@@ -1,5 +1,3 @@
-# Inizializzazione di un nuovo progetto
-
 **1. Creazione e attivazione dell'ambiente virtuale**
 
 - Creare l'ambiente virtuale:
