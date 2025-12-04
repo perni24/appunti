@@ -1,5 +1,5 @@
 ## Argomenti Principali
 
-- [[Inizializzazione di un nuovo progetto]]
-- [[Comandi base]]
+- [[Pagine/Inizializzazione di un nuovo progetto | Inizializzazione di un nuovo progetto]]
+- [[Pagine/Comandi base | Comandi base]]
 
