@@ -64,6 +64,63 @@ let spaces = spaces.len(); // Ora `spaces` è un numero
 
 Questa è una funzionalità molto utile che permette di riutilizzare nomi di variabili in modo sicuro.
 
+## Ownership (Proprietà)
+
+L'ownership è il concetto più unico di Rust e il modo in cui gestisce la memoria. Tutti i programmi devono gestire la memoria che usano durante l'esecuzione. Alcuni linguaggi usano un garbage collector (GC), altri richiedono al programmatore di allocare e deallocare la memoria manualmente. Rust usa un terzo approccio: un sistema di ownership con un insieme di regole che il compilatore controlla in fase di compilazione.
+
+### Regole dell'Ownership
+
+1.  Ogni valore in Rust ha una variabile che è il suo *owner* (proprietario).
+2.  Ci può essere un solo owner alla volta.
+3.  Quando l'owner esce dallo *scope* (l'ambito in cui è valido), il valore viene eliminato (dropped).
+
+```rust
+{
+    let s = String::from("ciao"); // s è valido da questo punto in poi
+    // fai qualcosa con s
+} // lo scope di s è finito, s non è più valido. Rust chiama `drop` automaticamente.
+```
+
+Quando si passano dati complessi (come una `String`, che è allocata sulla heap) a una funzione o li si assegna a un'altra variabile, la proprietà viene *spostata* (move).
+
+```rust
+fn main() {
+    let s1 = String::from("hello");
+    let s2 = s1; // La proprietà di "hello" viene spostata da s1 a s2.
+    // println!("{}", s1); // Errore! s1 non è più valido perché non è più il proprietario.
+}
+```
+
+### Borrowing (Prestito) e Riferimenti
+
+Invece di trasferire la proprietà, si può "prestare" l'accesso a un valore tramite i *riferimenti*. Questo processo è chiamato **borrowing**.
+
+Un riferimento è come un puntatore che permette di accedere a un valore senza prenderne la proprietà. Si crea un riferimento usando il simbolo `&`.
+
+```rust
+fn main() {
+    let s1 = String::from("ciao");
+    let lunghezza = calcola_lunghezza(&s1); // Passiamo un riferimento a s1
+    println!("La lunghezza di '{}' è {}.", s1, lunghezza); // s1 è ancora valido qui!
+}
+
+fn calcola_lunghezza(s: &String) -> usize { // s è un riferimento a una String
+    s.len()
+} // s esce dallo scope, ma siccome non ha la proprietà, non dealloca nulla.
+```
+
+Esistono due tipi di riferimenti:
+-   **Riferimenti immutabili (`&T`)**: Permettono di leggere i dati. Se ne possono avere quanti se ne vuole contemporaneamente.
+-   **Riferimenti mutabili (`&mut T`)**: Permettono di modificare i dati. Se ne può avere solo uno per un dato valore in un determinato scope.
+
+### Lifetimes (Durata)
+
+I lifetimes sono un'altra caratteristica unica di Rust che aiuta a prevenire i *dangling references* (riferimenti a dati non più validi).
+
+Il lifetime di un riferimento assicura che i dati a cui punta rimangano validi per tutta la "vita" del riferimento stesso. Nella maggior parte dei casi, i lifetimes sono inferiti automaticamente dal compilatore. Tuttavia, in alcuni scenari complessi, specialmente con le funzioni che restituiscono riferimenti, potrebbe essere necessario annotarli esplicitamente.
+
+Il loro scopo è garantire la sicurezza della memoria senza bisogno di un garbage collector. Per ora, è sufficiente sapere che esistono e che il compilatore li usa per verificare la validità dei riferimenti.
+
 ## Tipi di Dati
 
 Rust è un linguaggio a tipizzazione statica, il che significa che deve conoscere i tipi di tutte le variabili al momento della compilazione. Nella maggior parte dei casi, il compilatore può inferire il tipo in base al valore che gli assegniamo, ma a volte è necessario specificarlo esplicitamente.
