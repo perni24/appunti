@@ -215,3 +215,226 @@ let second = a[1];
 ```
 
 Accesso a un elemento fuori dai limiti di un array causerà un *panic* a runtime.
+
+#### Struct (Strutture)
+
+Le `struct` sono tipi di dati composti che permettono di raggruppare e nominare più valori correlati. Sono il modo principale in Rust per creare i tuoi tipi di dati personalizzati. Esistono tre tipi di `struct`:
+
+-   **Struct classiche (con campi nominati):**
+
+```rust
+struct Utente {
+    username: String,
+    email: String,
+    attivo: bool,
+    accessi: u64,
+}
+
+let utente1 = Utente {
+    email: String::from("qualcuno@example.com"),
+    username: String::from("utente123"),
+    attivo: true,
+    accessi: 1,
+};
+
+// Per accedere ai campi si usa la notazione a punto
+println!("Email dell'utente: {}", utente1.email);
+```
+
+-   **Tuple Structs:** Simili alle tuple, ma con un nome per il tipo. Utili per dare un nome a una tupla e renderla un tipo distinto.
+
+```rust
+struct Colore(i32, i32, i32);
+struct Punto(i32, i32, i32);
+
+let nero = Colore(0, 0, 0);
+let origine = Punto(0, 0, 0);
+```
+
+-   **Unit-like Structs:** Strutture senza campi, utili in situazioni generiche o quando si ha bisogno di implementare un *trait* su un tipo ma non si hanno dati da memorizzare.
+
+```rust
+struct AlwaysEqual;
+let subject = AlwaysEqual;
+```
+
+#### Enum (Enumerazioni)
+
+Le `enum` (enumerazioni) permettono di definire un tipo che può avere uno tra un insieme di valori possibili (chiamati *varianti*).
+
+```rust
+enum Messaggio {
+    Quit,
+    Move { x: i32, y: i32 },
+    Write(String),
+    ChangeColor(i32, i32, i32),
+}
+```
+A differenza di altri linguaggi, ogni variante di un'enum può opzionalmente contenere dei dati. Questo rende le enum di Rust estremamente potenti.
+
+Un esempio fondamentale è l'enum `Option<T>`, definita nella libreria standard, che gestisce l'eventuale assenza di un valore:
+
+```rust
+enum Option<T> {
+    Some(T), // Il valore è presente
+    None,    // Il valore è assente (simile a `null`)
+}
+```
+
+Questo sistema permette a Rust di garantire a livello di compilazione che i valori "null" (o meglio, `None`) siano gestiti, prevenendo un'intera classe di bug.
+
+```rust
+let numero_presente = Some(5);
+let numero_assente: Option<i32> = None;
+```
+Per interagire con le enum si usa tipicamente il costrutto `match`, che vedremo più avanti.
+
+### Tipi Slice
+
+Uno slice è un tipo di dato che non ha la proprietà dei dati, ma permette di fare riferimento a una sequenza contigua di elementi in una collezione. È una "vista" su una porzione di dati, come un array o una `String`.
+
+#### String Slice (`&str`)
+
+In Rust si distingue tra `String` e `&str`:
+
+-   `String`: È un tipo proprietario, allocato sulla heap, che può essere modificato (se dichiarato con `mut`). È un buffer di testo UTF-8. Quando si passa una `String`, la proprietà viene spostata.
+-   `&str`: È uno "string slice" o "riferimento a una stringa". È un riferimento immutabile a una sequenza di byte UTF-8 che può essere in qualsiasi parte della memoria (sulla heap, sullo stack o nel codice binario del programma). I letterali di stringa (es. `"ciao"`) sono di tipo `&'static str`.
+
+```rust
+let s = String::from("ciao mondo");
+
+let ciao = &s[0..4]; // slice che contiene "ciao"
+let mondo = &s[5..10]; // slice che contiene "mondo"
+
+// Le funzioni che accettano &str sono più flessibili
+fn prima_parola(s: &str) -> &str {
+    // ... logica per trovare la prima parola
+    &s[..1] // esempio semplificato
+}
+
+// Possiamo passare sia una String...
+prima_parola(&s);
+
+// ...che uno string slice
+let s_literal = "un'altra stringa";
+prima_parola(s_literal);
+```
+
+#### Slice di altri tipi
+
+Il concetto di slice non è limitato alle stringhe. Funziona con qualsiasi collezione contigua, come gli array.
+
+```rust
+let a = [1, 2, 3, 4, 5];
+
+let slice: &[i32] = &a[1..3]; // È un riferimento a una parte dell'array `a`
+// `slice` ora punta ai dati `[2, 3]`
+
+assert_eq!(slice, &[2, 3]);
+```
+Gli slice sono sicuri e potenti perché, grazie alle regole del borrowing, il compilatore si assicura che lo slice non possa "sopravvivere" alla collezione a cui fa riferimento, prevenendo dangling pointers.
+
+### Collezioni Dinamiche
+
+Oltre ai tipi composti con dimensione fissa come tuple e array, Rust offre collezioni dinamiche dalla libreria standard che possono crescere o ridursi in base alle necessità e che tipicamente allocano i loro dati sulla heap.
+
+#### Vettore (`Vec<T>`)
+
+Il tipo `Vec<T>`, spesso chiamato "vettore", è una collezione omogenea (tutti gli elementi sono dello stesso tipo `T`) che ti permette di memorizzare un numero variabile di valori. È l'equivalente di un array dinamico in altri linguaggi.
+
+```rust
+let mut v: Vec<i32> = Vec::new(); // Crea un nuovo vettore vuoto
+v.push(1); // Aggiunge elementi
+v.push(2);
+v.push(3);
+
+let mut v2 = vec![1, 2, 3]; // Macro per creare un vettore con valori iniziali
+
+// Accesso agli elementi (come gli array, ma attenzione ai panic!)
+let terzo_elemento = &v2[2]; // Riferimento all'elemento
+println!("Il terzo elemento è: {}", terzo_elemento);
+
+// Oppure con get, che restituisce un Option<&T>
+match v2.get(2) {
+    Some(terzo) => println!("Il terzo elemento è: {}", terzo),
+    None => println!("Non c'è un terzo elemento."),
+}
+
+// Iterare su un vettore
+for i in &mut v2 {
+    *i += 50; // Per modificare il valore, dobbiamo dereferenziare il riferimento mutabile
+}
+println!("Vettore modificato: {:?}", v2);
+```
+
+#### Hash Map (`HashMap<K, V>`)
+
+L'`HashMap<K, V>` è una collezione che memorizza i dati come coppie chiave-valore. Le chiavi `K` devono essere tutte dello stesso tipo e i valori `V` devono essere tutti dello stesso tipo. `HashMap` è utile quando vuoi cercare dati per chiave.
+
+```rust
+use std::collections::HashMap;
+
+let mut scores = HashMap::new();
+
+scores.insert(String::from("Blue"), 10);
+scores.insert(String::from("Yellow"), 50);
+
+let team_name = String::from("Blue");
+let score = scores.get(&team_name).copied().unwrap_or(0); // get restituisce Option<&V>
+println!("Il punteggio del team {} è: {}", team_name, score);
+
+// Iterare su una HashMap
+for (key, value) in &scores {
+    println!("{}: {}", key, value);
+}
+
+// Aggiornare valori:
+// Se la chiave non esiste, la inserisce. Se esiste, non fa nulla.
+scores.entry(String::from("Blue")).or_insert(25);
+
+// Se la chiave esiste, aggiorna il valore
+let red_score = scores.entry(String::from("Red")).or_insert(0);
+*red_score += 10; // Modifica il valore puntato dal riferimento
+```
+Una `HashMap` richiede che le chiavi implementino i trait `Eq` e `Hash`. Tipi come `String` e tutti i tipi numerici implementano questi trait per impostazione predefinita.
+
+## Pattern Matching con `match`
+
+Il `match` è un potente costrutto di controllo di flusso in Rust che permette di confrontare un valore con una serie di "pattern" ed eseguire codice basandosi sul pattern che corrisponde. È simile a un `switch` di altri linguaggi, ma molto più potente.
+
+Il `match` è esaustivo: devi coprire ogni possibile caso. Questo è particolarmente utile con le `enum`.
+
+```rust
+enum Moneta {
+    Penny,
+    Nickel,
+    Dime,
+    Quarter,
+}
+
+fn valore_in_centesimi(moneta: Moneta) -> u8 {
+    match moneta {
+        Moneta::Penny => 1,
+        Moneta::Nickel => 5,
+        Moneta::Dime => 10,
+        Moneta::Quarter => 25,
+    }
+}
+```
+
+`match` può anche essere usato per estrarre i valori contenuti nelle varianti di un'enum, come `Option<T>`:
+
+```rust
+fn piu_uno(x: Option<i32>) -> Option<i32> {
+    match x {
+        None => None,
+        Some(i) => Some(i + 1),
+    }
+}
+
+let cinque = Some(5);
+let sei = piu_uno(cinque);      // Some(6)
+let nessuno = piu_uno(None); // None
+```
+
+Il `match` è una delle funzionalità più amate di Rust perché permette di scrivere codice conciso, espressivo e sicuro, specialmente quando si lavora con strutture dati complesse.
