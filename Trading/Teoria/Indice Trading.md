@@ -1,4 +1,3 @@
-# Indice Teoria Trading
 
 - [[Pagine/Concetti fondamentali del daily trading]]
 - [[Pagine/EMA]]
