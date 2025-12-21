@@ -1,152 +1,104 @@
-# Comandi Base di Rust
+---
+tags:
+  - programmazione
+  - rust
+  - strumenti
+argomento: Comandi Base (Cargo)
+data: 2025-12-20
+stato: 🟢 completato
+---
 
-Questa pagina contiene i comandi essenziali per iniziare a programmare in Rust, con un focus particolare su `cargo`, il build system e package manager di Rust.
+# Comandi Base e Toolchain (Cargo)
 
-## Gestione del Progetto con Cargo
+## 💡 Concetto Chiave
+L'ecosistema Rust ruota attorno a **Cargo**, che non è solo un package manager, ma un sistema di build completo. Gestisce dipendenze, compilazione, testing, documentazione e rilascio. A differenza di C++ (Make/CMake) o Python (pip/poetry/venv), Cargo è lo standard unico e ufficiale.
 
-Cargo gestisce la maggior parte delle attività comuni nello sviluppo di un progetto Rust, come la creazione, la compilazione, il testing e la gestione delle dipendenze.
+---
 
-### Creare un Nuovo Progetto
-
-Per creare un nuovo progetto Rust, si usa il comando `cargo new`.
-
-- **Creare un eseguibile (binary):**
-  ```bash
-  cargo new nome_eseguibile
-  ```
-  o esplicitamente:
-  ```bash
-  cargo new nome_eseguibile --bin
-  ```
-  Questo è il comportamento di default.
-
-- **Creare una libreria (library):**
-  ```bash
-  cargo new nome_libreria --lib
-  ```
-
-Questo comando crea una nuova directory con il nome specificato, contenente una struttura di base per il progetto, incluso un file `Cargo.toml` (il file di configurazione del progetto) e una directory `src` con un file `main.rs` o `lib.rs`.
-
-### Compilazione ed Esecuzione
-
-- **Compilare il progetto:**
-  ```bash
-  cargo build
-  ```
-  Questo comando compila il codice sorgente e crea un eseguibile nella directory `target/debug/`.
-
-- **Eseguire il progetto:**
-  ```bash
-  cargo run
-  ```
-  Questo comando compila ed esegue il progetto. È utile per uno sviluppo rapido.
-
-- **Controllare il codice senza compilare:**
-  ```bash
-  cargo check
-  ```
-  Questo comando controlla il codice per errori di compilazione in modo molto più veloce rispetto a `cargo build`, poiché non produce un file eseguibile. È ideale per verificare la correttezza del codice durante lo sviluppo.
-
-### Build di Rilascio (Release)
-
-Per compilare il progetto con ottimizzazioni per la produzione, si usa il flag `--release`.
+## 📝 Sintassi
+I comandi si eseguono da terminale nella root del progetto.
 
 ```bash
+cargo <comando> [opzioni]
+```
+
+### Comandi Principali
+*   `new`: Crea un nuovo progetto.
+*   `build`: Compila il progetto.
+*   `run`: Compila ed esegue.
+*   `check`: Verifica errori senza generare l'eseguibile (veloce).
+*   `test`: Esegue la suite di test.
+*   `fmt`: Formatta il codice.
+*   `clippy`: Linter avanzato per suggerimenti di qualità.
+
+---
+
+## 💻 Esempi Pratici
+
+### 1. Inizializzazione Progetto
+```bash
+# Crea un eseguibile (default)
+cargo new mio_progetto
+
+# Crea una libreria
+cargo new mia_libreria --lib
+```
+Genera un `Cargo.toml` e una cartella `src`.
+
+### 2. Ciclo di Sviluppo (Dev Loop)
+Durante la scrittura del codice, usa `check` frequentemente.
+```bash
+# Veloce controllo di sintassi/tipi
+cargo check
+
+# Quando vuoi provare il programma
+cargo run
+```
+
+### 3. Aggiungere Dipendenze
+Non serve modificare `Cargo.toml` a mano.
+```bash
+# Scarica e aggiunge "serde" al progetto
+cargo add serde
+```
+
+### 4. Build per Produzione
+```bash
+# Ottimizzazioni attive, debug info rimossi
 cargo build --release
 ```
+L'eseguibile sarà in `target/release/` invece che `target/debug/`.
 
-L'eseguibile ottimizzato sarà disponibile in `target/release/`.
-
-### Compilazione Cross-Platform
-
-È possibile compilare un eseguibile per un sistema operativo o un'architettura diversa da quella in uso (cross-compilazione).
-
-Prima, è necessario installare il "target" desiderato con `rustup`:
-
+### 5. Cross-Compilazione
+Esempio per Windows da Linux:
 ```bash
-rustup target add <nome_del_target>
+rustup target add x86_64-pc-windows-gnu
+cargo build --release --target x86_64-pc-windows-gnu
 ```
 
-Poi, si può compilare il progetto specificando il target:
+---
 
-```bash
-cargo build --release --target <nome_del_target>
-```
+## ⚙️ Funzionamento Interno
 
-Alcuni target comuni:
+### Cargo.toml vs Cargo.lock
+*   **Cargo.toml:** Il file "manifesto". Qui dichiari le dipendenze e le loro versioni *compatibili* (es. `serde = "1.0"`). È modificabile dall'uomo.
+*   **Cargo.lock:** Generato automaticamente. Fissa le versioni *esatte* di tutte le dipendenze (e le loro sotto-dipendenze) usate nell'ultima build funzionante. Garantisce la riproducibilità. **Non modificarlo mai a mano.**
 
-- **Windows:**
-  ```bash
-  rustup target add x86_64-pc-windows-gnu
-  cargo build --release --target x86_64-pc-windows-gnu
-  ```
+### La cartella `target/`
+Tutti gli artefatti di compilazione finiscono qui. Può diventare molto grande (GB).
+*   **Debug:** Compilazione incrementale, veloce, zero ottimizzazioni.
+*   **Release:** Compilazione lenta, LLVM optimization pass attivi.
 
-- **Linux:**
-  ```bash
-  rustup target add x86_64-unknown-linux-gnu
-  cargo build --release --target x86_64-unknown-linux-gnu
-  ```
+---
 
-- **ARM (es. Raspberry Pi):**
-  ```bash
-  rustup target add armv7-unknown-linux-gnueabihf
-  cargo build --release --target armv7-unknown-linux-gnueabihf
-  ```
+## ⚠️ Best Practices & "Gotchas"
+- ✅ **Usa `cargo check`:** È molto più veloce di `build`. Usalo mentre scrivi codice per avere feedback rapido.
+- ✅ **Usa `clippy`:** `cargo clippy` ti insegna a scrivere codice "Idiomatic Rust". Ascolta i suoi consigli.
+- ✅ **Gitignore:** Assicurati che la cartella `/target` sia nel `.gitignore`.
+- 💣 **Librerie vs Binari:** Se crei una libreria, committa il `Cargo.lock` solo se vuoi garantire versioni precise (raro per le lib, comune per le app).
 
-- **macOS:**
-  ```bash
-  rustup target add x86_64-apple-darwin
-  cargo build --release --target x86_64-apple-darwin
-  ```
+---
 
-## Gestione delle Dipendenze
-
-Cargo semplifica l'aggiunta e la gestione delle dipendenze (chiamate "crates" in Rust).
-
-### Aggiungere una Dipendenza
-
-Per aggiungere una nuova dipendenza al progetto, si può usare il comando `cargo add`:
-
-```bash
-cargo add nome_crate
-```
-
-Questo comando scarica la dipendenza e la aggiunge automaticamente al file `Cargo.toml`.
-
-### Cercare una Dipendenza
-
-Per cercare un crate disponibile su [crates.io](https://crates.io/), puoi usare il comando `cargo search`:
-
-```bash
-cargo search nome_crate
-```
-
-## Qualità e Formattazione del Codice
-
-- **Formattare il codice:**
-  ```bash
-  cargo fmt
-  ```
-  Questo comando formatta automaticamente il codice secondo lo stile standard di Rust.
-
-- **Analisi statica (Linting):**
-  ```bash
-  cargo clippy
-  ```
-  Clippy è uno strumento di analisi statica che rileva errori comuni e suggerisce miglioramenti stilistici e di performance.
-
-## Testing
-
-Per eseguire i test del progetto (contenuti nei moduli di test, di solito annotati con `#[cfg(test)]`), si usa:
-
-```bash
-cargo test
-```
-
-## Documentazione
-
-Per generare la documentazione del progetto e delle sue dipendenze e aprirla nel browser:
-
-```bash
-cargo doc --open
-```
+## 📚 Riferimenti
+- [The Cargo Book](https://doc.rust-lang.org/cargo/)
+- [Crates.io](https://crates.io/)
