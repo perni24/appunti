@@ -1,4 +1,3 @@
-# Indice JavaScript
 
 Mappa dei contenuti relativi al linguaggio JavaScript (Browser & Node.js).
 
