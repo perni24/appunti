@@ -4,7 +4,6 @@ Mappa dei contenuti relativi al linguaggio Python.
 
 ## 🛠️ Fondamenti e Setup
 - [[Pagine/Comandi base|Comandi Base e Toolchain]]
-- [[Pagine/Inizializzazione di un nuovo progetto|Inizializzazione di un nuovo progetto]]
 - [[Pagine/Variabili|Variabili e Tipi di Dati]]
 
 ## 🏗️ Struttura del Codice
