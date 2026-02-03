@@ -12,10 +12,14 @@ Benvenuto nella tua Personal Knowledge Base. Questo file funge da punto di ingre
 - [[Trading/Teoria/Indice Trading.md|Teoria del Trading]]
 - [[Trading/Backtrader/Introduzione a Backtrader.md|Backtrader]]
 
+### Linux
+- [[Linux/Indice|Indice linux]]
+
+### Software Open Source
+- [[Programmi open source/Indice Programmi Open Source.md|Software Open Source]]
+
 ### 🤖 Intelligenza Artificiale
 - [[AI/Indice.md|Indice AI]]
-
-## 🛠️ Hobby & Progetti
 
 ### 🏠 Home Assistant
 - [[Home assistant/Indice.md|Indice Home Assistant]]
@@ -23,9 +27,8 @@ Benvenuto nella tua Personal Knowledge Base. Questo file funge da punto di ingre
 ### 🖨️ Stampa 3D
 - [[Stampante 3D/Introduzione Stamapante 3D.md|Introduzione alla Stampa 3D]]
 
-### 📂 Altri Progetti
+### 📂 Progetti
 - [[Progetti/Indice progetti.md|Indice Progetti]]
-- [[Programmi open source/Indice Programmi Open Source.md|Software Open Source]]
 
 
 ---
