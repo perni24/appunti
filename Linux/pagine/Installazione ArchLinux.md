@@ -1,7 +1,10 @@
 ---
 date: 2026-02-03
-tags: ["linux", "archlinux", "installazione"]
-type: #permanent-note
+tags:
+  - linux
+  - archlinux
+  - installazione
+type:
 status: budding
 ---
 
