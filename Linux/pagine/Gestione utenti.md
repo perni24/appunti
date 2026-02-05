@@ -7,7 +7,7 @@ status: budding
 
 # Gestione Utenti e Permessi in Linux
 
-Questa nota fornisce una guida rapida alla gestione degli utenti e dei relativi permessi sui sistemi [[Linux]], con un focus particolare sulle distribuzioni come [[Arch Linux]]. La corretta configurazione degli utenti e dei permessi è fondamentale per la [[sicurezza]] e la stabilità del sistema. Per una panoramica generale sui comandi [[Linux]], consulta [[Linux/Indice]].
+Questa nota fornisce una guida rapida alla gestione degli utenti e dei relativi permessi sui sistemi [[Linux]], con un focus particolare sulle distribuzioni come [[Arch Linux]]. La corretta configurazione degli utenti e dei permessi è fondamentale per la [[sicurezza]] e la stabilità del sistema. Per una panoramica generale sui comandi [[Linux]], consulta [[Indice Linux]].
 
 ## 0. Gestione dei Permessi di Amministrazione (sudo)
 

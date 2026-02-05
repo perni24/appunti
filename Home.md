@@ -13,16 +13,16 @@ Benvenuto nella tua Personal Knowledge Base. Questo file funge da punto di ingre
 - [[Trading/Backtrader/Introduzione a Backtrader.md|Backtrader]]
 
 ### Linux
-- [[Linux/Indice|Indice linux]]
+- [[Indice Linux|Indice linux]]
 
 ### Software Open Source
 - [[Programmi open source/Indice Programmi Open Source.md|Software Open Source]]
 
 ### 🤖 Intelligenza Artificiale
-- [[AI/Indice.md|Indice AI]]
+- [[Indice AI|Indice AI]]
 
 ### 🏠 Home Assistant
-- [[Home assistant/Indice.md|Indice Home Assistant]]
+- [[Indice Home Assistant|Indice Home Assistant]]
 
 ### 🖨️ Stampa 3D
 - [[Stampante 3D/Introduzione Stamapante 3D.md|Introduzione alla Stampa 3D]]
