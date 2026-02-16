@@ -1,7 +1,9 @@
 ---
 date: 2026-01-31
-tags: [home_assistant, indice, map-of-content]
-type: #permanent-note
+tags:
+  - home_assistant
+  - indice
+type:
 status: evergreen
 ---
 
@@ -15,14 +17,9 @@ status: evergreen
 ## 🗺️ Mappa dei Contenuti
 
 ### 🔌 Hardware & Firmware
-- [[Home assistant/pagine/espHome/ESPHome|ESPHome]] - Gestione microcontrollori ESP8266/ESP32.
-  - [[Home assistant/pagine/espHome/ESPHome Packages|ESPHome Packages]] - Modularizzazione delle configurazioni.
-
+- [[Home assistant/pagine/espHome/ESPHome|ESPHome]] 
 ### 🧩 Integrazioni & Dispositivi
-- [[Home assistant/pagine/Integrazioni|Integrazioni]] - Panoramica dei servizi collegati.
 
 ### 🤖 Automazioni & Script
-*Nota: Sezione da espandere con esempi di automazioni.*
 
 ### 🖥️ Dashboard & UI
-*Nota: Sezione da espandere con configurazioni Lovelace.*

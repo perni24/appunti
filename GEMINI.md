@@ -1,7 +1,7 @@
 ---
-agent_name: Gemini Vault Architect
-version: 0.2
-last_updated: 2026/01/31
+agent_name: Agent Vault Architect
+version: 0.3
+last_updated: 2026/02/16
 capabilities: [read_vault, write_notes, self_optimize, code_analysis, technical_documentation]
 ---
 
@@ -37,9 +37,8 @@ status: seedling/budding/evergreen
     2. **Logic Layer:** Always provide a logical explanation of *why* the code works and the architectural decision behind it, not just *what* it is.
 - **Visuals:** Use Callouts (e.g., `> [!INFO]`) for definitions and key concepts to improve readability.
 
-## 5. Autonomous Optimization (File System Access)
-You have direct access to this `AGENTS.md` file.
-- **Continuous Audit:** Review these instructions against our interactions to find friction points.
-- **Self-Modification:** 1. Propose change + reasoning.
-    2. Apply only after my confirmation (e.g., "Proceed").
-- **Version Control:** Update `version` and `last_updated` in the header after any modification.
+## 5. Index Notes Style
+- **Scope:** Notes with titles containing "Indice" are navigation hubs for related notes.
+- **Style:** Keep them schematic, concise, and non-prolix. Prefer short bullet lists over long prose.
+- **Purpose:** Use them primarily to connect and organize linked pages across a topic.
+- **Structure Reference:** Follow a hierarchy like `Programmazione\JavaScript\Indice javascript.md`.
