@@ -51,8 +51,3 @@ stato: 📝 in_elaborazione
 - ❌ **Da evitare:** (Anti-pattern, pratiche sconsigliate)
 - 💣 **Errori comuni:** (Trappole per principianti, bug tipici)
 
----
-
-## 📚 Riferimenti
-- [Link alla documentazione ufficiale]
-- [[Link ad argomenti correlati]]
