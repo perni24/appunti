@@ -15,6 +15,9 @@ Il **DOM** (Document Object Model) è la rappresentazione strutturata della pagi
 ## 1. Selezione Elementi
 Per manipolare un elemento, prima devi "trovarlo".
 
+> [!TIP] Tempismo è tutto
+> Assicurati che lo script venga eseguito quando il DOM è già pronto. Puoi usare l'attributo `defer` nello script HTML o racchiudere il codice in un listener per l'evento `DOMContentLoaded` (vedi [[Programmazione/JavaScript/Pagine/Gestione Eventi|Gestione Eventi]]).
+
 - **`document.getElementById('id')`**: Seleziona un singolo elemento per ID. Molto veloce.
 - **`document.querySelector('css-selector')`**: Seleziona il *primo* elemento che corrisponde al selettore CSS (es. `.classe`, `#id`, `div > p`).
 - **`document.querySelectorAll('css-selector')`**: Seleziona *tutti* gli elementi corrispondenti (restituisce una `NodeList`, simile a un array).

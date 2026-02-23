@@ -104,10 +104,32 @@ document.getElementById('lista').addEventListener('click', function(e) {
 
 ## 5. Rimozione Listener
 Per rimuovere un evento, la funzione callback deve essere **nominata** (non anonima).
-
 ```javascript
-function handleClick() { ... }
-
 btn.addEventListener('click', handleClick);
 btn.removeEventListener('click', handleClick); // Funziona
+```
+
+## 6. Eventi di Caricamento (Lifecycle)
+
+Questi eventi sono fondamentali per sapere quando il browser ha terminato di elaborare la pagina o parti di essa.
+
+### `DOMContentLoaded`
+Scatta quando il documento HTML è stato completamente caricato e analizzato, senza attendere il caricamento completo di fogli di stile, immagini e sotto-frame. 
+
+È il momento ideale per iniziare la manipolazione del DOM se lo script non usa l'attributo `defer`.
+
+```javascript
+document.addEventListener('DOMContentLoaded', () => {
+  console.log('Il DOM è pronto per essere manipolato!');
+  // Inizializza la tua app qui
+});
+```
+
+### `load`
+Scatta quando l'intera pagina è stata caricata, inclusi tutti i contenuti dipendenti (immagini, CSS, ecc.).
+
+```javascript
+window.addEventListener('load', () => {
+  console.log('Pagina completamente caricata (incluse immagini)');
+});
 ```
