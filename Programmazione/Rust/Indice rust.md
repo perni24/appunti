@@ -1,17 +1,68 @@
-# Indice Rust
+## Teoria
+### Basi
 
-Mappa dei contenuti relativi al linguaggio Rust.
+-   Tipi di Dato
+-   Funzioni
+-   Controllo di Flusso
+-   Commenti e Documentazione
 
-## 🛠️ Fondamenti e Toolchain
-- [[Pagine/Comandi base|Comandi Base e Toolchain (Cargo)]]
-- [[Programmazione/Rust/Pagine/Variabili|Variabili e Tipi di Dati]]
+### Memory Safety
 
-## 🏗️ Struttura del Codice
-- [[Pagine/Cicli e Condizionali|Cicli e Condizionali]]
-- [[Pagine/Funzioni|Funzioni]]
+-   Ownership
+-   References e Borrowing
+-   The Borrow Checker
+-   Slices
+-   Stringhe
 
-## 🛡️ Robustezza e Memoria
-- [[Pagine/Gestione degli Errori|Gestione degli Errori]]
+### Tipi di Dato Personalizzati
 
----
-**Note:** Questa struttura è ottimizzata per lo studio teorico e il confronto tra linguaggi.
+-   Structs
+-   Enums
+-   Pattern Matching
+-   Control Flow Avanzato
+
+### Gestione degli Errori e Collezioni
+
+-   Option Enum
+-   Result Enum
+-   Operatore ?
+-   Panic!
+-   Common Collections
+
+### Astrazione e Generici
+
+-   Generics
+-   Traits
+-   Trait Bounds
+-   Derive Traits
+-   Lifetimes
+
+### Smart Pointers (Gestione Avanzata Memoria)
+
+-   Box<T>
+-   Deref Trait
+-   Drop Trait
+-   Rc<T> e Arc<T>
+-   RefCell<T>
+
+### Concorrenza e Asincronia
+
+-   Threads
+-   Message Passing
+-   Shared State
+-   Send e Sync Traits
+-   Async/Await
+
+### Rust Avanzato e di Sistema
+
+-   Unsafe Rust
+-   FFI
+-   Macros
+-   Advanced Traits
+
+### Tooling e Ecosistema
+
+-   Cargo
+-   Testing
+-   Attributes
+-   Crates.io
