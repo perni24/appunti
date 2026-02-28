@@ -67,3 +67,9 @@
 -   Logging
 -   Profiling
 -   Stile
+
+## Librerie
+
+### Web Frameworks
+
+-   Flask

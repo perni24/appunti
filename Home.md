@@ -7,6 +7,7 @@ Benvenuto nella tua Personal Knowledge Base. Questo file funge da punto di ingre
 - [[Programmazione/Python/Indice python.md|Python]]
 - [[Programmazione/Rust/Indice rust.md|Rust]]
 - [[Programmazione/Postgres/Indice postgres.md|Postgres]]
+- [[Programmazione/React/Indice react.md|React]]
 
 ### 📈 Trading
 - [[Trading/Teoria/Indice Trading.md|Teoria del Trading]]
@@ -25,7 +26,7 @@ Benvenuto nella tua Personal Knowledge Base. Questo file funge da punto di ingre
 - [[Indice Home Assistant|Indice Home Assistant]]
 
 ### 🖨️ Stampa 3D
-- [[Stampante 3D/Introduzione Stamapante 3D.md|Introduzione alla Stampa 3D]]
+- [[Stampante 3D/Indice stampante 3D | Indice Stampante 3D ]]
 
 ### 📂 Progetti
 - [[Progetti/Indice progetti.md|Indice Progetti]]
