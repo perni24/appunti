@@ -1,6 +1,6 @@
 ## Fondamenta di React
-- Introduzione e Toolchain (Vite, npx create-react-app)
-- JSX (JavaScript XML) e sintassi
+- [[Pagine/Introduzione e Toolchain|Introduzione e Toolchain (Vite, npx create-react-app)]]
+- [[Pagine/JSX|JSX (JavaScript XML) e sintassi]]
 - Componenti Funzionali vs Componenti a Classe
 - Props e Flusso di dati unidirezionale
 - Rendering Condizionale e Liste (Key prop)
