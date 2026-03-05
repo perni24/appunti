@@ -5,21 +5,21 @@
 
 ### Basi
 
--   Sintassi e Variabili
--   Operatori
--   Strutture Condizionali
--   Cicli
--   Funzioni
--   Gestione File
--   Error Handling
+-   [[Pagine/Sintassi e Variabili|Sintassi e Variabili]]
+-   [[Pagine/Operatori|Operatori]]
+-   [[Pagine/Strutture Condizionali|Strutture Condizionali]]
+-   [[Pagine/Cicli|Cicli]]
+-   [[Pagine/Funzioni|Funzioni]]
+-   [[Pagine/Gestione File|Gestione File]]
+-   [[Pagine/Error Handling|Error Handling]]
 
 ### Strutture Dati
 
--   Liste
--   Tuple
--   Set
--   Dizionari
--   Comprehensions
+-   [[Pagine/Liste|Liste]]
+-   [[Pagine/Tuple|Tuple]]
+-   [[Pagine/Set|Set]]
+-   [[Pagine/Dizionari|Dizionari]]
+-   [[Pagine/Comprehensions|Comprehensions]]
 
 ### Programmazione ad Oggetti
 

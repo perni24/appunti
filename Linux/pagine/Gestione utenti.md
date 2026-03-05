@@ -7,7 +7,7 @@ status: budding
 
 # Gestione Utenti e Permessi in Linux
 
-Questa nota fornisce una guida rapida alla gestione degli utenti e dei relativi permessi sui sistemi [[Linux]], con un focus particolare sulle distribuzioni come [[Arch Linux]]. La corretta configurazione degli utenti e dei permessi è fondamentale per la [[sicurezza]] e la stabilità del sistema. Per una panoramica generale sui comandi [[Linux]], consulta [[Indice Linux]].
+Questa nota fornisce una guida rapida alla gestione degli utenti e dei relativi permessi sui sistemi Linux, con un focus particolare sulle distribuzioni come Arch Linux. La corretta configurazione degli utenti e dei permessi è fondamentale per la sicurezza e la stabilità del sistema. Per una panoramica generale sui comandi Linux, consulta Indice Linux.
 
 ## 0. Gestione dei Permessi di Amministrazione (sudo)
 
@@ -45,15 +45,15 @@ Per creare un utente standard:
 useradd -m -s /bin/bash nomeutente
 ```
 **Spiegazione delle opzioni:**
-*   `-m`: Questa opzione è fondamentale perché istruisce `useradd` a creare automaticamente la [[home directory]] per il nuovo utente (es. `/home/nomeutente`). Senza questa opzione, la home directory non verrebbe creata, e l'utente potrebbe riscontrare problemi nell'accesso e nella memorizzazione dei propri file.
-*   `-s /bin/bash`: Imposta la [[shell]] di login predefinita per l'utente. In questo caso, viene impostata la [[Bash]] shell, che è la shell più comune e ampiamente utilizzata nei sistemi [[Linux]]. È possibile specificare altre shell a seconda delle necessità.
+*   `-m`: Questa opzione è fondamentale perché istruisce `useradd` a creare automaticamente la home directory per il nuovo utente (es. `/home/nomeutente`). Senza questa opzione, la home directory non verrebbe creata, e l'utente potrebbe riscontrare problemi nell'accesso e nella memorizzazione dei propri file.
+*   `-s /bin/bash`: Imposta la shell di login predefinita per l'utente. In questo caso, viene impostata la Bash shell, che è la shell più comune e ampiamente utilizzata nei sistemi Linux. È possibile specificare altre shell a seconda delle necessità.
 
 Per creare un utente amministratore (che possa usare `sudo`):
 ```bash
 useradd -m -G wheel -s /bin/bash nomeutente
 ```
 **Spiegazione delle opzioni aggiuntive:**
-*   `-G wheel`: Questa opzione aggiunge il nuovo utente al gruppo `[[wheel group]]` fin dalla creazione. Nelle distribuzioni come [[Arch Linux]], gli utenti che appartengono al gruppo `wheel` sono quelli autorizzati ad utilizzare il comando `sudo` (previa configurazione di `visudo` come descritto sopra). Questo garantisce che il nuovo utente amministratore abbia immediatamente la capacità di eseguire comandi con privilegi elevati.
+*   `-G wheel`: Questa opzione aggiunge il nuovo utente al gruppo `[[wheel group]]` fin dalla creazione. Nelle distribuzioni come Arch Linux, gli utenti che appartengono al gruppo `wheel` sono quelli autorizzati ad utilizzare il comando `sudo` (previa configurazione di `visudo` come descritto sopra). Questo garantisce che il nuovo utente amministratore abbia immediatamente la capacità di eseguire comandi con privilegi elevati.
 
 ## 2. Impostazione Password Utente
 
@@ -67,4 +67,4 @@ passwd nomeutente
 *   `passwd nomeutente`: Esegue il programma `passwd`, che ti chiederà di inserire e confermare la nuova password per l'utente specificato (`nomeutente`).
 
 **Logica:**
-Assegnare una password è un passaggio di [[sicurezza]] critico. Finché un utente non ha una password, non può autenticarsi e accedere al sistema, rendendo l'account inutilizzabile. La password deve essere robusta e unica per prevenire accessi non autorizzati.
+Assegnare una password è un passaggio di sicurezza critico. Finché un utente non ha una password, non può autenticarsi e accedere al sistema, rendendo l'account inutilizzabile. La password deve essere robusta e unica per prevenire accessi non autorizzati.

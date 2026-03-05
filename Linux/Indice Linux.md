@@ -24,3 +24,5 @@
 - Gestione dei moduli del Kernel (Modprobe, Insmod, Lsmod)
 - Automazione e Task Scheduling (Cron, Anacron)
 
+# pagine vecchie 
+- [[pagine/Gestione utenti]] 

@@ -1,9 +1,9 @@
 ## Architettura e Fondamenti
 
-- Modello Client-Server
-- Architettura dei Processi (Postmaster, Background Workers)
-- Gestione della Memoria (Shared Buffers, Local Memory)
-- File System Layout e Data Directory
+- [[Pagine/Modello Client-Server|Modello Client-Server]]
+- [[Pagine/Architettura dei Processi|Architettura dei Processi (Postmaster, Background Workers)]]
+- [[Pagine/Gestione della Memoria|Gestione della Memoria (Shared Buffers, Local Memory)]]
+- [[Pagine/File System Layout e Data Directory|File System Layout e Data Directory]]
 
 ## Setup e Amministrazione
 

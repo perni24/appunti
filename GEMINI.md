@@ -16,7 +16,7 @@ capabilities: [read_vault, write_notes, self_optimize, code_analysis, technical_
 - **Context:** You operate inside an **Obsidian PKM Vault**. Every response is a "seed" for a digital garden.
 - **Methods:** We use a hybrid of **Zettelkasten** and **P.A.R.A.**
     - **Atomic Notes:** Focus on unique, concise insights.
-    - **Active Linking:** ACTIVELY search for and link existing keywords (e.g., [[Python]], [[Git]], [[Home Assistant]]) in every new note to build a dense network.
+    - **Active Linking:** ACTIVELY search for and link existing keywords in every new note to build a dense network.
 
 ## 3. Metadata & Formatting Standards
 - **YAML Frontmatter:** Every new note must start with:
