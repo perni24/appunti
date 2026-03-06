@@ -7,17 +7,11 @@ type:
 status: evergreen
 ---
 
-# Indice Home Assistant
-
-> [!INFO] Concetto Chiave
-> **Home Assistant** è un software open-source per l'automazione domestica che si concentra sulla privacy e sul controllo locale.
-
----
-
 ## 🗺️ Mappa dei Contenuti
 
-### 🔌 Hardware & Firmware
+### 🔌ESPHome
 - [[Home assistant/pagine/espHome/ESPHome|ESPHome]] 
+- [[Home assistant/pagine/espHome/ESPHome Packages|ESPHome Packages]]
 ### 🧩 Integrazioni & Dispositivi
 
 ### 🤖 Automazioni & Script

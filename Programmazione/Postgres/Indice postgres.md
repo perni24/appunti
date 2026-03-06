@@ -1,37 +1,37 @@
 ## Architettura e Fondamenti
 
 - [[Pagine/Modello Client-Server|Modello Client-Server]]
-- [[Pagine/Architettura dei Processi|Architettura dei Processi (Postmaster, Background Workers)]]
-- [[Pagine/Gestione della Memoria|Gestione della Memoria (Shared Buffers, Local Memory)]]
+- [[Pagine/Architettura dei Processi|Architettura dei Processi]]
+- [[Pagine/Gestione della Memoria|Gestione della Memoria]]
 - [[Pagine/File System Layout e Data Directory|File System Layout e Data Directory]]
 
 ## Setup e Amministrazione
 
-- Installazione e Inizializzazione (initdb)
-- Configurazione (postgresql.conf, pg_hba.conf)
-- Gestione Utenti e Ruoli
-- Backup e Ripristino (pg_dump, pg_restore, Barman)
-- Manutenzione (Vacuum, Analyze, Reindex)
+- [[Pagine/Installazione e Inizializzazione|Installazione e Inizializzazione]]
+- [[Pagine/Configurazione|Configurazione]]
+- [[Pagine/Gestione Utenti e Ruoli|Gestione Utenti e Ruoli]]
+- [[Pagine/Backup e Ripristino|Backup e Ripristino]]
+- [[Pagine/Manutenzione|Manutenzione]]
 
 ## Linguaggio SQL ed Estensioni psql
 
-- Tipi di Dato (Primitivi, Array, JSONB, Range Types)
-- Comandi psql e Meta-comandi (\d, \copy, \watch)
-- Common Table Expressions (CTE) e Recursive Queries
-- Window Functions
-- Full Text Search
+- [[Pagine/Tipi di Dato|Tipi di Dato]]
+- [[Pagine/Comandi psql e Meta-comandi|Comandi psql e Meta-comandi]]
+- [[Pagine/Common Table Expressions e Recursive Queries|Common Table Expressions e Recursive Queries]]
+- [[Pagine/Window Functions|Window Functions]]
+- [[Pagine/Full Text Search|Full Text Search]]
 
 ## Integrità e Logica di Business
 
-- Vincoli (Primary Key, Foreign Key, Check, Exclusion)
-- Trigger e Event Trigger
-- Regole (Rules System)
-- Schemi e Search Path
+- [[Pagine/Vincoli|Vincoli]]
+- [[Pagine/Trigger e Event Trigger|Trigger e Event Trigger]]
+- [[Pagine/Regole|Regole]]
+- [[Pagine/Schemi e Search Path|Schemi e Search Path]]
 
 ## Performance e Tuning
 
-- Tipi di Indici (B-Tree, GIN, GiST, BRIN, Hash)
-- Indici Parziali e Coprenti
+- [[Pagine/Tipi di Indici|Tipi di Indici]]
+- [[Pagine/Indici Parziali e Coprenti|Indici Parziali e Coprenti]]
 - Analisi delle Query (EXPLAIN, EXPLAIN ANALYZE)
 - Statistiche e Query Planner
 - Partitioning (Declarative Partitioning)
