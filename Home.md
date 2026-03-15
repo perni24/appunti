@@ -9,6 +9,9 @@ Benvenuto nella tua Personal Knowledge Base. Questo file funge da punto di ingre
 - [[Programmazione/Postgres/Indice postgres.md|Postgres]]
 - [[Programmazione/React/Indice react.md|React]]
 
+### Elettronica
+- [[Elettronica/RISC-V/Indice RISC-V.md|RISC-V]]
+
 ### 📈 Trading
 - [[Trading/Teoria/Indice Trading.md|Teoria del Trading]]
 - [[Trading/Backtrader/Introduzione a Backtrader.md|Backtrader]]
@@ -33,4 +36,3 @@ Benvenuto nella tua Personal Knowledge Base. Questo file funge da punto di ingre
 
 
 ---
-*Ultimo aggiornamento: 2026-01-30*

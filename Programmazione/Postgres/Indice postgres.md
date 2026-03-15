@@ -32,27 +32,28 @@
 
 - [[Pagine/Tipi di Indici|Tipi di Indici]]
 - [[Pagine/Indici Parziali e Coprenti|Indici Parziali e Coprenti]]
-- Analisi delle Query (EXPLAIN, EXPLAIN ANALYZE)
-- Statistiche e Query Planner
-- Partitioning (Declarative Partitioning)
+- [[Pagine/Analisi delle Query|Analisi delle Query (EXPLAIN, EXPLAIN ANALYZE)]]
+- [[Pagine/Statistiche e Query Planner|Statistiche e Query Planner]]
+- [[Pagine/Partitioning|Partitioning (Declarative Partitioning)]]
 
 ## Programmabilità
 
-- PL/pgSQL: Variabili, Controllo Flusso, Cursori
-- Funzioni e Store Procedures
-- Gestione delle Estensioni (CREATE EXTENSION)
+- [[Pagine/PL-pgSQL|PL/pgSQL: Variabili, Controllo Flusso, Cursori]]
+- [[Pagine/Funzioni e Store Procedures|Funzioni e Store Procedures]]
+- [[Pagine/Gestione delle Estensioni|Gestione delle Estensioni (CREATE EXTENSION)]]
 
 ## Concorrenza e Transazioni
 
-- Proprietà ACID
-- MVCC (Multi-Version Concurrency Control)
-- Livelli di Isolamento delle Transazioni
-- Meccanismi di Locking (Row-level, Table-level, Advisory)
-- Write-Ahead Logging (WAL)
+- [[Pagine/Proprietà ACID|Proprietà ACID]]
+- [[Pagine/MVCC|MVCC (Multi-Version Concurrency Control)]]
+- [[Pagine/Livelli di Isolamento delle Transazioni|Livelli di Isolamento delle Transazioni]]
+- [[Pagine/Meccanismi di Locking|Meccanismi di Locking (Row-level, Table-level, Advisory)]]
+- [[Pagine/Write-Ahead Logging|Write-Ahead Logging (WAL)]]
 
 ## Scalabilità e Alta Affidabilità
 
-- Replicazione Fisica (Streaming Replication)
-- Replicazione Logica
-- Connection Pooling (PgBouncer, pgcat)
-- Failover e Load Balancing
+- [[Pagine/Replicazione Fisica|Replicazione Fisica (Streaming Replication)]]
+- [[Pagine/Replicazione Logica|Replicazione Logica]]
+- [[Pagine/Connection Pooling|Connection Pooling (PgBouncer, pgcat)]]
+- [[Pagine/Failover e Load Balancing|Failover e Load Balancing]]
+
