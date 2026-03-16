@@ -23,10 +23,10 @@
 
 ### Programmazione ad Oggetti
 
--   Classi e Istanze
--   Metodi Speciali
--   Ereditarietà
--   Incapsulamento
+- [[Pagine/Classi e Istanze|Classi e Istanze]]
+- [[Pagine/Metodi Speciali|Metodi Speciali]]
+- [[Pagine/Ereditarietà|Ereditarietà]]
+- [[Pagine/Incapsulamento|Incapsulamento]]
 -   Proprietà
 -   Metodi di classe e statici
 
