@@ -27,17 +27,17 @@
 - [[Pagine/Metodi Speciali|Metodi Speciali]]
 - [[Pagine/Ereditarietà|Ereditarietà]]
 - [[Pagine/Incapsulamento|Incapsulamento]]
--   Proprietà
--   Metodi di classe e statici
+- [[Pagine/Proprietà|Proprietà]]
+- [[Pagine/Metodi di classe e statici|Metodi di classe e statici]]
 
 ### Concetti Funzionali e Avanzati
 
--   Funzioni Lambda
--   Higher-order Functions
--   Decoratori
--   Generatori
--   Iteratori
--   Argomenti Flessibili
+-   [[Pagine/Funzioni Lambda|Funzioni Lambda]]
+-   [[Pagine/Higher-order Functions|Higher-order Functions]]
+-   [[Pagine/Decoratori|Decoratori]]
+-   [[Pagine/Generatori|Generatori]]
+-   [[Pagine/Iteratori|Iteratori]]
+-   [[Pagine/Argomenti Flessibili|Argomenti Flessibili]]
 
 ### Internals e Gestione Risorse
 
