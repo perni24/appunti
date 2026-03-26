@@ -22,7 +22,7 @@ PostgreSQL è un database relazionale **ACID-compliant**. Ciò significa che, in
 L'atomicità garantisce che una transazione sia trattata come un'unica unità "tutto o niente". Se una parte della transazione fallisce, l'intera transazione viene annullata (**Rollback**).
 
 - **In Postgres:** Viene gestita tramite i comandi `BEGIN`, `COMMIT` e `ROLLBACK`.
-- **Meccanismo:** PostgreSQL utilizza il [[Programmazione/Postgres/Pagine/Write-Ahead Logging (WAL)|Write-Ahead Logging (WAL)]] per tenere traccia dei cambiamenti prima che avvengano, permettendo di annullarli se necessario.
+- **Meccanismo:** PostgreSQL utilizza il **Write-Ahead Logging (WAL)** per tenere traccia dei cambiamenti prima che avvengano, permettendo di annullarli se necessario.
 
 ---
 
@@ -48,7 +48,7 @@ L'isolamento garantisce che l'esecuzione concorrente di transazioni lasci il dat
 La durabilità garantisce che, una volta che una transazione è stata confermata (`COMMIT`), rimarrà memorizzata anche in caso di crash del server o interruzione di corrente.
 
 - **In Postgres:** I dati vengono scritti in modo permanente sul disco (tramite `fsync`).
-- **Logic Layer:** Anche se i dati non sono ancora stati scritti nei file delle tabelle, la loro presenza nel [[Programmazione/Postgres/Pagine/Write-Ahead Logging (WAL)|WAL]] permette al database di "ricostruire" le transazioni mancanti al riavvio dopo un crash.
+- **Logic Layer:** Anche se i dati non sono ancora stati scritti nei file delle tabelle, la loro presenza nel **WAL** permette al database di "ricostruire" le transazioni mancanti al riavvio dopo un crash.
 
 ---
 

@@ -4,6 +4,7 @@ Benvenuto nella tua Personal Knowledge Base. Questo file funge da punto di ingre
 
 ### 💻 Programmazione
 - [[Programmazione/JavaScript/Indice javascript.md|JavaScript]]
+- [[Programmazione/TypeScript/Indice TypeScript.md|TypeScript]]
 - [[Programmazione/Python/Indice python.md|Python]]
 - [[Programmazione/Rust/Indice rust.md|Rust]]
 - [[Programmazione/Postgres/Indice postgres.md|Postgres]]
