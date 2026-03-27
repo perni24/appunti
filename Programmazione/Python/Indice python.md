@@ -41,10 +41,10 @@
 
 ### Internals e Gestione Risorse
 
--   Memory Management
--   Global Interpreter Lock
--   Context Managers 
--   Introspezione
+-   [[Pagine/Memory Management|Memory Management]]
+-   [[Pagine/Global Interpreter Lock|Global Interpreter Lock]]
+-   [[Pagine/Context Managers|Context Managers]]
+-   [[Pagine/Introspezione|Introspezione]]
 
 ### Concorrenza e Parallelismo
 

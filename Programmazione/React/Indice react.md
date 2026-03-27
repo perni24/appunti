@@ -15,7 +15,7 @@
 - [[Pagine/Custom Hooks|Custom Hooks]]
 
 ## Concetti Avanzati e Design Patterns
-- Context API: Global State Management
+- [[Pagine/Context API|Context API: Global State Management]]
 - Compound Components Pattern (Es. Tabs, Accordion)
 - Control Props e State Reducer Pattern
 - Portals: Rendering fuori dalla gerarchia DOM principale
