@@ -73,3 +73,4 @@
 ### Web Frameworks
 
 -   Flask
+-   Starlette (versione moderna flask)
