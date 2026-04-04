@@ -12,6 +12,7 @@
 - Gestione dei Processi (PID, segnali, job control, monitoraggio)
 - Gestione della Memoria e Swap
 - Package Management (Repository, dipendenze, compilazione)
+- [[pagine/Installazione Linguaggi User-space|Installazione Linguaggi User-space (NVM, Pyenv, Rustup)]]
 - Storage e File Systems (Partizionamento, LVM, Mounting, /etc/fstab)
 - Crittografia e Sicurezza del Dato (LUKS, GPG)
 - Networking (Indirizzamento, routing, SSH, Firewall)

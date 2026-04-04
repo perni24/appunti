@@ -48,10 +48,10 @@
 
 ### Concorrenza e Parallelismo
 
--   Threading
--   Multiprocessing
--   Asyncio
--   Concurrent.futures
+-   [[Pagine/Threading|Threading]]
+-   [[Pagine/Multiprocessing|Multiprocessing]]
+-   [[Pagine/Asyncio|Asyncio]]
+-   [[Pagine/Concurrent.futures|Concurrent.futures]]
 
 ### Moduli, Pacchetti e Ambiente
 
