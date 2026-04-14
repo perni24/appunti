@@ -55,10 +55,10 @@
 
 ### Moduli, Pacchetti e Ambiente
 
--   Standard Library
--   Pip e PyPI
--   Ambienti Virtuali
--   Creazione di Package
+-   [[Pagine/Standard Library|Standard Library]]
+-   [[Pagine/Pip e PyPI|Pip e PyPI]]
+-   [[Pagine/Ambienti Virtuali|Ambienti Virtuali]]
+-   [[Pagine/Creazione di Package|Creazione di Package]]
 
 ### Qualità del Codice e Tooling
 
