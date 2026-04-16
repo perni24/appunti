@@ -62,11 +62,11 @@
 
 ### Qualità del Codice e Tooling
 
--   Type Hinting
--   Testing
--   Logging
--   Profiling
--   Stile
+-   [[Pagine/Type Hinting|Type Hinting]]
+-   [[Pagine/Testing|Testing]]
+-   [[Pagine/Logging|Logging]]
+-   [[Pagine/Profiling|Profiling]]
+-   [[Pagine/Stile|Stile]]
 
 ## Librerie
 
