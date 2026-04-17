@@ -16,18 +16,18 @@
 
 ## Concetti Avanzati e Design Patterns
 - [[Pagine/Context API|Context API: Global State Management]]
-- Compound Components Pattern (Es. Tabs, Accordion)
-- Control Props e State Reducer Pattern
-- Portals: Rendering fuori dalla gerarchia DOM principale
-- Error Boundaries: Gestione degli errori nei componenti
-- Suspense e Lazy Loading: Code Splitting
-- Profiler e Debugging (React DevTools)
+- [[Pagine/Compound Components Pattern|Compound Components Pattern (Es. Tabs, Accordion)]]
+- [[Pagine/Control Props e State Reducer Pattern|Control Props e State Reducer Pattern]]
+- [[Pagine/Portals|Portals: Rendering fuori dalla gerarchia DOM principale]]
+- [[Pagine/Error Boundaries|Error Boundaries: Gestione degli errori nei componenti]]
+- [[Pagine/Suspense e Lazy Loading|Suspense e Lazy Loading: Code Splitting]]
+- [[Pagine/Profiler e Debugging|Profiler e Debugging (React DevTools)]]
 
 ## Reattività e Internals
-- Virtual DOM e Algoritmo di Riconciliazione (Diffing)
-- Fiber Architecture e Concurrent Mode
-- Batching degli aggiornamenti di stato
-- Gestione della memoria e AbortController nelle API
+- [[Pagine/Virtual DOM|Virtual DOM e Algoritmo di Riconciliazione (Diffing)]]
+- [[Pagine/Fiber Architecture e Concurrent Mode|Fiber Architecture e Concurrent Mode]]
+- [[Pagine/Batching|Batching degli aggiornamenti di stato]]
+- [[Pagine/Gestione della memoria e AbortController|Gestione della memoria e AbortController nelle API]]
 
 ## Ecosistema e UX
 - React Router: Gestione della navigazione (SPA) e Protezione Rotte
