@@ -46,18 +46,16 @@
 - [[Pagine/Content Security Policy|Content Security Policy (CSP) per applicazioni React]]
 
 ## Accessibilità (a11y)
-- Standard WAI-ARIA e Ruoli Semantici
-- Focus Management e Navigazione da tastiera
-- Test di accessibilità (Axe-core, Lighthouse)
+- [[Pagine/WAI-ARIA|Standard WAI-ARIA e Ruoli Semantici]]
+- [[Pagine/Focus Management|Focus Management e Navigazione da tastiera]]
+- [[Pagine/Test di accessibilita|Test di accessibilita (Axe-core, Lighthouse)]]
 
 ## Testing e Qualità
-- Unit Testing con Jest e React Testing Library
-- E2E Testing con Cypress o Playwright
-- Linting (ESLint) e Formattazione (Prettier)
+- [[Pagine/Testing Jest|Unit Testing con Jest e React Testing Library]]
+- [[Pagine/Testing Cypress e Playwright|E2E Testing con Cypress o Playwright]]
+- [[Pagine/Linting e Formattazione|Linting (ESLint) e Formattazione (Prettier)]]
 
 ## React Moderno e Server-Side
-- Server Components (RSC)
-- Server-Side Rendering (SSR) e Static Site Generation (SSG)
-- Frameworks consigliati: Next.js, Remix
-
+- [[Pagine/Server Components|Server Components (RSC)]]
+- [[Pagine/SSR e SSG|Server-Side Rendering (SSR) e Static Site Generation (SSG)]]
 ---

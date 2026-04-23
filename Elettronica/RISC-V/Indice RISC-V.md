@@ -1,9 +1,9 @@
 # Indice RISC-V (Mastery Level)
 
 ## 1. Introduzione e Filosofia
-- [ ] Storia e Governance (RISC-V International)
-- [ ] Il concetto di "Frozen" vs "Draft" specifications
-- [ ] Estensibilità: Custom Opcode space
+- [[pagine/Storia e Governance|Storia e Governance (RISC-V International)]]
+- [[pagine/Frozen vs Draft|Il concetto di "Frozen" vs "Draft" specifications]]
+- [[pagine/Estensibilita|Estensibilita: Custom Opcode space]]
 
 ## 2. Architettura Base (ISA) e Z-Extensions
 - [ ] Registri e XLEN (32, 64, 128-bit)
