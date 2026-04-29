@@ -6,10 +6,10 @@
 - [[pagine/Estensibilita|Estensibilita: Custom Opcode space]]
 
 ## 2. Architettura Base (ISA) e Z-Extensions
-- [ ] [[pagine/Registri e XLEN|Registri e XLEN (32, 64, 128-bit)]]
-- [ ] **Zicsr**: Control and Status Register Instructions
-- [ ] **Zifencei**: Instruction Fetch Fence
-- [ ] Formati Istruzioni e Immediate Encoding (perché i bit sono rimescolati?)
+- [[pagine/Registri e XLEN|Registri e XLEN (32, 64, 128-bit)]]
+- [[pagine/Zicsr|Zicsr: Control and Status Register Instructions]]
+- [[pagine/Zifencei|Zifencei: Instruction Fetch Fence]]
+- [[pagine/Formati Istruzioni e Immediate Encoding|Formati Istruzioni e Immediate Encoding (perche i bit sono rimescolati?)]]
 
 ## 3. Estensioni Standard e Profili (Profiles)
 - [ ] Estensioni G (IMAFD_Zicsr_Zifencei)
