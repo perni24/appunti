@@ -24,6 +24,8 @@
 ### Programmazione ad Oggetti
 
 - [[Pagine/Classi e Istanze|Classi e Istanze]]
+- Dataclasses
+- Enum
 - [[Pagine/Metodi Speciali|Metodi Speciali]]
 - [[Pagine/Ereditarietà|Ereditarietà]]
 - [[Pagine/Incapsulamento|Incapsulamento]]
@@ -56,6 +58,11 @@
 ### Moduli, Pacchetti e Ambiente
 
 -   [[Pagine/Standard Library|Standard Library]]
+-   Subprocess
+-   CLI con argparse
+-   SQLite con sqlite3
+-   Networking base
+-   Configurazione e Variabili d Ambiente
 -   [[Pagine/Pip e PyPI|Pip e PyPI]]
 -   [[Pagine/Ambienti Virtuali|Ambienti Virtuali]]
 -   [[Pagine/Creazione di Package|Creazione di Package]]

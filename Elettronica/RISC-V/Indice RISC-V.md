@@ -12,10 +12,10 @@
 - [[pagine/Formati Istruzioni e Immediate Encoding|Formati Istruzioni e Immediate Encoding (perche i bit sono rimescolati?)]]
 
 ## 3. Estensioni Standard e Profili (Profiles)
-- [ ] Estensioni G (IMAFD_Zicsr_Zifencei)
-- [ ] **Bitmanip (B)**: Zba, Zbb, Zbc, Zbs
-- [ ] **Vector (V)**: VLEN, ELEN, Register Grouping (LMUL)
-- [ ] **Profili RVA/RVM/RVI**: Comprendere la standardizzazione moderna
+- [[pagine/Estensioni G|Estensioni G (IMAFD_Zicsr_Zifencei)]]
+- [[pagine/Bitmanip|Bitmanip (B): Zba, Zbb, Zbc, Zbs]]
+- [[pagine/Vector|Vector (V): VLEN, ELEN, Register Grouping (LMUL)]]
+- [[pagine/Profili RVA-RVM-RVI|Profili RVA/RVM/RVI: Comprendere la standardizzazione moderna]]
 
 ## 4. Modalità di Privilegio e Virtualizzazione
 - [ ] Machine, Supervisor, User Mode
