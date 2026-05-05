@@ -59,3 +59,17 @@
 - [[Pagine/Server Components|Server Components (RSC)]]
 - [[Pagine/SSR e SSG|Server-Side Rendering (SSR) e Static Site Generation (SSG)]]
 ---
+
+## Conoscenza Operativa
+
+### API Native Rapide
+
+### Soluzioni pratiche
+
+### Debugging
+
+### Snippet
+
+### Checklist
+
+### Troubleshooting

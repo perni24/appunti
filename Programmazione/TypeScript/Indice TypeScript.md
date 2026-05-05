@@ -88,3 +88,17 @@ status: seedling
 - [[Programmazione/TypeScript/Pagine/Pattern Repository e Service|Pattern Repository e Service]]
 - [[Programmazione/TypeScript/Pagine/DTO e modelli di dominio|DTO e modelli di dominio]]
 - [[Programmazione/TypeScript/Pagine/Brand Types|Brand Types]]
+
+## Conoscenza Operativa
+
+### API Native Rapide
+
+### Soluzioni pratiche
+
+### Debugging
+
+### Snippet
+
+### Checklist
+
+### Troubleshooting

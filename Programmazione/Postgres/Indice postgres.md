@@ -57,3 +57,17 @@
 - [[Pagine/Connection Pooling|Connection Pooling (PgBouncer, pgcat)]]
 - [[Pagine/Failover e Load Balancing|Failover e Load Balancing]]
 
+## Conoscenza Operativa
+
+### API Native Rapide
+
+### Soluzioni pratiche
+
+### Debugging
+
+### Snippet
+
+### Checklist
+
+### Troubleshooting
+

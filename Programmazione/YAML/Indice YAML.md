@@ -36,3 +36,17 @@
 -   Sicurezza e Parsing (Norway Problem)
 -   Integrazione negli Editor (VS Code)
 -   Librerie (PyYAML, js-yaml)
+
+## Conoscenza Operativa
+
+### API Native Rapide
+
+### Soluzioni pratiche
+
+### Debugging
+
+### Snippet
+
+### Checklist
+
+### Troubleshooting

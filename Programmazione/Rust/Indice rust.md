@@ -120,3 +120,17 @@
 -   Web Backend con axum
 -   Logging: log e tracing
 -   Security: cargo audit
+
+## Conoscenza Operativa
+
+### API Native Rapide
+
+### Soluzioni pratiche
+
+### Debugging
+
+### Snippet
+
+### Checklist
+
+### Troubleshooting

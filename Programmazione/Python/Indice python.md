@@ -81,3 +81,20 @@
 
 -   Flask
 -   Starlette (versione moderna flask)
+
+### llm 
+-   llama-cpp-python
+
+## Conoscenza Operativa
+
+### API Native Rapide
+
+### Soluzioni pratiche
+
+### Debugging
+
+### Snippet
+
+### Checklist
+
+### Troubleshooting
