@@ -1,86 +1,235 @@
 ---
-date: 2026-02-17
-tags: [javascript, oggetti, es6, this, object-methods]
-type: #permanent-note
-status: budding
+date: 2026-05-13
+area: Programmazione
+topic: JavaScript
+type: technical-note
+status: "non revisionato"
+difficulty: intermediate
+tags: [javascript, objects, object-methods, es6]
+aliases: [Oggetti JS, Object methods]
+prerequisites: [Tipi di Dati, Variabili]
+related: [Property Descriptors, Immutabilita e Copia degli Oggetti, Prototypes]
 ---
 
 # Oggetti Avanzati
 
-In JavaScript moderno (**ES6+**), gli oggetti hanno ricevuto numerosi potenziamenti sia in termini di sintassi che di metodi statici per la manipolazione dei dati.
+## Sintesi
 
-## 1. Scorciatoie Sintattiche (Shorthands)
+Gli oggetti sono una delle strutture fondamentali di JavaScript.
 
-### Property Shorthand
-Se il nome della variabile coincide con il nome della proprietà, si può omettere il valore.
+Oltre alla sintassi base, JavaScript offre shorthand, computed properties, metodi statici di `Object`, descriptor, copia, freezing e integrazione con prototipi.
 
-```javascript
-const name = "Luca";
-const age = 30;
+---
 
-// Prima di ES6
-const userOld = { name: name, age: age };
+## Object literal
 
-// Con ES6
-const user = { name, age }; // Shorthand property
+```js
+const user = {
+  name: "Luca",
+  role: "admin",
+};
 ```
 
-### Method Shorthand
-È possibile definire metodi senza la parola chiave `function` e i due punti.
+Un oggetto e una collezione di coppie chiave-valore.
 
-```javascript
+Le chiavi sono normalmente stringhe o simboli.
+
+---
+
+## Property shorthand
+
+Se variabile e proprieta hanno lo stesso nome, puoi abbreviare.
+
+```js
+const name = "Luca";
+const role = "admin";
+
+const user = {
+  name,
+  role,
+};
+```
+
+---
+
+## Method shorthand
+
+```js
 const calculator = {
   sum(a, b) {
     return a + b;
-  }
+  },
 };
 ```
 
-## 2. Metodi Statici di `Object`
+Evita di scrivere:
 
-Questi metodi permettono di interagire con la struttura degli oggetti.
-
-- **`Object.keys(obj)`**: Ritorna un array con i nomi delle proprietà (chiavi).
-- **`Object.values(obj)`**: Ritorna un array con i valori delle proprietà.
-- **`Object.entries(obj)`**: Ritorna un array di array, dove ogni sotto-array è una coppia `[chiave, valore]`.
-
-```javascript
-const laptop = { brand: "Apple", model: "Air" };
-
-console.log(Object.keys(laptop));   // ["brand", "model"]
-console.log(Object.values(laptop)); // ["Apple", "Air"]
-console.log(Object.entries(laptop)); // [["brand", "Apple"], ["model", "Air"]]
-```
-
-## 3. Il contesto `this` negli Oggetti
-
-Il valore di `this` dipende da **come** la funzione viene chiamata.
-
-### Metodi Regolari
-Nei metodi definiti con `function` o con la versione abbreviata, `this` punta all'**oggetto stesso**.
-
-```javascript
-const person = {
-  name: "Luca",
-  greet() {
-    console.log(`Ciao, sono ${this.name}`); // 'this' refers to 'person'
-  }
+```js
+const calculator = {
+  sum: function (a, b) {
+    return a + b;
+  },
 };
 ```
-
-### Arrow Functions
-Le arrow functions **non hanno un proprio `this`**. Usano il `this` dello scope esterno.
-
-```javascript
-const personArrow = {
-  name: "Sara",
-  greet: () => {
-    console.log(this.name); // undefined (this refers to global/window)
-  }
-};
-```
-
-> [!WARNING] Best Practice
-> Non utilizzare mai le *arrow functions* come metodi di un oggetto se hai bisogno di accedere alle proprietà dell'oggetto tramite `this`.
 
 ---
+
+## Computed property names
+
+Puoi calcolare il nome di una proprieta.
+
+```js
+const field = "email";
+
+const user = {
+  [field]: "luca@example.com",
+};
+
+console.log(user.email);
+```
+
+---
+
+## Object.keys, values, entries
+
+```js
+const user = {
+  name: "Luca",
+  role: "admin",
+};
+
+console.log(Object.keys(user));    // ["name", "role"]
+console.log(Object.values(user));  // ["Luca", "admin"]
+console.log(Object.entries(user)); // [["name", "Luca"], ["role", "admin"]]
+```
+
+`Object.entries()` e utile per trasformare oggetti in array.
+
+```js
+for (const [key, value] of Object.entries(user)) {
+  console.log(key, value);
+}
+```
+
+---
+
+## Object.fromEntries
+
+`Object.fromEntries()` trasforma coppie `[key, value]` in oggetto.
+
+```js
+const entries = [
+  ["name", "Luca"],
+  ["role", "admin"],
+];
+
+const user = Object.fromEntries(entries);
+```
+
+---
+
+## Object.assign e spread
+
+`Object.assign()` copia proprieta da uno o piu oggetti sorgente.
+
+```js
+const user = Object.assign({}, { role: "reader" }, { name: "Luca" });
+```
+
+Nel codice moderno spesso si usa lo spread.
+
+```js
+const user = {
+  ...baseUser,
+  name: "Luca",
+};
+```
+
+Entrambi fanno una copia superficiale.
+
+---
+
+## Object.hasOwn
+
+`Object.hasOwn()` verifica se una proprieta appartiene direttamente all'oggetto.
+
+```js
+const user = {
+  name: "Luca",
+};
+
+console.log(Object.hasOwn(user, "name")); // true
+```
+
+E piu sicuro di chiamare direttamente `hasOwnProperty()` sull'oggetto.
+
+---
+
+## this nei metodi
+
+Nei metodi normali, `this` dipende da come viene chiamata la funzione.
+
+```js
+const user = {
+  name: "Luca",
+  greet() {
+    return `Ciao ${this.name}`;
+  },
+};
+```
+
+Evita arrow function per metodi che devono usare `this`.
+
+---
+
+## Copia superficiale
+
+Spread e `Object.assign()` fanno copie superficiali.
+
+```js
+const original = {
+  profile: {
+    name: "Luca",
+  },
+};
+
+const copy = {
+  ...original,
+};
+
+copy.profile.name = "Marco";
+
+console.log(original.profile.name); // "Marco"
+```
+
+Per copie profonde, vedi [[Immutabilita e Copia degli Oggetti]].
+
+---
+
+## Errori comuni
+
+- Pensare che spread faccia deep copy.
+- Usare arrow function come metodo con `this`.
+- Iterare oggetti come se fossero array.
+- Confondere oggetto semplice e `Map` per chiavi dinamiche complesse.
+- Aspettarsi che `Object.assign()` preservi descriptor e prototipo.
+
+---
+
+## Checklist
+
+- Serve un oggetto semplice o una `Map`?
+- Sto copiando in modo superficiale o profondo?
+- Sto usando `this` correttamente?
+- Devo preservare descriptor o prototipo?
+- I nomi delle proprieta sono chiari?
+
+---
+
+## Collegamenti
+
+- [[Property Descriptors]]
+- [[Immutabilita e Copia degli Oggetti]]
+- [[Map e Set]]
+- [[Prototypes]]
+- [[Context]]

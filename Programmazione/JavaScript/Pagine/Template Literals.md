@@ -1,66 +1,153 @@
 ---
-date: 2026-02-17
-tags: [javascript, es6, template-literals, stringhe, interpolazione]
-type: #permanent-note
-status: budding
+date: 2026-05-13
+area: Programmazione
+topic: JavaScript
+type: technical-note
+status: "non revisionato"
+difficulty: beginner
+tags: [javascript, es6, template-literals, strings]
+aliases: [Template strings, Stringhe template]
+prerequisites: [Tipi di Dati, Variabili]
+related: [Tipi di Dati, Manipolazione del DOM]
 ---
 
 # Template Literals
 
-I **Template Literals** (o Template Strings), introdotti in **ES6**, sono un modo più flessibile e potente di lavorare con le stringhe in JavaScript rispetto alle classiche virgolette singole (`'`) o doppie (`"`).
+## Sintesi
 
-Si definiscono utilizzando il carattere **backtick** (`` ` ``).
+I template literals sono stringhe delimitate da backtick.
 
-## Caratteristiche Principali
+Permettono interpolazione di espressioni, stringhe multilinea e forme avanzate come i tagged templates.
 
-### 1. Interpolazione di Espressioni
-La funzionalità più utile è la possibilità di inserire variabili o espressioni direttamente all'interno della stringa utilizzando la sintassi `${espressione}`.
-
-```javascript
+```js
 const name = "Luca";
-const age = 30;
 
-// Old way
-console.log("Ciao, mi chiamo " + name + " e ho " + age + " anni.");
-
-// Template Literals
-console.log(`Ciao, mi chiamo ${name} e ho ${age} anni.`); // Expression interpolation
+console.log(`Ciao ${name}`);
 ```
 
-È possibile inserire qualsiasi espressione JavaScript valida:
-```javascript
+---
+
+## Interpolazione
+
+Dentro `${...}` puoi inserire variabili o espressioni JavaScript.
+
+```js
 const a = 5;
 const b = 10;
-console.log(`La somma è: ${a + b}`); // Simple addition
+
+console.log(`La somma e ${a + b}`);
 ```
 
-### 2. Stringhe Multilinea
-Con i template literals non è più necessario utilizzare caratteri di escape come `\n` per andare a capo. La stringa mantiene la formattazione esatta inserita nel codice.
+Questo e piu leggibile della concatenazione.
 
-```javascript
-const multiline = `Questa è una stringa
-che si estende su più righe
-senza bisogno di caratteri speciali.`; // Multi-line string
+```js
+console.log("La somma e " + (a + b));
 ```
 
-> [!TIP] Utilità nel DOM
-> Questa caratteristica è estremamente utile quando si deve generare del frammento di tramite JavaScript.
+---
 
-### 3. Tagged Templates
-È una forma avanzata di template literals che permette di processare la stringa tramite una funzione (detta "tag").
+## Stringhe multilinea
 
-```javascript
-function highlight(strings, ...values) {
-  // Logic to process the parts of the string
-  return strings.reduce((acc, str, i) => `${acc}${str}<b>${values[i] || ""}</b>`, "");
+I template literals possono estendersi su piu righe.
+
+```js
+const message = `Prima riga
+Seconda riga
+Terza riga`;
+```
+
+La formattazione viene mantenuta nella stringa.
+
+---
+
+## Espressioni
+
+Dentro `${...}` puoi chiamare funzioni o usare ternari.
+
+```js
+const user = {
+  name: "Luca",
+  active: true,
+};
+
+const label = `${user.name} - ${user.active ? "attivo" : "non attivo"}`;
+```
+
+Evita pero espressioni troppo complesse: rendono la stringa difficile da leggere.
+
+---
+
+## Uso con HTML
+
+I template literals sono comodi per creare markup.
+
+```js
+const user = {
+  name: "Luca",
+  role: "admin",
+};
+
+const html = `
+  <article>
+    <h2>${user.name}</h2>
+    <p>${user.role}</p>
+  </article>
+`;
+```
+
+> [!WARNING]
+> Se i dati arrivano da input utente o fonti non fidate, non inserirli direttamente in `innerHTML`.
+
+Preferisci `textContent` o sanitizzazione.
+
+---
+
+## Tagged templates
+
+Un tagged template passa parti statiche e valori interpolati a una funzione.
+
+```js
+function tag(strings, ...values) {
+  console.log(strings);
+  console.log(values);
 }
 
-const user = "Bellini";
-const message = highlight`Benvenuto, ${user}!`; // Tagged template usage
+const name = "Luca";
+
+tag`Ciao ${name}`;
 ```
 
-## Perché utilizzarli
+Uso avanzato:
 
-- **Leggibilità**: Il codice risulta molto più pulito eliminando la concatenazione con il simbolo `+`.
-- **Manutenibilità**: È più facile individuare la struttura finale della stringa.
-- **Potenza**: L'interpolazione permette di integrare logica complessa direttamente nel testo.
+- escaping sicuro;
+- internazionalizzazione;
+- query builder;
+- librerie CSS-in-JS;
+- DSL interne.
+
+---
+
+## Errori comuni
+
+- Usare virgolette normali invece di backtick.
+- Inserire logica troppo complessa dentro `${...}`.
+- Usare template literals con `innerHTML` e input non fidato.
+- Aspettarsi che l'indentazione del codice non influenzi la stringa multilinea.
+
+---
+
+## Checklist
+
+- La stringa contiene variabili? Usa template literal.
+- La stringa e multilinea? Usa template literal.
+- Il contenuto verra inserito nel DOM? Valuta sicurezza/XSS.
+- L'espressione dentro `${...}` e leggibile?
+
+---
+
+## Collegamenti
+
+- [[Tipi di Dati]]
+- [[Manipolazione del DOM]]
+- [[Sicurezza]]
+- [[Internazionalizzazione]]

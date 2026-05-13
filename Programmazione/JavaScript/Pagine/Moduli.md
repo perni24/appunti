@@ -1,126 +1,233 @@
 ---
-date: 2026-02-17
-tags: [javascript, es6, moduli, esm, import, export]
-type: #permanent-note
-status: budding
+date: 2026-05-13
+area: Programmazione
+topic: JavaScript
+type: technical-note
+status: "non revisionato"
+difficulty: intermediate
+tags: [javascript, es-modules, modules, import, export]
+aliases: [ES Modules, Moduli ES, import export]
+prerequisites: [Funzioni, Scope]
+related: [Dynamic Import, Circular Dependencies, Strict Mode]
 ---
 
-# Moduli (ES Modules)
+# Moduli
 
-I **Moduli** sono una funzionalità fondamentale introdotta in **ES6** (ECMAScript 2015) che permette di dividere il codice JavaScript in file separati, facilitando la manutenzione, il riutilizzo e l'organizzazione della codebase.
+## Sintesi
 
-Un modulo è semplicemente un file JavaScript che "esporta" parte del suo contenuto per renderlo utilizzabile da altri file tramite "importazione".
+I moduli permettono di dividere il codice JavaScript in file separati.
 
-## 1. Esportazione (Export)
+Con ES Modules puoi esportare funzioni, classi, costanti o oggetti da un file e importarli in un altro.
 
-Esistono due modi principali per esportare membri da un modulo: **Named Export** e **Default Export**.
+I moduli migliorano organizzazione, riuso, testabilita e gestione delle dipendenze.
 
-### Named Export (Esportazioni Nominate)
-Permette di esportare più elementi dallo stesso file. Ogni elemento deve essere importato usando il suo nome esatto.
+---
 
-```javascript
-// lib.js
+## Export nominato
+
+Un named export esporta un valore con il suo nome.
+
+```js
+// math.js
 export const pi = 3.14;
-export function sum(a, b) { return a + b; }
 
-// Altro modo (esportazione multipla alla fine)
-// export { pi, sum };
+export function sum(a, b) {
+  return a + b;
+}
 ```
 
-### Default Export (Esportazione Predefinita)
-Ogni modulo può avere **al massimo un'esportazione predefinita**. È l'entità principale che il modulo mette a disposizione.
+Import:
 
-**Caratteristiche:**
-- Non è necessario conoscere il nome originale dell'elemento per importarlo.
-- Si può esportare direttamente un valore, una funzione anonima o una classe senza assegnargli un nome nel file di origine.
+```js
+import { pi, sum } from "./math.js";
+```
 
-```javascript
-// User.js
-export default class User {
-  constructor(name) { this.name = name; }
+I nomi devono corrispondere agli export.
+
+---
+
+## Export a fine file
+
+```js
+const pi = 3.14;
+
+function sum(a, b) {
+  return a + b;
 }
 
-// logger.js (Esportazione di funzione anonima)
-// export default function(msg) { console.log(msg); }
+export { pi, sum };
 ```
 
-> [!WARNING] Restrizioni Sintattiche
-> Non è possibile usare `export default` insieme a dichiarazioni di variabili come `const`, `let` o `var` sulla stessa riga. Bisogna prima dichiarare la variabile e poi esportarla, oppure esportare direttamente il valore.
-> ```javascript
-> // ERRORE: export default const pi = 3.14; 
-> const pi = 3.14;
-> export default pi; // CORRETTO
-> ```
+Questa forma rende piu visibile cosa il modulo espone.
 
 ---
 
-## Esportare Classi vs Funzioni
+## Default export
 
-Dal punto di vista tecnico dei moduli non c'è differenza, ma la scelta cambia l'architettura:
+Ogni modulo puo avere al massimo un default export.
 
-### Esportare una Funzione
-Si usa per logiche **stateless** (senza stato) o utilità pure.
-- **Vantaggio**: Più leggera e semplice da testare.
-- **Esempio**: `export function formatDate(date) { ... }`
+```js
+// logger.js
+export default function log(message) {
+  console.log(message);
+}
+```
 
-### Esportare una Classe
-Si usa quando è necessario gestire uno **stato interno** o creare più istanze indipendenti.
-- **Vantaggio**: Permette di incapsulare dati (proprietà) e comportamenti (metodi).
-- **Esempio**: `export class DatabaseConnector { ... }`
+Import:
 
-> [!INFO] Hoisting
-> Ricorda che le **funzioni** dichiarate sono soggette a hoisting, mentre le **classi** no (devono essere definite prima di essere usate, specialmente se esportate/importate in logiche complesse).
+```js
+import log from "./logger.js";
+```
+
+Il nome locale puo essere scelto liberamente.
 
 ---
 
-## 2. Importazione (Import)
+## Named export vs default export
 
-### Importare Named Exports
-È necessario utilizzare le parentesi graffe `{}` e i nomi corretti.
+Named export:
 
-```javascript
-import { pi, sum } from './lib.js';
-console.log(sum(pi, 2)); // 5.14
-```
+- favorisce refactor piu sicuri;
+- rende esplicito il nome importato;
+- permette piu export per file.
 
-### Importare Default Exports
-A differenza delle named exports, **non si usano le parentesi graffe**. Poiché esiste un solo "default", JavaScript capisce automaticamente cosa importare. È possibile scegliere un nome qualsiasi per la variabile locale (piena libertà di ridenominazione).
+Default export:
 
-```javascript
-import UserProfile from './User.js'; 
-// 'UserProfile' può chiamarsi come vuoi e conterrà la classe 'User'
+- comodo quando il file espone una sola cosa principale;
+- permette nomi locali diversi;
+- puo rendere meno uniforme il naming tra file.
 
-import logMessage from './logger.js';
-logMessage("Test inviato");
-```
-
-> [!TIP] Importazione Ibrida
-> È possibile importare sia il default che i membri nominati nella stessa riga. Il default deve sempre essere indicato per primo, fuori dalle graffe.
-> ```javascript
-> import User, { pi, sum } from './myModule.js';
-> ```
-
-### Ridenominazione e Namespace
-```javascript
-// Ridenominazione (as)
-import { sum as add } from './lib.js';
-
-// Importazione di tutto (namespace)
-import * as MathLib from './lib.js';
-console.log(MathLib.pi);
-```
+Regola pratica: usa named export come default di progetto, default export quando c'e davvero una entita principale.
 
 ---
 
-## Caratteristiche dei Moduli
+## Import con alias
 
-1.  **Strict Mode Automatico**: I moduli sono sempre eseguiti in Strict Mode per default.
-2.  **Scope del Modulo**: Variabili e funzioni definite in un modulo non sono globali, ma rimangono confinate al file (a meno che non vengano esportate).
-3.  **Esecuzione Singola**: Un modulo viene scaricato ed eseguito una sola volta, indipendentemente da quante volte venga importato.
-4.  **Differimento (Deferred)**: Di default, gli script con `type="module"` nel browser vengono eseguiti in modo differito (come se avessero l'attributo `defer`).
+```js
+import { sum as add } from "./math.js";
 
-## Utilizzo nel Browser
-Per caricare un modulo in una pagina HTML, è necessario specificare il tipo:
+console.log(add(2, 3));
+```
+
+Utile per evitare collisioni di nomi o rendere il significato piu chiaro nel contesto locale.
+
+---
+
+## Namespace import
+
+```js
+import * as MathUtils from "./math.js";
+
+console.log(MathUtils.sum(2, 3));
+```
+
+Utile quando vuoi raggruppare molte funzioni sotto un nome.
+
+Evita namespace troppo grandi che diventano contenitori generici.
+
+---
+
+## Moduli nel browser
+
 ```html
 <script type="module" src="app.js"></script>
 ```
+
+Caratteristiche:
+
+- sono strict mode di default;
+- hanno scope di modulo;
+- sono caricati in modo defer;
+- supportano `import` ed `export`;
+- richiedono percorsi espliciti.
+
+```js
+import { initApp } from "./app.js";
+```
+
+Nel browser, spesso devi includere l'estensione `.js`.
+
+---
+
+## Scope di modulo
+
+Le variabili dichiarate in un modulo non diventano globali.
+
+```js
+const internalValue = 42;
+
+export function getValue() {
+  return internalValue;
+}
+```
+
+Solo cio che esporti e disponibile ad altri moduli.
+
+---
+
+## Esecuzione singola e cache
+
+Un modulo viene valutato una sola volta per runtime.
+
+Se piu file importano lo stesso modulo, condividono la stessa istanza del modulo.
+
+```js
+// counter.js
+let count = 0;
+
+export function increment() {
+  count += 1;
+  return count;
+}
+```
+
+Questo puo essere utile, ma anche creare stato condiviso implicito.
+
+---
+
+## Import statico e dynamic import
+
+Import statico:
+
+```js
+import { formatDate } from "./date.js";
+```
+
+Dynamic import:
+
+```js
+const module = await import("./date.js");
+```
+
+Usa import statico come scelta normale. Usa dynamic import per lazy loading, code splitting o moduli opzionali.
+
+---
+
+## Errori comuni
+
+- Confondere named export e default export.
+- Dimenticare `{}` negli import nominati.
+- Usare percorsi sbagliati o senza estensione nel browser.
+- Creare file `index.js` che causano dipendenze circolari.
+- Mettere troppo codice non correlato nello stesso modulo.
+- Creare stato condiviso implicito senza documentarlo.
+
+---
+
+## Checklist
+
+- Il modulo espone una API chiara?
+- Sto usando named export o default export in modo coerente?
+- Il percorso importato e corretto?
+- Il modulo ha effetti collaterali al caricamento?
+- Ci sono dipendenze circolari?
+
+---
+
+## Collegamenti
+
+- [[Dynamic Import]]
+- [[Circular Dependencies]]
+- [[Strict Mode]]
+- [[Scope]]
+- [[Funzioni]]

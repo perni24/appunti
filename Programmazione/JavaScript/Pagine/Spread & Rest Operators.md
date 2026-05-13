@@ -1,82 +1,205 @@
 ---
-date: 2026-02-17
-tags: [javascript, es6, spread, rest, array, oggetti]
-type: #permanent-note
-status: budding
+date: 2026-05-13
+area: Programmazione
+topic: JavaScript
+type: technical-note
+status: "non revisionato"
+difficulty: beginner
+tags: [javascript, es6, spread, rest, arrays, objects]
+aliases: [Spread operator, Rest operator, Tre puntini JavaScript]
+prerequisites: [Array Methods, Oggetti Avanzati, Funzioni]
+related: [Destructuring, Immutabilita e Copia degli Oggetti]
 ---
 
 # Spread & Rest Operators
 
-In JavaScript (**ES6+**), l'operatore **tre puntini** (`...`) viene utilizzato per due scopi opposti a seconda del contesto in cui si trova: **Spread** (espansione) e **Rest** (raccolta).
+## Sintesi
+
+La sintassi `...` ha due significati diversi in base al contesto:
+
+- **spread**: espande valori;
+- **rest**: raccoglie valori.
+
+La stessa sintassi produce quindi effetti opposti.
 
 ---
 
-## 1. Spread Operator (Espansione)
+## Spread negli array
 
-Lo *Spread* "espande" un iterabile (come un array o un oggetto) nei suoi singoli elementi.
+Lo spread espande un array nei suoi elementi.
 
-### Negli Array
-Utile per copiare array o concatenarli in modo leggibile.
-
-```javascript
+```js
 const numbers = [1, 2, 3];
-const moreNumbers = [...numbers, 4, 5]; // [1, 2, 3, 4, 5]
+const copy = [...numbers];
 
-// Copia superficiale (Shallow Copy)
-const copy = [...numbers]; // Different reference than 'numbers'
+console.log(copy); // [1, 2, 3]
 ```
 
-### Negli Oggetti (ES2018)
-Permette di clonare oggetti o unire più proprietà in uno solo.
+Puo essere usato per combinare array.
 
-```javascript
-const user = { name: "Luca", role: "Dev" };
-const details = { ...user, city: "Milano" }; 
-// { name: "Luca", role: "Dev", city: "Milano" }
+```js
+const a = [1, 2];
+const b = [3, 4];
 
-// Merging di oggetti
-const base = { a: 1, b: 2 };
-const override = { b: 10 };
-const merged = { ...base, ...override }; // { a: 1, b: 10 }
+const result = [...a, ...b];
+
+console.log(result); // [1, 2, 3, 4]
 ```
 
 ---
 
-## 2. Rest Operator (Raccolta)
+## Spread nelle chiamate di funzione
 
-Il *Rest* "raccoglie" più elementi rimasti e li raggruppa in un unico Array o Oggetto.
+```js
+const numbers = [4, 8, 2];
 
-### Parametri delle Funzioni
-Sostituisce il vecchio oggetto `arguments`, trasformando i parametri in un vero array.
+console.log(Math.max(...numbers)); // 8
+```
 
-```javascript
+Senza spread, `Math.max()` riceverebbe un array come singolo argomento.
+
+---
+
+## Spread negli oggetti
+
+Lo spread copia proprieta enumerabili in un nuovo oggetto.
+
+```js
+const user = {
+  name: "Luca",
+  role: "reader",
+};
+
+const admin = {
+  ...user,
+  role: "admin",
+};
+```
+
+Se due proprieta hanno lo stesso nome, vince quella piu a destra.
+
+```js
+const result = {
+  a: 1,
+  a: 2,
+};
+
+console.log(result.a); // 2
+```
+
+---
+
+## Copia superficiale
+
+Spread crea una copia superficiale.
+
+```js
+const original = {
+  user: {
+    name: "Luca",
+  },
+};
+
+const copy = {
+  ...original,
+};
+
+copy.user.name = "Marco";
+
+console.log(original.user.name); // "Marco"
+```
+
+Gli oggetti annidati restano condivisi.
+
+Per copie profonde, valuta `structuredClone()` quando supportato.
+
+---
+
+## Rest nei parametri
+
+Rest raccoglie piu argomenti in un array.
+
+```js
 function sum(...numbers) {
-  // 'numbers' is a real Array
-  return numbers.reduce((acc, n) => acc + n, 0);
+  return numbers.reduce((total, number) => total + number, 0);
 }
 
-console.log(sum(10, 20, 30)); // 60
+console.log(sum(1, 2, 3)); // 6
 ```
 
-> [!IMPORTANT] Vincolo di Posizione
-> Il parametro *Rest* deve sempre essere l'**ultimo** parametro nella definizione della funzione.
+Il rest parameter deve essere l'ultimo.
 
-### Nella Destructuring|Destrutturazione
-Permette di estrarre alcuni elementi e raggruppare i rimanenti.
-
-```javascript
-const [first, ...others] = [1, 2, 3, 4, 5];
-// first = 1, others = [2, 3, 4, 5]
-
-const { name, ...restOfProperties } = { name: "Luca", age: 30, city: "Roma" };
-// name = "Luca", restOfProperties = { age: 30, city: "Roma" }
+```js
+function log(prefix, ...messages) {
+  console.log(prefix, messages);
+}
 ```
 
 ---
 
-## Differenza Fondamentale
+## Rest nel destructuring
 
-| Operatore | Scopo | Dove si usa |
-| :--- | :--- | :--- |
-| **Spread** | Trasforma un array/oggetto in elementi singoli. | Chiamate di funzione, letterali di array/oggetti. |
-| **Rest** | Trasforma elementi singoli in un array/oggetto. | Parametri di funzione, destrutturazione. |
+Negli array:
+
+```js
+const [first, ...others] = [1, 2, 3, 4];
+
+console.log(first);  // 1
+console.log(others); // [2, 3, 4]
+```
+
+Negli oggetti:
+
+```js
+const { password, ...safeUser } = {
+  name: "Luca",
+  password: "secret",
+  role: "admin",
+};
+
+console.log(safeUser); // { name: "Luca", role: "admin" }
+```
+
+---
+
+## Differenza tra spread e rest
+
+| Uso | Significato | Esempio |
+| --- | --- | --- |
+| Spread | Espande valori | `[...items]` |
+| Rest | Raccoglie valori | `function fn(...args)` |
+
+Regola pratica:
+
+- a destra di una assegnazione o in una chiamata tende a essere spread;
+- in parametri o destructuring tende a essere rest.
+
+---
+
+## Errori comuni
+
+- Pensare che spread faccia una copia profonda.
+- Usare rest non come ultimo parametro.
+- Confondere spread e rest perche usano entrambi `...`.
+- Sovrascrivere proprieta oggetto senza accorgersene.
+- Copiare oggetti con metodi, prototipi o descriptor pensando di preservare tutto.
+
+---
+
+## Checklist
+
+- Sto espandendo o raccogliendo?
+- La copia superficiale e sufficiente?
+- L'ordine delle proprieta nello spread oggetto e corretto?
+- Il rest parameter e ultimo?
+- Per oggetti complessi serve `structuredClone()` o una logica dedicata?
+
+---
+
+## Collegamenti
+
+- [[Destructuring]]
+- [[Funzioni]]
+- [[Array Methods]]
+- [[Immutabilita e Copia degli Oggetti]]
+- [[Property Descriptors]]

@@ -1,135 +1,291 @@
 ---
-date: 2026-02-16
-tags:
-  - javascript
-  - programming
-  - events
-type: permanent-note
-status: budding
+date: 2026-05-13
+area: Programmazione
+topic: JavaScript
+type: technical-note
+status: "non revisionato"
+difficulty: beginner
+tags: [javascript, browser, events, dom, event-listener]
+aliases: [Eventi JS, Event handling JavaScript]
+prerequisites: [Funzioni, Manipolazione del DOM]
+related: [Manipolazione del DOM, Callback, AbortController]
 ---
 
-# Gestione Eventi in JavaScript
+# Gestione Eventi
 
-Gli **eventi** sono segnali emessi dal browser quando accade qualcosa (es. click del mouse, caricamento pagina, pressione tasti). JavaScript permette di "ascoltare" questi eventi ed eseguire codice in risposta.
+## Sintesi
 
-## 1. `addEventListener`
-Il metodo moderno e corretto per agganciare un gestore (handler) a un evento.
+Gli eventi sono segnali generati dal browser quando accade qualcosa: click, submit, input, caricamento pagina, pressione di tasti, movimento del mouse e altro.
 
-**Sintassi:** `element.addEventListener('event-name', function)`
+JavaScript puo ascoltare questi eventi ed eseguire funzioni di callback.
 
-```javascript
-const bottone = document.querySelector('#miodiv');
+---
 
-bottone.addEventListener('click', function() {
-  console.log("Bottone cliccato!");
+## addEventListener
+
+`addEventListener()` e il metodo standard per registrare un listener.
+
+```js
+const button = document.querySelector("button");
+
+button.addEventListener("click", () => {
+  console.log("Click");
 });
 ```
 
-> [!TIP] Perché non usare `onclick` nell'HTML?
-> Evita `<button onclick="...">`. `addEventListener` mantiene il JS separato dall'HTML (Separation of Concerns) e permette di agganciare *più* gestori allo stesso evento.
+Vantaggi rispetto ad attributi HTML come `onclick`:
 
-## 2. Event Object (`e`)
-Quando si verifica un evento, il browser passa automaticamente un oggetto **Event** alla funzione gestore. Contiene dettagli utili.
+- separa HTML e JavaScript;
+- permette piu listener sullo stesso evento;
+- supporta opzioni come `once`, `passive`, `capture` e `signal`.
 
-```javascript
-bottone.addEventListener('click', function(e) {
-  console.log(e.target); // L'elemento esatto che è stato cliccato
-  console.log(e.type);   // Tipo di evento ("click")
+---
+
+## Event object
+
+Il browser passa al listener un oggetto evento.
+
+```js
+button.addEventListener("click", event => {
+  console.log(event.type);
+  console.log(event.target);
+  console.log(event.currentTarget);
 });
 ```
 
-### `preventDefault()`
-Impedisce il comportamento predefinito del browser (es. invio form, apertura link).
+Differenza importante:
 
-```javascript
-form.addEventListener('submit', function(e) {
-  e.preventDefault(); // Ferma il refresh della pagina!
-  // ... logica invio dati via AJAX ...
+- `event.target`: elemento da cui parte l'evento;
+- `event.currentTarget`: elemento su cui e registrato il listener.
+
+---
+
+## preventDefault
+
+`preventDefault()` blocca il comportamento predefinito del browser.
+
+Esempio con form:
+
+```js
+const form = document.querySelector("form");
+
+form.addEventListener("submit", event => {
+  event.preventDefault();
+
+  console.log("Invio gestito via JavaScript");
 });
 ```
 
-## 3. Propagazione: Bubbling & Capturing
-Quando clicchi su un elemento annidato (es. un bottone dentro un div), l'evento non accade solo lì, ma attraversa tutto l'albero del DOM.
+Esempio con link:
 
-Immagina di lanciare un sasso in acqua:
-1.  **Capturing Phase** (Discesa): L'evento scende dalla superficie (`html`) fino al fondo (`target`).
-2.  **Target Phase**: L'evento colpisce l'elemento esatto.
-3.  **Bubbling Phase** (Risalita): L'evento "risale a galla" come una bolla, passando per tutti i genitori fino a `html`.
-
-> [!NOTE] Default Behavior
-> `addEventListener` ascolta di default solo la fase di **Bubbling**. Quindi se clicchi il bottone, scatta prima il suo handler, poi quello del div genitore, poi quello del body, ecc.
-
-### `stopPropagation()`
-Ferma la "bolla". L'evento non risalirà ai genitori.
-
-```javascript
-/* HTML: <div id="genitore"><button id="figlio">Clicca</button></div> */
-
-document.getElementById('figlio').addEventListener('click', function(e) {
-  e.stopPropagation(); 
-  console.log("Cliccato figlio - Il genitore NON lo saprà");
-});
-
-document.getElementById('genitore').addEventListener('click', function() {
-  console.log("Cliccato genitore"); // Non verrà mai eseguito
+```js
+link.addEventListener("click", event => {
+  event.preventDefault();
 });
 ```
 
-## 4. Event Delegation
-Grazie al Bubbling, possiamo gestire eventi su molti elementi usando **un solo listener** sul loro contenitore comune. È utilissimo per liste dinamiche o tabelle.
+---
 
-**Vantaggi**:
-1.  Meno memoria (1 listener vs 100).
-2.  Gestisce elementi aggiunti dinamicamente in futuro.
+## Propagazione
 
-```javascript
-/* 
-<ul id="lista">
-  <li>Item 1</li>
-  <li>Item 2</li>
-  <!-- Nuovi LI aggiunti qui funzioneranno automaticamente -->
-</ul> 
-*/
+Un evento attraversa il DOM in tre fasi:
 
-document.getElementById('lista').addEventListener('click', function(e) {
-  // e.target è l'elemento effettivamente cliccato (es. il <li>)
-  // e.currentTarget è l'elemento che ha il listener (il <ul>)
-  
-  // Verifichiamo se abbiamo cliccato un LI (o un suo figlio)
-  if (e.target.closest('li')) {
-    console.log("Hai selezionato: " + e.target.textContent);
+1. capturing;
+2. target;
+3. bubbling.
+
+```html
+<div id="parent">
+  <button id="child">Click</button>
+</div>
+```
+
+```js
+document.querySelector("#parent").addEventListener("click", () => {
+  console.log("Parent");
+});
+
+document.querySelector("#child").addEventListener("click", () => {
+  console.log("Child");
+});
+```
+
+Di default, `addEventListener()` ascolta in fase di bubbling.
+
+---
+
+## stopPropagation
+
+`stopPropagation()` impedisce all'evento di continuare la propagazione.
+
+```js
+child.addEventListener("click", event => {
+  event.stopPropagation();
+
+  console.log("Solo child");
+});
+```
+
+Usalo con criterio: bloccare la propagazione puo rompere event delegation o listener globali.
+
+---
+
+## Event delegation
+
+La delegazione consiste nel mettere un listener su un contenitore e gestire eventi dei figli.
+
+```js
+const list = document.querySelector("#list");
+
+list.addEventListener("click", event => {
+  const item = event.target.closest("li");
+
+  if (!item || !list.contains(item)) {
+    return;
   }
+
+  console.log(item.textContent);
 });
 ```
 
-## 5. Rimozione Listener
-Per rimuovere un evento, la funzione callback deve essere **nominata** (non anonima).
-```javascript
-btn.addEventListener('click', handleClick);
-btn.removeEventListener('click', handleClick); // Funziona
-```
+Vantaggi:
 
-## 6. Eventi di Caricamento (Lifecycle)
+- meno listener;
+- funziona anche con elementi aggiunti dinamicamente;
+- utile per liste, tabelle e menu.
 
-Questi eventi sono fondamentali per sapere quando il browser ha terminato di elaborare la pagina o parti di essa.
+---
 
-### `DOMContentLoaded`
-Scatta quando il documento HTML è stato completamente caricato e analizzato, senza attendere il caricamento completo di fogli di stile, immagini e sotto-frame. 
+## Opzioni del listener
 
-È il momento ideale per iniziare la manipolazione del DOM se lo script non usa l'attributo `defer`.
+`addEventListener()` accetta un oggetto di opzioni.
 
-```javascript
-document.addEventListener('DOMContentLoaded', () => {
-  console.log('Il DOM è pronto per essere manipolato!');
-  // Inizializza la tua app qui
+```js
+button.addEventListener("click", handleClick, {
+  once: true,
+  capture: false,
+  passive: true,
 });
 ```
 
-### `load`
-Scatta quando l'intera pagina è stata caricata, inclusi tutti i contenuti dipendenti (immagini, CSS, ecc.).
+Opzioni comuni:
 
-```javascript
-window.addEventListener('load', () => {
-  console.log('Pagina completamente caricata (incluse immagini)');
+- `once`: rimuove il listener dopo la prima esecuzione;
+- `capture`: ascolta in fase di capturing;
+- `passive`: dichiara che il listener non chiamera `preventDefault()`;
+- `signal`: collega il listener a un `AbortSignal`.
+
+---
+
+## Rimuovere listener
+
+Per rimuovere un listener devi passare la stessa funzione usata in registrazione.
+
+```js
+function handleClick() {
+  console.log("Click");
+}
+
+button.addEventListener("click", handleClick);
+button.removeEventListener("click", handleClick);
+```
+
+Questo non funziona:
+
+```js
+button.addEventListener("click", () => {
+  console.log("Click");
+});
+
+button.removeEventListener("click", () => {
+  console.log("Click");
 });
 ```
+
+Le due arrow function sono riferimenti diversi.
+
+---
+
+## Cleanup con AbortController
+
+`AbortController` puo rimuovere listener in modo pulito.
+
+```js
+const controller = new AbortController();
+
+window.addEventListener("resize", handleResize, {
+  signal: controller.signal,
+});
+
+controller.abort();
+```
+
+Utile quando una parte dell'interfaccia viene smontata o non serve piu.
+
+---
+
+## Eventi di caricamento
+
+`DOMContentLoaded` scatta quando l'HTML e stato letto e il DOM e pronto.
+
+```js
+document.addEventListener("DOMContentLoaded", () => {
+  initApp();
+});
+```
+
+`load` scatta quando sono caricati anche asset come immagini e iframe.
+
+```js
+window.addEventListener("load", () => {
+  console.log("Pagina completamente caricata");
+});
+```
+
+Nel codice moderno, spesso si usa `<script defer>`.
+
+---
+
+## Eventi comuni
+
+| Evento | Uso |
+| --- | --- |
+| `click` | Click mouse o tap |
+| `input` | Cambio valore mentre si digita |
+| `change` | Cambio valore confermato |
+| `submit` | Invio form |
+| `keydown` | Pressione tasto |
+| `mouseover` | Mouse sopra elemento |
+| `focus` | Elemento riceve focus |
+| `blur` | Elemento perde focus |
+
+---
+
+## Errori comuni
+
+- Usare `onclick` inline invece di `addEventListener()`.
+- Confondere `target` e `currentTarget`.
+- Dimenticare `preventDefault()` nel submit gestito via JavaScript.
+- Non rimuovere listener non piu necessari.
+- Usare `stopPropagation()` senza motivo.
+- Registrare listener duplicati.
+
+---
+
+## Checklist
+
+- Il listener viene registrato una sola volta?
+- Serve `preventDefault()`?
+- Sto usando `target` o `currentTarget` correttamente?
+- Posso usare event delegation?
+- Devo rimuovere il listener o usare `AbortController`?
+
+---
+
+## Collegamenti
+
+- [[Manipolazione del DOM]]
+- [[Callback]]
+- [[AbortController]]
+- [[Form Handling e Validazione]]
+- [[Web Components]]

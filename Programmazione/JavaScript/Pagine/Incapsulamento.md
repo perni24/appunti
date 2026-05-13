@@ -1,78 +1,172 @@
 ---
-date: 2026-02-24
-tags: [javascript, programming, oop, encapsulation]
-type: #permanent-note
-status: budding
+date: 2026-05-13
+area: Programmazione
+topic: JavaScript
+type: technical-note
+status: "non revisionato"
+difficulty: intermediate
+tags: [javascript, oop, encapsulation, private-fields]
+aliases: [Encapsulation JS, Incapsulamento JS]
+prerequisites: [Classi, Closures]
+related: [Private Fields e Static Blocks, Classi, Closures, Ereditarietà]
 ---
 
-# Incapsulamento in JavaScript
+# Incapsulamento
 
-L'**Incapsulamento** è uno dei pilastri della Programmazione ad Oggetti (OOP). Consiste nel nascondere lo stato interno di un oggetto (i suoi dati) e nel consentire l'interazione con esso solo attraverso dei metodi pubblici definiti. Questo protegge l'integrità dei dati e riduce la complessità del sistema.
+## Sintesi
 
-## 1. Evoluzione della Protezione Dati
+L'incapsulamento consiste nel proteggere lo stato interno di un oggetto e nell'esporre solo un'API controllata.
 
-JavaScript è nato senza un supporto nativo per i membri privati, portando alla nascita di diverse tecniche nel tempo.
-
-### Convenzione dell'Underscore (`_`)
-Per anni, gli sviluppatori hanno usato il prefisso `_` (es. `this._saldo`) per segnalare che una proprietà doveva essere considerata privata. Tuttavia, questa è solo una **convenzione**: la proprietà rimane tecnicamente accessibile dall'esterno.
-
-### Closures (Principio Modulo)
-Prima delle classi, le [[Programmazione/JavaScript/Pagine/Closures|closures]] erano l'unico modo per avere variabili realmente private fissate nello scope di una funzione.
-
-```javascript
-function Conto(iniziale) {
-    let saldo = iniziale; // Variabile privata
-    
-    this.getSaldo = function() {
-        return saldo;
-    };
-}
-```
-
-### Campi Privati Nativi (`#`)
-Introdotte in ES2022, le classi ora supportano i **campi privati** nativi usando il simbolo `#`. Questi sono inaccessibili dall'esterno dell'oggetto a livello di linguaggio.
-
-```javascript
-class ContoCorrente {
-    #saldo = 0; // REALE protezione a livello runtime
-
-    constructor(iniziale) {
-        this.#saldo = iniziale;
-    }
-
-    get saldo() {
-        return `€ ${this.#saldo}`;
-    }
-
-    deposita(importo) {
-        if (importo > 0) this.#saldo += importo;
-    }
-}
-
-const mioConto = new ContoCorrente(100);
-console.log(mioConto.saldo); // "€ 100"
-// console.log(mioConto.#saldo); // ERRORE di sintassi
-```
-
-## 2. Accesso Controllato (Getters & Setters)
-
-L'incapsulamento non significa "nascondere tutto", ma "controllare l'accesso". Usando `get` e `set`, possiamo aggiungere logica di validazione prima di modificare un dato.
-
-```javascript
-class Utente {
-    #eta;
-
-    set eta(valore) {
-        if (valore < 0) throw new Error("Età non valida");
-        this.#eta = valore;
-    }
-}
-```
-
-## 3. Vantaggi dell'Incapsulamento
-
-1.  **Protezione dell'Integrità**: Impedisce a codici esterni di impostare valori inconsistenti (es. saldo negativo).
-2.  **Manutenibilità**: Puoi cambiare la struttura interna della classe (es. rinominare `#saldo` in `#bilancio`) senza rompere il codice esterno che usa i metodi pubblici.
-3.  **Astrazione**: L'utente della classe deve sapere solo *cosa* fa l'oggetto, non *come* memorizza i dati internamente.
+Serve a mantenere invarianti, ridurre accoppiamento e rendere il codice piu facile da modificare.
 
 ---
+
+## Convenzione con underscore
+
+Prima dei private fields, spesso si usava `_` per indicare proprieta interne.
+
+```js
+class Account {
+  constructor(balance) {
+    this._balance = balance;
+  }
+}
+```
+
+Questa e solo una convenzione: il campo resta pubblico.
+
+---
+
+## Closure
+
+Le closure permettono stato privato reale.
+
+```js
+function createCounter() {
+  let count = 0;
+
+  return {
+    increment() {
+      count += 1;
+    },
+    getCount() {
+      return count;
+    },
+  };
+}
+```
+
+`count` non e accessibile direttamente dall'esterno.
+
+---
+
+## Private fields
+
+I campi privati nativi si dichiarano con `#`.
+
+```js
+class BankAccount {
+  #balance = 0;
+
+  deposit(amount) {
+    if (amount <= 0) {
+      throw new Error("Importo non valido");
+    }
+
+    this.#balance += amount;
+  }
+
+  getBalance() {
+    return this.#balance;
+  }
+}
+```
+
+L'accesso esterno a `#balance` e un errore di sintassi.
+
+---
+
+## Getter e setter
+
+Getter e setter permettono accesso controllato.
+
+```js
+class User {
+  #age = 0;
+
+  get age() {
+    return this.#age;
+  }
+
+  set age(value) {
+    if (value < 0) {
+      throw new Error("Eta non valida");
+    }
+
+    this.#age = value;
+  }
+}
+```
+
+---
+
+## API pubblica
+
+L'incapsulamento non significa nascondere tutto.
+
+Significa decidere cosa puo essere usato dall'esterno e cosa resta dettaglio interno.
+
+```js
+class Cart {
+  #items = [];
+
+  addItem(item) {
+    this.#items.push(item);
+  }
+
+  getTotal() {
+    return this.#items.reduce((total, item) => total + item.price, 0);
+  }
+}
+```
+
+Il chiamante non deve sapere come gli item sono memorizzati.
+
+---
+
+## Vantaggi
+
+- Protegge invarianti interne.
+- Riduce dipendenze da dettagli implementativi.
+- Permette refactor senza rompere chiamanti.
+- Rende esplicita l'API pubblica.
+- Limita modifiche accidentali allo stato.
+
+---
+
+## Errori comuni
+
+- Credere che `_field` sia privato.
+- Esporre direttamente strutture mutabili interne.
+- Rendere privato tutto senza motivo.
+- Usare getter e setter per nascondere logica pesante.
+- Confondere incapsulamento con sicurezza contro codice ostile.
+
+---
+
+## Checklist operativa
+
+- Esponi metodi che rappresentano operazioni di dominio.
+- Proteggi solo lo stato che ha invarianti da preservare.
+- Non restituire direttamente array o oggetti interni mutabili se possono rompere lo stato.
+- Usa `#` quando serve privacy reale.
+- Mantieni piccola l'API pubblica.
+
+---
+
+## Collegamenti
+
+- [[Programmazione/JavaScript/Pagine/Classi|Classi]]
+- [[Programmazione/JavaScript/Pagine/Private Fields e Static Blocks|Private Fields e Static Blocks]]
+- [[Programmazione/JavaScript/Pagine/Closures|Closures]]
+- [[Programmazione/JavaScript/Pagine/Ereditarietà|Ereditarieta]]

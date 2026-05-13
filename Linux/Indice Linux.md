@@ -13,7 +13,7 @@
 - Gestione della Memoria e Swap
 - Package Management (Repository, dipendenze, compilazione)
 - Gestione pacchetti universali (Flatpak, Snap, AppImage)
-- [[pagine/Installazione Linguaggi User-space|Installazione Linguaggi User-space (NVM, Pyenv, Rustup)]]
+- [[Pagine/Installazione Linguaggi User-space|Installazione Linguaggi User-space (NVM, Pyenv, Rustup)]]
 - Storage e File Systems (Partizionamento, LVM, Mounting, /etc/fstab)
 - Crittografia e Sicurezza del Dato (LUKS, GPG)
 - Networking (Indirizzamento, routing, SSH, Firewall)
@@ -27,4 +27,4 @@
 - Automazione e Task Scheduling (Cron, Anacron)
 
 # pagine vecchie 
-- [[pagine/Gestione utenti]] 
+- [[Pagine/Gestione utenti]] 

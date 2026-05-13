@@ -1,59 +1,182 @@
 ---
-date: 2026-02-20
-tags: [javascript, programming, async]
-type: #permanent-note
-status: budding
+date: 2026-05-13
+area: Programmazione
+topic: JavaScript
+type: technical-note
+status: "non revisionato"
+difficulty: beginner
+tags: [javascript, promises, async, error-handling]
+aliases: [Promise JS]
+prerequisites: [Callback, Event Loop]
+related: [Async Await, Promise avanzate, Fetch API, Error Handling]
 ---
 
-# Promises in JavaScript
+# Promises
 
-Una **Promise** è un oggetto che rappresenta l'eventuale completamento (o fallimento) di un'operazione asincrona e il suo valore risultante. È l'evoluzione delle callback per gestire l'asincronia in modo più pulito.
+## Sintesi
 
-## 1. I Tre Stati di una Promise
+Una Promise rappresenta il risultato futuro di un'operazione asincrona.
 
-Una Promise può trovarsi in uno di questi tre stati:
-- **Pending (In sospeso)**: Stato iniziale, l'operazione asincrona è ancora in corso.
-- **Fulfilled (Completata)**: L'operazione è terminata con successo e la promise ha un valore.
-- **Rejected (Rifiutata)**: L'operazione è fallita e la promise ha un motivo (errore).
+Puo terminare con successo, producendo un valore, oppure fallire, producendo un errore.
 
-## 2. Consumare una Promise
+---
 
-Per gestire il risultato di una Promise, utilizziamo dei metodi specifici:
+## Stati
 
-### `.then()`
-Viene eseguito quando la Promise passa allo stato *Fulfilled*. Riceve il risultato dell'operazione.
+Una Promise puo trovarsi in tre stati:
 
-```javascript
-miaPromise.then((valore) => {
-    console.log("Successo:", valore);
+- pending: operazione ancora in corso;
+- fulfilled: operazione completata con successo;
+- rejected: operazione fallita.
+
+Una volta fulfilled o rejected, la Promise e settled e non cambia piu stato.
+
+---
+
+## Creare una Promise
+
+```js
+const promise = new Promise((resolve, reject) => {
+  const success = true;
+
+  if (success) {
+    resolve("ok");
+  } else {
+    reject(new Error("errore"));
+  }
 });
 ```
 
-### `.catch()`
-Viene eseguito quando la Promise passa allo stato *Rejected*. È fondamentale per la gestione degli errori.
-
-```javascript
-miaPromise.catch((errore) => {
-    console.error("Errore:", errore);
-});
-```
-
-### `.finally()`
-Viene eseguito sempre, indipendentemente dall'esito (successo o fallimento). Utile per operazioni di pulizia (chiudere loader, resettare stati).
-
-## 3. Promise Chaining
-
-Uno dei vantaggi principali delle Promise è la possibilità di concatenarle. Ogni `.then()` restituisce a sua volta una nuova Promise, permettendo di scrivere codice asincrono sequenziale senza cadere nel "Callback Hell".
-
-```javascript
-ottieniUtente(1)
-    .then(utente => ottieniPost(utente.id))
-    .then(posts => ottieniCommenti(posts[0].id))
-    .then(commenti => console.log(commenti))
-    .catch(err => console.error("Qualcosa è andato storto:", err));
-```
-
-> [!TIP] Centralizzazione degli errori
-> In una catena di `.then()`, un singolo `.catch()` alla fine può gestire gli errori che si verificano in **qualsiasi** punto della catena.
+Nella maggior parte del codice applicativo si consumano Promise create da API esistenti, come `fetch`, invece di crearle manualmente.
 
 ---
+
+## Consumare una Promise
+
+```js
+fetch("/api/users")
+  .then((response) => response.json())
+  .then((users) => {
+    console.log(users);
+  })
+  .catch((error) => {
+    console.error(error);
+  })
+  .finally(() => {
+    console.log("richiesta terminata");
+  });
+```
+
+Metodi principali:
+
+- `.then()` gestisce il successo;
+- `.catch()` gestisce il fallimento;
+- `.finally()` viene eseguito in entrambi i casi.
+
+---
+
+## Chaining
+
+Ogni `.then()` restituisce una nuova Promise.
+
+```js
+loadUser(1)
+  .then((user) => loadPosts(user.id))
+  .then((posts) => loadComments(posts[0].id))
+  .then((comments) => render(comments))
+  .catch((error) => showError(error));
+```
+
+Un errore in qualunque punto della catena passa al primo `.catch()` disponibile.
+
+---
+
+## Return dentro then
+
+Il valore restituito da un `.then()` diventa il valore ricevuto dal `.then()` successivo.
+
+```js
+Promise.resolve(2)
+  .then((value) => value * 2)
+  .then((value) => {
+    console.log(value); // 4
+  });
+```
+
+Se restituisci una Promise, la catena aspetta che venga risolta.
+
+```js
+fetch("/api/users")
+  .then((response) => response.json())
+  .then((users) => console.log(users));
+```
+
+---
+
+## Error handling
+
+Lanciare un errore dentro `.then()` rifiuta la Promise successiva.
+
+```js
+fetch("/api/users")
+  .then((response) => {
+    if (!response.ok) {
+      throw new Error(`HTTP ${response.status}`);
+    }
+
+    return response.json();
+  })
+  .catch((error) => {
+    console.error(error);
+  });
+```
+
+---
+
+## Promise e microtask
+
+I callback di `.then()` e `.catch()` vengono eseguiti come microtask.
+
+```js
+console.log("A");
+
+Promise.resolve().then(() => {
+  console.log("B");
+});
+
+console.log("C");
+
+// A
+// C
+// B
+```
+
+---
+
+## Errori comuni
+
+- Dimenticare `return` dentro una catena.
+- Non gestire `.catch()`.
+- Pensare che una Promise possa essere cancellata direttamente.
+- Usare `new Promise` quando esiste gia un'API Promise-based.
+- Confondere Promise concorrenti e codice parallelo CPU.
+
+---
+
+## Checklist operativa
+
+- Gestisci sempre il percorso di errore.
+- Usa `async/await` quando rende il flusso piu leggibile.
+- Usa `Promise.all` per operazioni indipendenti necessarie.
+- Usa `AbortController` per cancellare operazioni che lo supportano.
+- Evita catene troppo lunghe se diventano meno leggibili.
+
+---
+
+## Collegamenti
+
+- [[Programmazione/JavaScript/Pagine/Event Loop|Event Loop]]
+- [[Programmazione/JavaScript/Pagine/Callback|Callback]]
+- [[Programmazione/JavaScript/Pagine/Async Await|Async Await]]
+- [[Programmazione/JavaScript/Pagine/Promise avanzate|Promise avanzate]]
+- [[Programmazione/JavaScript/Pagine/Fetch API|Fetch API]]

@@ -1,9 +1,14 @@
 ---
 date: 2026-05-04
+area: Programmazione
+topic: JavaScript
 tags: [javascript, binary-data, arraybuffer, typed-arrays, dataview, buffer]
 aliases: ["Typed Arrays, ArrayBuffer e DataView", "Dati Binari e Buffer"]
-type: #permanent-note
-status: budding
+type: technical-note
+status: "non revisionato"
+difficulty: advanced
+prerequisites: [Tipi di Dati, Array Methods]
+related: [Web Workers]
 ---
 
 # Buffer e Typed Arrays

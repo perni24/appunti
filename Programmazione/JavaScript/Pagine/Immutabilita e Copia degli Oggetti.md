@@ -1,9 +1,14 @@
 ---
 date: 2026-05-04
+area: Programmazione
+topic: JavaScript
 tags: [javascript, objects, immutability, clone, structuredclone, freeze, seal]
 aliases: ["Object.freeze, Object.seal e structuredClone"]
-type: #permanent-note
-status: budding
+type: technical-note
+status: "non revisionato"
+difficulty: intermediate
+prerequisites: [Oggetti Avanzati]
+related: [Property Descriptors, Spread & Rest Operators]
 ---
 
 # Immutabilita e Copia degli Oggetti

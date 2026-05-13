@@ -1,91 +1,196 @@
 ---
-date: 2026-02-17
-tags: [javascript, es6, map, set, data-structures]
-type: #permanent-note
-status: budding
+date: 2026-05-13
+area: Programmazione
+topic: JavaScript
+type: technical-note
+status: "non revisionato"
+difficulty: beginner
+tags: [javascript, map, set, data-structures, collections]
+aliases: [Map JS, Set JS]
+prerequisites: [Array Methods, Oggetti Avanzati]
+related: [WeakMap e WeakSet, Array Methods, Oggetti Avanzati]
 ---
 
 # Map e Set
 
-In **ES6**, JavaScript ha introdotto due nuove strutture dati per la gestione delle collezioni: **Map** e **Set**. Queste offrono vantaggi significativi rispetto agli oggetti e agli array tradizionali in casi d'uso specifici.
+## Sintesi
+
+`Map` e `Set` sono strutture dati introdotte in ES6.
+
+`Map` memorizza coppie chiave-valore. `Set` memorizza valori unici.
 
 ---
 
-## 1. Map
+## Map
 
-Una **Map** è una collezione di coppie chiave-valore. A differenza degli oggetti, le chiavi possono essere di **qualsiasi tipo** (oggetti, funzioni, numeri, ecc.) e viene mantenuto l'ordine di inserimento.
+Una `Map` associa chiavi a valori.
 
-### Metodi Principali
-```javascript
-const myMap = new Map();
+```js
+const usersById = new Map();
 
-// Aggiungere o aggiornare
-myMap.set("status", "online");
-myMap.set(123, "ID Utente");
+usersById.set(1, { name: "Luca" });
+usersById.set(2, { name: "Sara" });
 
-// Leggere
-console.log(myMap.get("status")); // "online"
-
-// Verificare esistenza
-console.log(myMap.has(123)); // true
-
-// Dimensione
-console.log(myMap.size); // 2
-
-// Eliminare
-myMap.delete("status");
+console.log(usersById.get(1)); // { name: "Luca" }
 ```
 
-> [!TIP] Map vs Object
-> Utilizza le `Map` quando i nomi delle chiavi non sono noti a priori o quando le chiavi devono essere di tipi diversi dalle stringhe. Per dati strutturati semplici, gli oggetti rimangono la scelta ottimale.
+Metodi principali:
+
+- `set(key, value)`;
+- `get(key)`;
+- `has(key)`;
+- `delete(key)`;
+- `clear()`;
+- `size`.
 
 ---
 
-## 2. Set
+## Chiavi di qualsiasi tipo
 
-Un **Set** è una collezione di **valori univoci**. Non permette duplicati: se si prova ad aggiungere un valore già presente, l'operazione viene ignorata.
+A differenza degli oggetti, una `Map` puo usare chiavi di qualsiasi tipo.
 
-### Metodi Principali
-```javascript
-const mySet = new Set([1, 2, 2, 3]); // Automatically removes duplicates
+```js
+const cache = new Map();
+const user = { id: 1 };
 
-// Aggiungere
-mySet.add(4);
-mySet.add(1); // Ignored because 1 is already present
+cache.set(user, "dati utente");
 
-// Verificare esistenza (molto performante)
-console.log(mySet.has(2)); // true
-
-// Dimensione
-console.log(mySet.size); // 4 (1, 2, 3, 4)
-
-// Eliminare
-mySet.delete(3);
+console.log(cache.get(user)); // "dati utente"
 ```
 
-### Casi d'uso: Rimuovere duplicati da un Array
-Il `Set` è il modo più rapido per ripulire un array dai duplicati.
-```javascript
+---
+
+## Iterare una Map
+
+```js
+const roles = new Map([
+  ["admin", "Amministratore"],
+  ["reader", "Lettore"],
+]);
+
+for (const [key, value] of roles) {
+  console.log(key, value);
+}
+```
+
+Una `Map` mantiene l'ordine di inserimento.
+
+---
+
+## Map vs Object
+
+Usa `Object` quando:
+
+- rappresenti un record con proprieta note;
+- stai modellando un'entita;
+- vuoi serializzare facilmente in JSON.
+
+Usa `Map` quando:
+
+- le chiavi sono dinamiche;
+- le chiavi non sono stringhe;
+- fai molte aggiunte e rimozioni;
+- vuoi semantica esplicita da dizionario.
+
+---
+
+## Set
+
+Un `Set` contiene valori unici.
+
+```js
+const ids = new Set();
+
+ids.add(1);
+ids.add(2);
+ids.add(1);
+
+console.log(ids.size); // 2
+```
+
+Metodi principali:
+
+- `add(value)`;
+- `has(value)`;
+- `delete(value)`;
+- `clear()`;
+- `size`.
+
+---
+
+## Rimuovere duplicati
+
+```js
 const names = ["Luca", "Sara", "Luca"];
-const uniqueNames = [...new Set(names)]; // ["Luca", "Sara"]
+const uniqueNames = [...new Set(names)];
+
+console.log(uniqueNames); // ["Luca", "Sara"]
+```
+
+Funziona bene con primitivi.
+
+Con oggetti, l'unicita e basata sul riferimento.
+
+```js
+const set = new Set([{ id: 1 }, { id: 1 }]);
+
+console.log(set.size); // 2
 ```
 
 ---
 
-## Iterazione
+## Conversioni
 
-Sia `Map` che `Set` sono iterabili e supportano il ciclo `for...of`.
+Array a Set:
 
-```javascript
-// Iterazione su Map
-for (let [key, value] of myMap) {
-  console.log(`${key}: ${value}`);
-}
+```js
+const set = new Set(["a", "b"]);
+```
 
-// Iterazione su Set
-for (let value of mySet) {
-  console.log(value);
-}
+Set ad array:
+
+```js
+const values = [...set];
+```
+
+Object a Map:
+
+```js
+const map = new Map(Object.entries({ a: 1, b: 2 }));
+```
+
+Map a Object:
+
+```js
+const object = Object.fromEntries(map);
 ```
 
 ---
+
+## Errori comuni
+
+- Usare oggetti come dizionari quando una `Map` sarebbe piu chiara.
+- Aspettarsi che `Set` rimuova oggetti duplicati per contenuto.
+- Dimenticare che `Map.get()` restituisce `undefined` se la chiave non esiste.
+- Usare `map[key]` invece di `map.get(key)`.
+- Confondere `Map` struttura dati con `Array.prototype.map()`.
+
+---
+
+## Checklist
+
+- Mi servono chiavi non stringa?
+- Mi serve una collezione di valori unici?
+- Devo serializzare facilmente in JSON?
+- L'unicita deve essere per valore o per riferimento?
+- `Object`, `Map`, array o `Set` rappresentano meglio il dato?
+
+---
+
+## Collegamenti
+
+- [[WeakMap e WeakSet]]
+- [[Array Methods]]
+- [[Oggetti Avanzati]]
+- [[JSON]]
+- [[Immutabilita e Copia degli Oggetti]]

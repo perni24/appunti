@@ -1,68 +1,139 @@
 ---
-date: 2026-02-24
-tags: [javascript, testing, quality, devops, tdd]
-type: #permanent-note
-status: budding
+date: 2026-05-13
+area: Programmazione
+topic: JavaScript
+type: technical-note
+status: "non revisionato"
+difficulty: beginner
+tags: [javascript, testing, quality, unit-test, e2e]
+aliases: [Testing JS, Test JavaScript]
+prerequisites: [Funzioni, Moduli, Error Handling]
+related: [Design Patterns, Functional Programming, Error Handling]
 ---
 
-# Testing in JavaScript
+# Testing
 
-Il testing è l'attività di verifica del software per garantire che soddisfi i requisiti e non introduca bug. In JavaScript, l'ecosistema del testing è molto maturo e offre strumenti per ogni livello di astrazione.
+## Sintesi
 
-## 1. Perché Testare?
+Il testing verifica che il codice si comporti come previsto e riduce il rischio di regressioni.
 
-- **Fiducia**: Permette di fare refactoring senza paura di rompere funzionalità esistenti.
-- **Documentazione**: I test spiegano come il codice dovrebbe comportarsi.
-- **Risparmio di Tempo**: Bug trovati durante lo sviluppo costano meno di quelli trovati in produzione.
+In JavaScript si testano funzioni, moduli, componenti, API, integrazioni e flussi end-to-end.
 
-## 2. La Piramide dei Test
+---
 
-Un'ottima strategia di test segue solitamente questa gerarchia:
+## Tipi di test
 
-1.  **Unit Test (Base)**: Testano la più piccola unità di codice (una singola funzione o classe) in isolamento. Sono veloci e numerosi.
-2.  **Integration Test (Centro)**: Verificano come diversi moduli o componenti lavorano insieme (es. una funzione che interroga un database mockato).
-3.  **End-to-End Test - E2E (Cima)**: Testano l'intera applicazione dal punto di vista dell'utente, simulando azioni nel browser. Sono lenti ma danno la massima certezza.
+- Unit test: verificano una singola funzione, classe o modulo in isolamento.
+- Integration test: verificano piu parti che collaborano.
+- End-to-end test: simulano flussi utente reali.
+- Contract test: verificano accordi tra servizi o moduli.
+- Regression test: impediscono il ritorno di bug gia risolti.
 
-## 3. TDD (Test Driven Development)
+---
 
-È una metodologia in cui si scrivono i test **prima** del codice funzionale. Segue il ciclo **Red-Green-Refactor**:
-1.  **Red**: Scrivi un test che fallisce.
-2.  **Green**: Scrivi il codice minimo necessario per far passare il test.
-3.  **Refactor**: Ottimizza il codice mantenendo il test verde.
+## Piramide dei test
 
-## 4. Ecosistema Tooling
+Una strategia comune:
 
-- **Unit/Integration**:
-    - **Jest**: Il framework più popolare (creato da Facebook), "tutto incluso".
-    - **Vitest**: Estremamente veloce, ideale per progetti basati su Vite.
-    - **Mocha + Chai**: Approccio modulare e flessibile.
-- **E2E / Browser**:
-    - **Cypress**: Ottima DX, gira internamente al browser.
-    - **Playwright**: Moderno, supporta tutti i browser e test in parallelo.
+- molti unit test;
+- meno integration test;
+- pochi E2E mirati.
 
-## 5. Esempio di Unit Test (Jest/Vitest)
+Gli unit test sono veloci e precisi. Gli E2E danno fiducia sul flusso reale, ma sono piu lenti e fragili.
 
-```javascript
-// somma.js
-export function somma(a, b) {
-    return a + b;
+---
+
+## Esempio unit test
+
+```js
+export function sum(a, b) {
+  return a + b;
 }
+```
 
-// somma.test.js
-import { somma } from './somma';
+```js
+import { sum } from "./sum.js";
 
-describe('Funzione Somma', () => {
-    test('aggiunge correttamente 2 + 3 ottenendo 5', () => {
-        expect(somma(2, 3)).toBe(5);
-    });
-
-    test('funziona con numeri negativi', () => {
-        expect(somma(-1, 1)).toBe(0);
-    });
+describe("sum", () => {
+  test("somma due numeri", () => {
+    expect(sum(2, 3)).toBe(5);
+  });
 });
 ```
 
-> [!TIP] Mocking
-> Nel testing è cruciale il "Mocking": sostituire dipendenze esterne (come chiamate API o database) con versioni controllate per testare il codice in modo isolato e deterministico.
+La sintassi e compatibile con framework come Jest e Vitest.
 
 ---
+
+## Arrange Act Assert
+
+Struttura pratica:
+
+- arrange: prepara input e dipendenze;
+- act: esegui l'azione;
+- assert: verifica il risultato.
+
+```js
+test("applica uno sconto", () => {
+  const price = 100;
+
+  const result = applyDiscount(price, 10);
+
+  expect(result).toBe(90);
+});
+```
+
+---
+
+## Mock e stub
+
+I mock sostituiscono dipendenze esterne.
+
+```js
+const api = {
+  loadUser: vi.fn().mockResolvedValue({ id: 1 }),
+};
+```
+
+Usali per isolare il codice, ma non abusarne: troppi mock possono testare l'implementazione invece del comportamento.
+
+---
+
+## TDD
+
+TDD segue il ciclo:
+
+- Red: scrivi un test che fallisce;
+- Green: scrivi il minimo codice per farlo passare;
+- Refactor: migliora il codice mantenendo i test verdi.
+
+Non e obbligatorio per ogni task, ma e utile per logica complessa o bug fix.
+
+---
+
+## Errori comuni
+
+- Testare dettagli interni invece del comportamento.
+- Avere solo E2E lenti e fragili.
+- Non testare percorsi di errore.
+- Usare mock troppo profondi.
+- Scrivere test non deterministici.
+
+---
+
+## Checklist operativa
+
+- Testa comportamento osservabile.
+- Copri casi limite ed errori.
+- Mantieni test veloci e indipendenti.
+- Usa E2E per flussi critici.
+- Aggiungi un test quando correggi un bug.
+
+---
+
+## Collegamenti
+
+- [[Programmazione/JavaScript/Pagine/Error Handling|Error Handling]]
+- [[Programmazione/JavaScript/Pagine/Funzioni|Funzioni]]
+- [[Programmazione/JavaScript/Pagine/Moduli|Moduli]]
+- [[Programmazione/JavaScript/Pagine/Functional Programming|Functional Programming]]

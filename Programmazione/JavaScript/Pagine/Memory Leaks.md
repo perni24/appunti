@@ -1,60 +1,207 @@
 ---
-date: 2026-02-23
-tags: [javascript, programming, memory, optimization]
-type: #permanent-note
-status: budding
+date: 2026-05-13
+area: Programmazione
+topic: JavaScript
+type: technical-note
+status: "non revisionato"
+difficulty: intermediate
+tags: [javascript, memory-leaks, memory, performance, debugging]
+aliases: [Memory Leak JS, Perdite di memoria JS]
+prerequisites: [Memory Lifecycle, Garbage Collection, Closures]
+related: [WeakMap e WeakSet, AbortController, Scheduling Browser, Optimization]
 ---
 
-# Memory Leaks in JavaScript
+# Memory Leaks
 
-Un **Memory Leak** (perdita di memoria) si verifica quando un'applicazione alloca della memoria che non è più necessaria, ma che non viene rilasciata dal [[Programmazione/JavaScript/Pagine/Garbage Collection|Garbage Collector]]. Se questi accumuli continuano nel tempo, possono rallentare l'applicazione o causarne il crash.
+## Sintesi
 
-## 1. Cause Comuni di Memory Leaks
+Un memory leak avviene quando memoria non piu utile resta raggiungibile e quindi non puo essere liberata dal garbage collector.
 
-Sebbene JavaScript gestisca la memoria automaticamente, alcune sviste nel codice possono impedire al Garbage Collector di funzionare correttamente.
+Il problema tipico non e "JavaScript non libera memoria", ma "il codice mantiene ancora un riferimento".
 
-### Variabili Globali Accidentali
-Se dimentichi di dichiarare una variabile con `let`, `const` o `var`, questa viene creata nell'oggetto globale (`window` nel browser). Le radici globali non vengono mai rimosse finché l'applicazione è attiva.
+---
 
-```javascript
-function creaLeak() {
-    leak = "Sono una globale accidentale"; // Manca let/const
+## Variabili globali accidentali
+
+In codice non strict, assegnare a un nome non dichiarato puo creare una globale.
+
+```js
+function createLeak() {
+  leakedValue = { large: true };
 }
 ```
 
-### Timer o Callback Dimenticati
-`setInterval` continuerà a girare all'infinito se non viene esplicitamente fermato con `clearInterval`. Finché il timer è attivo, tutti i dati usati all'interno della sua callback non possono essere eliminati.
+Usa strict mode, moduli ES, `const` e `let`.
 
-```javascript
-const datiPesanti = caricamentoDatiConfig();
-setInterval(() => {
-    // Se non fermiamo questo intervallo, datiPesanti resterà in memoria per sempre
-    console.log(datiPesanti);
+```js
+"use strict";
+
+function safe() {
+  const value = { large: true };
+}
+```
+
+---
+
+## Timer non puliti
+
+`setInterval` mantiene viva la callback e tutto cio che la callback referenzia.
+
+```js
+const data = loadLargeData();
+
+const intervalId = setInterval(() => {
+  console.log(data.length);
 }, 1000);
 ```
 
-### Closures
-Le [[Programmazione/JavaScript/Pagine/Closures|closures]] mantengono il riferimento al loro scope lessicale. Una funzione interna può trattenere involontariamente oggetti grandi presenti nella funzione esterna, anche se non li usa direttamente.
+Quando non serve piu:
 
-### Riferimenti DOM esterni
-Mantenere un riferimento a un elemento DOM in una variabile JavaScript impedisce al Garbage Collector di rimuoverlo, anche se l'elemento è stato rimosso dalla pagina (DOM tree).
-
-```javascript
-let pulsante = document.getElementById('btn-rimuovi');
-document.body.removeChild(pulsante); // Rimosso dalla pagina
-// Pulsante è ancora in memoria perché la variabile 'pulsante' esiste ancora
+```js
+clearInterval(intervalId);
 ```
 
-## 2. Come Rilevarli
+---
 
-Il modo migliore per identificare un memory leak è usare il tab **Memory** nei **Chrome DevTools**:
-1. Esegui uno "Heap Snapshot" all'inizio dell'attività.
-2. Esegui le operazioni sospette nell'applicazione.
-3. Esegui un secondo snapshot e confrontali. Se la memoria allocata cresce costantemente senza mai tornare ai livelli base, c'è un leak.
+## Event listener non rimossi
 
-> [!TIP] Prevenzione
-> - Usa sempre **`"use strict";`** per evitare variabili globali accidentali.
-> - Rimuovi sempre i listener (`removeEventListener`) e i timer quando un componente o una pagina vengono distrutti.
-> - Usa `WeakMap` o `WeakSet` quando possibile (approfondito in [[Programmazione/JavaScript/Pagine/WeakMap e WeakSet|WeakMap e WeakSet]]).
+Un listener puo trattenere riferimenti a oggetti, componenti o nodi DOM.
+
+```js
+function mount() {
+  const panel = document.querySelector("#panel");
+
+  function onResize() {
+    console.log(panel.offsetWidth);
+  }
+
+  window.addEventListener("resize", onResize);
+
+  return () => {
+    window.removeEventListener("resize", onResize);
+  };
+}
+```
+
+Il cleanup deve usare la stessa funzione registrata.
 
 ---
+
+## DOM scollegato ma referenziato
+
+Un nodo rimosso dal DOM puo restare in memoria se JavaScript lo conserva.
+
+```js
+let removedNode = document.querySelector("#modal");
+
+removedNode.remove();
+```
+
+Se non serve piu:
+
+```js
+removedNode = null;
+```
+
+---
+
+## Closure troppo longeve
+
+Le closure conservano accesso allo scope esterno.
+
+```js
+function createHandler(data) {
+  return function handleClick() {
+    console.log(data.id);
+  };
+}
+```
+
+Se `handleClick` resta registrata per molto tempo, anche `data` resta raggiungibile.
+
+---
+
+## Cache senza limite
+
+```js
+const cache = new Map();
+
+function getUser(id) {
+  if (!cache.has(id)) {
+    cache.set(id, loadUser(id));
+  }
+
+  return cache.get(id);
+}
+```
+
+Una cache deve avere una strategia di pulizia: TTL, limite dimensione, LRU o invalidazione esplicita.
+
+---
+
+## Richieste obsolete
+
+In UI dinamiche, richieste vecchie possono trattenere dati e aggiornare stato non piu valido.
+
+```js
+const controller = new AbortController();
+
+await fetch("/api/search", {
+  signal: controller.signal,
+});
+
+controller.abort();
+```
+
+`AbortController` aiuta a cancellare operazioni non piu utili.
+
+---
+
+## Come rilevarli
+
+Strumenti utili:
+
+- Chrome DevTools, tab Memory;
+- heap snapshot;
+- allocation instrumentation;
+- performance timeline;
+- confronto dopo cicli ripetuti di uso.
+
+Procedura pratica:
+
+1. Apri la pagina in stato iniziale.
+2. Fai uno heap snapshot.
+3. Ripeti l'azione sospetta piu volte.
+4. Forza garbage collection dagli strumenti, se disponibile.
+5. Fai un secondo snapshot.
+6. Cerca oggetti che crescono e restano trattenuti.
+
+---
+
+## Errori comuni
+
+- Rimuovere un nodo DOM ma conservare riferimenti JS.
+- Registrare listener anonimi impossibili da rimuovere.
+- Lasciare interval attivi.
+- Tenere cache infinite.
+- Ignorare richieste e subscription durante cambio vista.
+
+---
+
+## Checklist operativa
+
+- Pulisci listener, interval, timeout e subscription.
+- Usa `AbortController` per richieste obsolete.
+- Limita cache e strutture globali.
+- Evita closure che catturano oggetti grandi senza motivo.
+- Verifica leak con heap snapshot.
+
+---
+
+## Collegamenti
+
+- [[Programmazione/JavaScript/Pagine/Memory Lifecycle|Memory Lifecycle]]
+- [[Programmazione/JavaScript/Pagine/Garbage Collection|Garbage Collection]]
+- [[Programmazione/JavaScript/Pagine/WeakMap e WeakSet|WeakMap e WeakSet]]
+- [[Programmazione/JavaScript/Pagine/AbortController|AbortController]]
+- [[Programmazione/JavaScript/Pagine/Closures|Closures]]

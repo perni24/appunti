@@ -1,72 +1,176 @@
 ---
-date: 2026-02-23
-tags: [javascript, programming, memory, data-structures]
-type: #permanent-note
-status: budding
+date: 2026-05-13
+area: Programmazione
+topic: JavaScript
+type: technical-note
+status: "non revisionato"
+difficulty: intermediate
+tags: [javascript, weakmap, weakset, memory, data-structures]
+aliases: [WeakMap JS, WeakSet JS]
+prerequisites: [Map e Set, Garbage Collection]
+related: [Memory Leaks, Memory Lifecycle, Oggetti Avanzati]
 ---
 
-# WeakMap e WeakSet in JavaScript
+# WeakMap e WeakSet
 
-`WeakMap` e `WeakSet` sono varianti delle strutture dati [[Programmazione/JavaScript/Pagine/Map e Set|Map e Set]] introdotte in ES6. La loro particolarità principale è che mantengono **referenze deboli** agli oggetti che contengono, aiutando a prevenire i [[Programmazione/JavaScript/Pagine/Memory Leaks|Memory Leaks]].
+## Sintesi
 
-## 1. Il concetto di "Referenze Deboli"
+`WeakMap` e `WeakSet` sono collezioni che mantengono riferimenti deboli agli oggetti.
 
-In una `Map` o in un `Set` tradizionale, finché l'oggetto è presente nella struttura, il [[Programmazione/JavaScript/Pagine/Garbage Collection|Garbage Collector]] non lo rimuoverà mai dalla memoria, anche se non ci sono altre referenze ad esso nel programma.
+Se un oggetto e raggiungibile solo tramite una `WeakMap` o un `WeakSet`, il garbage collector puo comunque liberarlo.
 
-In una `WeakMap` o `WeakSet`, la referenza è "debole": se l'oggetto non ha altre referenze "forti" al di fuori della struttura, il Garbage Collector è libero di eliminarlo e rimuoverlo automaticamente anche dalla `WeakMap` o dal `WeakSet`.
+---
 
-## 2. WeakMap
+## Riferimenti forti e deboli
 
-Una `WeakMap` è una collezione di coppie chiave/valore in cui le chiavi **devono essere oggetti** (o simboli non registrati).
+Una `Map` mantiene riferimenti forti.
 
-### Caratteristiche principali:
-- **Chiavi solo oggetti**: Non puoi usare stringhe o numeri come chiavi.
-- **Non iterabile**: Non puoi usare `forEach`, `for...of`, né accedere a `.size`. Questo perché il GC potrebbe rimuovere elementi in qualsiasi momento, rendendo l'iterazione inconsistente.
-- **Metodi supportati**: `get()`, `set()`, `has()`, `delete()`.
+```js
+let user = { id: 1 };
+const map = new Map();
 
-### Caso d'uso: Dati Privati o Metadata
-Utilissimo per associare dati a un oggetto senza "sporcare" l'oggetto stesso o impedirne la rimozione.
-
-```javascript
-let utente = { nome: "Luca" };
-const metadata = new WeakMap();
-
-metadata.set(utente, { ultimoAccesso: Date.now() });
-
-// Se impostiamo utente a null, l'oggetto e i suoi metadata 
-// verranno rimossi dalla memoria al prossimo ciclo di GC
-utente = null; 
+map.set(user, "metadata");
+user = null;
 ```
 
-## 3. WeakSet
+L'oggetto resta raggiungibile tramite `map`.
 
-Simile al `Set`, ma contiene solo oggetti e le referenze sono deboli.
+Una `WeakMap` non impedisce la garbage collection della chiave.
 
-### Caratteristiche principali:
-- **Solo oggetti**: Non può contenere primitivi.
-- **Non iterabile**: Non ha `.size` o metodi di iterazione.
-- **Metodi supportati**: `add()`, `has()`, `delete()`.
+```js
+let user = { id: 1 };
+const metadata = new WeakMap();
 
-### Caso d'uso: Tracciamento dello stato
-Ideale per marcare oggetti come "processati" senza impedirne il rilascio.
+metadata.set(user, { lastAccess: Date.now() });
+user = null;
+```
 
-```javascript
-const processati = new WeakSet();
+Quando non esistono altri riferimenti, l'oggetto puo essere raccolto.
 
-function processa(obj) {
-    if (processati.has(obj)) return;
-    // ... logica di processing ...
-    processati.add(obj);
+---
+
+## WeakMap
+
+`WeakMap` associa chiavi oggetto a valori.
+
+```js
+const privateData = new WeakMap();
+
+class User {
+  constructor(name) {
+    privateData.set(this, { name });
+  }
+
+  getName() {
+    return privateData.get(this).name;
+  }
 }
 ```
 
-## 4. Confronto Rapido
+Metodi disponibili:
 
-| Caratteristica | Map / Set | WeakMap / WeakSet |
-| :--- | :--- | :--- |
-| **Tipo Chiavi/Valori** | Qualsiasi (primitivi e oggetti) | Solo **Oggetti** |
-| **Referenza** | **Forte** (blocca il GC) | **Debole** (permette il GC) |
-| **Iterabilità** | Sì (`forEach`, `size`, ecc.) | No |
-| **Determinismo** | Sì | No (dipende dal momento del GC) |
+- `set(key, value)`;
+- `get(key)`;
+- `has(key)`;
+- `delete(key)`.
+
+Le chiavi devono essere oggetti o simboli non registrati.
 
 ---
+
+## WeakSet
+
+`WeakSet` memorizza oggetti senza impedire che vengano raccolti.
+
+```js
+const processed = new WeakSet();
+
+function process(item) {
+  if (processed.has(item)) {
+    return;
+  }
+
+  processed.add(item);
+  // lavoro sull'oggetto
+}
+```
+
+Metodi disponibili:
+
+- `add(value)`;
+- `has(value)`;
+- `delete(value)`.
+
+---
+
+## Perche non sono iterabili
+
+`WeakMap` e `WeakSet` non espongono:
+
+- `size`;
+- `forEach`;
+- `keys`;
+- `values`;
+- `entries`;
+- iterazione con `for...of`.
+
+Il motivo e che il garbage collector puo rimuovere elementi in modo non deterministico.
+
+Se fossero iterabili, il risultato dipenderebbe dal momento interno della garbage collection.
+
+---
+
+## Casi d'uso
+
+Usa `WeakMap` per:
+
+- metadata associati a oggetti esterni;
+- dati privati;
+- cache legate alla vita di un oggetto;
+- informazioni su nodi DOM senza impedire cleanup.
+
+Usa `WeakSet` per:
+
+- marcare oggetti gia processati;
+- evitare doppia inizializzazione;
+- tracciare oggetti visitati in algoritmi su grafi.
+
+---
+
+## Confronto
+
+| Struttura | Chiavi/valori | Iterabile | Riferimento |
+| --- | --- | --- | --- |
+| `Map` | qualsiasi chiave | si | forte |
+| `Set` | qualsiasi valore | si | forte |
+| `WeakMap` | chiavi oggetto | no | debole sulle chiavi |
+| `WeakSet` | valori oggetto | no | debole sui valori |
+
+---
+
+## Errori comuni
+
+- Usare primitive come chiavi di `WeakMap`.
+- Cercare di iterare una `WeakMap`.
+- Usare `WeakMap` quando serve conoscere la dimensione della cache.
+- Pensare che la rimozione sia immediata o osservabile.
+- Usare `WeakSet` per dati che devono essere elencati.
+
+---
+
+## Checklist operativa
+
+- Usa `WeakMap` quando i dati devono seguire la vita di un oggetto.
+- Usa `Map` quando devi iterare o conoscere `size`.
+- Non basare la logica sul momento della garbage collection.
+- Usa `WeakSet` per marcature temporanee su oggetti.
+- Documenta perche serve un riferimento debole.
+
+---
+
+## Collegamenti
+
+- [[Programmazione/JavaScript/Pagine/Map e Set|Map e Set]]
+- [[Programmazione/JavaScript/Pagine/Garbage Collection|Garbage Collection]]
+- [[Programmazione/JavaScript/Pagine/Memory Leaks|Memory Leaks]]
+- [[Programmazione/JavaScript/Pagine/Oggetti Avanzati|Oggetti Avanzati]]

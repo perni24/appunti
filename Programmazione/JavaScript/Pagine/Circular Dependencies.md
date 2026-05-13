@@ -1,8 +1,14 @@
 ---
 date: 2026-05-04
+area: Programmazione
+topic: JavaScript
 tags: [javascript, es-modules, circular-dependencies, modules, architecture]
-type: #permanent-note
-status: budding
+type: technical-note
+status: "non revisionato"
+difficulty: intermediate
+aliases: [Dipendenze circolari, Cicli nei moduli]
+prerequisites: [Moduli]
+related: [Moduli, Dynamic Import]
 ---
 
 # Circular Dependencies

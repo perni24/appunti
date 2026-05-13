@@ -1,8 +1,14 @@
 ---
-date: 2026-05-04
+date: 2026-05-13
+area: Programmazione
+topic: JavaScript
+type: technical-note
+status: "non revisionato"
+difficulty: intermediate
 tags: [javascript, oop, classes, private-fields, static-blocks, encapsulation]
-type: #permanent-note
-status: budding
+aliases: [Private Fields JS, Static Blocks JS]
+prerequisites: [Classi, Incapsulamento]
+related: [Classi, Incapsulamento, Ereditarietà, Prototypes]
 ---
 
 # Private Fields e Static Blocks
@@ -446,9 +452,9 @@ Private Fields e Static Blocks
 
 ## 17. Collegamenti
 
-- [[Classi]]
-- [[Incapsulamento]]
-- [[Ereditarieta]]
-- [[Prototypes]]
-- [[Oggetti Avanzati]]
-- [[Property Descriptors]]
+- [[Programmazione/JavaScript/Pagine/Classi|Classi]]
+- [[Programmazione/JavaScript/Pagine/Incapsulamento|Incapsulamento]]
+- [[Programmazione/JavaScript/Pagine/Ereditarietà|Ereditarieta]]
+- [[Programmazione/JavaScript/Pagine/Prototypes|Prototypes]]
+- [[Programmazione/JavaScript/Pagine/Oggetti Avanzati|Oggetti Avanzati]]
+- [[Programmazione/JavaScript/Pagine/Property Descriptors|Property Descriptors]]

@@ -1,8 +1,14 @@
 ---
-date: 2026-05-05
+date: 2026-05-13
+area: Programmazione
+topic: JavaScript
+type: technical-note
+status: "non revisionato"
+difficulty: intermediate
 tags: [javascript, browser, web-api, cors, fetch, security, http]
-type: #permanent-note
-status: budding
+aliases: [Cross-Origin Resource Sharing, CORS JS]
+prerequisites: [Fetch API, AJAX, Sicurezza]
+related: [Fetch API, AJAX, Sicurezza, Browser Storage]
 ---
 
 # CORS

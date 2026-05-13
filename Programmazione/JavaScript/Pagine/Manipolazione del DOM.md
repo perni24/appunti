@@ -1,96 +1,283 @@
 ---
-date: 2026-02-16
-tags:
-  - javascript
-  - programming
-  - dom
-type: permanent-note
-status: budding
+date: 2026-05-13
+area: Programmazione
+topic: JavaScript
+type: technical-note
+status: "non revisionato"
+difficulty: beginner
+tags: [javascript, browser, dom, html, web-api]
+aliases: [DOM JS, Manipolare il DOM]
+prerequisites: [Variabili, Funzioni]
+related: [Gestione Eventi, Sicurezza, Web Components]
 ---
 
-# Manipolazione del DOM in JavaScript
+# Manipolazione del DOM
 
-Il **DOM** (Document Object Model) è la rappresentazione strutturata della pagina HTML che JavaScript può utilizzare per interagire con il contenuto, lo stile e la struttura del documento.
+## Sintesi
 
-## 1. Selezione Elementi
-Per manipolare un elemento, prima devi "trovarlo".
+Il DOM (**Document Object Model**) e la rappresentazione ad albero di una pagina HTML.
 
-> [!TIP] Tempismo è tutto
-> Assicurati che lo script venga eseguito quando il DOM è già pronto. Puoi usare l'attributo `defer` nello script HTML o racchiudere il codice in un listener per l'evento `DOMContentLoaded` (vedi [[Programmazione/JavaScript/Pagine/Gestione Eventi|Gestione Eventi]]).
+JavaScript puo leggere, modificare, creare e rimuovere nodi del DOM per aggiornare l'interfaccia utente.
 
-- **`document.getElementById('id')`**: Seleziona un singolo elemento per ID. Molto veloce.
-- **`document.querySelector('css-selector')`**: Seleziona il *primo* elemento che corrisponde al selettore CSS (es. `.classe`, `#id`, `div > p`).
-- **`document.querySelectorAll('css-selector')`**: Seleziona *tutti* gli elementi corrispondenti (restituisce una `NodeList`, simile a un array).
+---
 
-```javascript
-const titolo = document.getElementById('main-title');
-const primoParagrafo = document.querySelector('p.intro');
-const tuttiITasti = document.querySelectorAll('button');
+## Quando usarla
+
+- Leggere elementi dalla pagina.
+- Modificare testo, attributi o classi.
+- Creare elementi dinamicamente.
+- Reagire a dati ricevuti da API.
+- Costruire interfacce senza framework.
+
+---
+
+## Selezionare elementi
+
+```js
+const title = document.getElementById("main-title");
+const firstButton = document.querySelector("button");
+const allButtons = document.querySelectorAll("button");
 ```
 
-## 2. Modifica Contenuto
-- **`textContent`**: Legge/scrive il testo puro (ignora i tag HTML). Più sicuro e performante.
-- **`innerHTML`**: Legge/scrive l'HTML interno. Potente ma rischio sicurezza (XSS) se usato con input utente non sanificato.
+Metodi comuni:
 
-```javascript
-titolo.textContent = "Nuovo Titolo"; 
-// titolo.innerHTML = "<span>Nuovo</span> Titolo";
+- `getElementById()`: seleziona un elemento per `id`;
+- `querySelector()`: seleziona il primo elemento che corrisponde a un selettore CSS;
+- `querySelectorAll()`: seleziona tutti gli elementi corrispondenti.
+
+```js
+const card = document.querySelector(".card");
+const items = document.querySelectorAll(".menu-item");
 ```
 
-## 3. Modifica Stile e Classi
-Non modificare lo stile direttamente (`.style`) se puoi evitarlo; meglio manipolare le classi CSS.
+`querySelectorAll()` restituisce una `NodeList`, iterabile con `for...of`.
 
-- **`element.classList.add('class')`**: Aggiunge una classe.
-- **`element.classList.remove('class')`**: Rimuove una classe.
-- **`element.classList.toggle('class')`**: Aggiunge se manca, rimuove se c'è.
-
-```javascript
-titolo.classList.add('highlight');
+```js
+for (const item of items) {
+  console.log(item.textContent);
+}
 ```
 
-## 4. Creazione e Inserimento
-Per aggiungere nuovi elementi dinamicamente:
+---
 
-1.  **Creazione**: `document.createElement('tag')`
-2.  **Modifica**: Aggiungi testo/classi al nuovo elemento.
-3.  **Inserimento**: Appendilo a un genitore esistente con `parent.append()` o `parent.appendChild()`.
+## Controllare se un elemento esiste
 
-```javascript
-const nuovoDiv = document.createElement('div');
-nuovoDiv.textContent = "Sono stato creato con JS!";
-document.body.append(nuovoDiv);
+`querySelector()` puo restituire `null`.
+
+```js
+const modal = document.querySelector("#modal");
+
+if (modal) {
+  modal.classList.add("open");
+}
 ```
 
-### Configurazione dell'Elemento
-Dopo aver creato l'elemento, puoi modificarne gli attributi e lo stile:
+Errore tipico:
 
-- **Attributi Standard**: `element.id`, `element.src`, `element.href` (proprietà dirette).
-- **`setAttribute()`**: Per attributi personalizzati o non standard (`elem.setAttribute('role', 'button')`).
-- **Stile**: `element.style.color = 'red'` (aggiunge stile inline).
-- **Dataset**: `element.dataset.info = '123'` (crea attributo `data-info="123"`).
+```js
+const modal = document.querySelector("#modal");
 
-```javascript
-const btn = document.createElement('button');
-btn.textContent = "Cliccami";
-btn.id = "submit-btn";
-btn.setAttribute('type', 'submit');
-btn.classList.add('btn', 'btn-primary');
-btn.style.marginTop = '10px';
+// modal.classList.add("open"); // TypeError se modal e null
 ```
 
-> [!IMPORTANT] `createElement` vs `innerHTML`
->
-> È **fortemente consigliato** usare `createElement` rispetto a `innerHTML` per generare nuovi elementi:
-> 1.  **Sicurezza**: `innerHTML` è vulnerabile ad attacchi **XSS** (Cross-Site Scripting) se inserisci dati utente non sanificati.
-> 2.  **Performance**: Il browser deve ri-parsare l'intera stringa HTML ogni volta che usi `innerHTML`, mentre `createElement` lavora direttamente con nodi DOM ottimizzati.
-> 3.  **Event Listeners**: Con `innerHTML += ...`, distruggi e ricrei gli elementi, perdendo eventuali listener associati agli elementi esistenti.
+---
 
-## 5. Rimozione
-Per rimuovere un elemento dal DOM:
+## Leggere e modificare testo
 
-- **`element.remove()`**: Metodo moderno e diretto.
+Per testo puro, usa `textContent`.
 
-```javascript
-const daEliminare = document.querySelector('.old-banner');
-if (daEliminare) daEliminare.remove();
+```js
+const title = document.querySelector("h1");
+
+title.textContent = "Nuovo titolo";
 ```
+
+`textContent` non interpreta HTML, quindi e piu sicuro con dati non fidati.
+
+```js
+message.textContent = userInput;
+```
+
+---
+
+## innerHTML
+
+`innerHTML` interpreta stringhe come HTML.
+
+```js
+container.innerHTML = "<strong>Ciao</strong>";
+```
+
+E potente, ma rischioso se usato con input utente.
+
+```js
+// Pericoloso se userInput non e fidato
+container.innerHTML = userInput;
+```
+
+> [!WARNING]
+> Per contenuto proveniente da utenti o sorgenti non fidate, preferisci `textContent` o sanitizza l'HTML.
+
+---
+
+## Classi CSS
+
+`classList` permette di gestire classi senza manipolare stringhe manualmente.
+
+```js
+const panel = document.querySelector(".panel");
+
+panel.classList.add("open");
+panel.classList.remove("hidden");
+panel.classList.toggle("active");
+```
+
+Verificare una classe:
+
+```js
+if (panel.classList.contains("open")) {
+  console.log("Pannello aperto");
+}
+```
+
+---
+
+## Attributi e dataset
+
+```js
+const link = document.querySelector("a");
+
+link.setAttribute("href", "https://example.com");
+link.setAttribute("target", "_blank");
+
+console.log(link.getAttribute("href"));
+```
+
+Per attributi `data-*`, usa `dataset`.
+
+```html
+<button data-user-id="42">Apri profilo</button>
+```
+
+```js
+const button = document.querySelector("button");
+
+console.log(button.dataset.userId); // "42"
+```
+
+---
+
+## Creare elementi
+
+```js
+const item = document.createElement("li");
+
+item.textContent = "Nuovo elemento";
+item.classList.add("item");
+
+document.querySelector("ul").append(item);
+```
+
+Metodi utili:
+
+- `append()`: aggiunge nodi o stringhe alla fine;
+- `prepend()`: aggiunge all'inizio;
+- `before()`: inserisce prima dell'elemento;
+- `after()`: inserisce dopo l'elemento;
+- `replaceWith()`: sostituisce l'elemento.
+
+---
+
+## DocumentFragment
+
+`DocumentFragment` e utile per costruire piu nodi prima di inserirli nel DOM.
+
+```js
+const fragment = document.createDocumentFragment();
+
+for (const name of ["Luca", "Marco", "Giulia"]) {
+  const item = document.createElement("li");
+  item.textContent = name;
+  fragment.append(item);
+}
+
+document.querySelector("ul").append(fragment);
+```
+
+Riduce modifiche ripetute al DOM.
+
+---
+
+## Rimuovere elementi
+
+```js
+const banner = document.querySelector(".banner");
+
+banner?.remove();
+```
+
+`?.` evita errori se l'elemento non esiste.
+
+---
+
+## DOM ready
+
+Se lo script viene eseguito prima che il DOM sia pronto, gli elementi potrebbero non esistere ancora.
+
+Soluzioni comuni:
+
+```html
+<script src="app.js" defer></script>
+```
+
+Oppure:
+
+```js
+document.addEventListener("DOMContentLoaded", () => {
+  initApp();
+});
+```
+
+---
+
+## Performance
+
+Operazioni DOM ripetute possono essere costose.
+
+Buone pratiche:
+
+- seleziona elementi una volta quando possibile;
+- usa classi CSS invece di molti stili inline;
+- raggruppa inserimenti con `DocumentFragment`;
+- separa letture e scritture del layout;
+- evita `innerHTML += ...` in loop.
+
+---
+
+## Errori comuni
+
+- Usare un elemento `null` senza controllo.
+- Usare `innerHTML` con input non fidato.
+- Modificare stile inline invece di classi CSS.
+- Fare molte modifiche DOM dentro un loop senza raggrupparle.
+- Eseguire lo script prima che il DOM sia pronto.
+
+---
+
+## Checklist
+
+- L'elemento selezionato puo essere `null`?
+- Posso usare `textContent` invece di `innerHTML`?
+- Sto usando `classList` per gli stati visivi?
+- Devo creare molti elementi? Posso usare `DocumentFragment`?
+- Il codice viene eseguito dopo il caricamento del DOM?
+
+---
+
+## Collegamenti
+
+- [[Gestione Eventi]]
+- [[Sicurezza]]
+- [[Web Components]]
+- [[Browser Storage]]
+- [[Scheduling Browser]]

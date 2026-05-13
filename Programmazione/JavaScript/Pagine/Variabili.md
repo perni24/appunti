@@ -1,90 +1,216 @@
 ---
-date: 2026-02-16
+date: 2026-05-13
+area: Programmazione
+topic: JavaScript
+type: technical-note
+status: non revisionato
+difficulty: beginner
 tags:
   - javascript
-  - programming
   - basics
-type: permanent-note
-status: budding
+  - variables
+aliases:
+  - Variabili JS
+  - let const var
+prerequisites: []
+related:
+  - Tipi di Dati
+  - Scope
+  - Hoisting
 ---
 
-# Variabili in JavaScript
+# Variabili
 
-Le **variabili** sono contenitori fondamentali per memorizzare e manipolare dati in un programma. In JavaScript, la gestione della memoria e dello scope è determinata dalla parola chiave utilizzata per la dichiarazione: `var`, `let` o `const`.
+## Sintesi
 
-Ogni variabile associa un nome simbolico (identificatore) a un valore di un certo tipo.
+Le variabili permettono di associare un nome a un valore.
 
-## Tipizzazione Dinamica
+In JavaScript si dichiarano principalmente con `const` e `let`. `var` esiste ancora per compatibilita con codice vecchio, ma nella maggior parte del codice moderno va evitato.
 
-JavaScript è un linguaggio a **tipizzazione debole** (o dinamica). A differenza di linguaggi come Java o C#, una variabile non è vincolata a un tipo specifico (es. `int` o `string`) e può cambiare contenuto durante l'esecuzione.
+La scelta tra `const`, `let` e `var` influenza scope, riassegnazione e comportamento con l'hoisting.
 
-```javascript
-let output = 42;    // output è un Number
-output = "Ciao";    // ora output è una String
-output = true;      // ora output è un Boolean
+---
+
+## Quando usarle
+
+- Usa `const` quando il binding non deve essere riassegnato.
+- Usa `let` quando il valore deve cambiare nel tempo.
+- Evita `var` nel codice nuovo.
+- Usa nomi descrittivi per rendere chiaro cosa contiene una variabile.
+
+---
+
+## Tipizzazione dinamica
+
+JavaScript e un linguaggio a tipizzazione dinamica: il tipo appartiene al valore, non alla variabile.
+
+```js
+let output = 42;
+output = "Ciao";
+output = true;
 ```
 
-## Dichiarazione e Scope
+La stessa variabile puo contenere valori di tipo diverso, anche se abusare di questa possibilita rende il codice meno leggibile.
 
-La differenza principale tra le keyword risiede nel loro **Scope** (ambito di visibilità) e nella gestione del **Hoisting**.
+---
 
-### 1. `var` (Legacy / Function Scope)
-Prima di ES6 (2015), `var` era l'unico modo per dichiarare variabili.
-- **Scope:** È limitato alla **funzione** in cui è dichiarata (`function-scoped`). Se dichiarata fuori, diventa globale.
-- **Hoisting:** La dichiarazione viene "sollevata" in cima alla funzione, ma inizializzata a `undefined`.
-- **Riassegnabile:** Sì.
+## const
 
-> [!WARNING] Problemi di `var`
-> Poiché `var` ignora i blocchi `{ ... }` (come `if` o `for`), può causare bug sovrascrivendo variabili globali o esterne inavvertitamente.
+`const` crea un binding non riassegnabile.
 
-```javascript
-function esempioVar() {
+```js
+const name = "Luca";
+
+// name = "Marco"; // TypeError
+```
+
+`const` non rende immutabile il valore interno di un oggetto.
+
+```js
+const user = {
+  name: "Luca",
+};
+
+user.name = "Marco"; // Valido
+
+// user = {}; // TypeError
+```
+
+> [!INFO]
+> `const` blocca la riassegnazione della variabile, non la mutazione dell'oggetto referenziato.
+
+---
+
+## let
+
+`let` crea una variabile riassegnabile con scope di blocco.
+
+```js
+let counter = 0;
+
+counter += 1;
+counter += 1;
+
+console.log(counter); // 2
+```
+
+E utile per contatori, accumulatori, variabili aggiornate in un algoritmo o stato temporaneo.
+
+---
+
+## var
+
+`var` ha scope di funzione, non scope di blocco.
+
+```js
+function example() {
   if (true) {
-    var x = 10;
+    var value = 10;
   }
-  console.log(x); // 10 -> 'var' ignora il blocco if!
+
+  console.log(value); // 10
 }
 ```
 
-### 2. `let` (Block Scope)
-Introdotto per correggere i difetti di `var`.
-- **Scope:** È limitato al **blocco** `{ ... }` in cui si trova (`block-scoped`).
-- **Hoisting:** Esiste, ma la variabile finisce nella **Temporal Dead Zone (TDZ)** fino alla riga di dichiarazione. Accedervi prima causa un `ReferenceError`.
-- **Riassegnabile:** Sì.
+Con `let` o `const`, lo stesso codice non funzionerebbe perche la variabile resterebbe confinata nel blocco `if`.
 
-```javascript
-function esempioLet() {
+```js
+function example() {
   if (true) {
-    let y = 20;
+    let value = 10;
   }
-  // console.log(y); // ReferenceError: y is not defined
+
+  // console.log(value); // ReferenceError
 }
 ```
 
-### 3. `const` (Costanti)
-Simile a `let` per lo scope, ma impone un vincolo sull'assegnazione.
-- **Scope:** Block Scope.
-- **Immutabilità:** Non del valore, ma del **binding** (associazione nome-valore). Non puoi usare `=` di nuovo su di essa.
+---
 
-> [!INFO] Mutabilità degli Oggetti
-> `const` impedisce la riassegnazione della variabile, ma **non** rende immutabile l'oggetto a cui punta. Puoi modificare le proprietà di un oggetto dichiarato con `const`.
+## Scope
 
-```javascript
-const user = { nome: "Luca" };
-user.nome = "Marco"; // LECITO: modifichi la proprietà, non il binding
-// user = {}; // ERRORE: Assignment to constant variable.
+Lo scope definisce dove una variabile e visibile.
+
+```js
+const globalValue = "globale";
+
+function run() {
+  const localValue = "locale";
+
+  console.log(globalValue);
+  console.log(localValue);
+}
+
+run();
+
+// console.log(localValue); // ReferenceError
 ```
 
-## Tabella Comparativa
+`let` e `const` sono block-scoped.
 
-| Keyword | Scope | Hoisting | Riassegnabile | Riedicharabile nel blocco |
-| :--- | :--- | :--- | :--- | :--- |
-| `var` | Function | Sì (init `undefined`) | Sì | Sì |
-| `let` | Block | Sì (TDZ Error) | Sì | No |
-| `const` | Block | Sì (TDZ Error) | No | No |
+```js
+if (true) {
+  const message = "Dentro il blocco";
+}
 
-## Best Practices
+// console.log(message); // ReferenceError
+```
 
-1. **Usa `const`**: per variabili che non devono cambiare valore.
-2. **Usa `let`**: per variabili che devono cambiare valore nel tempo (es. contatori di loop, accumulatori).
-3. **Evita `var`**: Non ci sono motivi moderni per usare `var`, a meno di dover mantenere codice legacy molto vecchio.
+---
+
+## Hoisting e Temporal Dead Zone
+
+Le dichiarazioni vengono gestite durante la fase di creazione dello scope.
+
+Con `var`, la variabile viene inizializzata a `undefined`.
+
+```js
+console.log(count); // undefined
+var count = 1;
+```
+
+Con `let` e `const`, la variabile esiste nello scope ma non puo essere usata prima della dichiarazione. Questo intervallo si chiama **Temporal Dead Zone**.
+
+```js
+// console.log(count); // ReferenceError
+let count = 1;
+```
+
+---
+
+## Tabella comparativa
+
+| Keyword | Scope | Riassegnabile | Riedichiarabile | Uso consigliato |
+| --- | --- | --- | --- | --- |
+| `const` | Blocco | No | No | Default nel codice moderno |
+| `let` | Blocco | Si | No | Valori che cambiano |
+| `var` | Funzione | Si | Si | Solo codice legacy |
+
+---
+
+## Errori comuni
+
+- Usare `var` in codice nuovo senza motivo.
+- Pensare che `const` renda immutabili gli oggetti.
+- Dichiarare variabili troppo lontano dal punto in cui vengono usate.
+- Usare nomi generici come `data`, `value`, `temp` senza contesto.
+- Riassegnare la stessa variabile a tipi diversi senza necessita.
+
+---
+
+## Checklist
+
+- La variabile puo essere `const`?
+- Il nome descrive chiaramente il valore?
+- La variabile e dichiarata nello scope piu piccolo possibile?
+- Sto evitando `var`?
+- Sto distinguendo riassegnazione e mutazione?
+
+---
+
+## Collegamenti
+
+- [[Tipi di Dati]]
+- [[Scope]]
+- [[Hoisting]]
+- [[Strict Mode]]
+- [[Immutabilita e Copia degli Oggetti]]

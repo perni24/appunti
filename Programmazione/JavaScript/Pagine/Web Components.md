@@ -1,8 +1,14 @@
 ---
-date: 2026-05-05
+date: 2026-05-13
+area: Programmazione
+topic: JavaScript
+type: technical-note
+status: "non revisionato"
+difficulty: advanced
 tags: [javascript, web-components, custom-elements, shadow-dom, templates, browser]
-type: #permanent-note
-status: budding
+aliases: [Custom Elements, Shadow DOM, HTML Templates]
+prerequisites: [Classi, Manipolazione del DOM, Gestione Eventi]
+related: [Classi, Manipolazione del DOM, Gestione Eventi]
 ---
 
 # Web Components

@@ -1,62 +1,161 @@
 ---
-date: 2026-02-20
-tags: [javascript, programming, async]
-type: #permanent-note
-status: budding
+date: 2026-05-13
+area: Programmazione
+topic: JavaScript
+type: technical-note
+status: "non revisionato"
+difficulty: beginner
+tags: [javascript, callback, async, functions]
+aliases: [Callback JS]
+prerequisites: [Funzioni]
+related: [Event Loop, Promises, Async Await, Error Handling]
 ---
 
-# Callback in JavaScript
+# Callback
 
-Una **Callback** è una funzione passata come argomento a un'altra funzione, che verrà poi invocata all'interno della funzione contenitore per completare una qualche azione. Questo è possibile perché in JavaScript le funzioni sono **First-Class Citizens** (possono essere trattate come qualsiasi altra variabile).
+## Sintesi
 
-## 1. Callback Sincrone
+Una callback e una funzione passata come argomento a un'altra funzione, che la esegue in un momento successivo o durante la propria esecuzione.
 
-Vengono eseguite immediatamente, durante l'esecuzione della funzione principale.
+Le callback sono possibili perche in JavaScript le funzioni sono valori: possono essere assegnate, passate e restituite.
 
-```javascript
-const numeri = [1, 2, 3];
+---
 
-// .forEach accetta una callback sincrona
-numeri.forEach(function(num) {
-    console.log(num * 2);
+## Callback sincrone
+
+Una callback sincrona viene eseguita subito, prima che la funzione principale termini.
+
+```js
+const numbers = [1, 2, 3];
+
+numbers.forEach((number) => {
+  console.log(number * 2);
 });
 
-console.log("Finito!"); 
-// Output: 2, 4, 6, Finito!
+console.log("fine");
+
+// 2
+// 4
+// 6
+// fine
 ```
 
-## 2. Callback Asincrone
+`forEach` chiama la callback durante l'iterazione.
 
-Vengono eseguite dopo che un'operazione asincrona è stata completata (es. una richiesta di rete o un timer). Non bloccano l'esecuzione del resto del codice.
+---
 
-```javascript
-console.log("Inizio");
+## Callback asincrone
+
+Una callback asincrona viene eseguita dopo un evento o dopo il completamento di un'operazione.
+
+```js
+console.log("inizio");
 
 setTimeout(() => {
-    console.log("Callback eseguita dopo 2 secondi");
-}, 2000);
+  console.log("timer");
+}, 1000);
 
-console.log("Fine");
-// Output: Inizio, Fine, (attesa), Callback eseguita dopo 2 secondi
+console.log("fine");
+
+// inizio
+// fine
+// timer
 ```
 
-## 3. Il problema: Callback Hell
+Il timer viene gestito dal runtime. Il callback rientra nel call stack quando arriva il suo turno.
 
-Quando si concatenano molte operazioni asincrone dipendenti l'una dall'altra, il codice tende a spostarsi verso destra, diventando difficile da leggere, manutenere e debuggare. Questa struttura è nota come **Callback Hell** (o *Pyramid of Doom*).
+---
 
-```javascript
-// Esempio ipotetico di Callback Hell
-ottieniDatiUtente(id, (utente) => {
-    ottieniPostUtente(utente.username, (posts) => {
-        ottieniCommentiPost(posts[0].id, (commenti) => {
-            console.log(commenti);
-            // E così via...
-        });
-    });
+## Callback negli eventi
+
+Gli eventi browser usano callback.
+
+```js
+button.addEventListener("click", (event) => {
+  console.log("click su", event.currentTarget);
 });
 ```
 
-> [!WARNING] Gestione degli errori
-> Nelle callback, la gestione degli errori è complessa perché ogni livello deve gestire il proprio errore, spesso portando a codice ripetitivo e fragile.
+La funzione viene chiamata quando l'utente interagisce con l'elemento.
 
 ---
+
+## Error-first callback
+
+In Node.js e in molte API storiche si usa il pattern error-first callback.
+
+```js
+readFile("config.json", (error, content) => {
+  if (error) {
+    console.error(error);
+    return;
+  }
+
+  console.log(content);
+});
+```
+
+Il primo argomento rappresenta l'errore. Gli argomenti successivi rappresentano il risultato.
+
+---
+
+## Callback hell
+
+Quando callback asincrone dipendono una dall'altra, il codice puo diventare annidato e difficile da mantenere.
+
+```js
+loadUser(id, (user) => {
+  loadPosts(user.id, (posts) => {
+    loadComments(posts[0].id, (comments) => {
+      render(comments);
+    });
+  });
+});
+```
+
+Questo problema e uno dei motivi per cui Promise e `async/await` sono preferiti nel codice moderno.
+
+---
+
+## Inversion of control
+
+Passare una callback significa cedere a un'altra funzione il controllo su quando e quante volte verra chiamata.
+
+```js
+function runTwice(callback) {
+  callback();
+  callback();
+}
+```
+
+Per API pubbliche e codice critico conviene documentare chiaramente il comportamento atteso.
+
+---
+
+## Errori comuni
+
+- Chiamare subito la funzione invece di passarla come callback.
+- Dimenticare di gestire gli errori.
+- Creare annidamenti profondi.
+- Assumere che una callback asincrona venga eseguita immediatamente.
+- Perdere il valore di `this` quando si passa un metodo come callback.
+
+---
+
+## Checklist operativa
+
+- Usa callback per eventi e API semplici.
+- Usa Promise o `async/await` per flussi asincroni complessi.
+- Gestisci sempre gli errori nei callback asincroni.
+- Evita annidamenti profondi.
+- Se passi metodi come callback, controlla il valore di `this`.
+
+---
+
+## Collegamenti
+
+- [[Programmazione/JavaScript/Pagine/Funzioni|Funzioni]]
+- [[Programmazione/JavaScript/Pagine/Event Loop|Event Loop]]
+- [[Programmazione/JavaScript/Pagine/Promises|Promises]]
+- [[Programmazione/JavaScript/Pagine/Async Await|Async Await]]
+- [[Programmazione/JavaScript/Pagine/Context|Context]]

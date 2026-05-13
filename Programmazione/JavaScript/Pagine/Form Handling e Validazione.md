@@ -1,8 +1,14 @@
 ---
-date: 2026-05-05
+date: 2026-05-13
+area: Programmazione
+topic: JavaScript
+type: technical-note
+status: "non revisionato"
+difficulty: intermediate
 tags: [javascript, forms, validation, constraint-validation-api, formdata, browser]
-type: #permanent-note
-status: budding
+aliases: [Form Handling JS, Constraint Validation API]
+prerequisites: [Manipolazione del DOM, Gestione Eventi, Fetch API]
+related: [Fetch API, Sicurezza, Regular Expressions]
 ---
 
 # Form Handling e Validazione

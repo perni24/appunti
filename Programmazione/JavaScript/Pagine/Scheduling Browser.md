@@ -1,8 +1,14 @@
 ---
-date: 2026-05-04
+date: 2026-05-13
+area: Programmazione
+topic: JavaScript
+type: technical-note
+status: "non revisionato"
+difficulty: intermediate
 tags: [javascript, browser, scheduling, event-loop, performance, animation]
-type: #permanent-note
-status: budding
+aliases: [Browser Scheduling, requestAnimationFrame, requestIdleCallback]
+prerequisites: [Event Loop]
+related: [Event Loop, Promises, AbortController, Web Workers, Optimization]
 ---
 
 # Scheduling Browser
@@ -357,10 +363,10 @@ Scheduling Browser
 
 ## 15. Collegamenti
 
-- [[Event Loop]]
-- [[Promises]]
-- [[Promise avanzate]]
-- [[AbortController]]
-- [[Web Workers]]
-- [[Memory Leaks]]
-- [[Optimization]]
+- [[Programmazione/JavaScript/Pagine/Event Loop|Event Loop]]
+- [[Programmazione/JavaScript/Pagine/Promises|Promises]]
+- [[Programmazione/JavaScript/Pagine/Promise avanzate|Promise avanzate]]
+- [[Programmazione/JavaScript/Pagine/AbortController|AbortController]]
+- [[Programmazione/JavaScript/Pagine/Web Workers|Web Workers]]
+- [[Programmazione/JavaScript/Pagine/Memory Leaks|Memory Leaks]]
+- [[Programmazione/JavaScript/Pagine/Optimization|Optimization]]

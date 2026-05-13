@@ -1,54 +1,126 @@
 ---
-date: 2026-02-24
-tags: [javascript, security, xss, csrf, sanitization]
-type: #permanent-note
-status: budding
+date: 2026-05-13
+area: Programmazione
+topic: JavaScript
+type: technical-note
+status: "non revisionato"
+difficulty: intermediate
+tags: [javascript, security, xss, csrf, sanitization, browser]
+aliases: [Sicurezza JS, JavaScript Security]
+prerequisites: [Manipolazione del DOM, Fetch API, Browser Storage]
+related: [CORS, Browser Storage, Form Handling e Validazione]
 ---
 
-# Sicurezza in JavaScript
+# Sicurezza
 
-La sicurezza nelle applicazioni web è una responsabilità condivisibile tra frontend e backend. JavaScript, girando sul client, è esposto a vulnerabilità specifiche che possono compromettere i dati degli utenti.
+## Sintesi
 
-## 1. XSS (Cross-Site Scripting)
+La sicurezza JavaScript riguarda soprattutto codice eseguito nel browser, input non fidato, dati sensibili, comunicazione HTTP e manipolazione del DOM.
 
-L'**XSS** si verifica quando un utente malintenzionato inietta script malevoli (JS) in una pagina web visualizzata da altri utenti.
+Il principio base e non fidarsi mai di input utente, URL, storage client-side o dati provenienti da API senza validazione.
 
-- **Esempio**: Un commento in un blog che contiene `<script>rubo_cookie()</script>`.
+---
 
-### Prevenzione
-- **Uso di `textContent`**: Preferire sempre `element.textContent` invece di `innerHTML` per inserire testo dinamico, poiché il primo non interpreta i tag HTML.
-- **Sanitizzazione**: Pulire l'input utente rimuovendo tag pericolosi.
-- **CSP (Content Security Policy)**: Un header HTTP che istruisce il browser su quali sorgenti di script sono attendibili, bloccando script inline non autorizzati.
+## XSS
 
-## 2. CSRF (Cross-Site Request Forgery)
+XSS, Cross-Site Scripting, avviene quando un attaccante riesce a eseguire JavaScript nella pagina di un altro utente.
 
-Il **CSRF** inganna un utente autenticato spingendolo a eseguire azioni non volute (es. cambiare password o fare un bonifico) su un sito su cui è loggato.
+Esempio pericoloso:
 
-- **Esempio**: Un'immagine con un link malevolo del tipo `<img src="https://banca.com/trasferisci?importo=1000&a=hacker">`.
-
-### Prevenzione
-- **SameSite Cookies**: Impostare il flag `SameSite=Strict` o `Lax` nei cookies per impedire che vengano inviati in richieste effettuate da siti terzi.
-- **CSRF Tokens**: Il server genera un token unico e segreto per ogni sessione, che il client deve inviare in ogni richiesta "mutativa" (POST, PUT, DELETE).
-
-## 3. Sanitizzazione e Validazione
-
-Non fidarsi mai dell'input dell'utente. 
-
-- **Validazione**: Controllare che il dato sia del tipo corretto (es. un'email sia davvero un'email).
-- **Sanitizzazione**: Rimuovere o codificare caratteri speciali. In JavaScript si usa spesso una libreria collaudata come **DOMPurify** per pulire stringhe HTML prima di renderizzarle.
-
-```javascript
-import DOMPurify from 'dompurify';
-const stringaSporca = '<img src=x onerror=alert(1)>';
-const stringaPulita = DOMPurify.sanitize(stringaSporca);
-document.body.innerHTML = stringaPulita; // Sicuro
+```js
+element.innerHTML = userInput;
 ```
 
-## 4. Migliori Pratiche Generali
+Preferisci API testuali:
 
-1.  **HTTPS**: Usare sempre connessioni sicure per impedire attacchi "Man-in-the-Middle".
-2.  **Evitare `eval()`**: Questa funzione esegue stringhe come codice e rappresenta un enorme rischio di sicurezza.
-3.  **Cookies Sicuri**: Usare i flag `Secure` (solo HTTPS) e `HttpOnly` (non accessibile da JavaScript) per i cookies di sessione.
-4.  **Validazione Duplicata**: Validare i dati sia lato client (per UX) che lato server (per sicurezza reale).
+```js
+element.textContent = userInput;
+```
+
+Se devi renderizzare HTML, usa sanitizzazione robusta e policy chiare.
 
 ---
+
+## CSRF
+
+CSRF sfrutta il fatto che il browser invia cookie automaticamente.
+
+Mitigazioni comuni:
+
+- cookie `SameSite`;
+- CSRF token;
+- controlli su Origin e Referer;
+- metodi HTTP corretti;
+- autenticazione e autorizzazione lato server.
+
+CORS non e una protezione completa contro CSRF.
+
+---
+
+## Storage client-side
+
+Evita di salvare segreti in `localStorage`.
+
+```js
+localStorage.setItem("token", token); // rischio se avviene XSS
+```
+
+Se possibile, usa cookie `HttpOnly`, `Secure` e `SameSite` per sessioni.
+
+---
+
+## Validazione
+
+La validazione lato client migliora UX, ma non sostituisce mai quella lato server.
+
+```js
+if (!emailInput.validity.valid) {
+  showError("Email non valida");
+}
+```
+
+Il server deve validare tutto di nuovo.
+
+---
+
+## Dipendenze
+
+Le dipendenze possono introdurre vulnerabilita.
+
+Pratiche utili:
+
+- aggiornare pacchetti;
+- usare lockfile;
+- controllare advisory;
+- limitare pacchetti non necessari;
+- evitare codice copiato da fonti non affidabili.
+
+---
+
+## Errori comuni
+
+- Usare `innerHTML` con input non fidato.
+- Salvare token sensibili in storage leggibile da JavaScript.
+- Considerare CORS una misura di autenticazione.
+- Validare solo lato client.
+- Mostrare stack trace o dettagli interni all'utente.
+
+---
+
+## Checklist operativa
+
+- Usa `textContent` quando devi inserire testo.
+- Sanitizza HTML non fidato.
+- Proteggi cookie con `HttpOnly`, `Secure`, `SameSite`.
+- Valida sempre lato server.
+- Non loggare segreti.
+- Aggiorna dipendenze e controlla vulnerabilita.
+
+---
+
+## Collegamenti
+
+- [[Programmazione/JavaScript/Pagine/CORS|CORS]]
+- [[Programmazione/JavaScript/Pagine/Browser Storage|Browser Storage]]
+- [[Programmazione/JavaScript/Pagine/Form Handling e Validazione|Form Handling e Validazione]]
+- [[Programmazione/JavaScript/Pagine/Manipolazione del DOM|Manipolazione del DOM]]

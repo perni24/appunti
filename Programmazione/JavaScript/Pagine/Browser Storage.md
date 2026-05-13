@@ -1,61 +1,131 @@
 ---
-date: 2026-02-24
-tags: [javascript, web-api, storage, cookies]
-type: #permanent-note
-status: budding
+date: 2026-05-13
+area: Programmazione
+topic: JavaScript
+type: technical-note
+status: "non revisionato"
+difficulty: beginner
+tags: [javascript, browser, storage, localstorage, sessionstorage, indexeddb]
+aliases: [Storage Browser, Web Storage]
+prerequisites: [JSON, BOM]
+related: [CORS, Sicurezza, Service Workers e PWA]
 ---
 
-# Browser Storage in JavaScript
+# Browser Storage
 
-Le applicazioni web moderne hanno spesso bisogno di salvare dati localmente nel browser per migliorare le performance o mantenere lo stato dell'utente. Esistono diverse tecnologie per farlo, ognuna con scopi e limiti differenti.
+## Sintesi
 
-## 1. Web Storage API
+Il browser offre diverse API per salvare dati lato client.
 
-È il modo più semplice e comune per memorizzare dati (solo stringhe) sotto forma di coppie chiave-valore.
-
-### LocalStorage
-I dati salvati in `localStorage` non hanno scadenza: rimangono nel browser anche dopo la chiusura della scheda o del browser stesso.
-- **Capacità**: Circa 5-10MB.
-- **Scope**: Per Domain (stessa origine).
-
-```javascript
-localStorage.setItem('tema', 'dark');
-const tema = localStorage.getItem('tema');
-localStorage.removeItem('tema');
-localStorage.clear(); // Svuota tutto lo storage del dominio
-```
-
-### SessionStorage
-Identico a LocalStorage nell'API, ma i dati vengono eliminati alla chiusura della scheda (sessione del tab).
-- **Utilizzo**: Dati temporanei che servono solo per la navigazione attuale.
-
-## 2. Cookies
-
-Sono la forma più antica di storage. A differenza del Web Storage, i cookies possono essere inviati automaticamente al server ad ogni richiesta HTTP.
-- **Capacità**: Molto limitata (~4KB).
-- **Scadenza**: Può essere impostata manualmente.
-- **Sicurezza**: Supportano parametri come `HttpOnly` (non accessibile da JS) e `Secure` (solo HTTPS).
-
-```javascript
-document.cookie = "username=Luca; expires=Thu, 18 Dec 2026 12:00:00 UTC; path=/";
-```
-
-## 3. IndexedDB
-
-È un database NoSQL transazionale integrato nel browser. È molto più complesso del Web Storage ma permette di gestire enormi quantità di dati strutturati (oggetti, file, blob).
-- **Capacità**: Quasi illimitata (dipende dal disco).
-- **Async**: Funziona in modo asincrono per non bloccare il thread principale.
-
-## 4. Tabella Comparativa
-
-| Caratteristica | LocalStorage | SessionStorage | Cookies | IndexedDB |
-| :--- | :--- | :--- | :--- | :--- |
-| **Durata** | Permanente | Fine Sessione (Tab) | Impostabile | Permanente |
-| **Capacità** | ~5-10 MB | ~5-10 MB | ~4 KB | Quasi Illimitata |
-| **Inviato a Server**| No | No | Sì | No |
-| **API** | Semplice (Sincrona) | Semplice (Sincrona) | Complessa | Complessa (Asincrona) |
-
-> [!CAUTION] Sicurezza dei Dati
-> Non memorizzare **MAI** dati sensibili (password, token JWT non protetti, dati personali) in `localStorage` o `sessionStorage`, poiché sono vulnerabili agli attacchi **XSS** (Cross-Site Scripting).
+Le principali sono `localStorage`, `sessionStorage`, cookie, IndexedDB e Cache API.
 
 ---
+
+## localStorage
+
+`localStorage` salva coppie chiave-valore persistenti.
+
+```js
+localStorage.setItem("theme", "dark");
+
+const theme = localStorage.getItem("theme");
+```
+
+I dati restano anche dopo la chiusura del browser, finche non vengono rimossi.
+
+Limiti:
+
+- solo stringhe;
+- API sincrona;
+- accessibile da JavaScript della stessa origine;
+- non adatto a dati sensibili.
+
+---
+
+## sessionStorage
+
+`sessionStorage` ha API simile, ma dura solo per la sessione della tab.
+
+```js
+sessionStorage.setItem("draft", "testo temporaneo");
+```
+
+E utile per dati temporanei legati alla pagina corrente.
+
+---
+
+## Cookie
+
+I cookie vengono inviati automaticamente al server nelle richieste compatibili.
+
+Sono utili per sessioni e autenticazione, ma vanno configurati correttamente.
+
+Attributi importanti:
+
+- `HttpOnly`;
+- `Secure`;
+- `SameSite`;
+- `Expires` o `Max-Age`;
+- `Path`;
+- `Domain`.
+
+Per token sensibili, preferire cookie `HttpOnly` quando l'architettura lo permette.
+
+---
+
+## IndexedDB
+
+IndexedDB e un database client-side asincrono per dati strutturati e volumi piu grandi.
+
+E adatto a:
+
+- app offline;
+- cache applicative;
+- dati indicizzati;
+- sincronizzazione differita.
+
+Per dati semplici, `localStorage` puo bastare. Per dati grandi o complessi, IndexedDB e piu corretto.
+
+---
+
+## Cache API
+
+La Cache API salva richieste e risposte HTTP.
+
+E usata spesso con Service Worker.
+
+```js
+const cache = await caches.open("assets-v1");
+await cache.add("/app.css");
+```
+
+Non e un database generico: serve principalmente per risorse e response.
+
+---
+
+## Errori comuni
+
+- Salvare token sensibili in `localStorage`.
+- Dimenticare che `localStorage` e sincrono.
+- Non gestire quote e limiti di spazio.
+- Usare cookie senza `Secure` e `SameSite`.
+- Usare Cache API come sostituto generico di un database.
+
+---
+
+## Checklist operativa
+
+- Usa `sessionStorage` per dati temporanei di tab.
+- Usa `localStorage` per preferenze non sensibili.
+- Usa IndexedDB per dati grandi o strutturati.
+- Usa cookie sicuri per sessioni lato server.
+- Non salvare segreti leggibili da JavaScript se puoi evitarlo.
+
+---
+
+## Collegamenti
+
+- [[Programmazione/JavaScript/Pagine/JSON|JSON]]
+- [[Programmazione/JavaScript/Pagine/Service Workers e PWA|Service Workers e PWA]]
+- [[Programmazione/JavaScript/Pagine/Sicurezza|Sicurezza]]
+- [[Programmazione/JavaScript/Pagine/CORS|CORS]]

@@ -18,7 +18,7 @@ status: seedling
 ## 📚 Concetti Fondamentali
 - **Nodi:** Ogni scheda ESP è un nodo.
 - **Componenti:** I sensori, luci o interruttori collegati alla scheda (es. sensore DHT, relè).
-- [[Home assistant/pagine/espHome/ESPHome Packages|Packages]]: Metodo per riutilizzare parti di configurazione su più dispositivi.
+- [[Home assistant/Pagine/espHome/ESPHome Packages|Packages]]: Metodo per riutilizzare parti di configurazione su più dispositivi.
 
 ## 🔗 Risorse Utili
 - [Documentazione Ufficiale ESPHome](https://esphome.io/)

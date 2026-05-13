@@ -10,8 +10,8 @@ status: evergreen
 ## 🗺️ Mappa dei Contenuti
 
 ### 🔌ESPHome
-- [[Home assistant/pagine/espHome/ESPHome|ESPHome]] 
-- [[Home assistant/pagine/espHome/ESPHome Packages|ESPHome Packages]]
+- [[Home assistant/Pagine/espHome/ESPHome|ESPHome]] 
+- [[Home assistant/Pagine/espHome/ESPHome Packages|ESPHome Packages]]
 ### 🧩 Integrazioni & Dispositivi
 
 ### 🤖 Automazioni & Script

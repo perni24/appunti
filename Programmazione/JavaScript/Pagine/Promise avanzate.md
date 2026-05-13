@@ -1,8 +1,14 @@
 ---
-date: 2026-05-04
+date: 2026-05-13
+area: Programmazione
+topic: JavaScript
+type: technical-note
+status: "non revisionato"
+difficulty: intermediate
 tags: [javascript, promises, async, concurrency, allsettled, race, error-handling]
-type: #permanent-note
-status: budding
+aliases: [Promise all, Promise race, Promise any, Promise allSettled]
+prerequisites: [Promises, Async Await]
+related: [Event Loop, Fetch API, AbortController, Error Handling]
 ---
 
 # Promise avanzate
@@ -434,10 +440,10 @@ Promise avanzate
 
 ## 16. Collegamenti
 
-- [[Promises]]
-- [[Async Await]]
-- [[Event Loop]]
-- [[Fetch API]]
-- [[AbortController]]
-- [[Error Handling]]
-- [[Dynamic Import]]
+- [[Programmazione/JavaScript/Pagine/Promises|Promises]]
+- [[Programmazione/JavaScript/Pagine/Async Await|Async Await]]
+- [[Programmazione/JavaScript/Pagine/Event Loop|Event Loop]]
+- [[Programmazione/JavaScript/Pagine/Fetch API|Fetch API]]
+- [[Programmazione/JavaScript/Pagine/AbortController|AbortController]]
+- [[Programmazione/JavaScript/Pagine/Error Handling|Error Handling]]
+- [[Programmazione/JavaScript/Pagine/Dynamic Import|Dynamic Import]]

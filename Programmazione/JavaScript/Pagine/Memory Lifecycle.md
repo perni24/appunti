@@ -1,46 +1,177 @@
 ---
-date: 2026-02-23
-tags: [javascript, programming, memory, performance]
-type: #permanent-note
-status: budding
+date: 2026-05-13
+area: Programmazione
+topic: JavaScript
+type: technical-note
+status: "non revisionato"
+difficulty: beginner
+tags: [javascript, memory, heap, stack, performance]
+aliases: [Ciclo di vita memoria JS, JavaScript Memory Lifecycle]
+prerequisites: [Tipi di Dati, Oggetti Avanzati]
+related: [Garbage Collection, Memory Leaks, WeakMap e WeakSet, Optimization]
 ---
 
-# Memory Lifecycle in JavaScript
+# Memory Lifecycle
 
-Indipendentemente dal linguaggio di programmazione, il ciclo di vita della memoria è quasi sempre lo stesso. In JavaScript, questo processo è **automatico** e per lo più invisibile allo sviluppatore, ma capirlo è fondamentale per scrivere codice efficiente.
+## Sintesi
 
-## 1. Le Tre Fasi del Ciclo di Vita
+Il ciclo di vita della memoria descrive come JavaScript alloca, usa e libera memoria durante l'esecuzione.
 
-Il ciclo si compone di tre passaggi fondamentali:
+JavaScript gestisce il rilascio in modo automatico tramite garbage collection, ma il codice puo comunque causare consumo eccessivo o memory leak.
 
-1.  **Allocazione della memoria**: JavaScript riserva lo spazio necessario in memoria quando dichiariamo variabili, oggetti o funzioni.
-2.  **Utilizzo della memoria**: Avviene quando leggiamo o scriviamo nelle variabili allocate (es. leggere una proprietà di un oggetto o passare un argomento a una funzione).
-3.  **Rilascio della memoria**: Quando la memoria non è più necessaria, viene rilasciata per essere riutilizzata. In JS, questo compito è affidato al **Garbage Collector**.
+---
 
-## 2. Dove viene salvata la memoria? (Stack vs Heap)
+## Fasi principali
 
-Il motore JavaScript (come V8) utilizza due strutture diverse per gestire la memoria:
+Il ciclo e composto da tre fasi:
 
-### Stack (Memoria Statica)
-Viene utilizzata per i **valori primitivi** (stringhe, numeri, booleani, null, undefined) e per i **riferimenti** agli oggetti.
-- **Caratteristiche**: Dimensione fissa, accesso molto veloce (LIFO).
-- **Gestione**: Gestita direttamente dal motore con lo stack di esecuzione delle funzioni.
+- allocazione: il runtime riserva memoria per valori, oggetti, funzioni e strutture dati;
+- utilizzo: il programma legge e modifica i dati allocati;
+- rilascio: il garbage collector libera la memoria non piu raggiungibile.
 
-### Heap (Memoria Dinamica)
-Viene utilizzata per gli **oggetti**, gli **array** e le **funzioni**.
-- **Caratteristiche**: Dimensione variabile, potenzialmente molto grande, accesso leggermente più lento rispetto allo stack.
-- **Gestione**: Qui è dove interviene il Garbage Collector per pulire gli oggetti non più raggiungibili.
-
-```javascript
-const n = 123;           // Alloca un numero sullo Stack
-const s = "Testo";       // Alloca una stringa sullo Stack
-
-const obj = {            // Alloca l'oggetto nell'Heap
-    nome: "Luca"         // Il riferimento 'obj' sta nello Stack
+```js
+const user = {
+  name: "Luca",
+  active: true,
 };
+
+console.log(user.name);
 ```
 
-> [!INFO] Automazione
-> A differenza di linguaggi come C o C++, dove lo sviluppatore deve allocare e liberare memoria manualmente (es. `malloc()` e `free()`), JavaScript gestisce tutto questo "sotto il cofano", riducendo il rischio di errori macroscopici ma rendendo meno evidenti i problemi di performance.
+L'oggetto viene allocato, usato e poi potra essere rimosso quando non sara piu raggiungibile.
 
 ---
+
+## Stack
+
+Lo stack contiene dati legati all'esecuzione corrente:
+
+- frame delle funzioni;
+- variabili locali primitive;
+- riferimenti a oggetti;
+- indirizzi di ritorno.
+
+```js
+function sum(a, b) {
+  const result = a + b;
+  return result;
+}
+
+sum(2, 3);
+```
+
+Quando la funzione termina, il suo frame viene rimosso dallo stack.
+
+---
+
+## Heap
+
+L'heap contiene dati dinamici:
+
+- oggetti;
+- array;
+- funzioni;
+- strutture dati complesse.
+
+```js
+const numbers = [1, 2, 3];
+const user = { id: 1, name: "Luca" };
+```
+
+Le variabili conservano riferimenti agli oggetti nell'heap.
+
+---
+
+## Primitivi e riferimenti
+
+I primitivi vengono copiati per valore.
+
+```js
+let a = 1;
+let b = a;
+
+b = 2;
+
+console.log(a); // 1
+```
+
+Gli oggetti vengono manipolati tramite riferimento.
+
+```js
+const a = { count: 1 };
+const b = a;
+
+b.count = 2;
+
+console.log(a.count); // 2
+```
+
+---
+
+## Raggiungibilita
+
+Un valore resta in memoria finche e raggiungibile da una root.
+
+Root tipiche:
+
+- variabili globali;
+- variabili nello stack corrente;
+- closure ancora vive;
+- riferimenti dal DOM;
+- timer, listener e subscription attive.
+
+```js
+let user = { name: "Luca" };
+
+user = null;
+```
+
+Dopo l'assegnazione a `null`, l'oggetto puo essere raccolto se non esistono altri riferimenti.
+
+---
+
+## Memoria e asincronia
+
+Callback, Promise, timer e listener possono mantenere vivi riferimenti piu a lungo del previsto.
+
+```js
+function start(data) {
+  const id = setInterval(() => {
+    console.log(data.length);
+  }, 1000);
+
+  return id;
+}
+```
+
+Finche l'intervallo resta attivo, `data` resta raggiungibile.
+
+---
+
+## Errori comuni
+
+- Pensare che il garbage collector elimini qualunque cosa "non usata mentalmente".
+- Tenere riferimenti globali non necessari.
+- Dimenticare listener, timer o subscription.
+- Conservare oggetti grandi dentro closure longeve.
+- Confondere copia di primitivi e riferimento a oggetti.
+
+---
+
+## Checklist operativa
+
+- Riduci la durata dei riferimenti a oggetti grandi.
+- Pulisci timer e listener quando non servono.
+- Usa scope piccoli.
+- Evita cache illimitate.
+- Controlla l'heap con DevTools se la memoria cresce nel tempo.
+
+---
+
+## Collegamenti
+
+- [[Programmazione/JavaScript/Pagine/Garbage Collection|Garbage Collection]]
+- [[Programmazione/JavaScript/Pagine/Memory Leaks|Memory Leaks]]
+- [[Programmazione/JavaScript/Pagine/WeakMap e WeakSet|WeakMap e WeakSet]]
+- [[Programmazione/JavaScript/Pagine/Optimization|Optimization]]
+- [[Programmazione/JavaScript/Pagine/Closures|Closures]]

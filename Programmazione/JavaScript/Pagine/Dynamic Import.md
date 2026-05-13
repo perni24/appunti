@@ -1,8 +1,14 @@
 ---
 date: 2026-05-04
+area: Programmazione
+topic: JavaScript
 tags: [javascript, es-modules, dynamic-import, async, performance, code-splitting]
-type: #permanent-note
-status: budding
+type: technical-note
+status: "non revisionato"
+difficulty: intermediate
+aliases: [Import dinamico, import()]
+prerequisites: [Moduli, Promises]
+related: [Moduli, Promise avanzate, Circular Dependencies]
 ---
 
 # Dynamic Import

@@ -1,91 +1,172 @@
 ---
-date: 2026-02-24
-tags: [javascript, architecture, design-patterns, oop]
-type: #permanent-note
-status: budding
+date: 2026-05-13
+area: Programmazione
+topic: JavaScript
+type: technical-note
+status: "non revisionato"
+difficulty: intermediate
+tags: [javascript, design-patterns, architecture, oop]
+aliases: [Pattern JavaScript, Design Pattern JS]
+prerequisites: [Funzioni, Classi, Moduli]
+related: [Functional Programming, Classi, Moduli, Testing]
 ---
 
-# Design Patterns in JavaScript
+# Design Patterns
 
-I **Design Patterns** sono soluzioni collaudate a problemi comuni che si presentano durante la progettazione del software. Non sono frammenti di codice pronti all'uso, ma schemi logici per strutturare il codice in modo manutenibile e scalabile.
+## Sintesi
 
-## 1. Pattern Creazionali
-Si occupano dei meccanismi di creazione degli oggetti.
+I design pattern sono soluzioni ricorrenti a problemi di progettazione.
 
-### Singleton
-Garantisce che una classe abbia una sola istanza e fornisce un punto di accesso globale ad essa.
-```javascript
-const Database = (function() {
-    let instance;
-    function createInstance() {
-        return new Object("Istanza DB");
-    }
-    return {
-        getInstance: function() {
-            if (!instance) {
-                instance = createInstance();
-            }
-            return instance;
-        }
-    };
-})();
+Non sono codice da copiare meccanicamente: sono modelli mentali per organizzare responsabilita, dipendenze e creazione degli oggetti.
 
-const db1 = Database.getInstance();
-const db2 = Database.getInstance();
-console.log(db1 === db2); // true
-```
+---
 
-### Factory
-Definisce un'interfaccia per la creazione di oggetti, delegando alle sottoclassi o a una logica interna il tipo di oggetto da istanziare.
-```javascript
-class Auto { constructor() { this.tipo = "Auto"; } }
-class Moto { constructor() { this.tipo = "Moto"; } }
+## Factory
 
-class VeicoloFactory {
-    static creaVeicolo(tipo) {
-        if (tipo === "auto") return new Auto();
-        if (tipo === "moto") return new Moto();
-    }
+Una factory centralizza la creazione di oggetti.
+
+```js
+function createTransport(type) {
+  if (type === "car") {
+    return { type: "car", wheels: 4 };
+  }
+
+  if (type === "bike") {
+    return { type: "bike", wheels: 2 };
+  }
+
+  throw new Error("Tipo non supportato");
 }
 ```
 
-## 2. Pattern Strutturali
-Riguardano il modo in cui classi e oggetti sono composti per formare strutture più grandi.
+Utile quando la creazione dipende da configurazione o input.
 
-### Module Pattern
-Permette di emulare il concetto di "privato" e "pubblico" incapsulando la logica ed esponendo solo ciò che è necessario. (Oggi ampiamente sostituito dagli [ES Modules](file:///c:/Users/luca.bellini/Documents/luca/appunti/Programmazione/JavaScript/Pagine/Moduli.md)).
+---
 
-```javascript
-const ModuloContatore = (function() {
-    let _contatore = 0; // Privato
-    return {
-        incrementa: () => _contatore++,
-        getValore: () => _contatore
-    };
+## Singleton
+
+Un singleton espone una sola istanza condivisa.
+
+```js
+export const config = {
+  apiUrl: "https://api.example.com",
+};
+```
+
+Nei moduli ES, spesso un semplice export e sufficiente.
+
+Usalo con cautela: stato globale condiviso puo rendere test e dipendenze piu difficili.
+
+---
+
+## Module pattern
+
+Prima degli ES modules si usavano closure per esporre API pubblica e nascondere dettagli.
+
+```js
+const counter = (() => {
+  let value = 0;
+
+  return {
+    increment() {
+      value += 1;
+    },
+    getValue() {
+      return value;
+    },
+  };
 })();
 ```
 
-## 3. Pattern Comportamentali
-Gestiscono la comunicazione e l'assegnazione di responsabilità tra oggetti.
+Oggi gli ES modules coprono molti casi in modo nativo.
 
-### Observer Pattern
-Un oggetto (**Subject**) mantiene una lista di dipendenti (**Observers**) e li notifica automaticamente di qualsiasi cambiamento di stato. È la base della gestione degli eventi nel DOM.
+---
 
-```javascript
+## Observer
+
+Observer notifica piu subscriber quando avviene un evento.
+
+```js
 class Subject {
-    constructor() { this.observers = []; }
-    subscribe(fn) { this.observers.push(fn); }
-    notify(data) { this.observers.forEach(fn => fn(data)); }
-}
+  #listeners = new Set();
 
-const newsSub = new Subject();
-newsSub.subscribe(data => console.log("Notifica ricevuta: " + data));
-newsSub.notify("Nuovo articolo disponibile!");
+  subscribe(listener) {
+    this.#listeners.add(listener);
+    return () => this.#listeners.delete(listener);
+  }
+
+  notify(value) {
+    for (const listener of this.#listeners) {
+      listener(value);
+    }
+  }
+}
 ```
 
-## Perché usarli?
-1.  **Linguaggio Comune**: Facilitano la comunicazione tra sviluppatori.
-2.  **Best Practices**: Seguono pattern consolidati che evitano errori architettonici.
-3.  **Refactoring**: Rendono il codice più modulare e facile da modificare.
+E alla base di eventi, reactive state e pub/sub.
 
 ---
+
+## Strategy
+
+Strategy permette di cambiare algoritmo senza cambiare il chiamante.
+
+```js
+const strategies = {
+  percent: (price, value) => price - price * value,
+  fixed: (price, value) => price - value,
+};
+
+function applyDiscount(price, type, value) {
+  return strategies[type](price, value);
+}
+```
+
+Utile per regole intercambiabili.
+
+---
+
+## Decorator
+
+Decorator aggiunge comportamento a una funzione o oggetto.
+
+```js
+function withLogging(fn) {
+  return (...args) => {
+    console.log("args", args);
+    return fn(...args);
+  };
+}
+```
+
+In JavaScript molte decorazioni si fanno con higher-order functions.
+
+---
+
+## Errori comuni
+
+- Applicare pattern solo per rendere il codice "piu architetturale".
+- Usare singleton per stato che dovrebbe essere esplicito.
+- Creare astrazioni prima di avere duplicazione reale.
+- Confondere pattern con framework.
+- Rendere difficile il debug con troppi layer.
+
+---
+
+## Checklist operativa
+
+- Parti dal problema, non dal pattern.
+- Preferisci soluzioni semplici finche bastano.
+- Usa factory per creazione condizionale.
+- Usa observer per notifiche multiple.
+- Usa strategy per algoritmi intercambiabili.
+- Verifica che il pattern migliori testabilita e manutenzione.
+
+---
+
+## Collegamenti
+
+- [[Programmazione/JavaScript/Pagine/Classi|Classi]]
+- [[Programmazione/JavaScript/Pagine/Moduli|Moduli]]
+- [[Programmazione/JavaScript/Pagine/Functional Programming|Functional Programming]]
+- [[Programmazione/JavaScript/Pagine/Testing|Testing]]

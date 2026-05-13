@@ -1,98 +1,189 @@
 ---
-date: 2026-02-24
-tags: [javascript, programming, oop, classes]
-type: #permanent-note
-status: budding
+date: 2026-05-13
+area: Programmazione
+topic: JavaScript
+type: technical-note
+status: "non revisionato"
+difficulty: beginner
+tags: [javascript, oop, classes, prototypes]
+aliases: [Classi JS, JavaScript Classes]
+prerequisites: [Funzioni, Prototypes, Context]
+related: [Ereditarietà, Incapsulamento, Private Fields e Static Blocks, Prototypes]
 ---
 
-# Classi in JavaScript
+# Classi
 
-Le **Classi**, introdotte in ES6, forniscono una sintassi molto più chiara e concisa per creare oggetti e gestire l'ereditarietà. È importante ricordare che in JavaScript le classi sono principalmente "zucchero sintattico" sopra l'ereditarietà basata sui [[Programmazione/JavaScript/Pagine/Prototypes|prototipi]].
+## Sintesi
 
-## 1. Sintassi Base
+Le classi JavaScript sono una sintassi moderna per creare oggetti, istanze, metodi e gerarchie.
 
-Una classe si definisce con la keyword `class` e include quasi sempre un metodo speciale `constructor()`, che viene eseguito automaticamente alla creazione di una nuova istanza.
-
-```javascript
-class Persona {
-    constructor(nome, eta) {
-        this.nome = nome; // Proprietà di istanza
-        this.eta = eta;
-    }
-
-    // Metodo di istanza
-    saluta() {
-        console.log(`Ciao, mi chiamo ${this.nome}`);
-    }
-}
-
-const luca = new Persona("Luca", 30);
-luca.saluta(); // "Ciao, mi chiamo Luca"
-```
-
-## 2. Metodi Statici
-
-I metodi definiti con la keyword `static` non appartengono alle istanze della classe, ma alla classe stessa. Vengono spesso usati per funzioni di utilità.
-
-```javascript
-class Matematica {
-    static somma(a, b) {
-        return a + b;
-    }
-}
-
-console.log(Matematica.somma(5, 10)); // 15
-// const m = new Matematica(); m.somma(5, 10); // ERRORE
-```
-
-## 3. Campi della Classe (Public & Private)
-
-Nelle versioni più recenti di JS (ES2022+), possiamo definire proprietà direttamente nel corpo della classe.
-
-- **Campi Pubblici**: Accessibili da chiunque.
-- **Campi Privati**: Definiti con il prefisso `#`, sono accessibili **solo** all'interno della classe stessa.
-
-```javascript
-class ContoCorrente {
-    #saldo = 0; // Campo privato
-
-    deposita(importo) {
-        this.#saldo += importo;
-    }
-
-    mostraSaldo() {
-        console.log(`Il saldo è: ${this.#saldo}`);
-    }
-}
-
-const mioConto = new ContoCorrente();
-mioConto.deposita(100);
-// console.log(mioConto.#saldo); // ERRORE: Campo privato
-```
-
-## 4. Getters e Setters
-
-Permettono di definire metodi che vengono usati come se fossero proprietà, utili per validare i dati o calcolare valori al volo.
-
-```javascript
-class Rettangolo {
-    constructor(larghezza, altezza) {
-        this.larghezza = larghezza;
-        this.altezza = altezza;
-    }
-
-    get area() {
-        return this.larghezza * this.altezza;
-    }
-
-    set dimensione(valore) {
-        if (valore <= 0) console.error("Valore non valido");
-        else this.larghezza = this.altezza = valore;
-    }
-}
-```
-
-> [!NOTE] Classi vs Funzioni Costruttrici
-> Sotto il cofano, `class Persona {}` crea una funzione chiamata `Persona` e aggiunge i metodi a `Persona.prototype`. La sintassi `class` rende il codice più leggibile e meno propenso a errori rispetto alla manipolazione manuale dei prototipi.
+Sotto il cofano, restano basate sul modello prototipale di JavaScript.
 
 ---
+
+## Sintassi base
+
+```js
+class User {
+  constructor(name) {
+    this.name = name;
+  }
+
+  greet() {
+    return `Ciao, sono ${this.name}`;
+  }
+}
+
+const user = new User("Luca");
+
+console.log(user.greet()); // "Ciao, sono Luca"
+```
+
+`constructor` viene eseguito quando crei una nuova istanza con `new`.
+
+---
+
+## Metodi di istanza
+
+I metodi dichiarati nel corpo della classe finiscono sul prototipo.
+
+```js
+class Counter {
+  constructor() {
+    this.count = 0;
+  }
+
+  increment() {
+    this.count += 1;
+  }
+}
+```
+
+Ogni istanza condivide gli stessi metodi, invece di duplicarli.
+
+---
+
+## Campi pubblici
+
+I campi pubblici definiscono proprieta di istanza.
+
+```js
+class User {
+  role = "reader";
+
+  constructor(name) {
+    this.name = name;
+  }
+}
+```
+
+Sono utili per rendere visibile la forma dell'oggetto.
+
+---
+
+## Metodi statici
+
+I metodi statici appartengono alla classe, non alle istanze.
+
+```js
+class MathUtils {
+  static sum(a, b) {
+    return a + b;
+  }
+}
+
+console.log(MathUtils.sum(2, 3)); // 5
+```
+
+Sono adatti a factory, utility e metodi che non dipendono dallo stato di una istanza.
+
+---
+
+## Getter e setter
+
+Getter e setter espongono accesso controllato a proprieta calcolate o validate.
+
+```js
+class Rectangle {
+  constructor(width, height) {
+    this.width = width;
+    this.height = height;
+  }
+
+  get area() {
+    return this.width * this.height;
+  }
+
+  set size(value) {
+    if (value <= 0) {
+      throw new Error("Dimensione non valida");
+    }
+
+    this.width = value;
+    this.height = value;
+  }
+}
+```
+
+---
+
+## `this` nelle classi
+
+I metodi di classe seguono le normali regole di `this`.
+
+```js
+const counter = new Counter();
+const increment = counter.increment;
+
+increment(); // this perso
+```
+
+Se passi un metodo come callback, puo essere necessario usare `bind`, una wrapper function o campi con arrow function.
+
+---
+
+## Classi e prototipi
+
+```js
+class User {
+  greet() {
+    return "ciao";
+  }
+}
+
+const user = new User();
+
+console.log(Object.getPrototypeOf(user) === User.prototype); // true
+```
+
+`class` non sostituisce i prototipi: li rende piu leggibili.
+
+---
+
+## Errori comuni
+
+- Pensare che le classi JavaScript funzionino come classi Java o C#.
+- Dimenticare `new`.
+- Perdere `this` passando un metodo come callback.
+- Mettere troppa logica nel `constructor`.
+- Usare classi per semplici oggetti dati dove basta un object literal.
+
+---
+
+## Checklist operativa
+
+- Usa classi quando hai stato e comportamento legati.
+- Usa metodi statici per utility legate al tipo.
+- Usa private fields per invarianti interne reali.
+- Controlla sempre il comportamento di `this`.
+- Preferisci composizione quando l'ereditarieta rende la gerarchia fragile.
+
+---
+
+## Collegamenti
+
+- [[Programmazione/JavaScript/Pagine/Prototypes|Prototypes]]
+- [[Programmazione/JavaScript/Pagine/Ereditarietà|Ereditarieta]]
+- [[Programmazione/JavaScript/Pagine/Incapsulamento|Incapsulamento]]
+- [[Programmazione/JavaScript/Pagine/Private Fields e Static Blocks|Private Fields e Static Blocks]]
+- [[Programmazione/JavaScript/Pagine/Context|Context]]

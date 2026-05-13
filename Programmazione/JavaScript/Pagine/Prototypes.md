@@ -1,57 +1,275 @@
 ---
-date: 2026-02-19
-tags: [javascript, programming, oop]
-type: #permanent-note
-status: budding
+date: 2026-05-13
+area: Programmazione
+topic: JavaScript
+type: technical-note
+status: "non revisionato"
+difficulty: intermediate
+tags: [javascript, prototypes, prototype-chain, oop]
+aliases: [Prototype JS, Prototipi JavaScript]
+prerequisites: [Oggetti Avanzati, Funzioni]
+related: [Classi, Ereditarietà, Property Descriptors, Oggetti Avanzati]
 ---
 
-# Prototypes in JavaScript
+# Prototypes
 
-JavaScript è un linguaggio basato sui **prototipi**. A differenza dei linguaggi basati sulle classi (come Java o C++), JavaScript usa l'ereditarietà prototipale: ogni oggetto ha un link interno a un altro oggetto chiamato **Prototipo**.
+## Sintesi
 
-## 1. Il concetto di Prototipo
+JavaScript usa l'ereditarieta prototipale: gli oggetti possono delegare la ricerca di proprieta e metodi a un altro oggetto chiamato prototipo.
 
-Un prototipo è essenzialmente un "modello" da cui un oggetto eredita metodi e proprietà.
+La catena dei prototipi e il meccanismo alla base di oggetti, costruttori e classi.
 
-- Ogni funzione in JavaScript ha una proprietà chiamata `prototype`.
-- Ogni oggetto (istanza) ha una proprietà interna (accessibile via `__proto__`) che punta al `prototype` della funzione che l'ha creato.
+---
 
-## 2. prototype vs `__proto__`
+## Prototipo interno
 
-È facile confonderli, ma hanno scopi diversi:
-- **`prototype`**: È una proprietà presente solo nelle **funzioni**. Definisce cosa verrà ereditato dagli oggetti creati con quella funzione.
-- **`__proto__`**: È una proprietà presente in tutti gli **oggetti**. Punta al prototipo da cui l'oggetto sta attualmente ereditando.
+Ogni oggetto ha un riferimento interno chiamato `[[Prototype]]`.
 
-```javascript
-function Persona(nome) {
-    this.nome = nome;
-}
+Nel codice moderno si legge con `Object.getPrototypeOf`.
 
-// Aggiungiamo un metodo al PROTOTIPO della funzione
-Persona.prototype.saluta = function() {
-    console.log(`Ciao, sono ${this.nome}`);
+```js
+const user = {
+  name: "Luca",
 };
 
-const luca = new Persona("Luca");
-
-console.log(luca.__proto__ === Persona.prototype); // true
-luca.saluta(); // Funziona tramite ereditarietà!
+console.log(Object.getPrototypeOf(user) === Object.prototype); // true
 ```
 
-## 3. Prototype Chain (Catena dei Prototipi)
-
-Quando cerchi di accedere a una proprietà di un oggetto:
-1. JavaScript la cerca nell'oggetto stesso.
-2. Se non la trova, la cerca nel suo `__proto__` (il prototipo).
-3. Se non la trova nemmeno lì, sale al prototipo del prototipo.
-4. La catena finisce quando si arriva a `Object.prototype` (il cui prototipo è `null`).
-
-## 4. Perché usare i Prototipi?
-
-> [!TIP] Ottimizzazione della Memoria
-> Invece di definire un metodo all'interno del costruttore (che verrebbe duplicato per ogni singola istanza), definirlo sul prototipo significa che esiste **una sola copia** in memoria condivisa da tutte le istanze.
-
-> [!NOTE] Classi ES6
-> Le classi introdotte in ES6 sono "zucchero sintattico". Sotto il cofano, JavaScript continua a usare esattamente questo sistema di prototipi.
+`__proto__` esiste in molti ambienti, ma e meglio evitarlo nel codice nuovo.
 
 ---
+
+## Prototype chain
+
+Quando accedi a una proprieta, JavaScript cerca:
+
+- prima nell'oggetto stesso;
+- poi nel suo prototipo;
+- poi nel prototipo del prototipo;
+- fino a `null`.
+
+```js
+const user = {
+  name: "Luca",
+};
+
+console.log(user.toString); // trovato su Object.prototype
+```
+
+Questa catena permette la condivisione di metodi.
+
+---
+
+## `prototype` delle funzioni
+
+Le funzioni usabili come costruttori hanno una proprieta `prototype`.
+
+```js
+function User(name) {
+  this.name = name;
+}
+
+User.prototype.sayHello = function () {
+  return `Ciao, sono ${this.name}`;
+};
+
+const user = new User("Luca");
+
+console.log(user.sayHello()); // "Ciao, sono Luca"
+```
+
+Gli oggetti creati con `new User()` ricevono come prototipo `User.prototype`.
+
+```js
+console.log(Object.getPrototypeOf(user) === User.prototype); // true
+```
+
+---
+
+## `prototype` vs `[[Prototype]]`
+
+Sono concetti diversi:
+
+- `User.prototype` e una proprieta della funzione costruttrice;
+- `Object.getPrototypeOf(user)` restituisce il prototipo effettivo dell'oggetto;
+- `user.__proto__` e un accesso storico al prototipo interno, da evitare.
+
+```js
+function User() {}
+
+const user = new User();
+
+console.log(User.prototype === Object.getPrototypeOf(user)); // true
+```
+
+---
+
+## `new`
+
+Quando chiami una funzione con `new`, JavaScript:
+
+- crea un nuovo oggetto;
+- collega il suo prototipo a `Constructor.prototype`;
+- esegue la funzione con `this` puntato al nuovo oggetto;
+- restituisce il nuovo oggetto, salvo ritorno esplicito di un oggetto diverso.
+
+```js
+function Product(name) {
+  this.name = name;
+}
+
+const product = new Product("Mouse");
+
+console.log(product.name); // "Mouse"
+```
+
+---
+
+## Classi e prototipi
+
+Le classi ES6 sono sintassi piu moderna sopra il modello prototipale.
+
+```js
+class User {
+  constructor(name) {
+    this.name = name;
+  }
+
+  sayHello() {
+    return `Ciao, sono ${this.name}`;
+  }
+}
+
+const user = new User("Luca");
+
+console.log(Object.getPrototypeOf(user) === User.prototype); // true
+```
+
+I metodi dichiarati nella classe finiscono sul prototipo, non vengono duplicati su ogni istanza.
+
+---
+
+## Shadowing di proprieta
+
+Una proprieta dell'oggetto ha precedenza su una proprieta del prototipo.
+
+```js
+const defaults = {
+  role: "reader",
+};
+
+const user = Object.create(defaults);
+
+console.log(user.role); // "reader"
+
+user.role = "admin";
+
+console.log(user.role); // "admin"
+console.log(defaults.role); // "reader"
+```
+
+La proprieta `role` dell'oggetto nasconde quella del prototipo.
+
+---
+
+## `Object.create`
+
+`Object.create` crea un oggetto scegliendo direttamente il suo prototipo.
+
+```js
+const sharedMethods = {
+  activate() {
+    this.active = true;
+  },
+};
+
+const user = Object.create(sharedMethods);
+
+user.name = "Luca";
+user.activate();
+
+console.log(user.active); // true
+```
+
+Questo e utile quando vuoi costruire una catena prototipale senza classi o costruttori.
+
+---
+
+## `hasOwn` e proprieta ereditate
+
+Per distinguere proprieta proprie da proprieta ereditate, usa `Object.hasOwn`.
+
+```js
+const base = {
+  inherited: true,
+};
+
+const obj = Object.create(base);
+obj.own = true;
+
+console.log(Object.hasOwn(obj, "own")); // true
+console.log(Object.hasOwn(obj, "inherited")); // false
+```
+
+Questo evita bug quando si iterano oggetti.
+
+---
+
+## `instanceof`
+
+`instanceof` controlla se il `prototype` di una funzione compare nella prototype chain di un oggetto.
+
+```js
+class User {}
+
+const user = new User();
+
+console.log(user instanceof User); // true
+```
+
+Non controlla il tipo nominale in senso stretto: controlla la catena dei prototipi.
+
+---
+
+## Mutare prototipi
+
+Cambiare prototipi a runtime puo rendere il codice lento e difficile da prevedere.
+
+```js
+const user = {};
+
+Object.setPrototypeOf(user, {
+  role: "admin",
+});
+```
+
+Evita anche di modificare prototipi nativi come `Array.prototype` o `Object.prototype`, perche puoi rompere codice di terze parti.
+
+---
+
+## Errori comuni
+
+- Confondere `prototype` della funzione con il prototipo interno dell'oggetto.
+- Usare `__proto__` nel codice moderno.
+- Modificare prototipi nativi.
+- Aspettarsi che `instanceof` funzioni bene tra iframe, realm diversi o copie multiple di una libreria.
+- Dimenticare che le proprieta proprie nascondono quelle ereditate.
+
+---
+
+## Checklist operativa
+
+- Usa `class` quando vuoi un modello OOP leggibile.
+- Usa `Object.getPrototypeOf` per ispezionare il prototipo.
+- Usa `Object.hasOwn` per distinguere proprieta proprie da ereditarie.
+- Evita `Object.setPrototypeOf` su oggetti gia creati.
+- Non modificare prototipi nativi.
+
+---
+
+## Collegamenti
+
+- [[Programmazione/JavaScript/Pagine/Classi|Classi]]
+- [[Programmazione/JavaScript/Pagine/Ereditarietà|Ereditarieta]]
+- [[Programmazione/JavaScript/Pagine/Oggetti Avanzati|Oggetti Avanzati]]
+- [[Programmazione/JavaScript/Pagine/Property Descriptors|Property Descriptors]]

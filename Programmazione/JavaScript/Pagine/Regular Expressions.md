@@ -1,79 +1,143 @@
 ---
-date: 2026-02-24
-tags: [javascript, programming, regex, strings]
-type: #permanent-note
-status: budding
+date: 2026-05-13
+area: Programmazione
+topic: JavaScript
+type: technical-note
+status: "non revisionato"
+difficulty: intermediate
+tags: [javascript, regex, regexp, strings, validation]
+aliases: [Regex JS, RegExp]
+prerequisites: [Tipi di Dati, Stringhe]
+related: [Form Handling e Validazione, Error Handling]
 ---
 
-# Regular Expressions (RegEx) in JavaScript
+# Regular Expressions
 
-Le **espressioni regolari** sono pattern utilizzati per trovare corrispondenze di combinazioni di caratteri nelle stringhe. In JavaScript, le RegEx sono oggetti.
+## Sintesi
 
-## 1. Creazione
+Le regular expressions descrivono pattern testuali.
 
-Esistono due modi per creare un oggetto `RegExp`:
+In JavaScript sono rappresentate da oggetti `RegExp` e vengono usate per cercare, validare, sostituire ed estrarre testo.
 
-1.  **Sintassi Letterale**: Il pattern è racchiuso tra slash. Viene compilata al caricamento dello script.
-    ```javascript
-    const regex = /ab+c/i;
-    ```
-2.  **Costruttore**: Utile quando il pattern è dinamico (es. derivato da un input utente).
-    ```javascript
-    const regex = new RegExp('ab+c', 'i');
-    ```
+---
 
-## 2. Flags Comuni
+## Creazione
 
-I flags modificano il comportamento della ricerca:
-- `g`: **Global search** (non si ferma alla prima corrispondenza).
-- `i`: **Case-insensitive** search.
-- `m`: **Multiline** search.
-- `u`: **Unicode** (gestisce correttamente i caratteri speciali).
+Literal:
 
-## 3. Sintassi dei Pattern
-
-### Classi di Caratteri
-- `\d`: Qualsiasi cifra (0-9).
-- `\w`: Qualsiasi carattere alfanumerico (incluso underscore).
-- `\s`: Qualsiasi spazio bianco (spazi, tab, invio).
-- `.`: Qualsiasi carattere tranne l'andata a capo.
-- `[abc]`: Qualsiasi carattere contenuto nelle parentesi.
-- `[^abc]`: Qualsiasi carattere **NON** contenuto nelle parentesi.
-
-### Quantificatori
-- `*`: 0 o più volte.
-- `+`: 1 o più volte.
-- `?`: 0 o 1 volta.
-- `{n}`: Esattamente n volte.
-- `{n,m}`: Da n a m volte.
-
-### Ancore
-- `^`: Inizio della stringa.
-- `$`: Fine della stringa.
-- `\b`: Confine di parola.
-
-## 4. Metodi Principali
-
-### Metodi di RegExp
-- **`test()`**: Restituisce `true` o `false` se trova la corrispondenza.
-- **`exec()`**: Restituisce un array con i dettagli della corrispondenza (o `null`).
-
-### Metodi di Stringa
-- **`match()`**: Restituisce le corrispondenze trovate.
-- **`replace()`**: Sostituisce la parte trovata con un'altra stringa.
-- **`search()`**: Restituisce l'indice della prima corrispondenza.
-- **`split()`**: Divide la stringa usando la regex come separatore.
-
-```javascript
-const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-console.log(emailRegex.test("test@example.com")); // true
-
-const testo = "Oggi è il 24/02/2026";
-const date = testo.match(/\d{2}\/\d{2}\/\d{4}/g);
-console.log(date); // ["24/02/2026"]
+```js
+const emailPattern = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 ```
 
-> [!TIP] Strumenti Esterni
-> Per testare regex complesse, è consigliato usare strumenti visuali come **Regex101**, che spiegano passo dopo passo ogni parte del pattern.
+Costruttore:
+
+```js
+const pattern = new RegExp("hello", "i");
+```
+
+Usa il costruttore quando il pattern deve essere costruito dinamicamente.
 
 ---
+
+## Metodi principali
+
+```js
+const pattern = /js/i;
+
+console.log(pattern.test("JavaScript")); // true
+```
+
+```js
+const match = "abc123".match(/\d+/);
+
+console.log(match[0]); // "123"
+```
+
+Metodi comuni:
+
+- `regexp.test(string)`;
+- `regexp.exec(string)`;
+- `string.match(regexp)`;
+- `string.replace(regexp, value)`;
+- `string.split(regexp)`;
+- `string.search(regexp)`.
+
+---
+
+## Flag
+
+Flag principali:
+
+- `i`: case-insensitive;
+- `g`: ricerca globale;
+- `m`: multiline;
+- `s`: dotAll;
+- `u`: Unicode;
+- `y`: sticky;
+- `d`: indici dei match, dove supportato.
+
+```js
+const words = "uno due tre".match(/\w+/g);
+```
+
+---
+
+## Gruppi
+
+```js
+const pattern = /(\d{4})-(\d{2})-(\d{2})/;
+const match = "2026-05-13".match(pattern);
+
+console.log(match[1]); // "2026"
+```
+
+Gruppi nominati:
+
+```js
+const pattern = /(?<year>\d{4})-(?<month>\d{2})-(?<day>\d{2})/;
+const match = "2026-05-13".match(pattern);
+
+console.log(match.groups.year);
+```
+
+---
+
+## Sostituzione
+
+```js
+const result = "hello world".replace(/\b\w/g, (letter) => {
+  return letter.toUpperCase();
+});
+
+console.log(result); // "Hello World"
+```
+
+La callback di `replace` e utile per trasformazioni non banali.
+
+---
+
+## Errori comuni
+
+- Usare regex troppo complesse quando basta parsing esplicito.
+- Dimenticare che `g` rende `exec` e `test` stateful tramite `lastIndex`.
+- Validare email o URL reali con pattern troppo semplici.
+- Non fare escape di input utente in regex dinamiche.
+- Ignorare Unicode.
+
+---
+
+## Checklist operativa
+
+- Mantieni regex leggibili e testate.
+- Usa gruppi nominati per estrazioni complesse.
+- Evita regex dinamiche senza escape.
+- Usa `u` quando lavori con Unicode.
+- Per form, combina regex con Constraint Validation API.
+
+---
+
+## Collegamenti
+
+- [[Programmazione/JavaScript/Pagine/Form Handling e Validazione|Form Handling e Validazione]]
+- [[Programmazione/JavaScript/Pagine/Error Handling|Error Handling]]
+- [[Programmazione/JavaScript/Pagine/Tipi di Dati|Tipi di Dati]]

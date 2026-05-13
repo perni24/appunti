@@ -1,98 +1,173 @@
 ---
-date: 2026-02-24
-tags: [javascript, programming, generators, iterators, symbols]
-type: #permanent-note
-status: budding
+date: 2026-05-13
+area: Programmazione
+topic: JavaScript
+type: technical-note
+status: "non revisionato"
+difficulty: intermediate
+tags: [javascript, generators, iterators, iterable]
+aliases: [Generator JS, Iterator JS]
+prerequisites: [Funzioni, Cicli]
+related: [Array Methods, Async Await, Event Loop]
 ---
 
-# Generators e Iterators in JavaScript
+# Generators e Iterators
 
-I protocolli di iterazione (introdotti in ES6) permettono agli oggetti di definire o personalizzare il proprio comportamento di iterazione, come avviene nei cicli `for...of`.
+## Sintesi
 
-## 1. Iterators (Il Protocollo)
+Gli iterator definiscono come consumare una sequenza di valori.
 
-Un oggetto è un **Iterator** se implementa un metodo `next()` che restituisce un oggetto con due proprietà:
-1.  `value`: Il valore successivo nella sequenza.
-2.  `done`: Un booleano che è `true` se l'iterazione è terminata.
+I generator sono funzioni speciali che producono valori uno alla volta usando `yield`.
 
-```javascript
-/* Esempio di iteratore manuale */
-const mioIteratore = {
-    contatore: 0,
-    next() {
-        if (this.contatore < 3) {
-            return { value: this.contatore++, done: false };
+---
+
+## Protocollo iterator
+
+Un iterator espone un metodo `next()`.
+
+```js
+const iterator = {
+  current: 0,
+  next() {
+    this.current += 1;
+
+    if (this.current <= 3) {
+      return { value: this.current, done: false };
+    }
+
+    return { value: undefined, done: true };
+  },
+};
+```
+
+Ogni chiamata restituisce `{ value, done }`.
+
+---
+
+## Iterable
+
+Un oggetto iterable espone `Symbol.iterator`.
+
+```js
+const range = {
+  from: 1,
+  to: 3,
+  [Symbol.iterator]() {
+    let current = this.from;
+    const end = this.to;
+
+    return {
+      next() {
+        if (current <= end) {
+          return { value: current++, done: false };
         }
-        return { value: undefined, done: true };
-    }
+
+        return { done: true };
+      },
+    };
+  },
 };
 
-console.log(mioIteratore.next()); // { value: 0, done: false }
-```
-
-## 2. Iterables
-
-Un oggetto è **Iterable** se implementa il metodo `[Symbol.iterator]`, che deve restituire un iteratore. Molti oggetti integrati lo sono già (Array, Map, Set, String).
-
-```javascript
-// Rendere un oggetto iterabile
-const collezioneVoti = {
-    voti: [10, 8, 9],
-    [Symbol.iterator]() {
-        let index = 0;
-        return {
-            next: () => {
-                return index < this.voti.length 
-                    ? { value: this.voti[index++], done: false }
-                    : { done: true };
-            }
-        };
-    }
-};
-
-for (const voto of collezioneVoti) {
-    console.log(voto); // 10, 8, 9
+for (const value of range) {
+  console.log(value);
 }
 ```
 
-## 3. Generators
-
-I **Generators** sono funzioni speciali che possono essere messe in pausa e riprese, mantenendo il proprio stato (scope). Sono un modo molto più semplice per creare iteratori.
-
-### Sintassi
-- Si definiscono con `function*`.
-- Usano la keyword `yield` per "emettere" un valore e sospendere l'esecuzione.
-
-```javascript
-function* generaNumeri() {
-    yield 1;
-    yield 2;
-    yield 3;
-}
-
-const gen = generaNumeri(); // Restituisce un oggetto generatore (che è un iteratore)
-console.log(gen.next().value); // 1
-```
-
-### Vantaggi dei Generators
-- **Lazy Evaluation**: I valori vengono calcolati solo quando richiesti.
-- **Memoria efficiente**: Ideali per sequenze infinite o set di dati massivi.
-
-```javascript
-// Generatore infinito di ID
-function* idCreator() {
-    let id = 1;
-    while(true) {
-        yield id++;
-    }
-}
-
-const ids = idCreator();
-console.log(ids.next().value); // 1
-console.log(ids.next().value); // 2
-```
-
-> [!NOTE] Comunicazione bidirezionale
-> `yield` non solo emette valori, ma può anche riceverne. Se passi un valore a `next(valore)`, quel valore diventa il risultato dell'espressione `yield` all'interno del generatore.
+`for...of`, spread e destructuring usano il protocollo iterable.
 
 ---
+
+## Generator function
+
+```js
+function* numbers() {
+  yield 1;
+  yield 2;
+  yield 3;
+}
+
+for (const value of numbers()) {
+  console.log(value);
+}
+```
+
+Una generator function restituisce un iterator.
+
+---
+
+## Generator per range
+
+```js
+function* range(from, to) {
+  for (let value = from; value <= to; value += 1) {
+    yield value;
+  }
+}
+
+console.log([...range(1, 3)]); // [1, 2, 3]
+```
+
+I generator sono utili per sequenze lazy.
+
+---
+
+## `yield*`
+
+`yield*` delega a un altro iterable.
+
+```js
+function* combined() {
+  yield* [1, 2];
+  yield* [3, 4];
+}
+```
+
+---
+
+## Async iterators
+
+Un async iterator produce valori asincroni.
+
+```js
+async function* streamItems(items) {
+  for (const item of items) {
+    await wait(100);
+    yield item;
+  }
+}
+
+for await (const item of streamItems([1, 2, 3])) {
+  console.log(item);
+}
+```
+
+`for await...of` consuma async iterable.
+
+---
+
+## Errori comuni
+
+- Confondere generator function e funzione normale.
+- Dimenticare che un generator e lazy.
+- Consumare due volte lo stesso iterator aspettandosi che riparta.
+- Usare generator dove un array semplice sarebbe piu leggibile.
+- Ignorare gestione errori in async iterator.
+
+---
+
+## Checklist operativa
+
+- Usa generator per sequenze lazy o pipeline.
+- Usa iterable per rendere oggetti consumabili con `for...of`.
+- Usa async generator per stream asincroni.
+- Evita generator per logica banale.
+- Documenta se un iterator e monouso.
+
+---
+
+## Collegamenti
+
+- [[Programmazione/JavaScript/Pagine/Funzioni|Funzioni]]
+- [[Programmazione/JavaScript/Pagine/Cicli|Cicli]]
+- [[Programmazione/JavaScript/Pagine/Array Methods|Array Methods]]
+- [[Programmazione/JavaScript/Pagine/Async Await|Async Await]]

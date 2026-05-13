@@ -1,82 +1,216 @@
 ---
-date: 2026-02-16
-tags:
-  - javascript
-  - programming
-  - basics
-type: permanent-note
-status: budding
+date: 2026-05-13
+area: Programmazione
+topic: JavaScript
+type: technical-note
+status: "non revisionato"
+difficulty: beginner
+tags: [javascript, basics, conditionals, if, switch, truthy, falsy]
+aliases: [Condizioni JS, Controllo di flusso JS]
+prerequisites: [Operatori, Tipi di Dati]
+related: [Operatori, Cicli]
 ---
 
-# Strutture Condizionali in JavaScript
+# Strutture Condizionali
 
-Le **strutture condizionali** permettono di eseguire blocchi di codice diversi in base al verificarsi o meno di determinate condizioni (valori booleani `true` o `false`).
+## Sintesi
 
-## 1. `if`, `else if`, `else`
-È la struttura di controllo più comune. Valuta una condizione tra parentesi tonde `()` e, se vera, esegue il blocco nelle graffe `{}`.
+Le strutture condizionali permettono di eseguire codice diverso in base a una condizione.
 
-```javascript
-const orario = 14;
+In JavaScript le condizioni non devono essere per forza booleani: qualunque valore viene valutato come truthy o falsy.
 
-if (orario < 12) {
+---
+
+## if, else if, else
+
+`if` esegue un blocco quando la condizione e vera.
+
+```js
+const hour = 14;
+
+if (hour < 12) {
   console.log("Buongiorno");
-} else if (orario < 18) {
+} else if (hour < 18) {
   console.log("Buon pomeriggio");
 } else {
   console.log("Buonasera");
 }
 ```
 
-### Truthy e Falsy
-In JavaScript, le condizioni negli `if` non devono essere per forza booleani puri. Il linguaggio esegue una **conversione implicita** (Type Coercion).
+Usa `else if` per condizioni alternative e `else` come fallback.
 
-Un valore è **Falsy** (considerato `false`) se è:
-- `false`
-- `0` (zero)
-- `""` (stringa vuota)
-- `null`
-- `undefined`
-- `NaN`
+---
 
-Tutti gli altri valori sono **Truthy** (considerati `true`), inclusi array vuoti `[]` e oggetti vuoti `{}`.
+## Truthy e falsy
 
-```javascript
-const nome = ""; // Stringa vuota -> Falsy
+Valori falsy:
 
-if (nome) {
-  console.log("Nome presente: " + nome);
+- `false`;
+- `0`;
+- `-0`;
+- `0n`;
+- `""`;
+- `null`;
+- `undefined`;
+- `NaN`.
+
+Tutti gli altri valori sono truthy, inclusi:
+
+- `[]`;
+- `{}`;
+- `"false"`;
+- `"0"`;
+- funzioni.
+
+```js
+const name = "";
+
+if (name) {
+  console.log("Nome presente");
 } else {
-  console.log("Nome non inserito"); // Verrà eseguito questo
+  console.log("Nome mancante");
 }
 ```
 
-## 2. `switch`
-Utile quando si deve confrontare una singola variabile con **molti valori diversi** (uguaglianza stretta `===`).
+> [!WARNING]
+> Array e oggetti vuoti sono truthy.
 
-> [!WARNING] Il `break` è essenziale
-> Senza l'istruzione `break`, l'esecuzione "cade" (fall-through) nei case successivi, eseguendo anche codice che non dovrebbe.
+```js
+if ([]) {
+  console.log("Eseguito");
+}
+```
 
-```javascript
-const giorno = 3;
+---
 
-switch (giorno) {
-  case 1:
-    console.log("Lunedì");
+## Condizioni esplicite
+
+Quando il significato e importante, preferisci condizioni esplicite.
+
+```js
+const users = [];
+
+if (users.length > 0) {
+  console.log("Ci sono utenti");
+}
+```
+
+Meglio di:
+
+```js
+if (users) {
+  console.log("Questo e sempre true per un array");
+}
+```
+
+---
+
+## switch
+
+`switch` confronta una espressione con piu casi usando uguaglianza stretta.
+
+```js
+const status = "loading";
+
+switch (status) {
+  case "idle":
+    console.log("In attesa");
     break;
-  case 2:
-    console.log("Martedì");
+  case "loading":
+    console.log("Caricamento");
     break;
-  case 3:
-    console.log("Mercoledì");
+  case "error":
+    console.log("Errore");
     break;
   default:
-    console.log("Giorno non valido");
+    console.log("Stato sconosciuto");
 }
 ```
 
-## 3. Operatore Ternario
-Una forma concisa di `if...else`, molto utile per assegnazioni condizionali.
+`break` evita il fall-through verso i casi successivi.
 
-```javascript
-const stato = online ? "Connesso" : "Disconnesso";
+---
+
+## Fall-through intenzionale
+
+A volte il fall-through e voluto, ma deve essere evidente.
+
+```js
+const role = "admin";
+
+switch (role) {
+  case "admin":
+  case "owner":
+    console.log("Accesso completo");
+    break;
+  default:
+    console.log("Accesso limitato");
+}
 ```
+
+---
+
+## Operatore ternario
+
+Il ternario e utile per assegnazioni semplici.
+
+```js
+const age = 20;
+const label = age >= 18 ? "adulto" : "minorenne";
+```
+
+Evita ternari annidati complessi.
+
+```js
+// Difficile da leggere
+const label = score > 90 ? "A" : score > 70 ? "B" : "C";
+```
+
+In questi casi, usa `if...else` o una funzione.
+
+---
+
+## Guard clause
+
+Una guard clause interrompe subito la funzione se una condizione non e valida.
+
+```js
+function getUserName(user) {
+  if (!user) {
+    return "Guest";
+  }
+
+  return user.name;
+}
+```
+
+Riduce annidamenti e rende piu chiaro il flusso.
+
+---
+
+## Errori comuni
+
+- Pensare che `[]` o `{}` siano falsy.
+- Dimenticare `break` dentro `switch`.
+- Usare condizioni implicite quando serve distinguere `0`, `""`, `null` e `undefined`.
+- Scrivere ternari troppo lunghi.
+- Annidare troppi `if` invece di usare guard clause.
+
+---
+
+## Checklist
+
+- La condizione e leggibile?
+- Sto distinguendo valori falsy validi come `0` o `""`?
+- Serve `if...else`, `switch` o ternario?
+- In uno `switch`, ho gestito `default`?
+- Posso semplificare con una guard clause?
+
+---
+
+## Collegamenti
+
+- [[Operatori]]
+- [[Tipi di Dati]]
+- [[Cicli]]
+- [[Funzioni]]

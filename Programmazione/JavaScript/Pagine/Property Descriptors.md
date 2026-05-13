@@ -1,8 +1,14 @@
 ---
 date: 2026-05-04
+area: Programmazione
+topic: JavaScript
 tags: [javascript, objects, property-descriptors, defineproperty, getters, setters]
-type: #permanent-note
-status: budding
+type: technical-note
+status: "non revisionato"
+difficulty: advanced
+aliases: [Descriptor proprieta, Object.defineProperty]
+prerequisites: [Oggetti Avanzati]
+related: [Oggetti Avanzati, Immutabilita e Copia degli Oggetti]
 ---
 
 # Property Descriptors

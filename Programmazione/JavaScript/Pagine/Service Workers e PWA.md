@@ -1,8 +1,14 @@
 ---
-date: 2026-05-05
+date: 2026-05-13
+area: Programmazione
+topic: JavaScript
+type: technical-note
+status: "non revisionato"
+difficulty: advanced
 tags: [javascript, service-worker, pwa, cache, offline, web-api, browser]
-type: #permanent-note
-status: budding
+aliases: [Service Worker, PWA]
+prerequisites: [Fetch API, Promises, Browser Storage]
+related: [Web Workers, Fetch API, Browser Storage, CORS]
 ---
 
 # Service Workers e PWA

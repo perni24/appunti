@@ -1,39 +1,162 @@
 ---
-date: 2026-02-23
-tags: [javascript, programming, memory, performance]
-type: #permanent-note
-status: budding
+date: 2026-05-13
+area: Programmazione
+topic: JavaScript
+type: technical-note
+status: "non revisionato"
+difficulty: intermediate
+tags: [javascript, garbage-collection, memory, performance]
+aliases: [GC JavaScript, Garbage Collector]
+prerequisites: [Memory Lifecycle]
+related: [Memory Leaks, WeakMap e WeakSet, Optimization]
 ---
 
-# Garbage Collection in JavaScript
+# Garbage Collection
 
-La **Garbage Collection** (GC) è un processo automatico del motore JavaScript che monitora l'allocazione della memoria e determina quando un blocco di memoria non è più necessario, per poi liberarlo. In JS, questo processo è basato principalmente sul concetto di **Reachability** (Raggiungibilità).
+## Sintesi
 
-## 1. Il concetto di "Raggiungibilità"
+La garbage collection e il processo con cui il motore JavaScript libera memoria occupata da valori non piu raggiungibili.
 
-In JavaScript, un valore è considerato "raggiungibile" e non viene eliminato se è accessibile o utilizzato in qualche modo.
-- **Radici (Roots)**: Sono i valori base che sono sempre raggiungibili (es: variabili globali, variabili locali nel Call Stack attuale).
-- Un oggetto è raggiungibile se è nelle radici o se è referenziato da un altro oggetto raggiungibile.
-
-## 2. Algoritmo Mark-and-Sweep
-
-È l'algoritmo principale utilizzato dai moderni motori JS (come V8). Il processo avviene in due fasi:
-
-1.  **Mark (Marcatura)**: Il Garbage Collector parte dalle "radici" e visita tutti gli oggetti collegati, marcandoli come "vivi". Si sposta poi ricorsivamente su tutti gli oggetti referenziati da questi, finché ogni oggetto raggiungibile non è stato marcato.
-2.  **Sweep (Pulizia)**: Tutti gli oggetti della memoria che **non** sono stati marcati (quindi non raggiungibili dalle radici) vengono considerati "spazzatura" e la loro memoria viene liberata.
-
-## 3. Reference Counting (Approccio Storico)
-
-Un tempo si usava il *Reference Counting*, che contava semplicemente quante referenze puntavano a un oggetto. Se il conteggio arrivava a 0, l'oggetto veniva eliminato.
-- **Il Limite**: Questo algoritmo falliva con i **riferimenti circolari** (due oggetti che si puntano a vicenda ma non sono più usati dal resto del programma), causando Memory Leaks. Il *Mark-and-Sweep* risolve brillantemente questo problema.
-
-## 4. Ottimizzazioni del Motore
-
-I moderni Garbage Collector sono estremamente sofisticati:
-- **Generational Collection**: Divide gli oggetti in "nuovi" e "vecchi". Gli oggetti che sopravvivono a diversi cicli vengono spostati nella sezione dei vecchi e controllati meno frequentemente.
-- **Incremental/Idle GC**: Suddivide il lavoro in piccoli pezzi eseguiti durante i momenti di inattività del processore per evitare "freeze" evidenti dell'interfaccia utente.
-
-> [!IMPORTANT] Non determinismo
-> Non puoi forzare la Garbage Collection in JavaScript. È il motore a decidere il momento migliore per eseguirla in base all'utilizzo della memoria e all'attività del processore.
+Il programmatore non libera memoria manualmente, ma deve evitare di mantenere riferimenti inutili.
 
 ---
+
+## Raggiungibilita
+
+Il concetto chiave e la raggiungibilita.
+
+Un oggetto e mantenuto in memoria se puo essere raggiunto partendo da una root.
+
+Root comuni:
+
+- oggetto globale;
+- variabili locali nello stack;
+- closure attive;
+- code di task e microtask;
+- riferimenti DOM ancora vivi;
+- timer e listener registrati.
+
+```js
+let user = { name: "Luca" };
+
+user = null;
+```
+
+Se nessun altro riferimento punta all'oggetto, il garbage collector potra liberarlo.
+
+---
+
+## Mark and sweep
+
+I motori moderni usano varianti di mark and sweep.
+
+Fasi semplificate:
+
+- mark: il collector parte dalle root e marca tutti gli oggetti raggiungibili;
+- sweep: gli oggetti non marcati vengono considerati garbage;
+- compact o optimize: in alcuni casi la memoria viene riorganizzata.
+
+Questo risolve anche i riferimenti circolari non raggiungibili.
+
+```js
+let a = {};
+let b = {};
+
+a.other = b;
+b.other = a;
+
+a = null;
+b = null;
+```
+
+Anche se i due oggetti si riferiscono a vicenda, possono essere raccolti se non sono raggiungibili da root.
+
+---
+
+## Reference counting
+
+Il reference counting storico contava quanti riferimenti puntavano a un oggetto.
+
+Il problema principale erano i cicli.
+
+```js
+const a = {};
+const b = {};
+
+a.b = b;
+b.a = a;
+```
+
+Se nessuno dall'esterno raggiunge `a` o `b`, mark and sweep puo liberarli; un reference counting semplice no.
+
+---
+
+## GC generazionale
+
+Molti motori distinguono oggetti giovani e oggetti vecchi.
+
+Idea pratica:
+
+- molti oggetti muoiono rapidamente;
+- gli oggetti che sopravvivono a piu cicli vengono promossi;
+- controllare spesso gli oggetti giovani e piu efficiente.
+
+Questa e una semplificazione: i dettagli cambiano tra motori e versioni.
+
+---
+
+## Pause e performance
+
+La garbage collection consuma tempo CPU.
+
+I motori moderni usano tecniche incrementali, concorrenti e in idle time per ridurre pause visibili, ma una pressione eccessiva sulla memoria puo comunque causare rallentamenti.
+
+Cause frequenti:
+
+- allocazioni massicce in loop;
+- creazione continua di oggetti temporanei;
+- cache senza limite;
+- DOM node trattenuti dopo la rimozione.
+
+---
+
+## Non determinismo
+
+Non puoi decidere in modo affidabile quando il garbage collector verra eseguito.
+
+```js
+let data = buildLargeObject();
+
+data = null;
+```
+
+Questo rende l'oggetto candidabile alla raccolta, ma non forza una raccolta immediata.
+
+---
+
+## Errori comuni
+
+- Pensare che `obj = null` liberi subito memoria.
+- Usare il garbage collector come sostituto del cleanup.
+- Creare molte allocazioni temporanee in percorsi hot.
+- Conservare cache senza eviction.
+- Dimenticare che listener e timer sono root pratiche.
+
+---
+
+## Checklist operativa
+
+- Rimuovi riferimenti non necessari.
+- Limita cache e strutture dati longeve.
+- Pulisci listener, interval e subscription.
+- Riduci allocazioni ripetute in codice critico.
+- Usa snapshot memoria per verificare, non intuizioni.
+
+---
+
+## Collegamenti
+
+- [[Programmazione/JavaScript/Pagine/Memory Lifecycle|Memory Lifecycle]]
+- [[Programmazione/JavaScript/Pagine/Memory Leaks|Memory Leaks]]
+- [[Programmazione/JavaScript/Pagine/WeakMap e WeakSet|WeakMap e WeakSet]]
+- [[Programmazione/JavaScript/Pagine/Optimization|Optimization]]

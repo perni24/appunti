@@ -54,5 +54,5 @@ liniziare dal punto 5
 ---
 
 ## 📂 Risorse Locali
-- [[pagine/Neuroevoluzione delle Strategie (Ibrida)|Neuroevoluzione delle Strategie]]
-- [[pagine/Neuroevoluzione dei Pesi (Deep Neuroevolution)|Neuroevoluzione dei Pesi]]
+- [[Pagine/Neuroevoluzione delle Strategie (Ibrida)|Neuroevoluzione delle Strategie]]
+- [[Pagine/Neuroevoluzione dei Pesi (Deep Neuroevolution)|Neuroevoluzione dei Pesi]]

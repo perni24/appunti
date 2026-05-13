@@ -1,80 +1,173 @@
 ---
-date: 2026-02-24
-tags: [javascript, programming, functional-programming, clean-code]
-type: #permanent-note
-status: budding
+date: 2026-05-13
+area: Programmazione
+topic: JavaScript
+type: technical-note
+status: "non revisionato"
+difficulty: intermediate
+tags: [javascript, functional-programming, pure-functions, immutability]
+aliases: [FP JavaScript, Programmazione Funzionale JS]
+prerequisites: [Funzioni, Array Methods, Immutabilita e Copia degli Oggetti]
+related: [Array Methods, Immutabilita e Copia degli Oggetti, Design Patterns, Testing]
 ---
 
-# Functional Programming in JavaScript
+# Functional Programming
 
-La **Programmazione Funzionale (FP)** è un paradigma di programmazione che tratta il computo come la valutazione di funzioni matematiche ed evita stati mutabili e dati che cambiano nel tempo. JavaScript è un linguaggio **multi-paradigma** che supporta eccellentemente la FP.
+## Sintesi
 
-## 1. Funzioni Pure (Pure Functions)
+La programmazione funzionale organizza il codice attorno a funzioni, trasformazioni di dati, immutabilita e riduzione degli effetti collaterali.
 
-Una funzione è "pura" se:
-1.  **Deterministica**: Restituisce sempre lo stesso output per lo stesso input.
-2.  **Senza Effetti Collaterali (Side Effects)**: Non modifica nulla al di fuori del suo scope (es. variabili globali, file system, console).
-
-```javascript
-// Impura (dipende dallo stato esterno e lo modifica)
-let totale = 0;
-function aggiungiImpura(valore) {
-    totale += valore;
-    return totale;
-}
-
-// Pura (dipende solo dagli argomenti)
-function aggiungiPura(a, b) {
-    return a + b;
-}
-```
-
-## 2. Immutabilità
-
-In FP, i dati non vengono modificati. Se devi cambiare un oggetto o un array, ne crei una nuova copia con le modifiche.
-
-```javascript
-const utente = { nome: "Luca", eta: 25 };
-
-// Invece di utente.eta = 26;
-const utenteAggiornato = { ...utente, eta: 26 };
-```
-
-## 3. Higher-Order Functions (HOF)
-
-Sono funzioni che accettano altre funzioni come argomenti o restituiscono una funzione.
-Esempi comuni in JS: `map()`, `filter()`, `reduce()`.
-
-```javascript
-const numeri = [1, 2, 3, 4];
-const raddoppiati = numeri.map(n => n * 2);
-const pari = numeri.filter(n => n % 2 === 0);
-```
-
-## 4. Composizione e Currying
-
-### Composizione
-L'atto di combinare più funzioni semplici per crearne una complessa. L'output di una funzione diventa l'input della successiva.
-
-### Currying
-Tecnica di trasformazione di una funzione che accetta più argomenti in una serie di funzioni che accettano un singolo argomento alla volta.
-
-```javascript
-// Funzione normale
-const somma = (a, b) => a + b;
-
-// Curried
-const sommaCurried = a => b => a + b;
-const aggiungiCinque = sommaCurried(5);
-console.log(aggiungiCinque(3)); // 8
-```
-
-## 5. Dichiarativo vs Imperativo
-
-- **Imperativo**: "Come" fare le cose (cicli `for`, istruzioni passo-passo).
-- **Dichiarativo**: "Cosa" vuoi ottenere (uso di `map`, `filter`, astrazioni).
-
-> [!TIP] Perché la FP?
-> Il codice funzionale tende ad essere più facile da testare (grazie alle funzioni pure), più prevedibile e più facile da debuggare poiché non si verificano cambiamenti di stato inaspettati.
+JavaScript e multi-paradigma e supporta bene lo stile funzionale.
 
 ---
+
+## Funzioni pure
+
+Una funzione pura:
+
+- restituisce lo stesso output per lo stesso input;
+- non modifica stato esterno;
+- non produce side effect osservabili.
+
+```js
+function add(a, b) {
+  return a + b;
+}
+```
+
+Funzione impura:
+
+```js
+let total = 0;
+
+function addToTotal(value) {
+  total += value;
+  return total;
+}
+```
+
+Le funzioni pure sono piu facili da testare.
+
+---
+
+## Immutabilita
+
+Invece di modificare dati esistenti, si creano nuove versioni.
+
+```js
+const user = { name: "Luca", age: 30 };
+
+const updatedUser = {
+  ...user,
+  age: 31,
+};
+```
+
+Questo riduce effetti collaterali e rende i cambiamenti piu prevedibili.
+
+---
+
+## Higher-order functions
+
+Una higher-order function riceve o restituisce funzioni.
+
+```js
+function withTax(taxRate) {
+  return (price) => price * (1 + taxRate);
+}
+
+const addVat = withTax(0.22);
+
+console.log(addVat(100)); // 122
+```
+
+Metodi come `map`, `filter` e `reduce` sono esempi pratici.
+
+---
+
+## Map, filter, reduce
+
+```js
+const numbers = [1, 2, 3, 4];
+
+const doubled = numbers.map((n) => n * 2);
+const even = numbers.filter((n) => n % 2 === 0);
+const total = numbers.reduce((sum, n) => sum + n, 0);
+```
+
+Questi metodi descrivono cosa vuoi ottenere, non ogni passo imperativo.
+
+---
+
+## Composizione
+
+La composizione combina funzioni piccole.
+
+```js
+const trim = (value) => value.trim();
+const lower = (value) => value.toLowerCase();
+
+const normalize = (value) => lower(trim(value));
+```
+
+Funzioni piccole e pure sono piu semplici da riusare.
+
+---
+
+## Currying
+
+Il currying trasforma una funzione con piu argomenti in una sequenza di funzioni.
+
+```js
+const multiply = (a) => (b) => a * b;
+
+const double = multiply(2);
+
+console.log(double(5)); // 10
+```
+
+Utile quando vuoi specializzare funzioni.
+
+---
+
+## Side effect
+
+Side effect comuni:
+
+- modificare variabili esterne;
+- mutare oggetti ricevuti;
+- scrivere su DOM;
+- chiamare API;
+- leggere tempo o random;
+- loggare.
+
+Non tutti i side effect sono sbagliati. Devono pero essere isolati e controllati.
+
+---
+
+## Errori comuni
+
+- Usare FP in modo dogmatico.
+- Creare catene `map/filter/reduce` poco leggibili.
+- Copiare strutture grandi senza considerare performance.
+- Nascondere side effect in funzioni apparentemente pure.
+- Usare `reduce` dove un ciclo sarebbe piu chiaro.
+
+---
+
+## Checklist operativa
+
+- Preferisci funzioni pure per logica di dominio.
+- Isola side effect ai bordi del sistema.
+- Evita mutazioni implicite.
+- Usa `map`, `filter`, `reduce` quando migliorano chiarezza.
+- Testa funzioni pure con input/output espliciti.
+
+---
+
+## Collegamenti
+
+- [[Programmazione/JavaScript/Pagine/Funzioni|Funzioni]]
+- [[Programmazione/JavaScript/Pagine/Array Methods|Array Methods]]
+- [[Programmazione/JavaScript/Pagine/Immutabilita e Copia degli Oggetti|Immutabilita e Copia degli Oggetti]]
+- [[Programmazione/JavaScript/Pagine/Testing|Testing]]

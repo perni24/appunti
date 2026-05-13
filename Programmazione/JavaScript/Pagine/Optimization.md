@@ -1,62 +1,219 @@
 ---
-date: 2026-02-23
-tags: [javascript, programming, optimization, performance, v8]
-type: #permanent-note
-status: budding
+date: 2026-05-13
+area: Programmazione
+topic: JavaScript
+type: technical-note
+status: "non revisionato"
+difficulty: intermediate
+tags: [javascript, optimization, performance, v8, profiling]
+aliases: [JavaScript Performance, Ottimizzazione JS]
+prerequisites: [Event Loop, Memory Lifecycle, Oggetti Avanzati]
+related: [Garbage Collection, Memory Leaks, Scheduling Browser, Web Workers]
 ---
 
-# Optimization in JavaScript
+# Optimization
 
-L'ottimizzazione in JavaScript avviene a due livelli: quello del **motore** (come V8 di Chrome/Node.js) e quello del **codice** scritto dallo sviluppatore. Capire come il motore "pensa" permette di scrivere codice che può essere compilato ed eseguito molto più velocemente.
+## Sintesi
 
-## 1. Ottimizzazioni del Motore (V8)
+Ottimizzare JavaScript significa ridurre tempo CPU, memoria, lavoro sul main thread e latenza percepita.
 
-I motori moderni non si limitano a interpretare il codice, ma lo ottimizzano dinamicamente durante l'esecuzione.
+La regola principale e misurare prima di ottimizzare. Senza profiling, il rischio e migliorare codice non critico e peggiorare leggibilita.
 
-### JIT (Just-In-Time) Compilation
-JavaScript è un linguaggio interpretato, ma V8 utilizza la compilazione JIT per trasformare il codice spesso eseguito ("hot code") direttamente in **codice macchina** altamente ottimizzato.
+---
 
-### Hidden Classes (Classi Nascoste)
-Poiché JavaScript è un linguaggio a tipizzazione dinamica, l'accesso alle proprietà degli oggetti è intrinsecamente più lento rispetto a linguaggi statici come Java. V8 risolve questo creando "Hidden Classes" internamente.
-- **Good**: Inizializzare tutte le proprietà nel costruttore e nello stesso ordine.
-- **Bad**: Aggiungere o eliminare proprietà dinamicamente (causa il cambio della Hidden Class).
+## Misurare prima
 
-```javascript
-// Ottimizzato: stessa struttura
-function Punto(x, y) {
-    this.x = x;
-    this.y = y;
-}
-const p1 = new Punto(1, 2);
-const p2 = new Punto(3, 4); 
+Strumenti principali:
 
-// Non ottimizzato: strutture diverse
-const o1 = { a: 1 };
-o1.b = 2; // La Hidden Class cambia
-const o2 = { b: 2 };
-o2.a = 1; // Struttura diversa da o1
+- Performance panel dei DevTools;
+- Memory panel;
+- Lighthouse;
+- `performance.now()`;
+- profiling Node.js;
+- metriche real user monitoring.
+
+```js
+const start = performance.now();
+
+runTask();
+
+console.log(performance.now() - start);
 ```
 
-### Inline Caching (IC)
-Il motore memorizza la posizione delle proprietà degli oggetti per evitare ricerche costose nell'albero dei prototipi ogni volta che si accede a una proprietà.
-
-## 2. Buone Pratiche di Scrittura
-
-- **Evitare `delete`**: L'operatore `delete` modifica la struttura dell'oggetto e impedisce molte ottimizzazioni di V8. Meglio impostare il valore a `null` o `undefined`.
-- **Pre-allocazione degli Array**: Se conosci la dimensione di un array, inizializzalo correttamente per evitare continui ridimensionamenti della memoria.
-- **Evitare tipi misti**: Mantieni gli elementi di un array dello stesso tipo (es. tutti numeri) per permettere al motore di trattarli come vettori contigui in memoria.
-
-## 3. Tecniche Runtime (User Interface)
-
-Quando si gestiscono eventi frequenti (scroll, resize, digitazione), è fondamentale limitare il numero di esecuzioni delle funzioni per non bloccare il thread principale.
-
-### Debouncing
-Esegue la funzione solo **dopo** che è passato un certo tempo dall'ultimo evento ricevuto. Ideale per le barre di ricerca.
-
-### Throttling
-Garantisce che la funzione venga eseguita **al massimo una volta** ogni intervallo di tempo prestabilito. Ideale per lo scroll o il resize della finestra.
-
-> [!TIP] Profiling
-> Usa il tab **Performance** dei Chrome DevTools per identificare i colli di bottiglia e vedere quali funzioni occupano più tempo CPU o causano frequenti cicli di Garbage Collection.
+Misure locali aiutano, ma non sostituiscono profiling su casi reali.
 
 ---
+
+## Hot path
+
+Un hot path e una parte di codice eseguita molto spesso o con impatto alto.
+
+Prima di ottimizzare chiedi:
+
+- quante volte viene eseguito;
+- quanto tempo impiega;
+- quanta memoria alloca;
+- se blocca input o rendering;
+- se il problema e CPU, rete, DOM o memoria.
+
+---
+
+## Hidden classes
+
+Motori come V8 ottimizzano oggetti con forma stabile.
+
+```js
+function createPoint(x, y) {
+  return { x, y };
+}
+
+const a = createPoint(1, 2);
+const b = createPoint(3, 4);
+```
+
+Creare oggetti con proprieta nello stesso ordine aiuta il motore.
+
+```js
+const user = { id: 1, name: "Luca" };
+
+user.active = true;
+delete user.name;
+```
+
+Aggiungere e rimuovere proprieta dinamicamente puo rendere alcune ottimizzazioni meno efficaci.
+
+---
+
+## Allocazioni
+
+Allocare molti oggetti temporanei puo aumentare pressione sul garbage collector.
+
+```js
+for (const item of items) {
+  const view = { id: item.id, label: item.name };
+  render(view);
+}
+```
+
+Non evitare ogni oggetto per principio. Intervieni solo se il profiling mostra pressione reale.
+
+---
+
+## Array
+
+Array omogenei e densi sono piu facili da ottimizzare.
+
+```js
+const numbers = [1, 2, 3, 4];
+```
+
+Evita, nei percorsi critici:
+
+- array con buchi;
+- tipi molto misti;
+- uso eccessivo di `delete`;
+- conversioni implicite ripetute.
+
+---
+
+## DOM e rendering
+
+Molti problemi performance nel browser non sono nel linguaggio, ma nel rendering.
+
+```js
+const heights = elements.map((element) => element.offsetHeight);
+
+requestAnimationFrame(() => {
+  elements.forEach((element, index) => {
+    element.style.height = `${heights[index] + 10}px`;
+  });
+});
+```
+
+Separare letture e scritture riduce layout thrashing.
+
+---
+
+## Debounce e throttle
+
+Debounce: esegue dopo una pausa negli eventi.
+
+```js
+function debounce(callback, delay) {
+  let timeoutId;
+
+  return (...args) => {
+    clearTimeout(timeoutId);
+    timeoutId = setTimeout(() => callback(...args), delay);
+  };
+}
+```
+
+Throttle: limita la frequenza massima di esecuzione.
+
+```js
+function throttle(callback, delay) {
+  let lastRun = 0;
+
+  return (...args) => {
+    const now = Date.now();
+
+    if (now - lastRun >= delay) {
+      lastRun = now;
+      callback(...args);
+    }
+  };
+}
+```
+
+Debounce e utile per search input. Throttle e utile per scroll e resize.
+
+---
+
+## Lavoro pesante
+
+Se un task CPU blocca il main thread, valuta:
+
+- chunking con `setTimeout`;
+- `requestIdleCallback` per lavoro non urgente;
+- `Web Worker`;
+- elaborazione lato server;
+- streaming o paginazione.
+
+```js
+const worker = new Worker("worker.js");
+
+worker.postMessage({ type: "process", payload: data });
+```
+
+---
+
+## Errori comuni
+
+- Ottimizzare senza misurare.
+- Sacrificare leggibilita per micro-ottimizzazioni non rilevanti.
+- Fare lavoro pesante nel main thread.
+- Confondere lentezza di rete con lentezza JavaScript.
+- Ignorare layout, paint e dimensione del DOM.
+
+---
+
+## Checklist operativa
+
+- Misura prima con DevTools o profiler.
+- Identifica hot path reali.
+- Riduci lavoro sul main thread.
+- Evita cache illimitate.
+- Usa `requestAnimationFrame` per UI e animazioni.
+- Usa Web Worker per CPU pesante.
+- Mantieni il codice leggibile finche il profiling non giustifica compromessi.
+
+---
+
+## Collegamenti
+
+- [[Programmazione/JavaScript/Pagine/Memory Lifecycle|Memory Lifecycle]]
+- [[Programmazione/JavaScript/Pagine/Garbage Collection|Garbage Collection]]
+- [[Programmazione/JavaScript/Pagine/Memory Leaks|Memory Leaks]]
+- [[Programmazione/JavaScript/Pagine/Scheduling Browser|Scheduling Browser]]
+- [[Programmazione/JavaScript/Pagine/Web Workers|Web Workers]]

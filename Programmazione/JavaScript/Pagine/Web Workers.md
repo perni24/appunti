@@ -1,65 +1,132 @@
 ---
-date: 2026-02-24
-tags: [javascript, web-api, multithreading, performance]
-type: #permanent-note
-status: budding
+date: 2026-05-13
+area: Programmazione
+topic: JavaScript
+type: technical-note
+status: "non revisionato"
+difficulty: intermediate
+tags: [javascript, web-workers, browser, performance, concurrency]
+aliases: [Worker JS, Web Worker]
+prerequisites: [Event Loop, Scheduling Browser]
+related: [Optimization, Service Workers e PWA, Buffer e Typed Arrays]
 ---
 
-# Web Workers in JavaScript
+# Web Workers
 
-JavaScript è un linguaggio **single-threaded**, il che significa che può eseguire solo un'operazione alla volta sul thread principale (UI Thread). I **Web Workers** permettono di superare questa limitazione eseguendo script in thread separati in background.
+## Sintesi
 
-## 1. Perché usare i Web Workers?
+I Web Workers permettono di eseguire JavaScript in un thread separato dal main thread del browser.
 
-Se esegui un calcolo molto pesante (es. elaborazione di un'immagine o crittografia) sul thread principale, l'interfaccia utente diventerà non responsiva ("freezata") finché l'operazione non termina. I Web Workers risolvono questo problema spostando il carico di lavoro altrove.
-
-## 2. API e Comunicazione
-
-La comunicazione tra il thread principale e il Worker avviene esclusivamente tramite **scambio di messaggi**.
-
-### Thread Principale (`script.js`)
-```javascript
-// Creazione del worker
-const myWorker = new Worker('worker.js');
-
-// Invio dati al worker
-myWorker.postMessage([10, 20]);
-
-// Ricezione dati dal worker
-myWorker.onmessage = function(e) {
-    console.log('Risultato ricevuto: ' + e.data);
-};
-
-// Terminazione
-// myWorker.terminate();
-```
-
-### Worker Thread (`worker.js`)
-```javascript
-// Ricezione dati dal thread principale
-onmessage = function(e) {
-    console.log('Worker: Ricevuti dati');
-    const result = e.data[0] * e.data[1];
-    
-    // Invio risultato indietro
-    postMessage(result);
-}
-```
-
-## 3. Limitazioni Importanti
-
-Per motivi di sicurezza e consistenza, i Workers **non hanno accesso** agli oggetti globali del thread principale:
-- **No DOM**: Non puoi accedere a `document`, `window` o agli elementi della pagina.
-- **No Parent**: Un worker non conosce il documento che l'ha creato.
-- **Funzioni supportate**: Hanno accesso a `navigator`, `location` (read-only), `XMLHttpRequest`, `fetch` e timer (`setTimeout`).
-
-## 4. Tipologie di Workers
-
-1.  **Dedicated Workers**: Utilizzati da un singolo script.
-2.  **Shared Workers**: Possono essere condivisi da più script eseguiti in diverse finestre, iframe o tab (stesso dominio).
-3.  **Service Workers**: Agiscono come proxy tra l'app, il browser e la rete (fondamentali per le PWA e il supporto offline).
-
-> [!TIP] Quando usarli
-> Usa i Web Workers per qualsiasi operazione sincrona che richieda più di qualche millisecondo, garantendo che l'interfaccia utente rimanga fluida a 60fps.
+Sono utili per lavoro CPU pesante che altrimenti bloccherebbe UI, input e rendering.
 
 ---
+
+## Worker base
+
+Pagina principale:
+
+```js
+const worker = new Worker("worker.js");
+
+worker.postMessage({ type: "start", payload: [1, 2, 3] });
+
+worker.addEventListener("message", (event) => {
+  console.log(event.data);
+});
+```
+
+`worker.js`:
+
+```js
+self.addEventListener("message", (event) => {
+  const result = event.data.payload.reduce((total, value) => total + value, 0);
+
+  self.postMessage({ type: "done", result });
+});
+```
+
+La comunicazione avviene tramite messaggi.
+
+---
+
+## Limiti
+
+Un Web Worker non ha accesso diretto a:
+
+- DOM;
+- `window`;
+- elementi HTML;
+- API UI legate al main thread.
+
+Ha invece accesso a molte API come `fetch`, timer, Web Crypto e strutture dati standard.
+
+---
+
+## Dati copiati e trasferiti
+
+I messaggi vengono serializzati con structured clone.
+
+Per dati binari grandi, puoi trasferire ownership con transferables.
+
+```js
+const buffer = new ArrayBuffer(1024);
+
+worker.postMessage(buffer, [buffer]);
+```
+
+Dopo il trasferimento, il buffer originale non e piu utilizzabile nel thread mittente.
+
+---
+
+## Quando usarli
+
+Usa Web Worker per:
+
+- parsing pesante;
+- compressione;
+- elaborazione immagini;
+- calcoli numerici;
+- ricerca locale su grandi dataset;
+- trasformazioni dati costose.
+
+Non usarli per lavoro leggero: creano complessita e overhead di comunicazione.
+
+---
+
+## Terminazione
+
+```js
+worker.terminate();
+```
+
+Termina un worker quando non serve piu, soprattutto in applicazioni con viste dinamiche.
+
+---
+
+## Errori comuni
+
+- Provare a manipolare il DOM dal worker.
+- Passare troppi dati avanti e indietro.
+- Usare worker per task piccoli.
+- Non terminare worker non piu necessari.
+- Ignorare errori e messaggi non validi.
+
+---
+
+## Checklist operativa
+
+- Usa worker solo per CPU pesante o lavoro isolabile.
+- Definisci un protocollo messaggi con `type`.
+- Usa transferables per dati binari grandi.
+- Termina il worker nel cleanup.
+- Mantieni la UI sul main thread.
+
+---
+
+## Collegamenti
+
+- [[Programmazione/JavaScript/Pagine/Event Loop|Event Loop]]
+- [[Programmazione/JavaScript/Pagine/Scheduling Browser|Scheduling Browser]]
+- [[Programmazione/JavaScript/Pagine/Optimization|Optimization]]
+- [[Programmazione/JavaScript/Pagine/Service Workers e PWA|Service Workers e PWA]]
+- [[Programmazione/JavaScript/Pagine/Buffer e Typed Arrays|Buffer e Typed Arrays]]

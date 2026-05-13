@@ -1,77 +1,136 @@
 ---
-date: 2026-02-24
-tags: [javascript, programming, proxy, reflect, metaprogramming]
-type: #permanent-note
-status: budding
+date: 2026-05-13
+area: Programmazione
+topic: JavaScript
+type: technical-note
+status: "non revisionato"
+difficulty: advanced
+tags: [javascript, proxy, reflect, metaprogramming, objects]
+aliases: [Proxy JS, Reflect JS]
+prerequisites: [Oggetti Avanzati, Property Descriptors]
+related: [Prototypes, Property Descriptors, Error Handling]
 ---
 
-# Proxy e Reflect in JavaScript
+# Proxy e Reflect
 
-Questi due oggetti, introdotti in ES6, permettono di intercettare e personalizzare le operazioni fondamentali sugli oggetti (come la lettura di proprietà, l'assegnazione, l'enumerazione, ecc.). Sono alla base della **meta-programmazione** in JavaScript.
+## Sintesi
 
-## 1. Proxy
+`Proxy` permette di intercettare operazioni su un oggetto.
 
-Un `Proxy` avvolge un oggetto (il **target**) e permette di ridefinire il comportamento delle sue operazioni fondamentali tramite funzioni chiamate **traps**.
-
-### Sintassi
-```javascript
-const proxy = new Proxy(target, handler);
-```
-- **target**: L'oggetto originale che vogliamo proteggere o estendere.
-- **handler**: Un oggetto che contiene le "traps" (intercettatori).
-
-### Esempio: Validazione con `set`
-```javascript
-const utente = { nome: "Luca", eta: 25 };
-
-const handler = {
-    set(target, prop, value) {
-        if (prop === "eta" && typeof value !== "number") {
-            throw new TypeError("L'età deve essere un numero!");
-        }
-        target[prop] = value;
-        return true; // Indica che l'operazione è riuscita
-    }
-};
-
-const proxyUtente = new Proxy(utente, handler);
-proxyUtente.eta = 30; // Funziona
-// proxyUtente.eta = "trenta"; // Lancia un errore
-```
-
-## 2. Reflect
-
-`Reflect` è un oggetto built-in che fornisce metodi per le stesse operazioni intercettabili dai Proxy. Mentre i Proxy servono per **intercettare**, Reflect serve per **eseguire** le operazioni originali in modo pulito.
-
-### Perché usare Reflect con Proxy?
-1.  **Valori di ritorno**: I metodi di Reflect restituiscono un booleano che indica se l'operazione è riuscita, semplificando la scrittura delle traps.
-2.  **Propagazione corretta**: Risolve problemi legati a `this` quando si usano i prototipi.
-
-```javascript
-const handler = {
-    get(target, prop, receiver) {
-        console.log(`Lettura di: ${prop}`);
-        // Usa Reflect per eseguire l'operazione originale sul target
-        return Reflect.get(target, prop, receiver);
-    }
-};
-```
-
-## 3. Traps Comuni
-
-| Trap | Intercetta |
-| :--- | :--- |
-| `get(target, prop, receiver)` | Lettura di una proprietà. |
-| `set(target, prop, value, receiver)` | Scrittura di una proprietà. |
-| `has(target, prop)` | L'operatore `in`. |
-| `deleteProperty(target, prop)` | L'operatore `delete`. |
-| `apply(target, thisArg, argumentsList)` | La chiamata di una funzione. |
-
-## 4. Casi d'Uso Pratici
-
--   **Validazione**: Forzare tipi di dati o vincoli sui valori.
--   **Logging/Profilazione**: Tracciare chi accede a quali dati e quando.
--   **Reattività**: Registrare dipendenze quando una proprietà viene letta e notificare i cambiamenti quando viene scritta (tecnica usata da Vue.js 3).
--   **API Segrete**: Nascondere proprietà interne (es. quelle che iniziano con `_`).
+`Reflect` espone metodi standard per eseguire quelle operazioni in modo coerente.
 
 ---
+
+## Proxy base
+
+```js
+const target = { name: "Luca" };
+
+const proxy = new Proxy(target, {
+  get(object, property) {
+    console.log(`lettura ${String(property)}`);
+    return object[property];
+  },
+});
+
+console.log(proxy.name);
+```
+
+Il secondo argomento e un handler con trap.
+
+---
+
+## Trap comuni
+
+Trap frequenti:
+
+- `get`;
+- `set`;
+- `has`;
+- `deleteProperty`;
+- `ownKeys`;
+- `apply`;
+- `construct`.
+
+```js
+const user = new Proxy({}, {
+  set(target, property, value) {
+    if (property === "age" && value < 0) {
+      throw new Error("Eta non valida");
+    }
+
+    target[property] = value;
+    return true;
+  },
+});
+```
+
+---
+
+## Reflect
+
+`Reflect` contiene metodi equivalenti alle operazioni intercettabili.
+
+```js
+const proxy = new Proxy({ count: 1 }, {
+  get(target, property, receiver) {
+    return Reflect.get(target, property, receiver);
+  },
+});
+```
+
+Usare `Reflect` riduce errori in trap complessi e preserva semantica standard.
+
+---
+
+## Casi d'uso
+
+`Proxy` e utile per:
+
+- validazione;
+- logging;
+- reactive state;
+- lazy loading;
+- virtualizzazione di oggetti;
+- API fluenti;
+- controllo accessi.
+
+Va usato con attenzione perche rende il comportamento meno esplicito.
+
+---
+
+## Limiti
+
+- Puo impattare performance.
+- Puo rendere il debug piu difficile.
+- Non intercetta accessi a private fields.
+- Alcuni invarianti del linguaggio devono essere rispettati.
+
+---
+
+## Errori comuni
+
+- Dimenticare `return true` nel trap `set`.
+- Violare invarianti di oggetti non configurabili.
+- Usare Proxy per logica semplice risolvibile con funzioni.
+- Nascondere side effect in letture di proprieta.
+- Non usare `Reflect` come fallback standard.
+
+---
+
+## Checklist operativa
+
+- Usa Proxy solo quando serve intercettare operazioni generiche.
+- Mantieni handler piccoli.
+- Usa `Reflect` per comportamento base.
+- Documenta side effect.
+- Misura performance se e in hot path.
+
+---
+
+## Collegamenti
+
+- [[Programmazione/JavaScript/Pagine/Oggetti Avanzati|Oggetti Avanzati]]
+- [[Programmazione/JavaScript/Pagine/Property Descriptors|Property Descriptors]]
+- [[Programmazione/JavaScript/Pagine/Prototypes|Prototypes]]
+- [[Programmazione/JavaScript/Pagine/Error Handling|Error Handling]]

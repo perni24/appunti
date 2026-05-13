@@ -1,39 +1,45 @@
-Benvenuto nella tua Personal Knowledge Base. Questo file funge da punto di ingresso principale per navigare tra i vari argomenti.
 
-## 📚 Aree di Conoscenza
+## Programmazione
 
-### 💻 Programmazione
-- [[Programmazione/JavaScript/Indice javascript.md|JavaScript]]
-- [[Programmazione/TypeScript/Indice TypeScript.md|TypeScript]]
-- [[Programmazione/Python/Indice python.md|Python]]
-- [[Programmazione/Rust/Indice rust.md|Rust]]
-- [[Programmazione/Postgres/Indice postgres.md|Postgres]]
-- [[Programmazione/React/Indice react.md|React]]
+- [[Programmazione/JavaScript/Indice javascript|JavaScript]]
+- [[Programmazione/TypeScript/Indice TypeScript|TypeScript]]
+- [[Programmazione/Python/Indice python|Python]]
+- [[Programmazione/Rust/Indice rust|Rust]]
+- [[Programmazione/Postgres/Indice postgres|Postgres]]
+- [[Programmazione/React/Indice react|React]]
+- [[Programmazione/YAML/Indice YAML|YAML]]
 
-### Elettronica
-- [[Elettronica/RISC-V/Indice RISC-V.md|RISC-V]]
+## Elettronica
 
-### 📈 Trading
-- [[Trading/Teoria/Indice Trading.md|Teoria del Trading]]
-- [[Trading/Backtrader/Introduzione a Backtrader.md|Backtrader]]
+- [[Elettronica/RISC-V/Indice RISC-V|RISC-V]]
 
-### Linux
-- [[Indice Linux|Indice linux]]
+## Linux
 
-### Software Open Source
-- [[Programmi open source/Indice Programmi Open Source.md|Software Open Source]]
+- [[Linux/Indice Linux|Linux]]
+- [[Linux/Pagine/ArchLinux/Indice ArchLinux|Arch Linux]]
 
-### 🤖 Intelligenza Artificiale
-- [[Indice AI|Indice AI]]
+## Intelligenza Artificiale
 
-### 🏠 Home Assistant
-- [[Indice Home Assistant|Indice Home Assistant]]
+- [[AI/Indice AI|AI]]
 
-### 🖨️ Stampa 3D
-- [[Stampante 3D/Indice stampante 3D | Indice Stampante 3D ]]
+## Trading
 
-### 📂 Progetti
-- [[Progetti/Indice progetti.md|Indice Progetti]]
+- [[Trading/Teoria/Indice Trading|Teoria del Trading]]
+- [[Trading/Backtrader/Introduzione a Backtrader|Backtrader]]
 
+## Home Assistant
 
----
+- [[Home assistant/Indice Home Assistant|Home Assistant]]
+
+## Stampa 3D
+
+- [[Stampante 3D/Indice stampante 3D|Stampante 3D]]
+
+## Software Open Source
+
+- [[Programmi open source/Indice Programmi Open Source|Software Open Source]]
+
+## Progetti
+
+- [[Progetti/Indice progetti|Progetti]]
+- [[Progetti/Sito basket/Indice sito basket|Sito basket]]

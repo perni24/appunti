@@ -1,89 +1,246 @@
 ---
-date: 2026-02-16
-tags:
-  - javascript
-  - programming
-  - basics
-type: permanent-note
-status: budding
+date: 2026-05-13
+area: Programmazione
+topic: JavaScript
+type: technical-note
+status: "non revisionato"
+difficulty: beginner
+tags: [javascript, basics, operators, comparison, logical-operators]
+aliases: [Operatori JS]
+prerequisites: [Variabili, Tipi di Dati]
+related: [Strutture Condizionali, Tipi di Dati]
 ---
 
-# Operatori in JavaScript
+# Operatori
 
-Gli **operatori** sono simboli che permettono di eseguire operazioni su operandi (valori o variabili). In JavaScript, si dividono in diverse categorie in base alla loro funzione.
+## Sintesi
 
-## 1. Operatori Aritmetici
-Eseguono calcoli matematici.
+Gli operatori permettono di combinare, confrontare, trasformare o assegnare valori.
 
-| Operatore | Descrizione | Esempio (`x=10`, `y=5`) |
-| :--- | :--- | :--- |
-| `+` | Addizione | `x + y` -> `15` |
-| `-` | Sottrazione | `x - y` -> `5` |
-| `*` | Moltiplicazione | `x * y` -> `50` |
-| `/` | Divisione | `x / y` -> `2` |
-| `%` | Modulo (Resto) | `x % 3` -> `1` |
-| `**` | Esponente (ES6) | `y ** 2` -> `25` |
-| `++` | Incremento | `x++` (post) o `++x` (pre) |
-| `--` | Decremento | `x--` (post) o `--x` (pre) |
+In JavaScript e importante conoscere non solo la sintassi, ma anche le conversioni implicite, soprattutto con `+`, `==`, `&&`, `||` e `??`.
 
-> [!TIP] L'operatore `+`
-> L'operatore `+` serve anche per la **concatenazione** di stringhe: `"Ciao " + "Mondo"` -> `"Ciao Mondo"`. Attenzione alla conversione di tipo implicita se sommi numeri e stringhe!
+---
 
-## 2. Operatori di Assegnazione
-Assegnano un valore all'operando di sinistra basandosi sul valore dell'operando di destra.
+## Operatori aritmetici
 
-- `=`: Assegnazione semplice (`x = y`)
-- `+=`: Addizione e assegnazione (`x += y` equivale a `x = x + y`)
-- `-=`, `*=`, `/=`: Analoghi per le altre operazioni.
+| Operatore | Significato | Esempio |
+| --- | --- | --- |
+| `+` | Addizione o concatenazione | `1 + 2` |
+| `-` | Sottrazione | `5 - 2` |
+| `*` | Moltiplicazione | `3 * 4` |
+| `/` | Divisione | `10 / 2` |
+| `%` | Resto | `10 % 3` |
+| `**` | Potenza | `2 ** 3` |
+| `++` | Incremento | `count++` |
+| `--` | Decremento | `count--` |
 
-## 3. Operatori di Confronto
-Confrontano due valori e restituiscono un **Boolean** (`true` o `false`).
-
-> [!IMPORTANT] Uguaglianza Debole vs Stretta
-> - `==` (Debole): Converte i tipi prima di confrontare (`5 == "5" // true`)
-> - `===` (Stretta): Confronta sia il valore che il tipo (`5 === "5" // false`)
->
-> **Best Practice:** Usa sempre `===` per evitare bug dovuti a conversioni impreviste.
-
-| Operatore | Descrizione |
-| :--- | :--- |
-| `==` / `!=` | Uguale / Diverso (con conversione tipo) |
-| `===` / `!==` | Uguale / Diverso (stretto) |
-| `>` / `>=` | Maggiore / Maggiore o uguale |
-| `<` / `<=` | Minore / Minore o uguale |
-
-## 4. Operatori Logici
-Usati spesso con valori booleani per la logica condizionale.
-
-- `&&` (**AND**): `true` se *entrambi* gli operandi sono true.
-- `||` (**OR**): `true` se *almeno uno* degli operandi è true.
-- `!` (**NOT**): Inverte il valore booleano (`!true` -> `false`).
-
-```javascript
-const maggiorenne = true;
-const haPatente = false;
-
-if (maggiorenne && haPatente) {
-  console.log("Puoi guidare");
-} else {
-  console.log("Non puoi guidare");
-}
+```js
+const total = 10 + 5;
+const rest = 10 % 3;
+const power = 2 ** 4;
 ```
 
-## 5. Operatore Ternario
-Unico operatore che prende 3 operandi. È una scorciatoia per l'`if...else`.
+---
 
-**Sintassi:** `condizione ? exprSeVera : exprSeFalsa`
+## Operatore +
 
-```javascript
-let età = 20;
-let stato = (età >= 18) ? "Adulto" : "Minorenne";
+`+` somma numeri ma concatena stringhe.
+
+```js
+console.log(1 + 2);       // 3
+console.log("1" + 2);     // "12"
+console.log(1 + "2");     // "12"
+console.log("a" + "b");   // "ab"
 ```
 
-## 6. Operatore `typeof`
-Restituisce una stringa che indica il tipo dell'operando.
+Se almeno uno degli operandi e una stringa, il risultato tende a diventare concatenazione.
 
-```javascript
-typeof "Luca" // "string"
-typeof 42     // "number"
+Per conversioni numeriche esplicite:
+
+```js
+const value = Number("42");
+
+console.log(value + 1); // 43
 ```
+
+---
+
+## Operatori di assegnazione
+
+```js
+let count = 0;
+
+count += 1;
+count -= 1;
+count *= 2;
+count /= 2;
+```
+
+Equivalenze:
+
+```js
+count += 1; // count = count + 1
+count *= 2; // count = count * 2
+```
+
+---
+
+## Operatori di confronto
+
+| Operatore | Significato |
+| --- | --- |
+| `===` | Uguale per valore e tipo |
+| `!==` | Diverso per valore o tipo |
+| `>` | Maggiore |
+| `>=` | Maggiore o uguale |
+| `<` | Minore |
+| `<=` | Minore o uguale |
+
+```js
+console.log(5 === 5);   // true
+console.log(5 === "5"); // false
+console.log(10 > 3);    // true
+```
+
+---
+
+## == vs ===
+
+`==` fa conversioni implicite prima del confronto.
+
+```js
+console.log(5 == "5"); // true
+```
+
+`===` confronta senza conversione implicita.
+
+```js
+console.log(5 === "5"); // false
+```
+
+> [!IMPORTANT]
+> Nel codice moderno usa quasi sempre `===` e `!==`.
+
+---
+
+## Operatori logici
+
+```js
+const isAdult = true;
+const hasLicense = false;
+
+console.log(isAdult && hasLicense); // false
+console.log(isAdult || hasLicense); // true
+console.log(!isAdult);              // false
+```
+
+`&&` restituisce il primo valore falsy oppure l'ultimo valore.
+
+```js
+console.log("user" && "profile"); // "profile"
+console.log(null && "profile");   // null
+```
+
+`||` restituisce il primo valore truthy oppure l'ultimo valore.
+
+```js
+console.log("" || "default");     // "default"
+console.log("Luca" || "default"); // "Luca"
+```
+
+---
+
+## Nullish coalescing
+
+`??` restituisce il valore a destra solo se quello a sinistra e `null` o `undefined`.
+
+```js
+const name = null ?? "Guest";
+const count = 0 ?? 10;
+
+console.log(name);  // "Guest"
+console.log(count); // 0
+```
+
+Differenza con `||`:
+
+```js
+console.log(0 || 10); // 10
+console.log(0 ?? 10); // 0
+```
+
+`??` e utile quando `0`, `false` o `""` sono valori validi.
+
+---
+
+## Optional chaining
+
+`?.` permette di leggere proprieta annidate senza generare errore se una parte e `null` o `undefined`.
+
+```js
+const user = null;
+
+console.log(user?.profile?.name); // undefined
+```
+
+Senza optional chaining:
+
+```js
+// user.profile.name; // TypeError
+```
+
+---
+
+## Operatore ternario
+
+Il ternario e una forma compatta di `if...else` per espressioni semplici.
+
+```js
+const age = 20;
+const label = age >= 18 ? "adulto" : "minorenne";
+```
+
+Evita ternari troppo annidati: diventano difficili da leggere.
+
+---
+
+## typeof
+
+`typeof` restituisce una stringa con il tipo del valore.
+
+```js
+typeof "Luca"; // "string"
+typeof 42;     // "number"
+typeof null;   // "object"
+```
+
+Per dettagli sui tipi, vedi [[Tipi di Dati]].
+
+---
+
+## Errori comuni
+
+- Usare `==` invece di `===`.
+- Usare `||` quando serve `??`.
+- Dimenticare che `+` concatena stringhe.
+- Scrivere ternari troppo complessi.
+- Confondere `&&` e `||` con operatori che restituiscono sempre booleani.
+
+---
+
+## Checklist
+
+- Sto usando `===` o `!==`?
+- Ho bisogno di `||` o di `??`?
+- Il valore `0` deve essere considerato valido?
+- Il ternario resta leggibile?
+- Sto gestendo il caso `null` o `undefined`?
+
+---
+
+## Collegamenti
+
+- [[Tipi di Dati]]
+- [[Strutture Condizionali]]
+- [[Variabili]]
+- [[JSON]]

@@ -1,100 +1,191 @@
 ---
-date: 2026-02-17
-tags: [javascript, arrow-functions, es6, sintassi, this-binding]
-type: #permanent-note
-status: budding
+date: 2026-05-13
+area: Programmazione
+topic: JavaScript
+type: technical-note
+status: "non revisionato"
+difficulty: beginner
+tags: [javascript, es6, arrow-functions, functions, this]
+aliases: [Funzioni freccia, Arrow function]
+prerequisites: [Funzioni, Context]
+related: [Funzioni, Context, Callback]
 ---
 
 # Arrow Functions
 
-Le **Arrow Functions** (funzioni a freccia), introdotte in **ES6 (2015)**, offrono una sintassi più sintetica per definire funzioni in JavaScript e introducono un comportamento peculiare riguardo al legame della parola chiave `this`.
+## Sintesi
 
-## Sintassi
+Le arrow functions sono una sintassi compatta per definire funzioni.
 
-Esistono diverse varianti sintattiche a seconda della complessità della funzione.
+Non sono solo una forma piu breve di `function`: non hanno un proprio `this`, non hanno `arguments` e non possono essere usate come costruttori.
 
-### 1. Sintassi Base
-Se la funzione ha più parametri o richiede più righe di codice.
+---
 
-```javascript
+## Sintassi base
+
+```js
 const sum = (a, b) => {
   return a + b;
 };
 ```
 
-### 2. Parametro Singolo
-Se è presente un solo parametro, le parentesi tonde possono essere omesse.
+Con return implicito:
 
-```javascript
-const square = x => x * x; // Implicit return
+```js
+const sum = (a, b) => a + b;
 ```
 
-### 3. Ritorno Implicito (Implicit Return)
-Se il corpo della funzione contiene una sola espressione, è possibile omettere le parentesi graffe e la parola chiave `return`.
+Con un solo parametro, le parentesi sono opzionali.
 
-```javascript
-const greet = name => `Ciao, ${name}!`;
+```js
+const square = value => value * value;
 ```
 
-> [!IMPORTANT] Oggetti e Ritorno Implicito
-> Se si desidera restituire un oggetto letterale in modo implicito, è necessario avvolgerlo tra parentesi tonde, altrimenti le graffe verrebbero interpretate come l'inizio del blocco della funzione.
-> ```javascript
-> const getUser = id => ({ id: id, name: "Luca" });
-> ```
+Senza parametri, le parentesi sono obbligatorie.
 
-## Caratteristiche e Differenze Principali
+```js
+const getRandom = () => Math.random();
+```
 
-Le arrow functions non sono solo "zucchero sintattico", ma differiscono dalle funzioni tradizionali (`function`) per alcuni aspetti fondamentali:
+---
 
-### 1. Lexical `this`
-A differenza delle funzioni regolari, le arrow functions non hanno un proprio valore di `this`. Il valore di `this` all'interno di una arrow function è ereditato dallo **scope superiore** (lexical scoping).
+## Restituire oggetti
 
-```javascript
+Per restituire un oggetto con return implicito, usa parentesi tonde.
+
+```js
+const createUser = name => ({
+  name,
+  active: true,
+});
+```
+
+Senza parentesi, le graffe vengono interpretate come corpo della funzione.
+
+---
+
+## Lexical this
+
+Le arrow functions non creano un proprio `this`.
+
+Usano il `this` dello scope esterno.
+
+```js
 const timer = {
   seconds: 0,
-  start: function() {
+  start() {
     setInterval(() => {
-      this.seconds++; // 'this' refers to the 'timer' object
+      this.seconds += 1;
       console.log(this.seconds);
     }, 1000);
-  }
+  },
 };
 ```
 
-> [!WARNING] Metodi di Oggetti
-> Evitare l'uso di arrow functions per definire metodi di oggetti se si ha bisogno di accedere all'oggetto stesso tramite `this`.
+Qui `this` dentro la arrow function resta quello del metodo `start()`.
 
-### 2. Assenza dell'oggetto `arguments`
-A differenza delle funzioni tradizionali, le arrow functions non hanno un proprio oggetto locale `arguments`. Questo oggetto, nelle funzioni classiche, contiene tutti i parametri passati alla funzione.
+---
 
-Nelle arrow functions, se si prova ad accedere ad `arguments`, verrà cercato nello scope esterno (con lo stesso meccanismo di `this`).
+## Quando usarle
 
-```javascript
-// Function TRADIZIONALE
-function standardFunc() {
-  console.log(arguments); // [1, 2, 3]
-}
-standardFunc(1, 2, 3);
+Sono adatte per:
 
-// ARROW Function
-const arrowFunc = () => {
-  console.log(arguments); // ReferenceError (o 'arguments' dello scope esterno)
+- callback brevi;
+- funzioni passate a `map()`, `filter()`, `reduce()`;
+- handler dove vuoi preservare il `this` esterno;
+- funzioni pure brevi;
+- trasformazioni dichiarative.
+
+```js
+const numbers = [1, 2, 3];
+
+const doubled = numbers.map(number => number * 2);
+```
+
+---
+
+## Quando evitarle
+
+Evita arrow functions quando serve un `this` dinamico.
+
+```js
+const user = {
+  name: "Luca",
+  greet: () => {
+    console.log(this.name);
+  },
+};
+
+user.greet(); // Probabilmente undefined
+```
+
+Meglio:
+
+```js
+const user = {
+  name: "Luca",
+  greet() {
+    console.log(this.name);
+  },
 };
 ```
 
-> [!TIP] Soluzione: Rest Operator
-> Per gestire un numero indefinito di argomenti nelle arrow functions, si utilizza il **Rest Operator** (`...`), che crea un vero Array (a differenza di `arguments` che è un oggetto "array-like").
-> ```javascript
-> const sumAll = (...args) => {
->   return args.reduce((acc, val) => acc + val, 0); // 'args' is a real Array
-> };
-> ```
+---
 
-### 3. Non sono Costruttori
-Non possono essere utilizzate con l'operatore `new`. Se si tenta di farlo, JavaScript solleverà un `TypeError`.
+## arguments
 
-## Quando Usarle
+Le arrow functions non hanno un proprio oggetto `arguments`.
 
--   **Callback**: Perfette per metodi come `map`, `filter`, `forEach`.
--   **Metodi asincroni**: Quando si vuole preservare il contesto di `this` senza usare `.bind(this)`.
--   **Funzioni brevi**: Per migliorare la leggibilità del codice.
+Usa rest parameters.
+
+```js
+const sumAll = (...numbers) => {
+  return numbers.reduce((total, number) => total + number, 0);
+};
+```
+
+---
+
+## Non sono costruttori
+
+Le arrow functions non possono essere usate con `new`.
+
+```js
+const User = name => {
+  this.name = name;
+};
+
+// new User("Luca"); // TypeError
+```
+
+Per oggetti istanziabili usa `class` o funzioni costruttrici tradizionali.
+
+---
+
+## Errori comuni
+
+- Usare arrow function come metodo di oggetto quando serve `this`.
+- Dimenticare le parentesi quando si restituisce un oggetto.
+- Cercare di usare `arguments`.
+- Usarle come costruttori.
+- Rendere poco leggibile una funzione complessa pur di scriverla in una riga.
+
+---
+
+## Checklist
+
+- Mi serve un `this` dinamico? Se si, evita arrow function.
+- La funzione e una callback breve?
+- Sto restituendo un oggetto? Ho usato `({ ... })`?
+- Mi serve `arguments`? Usa `...args`.
+- La versione compatta resta leggibile?
+
+---
+
+## Collegamenti
+
+- [[Funzioni]]
+- [[Context]]
+- [[Callback]]
+- [[Array Methods]]
+- [[Spread & Rest Operators]]

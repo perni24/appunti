@@ -1,63 +1,157 @@
 ---
-date: 2026-02-20
-tags: [javascript, programming, async]
-type: #permanent-note
-status: budding
+date: 2026-05-13
+area: Programmazione
+topic: JavaScript
+type: technical-note
+status: "non revisionato"
+difficulty: intermediate
+tags: [javascript, event-loop, async, microtasks, browser]
+aliases: [Event Loop JS, Loop degli eventi]
+prerequisites: [Callback, Promises]
+related: [Callback, Promises, Async Await, Scheduling Browser]
 ---
 
-# Event Loop in JavaScript
+# Event Loop
 
-JavaScript è un linguaggio **single-threaded** (può eseguire una sola cosa alla volta) e **sincrono**. Tuttavia, grazie all'**Event Loop**, è in grado di gestire operazioni asincrone e non bloccanti (come richieste API o timer).
+## Sintesi
 
-## 1. Architettura del Motore
+L'Event Loop e il meccanismo che permette a JavaScript di gestire operazioni asincrone pur eseguendo codice su un singolo call stack.
 
-Per capire l'asincronia, dobbiamo guardare oltre il solo motore JS (come V8) e considerare l'ambiente runtime (Browser o Node.js).
+JavaScript esegue il codice sincrono subito. Timer, eventi, fetch e Promise vengono coordinati dal runtime tramite code e callback.
 
-### Call Stack (Pila delle Chiamate)
-Segue il principio **LIFO** (Last In, First Out). È dove JavaScript tiene traccia delle funzioni in esecuzione. Quando una funzione viene chiamata, viene "pusshata" nello stack; quando termina, viene rimossa.
+---
 
-### Web APIs
-Il browser fornisce funzionalità extra che JS non ha nativamente: `setTimeout`, `fetch`, DOM Events. Queste operazioni vengono delegate al browser per non bloccare lo stack.
+## Componenti principali
 
-## 2. Le Code (Queues)
+- Call stack: contiene le funzioni in esecuzione.
+- Web APIs: funzionalita fornite dal browser, come timer, DOM events e rete.
+- Task queue: contiene task come `setTimeout`, `setInterval` ed eventi.
+- Microtask queue: contiene callback di Promise, `queueMicrotask` e alcune API del runtime.
+- Rendering: il browser aggiorna layout e paint tra un ciclo e l'altro, quando puo.
 
-Quando un'operazione asincrona termina, il suo callback viene inserito in una coda in attesa di essere eseguito.
+---
 
-- **Task Queue (o Callback Queue)**: Contiene i callback di `setTimeout`, `setInterval` e degli eventi del browser.
-- **Microtask Queue**: Ha una **priorità maggiore**. Contiene principalmente i callback delle **Promises** (`.then`, `.catch`) e `queueMicrotask`.
+## Ordine generale
 
-## 3. Come funziona l'Event Loop
+Il ciclo semplificato e:
 
-L'Event Loop è un ciclo infinito con un compito semplicissimo:
-1. Controlla se il **Call Stack** è vuoto.
-2. Se lo stack è vuoto, guarda la **Microtask Queue**: esegue *tutti* i microtask presenti finché la coda non è vuota.
-3. Dopo aver svuotato i microtask, prende il *primo* compito dalla **Task Queue** e lo sposta nel Call Stack per eseguirlo.
-4. Ricomincia da capo.
+1. Esegui tutto il codice sincrono nel call stack.
+2. Quando il call stack e vuoto, svuota la microtask queue.
+3. Esegui un task dalla task queue.
+4. Dai al browser occasione di aggiornare rendering e input.
+5. Ripeti.
 
-## 4. Esempio di Ordine di Esecuzione
+Le microtask hanno priorita sui task normali.
 
-```javascript
-console.log("1. Inizio"); // Sincrono
+---
+
+## Esempio di ordine
+
+```js
+console.log("A");
 
 setTimeout(() => {
-    console.log("2. Task Queue (Timeout)"); // Macrotask
+  console.log("B");
 }, 0);
 
 Promise.resolve().then(() => {
-    console.log("3. Microtask Queue (Promise)"); // Microtask
+  console.log("C");
 });
 
-console.log("4. Fine"); // Sincrono
+console.log("D");
 
-/* Output:
-   1. Inizio
-   4. Fine
-   3. Microtask Queue (Promise)
-   2. Task Queue (Timeout)
-*/
+// Output:
+// A
+// D
+// C
+// B
 ```
 
-> [!IMPORTANT] Priorità Microtask
-> Il microtask (Promise) verrà eseguito SEMPRE prima del macrotask (setTimeout), anche se il timeout è impostato a 0ms, perché l'Event Loop svuota l'intera coda dei microtask prima di passare al compito successivo della Task Queue.
+`A` e `D` sono sincroni. La Promise finisce nella microtask queue. Il timeout finisce nella task queue.
 
 ---
+
+## Microtask
+
+Le microtask vengono eseguite dopo il codice sincrono corrente e prima del prossimo task.
+
+```js
+queueMicrotask(() => {
+  console.log("microtask");
+});
+
+console.log("sync");
+
+// sync
+// microtask
+```
+
+Attenzione: troppe microtask consecutive possono ritardare rendering e input, perche la coda deve essere svuotata prima di procedere.
+
+---
+
+## Task
+
+I task sono unita di lavoro pianificate dal runtime.
+
+Esempi tipici:
+
+- `setTimeout`;
+- `setInterval`;
+- eventi DOM;
+- messaggi tra contesti;
+- callback di alcune API browser.
+
+```js
+setTimeout(() => {
+  console.log("task futura");
+}, 0);
+```
+
+Anche con `0`, il callback non viene eseguito subito: viene rimandato a un task successivo.
+
+---
+
+## Rendering
+
+Il browser deve alternare JavaScript, input utente e rendering.
+
+Se un task sincrono dura troppo, la pagina non puo aggiornarsi.
+
+```js
+while (performance.now() < 5000) {
+  // blocca il main thread
+}
+```
+
+Per animazioni e lavoro visivo usa `requestAnimationFrame`. Per spezzare lavoro pesante usa chunk piccoli o Web Worker.
+
+---
+
+## Errori comuni
+
+- Pensare che `setTimeout(fn, 0)` esegua subito `fn`.
+- Ignorare la priorita delle microtask.
+- Bloccare il main thread con cicli lunghi.
+- Usare Promise per lavoro CPU pesante pensando che diventi parallelo.
+- Dimenticare che il browser non puo renderizzare mentre JavaScript blocca lo stack.
+
+---
+
+## Checklist operativa
+
+- Usa Promise e `async/await` per coordinare asincronia.
+- Usa `requestAnimationFrame` per lavoro legato al rendering.
+- Spezza task lunghi se impattano input e UI.
+- Non creare catene infinite di microtask.
+- Per CPU pesante valuta `Web Worker`.
+
+---
+
+## Collegamenti
+
+- [[Programmazione/JavaScript/Pagine/Callback|Callback]]
+- [[Programmazione/JavaScript/Pagine/Promises|Promises]]
+- [[Programmazione/JavaScript/Pagine/Async Await|Async Await]]
+- [[Programmazione/JavaScript/Pagine/Scheduling Browser|Scheduling Browser]]
+- [[Programmazione/JavaScript/Pagine/Web Workers|Web Workers]]

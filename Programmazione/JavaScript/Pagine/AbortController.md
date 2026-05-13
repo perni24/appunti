@@ -1,8 +1,14 @@
 ---
-date: 2026-05-04
+date: 2026-05-13
+area: Programmazione
+topic: JavaScript
+type: technical-note
+status: "non revisionato"
+difficulty: intermediate
 tags: [javascript, abortcontroller, abortsignal, fetch, async, promises, cleanup]
-type: #permanent-note
-status: budding
+aliases: [AbortController JS, AbortSignal]
+prerequisites: [Promises, Fetch API]
+related: [Fetch API, Promise avanzate, Async Await, Memory Leaks]
 ---
 
 # AbortController
@@ -358,10 +364,9 @@ AbortController
 
 ## 15. Collegamenti
 
-- [[Fetch API]]
-- [[Promise avanzate]]
-- [[Promises]]
-- [[Async Await]]
-- [[Event Loop]]
-- [[Web APIs]]
-- [[Memory Leaks]]
+- [[Programmazione/JavaScript/Pagine/Fetch API|Fetch API]]
+- [[Programmazione/JavaScript/Pagine/Promise avanzate|Promise avanzate]]
+- [[Programmazione/JavaScript/Pagine/Promises|Promises]]
+- [[Programmazione/JavaScript/Pagine/Async Await|Async Await]]
+- [[Programmazione/JavaScript/Pagine/Event Loop|Event Loop]]
+- [[Programmazione/JavaScript/Pagine/Memory Leaks|Memory Leaks]]

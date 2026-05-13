@@ -1,92 +1,204 @@
 ---
-date: 2026-02-17
-tags: [javascript, es6, destructuring, array, oggetti]
-type: #permanent-note
-status: budding
+date: 2026-05-13
+area: Programmazione
+topic: JavaScript
+type: technical-note
+status: "non revisionato"
+difficulty: beginner
+tags: [javascript, es6, destructuring, objects, arrays]
+aliases: [Destrutturazione, Destructuring assignment]
+prerequisites: [Array Methods, Oggetti Avanzati]
+related: [Spread & Rest Operators, Funzioni]
 ---
 
 # Destructuring
 
-La **Destructuring assignment** (assegnazione per destrutturazione) è una sintassi introdotta in **ES6** che permette di "estrarre" dati da array o oggetti e assegnarli a variabili distinte in modo rapido e leggibile.
+## Sintesi
 
-## 1. Destrutturazione di Array
+Il destructuring permette di estrarre valori da array e oggetti assegnandoli a variabili in modo compatto.
 
-L'estrazione avviene in base alla **posizione** (ordine) degli elementi.
+Riduce codice ripetitivo e rende espliciti i dati usati da una funzione o da un blocco.
 
-```javascript
+---
+
+## Destructuring degli array
+
+L'estrazione dagli array avviene per posizione.
+
+```js
 const colors = ["red", "green", "blue"];
 
-// Estrazione classica
-// const r = colors[0];
+const [first, second] = colors;
 
-// Destructuring
-const [r, g, b] = colors; // r="red", g="green", b="blue"
+console.log(first);  // "red"
+console.log(second); // "green"
 ```
 
-### Saltare Elementi
-È possibile saltare elementi lasciando uno spazio vuoto tra le virgole.
-```javascript
-const [first, , third] = ["A", "B", "C"]; // first="A", third="C"
+---
+
+## Saltare elementi
+
+```js
+const values = ["A", "B", "C"];
+
+const [first, , third] = values;
+
+console.log(first); // "A"
+console.log(third); // "C"
 ```
 
-### Rest Operator (`...`)
-Si può raccogliere il resto degli elementi in un nuovo array.
-```javascript
-const [head, ...tail] = [1, 2, 3, 4]; // head=1, tail=[2, 3, 4]
+Usalo con moderazione: troppi salti riducono la leggibilita.
+
+---
+
+## Valori di default
+
+```js
+const [name = "Guest"] = [];
+
+console.log(name); // "Guest"
 ```
 
-## 2. Destrutturazione di Oggetti
+Il default viene usato solo se il valore e `undefined`.
 
-L'estrazione avviene in base al **nome della proprietà** (chiave). L'ordine non conta.
+---
 
-```javascript
+## Rest negli array
+
+```js
+const [head, ...tail] = [1, 2, 3, 4];
+
+console.log(head); // 1
+console.log(tail); // [2, 3, 4]
+```
+
+Il rest deve essere l'ultimo elemento.
+
+---
+
+## Destructuring degli oggetti
+
+L'estrazione dagli oggetti avviene per nome della proprieta.
+
+```js
 const user = {
   name: "Luca",
-  role: "Admin",
-  age: 25
+  role: "admin",
 };
 
-const { name, role } = user; // Extract by key name: name="Luca", role="Admin"
+const { name, role } = user;
+
+console.log(name);
+console.log(role);
 ```
 
-### Ridenominazione e Valori di Default
-È possibile assegnare un nome diverso alla variabile o definire un valore di default se la proprietà è `undefined`.
+L'ordine non conta.
 
-```javascript
-const { name: userName, status = "active" } = user;
-// userName="Luca", status="active" (default)
-```
+---
 
-## 3. Destrutturazione Nidificata (Nested)
+## Rinomina
 
-Funziona sia per oggetti che per array complessi.
+Puoi estrarre una proprieta usando un nome diverso.
 
-```javascript
-const data = {
-  id: 1,
-  info: {
-    city: "Milano",
-    zip: 20100
-  }
+```js
+const user = {
+  name: "Luca",
 };
 
-const { info: { city } } = data; // Extracts 'city' from nested 'info' object: city="Milano"
+const { name: userName } = user;
+
+console.log(userName); // "Luca"
 ```
 
-## 4. Utilizzo nei Parametri delle Funzioni
+---
 
-Questa è una delle applicazioni più potenti, specialmente nello sviluppo web moderno (es. React).
+## Default negli oggetti
 
-```javascript
-function printUser({ name, role }) {
-  console.log(`${name} is a ${role}`);
+```js
+const user = {
+  name: "Luca",
+};
+
+const { role = "reader" } = user;
+
+console.log(role); // "reader"
+```
+
+---
+
+## Destructuring nidificato
+
+```js
+const response = {
+  data: {
+    user: {
+      name: "Luca",
+    },
+  },
+};
+
+const {
+  data: {
+    user: { name },
+  },
+} = response;
+
+console.log(name);
+```
+
+Attenzione: se una proprieta intermedia e `undefined`, il destructuring puo generare errore.
+
+---
+
+## Parametri di funzione
+
+Molto utile quando una funzione riceve un oggetto di opzioni.
+
+```js
+function createUser({ name, role = "reader" }) {
+  return {
+    name,
+    role,
+  };
 }
 
-printUser(user); // Passes the whole object, but the function destructures it
+createUser({ name: "Luca" });
 ```
 
-## Perché Utilizzarlo
+Per evitare errori se non viene passato nulla:
 
-- **Sinteticità**: Riduce drasticamente il numero di righe necessarie per estrarre dati.
-- **Chiarezza**: Rende esplicito quali dati un componente o una funzione sta utilizzando.
-- **Manutenibilità**: Facilita la gestione di oggetti complessi provenienti da API.
+```js
+function createUser({ name = "Guest" } = {}) {
+  return { name };
+}
+```
+
+---
+
+## Errori comuni
+
+- Destrutturare da `undefined` o `null`.
+- Usare destructuring troppo annidato.
+- Confondere posizione negli array e chiave negli oggetti.
+- Dimenticare che i default valgono solo per `undefined`, non per `null`.
+- Rendere la firma di una funzione difficile da leggere.
+
+---
+
+## Checklist
+
+- Sto destrutturando un array o un oggetto?
+- La struttura puo essere `undefined`?
+- Serve un valore di default?
+- La destrutturazione e ancora leggibile?
+- Nei parametri, serve `= {}` come default?
+
+---
+
+## Collegamenti
+
+- [[Spread & Rest Operators]]
+- [[Funzioni]]
+- [[Array Methods]]
+- [[Oggetti Avanzati]]
+- [[Default Parameters]]
