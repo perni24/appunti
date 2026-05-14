@@ -1,22 +1,27 @@
 ---
-date: 2026-03-06
-tags:
-  - database
-  - postgres
-  - psql
-  - strumenti
-type: #permanent-note
-status: evergreen
+date: 2026-05-14
+area: Programmazione
+topic: PostgreSQL
+type: technical-note
+status: "non revisionato"
+difficulty: intermediate
+tags: [postgresql, database]
+aliases: [Comandi psql e Meta-comandi]
+prerequisites: []
+related: []
 ---
-
 # Comandi psql e Meta-comandi
 
-## 💡 Concetto Chiave
+## Sintesi
+
+Nota su Comandi psql e Meta-comandi in PostgreSQL. Riassume il concetto, i meccanismi principali e i punti da ricordare durante studio, progettazione o amministrazione.
+
+## Concetto chiave
 `psql` è l'interfaccia a riga di comando (CLI) interattiva ufficiale per PostgreSQL. Oltre all'esecuzione di query SQL standard, offre una vasta gamma di **meta-comandi** (identificati dal prefisso backslash `\`) che permettono di ispezionare il database, gestire le connessioni e automatizzare script senza dover interrogare direttamente le tabelle di sistema (`information_schema`).
 
 ---
 
-## 🔍 Meta-comandi di Ispezione
+##  Meta-comandi di Ispezione
 
 Questi comandi sono essenziali per navigare nella struttura del database. Se aggiungi un `+` alla fine (es. `\d+`), otterrai informazioni molto più dettagliate.
 
@@ -34,16 +39,24 @@ Questi comandi sono essenziali per navigare nella struttura del database. Se agg
 
 ---
 
-## 🛠️ Comandi di Gestione e Utility
+##  Comandi di Gestione e Utility
 
 ### 1. `\copy` (Import/Export Client-side)
 A differenza del comando SQL `COPY` (che richiede l'utente superuser e file sul filesystem del server), `\copy` funziona con i permessi dell'utente locale e file residenti sul client.
 
 ```bash
-# Esportare una tabella in CSV
+# Comandi psql e Meta-comandi
+
+## Sintesi
+
+Nota su Comandi psql e Meta-comandi in PostgreSQL. Riassume il concetto, i meccanismi principali e i punti da ricordare durante studio, progettazione o amministrazione.
 \copy mia_tabella TO 'backup_dati.csv' WITH (FORMAT CSV, HEADER);
 
-# Importare dati da un CSV
+# Comandi psql e Meta-comandi
+
+## Sintesi
+
+Nota su Comandi psql e Meta-comandi in PostgreSQL. Riassume il concetto, i meccanismi principali e i punti da ricordare durante studio, progettazione o amministrazione.
 \copy mia_tabella FROM 'nuovi_dati.csv' WITH (FORMAT CSV, HEADER);
 ```
 
@@ -59,7 +72,7 @@ Attiva o disattiva la visualizzazione estesa. Utile quando le righe hanno molte 
 
 ---
 
-## ⚙️ Logic Layer: Scripting e Output
+## Logic layer: Scripting e Output
 
 `psql` può essere utilizzato per eseguire script direttamente dal terminale del sistema operativo:
 
@@ -72,7 +85,7 @@ Attiva o disattiva la visualizzazione estesa. Utile quando le righe hanno molte 
 
 ---
 
-## ⚠️ Uscita e Aiuto
+##  Uscita e Aiuto
 - **`\q`**: Chiude la sessione psql (Quit).
 - **`\?`**: Mostra l'aiuto per tutti i meta-comandi.
 - **`\h [nome_comando]`**: Mostra l'aiuto per un comando SQL specifico (es. `\h SELECT`).

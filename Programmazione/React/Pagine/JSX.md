@@ -1,11 +1,20 @@
 ---
-date: 2026-03-02
-tags: [react, jsx, javascript, syntax, frontend]
-type: #permanent-note
-status: budding
+date: 2026-05-14
+area: Programmazione
+topic: React
+type: technical-note
+status: "non revisionato"
+difficulty: intermediate
+tags: [react, frontend, javascript]
+aliases: [JSX (JavaScript XML)]
+prerequisites: []
+related: []
 ---
-
 # JSX (JavaScript XML)
+
+## Sintesi
+
+Nota su JSX (JavaScript XML) in React. Riassume il concetto, quando usarlo, i punti critici e gli errori da evitare durante sviluppo, debugging o revisione di applicazioni React.
 
 **JSX** è un'estensione della sintassi di JavaScript che permette di scrivere codice simile all'HTML direttamente all'interno dei file JS/JSX. È lo strumento principale di React per descrivere come dovrebbe apparire l'interfaccia utente.
 

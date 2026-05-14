@@ -1,16 +1,22 @@
 ---
-date: 2026-03-16
-tags:
-  - programmazione
-  - python
-  - oop
-type: #permanent-note
-status: evergreen
+date: 2026-05-14
+area: Programmazione
+topic: Python
+type: technical-note
+status: "non revisionato"
+difficulty: intermediate
+tags: [python, programming]
+aliases: [Classi e Istanze]
+prerequisites: []
+related: []
 ---
-
 # Classi e Istanze in Python
 
-## 💡 Concetto Chiave
+## Sintesi
+
+Nota su Classi e Istanze in Python. Riassume il concetto, la sintassi principale e i punti da ricordare durante studio, sviluppo o debugging.
+
+## Concetto chiave
 In Python, la Programmazione Orientata agli Oggetti (OOP) si basa su **Classi** e **Istanze**.
 - Una **Classe** è un "progetto" o un "modello" (blueprint) che definisce le caratteristiche e i comportamenti comuni a un gruppo di oggetti.
 - Una **Istanza** è l'oggetto concreto creato a partire da quel progetto.
@@ -19,7 +25,7 @@ Immagina la classe come lo stampo per i biscotti e le istanze come i singoli bis
 
 ---
 
-## 📝 Sintassi e Definizione
+##  Sintassi e Definizione
 Si utilizza la keyword `class` seguita dal nome della classe (per convenzione in **PascalCase**).
 
 ```python
@@ -45,7 +51,7 @@ class NomeClasse:
 
 ---
 
-## 💻 Esempi Pratici
+##  Esempi Pratici
 
 ### Esempio Base: La classe Cane
 ```python
@@ -57,7 +63,11 @@ class Cane:
     def abbaia(self):
         return f"{self.nome} dice: Bau!"
 
-# Creazione di istanze (oggetti)
+# Classi e Istanze in Python
+
+## Sintesi
+
+Nota su Classi e Istanze in Python. Riassume il concetto, la sintassi principale e i punti da ricordare durante studio, sviluppo o debugging.
 mio_cane = Cane("Fido", "Pastore Tedesco")
 tuo_cane = Cane("Luna", "Labrador")
 
@@ -86,7 +96,11 @@ class ContoBancario:
         else:
             print("Fondi insufficienti o importo non valido.")
 
-# Uso
+# Classi e Istanze in Python
+
+## Sintesi
+
+Nota su Classi e Istanze in Python. Riassume il concetto, la sintassi principale e i punti da ricordare durante studio, sviluppo o debugging.
 conto = ContoBancario("Mario Rossi", 1000)
 conto.deposita(500)
 conto.preleva(200)
@@ -94,7 +108,7 @@ conto.preleva(200)
 
 ---
 
-## ⚙️ Logic Layer: Cosa succede "sotto il cofano"?
+## Logic layer: Cosa succede "sotto il cofano"?
 
 ### 1. Istanziazione e `__init__`
 Quando chiami `Cane("Fido", "Pastore")`, Python:
@@ -111,13 +125,13 @@ Ogni istanza mantiene un dizionario interno chiamato `__dict__` che contiene tut
 
 ---
 
-## ⚠️ Best Practices & "Gotchas"
+##  Best Practices & "Gotchas"
 
-- ✅ **Da fare**: Usa sempre `self` come primo argomento dei metodi di istanza.
-- ✅ **Da fare**: Segui la convenzione **PascalCase** per i nomi delle classi (es. `UserAccount`, non `user_account`).
-- ❌ **Da evitare**: Non definire troppi attributi fuori dal metodo `__init__`; rende il codice meno prevedibile.
-- 💣 **Errore comune**: Dimenticare `self` durante la definizione di un metodo o quando si accede a un attributo interno.
-- 💣 **Attenzione**: Gli attributi di classe che sono **mutabili** (come liste o dizionari) possono causare effetti collaterali indesiderati se modificati da un'istanza.
+-  **Da fare**: Usa sempre `self` come primo argomento dei metodi di istanza.
+-  **Da fare**: Segui la convenzione **PascalCase** per i nomi delle classi (es. `UserAccount`, non `user_account`).
+-  **Da evitare**: Non definire troppi attributi fuori dal metodo `__init__`; rende il codice meno prevedibile.
+-  **Errore comune**: Dimenticare `self` durante la definizione di un metodo o quando si accede a un attributo interno.
+-  **Attenzione**: Gli attributi di classe che sono **mutabili** (come liste o dizionari) possono causare effetti collaterali indesiderati se modificati da un'istanza.
 
 ```python
 class ErroreCondivisione:

@@ -1,18 +1,27 @@
 ---
-date: 2026-04-23
-tags: [react, ssr, ssg, rendering, server-side, static-site-generation, frontend, javascript]
-type: #permanent-note
-status: budding
+date: 2026-05-14
+area: Programmazione
+topic: React
+type: technical-note
+status: "non revisionato"
+difficulty: intermediate
+tags: [react, frontend, javascript]
+aliases: [SSR e SSG]
+prerequisites: []
+related: []
 ---
-
 # SSR e SSG
+
+## Sintesi
+
+Nota su SSR e SSG in React. Riassume il concetto, quando usarlo, i punti critici e gli errori da evitare durante sviluppo, debugging o revisione di applicazioni React.
 
 SSR e SSG sono strategie di rendering usate nelle applicazioni React moderne per decidere **quando** viene generato l'HTML iniziale di una pagina.
 
 Con il rendering solo lato client, il browser riceve spesso una pagina HTML quasi vuota, scarica JavaScript, esegue React e solo dopo costruisce l'interfaccia. SSR e SSG spostano parte di questo lavoro sul server o nella fase di build, migliorando caricamento iniziale, SEO e percezione di velocita.
 
 > [!INFO]
-> SSR, SSG e [[Server Components]] non sono la stessa cosa. SSR e SSG descrivono quando viene generato l'HTML; i Server Components descrivono dove viene eseguita una parte dell'albero React e quanto JavaScript viene inviato al client.
+> SSR, SSG e [[Programmazione/React/Pagine/Server Components]] non sono la stessa cosa. SSR e SSG descrivono quando viene generato l'HTML; i Server Components descrivono dove viene eseguita una parte dell'albero React e quanto JavaScript viene inviato al client.
 
 ## 1. Problema del Client-Side Rendering
 
@@ -207,7 +216,7 @@ Domande da chiarire:
 - cambiano spesso o raramente?
 - possono essere caricati dopo il render iniziale?
 
-Collegamento con [[Data Fetching e Cache]]:
+Collegamento con [[Programmazione/React/Pagine/Data Fetching e Cache]]:
 
 - SSR recupera spesso dati lato server prima di generare HTML;
 - SSG recupera dati durante la build;
@@ -243,7 +252,7 @@ Rimangono importanti:
 - immagini ottimizzate;
 - caching HTTP;
 - streaming;
-- code splitting con [[Suspense e Lazy Loading]];
+- code splitting con [[Programmazione/React/Pagine/Suspense e Lazy Loading]];
 - riduzione del lavoro lato client.
 
 Una pagina SSR puo essere lenta se il server impiega troppo tempo a recuperare dati o renderizzare HTML.
@@ -252,7 +261,7 @@ Una pagina SSG puo essere veloce ma mostrare dati vecchi se la revalidation non 
 
 ## 9. Rapporto con Server Components
 
-I [[Server Components]] possono essere usati insieme a SSR o SSG, ma non li sostituiscono concettualmente.
+I [[Programmazione/React/Pagine/Server Components]] possono essere usati insieme a SSR o SSG, ma non li sostituiscono concettualmente.
 
 Differenza principale:
 
@@ -325,8 +334,8 @@ Oggetti come `window` e `document` non esistono sul server. Il codice che li usa
 5. Riduci il JavaScript client anche quando usi SSR.
 6. Controlla possibili hydration mismatch.
 7. Separa UI statica, dati server e interazioni client.
-8. Usa [[Suspense e Lazy Loading]] per dividere caricamenti e sezioni lente.
-9. Valuta i [[Server Components]] quando vuoi ridurre bundle e lavoro lato client.
+8. Usa [[Programmazione/React/Pagine/Suspense e Lazy Loading]] per dividere caricamenti e sezioni lente.
+9. Valuta i [[Programmazione/React/Pagine/Server Components]] quando vuoi ridurre bundle e lavoro lato client.
 10. Misura performance reali invece di basarti solo sulla strategia di rendering.
 
 ## 13. Quando Usare Cosa
@@ -360,7 +369,7 @@ Usa strategie ibride quando:
 
 ## Collegamenti
 
-- [[Server Components]]
-- [[Data Fetching e Cache]]
-- [[Suspense e Lazy Loading]]
-- [[React Router]]
+- [[Programmazione/React/Pagine/Server Components]]
+- [[Programmazione/React/Pagine/Data Fetching e Cache]]
+- [[Programmazione/React/Pagine/Suspense e Lazy Loading]]
+- [[Programmazione/React/Pagine/React Router]]

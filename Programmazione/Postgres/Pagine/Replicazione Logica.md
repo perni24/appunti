@@ -1,25 +1,29 @@
 ---
-date: 2026-03-15
-tags:
-  - database
-  - postgres
-  - scalabilita
-  - replication
-  - logical
-type: #permanent-note
-status: evergreen
+date: 2026-05-14
+area: Programmazione
+topic: PostgreSQL
+type: technical-note
+status: "non revisionato"
+difficulty: intermediate
+tags: [postgresql, database]
+aliases: [Replicazione Logica]
+prerequisites: []
+related: []
 ---
-
 # Replicazione Logica in PostgreSQL
+
+## Sintesi
+
+Nota su Replicazione Logica in PostgreSQL. Riassume il concetto, i meccanismi principali e i punti da ricordare durante studio, progettazione o amministrazione.
 
 La **Replicazione Logica** è un metodo di replica basato sulla decodifica dei cambiamenti dei dati (INSERT, UPDATE, DELETE) a livello di singola riga, anziché a livello di blocchi fisici del disco come nella [[Programmazione/Postgres/Pagine/Replicazione Fisica|Replicazione Fisica]].
 
-## 💡 Concetto Chiave
+## Concetto chiave
 Introdotta in PostgreSQL 10, utilizza un modello **Publish-Subscribe**. Un server (Publisher) definisce quali dati rendere disponibili, e uno o più server (Subscriber) si connettono per ricevere quei dati. Questo permette una granularità estrema e la possibilità di replicare dati tra versioni diverse di Postgres.
 
 ---
 
-## 🏗️ Architettura: Publication e Subscription
+##  Architettura: Publication e Subscription
 
 1.  **Publication:** Creata sul server sorgente. Può includere tutte le tabelle o solo una selezione specifica.
     ```sql
@@ -34,7 +38,7 @@ Introdotta in PostgreSQL 10, utilizza un modello **Publish-Subscribe**. Un serve
 
 ---
 
-## 🚀 Vantaggi e Casi d'Uso
+##  Vantaggi e Casi d'Uso
 
 ### 1. Upgrade Zero-Downtime
 Poiché la replicazione logica può avvenire tra versioni major diverse (es. da Postgres 12 a 16), è lo strumento ideale per migrare dati su un nuovo server con un'interruzione minima del servizio.
@@ -47,7 +51,7 @@ A differenza della fisica, puoi decidere di replicare solo alcune tabelle "sensi
 
 ---
 
-## ⚠️ Limitazioni e Requisiti
+##  Limitazioni e Requisiti
 
 - **Replica Identity:** Ogni tabella replicata deve avere una **Primary Key** (o un indice univoco) affinché il Subscriber possa identificare correttamente quali righe aggiornare o eliminare.
 - **Schema:** Lo schema delle tabelle (CREATE TABLE) deve essere creato manualmente sul Subscriber prima di attivare la sottoscrizione. La replicazione logica non replica i comandi DDL (cambiamenti di struttura).
@@ -55,7 +59,7 @@ A differenza della fisica, puoi decidere di replicare solo alcune tabelle "sensi
 
 ---
 
-## 🚀 Logic Layer: Quando preferirla alla Fisica?
+## Logic layer: Quando preferirla alla Fisica?
 
 > [!TIP] Scegli la Replicazione Logica se:
 > - Devi replicare solo un sottoinsieme di tabelle.

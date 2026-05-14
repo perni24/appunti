@@ -1,24 +1,29 @@
 ---
-date: 2026-03-15
-tags:
-  - database
-  - postgres
-  - transazioni
-  - concurrency
-type: #permanent-note
-status: evergreen
+date: 2026-05-14
+area: Programmazione
+topic: PostgreSQL
+type: technical-note
+status: "non revisionato"
+difficulty: intermediate
+tags: [postgresql, database]
+aliases: [Livelli di Isolamento delle Transazioni]
+prerequisites: []
+related: []
 ---
-
 # Livelli di Isolamento delle Transazioni in PostgreSQL
+
+## Sintesi
+
+Nota su Livelli di Isolamento delle Transazioni in PostgreSQL. Riassume il concetto, i meccanismi principali e i punti da ricordare durante studio, progettazione o amministrazione.
 
 L'isolamento è la "I" delle [[Programmazione/Postgres/Pagine/Proprietà ACID|Proprietà ACID]]. Determina come una transazione vede le modifiche apportate da altre transazioni concorrenti. PostgreSQL gestisce questi livelli tramite il meccanismo [[Programmazione/Postgres/Pagine/MVCC|MVCC]].
 
-## 💡 Concetto Chiave
+## Concetto chiave
 Lo standard SQL definisce quattro livelli di isolamento, basati sulle anomalie che possono verificarsi durante l'esecuzione di query concorrenti. In PostgreSQL, il livello di default è **Read Committed**.
 
 ---
 
-## 🔍 Anomalie dei Dati
+##  Anomalie dei Dati
 
 | Anomalia | Descrizione |
 | :--- | :--- |
@@ -29,7 +34,7 @@ Lo standard SQL definisce quattro livelli di isolamento, basati sulle anomalie c
 
 ---
 
-## 🛡️ Livelli in PostgreSQL
+##  Livelli in PostgreSQL
 
 PostgreSQL implementa i livelli in modo più rigoroso rispetto allo standard (es. non permette mai i Dirty Read).
 
@@ -53,7 +58,7 @@ Garantisce che il risultato sia identico a quello di un'esecuzione sequenziale d
 
 ---
 
-## ⚙️ Come impostare il livello
+##  Come impostare il livello
 
 Puoi impostare il livello per l'intera sessione o per una singola transazione:
 
@@ -67,7 +72,7 @@ SET SESSION CHARACTERISTICS AS TRANSACTION ISOLATION LEVEL SERIALIZABLE;
 
 ---
 
-## 🚀 Logic Layer: Quale scegliere?
+## Logic layer: Quale scegliere?
 
 > [!TIP] Bilanciamento Performance/Rigore
 > - **Read Committed:** Massimo throughput. Accetta che i dati possano cambiare tra una SELECT e l'altra nella stessa transazione.

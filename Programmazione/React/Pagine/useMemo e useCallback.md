@@ -1,11 +1,20 @@
 ---
-date: 2026-03-03
-tags: [react, hooks, performance, optimization, memoization, javascript]
-type: #permanent-note
-status: budding
+date: 2026-05-14
+area: Programmazione
+topic: React
+type: technical-note
+status: "non revisionato"
+difficulty: intermediate
+tags: [react, frontend, javascript]
+aliases: [useMemo e useCallback]
+prerequisites: []
+related: []
 ---
-
 # useMemo e useCallback
+
+## Sintesi
+
+Nota su useMemo e useCallback in React. Riassume il concetto, quando usarlo, i punti critici e gli errori da evitare durante sviluppo, debugging o revisione di applicazioni React.
 
 In React, ogni cambiamento allo stato o alle props innesca un nuovo ciclo di rendering del componente e di tutti i suoi figli. Per ottimizzare le prestazioni ed evitare calcoli costosi o re-render non necessari, React fornisce due hook basati sul concetto di **Memoization**: `useMemo` e `useCallback`.
 

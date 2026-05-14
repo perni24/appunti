@@ -1,22 +1,27 @@
 ---
-date: 2026-03-06
-tags:
-  - database
-  - postgres
-  - performance
-  - indici
-type: #permanent-note
-status: evergreen
+date: 2026-05-14
+area: Programmazione
+topic: PostgreSQL
+type: technical-note
+status: "non revisionato"
+difficulty: intermediate
+tags: [postgresql, database]
+aliases: [Tipi di Indici]
+prerequisites: []
+related: []
 ---
-
 # Tipi di Indici in PostgreSQL
 
-## 💡 Concetto Chiave
+## Sintesi
+
+Nota su Tipi di Indici in PostgreSQL. Riassume il concetto, i meccanismi principali e i punti da ricordare durante studio, progettazione o amministrazione.
+
+## Concetto chiave
 Gli **Indici** sono strutture di dati ausiliarie progettate per velocizzare il recupero delle righe filtrando i dati senza dover scansionare l'intera tabella (*Sequential Scan*). PostgreSQL offre una vasta gamma di tipi di indici, ognuno ottimizzato per specifici tipi di dati e operatori di confronto.
 
 ---
 
-## 🏗️ Panoramica dei Tipi di Indici
+##  Panoramica dei Tipi di Indici
 
 ### 1. B-Tree (Balanced Tree)
 È il tipo di indice predefinito. È estremamente versatile e gestisce la maggior parte dei tipi di dati comuni.
@@ -30,7 +35,7 @@ Memorizza un hash a 32 bit del valore della colonna indicizzata.
 
 ### 3. GIN (Generalized Inverted Index)
 Fondamentale per dati "multivalore" dove una singola colonna contiene più elementi ricercabili.
-- **Utilizzo**: [[Pagine/Tipi di Dato|Array]], [[Pagine/Full Text Search|Full Text Search]], `JSONB`.
+- **Utilizzo**: [[Programmazione/Postgres/Pagine/Tipi di Dato|Array]], [[Programmazione/Postgres/Pagine/Full Text Search|Full Text Search]], `JSONB`.
 - **Punto di forza**: Ideale quando si ha bisogno di indicizzare le chiavi o i valori all'interno di un documento JSON.
 
 ### 4. GiST (Generalized Search Tree)
@@ -49,7 +54,7 @@ Ottimizzato per partizionare spazi non bilanciati.
 
 ---
 
-## ⚙️ Logic Layer: Quale indice scegliere?
+## Logic layer: Quale indice scegliere?
 
 > [!IMPORTANT] Criteri di Selezione
 > 1. **Dati standard (Stringhe, Numeri)**: Sempre **B-Tree**.
@@ -59,7 +64,7 @@ Ottimizzato per partizionare spazi non bilanciati.
 
 ---
 
-## ⚠️ Best Practices
+##  Best Practices
 - **Non indicizzare tutto**: Ogni indice rallenta le operazioni di scrittura (`INSERT`, `UPDATE`, `DELETE`) perché Postgres deve aggiornare anche l'indice.
 - **Indici su Foreign Keys**: Postgres non crea automaticamente indici sulle chiavi esterne; ricordati di crearli se prevedi frequenti `JOIN`.
 - **Monitoraggio**: Usa `pg_stat_user_indexes` per identificare indici mai utilizzati che consumano spazio e risorse inutilmente.

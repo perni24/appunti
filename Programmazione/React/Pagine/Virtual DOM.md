@@ -1,11 +1,20 @@
 ---
-date: 2026-04-17
-tags: [react, virtual-dom, rendering, internals, frontend, javascript]
-type: #permanent-note
-status: budding
+date: 2026-05-14
+area: Programmazione
+topic: React
+type: technical-note
+status: "non revisionato"
+difficulty: intermediate
+tags: [react, frontend, javascript]
+aliases: [Virtual DOM]
+prerequisites: []
+related: []
 ---
-
 # Virtual DOM
+
+## Sintesi
+
+Nota su Virtual DOM in React. Riassume il concetto, quando usarlo, i punti critici e gli errori da evitare durante sviluppo, debugging o revisione di applicazioni React.
 
 Il **Virtual DOM** e una rappresentazione leggera in memoria dell'interfaccia utente. React lo usa per confrontare lo stato precedente e quello successivo della UI e decidere quali modifiche applicare davvero al DOM reale.
 
@@ -90,7 +99,7 @@ React usa euristiche pratiche per rendere il confronto efficiente:
 - se il tipo resta uguale, prova ad aggiornare solo le parti mutate;
 - nelle liste usa le `key` per capire identita e ordine degli elementi.
 
-Questo si collega direttamente a [[Rendering Condizionale e Liste]].
+Questo si collega direttamente a [[Programmazione/React/Pagine/Rendering Condizionale e Liste]].
 
 ### Esempio con lista
 
@@ -156,7 +165,7 @@ Se un'app e lenta, i motivi possono essere:
 - memoization inefficace;
 - struttura dello stato sbagliata.
 
-Per questo, quando sorgono problemi reali di performance, bisogna guardare strumenti come [[Profiler e Debugging]] e non fermarsi alla teoria del Virtual DOM.
+Per questo, quando sorgono problemi reali di performance, bisogna guardare strumenti come [[Programmazione/React/Pagine/Profiler e Debugging]] e non fermarsi alla teoria del Virtual DOM.
 
 ---
 

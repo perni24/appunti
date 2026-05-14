@@ -1,33 +1,51 @@
 ---
-date: 2026-03-05
-tags:
-  - programmazione
-  - python
-  - strutture-dati
-type: #permanent-note
-status: evergreen
+date: 2026-05-14
+area: Programmazione
+topic: Python
+type: technical-note
+status: "non revisionato"
+difficulty: intermediate
+tags: [python, programming]
+aliases: [Tuple]
+prerequisites: []
+related: []
 ---
-
 # Tuple in Python
 
-## 💡 Concetto Chiave
+## Sintesi
+
+Nota su Tuple in Python. Riassume il concetto, la sintassi principale e i punti da ricordare durante studio, sviluppo o debugging.
+
+## Concetto chiave
 Le **tuple** sono collezioni di oggetti **ordinate** e **immutabili**. A differenza delle liste, una volta creata, una tupla non può essere modificata (non si possono aggiungere, rimuovere o sovrascrivere elementi). Sono spesso utilizzate per rappresentare record di dati o collezioni che devono rimanere costanti durante l'esecuzione del programma.
 
 ---
 
-## 📝 Sintassi e Creazione
+##  Sintassi e Creazione
 
 Le tuple si definiscono utilizzando le parentesi tonde `()` (anche se tecnicamente è la virgola a definire la tupla).
 
 ```python
-# Creazione standard
+# Tuple in Python
+
+## Sintesi
+
+Nota su Tuple in Python. Riassume il concetto, la sintassi principale e i punti da ricordare durante studio, sviluppo o debugging.
 punto = (10, 20)
 colori = ("rosso", "verde", "blu")
 
-# Tupla con un solo elemento (ATTENZIONE alla virgola)
+# Tuple in Python
+
+## Sintesi
+
+Nota su Tuple in Python. Riassume il concetto, la sintassi principale e i punti da ricordare durante studio, sviluppo o debugging.
 singolo = (5,) # Senza virgola sarebbe solo un intero tra parentesi
 
-# Creazione senza parentesi (Tuple Packing)
+# Tuple in Python
+
+## Sintesi
+
+Nota su Tuple in Python. Riassume il concetto, la sintassi principale e i punti da ricordare durante studio, sviluppo o debugging.
 coordinate = 45.0, 9.0
 ```
 
@@ -39,7 +57,7 @@ print(colori[0]) # "rosso"
 
 ---
 
-## 🏗️ Tuple Unpacking (Scompattamento)
+##  Tuple Unpacking (Scompattamento)
 Una delle funzionalità più potenti e "Pythonic" delle tuple. Permette di estrarre i valori direttamente in variabili separate.
 
 ```python
@@ -52,7 +70,7 @@ print(nome) # "Luca"
 
 ---
 
-## ⚙️ Logic Layer: Perché usare le Tuple invece delle Liste?
+## Logic layer: Perché usare le Tuple invece delle Liste?
 
 ### 1. Immutabilità e Sicurezza
 Le tuple proteggono l'integrità dei dati. Se passi una tupla a una funzione, hai la garanzia che la funzione non possa modificarne il contenuto.
@@ -70,7 +88,7 @@ Poiché sono immutabili, le tuple sono **hashable** (se contengono solo elementi
 
 ---
 
-## 🛠️ Metodi Disponibili
+##  Metodi Disponibili
 Essendo immutabili, le tuple hanno solo due metodi di ricerca:
 
 | Metodo | Descrizione |

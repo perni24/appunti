@@ -1,11 +1,20 @@
 ---
-date: 2026-04-22
-tags: [react, data-fetching, cache, tanstack-query, react-query, frontend, javascript]
-type: #permanent-note
-status: budding
+date: 2026-05-14
+area: Programmazione
+topic: React
+type: technical-note
+status: "non revisionato"
+difficulty: intermediate
+tags: [react, frontend, javascript]
+aliases: [Data Fetching e Cache]
+prerequisites: []
+related: []
 ---
-
 # Data Fetching e Cache
+
+## Sintesi
+
+Nota su Data Fetching e Cache in React. Riassume il concetto, quando usarlo, i punti critici e gli errori da evitare durante sviluppo, debugging o revisione di applicazioni React.
 
 Per **data fetching** si intende il recupero di dati da API o servizi esterni. In React questo problema non riguarda solo la chiamata HTTP, ma anche tutto cio che viene dopo:
 - stato di caricamento;
@@ -24,7 +33,7 @@ Per questo, nelle applicazioni reali, il data fetching e spesso trattato come un
 
 ## 1. Approccio base con useEffect
 
-Il modo piu diretto per fare fetch in React e usare [[useEffect]].
+Il modo piu diretto per fare fetch in React e usare [[Programmazione/React/Pagine/useEffect]].
 
 ```javascript
 function UserList() {
@@ -88,7 +97,7 @@ Inoltre, due componenti che fanno la stessa richiesta possono:
 
 Questo e uno dei motivi per cui il data fetching non viene trattato come semplice side effect generico, ma come categoria specifica.
 
-Si collega direttamente a [[Gestione della memoria e AbortController]] quando la richiesta dipende dal ciclo di vita del componente.
+Si collega direttamente a [[Programmazione/React/Pagine/Gestione della memoria e AbortController]] quando la richiesta dipende dal ciclo di vita del componente.
 
 ---
 
@@ -248,7 +257,7 @@ Il server state ha caratteristiche diverse:
 - puo essere refetchato;
 - richiede caching e invalidazione.
 
-Per questo spesso va gestito con strumenti diversi rispetto a [[State Management Esterno]].
+Per questo spesso va gestito con strumenti diversi rispetto a [[Programmazione/React/Pagine/State Management Esterno]].
 
 ---
 
@@ -274,9 +283,9 @@ La differenza non e solo di comodita: e di modello architetturale.
 ## 10. Relazione con React Router e useEffect
 
 Il data fetching si collega spesso a:
-- [[React Router]] quando i dati dipendono da route params o query string;
-- [[useEffect]] se fai fetch manuale;
-- [[Gestione della memoria e AbortController]] per cleanup e cancellazione;
+- [[Programmazione/React/Pagine/React Router]] quando i dati dipendono da route params o query string;
+- [[Programmazione/React/Pagine/useEffect]] se fai fetch manuale;
+- [[Programmazione/React/Pagine/Gestione della memoria e AbortController]] per cleanup e cancellazione;
 - gestione dell'UX tramite loading, error, empty state e refresh.
 
 La route decide *quale vista* mostrare. Il layer di data fetching decide *come ottenere e mantenere sincronizzati i dati* di quella vista.

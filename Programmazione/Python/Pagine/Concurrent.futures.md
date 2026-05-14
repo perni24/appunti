@@ -1,18 +1,22 @@
 ---
-date: 2026-04-04
-tags:
-  - programmazione
-  - python
-  - concurrent-futures
-  - concorrenza
-  - parallelismo
-type: #permanent-note
-status: seedling
+date: 2026-05-14
+area: Programmazione
+topic: Python
+type: technical-note
+status: "non revisionato"
+difficulty: intermediate
+tags: [python, programming]
+aliases: [Concurrent.futures]
+prerequisites: []
+related: []
 ---
-
 # Concurrent.futures in Python
 
-## 💡 Concetto Chiave
+## Sintesi
+
+Nota su Concurrent.futures in Python. Riassume il concetto, la sintassi principale e i punti da ricordare durante studio, sviluppo o debugging.
+
+## Concetto chiave
 Il modulo **`concurrent.futures`** fornisce un'interfaccia ad alto livello per l'esecuzione asincrona di task. Utilizza il concetto di **Executor**, un oggetto che gestisce un pool di thread o di processi, astraendo la complessità di gestione manuale presente nei moduli `threading` e `multiprocessing`.
 
 > [!INFO]
@@ -20,13 +24,17 @@ Il modulo **`concurrent.futures`** fornisce un'interfaccia ad alto livello per l
 
 ---
 
-## 📝 Sintassi
+##  Sintassi
 Esistono due classi principali: `ThreadPoolExecutor` (per task I/O-bound) e `ProcessPoolExecutor` (per task CPU-bound).
 
 ```python
 from concurrent.futures import ThreadPoolExecutor, ProcessPoolExecutor
 
-# Utilizzo con Context Manager (raccomandato)
+# Concurrent.futures in Python
+
+## Sintesi
+
+Nota su Concurrent.futures in Python. Riassume il concetto, la sintassi principale e i punti da ricordare durante studio, sviluppo o debugging.
 with ThreadPoolExecutor(max_workers=5) as executor:
     # Invio di un task
     future = executor.submit(my_function, arg1, arg2)
@@ -37,7 +45,7 @@ with ThreadPoolExecutor(max_workers=5) as executor:
 
 ---
 
-## 💻 Esempi Pratici
+##  Esempi Pratici
 
 ### Esempio Base: Utilizzo di `map`
 `executor.map` funziona in modo simile alla funzione `map` integrata, ma esegue le chiamate in parallelo.
@@ -86,18 +94,18 @@ if __name__ == "__main__":
 
 ---
 
-## ⚙️ Funzionamento Interno (Teoria)
+##  Funzionamento Interno (Teoria)
 - **Executor:** Gestisce la coda dei task e il ciclo di vita dei worker.
 - **Future:** Rappresenta il risultato di un'operazione asincrona che non è ancora stata completata. Permette di interrogare lo stato del task (`running()`, `done()`, `cancelled()`).
 - **Abstrazione:** Sotto il cofano, `ThreadPoolExecutor` usa `threading` e `ProcessPoolExecutor` usa `multiprocessing`. L'API unificata permette di passare da thread a processi cambiando solo il nome della classe dell'Executor.
 
 ---
 
-## ⚠️ Best Practices & "Gotchas"
-- ✅ **Da fare:** Usa sempre il Context Manager (`with`) per garantire che tutte le risorse vengano liberate correttamente.
-- ✅ **Da fare:** Gestisci le eccezioni richiamando `future.result()`; se un task fallisce, l'eccezione viene sollevata in quel momento.
-- ❌ **Da evitare:** Non usare `ProcessPoolExecutor` per task estremamente brevi; l'overhead della creazione dei processi supererà il guadagno in termini di tempo.
-- 💣 **Interazione con GIL:** Come per il threading standard, `ThreadPoolExecutor` è limitato dal [[Global Interpreter Lock|GIL]] per task CPU-bound.
-- 💣 **Deadlock:** Fare attenzione se un task inviato all'executor tenta di inviare altri task allo stesso executor (rischio di saturazione del pool).
+##  Best Practices & "Gotchas"
+-  **Da fare:** Usa sempre il Context Manager (`with`) per garantire che tutte le risorse vengano liberate correttamente.
+-  **Da fare:** Gestisci le eccezioni richiamando `future.result()`; se un task fallisce, l'eccezione viene sollevata in quel momento.
+-  **Da evitare:** Non usare `ProcessPoolExecutor` per task estremamente brevi; l'overhead della creazione dei processi supererà il guadagno in termini di tempo.
+-  **Interazione con GIL:** Come per il threading standard, `ThreadPoolExecutor` è limitato dal [[Programmazione/Python/Pagine/Global Interpreter Lock|GIL]] per task CPU-bound.
+-  **Deadlock:** Fare attenzione se un task inviato all'executor tenta di inviare altri task allo stesso executor (rischio di saturazione del pool).
 
 ---

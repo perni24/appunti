@@ -1,21 +1,27 @@
 ---
-date: 2026-03-19
-tags:
-  - programmazione
-  - python
-  - teoria
-type: #permanent-note
-status: in_elaborazione
+date: 2026-05-14
+area: Programmazione
+topic: Python
+type: technical-note
+status: "non revisionato"
+difficulty: intermediate
+tags: [python, programming]
+aliases: [Funzioni Lambda]
+prerequisites: []
+related: []
 ---
-
 # Funzioni Lambda in Python
 
-## 💡 Concetto Chiave
+## Sintesi
+
+Nota su Funzioni Lambda in Python. Riassume il concetto, la sintassi principale e i punti da ricordare durante studio, sviluppo o debugging.
+
+## Concetto chiave
 Le **funzioni lambda** (o funzioni anonime) sono piccole funzioni ad una riga definite senza un nome. Sono ideali per operazioni brevi e "usa e getta", dove definire una funzione completa con `def` risulterebbe eccessivamente verboso.
 
 ---
 
-## 📝 Sintassi
+##  Sintassi
 In Python, una funzione lambda si definisce con la keyword `lambda`.
 
 ```python
@@ -28,11 +34,15 @@ lambda argomenti: espressione
 
 ---
 
-## 💻 Esempi Pratici
+##  Esempi Pratici
 
 ### Esempio Base
 ```python
-# Definizione di una lambda che somma due numeri
+# Funzioni Lambda in Python
+
+## Sintesi
+
+Nota su Funzioni Lambda in Python. Riassume il concetto, la sintassi principale e i punti da ricordare durante studio, sviluppo o debugging.
 somma = lambda x, y: x + y
 
 print(somma(5, 3)) # Output: 8
@@ -44,34 +54,50 @@ Le lambda sono estremamente utili come argomenti per funzioni come `sorted()`, `
 ```python
 coppie = [(1, 'uno'), (3, 'tre'), (2, 'due')]
 
-# Ordina la lista in base al secondo elemento di ogni tupla
+# Funzioni Lambda in Python
+
+## Sintesi
+
+Nota su Funzioni Lambda in Python. Riassume il concetto, la sintassi principale e i punti da ricordare durante studio, sviluppo o debugging.
 coppie_ordinate = sorted(coppie, key=lambda x: x[1])
-# Output: [(2, 'due'), (1, 'uno'), (3, 'tre')]
+# Funzioni Lambda in Python
+
+## Sintesi
+
+Nota su Funzioni Lambda in Python. Riassume il concetto, la sintassi principale e i punti da ricordare durante studio, sviluppo o debugging.
 ```
 
 ### Uso con Map e Filter
 ```python
 numeri = [1, 2, 3, 4, 5, 6]
 
-# Filtra solo i numeri pari
+# Funzioni Lambda in Python
+
+## Sintesi
+
+Nota su Funzioni Lambda in Python. Riassume il concetto, la sintassi principale e i punti da ricordare durante studio, sviluppo o debugging.
 pari = list(filter(lambda x: x % 2 == 0, numeri)) # [2, 4, 6]
 
-# Eleva al quadrato ogni numero
+# Funzioni Lambda in Python
+
+## Sintesi
+
+Nota su Funzioni Lambda in Python. Riassume il concetto, la sintassi principale e i punti da ricordare durante studio, sviluppo o debugging.
 quadrati = list(map(lambda x: x**2, numeri)) # [1, 4, 9, 16, 25, 36]
 ```
 
 ---
 
-## ⚙️ Funzionamento Interno (Teoria)
+##  Funzionamento Interno (Teoria)
 - **Oggetti di prima classe:** Le lambda sono oggetti funzione a tutti gli effetti, proprio come quelle create con `def`.
 - **Scope & Closures:** Le funzioni lambda hanno accesso alle variabili nel loro scope esterno (lexical scoping), permettendo la creazione di closure semplici.
 - **Limitazioni:** A differenza di `def`, non possono avere annotazioni di tipo (type hints) o docstring, e sono limitate a una singola espressione logica.
 
 ---
 
-## ⚠️ Best Practices & "Gotchas"
-- ✅ **Da fare:** Usale quando la logica è così semplice da essere chiara in una sola riga (es. trasformazioni di dati, callback).
-- ❌ **Da evitare:** Non assegnare mai una lambda a una variabile (es. `f = lambda x: x`). In quel caso, il PEP 8 raccomanda l'uso di `def f(x): return x` per facilitare il debugging (miglior stack trace).
-- 💣 **Leggibilità:** Se la lambda diventa troppo complessa o difficile da leggere, spostala in una funzione regolare con un nome descrittivo.
+##  Best Practices & "Gotchas"
+-  **Da fare:** Usale quando la logica è così semplice da essere chiara in una sola riga (es. trasformazioni di dati, callback).
+-  **Da evitare:** Non assegnare mai una lambda a una variabile (es. `f = lambda x: x`). In quel caso, il PEP 8 raccomanda l'uso di `def f(x): return x` per facilitare il debugging (miglior stack trace).
+-  **Leggibilità:** Se la lambda diventa troppo complessa o difficile da leggere, spostala in una funzione regolare con un nome descrittivo.
 
 ---

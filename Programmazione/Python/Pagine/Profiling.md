@@ -1,17 +1,22 @@
 ---
-date: 2026-04-16
-tags:
-  - programmazione
-  - python
-  - profiling
-  - performance
-type: #permanent-note
-status: budding
+date: 2026-05-14
+area: Programmazione
+topic: Python
+type: technical-note
+status: "non revisionato"
+difficulty: intermediate
+tags: [python, programming]
+aliases: [Profiling]
+prerequisites: []
+related: []
 ---
-
 # Profiling in Python
 
-## 💡 Concetto Chiave
+## Sintesi
+
+Nota su Profiling in Python. Riassume il concetto, la sintassi principale e i punti da ricordare durante studio, sviluppo o debugging.
+
+## Concetto chiave
 Il **profiling** e la pratica di misurare dove un programma consuma tempo o memoria. Serve a individuare i veri colli di bottiglia, invece di ottimizzare sulla base di intuizioni o supposizioni.
 
 In Python, il profiling e fondamentale perche il codice puo sembrare lento "in generale", ma nella pratica il costo reale si concentra spesso in poche funzioni, cicli o operazioni di I/O.
@@ -21,7 +26,7 @@ In Python, il profiling e fondamentale perche il codice puo sembrare lento "in g
 
 ---
 
-## 📝 Cosa si puo profilare
+##  Cosa si puo profilare
 
 Le aree principali sono:
 - **tempo di esecuzione**: quali funzioni consumano piu CPU o piu tempo totale;
@@ -30,13 +35,13 @@ Le aree principali sono:
 - **hot path**: il percorso di codice che pesa davvero sul runtime.
 
 Il profiling non e la stessa cosa del logging o del testing:
-- il [[Logging]] osserva eventi e stato;
-- il [[Testing]] verifica correttezza;
+- il [[Programmazione/Python/Pagine/Logging]] osserva eventi e stato;
+- il [[Programmazione/Python/Pagine/Testing]] verifica correttezza;
 - il profiling misura costi e performance.
 
 ---
 
-## 💻 Esempi Pratici
+##  Esempi Pratici
 
 ### Profilare con `cProfile`
 
@@ -89,7 +94,7 @@ print(result)
 
 ---
 
-## ⚙️ Strumenti principali
+##  Strumenti principali
 
 ### `cProfile`
 E il profiler standard piu usato per misurare il tempo di esecuzione delle funzioni.
@@ -122,11 +127,11 @@ for stat in top_stats[:5]:
     print(stat)
 ```
 
-Questo modulo e particolarmente utile quando il problema non e la velocita, ma la crescita della memoria. Si collega direttamente a [[Memory Management]].
+Questo modulo e particolarmente utile quando il problema non e la velocita, ma la crescita della memoria. Si collega direttamente a [[Programmazione/Python/Pagine/Memory Management]].
 
 ---
 
-## 🧠 Funzionamento Interno (Teoria)
+##  Funzionamento Interno (Teoria)
 
 ### Tempo totale vs tempo cumulativo
 Quando leggi un report di profiling, due misure sono particolarmente importanti:
@@ -155,7 +160,7 @@ Per questo bisogna chiarire prima il problema che si vuole misurare.
 
 ---
 
-## 📦 Workflow corretto di profiling
+##  Workflow corretto di profiling
 
 Un flusso pragmatico e:
 
@@ -178,14 +183,14 @@ Esempi di problemi mal formulati:
 
 ---
 
-## 🔄 Cosa ottimizzare davvero
+##  Cosa ottimizzare davvero
 
 Il profiling mostra dove il programma passa tempo o consuma memoria, ma non dice automaticamente come migliorarlo. Le azioni tipiche dopo il profiling sono:
 - ridurre lavoro ripetuto;
 - evitare allocazioni inutili;
 - cambiare struttura dati;
 - spostare operazioni fuori dai loop;
-- usare lazy evaluation o [[Generatori]];
+- usare lazy evaluation o [[Programmazione/Python/Pagine/Generatori]];
 - ridurre I/O bloccante;
 - scegliere algoritmi migliori.
 
@@ -194,20 +199,20 @@ In CPython, il profiling puo anche mostrare quando il collo di bottiglia non e i
 - database;
 - filesystem;
 - serializzazione;
-- lock o attese in [[Threading]].
+- lock o attese in [[Programmazione/Python/Pagine/Threading]].
 
 ---
 
-## ⚠️ Best Practices & "Gotchas"
+##  Best Practices & "Gotchas"
 
-- ✅ **Profila prima di ottimizzare:** evita lavoro inutile.
-- ✅ **Usa input realistici:** benchmark su dati finti troppo piccoli sono spesso fuorvianti.
-- ✅ **Misura piu volte:** rumore, cache e stato del sistema influenzano i risultati.
-- ✅ **Scegli lo strumento giusto:** `cProfile` per il quadro generale, `timeit` per snippet, `tracemalloc` per memoria.
-- ✅ **Confronta prima e dopo:** senza baseline, non sai se hai davvero migliorato qualcosa.
-- ❌ **Non fidarti dell'intuizione sulle performance:** spesso il collo di bottiglia non e dove sembra.
-- ❌ **Non ottimizzare codice non critico:** aumenta complessita senza valore reale.
-- 💣 **Attenzione ai micro-benchmark fuori contesto:** un frammento piu veloce in isolamento puo non migliorare il programma reale.
-- 💣 **Attenzione all'overhead del profiler:** i numeri assoluti possono cambiare; il valore principale sta nei rapporti e nelle aree calde.
+-  **Profila prima di ottimizzare:** evita lavoro inutile.
+-  **Usa input realistici:** benchmark su dati finti troppo piccoli sono spesso fuorvianti.
+-  **Misura piu volte:** rumore, cache e stato del sistema influenzano i risultati.
+-  **Scegli lo strumento giusto:** `cProfile` per il quadro generale, `timeit` per snippet, `tracemalloc` per memoria.
+-  **Confronta prima e dopo:** senza baseline, non sai se hai davvero migliorato qualcosa.
+-  **Non fidarti dell'intuizione sulle performance:** spesso il collo di bottiglia non e dove sembra.
+-  **Non ottimizzare codice non critico:** aumenta complessita senza valore reale.
+-  **Attenzione ai micro-benchmark fuori contesto:** un frammento piu veloce in isolamento puo non migliorare il programma reale.
+-  **Attenzione all'overhead del profiler:** i numeri assoluti possono cambiare; il valore principale sta nei rapporti e nelle aree calde.
 
 ---

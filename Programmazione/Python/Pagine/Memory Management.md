@@ -1,17 +1,22 @@
 ---
-date: 2026-03-27
-tags:
-  - programmazione
-  - python
-  - internals
-  - memoria
-type: #permanent-note
-status: budding
+date: 2026-05-14
+area: Programmazione
+topic: Python
+type: technical-note
+status: "non revisionato"
+difficulty: intermediate
+tags: [python, programming]
+aliases: [Memory Management]
+prerequisites: []
+related: []
 ---
-
 # Memory Management in Python
 
-## 💡 Concetto Chiave
+## Sintesi
+
+Nota su Memory Management in Python. Riassume il concetto, la sintassi principale e i punti da ricordare durante studio, sviluppo o debugging.
+
+## Concetto chiave
 Python gestisce la memoria in modo **automatico**: il programmatore non alloca e libera manualmente la memoria come avviene in linguaggi come C o C++. Questo non significa pero che la memoria sia "gratuita": capire come Python alloca, riusa e libera gli oggetti aiuta a scrivere codice piu efficiente, evitare memory leak logici e ragionare meglio sulle performance.
 
 L'implementazione standard, **CPython**, combina principalmente:
@@ -23,7 +28,7 @@ L'implementazione standard, **CPython**, combina principalmente:
 
 ---
 
-## 📝 Componenti principali
+##  Componenti principali
 
 ### 1. Reference Counting
 Ogni oggetto in CPython mantiene internamente un contatore di quanti riferimenti puntano a lui. Quando il contatore scende a zero, l'oggetto puo essere distrutto immediatamente.
@@ -63,7 +68,7 @@ CPython usa un allocatore specializzato chiamato **pymalloc**, ottimizzato per g
 
 ---
 
-## 💻 Esempi Pratici
+##  Esempi Pratici
 
 ### Verificare riferimenti e dimensioni
 
@@ -99,11 +104,11 @@ def read_lines(path):
             yield line.strip()
 ```
 
-Un approccio come questo evita di caricare tutto il file in RAM e si collega direttamente al comportamento dei [[Generatori]].
+Un approccio come questo evita di caricare tutto il file in RAM e si collega direttamente al comportamento dei [[Programmazione/Python/Pagine/Generatori]].
 
 ---
 
-## ⚙️ Funzionamento Interno (Teoria)
+##  Funzionamento Interno (Teoria)
 
 ### Stack vs Heap
 - **Stack**: contiene i riferimenti locali delle chiamate di funzione attive.
@@ -129,11 +134,11 @@ Se piu riferimenti puntano allo stesso oggetto mutabile, una modifica fatta tram
 ### Distruzione degli oggetti
 In CPython, molti oggetti vengono liberati appena il reference count va a zero. Questo spiega perche il rilascio della memoria spesso appare "immediato", ma non bisogna farci troppo affidamento a livello logico, specialmente quando si lavora con risorse esterne.
 
-Per file, lock, connessioni o socket, la strategia corretta non e aspettare il garbage collector, ma usare `with` e i [[Context Managers]].
+Per file, lock, connessioni o socket, la strategia corretta non e aspettare il garbage collector, ma usare `with` e i [[Programmazione/Python/Pagine/Context Managers]].
 
 ---
 
-## 🧠 Memory Leak in Python: come possono esistere?
+##  Memory Leak in Python: come possono esistere?
 
 Anche in un linguaggio con garbage collection possono comparire memory leak logici.
 
@@ -155,14 +160,14 @@ In questo esempio Python non ha "perso" memoria: la memoria e ancora raggiungibi
 
 ---
 
-## ⚠️ Best Practices & "Gotchas"
+##  Best Practices & "Gotchas"
 
-- ✅ **Preferisci `with` per le risorse:** file, lock e connessioni non vanno lasciati alla sola distruzione automatica.
-- ✅ **Usa generatori e iterazione lazy:** per dataset grandi, evita di creare liste complete se non servono.
-- ✅ **Controlla le strutture condivise:** liste globali, cache e singleton possono trattenere memoria piu del previsto.
-- ✅ **Usa `gc` e `tracemalloc` per analisi mirate:** sono strumenti ottimi per capire dove cresce la memoria.
-- ❌ **Non chiamare `gc.collect()` come soluzione generica:** se serve spesso, probabilmente c'e un problema architetturale o di design.
-- 💣 **Attenzione all'aliasing:** copiare un riferimento non significa copiare l'oggetto.
-- 💣 **Non confondere memoria con risorse esterne:** liberare RAM e chiudere un file sono due problemi distinti.
+-  **Preferisci `with` per le risorse:** file, lock e connessioni non vanno lasciati alla sola distruzione automatica.
+-  **Usa generatori e iterazione lazy:** per dataset grandi, evita di creare liste complete se non servono.
+-  **Controlla le strutture condivise:** liste globali, cache e singleton possono trattenere memoria piu del previsto.
+-  **Usa `gc` e `tracemalloc` per analisi mirate:** sono strumenti ottimi per capire dove cresce la memoria.
+-  **Non chiamare `gc.collect()` come soluzione generica:** se serve spesso, probabilmente c'e un problema architetturale o di design.
+-  **Attenzione all'aliasing:** copiare un riferimento non significa copiare l'oggetto.
+-  **Non confondere memoria con risorse esterne:** liberare RAM e chiudere un file sono due problemi distinti.
 
 ---

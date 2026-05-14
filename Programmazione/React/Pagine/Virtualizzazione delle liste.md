@@ -1,11 +1,20 @@
 ---
-date: 2026-04-22
-tags: [react, virtualization, lists, performance, react-window, react-virtuoso, frontend, javascript]
-type: #permanent-note
-status: budding
+date: 2026-05-14
+area: Programmazione
+topic: React
+type: technical-note
+status: "non revisionato"
+difficulty: intermediate
+tags: [react, frontend, javascript]
+aliases: [Virtualizzazione delle liste]
+prerequisites: []
+related: []
 ---
-
 # Virtualizzazione delle liste
+
+## Sintesi
+
+Nota su Virtualizzazione delle liste in React. Riassume il concetto, quando usarlo, i punti critici e gli errori da evitare durante sviluppo, debugging o revisione di applicazioni React.
 
 La **virtualizzazione delle liste** e una tecnica per renderizzare solo la parte visibile di una collezione molto grande, invece di montare nel DOM tutti gli elementi contemporaneamente.
 
@@ -46,7 +55,7 @@ Gli effetti tipici sono:
 - re-render costosi;
 - DOM troppo grande.
 
-Si collega direttamente a [[Profiler e Debugging]], perche il sintomo emerge spesso come componente lento o interazione poco reattiva.
+Si collega direttamente a [[Programmazione/React/Pagine/Profiler e Debugging]], perche il sintomo emerge spesso come componente lento o interazione poco reattiva.
 
 ---
 
@@ -86,7 +95,7 @@ Quindi il principio non e "renderizza solo quello che si vede in modo esatto", m
 
 Le `key` corrette sono fondamentali per il rendering di liste, ma non risolvono il problema del volume.
 
-[[Rendering Condizionale e Liste]] spiega perche le `key` aiutano React a riconciliare meglio gli elementi.
+[[Programmazione/React/Pagine/Rendering Condizionale e Liste]] spiega perche le `key` aiutano React a riconciliare meglio gli elementi.
 
 Ma anche con key perfette:
 - 10.000 nodi restano 10.000 nodi;
@@ -194,7 +203,7 @@ Puoi avere:
 
 In applicazioni grandi, la combinazione delle due tecniche e molto comune.
 
-Questo si collega anche a [[Data Fetching e Cache]] quando la lista carica pagine successive via API.
+Questo si collega anche a [[Programmazione/React/Pagine/Data Fetching e Cache]] quando la lista carica pagine successive via API.
 
 ---
 
@@ -249,10 +258,10 @@ Il criterio corretto resta sempre: misurare prima.
 ## 12. Relazione con React
 
 La virtualizzazione si collega bene a:
-- [[Rendering Condizionale e Liste]] per il tema `key` e rendering di array;
-- [[Profiler e Debugging]] per misurare il costo reale;
-- [[useMemo e useCallback]] quando servono ottimizzazioni mirate attorno alle righe;
-- [[Data Fetching e Cache]] se la lista carica dati a pagine;
+- [[Programmazione/React/Pagine/Rendering Condizionale e Liste]] per il tema `key` e rendering di array;
+- [[Programmazione/React/Pagine/Profiler e Debugging]] per misurare il costo reale;
+- [[Programmazione/React/Pagine/useMemo e useCallback]] quando servono ottimizzazioni mirate attorno alle righe;
+- [[Programmazione/React/Pagine/Data Fetching e Cache]] se la lista carica dati a pagine;
 - UI dense come dashboard, tabelle e risultati di ricerca.
 
 In pratica, non sostituisce una buona architettura del dato, ma riduce il costo della rappresentazione visuale di grandi collezioni.

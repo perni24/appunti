@@ -1,11 +1,20 @@
 ---
-date: 2026-04-22
-tags: [react, state-management, zustand, redux-toolkit, frontend, javascript]
-type: #permanent-note
-status: budding
+date: 2026-05-14
+area: Programmazione
+topic: React
+type: technical-note
+status: "non revisionato"
+difficulty: intermediate
+tags: [react, frontend, javascript]
+aliases: [State Management Esterno]
+prerequisites: []
+related: []
 ---
-
 # State Management Esterno
+
+## Sintesi
+
+Nota su State Management Esterno in React. Riassume il concetto, quando usarlo, i punti critici e gli errori da evitare durante sviluppo, debugging o revisione di applicazioni React.
 
 Per **state management esterno** si intende l'uso di librerie dedicate per gestire stato condiviso fuori dal singolo componente React.
 
@@ -24,7 +33,7 @@ Tra le soluzioni piu comuni nell'ecosistema React ci sono **Zustand** e **Redux 
 
 ## 1. Quando nasce il problema
 
-Con [[useState]], [[useReducer]] e [[Context API]] si coprono molti casi reali. Il problema emerge quando:
+Con [[Programmazione/React/Pagine/useState]], [[Programmazione/React/Pagine/useReducer]] e [[Programmazione/React/Pagine/Context API]] si coprono molti casi reali. Il problema emerge quando:
 - lo stesso dato serve a molti rami dell'albero;
 - il prop drilling diventa pesante;
 - il context provoca troppi re-render;
@@ -48,9 +57,9 @@ Tipicamente uno store esterno gestisce:
 Non tutto pero deve finire in uno store globale.
 
 Regola pratica:
-- **stato locale del componente**: resta in [[useState]];
-- **logica locale ma articolata**: spesso va bene [[useReducer]];
-- **dato condiviso semplice e poco frequente**: puo bastare [[Context API]];
+- **stato locale del componente**: resta in [[Programmazione/React/Pagine/useState]];
+- **logica locale ma articolata**: spesso va bene [[Programmazione/React/Pagine/useReducer]];
+- **dato condiviso semplice e poco frequente**: puo bastare [[Programmazione/React/Pagine/Context API]];
 - **stato condiviso complesso o molto dinamico**: valuta uno store esterno.
 
 ---
@@ -166,7 +175,7 @@ Lo store globale va usato quando il dato e davvero condiviso o quando il valore 
 
 ## 7. Relazione con Context API
 
-[[Context API]] e uno strumento di propagazione del dato nell'albero React. Uno store esterno e invece un contenitore di stato separato dai componenti.
+[[Programmazione/React/Pagine/Context API]] e uno strumento di propagazione del dato nell'albero React. Uno store esterno e invece un contenitore di stato separato dai componenti.
 
 Differenza pratica:
 - il context distribuisce un valore ai discendenti;

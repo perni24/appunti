@@ -1,11 +1,20 @@
 ---
-date: 2026-04-23
-tags: [react, accessibility, a11y, wai-aria, semantics, frontend, javascript]
-type: #permanent-note
-status: budding
+date: 2026-05-14
+area: Programmazione
+topic: React
+type: technical-note
+status: "non revisionato"
+difficulty: intermediate
+tags: [react, frontend, javascript]
+aliases: [WAI-ARIA]
+prerequisites: []
+related: []
 ---
-
 # WAI-ARIA
+
+## Sintesi
+
+Nota su WAI-ARIA in React. Riassume il concetto, quando usarlo, i punti critici e gli errori da evitare durante sviluppo, debugging o revisione di applicazioni React.
 
 La **WAI-ARIA** (*Web Accessibility Initiative - Accessible Rich Internet Applications*) e una specifica che aggiunge informazioni di accessibilita agli elementi dell'interfaccia quando l'HTML semantico da solo non basta.
 
@@ -157,7 +166,7 @@ Se proprio serve un'etichetta non visibile, puoi ricorrere a pattern dedicati, m
 - prima `label` semantica;
 - ARIA solo se necessario.
 
-Questo si collega direttamente a [[Gestione Moduli]].
+Questo si collega direttamente a [[Programmazione/React/Pagine/Gestione Moduli]].
 
 ---
 
@@ -210,7 +219,7 @@ Ma anche qui ARIA non basta da sola. Una modal accessibile deve gestire:
 - chiusura con tastiera;
 - ritorno del focus all'elemento originario.
 
-Questo si collega bene a [[Portals]] e ai temi di focus management.
+Questo si collega bene a [[Programmazione/React/Pagine/Portals]] e ai temi di focus management.
 
 ---
 
@@ -242,7 +251,7 @@ Per esempio, un accordion puo esporre:
 
 Questo tipo di struttura aiuta molto le tecnologie assistive a capire relazione e stato del componente.
 
-Si collega bene a [[Compound Components Pattern]].
+Si collega bene a [[Programmazione/React/Pagine/Compound Components Pattern]].
 
 ---
 
@@ -302,8 +311,8 @@ Un attributo ARIA statico ma disallineato allo stato reale e un bug di accessibi
 ## 12. Relazione con React
 
 WAI-ARIA si collega bene a:
-- [[Gestione Moduli]] per label, errori e descrizioni dei campi;
-- [[Portals]] per dialog e overlay;
+- [[Programmazione/React/Pagine/Gestione Moduli]] per label, errori e descrizioni dei campi;
+- [[Programmazione/React/Pagine/Portals]] per dialog e overlay;
 - focus management e navigazione da tastiera;
 - test di accessibilita come Axe e Lighthouse.
 

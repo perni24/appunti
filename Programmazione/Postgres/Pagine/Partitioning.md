@@ -1,25 +1,29 @@
 ---
-date: 2026-03-15
-tags:
-  - database
-  - postgres
-  - performance
-  - architecture
-  - partitioning
-type: #permanent-note
-status: evergreen
+date: 2026-05-14
+area: Programmazione
+topic: PostgreSQL
+type: technical-note
+status: "non revisionato"
+difficulty: intermediate
+tags: [postgresql, database]
+aliases: [Partitioning]
+prerequisites: []
+related: []
 ---
-
 # Partitioning in PostgreSQL
+
+## Sintesi
+
+Nota su Partitioning in PostgreSQL. Riassume il concetto, i meccanismi principali e i punti da ricordare durante studio, progettazione o amministrazione.
 
 Il **Table Partitioning** è una tecnica che permette di suddividere logicamente una tabella di grandi dimensioni (la tabella "parent") in pezzi fisici più piccoli (le "partizioni").
 
-## 💡 Concetto Chiave
+## Concetto chiave
 In PostgreSQL, il partizionamento moderno è chiamato **Declarative Partitioning**. L'obiettivo principale è migliorare le performance di query e manutenzione su dataset massivi (centinaia di GB o TB), permettendo al database di leggere solo le porzioni di dati strettamente necessarie.
 
 ---
 
-## 🏗️ Metodi di Partizionamento
+##  Metodi di Partizionamento
 
 Postgres supporta tre strategie principali:
 
@@ -63,7 +67,7 @@ CREATE TABLE log_p1 PARTITION OF log_accessi FOR VALUES WITH (MODULUS 4, REMAIND
 
 ---
 
-## 🚀 Vantaggi: Partition Pruning
+##  Vantaggi: Partition Pruning
 
 Il vantaggio principale in termini di performance è il **Partition Pruning**.
 
@@ -74,7 +78,7 @@ Per verificare se il pruning è attivo in un [[Programmazione/Postgres/Pagine/An
 
 ---
 
-## 🛠️ Gestione delle Partizioni (Maintenance)
+##  Gestione delle Partizioni (Maintenance)
 
 Uno dei grandi vantaggi del partizionamento è la velocità di rimozione dei vecchi dati (es. log vecchi di 1 anno).
 
@@ -87,7 +91,7 @@ Uno dei grandi vantaggi del partizionamento è la velocità di rimozione dei vec
 
 ---
 
-## ⚠️ Limitazioni Importanti
+##  Limitazioni Importanti
 
 > [!WARNING] Da considerare prima del design
 > 1.  **Chiave Primaria:** La chiave primaria di una tabella partizionata deve obbligatoriamente includere la colonna di partizionamento.

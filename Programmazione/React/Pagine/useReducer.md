@@ -1,11 +1,20 @@
 ---
-date: 2026-03-03
-tags: [react, hooks, state-management, reducer, javascript]
-type: #permanent-note
-status: budding
+date: 2026-05-14
+area: Programmazione
+topic: React
+type: technical-note
+status: "non revisionato"
+difficulty: intermediate
+tags: [react, frontend, javascript]
+aliases: [useReducer]
+prerequisites: []
+related: []
 ---
-
 # useReducer
+
+## Sintesi
+
+Nota su useReducer in React. Riassume il concetto, quando usarlo, i punti critici e gli errori da evitare durante sviluppo, debugging o revisione di applicazioni React.
 
 Il hook `useReducer` è un'alternativa avanzata a `useState` per la gestione dello stato nei componenti React. È particolarmente utile quando si ha a che fare con logiche di stato complesse, stati che dipendono da altri valori o quando l'aggiornamento dello stato richiede più passaggi.
 

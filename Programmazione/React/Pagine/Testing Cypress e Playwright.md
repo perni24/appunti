@@ -1,11 +1,20 @@
 ---
-date: 2026-04-23
-tags: [react, testing, e2e, cypress, playwright, frontend, javascript]
-type: #permanent-note
-status: budding
+date: 2026-05-14
+area: Programmazione
+topic: React
+type: technical-note
+status: "non revisionato"
+difficulty: intermediate
+tags: [react, frontend, javascript]
+aliases: [Testing Cypress e Playwright]
+prerequisites: []
+related: []
 ---
-
 # Testing Cypress e Playwright
+
+## Sintesi
+
+Nota su Testing Cypress e Playwright in React. Riassume il concetto, quando usarlo, i punti critici e gli errori da evitare durante sviluppo, debugging o revisione di applicazioni React.
 
 Il **testing end-to-end** (**E2E**) verifica il comportamento dell'applicazione dal punto di vista dell'utente, attraversando piu parti del sistema: UI, routing, chiamate API, stato applicativo e flussi reali.
 
@@ -28,7 +37,7 @@ Esempi:
 - naviga in una dashboard;
 - verifica che un risultato sia visibile.
 
-Rispetto a [[Testing Jest]], il livello e piu alto:
+Rispetto a [[Programmazione/React/Pagine/Testing Jest]], il livello e piu alto:
 - Jest testa componenti o logica in modo piu isolato;
 - E2E testa flussi completi e integrazione tra parti.
 
@@ -205,7 +214,7 @@ Strategie comuni:
 
 Questo evita test lenti e ripetitivi.
 
-Si collega a [[Gestione Autenticazione]] e [[React Router]], soprattutto per route protette.
+Si collega a [[Programmazione/React/Pagine/Gestione Autenticazione]] e [[Programmazione/React/Pagine/React Router]], soprattutto per route protette.
 
 ---
 
@@ -243,7 +252,7 @@ I test E2E possono aiutare anche sull'accessibilita:
 - label e ruoli usati nei selector;
 - integrazione con controlli automatici.
 
-Non sostituiscono [[Test di accessibilita]], ma possono rafforzare i flussi principali.
+Non sostituiscono [[Programmazione/React/Pagine/Test di accessibilita]], ma possono rafforzare i flussi principali.
 
 Quando i test usano `getByRole` e `getByLabel`, spingono anche il markup verso scelte piu accessibili.
 
@@ -260,7 +269,7 @@ Evita E2E per:
 - dettagli visuali minori;
 - combinazioni troppo numerose e costose.
 
-Per questi casi, [[Testing Jest]] o test di componente sono spesso piu economici e manutenibili.
+Per questi casi, [[Programmazione/React/Pagine/Testing Jest]] o test di componente sono spesso piu economici e manutenibili.
 
 ---
 

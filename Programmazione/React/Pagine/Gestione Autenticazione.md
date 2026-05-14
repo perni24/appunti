@@ -1,11 +1,20 @@
 ---
-date: 2026-04-22
-tags: [react, authentication, jwt, cookies, httpOnly, localStorage, frontend, javascript]
-type: #permanent-note
-status: budding
+date: 2026-05-14
+area: Programmazione
+topic: React
+type: technical-note
+status: "non revisionato"
+difficulty: intermediate
+tags: [react, frontend, javascript]
+aliases: [Gestione Autenticazione]
+prerequisites: []
+related: []
 ---
-
 # Gestione Autenticazione
+
+## Sintesi
+
+Nota su Gestione Autenticazione in React. Riassume il concetto, quando usarlo, i punti critici e gli errori da evitare durante sviluppo, debugging o revisione di applicazioni React.
 
 La **gestione autenticazione** in React riguarda il modo in cui il frontend riconosce un utente autenticato, conserva il suo stato di sessione e limita l'accesso a certe aree dell'interfaccia.
 
@@ -54,7 +63,7 @@ Nel frontend React, la gestione auth tipicamente include:
 - inviare credenziali o token nelle request;
 - gestire login, logout e stato di caricamento iniziale.
 
-Questa logica viene spesso centralizzata tramite [[Context API]], custom hook o store esterno.
+Questa logica viene spesso centralizzata tramite [[Programmazione/React/Pagine/Context API]], custom hook o store esterno.
 
 ---
 
@@ -104,7 +113,7 @@ function ProtectedRoute({ user, children }) {
 }
 ```
 
-Questo si integra naturalmente con [[React Router]].
+Questo si integra naturalmente con [[Programmazione/React/Pagine/React Router]].
 
 Ma e importante capire il limite:
 - la route protection lato client migliora il flusso UX;
@@ -165,7 +174,7 @@ Problemi:
 - un attacco XSS puo esporlo;
 - richiede molta disciplina lato sicurezza.
 
-Per questo `localStorage` e comodo, ma va valutato con attenzione. Si collega direttamente a [[Protezione XSS]].
+Per questo `localStorage` e comodo, ma va valutato con attenzione. Si collega direttamente a [[Programmazione/React/Pagine/Protezione XSS]].
 
 ---
 
@@ -254,7 +263,7 @@ Il frontend deve allora gestire:
 - retry delle request;
 - redirect al login se la sessione non puo piu essere rinnovata.
 
-Questa parte si collega anche a [[Data Fetching e Cache]], perche gli errori auth possono influire sulla strategia di fetch, retry e invalidazione dei dati.
+Questa parte si collega anche a [[Programmazione/React/Pagine/Data Fetching e Cache]], perche gli errori auth possono influire sulla strategia di fetch, retry e invalidazione dei dati.
 
 ---
 
@@ -267,7 +276,7 @@ Una UI React autenticata cambia spesso in base allo stato utente:
 - placeholder durante bootstrap sessione;
 - messaggi di permesso negato.
 
-Per questo l'autenticazione non e solo un layer di sicurezza. E anche un layer di stato applicativo condiviso, spesso ben rappresentato tramite [[Context API]] o store esterno.
+Per questo l'autenticazione non e solo un layer di sicurezza. E anche un layer di stato applicativo condiviso, spesso ben rappresentato tramite [[Programmazione/React/Pagine/Context API]] o store esterno.
 
 ---
 

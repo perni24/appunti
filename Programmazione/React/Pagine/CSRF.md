@@ -1,11 +1,20 @@
 ---
-date: 2026-04-22
-tags: [react, security, csrf, cookies, httpOnly, sameSite, frontend, javascript]
-type: #permanent-note
-status: budding
+date: 2026-05-14
+area: Programmazione
+topic: React
+type: technical-note
+status: "non revisionato"
+difficulty: intermediate
+tags: [react, frontend, javascript]
+aliases: [CSRF]
+prerequisites: []
+related: []
 ---
-
 # CSRF
+
+## Sintesi
+
+Nota su CSRF in React. Riassume il concetto, quando usarlo, i punti critici e gli errori da evitare durante sviluppo, debugging o revisione di applicazioni React.
 
 La **CSRF** (**Cross-Site Request Forgery**) e un attacco in cui un sito malevolo induce il browser dell'utente autenticato a inviare richieste indesiderate verso un'altra applicazione.
 
@@ -45,7 +54,7 @@ La CSRF e particolarmente rilevante quando l'autenticazione usa:
 
 Il rischio e invece diverso quando l'autenticazione usa token esplicitamente inviati in header `Authorization` dal codice client, perche il browser non li aggiunge da solo in una richiesta cross-site arbitraria.
 
-Questa e una delle ragioni per cui la CSRF si collega strettamente a [[Gestione Autenticazione]].
+Questa e una delle ragioni per cui la CSRF si collega strettamente a [[Programmazione/React/Pagine/Gestione Autenticazione]].
 
 ---
 
@@ -63,7 +72,7 @@ Differenza pratica:
 - CSRF sfrutta l'autenticazione automatica del browser;
 - XSS sfrutta l'esecuzione di script malevoli nella pagina.
 
-Si collegano, ma non vanno confusi. Una buona nota di riferimento qui e [[Protezione XSS]].
+Si collegano, ma non vanno confusi. Una buona nota di riferimento qui e [[Programmazione/React/Pagine/Protezione XSS]].
 
 ---
 

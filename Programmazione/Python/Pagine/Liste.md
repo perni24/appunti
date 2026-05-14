@@ -1,29 +1,43 @@
 ---
-date: 2026-03-05
-tags:
-  - programmazione
-  - python
-  - strutture-dati
-type: #permanent-note
-status: evergreen
+date: 2026-05-14
+area: Programmazione
+topic: Python
+type: technical-note
+status: "non revisionato"
+difficulty: intermediate
+tags: [python, programming]
+aliases: [Liste]
+prerequisites: []
+related: []
 ---
-
 # Liste in Python
 
-## 💡 Concetto Chiave
+## Sintesi
+
+Nota su Liste in Python. Riassume il concetto, la sintassi principale e i punti da ricordare durante studio, sviluppo o debugging.
+
+## Concetto chiave
 Le **liste** sono collezioni di elementi **ordinate**, **mutabili** e indicizzate. Sono probabilmente la struttura dati più versatile e utilizzata in Python. Possono contenere elementi di tipi diversi (eterogenee), anche se solitamente vengono usate per collezionare oggetti omogenei.
 
 ---
 
-## 📝 Sintassi e Operazioni Base
+##  Sintassi e Operazioni Base
 
 ### Definizione e Accesso
 ```python
-# Creazione
+# Liste in Python
+
+## Sintesi
+
+Nota su Liste in Python. Riassume il concetto, la sintassi principale e i punti da ricordare durante studio, sviluppo o debugging.
 frutti = ["mela", "banana", "ciliegia"]
 numeri_misti = [1, "test", 3.14, True]
 
-# Accesso (0-indexed)
+# Liste in Python
+
+## Sintesi
+
+Nota su Liste in Python. Riassume il concetto, la sintassi principale e i punti da ricordare durante studio, sviluppo o debugging.
 print(frutti[0])   # "mela"
 print(frutti[-1])  # "ciliegia" (ultimo elemento)
 ```
@@ -36,7 +50,7 @@ frutti[1] = "pera"
 
 ---
 
-## 🏗️ Metodi Principali
+##  Metodi Principali
 
 | Metodo | Descrizione | Esempio |
 | :--- | :--- | :--- |
@@ -50,7 +64,7 @@ frutti[1] = "pera"
 
 ---
 
-## ✂️ Slicing (Affettamento)
+##  Slicing (Affettamento)
 Una delle funzionalità più potenti di Python per estrarre sotto-sequenze.
 **Sintassi:** `lista[inizio:fine:passo]`
 
@@ -66,7 +80,7 @@ print(numeri[::-1])  # [9, 8, 7, 6, 5, 4, 3, 2, 1, 0] (inversione rapida)
 
 ---
 
-## ⚙️ Logic Layer: Gestione della Memoria e Performance
+## Logic layer: Gestione della Memoria e Performance
 In Python, le liste sono implementate come **array dinamici** di riferimenti ad oggetti.
 
 > [!INFO] Complessità Computazionale (Big O)
@@ -79,7 +93,11 @@ In Python, le liste sono implementate come **array dinamici** di riferimenti ad 
 Attenzione: `lista_b = lista_a` non crea una copia, ma un nuovo riferimento allo stesso oggetto. Per copiare davvero usa:
 ```python
 copia = lista_a.copy()
-# oppure
+# Liste in Python
+
+## Sintesi
+
+Nota su Liste in Python. Riassume il concetto, la sintassi principale e i punti da ricordare durante studio, sviluppo o debugging.
 copia = lista_a[:]
 ```
 

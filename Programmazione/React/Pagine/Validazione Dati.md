@@ -1,11 +1,20 @@
 ---
-date: 2026-04-22
-tags: [react, validation, zod, yup, forms, react-hook-form, frontend, javascript]
-type: #permanent-note
-status: budding
+date: 2026-05-14
+area: Programmazione
+topic: React
+type: technical-note
+status: "non revisionato"
+difficulty: intermediate
+tags: [react, frontend, javascript]
+aliases: [Validazione Dati]
+prerequisites: []
+related: []
 ---
-
 # Validazione Dati
+
+## Sintesi
+
+Nota su Validazione Dati in React. Riassume il concetto, quando usarlo, i punti critici e gli errori da evitare durante sviluppo, debugging o revisione di applicazioni React.
 
 La **validazione dati** serve a verificare che gli input dell'utente rispettino regole previste prima di essere usati o inviati al backend.
 
@@ -31,7 +40,7 @@ La validazione serve quindi a:
 - mantenere il dato piu pulito;
 - esplicitare vincoli del sistema.
 
-Si collega direttamente a [[Gestione Moduli]], perche la qualita della validazione dipende anche da come il form e costruito.
+Si collega direttamente a [[Programmazione/React/Pagine/Gestione Moduli]], perche la qualita della validazione dipende anche da come il form e costruito.
 
 ---
 
@@ -273,7 +282,7 @@ La qualita dell'errore fa parte della UX del form, non e un dettaglio secondario
 Dopo la validazione client-side, spesso il form effettua una request.
 
 Qui si collegano:
-- [[Data Fetching e Cache]];
+- [[Programmazione/React/Pagine/Data Fetching e Cache]];
 - gestione di loading e stato di submit;
 - errori restituiti dal server;
 - mapping di errori backend sui campi del form.

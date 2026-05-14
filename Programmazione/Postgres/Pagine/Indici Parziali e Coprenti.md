@@ -1,22 +1,27 @@
 ---
-date: 2026-03-06
-tags:
-  - database
-  - postgres
-  - performance
-  - indici
-type: #permanent-note
-status: evergreen
+date: 2026-05-14
+area: Programmazione
+topic: PostgreSQL
+type: technical-note
+status: "non revisionato"
+difficulty: intermediate
+tags: [postgresql, database]
+aliases: [Indici Parziali e Coprenti]
+prerequisites: []
+related: []
 ---
-
 # Indici Parziali e Coprenti in PostgreSQL
 
-## 💡 Concetto Chiave
+## Sintesi
+
+Nota su Indici Parziali e Coprenti in PostgreSQL. Riassume il concetto, i meccanismi principali e i punti da ricordare durante studio, progettazione o amministrazione.
+
+## Concetto chiave
 Oltre ai tipi di struttura fisica (B-Tree, GIN, ecc.), PostgreSQL permette di ottimizzare ulteriormente le performance e l'occupazione di disco attraverso tecniche di indicizzazione logica: gli **Indici Parziali** (che indicizzano solo un sottoinsieme di righe) e gli **Indici Coprenti** (che includono dati extra per evitare l'accesso alla tabella).
 
 ---
 
-## 🏗️ Indici Parziali (Partial Indexes)
+##  Indici Parziali (Partial Indexes)
 
 Un indice parziale viene creato aggiungendo una clausola `WHERE`. Contiene voci solo per le righe che soddisfano tale condizione.
 
@@ -34,7 +39,7 @@ WHERE pagato = false;
 
 ---
 
-## 🏗️ Indici Coprenti (Covering Indexes)
+##  Indici Coprenti (Covering Indexes)
 
 Un indice è "coprente" quando contiene tutte le informazioni richieste da una query, permettendo al database di restituire i risultati leggendo solo l'indice (**Index Only Scan**) ed evitando di dover andare a leggere i dati fisici nella tabella (Heap).
 
@@ -47,7 +52,11 @@ CREATE INDEX idx_utenti_email_coprente
 ON utenti (email) 
 INCLUDE (username, data_iscrizione);
 
-# Query ottimizzata (Index Only Scan)
+# Indici Parziali e Coprenti in PostgreSQL
+
+## Sintesi
+
+Nota su Indici Parziali e Coprenti in PostgreSQL. Riassume il concetto, i meccanismi principali e i punti da ricordare durante studio, progettazione o amministrazione.
 SELECT email, username, data_iscrizione 
 FROM utenti 
 WHERE email = 'test@example.com';
@@ -55,7 +64,7 @@ WHERE email = 'test@example.com';
 
 ---
 
-## ⚙️ Logic Layer: Quando usare cosa?
+## Logic layer: Quando usare cosa?
 
 > [!IMPORTANT] Scelte di Design
 > - **Usa gli Indici Parziali** se la tua query filtra costantemente per uno stato specifico (es. `is_active = true`, `status = 'PENDING'`) che rappresenta una piccola frazione del database.
@@ -63,7 +72,7 @@ WHERE email = 'test@example.com';
 
 ---
 
-## ⚠️ Considerazioni Tecniche
+##  Considerazioni Tecniche
 
 ### 1. Index Only Scan e Visibility Map
 Affinché un **Index Only Scan** funzioni, Postgres deve sapere se i dati nell'indice sono aggiornati rispetto alla tabella. Questo dipende dalla **Visibility Map**, che viene mantenuta dal processo di VACUUM. 

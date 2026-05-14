@@ -1,22 +1,28 @@
 ---
-date: 2026-03-17
-tags:
-  - programmazione
-  - python
-  - oop
-type: #permanent-note
-status: in_elaborazione
+date: 2026-05-14
+area: Programmazione
+topic: Python
+type: technical-note
+status: "non revisionato"
+difficulty: intermediate
+tags: [python, programming]
+aliases: [Proprietà (@property)]
+prerequisites: []
+related: []
 ---
-
 # Proprietà (@property) in Python
 
-## 💡 Concetto Chiave
+## Sintesi
+
+Nota su Proprietà (@property) in Python. Riassume il concetto, la sintassi principale e i punti da ricordare durante studio, sviluppo o debugging.
+
+## Concetto chiave
 Le **Proprietà** in Python permettono di gestire l'accesso agli attributi di una classe in modo controllato tramite il decoratore `@property`. 
 Invece di accedere direttamente a una variabile, si definisce un metodo che si comporta come un attributo. Questo consente di aggiungere logica di validazione o calcolo senza cambiare l'interfaccia pubblica della classe.
 
 ---
 
-## 📝 Sintassi e Definizione
+##  Sintassi e Definizione
 
 Si utilizzano i decoratori per definire getter, setter e deleter.
 
@@ -45,7 +51,7 @@ class Esempio:
 
 ---
 
-## 💻 Esempi Pratici
+##  Esempi Pratici
 
 ### Esempio Base: Validazione
 ```python
@@ -78,7 +84,7 @@ class Rettangolo:
 
 ---
 
-## ⚙️ Logic Layer: Descrittori e Incapsulamento
+## Logic layer: Descrittori e Incapsulamento
 
 In Python, le proprietà sono implementate tramite il **Protocollo Descrittore**.
 
@@ -90,10 +96,10 @@ A differenza di linguaggi come Java (dove si usano `getValore()` e `setValore()`
 
 ---
 
-## ⚠️ Best Practices & "Gotchas"
+##  Best Practices & "Gotchas"
 
-- ✅ **Da fare**: Usa `@property` per mantenere l'interfaccia pulita e "Pythonica".
-- ✅ **Da fare**: Usa nomi con prefisso `_` per memorizzare i dati reali (es. `self._valore`).
-- ❌ **Da evitare**: Non inserire operazioni pesanti (I/O, DB) dentro una proprietà; deve sembrare un accesso veloce.
-- 💣 **Errore comune**: Causare una **ricorsione infinita** usando `self.attributo = x` dentro il setter della stessa proprietà (invece di `self._attributo = x`).
-- 💣 **Attenzione**: Una proprietà definita solo con `@property` è automaticamente **Read-Only**.
+-  **Da fare**: Usa `@property` per mantenere l'interfaccia pulita e "Pythonica".
+-  **Da fare**: Usa nomi con prefisso `_` per memorizzare i dati reali (es. `self._valore`).
+-  **Da evitare**: Non inserire operazioni pesanti (I/O, DB) dentro una proprietà; deve sembrare un accesso veloce.
+-  **Errore comune**: Causare una **ricorsione infinita** usando `self.attributo = x` dentro il setter della stessa proprietà (invece di `self._attributo = x`).
+-  **Attenzione**: Una proprietà definita solo con `@property` è automaticamente **Read-Only**.

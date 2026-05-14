@@ -1,22 +1,27 @@
 ---
-date: 2026-03-04
-tags:
-  - programmazione
-  - python
-  - basi
-  - eccezioni
-type: #permanent-note
-status: evergreen
+date: 2026-05-14
+area: Programmazione
+topic: Python
+type: technical-note
+status: "non revisionato"
+difficulty: intermediate
+tags: [python, programming]
+aliases: [Error Handling (Gestione delle Eccezioni)]
+prerequisites: []
+related: []
 ---
-
 # Error Handling (Gestione delle Eccezioni) in Python
 
-## 💡 Concetto Chiave
+## Sintesi
+
+Nota su Error Handling (Gestione delle Eccezioni) in Python. Riassume il concetto, la sintassi principale e i punti da ricordare durante studio, sviluppo o debugging.
+
+## Concetto chiave
 In Python, gli errori rilevati durante l'esecuzione sono chiamati **eccezioni**. La gestione delle eccezioni permette al programma di rispondere a eventi imprevisti (come un file mancante o una divisione per zero) senza interrompersi bruscamente.
 
 ---
 
-## 📝 La Struttura `try-except`
+##  La Struttura `try-except`
 
 La gestione avviene tramite un blocco che "tenta" l'esecuzione e uno che "cattura" l'eventuale errore.
 
@@ -48,7 +53,7 @@ finally:
 
 ---
 
-## 🏗️ Sollevare Eccezioni (`raise`)
+##  Sollevare Eccezioni (`raise`)
 
 È possibile forzare il sollevamento di un'eccezione quando si verifica una condizione non valida per la logica dell'applicazione.
 
@@ -61,7 +66,7 @@ def imposta_eta(eta):
 
 ---
 
-## ⚙️ Logic Layer: EAFP vs LBYL
+## Logic layer: EAFP vs LBYL
 
 Python sposa fermamente la filosofia **EAFP** (*Easier to Ask for Forgiveness than Permission*), contrapposta alla **LBYL** (*Look Before You Leap*) tipica di linguaggi come il C.
 
@@ -70,7 +75,7 @@ Python sposa fermamente la filosofia **EAFP** (*Easier to Ask for Forgiveness th
 
 ---
 
-## ⚠️ Best Practices
+##  Best Practices
 
 > [!CAUTION] Bare Except
 > Evita sempre di usare un `except:` generico senza specificare l'errore. Questo catturerà anche `SystemExit` e `KeyboardInterrupt` (Ctrl+C), rendendo difficile terminare il programma. Usa almeno `except Exception:` se devi proprio catturare tutto il resto.

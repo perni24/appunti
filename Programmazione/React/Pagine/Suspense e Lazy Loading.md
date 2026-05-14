@@ -1,11 +1,20 @@
 ---
-date: 2026-04-17
-tags: [react, suspense, lazy-loading, code-splitting, frontend, javascript]
-type: #permanent-note
-status: budding
+date: 2026-05-14
+area: Programmazione
+topic: React
+type: technical-note
+status: "non revisionato"
+difficulty: intermediate
+tags: [react, frontend, javascript]
+aliases: [Suspense e Lazy Loading]
+prerequisites: []
+related: []
 ---
-
 # Suspense e Lazy Loading
+
+## Sintesi
+
+Nota su Suspense e Lazy Loading in React. Riassume il concetto, quando usarlo, i punti critici e gli errori da evitare durante sviluppo, debugging o revisione di applicazioni React.
 
 **Suspense** e **Lazy Loading** sono strumenti React usati per migliorare il caricamento dell'interfaccia, rimandando il rendering di parti dell'applicazione finche il relativo codice o i dati necessari non sono pronti.
 
@@ -107,7 +116,7 @@ function Dashboard({ isAdmin }) {
 
 Qui il pannello admin viene caricato solo se serve davvero.
 
-Questo si integra bene con il [[Rendering Condizionale e Liste]].
+Questo si integra bene con il [[Programmazione/React/Pagine/Rendering Condizionale e Liste]].
 
 ---
 
@@ -145,13 +154,13 @@ Molto spesso conviene combinarli:
 </ErrorBoundary>
 ```
 
-Questo collega direttamente il pattern a [[Error Boundaries]].
+Questo collega direttamente il pattern a [[Programmazione/React/Pagine/Error Boundaries]].
 
 ---
 
 ## 7. Relazione con rendering concorrente
 
-In React moderno, `Suspense` si inserisce bene nella strategia di rendering concorrente e si collega ai concetti di [[useTransition e useDeferredValue]].
+In React moderno, `Suspense` si inserisce bene nella strategia di rendering concorrente e si collega ai concetti di [[Programmazione/React/Pagine/useTransition e useDeferredValue]].
 
 In pratica:
 - `Suspense` gestisce stati di attesa visuali;

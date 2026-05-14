@@ -1,22 +1,27 @@
 ---
-date: 2026-03-06
-tags:
-  - database
-  - postgres
-  - sql
-  - analytics
-type: #permanent-note
-status: evergreen
+date: 2026-05-14
+area: Programmazione
+topic: PostgreSQL
+type: technical-note
+status: "non revisionato"
+difficulty: intermediate
+tags: [postgresql, database]
+aliases: [Window Functions]
+prerequisites: []
+related: []
 ---
-
 # Window Functions in PostgreSQL
 
-## 💡 Concetto Chiave
+## Sintesi
+
+Nota su Window Functions in PostgreSQL. Riassume il concetto, i meccanismi principali e i punti da ricordare durante studio, progettazione o amministrazione.
+
+## Concetto chiave
 Le **Window Functions** permettono di eseguire calcoli su un insieme di righe correlate alla riga corrente, senza però raggrupparle in un'unica riga di output (come fa il `GROUP BY`). Questo consente di mantenere i dettagli della singola riga pur avendo accesso a dati aggregati del contesto circostante (la "finestra").
 
 ---
 
-## 📝 Sintassi Fondamentale
+##  Sintassi Fondamentale
 
 La caratteristica distintiva è la clausola **`OVER`**, che definisce la finestra di dati su cui operare.
 
@@ -36,7 +41,7 @@ FROM tabella;
 
 ---
 
-## 🏗️ Funzioni Comuni
+##  Funzioni Comuni
 
 ### 1. Funzioni di Ranking
 - **`ROW_NUMBER()`**: Assegna un numero progressivo univoco alle righe.
@@ -54,7 +59,7 @@ Puoi usare le classiche funzioni di aggregazione (`SUM`, `AVG`, `COUNT`) come wi
 
 ---
 
-## 💻 Esempio Pratico
+##  Esempio Pratico
 Calcolare il contributo percentuale di ogni vendita rispetto al totale del reparto, senza perdere il dettaglio della singola vendita.
 
 ```sql
@@ -68,7 +73,7 @@ FROM vendite;
 
 ---
 
-## ⚙️ Logic Layer: Window Functions vs GROUP BY
+## Logic layer: Window Functions vs GROUP BY
 
 | Caratteristica | GROUP BY | Window Function |
 | :--- | :--- | :--- |
@@ -81,7 +86,7 @@ FROM vendite;
 
 ---
 
-## ⚠️ Best Practices
+##  Best Practices
 - **Alias della Finestra**: Se usi la stessa finestra per più colonne, puoi definirla una sola volta alla fine della query per pulizia:
   `SELECT ... WINDOW w AS (PARTITION BY ... ORDER BY ...)`
 - **Attenzione ai Frame**: Se usi solo `ORDER BY` senza specificare un frame, Postgres assume di default `RANGE BETWEEN UNBOUNDED PRECEDING AND CURRENT ROW`, il che può influire sulle performance.

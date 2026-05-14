@@ -1,23 +1,29 @@
 ---
-date: 2026-03-16
-tags:
-  - programmazione
-  - python
-  - oop
-type: #permanent-note
-status: evergreen
+date: 2026-05-14
+area: Programmazione
+topic: Python
+type: technical-note
+status: "non revisionato"
+difficulty: intermediate
+tags: [python, programming]
+aliases: [Metodi Speciali (Dunder Methods)]
+prerequisites: []
+related: []
 ---
-
 # Metodi Speciali (Dunder Methods)
 
-## 💡 Concetto Chiave
+## Sintesi
+
+Nota su Metodi Speciali (Dunder Methods) in Python. Riassume il concetto, la sintassi principale e i punti da ricordare durante studio, sviluppo o debugging.
+
+## Concetto chiave
 I **Metodi Speciali** (anche chiamati **Magic Methods** o **Dunder Methods**, da *Double Underscore*) sono metodi predefiniti in Python che iniziano e finiscono con un doppio trattino basso, come `__init__`.
 
 Permettono di implementare l'**Overloading degli Operatori** e di definire come gli oggetti della nostra classe devono comportarsi con le funzioni built-in di Python (es. `len()`, `print()`, `+`, `==`).
 
 ---
 
-## 📝 Sintassi e Categorie Principali
+##  Sintassi e Categorie Principali
 Non vengono quasi mai chiamati direttamente (`obj.__init__()`), ma vengono invocati implicitamente da Python.
 
 ### 1. Inizializzazione e Rappresentazione
@@ -37,7 +43,7 @@ Non vengono quasi mai chiamati direttamente (`obj.__init__()`), ma vengono invoc
 
 ---
 
-## 💻 Esempi Pratici
+##  Esempi Pratici
 
 ### Esempio Base: Rappresentazione e Lunghezza
 ```python
@@ -80,7 +86,7 @@ print(v3) # Output: Vettore(7, 2)
 
 ---
 
-## ⚙️ Funzionamento Interno (Teoria)
+##  Funzionamento Interno (Teoria)
 Python mappa le funzioni globali e gli operatori ai relativi metodi dunder:
 - `len(x)` $\rightarrow$ `x.__len__()`
 - `x + y` $\rightarrow$ `x.__add__(y)`
@@ -90,13 +96,13 @@ Python mappa le funzioni globali e gli operatori ai relativi metodi dunder:
 
 ---
 
-## ⚠️ Best Practices & "Gotchas"
+##  Best Practices & "Gotchas"
 
-- ✅ **Da fare**: Implementa `__repr__` sempre; `__str__` è opzionale ma consigliato per classi rivolte all'utente finale.
-- ✅ **Da fare**: In `__repr__`, cerca di restituire una stringa che sembri il codice necessario per ricreare l'oggetto.
-- ❌ **Da evitare**: Non inventare dunder methods personalizzati (es. `__mio_metodo__`). Riservali solo a quelli definiti dal linguaggio.
-- 💣 **Errore comune**: Dimenticare di ritornare un valore nei metodi `__str__` o `__repr__` (devono sempre ritornare una stringa).
-- 💣 **Attenzione**: Quando implementi operatori matematici, assicurati di gestire il caso in cui `other` sia di un tipo diverso da quello aspettato.
+-  **Da fare**: Implementa `__repr__` sempre; `__str__` è opzionale ma consigliato per classi rivolte all'utente finale.
+-  **Da fare**: In `__repr__`, cerca di restituire una stringa che sembri il codice necessario per ricreare l'oggetto.
+-  **Da evitare**: Non inventare dunder methods personalizzati (es. `__mio_metodo__`). Riservali solo a quelli definiti dal linguaggio.
+-  **Errore comune**: Dimenticare di ritornare un valore nei metodi `__str__` o `__repr__` (devono sempre ritornare una stringa).
+-  **Attenzione**: Quando implementi operatori matematici, assicurati di gestire il caso in cui `other` sia di un tipo diverso da quello aspettato.
 
 ```python
 def __add__(self, other):

@@ -1,25 +1,29 @@
 ---
-date: 2026-03-15
-tags:
-  - database
-  - postgres
-  - scalabilita
-  - performance
-  - pooling
-type: #permanent-note
-status: evergreen
+date: 2026-05-14
+area: Programmazione
+topic: PostgreSQL
+type: technical-note
+status: "non revisionato"
+difficulty: intermediate
+tags: [postgresql, database]
+aliases: [Connection Pooling]
+prerequisites: []
+related: []
 ---
-
 # Connection Pooling in PostgreSQL
+
+## Sintesi
+
+Nota su Connection Pooling in PostgreSQL. Riassume il concetto, i meccanismi principali e i punti da ricordare durante studio, progettazione o amministrazione.
 
 Il **Connection Pooling** è una tecnica fondamentale per gestire le connessioni al database in modo efficiente, specialmente in applicazioni ad alto traffico.
 
-## 💡 Concetto Chiave
+## Concetto chiave
 Poiché PostgreSQL utilizza un modello [[Programmazione/Postgres/Pagine/Modello Client-Server|Process-per-Connection]], ogni nuova connessione crea un processo backend sul server. Questo processo è costoso in termini di memoria e tempo di CPU. Il Connection Pooling risolve il problema mantenendo un "pool" di connessioni aperte e riutilizzandole per diverse richieste client, evitando il costo di creazione/distruzione continua.
 
 ---
 
-## 🏗️ Perché è necessario?
+##  Perché è necessario?
 
 Senza un pooler, un'applicazione web con migliaia di utenti simultanei potrebbe saturare rapidamente le risorse del server:
 - **Consumo RAM:** Ogni processo backend consuma circa 10-20MB di RAM.
@@ -28,7 +32,7 @@ Senza un pooler, un'applicazione web con migliaia di utenti simultanei potrebbe 
 
 ---
 
-## 🛠️ Strumenti Principali
+##  Strumenti Principali
 
 ### 1. PgBouncer
 Il pooler più leggero e diffuso. Agisce come un proxy tra l'applicazione e Postgres.
@@ -43,7 +47,7 @@ Molti framework includono un pooler interno. Tuttavia, in architetture a microse
 
 ---
 
-## ⚙️ Modalità di Pooling (PgBouncer)
+##  Modalità di Pooling (PgBouncer)
 
 | Modalità | Quando usarla | Note |
 | :--- | :--- | :--- |
@@ -53,7 +57,7 @@ Molti framework includono un pooler interno. Tuttavia, in architetture a microse
 
 ---
 
-## 🚀 Logic Layer: Quando implementarlo?
+## Logic layer: Quando implementarlo?
 
 > [!TIP] Regola del Pollice
 > Se il numero di connessioni simultanee della tua applicazione supera regolarmente le 50-100, l'introduzione di **PgBouncer** porterà un miglioramento immediato delle performance e una riduzione del carico sulla CPU del server database.

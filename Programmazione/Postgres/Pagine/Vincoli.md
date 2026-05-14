@@ -1,22 +1,27 @@
 ---
-date: 2026-03-06
-tags:
-  - database
-  - postgres
-  - sql
-  - integrita
-type: #permanent-note
-status: evergreen
+date: 2026-05-14
+area: Programmazione
+topic: PostgreSQL
+type: technical-note
+status: "non revisionato"
+difficulty: intermediate
+tags: [postgresql, database]
+aliases: [Vincoli (Constraints)]
+prerequisites: []
+related: []
 ---
-
 # Vincoli (Constraints) in PostgreSQL
 
-## 💡 Concetto Chiave
+## Sintesi
+
+Nota su Vincoli (Constraints) in PostgreSQL. Riassume il concetto, i meccanismi principali e i punti da ricordare durante studio, progettazione o amministrazione.
+
+## Concetto chiave
 I **Vincoli** sono regole applicate alle colonne o alle tabelle per limitare il tipo di dati che possono essere inseriti. Il loro scopo fondamentale è garantire l'**Integrità dei Dati** (Data Integrity) a livello di database, impedendo che errori applicativi o inserimenti manuali corrompano la coerenza delle informazioni.
 
 ---
 
-## 🏗️ Tipologie di Vincoli
+##  Tipologie di Vincoli
 
 ### 1. NOT NULL
 Garantisce che una colonna non possa contenere valori `NULL`.
@@ -63,7 +68,7 @@ Un vincolo avanzato di PostgreSQL che garantisce che, se due righe vengono confr
 
 ---
 
-## ⚙️ Logic Layer: Integrità Dichiarativa
+## Logic layer: Integrità Dichiarativa
 
 L'utilizzo dei vincoli implementa l'**Integrità Dichiarativa**. 
 
@@ -72,7 +77,7 @@ L'utilizzo dei vincoli implementa l'**Integrità Dichiarativa**.
 
 ---
 
-## ⚠️ Best Practices
+##  Best Practices
 - **Nomi ai vincoli:** Assegna sempre un nome esplicito ai vincoli complessi (specialmente `CHECK` e `FOREIGN KEY`) per facilitare il debugging degli errori:
   `CONSTRAINT prezzo_positivo CHECK (prezzo > 0)`
 - **Validazione differita:** Se necessario, i vincoli possono essere impostati come `DEFERRABLE`, permettendo di violarli temporaneamente durante una transazione e controllandoli solo al `COMMIT`.

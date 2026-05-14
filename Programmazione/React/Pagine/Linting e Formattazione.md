@@ -1,11 +1,20 @@
 ---
-date: 2026-04-23
-tags: [react, linting, formatting, eslint, prettier, code-quality, frontend, javascript]
-type: #permanent-note
-status: budding
+date: 2026-05-14
+area: Programmazione
+topic: React
+type: technical-note
+status: "non revisionato"
+difficulty: intermediate
+tags: [react, frontend, javascript]
+aliases: [Linting e Formattazione]
+prerequisites: []
+related: []
 ---
-
 # Linting e Formattazione
+
+## Sintesi
+
+Nota su Linting e Formattazione in React. Riassume il concetto, quando usarlo, i punti critici e gli errori da evitare durante sviluppo, debugging o revisione di applicazioni React.
 
 **Linting** e **formattazione** sono due pratiche fondamentali per mantenere un codice React leggibile, coerente e meno soggetto a errori.
 
@@ -42,7 +51,7 @@ function Component({ user }) {
 
 Qui un linter puo segnalare che `user` manca nelle dipendenze dell'effetto.
 
-Questo si collega direttamente a [[useEffect]].
+Questo si collega direttamente a [[Programmazione/React/Pagine/useEffect]].
 
 ---
 
@@ -203,9 +212,9 @@ Plugin dedicati possono segnalare:
 - click handler su elementi non interattivi.
 
 Questo si collega a:
-- [[WAI-ARIA]];
-- [[Focus Management]];
-- [[Test di accessibilita]].
+- [[Programmazione/React/Pagine/WAI-ARIA]];
+- [[Programmazione/React/Pagine/Focus Management]];
+- [[Programmazione/React/Pagine/Test di accessibilita]].
 
 Il linter non sostituisce i test manuali, ma intercetta molte regressioni comuni.
 
@@ -250,8 +259,8 @@ Linting e formattazione non sostituiscono i test.
 Servono a coprire un livello diverso:
 - Prettier mantiene il codice uniforme;
 - ESLint intercetta pattern rischiosi;
-- [[Testing Jest]] verifica comportamento di componenti e logica;
-- [[Testing Cypress e Playwright]] verifica flussi end-to-end.
+- [[Programmazione/React/Pagine/Testing Jest]] verifica comportamento di componenti e logica;
+- [[Programmazione/React/Pagine/Testing Cypress e Playwright]] verifica flussi end-to-end.
 
 Insieme creano una rete di qualita piu robusta.
 

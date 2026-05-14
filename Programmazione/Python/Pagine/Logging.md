@@ -1,17 +1,22 @@
 ---
-date: 2026-04-16
-tags:
-  - programmazione
-  - python
-  - logging
-  - qualita
-type: #permanent-note
-status: budding
+date: 2026-05-14
+area: Programmazione
+topic: Python
+type: technical-note
+status: "non revisionato"
+difficulty: intermediate
+tags: [python, programming]
+aliases: [Logging]
+prerequisites: []
+related: []
 ---
-
 # Logging in Python
 
-## 💡 Concetto Chiave
+## Sintesi
+
+Nota su Logging in Python. Riassume il concetto, la sintassi principale e i punti da ricordare durante studio, sviluppo o debugging.
+
+## Concetto chiave
 Il **logging** e il sistema standard per registrare eventi significativi durante l'esecuzione di un programma. Serve a osservare il comportamento del software, diagnosticare problemi, tracciare errori e capire cosa e successo in produzione o durante il debugging.
 
 In Python, il modulo standard e `logging`, incluso nella Standard Library.
@@ -27,7 +32,7 @@ La differenza chiave rispetto a `print()` e che il logging:
 
 ---
 
-## 📝 Sintassi di base
+##  Sintassi di base
 
 ### Configurazione minima
 
@@ -53,7 +58,7 @@ logging.critical("Errore critico")
 
 ---
 
-## 💻 Esempi Pratici
+##  Esempi Pratici
 
 ### Logger dedicato per modulo
 
@@ -95,11 +100,11 @@ except ZeroDivisionError:
     logger.exception("Errore durante il calcolo")
 ```
 
-`logger.exception()` registra il messaggio e include automaticamente traceback e contesto dell'eccezione. Questo si collega direttamente a [[Error Handling]].
+`logger.exception()` registra il messaggio e include automaticamente traceback e contesto dell'eccezione. Questo si collega direttamente a [[Programmazione/Python/Pagine/Error Handling]].
 
 ---
 
-## ⚙️ Funzionamento Interno (Teoria)
+##  Funzionamento Interno (Teoria)
 
 ### Componenti principali
 Il sistema di logging ruota attorno a quattro elementi principali:
@@ -135,7 +140,7 @@ Questa gerarchia permette configurazioni centralizzate e propagazione dei messag
 
 ---
 
-## 🧠 Perche usare il logging invece di `print()`
+##  Perche usare il logging invece di `print()`
 
 `print()`:
 - scrive testo grezzo;
@@ -154,7 +159,7 @@ Questa gerarchia permette configurazioni centralizzate e propagazione dei messag
 
 ---
 
-## 📦 Configurazione pratica
+##  Configurazione pratica
 
 Una configurazione semplice ma utile:
 
@@ -191,7 +196,7 @@ perche lascia al logging la gestione della formattazione e riduce lavoro inutile
 
 ---
 
-## 🔒 Cosa loggare e cosa non loggare
+##  Cosa loggare e cosa non loggare
 
 Ha senso loggare:
 - eventi applicativi importanti;
@@ -209,17 +214,17 @@ Il logging utile ha abbastanza contesto per diagnosticare il problema, ma non ab
 
 ---
 
-## ⚠️ Best Practices & "Gotchas"
+##  Best Practices & "Gotchas"
 
-- ✅ **Usa `getLogger(__name__)` nei moduli:** mantiene ordine e gerarchia.
-- ✅ **Scegli il livello giusto:** `INFO` non e `ERROR`, e `DEBUG` non va lasciato ovunque in produzione.
-- ✅ **Logga contesto utile:** ID, stato, operazione, modulo.
-- ✅ **Usa `logger.exception()` dentro `except`:** ottieni traceback senza lavoro manuale.
-- ✅ **Configura un formato consistente:** timestamp, livello e nome modulo aiutano molto.
-- ❌ **Non usare `print()` come sostituto del logging applicativo:** non scala e non si governa.
-- ❌ **Non loggare dati sensibili:** password, chiavi API, token, dati personali non necessari.
-- ❌ **Non abusare di `ERROR` o `CRITICAL`:** livelli troppo alti per eventi normali rendono i log inutili.
-- 💣 **Attenzione al logging duplicato:** configurazioni multiple o handler ridondanti possono produrre messaggi ripetuti.
-- 💣 **Attenzione al rumore:** troppi log rendono difficile trovare i segnali davvero importanti.
+-  **Usa `getLogger(__name__)` nei moduli:** mantiene ordine e gerarchia.
+-  **Scegli il livello giusto:** `INFO` non e `ERROR`, e `DEBUG` non va lasciato ovunque in produzione.
+-  **Logga contesto utile:** ID, stato, operazione, modulo.
+-  **Usa `logger.exception()` dentro `except`:** ottieni traceback senza lavoro manuale.
+-  **Configura un formato consistente:** timestamp, livello e nome modulo aiutano molto.
+-  **Non usare `print()` come sostituto del logging applicativo:** non scala e non si governa.
+-  **Non loggare dati sensibili:** password, chiavi API, token, dati personali non necessari.
+-  **Non abusare di `ERROR` o `CRITICAL`:** livelli troppo alti per eventi normali rendono i log inutili.
+-  **Attenzione al logging duplicato:** configurazioni multiple o handler ridondanti possono produrre messaggi ripetuti.
+-  **Attenzione al rumore:** troppi log rendono difficile trovare i segnali davvero importanti.
 
 ---

@@ -1,11 +1,20 @@
 ---
-date: 2026-03-27
-tags: [react, context-api, state-management, frontend, javascript]
-type: #permanent-note
-status: budding
+date: 2026-05-14
+area: Programmazione
+topic: React
+type: technical-note
+status: "non revisionato"
+difficulty: intermediate
+tags: [react, frontend, javascript]
+aliases: [Context API]
+prerequisites: []
+related: []
 ---
-
 # Context API
+
+## Sintesi
+
+Nota su Context API in React. Riassume il concetto, quando usarlo, i punti critici e gli errori da evitare durante sviluppo, debugging o revisione di applicazioni React.
 
 La **Context API** e un meccanismo nativo di React che permette di condividere dati tra componenti anche molto distanti nell'albero, senza dover passare manualmente le `props` ad ogni livello intermedio.
 
@@ -130,8 +139,8 @@ const value = useContext(MyContext);
 
 `useContext` rende il codice:
 - piu leggibile;
-- piu vicino allo stile dei [[Custom Hooks]];
-- piu semplice da comporre con [[useState]], [[useReducer]] e [[useEffect]].
+- piu vicino allo stile dei [[Programmazione/React/Pagine/Custom Hooks]];
+- piu semplice da comporre con [[Programmazione/React/Pagine/useState]], [[Programmazione/React/Pagine/useReducer]] e [[Programmazione/React/Pagine/useEffect]].
 
 ---
 
@@ -150,7 +159,7 @@ La Context API e adatta quando un dato deve essere letto da molti componenti in 
 Se il dato serve solo a pochi componenti vicini tra loro, spesso e meglio continuare a usare le `props`. Introdurre un context troppo presto puo rendere il flusso dei dati meno esplicito.
 
 > [!WARNING] Context != State Manager completo
-> La Context API non sostituisce automaticamente strumenti piu avanzati di state management. Con stati molto dinamici, aggiornamenti frequenti o logiche complesse, puo essere utile combinarla con [[useReducer]] oppure valutare librerie dedicate.
+> La Context API non sostituisce automaticamente strumenti piu avanzati di state management. Con stati molto dinamici, aggiornamenti frequenti o logiche complesse, puo essere utile combinarla con [[Programmazione/React/Pagine/useReducer]] oppure valutare librerie dedicate.
 
 ---
 
@@ -182,8 +191,8 @@ Nel codice sopra, `value` e un nuovo oggetto ad ogni render.
 ### Strategie utili
 - separare i context per responsabilita diverse;
 - evitare di mettere nel context dati che cambiano continuamente;
-- usare [[useMemo e useCallback]] quando serve stabilizzare il valore fornito;
-- combinare Context API e [[useReducer]] per centralizzare meglio gli aggiornamenti.
+- usare [[Programmazione/React/Pagine/useMemo e useCallback]] quando serve stabilizzare il valore fornito;
+- combinare Context API e [[Programmazione/React/Pagine/useReducer]] per centralizzare meglio gli aggiornamenti.
 
 ---
 
@@ -210,7 +219,7 @@ export function useAuth() {
 }
 ```
 
-Questo pattern si integra molto bene con i [[Custom Hooks]].
+Questo pattern si integra molto bene con i [[Programmazione/React/Pagine/Custom Hooks]].
 
 ---
 
@@ -235,6 +244,6 @@ La regola pratica e semplice:
 2. **Non abusare del context:** se basta passare una prop per due livelli, spesso e la scelta piu chiara.
 3. **Incapsula `useContext` in custom hook:** migliora ergonomia e sicurezza.
 4. **Mantieni stabile `value` quando necessario:** soprattutto se il provider espone oggetti e funzioni.
-5. **Combina con altri hook:** il context funziona molto bene con [[useState]], [[useReducer]] e [[Custom Hooks]].
+5. **Combina con altri hook:** il context funziona molto bene con [[Programmazione/React/Pagine/useState]], [[Programmazione/React/Pagine/useReducer]] e [[Programmazione/React/Pagine/Custom Hooks]].
 
 ---

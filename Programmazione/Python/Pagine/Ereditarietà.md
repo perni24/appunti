@@ -1,23 +1,29 @@
 ---
-date: 2026-03-16
-tags:
-  - programmazione
-  - python
-  - oop
-type: #permanent-note
-status: evergreen
+date: 2026-05-14
+area: Programmazione
+topic: Python
+type: technical-note
+status: "non revisionato"
+difficulty: intermediate
+tags: [python, programming]
+aliases: [Ereditarietà]
+prerequisites: []
+related: []
 ---
-
 # Ereditarietà in Python
 
-## 💡 Concetto Chiave
+## Sintesi
+
+Nota su Ereditarietà in Python. Riassume il concetto, la sintassi principale e i punti da ricordare durante studio, sviluppo o debugging.
+
+## Concetto chiave
 L'**Ereditarietà** permette a una classe (classe **figlia** o sottoclasse) di derivare attributi e metodi da un'altra classe (classe **padre** o superclasse).
 
 Questo meccanismo favorisce il **riutilizzo del codice** e permette di creare gerarchie logiche tra gli oggetti, modellando relazioni del tipo "is-a" (un Gatto *è un* Animale).
 
 ---
 
-## 📝 Sintassi e Definizione
+##  Sintassi e Definizione
 Per far ereditare una classe, basta inserire il nome della superclasse tra parentesi dopo il nome della sottoclasse.
 
 ```python
@@ -33,7 +39,7 @@ La funzione `super()` viene utilizzata per accedere ai metodi della classe padre
 
 ---
 
-## 💻 Esempi Pratici
+##  Esempi Pratici
 
 ### Esempio Base: Animali e Cani
 ```python
@@ -72,7 +78,7 @@ uccellino.mangia() # Output: Cip becca i semi.
 
 ---
 
-## ⚙️ Logic Layer: Concetti Avanzati
+## Logic layer: Concetti Avanzati
 
 ### 1. Ereditarietà Multipla
 Python supporta l'ereditarietà multipla, dove una classe può derivare da più classi base.
@@ -96,16 +102,20 @@ Quando Python cerca un metodo o un attributo, segue un ordine preciso chiamato *
 
 ---
 
-## ⚠️ Best Practices & "Gotchas"
+##  Best Practices & "Gotchas"
 
-- ✅ **Da fare**: Usa sempre `super().__init__()` nelle sottoclassi per garantire una corretta inizializzazione.
-- ✅ **Da fare**: Favorisci la composizione rispetto all'ereditarietà se la relazione non è strettamente "is-a".
-- ❌ **Da evitare**: Evita gerarchie di ereditarietà troppo profonde (difficili da mantenere).
-- ❌ **Da evitare**: Usa l'ereditarietà multipla con estrema cautela; può rendere il flusso del codice molto complesso da seguire.
-- 💣 **Errore comune**: Dimenticare di chiamare il costruttore della superclasse, lasciando gli attributi base non inizializzati.
-- 💣 **Attenzione**: In Python 3, tutte le classi ereditano implicitamente da `object`.
+-  **Da fare**: Usa sempre `super().__init__()` nelle sottoclassi per garantire una corretta inizializzazione.
+-  **Da fare**: Favorisci la composizione rispetto all'ereditarietà se la relazione non è strettamente "is-a".
+-  **Da evitare**: Evita gerarchie di ereditarietà troppo profonde (difficili da mantenere).
+-  **Da evitare**: Usa l'ereditarietà multipla con estrema cautela; può rendere il flusso del codice molto complesso da seguire.
+-  **Errore comune**: Dimenticare di chiamare il costruttore della superclasse, lasciando gli attributi base non inizializzati.
+-  **Attenzione**: In Python 3, tutte le classi ereditano implicitamente da `object`.
 
 ```python
-# Verificare l'ordine di risoluzione dei metodi
+# Ereditarietà in Python
+
+## Sintesi
+
+Nota su Ereditarietà in Python. Riassume il concetto, la sintassi principale e i punti da ricordare durante studio, sviluppo o debugging.
 print(Cane.mro())
 ```

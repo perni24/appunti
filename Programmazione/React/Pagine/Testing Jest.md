@@ -1,11 +1,20 @@
 ---
-date: 2026-04-23
-tags: [react, testing, jest, react-testing-library, unit-testing, frontend, javascript]
-type: #permanent-note
-status: budding
+date: 2026-05-14
+area: Programmazione
+topic: React
+type: technical-note
+status: "non revisionato"
+difficulty: intermediate
+tags: [react, frontend, javascript]
+aliases: [Testing Jest]
+prerequisites: []
+related: []
 ---
-
 # Testing Jest
+
+## Sintesi
+
+Nota su Testing Jest in React. Riassume il concetto, quando usarlo, i punti critici e gli errori da evitare durante sviluppo, debugging o revisione di applicazioni React.
 
 Il **testing con Jest** in React serve a verificare che componenti, hook e logiche dell'interfaccia funzionino correttamente in modo ripetibile.
 
@@ -86,7 +95,7 @@ Il primo approccio e migliore perche:
 - testa il comportamento percepito;
 - evita dipendenza da classi CSS o struttura interna.
 
-Questo si collega bene a [[WAI-ARIA]] e [[Test di accessibilita]].
+Questo si collega bene a [[Programmazione/React/Pagine/WAI-ARIA]] e [[Programmazione/React/Pagine/Test di accessibilita]].
 
 ---
 
@@ -143,7 +152,7 @@ Questo approccio verifica:
 - submit;
 - callback finale.
 
-Si collega direttamente a [[Gestione Moduli]] e [[Validazione Dati]].
+Si collega direttamente a [[Programmazione/React/Pagine/Gestione Moduli]] e [[Programmazione/React/Pagine/Validazione Dati]].
 
 ---
 
@@ -165,7 +174,7 @@ test("mostra gli utenti caricati", async () => {
 
 `findByText` aspetta che l'elemento compaia entro un timeout ragionevole.
 
-Questo si collega a [[Data Fetching e Cache]], dove loading, error e dati remoti sono parte centrale della UI.
+Questo si collega a [[Programmazione/React/Pagine/Data Fetching e Cache]], dove loading, error e dati remoti sono parte centrale della UI.
 
 ---
 
@@ -218,8 +227,8 @@ Non serve verificare il backend in un unit test del componente.
 ## 9. Testare routing e provider
 
 Molti componenti React dipendono da:
-- [[React Router]];
-- [[Context API]];
+- [[Programmazione/React/Pagine/React Router]];
+- [[Programmazione/React/Pagine/Context API]];
 - provider di state management;
 - provider di query client;
 - tema o i18n.
@@ -315,11 +324,11 @@ Un test utile deve dare fiducia sul comportamento reale, non solo aumentare il n
 ## 14. Relazione con React
 
 Il testing con Jest si collega bene a:
-- [[Gestione Moduli]] per input, submit e validazione;
-- [[Data Fetching e Cache]] per stati asincroni;
-- [[React Router]] per pagine e navigazione;
-- [[Context API]] per provider condivisi;
-- [[Test di accessibilita]] per query orientate a ruoli e label.
+- [[Programmazione/React/Pagine/Gestione Moduli]] per input, submit e validazione;
+- [[Programmazione/React/Pagine/Data Fetching e Cache]] per stati asincroni;
+- [[Programmazione/React/Pagine/React Router]] per pagine e navigazione;
+- [[Programmazione/React/Pagine/Context API]] per provider condivisi;
+- [[Programmazione/React/Pagine/Test di accessibilita]] per query orientate a ruoli e label.
 
 In React, testare bene significa verificare come stato, props, effetti e interazioni producono una UI corretta.
 

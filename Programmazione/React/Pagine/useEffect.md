@@ -1,11 +1,20 @@
 ---
-date: 2026-03-03
-tags: [react, hooks, side-effects, cleanup, frontend]
-type: #permanent-note
-status: budding
+date: 2026-05-14
+area: Programmazione
+topic: React
+type: technical-note
+status: "non revisionato"
+difficulty: intermediate
+tags: [react, frontend, javascript]
+aliases: [useEffect: Side effects e Cleanup]
+prerequisites: []
+related: []
 ---
-
 # useEffect: Side effects e Cleanup
+
+## Sintesi
+
+Nota su useEffect: Side effects e Cleanup in React. Riassume il concetto, quando usarlo, i punti critici e gli errori da evitare durante sviluppo, debugging o revisione di applicazioni React.
 
 Il hook `useEffect` permette di gestire gli **effetti collaterali** (side effects) nei componenti funzionali. È l'equivalente dei metodi del ciclo di vita nelle classi (`componentDidMount`, `componentDidUpdate`, e `componentWillUnmount`).
 

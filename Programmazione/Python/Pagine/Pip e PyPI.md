@@ -1,17 +1,22 @@
 ---
-date: 2026-04-14
-tags:
-  - programmazione
-  - python
-  - packaging
-  - dipendenze
-type: #permanent-note
-status: budding
+date: 2026-05-14
+area: Programmazione
+topic: Python
+type: technical-note
+status: "non revisionato"
+difficulty: intermediate
+tags: [python, programming]
+aliases: [Pip e PyPI]
+prerequisites: []
+related: []
 ---
-
 # Pip e PyPI
 
-## 💡 Concetto Chiave
+## Sintesi
+
+Nota su Pip e PyPI in Python. Riassume il concetto, la sintassi principale e i punti da ricordare durante studio, sviluppo o debugging.
+
+## Concetto chiave
 `pip` e il package manager standard piu usato nell'ecosistema Python. Serve per installare, aggiornare e rimuovere pacchetti.
 
 **PyPI** (*Python Package Index*) e invece il repository pubblico principale dove i pacchetti Python vengono pubblicati e distribuiti.
@@ -25,7 +30,7 @@ In sintesi:
 
 ---
 
-## 📝 Sintassi di base
+##  Sintassi di base
 
 I comandi piu comuni sono:
 
@@ -58,7 +63,7 @@ python -m pip install "django>=5.0,<6.0"
 
 ---
 
-## 💻 Esempi Pratici
+##  Esempi Pratici
 
 ### Installare una libreria
 
@@ -93,7 +98,7 @@ Questo workflow e fondamentale per rendere un progetto replicabile su altre macc
 
 ---
 
-## ⚙️ Funzionamento Interno (Teoria)
+##  Funzionamento Interno (Teoria)
 
 ### Cosa fa `pip`
 Quando esegui `pip install`, lo strumento:
@@ -131,7 +136,7 @@ Per questo `pip` e strettamente collegato alla gestione degli ambienti Python.
 
 ---
 
-## 🧠 Versionamento e dipendenze
+##  Versionamento e dipendenze
 
 Gestire correttamente le versioni e una parte centrale dell'uso di `pip`.
 
@@ -152,7 +157,7 @@ Bloccare le versioni aiuta a:
 
 ---
 
-## 📦 `requirements.txt` e workflow tipico
+##  `requirements.txt` e workflow tipico
 
 Un flusso comune in molti progetti Python e questo:
 
@@ -174,7 +179,7 @@ Questa nota si collega naturalmente al tema degli ambienti virtuali.
 
 ---
 
-## 🔒 Sicurezza e affidabilita
+##  Sicurezza e affidabilita
 
 Installare un pacchetto significa eseguire codice distribuito da terzi. Quindi:
 - bisogna controllare l'affidabilita del pacchetto;
@@ -189,16 +194,16 @@ Installare un pacchetto significa eseguire codice distribuito da terzi. Quindi:
 
 ---
 
-## ⚠️ Best Practices & "Gotchas"
+##  Best Practices & "Gotchas"
 
-- ✅ **Usa `python -m pip`:** evita ambiguita tra piu interpreti Python installati.
-- ✅ **Lavora dentro ambienti virtuali:** riduce conflitti tra progetti.
-- ✅ **Blocca le versioni quando serve riproducibilita:** soprattutto in produzione e CI.
-- ✅ **Controlla il nome reale del package importabile:** installazione e import non coincidono sempre.
-- ✅ **Aggiorna `pip` periodicamente:** migliora compatibilita e supporto ai formati moderni.
-- ❌ **Non installare tutto nell'interprete globale di sistema:** aumenta conflitti e rende difficile la manutenzione.
-- ❌ **Non usare `pip freeze` come unica strategia di design delle dipendenze:** e utile per snapshot, ma puo produrre file troppo rigidi o rumorosi.
-- 💣 **Attenzione ai conflitti di versione:** due librerie possono richiedere dipendenze incompatibili.
-- 💣 **Attenzione ai package name shadowing:** creare file locali come `requests.py` o `fastapi.py` puo rompere gli import.
+-  **Usa `python -m pip`:** evita ambiguita tra piu interpreti Python installati.
+-  **Lavora dentro ambienti virtuali:** riduce conflitti tra progetti.
+-  **Blocca le versioni quando serve riproducibilita:** soprattutto in produzione e CI.
+-  **Controlla il nome reale del package importabile:** installazione e import non coincidono sempre.
+-  **Aggiorna `pip` periodicamente:** migliora compatibilita e supporto ai formati moderni.
+-  **Non installare tutto nell'interprete globale di sistema:** aumenta conflitti e rende difficile la manutenzione.
+-  **Non usare `pip freeze` come unica strategia di design delle dipendenze:** e utile per snapshot, ma puo produrre file troppo rigidi o rumorosi.
+-  **Attenzione ai conflitti di versione:** due librerie possono richiedere dipendenze incompatibili.
+-  **Attenzione ai package name shadowing:** creare file locali come `requests.py` o `fastapi.py` puo rompere gli import.
 
 ---

@@ -1,89 +1,89 @@
 ## vecchie voci
-- [[Pagine/Comandi base|Comandi Base e Toolchain]]
+- [[Programmazione/Python/Pagine/Comandi base|Comandi Base e Toolchain]]
 
 ## Teoria
 
 ### Basi
 
--   [[Pagine/Sintassi e Variabili|Sintassi e Variabili]]
--   [[Pagine/Operatori|Operatori]]
--   [[Pagine/Strutture Condizionali|Strutture Condizionali]]
--   [[Pagine/Cicli|Cicli]]
--   [[Pagine/Funzioni|Funzioni]]
--   [[Pagine/Gestione File|Gestione File]]
--   [[Pagine/Error Handling|Error Handling]]
+- [[Programmazione/Python/Pagine/Sintassi e Variabili|Sintassi e Variabili]]
+- [[Programmazione/Python/Pagine/Operatori|Operatori]]
+- [[Programmazione/Python/Pagine/Strutture Condizionali|Strutture Condizionali]]
+- [[Programmazione/Python/Pagine/Cicli|Cicli]]
+- [[Programmazione/Python/Pagine/Funzioni|Funzioni]]
+- [[Programmazione/Python/Pagine/Gestione File|Gestione File]]
+- [[Programmazione/Python/Pagine/Error Handling|Error Handling]]
 
 ### Strutture Dati
 
--   [[Pagine/Liste|Liste]]
--   [[Pagine/Tuple|Tuple]]
--   [[Pagine/Set|Set]]
--   [[Pagine/Dizionari|Dizionari]]
--   [[Pagine/Comprehensions|Comprehensions]]
+- [[Programmazione/Python/Pagine/Liste|Liste]]
+- [[Programmazione/Python/Pagine/Tuple|Tuple]]
+- [[Programmazione/Python/Pagine/Set|Set]]
+- [[Programmazione/Python/Pagine/Dizionari|Dizionari]]
+- [[Programmazione/Python/Pagine/Comprehensions|Comprehensions]]
 
 ### Programmazione ad Oggetti
 
-- [[Pagine/Classi e Istanze|Classi e Istanze]]
-- Dataclasses
-- Enum
-- [[Pagine/Metodi Speciali|Metodi Speciali]]
-- [[Pagine/Ereditarietà|Ereditarietà]]
-- [[Pagine/Incapsulamento|Incapsulamento]]
-- [[Pagine/Proprietà|Proprietà]]
-- [[Pagine/Metodi di classe e statici|Metodi di classe e statici]]
+- [[Programmazione/Python/Pagine/Classi e Istanze|Classi e Istanze]]
+- [[Programmazione/Python/Pagine/Dataclasses|Dataclasses]]
+- [[Programmazione/Python/Pagine/Enum|Enum]]
+- [[Programmazione/Python/Pagine/Metodi Speciali|Metodi Speciali]]
+- [[Programmazione/Python/Pagine/Ereditarietà|Ereditarietà]]
+- [[Programmazione/Python/Pagine/Incapsulamento|Incapsulamento]]
+- [[Programmazione/Python/Pagine/Proprietà|Proprietà]]
+- [[Programmazione/Python/Pagine/Metodi di classe e statici|Metodi di classe e statici]]
 
 ### Concetti Funzionali e Avanzati
 
--   [[Pagine/Funzioni Lambda|Funzioni Lambda]]
--   [[Pagine/Higher-order Functions|Higher-order Functions]]
--   [[Pagine/Decoratori|Decoratori]]
--   [[Pagine/Generatori|Generatori]]
--   [[Pagine/Iteratori|Iteratori]]
--   [[Pagine/Argomenti Flessibili|Argomenti Flessibili]]
+- [[Programmazione/Python/Pagine/Funzioni Lambda|Funzioni Lambda]]
+- [[Programmazione/Python/Pagine/Higher-order Functions|Higher-order Functions]]
+- [[Programmazione/Python/Pagine/Decoratori|Decoratori]]
+- [[Programmazione/Python/Pagine/Generatori|Generatori]]
+- [[Programmazione/Python/Pagine/Iteratori|Iteratori]]
+- [[Programmazione/Python/Pagine/Argomenti Flessibili|Argomenti Flessibili]]
 
 ### Internals e Gestione Risorse
 
--   [[Pagine/Memory Management|Memory Management]]
--   [[Pagine/Global Interpreter Lock|Global Interpreter Lock]]
--   [[Pagine/Context Managers|Context Managers]]
--   [[Pagine/Introspezione|Introspezione]]
+- [[Programmazione/Python/Pagine/Memory Management|Memory Management]]
+- [[Programmazione/Python/Pagine/Global Interpreter Lock|Global Interpreter Lock]]
+- [[Programmazione/Python/Pagine/Context Managers|Context Managers]]
+- [[Programmazione/Python/Pagine/Introspezione|Introspezione]]
 
 ### Concorrenza e Parallelismo
 
--   [[Pagine/Threading|Threading]]
--   [[Pagine/Multiprocessing|Multiprocessing]]
--   [[Pagine/Asyncio|Asyncio]]
--   [[Pagine/Concurrent.futures|Concurrent.futures]]
+- [[Programmazione/Python/Pagine/Threading|Threading]]
+- [[Programmazione/Python/Pagine/Multiprocessing|Multiprocessing]]
+- [[Programmazione/Python/Pagine/Asyncio|Asyncio]]
+- [[Programmazione/Python/Pagine/Concurrent.futures|Concurrent.futures]]
 
 ### Moduli, Pacchetti e Ambiente
 
--   [[Pagine/Standard Library|Standard Library]]
--   Subprocess
--   CLI con argparse
--   SQLite con sqlite3
--   Networking base
--   Configurazione e Variabili d Ambiente
--   [[Pagine/Pip e PyPI|Pip e PyPI]]
--   [[Pagine/Ambienti Virtuali|Ambienti Virtuali]]
--   [[Pagine/Creazione di Package|Creazione di Package]]
+- [[Programmazione/Python/Pagine/Standard Library|Standard Library]]
+- [[Programmazione/Python/Pagine/Subprocess|Subprocess]]
+- [[Programmazione/Python/Pagine/CLI con argparse|CLI con argparse]]
+- [[Programmazione/Python/Pagine/SQLite con sqlite3|SQLite con sqlite3]]
+- [[Programmazione/Python/Pagine/Networking base|Networking base]]
+- [[Programmazione/Python/Pagine/Configurazione e Variabili d Ambiente|Configurazione e Variabili d Ambiente]]
+- [[Programmazione/Python/Pagine/Pip e PyPI|Pip e PyPI]]
+- [[Programmazione/Python/Pagine/Ambienti Virtuali|Ambienti Virtuali]]
+- [[Programmazione/Python/Pagine/Creazione di Package|Creazione di Package]]
 
 ### Qualità del Codice e Tooling
 
--   [[Pagine/Type Hinting|Type Hinting]]
--   [[Pagine/Testing|Testing]]
--   [[Pagine/Logging|Logging]]
--   [[Pagine/Profiling|Profiling]]
--   [[Pagine/Stile|Stile]]
+- [[Programmazione/Python/Pagine/Type Hinting|Type Hinting]]
+- [[Programmazione/Python/Pagine/Testing|Testing]]
+- [[Programmazione/Python/Pagine/Logging|Logging]]
+- [[Programmazione/Python/Pagine/Profiling|Profiling]]
+- [[Programmazione/Python/Pagine/Stile|Stile]]
 
 ## Librerie
 
 ### Web Frameworks
 
--   Flask
--   Starlette (versione moderna flask)
+- Starlette (versione moderna flask)
 
 ### llm 
--   llama-cpp-python
+
+- llama-cpp-python
 
 ## Conoscenza Operativa
 

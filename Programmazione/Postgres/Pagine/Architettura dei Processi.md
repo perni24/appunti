@@ -1,22 +1,27 @@
 ---
-date: 2026-03-05
-tags:
-  - database
-  - postgres
-  - architettura
-  - processi
-type: #permanent-note
-status: evergreen
+date: 2026-05-14
+area: Programmazione
+topic: PostgreSQL
+type: technical-note
+status: "non revisionato"
+difficulty: intermediate
+tags: [postgresql, database]
+aliases: [Architettura dei Processi]
+prerequisites: []
+related: []
 ---
-
 # Architettura dei Processi in PostgreSQL
 
-## 💡 Concetto Chiave
+## Sintesi
+
+Nota su Architettura dei Processi in PostgreSQL. Riassume il concetto, i meccanismi principali e i punti da ricordare durante studio, progettazione o amministrazione.
+
+## Concetto chiave
 L'architettura di PostgreSQL non è limitata alla sola comunicazione client-server. Dietro le quinte, una serie di processi ausiliari lavorano in armonia con il **Postmaster** e i **Backend Processes** per garantire la persistenza dei dati, la manutenzione automatica e l'efficienza del sistema.
 
 ---
 
-## 🏗️ I Processi Principali
+##  I Processi Principali
 
 ### 1. Il Processo Genitore (Postmaster/Postgres)
 È il primo processo ad essere avviato. Le sue responsabilità sono fondamentali:
@@ -29,7 +34,7 @@ Per ogni client connesso, viene creato un processo backend dedicato che interpre
 
 ---
 
-## 🛠️ Background Workers (Processi Ausiliari)
+##  Background Workers (Processi Ausiliari)
 
 Questi processi vengono avviati dal Postmaster al boot del database e rimangono attivi per svolgere compiti di sistema critici:
 
@@ -45,7 +50,7 @@ Questi processi vengono avviati dal Postmaster al boot del database e rimangono 
 
 ---
 
-## ⚙️ Logic Layer: Monitoraggio e Segnali
+## Logic layer: Monitoraggio e Segnali
 
 Tutti i processi comunicano attraverso la **Shared Memory** e segnali di sistema. Se un processo ausiliario o un backend termina in modo anomalo (crash), il Postmaster reagisce immediatamente:
 - Ferma tutti i processi backend attivi.

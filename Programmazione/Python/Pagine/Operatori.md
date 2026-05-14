@@ -1,21 +1,27 @@
 ---
-date: 2026-03-04
-tags:
-  - programmazione
-  - python
-  - basi
-type: #permanent-note
-status: evergreen
+date: 2026-05-14
+area: Programmazione
+topic: Python
+type: technical-note
+status: "non revisionato"
+difficulty: intermediate
+tags: [python, programming]
+aliases: [Operatori]
+prerequisites: []
+related: []
 ---
-
 # Operatori in Python
 
-## 💡 Concetto Chiave
+## Sintesi
+
+Nota su Operatori in Python. Riassume il concetto, la sintassi principale e i punti da ricordare durante studio, sviluppo o debugging.
+
+## Concetto chiave
 Gli operatori sono simboli speciali che eseguono operazioni su variabili e valori. Python offre una vasta gamma di operatori, dai classici aritmetici a quelli più specifici per il confronto di identità e l'appartenenza.
 
 ---
 
-## 📝 Tipologie di Operatori
+##  Tipologie di Operatori
 
 ### 1. Operatori Aritmetici
 Usati per eseguire operazioni matematiche comuni.
@@ -61,11 +67,19 @@ Questi operatori sono molto comuni in Python per la loro leggibilità.
 - **`in` / `not in`**: Controllano se una sequenza (stringa, lista, tupla) è presente in un oggetto.
 
 ```python
-# Appartenenza
+# Operatori in Python
+
+## Sintesi
+
+Nota su Operatori in Python. Riassume il concetto, la sintassi principale e i punti da ricordare durante studio, sviluppo o debugging.
 frutta = ["mela", "banana"]
 print("mela" in frutta) # True
 
-# Identità
+# Operatori in Python
+
+## Sintesi
+
+Nota su Operatori in Python. Riassume il concetto, la sintassi principale e i punti da ricordare durante studio, sviluppo o debugging.
 a = [1, 2]
 b = [1, 2]
 c = a
@@ -76,7 +90,7 @@ print(a is c) # True (stesso oggetto)
 
 ---
 
-## ⚙️ Logic Layer: Precedenza degli Operatori
+## Logic layer: Precedenza degli Operatori
 Python segue l'ordine matematico standard (PEMDAS), ma è importante ricordare la gerarchia quando si mescolano tipi diversi:
 
 1.  Parentesi `()`
@@ -88,7 +102,7 @@ Python segue l'ordine matematico standard (PEMDAS), ma è importante ricordare l
 
 ---
 
-## ⚠️ Best Practices
+##  Best Practices
 > [!TIP] Leggibilità
 > Anche se la precedenza è chiara per l'interprete, usa le **parentesi** per rendere il codice più leggibile ai programmatori umani. 
 > Esempio: `(a and b) or c` è meglio di `a and b or c`.

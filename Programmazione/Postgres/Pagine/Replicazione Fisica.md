@@ -1,25 +1,29 @@
 ---
-date: 2026-03-15
-tags:
-  - database
-  - postgres
-  - scalabilita
-  - replication
-  - high-availability
-type: #permanent-note
-status: evergreen
+date: 2026-05-14
+area: Programmazione
+topic: PostgreSQL
+type: technical-note
+status: "non revisionato"
+difficulty: intermediate
+tags: [postgresql, database]
+aliases: [Replicazione Fisica]
+prerequisites: []
+related: []
 ---
-
 # Replicazione Fisica in PostgreSQL
+
+## Sintesi
+
+Nota su Replicazione Fisica in PostgreSQL. Riassume il concetto, i meccanismi principali e i punti da ricordare durante studio, progettazione o amministrazione.
 
 La **Replicazione Fisica** (spesso chiamata *Streaming Replication*) è una tecnica che permette di creare una copia esatta, byte per byte, di un intero cluster PostgreSQL su uno o più server secondari (**Standby**).
 
-## 💡 Concetto Chiave
+## Concetto chiave
 La replicazione fisica si basa sul flusso dei log [[Programmazione/Postgres/Pagine/Write-Ahead Logging|WAL]]. Il server Primario invia i suoi record WAL al server Standby, che li applica fedelmente ai propri file dei dati. Poiché la replica è a livello di disco, lo Standby è una copia identica (incluso lo schema, gli utenti e le configurazioni).
 
 ---
 
-## 🏗️ Architettura e Componenti
+##  Architettura e Componenti
 
 1.  **Primary (Master):** Il server che accetta query in lettura e scrittura.
 2.  **Standby (Slave/Replica):** Il server che riceve i dati. Di default è in modalità **Hot Standby**, ovvero permette query in sola lettura.
@@ -28,7 +32,7 @@ La replicazione fisica si basa sul flusso dei log [[Programmazione/Postgres/Pagi
 
 ---
 
-## 🔄 Modalità di Sincronizzazione
+##  Modalità di Sincronizzazione
 
 PostgreSQL permette di scegliere quanto "vicini" debbano essere i server:
 
@@ -44,7 +48,7 @@ Il Primario aspetta che lo Standby confermi di aver ricevuto e scritto i dati pr
 
 ---
 
-## 🚀 Casi d'Uso
+##  Casi d'Uso
 
 1.  **High Availability (HA):** Se il Primario fallisce, uno Standby può essere promosso a nuovo Primario (**Failover**).
 2.  **Read Scalability:** Puoi distribuire il carico delle query `SELECT` pesanti (reportistica, analisi) sui server Standby, lasciando il Primario libero per le transazioni `INSERT/UPDATE`.
@@ -52,7 +56,7 @@ Il Primario aspetta che lo Standby confermi di aver ricevuto e scritto i dati pr
 
 ---
 
-## 🛠️ Configurazione Rapida
+##  Configurazione Rapida
 
 Lo Standby viene creato inizialmente tramite un backup fisico (`pg_basebackup`) e poi configurato per connettersi al primario tramite una stringa di connessione (`primary_conninfo`).
 
@@ -61,7 +65,7 @@ Lo Standby viene creato inizialmente tramite un backup fisico (`pg_basebackup`) 
 
 ---
 
-## 🚀 Logic Layer: Replicazione Fisica vs Logica
+## Logic layer: Replicazione Fisica vs Logica
 
 | Caratteristica | Replicazione Fisica | [[Programmazione/Postgres/Pagine/Replicazione Logica|Replicazione Logica]] |
 | :--- | :--- | :--- |

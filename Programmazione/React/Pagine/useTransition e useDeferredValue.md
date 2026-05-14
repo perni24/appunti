@@ -1,11 +1,20 @@
 ---
-date: 2026-03-03
-tags: [react, hooks, performance, concurrent-mode, transition, deferred-value, javascript]
-type: #permanent-note
-status: budding
+date: 2026-05-14
+area: Programmazione
+topic: React
+type: technical-note
+status: "non revisionato"
+difficulty: intermediate
+tags: [react, frontend, javascript]
+aliases: [useTransition e useDeferredValue (Concurrent React)]
+prerequisites: []
+related: []
 ---
-
 # useTransition e useDeferredValue (Concurrent React)
+
+## Sintesi
+
+Nota su useTransition e useDeferredValue (Concurrent React) in React. Riassume il concetto, quando usarlo, i punti critici e gli errori da evitare durante sviluppo, debugging o revisione di applicazioni React.
 
 In React 18, sono stati introdotti nuovi hook per gestire la **priorità del rendering**. Questi strumenti permettono di mantenere l'interfaccia utente (UI) reattiva anche durante aggiornamenti pesanti dello stato, come il filtraggio di lunghe liste o la generazione di grafici complessi.
 

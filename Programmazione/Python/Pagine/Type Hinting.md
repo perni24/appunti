@@ -1,17 +1,22 @@
 ---
-date: 2026-04-16
-tags:
-  - programmazione
-  - python
-  - type-hinting
-  - qualita
-type: #permanent-note
-status: budding
+date: 2026-05-14
+area: Programmazione
+topic: Python
+type: technical-note
+status: "non revisionato"
+difficulty: intermediate
+tags: [python, programming]
+aliases: [Type Hinting]
+prerequisites: []
+related: []
 ---
-
 # Type Hinting in Python
 
-## 💡 Concetto Chiave
+## Sintesi
+
+Nota su Type Hinting in Python. Riassume il concetto, la sintassi principale e i punti da ricordare durante studio, sviluppo o debugging.
+
+## Concetto chiave
 Il **Type Hinting** e il sistema di annotazioni dei tipi introdotto in Python per rendere il codice piu leggibile, piu analizzabile e meno soggetto a errori. Le annotazioni non cambiano da sole il comportamento runtime del programma, ma permettono a IDE, linters e type checker statici di verificare incoerenze prima dell'esecuzione.
 
 In pratica, il type hinting aggiunge un contratto esplicito al codice:
@@ -24,7 +29,7 @@ In pratica, il type hinting aggiunge un contratto esplicito al codice:
 
 ---
 
-## 📝 Sintassi di base
+##  Sintassi di base
 
 ### Annotare parametri e valore di ritorno
 
@@ -53,7 +58,7 @@ def log_message(message: str) -> None:
 
 ---
 
-## 💻 Esempi Pratici
+##  Esempi Pratici
 
 ### Liste, dizionari e tuple
 
@@ -89,7 +94,7 @@ Nelle versioni moderne di Python, `int | float` e spesso preferibile a `Union[in
 
 ---
 
-## ⚙️ Funzionamento Interno (Teoria)
+##  Funzionamento Interno (Teoria)
 
 ### Le annotazioni sono metadati
 Python memorizza i type hints nell'attributo `__annotations__`.
@@ -128,7 +133,7 @@ Il type hinting funziona meglio quando funzioni, classi e moduli hanno responsab
 
 ---
 
-## 🧠 Tipi utili da conoscere
+##  Tipi utili da conoscere
 
 ### `Any`
 
@@ -190,7 +195,7 @@ class SupportsClose(Protocol):
 
 ---
 
-## 📦 Type Hinting e tooling
+##  Type Hinting e tooling
 
 Il valore reale del type hinting emerge quando il codice viene controllato con strumenti esterni.
 
@@ -213,10 +218,10 @@ Questi strumenti possono segnalare:
 
 ---
 
-## 🔄 Type Hinting nelle funzioni e nelle classi
+##  Type Hinting nelle funzioni e nelle classi
 
 Le annotazioni sono particolarmente utili in:
-- [[Funzioni]];
+- [[Programmazione/Python/Pagine/Funzioni]];
 - metodi di classi;
 - API pubbliche di librerie e package;
 - modelli dati;
@@ -238,16 +243,16 @@ Questo rende esplicita l'interfaccia della classe gia a colpo d'occhio.
 
 ---
 
-## ⚠️ Best Practices & "Gotchas"
+##  Best Practices & "Gotchas"
 
-- ✅ **Annota prima le API pubbliche:** funzioni, metodi e moduli usati da altri.
-- ✅ **Usa tipi concreti ma leggibili:** l'obiettivo e chiarezza, non esibire complessita.
-- ✅ **Preferisci la sintassi moderna quando disponibile:** `list[str]`, `dict[str, int]`, `str | None`.
-- ✅ **Usa `TypedDict`, `Protocol` e `Callable` quando servono davvero:** migliorano il contratto del codice.
-- ✅ **Integra un type checker nel workflow:** senza tooling, il beneficio e solo parziale.
-- ❌ **Non riempire tutto di `Any`:** annulla gran parte del valore del type hinting.
-- ❌ **Non usare tipi troppo sofisticati senza necessità:** se il tipo e piu difficile del codice, stai perdendo leggibilita.
-- 💣 **Attenzione a `None`:** molti bug nascono da valori opzionali non gestiti correttamente.
-- 💣 **Attenzione ai nomi shadowing:** variabili o file con nomi come `typing.py` possono rompere import e tooling.
+-  **Annota prima le API pubbliche:** funzioni, metodi e moduli usati da altri.
+-  **Usa tipi concreti ma leggibili:** l'obiettivo e chiarezza, non esibire complessita.
+-  **Preferisci la sintassi moderna quando disponibile:** `list[str]`, `dict[str, int]`, `str | None`.
+-  **Usa `TypedDict`, `Protocol` e `Callable` quando servono davvero:** migliorano il contratto del codice.
+-  **Integra un type checker nel workflow:** senza tooling, il beneficio e solo parziale.
+-  **Non riempire tutto di `Any`:** annulla gran parte del valore del type hinting.
+-  **Non usare tipi troppo sofisticati senza necessità:** se il tipo e piu difficile del codice, stai perdendo leggibilita.
+-  **Attenzione a `None`:** molti bug nascono da valori opzionali non gestiti correttamente.
+-  **Attenzione ai nomi shadowing:** variabili o file con nomi come `typing.py` possono rompere import e tooling.
 
 ---

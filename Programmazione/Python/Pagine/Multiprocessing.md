@@ -1,31 +1,40 @@
 ---
-date: 2026-04-04
-tags:
-  - programmazione
-  - python
-  - multiprocessing
-  - parallelismo
-type: #permanent-note
-status: seedling
+date: 2026-05-14
+area: Programmazione
+topic: Python
+type: technical-note
+status: "non revisionato"
+difficulty: intermediate
+tags: [python, programming]
+aliases: [Multiprocessing]
+prerequisites: []
+related: []
 ---
-
 # Multiprocessing in Python
 
-## 💡 Concetto Chiave
-Il **Multiprocessing** è una tecnica che permette di eseguire più processi indipendenti contemporaneamente, ciascuno con la propria istanza dell'interprete Python e il proprio spazio di memoria. A differenza del [[Threading]], il multiprocessing permette di superare i limiti del [[Global Interpreter Lock|GIL]], rendendolo la scelta ideale per operazioni **CPU-bound** (calcoli intensivi).
+## Sintesi
+
+Nota su Multiprocessing in Python. Riassume il concetto, la sintassi principale e i punti da ricordare durante studio, sviluppo o debugging.
+
+## Concetto chiave
+Il **Multiprocessing** è una tecnica che permette di eseguire più processi indipendenti contemporaneamente, ciascuno con la propria istanza dell'interprete Python e il proprio spazio di memoria. A differenza del [[Programmazione/Python/Pagine/Threading]], il multiprocessing permette di superare i limiti del [[Programmazione/Python/Pagine/Global Interpreter Lock|GIL]], rendendolo la scelta ideale per operazioni **CPU-bound** (calcoli intensivi).
 
 > [!INFO]
 > Ogni processo ha il suo ID (PID) e la sua memoria privata. La comunicazione tra processi è più lenta rispetto ai thread perché richiede meccanismi di IPC (Inter-Process Communication).
 
 ---
 
-## 📝 Sintassi
+##  Sintassi
 Il modulo standard è `multiprocessing`.
 
 ```python
 import multiprocessing
 
-# Funzione da eseguire in un processo separato
+# Multiprocessing in Python
+
+## Sintesi
+
+Nota su Multiprocessing in Python. Riassume il concetto, la sintassi principale e i punti da ricordare durante studio, sviluppo o debugging.
 def worker_function(data):
     # Logica computazionale
     return data * 2
@@ -43,7 +52,7 @@ if __name__ == "__main__":
 
 ---
 
-## 💻 Esempi Pratici
+##  Esempi Pratici
 
 ### Esempio Base: Parallelismo Reale
 Calcolo di numeri pesanti utilizzando più core della CPU.
@@ -94,18 +103,18 @@ if __name__ == "__main__":
 
 ---
 
-## ⚙️ Funzionamento Interno (Teoria)
+##  Funzionamento Interno (Teoria)
 - **Gestione Memoria:** Ogni processo ha la sua memoria dedicata (heap e stack). Non c'è rischio di race condition su variabili globali (perché non sono condivise), ma la condivisione di dati richiede oggetti speciali come `Queue`, `Pipe` o `Value/Array`.
 - **Bypass del GIL:** Poiché ogni processo ha il proprio interprete Python, ogni processo ha il proprio GIL. Questo permette l'esecuzione parallela effettiva su sistemi multi-core.
 - **Overhead:** La creazione di un processo è più costosa (in termini di tempo e RAM) rispetto a quella di un thread. È consigliato per task lunghi e intensivi, non per migliaia di task brevi.
 
 ---
 
-## ⚠️ Best Practices & "Gotchas"
-- ✅ **Da fare:** Usa `if __name__ == "__main__":` per evitare ricorsioni infinite nella creazione dei processi (specialmente su Windows).
-- ✅ **Da fare:** Usa `Pool` quando devi eseguire lo stesso task su una collezione di dati.
-- ❌ **Da evitare:** Non usare il multiprocessing per task I/O-bound leggeri; l'overhead della creazione del processo supererebbe i benefici.
-- 💣 **Pickling Error:** I dati passati ai processi devono essere "serializzabili" (picklable). Alcuni oggetti complessi o funzioni lambda potrebbero fallire.
-- 💣 **Memoria:** Se crei troppi processi, potresti esaurire rapidamente la RAM disponibile.
+##  Best Practices & "Gotchas"
+-  **Da fare:** Usa `if __name__ == "__main__":` per evitare ricorsioni infinite nella creazione dei processi (specialmente su Windows).
+-  **Da fare:** Usa `Pool` quando devi eseguire lo stesso task su una collezione di dati.
+-  **Da evitare:** Non usare il multiprocessing per task I/O-bound leggeri; l'overhead della creazione del processo supererebbe i benefici.
+-  **Pickling Error:** I dati passati ai processi devono essere "serializzabili" (picklable). Alcuni oggetti complessi o funzioni lambda potrebbero fallire.
+-  **Memoria:** Se crei troppi processi, potresti esaurire rapidamente la RAM disponibile.
 
 ---

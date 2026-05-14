@@ -1,11 +1,20 @@
 ---
-date: 2026-04-17
-tags: [react, error-boundaries, frontend, error-handling, javascript]
-type: #permanent-note
-status: budding
+date: 2026-05-14
+area: Programmazione
+topic: React
+type: technical-note
+status: "non revisionato"
+difficulty: intermediate
+tags: [react, frontend, javascript]
+aliases: [Error Boundaries]
+prerequisites: []
+related: []
 ---
-
 # Error Boundaries
+
+## Sintesi
+
+Nota su Error Boundaries in React. Riassume il concetto, quando usarlo, i punti critici e gli errori da evitare durante sviluppo, debugging o revisione di applicazioni React.
 
 Gli **Error Boundaries** sono componenti React che intercettano errori JavaScript lanciati durante il rendering, nei lifecycle methods e nei costruttori dei componenti figli.
 
@@ -44,7 +53,7 @@ Con un error boundary, invece, si puo mostrare un fallback:
 
 In React, un Error Boundary classico e ancora un **componente a classe**.
 
-Questo e uno dei pochi casi moderni in cui i class component restano rilevanti. Si collega direttamente a [[Componenti Funzionali vs Componenti a Classe]].
+Questo e uno dei pochi casi moderni in cui i class component restano rilevanti. Si collega direttamente a [[Programmazione/React/Pagine/Componenti Funzionali vs Componenti a Classe]].
 
 ### Struttura base
 
@@ -102,7 +111,7 @@ componentDidCatch(error, errorInfo) {
 }
 ```
 
-Questa parte si collega al tema del [[Logging]].
+Questa parte si collega al tema del logging applicativo e del monitoraggio errori.
 
 ---
 

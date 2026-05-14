@@ -1,17 +1,22 @@
 ---
-date: 2026-03-27
-tags:
-  - programmazione
-  - python
-  - internals
-  - concorrenza
-type: #permanent-note
-status: budding
+date: 2026-05-14
+area: Programmazione
+topic: Python
+type: technical-note
+status: "non revisionato"
+difficulty: intermediate
+tags: [python, programming]
+aliases: [Global Interpreter Lock (GIL)]
+prerequisites: []
+related: []
 ---
-
 # Global Interpreter Lock (GIL)
 
-## 💡 Concetto Chiave
+## Sintesi
+
+Nota su Global Interpreter Lock (GIL) in Python. Riassume il concetto, la sintassi principale e i punti da ricordare durante studio, sviluppo o debugging.
+
+## Concetto chiave
 Il **Global Interpreter Lock**, o **GIL**, e un meccanismo presente in **CPython** che permette a **un solo thread alla volta** di eseguire bytecode Python all'interno dello stesso processo.
 
 Questo significa che, anche se un programma Python crea piu thread, i thread non eseguono davvero codice Python in parallelo sui core della CPU quando il lavoro e **CPU-bound**.
@@ -21,13 +26,13 @@ Questo significa che, anche se un programma Python crea piu thread, i thread non
 
 ---
 
-## 📝 Perche esiste
+##  Perche esiste
 
 Il GIL semplifica molto la gestione interna degli oggetti Python in CPython.
 
 In particolare:
 - protegge strutture dati interne dell'interprete;
-- rende piu semplice la gestione del [[Memory Management]];
+- rende piu semplice la gestione del [[Programmazione/Python/Pagine/Memory Management]];
 - evita di dover sincronizzare continuamente l'accesso agli oggetti a basso livello.
 
 Dal punto di vista progettuale, il GIL e un compromesso:
@@ -36,7 +41,7 @@ Dal punto di vista progettuale, il GIL e un compromesso:
 
 ---
 
-## 💻 Esempi Pratici
+##  Esempi Pratici
 
 ### Thread CPU-bound
 
@@ -83,7 +88,7 @@ Qui i thread possono essere utili: durante le attese di I/O o sleep, il GIL vien
 
 ---
 
-## ⚙️ Funzionamento Interno (Teoria)
+##  Funzionamento Interno (Teoria)
 
 ### Un thread alla volta sul bytecode Python
 In CPython, il GIL garantisce che solo un thread esegua bytecode Python per volta. L'interprete rilascia periodicamente il controllo, permettendo ad altri thread di proseguire.
@@ -91,14 +96,14 @@ In CPython, il GIL garantisce che solo un thread esegua bytecode Python per volt
 ### Perche il GIL e legato alla memoria
 Molte operazioni interne di CPython, come il **reference counting**, modificano strutture condivise. Senza una protezione globale, servirebbero meccanismi di sincronizzazione molto piu estesi e costosi.
 
-Questo collega direttamente il GIL alla gestione del [[Memory Management]].
+Questo collega direttamente il GIL alla gestione del [[Programmazione/Python/Pagine/Memory Management]].
 
 ### Switch tra thread
 Il sistema operativo e l'interprete alternano l'esecuzione dei thread. Il risultato percepito puo sembrare parallelo, ma in realta il codice Python puro viene eseguito a turni quando il carico e CPU-bound.
 
 ---
 
-## 🧠 CPU-bound vs I/O-bound
+##  CPU-bound vs I/O-bound
 
 ### CPU-bound
 Un task e **CPU-bound** quando passa la maggior parte del tempo a fare calcoli.
@@ -127,7 +132,7 @@ In questi scenari il threading resta utile, perche mentre un thread attende, alt
 
 ---
 
-## 🔄 Alternative al threading per aggirare il limite
+##  Alternative al threading per aggirare il limite
 
 ### Multiprocessing
 Il modulo `multiprocessing` avvia processi separati. Ogni processo ha il proprio interprete Python e quindi il proprio GIL.
@@ -162,7 +167,7 @@ Librerie scritte in C, C++ o Rust possono eseguire parti computazionalmente inte
 
 ---
 
-## ⚠️ Fraintendimenti comuni
+##  Fraintendimenti comuni
 
 ### "Python non supporta il multithreading"
 Falso. Python supporta i thread, ma in CPython il GIL limita il parallelismo reale del bytecode Python.
@@ -175,14 +180,14 @@ Non necessariamente nello stesso modo. Il GIL e soprattutto un tema associato a 
 
 ---
 
-## ⚠️ Best Practices & "Gotchas"
+##  Best Practices & "Gotchas"
 
-- ✅ **Usa `threading` per task I/O-bound:** rete, file, attese, polling e integrazioni esterne.
-- ✅ **Usa `multiprocessing` per task CPU-bound:** quando vuoi sfruttare davvero piu core della macchina.
-- ✅ **Profilare prima di scegliere:** non tutte le lentezze dipendono dal GIL.
-- ✅ **Valuta `asyncio` per alta concorrenza I/O:** soprattutto nei servizi che gestiscono molte connessioni.
-- ❌ **Non assumere che piu thread significhi piu velocita:** in CPython spesso non e vero per il calcolo puro.
-- 💣 **Attenzione alla condivisione dei dati:** anche con il GIL, le race condition logiche possono esistere.
-- 💣 **Il GIL non sostituisce i lock applicativi:** strutture condivise e invarianti di business possono richiedere comunque sincronizzazione esplicita.
+-  **Usa `threading` per task I/O-bound:** rete, file, attese, polling e integrazioni esterne.
+-  **Usa `multiprocessing` per task CPU-bound:** quando vuoi sfruttare davvero piu core della macchina.
+-  **Profilare prima di scegliere:** non tutte le lentezze dipendono dal GIL.
+-  **Valuta `asyncio` per alta concorrenza I/O:** soprattutto nei servizi che gestiscono molte connessioni.
+-  **Non assumere che piu thread significhi piu velocita:** in CPython spesso non e vero per il calcolo puro.
+-  **Attenzione alla condivisione dei dati:** anche con il GIL, le race condition logiche possono esistere.
+-  **Il GIL non sostituisce i lock applicativi:** strutture condivise e invarianti di business possono richiedere comunque sincronizzazione esplicita.
 
 ---

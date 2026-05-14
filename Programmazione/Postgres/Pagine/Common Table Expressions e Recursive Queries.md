@@ -1,22 +1,27 @@
 ---
-date: 2026-03-06
-tags:
-  - database
-  - postgres
-  - sql
-  - query-avanzate
-type: #permanent-note
-status: evergreen
+date: 2026-05-14
+area: Programmazione
+topic: PostgreSQL
+type: technical-note
+status: "non revisionato"
+difficulty: intermediate
+tags: [postgresql, database]
+aliases: [Common Table Expressions (CTE) e Recursive Queries]
+prerequisites: []
+related: []
 ---
-
 # Common Table Expressions (CTE) e Recursive Queries
 
-## 💡 Concetto Chiave
+## Sintesi
+
+Nota su Common Table Expressions (CTE) e Recursive Queries in PostgreSQL. Riassume il concetto, i meccanismi principali e i punti da ricordare durante studio, progettazione o amministrazione.
+
+## Concetto chiave
 Le **Common Table Expressions (CTE)**, introdotte dallo statement `WITH`, permettono di creare dei set di risultati temporanei che esistono solo durante l'esecuzione di una singola query. Sono strumenti fondamentali per migliorare la leggibilità di query complesse (evitando subquery annidate) e per implementare la **ricorsione** su strutture dati gerarchiche.
 
 ---
 
-## 📝 CTE Standard (Non-Ricorsive)
+##  CTE Standard (Non-Ricorsive)
 
 Una CTE funge da "tabella temporanea" leggibile solo all'interno della query principale.
 
@@ -38,7 +43,7 @@ WHERE v.totale > 1000;
 
 ---
 
-## 🔄 Recursive Queries (WITH RECURSIVE)
+##  Recursive Queries (WITH RECURSIVE)
 
 Le query ricorsive sono utilizzate quando i dati hanno una struttura gerarchica (es. organigrammi, file system, grafi) e non si conosce a priori la profondità dei livelli.
 
@@ -48,7 +53,11 @@ Le query ricorsive sono utilizzate quando i dati hanno una struttura gerarchica 
 3.  **Recursive term**: La query che fa riferimento al nome della CTE stessa per "scendere" di livello.
 
 ```sql
-# Esempio: Calcolare il percorso di una categoria padre-figlio
+# Common Table Expressions (CTE) e Recursive Queries
+
+## Sintesi
+
+Nota su Common Table Expressions (CTE) e Recursive Queries in PostgreSQL. Riassume il concetto, i meccanismi principali e i punti da ricordare durante studio, progettazione o amministrazione.
 WITH RECURSIVE gerarchia AS (
     -- 1. Punto di partenza (Radice)
     SELECT id, nome, padre_id, 1 as livello
@@ -67,7 +76,7 @@ SELECT * FROM gerarchia;
 
 ---
 
-## ⚙️ Logic Layer: Come funziona la ricorsione in SQL?
+## Logic layer: Come funziona la ricorsione in SQL?
 
 PostgreSQL elabora la ricorsione nel seguente modo:
 1.  Esegue il **termine non ricorsivo** e mette i risultati in una tabella temporanea di lavoro (*Working Table*).
@@ -79,7 +88,7 @@ PostgreSQL elabora la ricorsione nel seguente modo:
 
 ---
 
-## ⚠️ CTE e Performance (Materializzazione)
+##  CTE e Performance (Materializzazione)
 In passato, Postgres "materializzava" sempre le CTE (le scriveva in memoria temporanea rendendole opache all'ottimizzatore). 
 - **Dalla versione 12+**: L'ottimizzatore può decidere di fare l'inline (unire la CTE alla query principale) per ottimizzare le performance, a meno di non forzare il comportamento con la keyword `MATERIALIZED` o `NOT MATERIALIZED`.
 

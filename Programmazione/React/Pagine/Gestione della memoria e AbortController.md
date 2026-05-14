@@ -1,11 +1,20 @@
 ---
-date: 2026-04-17
-tags: [react, memory-management, abortcontroller, useeffect, api, cleanup, frontend, javascript]
-type: #permanent-note
-status: budding
+date: 2026-05-14
+area: Programmazione
+topic: React
+type: technical-note
+status: "non revisionato"
+difficulty: intermediate
+tags: [react, frontend, javascript]
+aliases: [Gestione della memoria e AbortController]
+prerequisites: []
+related: []
 ---
-
 # Gestione della memoria e AbortController
+
+## Sintesi
+
+Nota su Gestione della memoria e AbortController in React. Riassume il concetto, quando usarlo, i punti critici e gli errori da evitare durante sviluppo, debugging o revisione di applicazioni React.
 
 In React, la **gestione della memoria** non significa allocare o liberare memoria manualmente come in linguaggi low-level. Significa soprattutto evitare effetti collaterali che restano vivi oltre il necessario:
 - timer non rimossi;
@@ -23,7 +32,7 @@ In questo contesto, `AbortController` e uno strumento pratico per interrompere o
 
 ## 1. Da dove nascono i problemi
 
-I problemi tipici nascono dentro [[useEffect]], quando un componente:
+I problemi tipici nascono dentro [[Programmazione/React/Pagine/useEffect]], quando un componente:
 - monta e avvia un side effect;
 - cambia dipendenze e riavvia lo stesso effetto;
 - si smonta prima che il lavoro asincrono sia concluso.
@@ -41,7 +50,7 @@ Il rischio non e solo sprecare memoria: e anche sporcare lo stato della UI con r
 
 ## 2. Cleanup in useEffect
 
-La prima difesa e la funzione di cleanup di [[useEffect]].
+La prima difesa e la funzione di cleanup di [[Programmazione/React/Pagine/useEffect]].
 
 ```javascript
 useEffect(() => {
@@ -220,7 +229,7 @@ La regola e semplice: se l'effetto registra qualcosa nel mondo esterno, deve qua
 
 ## 9. Relazione con il rendering React
 
-Questi problemi non dipendono dal [[Virtual DOM]] in senso stretto, ma dal fatto che React:
+Questi problemi non dipendono dal [[Programmazione/React/Pagine/Virtual DOM]] in senso stretto, ma dal fatto che React:
 - monta;
 - aggiorna;
 - smonta componenti;
@@ -229,8 +238,8 @@ Questi problemi non dipendono dal [[Virtual DOM]] in senso stretto, ma dal fatto
 Con il rendering moderno e concorrente, capire bene il ciclo di vita degli effetti diventa ancora piu importante. Il punto non e "bloccare React", ma mantenere effetti e dati allineati al render effettivamente valido.
 
 Questo si collega bene a:
-- [[useEffect]];
-- [[Fiber Architecture e Concurrent Mode]];
+- [[Programmazione/React/Pagine/useEffect]];
+- [[Programmazione/React/Pagine/Fiber Architecture e Concurrent Mode]];
 - `data fetching` nell'ecosistema React.
 
 ---

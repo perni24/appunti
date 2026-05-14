@@ -1,25 +1,29 @@
 ---
-date: 2026-03-15
-tags:
-  - database
-  - postgres
-  - scalabilita
-  - high-availability
-  - failover
-type: #permanent-note
-status: evergreen
+date: 2026-05-14
+area: Programmazione
+topic: PostgreSQL
+type: technical-note
+status: "non revisionato"
+difficulty: intermediate
+tags: [postgresql, database]
+aliases: [Failover e Load Balancing]
+prerequisites: []
+related: []
 ---
-
 # Failover e Load Balancing in PostgreSQL
+
+## Sintesi
+
+Nota su Failover e Load Balancing in PostgreSQL. Riassume il concetto, i meccanismi principali e i punti da ricordare durante studio, progettazione o amministrazione.
 
 Per garantire la continuità del servizio e la scalabilità, un cluster PostgreSQL deve gestire correttamente i guasti (**Failover**) e distribuire il carico di lavoro (**Load Balancing**).
 
-## 💡 Concetto Chiave
+## Concetto chiave
 Mentre la [[Programmazione/Postgres/Pagine/Replicazione Fisica|Replicazione]] sposta i dati, il **Failover** e il **Load Balancing** gestiscono il traffico dei client. Il Failover assicura che un database sia sempre disponibile per le scritture, mentre il Load Balancing ottimizza l'uso delle risorse distribuendo le letture.
 
 ---
 
-## 🔄 Failover (Alta Affidabilità)
+##  Failover (Alta Affidabilità)
 
 Il failover è il processo di promozione di un server Standby a Primario quando il Primario originale fallisce.
 
@@ -33,7 +37,7 @@ Strumenti che monitorano costantemente il cluster e intervengono senza l'interve
 
 ---
 
-## ⚖️ Load Balancing (Bilanciamento del Carico)
+##  Load Balancing (Bilanciamento del Carico)
 
 Poiché il Primario è l'unico che può gestire le scritture, il bilanciamento si concentra sulla distribuzione delle `SELECT` sulle repliche.
 
@@ -44,7 +48,7 @@ Poiché il Primario è l'unico che può gestire le scritture, il bilanciamento s
 
 ---
 
-## 🌐 Indirizzamento del Traffico
+##  Indirizzamento del Traffico
 
 Quando avviene un failover, i client devono sapere dove si trova il nuovo Primario.
 - **Virtual IP (VIP):** Un indirizzo IP che "salta" dal vecchio al nuovo primario tramite strumenti come `Keepalived`.
@@ -53,7 +57,7 @@ Quando avviene un failover, i client devono sapere dove si trova il nuovo Primar
 
 ---
 
-## 🚀 Logic Layer: La gerarchia dell'HA
+## Logic layer: La gerarchia dell'HA
 
 > [!INFO] Workflow di un sistema resiliente
 > 1.  **Replicazione:** Mantiene i dati sincronizzati su più nodi.

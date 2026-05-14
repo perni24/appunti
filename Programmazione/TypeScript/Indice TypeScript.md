@@ -1,9 +1,3 @@
----
-date: 2026-03-26
-tags: [programmazione, typescript, indice]
-type: #permanent-note
-status: seedling
----
 ## Teoria
 
 ### Basi

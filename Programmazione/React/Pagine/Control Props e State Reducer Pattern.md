@@ -1,11 +1,20 @@
 ---
-date: 2026-04-17
-tags: [react, design-patterns, control-props, state-reducer, frontend, javascript]
-type: #permanent-note
-status: budding
+date: 2026-05-14
+area: Programmazione
+topic: React
+type: technical-note
+status: "non revisionato"
+difficulty: intermediate
+tags: [react, frontend, javascript]
+aliases: [Control Props e State Reducer Pattern]
+prerequisites: []
+related: []
 ---
-
 # Control Props e State Reducer Pattern
+
+## Sintesi
+
+Nota su Control Props e State Reducer Pattern in React. Riassume il concetto, quando usarlo, i punti critici e gli errori da evitare durante sviluppo, debugging o revisione di applicazioni React.
 
 I pattern **Control Props** e **State Reducer** servono a rendere un componente piu flessibile, permettendo al consumer di controllarne parzialmente o totalmente il comportamento interno.
 
@@ -97,7 +106,7 @@ function App() {
 
 Dal punto di vista architetturale, il controllo del dato passa dal componente figlio al chiamante.
 
-Questo pattern si collega direttamente al tema di [[Props e Flusso di dati unidirezionale]].
+Questo pattern si collega direttamente al tema di [[Programmazione/React/Pagine/Props e Flusso di dati unidirezionale]].
 
 ---
 
@@ -164,7 +173,7 @@ function limitedToggleReducer(state, action) {
 
 ## 6. Relazione con `useReducer`
 
-Lo State Reducer Pattern si appoggia molto bene a [[useReducer]], perche separa chiaramente:
+Lo State Reducer Pattern si appoggia molto bene a [[Programmazione/React/Pagine/useReducer]], perche separa chiaramente:
 - stato;
 - azioni;
 - logica di transizione.

@@ -1,11 +1,20 @@
 ---
-date: 2026-04-23
-tags: [react, server-components, rsc, server-side, rendering, frontend, javascript]
-type: #permanent-note
-status: budding
+date: 2026-05-14
+area: Programmazione
+topic: React
+type: technical-note
+status: "non revisionato"
+difficulty: intermediate
+tags: [react, frontend, javascript]
+aliases: [Server Components]
+prerequisites: []
+related: []
 ---
-
 # Server Components
+
+## Sintesi
+
+Nota su Server Components in React. Riassume il concetto, quando usarlo, i punti critici e gli errori da evitare durante sviluppo, debugging o revisione di applicazioni React.
 
 I **React Server Components** (**RSC**) sono componenti React che vengono eseguiti sul server invece che nel browser.
 
@@ -130,7 +139,7 @@ Qui non serve:
 - fetch dal browser;
 - inviare al client codice per ottenere quei dati.
 
-Questo cambia il modo di pensare [[Data Fetching e Cache]] nelle app React moderne.
+Questo cambia il modo di pensare [[Programmazione/React/Pagine/Data Fetching e Cache]] nelle app React moderne.
 
 ---
 
@@ -212,7 +221,7 @@ Questo si collega direttamente a Server-Side Rendering e Static Site Generation.
 
 ## 9. Suspense e streaming
 
-I Server Components si integrano bene con [[Suspense e Lazy Loading]].
+I Server Components si integrano bene con [[Programmazione/React/Pagine/Suspense e Lazy Loading]].
 
 In scenari moderni, parti della UI possono essere:
 - preparate sul server;
@@ -265,9 +274,9 @@ Sono meno rilevanti quando:
 ## 12. Relazione con React moderno
 
 I Server Components si collegano a:
-- [[Suspense e Lazy Loading]] per fallback e rendering progressivo;
-- [[Data Fetching e Cache]] per spostare parte del fetching sul server;
-- [[React Router]] nei framework che integrano routing e data loading;
+- [[Programmazione/React/Pagine/Suspense e Lazy Loading]] per fallback e rendering progressivo;
+- [[Programmazione/React/Pagine/Data Fetching e Cache]] per spostare parte del fetching sul server;
+- [[Programmazione/React/Pagine/React Router]] nei framework che integrano routing e data loading;
 - Server-Side Rendering e Static Site Generation;
 - framework come Next.js.
 

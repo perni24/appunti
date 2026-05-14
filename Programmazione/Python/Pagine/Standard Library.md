@@ -1,17 +1,22 @@
 ---
-date: 2026-04-14
-tags:
-  - programmazione
-  - python
-  - standard-library
-  - moduli
-type: #permanent-note
-status: budding
+date: 2026-05-14
+area: Programmazione
+topic: Python
+type: technical-note
+status: "non revisionato"
+difficulty: intermediate
+tags: [python, programming]
+aliases: [Standard Library di Python]
+prerequisites: []
+related: []
 ---
-
 # Standard Library di Python
 
-## 💡 Concetto Chiave
+## Sintesi
+
+Nota su Standard Library di Python in Python. Riassume il concetto, la sintassi principale e i punti da ricordare durante studio, sviluppo o debugging.
+
+## Concetto chiave
 La **Standard Library** di Python e l'insieme dei moduli inclusi con il linguaggio, disponibili senza installare pacchetti esterni. E uno dei punti di forza principali di Python: per molte esigenze comuni esiste gia un modulo ufficiale, stabile e ben integrato.
 
 L'idea pratica e semplice: prima di aggiungere una dipendenza esterna, conviene verificare se la Standard Library copre gia il problema in modo sufficiente.
@@ -21,7 +26,7 @@ L'idea pratica e semplice: prima di aggiungere una dipendenza esterna, conviene 
 
 ---
 
-## 📝 Come e organizzata
+##  Come e organizzata
 
 La Standard Library non e un singolo pacchetto, ma una raccolta molto ampia di moduli e package standard.
 
@@ -46,7 +51,7 @@ Questi import non richiedono `pip install`, perche fanno gia parte della distrib
 
 ---
 
-## 💻 Moduli fondamentali da conoscere
+##  Moduli fondamentali da conoscere
 
 ### File system e sistema operativo
 
@@ -62,7 +67,7 @@ path = Path("documenti") / "report.txt"
 print(path.exists())
 ```
 
-`pathlib` e spesso preferibile a manipolare path come stringhe raw, ed e direttamente collegato a [[Gestione File]].
+`pathlib` e spesso preferibile a manipolare path come stringhe raw, ed e direttamente collegato a [[Programmazione/Python/Pagine/Gestione File]].
 
 ### Serializzazione e formati dati
 
@@ -143,7 +148,7 @@ print(bool(match))
 - `queue`: code thread-safe.
 - `concurrent.futures`: API ad alto livello per task concorrenti.
 
-Questi moduli si collegano direttamente a [[Threading]], `Multiprocessing`, `Asyncio` e `Concurrent.futures`.
+Questi moduli si collegano direttamente a [[Programmazione/Python/Pagine/Threading]], `Multiprocessing`, `Asyncio` e `Concurrent.futures`.
 
 ### Debugging, test e osservabilita
 
@@ -160,11 +165,11 @@ Questi moduli si collegano direttamente a [[Threading]], `Multiprocessing`, `Asy
 - `types`: tipi speciali del runtime.
 - `importlib`: import dinamico e gestione moduli.
 
-Questa area e collegata a [[Introspezione]].
+Questa area e collegata a [[Programmazione/Python/Pagine/Introspezione]].
 
 ---
 
-## ⚙️ Funzionamento Interno (Teoria)
+##  Funzionamento Interno (Teoria)
 
 ### Moduli built-in vs moduli della libreria standard
 Non tutti i moduli standard sono uguali:
@@ -194,7 +199,7 @@ La Standard Library tende a essere piu stabile e portabile di molte librerie est
 
 ---
 
-## 🧠 Quando preferire la Standard Library
+##  Quando preferire la Standard Library
 
 Conviene partire dalla Standard Library quando:
 - il problema e comune e ben coperto da un modulo standard;
@@ -212,15 +217,15 @@ Ha senso introdurre librerie esterne quando:
 
 ---
 
-## ⚠️ Best Practices & "Gotchas"
+##  Best Practices & "Gotchas"
 
-- ✅ **Conosci i moduli base prima di installare dipendenze:** spesso `json`, `pathlib`, `collections`, `datetime` e `logging` bastano gia.
-- ✅ **Preferisci moduli moderni quando esistono:** ad esempio `pathlib` e spesso piu chiaro di `os.path`.
-- ✅ **Leggi la documentazione ufficiale dei moduli standard:** i dettagli dei corner case contano molto.
-- ✅ **Mantieni gli import espliciti e leggibili:** evita wildcard import.
-- ❌ **Non usare `pickle` per dati non fidati:** puo eseguire codice arbitrario in fase di deserializzazione.
-- ❌ **Non confondere Standard Library con built-in:** `len` e `print` sono built-in, `json` e `pathlib` sono moduli standard.
-- 💣 **Attenzione ai nomi dei file locali:** creare file come `json.py`, `threading.py` o `pathlib.py` puo rompere gli import.
-- 💣 **Non assumere che ogni modulo standard sia ideale:** "standard" non significa automaticamente "migliore" per ogni contesto.
+-  **Conosci i moduli base prima di installare dipendenze:** spesso `json`, `pathlib`, `collections`, `datetime` e `logging` bastano gia.
+-  **Preferisci moduli moderni quando esistono:** ad esempio `pathlib` e spesso piu chiaro di `os.path`.
+-  **Leggi la documentazione ufficiale dei moduli standard:** i dettagli dei corner case contano molto.
+-  **Mantieni gli import espliciti e leggibili:** evita wildcard import.
+-  **Non usare `pickle` per dati non fidati:** puo eseguire codice arbitrario in fase di deserializzazione.
+-  **Non confondere Standard Library con built-in:** `len` e `print` sono built-in, `json` e `pathlib` sono moduli standard.
+-  **Attenzione ai nomi dei file locali:** creare file come `json.py`, `threading.py` o `pathlib.py` puo rompere gli import.
+-  **Non assumere che ogni modulo standard sia ideale:** "standard" non significa automaticamente "migliore" per ogni contesto.
 
 ---

@@ -1,21 +1,27 @@
 ---
-date: 2026-03-04
-tags:
-  - programmazione
-  - python
-  - basi
-type: #permanent-note
-status: evergreen
+date: 2026-05-14
+area: Programmazione
+topic: Python
+type: technical-note
+status: "non revisionato"
+difficulty: intermediate
+tags: [python, programming]
+aliases: [Sintassi e Variabili]
+prerequisites: []
+related: []
 ---
-
 # Sintassi e Variabili in Python
 
-## 💡 Concetto Chiave
+## Sintesi
+
+Nota su Sintassi e Variabili in Python. Riassume il concetto, la sintassi principale e i punti da ricordare durante studio, sviluppo o debugging.
+
+## Concetto chiave
 Python è progettato per la **leggibilità**. A differenza di molti altri linguaggi che usano parentesi graffe `{}` per definire blocchi di codice, Python usa l'**indentazione**. È un linguaggio a **tipizzazione dinamica** e **fortemente tipizzato**, il che significa che il tipo delle variabili viene determinato a runtime e non avvengono conversioni implicite pericolose tra tipi incompatibili.
 
 ---
 
-## 📝 Sintassi Fondamentale
+## Sintassi fondamentale
 
 ### Indentazione
 In Python, lo spazio bianco all'inizio di una riga è significativo. Definisce la gerarchia e i blocchi logici (funzioni, cicli, condizioni).
@@ -33,7 +39,11 @@ I commenti sono essenziali per documentare il codice.
 - **Docstrings:** Usano tripli apici `"""` e sono usati per documentare moduli, classi e funzioni.
 
 ```python
-# Questo è un commento a riga singola
+# Sintassi e Variabili in Python
+
+## Sintesi
+
+Nota su Sintassi e Variabili in Python. Riassume il concetto, la sintassi principale e i punti da ricordare durante studio, sviluppo o debugging.
 x = 5  # Commento inline
 
 """
@@ -44,7 +54,7 @@ Può estendersi su più righe.
 
 ---
 
-## 🏗️ Variabili
+##  Variabili
 
 In Python, le variabili sono **etichette** che puntano a oggetti in memoria. Non è necessario dichiarare il tipo o usare keyword (come `let` o `var`).
 
@@ -55,7 +65,11 @@ eta = 30           # Intero
 altezza = 1.75     # Float
 is_active = True   # Booleano
 
-# Assegnazione multipla
+# Sintassi e Variabili in Python
+
+## Sintesi
+
+Nota su Sintassi e Variabili in Python. Riassume il concetto, la sintassi principale e i punti da ricordare durante studio, sviluppo o debugging.
 a, b, c = 1, 2, 3
 x = y = z = 0
 ```
@@ -67,7 +81,7 @@ x = y = z = 0
 
 ---
 
-## 📊 Tipi di Dati Primitivi
+##  Tipi di Dati Primitivi
 
 > [!INFO] Definizione: Tipizzazione Dinamica
 > Significa che una variabile può cambiare "tipo" durante l'esecuzione semplicemente assegnandole un nuovo valore di tipo diverso.
@@ -82,7 +96,7 @@ x = y = z = 0
 
 ---
 
-## 🔄 Conversione di Tipo (Casting)
+##  Conversione di Tipo (Casting)
 È possibile convertire esplicitamente un dato da un tipo all'altro utilizzando le funzioni costruttore:
 
 ```python
@@ -94,7 +108,7 @@ messaggio = "Anni: " + str(30) # Da intero a stringa per concatenazione
 
 ---
 
-## ⚙️ Logic Layer: Come funziona la memoria?
+## Logic layer: Come funziona la memoria?
 In Python, **tutto è un oggetto**. Quando scrivi `x = 5`:
 1. Viene creato un oggetto di tipo `int` con valore `5` in memoria.
 2. La variabile `x` diventa un riferimento (puntatore) a quell'oggetto.

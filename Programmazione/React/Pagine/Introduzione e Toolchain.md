@@ -1,11 +1,20 @@
 ---
-date: 2026-03-02
-tags: [react, frontend, javascript, toolchain, vite]
-type: #permanent-note
-status: budding
+date: 2026-05-14
+area: Programmazione
+topic: React
+type: technical-note
+status: "non revisionato"
+difficulty: intermediate
+tags: [react, frontend, javascript]
+aliases: [Introduzione e Toolchain]
+prerequisites: []
+related: []
 ---
-
 # Introduzione e Toolchain di React
+
+## Sintesi
+
+Nota su Introduzione e Toolchain in React. Riassume il concetto, quando usarlo, i punti critici e gli errori da evitare durante sviluppo, debugging o revisione di applicazioni React.
 
 **React** è una libreria JavaScript open-source sviluppata da Meta per la creazione di interfacce utente (UI) moderne, dinamiche e scalabili. Si basa sul concetto di **Componenti** e utilizza il **Virtual DOM** per ottimizzare le prestazioni delle applicazioni Single Page (SPA).
 
@@ -33,7 +42,11 @@ Per sviluppare con React oggi non basta un semplice file HTML. È necessaria una
 **Vite** è attualmente lo standard per iniziare nuovi progetti React. È estremamente veloce grazie all'uso di ES Modules nativi durante lo sviluppo.
 
 ```bash
-# Creazione di un nuovo progetto con Vite
+# Introduzione e Toolchain di React
+
+## Sintesi
+
+Nota su Introduzione e Toolchain in React. Riassume il concetto, quando usarlo, i punti critici e gli errori da evitare durante sviluppo, debugging o revisione di applicazioni React.
 npm create vite@latest my-react-app -- --template react
 ```
 
@@ -41,7 +54,11 @@ npm create vite@latest my-react-app -- --template react
 In passato, `create-react-app` (CRA) era lo strumento ufficiale. Oggi è considerato deprecato perché più lento e meno flessibile rispetto a Vite.
 
 ```bash
-# Metodo deprecato
+# Introduzione e Toolchain di React
+
+## Sintesi
+
+Nota su Introduzione e Toolchain in React. Riassume il concetto, quando usarlo, i punti critici e gli errori da evitare durante sviluppo, debugging o revisione di applicazioni React.
 npx create-react-app my-app
 ```
 

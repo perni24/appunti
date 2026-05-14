@@ -1,22 +1,27 @@
 ---
-date: 2026-03-06
-tags:
-  - database
-  - postgres
-  - sql
-  - rules-system
-type: #permanent-note
-status: evergreen
+date: 2026-05-14
+area: Programmazione
+topic: PostgreSQL
+type: technical-note
+status: "non revisionato"
+difficulty: intermediate
+tags: [postgresql, database]
+aliases: [Il Sistema delle Regole (Rules System)]
+prerequisites: []
+related: []
 ---
-
 # Il Sistema delle Regole (Rules System) in PostgreSQL
 
-## 💡 Concetto Chiave
+## Sintesi
+
+Nota su Il Sistema delle Regole (Rules System) in PostgreSQL. Riassume il concetto, i meccanismi principali e i punti da ricordare durante studio, progettazione o amministrazione.
+
+## Concetto chiave
 Il **Rules System** (o Query Rewrite System) è un meccanismo unico di PostgreSQL che permette di modificare una query in arrivo prima che venga eseguita dal Query Planner. A differenza dei trigger, che agiscono sui dati riga per riga, le regole operano a livello di **struttura della query**, trasformando una richiesta SQL in un'altra (o in più query).
 
 ---
 
-## 🏗️ Come funzionano le Regole
+##  Come funzionano le Regole
 
 Quando Postgres riceve una query, passa attraverso il sistema delle regole che può:
 1.  **Sostituire** la query originale.
@@ -32,7 +37,7 @@ DO [ INSTEAD | ALSO ] azione;
 
 ---
 
-## 🆚 Regole vs Trigger
+##  Regole vs Trigger
 
 Questa è la distinzione più importante per un amministratore di database:
 
@@ -45,7 +50,7 @@ Questa è la distinzione più importante per un amministratore di database:
 
 ---
 
-## 🛠️ Esempi di Utilizzo
+##  Esempi di Utilizzo
 
 ### 1. Rendere una Vista scrivibile (Uso Storico)
 Prima dell'introduzione dei trigger `INSTEAD OF`, le regole erano l'unico modo per permettere `INSERT` o `UPDATE` su viste complesse.
@@ -67,7 +72,7 @@ DO INSTEAD
 
 ---
 
-## ⚙️ Logic Layer: Perché evitarle?
+## Logic layer: Perché evitarle?
 
 Sebbene potenti, le regole sono spesso considerate **deprecate** per la logica di business quotidiana a favore dei trigger.
 
@@ -76,7 +81,7 @@ Sebbene potenti, le regole sono spesso considerate **deprecate** per la logica d
 
 ---
 
-## ⚠️ Best Practices
+##  Best Practices
 - **Usa i Trigger**: Nella quasi totalità dei casi, i trigger sono la scelta corretta.
 - **Viste Updatable**: Usa le regole solo se hai bisogno di alte performance su aggiornamenti massivi di viste che i trigger non riescono a gestire efficientemente.
 - **Documentazione**: Se decidi di usare una regola, documentala ossessivamente; è il posto più difficile dove cercare un bug.

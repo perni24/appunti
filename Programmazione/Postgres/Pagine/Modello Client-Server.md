@@ -1,21 +1,27 @@
 ---
-date: 2026-03-05
-tags:
-  - database
-  - postgres
-  - architettura
-type: #permanent-note
-status: evergreen
+date: 2026-05-14
+area: Programmazione
+topic: PostgreSQL
+type: technical-note
+status: "non revisionato"
+difficulty: intermediate
+tags: [postgresql, database]
+aliases: [Modello Client-Server]
+prerequisites: []
+related: []
 ---
-
 # Modello Client-Server in PostgreSQL
 
-## 💡 Concetto Chiave
+## Sintesi
+
+Nota su Modello Client-Server in PostgreSQL. Riassume il concetto, i meccanismi principali e i punti da ricordare durante studio, progettazione o amministrazione.
+
+## Concetto chiave
 PostgreSQL utilizza un modello **Client-Server** basato su processi multipli. In questo paradigma, le applicazioni (Client) non accedono direttamente ai file del database, ma inviano richieste a un processo centrale (Server) che gestisce i dati, garantendo integrità, sicurezza e concorrenza.
 
 ---
 
-## 🏗️ Architettura dei Processi
+##  Architettura dei Processi
 
 L'architettura di Postgres è di tipo **Process-per-Connection**. Questo significa che per ogni nuova connessione instaurata, il server crea un processo dedicato per gestirla.
 
@@ -35,7 +41,7 @@ Quando un client si connette con successo, il Supervisore crea un processo **Bac
 
 ---
 
-## 🔄 Il Flusso di una Query
+##  Il Flusso di una Query
 
 > [!INFO] Workflow di Connessione
 > 1.  **Client:** Invia una richiesta di connessione.
@@ -45,7 +51,7 @@ Quando un client si connette con successo, il Supervisore crea un processo **Bac
 
 ---
 
-## ⚙️ Logic Layer: Isolamento e Shared Memory
+## Logic layer: Isolamento e Shared Memory
 
 Sebbene ogni connessione abbia il suo processo isolato, tutti i processi devono accedere agli stessi dati. Ciò avviene tramite la **Shared Memory**:
 
@@ -55,7 +61,7 @@ Sebbene ogni connessione abbia il suo processo isolato, tutti i processi devono 
 
 ---
 
-## ⚠️ Considerazioni sulle Performance
+## Considerazioni sulle performance
 
 A causa del modello "un processo per connessione", Postgres può risultare pesante in termini di risorse se ci sono migliaia di connessioni simultanee (overhead di creazione processo e consumo RAM).
 

@@ -1,11 +1,20 @@
 ---
-date: 2026-04-17
-tags: [react, portals, frontend, dom, javascript]
-type: #permanent-note
-status: budding
+date: 2026-05-14
+area: Programmazione
+topic: React
+type: technical-note
+status: "non revisionato"
+difficulty: intermediate
+tags: [react, frontend, javascript]
+aliases: [Portals]
+prerequisites: []
+related: []
 ---
-
 # Portals
+
+## Sintesi
+
+Nota su Portals in React. Riassume il concetto, quando usarlo, i punti critici e gli errori da evitare durante sviluppo, debugging o revisione di applicazioni React.
 
 I **Portals** permettono di renderizzare un albero React in un nodo DOM diverso da quello in cui il componente appare logicamente nell'albero React.
 
@@ -103,7 +112,7 @@ Il punto chiave e questo: un portal cambia la posizione nel DOM, ma **non rompe*
 
 Questo implica che:
 - il componente continua a ricevere `props` normalmente;
-- puo usare [[Context API]];
+- puo usare [[Programmazione/React/Pagine/Context API]];
 - puo usare hook come qualunque altro componente;
 - partecipa normalmente al reconciliation di React.
 
@@ -197,7 +206,7 @@ Usare portals ovunque per componenti normali crea piu complessita di quanta ne t
 
 ## 8. Portals vs Conditional Rendering
 
-Un portal non sostituisce il [[Rendering Condizionale e Liste]].
+Un portal non sostituisce il [[Programmazione/React/Pagine/Rendering Condizionale e Liste]].
 
 I due concetti rispondono a problemi diversi:
 - **rendering condizionale**: decide se un elemento esiste o no;

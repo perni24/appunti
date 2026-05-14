@@ -1,11 +1,20 @@
 ---
-date: 2026-03-02
-tags: [react, props, data-flow, frontend, basics]
-type: #permanent-note
-status: budding
+date: 2026-05-14
+area: Programmazione
+topic: React
+type: technical-note
+status: "non revisionato"
+difficulty: intermediate
+tags: [react, frontend, javascript]
+aliases: [Props e Flusso di dati unidirezionale]
+prerequisites: []
+related: []
 ---
-
 # Props e Flusso di dati unidirezionale
+
+## Sintesi
+
+Nota su Props e Flusso di dati unidirezionale in React. Riassume il concetto, quando usarlo, i punti critici e gli errori da evitare durante sviluppo, debugging o revisione di applicazioni React.
 
 In React, le **Props** (abbreviazione di *properties*) sono il meccanismo principale per passare dati da un componente genitore (Parent) a un componente figlio (Child). Insieme allo stato, costituiscono il cuore della reattività di React.
 

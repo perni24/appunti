@@ -1,11 +1,20 @@
 ---
-date: 2026-04-22
-tags: [react, security, csp, xss, frontend, javascript]
-type: #permanent-note
-status: budding
+date: 2026-05-14
+area: Programmazione
+topic: React
+type: technical-note
+status: "non revisionato"
+difficulty: intermediate
+tags: [react, frontend, javascript]
+aliases: [Content Security Policy]
+prerequisites: []
+related: []
 ---
-
 # Content Security Policy
+
+## Sintesi
+
+Nota su Content Security Policy in React. Riassume il concetto, quando usarlo, i punti critici e gli errori da evitare durante sviluppo, debugging o revisione di applicazioni React.
 
 La **Content Security Policy** (**CSP**) e un meccanismo di sicurezza del browser che limita quali risorse una pagina puo caricare o eseguire.
 
@@ -36,7 +45,7 @@ In pratica, e un modo per ridurre la superficie di esecuzione arbitraria nel bro
 
 ## 2. Relazione con XSS
 
-La CSP e fortemente collegata a [[Protezione XSS]].
+La CSP e fortemente collegata a [[Programmazione/React/Pagine/Protezione XSS]].
 
 Se un'app ha una vulnerabilita XSS, una CSP ben progettata puo limitare alcuni scenari, per esempio:
 - bloccare script inline non autorizzati;
@@ -158,7 +167,7 @@ In una app React moderna, la CSP va progettata tenendo conto di:
 - eventuali analytics;
 - eventuali script di terze parti.
 
-Per esempio, `connect-src` e spesso rilevante perche React usa `fetch` o librerie di data fetching verso endpoint esterni. Qui si collega direttamente a [[Data Fetching e Cache]].
+Per esempio, `connect-src` e spesso rilevante perche React usa `fetch` o librerie di data fetching verso endpoint esterni. Qui si collega direttamente a [[Programmazione/React/Pagine/Data Fetching e Cache]].
 
 Se la policy e troppo permissiva, perde valore.
 
@@ -228,7 +237,7 @@ Va quindi vista come parte di una difesa a strati insieme a:
 - escaping del JSX;
 - sanitizzazione HTML;
 - gestione corretta di token e cookie;
-- difese contro CSRF come in [[CSRF]].
+- difese contro CSRF come in [[Programmazione/React/Pagine/CSRF]].
 
 ---
 

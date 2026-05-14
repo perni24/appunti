@@ -1,24 +1,29 @@
 ---
-date: 2026-03-15
-tags:
-  - database
-  - postgres
-  - performance
-  - tuning
-type: #permanent-note
-status: evergreen
+date: 2026-05-14
+area: Programmazione
+topic: PostgreSQL
+type: technical-note
+status: "non revisionato"
+difficulty: intermediate
+tags: [postgresql, database]
+aliases: [Analisi delle Query]
+prerequisites: []
+related: []
 ---
-
 # Analisi delle Query in PostgreSQL
+
+## Sintesi
+
+Nota su Analisi delle Query in PostgreSQL. Riassume il concetto, i meccanismi principali e i punti da ricordare durante studio, progettazione o amministrazione.
 
 L'analisi delle query è il pilastro fondamentale per il **Database Tuning**. In PostgreSQL, questo processo ruota attorno alla comprensione del **Query Planner** e all'utilizzo del comando `EXPLAIN`.
 
-## 💡 Concetto Chiave
+## Concetto chiave
 Il Query Planner (o Optimizer) riceve una query SQL e decide la strategia più efficiente per recuperare i dati, generando un **Piano di Esecuzione**. L'analisi consiste nel verificare se la scelta del Planner coincide con la realtà dei dati.
 
 ---
 
-## 🏗️ Lo Strumento: EXPLAIN
+##  Lo Strumento: EXPLAIN
 
 Il comando `EXPLAIN` mostra il piano di esecuzione senza eseguire la query (nella forma base).
 
@@ -38,7 +43,7 @@ SELECT * FROM ordini WHERE cliente_id = 42;
 
 ---
 
-## 🔍 Anatomia di un Piano (Execution Nodes)
+##  Anatomia di un Piano (Execution Nodes)
 
 Un piano di esecuzione è un albero di **nodi**. Ogni nodo rappresenta un'operazione specifica.
 
@@ -50,7 +55,7 @@ Un piano di esecuzione è un albero di **nodi**. Ogni nodo rappresenta un'operaz
 
 ---
 
-## 🛤️ Metodi di Accesso ai Dati (Scan Types)
+##  Metodi di Accesso ai Dati (Scan Types)
 
 PostgreSQL sceglie come leggere le tabelle in base agli indici disponibili e alla selettività della query:
 
@@ -63,7 +68,7 @@ PostgreSQL sceglie come leggere le tabelle in base agli indici disponibili e all
 
 ---
 
-## 🤝 Algoritmi di Join
+##  Algoritmi di Join
 
 Quando la query coinvolge più tabelle, il planner deve scegliere come unirle:
 
@@ -73,7 +78,7 @@ Quando la query coinvolge più tabelle, il planner deve scegliere come unirle:
 
 ---
 
-## ⚖️ Il Ruolo delle Statistiche
+##  Il Ruolo delle Statistiche
 
 Il Planner decide basandosi sulle statistiche memorizzate in `pg_statistic`.
 
@@ -85,7 +90,7 @@ Se noti una grande differenza tra `rows` (stimato) e `actual rows` (reale), sign
 
 ---
 
-## 🛠️ Strumenti Avanzati
+##  Strumenti Avanzati
 
 1. **pg_stat_statements:** Estensione indispensabile per monitorare quali query consumano più risorse nel tempo.
 2. **auto_explain:** Modulo per loggare automaticamente i piani delle query che superano una certa soglia di tempo.

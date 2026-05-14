@@ -1,48 +1,69 @@
 ---
-date: 2026-04-04
-tags:
-  - programmazione
-  - python
-  - threading
-  - concorrenza
-type: #permanent-note
-status: seedling
+date: 2026-05-14
+area: Programmazione
+topic: Python
+type: technical-note
+status: "non revisionato"
+difficulty: intermediate
+tags: [python, programming]
+aliases: [Threading]
+prerequisites: []
+related: []
 ---
-
 # Threading in Python
 
-## 💡 Concetto Chiave
+## Sintesi
+
+Nota su Threading in Python. Riassume il concetto, la sintassi principale e i punti da ricordare durante studio, sviluppo o debugging.
+
+## Concetto chiave
 Il **Threading** è una tecnica di programmazione che permette l'esecuzione di più thread (sottoprocessi leggeri) all'interno di un singolo processo. In Python, il modulo `threading` viene utilizzato principalmente per gestire attività **I/O-bound** (operazioni che attendono input/output, come richieste di rete o lettura di file), permettendo al programma di rimanere responsivo invece di bloccarsi in attesa.
 
 > [!IMPORTANT]
-> A causa del [[Global Interpreter Lock|GIL (Global Interpreter Lock)]], il threading in Python non offre un vero parallelismo per operazioni **CPU-bound** (calcoli intensivi), poiché solo un thread alla volta può eseguire bytecode Python.
+> A causa del [[Programmazione/Python/Pagine/Global Interpreter Lock|GIL (Global Interpreter Lock)]], il threading in Python non offre un vero parallelismo per operazioni **CPU-bound** (calcoli intensivi), poiché solo un thread alla volta può eseguire bytecode Python.
 
 ---
 
-## 📝 Sintassi
+##  Sintassi
 Il modulo standard per gestire i thread è `threading`.
 
 ```python
 import threading
 
-# Definizione di una funzione da eseguire in un thread
+# Threading in Python
+
+## Sintesi
+
+Nota su Threading in Python. Riassume il concetto, la sintassi principale e i punti da ricordare durante studio, sviluppo o debugging.
 def task_function(arg1, arg2):
     # Logica del thread
     pass
 
-# Creazione del thread
+# Threading in Python
+
+## Sintesi
+
+Nota su Threading in Python. Riassume il concetto, la sintassi principale e i punti da ricordare durante studio, sviluppo o debugging.
 thread = threading.Thread(target=task_function, args=(val1, val2))
 
-# Avvio del thread
+# Threading in Python
+
+## Sintesi
+
+Nota su Threading in Python. Riassume il concetto, la sintassi principale e i punti da ricordare durante studio, sviluppo o debugging.
 thread.start()
 
-# Attesa del completamento (opzionale)
+# Threading in Python
+
+## Sintesi
+
+Nota su Threading in Python. Riassume il concetto, la sintassi principale e i punti da ricordare durante studio, sviluppo o debugging.
 thread.join()
 ```
 
 ---
 
-## 💻 Esempi Pratici
+##  Esempi Pratici
 
 ### Esempio Base
 Un esempio semplice che mostra come avviare più thread per simulare task paralleli.
@@ -61,15 +82,27 @@ def print_letters():
         time.sleep(1.5)
         print(f"Lettera: {letter}")
 
-# Creazione dei thread
+# Threading in Python
+
+## Sintesi
+
+Nota su Threading in Python. Riassume il concetto, la sintassi principale e i punti da ricordare durante studio, sviluppo o debugging.
 t1 = threading.Thread(target=print_numbers)
 t2 = threading.Thread(target=print_letters)
 
-# Avvio
+# Threading in Python
+
+## Sintesi
+
+Nota su Threading in Python. Riassume il concetto, la sintassi principale e i punti da ricordare durante studio, sviluppo o debugging.
 t1.start()
 t2.start()
 
-# Aspettiamo che entrambi finiscano prima di proseguire nel main thread
+# Threading in Python
+
+## Sintesi
+
+Nota su Threading in Python. Riassume il concetto, la sintassi principale e i punti da ricordare durante studio, sviluppo o debugging.
 t1.join()
 t2.join()
 
@@ -106,18 +139,18 @@ print(f"Valore finale counter: {counter}")
 
 ---
 
-## ⚙️ Funzionamento Interno (Teoria)
+##  Funzionamento Interno (Teoria)
 - **Gestione Memoria:** Tutti i thread di un processo condividono lo stesso spazio di indirizzamento (memoria heap). Questo rende la comunicazione tra thread molto veloce ma richiede sincronizzazione per evitare corruzione dei dati.
 - **Context Switching:** Il sistema operativo (o l'interprete Python) scambia rapidamente l'esecuzione tra i thread. In Python, il GIL viene rilasciato durante le operazioni di I/O, rendendo il threading ideale per queste ultime.
 - **Performance:** Per task che richiedono calcoli puri (es. crittografia, elaborazione immagini), il threading può risultare più lento a causa dell'overhead del context switching senza il beneficio del parallelismo reale. In quei casi è meglio usare `Multiprocessing`.
 
 ---
 
-## ⚠️ Best Practices & "Gotchas"
-- ✅ **Da fare:** Usa il threading per operazioni che passano molto tempo in attesa (Network requests, Database queries, UI responsiveness).
-- ✅ **Da fare:** Usa sempre i `Lock` o altre primitive di sincronizzazione (come `Queue`) quando condividi dati mutabili tra thread.
-- ❌ **Da evitare:** Non usare il threading per velocizzare cicli `for` intensivi a livello computazionale (CPU-bound); usa `multiprocessing`.
-- 💣 **Errori comuni:** Dimenticare di chiamare `.join()`, portando il thread principale a terminare prima dei thread figli (o lasciandoli "zombie" se non sono daemon).
-- 💣 **Deadlock:** Situazione in cui il Thread A aspetta una risorsa bloccata dal Thread B, e il Thread B aspetta una risorsa bloccata dal Thread A.
+##  Best Practices & "Gotchas"
+-  **Da fare:** Usa il threading per operazioni che passano molto tempo in attesa (Network requests, Database queries, UI responsiveness).
+-  **Da fare:** Usa sempre i `Lock` o altre primitive di sincronizzazione (come `Queue`) quando condividi dati mutabili tra thread.
+-  **Da evitare:** Non usare il threading per velocizzare cicli `for` intensivi a livello computazionale (CPU-bound); usa `multiprocessing`.
+-  **Errori comuni:** Dimenticare di chiamare `.join()`, portando il thread principale a terminare prima dei thread figli (o lasciandoli "zombie" se non sono daemon).
+-  **Deadlock:** Situazione in cui il Thread A aspetta una risorsa bloccata dal Thread B, e il Thread B aspetta una risorsa bloccata dal Thread A.
 
 ---

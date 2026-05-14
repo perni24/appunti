@@ -1,11 +1,20 @@
 ---
-date: 2026-04-17
-tags: [react, profiler, debugging, performance, frontend, javascript]
-type: #permanent-note
-status: budding
+date: 2026-05-14
+area: Programmazione
+topic: React
+type: technical-note
+status: "non revisionato"
+difficulty: intermediate
+tags: [react, frontend, javascript]
+aliases: [Profiler e Debugging (React DevTools)]
+prerequisites: []
+related: []
 ---
-
 # Profiler e Debugging (React DevTools)
+
+## Sintesi
+
+Nota su Profiler e Debugging (React DevTools) in React. Riassume il concetto, quando usarlo, i punti critici e gli errori da evitare durante sviluppo, debugging o revisione di applicazioni React.
 
 Il **profiling** e il **debugging** in React servono a capire due cose diverse ma complementari:
 
@@ -120,7 +129,7 @@ Se tieni stato in un parent molto alto, ogni aggiornamento puo trascinare troppi
 ### Liste grandi
 Renderizzare molte righe o card puo diventare costoso anche con logica semplice.
 
-Questi casi si collegano direttamente a [[useMemo e useCallback]] e [[useTransition e useDeferredValue]].
+Questi casi si collegano direttamente a [[Programmazione/React/Pagine/useMemo e useCallback]] e [[Programmazione/React/Pagine/useTransition e useDeferredValue]].
 
 ---
 
@@ -159,7 +168,7 @@ Per i problemi di runtime dell'interfaccia, spesso conviene combinare:
 - **Components tab** per stato e props;
 - **console** per verifiche puntuali;
 - **Profiler** per i costi di rendering;
-- [[Error Boundaries]] per isolare crash di rendering.
+- [[Programmazione/React/Pagine/Error Boundaries]] per isolare crash di rendering.
 
 ---
 

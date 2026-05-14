@@ -1,22 +1,27 @@
 ---
-date: 2026-03-06
-tags:
-  - database
-  - postgres
-  - sql
-  - tipi-dato
-type: #permanent-note
-status: evergreen
+date: 2026-05-14
+area: Programmazione
+topic: PostgreSQL
+type: technical-note
+status: "non revisionato"
+difficulty: intermediate
+tags: [postgresql, database]
+aliases: [Tipi di Dato]
+prerequisites: []
+related: []
 ---
-
 # Tipi di Dato in PostgreSQL
 
-## 💡 Concetto Chiave
+## Sintesi
+
+Nota su Tipi di Dato in PostgreSQL. Riassume il concetto, i meccanismi principali e i punti da ricordare durante studio, progettazione o amministrazione.
+
+## Concetto chiave
 PostgreSQL offre uno dei sistemi di tipi più ricchi e flessibili nel mondo dei database relazionali. Oltre ai tipi standard SQL, include supporto nativo per strutture complesse come array, documenti JSON binari e intervalli, permettendo di modellare i dati in modo preciso ed efficiente senza dover ricorrere a database NoSQL esterni.
 
 ---
 
-## 📝 Tipi Primitivi e Comuni
+##  Tipi Primitivi e Comuni
 
 ### 1. Numerici
 - **`integer` / `int`**: Intero a 4 byte (range ±2 miliardi).
@@ -38,7 +43,7 @@ PostgreSQL offre uno dei sistemi di tipi più ricchi e flessibili nel mondo dei 
 
 ---
 
-## 🚀 Tipi di Dato Avanzati
+##  Tipi di Dato Avanzati
 
 ### 1. Array
 Postgres permette a una colonna di contenere una lista di valori dello stesso tipo.
@@ -62,13 +67,17 @@ Permettono di memorizzare un intervallo di valori in una singola colonna, garant
 - **`tstzrange`**: Intervallo di timestamp con timezone (es. per prenotazioni hotel).
 
 ```sql
-# Controllare se una data cade in un intervallo
+# Tipi di Dato in PostgreSQL
+
+## Sintesi
+
+Nota su Tipi di Dato in PostgreSQL. Riassume il concetto, i meccanismi principali e i punti da ricordare durante studio, progettazione o amministrazione.
 SELECT daterange('2026-01-01', '2026-01-31') @> '2026-01-15'::date; -- Risultato: True
 ```
 
 ---
 
-## ⚙️ Logic Layer: Perché usare `JSONB` e `TIMESTAMPTZ`?
+## Logic layer: Perché usare `JSONB` e `TIMESTAMPTZ`?
 
 > [!IMPORTANT] Scelte Architetturali
 > 1. **`jsonb` vs `json`**: `jsonb` esegue il parsing all'inserimento, rendendo le query su singoli campi estremamente rapide grazie agli indici **GIN**. Scegli `json` solo se devi conservare la formattazione originale esatta.

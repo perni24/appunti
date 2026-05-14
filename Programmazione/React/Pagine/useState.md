@@ -1,11 +1,20 @@
 ---
-date: 2026-03-03
-tags: [react, hooks, state, frontend, javascript]
-type: #permanent-note
-status: budding
+date: 2026-05-14
+area: Programmazione
+topic: React
+type: technical-note
+status: "non revisionato"
+difficulty: intermediate
+tags: [react, frontend, javascript]
+aliases: [useState: Gestione dello stato locale]
+prerequisites: []
+related: []
 ---
-
 # useState: Gestione dello stato locale
+
+## Sintesi
+
+Nota su useState: Gestione dello stato locale in React. Riassume il concetto, quando usarlo, i punti critici e gli errori da evitare durante sviluppo, debugging o revisione di applicazioni React.
 
 Il hook `useState` è lo strumento fondamentale in React per aggiungere uno **stato locale** ai Componenti Funzionali. Prima della sua introduzione, la gestione dello stato era possibile solo all'interno delle classi.
 

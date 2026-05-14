@@ -1,24 +1,29 @@
 ---
-date: 2026-03-15
-tags:
-  - database
-  - postgres
-  - performance
-  - architecture
-type: #permanent-note
-status: evergreen
+date: 2026-05-14
+area: Programmazione
+topic: PostgreSQL
+type: technical-note
+status: "non revisionato"
+difficulty: intermediate
+tags: [postgresql, database]
+aliases: [Statistiche e Query Planner]
+prerequisites: []
+related: []
 ---
-
 # Statistiche e Query Planner in PostgreSQL
+
+## Sintesi
+
+Nota su Statistiche e Query Planner in PostgreSQL. Riassume il concetto, i meccanismi principali e i punti da ricordare durante studio, progettazione o amministrazione.
 
 Il **Query Planner** (o Optimizer) è il "cervello" di PostgreSQL che decide il percorso più efficiente per eseguire una query. Questa decisione non è casuale, ma si basa interamente sulle **Statistiche** raccolte sui dati.
 
-## 💡 Concetto Chiave
+## Concetto chiave
 PostgreSQL utilizza un **Cost-Based Optimizer (CBO)**. Il Planner stima il "costo" di diverse strategie di esecuzione (es. usare un indice vs scansione sequenziale) e sceglie quella con il costo totale minimo. La qualità di questa scelta dipende direttamente dall'accuratezza delle statistiche.
 
 ---
 
-## 📊 Come vengono raccolte le Statistiche?
+##  Come vengono raccolte le Statistiche?
 
 Le statistiche non sono aggiornate in tempo reale a ogni `INSERT` o `UPDATE` (sarebbe troppo costoso). Vengono raccolte dal processo **Autovacuum** o tramite il comando manuale `ANALYZE`.
 
@@ -30,7 +35,7 @@ Questo comando campiona casualmente una porzione della tabella e aggiorna la tab
 
 ---
 
-## 🔍 Cosa analizza il Planner? (pg_stats)
+##  Cosa analizza il Planner? (pg_stats)
 
 Per ogni colonna di ogni tabella, PostgreSQL memorizza dati cruciali:
 
@@ -45,7 +50,7 @@ Per ogni colonna di ogni tabella, PostgreSQL memorizza dati cruciali:
 
 ---
 
-## ⚙️ Il Calcolo del Costo
+##  Il Calcolo del Costo
 
 Il costo è una combinazione di diversi fattori configurabili nel `postgresql.conf`:
 
@@ -59,7 +64,7 @@ Il costo è una combinazione di diversi fattori configurabili nel `postgresql.co
 
 ---
 
-## 🚧 Problemi Comuni e Correlazioni
+##  Problemi Comuni e Correlazioni
 
 Il Planner assume che le colonne siano **indipendenti**. Se hai una query con `WHERE città = 'Roma' AND cap = '00100'`, il Planner moltiplicherà le probabilità di entrambi, ottenendo una stima molto più bassa del reale (perché le due colonne sono correlate).
 
@@ -72,7 +77,7 @@ ANALYZE indirizzi;
 
 ---
 
-## 🛠️ Debugging delle Statistiche
+##  Debugging delle Statistiche
 
 Se `EXPLAIN ANALYZE` mostra una discrepanza enorme tra le righe stimate e quelle reali:
 1.  **Controlla l'ultima analisi:** `SELECT last_analyze FROM pg_stat_user_tables;`

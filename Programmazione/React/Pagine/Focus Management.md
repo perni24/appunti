@@ -1,11 +1,20 @@
 ---
-date: 2026-04-23
-tags: [react, accessibility, a11y, focus-management, keyboard-navigation, frontend, javascript]
-type: #permanent-note
-status: budding
+date: 2026-05-14
+area: Programmazione
+topic: React
+type: technical-note
+status: "non revisionato"
+difficulty: intermediate
+tags: [react, frontend, javascript]
+aliases: [Focus Management]
+prerequisites: []
+related: []
 ---
-
 # Focus Management
+
+## Sintesi
+
+Nota su Focus Management in React. Riassume il concetto, quando usarlo, i punti critici e gli errori da evitare durante sviluppo, debugging o revisione di applicazioni React.
 
 Il **focus management** riguarda il modo in cui l'interfaccia controlla e mantiene il focus tastiera sugli elementi interattivi.
 
@@ -39,7 +48,7 @@ Se il focus non viene gestito bene, l'utente puo:
 React aggiorna il DOM dinamicamente:
 - componenti montati o smontati;
 - contenuti che compaiono dopo un click;
-- modal che si aprono via [[Portals]];
+- modal che si aprono via [[Programmazione/React/Pagine/Portals]];
 - messaggi di errore che appaiono nel form;
 - liste filtrate o riordinate.
 
@@ -81,7 +90,7 @@ La regola pratica e: lascia al browser il piu possibile, intervieni solo quando 
 
 ## 4. useRef e focus imperativo
 
-In React il modo piu comune per gestire il focus e usare [[useRef]].
+In React il modo piu comune per gestire il focus e usare [[Programmazione/React/Pagine/useRef]].
 
 Esempio:
 
@@ -158,7 +167,7 @@ Serve perche, se la modal rappresenta il contesto attivo:
 
 Questa parte non viene risolta da ARIA da sola. Richiede logica reale di tastiera e focus.
 
-Si collega direttamente a [[WAI-ARIA]] e [[Portals]].
+Si collega direttamente a [[Programmazione/React/Pagine/WAI-ARIA]] e [[Programmazione/React/Pagine/Portals]].
 
 ---
 
@@ -193,7 +202,7 @@ Pattern frequente:
 
 Questo rende piu facile correggere il problema, specialmente per utenti tastiera o screen reader.
 
-Si collega bene a [[Gestione Moduli]] e [[WAI-ARIA]].
+Si collega bene a [[Programmazione/React/Pagine/Gestione Moduli]] e [[Programmazione/React/Pagine/WAI-ARIA]].
 
 ---
 
@@ -278,9 +287,9 @@ Questi bug spesso non si notano con il mouse, ma emergono subito con tastiera e 
 ## 13. Relazione con React
 
 Il focus management si collega bene a:
-- [[WAI-ARIA]] per ruoli, stati e descrizioni corrette;
-- [[Portals]] per modal e overlay;
-- [[Gestione Moduli]] per errori e campi invalidi;
+- [[Programmazione/React/Pagine/WAI-ARIA]] per ruoli, stati e descrizioni corrette;
+- [[Programmazione/React/Pagine/Portals]] per modal e overlay;
+- [[Programmazione/React/Pagine/Gestione Moduli]] per errori e campi invalidi;
 - navigazione da tastiera e test di accessibilita.
 
 In React il punto chiave e mantenere allineati:

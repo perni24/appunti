@@ -1,17 +1,26 @@
 ---
-date: 2026-03-03
-tags: [react, hooks, dry, reusable-logic, frontend]
-type: #permanent-note
-status: budding
+date: 2026-05-14
+area: Programmazione
+topic: React
+type: technical-note
+status: "non revisionato"
+difficulty: intermediate
+tags: [react, frontend, javascript]
+aliases: [Custom Hooks]
+prerequisites: []
+related: []
 ---
-
 # Custom Hooks
+
+## Sintesi
+
+Nota su Custom Hooks in React. Riassume il concetto, quando usarlo, i punti critici e gli errori da evitare durante sviluppo, debugging o revisione di applicazioni React.
 
 I **Custom Hooks** sono funzioni JavaScript che permettono di estrarre e riutilizzare la logica di stato tra diversi componenti. Rappresentano lo strumento più potente di React per seguire il principio **DRY** (Don't Repeat Yourself).
 
 ## 1. Cos'è un Custom Hook?
 
-Un custom hook è una funzione il cui nome inizia convenzionalmente con **`use`** (es: `useFetch`, `useAuth`, `useLocalStorage`). Al suo interno può richiamare altri Hook di React come [[useState]], [[useEffect]], ecc.
+Un custom hook è una funzione il cui nome inizia convenzionalmente con **`use`** (es: `useFetch`, `useAuth`, `useLocalStorage`). Al suo interno può richiamare altri Hook di React come [[Programmazione/React/Pagine/useState]], [[Programmazione/React/Pagine/useEffect]], ecc.
 
 > [!INFO] Logica vs UI
 > I custom hook servono a condividere la **logica di stato** (stateful logic), non lo stato stesso. Ogni volta che un componente chiama un custom hook, tutti gli stati e gli effetti al suo interno sono completamente isolati e indipendenti tra i vari componenti.

@@ -1,24 +1,29 @@
 ---
-date: 2026-03-15
-tags:
-  - database
-  - postgres
-  - transazioni
-  - acid
-type: #permanent-note
-status: evergreen
+date: 2026-05-14
+area: Programmazione
+topic: PostgreSQL
+type: technical-note
+status: "non revisionato"
+difficulty: intermediate
+tags: [postgresql, database]
+aliases: [Proprietà ACID]
+prerequisites: []
+related: []
 ---
-
 # Proprietà ACID in PostgreSQL
+
+## Sintesi
+
+Nota su Proprietà ACID in PostgreSQL. Riassume il concetto, i meccanismi principali e i punti da ricordare durante studio, progettazione o amministrazione.
 
 In informatica, le proprietà **ACID** (Atomicity, Consistency, Isolation, Durability) rappresentano un insieme di caratteristiche che garantiscono che le transazioni del database vengano elaborate in modo affidabile.
 
-## 💡 Concetto Chiave
+## Concetto chiave
 PostgreSQL è un database relazionale **ACID-compliant**. Ciò significa che, indipendentemente da crash del sistema, errori di rete o accessi concorrenti, i dati rimarranno sempre in uno stato integro e coerente.
 
 ---
 
-## 🅰️ Atomicità (Atomicity)
+## Atomicità (Atomicity)
 L'atomicità garantisce che una transazione sia trattata come un'unica unità "tutto o niente". Se una parte della transazione fallisce, l'intera transazione viene annullata (**Rollback**).
 
 - **In Postgres:** Viene gestita tramite i comandi `BEGIN`, `COMMIT` e `ROLLBACK`.
@@ -26,7 +31,7 @@ L'atomicità garantisce che una transazione sia trattata come un'unica unità "t
 
 ---
 
-## Ⓒ Consistenza (Consistency)
+## Consistenza (Consistency)
 La consistenza garantisce che una transazione porti il database da uno stato valido a un altro stato valido, rispettando tutti i vincoli definiti (regole di integrità).
 
 - **In Postgres:** Viene garantita dall'applicazione rigorosa di:
@@ -36,7 +41,7 @@ La consistenza garantisce che una transazione porti il database da uno stato val
 
 ---
 
-## Ⓘ Isolamento (Isolation)
+## Isolamento (Isolation)
 L'isolamento garantisce che l'esecuzione concorrente di transazioni lasci il database nello stesso stato in cui si troverebbe se le transazioni fossero eseguite sequenzialmente.
 
 - **In Postgres:** Viene implementato tramite il sistema [[Programmazione/Postgres/Pagine/MVCC|MVCC (Multi-Version Concurrency Control)]].
@@ -44,7 +49,7 @@ L'isolamento garantisce che l'esecuzione concorrente di transazioni lasci il dat
 
 ---
 
-## Ⓓ Durabilità (Durability)
+## Durabilità (Durability)
 La durabilità garantisce che, una volta che una transazione è stata confermata (`COMMIT`), rimarrà memorizzata anche in caso di crash del server o interruzione di corrente.
 
 - **In Postgres:** I dati vengono scritti in modo permanente sul disco (tramite `fsync`).
@@ -52,7 +57,7 @@ La durabilità garantisce che, una volta che una transazione è stata confermata
 
 ---
 
-## 🚀 Logic Layer: Perché ACID è fondamentale?
+## Logic layer: Perché ACID è fondamentale?
 
 Senza le proprietà ACID, un database non potrebbe essere utilizzato per applicazioni critiche (es: sistemi bancari, e-commerce). Ad esempio, senza **Atomicità**, un trasferimento bancario potrebbe sottrarre soldi da un conto senza accreditarli sull'altro se il sistema crashasse a metà operazione.
 

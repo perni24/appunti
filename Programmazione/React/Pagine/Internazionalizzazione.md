@@ -1,11 +1,20 @@
 ---
-date: 2026-04-22
-tags: [react, i18n, localization, react-i18next, frontend, javascript]
-type: #permanent-note
-status: budding
+date: 2026-05-14
+area: Programmazione
+topic: React
+type: technical-note
+status: "non revisionato"
+difficulty: intermediate
+tags: [react, frontend, javascript]
+aliases: [Internazionalizzazione]
+prerequisites: []
+related: []
 ---
-
 # Internazionalizzazione
+
+## Sintesi
+
+Nota su Internazionalizzazione in React. Riassume il concetto, quando usarlo, i punti critici e gli errori da evitare durante sviluppo, debugging o revisione di applicazioni React.
 
 La **internazionalizzazione** (**i18n**, da *internationalization*) e il processo con cui un'applicazione viene progettata per supportare piu lingue, formati e convenzioni locali senza dover riscrivere i componenti.
 
@@ -143,7 +152,7 @@ Questo apre poi domande architetturali importanti:
 - come leggerla da route, cookie o localStorage;
 - come sincronizzarla con il backend o con la preferenza utente.
 
-Qui il tema puo collegarsi a [[React Router]] e a sistemi di persistenza leggeri.
+Qui il tema puo collegarsi a [[Programmazione/React/Pagine/React Router]] e a sistemi di persistenza leggeri.
 
 ---
 
@@ -222,7 +231,7 @@ L'internazionalizzazione puo influenzare anche il caricamento dati:
 - fetch delle risorse di traduzione;
 - invalidazione della cache quando cambia locale.
 
-Per questo puo collegarsi a [[Data Fetching e Cache]], soprattutto se:
+Per questo puo collegarsi a [[Programmazione/React/Pagine/Data Fetching e Cache]], soprattutto se:
 - la lingua influisce sulle query;
 - il backend restituisce contenuti localizzati;
 - alcune risorse vanno ricaricate al cambio lingua.
@@ -242,7 +251,7 @@ Questo approccio puo essere utile per:
 - SEO;
 - condivisione di link corretti;
 - gestione esplicita del contesto lingua;
-- allineamento con [[React Router]].
+- allineamento con [[Programmazione/React/Pagine/React Router]].
 
 Ma introduce anche piu complessita:
 - mapping delle route;

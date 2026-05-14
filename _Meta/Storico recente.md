@@ -29,6 +29,9 @@ Mantieni solo le ultime 10 voci operative.
 - Sistemate le note della sezione `Asincronia e Networking` di JavaScript: `Event Loop`, `Callback`, `Promises`, `Promise avanzate`, `Async Await`, `Fetch API`, `AbortController`, `WebSockets`, `AJAX`, `Scheduling Browser`.
 - Create e collegate le pagine mancanti della sezione `Node.js Runtime` di JavaScript: `Node.js Basics`, `File System fs`, `Path e Process`, `Events Node.js`, `Streams Node.js`, `Buffer Node.js`.
 - Completata la ristrutturazione dei file vecchi JavaScript: sezioni `Gestione della Memoria e Performance`, `Programmazione ad Oggetti e Classi`, `Web APIs e Concetti Avanzati`, `Tooling e Qualita del Codice`.
+- Aggiornate le pagine Postgres alla nuova struttura: frontmatter standard, sezione `Sintesi`, link indice assoluti e pulizia dei caratteri corrotti.
+- Aggiornate le pagine Python alla nuova struttura: frontmatter standard, sezione `Sintesi`, link interni assoluti, pulizia encoding e creazione delle pagine native mancanti (`Dataclasses`, `Enum`, `Subprocess`, `argparse`, `sqlite3`, networking e configurazione).
+- Aggiornate le pagine React alla nuova struttura: frontmatter standard, sezione `Sintesi`, link interni assoluti e pulizia encoding.
 
 ### Decisioni
 

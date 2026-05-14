@@ -1,11 +1,20 @@
 ---
-date: 2026-04-23
-tags: [react, accessibility, a11y, testing, axe, lighthouse, frontend, javascript]
-type: #permanent-note
-status: budding
+date: 2026-05-14
+area: Programmazione
+topic: React
+type: technical-note
+status: "non revisionato"
+difficulty: intermediate
+tags: [react, frontend, javascript]
+aliases: [Test di accessibilita]
+prerequisites: []
+related: []
 ---
-
 # Test di accessibilita
+
+## Sintesi
+
+Nota su Test di accessibilita in React. Riassume il concetto, quando usarlo, i punti critici e gli errori da evitare durante sviluppo, debugging o revisione di applicazioni React.
 
 I **test di accessibilita** servono a verificare se un'interfaccia e realmente utilizzabile anche da persone che navigano con tastiera, screen reader o altre tecnologie assistive.
 
@@ -120,7 +129,7 @@ Controlli pratici:
 - una modal blocca correttamente il focus?
 - il focus torna nel punto corretto quando un overlay si chiude?
 
-Questo si collega direttamente a [[Focus Management]].
+Questo si collega direttamente a [[Programmazione/React/Pagine/Focus Management]].
 
 Se una UI non e usabile con la tastiera, c'e gia un problema reale.
 
@@ -137,7 +146,7 @@ Obiettivi:
 - capire se messaggi dinamici vengono annunciati.
 
 Qui diventano rilevanti:
-- [[WAI-ARIA]];
+- [[Programmazione/React/Pagine/WAI-ARIA]];
 - label corrette;
 - `aria-live`;
 - semantica HTML;
@@ -158,7 +167,7 @@ Controlli utili:
 - il campo invalido e percepibile anche senza colore?
 - l'utente capisce come correggere l'errore?
 
-Questo si collega a [[Gestione Moduli]] e [[WAI-ARIA]].
+Questo si collega a [[Programmazione/React/Pagine/Gestione Moduli]] e [[Programmazione/React/Pagine/WAI-ARIA]].
 
 Un form puo essere corretto sul piano funzionale e restare comunque molto difficile da usare per utenti assistive tech.
 
@@ -218,9 +227,9 @@ Il problema non e solo "quale attributo manca", ma se l'interazione completa e d
 ## 12. Relazione con React
 
 I test di accessibilita si collegano bene a:
-- [[WAI-ARIA]] per verificare ruoli, stati e naming;
-- [[Focus Management]] per tastiera e overlay;
-- [[Gestione Moduli]] per label, errori e submit;
+- [[Programmazione/React/Pagine/WAI-ARIA]] per verificare ruoli, stati e naming;
+- [[Programmazione/React/Pagine/Focus Management]] per tastiera e overlay;
+- [[Programmazione/React/Pagine/Gestione Moduli]] per label, errori e submit;
 - testing UI piu ampio con strumenti automatici e manuali.
 
 In React il rischio principale e che stato, rendering dinamico e componenti custom introducano regressioni invisibili se non verificate esplicitamente.

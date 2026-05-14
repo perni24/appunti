@@ -1,11 +1,20 @@
 ---
-date: 2026-04-22
-tags: [react, forms, controlled-components, uncontrolled-components, react-hook-form, frontend, javascript]
-type: #permanent-note
-status: budding
+date: 2026-05-14
+area: Programmazione
+topic: React
+type: technical-note
+status: "non revisionato"
+difficulty: intermediate
+tags: [react, frontend, javascript]
+aliases: [Gestione Moduli]
+prerequisites: []
+related: []
 ---
-
 # Gestione Moduli
+
+## Sintesi
+
+Nota su Gestione Moduli in React. Riassume il concetto, quando usarlo, i punti critici e gli errori da evitare durante sviluppo, debugging o revisione di applicazioni React.
 
 In React, la **gestione dei moduli** riguarda il modo in cui raccogliamo, validiamo e inviamo input dell'utente attraverso i form.
 
@@ -39,7 +48,7 @@ Qui il valore dell'input:
 - viene aggiornato con `onChange`;
 - vive nello stato del componente.
 
-Questo pattern rende il flusso dei dati molto esplicito ed e coerente con [[useState]] e con il modello dichiarativo di React.
+Questo pattern rende il flusso dei dati molto esplicito ed e coerente con [[Programmazione/React/Pagine/useState]] e con il modello dichiarativo di React.
 
 ---
 
@@ -113,7 +122,7 @@ function LoginForm() {
 
 Qui il valore viene letto solo quando serve, tipicamente al submit.
 
-Questo approccio si collega a [[useRef]] piu che a `useState`.
+Questo approccio si collega a [[Programmazione/React/Pagine/useRef]] piu che a `useState`.
 
 ---
 
@@ -158,7 +167,7 @@ function ContactForm() {
 
 `event.preventDefault()` evita il comportamento nativo di reload della pagina e lascia a React il controllo del flusso.
 
-Qui si collega bene anche [[React Router]] se il submit porta a navigazione, redirect o pagina successiva.
+Qui si collega bene anche [[Programmazione/React/Pagine/React Router]] se il submit porta a navigazione, redirect o pagina successiva.
 
 ---
 
@@ -274,7 +283,7 @@ Un errore comune e trattare ogni form come stato globale.
 Nella maggior parte dei casi:
 - i valori del form restano locali al componente;
 - non vanno messi subito in uno store globale;
-- non servono in [[State Management Esterno]] finche non devono essere condivisi davvero.
+- non servono in [[Programmazione/React/Pagine/State Management Esterno]] finche non devono essere condivisi davvero.
 
 Il form state e spesso **UI state locale**, non stato globale applicativo.
 
@@ -289,8 +298,8 @@ Solo in casi specifici ha senso centralizzarlo:
 
 La gestione moduli si collega spesso a:
 - validazione dei dati, anche tramite schema;
-- [[Data Fetching e Cache]] se il submit chiama API;
-- [[Gestione della memoria e AbortController]] se vuoi gestire richieste annullabili;
+- [[Programmazione/React/Pagine/Data Fetching e Cache]] se il submit chiama API;
+- [[Programmazione/React/Pagine/Gestione della memoria e AbortController]] se vuoi gestire richieste annullabili;
 - UX di loading, success ed error state.
 
 Un buon form non raccoglie solo input: coordina anche feedback, invio e stato della richiesta.

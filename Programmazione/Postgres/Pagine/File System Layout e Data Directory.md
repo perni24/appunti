@@ -1,22 +1,27 @@
 ---
-date: 2026-03-05
-tags:
-  - database
-  - postgres
-  - architettura
-  - filesystem
-type: #permanent-note
-status: evergreen
+date: 2026-05-14
+area: Programmazione
+topic: PostgreSQL
+type: technical-note
+status: "non revisionato"
+difficulty: intermediate
+tags: [postgresql, database]
+aliases: [File System Layout e Data Directory]
+prerequisites: []
+related: []
 ---
-
 # File System Layout e Data Directory in PostgreSQL
 
-## 💡 Concetto Chiave
+## Sintesi
+
+Nota su File System Layout e Data Directory in PostgreSQL. Riassume il concetto, i meccanismi principali e i punti da ricordare durante studio, progettazione o amministrazione.
+
+## Concetto chiave
 Tutti i dati gestiti da un'istanza di PostgreSQL (il "cluster") risiedono in una singola directory del file system, nota come **Data Directory** o `PGDATA`. Comprendere l'organizzazione interna di questa cartella è fondamentale per operazioni di backup, troubleshooting e ottimizzazione dei dischi.
 
 ---
 
-## 🏗️ Struttura della Data Directory
+##  Struttura della Data Directory
 
 Ecco le sottocartelle più importanti che compongono l'ecosistema di Postgres:
 
@@ -31,7 +36,7 @@ Ecco le sottocartelle più importanti che compongono l'ecosistema di Postgres:
 
 ---
 
-## 📄 File di Configurazione e Controllo
+##  File di Configurazione e Controllo
 
 All'interno della root di `PGDATA` troviamo i file vitali per il funzionamento:
 
@@ -42,7 +47,7 @@ All'interno della root di `PGDATA` troviamo i file vitali per il funzionamento:
 
 ---
 
-## ⚙️ Logic Layer: Come vengono salvate le Tabelle?
+## Logic layer: Come vengono salvate le Tabelle?
 
 In Postgres, ogni database, tabella e indice è mappato su un file fisico tramite un **OID** (Object ID).
 
@@ -58,7 +63,7 @@ Se cerchi una tabella nel file system:
 
 ---
 
-## ⚠️ Regola d'Oro
+##  Regola d'Oro
 > [!CAUTION] Non toccare i file manualmente
 > **MAI** modificare, spostare o cancellare file all'interno della Data Directory utilizzando comandi del sistema operativo (`rm`, `mv`, `vi`). Qualsiasi modifica deve essere effettuata tramite comandi SQL o tool ufficiali, pena la corruzione irreversibile del database.
 

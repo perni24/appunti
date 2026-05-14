@@ -1,11 +1,20 @@
 ---
-date: 2026-03-02
-tags: [react, rendering, lists, key-prop, conditional-rendering]
-type: #permanent-note
-status: budding
+date: 2026-05-14
+area: Programmazione
+topic: React
+type: technical-note
+status: "non revisionato"
+difficulty: intermediate
+tags: [react, frontend, javascript]
+aliases: [Rendering Condizionale e Liste (Key prop)]
+prerequisites: []
+related: []
 ---
-
 # Rendering Condizionale e Liste (Key prop)
+
+## Sintesi
+
+Nota su Rendering Condizionale e Liste (Key prop) in React. Riassume il concetto, quando usarlo, i punti critici e gli errori da evitare durante sviluppo, debugging o revisione di applicazioni React.
 
 In React, le interfacce dinamiche richiedono spesso di mostrare o nascondere elementi in base a determinate condizioni o di generare componenti a partire da array di dati.
 

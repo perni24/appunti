@@ -1,11 +1,20 @@
 ---
-date: 2026-03-03
-tags: [react, hooks, dom, persistence, javascript]
-type: #permanent-note
-status: budding
+date: 2026-05-14
+area: Programmazione
+topic: React
+type: technical-note
+status: "non revisionato"
+difficulty: intermediate
+tags: [react, frontend, javascript]
+aliases: [useRef]
+prerequisites: []
+related: []
 ---
-
 # useRef
+
+## Sintesi
+
+Nota su useRef in React. Riassume il concetto, quando usarlo, i punti critici e gli errori da evitare durante sviluppo, debugging o revisione di applicazioni React.
 
 Il hook `useRef` è uno strumento versatile in React che permette di mantenere un valore persistente tra i render senza scatenare un nuovo ciclo di rendering quando viene modificato. Restituisce un oggetto "ref" con una singola proprietà: `current`.
 
@@ -16,7 +25,7 @@ Il hook `useRef` è uno strumento versatile in React che permette di mantenere u
 2. **Memorizzare valori mutabili:** Per conservare dati che non influiscono sulla UI (ID di timer, valori precedenti di props o stato) evitando render superflui.
 
 > [!INFO] Definizione di Ref
-> Una "ref" è come una scatola in cui puoi conservare un qualsiasi valore JavaScript. A differenza di [[useState]], cambiare il contenuto della scatola (`ref.current = newValue`) **non notifica React** e quindi non causa un aggiornamento visivo.
+> Una "ref" è come una scatola in cui puoi conservare un qualsiasi valore JavaScript. A differenza di [[Programmazione/React/Pagine/useState]], cambiare il contenuto della scatola (`ref.current = newValue`) **non notifica React** e quindi non causa un aggiornamento visivo.
 
 ---
 

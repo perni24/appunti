@@ -1,24 +1,29 @@
 ---
-date: 2026-03-15
-tags:
-  - database
-  - postgres
-  - concurrency
-  - locking
-type: #permanent-note
-status: evergreen
+date: 2026-05-14
+area: Programmazione
+topic: PostgreSQL
+type: technical-note
+status: "non revisionato"
+difficulty: intermediate
+tags: [postgresql, database]
+aliases: [Meccanismi di Locking]
+prerequisites: []
+related: []
 ---
-
 # Meccanismi di Locking in PostgreSQL
+
+## Sintesi
+
+Nota su Meccanismi di Locking in PostgreSQL. Riassume il concetto, i meccanismi principali e i punti da ricordare durante studio, progettazione o amministrazione.
 
 Sebbene il sistema [[Programmazione/Postgres/Pagine/MVCC|MVCC]] permetta a lettori e scrittori di non bloccarsi a vicenda, esistono situazioni in cui PostgreSQL deve utilizzare dei **Lock** (blocchi) per garantire l'integrità dei dati, specialmente quando più transazioni tentano di modificare le stesse risorse contemporaneamente.
 
-## 💡 Concetto Chiave
+## Concetto chiave
 I lock sono meccanismi di sincronizzazione che impediscono a transazioni concorrenti di interferire tra loro in modi che violerebbero le [[Programmazione/Postgres/Pagine/Proprietà ACID|Proprietà ACID]]. PostgreSQL gestisce i lock in modo granulare, dal livello di singola riga fino all'intera tabella.
 
 ---
 
-## 🏛️ Livelli di Locking
+##  Livelli di Locking
 
 ### 1. Table-Level Locks (Blocchi a livello di Tabella)
 Questi lock controllano l'accesso a un'intera tabella. Non bloccano necessariamente tutte le operazioni, ma regolano la compatibilità tra comandi DDL (es. `ALTER TABLE`) e DML (es. `INSERT`).
@@ -46,7 +51,7 @@ COMMIT;
 
 ---
 
-## 🧩 Advisory Locks (Blocchi Consultivi)
+##  Advisory Locks (Blocchi Consultivi)
 Sono lock definiti dall'applicazione. Il database non li impone automaticamente; è lo sviluppatore che decide quando acquisirli.
 
 - **Uso:** Sincronizzare operazioni che non riguardano direttamente una riga di tabella (es. impedire che due processi worker eseguano lo stesso report pesante contemporaneamente).
@@ -54,7 +59,7 @@ Sono lock definiti dall'applicazione. Il database non li impone automaticamente;
 
 ---
 
-## ⚠️ Deadlocks (Stallo)
+##  Deadlocks (Stallo)
 Un deadlock si verifica quando due transazioni si bloccano a vicenda aspettando un lock detenuto dall'altra.
 
 > [!INFO] Rilevamento Automatico
@@ -62,7 +67,7 @@ Un deadlock si verifica quando due transazioni si bloccano a vicenda aspettando 
 
 ---
 
-## 🚀 Logic Layer: Best Practices
+## Logic layer: Best Practices
 
 1.  **Ordine Costante:** Accedi sempre alle tabelle (e alle righe) nello stesso ordine logico per minimizzare il rischio di deadlock.
 2.  **Transazioni Brevi:** Mantieni i lock per il minor tempo possibile. Non includere chiamate a API esterne o input utente all'interno di una transazione che detiene lock pesanti.

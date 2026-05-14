@@ -1,11 +1,20 @@
 ---
-date: 2026-03-02
-tags: [react, components, functional-components, class-components, hooks]
-type: #permanent-note
-status: budding
+date: 2026-05-14
+area: Programmazione
+topic: React
+type: technical-note
+status: "non revisionato"
+difficulty: intermediate
+tags: [react, frontend, javascript]
+aliases: [Componenti Funzionali vs Componenti a Classe]
+prerequisites: []
+related: []
 ---
-
 # Componenti Funzionali vs Componenti a Classe
+
+## Sintesi
+
+Nota su Componenti Funzionali vs Componenti a Classe in React. Riassume il concetto, quando usarlo, i punti critici e gli errori da evitare durante sviluppo, debugging o revisione di applicazioni React.
 
 In React, i componenti sono i mattoni fondamentali della UI. Storicamente, esistono due modi principali per definirli: tramite funzioni (**Functional Components**) o tramite classi ES6 (**Class Components**).
 

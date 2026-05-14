@@ -1,22 +1,27 @@
 ---
-date: 2026-03-06
-tags:
-  - database
-  - postgres
-  - sql
-  - automazione
-type: #permanent-note
-status: evergreen
+date: 2026-05-14
+area: Programmazione
+topic: PostgreSQL
+type: technical-note
+status: "non revisionato"
+difficulty: intermediate
+tags: [postgresql, database]
+aliases: [Trigger e Event Trigger]
+prerequisites: []
+related: []
 ---
-
 # Trigger e Event Trigger in PostgreSQL
 
-## 💡 Concetto Chiave
+## Sintesi
+
+Nota su Trigger e Event Trigger in PostgreSQL. Riassume il concetto, i meccanismi principali e i punti da ricordare durante studio, progettazione o amministrazione.
+
+## Concetto chiave
 Un **Trigger** è una funzione speciale che viene invocata automaticamente dal database in risposta a determinati eventi legati ai dati (DML) o alla struttura (DDL). Sono strumenti potenti per far rispettare regole di business complesse, mantenere log di audit o sincronizzare tabelle correlate in modo trasparente all'applicazione.
 
 ---
 
-## 🏗️ Trigger Standard (DML)
+##  Trigger Standard (DML)
 
 I trigger standard agiscono su tabelle o viste e rispondono alle operazioni di `INSERT`, `UPDATE`, `DELETE` o `TRUNCATE`.
 
@@ -31,7 +36,7 @@ I trigger standard agiscono su tabelle o viste e rispondono alle operazioni di `
 
 ---
 
-## 🛠️ Creazione di un Trigger
+##  Creazione di un Trigger
 
 In Postgres, la creazione di un trigger richiede due passaggi: la definizione di una **Trigger Function** e il comando **CREATE TRIGGER**.
 
@@ -39,7 +44,11 @@ In Postgres, la creazione di un trigger richiede due passaggi: la definizione di
 Crea una funzione che usa le variabili speciali **`NEW`** (la riga in inserimento/aggiornamento) e **`OLD`** (la riga precedente).
 
 ```sql
-# 1. Definizione della funzione
+# Trigger e Event Trigger in PostgreSQL
+
+## Sintesi
+
+Nota su Trigger e Event Trigger in PostgreSQL. Riassume il concetto, i meccanismi principali e i punti da ricordare durante studio, progettazione o amministrazione.
 CREATE OR REPLACE FUNCTION log_cambio_prezzo()
 RETURNS TRIGGER AS $$
 BEGIN
@@ -51,7 +60,11 @@ BEGIN
 END;
 $$ LANGUAGE plpgsql;
 
-# 2. Associazione alla tabella
+# Trigger e Event Trigger in PostgreSQL
+
+## Sintesi
+
+Nota su Trigger e Event Trigger in PostgreSQL. Riassume il concetto, i meccanismi principali e i punti da ricordare durante studio, progettazione o amministrazione.
 CREATE TRIGGER trg_audit_prezzi
 AFTER UPDATE ON prodotti
 FOR EACH ROW
@@ -60,7 +73,7 @@ EXECUTE FUNCTION log_cambio_prezzo();
 
 ---
 
-## 🚀 Event Trigger (DDL)
+##  Event Trigger (DDL)
 
 A differenza dei trigger standard, gli **Event Trigger** sono globali a livello di database e rispondono a cambiamenti strutturali (DDL) come `CREATE TABLE`, `ALTER TYPE` o `DROP SCHEMA`.
 
@@ -70,7 +83,7 @@ A differenza dei trigger standard, gli **Event Trigger** sono globali a livello 
 
 ---
 
-## ⚙️ Logic Layer: Automazione vs Logica Nascosta
+## Logic layer: Automazione vs Logica Nascosta
 
 > [!WARNING] Attenzione alla Complessità
 > I trigger possono rendere difficile il debugging perché la loro esecuzione è "invisibile" per chi scrive la query. Un abuso di trigger può portare a:
@@ -79,7 +92,7 @@ A differenza dei trigger standard, gli **Event Trigger** sono globali a livello 
 
 ---
 
-## ⚠️ Best Practices
+##  Best Practices
 - **Preferisci i Vincoli**: Se puoi risolvere un problema con un vincolo (`CHECK`, `FOREIGN KEY`), non usare un trigger. È più veloce e chiaro.
 - **Mantieni le funzioni snelle**: Le funzioni dei trigger devono essere il più rapide possibile per non rallentare le transazioni.
 - **Gestisci i ritorni**: Una funzione `BEFORE` che ritorna `NULL` interrompe l'operazione per quella specifica riga.

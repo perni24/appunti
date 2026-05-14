@@ -1,31 +1,44 @@
 ---
-date: 2026-03-06
-tags:
-  - database
-  - postgres
-  - sicurezza
-  - amministrazione
-type: #permanent-note
-status: evergreen
+date: 2026-05-14
+area: Programmazione
+topic: PostgreSQL
+type: technical-note
+status: "non revisionato"
+difficulty: intermediate
+tags: [postgresql, database]
+aliases: [Gestione Utenti e Ruoli]
+prerequisites: []
+related: []
 ---
-
 # Gestione Utenti e Ruoli in PostgreSQL
 
-## 💡 Concetto Chiave
+## Sintesi
+
+Nota su Gestione Utenti e Ruoli in PostgreSQL. Riassume il concetto, i meccanismi principali e i punti da ricordare durante studio, progettazione o amministrazione.
+
+## Concetto chiave
 In PostgreSQL, il concetto di "utente" e "gruppo" è unificato sotto l'entità chiamata **Role** (Ruolo). Un ruolo può essere pensato come un utente (se ha il permesso di login) o come un gruppo (se serve ad aggregare permessi da assegnare ad altri ruoli). Tutti i ruoli sono globali a livello di cluster.
 
 ---
 
-## 🏗️ Creazione e Gestione dei Ruoli
+##  Creazione e Gestione dei Ruoli
 
 ### 1. Creare un Ruolo
 Il comando `CREATE ROLE` definisce una nuova entità. Per rendere il ruolo un vero "utente", occorre aggiungere l'attributo `LOGIN`.
 
 ```sql
-# Creazione di un utente con password
+# Gestione Utenti e Ruoli in PostgreSQL
+
+## Sintesi
+
+Nota su Gestione Utenti e Ruoli in PostgreSQL. Riassume il concetto, i meccanismi principali e i punti da ricordare durante studio, progettazione o amministrazione.
 CREATE ROLE luca WITH LOGIN PASSWORD 'strong_password';
 
-# Creazione di un ruolo "gruppo" (senza login)
+# Gestione Utenti e Ruoli in PostgreSQL
+
+## Sintesi
+
+Nota su Gestione Utenti e Ruoli in PostgreSQL. Riassume il concetto, i meccanismi principali e i punti da ricordare durante studio, progettazione o amministrazione.
 CREATE ROLE developers;
 ```
 
@@ -37,22 +50,34 @@ Gli attributi definiscono i poteri amministrativi del ruolo:
 - **`REPLICATION`**: Necessario per compiti di replicazione fisica.
 
 ```sql
-# Modifica di un ruolo esistente
+# Gestione Utenti e Ruoli in PostgreSQL
+
+## Sintesi
+
+Nota su Gestione Utenti e Ruoli in PostgreSQL. Riassume il concetto, i meccanismi principali e i punti da ricordare durante studio, progettazione o amministrazione.
 ALTER ROLE luca CREATEDB;
 ```
 
 ---
 
-## 🔐 Gestione dei Permessi (Privileges)
+##  Gestione dei Permessi (Privileges)
 
 Postgres utilizza i comandi `GRANT` e `REVOKE` per gestire l'accesso agli oggetti (tabelle, schemi, sequenze).
 
 ### 1. Assegnare permessi su una tabella
 ```sql
-# Permessi di lettura e scrittura
+# Gestione Utenti e Ruoli in PostgreSQL
+
+## Sintesi
+
+Nota su Gestione Utenti e Ruoli in PostgreSQL. Riassume il concetto, i meccanismi principali e i punti da ricordare durante studio, progettazione o amministrazione.
 GRANT SELECT, INSERT, UPDATE ON TABLE vendite TO developers;
 
-# Revocare permessi
+# Gestione Utenti e Ruoli in PostgreSQL
+
+## Sintesi
+
+Nota su Gestione Utenti e Ruoli in PostgreSQL. Riassume il concetto, i meccanismi principali e i punti da ricordare durante studio, progettazione o amministrazione.
 REVOKE UPDATE ON TABLE vendite FROM developers;
 ```
 
@@ -60,13 +85,17 @@ REVOKE UPDATE ON TABLE vendite FROM developers;
 È possibile assegnare un ruolo a un altro ruolo. Il ruolo "membro" eredita i permessi del ruolo "padre".
 
 ```sql
-# L'utente 'luca' diventa membro del gruppo 'developers'
+# Gestione Utenti e Ruoli in PostgreSQL
+
+## Sintesi
+
+Nota su Gestione Utenti e Ruoli in PostgreSQL. Riassume il concetto, i meccanismi principali e i punti da ricordare durante studio, progettazione o amministrazione.
 GRANT developers TO luca;
 ```
 
 ---
 
-## ⚙️ Logic Layer: Public Schema e Default Privileges
+## Logic layer: Public Schema e Default Privileges
 
 Per impostazione predefinita, molti database hanno lo schema `public` dove il ruolo speciale `PUBLIC` (tutti gli utenti) ha permessi di creazione. È una buona pratica di sicurezza revocare questi permessi per implementare un controllo granulare.
 
@@ -79,7 +108,7 @@ Per impostazione predefinita, molti database hanno lo schema `public` dove il ru
 
 ---
 
-## ⚠️ Best Practices
+##  Best Practices
 - **Least Privilege**: Assegna solo i permessi strettamente necessari. Non usare `SUPERUSER` per le applicazioni.
 - **Usa i Gruppi**: Invece di assegnare permessi a ogni singolo utente, crea dei ruoli di gruppo (es. `readonly`, `readwrite`) e assegna gli utenti a questi gruppi.
 - **Password**: Assicurati che `pg_hba.conf` richieda metodi di autenticazione sicuri come `scram-sha-256`.

@@ -1,11 +1,20 @@
 ---
-date: 2026-04-22
-tags: [react, security, xss, dangerouslysetinnerhtml, sanitization, frontend, javascript]
-type: #permanent-note
-status: budding
+date: 2026-05-14
+area: Programmazione
+topic: React
+type: technical-note
+status: "non revisionato"
+difficulty: intermediate
+tags: [react, frontend, javascript]
+aliases: [Protezione XSS]
+prerequisites: []
+related: []
 ---
-
 # Protezione XSS
+
+## Sintesi
+
+Nota su Protezione XSS in React. Riassume il concetto, quando usarlo, i punti critici e gli errori da evitare durante sviluppo, debugging o revisione di applicazioni React.
 
 La **protezione XSS** riguarda la difesa dagli attacchi **Cross-Site Scripting**, cioe situazioni in cui codice malevolo viene iniettato nella pagina ed eseguito nel browser dell'utente.
 
@@ -55,7 +64,7 @@ function Message({ text }) {
 
 Se `text` contiene una stringa con tag HTML o script, React la renderizza come testo e non come markup attivo.
 
-Questo e uno dei motivi per cui [[JSX]] e relativamente sicuro nei casi normali.
+Questo e uno dei motivi per cui [[Programmazione/React/Pagine/JSX]] e relativamente sicuro nei casi normali.
 
 In pratica:
 - `"<b>Hello</b>"` viene mostrato come testo;

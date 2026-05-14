@@ -1,11 +1,20 @@
 ---
-date: 2026-04-17
-tags: [react, batching, state, rendering, internals, frontend, javascript]
-type: #permanent-note
-status: budding
+date: 2026-05-14
+area: Programmazione
+topic: React
+type: technical-note
+status: "non revisionato"
+difficulty: intermediate
+tags: [react, frontend, javascript]
+aliases: [Batching]
+prerequisites: []
+related: []
 ---
-
 # Batching
+
+## Sintesi
+
+Nota su Batching in React. Riassume il concetto, quando usarlo, i punti critici e gli errori da evitare durante sviluppo, debugging o revisione di applicazioni React.
 
 Il **batching** e il meccanismo con cui React raggruppa piu aggiornamenti di stato nello stesso ciclo di rendering, evitando render inutili e mantenendo l'interfaccia coerente.
 
@@ -20,7 +29,7 @@ In pratica, se dentro lo stesso flusso logico esegui piu `setState`, React prova
 
 Senza batching, ogni aggiornamento di stato potrebbe causare un nuovo render:
 - piu lavoro per React;
-- piu diffing del [[Virtual DOM]];
+- piu diffing del [[Programmazione/React/Pagine/Virtual DOM]];
 - maggiore probabilita di render ridondanti;
 - interfaccia meno efficiente.
 
@@ -30,7 +39,7 @@ Con il batching, React puo:
 - applicare lo stato finale in modo piu prevedibile;
 - migliorare la reattivita percepita.
 
-Questo si collega direttamente al modo in cui React gestisce scheduling e priorita nella [[Fiber Architecture e Concurrent Mode]].
+Questo si collega direttamente al modo in cui React gestisce scheduling e priorita nella [[Programmazione/React/Pagine/Fiber Architecture e Concurrent Mode]].
 
 ---
 
@@ -81,7 +90,7 @@ Il `console.log` non mostra il nuovo valore perche:
 
 Questo non dipende solo dal batching: dipende anche dal modello dichiarativo di React.
 
-Per questo [[useState]] va pensato come "richiesta di aggiornamento", non come assegnazione immediata a una variabile.
+Per questo [[Programmazione/React/Pagine/useState]] va pensato come "richiesta di aggiornamento", non come assegnazione immediata a una variabile.
 
 ---
 
@@ -143,7 +152,7 @@ Questo rende il comportamento piu coerente, ma non cambia una regola fondamental
 
 ## 6. Relazione con useReducer
 
-Il batching non riguarda solo `useState`. Anche con [[useReducer]], piu `dispatch` ravvicinati possono essere raggruppati nello stesso flusso di render.
+Il batching non riguarda solo `useState`. Anche con [[Programmazione/React/Pagine/useReducer]], piu `dispatch` ravvicinati possono essere raggruppati nello stesso flusso di render.
 
 La differenza e concettuale:
 - `useState` aggiorna singole porzioni di stato;

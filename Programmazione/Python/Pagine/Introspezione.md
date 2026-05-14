@@ -1,17 +1,22 @@
 ---
-date: 2026-03-27
-tags:
-  - programmazione
-  - python
-  - internals
-  - introspezione
-type: #permanent-note
-status: budding
+date: 2026-05-14
+area: Programmazione
+topic: Python
+type: technical-note
+status: "non revisionato"
+difficulty: intermediate
+tags: [python, programming]
+aliases: [Introspezione]
+prerequisites: []
+related: []
 ---
-
 # Introspezione in Python
 
-## 💡 Concetto Chiave
+## Sintesi
+
+Nota su Introspezione in Python. Riassume il concetto, la sintassi principale e i punti da ricordare durante studio, sviluppo o debugging.
+
+## Concetto chiave
 L'**introspezione** e la capacita di un programma di esaminare se stesso a runtime: tipi, attributi, metodi, firme delle funzioni, gerarchie di classi e metadati.
 
 Python supporta molto bene l'introspezione, ed e uno dei motivi per cui il linguaggio risulta flessibile, dinamico e adatto a debugging, tooling, metaprogrammazione e framework.
@@ -21,7 +26,7 @@ Python supporta molto bene l'introspezione, ed e uno dei motivi per cui il lingu
 
 ---
 
-## 📝 Strumenti principali
+##  Strumenti principali
 
 Python offre molte funzioni built-in e moduli standard per fare introspezione.
 
@@ -42,7 +47,7 @@ Python offre molte funzioni built-in e moduli standard per fare introspezione.
 
 ---
 
-## 💻 Esempi Pratici
+##  Esempi Pratici
 
 ### Esplorare un oggetto
 
@@ -93,7 +98,7 @@ Questo e utile quando si costruiscono wrapper, decorator o sistemi di validazion
 
 ---
 
-## ⚙️ Funzionamento Interno (Teoria)
+##  Funzionamento Interno (Teoria)
 
 ### Tutto e un oggetto
 In Python quasi tutto e un oggetto: funzioni, classi, moduli, metodi, eccezioni. Questo rende possibile ispezionare il programma in modo uniforme.
@@ -139,11 +144,11 @@ print(Dog.__bases__)
 print(Dog.__mro__)
 ```
 
-Questa capacita e molto utile quando si lavora con [[Metodi Speciali]], ereditarieta e sistemi basati su plugin.
+Questa capacita e molto utile quando si lavora con [[Programmazione/Python/Pagine/Metodi Speciali]], ereditarieta e sistemi basati su plugin.
 
 ---
 
-## 🧠 Il modulo `inspect`
+##  Il modulo `inspect`
 
 Il modulo `inspect` e lo strumento standard piu potente per l'introspezione avanzata.
 
@@ -169,7 +174,7 @@ print(members)
 
 ---
 
-## 🔄 Introspezione vs Reflection
+##  Introspezione vs Reflection
 
 Spesso i termini vengono usati come sinonimi, ma non sono identici.
 
@@ -180,15 +185,15 @@ In Python il confine e sottile, perche funzioni come `getattr`, `setattr` e `__d
 
 ---
 
-## ⚠️ Best Practices & "Gotchas"
+##  Best Practices & "Gotchas"
 
-- ✅ **Usa l'introspezione per tooling, debugging e automazione:** e molto potente in questi scenari.
-- ✅ **Preferisci `getattr` con default quando opportuno:** evita errori inutili quando un attributo puo mancare.
-- ✅ **Usa `inspect.signature` nei decorator avanzati:** aiuta a preservare o analizzare l'interfaccia delle funzioni.
-- ✅ **Mantieni chiari i contratti pubblici:** se un sistema usa molta introspezione, nomi e struttura diventano ancora piu importanti.
-- ❌ **Non abusare della dinamica:** troppo `getattr` e troppe convenzioni implicite possono rendere il codice difficile da seguire.
-- ❌ **Non affidarti solo a `dir()`:** mostra molto, ma non sempre spiega il significato semantico degli attributi.
-- 💣 **Attenzione agli attributi speciali:** modificare `__dict__`, `__class__` o altri elementi interni senza cautela puo rompere invarianti del programma.
-- 💣 **L'introspezione non sostituisce il design:** se serve continuamente "indovinare" struttura e tipo degli oggetti, forse l'API puo essere resa piu esplicita.
+-  **Usa l'introspezione per tooling, debugging e automazione:** e molto potente in questi scenari.
+-  **Preferisci `getattr` con default quando opportuno:** evita errori inutili quando un attributo puo mancare.
+-  **Usa `inspect.signature` nei decorator avanzati:** aiuta a preservare o analizzare l'interfaccia delle funzioni.
+-  **Mantieni chiari i contratti pubblici:** se un sistema usa molta introspezione, nomi e struttura diventano ancora piu importanti.
+-  **Non abusare della dinamica:** troppo `getattr` e troppe convenzioni implicite possono rendere il codice difficile da seguire.
+-  **Non affidarti solo a `dir()`:** mostra molto, ma non sempre spiega il significato semantico degli attributi.
+-  **Attenzione agli attributi speciali:** modificare `__dict__`, `__class__` o altri elementi interni senza cautela puo rompere invarianti del programma.
+-  **L'introspezione non sostituisce il design:** se serve continuamente "indovinare" struttura e tipo degli oggetti, forse l'API puo essere resa piu esplicita.
 
 ---

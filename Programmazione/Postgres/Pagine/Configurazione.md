@@ -1,22 +1,27 @@
 ---
-date: 2026-03-06
-tags:
-  - database
-  - postgres
-  - setup
-  - configurazione
-type: #permanent-note
-status: evergreen
+date: 2026-05-14
+area: Programmazione
+topic: PostgreSQL
+type: technical-note
+status: "non revisionato"
+difficulty: intermediate
+tags: [postgresql, database]
+aliases: [Configurazione di]
+prerequisites: []
+related: []
 ---
-
 # Configurazione di PostgreSQL
 
-## 💡 Concetto Chiave
-La configurazione di PostgreSQL si basa principalmente su due file di testo situati nella [[Pagine/File System Layout e Data Directory|Data Directory]]: `postgresql.conf` per il comportamento del server e `pg_hba.conf` per il controllo degli accessi. Una corretta configurazione è l'ago della bilancia tra un database lento/insicuro e uno ottimizzato.
+## Sintesi
+
+Nota su Configurazione di in PostgreSQL. Riassume il concetto, i meccanismi principali e i punti da ricordare durante studio, progettazione o amministrazione.
+
+## Concetto chiave
+La configurazione di PostgreSQL si basa principalmente su due file di testo situati nella [[Programmazione/Postgres/Pagine/File System Layout e Data Directory|Data Directory]]: `postgresql.conf` per il comportamento del server e `pg_hba.conf` per il controllo degli accessi. Una corretta configurazione è l'ago della bilancia tra un database lento/insicuro e uno ottimizzato.
 
 ---
 
-## 🏗️ I File di Configurazione Principali
+##  I File di Configurazione Principali
 
 ### 1. `postgresql.conf` (Server Configuration)
 Contiene i parametri che regolano l'utilizzo delle risorse, il networking, il logging e il comportamento del Query Planner.
@@ -36,16 +41,24 @@ Gestisce la sicurezza a livello di rete. Ogni riga definisce un set di regole: c
 `TYPE  DATABASE  USER  ADDRESS  METHOD`
 
 ```text
-# Esempio: Ammetti connessioni locali via socket Unix
+# Configurazione di PostgreSQL
+
+## Sintesi
+
+Nota su Configurazione di in PostgreSQL. Riassume il concetto, i meccanismi principali e i punti da ricordare durante studio, progettazione o amministrazione.
 local   all             all                                     trust
 
-# Esempio: Ammetti connessioni da una subnet specifica con password cifrata
+# Configurazione di PostgreSQL
+
+## Sintesi
+
+Nota su Configurazione di in PostgreSQL. Riassume il concetto, i meccanismi principali e i punti da ricordare durante studio, progettazione o amministrazione.
 host    mio_db          utente_app      192.168.1.0/24          scram-sha-256
 ```
 
 ---
 
-## 🔄 Applicare i Cambiamenti
+##  Applicare i Cambiamenti
 
 Non tutti i parametri possono essere cambiati "al volo". Esistono due tipi di modifiche:
 
@@ -61,7 +74,7 @@ Non tutti i parametri possono essere cambiati "al volo". Esistono due tipi di mo
 
 ---
 
-## ⚙️ Logic Layer: Gerarchia della Configurazione
+## Logic layer: Gerarchia della Configurazione
 
 In Postgres la configurazione segue una gerarchia di precedenza. Un valore impostato a livello di sessione sovrascrive quello globale:
 
@@ -75,7 +88,7 @@ In Postgres la configurazione segue una gerarchia di precedenza. Un valore impos
 
 ---
 
-## ⚠️ Best Practices
+##  Best Practices
 - **Backup dei file**: Fai sempre una copia dei file `.conf` prima di modificarli pesantemente.
 - **Commenti**: Documenta *perché* hai cambiato un parametro, specialmente se per risolvere un problema di performance.
 - **Specificità**: In `pg_hba.conf`, sii il più restrittivo possibile per evitare accessi indesiderati.

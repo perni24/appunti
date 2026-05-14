@@ -1,11 +1,20 @@
 ---
-date: 2026-04-17
-tags: [react, fiber, concurrent-rendering, internals, frontend, javascript]
-type: #permanent-note
-status: budding
+date: 2026-05-14
+area: Programmazione
+topic: React
+type: technical-note
+status: "non revisionato"
+difficulty: intermediate
+tags: [react, frontend, javascript]
+aliases: [Fiber Architecture e Concurrent Mode]
+prerequisites: []
+related: []
 ---
-
 # Fiber Architecture e Concurrent Mode
+
+## Sintesi
+
+Nota su Fiber Architecture e Concurrent Mode in React. Riassume il concetto, quando usarlo, i punti critici e gli errori da evitare durante sviluppo, debugging o revisione di applicazioni React.
 
 La **Fiber Architecture** e l'architettura interna moderna di React che gestisce riconciliazione, scheduling e priorita degli aggiornamenti.
 
@@ -61,7 +70,7 @@ Esempio intuitivo:
 
 Senza un sistema di priorita, tutto entra nello stesso flusso di lavoro. Con Fiber, React puo trattare quei due aggiornamenti in modo diverso.
 
-Questo si collega direttamente a [[useTransition e useDeferredValue]].
+Questo si collega direttamente a [[Programmazione/React/Pagine/useTransition e useDeferredValue]].
 
 ---
 
@@ -84,7 +93,7 @@ Significa piuttosto che React puo:
 
 ## 5. Relazione con il Virtual DOM
 
-Il [[Virtual DOM]] descrive la rappresentazione virtuale dell'interfaccia e il processo di diffing.
+Il [[Programmazione/React/Pagine/Virtual DOM]] descrive la rappresentazione virtuale dell'interfaccia e il processo di diffing.
 
 Fiber aggiunge un livello in piu:
 - non decide solo *cosa* aggiornare;
@@ -150,8 +159,8 @@ Questa distinzione aiuta a capire perche React puo essere flessibile nel renderi
 ## 8. Fiber e feature moderne
 
 La Fiber Architecture rende possibili molte feature moderne di React:
-- [[Suspense e Lazy Loading]];
-- [[useTransition e useDeferredValue]];
+- [[Programmazione/React/Pagine/Suspense e Lazy Loading]];
+- [[Programmazione/React/Pagine/useTransition e useDeferredValue]];
 - scheduling piu intelligente;
 - rendering piu responsivo;
 - basi per strategie moderne di streaming e server rendering.
@@ -186,7 +195,7 @@ Pensare che "React 18 risolve le performance da solo" porta a diagnosi sbagliate
 2. **Usa le API moderne che lo sfruttano davvero:** `useTransition`, `useDeferredValue`, `Suspense`.
 3. **Distingui aggiornamenti urgenti da non urgenti:** e il modo corretto di sfruttare il concurrent rendering.
 4. **Non confondere concorrente con parallelo:** il browser resta single-threaded per JavaScript nella maggior parte dei casi.
-5. **Continua a usare profiling reale:** la teoria di Fiber non sostituisce [[Profiler e Debugging]].
+5. **Continua a usare profiling reale:** la teoria di Fiber non sostituisce [[Programmazione/React/Pagine/Profiler e Debugging]].
 6. **Mantieni comunque buona architettura UI:** stato locale ben posizionato, liste ottimizzate e componenti coerenti restano fondamentali.
 
 ---

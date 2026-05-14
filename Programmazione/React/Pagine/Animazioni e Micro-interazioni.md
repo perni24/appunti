@@ -1,11 +1,20 @@
 ---
-date: 2026-04-22
-tags: [react, animations, micro-interactions, framer-motion, react-spring, frontend, javascript]
-type: #permanent-note
-status: budding
+date: 2026-05-14
+area: Programmazione
+topic: React
+type: technical-note
+status: "non revisionato"
+difficulty: intermediate
+tags: [react, frontend, javascript]
+aliases: [Animazioni e Micro-interazioni]
+prerequisites: []
+related: []
 ---
-
 # Animazioni e Micro-interazioni
+
+## Sintesi
+
+Nota su Animazioni e Micro-interazioni in React. Riassume il concetto, quando usarlo, i punti critici e gli errori da evitare durante sviluppo, debugging o revisione di applicazioni React.
 
 Le **animazioni** e le **micro-interazioni** servono a rendere l'interfaccia piu chiara, reattiva e leggibile nel tempo.
 
@@ -188,7 +197,7 @@ Regole pratiche:
 - preferire `transform` e `opacity` quando possibile;
 - evitare animazioni pesanti su layout complesso;
 - non animare tutto;
-- verificare con [[Profiler e Debugging]] se la UI perde fluidita.
+- verificare con [[Programmazione/React/Pagine/Profiler e Debugging]] se la UI perde fluidita.
 
 Un'animazione che scatta o rallenta e peggiore di nessuna animazione.
 
@@ -235,11 +244,11 @@ Esempi cattivi:
 ## 12. Relazione con React
 
 Le animazioni si collegano spesso a:
-- [[Gestione Moduli]] per feedback su input e submit;
-- [[Validazione Dati]] per errori e stati di conferma;
-- [[React Router]] per route transitions;
-- [[Suspense e Lazy Loading]] per loading state e fallback;
-- [[Profiler e Debugging]] per verificare costi reali della motion.
+- [[Programmazione/React/Pagine/Gestione Moduli]] per feedback su input e submit;
+- [[Programmazione/React/Pagine/Validazione Dati]] per errori e stati di conferma;
+- [[Programmazione/React/Pagine/React Router]] per route transitions;
+- [[Programmazione/React/Pagine/Suspense e Lazy Loading]] per loading state e fallback;
+- [[Programmazione/React/Pagine/Profiler e Debugging]] per verificare costi reali della motion.
 
 In pratica, motion e interazione vanno pensate insieme al flusso dello stato e non come livello separato applicato alla fine.
 

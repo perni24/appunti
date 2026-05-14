@@ -1,24 +1,29 @@
 ---
-date: 2026-03-15
-tags:
-  - database
-  - postgres
-  - amministrazione
-  - estensioni
-type: #permanent-note
-status: evergreen
+date: 2026-05-14
+area: Programmazione
+topic: PostgreSQL
+type: technical-note
+status: "non revisionato"
+difficulty: intermediate
+tags: [postgresql, database]
+aliases: [Gestione delle Estensioni]
+prerequisites: []
+related: []
 ---
-
 # Gestione delle Estensioni in PostgreSQL
+
+## Sintesi
+
+Nota su Gestione delle Estensioni in PostgreSQL. Riassume il concetto, i meccanismi principali e i punti da ricordare durante studio, progettazione o amministrazione.
 
 PostgreSQL è celebre per la sua estensibilità. Le **Estensioni** permettono di aggiungere nuove funzionalità al database (nuovi tipi di dato, funzioni, indici o linguaggi procedurali) come se fossero nativi.
 
-## 💡 Concetto Chiave
+## Concetto chiave
 Un'estensione è un pacchetto di oggetti SQL che possono essere caricati nel database con un singolo comando. Questo meccanismo previene la frammentazione e facilita la manutenzione, permettendo di aggiornare o rimuovere interi set di funzionalità in modo pulito.
 
 ---
 
-## 🛠️ Comandi Principali
+##  Comandi Principali
 
 ### 1. Caricare un'estensione
 Per abilitare un'estensione in un database specifico, si usa il comando `CREATE EXTENSION`.
@@ -39,7 +44,7 @@ DROP EXTENSION "uuid-ossp";
 
 ---
 
-## 🌟 Estensioni Indispensabili
+##  Estensioni Indispensabili
 
 PostgreSQL include nella distribuzione ufficiale il modulo **"contrib"**, che contiene estensioni testate e supportate:
 
@@ -53,7 +58,7 @@ PostgreSQL include nella distribuzione ufficiale il modulo **"contrib"**, che co
 
 ---
 
-## ⚙️ Configurazione (Shared Preload Libraries)
+##  Configurazione (Shared Preload Libraries)
 
 Alcune estensioni (come `pg_stat_statements`) richiedono di essere caricate all'avvio del server perché devono allocare memoria condivisa.
 
@@ -64,7 +69,7 @@ Alcune estensioni (come `pg_stat_statements`) richiedono di essere caricate all'
 
 ---
 
-## 🚀 Logic Layer: Perché usare le estensioni?
+## Logic layer: Perché usare le estensioni?
 
 1.  **Modularità:** Mantieni il core del database leggero, aggiungendo solo ciò che serve.
 2.  **Specializzazione:** Trasforma Postgres in un database vettoriale (es: `pgvector`), spaziale (`PostGIS`) o per serie temporali (`TimescaleDB`).

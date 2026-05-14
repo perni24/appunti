@@ -1,11 +1,20 @@
 ---
-date: 2026-04-22
-tags: [react, react-router, routing, spa, frontend, javascript]
-type: #permanent-note
-status: budding
+date: 2026-05-14
+area: Programmazione
+topic: React
+type: technical-note
+status: "non revisionato"
+difficulty: intermediate
+tags: [react, frontend, javascript]
+aliases: [React Router]
+prerequisites: []
+related: []
 ---
-
 # React Router
+
+## Sintesi
+
+Nota su React Router in React. Riassume il concetto, quando usarlo, i punti critici e gli errori da evitare durante sviluppo, debugging o revisione di applicazioni React.
 
 **React Router** e la libreria piu usata per gestire la navigazione nelle applicazioni React a pagina singola (**SPA**, Single Page Application).
 
@@ -218,7 +227,7 @@ Uso:
 />
 ```
 
-In applicazioni reali, `isAuthenticated` viene spesso letto da [[Context API]] o da uno state manager esterno.
+In applicazioni reali, `isAuthenticated` viene spesso letto da [[Programmazione/React/Pagine/Context API]] o da uno state manager esterno.
 
 > [!WARNING] Sicurezza reale
 > Proteggere una route lato client migliora UX e controllo del flusso, ma non sostituisce l'autorizzazione lato server. I controlli di sicurezza reali devono esistere anche sulle API.
@@ -239,7 +248,7 @@ Questo e utile per:
 - paginazione;
 - stato condivisibile via URL.
 
-La URL diventa cosi parte dello stato dell'applicazione, e spesso e preferibile a tenere tutto solo in [[useState]].
+La URL diventa cosi parte dello stato dell'applicazione, e spesso e preferibile a tenere tutto solo in [[Programmazione/React/Pagine/useState]].
 
 ---
 
@@ -265,9 +274,9 @@ E migliora robustezza e UX.
 React Router non sostituisce React: si integra con il suo modello dichiarativo.
 
 Si collega bene a:
-- [[Context API]] per autenticazione, tema o permessi;
-- [[useEffect]] quando una route attiva side effect o fetch dipendenti dai parametri;
-- [[Suspense e Lazy Loading]] se vuoi caricare pagine solo quando servono;
+- [[Programmazione/React/Pagine/Context API]] per autenticazione, tema o permessi;
+- [[Programmazione/React/Pagine/useEffect]] quando una route attiva side effect o fetch dipendenti dai parametri;
+- [[Programmazione/React/Pagine/Suspense e Lazy Loading]] se vuoi caricare pagine solo quando servono;
 - gestione del layout tramite composizione di componenti.
 
 In pratica, React Router organizza **la navigazione**, mentre React continua a gestire **stato, rendering e composizione**.

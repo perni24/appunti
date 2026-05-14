@@ -1,25 +1,29 @@
 ---
-date: 2026-03-15
-tags:
-  - database
-  - postgres
-  - concurrency
-  - architecture
-  - mvcc
-type: #permanent-note
-status: evergreen
+date: 2026-05-14
+area: Programmazione
+topic: PostgreSQL
+type: technical-note
+status: "non revisionato"
+difficulty: intermediate
+tags: [postgresql, database]
+aliases: [MVCC (Multi-Version Concurrency Control)]
+prerequisites: []
+related: []
 ---
-
 # MVCC (Multi-Version Concurrency Control) in PostgreSQL
+
+## Sintesi
+
+Nota su MVCC (Multi-Version Concurrency Control) in PostgreSQL. Riassume il concetto, i meccanismi principali e i punti da ricordare durante studio, progettazione o amministrazione.
 
 Il **Multi-Version Concurrency Control (MVCC)** è il meccanismo fondamentale con cui PostgreSQL gestisce l'accesso simultaneo ai dati da parte di più utenti senza compromettere l'integrità.
 
-## 💡 Concetto Chiave
+## Concetto chiave
 La filosofia di MVCC è: **"I lettori non bloccano i scrittori, e i scrittori non bloccano i lettori"**. Invece di bloccare una riga quando viene modificata, Postgres ne crea una nuova versione, permettendo a chi legge di vedere lo stato dei dati coerente al momento dell'inizio della propria transazione.
 
 ---
 
-## 🏗️ Come funziona: Versionamento delle Righe
+##  Come funziona: Versionamento delle Righe
 
 Ogni riga (tuple) in PostgreSQL contiene dei campi nascosti che gestiscono la visibilità:
 
@@ -33,7 +37,7 @@ Quando esegui un `UPDATE`:
 
 ---
 
-## 🔍 Visibilità delle Transazioni (Snapshot)
+##  Visibilità delle Transazioni (Snapshot)
 
 Ogni transazione opera su uno **Snapshot**. Uno snapshot definisce quali transazioni sono "visibili":
 - Sono visibili le righe il cui `xmin` è una transazione già confermata (`COMMITTED`).
@@ -43,7 +47,7 @@ Questo garantisce l'[[Programmazione/Postgres/Pagine/Proprietà ACID|Isolamento]
 
 ---
 
-## 🧹 Il problema dei "Dead Tuples" e VACUUM
+##  Il problema dei "Dead Tuples" e VACUUM
 
 Poiché gli update e i delete non eliminano fisicamente i dati ma creano nuove versioni, lo spazio su disco tende a crescere (**Bloat**). Le vecchie versioni non più visibili a nessuna transazione attiva sono chiamate "Dead Tuples".
 
@@ -58,7 +62,7 @@ Il compito di **VACUUM** è:
 
 ---
 
-## 🚀 Logic Layer: Vantaggi di MVCC
+## Logic layer: Vantaggi di MVCC
 
 1.  **Alta Concorrenza:** Ideale per sistemi con molti lettori (es: siti web).
 2.  **Performance Costanti:** Le letture non devono mai aspettare che un lock venga rilasciato da una scrittura.

@@ -1,24 +1,29 @@
 ---
-date: 2026-03-15
-tags:
-  - database
-  - postgres
-  - plpgsql
-  - architecture
-type: #permanent-note
-status: evergreen
+date: 2026-05-14
+area: Programmazione
+topic: PostgreSQL
+type: technical-note
+status: "non revisionato"
+difficulty: intermediate
+tags: [postgresql, database]
+aliases: [Funzioni e Store Procedures]
+prerequisites: []
+related: []
 ---
-
 # Funzioni e Store Procedures in PostgreSQL
+
+## Sintesi
+
+Nota su Funzioni e Store Procedures in PostgreSQL. Riassume il concetto, i meccanismi principali e i punti da ricordare durante studio, progettazione o amministrazione.
 
 In PostgreSQL, la logica di business può essere incapsulata all'interno del database utilizzando **Funzioni** e **Procedure**. Sebbene simili, hanno scopi e comportamenti transazionali diversi.
 
-## 💡 Concetto Chiave
+## Concetto chiave
 Le **Funzioni** sono progettate per calcolare e restituire dati, mentre le **Procedure** (introdotte in Postgres 11) sono progettate per gestire l'esecuzione di task che richiedono il controllo esplicito delle transazioni (`COMMIT`, `ROLLBACK`).
 
 ---
 
-## 🛠️ Funzioni (UDF - User Defined Functions)
+##  Funzioni (UDF - User Defined Functions)
 
 Una funzione restituisce sempre un valore (o un set di valori) e viene invocata all'interno di una query SQL (`SELECT`).
 
@@ -42,7 +47,7 @@ Il Planner usa queste categorie per ottimizzare le query:
 
 ---
 
-## 🏗️ Stored Procedures
+##  Stored Procedures
 
 A differenza delle funzioni, le procedure non restituiscono un valore e vengono invocate con il comando `CALL`. La loro caratteristica principale è la capacità di gestire transazioni interne.
 
@@ -65,7 +70,7 @@ CALL trasferisci_fondi(1, 2, 500.00);
 
 ---
 
-## 📦 Parametri e Modalità
+##  Parametri e Modalità
 
 | Tipo | Descrizione |
 | :--- | :--- |
@@ -76,7 +81,7 @@ CALL trasferisci_fondi(1, 2, 500.00);
 
 ---
 
-## 🚀 Logic Layer: Perché incapsulare la logica?
+## Logic layer: Perché incapsulare la logica?
 
 1.  **Sicurezza:** Puoi concedere i permessi di esecuzione (`GRANT EXECUTE`) su una funzione senza dare accesso diretto alle tabelle sottostanti.
 2.  **Astrazione:** Se la struttura delle tabelle cambia, basta aggiornare la funzione; il codice dell'applicazione (API, Frontend) rimane invariato.

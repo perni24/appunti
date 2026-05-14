@@ -1,11 +1,20 @@
 ---
-date: 2026-04-17
-tags: [react, design-patterns, compound-components, frontend, javascript]
-type: #permanent-note
-status: budding
+date: 2026-05-14
+area: Programmazione
+topic: React
+type: technical-note
+status: "non revisionato"
+difficulty: intermediate
+tags: [react, frontend, javascript]
+aliases: [Compound Components Pattern]
+prerequisites: []
+related: []
 ---
-
 # Compound Components Pattern
+
+## Sintesi
+
+Nota su Compound Components Pattern in React. Riassume il concetto, quando usarlo, i punti critici e gli errori da evitare durante sviluppo, debugging o revisione di applicazioni React.
 
 I **Compound Components** sono un pattern React in cui piu componenti collaborano tra loro come parti di un unico componente "padre", condividendo stato e comportamento impliciti.
 
@@ -57,7 +66,7 @@ Il pattern di solito contiene:
 
 1. un componente principale che gestisce lo stato;
 2. sottocomponenti esposti come proprieta statiche;
-3. un meccanismo di condivisione dello stato, spesso tramite [[Context API]];
+3. un meccanismo di condivisione dello stato, spesso tramite [[Programmazione/React/Pagine/Context API]];
 4. una API orientata alla composizione.
 
 ### Esempio semplificato
@@ -127,7 +136,7 @@ Il JSX descrive la struttura del componente in modo naturale.
 I consumer possono decidere ordine, layout e markup dei figli.
 
 ### Logica condivisa senza prop drilling
-Il pattern si integra molto bene con [[Context API]] per condividere stato e comportamenti.
+Il pattern si integra molto bene con [[Programmazione/React/Pagine/Context API]] per condividere stato e comportamenti.
 
 ### Componenti complessi più leggibili
 Per widget articolati, una API composta e spesso piu chiara di una lista lunga di props booleane o array paralleli.
@@ -206,8 +215,8 @@ La regola pratica e:
 ## 7. Relazione con Context API e Custom Hooks
 
 Il Compound Components Pattern viene spesso implementato con:
-- [[Context API]] per condividere lo stato;
-- [[Custom Hooks]] per incapsulare l'accesso al contesto.
+- [[Programmazione/React/Pagine/Context API]] per condividere lo stato;
+- [[Programmazione/React/Pagine/Custom Hooks]] per incapsulare l'accesso al contesto.
 
 Pattern comune:
 

@@ -1,17 +1,22 @@
 ---
-date: 2026-04-16
-tags:
-  - programmazione
-  - python
-  - testing
-  - qualita
-type: #permanent-note
-status: budding
+date: 2026-05-14
+area: Programmazione
+topic: Python
+type: technical-note
+status: "non revisionato"
+difficulty: intermediate
+tags: [python, programming]
+aliases: [Testing]
+prerequisites: []
+related: []
 ---
-
 # Testing in Python
 
-## 💡 Concetto Chiave
+## Sintesi
+
+Nota su Testing in Python. Riassume il concetto, la sintassi principale e i punti da ricordare durante studio, sviluppo o debugging.
+
+## Concetto chiave
 Il **testing** e la pratica di verificare in modo automatico che il codice si comporti come previsto. In Python, i test servono a ridurre regressioni, documentare il comportamento atteso e rendere piu sicuri refactoring, bugfix e nuove feature.
 
 Un buon test non dimostra che il codice e "perfetto": dimostra che, per certi input e certe condizioni, il comportamento osservato corrisponde al contratto del sistema.
@@ -21,7 +26,7 @@ Un buon test non dimostra che il codice e "perfetto": dimostra che, per certi in
 
 ---
 
-## 📝 Tipi di test
+##  Tipi di test
 
 ### Unit Test
 Verificano unita piccole e isolate di codice:
@@ -44,7 +49,7 @@ Per la maggior parte dei progetti Python, i primi due livelli sono quelli piu fr
 
 ---
 
-## 💻 Esempi Pratici
+##  Esempi Pratici
 
 ### Test semplice con `assert`
 
@@ -89,11 +94,11 @@ def test_divide_raises_on_zero() -> None:
         divide(10, 0)
 ```
 
-Questo si collega direttamente a [[Error Handling]].
+Questo si collega direttamente a [[Programmazione/Python/Pagine/Error Handling]].
 
 ---
 
-## ⚙️ Framework comuni
+##  Framework comuni
 
 ### `unittest`
 Fa parte della Standard Library ed e il framework storico incluso in Python.
@@ -136,7 +141,7 @@ Vantaggi:
 
 ---
 
-## 🧠 Fixture, setup e isolamento
+##  Fixture, setup e isolamento
 
 I test devono essere ripetibili e indipendenti. Per questo serve separare bene:
 - preparazione dati;
@@ -167,7 +172,7 @@ Con `pytest`, molte volte questo pattern viene sostituito da fixture.
 
 ---
 
-## 🔄 Mocking e dipendenze esterne
+##  Mocking e dipendenze esterne
 
 Un buon test unitario non dovrebbe dipendere realmente da:
 - rete;
@@ -198,7 +203,7 @@ Il mocking e utile, ma va usato con criterio: se un test mocka tutto, rischia di
 
 ---
 
-## 📦 Dove mettere i test
+##  Dove mettere i test
 
 Una struttura comune e:
 
@@ -216,11 +221,11 @@ Convenzioni diffuse:
 - file che iniziano con `test_`;
 - nomi dei test descrittivi e stabili.
 
-Questa organizzazione si integra bene con [[Creazione di Package]].
+Questa organizzazione si integra bene con [[Programmazione/Python/Pagine/Creazione di Package]].
 
 ---
 
-## 🔍 Cosa rende un test buono
+##  Cosa rende un test buono
 
 Un buon test e:
 - veloce;
@@ -240,16 +245,16 @@ Un cattivo test e:
 
 ---
 
-## ⚠️ Best Practices & "Gotchas"
+##  Best Practices & "Gotchas"
 
-- ✅ **Testa prima il codice più critico:** logica di dominio, parsing, validazione, flussi con rischio di regressione.
-- ✅ **Mantieni i test piccoli e leggibili:** un test deve spiegare rapidamente cosa sta verificando.
-- ✅ **Usa nomi descrittivi:** il nome del test deve chiarire il comportamento atteso.
-- ✅ **Copri anche i casi di errore:** non solo il percorso felice.
-- ✅ **Integra i test nel workflow quotidiano:** eseguirli spesso e meglio che accumulare rotture.
-- ❌ **Non testare dettagli banali senza valore:** aggiunge rumore e costo di manutenzione.
-- ❌ **Non creare test dipendenti dal tempo, dalla rete o dall'ordine globale se puoi evitarlo:** diventano flaky.
-- 💣 **Attenzione ai mock eccessivi:** possono produrre test verdi su codice che in realta non funziona.
-- 💣 **Attenzione alla coverage come metrica assoluta:** alta coverage non garantisce test di qualità.
+-  **Testa prima il codice più critico:** logica di dominio, parsing, validazione, flussi con rischio di regressione.
+-  **Mantieni i test piccoli e leggibili:** un test deve spiegare rapidamente cosa sta verificando.
+-  **Usa nomi descrittivi:** il nome del test deve chiarire il comportamento atteso.
+-  **Copri anche i casi di errore:** non solo il percorso felice.
+-  **Integra i test nel workflow quotidiano:** eseguirli spesso e meglio che accumulare rotture.
+-  **Non testare dettagli banali senza valore:** aggiunge rumore e costo di manutenzione.
+-  **Non creare test dipendenti dal tempo, dalla rete o dall'ordine globale se puoi evitarlo:** diventano flaky.
+-  **Attenzione ai mock eccessivi:** possono produrre test verdi su codice che in realta non funziona.
+-  **Attenzione alla coverage come metrica assoluta:** alta coverage non garantisce test di qualità.
 
 ---

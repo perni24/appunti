@@ -1,17 +1,22 @@
 ---
-date: 2026-04-16
-tags:
-  - programmazione
-  - python
-  - stile
-  - qualita
-type: #permanent-note
-status: budding
+date: 2026-05-14
+area: Programmazione
+topic: Python
+type: technical-note
+status: "non revisionato"
+difficulty: intermediate
+tags: [python, programming]
+aliases: [Stile]
+prerequisites: []
+related: []
 ---
-
 # Stile in Python
 
-## 💡 Concetto Chiave
+## Sintesi
+
+Nota su Stile in Python. Riassume il concetto, la sintassi principale e i punti da ricordare durante studio, sviluppo o debugging.
+
+## Concetto chiave
 Lo **stile** in Python non riguarda solo l'estetica del codice. Riguarda leggibilita, coerenza e costo di manutenzione. Codice scritto con uno stile chiaro e uniforme e piu facile da capire, testare, correggere e modificare nel tempo.
 
 Python ha una forte cultura della leggibilita, riassunta anche nello **Zen of Python**: il codice dovrebbe essere esplicito, semplice e facile da seguire.
@@ -21,7 +26,7 @@ Python ha una forte cultura della leggibilita, riassunta anche nello **Zen of Py
 
 ---
 
-## 📝 Riferimenti principali
+##  Riferimenti principali
 
 Il riferimento piu importante e **PEP 8**, la style guide ufficiale di Python.
 
@@ -40,7 +45,7 @@ Altri riferimenti utili:
 
 ---
 
-## 💻 Convenzioni fondamentali
+##  Convenzioni fondamentali
 
 ### Naming
 
@@ -80,7 +85,7 @@ Meglio import espliciti e leggibili che wildcard import o alias inutili.
 
 ---
 
-## ⚙️ Funzionamento Interno (Teoria)
+##  Funzionamento Interno (Teoria)
 
 ### Stile e leggibilita
 In Python, la leggibilita e una priorita progettuale. Per questo molte convenzioni di stile non sono arbitrarie:
@@ -99,11 +104,11 @@ Lo stile in Python e fortemente supportato da strumenti automatici:
 - linter: segnalano problemi stilistici o pratici;
 - type checker: aggiungono coerenza semantica, non solo formale.
 
-Questa area si collega direttamente a [[Type Hinting]].
+Questa area si collega direttamente a [[Programmazione/Python/Pagine/Type Hinting]].
 
 ---
 
-## 🧠 Principi pratici di buon stile
+##  Principi pratici di buon stile
 
 ### Preferire codice semplice
 
@@ -144,18 +149,26 @@ I commenti utili spiegano **perche**, non solo **cosa**.
 Meglio:
 
 ```python
-# Retry because the external API is eventually consistent
+# Stile in Python
+
+## Sintesi
+
+Nota su Stile in Python. Riassume il concetto, la sintassi principale e i punti da ricordare durante studio, sviluppo o debugging.
 ```
 
 che:
 
 ```python
-# Increment i by 1
+# Stile in Python
+
+## Sintesi
+
+Nota su Stile in Python. Riassume il concetto, la sintassi principale e i punti da ricordare durante studio, sviluppo o debugging.
 ```
 
 ---
 
-## 📦 Docstring e documentazione del codice
+##  Docstring e documentazione del codice
 
 Le docstring sono appropriate quando una funzione, classe o modulo espone un comportamento che merita documentazione stabile.
 
@@ -174,7 +187,7 @@ Se il codice e gia ovvio e il nome e buono, una docstring ridondante puo aggiung
 
 ---
 
-## 🔄 Formatter, linter e stile applicato
+##  Formatter, linter e stile applicato
 
 Nel lavoro reale, lo stile non dovrebbe essere gestito "a mano" piu del necessario.
 
@@ -191,17 +204,17 @@ Approccio pragmatico:
 
 ---
 
-## ⚠️ Best Practices & "Gotchas"
+##  Best Practices & "Gotchas"
 
-- ✅ **Segui PEP 8 come baseline:** ti evita di reinventare convenzioni inutilmente.
-- ✅ **Sii coerente con il progetto esistente:** la coerenza locale conta molto.
-- ✅ **Usa nomi chiari e specifici:** riducono il bisogno di commenti superflui.
-- ✅ **Tieni funzioni e moduli focalizzati:** migliora leggibilita e testabilita.
-- ✅ **Automatizza lo stile con tool dedicati:** riduce discussioni a basso valore.
-- ❌ **Non usare abbreviazioni oscure:** fanno risparmiare pochi caratteri e costano molto in comprensione.
-- ❌ **Non complicare il codice per "eleganza":** in Python la chiarezza viene prima.
-- ❌ **Non mischiare stili diversi nello stesso progetto:** aumenta rumore e confusione.
-- 💣 **Attenzione ai commenti obsoleti:** un commento sbagliato e peggio di nessun commento.
-- 💣 **Attenzione all'over-formatting manuale:** se il formatter del progetto decide diversamente, segui il formatter.
+-  **Segui PEP 8 come baseline:** ti evita di reinventare convenzioni inutilmente.
+-  **Sii coerente con il progetto esistente:** la coerenza locale conta molto.
+-  **Usa nomi chiari e specifici:** riducono il bisogno di commenti superflui.
+-  **Tieni funzioni e moduli focalizzati:** migliora leggibilita e testabilita.
+-  **Automatizza lo stile con tool dedicati:** riduce discussioni a basso valore.
+-  **Non usare abbreviazioni oscure:** fanno risparmiare pochi caratteri e costano molto in comprensione.
+-  **Non complicare il codice per "eleganza":** in Python la chiarezza viene prima.
+-  **Non mischiare stili diversi nello stesso progetto:** aumenta rumore e confusione.
+-  **Attenzione ai commenti obsoleti:** un commento sbagliato e peggio di nessun commento.
+-  **Attenzione all'over-formatting manuale:** se il formatter del progetto decide diversamente, segui il formatter.
 
 ---

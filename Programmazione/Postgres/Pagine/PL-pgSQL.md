@@ -1,24 +1,29 @@
 ---
-date: 2026-03-15
-tags:
-  - database
-  - postgres
-  - plpgsql
-  - programming
-type: #permanent-note
-status: evergreen
+date: 2026-05-14
+area: Programmazione
+topic: PostgreSQL
+type: technical-note
+status: "non revisionato"
+difficulty: intermediate
+tags: [postgresql, database]
+aliases: [PL/pgSQL]
+prerequisites: []
+related: []
 ---
-
 # PL/pgSQL in PostgreSQL
+
+## Sintesi
+
+Nota su PL/pgSQL in PostgreSQL. Riassume il concetto, i meccanismi principali e i punti da ricordare durante studio, progettazione o amministrazione.
 
 **PL/pgSQL** (Procedural Language/PostgreSQL) è un linguaggio procedurale caricabile per il database PostgreSQL. Permette di estendere il classico SQL aggiungendo strutture di controllo, variabili e gestione degli errori.
 
-## 💡 Concetto Chiave
+## Concetto chiave
 PL/pgSQL consente di eseguire logica complessa direttamente sul server. Questo riduce drasticamente il traffico di rete (round-trips) tra client e server, poiché i dati vengono elaborati internamente senza essere trasferiti per ogni passaggio intermedio.
 
 ---
 
-## 🏗️ Struttura di un Blocco
+##  Struttura di un Blocco
 
 Il codice PL/pgSQL è organizzato in blocchi delimitati dalle keyword `BEGIN` e `END`.
 
@@ -34,7 +39,7 @@ END $$;
 
 ---
 
-## 📦 Variabili e Tipi
+##  Variabili e Tipi
 
 Le variabili devono essere dichiarate nella sezione `DECLARE`.
 
@@ -53,7 +58,7 @@ END;
 
 ---
 
-## 🔄 Controllo del Flusso
+##  Controllo del Flusso
 
 ### IF / THEN / ELSE
 ```sql
@@ -76,7 +81,7 @@ END LOOP;
 
 ---
 
-## 🖱️ Cursori
+##  Cursori
 
 I cursori permettono di incapsulare una query e scorrere i risultati riga per riga, utile per gestire dataset molto grandi senza saturare la memoria.
 
@@ -97,7 +102,7 @@ END;
 
 ---
 
-## 🚀 Logic Layer: Perché usare PL/pgSQL?
+## Logic layer: Perché usare PL/pgSQL?
 
 1.  **Performance:** Sposta la logica vicino ai dati.
 2.  **Sicurezza:** Può essere usato per creare API di database (tramite Funzioni), nascondendo la complessità delle tabelle sottostanti.

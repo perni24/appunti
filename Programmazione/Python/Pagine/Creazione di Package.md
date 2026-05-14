@@ -1,17 +1,22 @@
 ---
-date: 2026-04-14
-tags:
-  - programmazione
-  - python
-  - packaging
-  - package
-type: #permanent-note
-status: budding
+date: 2026-05-14
+area: Programmazione
+topic: Python
+type: technical-note
+status: "non revisionato"
+difficulty: intermediate
+tags: [python, programming]
+aliases: [Creazione di Package]
+prerequisites: []
+related: []
 ---
-
 # Creazione di Package in Python
 
-## 💡 Concetto Chiave
+## Sintesi
+
+Nota su Creazione di Package in Python. Riassume il concetto, la sintassi principale e i punti da ricordare durante studio, sviluppo o debugging.
+
+## Concetto chiave
 Un **package** Python e un modo per organizzare moduli correlati dentro una struttura riutilizzabile e importabile. Serve a dare un namespace coerente al codice, migliorare la manutenibilita e preparare il progetto alla distribuzione o al riuso.
 
 In pratica:
@@ -24,7 +29,7 @@ In pratica:
 
 ---
 
-## 📝 Struttura minima
+##  Struttura minima
 
 Una struttura semplice di package puo essere:
 
@@ -51,7 +56,7 @@ Il layout `src/` e oggi molto diffuso per evitare import accidentali dal root de
 
 ---
 
-## 💻 Esempi Pratici
+##  Esempi Pratici
 
 ### Package minimale
 
@@ -101,7 +106,7 @@ Questa struttura diventa utile quando il progetto cresce e hai bisogno di separa
 
 ---
 
-## ⚙️ Funzionamento Interno (Teoria)
+##  Funzionamento Interno (Teoria)
 
 ### `__init__.py`
 Storicamente `__init__.py` serve a definire una directory come package Python. Oggi esistono anche i namespace package, ma nella pratica usare `__init__.py` resta la soluzione piu chiara e prevedibile.
@@ -147,11 +152,11 @@ stai installando una **distribuzione**. Una volta installata, quella distribuzio
 import my_package
 ```
 
-Questo si collega direttamente a [[Pip e PyPI]].
+Questo si collega direttamente a [[Programmazione/Python/Pagine/Pip e PyPI]].
 
 ---
 
-## 📦 `pyproject.toml`
+##  `pyproject.toml`
 
 Nel packaging moderno Python, `pyproject.toml` e il file centrale per dichiarare metadati e sistema di build.
 
@@ -179,7 +184,7 @@ Questo file descrive:
 
 ---
 
-## 🧠 Installazione locale e sviluppo
+##  Installazione locale e sviluppo
 
 Durante lo sviluppo, un package viene spesso installato in editable mode:
 
@@ -197,11 +202,11 @@ Il workflow tipico e:
 4. installare in editable mode;
 5. eseguire test e usare gli import come farebbe un consumer reale.
 
-Questa nota si collega quindi anche a [[Ambienti Virtuali]].
+Questa nota si collega quindi anche a [[Programmazione/Python/Pagine/Ambienti Virtuali]].
 
 ---
 
-## 🔒 API pubblica e organizzazione
+##  API pubblica e organizzazione
 
 Creare un package non significa solo "mettere file in una cartella". Significa anche definire:
 - quali moduli fanno parte dell'API pubblica;
@@ -215,16 +220,16 @@ Una convenzione utile e:
 
 ---
 
-## ⚠️ Best Practices & "Gotchas"
+##  Best Practices & "Gotchas"
 
-- ✅ **Usa una struttura chiara:** separa codice, test e metadati del progetto.
-- ✅ **Preferisci `pyproject.toml`:** e lo standard moderno del packaging Python.
-- ✅ **Usa `src/` per progetti non banali:** evita import accidentali dal repository root.
-- ✅ **Definisci un'API pubblica esplicita:** non costringere chi usa il package a import complessi o instabili.
-- ✅ **Installa in editable mode durante lo sviluppo:** rende il workflow piu veloce e realistico.
-- ❌ **Non confondere modulo, package e distribuzione:** sono livelli diversi del packaging.
-- ❌ **Non esportare tutto da `__init__.py` senza criterio:** crea namespace confusi e accoppiamento inutile.
-- 💣 **Attenzione ai nomi dei package:** evitare collisioni con moduli standard come `json`, `threading` o `email`.
-- 💣 **Attenzione agli import relativi profondi:** possono diventare fragili se la struttura evolve male.
+-  **Usa una struttura chiara:** separa codice, test e metadati del progetto.
+-  **Preferisci `pyproject.toml`:** e lo standard moderno del packaging Python.
+-  **Usa `src/` per progetti non banali:** evita import accidentali dal repository root.
+-  **Definisci un'API pubblica esplicita:** non costringere chi usa il package a import complessi o instabili.
+-  **Installa in editable mode durante lo sviluppo:** rende il workflow piu veloce e realistico.
+-  **Non confondere modulo, package e distribuzione:** sono livelli diversi del packaging.
+-  **Non esportare tutto da `__init__.py` senza criterio:** crea namespace confusi e accoppiamento inutile.
+-  **Attenzione ai nomi dei package:** evitare collisioni con moduli standard come `json`, `threading` o `email`.
+-  **Attenzione agli import relativi profondi:** possono diventare fragili se la struttura evolve male.
 
 ---
