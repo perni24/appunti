@@ -8,6 +8,110 @@ Mantieni solo le ultime 10 voci operative.
 
 ---
 
+## 2026-05-20 - Correzione frontmatter Rust
+
+### Fatto
+
+- Verificato il frontmatter YAML delle pagine Rust.
+- Quotate le wikilink nei campi `prerequisites` e `related` delle note completate.
+- Normalizzato il frontmatter delle pagine Rust ancora seedling secondo `AGENTS.md`.
+
+### Decisioni
+
+- Le pagine Rust generate o modificate dal modello restano con `status: "non revisionato"`.
+- Le pagine non ancora completate mantengono il contenuto placeholder, ma ora hanno intestazione YAML valida e coerente.
+
+### Prossimi passi
+
+- Continuare il completamento dei capitoli Rust senza dover correggere nuovamente il frontmatter di base.
+
+## 2026-05-20 - Completamento errori e collezioni Rust
+
+### Fatto
+
+- Completate con contenuto reale le note del capitolo `Errori e Collezioni` dell'indice Rust.
+- Sviluppati `Option`, `Result`, operatore `?`, `panic!`, error handling idiomatico, `thiserror`, `anyhow`, `Vec`, mappe, set, iteratori e closure.
+- Aggiunti esempi pratici, checklist, errori comuni e collegamenti interni coerenti.
+
+### Decisioni
+
+- Le note completate restano con `status: "non revisionato"` fino alla revisione dell'utente.
+- Il capitolo viene trattato come ponte tra i fondamenti Rust e il percorso intermedio su trait, generics e standard library.
+
+### Prossimi passi
+
+- Completare il percorso intermedio partendo dal capitolo `Astrazione e Generici`.
+
+## 2026-05-20 - Completamento tipi personalizzati Rust
+
+### Fatto
+
+- Completate con contenuto reale le note del capitolo `Tipi di Dato Personalizzati` dell'indice Rust.
+- Sviluppati struct, tuple struct, enum, pattern matching, `if let`, `while let`, destructuring e pattern avanzati.
+- Aggiunti esempi pratici, errori comuni, checklist e collegamenti interni coerenti.
+
+### Decisioni
+
+- Le note completate restano con `status: "non revisionato"` fino alla revisione dell'utente.
+- Il capitolo collega i tipi personalizzati ai capitoli successivi su `Option`, `Result`, trait e API design.
+
+### Prossimi passi
+
+- Completare il capitolo Rust `Errori e Collezioni`, che dipende direttamente da enum, pattern matching e ownership.
+
+## 2026-05-20 - Completamento ownership Rust
+
+### Fatto
+
+- Completate con contenuto reale le note del capitolo `Ownership e Memory Safety` dell'indice Rust.
+- Aggiunti esempi pratici su ownership, move semantics, borrowing, slice, stringhe, stack/heap, mutabilita e lifetime impliciti.
+- Verificata la coerenza delle note con la struttura tecnica prevista da `AGENTS.md`.
+
+### Decisioni
+
+- Le note completate restano con `status: "non revisionato"` fino alla revisione dell'utente.
+- Il capitolo `Ownership e Memory Safety` diventa il riferimento base per i capitoli successivi su lifetime, smart pointer e unsafe.
+
+### Prossimi passi
+
+- Completare il capitolo Rust successivo sui tipi di dato personalizzati oppure approfondire i lifetime espliciti.
+
+## 2026-05-20 - Completamento fondamenti Rust
+
+### Fatto
+
+- Completate con contenuto reale le note del capitolo `Fondamenti del Linguaggio` dell'indice Rust.
+- Normalizzate le note completate secondo il template tecnico previsto da `AGENTS.md`.
+- Verificati frontmatter, sezioni obbligatorie e collegamenti interni delle note completate.
+
+### Decisioni
+
+- Le note Rust completate restano con `status: "non revisionato"` fino alla revisione dell'utente.
+- Il capitolo `Fondamenti del Linguaggio` viene trattato come base operativa prima di completare gli altri capitoli Rust.
+
+### Prossimi passi
+
+- Completare progressivamente gli altri capitoli Rust partendo da ownership, borrowing e tipi composti.
+
+## 2026-05-20 - Normalizzazione nuove note Programmazione
+
+### Fatto
+
+- Create e collegate le pagine mancanti per gli indici JavaScript, Postgres, Python e React.
+- Normalizzato il frontmatter delle nuove note secondo `AGENTS.md`.
+- Impostato `status: "non revisionato"` sulle note create dal modello.
+- Aggiunte le sezioni richieste dai template `_Template/Nota teorica.md`, `_Template/Nota tecnica.md` e `_Template/Nota operativa.md` in base al tipo della nota.
+
+### Decisioni
+
+- Le nuove note generate dal modello restano non revisionate finche non vengono controllate dall'utente.
+- I contenuti gia scritti sono stati preservati; le sezioni mancanti sono state aggiunte come tracce da completare.
+
+### Prossimi passi
+
+- Sviluppare progressivamente le sezioni marcate come `Da completare`.
+- Applicare la stessa normalizzazione alle note Rust se si vuole renderle coerenti con `AGENTS.md`.
+
 ## 2026-05-13 - Struttura LLM del vault
 
 ### Fatto

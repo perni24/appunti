@@ -1,17 +1,18 @@
 ### Gestione password
-[[Bitwarden]]
+- [[Bitwarden]]
 
 ### Multi boot ISO
-[[Yumi]]
+- [[Yumi]]
 
 ### Desktop remoto
-[[RustDesk]]
+- [[RustDesk]]
 
 ### Mouse/Tastiera remoto
-[[Barrier]]
+- [[Barrier]]
 
 ### Condivisione file
-[[LocalSend]]
+- [[LocalSend]]
 
 ### Modellazione CAD
-[[FreeCAD]]
+- [[FreeCAD]]
+- OpenScad
