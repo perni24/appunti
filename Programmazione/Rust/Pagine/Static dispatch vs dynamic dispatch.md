@@ -1,47 +1,137 @@
-﻿---
-date: 2026-05-20
+---
+date: 2026-05-21
 area: Programmazione
 topic: Rust
 type: technical-note
 status: "non revisionato"
-difficulty:
+difficulty: intermedio
 tags:
   - programmazione
   - rust
   - astrazione-e-generici
-aliases: []
-prerequisites: []
-related: []
+aliases:
+  - "Static dispatch"
+  - "Dynamic dispatch"
+  - "Dispatch Rust"
+prerequisites:
+  - "[[Programmazione/Rust/Pagine/Generics]]"
+  - "[[Programmazione/Rust/Pagine/Traits]]"
+  - "[[Programmazione/Rust/Pagine/Trait objects e dyn Trait]]"
+related:
+  - "[[Programmazione/Rust/Pagine/Zero-cost abstractions]]"
+  - "[[Programmazione/Rust/Pagine/Object safety]]"
+  - "[[Programmazione/Rust/Pagine/Performance e profiling]]"
 ---
 
 # Static dispatch vs dynamic dispatch
 
 ## Sintesi
 
-Nota seedling su **Static dispatch vs dynamic dispatch** in Rust. L'argomento appartiene a **Percorso Intermedio** / **Astrazione e Generici** e va sviluppato con definizione, motivazione, esempi e collegamenti alle note vicine.
+Static dispatch significa che il compilatore conosce il tipo concreto e risolve la chiamata a compile time. Dynamic dispatch significa che la chiamata viene risolta a runtime tramite una vtable, di solito con `dyn Trait`.
 
-## Concetto chiave
+Rust usa static dispatch per generics e `impl Trait`; usa dynamic dispatch per trait objects.
 
-Descrivi qui il ruolo di **Static dispatch vs dynamic dispatch** nel linguaggio, nella standard library o nell'ecosistema Rust. Evidenzia soprattutto cosa risolve e quali vincoli introduce rispetto a ownership, type system, performance o sicurezza.
+## Quando usarlo
 
-## Quando approfondirlo
+- Usa static dispatch quando il tipo concreto puo restare noto a compile time.
+- Usa dynamic dispatch quando devi gestire tipi diversi in modo uniforme a runtime.
+- Usa static dispatch per performance e ottimizzazioni aggressive.
+- Usa dynamic dispatch per plugin, handler eterogenei, dependency injection semplice o collection di trait object.
 
-- Quando compare in codice reale o nella documentazione ufficiale.
-- Quando influenza API design, gestione della memoria, concorrenza o build.
-- Quando serve distinguere il comportamento idiomatico Rust da approcci presi da altri linguaggi.
+## Come funziona
 
-## Esempio o checklist
+Static dispatch:
 
-Aggiungi un esempio minimo in Rust o una checklist operativa quando la nota viene sviluppata.
+```rust
+fn stampa<T: std::fmt::Display>(value: T) {
+    println!("{value}");
+}
+```
+
+Il compilatore genera codice specializzato per ogni `T` usato.
+
+Dynamic dispatch:
+
+```rust
+fn stampa_dyn(value: &dyn std::fmt::Display) {
+    println!("{value}");
+}
+```
+
+Il metodo viene scelto a runtime tramite vtable.
+
+## API / Sintassi
+
+Statico con generics:
+
+```rust
+fn run<T: Task>(task: T) {
+    task.execute();
+}
+```
+
+Statico con `impl Trait`:
+
+```rust
+fn run(task: impl Task) {
+    task.execute();
+}
+```
+
+Dinamico:
+
+```rust
+fn run(task: &dyn Task) {
+    task.execute();
+}
+```
+
+## Esempio pratico
+
+```rust
+trait Handler {
+    fn handle(&self, input: &str);
+}
+
+fn static_run<H: Handler>(handler: H, input: &str) {
+    handler.handle(input);
+}
+
+fn dynamic_run(handler: &dyn Handler, input: &str) {
+    handler.handle(input);
+}
+```
+
+`static_run` viene specializzata per ogni handler. `dynamic_run` usa una singola firma che accetta qualsiasi trait object compatibile.
+
+## Varianti
+
+- Generics: static dispatch.
+- `impl Trait` in parametro: static dispatch.
+- `impl Trait` in ritorno: tipo concreto nascosto ma unico.
+- `dyn Trait`: dynamic dispatch.
+- Enum dispatch manuale: enum con varianti concrete e `match`.
 
 ## Errori comuni
 
-- Confondere il concetto con una soluzione piu generale.
-- Usarlo senza valutare ownership, lifetime o costo runtime.
-- Non collegarlo agli strumenti Cargo, al compilatore o alle crate coinvolte quando rilevante.
+- Pensare che `impl Trait` in ritorno possa restituire tipi diversi nei vari branch.
+- Usare `Box<dyn Trait>` per evitare di capire un errore di tipo.
+- Ignorare la crescita del codice causata dalla monomorfizzazione in casi estremi.
+- Ottimizzare contro dynamic dispatch senza misurare.
+- Dimenticare che `dyn Trait` richiede object safety.
+
+## Checklist
+
+- Il tipo concreto e unico e noto a compile time?
+- Serve una collection eterogenea?
+- La API deve nascondere il tipo o accettare tipi diversi?
+- Il costo di dispatch o monomorfizzazione conta davvero?
+- Un enum sarebbe piu chiaro di `dyn Trait`?
 
 ## Collegamenti
 
-- [[Programmazione/Rust/Indice rust|Indice Rust]]
-
-
+- [[Programmazione/Rust/Pagine/Generics|Generics]]
+- [[Programmazione/Rust/Pagine/Trait objects e dyn Trait|Trait objects e dyn Trait]]
+- [[Programmazione/Rust/Pagine/Object safety|Object safety]]
+- [[Programmazione/Rust/Pagine/Zero-cost abstractions|Zero-cost abstractions]]
+- [[Programmazione/Rust/Pagine/Performance e profiling|Performance e profiling]]

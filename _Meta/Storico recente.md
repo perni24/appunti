@@ -8,6 +8,23 @@ Mantieni solo le ultime 10 voci operative.
 
 ---
 
+## 2026-05-21 - Completamento astrazione e generici Rust
+
+### Fatto
+
+- Completate con contenuto reale le note del capitolo `Astrazione e Generici` dell'indice Rust.
+- Sviluppati generics, traits, trait bounds, derive, associated types, GAT, trait object, dispatch, object safety e blanket implementations.
+- Aggiornati frontmatter, esempi pratici, checklist e collegamenti interni.
+
+### Decisioni
+
+- Le note completate restano con `status: "non revisionato"` fino alla revisione dell'utente.
+- Il capitolo viene trattato come base del percorso intermedio Rust prima di lifetime avanzati e smart pointer.
+
+### Prossimi passi
+
+- Completare il capitolo `Lifetimes` o collegare meglio queste note alle future sezioni su smart pointer e standard library.
+
 ## 2026-05-20 - Correzione frontmatter Rust
 
 ### Fatto
