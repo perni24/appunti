@@ -1,47 +1,138 @@
-﻿---
-date: 2026-05-20
+---
+date: 2026-05-22
 area: Programmazione
 topic: Rust
 type: technical-note
 status: "non revisionato"
-difficulty:
+difficulty: base
 tags:
   - programmazione
   - rust
   - cargo-editions-e-compatibilita
-aliases: []
-prerequisites: []
-related: []
+aliases:
+  - "Cargo Rust"
+  - "Rust package manager"
+prerequisites:
+  - "[[Programmazione/Rust/Pagine/Rust 2018 2021 e 2024]]"
+  - "[[Programmazione/Rust/Pagine/Cargo.toml]]"
+related:
+  - "[[Programmazione/Rust/Pagine/Cargo.lock]]"
+  - "[[Programmazione/Rust/Pagine/Crates.io]]"
+  - "[[Programmazione/Rust/Pagine/Build profiles]]"
 ---
 
 # Cargo
 
 ## Sintesi
 
-Nota seedling su **Cargo** in Rust. L'argomento appartiene a **Percorso Intermedio** / **Cargo, Editions e Compatibilita** e va sviluppato con definizione, motivazione, esempi e collegamenti alle note vicine.
+Cargo e il tool standard di Rust per creare progetti, compilare crate, gestire dipendenze, eseguire test, generare documentazione e pubblicare pacchetti. In pratica e insieme package manager, build system e task runner dell'ecosistema Rust.
 
-## Concetto chiave
+Un progetto Rust moderno quasi sempre viene gestito tramite Cargo.
 
-Descrivi qui il ruolo di **Cargo** nel linguaggio, nella standard library o nell'ecosistema Rust. Evidenzia soprattutto cosa risolve e quali vincoli introduce rispetto a ownership, type system, performance o sicurezza.
+## Quando usarlo
 
-## Quando approfondirlo
+- Per creare un nuovo binario o una nuova libreria.
+- Per dichiarare dipendenze e feature.
+- Per compilare, testare, fare benchmark e generare documentazione.
+- Per pubblicare crate su crates.io.
+- Per gestire workspace multi-crate.
 
-- Quando compare in codice reale o nella documentazione ufficiale.
-- Quando influenza API design, gestione della memoria, concorrenza o build.
-- Quando serve distinguere il comportamento idiomatico Rust da approcci presi da altri linguaggi.
+## Come funziona
 
-## Esempio o checklist
+Cargo legge il manifest `Cargo.toml`, risolve le dipendenze, aggiorna `Cargo.lock` quando necessario e invoca `rustc` con le opzioni corrette.
 
-Aggiungi un esempio minimo in Rust o una checklist operativa quando la nota viene sviluppata.
+Comandi base:
+
+```bash
+cargo new nome-progetto
+cargo build
+cargo run
+cargo test
+cargo check
+cargo doc
+```
+
+`cargo check` e spesso il comando piu rapido durante lo sviluppo, perche controlla tipi e borrow checker senza produrre l'eseguibile finale.
+
+## API / Sintassi
+
+Creare un progetto:
+
+```bash
+cargo new app
+cargo new libreria --lib
+```
+
+Aggiungere dipendenze:
+
+```bash
+cargo add serde
+cargo add tokio --features full
+```
+
+Build release:
+
+```bash
+cargo build --release
+```
+
+Eseguire un binario specifico:
+
+```bash
+cargo run --bin nome_binario
+```
+
+## Esempio pratico
+
+```bash
+cargo new hello-rust
+cd hello-rust
+cargo check
+cargo run
+cargo test
+```
+
+Flusso tipico durante lo sviluppo:
+
+```bash
+cargo fmt
+cargo clippy
+cargo test
+cargo build --release
+```
+
+Questo copre formattazione, lint, test e build ottimizzata.
+
+## Varianti
+
+- `cargo check`: controllo rapido.
+- `cargo build`: compilazione debug.
+- `cargo build --release`: compilazione ottimizzata.
+- `cargo test`: test unitari e integrazione.
+- `cargo doc --open`: documentazione locale.
+- `cargo publish`: pubblicazione su crates.io.
+- `cargo metadata`: dati strutturati sul progetto, utili per tooling.
 
 ## Errori comuni
 
-- Confondere il concetto con una soluzione piu generale.
-- Usarlo senza valutare ownership, lifetime o costo runtime.
-- Non collegarlo agli strumenti Cargo, al compilatore o alle crate coinvolte quando rilevante.
+- Usare solo `cargo build` durante lo sviluppo invece di `cargo check`.
+- Non committare `Cargo.lock` per applicazioni/binari.
+- Committare target build o artefatti generati.
+- Abilitare feature troppo ampie senza motivo.
+- Confondere crate, package e workspace.
+
+## Checklist
+
+- Il progetto e una libreria, un binario o un workspace?
+- `Cargo.toml` dichiara correttamente edition, dipendenze e feature?
+- `Cargo.lock` va committato in questo tipo di progetto?
+- Prima di rilasciare hai eseguito `fmt`, `clippy`, `test` e build release?
+- Le dipendenze sono necessarie e con feature minime?
 
 ## Collegamenti
 
-- [[Programmazione/Rust/Indice rust|Indice Rust]]
-
-
+- [[Programmazione/Rust/Pagine/Cargo.toml|Cargo.toml]]
+- [[Programmazione/Rust/Pagine/Cargo.lock|Cargo.lock]]
+- [[Programmazione/Rust/Pagine/Crates.io|Crates.io]]
+- [[Programmazione/Rust/Pagine/Build profiles|Build profiles]]
+- [[Programmazione/Rust/Pagine/Workspace|Workspace]]

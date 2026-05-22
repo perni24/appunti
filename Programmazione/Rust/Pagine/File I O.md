@@ -1,47 +1,123 @@
-﻿---
-date: 2026-05-20
+---
+date: 2026-05-22
 area: Programmazione
 topic: Rust
 type: technical-note
 status: "non revisionato"
-difficulty:
+difficulty: base
 tags:
   - programmazione
   - rust
   - standard-library
-aliases: []
-prerequisites: []
-related: []
+aliases:
+  - "File I/O"
+  - "std::fs"
+  - "std::io"
+prerequisites:
+  - "[[Programmazione/Rust/Pagine/Result]]"
+  - "[[Programmazione/Rust/Pagine/Path e PathBuf]]"
+  - "[[Programmazione/Rust/Pagine/Operatore]]"
+related:
+  - "[[Programmazione/Rust/Pagine/OsStr e OsString]]"
+  - "[[Programmazione/Rust/Pagine/File descriptor]]"
+  - "[[Programmazione/Rust/Pagine/Error handling idiomatico]]"
 ---
 
 # File I/O
 
 ## Sintesi
 
-Nota seedling su **File I/O** in Rust. L'argomento appartiene a **Percorso Intermedio** / **Standard Library** e va sviluppato con definizione, motivazione, esempi e collegamenti alle note vicine.
+La standard library offre `std::fs` per operazioni filesystem e `std::io` per lettura/scrittura tramite trait come `Read`, `Write` e `BufRead`. Quasi tutte le operazioni I/O restituiscono `Result`, perche file e filesystem possono fallire.
 
-## Concetto chiave
+Il codice idiomatico accetta path flessibili con `AsRef<Path>` e propaga errori con `?`.
 
-Descrivi qui il ruolo di **File I/O** nel linguaggio, nella standard library o nell'ecosistema Rust. Evidenzia soprattutto cosa risolve e quali vincoli introduce rispetto a ownership, type system, performance o sicurezza.
+## Quando usarlo
 
-## Quando approfondirlo
+- Quando devi leggere o scrivere file.
+- Quando devi creare directory, controllare metadata o iterare directory.
+- Quando devi gestire input/output sincrono.
+- Quando vuoi usare buffer per leggere file grandi.
 
-- Quando compare in codice reale o nella documentazione ufficiale.
-- Quando influenza API design, gestione della memoria, concorrenza o build.
-- Quando serve distinguere il comportamento idiomatico Rust da approcci presi da altri linguaggi.
+## Come funziona
 
-## Esempio o checklist
+Lettura semplice:
 
-Aggiungi un esempio minimo in Rust o una checklist operativa quando la nota viene sviluppata.
+```rust
+let text = std::fs::read_to_string("config.toml")?;
+```
+
+Scrittura semplice:
+
+```rust
+std::fs::write("out.txt", "hello")?;
+```
+
+Per file grandi o streaming si usano `File` e buffer.
+
+## API / Sintassi
+
+```rust
+use std::fs::File;
+use std::io::{self, BufRead, BufReader, Write};
+use std::path::Path;
+
+fn read_lines<P: AsRef<Path>>(path: P) -> io::Result<Vec<String>> {
+    let file = File::open(path)?;
+    let reader = BufReader::new(file);
+    reader.lines().collect()
+}
+```
+
+Scrittura:
+
+```rust
+let mut file = File::create("out.txt")?;
+writeln!(file, "linea")?;
+```
+
+## Esempio pratico
+
+```rust
+use std::io;
+use std::path::Path;
+
+fn copy_text<P: AsRef<Path>, Q: AsRef<Path>>(from: P, to: Q) -> io::Result<()> {
+    let text = std::fs::read_to_string(from)?;
+    std::fs::write(to, text)?;
+    Ok(())
+}
+```
+
+La funzione e semplice, ma mantiene path generici ed errori espliciti.
+
+## Varianti
+
+- `std::fs::read`, `read_to_string`, `write`: helper semplici.
+- `File::open`, `File::create`: controllo esplicito.
+- `BufReader`, `BufWriter`: buffering.
+- `Read`, `Write`, `BufRead`: trait I/O.
+- `OpenOptions`: apertura con flag specifici.
 
 ## Errori comuni
 
-- Confondere il concetto con una soluzione piu generale.
-- Usarlo senza valutare ownership, lifetime o costo runtime.
-- Non collegarlo agli strumenti Cargo, al compilatore o alle crate coinvolte quando rilevante.
+- Usare `unwrap()` su operazioni filesystem.
+- Leggere file enormi interamente in memoria.
+- Convertire path in stringa inutilmente.
+- Ignorare buffering quando si leggono molte righe.
+- Perdere contesto sull'errore, per esempio quale path ha fallito.
+
+## Checklist
+
+- Il file puo essere grande?
+- Serve leggere tutto o streammare?
+- Il path e gestito come `Path`/`PathBuf`?
+- L'errore contiene abbastanza contesto?
+- Serve creazione atomica o gestione di file esistenti?
 
 ## Collegamenti
 
-- [[Programmazione/Rust/Indice rust|Indice Rust]]
-
-
+- [[Programmazione/Rust/Pagine/Path e PathBuf|Path e PathBuf]]
+- [[Programmazione/Rust/Pagine/OsStr e OsString|OsStr e OsString]]
+- [[Programmazione/Rust/Pagine/Result|Result]]
+- [[Programmazione/Rust/Pagine/Error handling idiomatico|Error handling idiomatico]]
+- [[Programmazione/Rust/Pagine/File descriptor|File descriptor]]

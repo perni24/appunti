@@ -1,47 +1,130 @@
-﻿---
-date: 2026-05-20
+---
+date: 2026-05-22
 area: Programmazione
 topic: Rust
 type: technical-note
 status: "non revisionato"
-difficulty:
+difficulty: intermedio
 tags:
   - programmazione
   - rust
   - standard-library
-aliases: []
-prerequisites: []
-related: []
+aliases:
+  - "OsStr"
+  - "OsString"
+  - "Stringhe OS"
+prerequisites:
+  - "[[Programmazione/Rust/Pagine/Stringhe String e &str]]"
+  - "[[Programmazione/Rust/Pagine/Path e PathBuf]]"
+related:
+  - "[[Programmazione/Rust/Pagine/Process e Command]]"
+  - "[[Programmazione/Rust/Pagine/File I O]]"
+  - "[[Programmazione/Rust/Pagine/FFI]]"
 ---
 
 # OsStr e OsString
 
 ## Sintesi
 
-Nota seedling su **OsStr e OsString** in Rust. L'argomento appartiene a **Percorso Intermedio** / **Standard Library** e va sviluppato con definizione, motivazione, esempi e collegamenti alle note vicine.
+`OsStr` e `OsString` rappresentano stringhe nel formato nativo del sistema operativo. Sono usati per path, argomenti di processo, variabili d'ambiente e interazioni con API di sistema.
 
-## Concetto chiave
+Non sempre una stringa OS e UTF-8 valida. Per questo non va trattata automaticamente come `String` o `&str`.
 
-Descrivi qui il ruolo di **OsStr e OsString** nel linguaggio, nella standard library o nell'ecosistema Rust. Evidenzia soprattutto cosa risolve e quali vincoli introduce rispetto a ownership, type system, performance o sicurezza.
+## Quando usarlo
 
-## Quando approfondirlo
+- Quando lavori con path o nomi file.
+- Quando leggi argomenti CLI dal sistema operativo.
+- Quando usi variabili d'ambiente o processi.
+- Quando interagisci con FFI o API OS.
+- Quando vuoi evitare conversioni UTF-8 non sicure.
 
-- Quando compare in codice reale o nella documentazione ufficiale.
-- Quando influenza API design, gestione della memoria, concorrenza o build.
-- Quando serve distinguere il comportamento idiomatico Rust da approcci presi da altri linguaggi.
+## Come funziona
 
-## Esempio o checklist
+`OsStr` e borrowed. `OsString` e owned.
 
-Aggiungi un esempio minimo in Rust o una checklist operativa quando la nota viene sviluppata.
+```rust
+use std::ffi::{OsStr, OsString};
+
+let borrowed = OsStr::new("file.txt");
+let owned = OsString::from("file.txt");
+```
+
+Conversione fallibile a UTF-8:
+
+```rust
+if let Some(s) = borrowed.to_str() {
+    println!("{s}");
+}
+```
+
+Conversione lossy:
+
+```rust
+let printable = borrowed.to_string_lossy();
+```
+
+## API / Sintassi
+
+Argomenti processo:
+
+```rust
+let args: Vec<std::ffi::OsString> = std::env::args_os().collect();
+```
+
+Path:
+
+```rust
+let path = std::path::Path::new("file.txt");
+let file_name = path.file_name();
+```
+
+Variabili d'ambiente:
+
+```rust
+let home = std::env::var_os("HOME");
+```
+
+## Esempio pratico
+
+```rust
+use std::ffi::OsStr;
+use std::path::Path;
+
+fn is_rust_file(path: &Path) -> bool {
+    path.extension() == Some(OsStr::new("rs"))
+}
+```
+
+Il confronto evita conversioni inutili a `&str`.
+
+## Varianti
+
+- `OsStr`: vista borrowed.
+- `OsString`: valore posseduto.
+- `str` e `String`: testo UTF-8.
+- `Path` e `PathBuf`: percorsi basati su stringhe OS.
+- `CString` e `CStr`: stringhe C per FFI.
 
 ## Errori comuni
 
-- Confondere il concetto con una soluzione piu generale.
-- Usarlo senza valutare ownership, lifetime o costo runtime.
-- Non collegarlo agli strumenti Cargo, al compilatore o alle crate coinvolte quando rilevante.
+- Fare `to_str().unwrap()` su path provenienti dal sistema operativo.
+- Usare `std::env::args()` quando servono argomenti non UTF-8.
+- Convertire a `String` troppo presto.
+- Confondere stringhe OS e stringhe C.
+- Perdere dati con conversioni lossy usate in logica, non solo in output.
+
+## Checklist
+
+- Il dato proviene dal sistema operativo?
+- Puo non essere UTF-8 valido?
+- Serve solo stamparlo o anche confrontarlo?
+- `to_string_lossy` e accettabile in questo punto?
+- Puoi restare su `OsStr`/`Path` piu a lungo?
 
 ## Collegamenti
 
-- [[Programmazione/Rust/Indice rust|Indice Rust]]
-
-
+- [[Programmazione/Rust/Pagine/Path e PathBuf|Path e PathBuf]]
+- [[Programmazione/Rust/Pagine/Stringhe String e &str|Stringhe String e &str]]
+- [[Programmazione/Rust/Pagine/Process e Command|Process e Command]]
+- [[Programmazione/Rust/Pagine/File I O|File I O]]
+- [[Programmazione/Rust/Pagine/FFI|FFI]]

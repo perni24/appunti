@@ -1,47 +1,145 @@
-﻿---
-date: 2026-05-20
+---
+date: 2026-05-22
 area: Programmazione
 topic: Rust
 type: technical-note
 status: "non revisionato"
-difficulty:
+difficulty: intermedio
 tags:
   - programmazione
   - rust
   - smart-pointers-e-interior-mutability
-aliases: []
-prerequisites: []
-related: []
+aliases:
+  - "Deref"
+  - "Deref coercion"
+prerequisites:
+  - "[[Programmazione/Rust/Pagine/Traits]]"
+  - "[[Programmazione/Rust/Pagine/Box T]]"
+  - "[[Programmazione/Rust/Pagine/References e Borrowing]]"
+related:
+  - "[[Programmazione/Rust/Pagine/Drop Trait]]"
+  - "[[Programmazione/Rust/Pagine/Rc T e Arc T]]"
+  - "[[Programmazione/Rust/Pagine/AsRef AsMut e Borrow]]"
 ---
 
 # Deref Trait
 
 ## Sintesi
 
-Nota seedling su **Deref Trait** in Rust. L'argomento appartiene a **Percorso Intermedio** / **Smart Pointers e Interior Mutability** e va sviluppato con definizione, motivazione, esempi e collegamenti alle note vicine.
+`Deref` permette a uno smart pointer di comportarsi come un riferimento al valore interno. E il trait dietro l'operatore `*` e dietro molte deref coercions automatiche, per esempio passare `&String` dove serve `&str`.
 
-## Concetto chiave
+Va implementato solo per tipi che sono davvero pointer-like.
 
-Descrivi qui il ruolo di **Deref Trait** nel linguaggio, nella standard library o nell'ecosistema Rust. Evidenzia soprattutto cosa risolve e quali vincoli introduce rispetto a ownership, type system, performance o sicurezza.
+## Quando usarlo
 
-## Quando approfondirlo
+- Quando progetti uno smart pointer o wrapper che deve esporre accesso trasparente al valore interno.
+- Quando vuoi capire perche `&Box<T>` puo essere usato come `&T`.
+- Quando lavori con `String`, `Vec<T>`, `Box<T>`, `Rc<T>` o `Arc<T>`.
+- Quando devi distinguere `Deref`, `AsRef` e accesso esplicito tramite metodi.
 
-- Quando compare in codice reale o nella documentazione ufficiale.
-- Quando influenza API design, gestione della memoria, concorrenza o build.
-- Quando serve distinguere il comportamento idiomatico Rust da approcci presi da altri linguaggi.
+## Come funziona
 
-## Esempio o checklist
+Il trait ha un tipo associato `Target`:
 
-Aggiungi un esempio minimo in Rust o una checklist operativa quando la nota viene sviluppata.
+```rust
+use std::ops::Deref;
+
+impl<T> Deref for MyBox<T> {
+    type Target = T;
+
+    fn deref(&self) -> &Self::Target {
+        &self.0
+    }
+}
+```
+
+Quando scrivi `*x`, Rust chiama `deref`. In molti contesti applica anche conversioni automatiche da `&Smart<T>` a `&T`.
+
+## API / Sintassi
+
+```rust
+use std::ops::Deref;
+
+struct MyBox<T>(T);
+
+impl<T> Deref for MyBox<T> {
+    type Target = T;
+
+    fn deref(&self) -> &T {
+        &self.0
+    }
+}
+```
+
+Deref coercion:
+
+```rust
+fn stampa(s: &str) {
+    println!("{s}");
+}
+
+let s = String::from("rust");
+stampa(&s);
+```
+
+`String` implementa `Deref<Target = str>`.
+
+## Esempio pratico
+
+```rust
+use std::ops::Deref;
+
+struct NonEmptyString(String);
+
+impl NonEmptyString {
+    fn new(value: String) -> Option<Self> {
+        if value.is_empty() {
+            None
+        } else {
+            Some(Self(value))
+        }
+    }
+}
+
+impl Deref for NonEmptyString {
+    type Target = str;
+
+    fn deref(&self) -> &Self::Target {
+        &self.0
+    }
+}
+```
+
+Il wrapper puo essere usato come `&str`, ma mantiene una invariante in costruzione.
+
+## Varianti
+
+- `Deref`: accesso immutabile.
+- `DerefMut`: accesso mutabile.
+- Deref coercion: conversione automatica tra riferimenti.
+- `AsRef`: conversione esplicita e piu leggera per API generiche.
+- `Borrow`: usato soprattutto per lookup in collection.
 
 ## Errori comuni
 
-- Confondere il concetto con una soluzione piu generale.
-- Usarlo senza valutare ownership, lifetime o costo runtime.
-- Non collegarlo agli strumenti Cargo, al compilatore o alle crate coinvolte quando rilevante.
+- Implementare `Deref` su tipi che non sono semanticamente puntatori.
+- Nascondere logica costosa o sorprendente in `deref`.
+- Usare `Deref` per simulare ereditarieta.
+- Confondere deref coercion con conversione ownership.
+- Implementare `DerefMut` rompendo invarianti del wrapper.
+
+## Checklist
+
+- Il tipo e davvero uno smart pointer o una vista trasparente?
+- `deref` e economico e senza effetti collaterali?
+- L'accesso al target puo rompere invarianti?
+- `AsRef` sarebbe piu appropriato?
+- Serve anche `DerefMut` o basta accesso immutabile?
 
 ## Collegamenti
 
-- [[Programmazione/Rust/Indice rust|Indice Rust]]
-
-
+- [[Programmazione/Rust/Pagine/Box T|Box T]]
+- [[Programmazione/Rust/Pagine/Drop Trait|Drop Trait]]
+- [[Programmazione/Rust/Pagine/Rc T e Arc T|Rc T e Arc T]]
+- [[Programmazione/Rust/Pagine/AsRef AsMut e Borrow|AsRef AsMut e Borrow]]
+- [[Programmazione/Rust/Pagine/Traits|Traits]]

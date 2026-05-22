@@ -1,47 +1,129 @@
-﻿---
-date: 2026-05-20
+---
+date: 2026-05-22
 area: Programmazione
 topic: Rust
 type: technical-note
 status: "non revisionato"
-difficulty:
+difficulty: intermedio
 tags:
   - programmazione
   - rust
   - cargo-editions-e-compatibilita
-aliases: []
-prerequisites: []
-related: []
+aliases:
+  - "Feature Cargo"
+  - "Cargo feature flags"
+prerequisites:
+  - "[[Programmazione/Rust/Pagine/Cargo.toml]]"
+  - "[[Programmazione/Rust/Pagine/Crates.io]]"
+related:
+  - "[[Programmazione/Rust/Pagine/Feature flags ben progettate]]"
+  - "[[Programmazione/Rust/Pagine/Build profiles]]"
+  - "[[Programmazione/Rust/Pagine/Workspace dependencies]]"
 ---
 
 # Cargo features
 
 ## Sintesi
 
-Nota seedling su **Cargo features** in Rust. L'argomento appartiene a **Percorso Intermedio** / **Cargo, Editions e Compatibilita** e va sviluppato con definizione, motivazione, esempi e collegamenti alle note vicine.
+Le Cargo features sono flag di compilazione che permettono di abilitare codice opzionale, dipendenze opzionali e integrazioni. Sono additive: se una dipendenza viene usata da piu crate con feature diverse, Cargo abilita l'unione delle feature richieste.
 
-## Concetto chiave
+Vanno progettate con attenzione per evitare combinazioni fragili e dipendenze inutili.
 
-Descrivi qui il ruolo di **Cargo features** nel linguaggio, nella standard library o nell'ecosistema Rust. Evidenzia soprattutto cosa risolve e quali vincoli introduce rispetto a ownership, type system, performance o sicurezza.
+## Quando usarlo
 
-## Quando approfondirlo
+- Per rendere opzionale una dipendenza pesante.
+- Per esporre integrazioni facoltative, per esempio `serde`, `tokio`, `sqlx`.
+- Per separare backend o piattaforme.
+- Per offrire una configurazione `default` comoda ma non eccessiva.
 
-- Quando compare in codice reale o nella documentazione ufficiale.
-- Quando influenza API design, gestione della memoria, concorrenza o build.
-- Quando serve distinguere il comportamento idiomatico Rust da approcci presi da altri linguaggi.
+## Come funziona
 
-## Esempio o checklist
+In `Cargo.toml`:
 
-Aggiungi un esempio minimo in Rust o una checklist operativa quando la nota viene sviluppata.
+```toml
+[features]
+default = ["std"]
+std = []
+serde = ["dep:serde"]
+
+[dependencies]
+serde = { version = "1", optional = true, features = ["derive"] }
+```
+
+Nel codice:
+
+```rust
+#[cfg(feature = "serde")]
+use serde::{Deserialize, Serialize};
+```
+
+## API / Sintassi
+
+Abilitare feature:
+
+```bash
+cargo build --features serde
+cargo test --no-default-features
+cargo test --all-features
+```
+
+Dipendenza con feature:
+
+```toml
+tokio = { version = "1", features = ["rt", "macros"] }
+```
+
+Feature che abilita feature di dipendenza:
+
+```toml
+[features]
+async = ["dep:tokio", "tokio/rt"]
+```
+
+## Esempio pratico
+
+```toml
+[features]
+default = ["std"]
+std = []
+json = ["dep:serde", "dep:serde_json"]
+
+[dependencies]
+serde = { version = "1", optional = true, features = ["derive"] }
+serde_json = { version = "1", optional = true }
+```
+
+Questa configurazione mantiene il supporto JSON opzionale.
+
+## Varianti
+
+- Feature di default.
+- Feature opzionali senza dipendenze.
+- Dipendenze opzionali con `dep:nome`.
+- Feature forwarding verso dipendenze.
+- Feature per `no_std`/`std`.
+- Feature additive vs mutualmente esclusive.
 
 ## Errori comuni
 
-- Confondere il concetto con una soluzione piu generale.
-- Usarlo senza valutare ownership, lifetime o costo runtime.
-- Non collegarlo agli strumenti Cargo, al compilatore o alle crate coinvolte quando rilevante.
+- Progettare feature mutualmente esclusive: Cargo le unifica e puo abilitarle insieme.
+- Mettere troppe dipendenze in `default`.
+- Non testare `--no-default-features`.
+- Usare feature per configurazioni runtime che dovrebbero essere parametri.
+- Rompere API pubbliche in base a feature non documentate.
+
+## Checklist
+
+- Le feature sono additive?
+- La feature `default` e minimale?
+- Hai testato `--all-features` e `--no-default-features`?
+- Le dipendenze opzionali sono davvero opzionali?
+- Le feature pubbliche sono documentate?
 
 ## Collegamenti
 
-- [[Programmazione/Rust/Indice rust|Indice Rust]]
-
-
+- [[Programmazione/Rust/Pagine/Cargo.toml|Cargo.toml]]
+- [[Programmazione/Rust/Pagine/Feature flags ben progettate|Feature flags ben progettate]]
+- [[Programmazione/Rust/Pagine/no_std|no_std]]
+- [[Programmazione/Rust/Pagine/Crates.io|Crates.io]]
+- [[Programmazione/Rust/Pagine/Workspace dependencies|Workspace dependencies]]

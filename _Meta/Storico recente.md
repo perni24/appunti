@@ -8,6 +8,74 @@ Mantieni solo le ultime 10 voci operative.
 
 ---
 
+## 2026-05-22 - Completamento Cargo e compatibilita Rust
+
+### Fatto
+
+- Completate con contenuto reale le note del capitolo `Cargo, Editions e Compatibilita` dell'indice Rust.
+- Sviluppati Cargo, manifest, lockfile, crates.io, semantic versioning, MSRV, editions, migrazione edition, feature, build script, profili e dipendenze workspace.
+- Aggiunti esempi pratici, errori comuni, checklist e collegamenti interni coerenti.
+
+### Decisioni
+
+- Le note completate restano con `status: "non revisionato"` fino alla revisione dell'utente.
+- Il capitolo chiarisce il ruolo di compatibilita, MSRV e edition come parte della manutenzione di crate e applicazioni Rust.
+
+### Prossimi passi
+
+- Proseguire con il percorso avanzato Rust partendo da `Concorrenza e Asincronia`.
+
+## 2026-05-22 - Completamento standard library Rust
+
+### Fatto
+
+- Completate con contenuto reale le note del capitolo `Standard Library` dell'indice Rust.
+- Sviluppati Iterator API, conversioni `From`/`Into`/`TryFrom`/`TryInto`, `AsRef`/`AsMut`/`Borrow`, `Default`, `Display`/`Debug`, path, stringhe OS, file I/O, processi e tempo.
+- Aggiunti esempi pratici, errori comuni, checklist e collegamenti interni coerenti.
+
+### Decisioni
+
+- Le note completate restano con `status: "non revisionato"` fino alla revisione dell'utente.
+- Il capitolo `Standard Library` viene trattato come base operativa prima delle sezioni Cargo, tooling, async e applicazioni.
+
+### Prossimi passi
+
+- Completare il capitolo `Cargo, Editions e Compatibilita`.
+
+## 2026-05-22 - Completamento smart pointer Rust
+
+### Fatto
+
+- Completate con contenuto reale le note del capitolo `Smart Pointers e Interior Mutability` dell'indice Rust.
+- Sviluppati `Box<T>`, `Deref`, `Drop`, `Rc<T>`, `Arc<T>`, `RefCell<T>`, `Cell<T>`, `Mutex<T>`, `RwLock<T>`, `OnceLock`, `LazyLock`, interior mutability e `Pin`/`Unpin`.
+- Aggiunti esempi pratici, errori comuni, checklist e collegamenti interni coerenti.
+
+### Decisioni
+
+- Le note completate restano con `status: "non revisionato"` fino alla revisione dell'utente.
+- Il capitolo collega ownership, borrowing e concorrenza, preparando le sezioni su standard library, async e unsafe.
+
+### Prossimi passi
+
+- Completare il capitolo `Standard Library` oppure approfondire concorrenza e async.
+
+## 2026-05-22 - Completamento lifetimes Rust
+
+### Fatto
+
+- Completate con contenuto reale le note del capitolo `Lifetimes` dell'indice Rust.
+- Sviluppati lifetime annotations, lifetime elision, lifetimes nelle struct, lifetimes nei trait, lifetimes avanzati e HRTB.
+- Aggiunti esempi pratici, errori comuni, checklist e collegamenti interni coerenti.
+
+### Decisioni
+
+- Le note completate restano con `status: "non revisionato"` fino alla revisione dell'utente.
+- Il capitolo `Lifetimes` fa da ponte tra ownership/borrowing e le sezioni su GAT, trait object, smart pointer e unsafe.
+
+### Prossimi passi
+
+- Completare il capitolo `Smart Pointers e Interior Mutability`.
+
 ## 2026-05-21 - Completamento astrazione e generici Rust
 
 ### Fatto

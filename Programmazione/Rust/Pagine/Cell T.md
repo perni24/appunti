@@ -1,47 +1,119 @@
-﻿---
-date: 2026-05-20
+---
+date: 2026-05-22
 area: Programmazione
 topic: Rust
 type: technical-note
 status: "non revisionato"
-difficulty:
+difficulty: intermedio
 tags:
   - programmazione
   - rust
   - smart-pointers-e-interior-mutability
-aliases: []
-prerequisites: []
-related: []
+aliases:
+  - "Cell<T>"
+  - "Cell Rust"
+prerequisites:
+  - "[[Programmazione/Rust/Pagine/Interior mutability]]"
+  - "[[Programmazione/Rust/Pagine/Copy e Clone]]"
+  - "[[Programmazione/Rust/Pagine/Mutabilita]]"
+related:
+  - "[[Programmazione/Rust/Pagine/RefCell T]]"
+  - "[[Programmazione/Rust/Pagine/OnceLock e LazyLock]]"
+  - "[[Programmazione/Rust/Pagine/Send e Sync Traits]]"
 ---
 
 # Cell<T>
 
 ## Sintesi
 
-Nota seedling su **Cell<T>** in Rust. L'argomento appartiene a **Percorso Intermedio** / **Smart Pointers e Interior Mutability** e va sviluppato con definizione, motivazione, esempi e collegamenti alle note vicine.
+`Cell<T>` fornisce mutabilita interna per valori piccoli o sostituibili interamente. A differenza di `RefCell<T>`, non restituisce riferimenti al contenuto: legge, scrive, sostituisce o prende il valore.
 
-## Concetto chiave
+E adatto per tipi `Copy`, flag, contatori locali e cache semplici in codice single-thread.
 
-Descrivi qui il ruolo di **Cell<T>** nel linguaggio, nella standard library o nell'ecosistema Rust. Evidenzia soprattutto cosa risolve e quali vincoli introduce rispetto a ownership, type system, performance o sicurezza.
+## Quando usarlo
 
-## Quando approfondirlo
+- Quando devi modificare un valore tramite `&self`.
+- Quando il valore e `Copy` e piccolo.
+- Quando vuoi evitare borrow runtime di `RefCell`.
+- Quando ti basta sostituire l'intero valore, non mutarne parti interne tramite riferimento.
 
-- Quando compare in codice reale o nella documentazione ufficiale.
-- Quando influenza API design, gestione della memoria, concorrenza o build.
-- Quando serve distinguere il comportamento idiomatico Rust da approcci presi da altri linguaggi.
+## Come funziona
 
-## Esempio o checklist
+```rust
+use std::cell::Cell;
 
-Aggiungi un esempio minimo in Rust o una checklist operativa quando la nota viene sviluppata.
+let counter = Cell::new(0);
+counter.set(counter.get() + 1);
+```
+
+`get()` richiede in genere `T: Copy`, perche restituisce una copia del valore. `set()` rimpiazza il contenuto.
+
+`Cell<T>` non e thread-safe: per condivisione tra thread servono atomics, `Mutex` o `RwLock`.
+
+## API / Sintassi
+
+```rust
+let value = Cell::new(10);
+
+let old = value.get();
+value.set(20);
+
+let replaced = value.replace(30);
+let taken = value.take();
+```
+
+`take()` richiede `T: Default`, perche lascia un valore di default al posto del contenuto.
+
+## Esempio pratico
+
+```rust
+use std::cell::Cell;
+
+struct Metrics {
+    calls: Cell<u64>,
+}
+
+impl Metrics {
+    fn record_call(&self) {
+        self.calls.set(self.calls.get() + 1);
+    }
+
+    fn calls(&self) -> u64 {
+        self.calls.get()
+    }
+}
+```
+
+`record_call` usa `&self`, ma aggiorna internamente il contatore.
+
+## Varianti
+
+- `Cell<T>`: sostituzione interna senza riferimenti al contenuto.
+- `RefCell<T>`: borrow runtime e accesso tramite `Ref`/`RefMut`.
+- Tipi atomici: contatori e flag thread-safe.
+- `OnceLock<T>`: inizializzazione una sola volta.
+- `Mutex<T>`: mutabilita interna sincronizzata.
 
 ## Errori comuni
 
-- Confondere il concetto con una soluzione piu generale.
-- Usarlo senza valutare ownership, lifetime o costo runtime.
-- Non collegarlo agli strumenti Cargo, al compilatore o alle crate coinvolte quando rilevante.
+- Usare `Cell<T>` quando serve modificare una parte interna di un valore complesso.
+- Aspettarsi riferimenti al contenuto.
+- Usarlo tra thread.
+- Nascondere mutabilita importante rendendo l'API poco chiara.
+- Usare `Cell` per valori grandi dove sostituzione/copia e costosa.
+
+## Checklist
+
+- Il valore e piccolo o `Copy`?
+- Serve accesso per riferimento o basta sostituzione?
+- Il codice e single-thread?
+- `RefCell<T>` sarebbe piu adatto?
+- La mutabilita interna e documentata dal tipo?
 
 ## Collegamenti
 
-- [[Programmazione/Rust/Indice rust|Indice Rust]]
-
-
+- [[Programmazione/Rust/Pagine/Interior mutability|Interior mutability]]
+- [[Programmazione/Rust/Pagine/RefCell T|RefCell T]]
+- [[Programmazione/Rust/Pagine/Copy e Clone|Copy e Clone]]
+- [[Programmazione/Rust/Pagine/OnceLock e LazyLock|OnceLock e LazyLock]]
+- [[Programmazione/Rust/Pagine/Send e Sync Traits|Send e Sync Traits]]
