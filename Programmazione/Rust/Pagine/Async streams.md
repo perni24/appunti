@@ -1,47 +1,124 @@
-﻿---
-date: 2026-05-20
+---
+date: 2026-05-26
 area: Programmazione
 topic: Rust
 type: technical-note
 status: "non revisionato"
-difficulty:
+difficulty: intermedio
 tags:
   - programmazione
   - rust
   - concorrenza-e-asincronia
-aliases: []
-prerequisites: []
-related: []
+aliases:
+  - "Stream async"
+  - "Async Stream Rust"
+prerequisites:
+  - "[[Programmazione/Rust/Pagine/Async Await]]"
+  - "[[Programmazione/Rust/Pagine/Future Trait]]"
+  - "[[Programmazione/Rust/Pagine/Iterator API]]"
+related:
+  - "[[Programmazione/Rust/Pagine/Channel async]]"
+  - "[[Programmazione/Rust/Pagine/select join e cancellation]]"
+  - "[[Programmazione/Rust/Pagine/Runtime async Tokio e async-std]]"
 ---
 
 # Async streams
 
 ## Sintesi
 
-Nota seedling su **Async streams** in Rust. L'argomento appartiene a **Percorso Avanzato** / **Concorrenza e Asincronia** e va sviluppato con definizione, motivazione, esempi e collegamenti alle note vicine.
+Uno stream async e l'equivalente asincrono di un iteratore: produce una sequenza di valori nel tempo. Ogni elemento puo richiedere attesa, per esempio messaggi da rete, righe da socket o eventi da channel.
 
-## Concetto chiave
+Nella pratica si usano trait e utility da ecosystem come `futures`, `tokio-stream` o runtime specifici.
 
-Descrivi qui il ruolo di **Async streams** nel linguaggio, nella standard library o nell'ecosistema Rust. Evidenzia soprattutto cosa risolve e quali vincoli introduce rispetto a ownership, type system, performance o sicurezza.
+## Quando usarlo
 
-## Quando approfondirlo
+- Quando ricevi molti valori asincroni nel tempo.
+- Quando vuoi trasformare eventi con pipeline simili agli iteratori.
+- Quando leggi da channel, socket o sorgenti I/O incrementali.
+- Quando una singola `Future` non basta per rappresentare piu output.
 
-- Quando compare in codice reale o nella documentazione ufficiale.
-- Quando influenza API design, gestione della memoria, concorrenza o build.
-- Quando serve distinguere il comportamento idiomatico Rust da approcci presi da altri linguaggi.
+## Come funziona
 
-## Esempio o checklist
+Concettualmente:
 
-Aggiungi un esempio minimo in Rust o una checklist operativa quando la nota viene sviluppata.
+```rust
+trait Stream {
+    type Item;
+    fn poll_next(...) -> Poll<Option<Self::Item>>;
+}
+```
+
+Uno stream restituisce:
+
+- `Some(item)` per un valore disponibile;
+- `None` quando la sequenza e finita;
+- `Pending` quando bisogna attendere.
+
+## API / Sintassi
+
+Con `StreamExt`:
+
+```rust
+use futures::StreamExt;
+
+while let Some(item) = stream.next().await {
+    println!("{item:?}");
+}
+```
+
+Adattatori:
+
+```rust
+stream
+    .filter(|item| async move { item.is_valid() })
+    .map(|item| item.value())
+```
+
+## Esempio pratico
+
+```rust
+use futures::StreamExt;
+
+async fn consume_numbers<S>(mut stream: S)
+where
+    S: futures::Stream<Item = u64> + Unpin,
+{
+    while let Some(n) = stream.next().await {
+        println!("{n}");
+    }
+}
+```
+
+La funzione consuma una sequenza asincrona di numeri.
+
+## Varianti
+
+- `Stream` da crate `futures`.
+- `tokio_stream` per integrazione Tokio.
+- Receiver async convertiti in stream.
+- Stream boxed per tipi eterogenei.
+- Stream pinned quando il tipo non e `Unpin`.
 
 ## Errori comuni
 
-- Confondere il concetto con una soluzione piu generale.
-- Usarlo senza valutare ownership, lifetime o costo runtime.
-- Non collegarlo agli strumenti Cargo, al compilatore o alle crate coinvolte quando rilevante.
+- Confondere `Iterator` e `Stream`: il secondo richiede `.await`.
+- Dimenticare `Unpin` o pinning quando si usa `.next().await`.
+- Creare stream che non gestiscono cancellation.
+- Usare stream per un singolo valore invece di `Future`.
+- Non gestire backpressure.
+
+## Checklist
+
+- La sorgente produce molti valori nel tempo?
+- Serve trasformare o filtrare eventi?
+- Il runtime e compatibile con lo stream scelto?
+- Serve pinning o boxing?
+- Cosa succede se il consumer si ferma?
 
 ## Collegamenti
 
-- [[Programmazione/Rust/Indice rust|Indice Rust]]
-
-
+- [[Programmazione/Rust/Pagine/Iterator API|Iterator API]]
+- [[Programmazione/Rust/Pagine/Future Trait|Future Trait]]
+- [[Programmazione/Rust/Pagine/Channel async|Channel async]]
+- [[Programmazione/Rust/Pagine/select join e cancellation|select join e cancellation]]
+- [[Programmazione/Rust/Pagine/Pin e Unpin|Pin e Unpin]]

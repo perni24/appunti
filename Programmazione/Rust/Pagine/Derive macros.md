@@ -1,47 +1,128 @@
-﻿---
-date: 2026-05-20
+---
+date: 2026-05-26
 area: Programmazione
 topic: Rust
 type: technical-note
 status: "non revisionato"
-difficulty:
+difficulty: avanzato
 tags:
   - programmazione
   - rust
   - macros
-aliases: []
-prerequisites: []
-related: []
+aliases:
+  - "derive macro"
+  - "proc_macro_derive"
+prerequisites:
+  - "[[Programmazione/Rust/Pagine/Derive traits]]"
+  - "[[Programmazione/Rust/Pagine/Procedural macros]]"
+  - "[[Programmazione/Rust/Pagine/Traits]]"
+related:
+  - "[[Programmazione/Rust/Pagine/Attribute macros]]"
+  - "[[Programmazione/Rust/Pagine/Display e Debug]]"
+  - "[[Programmazione/Rust/Pagine/thiserror e anyhow]]"
 ---
 
 # Derive macros
 
 ## Sintesi
 
-Nota seedling su **Derive macros** in Rust. L'argomento appartiene a **Percorso Avanzato** / **Macros** e va sviluppato con definizione, motivazione, esempi e collegamenti alle note vicine.
+Le derive macros sono procedural macros invocate con `#[derive(...)]`. Generano implementazioni di trait o codice associato leggendo la definizione di una struct o enum.
 
-## Concetto chiave
+Sono il meccanismo dietro molte API ergonomiche dell'ecosistema Rust, come `serde::Serialize`, `thiserror::Error` e derive custom di framework.
 
-Descrivi qui il ruolo di **Derive macros** nel linguaggio, nella standard library o nell'ecosistema Rust. Evidenzia soprattutto cosa risolve e quali vincoli introduce rispetto a ownership, type system, performance o sicurezza.
+## Quando usarlo
 
-## Quando approfondirlo
+- Quando vuoi generare implementazioni ripetitive di trait.
+- Quando un trait richiede codice derivabile dalla struttura dei campi.
+- Quando vuoi supportare attributi di configurazione sui campi.
+- Quando vuoi offrire API ergonomica a utenti di una libreria.
 
-- Quando compare in codice reale o nella documentazione ufficiale.
-- Quando influenza API design, gestione della memoria, concorrenza o build.
-- Quando serve distinguere il comportamento idiomatico Rust da approcci presi da altri linguaggi.
+## Come funziona
 
-## Esempio o checklist
+```rust
+#[derive(Debug, Clone)]
+struct User {
+    id: u64,
+    name: String,
+}
+```
 
-Aggiungi un esempio minimo in Rust o una checklist operativa quando la nota viene sviluppata.
+Per derive custom:
+
+```rust
+#[proc_macro_derive(MyTrait)]
+pub fn derive_my_trait(input: TokenStream) -> TokenStream {
+    // parse input, generate impl
+}
+```
+
+La macro riceve i token dell'item annotato e produce codice aggiuntivo, spesso un `impl Trait for Type`.
+
+## API / Sintassi
+
+Con attributi helper:
+
+```rust
+#[derive(MyDerive)]
+#[my_derive(rename = "user")]
+struct User {
+    #[my_derive(skip)]
+    password: String,
+}
+```
+
+Dichiarazione:
+
+```rust
+#[proc_macro_derive(MyDerive, attributes(my_derive))]
+pub fn my_derive(input: TokenStream) -> TokenStream {
+    todo!()
+}
+```
+
+## Esempio pratico
+
+```rust
+#[derive(Debug, thiserror::Error)]
+enum AppError {
+    #[error("config mancante")]
+    MissingConfig,
+
+    #[error("errore io")]
+    Io(#[from] std::io::Error),
+}
+```
+
+`thiserror::Error` genera implementazioni di `Display`, `Error` e conversioni dove richiesto.
+
+## Varianti
+
+- Derive standard: `Debug`, `Clone`, `Copy`, `Default`, `Eq`, `Hash`.
+- Derive custom da proc macro.
+- Helper attributes per campi e varianti.
+- Derive che generano trait impl.
+- Derive che generano metodi o item aggiuntivi.
 
 ## Errori comuni
 
-- Confondere il concetto con una soluzione piu generale.
-- Usarlo senza valutare ownership, lifetime o costo runtime.
-- Non collegarlo agli strumenti Cargo, al compilatore o alle crate coinvolte quando rilevante.
+- Derivare trait senza capire il comportamento generato.
+- Usare attributi helper non documentati.
+- Generare impl troppo generici o con bounds sbagliati.
+- Nascondere breaking changes dietro modifiche alla macro.
+- Produrre messaggi di errore difficili da collegare al campo sbagliato.
+
+## Checklist
+
+- Il codice generato e prevedibile?
+- I bound generati sui generics sono minimi?
+- Gli attributi helper sono documentati?
+- Gli errori puntano agli span corretti?
+- Ci sono test su struct, enum, generics e lifetime?
 
 ## Collegamenti
 
-- [[Programmazione/Rust/Indice rust|Indice Rust]]
-
-
+- [[Programmazione/Rust/Pagine/Derive traits|Derive traits]]
+- [[Programmazione/Rust/Pagine/Procedural macros|Procedural macros]]
+- [[Programmazione/Rust/Pagine/Attribute macros|Attribute macros]]
+- [[Programmazione/Rust/Pagine/thiserror e anyhow|thiserror e anyhow]]
+- [[Programmazione/Rust/Pagine/Display e Debug|Display e Debug]]

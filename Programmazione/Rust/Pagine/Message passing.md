@@ -1,47 +1,133 @@
-﻿---
-date: 2026-05-20
+---
+date: 2026-05-26
 area: Programmazione
 topic: Rust
 type: technical-note
 status: "non revisionato"
-difficulty:
+difficulty: intermedio
 tags:
   - programmazione
   - rust
   - concorrenza-e-asincronia
-aliases: []
-prerequisites: []
-related: []
+aliases:
+  - "Message passing Rust"
+  - "std::sync::mpsc"
+prerequisites:
+  - "[[Programmazione/Rust/Pagine/Threads]]"
+  - "[[Programmazione/Rust/Pagine/Ownership]]"
+related:
+  - "[[Programmazione/Rust/Pagine/Channel async]]"
+  - "[[Programmazione/Rust/Pagine/Shared state]]"
+  - "[[Programmazione/Rust/Pagine/Graceful shutdown]]"
 ---
 
 # Message passing
 
 ## Sintesi
 
-Nota seedling su **Message passing** in Rust. L'argomento appartiene a **Percorso Avanzato** / **Concorrenza e Asincronia** e va sviluppato con definizione, motivazione, esempi e collegamenti alle note vicine.
+Message passing significa comunicare tra thread o task inviando messaggi invece di condividere direttamente stato mutabile. In Rust e un pattern naturale perche il messaggio puo trasferire ownership dal produttore al consumatore.
 
-## Concetto chiave
+Nella standard library il canale principale e `std::sync::mpsc`.
 
-Descrivi qui il ruolo di **Message passing** nel linguaggio, nella standard library o nell'ecosistema Rust. Evidenzia soprattutto cosa risolve e quali vincoli introduce rispetto a ownership, type system, performance o sicurezza.
+## Quando usarlo
 
-## Quando approfondirlo
+- Quando vuoi evitare lock espliciti.
+- Quando un thread produce lavoro e un altro lo consuma.
+- Quando vuoi modellare worker, code, eventi o comandi.
+- Quando il trasferimento di ownership e piu semplice della condivisione.
 
-- Quando compare in codice reale o nella documentazione ufficiale.
-- Quando influenza API design, gestione della memoria, concorrenza o build.
-- Quando serve distinguere il comportamento idiomatico Rust da approcci presi da altri linguaggi.
+## Come funziona
 
-## Esempio o checklist
+```rust
+use std::sync::mpsc;
+use std::thread;
 
-Aggiungi un esempio minimo in Rust o una checklist operativa quando la nota viene sviluppata.
+let (tx, rx) = mpsc::channel();
+
+thread::spawn(move || {
+    tx.send(String::from("ciao")).unwrap();
+});
+
+let msg = rx.recv().unwrap();
+println!("{msg}");
+```
+
+`send` muove il messaggio nel canale. `recv` blocca finche arriva un messaggio o tutti i sender vengono chiusi.
+
+## API / Sintassi
+
+```rust
+let (tx, rx) = std::sync::mpsc::channel::<String>();
+
+tx.send(String::from("job"))?;
+let job = rx.recv()?;
+```
+
+Canale bounded:
+
+```rust
+let (tx, rx) = std::sync::mpsc::sync_channel(10);
+```
+
+Iterazione:
+
+```rust
+for message in rx {
+    println!("{message}");
+}
+```
+
+## Esempio pratico
+
+```rust
+use std::sync::mpsc;
+use std::thread;
+
+enum Command {
+    Work(u64),
+    Stop,
+}
+
+fn worker(rx: mpsc::Receiver<Command>) {
+    while let Ok(command) = rx.recv() {
+        match command {
+            Command::Work(id) => println!("job {id}"),
+            Command::Stop => break,
+        }
+    }
+}
+```
+
+Il messaggio `Stop` rende esplicito lo shutdown.
+
+## Varianti
+
+- `mpsc::channel`: canale non bounded.
+- `mpsc::sync_channel`: canale bounded con backpressure.
+- Async channels: `tokio::sync::mpsc`, `async_std::channel` o crate dedicate.
+- One-shot channel: risposta singola.
+- Broadcast/watch channel: modelli async specifici.
 
 ## Errori comuni
 
-- Confondere il concetto con una soluzione piu generale.
-- Usarlo senza valutare ownership, lifetime o costo runtime.
-- Non collegarlo agli strumenti Cargo, al compilatore o alle crate coinvolte quando rilevante.
+- Usare canali non bounded senza controllo di memoria.
+- Ignorare errori di `send`: indicano ricevitore chiuso.
+- Tenere sender clonati e impedire la chiusura del receiver.
+- Mandare messaggi troppo grandi senza valutare il costo di move.
+- Usare channel quando basta una chiamata diretta.
+
+## Checklist
+
+- Serve ownership transfer o condivisione?
+- Il canale deve essere bounded?
+- Come viene segnalata la chiusura?
+- Gli errori di `send` e `recv` sono gestiti?
+- Il protocollo dei messaggi e modellato con enum chiari?
 
 ## Collegamenti
 
-- [[Programmazione/Rust/Indice rust|Indice Rust]]
-
-
+- [[Programmazione/Rust/Pagine/Threads|Threads]]
+- [[Programmazione/Rust/Pagine/Channel async|Channel async]]
+- [[Programmazione/Rust/Pagine/Shared state|Shared state]]
+- [[Programmazione/Rust/Pagine/Graceful shutdown|Graceful shutdown]]
+- [[Programmazione/Rust/Pagine/Ownership|Ownership]]

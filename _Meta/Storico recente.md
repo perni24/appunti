@@ -8,6 +8,91 @@ Mantieni solo le ultime 10 voci operative.
 
 ---
 
+## 2026-05-26 - Completamento Rust di Sistema
+
+### Fatto
+
+- Completate con contenuto reale le note del capitolo `Rust di Sistema` dell'indice Rust.
+- Sviluppati FFI, bindgen/cbindgen, libc/nix, layout, allocator, no_std, embedded, file descriptor, memory mapping, cross-compilation, linking, performance/profiling e zero-cost abstractions.
+- Aggiunti esempi pratici, errori comuni, checklist e collegamenti interni coerenti.
+
+### Decisioni
+
+- Le note completate restano con `status: "non revisionato"` fino alla revisione dell'utente.
+- Il capitolo separa i confini unsafe/FFI dalle pratiche operative di build, profiling e cross-compilation.
+
+### Prossimi passi
+
+- Proseguire con `Applicazioni e Ecosistema`.
+
+## 2026-05-26 - Completamento unsafe Rust
+
+### Fatto
+
+- Completate con contenuto reale le note del capitolo `Unsafe Rust in Profondita` dell'indice Rust.
+- Sviluppati unsafe Rust, raw pointers, unsafe functions, unsafe traits, invariants, aliasing rules, undefined behavior, Miri e unsafe abstractions sicure.
+- Aggiunti esempi pratici, contratti di safety, errori comuni, checklist e collegamenti interni coerenti.
+
+### Decisioni
+
+- Le note completate restano con `status: "non revisionato"` fino alla revisione dell'utente.
+- Il capitolo enfatizza confinamento dell'unsafe, documentazione delle invarianti e verifica con Miri.
+
+### Prossimi passi
+
+- Proseguire con il capitolo `Rust di Sistema`.
+
+## 2026-05-26 - Completamento macro Rust
+
+### Fatto
+
+- Completate con contenuto reale le note del capitolo `Macros` dell'indice Rust.
+- Sviluppate macro dichiarative, procedural macros, derive macros, attribute macros, function-like macros e hygiene.
+- Aggiunti esempi pratici, errori comuni, checklist e collegamenti interni coerenti.
+
+### Decisioni
+
+- Le note completate restano con `status: "non revisionato"` fino alla revisione dell'utente.
+- Il capitolo distingue chiaramente tra `macro_rules!` e macro procedurali per evitare sovrauso di proc macro.
+
+### Prossimi passi
+
+- Proseguire con il capitolo `Unsafe Rust in Profondita`.
+
+## 2026-05-26 - Completamento compile-time Rust
+
+### Fatto
+
+- Completate con contenuto reale le note del capitolo `Compile-Time e Type-Level Programming` dell'indice Rust.
+- Sviluppati `const`, `static`, `const fn`, const generics, `PhantomData`, marker types, newtype, typestate e zero-sized types.
+- Aggiunti esempi pratici, errori comuni, checklist e collegamenti interni coerenti.
+
+### Decisioni
+
+- Le note completate restano con `status: "non revisionato"` fino alla revisione dell'utente.
+- Il capitolo distingue tra valori compile-time, parametri const e pattern type-level per evitare uso eccessivo di astrazioni generiche.
+
+### Prossimi passi
+
+- Proseguire con il capitolo `Macros`.
+
+## 2026-05-26 - Completamento concorrenza e asincronia Rust
+
+### Fatto
+
+- Completate con contenuto reale le note del capitolo `Concorrenza e Asincronia` dell'indice Rust.
+- Sviluppati thread, message passing, shared state, `Send`/`Sync`, mutex, RwLock, atomics, Rayon, async/await, Future, runtime async, select/join/cancellation, async streams, channel async e graceful shutdown.
+- Aggiunti esempi pratici, errori comuni, checklist e collegamenti interni coerenti.
+
+### Decisioni
+
+- Le note completate restano con `status: "non revisionato"` fino alla revisione dell'utente.
+- Il capitolo separa concorrenza sync, parallelismo CPU e asincronia I/O per evitare sovrapposizioni concettuali.
+
+### Prossimi passi
+
+- Proseguire con il capitolo `Compile-Time e Type-Level Programming`.
+
 ## 2026-05-22 - Completamento Cargo e compatibilita Rust
 
 ### Fatto
@@ -92,150 +177,3 @@ Mantieni solo le ultime 10 voci operative.
 ### Prossimi passi
 
 - Completare il capitolo `Lifetimes` o collegare meglio queste note alle future sezioni su smart pointer e standard library.
-
-## 2026-05-20 - Correzione frontmatter Rust
-
-### Fatto
-
-- Verificato il frontmatter YAML delle pagine Rust.
-- Quotate le wikilink nei campi `prerequisites` e `related` delle note completate.
-- Normalizzato il frontmatter delle pagine Rust ancora seedling secondo `AGENTS.md`.
-
-### Decisioni
-
-- Le pagine Rust generate o modificate dal modello restano con `status: "non revisionato"`.
-- Le pagine non ancora completate mantengono il contenuto placeholder, ma ora hanno intestazione YAML valida e coerente.
-
-### Prossimi passi
-
-- Continuare il completamento dei capitoli Rust senza dover correggere nuovamente il frontmatter di base.
-
-## 2026-05-20 - Completamento errori e collezioni Rust
-
-### Fatto
-
-- Completate con contenuto reale le note del capitolo `Errori e Collezioni` dell'indice Rust.
-- Sviluppati `Option`, `Result`, operatore `?`, `panic!`, error handling idiomatico, `thiserror`, `anyhow`, `Vec`, mappe, set, iteratori e closure.
-- Aggiunti esempi pratici, checklist, errori comuni e collegamenti interni coerenti.
-
-### Decisioni
-
-- Le note completate restano con `status: "non revisionato"` fino alla revisione dell'utente.
-- Il capitolo viene trattato come ponte tra i fondamenti Rust e il percorso intermedio su trait, generics e standard library.
-
-### Prossimi passi
-
-- Completare il percorso intermedio partendo dal capitolo `Astrazione e Generici`.
-
-## 2026-05-20 - Completamento tipi personalizzati Rust
-
-### Fatto
-
-- Completate con contenuto reale le note del capitolo `Tipi di Dato Personalizzati` dell'indice Rust.
-- Sviluppati struct, tuple struct, enum, pattern matching, `if let`, `while let`, destructuring e pattern avanzati.
-- Aggiunti esempi pratici, errori comuni, checklist e collegamenti interni coerenti.
-
-### Decisioni
-
-- Le note completate restano con `status: "non revisionato"` fino alla revisione dell'utente.
-- Il capitolo collega i tipi personalizzati ai capitoli successivi su `Option`, `Result`, trait e API design.
-
-### Prossimi passi
-
-- Completare il capitolo Rust `Errori e Collezioni`, che dipende direttamente da enum, pattern matching e ownership.
-
-## 2026-05-20 - Completamento ownership Rust
-
-### Fatto
-
-- Completate con contenuto reale le note del capitolo `Ownership e Memory Safety` dell'indice Rust.
-- Aggiunti esempi pratici su ownership, move semantics, borrowing, slice, stringhe, stack/heap, mutabilita e lifetime impliciti.
-- Verificata la coerenza delle note con la struttura tecnica prevista da `AGENTS.md`.
-
-### Decisioni
-
-- Le note completate restano con `status: "non revisionato"` fino alla revisione dell'utente.
-- Il capitolo `Ownership e Memory Safety` diventa il riferimento base per i capitoli successivi su lifetime, smart pointer e unsafe.
-
-### Prossimi passi
-
-- Completare il capitolo Rust successivo sui tipi di dato personalizzati oppure approfondire i lifetime espliciti.
-
-## 2026-05-20 - Completamento fondamenti Rust
-
-### Fatto
-
-- Completate con contenuto reale le note del capitolo `Fondamenti del Linguaggio` dell'indice Rust.
-- Normalizzate le note completate secondo il template tecnico previsto da `AGENTS.md`.
-- Verificati frontmatter, sezioni obbligatorie e collegamenti interni delle note completate.
-
-### Decisioni
-
-- Le note Rust completate restano con `status: "non revisionato"` fino alla revisione dell'utente.
-- Il capitolo `Fondamenti del Linguaggio` viene trattato come base operativa prima di completare gli altri capitoli Rust.
-
-### Prossimi passi
-
-- Completare progressivamente gli altri capitoli Rust partendo da ownership, borrowing e tipi composti.
-
-## 2026-05-20 - Normalizzazione nuove note Programmazione
-
-### Fatto
-
-- Create e collegate le pagine mancanti per gli indici JavaScript, Postgres, Python e React.
-- Normalizzato il frontmatter delle nuove note secondo `AGENTS.md`.
-- Impostato `status: "non revisionato"` sulle note create dal modello.
-- Aggiunte le sezioni richieste dai template `_Template/Nota teorica.md`, `_Template/Nota tecnica.md` e `_Template/Nota operativa.md` in base al tipo della nota.
-
-### Decisioni
-
-- Le nuove note generate dal modello restano non revisionate finche non vengono controllate dall'utente.
-- I contenuti gia scritti sono stati preservati; le sezioni mancanti sono state aggiunte come tracce da completare.
-
-### Prossimi passi
-
-- Sviluppare progressivamente le sezioni marcate come `Da completare`.
-- Applicare la stessa normalizzazione alle note Rust se si vuole renderle coerenti con `AGENTS.md`.
-
-## 2026-05-13 - Struttura LLM del vault
-
-### Fatto
-
-- Creata la cartella `_Template/`.
-- Creati i template `Nota teorica.md`, `Nota tecnica.md` e `Nota operativa.md`.
-- Creato `AGENTS.md` come file principale di istruzioni per modelli e agenti.
-- Ridotto `GEMINI.md` a rimando verso `AGENTS.md`.
-- Creata la cartella `Raw/`.
-- Creato `Raw/log.md` per tracciare i documenti analizzati.
-- Aggiunta la regola dello storico recente in `_Meta/Storico recente.md`.
-- Sistemata `Home.md` come indice generale pulito del vault.
-- Rinominate le cartelle `pagine` in `Pagine`.
-- Aggiornati i link interni che puntavano a `pagine/`.
-- Sistemate le note della sezione `Basi` di JavaScript: `Variabili`, `Tipi di Dati`, `Operatori`, `Strutture Condizionali`, `Cicli`, `Funzioni`, `Manipolazione del DOM`, `Gestione Eventi`.
-- Sistemate le note della sezione `JavaScript Moderno (ES6+)`: `Strict Mode`, `Arrow Functions`, `Template Literals`, `Destructuring`, `Spread & Rest Operators`, `Moduli`, `Dynamic Import`, `Circular Dependencies`, `Default Parameters`.
-- Sistemate le note della sezione `Strutture Dati e Manipolazione` di JavaScript: `Array Methods`, `Oggetti Avanzati`, `Property Descriptors`, `Immutabilita e Copia degli Oggetti`, `Map e Set`, `JSON`, `Date & Time`, `Buffer e Typed Arrays`.
-- Sistemate le note della sezione `Logica Interna` di JavaScript: `Scope`, `Hoisting`, `Closures`, `Context`, `Prototypes`.
-- Sistemate le note della sezione `Asincronia e Networking` di JavaScript: `Event Loop`, `Callback`, `Promises`, `Promise avanzate`, `Async Await`, `Fetch API`, `AbortController`, `WebSockets`, `AJAX`, `Scheduling Browser`.
-- Create e collegate le pagine mancanti della sezione `Node.js Runtime` di JavaScript: `Node.js Basics`, `File System fs`, `Path e Process`, `Events Node.js`, `Streams Node.js`, `Buffer Node.js`.
-- Completata la ristrutturazione dei file vecchi JavaScript: sezioni `Gestione della Memoria e Performance`, `Programmazione ad Oggetti e Classi`, `Web APIs e Concetti Avanzati`, `Tooling e Qualita del Codice`.
-- Aggiornate le pagine Postgres alla nuova struttura: frontmatter standard, sezione `Sintesi`, link indice assoluti e pulizia dei caratteri corrotti.
-- Aggiornate le pagine Python alla nuova struttura: frontmatter standard, sezione `Sintesi`, link interni assoluti, pulizia encoding e creazione delle pagine native mancanti (`Dataclasses`, `Enum`, `Subprocess`, `argparse`, `sqlite3`, networking e configurazione).
-- Aggiornate le pagine React alla nuova struttura: frontmatter standard, sezione `Sintesi`, link interni assoluti e pulizia encoding.
-
-### Decisioni
-
-- Le nuove note devono partire dai template in `_Template/`.
-- `status` usa i valori `"non revisionato"` e `"revisionato (da me)"`.
-- Una nota modificata da un modello torna a `status: "non revisionato"`.
-- I file assimilati da `Raw/` vengono rinominati con prefisso `completato - `.
-- Ogni macro argomento deve essere collegato in `Home.md`.
-- Lo storico recente mantiene solo le ultime 10 voci operative.
-- Le cartelle di contenuto devono usare la forma `Pagine/`.
-- Le note riscritte da un modello restano con `status: "non revisionato"` fino a revisione utente.
-
-### Prossimi passi
-
-- Creare una guida generale del vault se serve.
-- Uniformare gradualmente le cartelle `pagine` in `Pagine`.
-- Aggiungere frontmatter alle note che ne sono prive.
-- Pulire `Home.md` dai caratteri corrotti.

@@ -1,47 +1,169 @@
-﻿---
-date: 2026-05-20
+---
+date: 2026-05-26
 area: Programmazione
 topic: Rust
 type: technical-note
 status: "non revisionato"
-difficulty:
+difficulty: avanzato
 tags:
   - programmazione
   - rust
   - rust-di-sistema
-aliases: []
-prerequisites: []
-related: []
+aliases:
+  - "Zero-cost abstractions"
+  - "Astrazioni zero-cost"
+prerequisites:
+  - "[[Programmazione/Rust/Pagine/Generics]]"
+  - "[[Programmazione/Rust/Pagine/Traits]]"
+  - "[[Programmazione/Rust/Pagine/Iterator API]]"
+related:
+  - "[[Programmazione/Rust/Pagine/Static dispatch vs dynamic dispatch]]"
+  - "[[Programmazione/Rust/Pagine/Performance e profiling]]"
+  - "[[Programmazione/Rust/Pagine/Rayon e parallel iterators]]"
 ---
 
 # Zero-cost abstractions
 
 ## Sintesi
 
-Nota seedling su **Zero-cost abstractions** in Rust. L'argomento appartiene a **Percorso Avanzato** / **Rust di Sistema** e va sviluppato con definizione, motivazione, esempi e collegamenti alle note vicine.
+Le **zero-cost abstractions** sono astrazioni che offrono ergonomia e sicurezza senza imporre un costo runtime aggiuntivo rispetto a codice manuale equivalente. In Rust questo principio appare in generics, iteratori, trait con dispatch statico, newtype, pattern matching e API basate su ownership.
 
-## Concetto chiave
+"Zero-cost" non significa "sempre gratis": significa che il costo non e nascosto e, quando l'astrazione viene compilata, il risultato puo essere equivalente a codice scritto a mano. Ci possono comunque essere costi di compile time, dimensione binario o scelte API.
 
-Descrivi qui il ruolo di **Zero-cost abstractions** nel linguaggio, nella standard library o nell'ecosistema Rust. Evidenzia soprattutto cosa risolve e quali vincoli introduce rispetto a ownership, type system, performance o sicurezza.
+## Quando usarlo
 
-## Quando approfondirlo
+Ragiona in termini di astrazioni zero-cost quando:
 
-- Quando compare in codice reale o nella documentazione ufficiale.
-- Quando influenza API design, gestione della memoria, concorrenza o build.
-- Quando serve distinguere il comportamento idiomatico Rust da approcci presi da altri linguaggi.
+- vuoi scrivere API generiche senza perdere performance;
+- devi scegliere tra iteratori e loop espliciti;
+- stai progettando trait e tipi wrapper;
+- vuoi evitare dynamic dispatch non necessario;
+- lavori su codice di sistema o percorsi caldi;
+- devi mantenere codice leggibile senza sacrificare controllo.
 
-## Esempio o checklist
+Il concetto serve anche a evitare micro-ottimizzazioni premature: in Rust molte astrazioni idiomatiche sono gia pensate per compilare bene.
 
-Aggiungi un esempio minimo in Rust o una checklist operativa quando la nota viene sviluppata.
+## Come funziona
+
+Rust abilita astrazioni zero-cost tramite diversi meccanismi:
+
+- **monomorphization**: il compilatore genera versioni concrete del codice generico;
+- **inlining**: funzioni piccole e combinatori possono essere fuse nel chiamante;
+- **static dispatch**: chiamate a trait generici possono essere risolte a compile time;
+- **ownership**: evita runtime garbage collector e molte verifiche dinamiche;
+- **enum e pattern matching**: rappresentano alternative tipizzate senza gerarchie runtime;
+- **iterator fusion**: catene di iteratori possono diventare loop ottimizzati.
+
+Esempio: una funzione generica con trait bound puo compilare in codice specifico per ogni tipo usato:
+
+```rust
+fn max_value<T: Ord + Copy>(left: T, right: T) -> T {
+    if left >= right {
+        left
+    } else {
+        right
+    }
+}
+```
+
+Non serve una tabella virtuale se il tipo e noto a compile time.
+
+## API / Sintassi
+
+Forme comuni:
+
+```rust
+fn parse_all<I>(items: I) -> usize
+where
+    I: IntoIterator<Item = String>,
+{
+    items.into_iter().filter(|item| !item.is_empty()).count()
+}
+```
+
+Trait object con dynamic dispatch:
+
+```rust
+trait Draw {
+    fn draw(&self);
+}
+
+fn draw_all(items: &[Box<dyn Draw>]) {
+    for item in items {
+        item.draw();
+    }
+}
+```
+
+La prima forma tende a usare static dispatch e monomorphization. La seconda usa dynamic dispatch tramite `dyn Trait`, utile quando serve eterogeneita runtime, ma con costo e vincoli diversi.
+
+## Esempio pratico
+
+Loop esplicito:
+
+```rust
+fn sum_even(values: &[u64]) -> u64 {
+    let mut total = 0;
+
+    for value in values {
+        if value % 2 == 0 {
+            total += value;
+        }
+    }
+
+    total
+}
+```
+
+Versione con iteratori:
+
+```rust
+fn sum_even(values: &[u64]) -> u64 {
+    values
+        .iter()
+        .copied()
+        .filter(|value| value % 2 == 0)
+        .sum()
+}
+```
+
+In build ottimizzate, la versione con iteratori puo compilare in codice equivalente al loop manuale. La scelta dovrebbe quindi considerare anche chiarezza, testabilita e possibilita di composizione.
+
+## Varianti
+
+- **Generics statici**: performance alta, possibile aumento del binario.
+- **Trait object**: flessibilita runtime, costo di dispatch indiretto.
+- **Iteratori**: composizione espressiva, spesso ottimizzata in loop.
+- **Newtype**: sicurezza semantica senza wrapper runtime significativo.
+- **Typestate**: stati rappresentati nel type system invece che con flag runtime.
+- **Zero-sized types**: tipi senza dati runtime, utili come marker.
 
 ## Errori comuni
 
-- Confondere il concetto con una soluzione piu generale.
-- Usarlo senza valutare ownership, lifetime o costo runtime.
-- Non collegarlo agli strumenti Cargo, al compilatore o alle crate coinvolte quando rilevante.
+- Pensare che ogni astrazione Rust sia automaticamente zero-cost.
+- Usare `Box<dyn Trait>` quando basta un generic parameter.
+- Sostituire iteratori con loop senza misurare.
+- Ignorare code size e tempi di compilazione causati da monomorphization.
+- Nascondere allocazioni dentro API apparentemente leggere.
+- Confondere costo runtime nullo con complessita concettuale nulla.
+- Usare troppi tipi avanzati rendendo l'API difficile da capire.
+
+## Checklist
+
+- Il dispatch e statico o dinamico?
+- L'astrazione introduce allocazioni?
+- Il codice e compilato in release quando misuri?
+- La monomorphization aumenta troppo il binario?
+- L'API resta leggibile per chi la usa?
+- Hai verificato il percorso caldo con profiling?
+- Il costo dell'astrazione e documentato se non e nullo?
 
 ## Collegamenti
 
 - [[Programmazione/Rust/Indice rust|Indice Rust]]
-
-
+- [[Programmazione/Rust/Pagine/Generics]]
+- [[Programmazione/Rust/Pagine/Traits]]
+- [[Programmazione/Rust/Pagine/Iterator API]]
+- [[Programmazione/Rust/Pagine/Static dispatch vs dynamic dispatch]]
+- [[Programmazione/Rust/Pagine/Performance e profiling]]
+- [[Programmazione/Rust/Pagine/Rayon e parallel iterators]]

@@ -1,47 +1,125 @@
-﻿---
-date: 2026-05-20
+---
+date: 2026-05-26
 area: Programmazione
 topic: Rust
 type: technical-note
 status: "non revisionato"
-difficulty:
+difficulty: intermedio
 tags:
   - programmazione
   - rust
   - concorrenza-e-asincronia
-aliases: []
-prerequisites: []
-related: []
+aliases:
+  - "Async channels"
+  - "tokio::sync::mpsc"
+prerequisites:
+  - "[[Programmazione/Rust/Pagine/Async Await]]"
+  - "[[Programmazione/Rust/Pagine/Message passing]]"
+  - "[[Programmazione/Rust/Pagine/Runtime async Tokio e async-std]]"
+related:
+  - "[[Programmazione/Rust/Pagine/select join e cancellation]]"
+  - "[[Programmazione/Rust/Pagine/Async streams]]"
+  - "[[Programmazione/Rust/Pagine/Graceful shutdown]]"
 ---
 
 # Channel async
 
 ## Sintesi
 
-Nota seedling su **Channel async** in Rust. L'argomento appartiene a **Percorso Avanzato** / **Concorrenza e Asincronia** e va sviluppato con definizione, motivazione, esempi e collegamenti alle note vicine.
+I channel async permettono a task asincrone di comunicare senza bloccare thread. Sono il corrispettivo async del message passing: una task invia messaggi, un'altra li riceve con `.await`.
 
-## Concetto chiave
+La scelta del tipo di channel determina backpressure, numero di consumer e semantica di aggiornamento.
 
-Descrivi qui il ruolo di **Channel async** nel linguaggio, nella standard library o nell'ecosistema Rust. Evidenzia soprattutto cosa risolve e quali vincoli introduce rispetto a ownership, type system, performance o sicurezza.
+## Quando usarlo
 
-## Quando approfondirlo
+- Quando task async devono comunicare eventi o comandi.
+- Quando vuoi separare produttori e consumatori.
+- Quando serve backpressure con canali bounded.
+- Quando devi coordinare shutdown o fan-out.
 
-- Quando compare in codice reale o nella documentazione ufficiale.
-- Quando influenza API design, gestione della memoria, concorrenza o build.
-- Quando serve distinguere il comportamento idiomatico Rust da approcci presi da altri linguaggi.
+## Come funziona
 
-## Esempio o checklist
+Con Tokio:
 
-Aggiungi un esempio minimo in Rust o una checklist operativa quando la nota viene sviluppata.
+```rust
+let (tx, mut rx) = tokio::sync::mpsc::channel::<String>(32);
+
+tokio::spawn(async move {
+    tx.send(String::from("job")).await.unwrap();
+});
+
+while let Some(message) = rx.recv().await {
+    println!("{message}");
+}
+```
+
+`send().await` puo attendere se il buffer e pieno.
+
+## API / Sintassi
+
+Tipi comuni Tokio:
+
+```rust
+tokio::sync::mpsc
+tokio::sync::oneshot
+tokio::sync::broadcast
+tokio::sync::watch
+```
+
+Pattern richiesta/risposta:
+
+```rust
+let (reply_tx, reply_rx) = tokio::sync::oneshot::channel();
+```
+
+## Esempio pratico
+
+```rust
+enum Command {
+    Work(String),
+    Shutdown,
+}
+
+async fn worker(mut rx: tokio::sync::mpsc::Receiver<Command>) {
+    while let Some(command) = rx.recv().await {
+        match command {
+            Command::Work(job) => println!("{job}"),
+            Command::Shutdown => break,
+        }
+    }
+}
+```
+
+Il protocollo e esplicito e modellato con un enum.
+
+## Varianti
+
+- `mpsc`: molti producer, un consumer.
+- `oneshot`: singolo valore.
+- `broadcast`: ogni receiver riceve messaggi.
+- `watch`: conserva ultimo valore e notifica cambiamenti.
+- Channel bounded vs unbounded.
 
 ## Errori comuni
 
-- Confondere il concetto con una soluzione piu generale.
-- Usarlo senza valutare ownership, lifetime o costo runtime.
-- Non collegarlo agli strumenti Cargo, al compilatore o alle crate coinvolte quando rilevante.
+- Usare channel unbounded e perdere controllo memoria.
+- Ignorare errore di `send`, che indica receiver chiuso.
+- Non chiudere sender e impedire terminazione del receiver.
+- Usare `broadcast` quando serve coda per ogni consumer.
+- Mescolare channel sync in contesti async causando blocchi.
+
+## Checklist
+
+- Quanti producer e consumer servono?
+- Serve backpressure?
+- Il messaggio trasferisce ownership?
+- Come si chiude il canale?
+- Serve distinguere shutdown normale da errore?
 
 ## Collegamenti
 
-- [[Programmazione/Rust/Indice rust|Indice Rust]]
-
-
+- [[Programmazione/Rust/Pagine/Message passing|Message passing]]
+- [[Programmazione/Rust/Pagine/Async Await|Async Await]]
+- [[Programmazione/Rust/Pagine/select join e cancellation|select join e cancellation]]
+- [[Programmazione/Rust/Pagine/Async streams|Async streams]]
+- [[Programmazione/Rust/Pagine/Graceful shutdown|Graceful shutdown]]

@@ -1,47 +1,125 @@
-﻿---
-date: 2026-05-20
+---
+date: 2026-05-26
 area: Programmazione
 topic: Rust
 type: technical-note
 status: "non revisionato"
-difficulty:
+difficulty: avanzato
 tags:
   - programmazione
   - rust
   - rust-di-sistema
-aliases: []
-prerequisites: []
-related: []
+aliases:
+  - "no_std"
+  - "#![no_std]"
+prerequisites:
+  - "[[Programmazione/Rust/Pagine/Embedded Rust]]"
+  - "[[Programmazione/Rust/Pagine/Allocator]]"
+related:
+  - "[[Programmazione/Rust/Pagine/Embedded Rust]]"
+  - "[[Programmazione/Rust/Pagine/Allocator]]"
+  - "[[Programmazione/Rust/Pagine/Cargo features]]"
 ---
 
 # no_std
 
 ## Sintesi
 
-Nota seedling su **no_std** in Rust. L'argomento appartiene a **Percorso Avanzato** / **Rust di Sistema** e va sviluppato con definizione, motivazione, esempi e collegamenti alle note vicine.
+`no_std` indica che un crate non dipende dalla standard library `std`, ma solo da `core` e, se disponibile, `alloc`. Serve in ambienti senza sistema operativo, embedded, kernel, bootloader o contesti con runtime limitato.
 
-## Concetto chiave
+`no_std` non significa “niente Rust moderno”: ownership, trait, generics, enum e molte API di `core` restano disponibili.
 
-Descrivi qui il ruolo di **no_std** nel linguaggio, nella standard library o nell'ecosistema Rust. Evidenzia soprattutto cosa risolve e quali vincoli introduce rispetto a ownership, type system, performance o sicurezza.
+## Quando usarlo
 
-## Quando approfondirlo
+- In embedded bare-metal.
+- In kernel, bootloader o firmware.
+- Quando vuoi una libreria utilizzabile anche senza OS.
+- Quando vuoi rendere opzionale la dipendenza da `std` tramite feature.
 
-- Quando compare in codice reale o nella documentazione ufficiale.
-- Quando influenza API design, gestione della memoria, concorrenza o build.
-- Quando serve distinguere il comportamento idiomatico Rust da approcci presi da altri linguaggi.
+## Come funziona
 
-## Esempio o checklist
+All'inizio del crate:
 
-Aggiungi un esempio minimo in Rust o una checklist operativa quando la nota viene sviluppata.
+```rust
+#![no_std]
+```
+
+`std` non e disponibile. Puoi usare `core`:
+
+```rust
+use core::fmt;
+```
+
+Se hai un allocator, puoi usare `alloc`:
+
+```rust
+extern crate alloc;
+use alloc::vec::Vec;
+```
+
+## API / Sintassi
+
+Feature `std` opzionale:
+
+```toml
+[features]
+default = ["std"]
+std = []
+```
+
+Nel codice:
+
+```rust
+#![cfg_attr(not(feature = "std"), no_std)]
+```
+
+Alloc opzionale:
+
+```rust
+#[cfg(feature = "alloc")]
+extern crate alloc;
+```
+
+## Esempio pratico
+
+```rust
+#![cfg_attr(not(feature = "std"), no_std)]
+
+pub fn checksum(bytes: &[u8]) -> u8 {
+    bytes.iter().fold(0, |acc, b| acc.wrapping_add(*b))
+}
+```
+
+Questa funzione lavora solo con slice e tipi primitivi, quindi non ha bisogno di `std`.
+
+## Varianti
+
+- `core`: API fondamentali senza allocazione.
+- `alloc`: tipi heap come `Vec`, `Box`, `String` se esiste allocator.
+- `std`: include OS, I/O, thread, filesystem e altro.
+- Crate dual-mode: supporta `std` e `no_std`.
+- Embedded HAL ecosystem.
 
 ## Errori comuni
 
-- Confondere il concetto con una soluzione piu generale.
-- Usarlo senza valutare ownership, lifetime o costo runtime.
-- Non collegarlo agli strumenti Cargo, al compilatore o alle crate coinvolte quando rilevante.
+- Usare `Vec` o `String` senza `alloc`.
+- Dipendere indirettamente da crate che richiedono `std`.
+- Usare feature default che abilitano `std` senza accorgersene.
+- Confondere `no_std` con assenza di panic handler o runtime.
+- Non testare build `--no-default-features`.
+
+## Checklist
+
+- Il crate deve funzionare senza sistema operativo?
+- Serve heap allocation?
+- Le feature `std`/`alloc` sono chiare?
+- La CI testa `--no-default-features`?
+- Le dipendenze supportano davvero `no_std`?
 
 ## Collegamenti
 
-- [[Programmazione/Rust/Indice rust|Indice Rust]]
-
-
+- [[Programmazione/Rust/Pagine/Embedded Rust|Embedded Rust]]
+- [[Programmazione/Rust/Pagine/Allocator|Allocator]]
+- [[Programmazione/Rust/Pagine/Cargo features|Cargo features]]
+- [[Programmazione/Rust/Pagine/Feature flags ben progettate|Feature flags ben progettate]]
+- [[Programmazione/Rust/Pagine/cortex-m|cortex-m]]

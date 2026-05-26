@@ -1,47 +1,131 @@
-﻿---
-date: 2026-05-20
+---
+date: 2026-05-26
 area: Programmazione
 topic: Rust
 type: technical-note
 status: "non revisionato"
-difficulty:
+difficulty: avanzato
 tags:
   - programmazione
   - rust
   - rust-di-sistema
-aliases: []
-prerequisites: []
-related: []
+aliases:
+  - "bindgen"
+  - "cbindgen"
+prerequisites:
+  - "[[Programmazione/Rust/Pagine/FFI]]"
+  - "[[Programmazione/Rust/Pagine/Build scripts]]"
+related:
+  - "[[Programmazione/Rust/Pagine/libc e nix]]"
+  - "[[Programmazione/Rust/Pagine/Linking]]"
+  - "[[Programmazione/Rust/Pagine/Cross-compilation]]"
 ---
 
 # bindgen e cbindgen
 
 ## Sintesi
 
-Nota seedling su **bindgen e cbindgen** in Rust. L'argomento appartiene a **Percorso Avanzato** / **Rust di Sistema** e va sviluppato con definizione, motivazione, esempi e collegamenti alle note vicine.
+`bindgen` genera binding Rust a partire da header C/C++. `cbindgen` fa il percorso opposto: genera header C/C++ a partire da API Rust esposte via FFI.
 
-## Concetto chiave
+Sono strumenti utili quando il confine FFI e abbastanza grande da rendere fragile scrivere dichiarazioni manuali.
 
-Descrivi qui il ruolo di **bindgen e cbindgen** nel linguaggio, nella standard library o nell'ecosistema Rust. Evidenzia soprattutto cosa risolve e quali vincoli introduce rispetto a ownership, type system, performance o sicurezza.
+## Quando usarlo
 
-## Quando approfondirlo
+- Usa `bindgen` per consumare librerie C con header esistenti.
+- Usa `cbindgen` per esporre una libreria Rust a codice C/C++.
+- Usa build script quando i binding devono essere rigenerati durante la build.
+- Evita generazione automatica per API minuscole dove binding manuali sono piu leggibili.
 
-- Quando compare in codice reale o nella documentazione ufficiale.
-- Quando influenza API design, gestione della memoria, concorrenza o build.
-- Quando serve distinguere il comportamento idiomatico Rust da approcci presi da altri linguaggi.
+## Come funziona
 
-## Esempio o checklist
+`bindgen` legge header e produce dichiarazioni Rust unsafe:
 
-Aggiungi un esempio minimo in Rust o una checklist operativa quando la nota viene sviluppata.
+```text
+wrapper.h -> bindings.rs
+```
+
+`cbindgen` legge crate Rust e produce header:
+
+```text
+lib.rs -> my_crate.h
+```
+
+In entrambi i casi serve comunque verificare ownership, layout e contratti di sicurezza.
+
+## API / Sintassi
+
+Build script con bindgen:
+
+```rust
+fn main() {
+    println!("cargo:rerun-if-changed=wrapper.h");
+
+    let bindings = bindgen::Builder::default()
+        .header("wrapper.h")
+        .generate()
+        .expect("generazione binding");
+
+    let out = std::path::PathBuf::from(std::env::var("OUT_DIR").unwrap());
+    bindings.write_to_file(out.join("bindings.rs")).unwrap();
+}
+```
+
+Include:
+
+```rust
+include!(concat!(env!("OUT_DIR"), "/bindings.rs"));
+```
+
+## Esempio pratico
+
+Header C:
+
+```c
+int add(int a, int b);
+```
+
+Wrapper Rust generato o manuale:
+
+```rust
+unsafe extern "C" {
+    fn add(a: i32, b: i32) -> i32;
+}
+
+pub fn safe_add(a: i32, b: i32) -> i32 {
+    unsafe { add(a, b) }
+}
+```
+
+Il binding unsafe resta interno; l'API pubblica puo essere safe se il contratto C e semplice.
+
+## Varianti
+
+- Binding generati a build time.
+- Binding generati e committati nel repository.
+- Allowlist/blocklist di tipi e funzioni.
+- Header generati con `cbindgen` per librerie Rust.
+- Crate `-sys`: crate basso livello che espone binding FFI.
 
 ## Errori comuni
 
-- Confondere il concetto con una soluzione piu generale.
-- Usarlo senza valutare ownership, lifetime o costo runtime.
-- Non collegarlo agli strumenti Cargo, al compilatore o alle crate coinvolte quando rilevante.
+- Fidarsi dei binding generati senza rivedere layout e ownership.
+- Rigenerare binding in modo non deterministico.
+- Non gestire include path e toolchain C in CI.
+- Esporre direttamente binding unsafe agli utenti finali.
+- Mescolare wrapper safe e binding raw nello stesso modulo pubblico.
+
+## Checklist
+
+- I binding sono generati in modo riproducibile?
+- La toolchain C richiesta e documentata?
+- Gli unsafe binding sono isolati in un modulo interno?
+- Esiste un wrapper safe dove possibile?
+- Cross-compilation e CI usano header/librerie corrette?
 
 ## Collegamenti
 
-- [[Programmazione/Rust/Indice rust|Indice Rust]]
-
-
+- [[Programmazione/Rust/Pagine/FFI|FFI]]
+- [[Programmazione/Rust/Pagine/Build scripts|Build scripts]]
+- [[Programmazione/Rust/Pagine/libc e nix|libc e nix]]
+- [[Programmazione/Rust/Pagine/Linking|Linking]]
+- [[Programmazione/Rust/Pagine/Cross-compilation|Cross-compilation]]

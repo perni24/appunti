@@ -1,47 +1,134 @@
-﻿---
-date: 2026-05-20
+---
+date: 2026-05-26
 area: Programmazione
 topic: Rust
 type: technical-note
 status: "non revisionato"
-difficulty:
+difficulty: intermedio
 tags:
   - programmazione
   - rust
   - concorrenza-e-asincronia
-aliases: []
-prerequisites: []
-related: []
+aliases:
+  - "Shutdown graceful"
+  - "Graceful shutdown Rust"
+prerequisites:
+  - "[[Programmazione/Rust/Pagine/Async Await]]"
+  - "[[Programmazione/Rust/Pagine/select join e cancellation]]"
+  - "[[Programmazione/Rust/Pagine/Channel async]]"
+related:
+  - "[[Programmazione/Rust/Pagine/Runtime async Tokio e async-std]]"
+  - "[[Programmazione/Rust/Pagine/Message passing]]"
+  - "[[Programmazione/Rust/Pagine/Shared state]]"
 ---
 
 # Graceful shutdown
 
 ## Sintesi
 
-Nota seedling su **Graceful shutdown** in Rust. L'argomento appartiene a **Percorso Avanzato** / **Concorrenza e Asincronia** e va sviluppato con definizione, motivazione, esempi e collegamenti alle note vicine.
+Graceful shutdown significa terminare un sistema in modo controllato: smettere di accettare nuovo lavoro, notificare task e worker, completare o annullare operazioni pendenti, rilasciare risorse e attendere la terminazione.
 
-## Concetto chiave
+In Rust async si combina spesso con channel, cancellation token, `select!`, segnali OS e join dei task.
 
-Descrivi qui il ruolo di **Graceful shutdown** nel linguaggio, nella standard library o nell'ecosistema Rust. Evidenzia soprattutto cosa risolve e quali vincoli introduce rispetto a ownership, type system, performance o sicurezza.
+## Quando usarlo
 
-## Quando approfondirlo
+- In server HTTP, worker, daemon e consumer di code.
+- Quando ci sono task background da chiudere.
+- Quando bisogna salvare stato o svuotare buffer.
+- Quando un processo deve reagire a Ctrl+C o segnali di sistema.
 
-- Quando compare in codice reale o nella documentazione ufficiale.
-- Quando influenza API design, gestione della memoria, concorrenza o build.
-- Quando serve distinguere il comportamento idiomatico Rust da approcci presi da altri linguaggi.
+## Come funziona
 
-## Esempio o checklist
+Pattern base:
 
-Aggiungi un esempio minimo in Rust o una checklist operativa quando la nota viene sviluppata.
+```rust
+tokio::select! {
+    _ = run_server() => {}
+    _ = tokio::signal::ctrl_c() => {
+        println!("shutdown");
+    }
+}
+```
+
+Dopo il segnale, bisogna propagare la chiusura ai task figli e attendere il loro completamento.
+
+## API / Sintassi
+
+Con channel:
+
+```rust
+let (tx, mut rx) = tokio::sync::watch::channel(false);
+
+tokio::spawn(async move {
+    while !*rx.borrow() {
+        rx.changed().await.unwrap();
+    }
+});
+
+tx.send(true).unwrap();
+```
+
+Con task:
+
+```rust
+let handle = tokio::spawn(async move {
+    // worker
+});
+
+handle.abort();
+```
+
+`abort` e cancellation brusca; graceful shutdown di solito preferisce un segnale cooperativo.
+
+## Esempio pratico
+
+```rust
+async fn worker(mut shutdown: tokio::sync::watch::Receiver<bool>) {
+    loop {
+        tokio::select! {
+            changed = shutdown.changed() => {
+                if changed.is_ok() && *shutdown.borrow() {
+                    break;
+                }
+            }
+            _ = tokio::time::sleep(std::time::Duration::from_secs(1)) => {
+                println!("tick");
+            }
+        }
+    }
+}
+```
+
+Il worker controlla periodicamente il segnale e termina volontariamente.
+
+## Varianti
+
+- Segnale OS: `ctrl_c`.
+- Channel di shutdown: `watch`, `broadcast`, `oneshot`.
+- Cancellation token da crate esterne.
+- Timeout di shutdown.
+- Abort forzato dopo periodo di grazia.
 
 ## Errori comuni
 
-- Confondere il concetto con una soluzione piu generale.
-- Usarlo senza valutare ownership, lifetime o costo runtime.
-- Non collegarlo agli strumenti Cargo, al compilatore o alle crate coinvolte quando rilevante.
+- Fermare solo il task principale e lasciare task background vivi.
+- Usare solo `abort` senza cleanup.
+- Non chiudere sender/channel.
+- Tenere lock o risorse durante shutdown.
+- Non mettere timeout al periodo di attesa finale.
+
+## Checklist
+
+- Chi riceve il segnale di shutdown?
+- Come viene propagato ai task figli?
+- Le operazioni pendenti sono completate o cancellate?
+- I task vengono attesi?
+- Esiste un timeout dopo cui forzare l'uscita?
 
 ## Collegamenti
 
-- [[Programmazione/Rust/Indice rust|Indice Rust]]
-
-
+- [[Programmazione/Rust/Pagine/select join e cancellation|select join e cancellation]]
+- [[Programmazione/Rust/Pagine/Channel async|Channel async]]
+- [[Programmazione/Rust/Pagine/Runtime async Tokio e async-std|Runtime async Tokio e async-std]]
+- [[Programmazione/Rust/Pagine/Message passing|Message passing]]
+- [[Programmazione/Rust/Pagine/Shared state|Shared state]]
