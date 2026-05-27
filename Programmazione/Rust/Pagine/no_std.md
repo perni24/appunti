@@ -1,5 +1,5 @@
 ---
-date: 2026-05-26
+date: 2026-05-27
 area: Programmazione
 topic: Rust
 type: technical-note
@@ -9,6 +9,7 @@ tags:
   - programmazione
   - rust
   - rust-di-sistema
+  - embedded
 aliases:
   - "no_std"
   - "#![no_std]"
@@ -19,6 +20,8 @@ related:
   - "[[Programmazione/Rust/Pagine/Embedded Rust]]"
   - "[[Programmazione/Rust/Pagine/Allocator]]"
   - "[[Programmazione/Rust/Pagine/Cargo features]]"
+  - "[[Programmazione/Rust/Pagine/embedded-hal]]"
+  - "[[Programmazione/Rust/Pagine/cortex-m]]"
 ---
 
 # no_std
@@ -122,4 +125,5 @@ Questa funzione lavora solo con slice e tipi primitivi, quindi non ha bisogno di
 - [[Programmazione/Rust/Pagine/Allocator|Allocator]]
 - [[Programmazione/Rust/Pagine/Cargo features|Cargo features]]
 - [[Programmazione/Rust/Pagine/Feature flags ben progettate|Feature flags ben progettate]]
+- [[Programmazione/Rust/Pagine/embedded-hal|embedded-hal]]
 - [[Programmazione/Rust/Pagine/cortex-m|cortex-m]]

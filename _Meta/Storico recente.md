@@ -8,6 +8,74 @@ Mantieni solo le ultime 10 voci operative.
 
 ---
 
+## 2026-05-27 - Completamento Embedded Rust
+
+### Fatto
+
+- Completate con contenuto reale le note del capitolo `Embedded` dell'indice Rust.
+- Sviluppati `embedded-hal`, `cortex-m`, `probe-rs`, `defmt`, RTIC ed Embassy; aggiornata anche la nota `no_std` con collegamenti al percorso Embedded.
+- Aggiunti esempi pratici, errori comuni, checklist e collegamenti interni coerenti.
+
+### Decisioni
+
+- Le note completate restano con `status: "non revisionato"` fino alla revisione dell'utente.
+- Il capitolo distingue tra astrazioni hardware portabili, runtime Cortex-M, flashing/debug, logging compatto, concorrenza real-time e async embedded.
+
+### Prossimi passi
+
+- Proseguire con `Testing, Qualita e Sicurezza`.
+
+## 2026-05-27 - Completamento WebAssembly Rust
+
+### Fatto
+
+- Completate con contenuto reale le note del capitolo `WebAssembly` dell'indice Rust.
+- Sviluppati `wasm-bindgen`, `wasm-pack`, interop con JavaScript, WASI e limiti del runtime WebAssembly.
+- Aggiunti esempi pratici, errori comuni, checklist e collegamenti interni coerenti.
+
+### Decisioni
+
+- Le note completate restano con `status: "non revisionato"` fino alla revisione dell'utente.
+- Il capitolo distingue tra browser/JavaScript, packaging npm, runtime WASI e limiti generali del target Wasm.
+
+### Prossimi passi
+
+- Proseguire con `Embedded` oppure `Testing, Qualita e Sicurezza`.
+
+## 2026-05-27 - Completamento backend Rust
+
+### Fatto
+
+- Completate con contenuto reale le note del capitolo `Backend, Networking e Database` dell'indice Rust.
+- Sviluppati networking con `reqwest`, backend con `axum`, Tower/middleware, Serde, SQLx, Diesel, SeaORM, connection pooling e background jobs.
+- Aggiunti esempi pratici, errori comuni, checklist e collegamenti interni coerenti.
+
+### Decisioni
+
+- Le note completate restano con `status: "non revisionato"` fino alla revisione dell'utente.
+- Il capitolo distingue chiaramente tra HTTP client, web layer, middleware, serializzazione, accesso dati e lavoro asincrono fuori richiesta.
+
+### Prossimi passi
+
+- Proseguire con `WebAssembly`, `Embedded` oppure `Testing, Qualita e Sicurezza`.
+
+## 2026-05-27 - Completamento CLI e Tooling Rust
+
+### Fatto
+
+- Completate con contenuto reale le note del capitolo `CLI e Tooling` dell'indice Rust.
+- Sviluppati CLI con `clap`, configurazione applicativa, logging, tracing, error reporting e packaging/release.
+- Aggiunti esempi pratici, errori comuni, checklist e collegamenti interni coerenti.
+
+### Decisioni
+
+- Le note completate restano con `status: "non revisionato"` fino alla revisione dell'utente.
+- Il capitolo tratta la CLI come superficie pubblica dell'applicazione, separando parsing, configurazione, osservabilita, reporting e distribuzione.
+
+### Prossimi passi
+
+- Proseguire con `Backend, Networking e Database` oppure `Testing, Qualita e Sicurezza`.
+
 ## 2026-05-26 - Completamento Rust di Sistema
 
 ### Fatto
@@ -109,71 +177,3 @@ Mantieni solo le ultime 10 voci operative.
 ### Prossimi passi
 
 - Proseguire con il percorso avanzato Rust partendo da `Concorrenza e Asincronia`.
-
-## 2026-05-22 - Completamento standard library Rust
-
-### Fatto
-
-- Completate con contenuto reale le note del capitolo `Standard Library` dell'indice Rust.
-- Sviluppati Iterator API, conversioni `From`/`Into`/`TryFrom`/`TryInto`, `AsRef`/`AsMut`/`Borrow`, `Default`, `Display`/`Debug`, path, stringhe OS, file I/O, processi e tempo.
-- Aggiunti esempi pratici, errori comuni, checklist e collegamenti interni coerenti.
-
-### Decisioni
-
-- Le note completate restano con `status: "non revisionato"` fino alla revisione dell'utente.
-- Il capitolo `Standard Library` viene trattato come base operativa prima delle sezioni Cargo, tooling, async e applicazioni.
-
-### Prossimi passi
-
-- Completare il capitolo `Cargo, Editions e Compatibilita`.
-
-## 2026-05-22 - Completamento smart pointer Rust
-
-### Fatto
-
-- Completate con contenuto reale le note del capitolo `Smart Pointers e Interior Mutability` dell'indice Rust.
-- Sviluppati `Box<T>`, `Deref`, `Drop`, `Rc<T>`, `Arc<T>`, `RefCell<T>`, `Cell<T>`, `Mutex<T>`, `RwLock<T>`, `OnceLock`, `LazyLock`, interior mutability e `Pin`/`Unpin`.
-- Aggiunti esempi pratici, errori comuni, checklist e collegamenti interni coerenti.
-
-### Decisioni
-
-- Le note completate restano con `status: "non revisionato"` fino alla revisione dell'utente.
-- Il capitolo collega ownership, borrowing e concorrenza, preparando le sezioni su standard library, async e unsafe.
-
-### Prossimi passi
-
-- Completare il capitolo `Standard Library` oppure approfondire concorrenza e async.
-
-## 2026-05-22 - Completamento lifetimes Rust
-
-### Fatto
-
-- Completate con contenuto reale le note del capitolo `Lifetimes` dell'indice Rust.
-- Sviluppati lifetime annotations, lifetime elision, lifetimes nelle struct, lifetimes nei trait, lifetimes avanzati e HRTB.
-- Aggiunti esempi pratici, errori comuni, checklist e collegamenti interni coerenti.
-
-### Decisioni
-
-- Le note completate restano con `status: "non revisionato"` fino alla revisione dell'utente.
-- Il capitolo `Lifetimes` fa da ponte tra ownership/borrowing e le sezioni su GAT, trait object, smart pointer e unsafe.
-
-### Prossimi passi
-
-- Completare il capitolo `Smart Pointers e Interior Mutability`.
-
-## 2026-05-21 - Completamento astrazione e generici Rust
-
-### Fatto
-
-- Completate con contenuto reale le note del capitolo `Astrazione e Generici` dell'indice Rust.
-- Sviluppati generics, traits, trait bounds, derive, associated types, GAT, trait object, dispatch, object safety e blanket implementations.
-- Aggiornati frontmatter, esempi pratici, checklist e collegamenti interni.
-
-### Decisioni
-
-- Le note completate restano con `status: "non revisionato"` fino alla revisione dell'utente.
-- Il capitolo viene trattato come base del percorso intermedio Rust prima di lifetime avanzati e smart pointer.
-
-### Prossimi passi
-
-- Completare il capitolo `Lifetimes` o collegare meglio queste note alle future sezioni su smart pointer e standard library.
