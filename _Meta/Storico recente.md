@@ -8,6 +8,40 @@ Mantieni solo le ultime 10 voci operative.
 
 ---
 
+## 2026-05-28 - Completamento API Design Rust
+
+### Fatto
+
+- Completate con contenuto reale le note del capitolo `API Design Idiomatico` dell'indice Rust.
+- Sviluppati public API design, error types pubblici, builder pattern, newtype pattern, extension traits, feature flags, compatibilita/breaking changes e documentazione delle crate.
+- Aggiunti esempi pratici, errori comuni, checklist e collegamenti interni coerenti.
+
+### Decisioni
+
+- Le note completate restano con `status: "non revisionato"` fino alla revisione dell'utente.
+- Il capitolo tratta API pubbliche, feature e documentazione come contratti di compatibilita, non solo come dettagli di implementazione.
+
+### Prossimi passi
+
+- Completare la sezione `Conoscenza Operativa` dell'indice Rust se deve diventare una guida pratica.
+
+## 2026-05-28 - Completamento testing Rust
+
+### Fatto
+
+- Completate con contenuto reale le note del capitolo `Testing, Qualita e Sicurezza` dell'indice Rust.
+- Sviluppati unit test, integration test, doc test, mocking, benchmark con Criterion, property testing, fuzzing, snapshot testing, cargo-nextest, Clippy, rustfmt, rustdoc, cargo audit e cargo deny.
+- Aggiunti esempi pratici, errori comuni, checklist e collegamenti interni coerenti.
+
+### Decisioni
+
+- Le note completate restano con `status: "non revisionato"` fino alla revisione dell'utente.
+- Il capitolo separa test funzionali, test generativi, benchmark, formattazione/linting, documentazione e controlli supply-chain.
+
+### Prossimi passi
+
+- Proseguire con `API Design Idiomatico`.
+
 ## 2026-05-27 - Completamento Embedded Rust
 
 ### Fatto
@@ -143,37 +177,3 @@ Mantieni solo le ultime 10 voci operative.
 ### Prossimi passi
 
 - Proseguire con il capitolo `Macros`.
-
-## 2026-05-26 - Completamento concorrenza e asincronia Rust
-
-### Fatto
-
-- Completate con contenuto reale le note del capitolo `Concorrenza e Asincronia` dell'indice Rust.
-- Sviluppati thread, message passing, shared state, `Send`/`Sync`, mutex, RwLock, atomics, Rayon, async/await, Future, runtime async, select/join/cancellation, async streams, channel async e graceful shutdown.
-- Aggiunti esempi pratici, errori comuni, checklist e collegamenti interni coerenti.
-
-### Decisioni
-
-- Le note completate restano con `status: "non revisionato"` fino alla revisione dell'utente.
-- Il capitolo separa concorrenza sync, parallelismo CPU e asincronia I/O per evitare sovrapposizioni concettuali.
-
-### Prossimi passi
-
-- Proseguire con il capitolo `Compile-Time e Type-Level Programming`.
-
-## 2026-05-22 - Completamento Cargo e compatibilita Rust
-
-### Fatto
-
-- Completate con contenuto reale le note del capitolo `Cargo, Editions e Compatibilita` dell'indice Rust.
-- Sviluppati Cargo, manifest, lockfile, crates.io, semantic versioning, MSRV, editions, migrazione edition, feature, build script, profili e dipendenze workspace.
-- Aggiunti esempi pratici, errori comuni, checklist e collegamenti interni coerenti.
-
-### Decisioni
-
-- Le note completate restano con `status: "non revisionato"` fino alla revisione dell'utente.
-- Il capitolo chiarisce il ruolo di compatibilita, MSRV e edition come parte della manutenzione di crate e applicazioni Rust.
-
-### Prossimi passi
-
-- Proseguire con il percorso avanzato Rust partendo da `Concorrenza e Asincronia`.

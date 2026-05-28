@@ -1,47 +1,148 @@
-﻿---
-date: 2026-05-20
+---
+date: 2026-05-28
 area: Programmazione
 topic: Rust
 type: technical-note
 status: "non revisionato"
-difficulty:
+difficulty: intermedio
 tags:
   - programmazione
   - rust
   - testing-qualita-e-sicurezza
-aliases: []
-prerequisites: []
-related: []
+aliases:
+  - "rustdoc"
+  - "cargo doc"
+prerequisites:
+  - "[[Programmazione/Rust/Pagine/Doc test]]"
+  - "[[Programmazione/Rust/Pagine/Public API design]]"
+related:
+  - "[[Programmazione/Rust/Pagine/Documentazione delle crate]]"
+  - "[[Programmazione/Rust/Pagine/rustfmt]]"
+  - "[[Programmazione/Rust/Pagine/Clippy]]"
 ---
 
 # rustdoc
 
 ## Sintesi
 
-Nota seedling su **rustdoc** in Rust. L'argomento appartiene a **Applicazioni e Ecosistema** / **Testing, Qualita e Sicurezza** e va sviluppato con definizione, motivazione, esempi e collegamenti alle note vicine.
+`rustdoc` e lo strumento ufficiale che genera documentazione HTML per crate Rust a partire da commenti di documentazione, firme pubbliche, moduli, trait, struct, enum e esempi.
 
-## Concetto chiave
+E anche parte del sistema di test: i blocchi di codice nella documentazione possono diventare doc test eseguiti da `cargo test`.
 
-Descrivi qui il ruolo di **rustdoc** nel linguaggio, nella standard library o nell'ecosistema Rust. Evidenzia soprattutto cosa risolve e quali vincoli introduce rispetto a ownership, type system, performance o sicurezza.
+## Quando usarlo
 
-## Quando approfondirlo
+Usa `rustdoc` quando:
 
-- Quando compare in codice reale o nella documentazione ufficiale.
-- Quando influenza API design, gestione della memoria, concorrenza o build.
-- Quando serve distinguere il comportamento idiomatico Rust da approcci presi da altri linguaggi.
+- stai pubblicando una libreria;
+- vuoi documentare API pubbliche;
+- vuoi controllare esempi e doc test;
+- vuoi generare documentazione locale;
+- vuoi verificare link e item documentati;
+- vuoi migliorare usabilita della crate.
 
-## Esempio o checklist
+Per applicazioni private, documentare moduli chiave resta utile, ma la priorita e diversa rispetto a una crate pubblica.
 
-Aggiungi un esempio minimo in Rust o una checklist operativa quando la nota viene sviluppata.
+## Come funziona
+
+Commenti doc:
+
+- `///` documenta l'item successivo;
+- `//!` documenta il modulo o crate corrente;
+- Markdown e supportato;
+- link intra-doc possono puntare a item Rust;
+- esempi Rust possono essere testati.
+
+Comandi:
+
+```powershell
+cargo doc
+cargo doc --open
+cargo test --doc
+```
+
+Per crate pubbliche, conviene trattare documentazione incompleta o link rotti come problemi di qualita.
+
+## API / Sintassi
+
+Documentare una funzione:
+
+```rust
+/// Calcola la percentuale.
+///
+/// # Errors
+///
+/// Restituisce errore se `total` e zero.
+pub fn percentage(part: u64, total: u64) -> Result<u64, String> {
+    if total == 0 {
+        return Err("total is zero".to_string());
+    }
+
+    Ok(part * 100 / total)
+}
+```
+
+Documentazione di crate:
+
+```rust
+//! Libreria per normalizzare input testuale.
+//!
+//! Usa [`normalize`] per applicare la normalizzazione standard.
+```
+
+## Esempio pratico
+
+API con esempio:
+
+```rust
+/// Normalizza un nome.
+///
+/// # Examples
+///
+/// ```
+/// let value = my_crate::normalize(" Luca ");
+/// assert_eq!(value, "luca");
+/// ```
+pub fn normalize(input: &str) -> String {
+    input.trim().to_lowercase()
+}
+```
+
+Questo esempio e leggibile per l'utente e testabile da `cargo test`.
+
+## Varianti
+
+- **Documentazione HTML locale**: `cargo doc --open`.
+- **Doc test**: esempi compilati/eseguiti.
+- **Intra-doc links**: link a item Rust.
+- **Crate-level docs**: `//!` in `lib.rs`.
+- **Documentazione privata**: generabile con opzioni dedicate.
+- **docs.rs**: documentazione generata per crate pubblicate.
 
 ## Errori comuni
 
-- Confondere il concetto con una soluzione piu generale.
-- Usarlo senza valutare ownership, lifetime o costo runtime.
-- Non collegarlo agli strumenti Cargo, al compilatore o alle crate coinvolte quando rilevante.
+- Documentare il "come" interno invece del contratto pubblico.
+- Scrivere esempi che non compilano.
+- Dimenticare sezioni `Errors`, `Panics` o `Safety` quando rilevanti.
+- Esporre API pubbliche senza descrivere invarianti.
+- Usare link testuali invece di link a item quando possibile.
+- Lasciare documentazione obsoleta dopo refactor.
+- Usare doc comment come commenti interni di implementazione.
+
+## Checklist
+
+- Le API pubbliche principali sono documentate?
+- Gli esempi compilano?
+- Errori e panic sono descritti?
+- Le funzioni unsafe hanno sezione `Safety`?
+- I link intra-doc funzionano?
+- La documentazione mostra casi reali?
+- `cargo doc` e `cargo test --doc` passano?
 
 ## Collegamenti
 
 - [[Programmazione/Rust/Indice rust|Indice Rust]]
-
-
+- [[Programmazione/Rust/Pagine/Doc test]]
+- [[Programmazione/Rust/Pagine/Documentazione delle crate]]
+- [[Programmazione/Rust/Pagine/Public API design]]
+- [[Programmazione/Rust/Pagine/rustfmt]]
+- [[Programmazione/Rust/Pagine/Clippy]]

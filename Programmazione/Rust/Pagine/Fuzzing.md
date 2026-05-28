@@ -1,47 +1,137 @@
-﻿---
-date: 2026-05-20
+---
+date: 2026-05-28
 area: Programmazione
 topic: Rust
 type: technical-note
 status: "non revisionato"
-difficulty:
+difficulty: avanzato
 tags:
   - programmazione
   - rust
   - testing-qualita-e-sicurezza
-aliases: []
-prerequisites: []
-related: []
+aliases:
+  - "Fuzzing"
+  - "cargo-fuzz"
+prerequisites:
+  - "[[Programmazione/Rust/Pagine/Property testing]]"
+  - "[[Programmazione/Rust/Pagine/Unsafe Rust]]"
+  - "[[Programmazione/Rust/Pagine/Error handling idiomatico]]"
+related:
+  - "[[Programmazione/Rust/Pagine/Miri]]"
+  - "[[Programmazione/Rust/Pagine/Undefined behavior]]"
+  - "[[Programmazione/Rust/Pagine/cargo audit]]"
 ---
 
 # Fuzzing
 
 ## Sintesi
 
-Nota seedling su **Fuzzing** in Rust. L'argomento appartiene a **Applicazioni e Ecosistema** / **Testing, Qualita e Sicurezza** e va sviluppato con definizione, motivazione, esempi e collegamenti alle note vicine.
+Il **fuzzing** esegue il codice con molti input generati automaticamente per scoprire panic, crash, violazioni di asserzioni, bug di parsing e vulnerabilita. In Rust lo strumento piu comune per progetti Cargo e `cargo-fuzz`, basato su libFuzzer.
 
-## Concetto chiave
+E particolarmente utile per parser, decoder, formati binari, unsafe code, FFI, algoritmi complessi e qualunque funzione esposta a input non fidato.
 
-Descrivi qui il ruolo di **Fuzzing** nel linguaggio, nella standard library o nell'ecosistema Rust. Evidenzia soprattutto cosa risolve e quali vincoli introduce rispetto a ownership, type system, performance o sicurezza.
+## Quando usarlo
 
-## Quando approfondirlo
+Usa fuzzing quando:
 
-- Quando compare in codice reale o nella documentazione ufficiale.
-- Quando influenza API design, gestione della memoria, concorrenza o build.
-- Quando serve distinguere il comportamento idiomatico Rust da approcci presi da altri linguaggi.
+- il codice accetta input esterno non fidato;
+- hai parser o deserializzatori custom;
+- usi `unsafe`;
+- integri codice C/C++;
+- vuoi cercare panic non coperti da test normali;
+- vuoi hardenare una libreria pubblica.
 
-## Esempio o checklist
+Il fuzzing non dimostra assenza di bug: aumenta la probabilita di trovare casi che test manuali non avrebbero immaginato.
 
-Aggiungi un esempio minimo in Rust o una checklist operativa quando la nota viene sviluppata.
+## Come funziona
+
+Un fuzzer genera input, li passa a un fuzz target e osserva il comportamento del programma. Se trova crash o panic, salva l'input che li riproduce. I fuzz target dovrebbero essere piccoli e concentrati su una API.
+
+Flusso tipico:
+
+1. inizializzi la struttura `fuzz/`;
+2. crei un fuzz target;
+3. esegui il fuzzer;
+4. analizzi crash e corpus;
+5. riduci e trasformi crash in regression test;
+6. mantieni fuzzing in locale o CI dedicata.
+
+## API / Sintassi
+
+Comandi tipici:
+
+```powershell
+cargo install cargo-fuzz
+cargo fuzz init
+cargo +nightly fuzz run parse_input
+```
+
+Fuzz target schematico:
+
+```rust
+#![no_main]
+
+use libfuzzer_sys::fuzz_target;
+
+fuzz_target!(|data: &[u8]| {
+    let _ = my_crate::parse_bytes(data);
+});
+```
+
+Il target non deve verificare solo che il codice compili: deve chiamare una funzione significativa con input fuzzer-controlled.
+
+## Esempio pratico
+
+Fuzzing di un parser UTF-8:
+
+```rust
+#![no_main]
+
+use libfuzzer_sys::fuzz_target;
+
+fuzz_target!(|data: &[u8]| {
+    if let Ok(text) = std::str::from_utf8(data) {
+        let _ = my_crate::parse_command(text);
+    }
+});
+```
+
+Se il parser va in panic su un input valido UTF-8, il fuzzer salva un caso riproducibile. Quel caso dovrebbe diventare un test unitario o di integrazione.
+
+## Varianti
+
+- **Coverage-guided fuzzing**: genera input in base alla copertura raggiunta.
+- **Structure-aware fuzzing**: genera input piu vicini al formato atteso.
+- **Fuzzing parser**: uno degli usi piu comuni.
+- **Fuzzing unsafe/FFI**: utile con sanitizers e Miri dove applicabile.
+- **Regression fuzz tests**: crash salvati trasformati in test normali.
+- **CI fuzzing**: job separati, spesso non a ogni commit.
 
 ## Errori comuni
 
-- Confondere il concetto con una soluzione piu generale.
-- Usarlo senza valutare ownership, lifetime o costo runtime.
-- Non collegarlo agli strumenti Cargo, al compilatore o alle crate coinvolte quando rilevante.
+- Fuzz target troppo grande e lento.
+- Ignorare crash invece di convertirli in test.
+- Generare solo input invalidi che non entrano nel parser.
+- Fare I/O, rete o sleep dentro fuzz target.
+- Confondere fuzzing e property testing.
+- Non fissare limiti per input che causano allocazioni enormi.
+- Pensare che safe Rust renda inutile il fuzzing.
+
+## Checklist
+
+- Il target esercita una API critica?
+- L'input controlla davvero il comportamento?
+- Crash e panic sono salvati come regression test?
+- Il target e veloce e deterministico?
+- Le allocazioni sono limitate?
+- Il fuzzing gira con toolchain appropriata?
+- Fuzzing, Miri e test normali si completano a vicenda?
 
 ## Collegamenti
 
 - [[Programmazione/Rust/Indice rust|Indice Rust]]
-
-
+- [[Programmazione/Rust/Pagine/Property testing]]
+- [[Programmazione/Rust/Pagine/Miri]]
+- [[Programmazione/Rust/Pagine/Unsafe Rust]]
+- [[Programmazione/Rust/Pagine/Undefined behavior]]
+- [[Programmazione/Rust/Pagine/cargo audit]]
