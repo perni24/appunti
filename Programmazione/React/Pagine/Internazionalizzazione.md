@@ -1,5 +1,5 @@
----
-date: 2026-05-14
+﻿---
+date: 2026-06-02
 area: Programmazione
 topic: React
 type: technical-note
@@ -10,6 +10,7 @@ aliases: [Internazionalizzazione]
 prerequisites: []
 related: []
 ---
+
 # Internazionalizzazione
 
 ## Sintesi
@@ -32,8 +33,13 @@ In React, questo tema non riguarda solo la traduzione delle stringhe, ma anche:
 
 ---
 
-## 1. i18n vs l10n
+## Quando usarlo
 
+Contenuto da sviluppare: nella nota originale questa sezione non era presente o era solo una traccia.
+
+## Come funziona
+
+### 1. i18n vs l10n
 Conviene distinguere due concetti:
 
 ### Internazionalizzazione (i18n)
@@ -53,9 +59,7 @@ In pratica:
 - l10n e l'adattamento concreto.
 
 ---
-
-## 2. Perche serve
-
+### 2. Perche serve
 Senza una strategia di internazionalizzazione, il codice tende a riempirsi di stringhe hardcoded:
 
 ```javascript
@@ -75,9 +79,7 @@ Una strategia i18n permette invece di:
 - adattare meglio l'app a mercati e utenti diversi.
 
 ---
-
-## 3. Stringhe tradotte
-
+### 3. Stringhe tradotte
 La forma piu basilare di i18n e spostare il testo fuori dal componente e risolverlo tramite chiavi.
 
 Concettualmente:
@@ -100,9 +102,7 @@ Questo approccio rende possibile:
 - evitare testo hardcoded nel markup.
 
 ---
-
-## 4. react-i18next
-
+### 4. react-i18next
 **react-i18next** e una delle librerie piu usate per l'internazionalizzazione in React.
 
 Si basa sul progetto `i18next` e fornisce integrazione React tramite hook e provider.
@@ -126,9 +126,7 @@ Vantaggi pratici:
 - supporto a interpolazione e pluralizzazione.
 
 ---
-
-## 5. Cambio lingua
-
+### 5. Cambio lingua
 Una buona integrazione i18n deve permettere di cambiare lingua senza riscrivere i componenti.
 
 Esempio concettuale:
@@ -155,9 +153,7 @@ Questo apre poi domande architetturali importanti:
 Qui il tema puo collegarsi a [[Programmazione/React/Pagine/React Router]] e a sistemi di persistenza leggeri.
 
 ---
-
-## 6. Interpolazione e pluralizzazione
-
+### 6. Interpolazione e pluralizzazione
 Tradurre non significa solo sostituire stringhe statiche.
 
 Spesso serve interpolare valori:
@@ -175,9 +171,7 @@ t("cart.items", { count: 3 })
 Questi casi sono importanti perche le regole grammaticali cambiano tra lingue diverse. Una soluzione i18n seria deve supportarle nativamente, altrimenti il testo diventa rapidamente fragile o innaturale.
 
 ---
-
-## 7. Date, numeri e valute
-
+### 7. Date, numeri e valute
 Una parte importante della localizzazione riguarda i formati dei dati, non solo le parole.
 
 Esempi:
@@ -198,9 +192,7 @@ const formattedPrice = new Intl.NumberFormat("it-IT", {
 Questa parte e fondamentale, perche una UI tradotta ma con formati sbagliati continua a sembrare "straniera" all'utente.
 
 ---
-
-## 8. Namespace e organizzazione delle traduzioni
-
+### 8. Namespace e organizzazione delle traduzioni
 Quando il progetto cresce, conviene organizzare le traduzioni in modo coerente.
 
 Strategie comuni:
@@ -222,9 +214,7 @@ Una cattiva organizzazione delle traduzioni porta rapidamente a:
 - difficolta nel riuso.
 
 ---
-
-## 9. i18n e data fetching
-
+### 9. i18n e data fetching
 L'internazionalizzazione puo influenzare anche il caricamento dati:
 - contenuti remoti in lingua diversa;
 - route o endpoint localizzati;
@@ -237,9 +227,7 @@ Per questo puo collegarsi a [[Programmazione/React/Pagine/Data Fetching e Cache]
 - alcune risorse vanno ricaricate al cambio lingua.
 
 ---
-
-## 10. Routing e URL localizzate
-
+### 10. Routing e URL localizzate
 In alcune applicazioni la lingua compare anche nella URL:
 
 ```text
@@ -261,9 +249,7 @@ Ma introduce anche piu complessita:
 Non sempre serve, ma in prodotti pubblici multi-lingua puo avere molto senso.
 
 ---
-
-## 11. Accessibilita e testo
-
+### 11. Accessibilita e testo
 Una buona internazionalizzazione deve considerare anche:
 - attributo `lang`;
 - leggibilita dei messaggi;
@@ -277,8 +263,21 @@ Quindi i18n ha anche implicazioni di layout e design, non solo di contenuto.
 
 ---
 
-## 12. Errori comuni
+## API / Sintassi
 
+Contenuto da sviluppare: nella nota originale questa sezione non era presente o era solo una traccia.
+
+## Esempio pratico
+
+Contenuto da sviluppare: nella nota originale questa sezione non era presente o era solo una traccia.
+
+## Varianti
+
+Contenuto da sviluppare: nella nota originale questa sezione non era presente o era solo una traccia.
+
+## Errori comuni
+
+### 12. Errori comuni
 Errori frequenti:
 - stringhe hardcoded nei componenti;
 - chiavi poco chiare o duplicate;
@@ -297,8 +296,9 @@ Meglio usare interpolazione nella libreria i18n, per lasciare flessibilita alla 
 
 ---
 
-## 13. Best Practices
+## Checklist
 
+### 13. Best Practices
 1. **Non hardcodare testo nei componenti:** usa chiavi e risorse dedicate.
 2. **Distingui traduzione da localizzazione:** date, numeri e valute sono parte del problema.
 3. **Usa `react-i18next` o una soluzione equivalente quando l'app cresce:** gestire tutto a mano scala male.
@@ -307,3 +307,7 @@ Meglio usare interpolazione nella libreria i18n, per lasciare flessibilita alla 
 6. **Ricorda che la validazione finale resta anche lato backend:** lingua e messaggi possono cambiare, ma le regole di dominio devono restare coerenti.
 
 ---
+
+## Collegamenti
+
+- [[Programmazione/React/Indice react|Indice React]]

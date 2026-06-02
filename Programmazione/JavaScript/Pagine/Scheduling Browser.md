@@ -1,5 +1,5 @@
----
-date: 2026-05-13
+﻿---
+date: 2026-06-02
 area: Programmazione
 topic: JavaScript
 type: technical-note
@@ -13,14 +13,34 @@ related: [Event Loop, Promises, AbortController, Web Workers, Optimization]
 
 # Scheduling Browser
 
+## Sintesi
+
+### Testo introduttivo
 Lo scheduling nel browser riguarda il modo in cui JavaScript programma lavoro asincrono senza bloccare troppo a lungo il thread principale.
 
 Nel browser il thread principale gestisce JavaScript, rendering, eventi utente, layout, paint e aggiornamenti del DOM. Per questo e importante scegliere lo strumento giusto per rimandare, distribuire o sincronizzare il lavoro.
 
 ---
 
-## 1. Perche serve lo scheduling
+## Quando usarlo
 
+Usa scheduling browser quando devi decidere quando eseguire lavoro JavaScript senza peggiorare input, rendering o animazioni.
+
+Casi comuni:
+
+- animazioni;
+- debounce di input;
+- polling;
+- spezzare task lunghi;
+- lavoro non urgente in idle time;
+- aggiornamenti DOM sincronizzati con frame;
+- cleanup o analytics a bassa priorita.
+
+Se il lavoro CPU e davvero pesante, lo scheduling sul main thread puo non bastare: valuta Web Worker.
+
+## Come funziona
+
+### 1. Perche serve lo scheduling
 JavaScript nel browser esegue codice sul main thread.
 
 Se un task dura troppo:
@@ -41,9 +61,7 @@ Lo scheduling permette di decidere quando eseguire un lavoro:
 - dopo un certo ritardo.
 
 ---
-
-## 2. setTimeout()
-
+### 2. setTimeout()
 `setTimeout()` programma una funzione da eseguire dopo un ritardo minimo.
 
 ```js
@@ -72,9 +90,7 @@ console.log("C");
 Anche con `0`, il callback viene rinviato a un task successivo.
 
 ---
-
-## 3. setInterval()
-
+### 3. setInterval()
 `setInterval()` esegue una funzione ripetutamente a intervalli regolari.
 
 ```js
@@ -104,9 +120,7 @@ poll();
 In questo modo il nuovo ciclo parte solo dopo la fine del precedente.
 
 ---
-
-## 4. queueMicrotask()
-
+### 4. queueMicrotask()
 `queueMicrotask()` inserisce un callback nella microtask queue.
 
 ```js
@@ -136,9 +150,7 @@ Sono utili per:
 > Troppe microtask consecutive possono bloccare il rendering, perche il browser deve svuotare la microtask queue prima di continuare.
 
 ---
-
-## 5. requestAnimationFrame()
-
+### 5. requestAnimationFrame()
 `requestAnimationFrame()` programma un callback prima del prossimo repaint.
 
 E lo strumento corretto per aggiornare animazioni e modifiche visive sincronizzate con il rendering.
@@ -163,9 +175,7 @@ Vantaggi:
 - migliore efficienza rispetto a `setInterval()` per animazioni.
 
 ---
-
-## 6. Separare letture e scritture del DOM
-
+### 6. Separare letture e scritture del DOM
 Le operazioni sul DOM possono causare layout e repaint.
 
 Un errore comune e alternare letture e scritture nello stesso ciclo.
@@ -194,9 +204,7 @@ requestAnimationFrame(() => {
 Questo pattern riduce il rischio di layout thrashing.
 
 ---
-
-## 7. requestIdleCallback()
-
+### 7. requestIdleCallback()
 `requestIdleCallback()` programma lavoro da eseguire quando il browser ha tempo libero.
 
 ```js
@@ -219,9 +227,7 @@ E utile per lavori non urgenti:
 Non va usato per lavoro necessario al rendering immediato o all'interazione principale.
 
 ---
-
-## 8. Timeout con requestIdleCallback()
-
+### 8. Timeout con requestIdleCallback()
 `requestIdleCallback()` puo ricevere un timeout.
 
 ```js
@@ -238,9 +244,7 @@ Il timeout indica che il callback deve essere eseguito entro un tempo massimo, a
 Questo e utile quando un lavoro e a bassa priorita, ma non puo essere rimandato per sempre.
 
 ---
-
-## 9. Suddividere task pesanti
-
+### 9. Suddividere task pesanti
 Un task lungo puo essere spezzato in blocchi piu piccoli.
 
 ```js
@@ -267,9 +271,21 @@ function processItems(items) {
 Questo lascia spazio al browser per gestire input, rendering e altri task tra un blocco e l'altro.
 
 ---
+### 11. Confronto tra strumenti
+| Strumento | Quando usarlo | Note |
+| --- | --- | --- |
+| `queueMicrotask()` | Dopo il codice corrente, prima del rendering | Alta priorita, da usare con moderazione |
+| `setTimeout()` | Rinviare lavoro a un task futuro | Ritardo minimo, non preciso |
+| `setInterval()` | Esecuzione ripetuta semplice | Attenzione ad accumuli e drift |
+| `requestAnimationFrame()` | Animazioni e aggiornamenti visivi | Sincronizzato con il repaint |
+| `requestIdleCallback()` | Lavoro non urgente | Dipende dal tempo libero del browser |
+| `scheduler.postTask()` | Task con priorita esplicita | Supporto da verificare |
 
-## 10. Scheduler API
+---
 
+## API / Sintassi
+
+### 10. Scheduler API
 Alcuni ambienti moderni espongono `scheduler.postTask()`, che permette di programmare task con priorita.
 
 ```js
@@ -293,46 +309,36 @@ Questa API e utile quando si vuole comunicare al browser quanto e urgente un lav
 
 ---
 
-## 11. Confronto tra strumenti
+## Esempio pratico
 
-| Strumento | Quando usarlo | Note |
-| --- | --- | --- |
-| `queueMicrotask()` | Dopo il codice corrente, prima del rendering | Alta priorita, da usare con moderazione |
-| `setTimeout()` | Rinviare lavoro a un task futuro | Ritardo minimo, non preciso |
-| `setInterval()` | Esecuzione ripetuta semplice | Attenzione ad accumuli e drift |
-| `requestAnimationFrame()` | Animazioni e aggiornamenti visivi | Sincronizzato con il repaint |
-| `requestIdleCallback()` | Lavoro non urgente | Dipende dal tempo libero del browser |
-| `scheduler.postTask()` | Task con priorita esplicita | Supporto da verificare |
+Spezzare lavoro lungo:
 
----
+```js
+function processInChunks(items, processItem) {
+  let index = 0;
 
-## 12. Best practice
+  function runChunk() {
+    const start = performance.now();
 
-- Usa `requestAnimationFrame()` per animazioni e modifiche visive.
-- Usa `requestIdleCallback()` per lavoro non urgente.
-- Usa `setTimeout()` per spezzare task lunghi.
-- Evita cicli sincroni pesanti sul main thread.
-- Non abusare di `queueMicrotask()`, perche puo ritardare il rendering.
-- Pulisci sempre timer e intervalli quando non servono piu.
-- Per lavori CPU pesanti valuta un `Web Worker`.
-- Misura con DevTools prima di ottimizzare.
+    while (index < items.length && performance.now() - start < 8) {
+      processItem(items[index]);
+      index += 1;
+    }
 
----
+    if (index < items.length) {
+      setTimeout(runChunk, 0);
+    }
+  }
 
-## 13. Errori comuni
+  runChunk();
+}
+```
 
-- Usare `setInterval()` per animazioni invece di `requestAnimationFrame()`.
-- Pensare che `setTimeout(fn, 0)` esegua subito `fn`.
-- Riempire la microtask queue e bloccare il rendering.
-- Fare lavoro pesante dentro `requestAnimationFrame()`.
-- Usare `requestIdleCallback()` per task urgenti.
-- Non cancellare timer e interval, causando memory leak.
-- Alternare letture e scritture DOM causando layout thrashing.
+Il browser puo gestire input e rendering tra un chunk e il successivo.
 
----
+## Varianti
 
-## 14. Mappa mentale
-
+### 14. Mappa mentale
 ```text
 Scheduling Browser
 |
@@ -361,8 +367,36 @@ Scheduling Browser
 
 ---
 
-## 15. Collegamenti
+## Errori comuni
 
+### 13. Errori comuni
+- Usare `setInterval()` per animazioni invece di `requestAnimationFrame()`.
+- Pensare che `setTimeout(fn, 0)` esegua subito `fn`.
+- Riempire la microtask queue e bloccare il rendering.
+- Fare lavoro pesante dentro `requestAnimationFrame()`.
+- Usare `requestIdleCallback()` per task urgenti.
+- Non cancellare timer e interval, causando memory leak.
+- Alternare letture e scritture DOM causando layout thrashing.
+
+---
+
+## Checklist
+
+### 12. Best practice
+- Usa `requestAnimationFrame()` per animazioni e modifiche visive.
+- Usa `requestIdleCallback()` per lavoro non urgente.
+- Usa `setTimeout()` per spezzare task lunghi.
+- Evita cicli sincroni pesanti sul main thread.
+- Non abusare di `queueMicrotask()`, perche puo ritardare il rendering.
+- Pulisci sempre timer e intervalli quando non servono piu.
+- Per lavori CPU pesanti valuta un `Web Worker`.
+- Misura con DevTools prima di ottimizzare.
+
+---
+
+## Collegamenti
+
+### 15. Collegamenti
 - [[Programmazione/JavaScript/Pagine/Event Loop|Event Loop]]
 - [[Programmazione/JavaScript/Pagine/Promises|Promises]]
 - [[Programmazione/JavaScript/Pagine/Promise avanzate|Promise avanzate]]

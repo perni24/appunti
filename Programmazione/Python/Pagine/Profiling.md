@@ -1,5 +1,5 @@
----
-date: 2026-05-14
+﻿---
+date: 2026-06-02
 area: Programmazione
 topic: Python
 type: technical-note
@@ -10,13 +10,20 @@ aliases: [Profiling]
 prerequisites: []
 related: []
 ---
+
 # Profiling in Python
 
 ## Sintesi
 
 Nota su Profiling in Python. Riassume il concetto, la sintassi principale e i punti da ricordare durante studio, sviluppo o debugging.
 
-## Concetto chiave
+## Quando usarlo
+
+Contenuto da sviluppare: nella nota originale questa sezione non era presente o era solo una traccia.
+
+## Come funziona
+
+### Concetto chiave
 Il **profiling** e la pratica di misurare dove un programma consuma tempo o memoria. Serve a individuare i veri colli di bottiglia, invece di ottimizzare sulla base di intuizioni o supposizioni.
 
 In Python, il profiling e fondamentale perche il codice puo sembrare lento "in generale", ma nella pratica il costo reale si concentra spesso in poche funzioni, cicli o operazioni di I/O.
@@ -25,9 +32,7 @@ In Python, il profiling e fondamentale perche il codice puo sembrare lento "in g
 > Non ottimizzare prima di misurare. Senza dati reali, il rischio e spendere tempo a migliorare parti irrilevanti del programma.
 
 ---
-
-##  Cosa si puo profilare
-
+### Cosa si puo profilare
 Le aree principali sono:
 - **tempo di esecuzione**: quali funzioni consumano piu CPU o piu tempo totale;
 - **numero di chiamate**: quante volte viene eseguita una funzione;
@@ -40,9 +45,7 @@ Il profiling non e la stessa cosa del logging o del testing:
 - il profiling misura costi e performance.
 
 ---
-
-##  Esempi Pratici
-
+### Esempi Pratici
 ### Profilare con `cProfile`
 
 ```python
@@ -93,9 +96,7 @@ print(result)
 `timeit` e utile quando vuoi confrontare frammenti piccoli e isolati di codice.
 
 ---
-
-##  Strumenti principali
-
+### Strumenti principali
 ### `cProfile`
 E il profiler standard piu usato per misurare il tempo di esecuzione delle funzioni.
 
@@ -130,9 +131,7 @@ for stat in top_stats[:5]:
 Questo modulo e particolarmente utile quando il problema non e la velocita, ma la crescita della memoria. Si collega direttamente a [[Programmazione/Python/Pagine/Memory Management]].
 
 ---
-
-##  Funzionamento Interno (Teoria)
-
+### Funzionamento Interno (Teoria)
 ### Tempo totale vs tempo cumulativo
 Quando leggi un report di profiling, due misure sono particolarmente importanti:
 
@@ -159,9 +158,7 @@ Un programma puo essere:
 Per questo bisogna chiarire prima il problema che si vuole misurare.
 
 ---
-
-##  Workflow corretto di profiling
-
+### Workflow corretto di profiling
 Un flusso pragmatico e:
 
 1. definire il problema osservabile;
@@ -182,9 +179,7 @@ Esempi di problemi mal formulati:
 - "forse questa funzione va ottimizzata".
 
 ---
-
-##  Cosa ottimizzare davvero
-
+### Cosa ottimizzare davvero
 Il profiling mostra dove il programma passa tempo o consuma memoria, ma non dice automaticamente come migliorarlo. Le azioni tipiche dopo il profiling sono:
 - ridurre lavoro ripetuto;
 - evitare allocazioni inutili;
@@ -203,8 +198,21 @@ In CPython, il profiling puo anche mostrare quando il collo di bottiglia non e i
 
 ---
 
-##  Best Practices & "Gotchas"
+## API / Sintassi
 
+Contenuto da sviluppare: nella nota originale questa sezione non era presente o era solo una traccia.
+
+## Esempio pratico
+
+Contenuto da sviluppare: nella nota originale questa sezione non era presente o era solo una traccia.
+
+## Varianti
+
+Contenuto da sviluppare: nella nota originale questa sezione non era presente o era solo una traccia.
+
+## Errori comuni
+
+### Best Practices & "Gotchas"
 -  **Profila prima di ottimizzare:** evita lavoro inutile.
 -  **Usa input realistici:** benchmark su dati finti troppo piccoli sono spesso fuorvianti.
 -  **Misura piu volte:** rumore, cache e stato del sistema influenzano i risultati.
@@ -216,3 +224,11 @@ In CPython, il profiling puo anche mostrare quando il collo di bottiglia non e i
 -  **Attenzione all'overhead del profiler:** i numeri assoluti possono cambiare; il valore principale sta nei rapporti e nelle aree calde.
 
 ---
+
+## Checklist
+
+Contenuto da sviluppare: nella nota originale questa sezione non era presente o era solo una traccia.
+
+## Collegamenti
+
+- [[Programmazione/Python/Indice python|Indice Python]]

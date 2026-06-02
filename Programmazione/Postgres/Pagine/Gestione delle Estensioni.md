@@ -1,5 +1,5 @@
 ---
-date: 2026-05-14
+date: 2026-06-02
 area: Programmazione
 topic: PostgreSQL
 type: technical-note
@@ -10,69 +10,71 @@ aliases: [Gestione delle Estensioni]
 prerequisites: []
 related: []
 ---
-# Gestione delle Estensioni in PostgreSQL
+
+# Gestione delle Estensioni
 
 ## Sintesi
 
-Nota su Gestione delle Estensioni in PostgreSQL. Riassume il concetto, i meccanismi principali e i punti da ricordare durante studio, progettazione o amministrazione.
+Le estensioni aggiungono funzionalita a PostgreSQL: tipi, funzioni, indici, linguaggi, strumenti di monitoraggio e moduli applicativi.
 
-PostgreSQL è celebre per la sua estensibilità. Le **Estensioni** permettono di aggiungere nuove funzionalità al database (nuovi tipi di dato, funzioni, indici o linguaggi procedurali) come se fossero nativi.
+## Quando usarlo
 
-## Concetto chiave
-Un'estensione è un pacchetto di oggetti SQL che possono essere caricati nel database con un singolo comando. Questo meccanismo previene la frammentazione e facilita la manutenzione, permettendo di aggiornare o rimuovere interi set di funzionalità in modo pulito.
+Usale quando una funzionalita e disponibile come estensione stabile invece di implementarla manualmente.
 
----
+## Come funziona
 
-##  Comandi Principali
+Un'estensione viene installata a livello server e abilitata in un database con `CREATE EXTENSION`. Alcune richiedono librerie presenti sul sistema operativo.
 
-### 1. Caricare un'estensione
-Per abilitare un'estensione in un database specifico, si usa il comando `CREATE EXTENSION`.
+## API / Sintassi
+
 ```sql
+CREATE EXTENSION IF NOT EXISTS pgcrypto;
 CREATE EXTENSION IF NOT EXISTS "uuid-ossp";
+DROP EXTENSION pgcrypto;
 ```
-> [!WARNING] Privilegi
-> Solo i **Superuser** possono installare estensioni, a meno che l'estensione non sia stata esplicitamente marcata come "trusted" dal server.
 
-### 2. Elencare le estensioni
-- **Da psql:** `\dx`
-- **Via SQL:** `SELECT * FROM pg_extension;`
+Lista:
 
-### 3. Rimuovere un'estensione
 ```sql
-DROP EXTENSION "uuid-ossp";
+SELECT * FROM pg_available_extensions;
+SELECT * FROM pg_extension;
 ```
 
----
+## Esempio pratico
 
-##  Estensioni Indispensabili
+Abilitare `pgcrypto`:
 
-PostgreSQL include nella distribuzione ufficiale il modulo **"contrib"**, che contiene estensioni testate e supportate:
+```sql
+CREATE EXTENSION IF NOT EXISTS pgcrypto;
+SELECT gen_random_uuid();
+```
 
-| Estensione | Descrizione | Caso d'uso |
-| :--- | :--- | :--- |
-| **pg_stat_statements** | Traccia le statistiche di esecuzione di tutte le query. | Fondamentale per il [[Programmazione/Postgres/Pagine/Analisi delle Query|Query Tuning]]. |
-| **PostGIS** | Aggiunge il supporto per oggetti geografici e spaziali. | GIS e mappe. |
-| **uuid-ossp** | Genera identificatori univoci universali (UUID). | Chiavi primarie non sequenziali. |
-| **pg_trgm** | Funzioni per la ricerca di testo basata su trigrammi. | Ricerca "fuzzy" e suggerimenti. |
-| **pgaudit** | Logging dettagliato per scopi di audit e sicurezza. | Compliance normativa. |
+## Varianti
 
----
+- Estensioni core distribuite con PostgreSQL.
+- Estensioni di terze parti.
+- Estensioni per tipi dati.
+- Estensioni per osservabilita.
+- Estensioni per linguaggi procedurali.
 
-##  Configurazione (Shared Preload Libraries)
+## Errori comuni
 
-Alcune estensioni (come `pg_stat_statements`) richiedono di essere caricate all'avvio del server perché devono allocare memoria condivisa.
+- Abilitare estensioni non necessarie.
+- Non versionare `CREATE EXTENSION` nelle migrazioni.
+- Usare estensioni non disponibili in produzione.
+- Ignorare privilegi richiesti.
+- Non valutare sicurezza di estensioni terze.
 
-> [!INFO] Modifica del postgresql.conf
-> In questi casi, non basta il comando SQL; bisogna aggiungere l'estensione al parametro:
-> `shared_preload_libraries = 'pg_stat_statements'`
-> **Richiede il riavvio del server.**
+## Checklist
 
----
+- L'estensione e disponibile in tutti gli ambienti?
+- E versionata in migrazione?
+- I privilegi sono adeguati?
+- La dipendenza e documentata?
+- L'estensione e mantenuta e affidabile?
 
-## Logic layer: Perché usare le estensioni?
+## Collegamenti
 
-1.  **Modularità:** Mantieni il core del database leggero, aggiungendo solo ciò che serve.
-2.  **Specializzazione:** Trasforma Postgres in un database vettoriale (es: `pgvector`), spaziale (`PostGIS`) o per serie temporali (`TimescaleDB`).
-3.  **Standardizzazione:** Le estensioni gestiscono internamente le dipendenze tra oggetti SQL, evitando errori manuali durante le migrazioni.
-
----
+- [[Programmazione/Postgres/Pagine/uuid-ossp e pgcrypto|uuid-ossp e pgcrypto]]
+- [[Programmazione/Postgres/Pagine/Sicurezza delle estensioni|Sicurezza delle estensioni]]
+- [[Programmazione/Postgres/Pagine/Full Text Search|Full Text Search]]

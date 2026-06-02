@@ -1,5 +1,5 @@
-﻿---
-date: 2026-05-20
+---
+date: 2026-06-02
 area: Programmazione
 topic: Postgres
 type: technical-note
@@ -9,7 +9,6 @@ tags:
   - programmazione
   - postgres
   - fdw
-  - integrazione
 aliases: []
 prerequisites: []
 related: []
@@ -19,68 +18,77 @@ related: []
 
 ## Sintesi
 
-Gli **Foreign Data Wrapper** (FDW) permettono a PostgreSQL di interrogare dati esterni come se fossero tabelle locali.
-
-## Concetto chiave
-
-Un FDW definisce server esterno, mapping utente e foreign table.
-
-```sql
-CREATE EXTENSION postgres_fdw;
-
-CREATE SERVER remote_pg
-FOREIGN DATA WRAPPER postgres_fdw
-OPTIONS (host 'db.example.com', dbname 'app');
-```
-
-## Casi d'uso
-
-- Query tra database PostgreSQL.
-- Integrazione con sistemi esterni.
-- Migrazioni graduali.
-- Reporting federato.
-
-## Limiti
-
-- Performance dipendente dalla rete.
-- Pushdown non sempre completo.
-- Transazioni distribuite complesse.
+I **Foreign Data Wrapper** permettono a PostgreSQL di accedere a dati esterni come se fossero tabelle, per esempio un altro database PostgreSQL.
 
 ## Quando usarlo
 
-- Da completare: indicare scenari pratici in cui questa nota e utile.
+Usali per integrazione, query federate, migrazioni progressive, accesso read-only a dati esterni o collegamento temporaneo tra database.
 
 ## Come funziona
 
-Da completare: spiegare il meccanismo principale o il comportamento tecnico.
+Un FDW definisce server esterno, user mapping e foreign table. PostgreSQL invia parte della query al server remoto quando possibile.
 
 ## API / Sintassi
 
-```text
-Da completare con API o sintassi principale.
+```sql
+CREATE EXTENSION IF NOT EXISTS postgres_fdw;
+
+CREATE SERVER remote_db
+FOREIGN DATA WRAPPER postgres_fdw
+OPTIONS (host 'remote', dbname 'app_db', port '5432');
+
+CREATE USER MAPPING FOR app_user
+SERVER remote_db
+OPTIONS (user 'remote_user', password 'secret');
+```
+
+Foreign table:
+
+```sql
+CREATE FOREIGN TABLE remote_users (
+  id bigint,
+  email text
+)
+SERVER remote_db
+OPTIONS (schema_name 'public', table_name 'users');
 ```
 
 ## Esempio pratico
 
-```text
-Da completare con un esempio pratico.
+```sql
+SELECT *
+FROM remote_users
+WHERE email LIKE 'a%';
 ```
+
+Controlla con `EXPLAIN` quanto viene spinto al server remoto.
 
 ## Varianti
 
-- Da completare: varianti, alternative o differenze rispetto ad approcci simili.
+- `postgres_fdw`.
+- FDW per file.
+- FDW per altri database.
+- Import schema remoto.
+- Foreign table read-only o writable.
 
 ## Errori comuni
 
-Da completare durante revisione.
+- Usare FDW per carichi ad alta latenza senza misurare.
+- Non proteggere credenziali remote.
+- Aspettarsi pushdown completo di ogni query.
+- Fare join pesanti tra locale e remoto.
+- Non gestire permessi separati.
 
 ## Checklist
 
-- Da completare: controlli essenziali prima di usare questo concetto in pratica.
+- La latenza remota e accettabile?
+- Le credenziali sono protette?
+- `EXPLAIN` mostra pushdown utile?
+- I permessi sono minimi?
+- Serve davvero federazione invece di replica/import?
 
 ## Collegamenti
+
 - [[Programmazione/Postgres/Pagine/Gestione delle Estensioni|Gestione delle Estensioni]]
 - [[Programmazione/Postgres/Pagine/Driver e connection string|Driver e connection string]]
-- [[Programmazione/Postgres/Pagine/Sicurezza delle estensioni|Sicurezza delle estensioni]]
-
-
+- [[Programmazione/Postgres/Pagine/Analisi delle Query|Analisi delle Query]]

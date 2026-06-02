@@ -1,5 +1,5 @@
 ﻿---
-date: 2026-05-20
+date: 2026-06-02
 area: Programmazione
 topic: Python
 type: technical-note
@@ -21,60 +21,47 @@ related: []
 
 Le **C extensions** permettono di scrivere moduli Python in C o di collegare librerie native a Python.
 
-## Quando servono
+## Quando usarlo
 
+### Quando servono
 - Performance molto alta.
 - Binding a librerie C esistenti.
 - Accesso a API di sistema.
 - Ottimizzazione di hot path misurati.
 
-## Tradeoff
+## Come funziona
 
+Contenuto da sviluppare: nella nota originale questa sezione non era presente o era solo una traccia.
+
+## API / Sintassi
+
+Contenuto da sviluppare: nella nota originale questa sezione non era presente o era solo una traccia.
+
+## Esempio pratico
+
+Contenuto da sviluppare: nella nota originale questa sezione non era presente o era solo una traccia.
+
+## Varianti
+
+### Tradeoff
 Le estensioni C possono essere molto veloci, ma aumentano complessita di build, distribuzione, debugging e compatibilita tra piattaforme.
-
-## Alternative
-
+### Alternative
 - [[Programmazione/Python/Pagine/Cython|Cython]]
 - `ctypes`
 - `cffi`
 - binding Rust con PyO3
 - ottimizzazione Python pura
 
-## Quando usarlo
-
-- Da completare: indicare scenari pratici in cui questa nota e utile.
-
-## Come funziona
-
-Da completare: spiegare il meccanismo principale o il comportamento tecnico.
-
-## API / Sintassi
-
-```text
-Da completare con API o sintassi principale.
-```
-
-## Esempio pratico
-
-```text
-Da completare con un esempio pratico.
-```
-
-## Varianti
-
-- Da completare: varianti, alternative o differenze rispetto ad approcci simili.
-
 ## Errori comuni
 
-Da completare durante revisione.
+Contenuto da sviluppare: nella nota originale questa sezione non era presente o era solo una traccia.
 
 ## Checklist
 
-- Da completare: controlli essenziali prima di usare questo concetto in pratica.
+Contenuto da sviluppare: nella nota originale questa sezione non era presente o era solo una traccia.
 
 ## Collegamenti
+
 - [[Programmazione/Python/Pagine/Profiling|Profiling]]
 - [[Programmazione/Python/Pagine/Memory Management|Memory Management]]
 - [[Programmazione/Python/Pagine/Creazione di Package|Creazione di Package]]
-
-

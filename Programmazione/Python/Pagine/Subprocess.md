@@ -1,5 +1,5 @@
----
-date: 2026-05-14
+﻿---
+date: 2026-06-02
 area: Programmazione
 topic: Python
 type: technical-note
@@ -19,8 +19,13 @@ related: [CLI con argparse, Standard Library]
 
 E utile per integrare comandi di sistema, tool CLI e script esistenti.
 
-## `subprocess.run`
+## Quando usarlo
 
+Contenuto da sviluppare: nella nota originale questa sezione non era presente o era solo una traccia.
+
+## Come funziona
+
+### `subprocess.run`
 ```python
 import subprocess
 
@@ -35,9 +40,30 @@ print(result.stdout)
 ```
 
 Usa una lista di argomenti invece di una stringa quando possibile.
+### Sicurezza
+Evita `shell=True` con input utente.
 
-## Errori
+```python
+subprocess.run(["grep", pattern, file_path], check=True)
+```
 
+Questo riduce il rischio di command injection.
+
+## API / Sintassi
+
+Contenuto da sviluppare: nella nota originale questa sezione non era presente o era solo una traccia.
+
+## Esempio pratico
+
+Contenuto da sviluppare: nella nota originale questa sezione non era presente o era solo una traccia.
+
+## Varianti
+
+Contenuto da sviluppare: nella nota originale questa sezione non era presente o era solo una traccia.
+
+## Errori comuni
+
+### Errori
 Con `check=True`, Python solleva `CalledProcessError` se il comando termina con exit code diverso da zero.
 
 ```python
@@ -47,15 +73,9 @@ except subprocess.CalledProcessError as error:
     print(error.returncode)
 ```
 
-## Sicurezza
+## Checklist
 
-Evita `shell=True` con input utente.
-
-```python
-subprocess.run(["grep", pattern, file_path], check=True)
-```
-
-Questo riduce il rischio di command injection.
+Contenuto da sviluppare: nella nota originale questa sezione non era presente o era solo una traccia.
 
 ## Collegamenti
 

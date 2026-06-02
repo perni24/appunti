@@ -1,5 +1,5 @@
 ---
-date: 2026-05-14
+date: 2026-06-02
 area: Programmazione
 topic: PostgreSQL
 type: technical-note
@@ -10,61 +10,73 @@ aliases: [File System Layout e Data Directory]
 prerequisites: []
 related: []
 ---
-# File System Layout e Data Directory in PostgreSQL
+
+# File System Layout e Data Directory
 
 ## Sintesi
 
-Nota su File System Layout e Data Directory in PostgreSQL. Riassume il concetto, i meccanismi principali e i punti da ricordare durante studio, progettazione o amministrazione.
+La data directory contiene i file fisici del cluster PostgreSQL: dati, WAL, configurazione, cataloghi, tablespace linkati e metadati. Non va modificata manualmente mentre il server e in uso.
 
-## Concetto chiave
-Tutti i dati gestiti da un'istanza di PostgreSQL (il "cluster") risiedono in una singola directory del file system, nota come **Data Directory** o `PGDATA`. Comprendere l'organizzazione interna di questa cartella è fondamentale per operazioni di backup, troubleshooting e ottimizzazione dei dischi.
+## Quando usarlo
 
----
+Serve per capire backup fisici, spazio disco, WAL, configurazione, tablespace e struttura del cluster.
 
-##  Struttura della Data Directory
+## Come funziona
 
-Ecco le sottocartelle più importanti che compongono l'ecosistema di Postgres:
+La data directory contiene sottocartelle come `base`, `global`, `pg_wal`, `pg_tblspc`, `pg_stat`, `pg_xact` e file di configurazione. I file non hanno nomi leggibili per tabella: PostgreSQL usa OID e relfilenode.
 
-| Cartella | Contenuto e Funzione |
-| :--- | :--- |
-| `base/` | Contiene le sottodirectory per ogni **Database**. I nomi delle cartelle corrispondono all'OID (Object Identifier) del database. |
-| `global/` | Tabelle condivise a livello di intero cluster (es. `pg_database`, utenti e ruoli). |
-| `pg_wal/` | Contiene i file del **Write-Ahead Log (WAL)**. È l'area più critica per il recovery dopo un crash. |
-| `pg_stat/` | Dati temporanei del sottosistema delle statistiche. |
-| `pg_tblspc/` | Link simbolici ai **Tablespaces** (locazioni esterne alla directory dati principale). |
-| `pg_commit_ts/` | Dati relativi ai timestamp di commit delle transazioni. |
+## API / Sintassi
 
----
+Trovare la data directory:
 
-##  File di Configurazione e Controllo
+```sql
+SHOW data_directory;
+```
 
-All'interno della root di `PGDATA` troviamo i file vitali per il funzionamento:
+Trovare file associato a una tabella:
 
-- **`postgresql.conf`**: Il file di configurazione principale (memoria, porte, logging, ecc.).
-- **`pg_hba.conf`**: (Host-Based Authentication) Gestisce chi può connettersi e come.
-- **`postmaster.pid`**: File di lock che indica che il server è in esecuzione (contiene il PID del processo principale).
-- **`PG_VERSION`**: Un semplice file di testo che indica la versione principale di Postgres.
+```sql
+SELECT pg_relation_filepath('orders');
+```
 
----
+Dimensioni:
 
-## Logic layer: Come vengono salvate le Tabelle?
+```sql
+SELECT pg_size_pretty(pg_database_size(current_database()));
+SELECT pg_size_pretty(pg_total_relation_size('orders'));
+```
 
-In Postgres, ogni database, tabella e indice è mappato su un file fisico tramite un **OID** (Object ID).
+## Esempio pratico
 
-### Mappatura Fisica
-Se cerchi una tabella nel file system:
-1.  Trovi l'OID del database: `SELECT oid FROM pg_database WHERE datname = 'mio_db';`
-2.  Entri in `base/[OID_DATABASE]/`.
-3.  Trovi l'OID della tabella (filenode): `SELECT relfilenode FROM pg_class WHERE relname = 'mia_tabella';`
-4.  Il file risultante sul disco avrà quel numero come nome.
+`pg_wal` cresce se archiviazione, replica o slot non consumano WAL. Prima di cancellare file manualmente bisogna capire la causa. Cancellare file da `pg_wal` puo rendere il cluster non avviabile.
 
-> [!IMPORTANT] Dimensione dei File
-> Per motivi di compatibilità con i vecchi file system, Postgres segmenta le tabelle in file da **1 GB** (chiamati segmenti). Se una tabella è di 3 GB, vedrai file chiamati `12345`, `12345.1`, `12345.2`.
+## Varianti
 
----
+- `base`: dati dei database.
+- `global`: cataloghi globali.
+- `pg_wal`: Write-Ahead Log.
+- `pg_tblspc`: link verso tablespace.
+- `postgresql.conf`: configurazione.
+- `pg_hba.conf`: autenticazione.
 
-##  Regola d'Oro
-> [!CAUTION] Non toccare i file manualmente
-> **MAI** modificare, spostare o cancellare file all'interno della Data Directory utilizzando comandi del sistema operativo (`rm`, `mv`, `vi`). Qualsiasi modifica deve essere effettuata tramite comandi SQL o tool ufficiali, pena la corruzione irreversibile del database.
+## Errori comuni
 
----
+- Modificare file dati manualmente.
+- Cancellare file WAL per liberare spazio.
+- Fare copia fisica senza procedura corretta.
+- Ignorare permessi del filesystem.
+- Non monitorare spazio disco.
+
+## Checklist
+
+- La data directory e su storage affidabile?
+- `pg_wal` e monitorato?
+- I backup fisici usano strumenti corretti?
+- I permessi impediscono accessi non autorizzati?
+- I tablespace sono documentati?
+
+## Collegamenti
+
+- [[Programmazione/Postgres/Pagine/Write-Ahead Logging|Write-Ahead Logging]]
+- [[Programmazione/Postgres/Pagine/Backup e Ripristino|Backup e Ripristino]]
+- [[Programmazione/Postgres/Pagine/Tablespace|Tablespace]]

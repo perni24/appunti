@@ -1,5 +1,5 @@
 ---
-date: 2026-05-14
+date: 2026-06-02
 area: Programmazione
 topic: PostgreSQL
 type: technical-note
@@ -10,61 +10,103 @@ aliases: [Replicazione Logica]
 prerequisites: []
 related: []
 ---
+
 # Replicazione Logica in PostgreSQL
 
 ## Sintesi
 
-Nota su Replicazione Logica in PostgreSQL. Riassume il concetto, i meccanismi principali e i punti da ricordare durante studio, progettazione o amministrazione.
+La **replicazione logica** replica cambiamenti di riga tramite un modello publication/subscription. A differenza della replica fisica, puo replicare solo alcune tabelle e puo funzionare tra versioni major diverse.
 
-La **Replicazione Logica** è un metodo di replica basato sulla decodifica dei cambiamenti dei dati (INSERT, UPDATE, DELETE) a livello di singola riga, anziché a livello di blocchi fisici del disco come nella [[Programmazione/Postgres/Pagine/Replicazione Fisica|Replicazione Fisica]].
+## Quando usarlo
 
-## Concetto chiave
-Introdotta in PostgreSQL 10, utilizza un modello **Publish-Subscribe**. Un server (Publisher) definisce quali dati rendere disponibili, e uno o più server (Subscriber) si connettono per ricevere quei dati. Questo permette una granularità estrema e la possibilità di replicare dati tra versioni diverse di Postgres.
+Usala per:
 
----
+- upgrade major con downtime ridotto;
+- replica selettiva di tabelle;
+- consolidamento dati da piu database;
+- integrazione con sistemi esterni;
+- migrazioni tra cluster;
+- data warehouse o reporting separato.
 
-##  Architettura: Publication e Subscription
+## Come funziona
 
-1.  **Publication:** Creata sul server sorgente. Può includere tutte le tabelle o solo una selezione specifica.
-    ```sql
-    CREATE PUBLICATION mia_pubblicazione FOR TABLE utenti, ordini;
-    ```
-2.  **Subscription:** Creata sul server destinazione. Si connette al Publisher e scarica i dati iniziali, per poi ricevere i cambiamenti in tempo reale.
-    ```sql
-    CREATE SUBSCRIPTION mia_sottoscrizione 
-    CONNECTION 'host=sorgente_ip dbname=db_prod user=rep_user' 
-    PUBLICATION mia_pubblicazione;
-    ```
+Il publisher definisce una publication. Il subscriber crea una subscription che si collega al publisher, copia i dati iniziali e poi riceve modifiche.
 
----
+La replicazione logica non replica automaticamente DDL, sequenze e tutte le configurazioni. Le tabelle replicate devono avere una replica identity adeguata per `UPDATE` e `DELETE`, di solito una primary key.
 
-##  Vantaggi e Casi d'Uso
+## API / Sintassi
 
-### 1. Upgrade Zero-Downtime
-Poiché la replicazione logica può avvenire tra versioni major diverse (es. da Postgres 12 a 16), è lo strumento ideale per migrare dati su un nuovo server con un'interruzione minima del servizio.
+Sul publisher:
 
-### 2. Consolidamento Dati
-È possibile replicare tabelle da più database sorgente in un unico database centrale per scopi di data warehousing o reportistica aggregata.
+```sql
+CREATE PUBLICATION app_publication
+FOR TABLE users, orders;
+```
 
-### 3. Replicazione Selettiva
-A differenza della fisica, puoi decidere di replicare solo alcune tabelle "sensibili" o critiche, risparmiando banda e risorse sul Subscriber.
+Sul subscriber:
 
----
+```sql
+CREATE SUBSCRIPTION app_subscription
+CONNECTION 'host=publisher dbname=app_db user=rep_user password=secret'
+PUBLICATION app_publication;
+```
 
-##  Limitazioni e Requisiti
+Replica identity:
 
-- **Replica Identity:** Ogni tabella replicata deve avere una **Primary Key** (o un indice univoco) affinché il Subscriber possa identificare correttamente quali righe aggiornare o eliminare.
-- **Schema:** Lo schema delle tabelle (CREATE TABLE) deve essere creato manualmente sul Subscriber prima di attivare la sottoscrizione. La replicazione logica non replica i comandi DDL (cambiamenti di struttura).
-- **Sequenze:** I valori delle sequenze (es. ID auto-incrementali) non vengono replicati automaticamente.
+```sql
+ALTER TABLE orders REPLICA IDENTITY DEFAULT;
+ALTER TABLE audit_events REPLICA IDENTITY FULL;
+```
 
----
+## Esempio pratico
 
-## Logic layer: Quando preferirla alla Fisica?
+Replicare solo tabelle operative:
 
-> [!TIP] Scegli la Replicazione Logica se:
-> - Devi replicare solo un sottoinsieme di tabelle.
-> - Devi unire dati da più server in uno solo.
-> - Devi migrare i dati tra diverse versioni di PostgreSQL.
-> - Vuoi che il Subscriber possa avere i propri indici locali o trigger diversi dal Publisher.
+```sql
+CREATE PUBLICATION reporting_pub
+FOR TABLE orders, order_items, customers;
+```
 
----
+Sul database di reporting:
+
+```sql
+CREATE SUBSCRIPTION reporting_sub
+CONNECTION 'host=prod-db dbname=app_db user=rep_user password=secret'
+PUBLICATION reporting_pub
+WITH (copy_data = true);
+```
+
+Prima di creare la subscription, lo schema delle tabelle deve esistere sul subscriber.
+
+## Varianti
+
+- Publication per tutte le tabelle.
+- Publication per tabelle specifiche.
+- Filtri di righe e colonne nelle versioni moderne di PostgreSQL.
+- Subscription con o senza copia iniziale.
+- Replica identity `DEFAULT`, `USING INDEX` o `FULL`.
+- Logical decoding verso consumer esterni.
+
+## Errori comuni
+
+- Dimenticare che DDL e sequenze non sono replicate automaticamente.
+- Replicare tabelle senza primary key e poi avere problemi su update/delete.
+- Non monitorare slot logici e lag.
+- Scrivere sugli stessi dati sia su publisher sia su subscriber.
+- Non pianificare cutover e rollback.
+- Lasciare subscription disattive che trattengono WAL.
+
+## Checklist
+
+- Le tabelle hanno primary key o replica identity adeguata?
+- Lo schema e gia presente sul subscriber?
+- Le sequenze sono gestite separatamente?
+- Gli slot logici sono monitorati?
+- Il cutover e stato provato?
+- Sono chiari i dati replicati e quelli esclusi?
+
+## Collegamenti
+
+- [[Programmazione/Postgres/Pagine/Replicazione Fisica|Replicazione Fisica]]
+- [[Programmazione/Postgres/Pagine/Logical decoding|Logical decoding]]
+- [[Programmazione/Postgres/Pagine/Write-Ahead Logging|Write-Ahead Logging]]

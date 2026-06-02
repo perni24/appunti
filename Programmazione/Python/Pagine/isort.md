@@ -1,5 +1,5 @@
 ﻿---
-date: 2026-05-20
+date: 2026-06-02
 area: Programmazione
 topic: Python
 type: technical-note
@@ -21,21 +21,22 @@ related: []
 
 **isort** ordina automaticamente gli import Python secondo regole coerenti.
 
-## Uso base
+## Quando usarlo
 
+Contenuto da sviluppare: nella nota originale questa sezione non era presente o era solo una traccia.
+
+## Come funziona
+
+### Uso base
 ```powershell
 isort .
 ```
-
-## Cosa fa
-
+### Cosa fa
 - Raggruppa import standard library, terze parti e locali.
 - Ordina alfabeticamente.
 - Applica wrapping coerente.
 - Riduce diff inutili.
-
-## Con Black
-
+### Con Black
 isort viene spesso configurato con profilo compatibile con Black.
 
 ```toml
@@ -43,41 +44,28 @@ isort viene spesso configurato con profilo compatibile con Black.
 profile = "black"
 ```
 
-## Quando usarlo
-
-- Da completare: indicare scenari pratici in cui questa nota e utile.
-
-## Come funziona
-
-Da completare: spiegare il meccanismo principale o il comportamento tecnico.
-
 ## API / Sintassi
 
-```text
-Da completare con API o sintassi principale.
-```
+Contenuto da sviluppare: nella nota originale questa sezione non era presente o era solo una traccia.
 
 ## Esempio pratico
 
-```text
-Da completare con un esempio pratico.
-```
+Contenuto da sviluppare: nella nota originale questa sezione non era presente o era solo una traccia.
 
 ## Varianti
 
-- Da completare: varianti, alternative o differenze rispetto ad approcci simili.
+Contenuto da sviluppare: nella nota originale questa sezione non era presente o era solo una traccia.
 
 ## Errori comuni
 
-Da completare durante revisione.
+Contenuto da sviluppare: nella nota originale questa sezione non era presente o era solo una traccia.
 
 ## Checklist
 
-- Da completare: controlli essenziali prima di usare questo concetto in pratica.
+Contenuto da sviluppare: nella nota originale questa sezione non era presente o era solo una traccia.
 
 ## Collegamenti
+
 - [[Programmazione/Python/Pagine/Stile|Stile]]
 - [[Programmazione/Python/Pagine/pre-commit|pre-commit]]
 - [[Programmazione/Python/Pagine/uv pipx e poetry|uv, pipx e poetry]]
-
-

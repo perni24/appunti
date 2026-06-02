@@ -1,5 +1,5 @@
----
-date: 2026-05-13
+﻿---
+date: 2026-06-02
 area: Programmazione
 topic: JavaScript
 type: technical-note
@@ -21,8 +21,23 @@ JavaScript gestisce date e orari principalmente con l'oggetto `Date`.
 
 ---
 
-## Creare date
+## Quando usarlo
 
+Usa `Date` quando devi rappresentare un istante, salvare timestamp, formattare date o calcolare differenze semplici.
+
+Casi comuni:
+
+- mostrare date all'utente;
+- salvare `createdAt` e `updatedAt`;
+- calcolare durata tra due istanti;
+- serializzare date in JSON;
+- ordinare eventi per timestamp.
+
+Per calendari complessi, timezone multiple, ricorrenze e regole locali, valuta librerie dedicate o API moderne quando disponibili.
+
+## Come funziona
+
+### Creare date
 Data corrente:
 
 ```js
@@ -51,9 +66,7 @@ const date = new Date(2026, 4, 13, 10, 30);
 > Nei costruttori con componenti numerici, i mesi partono da `0`: gennaio e `0`, maggio e `4`.
 
 ---
-
-## Timestamp
-
+### Timestamp
 `Date.now()` restituisce il timestamp corrente in millisecondi.
 
 ```js
@@ -69,9 +82,7 @@ console.log(date.getTime());
 ```
 
 ---
-
-## Getter principali
-
+### Getter principali
 ```js
 const date = new Date();
 
@@ -92,9 +103,7 @@ Attenzione:
 - `getDay()` restituisce il giorno della settimana, con domenica `0`.
 
 ---
-
-## UTC vs locale
-
+### UTC vs locale
 Molti metodi hanno versione locale e UTC.
 
 ```js
@@ -113,9 +122,7 @@ const iso = new Date().toISOString();
 ```
 
 ---
-
-## Formattare date
-
+### Formattare date
 Usa `Intl.DateTimeFormat` per mostrare date all'utente.
 
 ```js
@@ -138,9 +145,7 @@ const formatter = new Intl.DateTimeFormat("it-IT", {
 ```
 
 ---
-
-## Parsing
-
+### Parsing
 Il parsing di stringhe non ISO puo essere ambiguo.
 
 ```js
@@ -154,9 +159,7 @@ new Date("2026-06-05T00:00:00.000Z");
 ```
 
 ---
-
-## Operazioni tra date
-
+### Operazioni tra date
 Differenza in millisecondi:
 
 ```js
@@ -170,9 +173,7 @@ const diffMinutes = diffMs / 1000 / 60;
 Per operazioni complesse su calendario, timezone, giorni lavorativi o ricorrenze, valuta librerie dedicate.
 
 ---
-
-## JSON e Date
-
+### JSON e Date
 Quando serializzi una `Date` in JSON, viene convertita in stringa ISO.
 
 ```js
@@ -186,6 +187,70 @@ const json = JSON.stringify(data);
 Quando fai `JSON.parse()`, non torna automaticamente una `Date`: torna una stringa.
 
 ---
+
+## API / Sintassi
+
+Creazione:
+
+```js
+new Date();
+new Date(timestamp);
+new Date("2026-06-02T10:00:00.000Z");
+```
+
+Timestamp:
+
+```js
+Date.now();
+date.getTime();
+```
+
+Serializzazione:
+
+```js
+date.toISOString();
+JSON.stringify({ createdAt: date });
+```
+
+Formattazione:
+
+```js
+new Intl.DateTimeFormat("it-IT", {
+  dateStyle: "medium",
+  timeStyle: "short",
+}).format(date);
+```
+
+## Esempio pratico
+
+Calcolare durata di un'operazione:
+
+```js
+const startedAt = Date.now();
+
+await runJob();
+
+const durationMs = Date.now() - startedAt;
+console.log(`Durata: ${durationMs}ms`);
+```
+
+Mostrare una data salvata come ISO:
+
+```js
+const createdAt = new Date(user.createdAt);
+const label = new Intl.DateTimeFormat("it-IT", {
+  dateStyle: "long",
+}).format(createdAt);
+```
+
+## Varianti
+
+- **Timestamp millisecondi**: numero da Unix Epoch.
+- **Stringa ISO UTC**: formato consigliato per scambio dati.
+- **Data locale**: interpretata secondo timezone dell'ambiente.
+- **UTC methods**: `getUTCFullYear`, `getUTCHours` e simili.
+- **Intl formatting**: formattazione localizzata.
+- **Librerie dedicate**: utili per timezone, calendari e ricorrenze.
 
 ## Errori comuni
 
@@ -211,6 +276,6 @@ Quando fai `JSON.parse()`, non torna automaticamente una `Date`: torna una strin
 ## Collegamenti
 
 - [[JSON]]
-- [[Internazionalizzazione]]
+- Internazionalizzazione
 - [[Tipi di Dati]]
 - [[Form Handling e Validazione]]

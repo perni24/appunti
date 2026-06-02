@@ -1,5 +1,5 @@
----
-date: 2026-05-14
+﻿---
+date: 2026-06-02
 area: Programmazione
 topic: React
 type: technical-note
@@ -10,6 +10,7 @@ aliases: [useMemo e useCallback]
 prerequisites: []
 related: []
 ---
+
 # useMemo e useCallback
 
 ## Sintesi
@@ -18,8 +19,13 @@ Nota su useMemo e useCallback in React. Riassume il concetto, quando usarlo, i p
 
 In React, ogni cambiamento allo stato o alle props innesca un nuovo ciclo di rendering del componente e di tutti i suoi figli. Per ottimizzare le prestazioni ed evitare calcoli costosi o re-render non necessari, React fornisce due hook basati sul concetto di **Memoization**: `useMemo` e `useCallback`.
 
-## 1. useMemo
+## Quando usarlo
 
+Contenuto da sviluppare: nella nota originale questa sezione non era presente o era solo una traccia.
+
+## Come funziona
+
+### 1. useMemo
 Il hook `useMemo` serve a memorizzare il **risultato** di un calcolo complesso, calcolandolo nuovamente solo quando una delle sue dipendenze cambia.
 
 ### Sintassi e Utilizzo
@@ -31,9 +37,7 @@ const memoizedValue = useMemo(() => computeExpensiveValue(a, b), [a, b]);
 > È utile quando hai una funzione "costosa" (che richiede molto tempo o risorse) che viene eseguita ad ogni render. Se i parametri di input (`a`, `b`) rimangono gli stessi, `useMemo` restituisce istantaneamente il valore precedentemente calcolato invece di rieseguire la funzione.
 
 ---
-
-## 2. useCallback
-
+### 2. useCallback
 A differenza di `useMemo`, `useCallback` memorizza l'**istanza della funzione** stessa invece del suo risultato.
 
 ### Il Problema del Referenziamento
@@ -50,8 +54,9 @@ const memoizedCallback = useCallback(() => {
 
 ---
 
-## 3. Confronto Rapido
+## API / Sintassi
 
+### 3. Confronto Rapido
 | Hook | Cosa memorizza? | Scopo Principale |
 | :--- | :--- | :--- |
 | **`useMemo`** | Il **Valore di ritorno** | Evitare calcoli pesanti ad ogni render. |
@@ -59,8 +64,17 @@ const memoizedCallback = useCallback(() => {
 
 ---
 
-## 4. Attenzione alla Premature Optimization
+## Esempio pratico
 
+Contenuto da sviluppare: nella nota originale questa sezione non era presente o era solo una traccia.
+
+## Varianti
+
+Contenuto da sviluppare: nella nota originale questa sezione non era presente o era solo una traccia.
+
+## Errori comuni
+
+### 4. Attenzione alla Premature Optimization
 Non bisogna usare questi hook ovunque. Entrambi hanno un "costo" in termini di memoria (devono salvare i valori e controllare le dipendenze).
 
 > [!WARNING] Best Practice
@@ -69,3 +83,11 @@ Non bisogna usare questi hook ovunque. Entrambi hanno un "costo" in termini di m
 > 3. **Non saltare i render per logica:** Non usarli per gestire il flusso dell'applicazione, ma solo per l'efficienza.
 
 ---
+
+## Checklist
+
+Contenuto da sviluppare: nella nota originale questa sezione non era presente o era solo una traccia.
+
+## Collegamenti
+
+- [[Programmazione/React/Indice react|Indice React]]

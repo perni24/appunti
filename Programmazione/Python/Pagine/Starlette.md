@@ -1,5 +1,5 @@
 ﻿---
-date: 2026-05-20
+date: 2026-06-02
 area: Programmazione
 topic: Python
 type: technical-note
@@ -21,8 +21,16 @@ related: []
 
 **Starlette** e un framework ASGI leggero per costruire servizi web asincroni in Python.
 
-## Concetto chiave
+## Quando usarlo
 
+- API ASGI leggere.
+- Middleware custom.
+- WebSocket.
+- Servizi asincroni senza layer di validazione automatico.
+
+## Come funziona
+
+### Concetto chiave
 Starlette fornisce routing, middleware, request/response, WebSocket e background task. E anche una base importante per [[Programmazione/Python/Pagine/FastAPI|FastAPI]].
 
 ```python
@@ -36,44 +44,28 @@ async def homepage(request):
 app = Starlette(routes=[Route("/", homepage)])
 ```
 
-## Quando usarlo
-
-- API ASGI leggere.
-- Middleware custom.
-- WebSocket.
-- Servizi asincroni senza layer di validazione automatico.
-
-## Come funziona
-
-Da completare: spiegare il meccanismo principale o il comportamento tecnico.
-
 ## API / Sintassi
 
-```text
-Da completare con API o sintassi principale.
-```
+Contenuto da sviluppare: nella nota originale questa sezione non era presente o era solo una traccia.
 
 ## Esempio pratico
 
-```text
-Da completare con un esempio pratico.
-```
+Contenuto da sviluppare: nella nota originale questa sezione non era presente o era solo una traccia.
 
 ## Varianti
 
-- Da completare: varianti, alternative o differenze rispetto ad approcci simili.
+Contenuto da sviluppare: nella nota originale questa sezione non era presente o era solo una traccia.
 
 ## Errori comuni
 
-Da completare durante revisione.
+Contenuto da sviluppare: nella nota originale questa sezione non era presente o era solo una traccia.
 
 ## Checklist
 
-- Da completare: controlli essenziali prima di usare questo concetto in pratica.
+Contenuto da sviluppare: nella nota originale questa sezione non era presente o era solo una traccia.
 
 ## Collegamenti
+
 - [[Programmazione/Python/Pagine/Asyncio|Asyncio]]
 - [[Programmazione/Python/Pagine/FastAPI|FastAPI]]
 - [[Programmazione/Python/Pagine/Networking base|Networking base]]
-
-

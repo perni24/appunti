@@ -1,5 +1,5 @@
----
-date: 2026-05-13
+﻿---
+date: 2026-06-02
 area: Programmazione
 topic: JavaScript
 type: technical-note
@@ -13,6 +13,9 @@ related: [Fetch API, AJAX, Sicurezza, Browser Storage]
 
 # CORS
 
+## Sintesi
+
+### Testo introduttivo
 CORS significa **Cross-Origin Resource Sharing**.
 
 E un meccanismo di sicurezza del browser che decide se una pagina web puo leggere la risposta di una richiesta fatta verso una origine diversa.
@@ -21,8 +24,23 @@ Non e una protezione del server in senso assoluto: e una regola applicata dal br
 
 ---
 
-## 1. Origine
+## Quando usarlo
 
+Consulta CORS quando una pagina web deve chiamare API su origine diversa da quella da cui e stata servita.
+
+Serve per capire:
+
+- errori browser su richieste cross-origin;
+- differenza tra richiesta inviata e risposta leggibile;
+- preflight `OPTIONS`;
+- uso di cookie o credenziali cross-origin;
+- configurazione server di header CORS.
+
+CORS e una policy del browser: non e un sistema di autenticazione.
+
+## Come funziona
+
+### 1. Origine
 Una origine e composta da:
 
 - protocollo;
@@ -45,9 +63,7 @@ https://example.com:3000
 Anche una piccola differenza tra protocollo, host o porta crea una origine diversa.
 
 ---
-
-## 2. Same-Origin Policy
-
+### 2. Same-Origin Policy
 La **Same-Origin Policy** e la regola di base: una pagina puo leggere liberamente risorse della stessa origine, ma non puo leggere risposte da origini diverse senza permesso.
 
 Esempio:
@@ -62,9 +78,7 @@ Il browser considera queste due origini diverse.
 Per permettere al frontend di leggere la risposta dell'API, il server deve inviare header CORS adeguati.
 
 ---
-
-## 3. CORS non blocca la richiesta, blocca la lettura
-
+### 3. CORS non blocca la richiesta, blocca la lettura
 Un punto importante: spesso la richiesta arriva comunque al server.
 
 Il blocco CORS avviene quando il browser decide se rendere la risposta accessibile al codice JavaScript.
@@ -77,9 +91,7 @@ const users = await response.json();
 Se il server non autorizza l'origine, il browser blocca il codice JS dal leggere la risposta.
 
 ---
-
-## 4. Header Access-Control-Allow-Origin
-
+### 4. Header Access-Control-Allow-Origin
 L'header principale e `Access-Control-Allow-Origin`.
 
 ```http
@@ -101,9 +113,7 @@ Access-Control-Allow-Origin: *
 `*` significa "qualunque origine", ma non puo essere usato insieme a credenziali come cookie o header di autenticazione gestiti dal browser.
 
 ---
-
-## 5. Simple request
-
+### 5. Simple request
 Alcune richieste cross-origin sono considerate semplici.
 
 Una richiesta semplice usa metodi come:
@@ -127,9 +137,7 @@ await fetch("https://api.example.com/public-data");
 Il browser invia direttamente la richiesta e poi controlla gli header CORS della risposta.
 
 ---
-
-## 6. Preflight request
-
+### 6. Preflight request
 Quando una richiesta non e semplice, il browser fa prima una richiesta preliminare `OPTIONS`.
 
 Questa richiesta si chiama **preflight**.
@@ -167,9 +175,7 @@ Access-Control-Allow-Headers: Content-Type, Authorization
 Solo dopo una preflight positiva il browser invia la richiesta reale.
 
 ---
-
-## 7. Header principali
-
+### 7. Header principali
 | Header | Direzione | Scopo |
 | --- | --- | --- |
 | `Origin` | Request | Indica l'origine della pagina che fa la richiesta |
@@ -181,9 +187,7 @@ Solo dopo una preflight positiva il browser invia la richiesta reale.
 | `Access-Control-Expose-Headers` | Response | Espone header custom al codice JS |
 
 ---
-
-## 8. CORS con credenziali
-
+### 8. CORS con credenziali
 Per inviare cookie o credenziali cross-origin, il frontend deve impostare `credentials`.
 
 ```js
@@ -208,9 +212,7 @@ Access-Control-Allow-Origin: *
 Bisogna indicare una origine specifica.
 
 ---
-
-## 9. Expose headers
-
+### 9. Expose headers
 Di default JavaScript puo leggere solo alcuni header di risposta.
 
 Se il server vuole esporre header custom, deve usare `Access-Control-Expose-Headers`.
@@ -231,9 +233,7 @@ console.log(response.headers.get("X-Request-Id"));
 Senza `Access-Control-Expose-Headers`, questi header potrebbero essere presenti nella risposta ma non leggibili dal codice JS.
 
 ---
-
-## 10. CORS e fetch()
-
+### 10. CORS e fetch()
 `fetch()` usa CORS automaticamente quando chiami una origine diversa.
 
 ```js
@@ -254,9 +254,7 @@ await fetch("https://api.example.com/data", {
 `credentials: "include"` include cookie e credenziali anche verso origini diverse, se il server lo permette.
 
 ---
-
-## 11. no-cors
-
+### 11. no-cors
 `mode: "no-cors"` non risolve davvero gli errori CORS.
 
 ```js
@@ -272,9 +270,42 @@ Con `no-cors`, la risposta diventa **opaque**: il browser permette di fare la ri
 Va usato solo in casi specifici, per esempio inviare una richiesta senza bisogno di leggerne il risultato.
 
 ---
+### 13. Proxy in sviluppo
+Durante lo sviluppo si puo evitare CORS usando un proxy del dev server.
 
-## 12. Configurazione lato server
+Esempio concettuale:
 
+```text
+Browser -> http://localhost:5173/api/users
+Dev server -> https://api.example.com/users
+```
+
+Dal punto di vista del browser, la richiesta resta verso `localhost:5173`, quindi non appare cross-origin.
+
+Questo e utile in sviluppo, ma non sostituisce una corretta configurazione CORS in produzione.
+
+---
+### 14. CORS e sicurezza
+CORS non serve ad autenticare utenti.
+
+CORS non rende una API privata.
+
+CORS controlla solo quali origini possono leggere le risposte nel browser.
+
+Se una API contiene dati sensibili, deve comunque usare:
+
+- autenticazione;
+- autorizzazione;
+- validazione lato server;
+- cookie sicuri;
+- token gestiti correttamente;
+- controlli CSRF quando necessari.
+
+---
+
+## API / Sintassi
+
+### 12. Configurazione lato server
 CORS si risolve lato server, non lato frontend.
 
 Esempio Express:
@@ -301,100 +332,28 @@ Meglio usare una allowlist di origini consentite.
 
 ---
 
-## 13. Proxy in sviluppo
+## Esempio pratico
 
-Durante lo sviluppo si puo evitare CORS usando un proxy del dev server.
+Richiesta con credenziali:
 
-Esempio concettuale:
-
-```text
-Browser -> http://localhost:5173/api/users
-Dev server -> https://api.example.com/users
+```js
+await fetch("https://api.example.com/me", {
+  credentials: "include",
+});
 ```
 
-Dal punto di vista del browser, la richiesta resta verso `localhost:5173`, quindi non appare cross-origin.
+Il server deve rispondere con header compatibili:
 
-Questo e utile in sviluppo, ma non sostituisce una corretta configurazione CORS in produzione.
+```http
+Access-Control-Allow-Origin: https://app.example.com
+Access-Control-Allow-Credentials: true
+```
 
----
+Con credenziali non puoi usare `Access-Control-Allow-Origin: *`.
 
-## 14. CORS e sicurezza
+## Varianti
 
-CORS non serve ad autenticare utenti.
-
-CORS non rende una API privata.
-
-CORS controlla solo quali origini possono leggere le risposte nel browser.
-
-Se una API contiene dati sensibili, deve comunque usare:
-
-- autenticazione;
-- autorizzazione;
-- validazione lato server;
-- cookie sicuri;
-- token gestiti correttamente;
-- controlli CSRF quando necessari.
-
----
-
-## 15. Errori comuni
-
-### Missing Access-Control-Allow-Origin
-
-Il server non sta autorizzando l'origine.
-
-Soluzione: aggiungere `Access-Control-Allow-Origin` lato server.
-
-### Method not allowed by Access-Control-Allow-Methods
-
-La preflight chiede un metodo che il server non autorizza.
-
-Soluzione: aggiungere il metodo a `Access-Control-Allow-Methods`.
-
-### Request header field authorization is not allowed
-
-Il frontend invia un header custom, ma il server non lo autorizza.
-
-Soluzione: aggiungere l'header a `Access-Control-Allow-Headers`.
-
-### Credentials flag is true but Allow-Origin is *
-
-Il frontend usa credenziali, ma il server risponde con `*`.
-
-Soluzione: usare una origine specifica e `Access-Control-Allow-Credentials: true`.
-
----
-
-## 16. Checklist di debug
-
-- Controlla l'URL: protocollo, dominio e porta sono diversi?
-- Guarda la richiesta `OPTIONS` nel Network tab.
-- Verifica se il server risponde alla preflight.
-- Controlla `Access-Control-Allow-Origin`.
-- Controlla `Access-Control-Allow-Methods`.
-- Controlla `Access-Control-Allow-Headers`.
-- Se usi cookie, controlla `credentials: "include"`.
-- Se usi cookie, evita `Access-Control-Allow-Origin: *`.
-- Verifica che il backend gestisca `OPTIONS`.
-- Ricorda che il problema va risolto lato server.
-
----
-
-## 17. Best practice
-
-- Usa una allowlist di origini affidabili.
-- Evita `*` su API private.
-- Non usare `*` con credenziali.
-- Rispondi correttamente alle richieste `OPTIONS`.
-- Limita metodi e header a quelli necessari.
-- Usa `Access-Control-Max-Age` per ridurre preflight ripetute.
-- Non considerare CORS una forma di autenticazione.
-- In sviluppo usa un proxy solo come comodita, non come soluzione di sicurezza.
-
----
-
-## 18. Mappa mentale
-
+### 18. Mappa mentale
 ```text
 CORS
 |
@@ -424,3 +383,63 @@ CORS
 ```
 
 ---
+
+## Errori comuni
+
+### 15. Errori comuni
+### Missing Access-Control-Allow-Origin
+
+Il server non sta autorizzando l'origine.
+
+Soluzione: aggiungere `Access-Control-Allow-Origin` lato server.
+
+### Method not allowed by Access-Control-Allow-Methods
+
+La preflight chiede un metodo che il server non autorizza.
+
+Soluzione: aggiungere il metodo a `Access-Control-Allow-Methods`.
+
+### Request header field authorization is not allowed
+
+Il frontend invia un header custom, ma il server non lo autorizza.
+
+Soluzione: aggiungere l'header a `Access-Control-Allow-Headers`.
+
+### Credentials flag is true but Allow-Origin is *
+
+Il frontend usa credenziali, ma il server risponde con `*`.
+
+Soluzione: usare una origine specifica e `Access-Control-Allow-Credentials: true`.
+
+---
+
+## Checklist
+
+### 16. Checklist di debug
+- Controlla l'URL: protocollo, dominio e porta sono diversi?
+- Guarda la richiesta `OPTIONS` nel Network tab.
+- Verifica se il server risponde alla preflight.
+- Controlla `Access-Control-Allow-Origin`.
+- Controlla `Access-Control-Allow-Methods`.
+- Controlla `Access-Control-Allow-Headers`.
+- Se usi cookie, controlla `credentials: "include"`.
+- Se usi cookie, evita `Access-Control-Allow-Origin: *`.
+- Verifica che il backend gestisca `OPTIONS`.
+- Ricorda che il problema va risolto lato server.
+
+---
+### 17. Best practice
+- Usa una allowlist di origini affidabili.
+- Evita `*` su API private.
+- Non usare `*` con credenziali.
+- Rispondi correttamente alle richieste `OPTIONS`.
+- Limita metodi e header a quelli necessari.
+- Usa `Access-Control-Max-Age` per ridurre preflight ripetute.
+- Non considerare CORS una forma di autenticazione.
+- In sviluppo usa un proxy solo come comodita, non come soluzione di sicurezza.
+
+---
+
+## Collegamenti
+
+- [[Programmazione/JavaScript/Indice javascript|Indice JavaScript]]

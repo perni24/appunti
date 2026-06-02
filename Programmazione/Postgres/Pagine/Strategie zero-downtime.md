@@ -1,5 +1,5 @@
-﻿---
-date: 2026-05-20
+---
+date: 2026-06-02
 area: Programmazione
 topic: Postgres
 type: operational-note
@@ -8,8 +8,8 @@ difficulty:
 tags:
   - programmazione
   - postgres
-  - deploy
   - migrazioni
+  - zero-downtime
 aliases: []
 prerequisites: []
 related: []
@@ -19,63 +19,76 @@ related: []
 
 ## Sintesi
 
-Le **strategie zero-downtime** permettono di modificare schema e applicazione senza interrompere il servizio.
-
-## Principio expand-contract
-
-1. Aggiungi nuovo schema compatibile.
-2. Rilascia codice che legge/scrive entrambi i formati.
-3. Backfill dei dati.
-4. Sposta il traffico sul nuovo formato.
-5. Rimuovi il vecchio schema.
-
-## Esempi
-
-- Aggiungere colonna nullable, poi popolarla, poi renderla `NOT NULL`.
-- Creare indici con `CONCURRENTLY`.
-- Evitare lock lunghi durante orari di traffico.
-
-## Errori comuni
-
-- Rinominare o rimuovere colonne usate dal codice ancora in esecuzione.
-- Eseguire DDL bloccante su tabelle grandi.
-- Non monitorare lock durante la migrazione.
-
-## Obiettivo
-
-Da completare: descrivere cosa ottenere in pratica.
+Le strategie zero-downtime permettono di cambiare schema e applicazione senza fermare il servizio, mantenendo compatibilita tra vecchia e nuova versione.
 
 ## Quando usarlo
 
-- Da completare: indicare scenari pratici in cui questa nota e utile.
+Serve per deploy continui, sistemi in produzione, tabelle grandi e applicazioni con SLA.
 
-## Procedura
+## Come funziona
 
-1. Da completare.
-2. Da completare.
-3. Da completare.
+Il principio e expand-and-contract:
 
-## Snippet
+1. Espandi schema in modo compatibile.
+2. Deploy app che supporta vecchio e nuovo schema.
+3. Backfill dati.
+4. Sposta letture/scritture.
+5. Rimuovi vecchio schema quando non serve piu.
 
-```text
-Da completare con codice o comando riutilizzabile.
+## API / Sintassi
+
+Indice non bloccante:
+
+```sql
+CREATE INDEX CONCURRENTLY orders_status_idx ON orders (status);
 ```
 
-## Adattamenti comuni
+Vincolo validato dopo:
 
-- Da completare: varianti per casi frequenti.
+```sql
+ALTER TABLE orders ADD CONSTRAINT orders_total_positive
+CHECK (total_amount > 0) NOT VALID;
 
-## Debug rapido
+ALTER TABLE orders VALIDATE CONSTRAINT orders_total_positive;
+```
 
-- Da completare: controlli rapidi in caso di errore.
+## Esempio pratico
 
-## Checklist finale
+Rinominare una colonna senza downtime:
 
-- Da completare: verifiche finali.
+1. Aggiungi nuova colonna.
+2. Scrivi su entrambe.
+3. Backfill vecchi dati.
+4. Leggi dalla nuova colonna.
+5. Rimuovi vecchia colonna dopo verifica.
+
+## Varianti
+
+- Expand-and-contract.
+- Backfill a batch.
+- Feature flag.
+- Dual write temporaneo.
+- Indici `CONCURRENTLY`.
+- Vincoli `NOT VALID`.
+
+## Errori comuni
+
+- Fare rename/drop immediato usato ancora dall'app.
+- Creare indici bloccanti su tabelle grandi.
+- Backfill in una sola transazione enorme.
+- Non monitorare lock.
+- Non prevedere rollback applicativo.
+
+## Checklist
+
+- Vecchia e nuova app sono compatibili con lo schema?
+- I backfill sono a batch?
+- Gli indici sono concorrenti?
+- I vincoli sono validati in fase separata?
+- Esiste rollback o fix forward?
 
 ## Collegamenti
+
 - [[Programmazione/Postgres/Pagine/Migrazioni schema|Migrazioni schema]]
-- [[Programmazione/Postgres/Pagine/Lock monitoring|Lock monitoring]]
 - [[Programmazione/Postgres/Pagine/Versionamento database|Versionamento database]]
-
-
+- [[Programmazione/Postgres/Pagine/Lock monitoring|Lock monitoring]]

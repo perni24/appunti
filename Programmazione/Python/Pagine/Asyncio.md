@@ -1,5 +1,5 @@
----
-date: 2026-05-14
+﻿---
+date: 2026-06-02
 area: Programmazione
 topic: Python
 type: technical-note
@@ -10,30 +10,12 @@ aliases: [Asyncio]
 prerequisites: []
 related: []
 ---
+
 # Asyncio in Python
 
 ## Sintesi
 
 Nota su Asyncio in Python. Riassume il concetto, la sintassi principale e i punti da ricordare durante studio, sviluppo o debugging.
-
-## Concetto chiave
-**Asyncio** è una libreria per scrivere codice concorrente utilizzando la sintassi **async/await**. A differenza del [[Programmazione/Python/Pagine/Threading]] (concorrenza preemptive), Asyncio utilizza la **concorrenza cooperativa** su un singolo thread. Un **Event Loop** gestisce l'esecuzione di diverse "coroutine", passando dall'una all'altra quando una di esse è in attesa (solitamente per operazioni di I/O).
-
-> [!TIP]
-> Asyncio è perfetto per gestire migliaia di connessioni simultanee (web server, scraper, chat) dove il collo di bottiglia è l'attesa della rete, non la potenza di calcolo della CPU.
-
----
-
-##  Sintassi
-Le basi di asyncio ruotano attorno a tre concetti: `async def`, `await` e l'Event Loop.
-
-```python
-import asyncio
-
-# Asyncio in Python
-
-## Sintesi
-
 Nota su Asyncio in Python. Riassume il concetto, la sintassi principale e i punti da ricordare durante studio, sviluppo o debugging.
 async def my_coroutine():
     print("Inizio...")
@@ -41,9 +23,6 @@ async def my_coroutine():
     print("Fine!")
 
 # Asyncio in Python
-
-## Sintesi
-
 Nota su Asyncio in Python. Riassume il concetto, la sintassi principale e i punti da ricordare durante studio, sviluppo o debugging.
 if __name__ == "__main__":
     asyncio.run(my_coroutine())
@@ -51,8 +30,20 @@ if __name__ == "__main__":
 
 ---
 
-##  Esempi Pratici
+## Quando usarlo
 
+Contenuto da sviluppare: nella nota originale questa sezione non era presente o era solo una traccia.
+
+## Come funziona
+
+### Concetto chiave
+**Asyncio** è una libreria per scrivere codice concorrente utilizzando la sintassi **async/await**. A differenza del [[Programmazione/Python/Pagine/Threading]] (concorrenza preemptive), Asyncio utilizza la **concorrenza cooperativa** su un singolo thread. Un **Event Loop** gestisce l'esecuzione di diverse "coroutine", passando dall'una all'altra quando una di esse è in attesa (solitamente per operazioni di I/O).
+
+> [!TIP]
+> Asyncio è perfetto per gestire migliaia di connessioni simultanee (web server, scraper, chat) dove il collo di bottiglia è l'attesa della rete, non la potenza di calcolo della CPU.
+
+---
+### Esempi Pratici
 ### Esempio Base: Esecuzione Concorrente
 Utilizzo di `asyncio.gather()` per eseguire più task contemporaneamente.
 
@@ -111,8 +102,7 @@ if __name__ == "__main__":
 ```
 
 ---
-
-##  Funzionamento Interno (Teoria)
+### Funzionamento Interno (Teoria)
 - **Event Loop:** È il cuore di asyncio. Gira in un ciclo infinito e decide quale coroutine eseguire in base agli eventi pronti (es. dati arrivati sulla socket).
 - **Coroutine:** Sono funzioni speciali che possono "mettere in pausa" la loro esecuzione (`yield` sotto il cofano) per restituire il controllo al loop.
 - **Single Threaded:** Tutto gira su un unico thread. Questo elimina il rischio di race condition su variabili globali (nessun bisogno di Lock complessi), ma significa anche che una coroutine che fa calcoli pesanti bloccherà *tutto* il programma.
@@ -120,7 +110,27 @@ if __name__ == "__main__":
 
 ---
 
-##  Best Practices & "Gotchas"
+## API / Sintassi
+
+### Sintassi
+Le basi di asyncio ruotano attorno a tre concetti: `async def`, `await` e l'Event Loop.
+
+```python
+import asyncio
+
+# Asyncio in Python
+
+## Esempio pratico
+
+Contenuto da sviluppare: nella nota originale questa sezione non era presente o era solo una traccia.
+
+## Varianti
+
+Contenuto da sviluppare: nella nota originale questa sezione non era presente o era solo una traccia.
+
+## Errori comuni
+
+### Best Practices & "Gotchas"
 -  **Da fare:** Usa sempre librerie asincrone (es. `aiohttp` invece di `requests`) all'interno di coroutine.
 -  **Da fare:** Usa `asyncio.create_task()` per task che non devono bloccare la sequenza principale.
 -  **Da evitare:** Mai usare funzioni bloccanti come `time.sleep()` o operazioni di file sincrone in una coroutine; bloccheresti l'intero Event Loop.
@@ -128,3 +138,11 @@ if __name__ == "__main__":
 -  **Chiamata da sincrono:** È difficile chiamare codice asincrono da un contesto puramente sincrono senza gestire manualmente il loop (usa `asyncio.run()` solo nel main).
 
 ---
+
+## Checklist
+
+Contenuto da sviluppare: nella nota originale questa sezione non era presente o era solo una traccia.
+
+## Collegamenti
+
+- [[Programmazione/Python/Indice python|Indice Python]]

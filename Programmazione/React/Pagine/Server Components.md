@@ -1,5 +1,5 @@
----
-date: 2026-05-14
+﻿---
+date: 2026-06-02
 area: Programmazione
 topic: React
 type: technical-note
@@ -10,6 +10,7 @@ aliases: [Server Components]
 prerequisites: []
 related: []
 ---
+
 # Server Components
 
 ## Sintesi
@@ -25,8 +26,13 @@ Il loro obiettivo e spostare parte del lavoro di rendering e data fetching fuori
 
 ---
 
-## 1. Il problema che risolvono
+## Quando usarlo
 
+Contenuto da sviluppare: nella nota originale questa sezione non era presente o era solo una traccia.
+
+## Come funziona
+
+### 1. Il problema che risolvono
 Nelle SPA tradizionali, molto lavoro finisce nel browser:
 - download del bundle JavaScript;
 - parsing ed esecuzione del codice;
@@ -44,9 +50,7 @@ Questo puo creare problemi:
 I Server Components provano a ridurre questo costo spostando sul server cio che non richiede interattivita browser.
 
 ---
-
-## 2. Server Components vs Client Components
-
+### 2. Server Components vs Client Components
 La distinzione fondamentale e questa:
 
 ### Server Components
@@ -80,9 +84,7 @@ In pratica:
 - Client Component per interazione.
 
 ---
-
-## 3. Il confine `"use client"`
-
+### 3. Il confine `"use client"`
 In framework che supportano RSC, un file puo essere marcato come Client Component con la direttiva:
 
 ```javascript
@@ -112,9 +114,7 @@ Senza `"use client"`, un componente puo essere trattato come server-side dal fra
 La direttiva crea un confine: da quel punto in poi, il codice deve essere compatibile con il browser.
 
 ---
-
-## 4. Data fetching nei Server Components
-
+### 4. Data fetching nei Server Components
 Uno dei vantaggi principali e poter recuperare dati direttamente sul server.
 
 Esempio concettuale:
@@ -142,9 +142,7 @@ Qui non serve:
 Questo cambia il modo di pensare [[Programmazione/React/Pagine/Data Fetching e Cache]] nelle app React moderne.
 
 ---
-
-## 5. Riduzione del bundle client
-
+### 5. Riduzione del bundle client
 Un Server Component non deve essere spedito come JavaScript eseguibile al browser nello stesso modo di un Client Component.
 
 Questo puo ridurre:
@@ -160,9 +158,7 @@ Esempio pratico:
 Il risultato migliore si ottiene quando il confine tra server e client e progettato intenzionalmente.
 
 ---
-
-## 6. Interattivita e composizione
-
+### 6. Interattivita e composizione
 Un Server Component puo renderizzare un Client Component.
 
 Esempio concettuale:
@@ -188,9 +184,7 @@ Questo pattern permette di:
 - ridurre client JavaScript.
 
 ---
-
-## 7. Cosa non sono
-
+### 7. Cosa non sono
 I Server Components non sono semplicemente:
 - SSR classico;
 - una sostituzione totale delle SPA;
@@ -202,9 +196,7 @@ Sono un modello di rendering e composizione che separa meglio lavoro server e la
 La UI interattiva continua ad avere bisogno del client.
 
 ---
-
-## 8. RSC vs SSR
-
+### 8. RSC vs SSR
 SSR e RSC sono concetti collegati ma diversi.
 
 ### SSR
@@ -218,9 +210,7 @@ In molte architetture moderne possono lavorare insieme, ma non indicano la stess
 Questo si collega direttamente a Server-Side Rendering e Static Site Generation.
 
 ---
-
-## 9. Suspense e streaming
-
+### 9. Suspense e streaming
 I Server Components si integrano bene con [[Programmazione/React/Pagine/Suspense e Lazy Loading]].
 
 In scenari moderni, parti della UI possono essere:
@@ -235,26 +225,7 @@ Questo rende possibile una UX piu progressiva:
 - meno blocco totale della pagina.
 
 ---
-
-## 10. Limiti e tradeoff
-
-I Server Components introducono anche complessita.
-
-Limiti principali:
-- richiedono framework e bundler compatibili;
-- impongono distinzione chiara tra server e client;
-- non possono usare hook client-side;
-- possono confondere se il team non capisce il confine `"use client"`;
-- non eliminano la necessita di caching e progettazione dati.
-
-Rischio comune:
-- marcare troppi componenti come client-side e perdere i benefici;
-- oppure tentare di mettere interattivita in componenti server.
-
----
-
-## 11. Quando usarli
-
+### 11. Quando usarli
 Sono adatti per:
 - pagine data-heavy;
 - dashboard con dati iniziali server-side;
@@ -270,9 +241,7 @@ Sono meno rilevanti quando:
 - la complessita introdotta supera il beneficio.
 
 ---
-
-## 12. Relazione con React moderno
-
+### 12. Relazione con React moderno
 I Server Components si collegano a:
 - [[Programmazione/React/Pagine/Suspense e Lazy Loading]] per fallback e rendering progressivo;
 - [[Programmazione/React/Pagine/Data Fetching e Cache]] per spostare parte del fetching sul server;
@@ -284,8 +253,39 @@ Il punto architetturale e pensare il frontend non piu solo come bundle client, m
 
 ---
 
-## 13. Best Practices
+## API / Sintassi
 
+Contenuto da sviluppare: nella nota originale questa sezione non era presente o era solo una traccia.
+
+## Esempio pratico
+
+Contenuto da sviluppare: nella nota originale questa sezione non era presente o era solo una traccia.
+
+## Varianti
+
+### 10. Limiti e tradeoff
+I Server Components introducono anche complessita.
+
+Limiti principali:
+- richiedono framework e bundler compatibili;
+- impongono distinzione chiara tra server e client;
+- non possono usare hook client-side;
+- possono confondere se il team non capisce il confine `"use client"`;
+- non eliminano la necessita di caching e progettazione dati.
+
+Rischio comune:
+- marcare troppi componenti come client-side e perdere i benefici;
+- oppure tentare di mettere interattivita in componenti server.
+
+---
+
+## Errori comuni
+
+Contenuto da sviluppare: nella nota originale questa sezione non era presente o era solo una traccia.
+
+## Checklist
+
+### 13. Best Practices
 1. **Tieni server-side cio che non richiede interattivita:** data fetching, layout statici e contenuti da backend sono buoni candidati.
 2. **Usa Client Components solo dove servono eventi, stato o API browser:** evita `"use client"` troppo in alto nell'albero.
 3. **Progetta bene il confine server/client:** e il punto piu importante per mantenere benefici e chiarezza.
@@ -294,3 +294,7 @@ Il punto architetturale e pensare il frontend non piu solo come bundle client, m
 6. **Ricorda che RSC non sostituisce sicurezza e caching:** dati, permessi e performance restano responsabilita architetturali.
 
 ---
+
+## Collegamenti
+
+- [[Programmazione/React/Indice react|Indice React]]

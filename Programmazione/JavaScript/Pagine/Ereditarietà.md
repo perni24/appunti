@@ -1,5 +1,5 @@
----
-date: 2026-05-13
+﻿---
+date: 2026-06-02
 area: Programmazione
 topic: JavaScript
 type: technical-note
@@ -21,8 +21,22 @@ In JavaScript l'ereditarieta delle classi usa `extends` e `super`, ma il meccani
 
 ---
 
-## `extends`
+## Quando usarlo
 
+Usa ereditarieta quando una classe specializzata e davvero un tipo piu specifico della classe base e deve rispettarne il contratto.
+
+Casi adatti:
+
+- gerarchie piccole e stabili;
+- API dove la classe base definisce comportamento comune;
+- specializzazioni che condividono invarianti;
+- framework che richiedono estensione di classi.
+
+Evitala se vuoi solo riusare qualche metodo: composizione, funzioni o moduli sono spesso piu flessibili.
+
+## Come funziona
+
+### `extends`
 ```js
 class Animal {
   constructor(name) {
@@ -49,9 +63,7 @@ console.log(dog.bark());
 `Dog` eredita i metodi definiti su `Animal.prototype`.
 
 ---
-
-## `super` nel costruttore
-
+### `super` nel costruttore
 Se una sottoclasse definisce `constructor`, deve chiamare `super()` prima di usare `this`.
 
 ```js
@@ -66,9 +78,7 @@ class Dog extends Animal {
 `super(name)` chiama il costruttore della classe base.
 
 ---
-
-## `super` nei metodi
-
+### `super` nei metodi
 `super` puo richiamare metodi della classe base.
 
 ```js
@@ -82,9 +92,7 @@ class Dog extends Animal {
 Questo consente di estendere un comportamento invece di riscriverlo completamente.
 
 ---
-
-## Override
-
+### Override
 Una sottoclasse puo ridefinire un metodo della classe base.
 
 ```js
@@ -98,9 +106,7 @@ class Cat extends Animal {
 Quando il metodo viene chiamato sull'istanza, JavaScript usa la versione piu vicina nella prototype chain.
 
 ---
-
-## Prototype chain
-
+### Prototype chain
 ```js
 console.log(Object.getPrototypeOf(Dog.prototype) === Animal.prototype); // true
 ```
@@ -114,9 +120,77 @@ La catena e:
 - `null`.
 
 ---
+### Composizione vs ereditarieta
+Usa ereditarieta quando esiste una relazione "e un tipo di".
 
-## Limiti
+Usa composizione quando vuoi combinare comportamenti senza creare gerarchie rigide.
 
+```js
+function createLogger(target) {
+  return {
+    log(message) {
+      console.log(`[${target}] ${message}`);
+    },
+  };
+}
+```
+
+Nel dubbio, composizione tende a essere piu flessibile.
+
+---
+
+## API / Sintassi
+
+Sintassi base:
+
+```js
+class Child extends Parent {
+  constructor(value) {
+    super(value);
+  }
+
+  method() {
+    return super.method();
+  }
+}
+```
+
+Concetti:
+
+```js
+child instanceof Child;
+child instanceof Parent;
+Object.getPrototypeOf(Child.prototype) === Parent.prototype;
+```
+
+`super()` e obbligatorio nel costruttore di una sottoclasse prima di usare `this`.
+
+## Esempio pratico
+
+Specializzare una classe base:
+
+```js
+class ApiError extends Error {
+  constructor(message, status) {
+    super(message);
+    this.name = "ApiError";
+    this.status = status;
+  }
+}
+
+class NotFoundError extends ApiError {
+  constructor(message = "Risorsa non trovata") {
+    super(message, 404);
+    this.name = "NotFoundError";
+  }
+}
+```
+
+Qui `NotFoundError` e un tipo specifico di `ApiError`, quindi l'ereditarieta ha un significato chiaro.
+
+## Varianti
+
+### Limiti
 JavaScript non ha ereditarieta multipla tra classi.
 
 Inoltre i private fields della classe base non sono accessibili direttamente dalla sottoclasse.
@@ -137,26 +211,6 @@ Se serve accesso controllato, esponi metodi pubblici o usa convenzioni esplicite
 
 ---
 
-## Composizione vs ereditarieta
-
-Usa ereditarieta quando esiste una relazione "e un tipo di".
-
-Usa composizione quando vuoi combinare comportamenti senza creare gerarchie rigide.
-
-```js
-function createLogger(target) {
-  return {
-    log(message) {
-      console.log(`[${target}] ${message}`);
-    },
-  };
-}
-```
-
-Nel dubbio, composizione tende a essere piu flessibile.
-
----
-
 ## Errori comuni
 
 - Usare ereditarieta per semplice riuso di codice.
@@ -167,8 +221,9 @@ Nel dubbio, composizione tende a essere piu flessibile.
 
 ---
 
-## Checklist operativa
+## Checklist
 
+### Checklist operativa
 - Usa `extends` solo per relazioni chiare.
 - Mantieni gerarchie basse.
 - Chiama `super()` prima di usare `this`.

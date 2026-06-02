@@ -1,5 +1,5 @@
----
-date: 2026-05-14
+﻿---
+date: 2026-06-02
 area: Programmazione
 topic: Python
 type: technical-note
@@ -19,8 +19,13 @@ related: [Standard Library, Gestione File]
 
 E utile per script, prototipi, app desktop, test e piccoli database embedded.
 
-## Connessione
+## Quando usarlo
 
+Contenuto da sviluppare: nella nota originale questa sezione non era presente o era solo una traccia.
+
+## Come funziona
+
+### Connessione
 ```python
 import sqlite3
 
@@ -30,9 +35,7 @@ with sqlite3.connect("app.db") as conn:
 ```
 
 Il context manager gestisce commit o rollback a seconda dell'esito.
-
-## Query parametrizzate
-
+### Query parametrizzate
 ```python
 user_id = 1
 
@@ -43,9 +46,7 @@ cursor = conn.execute(
 ```
 
 Usa sempre parametri invece di concatenare stringhe SQL.
-
-## Creare tabelle
-
+### Creare tabelle
 ```python
 conn.execute("""
 CREATE TABLE IF NOT EXISTS users (
@@ -55,12 +56,28 @@ CREATE TABLE IF NOT EXISTS users (
 """)
 ```
 
+## API / Sintassi
+
+Contenuto da sviluppare: nella nota originale questa sezione non era presente o era solo una traccia.
+
+## Esempio pratico
+
+Contenuto da sviluppare: nella nota originale questa sezione non era presente o era solo una traccia.
+
+## Varianti
+
+Contenuto da sviluppare: nella nota originale questa sezione non era presente o era solo una traccia.
+
 ## Errori comuni
 
 - Costruire SQL concatenando input utente.
 - Dimenticare commit quando non si usa context manager.
 - Usare SQLite per carichi concorrenti non adatti.
 - Non gestire migrazioni dello schema.
+
+## Checklist
+
+Contenuto da sviluppare: nella nota originale questa sezione non era presente o era solo una traccia.
 
 ## Collegamenti
 

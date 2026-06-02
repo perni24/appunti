@@ -1,5 +1,5 @@
----
-date: 2026-05-14
+﻿---
+date: 2026-06-02
 area: Programmazione
 topic: Python
 type: technical-note
@@ -10,18 +10,33 @@ aliases: [Gestione dei File]
 prerequisites: []
 related: []
 ---
+
 # Gestione dei File in Python
 
 ## Sintesi
 
 Nota su Gestione dei File in Python. Riassume il concetto, la sintassi principale e i punti da ricordare durante studio, sviluppo o debugging.
-
-## Concetto chiave
-La gestione dei file è una competenza fondamentale per interagire con il sistema operativo, leggere dati persistenti o salvare output. In Python, l'interazione con i file avviene principalmente tramite la funzione integrata `open()`. La best practice assoluta è l'utilizzo dello statement `with`, che gestisce automaticamente la chiusura delle risorse.
+Nota su Gestione dei File in Python. Riassume il concetto, la sintassi principale e i punti da ricordare durante studio, sviluppo o debugging.
+with open("dati.txt", "r", encoding="utf-8") as file:
+    contenuto = file.read()
+    print(contenuto)
+# Gestione dei File in Python
+Nota su Gestione dei File in Python. Riassume il concetto, la sintassi principale e i punti da ricordare durante studio, sviluppo o debugging.
+```
 
 ---
 
-##  Apertura e Modalità (Modes)
+## Quando usarlo
+
+Contenuto da sviluppare: nella nota originale questa sezione non era presente o era solo una traccia.
+
+## Come funziona
+
+### Concetto chiave
+La gestione dei file è una competenza fondamentale per interagire con il sistema operativo, leggere dati persistenti o salvare output. In Python, l'interazione con i file avviene principalmente tramite la funzione integrata `open()`. La best practice assoluta è l'utilizzo dello statement `with`, che gestisce automaticamente la chiusura delle risorse.
+
+---
+### Apertura e Modalità (Modes)
 La funzione `open(file, mode)` richiede il percorso del file e la modalità di apertura.
 
 | Modo | Descrizione | Note |
@@ -34,30 +49,12 @@ La funzione `open(file, mode)` richiede il percorso del file e la modalità di a
 | `'t'` | **Text** (Default) | Modalità testo. |
 
 ---
-
-##  Lo Statement `with` (Context Manager)
+### Lo Statement `with` (Context Manager)
 Utilizzare `with` garantisce che il file venga chiuso correttamente anche se si verifica un'eccezione durante l'elaborazione, evitando perdite di memoria o corruzione dei dati.
 
 ```python
 # Gestione dei File in Python
-
-## Sintesi
-
-Nota su Gestione dei File in Python. Riassume il concetto, la sintassi principale e i punti da ricordare durante studio, sviluppo o debugging.
-with open("dati.txt", "r", encoding="utf-8") as file:
-    contenuto = file.read()
-    print(contenuto)
-# Gestione dei File in Python
-
-## Sintesi
-
-Nota su Gestione dei File in Python. Riassume il concetto, la sintassi principale e i punti da ricordare durante studio, sviluppo o debugging.
-```
-
----
-
-##  Lettura e Scrittura
-
+### Lettura e Scrittura
 ### Metodi di Lettura
 - `read()`: Legge l'intero file come stringa.
 - `readline()`: Legge una sola riga alla volta.
@@ -74,8 +71,7 @@ with open("output.txt", "w") as f:
 ```
 
 ---
-
-## Logic layer: Encoding e Buffer
+### Logic layer: Encoding e Buffer
 In Python 3, le stringhe sono Unicode (UTF-8). È sempre caldamente consigliato specificare l'**encoding** esplicitamente per evitare problemi di compatibilità tra sistemi operativi (es. Windows vs Linux).
 
 > [!TIP] Gestione Path moderne
@@ -90,3 +86,27 @@ if percorso.exists():
 ```
 
 ---
+
+## API / Sintassi
+
+Contenuto da sviluppare: nella nota originale questa sezione non era presente o era solo una traccia.
+
+## Esempio pratico
+
+Contenuto da sviluppare: nella nota originale questa sezione non era presente o era solo una traccia.
+
+## Varianti
+
+Contenuto da sviluppare: nella nota originale questa sezione non era presente o era solo una traccia.
+
+## Errori comuni
+
+Contenuto da sviluppare: nella nota originale questa sezione non era presente o era solo una traccia.
+
+## Checklist
+
+Contenuto da sviluppare: nella nota originale questa sezione non era presente o era solo una traccia.
+
+## Collegamenti
+
+- [[Programmazione/Python/Indice python|Indice Python]]

@@ -1,5 +1,5 @@
----
-date: 2026-05-14
+﻿---
+date: 2026-06-02
 area: Programmazione
 topic: React
 type: technical-note
@@ -10,6 +10,7 @@ aliases: [Rendering Condizionale e Liste (Key prop)]
 prerequisites: []
 related: []
 ---
+
 # Rendering Condizionale e Liste (Key prop)
 
 ## Sintesi
@@ -18,8 +19,13 @@ Nota su Rendering Condizionale e Liste (Key prop) in React. Riassume il concetto
 
 In React, le interfacce dinamiche richiedono spesso di mostrare o nascondere elementi in base a determinate condizioni o di generare componenti a partire da array di dati.
 
-## 1. Rendering Condizionale
+## Quando usarlo
 
+Contenuto da sviluppare: nella nota originale questa sezione non era presente o era solo una traccia.
+
+## Come funziona
+
+### 1. Rendering Condizionale
 Il rendering condizionale in React funziona allo stesso modo delle condizioni in JavaScript. Si utilizzano operatori come `if`, l'operatore ternario o l'operatore logico `&&`.
 
 ### Operatore Ternario (`condition ? true : false`)
@@ -47,9 +53,7 @@ function Notification({ count }) {
 ```
 
 ---
-
-## 2. Rendering di Liste
-
+### 2. Rendering di Liste
 Per renderizzare una lista di elementi, si utilizza solitamente il metodo `.map()` di JavaScript per trasformare un array di dati in un array di elementi JSX.
 
 ```jsx
@@ -67,9 +71,7 @@ function UserList() {
 ```
 
 ---
-
-## 3. L'importanza della `key` prop
-
+### 3. L'importanza della `key` prop
 La **key** è un attributo speciale che devi includere quando crei liste di elementi in React. Le chiavi aiutano React a identificare quali elementi sono cambiati, sono stati aggiunti o rimossi.
 
 ### Perché è necessaria?
@@ -89,3 +91,27 @@ React utilizza le chiavi per il processo di **Riconciliazione** (Diffing). Senza
 ```
 
 ---
+
+## API / Sintassi
+
+Contenuto da sviluppare: nella nota originale questa sezione non era presente o era solo una traccia.
+
+## Esempio pratico
+
+Contenuto da sviluppare: nella nota originale questa sezione non era presente o era solo una traccia.
+
+## Varianti
+
+Contenuto da sviluppare: nella nota originale questa sezione non era presente o era solo una traccia.
+
+## Errori comuni
+
+Contenuto da sviluppare: nella nota originale questa sezione non era presente o era solo una traccia.
+
+## Checklist
+
+Contenuto da sviluppare: nella nota originale questa sezione non era presente o era solo una traccia.
+
+## Collegamenti
+
+- [[Programmazione/React/Indice react|Indice React]]

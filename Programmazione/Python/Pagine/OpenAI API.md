@@ -1,5 +1,5 @@
 ﻿---
-date: 2026-05-20
+date: 2026-06-02
 area: Programmazione
 topic: Python
 type: technical-note
@@ -21,8 +21,9 @@ related: []
 
 La **OpenAI API** permette a un'applicazione Python di usare modelli per generazione testo, strumenti, embeddings, immagini, audio e workflow agentici.
 
-## Uso concettuale
+## Quando usarlo
 
+### Uso concettuale
 Un client Python invia input strutturato al modello e riceve output o azioni da integrare nell'applicazione.
 
 ```python
@@ -38,48 +39,36 @@ response = client.responses.create(
 print(response.output_text)
 ```
 
-## Attenzione
+## Come funziona
 
+Contenuto da sviluppare: nella nota originale questa sezione non era presente o era solo una traccia.
+
+## API / Sintassi
+
+Contenuto da sviluppare: nella nota originale questa sezione non era presente o era solo una traccia.
+
+## Esempio pratico
+
+Contenuto da sviluppare: nella nota originale questa sezione non era presente o era solo una traccia.
+
+## Varianti
+
+Contenuto da sviluppare: nella nota originale questa sezione non era presente o era solo una traccia.
+
+## Errori comuni
+
+### Attenzione
 - Gestisci chiavi API come segreti.
 - Imposta timeout e retry.
 - Valida output se influenza decisioni importanti.
 - Usa embeddings o retrieval per conoscenza privata.
 
-## Quando usarlo
-
-- Da completare: indicare scenari pratici in cui questa nota e utile.
-
-## Come funziona
-
-Da completare: spiegare il meccanismo principale o il comportamento tecnico.
-
-## API / Sintassi
-
-```text
-Da completare con API o sintassi principale.
-```
-
-## Esempio pratico
-
-```text
-Da completare con un esempio pratico.
-```
-
-## Varianti
-
-- Da completare: varianti, alternative o differenze rispetto ad approcci simili.
-
-## Errori comuni
-
-Da completare durante revisione.
-
 ## Checklist
 
-- Da completare: controlli essenziali prima di usare questo concetto in pratica.
+Contenuto da sviluppare: nella nota originale questa sezione non era presente o era solo una traccia.
 
 ## Collegamenti
+
 - [[Programmazione/Python/Pagine/llama-cpp-python|llama-cpp-python]]
 - [[Programmazione/Python/Pagine/HTTPX e requests|HTTPX e requests]]
 - [[AI/Indice AI|Indice AI]]
-
-

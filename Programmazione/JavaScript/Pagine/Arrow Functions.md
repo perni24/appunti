@@ -1,5 +1,5 @@
----
-date: 2026-05-13
+﻿---
+date: 2026-06-02
 area: Programmazione
 topic: JavaScript
 type: technical-note
@@ -21,73 +21,9 @@ Non sono solo una forma piu breve di `function`: non hanno un proprio `this`, no
 
 ---
 
-## Sintassi base
+## Quando usarlo
 
-```js
-const sum = (a, b) => {
-  return a + b;
-};
-```
-
-Con return implicito:
-
-```js
-const sum = (a, b) => a + b;
-```
-
-Con un solo parametro, le parentesi sono opzionali.
-
-```js
-const square = value => value * value;
-```
-
-Senza parametri, le parentesi sono obbligatorie.
-
-```js
-const getRandom = () => Math.random();
-```
-
----
-
-## Restituire oggetti
-
-Per restituire un oggetto con return implicito, usa parentesi tonde.
-
-```js
-const createUser = name => ({
-  name,
-  active: true,
-});
-```
-
-Senza parentesi, le graffe vengono interpretate come corpo della funzione.
-
----
-
-## Lexical this
-
-Le arrow functions non creano un proprio `this`.
-
-Usano il `this` dello scope esterno.
-
-```js
-const timer = {
-  seconds: 0,
-  start() {
-    setInterval(() => {
-      this.seconds += 1;
-      console.log(this.seconds);
-    }, 1000);
-  },
-};
-```
-
-Qui `this` dentro la arrow function resta quello del metodo `start()`.
-
----
-
-## Quando usarle
-
+### Quando usarle
 Sono adatte per:
 
 - callback brevi;
@@ -103,9 +39,7 @@ const doubled = numbers.map(number => number * 2);
 ```
 
 ---
-
-## Quando evitarle
-
+### Quando evitarle
 Evita arrow functions quando serve un `this` dinamico.
 
 ```js
@@ -132,8 +66,42 @@ const user = {
 
 ---
 
-## arguments
+## Come funziona
 
+### Restituire oggetti
+Per restituire un oggetto con return implicito, usa parentesi tonde.
+
+```js
+const createUser = name => ({
+  name,
+  active: true,
+});
+```
+
+Senza parentesi, le graffe vengono interpretate come corpo della funzione.
+
+---
+### Lexical this
+Le arrow functions non creano un proprio `this`.
+
+Usano il `this` dello scope esterno.
+
+```js
+const timer = {
+  seconds: 0,
+  start() {
+    setInterval(() => {
+      this.seconds += 1;
+      console.log(this.seconds);
+    }, 1000);
+  },
+};
+```
+
+Qui `this` dentro la arrow function resta quello del metodo `start()`.
+
+---
+### arguments
 Le arrow functions non hanno un proprio oggetto `arguments`.
 
 Usa rest parameters.
@@ -145,9 +113,7 @@ const sumAll = (...numbers) => {
 ```
 
 ---
-
-## Non sono costruttori
-
+### Non sono costruttori
 Le arrow functions non possono essere usate con `new`.
 
 ```js
@@ -161,6 +127,70 @@ const User = name => {
 Per oggetti istanziabili usa `class` o funzioni costruttrici tradizionali.
 
 ---
+
+## API / Sintassi
+
+### Sintassi base
+```js
+const sum = (a, b) => {
+  return a + b;
+};
+```
+
+Con return implicito:
+
+```js
+const sum = (a, b) => a + b;
+```
+
+Con un solo parametro, le parentesi sono opzionali.
+
+```js
+const square = value => value * value;
+```
+
+Senza parametri, le parentesi sono obbligatorie.
+
+```js
+const getRandom = () => Math.random();
+```
+
+---
+
+## Esempio pratico
+
+Callback concisa:
+
+```js
+const activeNames = users
+  .filter((user) => user.active)
+  .map((user) => user.name);
+```
+
+Uso utile con `this` lessicale:
+
+```js
+class Timer {
+  seconds = 0;
+
+  start() {
+    setInterval(() => {
+      this.seconds += 1;
+    }, 1000);
+  }
+}
+```
+
+L'arrow function mantiene il `this` del metodo `start`.
+
+## Varianti
+
+- **Parametro singolo**: `value => value * 2`.
+- **Piu parametri**: `(a, b) => a + b`.
+- **Return implicito**: `value => value.id`.
+- **Corpo a blocco**: `value => { return value.id; }`.
+- **Ritorno di oggetto**: `value => ({ id: value })`.
+- **Callback con `this` lessicale**: utile dentro metodi e classi.
 
 ## Errori comuni
 

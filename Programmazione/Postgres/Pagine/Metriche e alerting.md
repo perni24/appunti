@@ -1,5 +1,5 @@
-﻿---
-date: 2026-05-20
+---
+date: 2026-06-02
 area: Programmazione
 topic: Postgres
 type: operational-note
@@ -9,7 +9,7 @@ tags:
   - programmazione
   - postgres
   - osservabilita
-  - metriche
+  - monitoraggio
 aliases: []
 prerequisites: []
 related: []
@@ -19,68 +19,85 @@ related: []
 
 ## Sintesi
 
-Metriche e alerting servono a capire lo stato del database prima che un problema diventi incidente.
-
-## Metriche importanti
-
-- Connessioni attive.
-- Cache hit ratio.
-- Query lente.
-- Lock e deadlock.
-- Replica lag.
-- Checkpoint e WAL.
-- Bloat e autovacuum.
-- Spazio disco.
-
-## Alert utili
-
-- Disco quasi pieno.
-- Replica lag elevato.
-- Troppi errori di connessione.
-- Autovacuum bloccato.
-- Aumento improvviso di query lente.
-
-## Errori comuni
-
-- Alertare su metriche rumorose.
-- Non collegare metriche a runbook.
-- Monitorare solo CPU e RAM, ignorando lock, WAL e query.
-
-## Obiettivo
-
-Da completare: descrivere cosa ottenere in pratica.
+Metriche e alerting permettono di rilevare saturazione, query lente, replica lag, crescita WAL, lock, bloat e problemi di disponibilita prima che diventino incidenti.
 
 ## Quando usarlo
 
-- Da completare: indicare scenari pratici in cui questa nota e utile.
+Serve per database in produzione, ambienti critici, replica, backup, sistemi con SLA o applicazioni dove downtime e perdita dati hanno impatto reale.
 
-## Procedura
+## Come funziona
 
-1. Da completare.
-2. Da completare.
-3. Da completare.
+PostgreSQL espone viste statistiche come `pg_stat_activity`, `pg_stat_database`, `pg_stat_user_tables`, `pg_stat_replication` e `pg_replication_slots`. I sistemi di monitoraggio raccolgono questi dati e generano alert.
 
-## Snippet
+## API / Sintassi
 
-```text
-Da completare con codice o comando riutilizzabile.
+Connessioni:
+
+```sql
+SELECT count(*) FROM pg_stat_activity;
 ```
 
-## Adattamenti comuni
+Database stats:
 
-- Da completare: varianti per casi frequenti.
+```sql
+SELECT datname, xact_commit, xact_rollback, deadlocks
+FROM pg_stat_database;
+```
 
-## Debug rapido
+Replica lag:
 
-- Da completare: controlli rapidi in caso di errore.
+```sql
+SELECT now() - pg_last_xact_replay_timestamp() AS replica_lag;
+```
 
-## Checklist finale
+Tuple morte:
 
-- Da completare: verifiche finali.
+```sql
+SELECT relname, n_dead_tup
+FROM pg_stat_user_tables
+ORDER BY n_dead_tup DESC;
+```
+
+## Esempio pratico
+
+Alert utili:
+
+- connessioni oltre soglia;
+- spazio disco sotto soglia;
+- replica lag eccessivo;
+- slot di replica inattivo;
+- deadlock maggiori di zero;
+- autovacuum non avanza;
+- backup fallito.
+
+## Varianti
+
+- Metriche interne PostgreSQL.
+- Exporter Prometheus.
+- Dashboard Grafana.
+- Alert cloud provider.
+- Log-based alerting.
+- APM applicativo.
+
+## Errori comuni
+
+- Monitorare solo CPU e RAM.
+- Non controllare replica lag e WAL.
+- Alert troppo rumorosi.
+- Mancanza di alert su backup falliti.
+- Non misurare query per frequenza e durata.
+- Ignorare trend di crescita disco.
+
+## Checklist
+
+- Esistono alert su disco, connessioni e replica?
+- I backup generano alert se falliscono?
+- Deadlock e lock wait sono osservati?
+- `pg_stat_statements` e raccolto?
+- Le soglie sono testate?
 
 ## Collegamenti
-- [[Programmazione/Postgres/Pagine/Slow query log|Slow query log]]
+
 - [[Programmazione/Postgres/Pagine/Lock monitoring|Lock monitoring]]
-- [[Programmazione/Postgres/Pagine/Write-Ahead Logging|Write-Ahead Logging]]
-
-
+- [[Programmazione/Postgres/Pagine/Slow query log|Slow query log]]
+- [[Programmazione/Postgres/Pagine/Replicazione Fisica|Replicazione Fisica]]

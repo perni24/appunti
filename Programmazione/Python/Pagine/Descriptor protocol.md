@@ -1,5 +1,5 @@
 ﻿---
-date: 2026-05-20
+date: 2026-06-02
 area: Programmazione
 topic: Python
 type: theory-note
@@ -21,8 +21,13 @@ related: []
 
 Il **descriptor protocol** permette a un oggetto di controllare accesso, assegnazione e cancellazione di un attributo.
 
-## Concetto chiave
+## Quando usarlo
 
+Contenuto da sviluppare: nella nota originale questa sezione non era presente o era solo una traccia.
+
+## Come funziona
+
+### Concetto chiave
 Un descriptor implementa uno o piu metodi tra `__get__`, `__set__` e `__delete__`.
 
 ```python
@@ -41,36 +46,31 @@ class Positive:
 class Product:
     price = Positive()
 ```
-
-## Dove si trova
-
+### Dove si trova
 `property`, metodi, `staticmethod`, `classmethod` e molte parti dell'OOP Python usano descriptor sotto il cofano.
 
-## Problema che risolve
+## API / Sintassi
 
-Da completare: descrivere il problema concettuale o tecnico che questa nota chiarisce.
+Contenuto da sviluppare: nella nota originale questa sezione non era presente o era solo una traccia.
 
-## Dettagli importanti
+## Esempio pratico
 
-- Da completare: aggiungere dettagli, casi limite e differenze da concetti simili.
+Contenuto da sviluppare: nella nota originale questa sezione non era presente o era solo una traccia.
 
-## Esempio
+## Varianti
 
-```text
-Da completare con un esempio minimo.
-```
-
-## Limiti
-
-- Da completare: indicare limiti, ambiguita e casi in cui il concetto non basta.
+Contenuto da sviluppare: nella nota originale questa sezione non era presente o era solo una traccia.
 
 ## Errori comuni
 
-Da completare durante revisione.
+Contenuto da sviluppare: nella nota originale questa sezione non era presente o era solo una traccia.
+
+## Checklist
+
+Contenuto da sviluppare: nella nota originale questa sezione non era presente o era solo una traccia.
 
 ## Collegamenti
+
 - [[Programmazione/Python/Pagine/Proprietà|Proprietà]]
 - [[Programmazione/Python/Pagine/Metodi di classe e statici|Metodi di classe e statici]]
 - [[Programmazione/Python/Pagine/Data model|Data model]]
-
-

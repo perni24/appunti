@@ -1,5 +1,5 @@
----
-date: 2026-05-13
+﻿---
+date: 2026-06-02
 area: Programmazione
 topic: JavaScript
 type: technical-note
@@ -21,8 +21,24 @@ In JavaScript gli errori si gestiscono con `throw`, `try/catch`, Promise rejecti
 
 ---
 
-## `throw`
+## Quando usarlo
 
+Usa gestione errori esplicita in ogni punto dove un'operazione puo fallire per motivi previsti o esterni.
+
+Casi tipici:
+
+- input non valido;
+- richieste HTTP fallite;
+- permessi mancanti;
+- parsing di dati esterni;
+- file o risorse non disponibili;
+- operazioni asincrone.
+
+Non catturare errori solo per nasconderli. Se il livello corrente non puo risolvere il problema, aggiungi contesto e rilancia.
+
+## Come funziona
+
+### `throw`
 ```js
 function divide(a, b) {
   if (b === 0) {
@@ -36,9 +52,7 @@ function divide(a, b) {
 Lancia oggetti `Error`, non stringhe.
 
 ---
-
-## `try/catch/finally`
-
+### `try/catch/finally`
 ```js
 try {
   const result = divide(10, 0);
@@ -54,8 +68,76 @@ try {
 
 ---
 
-## Errori custom
+## API / Sintassi
 
+Sintassi principali:
+
+```js
+throw new Error("Messaggio");
+```
+
+```js
+try {
+  doWork();
+} catch (error) {
+  handleError(error);
+} finally {
+  cleanup();
+}
+```
+
+Con Promise:
+
+```js
+loadData()
+  .then(renderData)
+  .catch(handleError);
+```
+
+Con `async/await`:
+
+```js
+try {
+  const data = await loadData();
+  renderData(data);
+} catch (error) {
+  handleError(error);
+}
+```
+
+## Esempio pratico
+
+Gestione distinta tra errore previsto e errore inatteso:
+
+```js
+async function loadUser(id) {
+  const response = await fetch(`/api/users/${id}`);
+
+  if (response.status === 404) {
+    return null;
+  }
+
+  if (!response.ok) {
+    throw new Error(`HTTP ${response.status}`);
+  }
+
+  return response.json();
+}
+```
+
+Un `404` puo essere un caso gestibile. Un `500` o una risposta inattesa va propagata per log, retry o messaggio di errore.
+
+## Varianti
+
+- **Errori di validazione**: input non conforme.
+- **Errori di rete**: timeout, offline, CORS, DNS.
+- **Errori HTTP**: risposta ricevuta ma con status non positivo.
+- **Errori di programmazione**: bug, stato impossibile, `TypeError`.
+- **Errori custom**: classi derivate da `Error` per distinguere casi applicativi.
+
+## Errori comuni
+
+### Errori custom
 ```js
 class ValidationError extends Error {
   constructor(message, details) {
@@ -69,9 +151,7 @@ class ValidationError extends Error {
 Errori specifici aiutano a decidere come reagire.
 
 ---
-
-## Errori asincroni
-
+### Errori asincroni
 Con `async/await`, usa `try/catch`.
 
 ```js
@@ -95,9 +175,7 @@ loadUser().catch((error) => {
 ```
 
 ---
-
-## Rilanciare errori
-
+### Rilanciare errori
 Gestisci solo errori che puoi davvero trattare.
 
 ```js
@@ -112,9 +190,6 @@ try {
 Nascondere errori rende il debug piu difficile.
 
 ---
-
-## Errori comuni
-
 - Fare `catch` vuoti.
 - Lanciare stringhe invece di `Error`.
 - Trattare abort, validazione e bug nello stesso modo.
@@ -123,8 +198,9 @@ Nascondere errori rende il debug piu difficile.
 
 ---
 
-## Checklist operativa
+## Checklist
 
+### Checklist operativa
 - Usa `Error` o classi derivate.
 - Logga contesto utile senza segreti.
 - Gestisci separatamente errori attesi e bug.

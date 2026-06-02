@@ -1,5 +1,5 @@
----
-date: 2026-05-14
+﻿---
+date: 2026-06-02
 area: Programmazione
 topic: Python
 type: technical-note
@@ -10,13 +10,35 @@ aliases: [Standard Library di Python]
 prerequisites: []
 related: []
 ---
+
 # Standard Library di Python
 
 ## Sintesi
 
 Nota su Standard Library di Python in Python. Riassume il concetto, la sintassi principale e i punti da ricordare durante studio, sviluppo o debugging.
 
-## Concetto chiave
+## Quando usarlo
+
+### Quando preferire la Standard Library
+Conviene partire dalla Standard Library quando:
+- il problema e comune e ben coperto da un modulo standard;
+- vuoi ridurre dipendenze esterne;
+- vuoi massimizzare portabilita e manutenzione a lungo termine;
+- stai costruendo script, utility o tool interni.
+
+Ha senso introdurre librerie esterne quando:
+- servono feature molto piu evolute;
+- la DX della libreria standard e troppo bassa per il caso reale;
+- performance, ergonomia o ecosistema richiedono uno strumento dedicato.
+
+> [!TIP] Regola pratica
+> Prima verifica la Standard Library. Se copre il problema in modo chiaro e sufficiente, evita dipendenze in piu. Se invece la soluzione diventa artificiale o troppo limitata, passa a una libreria esterna.
+
+---
+
+## Come funziona
+
+### Concetto chiave
 La **Standard Library** di Python e l'insieme dei moduli inclusi con il linguaggio, disponibili senza installare pacchetti esterni. E uno dei punti di forza principali di Python: per molte esigenze comuni esiste gia un modulo ufficiale, stabile e ben integrato.
 
 L'idea pratica e semplice: prima di aggiungere una dipendenza esterna, conviene verificare se la Standard Library copre gia il problema in modo sufficiente.
@@ -25,9 +47,7 @@ L'idea pratica e semplice: prima di aggiungere una dipendenza esterna, conviene 
 > Python viene spesso descritto con l'espressione **batteries included**: il linguaggio arriva gia con strumenti per file, path, regex, JSON, HTTP, threading, testing, datetime, logging, serializzazione, parsing e molto altro.
 
 ---
-
-##  Come e organizzata
-
+### Come e organizzata
 La Standard Library non e un singolo pacchetto, ma una raccolta molto ampia di moduli e package standard.
 
 Alcune aree fondamentali:
@@ -50,9 +70,7 @@ import datetime
 Questi import non richiedono `pip install`, perche fanno gia parte della distribuzione standard di Python.
 
 ---
-
-##  Moduli fondamentali da conoscere
-
+### Moduli fondamentali da conoscere
 ### File system e sistema operativo
 
 - `os`: interazione con ambiente e sistema operativo.
@@ -168,9 +186,7 @@ Questi moduli si collegano direttamente a [[Programmazione/Python/Pagine/Threadi
 Questa area e collegata a [[Programmazione/Python/Pagine/Introspezione]].
 
 ---
-
-##  Funzionamento Interno (Teoria)
-
+### Funzionamento Interno (Teoria)
 ### Moduli built-in vs moduli della libreria standard
 Non tutti i moduli standard sono uguali:
 
@@ -199,26 +215,21 @@ La Standard Library tende a essere piu stabile e portabile di molte librerie est
 
 ---
 
-##  Quando preferire la Standard Library
+## API / Sintassi
 
-Conviene partire dalla Standard Library quando:
-- il problema e comune e ben coperto da un modulo standard;
-- vuoi ridurre dipendenze esterne;
-- vuoi massimizzare portabilita e manutenzione a lungo termine;
-- stai costruendo script, utility o tool interni.
+Contenuto da sviluppare: nella nota originale questa sezione non era presente o era solo una traccia.
 
-Ha senso introdurre librerie esterne quando:
-- servono feature molto piu evolute;
-- la DX della libreria standard e troppo bassa per il caso reale;
-- performance, ergonomia o ecosistema richiedono uno strumento dedicato.
+## Esempio pratico
 
-> [!TIP] Regola pratica
-> Prima verifica la Standard Library. Se copre il problema in modo chiaro e sufficiente, evita dipendenze in piu. Se invece la soluzione diventa artificiale o troppo limitata, passa a una libreria esterna.
+Contenuto da sviluppare: nella nota originale questa sezione non era presente o era solo una traccia.
 
----
+## Varianti
 
-##  Best Practices & "Gotchas"
+Contenuto da sviluppare: nella nota originale questa sezione non era presente o era solo una traccia.
 
+## Errori comuni
+
+### Best Practices & "Gotchas"
 -  **Conosci i moduli base prima di installare dipendenze:** spesso `json`, `pathlib`, `collections`, `datetime` e `logging` bastano gia.
 -  **Preferisci moduli moderni quando esistono:** ad esempio `pathlib` e spesso piu chiaro di `os.path`.
 -  **Leggi la documentazione ufficiale dei moduli standard:** i dettagli dei corner case contano molto.
@@ -229,3 +240,11 @@ Ha senso introdurre librerie esterne quando:
 -  **Non assumere che ogni modulo standard sia ideale:** "standard" non significa automaticamente "migliore" per ogni contesto.
 
 ---
+
+## Checklist
+
+Contenuto da sviluppare: nella nota originale questa sezione non era presente o era solo una traccia.
+
+## Collegamenti
+
+- [[Programmazione/Python/Indice python|Indice Python]]

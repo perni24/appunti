@@ -1,5 +1,5 @@
----
-date: 2026-05-13
+﻿---
+date: 2026-06-02
 area: Programmazione
 topic: JavaScript
 type: technical-note
@@ -27,8 +27,23 @@ console.log(`Ciao ${name}`);
 
 ---
 
-## Interpolazione
+## Quando usarlo
 
+Usa template literals quando devi comporre stringhe leggibili con variabili, espressioni o piu righe.
+
+Sono utili per:
+
+- messaggi di log;
+- stringhe con valori interpolati;
+- HTML template semplici;
+- query o frammenti testuali controllati;
+- tagged templates in librerie specializzate.
+
+Se la stringa contiene input non fidato e finisce nel DOM, considera sicurezza e sanitizzazione.
+
+## Come funziona
+
+### Interpolazione
 Dentro `${...}` puoi inserire variabili o espressioni JavaScript.
 
 ```js
@@ -45,9 +60,7 @@ console.log("La somma e " + (a + b));
 ```
 
 ---
-
-## Stringhe multilinea
-
+### Stringhe multilinea
 I template literals possono estendersi su piu righe.
 
 ```js
@@ -59,9 +72,7 @@ Terza riga`;
 La formattazione viene mantenuta nella stringa.
 
 ---
-
-## Espressioni
-
+### Espressioni
 Dentro `${...}` puoi chiamare funzioni o usare ternari.
 
 ```js
@@ -76,9 +87,7 @@ const label = `${user.name} - ${user.active ? "attivo" : "non attivo"}`;
 Evita pero espressioni troppo complesse: rendono la stringa difficile da leggere.
 
 ---
-
-## Uso con HTML
-
+### Uso con HTML
 I template literals sono comodi per creare markup.
 
 ```js
@@ -101,9 +110,7 @@ const html = `
 Preferisci `textContent` o sanitizzazione.
 
 ---
-
-## Tagged templates
-
+### Tagged templates
 Un tagged template passa parti statiche e valori interpolati a una funzione.
 
 ```js
@@ -126,6 +133,57 @@ Uso avanzato:
 - DSL interne.
 
 ---
+
+## API / Sintassi
+
+Sintassi base:
+
+```js
+const message = `Ciao ${name}`;
+```
+
+Stringa multilinea:
+
+```js
+const text = `Riga 1
+Riga 2`;
+```
+
+Tagged template:
+
+```js
+tag`Ciao ${name}`;
+```
+
+La funzione tag riceve prima un array con le parti statiche, poi i valori interpolati.
+
+## Esempio pratico
+
+Creare una label leggibile:
+
+```js
+function formatUserLabel(user) {
+  const status = user.active ? "attivo" : "non attivo";
+  return `${user.name} (${status})`;
+}
+```
+
+Per DOM sicuro:
+
+```js
+const label = document.createElement("span");
+label.textContent = formatUserLabel(user);
+```
+
+In questo modo la stringa non viene interpretata come HTML.
+
+## Varianti
+
+- **Interpolazione semplice**: `${value}`.
+- **Espressioni**: `${count + 1}` o `${condition ? "si" : "no"}`.
+- **Multilinea**: conserva newline e spazi.
+- **Tagged templates**: trasformano parti statiche e valori.
+- **Template HTML**: comodi, ma richiedono attenzione con input non fidato.
 
 ## Errori comuni
 
@@ -150,4 +208,4 @@ Uso avanzato:
 - [[Tipi di Dati]]
 - [[Manipolazione del DOM]]
 - [[Sicurezza]]
-- [[Internazionalizzazione]]
+- Internazionalizzazione

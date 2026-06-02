@@ -8,6 +8,61 @@ Mantieni solo le ultime 10 voci operative.
 
 ---
 
+## 2026-06-02 - Completamento contenuto Postgres
+
+### Fatto
+
+- Completate tutte le 72 pagine Postgres in `Programmazione/Postgres/Pagine`.
+- Rimossi tutti i placeholder `Contenuto da sviluppare`, `Da completare` e `TODO` dalle note Postgres.
+- Sviluppate con contenuto reale le note su query SQL, modellazione dati, indici, planner, transazioni, MVCC, locking, backup, configurazione, ruoli, sicurezza, replica, WAL, partizionamento, full text search, funzioni, PL/pgSQL, estensioni, tooling, osservabilita, migrazioni e pattern applicativi.
+- Ripuliti blocchi Markdown duplicati o spezzati nelle note generate in precedenza.
+
+### Decisioni
+
+- Le note modificate restano con `status: "non revisionato"`.
+- La priorita e stata completare prima gli argomenti fondazionali e poi chiudere tutte le pagine residue fino a zero placeholder.
+
+### Prossimi passi
+
+- Rivedere manualmente le note Postgres completate prima di impostarle a `revisionato (da me)`.
+- Applicare lo stesso completamento alle altre aree di Programmazione che hanno ancora placeholder.
+
+## 2026-06-02 - Completamento contenuto JavaScript
+
+### Fatto
+
+- Completate tutte le 87 pagine JavaScript in `Programmazione/JavaScript/Pagine`.
+- Rimossi tutti i placeholder `Contenuto da sviluppare` dalle note JavaScript.
+- Sviluppate con contenuto reale sezioni come `Quando usarlo`, `API / Sintassi`, `Esempio pratico`, `Varianti`, `Errori comuni` e `Checklist`.
+
+### Decisioni
+
+- Le note modificate restano con `status: "non revisionato"`.
+- La priorita e stata prima data alle pagine piu corte, poi alle sezioni residue fino a portare JavaScript a zero placeholder.
+
+### Prossimi passi
+
+- Applicare lo stesso completamento progressivo alle altre aree di Programmazione che hanno ancora sezioni `Contenuto da sviluppare`.
+- Rivedere manualmente le note JavaScript completate prima di impostarle a `revisionato (da me)`.
+
+## 2026-06-02 - Normalizzazione pagine Programmazione
+
+### Fatto
+
+- Normalizzate le pagine esistenti in `Programmazione/*/Pagine/` alla struttura comune usata per le note tecniche.
+- Uniformate le sezioni top-level: `Sintesi`, `Quando usarlo`, `Come funziona`, `API / Sintassi`, `Esempio pratico`, `Varianti`, `Errori comuni`, `Checklist`, `Collegamenti`.
+- Preservato il contenuto esistente spostandolo sotto le sezioni standard e sistemati alcuni wikilink rotti in JavaScript.
+
+### Decisioni
+
+- Le pagine modificate restano con `status: "non revisionato"`.
+- Le sezioni senza contenuto reale sono marcate come `Contenuto da sviluppare` invece di inventare dettagli non presenti.
+
+### Prossimi passi
+
+- Completare progressivamente le sezioni marcate come contenuto da sviluppare.
+- Creare le pagine mancanti dell'indice TypeScript.
+
 ## 2026-05-28 - Completamento API Design Rust
 
 ### Fatto
@@ -126,54 +181,3 @@ Mantieni solo le ultime 10 voci operative.
 ### Prossimi passi
 
 - Proseguire con `Applicazioni e Ecosistema`.
-
-## 2026-05-26 - Completamento unsafe Rust
-
-### Fatto
-
-- Completate con contenuto reale le note del capitolo `Unsafe Rust in Profondita` dell'indice Rust.
-- Sviluppati unsafe Rust, raw pointers, unsafe functions, unsafe traits, invariants, aliasing rules, undefined behavior, Miri e unsafe abstractions sicure.
-- Aggiunti esempi pratici, contratti di safety, errori comuni, checklist e collegamenti interni coerenti.
-
-### Decisioni
-
-- Le note completate restano con `status: "non revisionato"` fino alla revisione dell'utente.
-- Il capitolo enfatizza confinamento dell'unsafe, documentazione delle invarianti e verifica con Miri.
-
-### Prossimi passi
-
-- Proseguire con il capitolo `Rust di Sistema`.
-
-## 2026-05-26 - Completamento macro Rust
-
-### Fatto
-
-- Completate con contenuto reale le note del capitolo `Macros` dell'indice Rust.
-- Sviluppate macro dichiarative, procedural macros, derive macros, attribute macros, function-like macros e hygiene.
-- Aggiunti esempi pratici, errori comuni, checklist e collegamenti interni coerenti.
-
-### Decisioni
-
-- Le note completate restano con `status: "non revisionato"` fino alla revisione dell'utente.
-- Il capitolo distingue chiaramente tra `macro_rules!` e macro procedurali per evitare sovrauso di proc macro.
-
-### Prossimi passi
-
-- Proseguire con il capitolo `Unsafe Rust in Profondita`.
-
-## 2026-05-26 - Completamento compile-time Rust
-
-### Fatto
-
-- Completate con contenuto reale le note del capitolo `Compile-Time e Type-Level Programming` dell'indice Rust.
-- Sviluppati `const`, `static`, `const fn`, const generics, `PhantomData`, marker types, newtype, typestate e zero-sized types.
-- Aggiunti esempi pratici, errori comuni, checklist e collegamenti interni coerenti.
-
-### Decisioni
-
-- Le note completate restano con `status: "non revisionato"` fino alla revisione dell'utente.
-- Il capitolo distingue tra valori compile-time, parametri const e pattern type-level per evitare uso eccessivo di astrazioni generiche.
-
-### Prossimi passi
-
-- Proseguire con il capitolo `Macros`.

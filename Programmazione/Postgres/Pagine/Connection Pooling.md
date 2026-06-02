@@ -1,5 +1,5 @@
 ---
-date: 2026-05-14
+date: 2026-06-02
 area: Programmazione
 topic: PostgreSQL
 type: technical-note
@@ -10,56 +10,102 @@ aliases: [Connection Pooling]
 prerequisites: []
 related: []
 ---
+
 # Connection Pooling in PostgreSQL
 
 ## Sintesi
 
-Nota su Connection Pooling in PostgreSQL. Riassume il concetto, i meccanismi principali e i punti da ricordare durante studio, progettazione o amministrazione.
+Il connection pooling riusa connessioni gia aperte verso PostgreSQL. Riduce overhead, memoria e numero di processi backend, soprattutto in applicazioni web con molte richieste brevi.
 
-Il **Connection Pooling** è una tecnica fondamentale per gestire le connessioni al database in modo efficiente, specialmente in applicazioni ad alto traffico.
+## Quando usarlo
 
-## Concetto chiave
-Poiché PostgreSQL utilizza un modello [[Programmazione/Postgres/Pagine/Modello Client-Server|Process-per-Connection]], ogni nuova connessione crea un processo backend sul server. Questo processo è costoso in termini di memoria e tempo di CPU. Il Connection Pooling risolve il problema mantenendo un "pool" di connessioni aperte e riutilizzandole per diverse richieste client, evitando il costo di creazione/distruzione continua.
+Usa il pooling quando:
 
----
+- l'applicazione apre molte connessioni brevi;
+- `max_connections` tende a saturarsi;
+- molti microservizi parlano con lo stesso database;
+- ci sono serverless function o worker elastici;
+- vuoi limitare connessioni reali al database;
+- devi proteggere PostgreSQL da picchi di traffico.
 
-##  Perché è necessario?
+## Come funziona
 
-Senza un pooler, un'applicazione web con migliaia di utenti simultanei potrebbe saturare rapidamente le risorse del server:
-- **Consumo RAM:** Ogni processo backend consuma circa 10-20MB di RAM.
-- **Overhead Fork:** Creare un nuovo processo è un'operazione lenta a livello di Sistema Operativo.
-- **Context Switching:** Troppi processi attivi costringono la CPU a cambiare continuamente contesto, riducendo il throughput globale.
+PostgreSQL usa un modello process-per-connection: ogni connessione client crea un backend. Troppe connessioni aumentano memoria, context switching e carico sul server.
 
----
+Un pooler mantiene un numero limitato di connessioni reali e le assegna ai client solo quando serve.
 
-##  Strumenti Principali
+PgBouncer e il pooler piu comune. In modalita transaction pooling, una connessione server viene restituita al pool alla fine della transazione.
 
-### 1. PgBouncer
-Il pooler più leggero e diffuso. Agisce come un proxy tra l'applicazione e Postgres.
-- **Session Pooling:** La connessione è assegnata al client per tutta la durata della sessione.
-- **Transaction Pooling:** (Il più comune) La connessione viene restituita al pool non appena finisce una transazione. Permette a migliaia di client di condividere poche decine di connessioni reali.
+## API / Sintassi
 
-### 2. pgcat
-Un pooler moderno scritto in Rust, progettato per gestire carichi massivi e offrire funzionalità avanzate come lo sharding e il bilanciamento del carico tra repliche.
+Esempio concettuale PgBouncer:
 
-### 3. Pooler Applicativi (es. HikariCP, Prisma, SQLAlchemy)
-Molti framework includono un pooler interno. Tuttavia, in architetture a microservizi, un pooler lato server (come PgBouncer) è spesso preferibile per centralizzare la gestione dei limiti.
+```ini
+[databases]
+app_db = host=127.0.0.1 port=5432 dbname=app_db
 
----
+[pgbouncer]
+listen_addr = 0.0.0.0
+listen_port = 6432
+pool_mode = transaction
+default_pool_size = 20
+max_client_conn = 1000
+```
 
-##  Modalità di Pooling (PgBouncer)
+Connection string verso PgBouncer:
 
-| Modalità | Quando usarla | Note |
-| :--- | :--- | :--- |
-| **Session** | App legacy o connessioni lunghe. | Poco efficiente per alte concorrenze. |
-| **Transaction** | **Best practice** per web app. | Non permette l'uso di `SET` o `LISTEN/NOTIFY` persistenti. |
-| **Statement** | Casi estremi. | Non permette transazioni multi-statement. |
+```text
+postgresql://app_user:secret@pgbouncer.internal:6432/app_db?sslmode=require
+```
 
----
+## Esempio pratico
 
-## Logic layer: Quando implementarlo?
+Web app con molte richieste:
 
-> [!TIP] Regola del Pollice
-> Se il numero di connessioni simultanee della tua applicazione supera regolarmente le 50-100, l'introduzione di **PgBouncer** porterà un miglioramento immediato delle performance e una riduzione del carico sulla CPU del server database.
+```text
+Client HTTP -> App -> PgBouncer:6432 -> PostgreSQL:5432
+```
 
----
+L'applicazione puo avere centinaia di client concorrenti, mentre PostgreSQL vede solo poche decine di connessioni reali.
+
+Con transaction pooling, evitare session state persistente:
+
+```sql
+-- Preferire SET LOCAL dentro transazione
+BEGIN;
+SET LOCAL statement_timeout = '5s';
+SELECT ...
+COMMIT;
+```
+
+## Varianti
+
+- Pool applicativo: integrato in driver/framework.
+- PgBouncer session pooling: una connessione server per sessione client.
+- PgBouncer transaction pooling: connessione server solo per transazione.
+- PgBouncer statement pooling: raramente usato, una connessione per statement.
+- Pooler lato infrastruttura: proxy condiviso tra servizi.
+
+## Errori comuni
+
+- Aumentare `max_connections` invece di ridurre connessioni reali.
+- Usare transaction pooling con feature che richiedono session state persistente.
+- Usare prepared statements lato sessione senza compatibilita col pooler.
+- Configurare pool troppo grandi in ogni microservizio.
+- Non impostare timeout e limiti.
+- Dimenticare che ogni connessione reale consuma memoria.
+
+## Checklist
+
+- Quante connessioni reali puo sostenere PostgreSQL?
+- Il pool applicativo e coordinato con PgBouncer?
+- La modalita `transaction` e compatibile con l'app?
+- Sono configurati timeout di idle e query?
+- Le metriche mostrano saturazione del pool?
+- Le connection string puntano al pooler dove previsto?
+
+## Collegamenti
+
+- [[Programmazione/Postgres/Pagine/Modello Client-Server|Modello Client-Server]]
+- [[Programmazione/Postgres/Pagine/Driver e connection string|Driver e connection string]]
+- [[Programmazione/Postgres/Pagine/Configurazione|Configurazione]]

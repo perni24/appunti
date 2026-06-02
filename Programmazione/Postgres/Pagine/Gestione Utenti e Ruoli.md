@@ -1,5 +1,5 @@
 ---
-date: 2026-05-14
+date: 2026-06-02
 area: Programmazione
 topic: PostgreSQL
 type: technical-note
@@ -10,107 +10,125 @@ aliases: [Gestione Utenti e Ruoli]
 prerequisites: []
 related: []
 ---
+
 # Gestione Utenti e Ruoli in PostgreSQL
 
 ## Sintesi
 
-Nota su Gestione Utenti e Ruoli in PostgreSQL. Riassume il concetto, i meccanismi principali e i punti da ricordare durante studio, progettazione o amministrazione.
+In PostgreSQL utenti e gruppi sono entrambi **ruoli**. Un ruolo con `LOGIN` puo connettersi; un ruolo senza `LOGIN` viene spesso usato come gruppo per aggregare permessi.
 
-## Concetto chiave
-In PostgreSQL, il concetto di "utente" e "gruppo" è unificato sotto l'entità chiamata **Role** (Ruolo). Un ruolo può essere pensato come un utente (se ha il permesso di login) o come un gruppo (se serve ad aggregare permessi da assegnare ad altri ruoli). Tutti i ruoli sono globali a livello di cluster.
+## Quando usarlo
 
----
+Usa questa nota quando devi creare accessi o separare privilegi:
 
-##  Creazione e Gestione dei Ruoli
+- utente applicativo;
+- utente read-only;
+- ruolo per migrazioni;
+- ruoli umani per amministrazione;
+- gruppi di permessi;
+- revoca di privilegi troppo ampi.
 
-### 1. Creare un Ruolo
-Il comando `CREATE ROLE` definisce una nuova entità. Per rendere il ruolo un vero "utente", occorre aggiungere l'attributo `LOGIN`.
+## Come funziona
+
+I ruoli sono globali nel cluster PostgreSQL. I privilegi sugli oggetti sono invece legati a database, schema, tabelle, sequenze, funzioni e altri oggetti.
+
+Una buona configurazione separa:
+
+- owner degli oggetti;
+- ruolo runtime dell'applicazione;
+- ruoli di lettura;
+- ruoli per migrazioni;
+- ruoli amministrativi.
+
+Il principio guida e il least privilege: ogni ruolo deve avere solo i permessi necessari.
+
+## API / Sintassi
+
+Creare un ruolo utente:
 
 ```sql
-# Gestione Utenti e Ruoli in PostgreSQL
-
-## Sintesi
-
-Nota su Gestione Utenti e Ruoli in PostgreSQL. Riassume il concetto, i meccanismi principali e i punti da ricordare durante studio, progettazione o amministrazione.
-CREATE ROLE luca WITH LOGIN PASSWORD 'strong_password';
-
-# Gestione Utenti e Ruoli in PostgreSQL
-
-## Sintesi
-
-Nota su Gestione Utenti e Ruoli in PostgreSQL. Riassume il concetto, i meccanismi principali e i punti da ricordare durante studio, progettazione o amministrazione.
-CREATE ROLE developers;
+CREATE ROLE app_user
+WITH LOGIN PASSWORD 'change_me';
 ```
 
-### 2. Attributi del Ruolo
-Gli attributi definiscono i poteri amministrativi del ruolo:
-- **`SUPERUSER`**: Può fare tutto, ignorando ogni controllo di permesso.
-- **`CREATEDB`**: Può creare nuovi database.
-- **`CREATEROLE`**: Può creare, modificare o eliminare altri ruoli.
-- **`REPLICATION`**: Necessario per compiti di replicazione fisica.
+Creare un ruolo gruppo:
 
 ```sql
-# Gestione Utenti e Ruoli in PostgreSQL
-
-## Sintesi
-
-Nota su Gestione Utenti e Ruoli in PostgreSQL. Riassume il concetto, i meccanismi principali e i punti da ricordare durante studio, progettazione o amministrazione.
-ALTER ROLE luca CREATEDB;
+CREATE ROLE app_readonly;
 ```
 
----
-
-##  Gestione dei Permessi (Privileges)
-
-Postgres utilizza i comandi `GRANT` e `REVOKE` per gestire l'accesso agli oggetti (tabelle, schemi, sequenze).
-
-### 1. Assegnare permessi su una tabella
-```sql
-# Gestione Utenti e Ruoli in PostgreSQL
-
-## Sintesi
-
-Nota su Gestione Utenti e Ruoli in PostgreSQL. Riassume il concetto, i meccanismi principali e i punti da ricordare durante studio, progettazione o amministrazione.
-GRANT SELECT, INSERT, UPDATE ON TABLE vendite TO developers;
-
-# Gestione Utenti e Ruoli in PostgreSQL
-
-## Sintesi
-
-Nota su Gestione Utenti e Ruoli in PostgreSQL. Riassume il concetto, i meccanismi principali e i punti da ricordare durante studio, progettazione o amministrazione.
-REVOKE UPDATE ON TABLE vendite FROM developers;
-```
-
-### 2. Ereditarietà dei Ruoli
-È possibile assegnare un ruolo a un altro ruolo. Il ruolo "membro" eredita i permessi del ruolo "padre".
+Assegnare membership:
 
 ```sql
-# Gestione Utenti e Ruoli in PostgreSQL
-
-## Sintesi
-
-Nota su Gestione Utenti e Ruoli in PostgreSQL. Riassume il concetto, i meccanismi principali e i punti da ricordare durante studio, progettazione o amministrazione.
-GRANT developers TO luca;
+GRANT app_readonly TO analyst_user;
 ```
 
----
+Permessi su schema e tabelle:
 
-## Logic layer: Public Schema e Default Privileges
+```sql
+GRANT USAGE ON SCHEMA public TO app_readonly;
+GRANT SELECT ON ALL TABLES IN SCHEMA public TO app_readonly;
+```
 
-Per impostazione predefinita, molti database hanno lo schema `public` dove il ruolo speciale `PUBLIC` (tutti gli utenti) ha permessi di creazione. È una buona pratica di sicurezza revocare questi permessi per implementare un controllo granulare.
+Revoca:
 
-> [!IMPORTANT] Default Privileges
-> Se vuoi che i nuovi oggetti creati in futuro abbiano automaticamente certi permessi, usa `ALTER DEFAULT PRIVILEGES`:
-> ```sql
-> ALTER DEFAULT PRIVILEGES IN SCHEMA sales 
-> GRANT SELECT ON TABLES TO report_user;
-> ```
+```sql
+REVOKE CREATE ON SCHEMA public FROM PUBLIC;
+```
 
----
+## Esempio pratico
 
-##  Best Practices
-- **Least Privilege**: Assegna solo i permessi strettamente necessari. Non usare `SUPERUSER` per le applicazioni.
-- **Usa i Gruppi**: Invece di assegnare permessi a ogni singolo utente, crea dei ruoli di gruppo (es. `readonly`, `readwrite`) e assegna gli utenti a questi gruppi.
-- **Password**: Assicurati che `pg_hba.conf` richieda metodi di autenticazione sicuri come `scram-sha-256`.
+Ruolo applicativo con lettura e scrittura limitata:
 
----
+```sql
+CREATE ROLE app_runtime WITH LOGIN PASSWORD 'change_me';
+
+GRANT CONNECT ON DATABASE app_db TO app_runtime;
+GRANT USAGE ON SCHEMA public TO app_runtime;
+GRANT SELECT, INSERT, UPDATE, DELETE ON ALL TABLES IN SCHEMA public TO app_runtime;
+GRANT USAGE, SELECT ON ALL SEQUENCES IN SCHEMA public TO app_runtime;
+```
+
+Default privileges per nuove tabelle:
+
+```sql
+ALTER DEFAULT PRIVILEGES IN SCHEMA public
+GRANT SELECT, INSERT, UPDATE, DELETE ON TABLES TO app_runtime;
+
+ALTER DEFAULT PRIVILEGES IN SCHEMA public
+GRANT USAGE, SELECT ON SEQUENCES TO app_runtime;
+```
+
+## Varianti
+
+- `LOGIN`: ruolo che puo autenticarsi.
+- `NOLOGIN`: ruolo gruppo o owner tecnico.
+- `SUPERUSER`: bypassa quasi tutti i controlli, da evitare per applicazioni.
+- `CREATEDB`: puo creare database.
+- `CREATEROLE`: puo gestire altri ruoli.
+- `REPLICATION`: usato per replica fisica.
+- Role membership: assegna permessi tramite gruppi.
+
+## Errori comuni
+
+- Usare `postgres` o un owner come utente applicativo.
+- Dare `SUPERUSER` per risolvere problemi di permessi.
+- Dimenticare `USAGE` sulle sequenze.
+- Dimenticare `USAGE` sullo schema.
+- Lasciare `CREATE` sullo schema `public` a `PUBLIC`.
+- Assegnare permessi a singoli utenti invece che a ruoli gruppo.
+
+## Checklist
+
+- L'applicazione usa un ruolo non owner?
+- I permessi sono assegnati tramite gruppi?
+- `PUBLIC` ha solo privilegi intenzionali?
+- Le sequenze hanno privilegi corretti?
+- I nuovi oggetti ricevono default privileges coerenti?
+- Nessun ruolo applicativo e `SUPERUSER`?
+
+## Collegamenti
+
+- [[Programmazione/Postgres/Pagine/Ruoli e privilegi avanzati|Ruoli e privilegi avanzati]]
+- [[Programmazione/Postgres/Pagine/Row Level Security|Row Level Security]]
+- [[Programmazione/Postgres/Pagine/Secret management|Secret management]]

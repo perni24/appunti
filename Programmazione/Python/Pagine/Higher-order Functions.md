@@ -1,5 +1,5 @@
----
-date: 2026-05-14
+﻿---
+date: 2026-06-02
 area: Programmazione
 topic: Python
 type: technical-note
@@ -10,21 +10,59 @@ aliases: [Higher-order Functions (HOF)]
 prerequisites: []
 related: []
 ---
+
 # Higher-order Functions (HOF) in Python
 
 ## Sintesi
 
 Nota su Higher-order Functions (HOF) in Python. Riassume il concetto, la sintassi principale e i punti da ricordare durante studio, sviluppo o debugging.
+Nota su Higher-order Functions (HOF) in Python. Riassume il concetto, la sintassi principale e i punti da ricordare durante studio, sviluppo o debugging.
+maiuscoli = list(map(str.upper, nomi))
 
-## Concetto chiave
+# Higher-order Functions (HOF) in Python
+Nota su Higher-order Functions (HOF) in Python. Riassume il concetto, la sintassi principale e i punti da ricordare durante studio, sviluppo o debugging.
+dispari = list(filter(lambda x: x % 2 != 0, numeri))
+
+# Higher-order Functions (HOF) in Python
+Nota su Higher-order Functions (HOF) in Python. Riassume il concetto, la sintassi principale e i punti da ricordare durante studio, sviluppo o debugging.
+somma_totale = reduce(lambda x, y: x + y, numeri) # 15
+```
+
+---
+
+## Quando usarlo
+
+Contenuto da sviluppare: nella nota originale questa sezione non era presente o era solo una traccia.
+
+## Come funziona
+
+### Concetto chiave
 In Python, le funzioni sono **oggetti di prima classe** (*first-class citizens*). Questo significa che possono essere passate come argomenti ad altre funzioni, restituite da funzioni e assegnate a variabili. Una **Higher-order Function** è una funzione che soddisfa almeno una di queste condizioni:
 1. Accetta una o più funzioni come parametri.
 2. Restituisce una funzione come risultato.
 
 ---
+### HOF Integrate nel Linguaggio
+### Map, Filter e Reduce
+Python offre diverse HOF integrate (anche se spesso sostituibili dalle *List Comprehensions*).
 
-##  Sintassi ed Esempi Fondamentali
+```python
+from functools import reduce
 
+nomi = ["anna", "luca", "marco"]
+numeri = [1, 2, 3, 4, 5]
+
+# Higher-order Functions (HOF) in Python
+### Funzionamento Interno (Teoria)
+- **Modularià:** Le HOF permettono di separare la *logica di iterazione* dalla *logica di elaborazione*.
+- **Closures:** Quando una funzione restituisce un'altra funzione, quest'ultima "ricorda" lo scope in cui è stata creata (le variabili locali della funzione esterna).
+- **Functools:** Il modulo `functools` contiene utility avanzate per HOF, come `partial` (per fissare alcuni argomenti di una funzione) e `lru_cache` (per la memoizzazione).
+
+---
+
+## API / Sintassi
+
+### Sintassi ed Esempi Fondamentali
 ### 1. Funzioni come Argomenti
 L'esempio più comune è l'uso di callback o trasformazioni.
 
@@ -53,52 +91,28 @@ print(triplica(10)) # Output: 30
 
 ---
 
-##  HOF Integrate nel Linguaggio
+## Esempio pratico
 
-### Map, Filter e Reduce
-Python offre diverse HOF integrate (anche se spesso sostituibili dalle *List Comprehensions*).
+Contenuto da sviluppare: nella nota originale questa sezione non era presente o era solo una traccia.
 
-```python
-from functools import reduce
+## Varianti
 
-nomi = ["anna", "luca", "marco"]
-numeri = [1, 2, 3, 4, 5]
+Contenuto da sviluppare: nella nota originale questa sezione non era presente o era solo una traccia.
 
-# Higher-order Functions (HOF) in Python
+## Errori comuni
 
-## Sintesi
-
-Nota su Higher-order Functions (HOF) in Python. Riassume il concetto, la sintassi principale e i punti da ricordare durante studio, sviluppo o debugging.
-maiuscoli = list(map(str.upper, nomi))
-
-# Higher-order Functions (HOF) in Python
-
-## Sintesi
-
-Nota su Higher-order Functions (HOF) in Python. Riassume il concetto, la sintassi principale e i punti da ricordare durante studio, sviluppo o debugging.
-dispari = list(filter(lambda x: x % 2 != 0, numeri))
-
-# Higher-order Functions (HOF) in Python
-
-## Sintesi
-
-Nota su Higher-order Functions (HOF) in Python. Riassume il concetto, la sintassi principale e i punti da ricordare durante studio, sviluppo o debugging.
-somma_totale = reduce(lambda x, y: x + y, numeri) # 15
-```
-
----
-
-##  Funzionamento Interno (Teoria)
-- **Modularià:** Le HOF permettono di separare la *logica di iterazione* dalla *logica di elaborazione*.
-- **Closures:** Quando una funzione restituisce un'altra funzione, quest'ultima "ricorda" lo scope in cui è stata creata (le variabili locali della funzione esterna).
-- **Functools:** Il modulo `functools` contiene utility avanzate per HOF, come `partial` (per fissare alcuni argomenti di una funzione) e `lru_cache` (per la memoizzazione).
-
----
-
-##  Best Practices & "Gotchas"
+### Best Practices & "Gotchas"
 -  **Composizione:** Usa le HOF per scrivere codice più generico e riutilizzabile.
 -  **Eccesso di Astrazione:** Non creare HOF troppo nidificate; possono rendere il debugging e la lettura del codice molto difficili.
 -  **Preferenza Pythonica:** Per `map` e `filter` semplici, in Python è spesso considerata più leggibile una **List Comprehension**:
   - `[x**2 for x in lista]` è preferito a `list(map(lambda x: x**2, lista))`.
 
 ---
+
+## Checklist
+
+Contenuto da sviluppare: nella nota originale questa sezione non era presente o era solo una traccia.
+
+## Collegamenti
+
+- [[Programmazione/Python/Indice python|Indice Python]]

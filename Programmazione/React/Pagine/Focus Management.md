@@ -1,5 +1,5 @@
----
-date: 2026-05-14
+﻿---
+date: 2026-06-02
 area: Programmazione
 topic: React
 type: technical-note
@@ -10,6 +10,7 @@ aliases: [Focus Management]
 prerequisites: []
 related: []
 ---
+
 # Focus Management
 
 ## Sintesi
@@ -25,8 +26,13 @@ In React questo tema e centrale per l'accessibilita, perche componenti complessi
 
 ---
 
-## 1. Cos'e il focus
+## Quando usarlo
 
+Contenuto da sviluppare: nella nota originale questa sezione non era presente o era solo una traccia.
+
+## Come funziona
+
+### 1. Cos'e il focus
 Il **focus** indica quale elemento interattivo sta ricevendo input dalla tastiera in quel momento.
 
 Esempi:
@@ -42,9 +48,7 @@ Se il focus non viene gestito bene, l'utente puo:
 - restare bloccato in overlay o sezioni non piu visibili.
 
 ---
-
-## 2. Perche e importante in React
-
+### 2. Perche e importante in React
 React aggiorna il DOM dinamicamente:
 - componenti montati o smontati;
 - contenuti che compaiono dopo un click;
@@ -63,9 +67,7 @@ Il risultato e che il focus puo:
 Per questo il focus management e spesso responsabilita esplicita dello sviluppatore.
 
 ---
-
-## 3. Focus naturale vs focus gestito
-
+### 3. Focus naturale vs focus gestito
 ### Focus naturale
 Il browser segue l'ordine del DOM e la semantica nativa.
 
@@ -87,9 +89,7 @@ Casi tipici:
 La regola pratica e: lascia al browser il piu possibile, intervieni solo quando il comportamento naturale non risolve bene il caso.
 
 ---
-
-## 4. useRef e focus imperativo
-
+### 4. useRef e focus imperativo
 In React il modo piu comune per gestire il focus e usare [[Programmazione/React/Pagine/useRef]].
 
 Esempio:
@@ -118,9 +118,7 @@ Questo approccio e utile quando devi spostare il focus in modo esplicito in risp
 - cambio di stato UI.
 
 ---
-
-## 5. Focus iniziale
-
+### 5. Focus iniziale
 Quando un componente importante appare, spesso serve decidere dove mettere il focus iniziale.
 
 Esempi:
@@ -153,9 +151,7 @@ function Modal({ isOpen }) {
 Il focus iniziale aiuta l'utente a capire immediatamente dove si trova.
 
 ---
-
-## 6. Focus trap
-
+### 6. Focus trap
 Una modal accessibile non dovrebbe permettere al focus di uscire dal dialog mentre e aperta.
 
 Questo comportamento si chiama **focus trap**.
@@ -170,9 +166,7 @@ Questa parte non viene risolta da ARIA da sola. Richiede logica reale di tastier
 Si collega direttamente a [[Programmazione/React/Pagine/WAI-ARIA]] e [[Programmazione/React/Pagine/Portals]].
 
 ---
-
-## 7. Ritorno del focus
-
+### 7. Ritorno del focus
 Quando chiudi un overlay o una modal, il focus dovrebbe tornare all'elemento che aveva attivato l'apertura.
 
 Esempio tipico:
@@ -189,9 +183,7 @@ Questo e importante per:
 Se il focus non torna in un punto logico, l'utente puo perdere il contesto.
 
 ---
-
-## 8. Focus e validazione form
-
+### 8. Focus e validazione form
 Nei form, il focus management e molto utile quando il submit fallisce.
 
 Pattern frequente:
@@ -205,9 +197,7 @@ Questo rende piu facile correggere il problema, specialmente per utenti tastiera
 Si collega bene a [[Programmazione/React/Pagine/Gestione Moduli]] e [[Programmazione/React/Pagine/WAI-ARIA]].
 
 ---
-
-## 9. Navigazione da tastiera
-
+### 9. Navigazione da tastiera
 Il focus management e strettamente legato alla navigazione da tastiera.
 
 Controlli base da rispettare:
@@ -231,9 +221,7 @@ Questo rompe:
 Meglio usare elementi nativi o implementare completamente il comportamento necessario.
 
 ---
-
-## 10. Focus visibile
-
+### 10. Focus visibile
 Gestire il focus non significa solo spostarlo. Significa anche rendere visibile dove si trova.
 
 Problemi comuni:
@@ -249,9 +237,7 @@ Una buona UI deve mostrare chiaramente:
 Togliere l'outline senza sostituirla con un'alternativa equivalente e un anti-pattern.
 
 ---
-
-## 11. Componenti dinamici
-
+### 11. Componenti dinamici
 Il focus management diventa piu delicato in componenti dinamici:
 - dropdown custom;
 - combobox;
@@ -269,23 +255,7 @@ In questi casi bisogna progettare:
 Se il comportamento non e definito in modo esplicito, il componente rischia di essere usabile solo col mouse.
 
 ---
-
-## 12. Errori comuni
-
-Errori frequenti:
-- aprire una modal senza spostare il focus dentro;
-- chiudere una modal senza restituire il focus;
-- usare elementi non focussabili come controlli interattivi;
-- rimuovere l'outline di focus;
-- lasciare il focus su elementi nascosti o smontati;
-- gestire ARIA ma non il comportamento tastiera reale.
-
-Questi bug spesso non si notano con il mouse, ma emergono subito con tastiera e screen reader.
-
----
-
-## 13. Relazione con React
-
+### 13. Relazione con React
 Il focus management si collega bene a:
 - [[Programmazione/React/Pagine/WAI-ARIA]] per ruoli, stati e descrizioni corrette;
 - [[Programmazione/React/Pagine/Portals]] per modal e overlay;
@@ -302,8 +272,36 @@ Se uno di questi aspetti resta indietro rispetto agli altri, l'esperienza tastie
 
 ---
 
-## 14. Best Practices
+## API / Sintassi
 
+Contenuto da sviluppare: nella nota originale questa sezione non era presente o era solo una traccia.
+
+## Esempio pratico
+
+Contenuto da sviluppare: nella nota originale questa sezione non era presente o era solo una traccia.
+
+## Varianti
+
+Contenuto da sviluppare: nella nota originale questa sezione non era presente o era solo una traccia.
+
+## Errori comuni
+
+### 12. Errori comuni
+Errori frequenti:
+- aprire una modal senza spostare il focus dentro;
+- chiudere una modal senza restituire il focus;
+- usare elementi non focussabili come controlli interattivi;
+- rimuovere l'outline di focus;
+- lasciare il focus su elementi nascosti o smontati;
+- gestire ARIA ma non il comportamento tastiera reale.
+
+Questi bug spesso non si notano con il mouse, ma emergono subito con tastiera e screen reader.
+
+---
+
+## Checklist
+
+### 14. Best Practices
 1. **Affidati al focus naturale del browser quando basta:** HTML semantico corretto risolve gia molti problemi.
 2. **Gestisci esplicitamente focus iniziale e ritorno del focus per overlay e modal:** sono i casi piu importanti.
 3. **Usa `useRef` per spostare il focus in modo mirato:** evita soluzioni fragili o troppo indirette.
@@ -312,3 +310,7 @@ Se uno di questi aspetti resta indietro rispetto agli altri, l'esperienza tastie
 6. **Testa l'interfaccia solo con tastiera:** e il modo piu rapido per individuare problemi reali di focus management.
 
 ---
+
+## Collegamenti
+
+- [[Programmazione/React/Indice react|Indice React]]

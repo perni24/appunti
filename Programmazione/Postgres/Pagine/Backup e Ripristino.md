@@ -1,5 +1,5 @@
 ---
-date: 2026-05-14
+date: 2026-06-02
 area: Programmazione
 topic: PostgreSQL
 type: technical-note
@@ -10,80 +10,122 @@ aliases: [Backup e Ripristino]
 prerequisites: []
 related: []
 ---
+
 # Backup e Ripristino in PostgreSQL
 
 ## Sintesi
 
-Nota su Backup e Ripristino in PostgreSQL. Riassume il concetto, i meccanismi principali e i punti da ricordare durante studio, progettazione o amministrazione.
+Il backup protegge i dati da errori umani, guasti, deploy sbagliati e perdita del server. In PostgreSQL le strategie principali sono dump logici, backup fisici e Point-In-Time Recovery tramite archiviazione dei WAL.
 
-## Concetto chiave
-La strategia di backup in PostgreSQL si divide principalmente in tre categorie: **SQL Dump** (logico), **File System Level Backup** (fisico) e **Continuous Archiving** (PITR). La scelta dipende dalla dimensione del database e dal tempo di ripristino accettabile (RTO).
+## Quando usarlo
 
----
+Usa questa nota quando devi progettare o verificare una strategia di backup:
 
-##  Backup Logico (SQL Dump)
-Crea un file di testo (o un formato compresso) contenente i comandi SQL necessari per ricostruire il database.
+- esportare un database per migrazione o test;
+- ripristinare una tabella o un database;
+- proteggere un ambiente di produzione;
+- definire RPO e RTO;
+- testare procedure di disaster recovery;
+- scegliere tra `pg_dump`, `pg_basebackup`, Barman o pgBackRest.
 
-### 1. `pg_dump`
-Esegue il backup di un singolo database. Non blocca i lettori o gli scrittori (grazie a MVCC).
+## Come funziona
+
+Il backup logico esporta schema e dati in forma SQL o in un formato ripristinabile con `pg_restore`. E flessibile, ma puo essere lento su database grandi.
+
+Il backup fisico copia i file del cluster PostgreSQL. E adatto a database grandi e viene spesso combinato con archiviazione WAL per il Point-In-Time Recovery.
+
+Il PITR combina:
+
+- base backup;
+- archiviazione continua dei WAL;
+- ripristino fino a un timestamp, un LSN o un restore point.
+
+Un backup non testato non e affidabile: la prova di restore e parte della strategia, non un controllo opzionale.
+
+## API / Sintassi
+
+Dump logico plain SQL:
+
 ```bash
-# Backup e Ripristino in PostgreSQL
-
-## Sintesi
-
-Nota su Backup e Ripristino in PostgreSQL. Riassume il concetto, i meccanismi principali e i punti da ricordare durante studio, progettazione o amministrazione.
-pg_dump mio_db > backup.sql
-
-# Backup e Ripristino in PostgreSQL
-
-## Sintesi
-
-Nota su Backup e Ripristino in PostgreSQL. Riassume il concetto, i meccanismi principali e i punti da ricordare durante studio, progettazione o amministrazione.
-pg_dump -Fd mio_db -j 4 -f /percorso/directory_backup
+pg_dump app_db > app_db.sql
+psql restored_db < app_db.sql
 ```
 
-### 2. `pg_dumpall`
-Esegue il backup di tutti i database del cluster, inclusi i ruoli e i tablespace globali.
+Dump custom:
+
 ```bash
-pg_dumpall > cluster_backup.sql
+pg_dump -Fc app_db -f app_db.dump
+pg_restore -d restored_db app_db.dump
 ```
 
----
+Dump directory parallelo:
 
-##  Ripristino (Restore)
-A seconda del formato del dump, si usano tool diversi:
+```bash
+pg_dump -Fd app_db -j 4 -f app_db_dump_dir
+pg_restore -d restored_db -j 4 app_db_dump_dir
+```
 
-| Formato Dump | Tool di Ripristino | Comando |
-| :--- | :--- | :--- |
-| Testo (Plain SQL) | `psql` | `psql db_nuovo < backup.sql` |
-| Custom / Directory / Tar | `pg_restore` | `pg_restore -d db_nuovo backup.dump` |
+Cluster globale:
 
-> [!TIP] Vantaggi di pg_restore
-> Il tool `pg_restore` permette di selezionare solo alcune tabelle dal backup, di cambiare proprietario agli oggetti e di eseguire il ripristino in parallelo (`-j`).
+```bash
+pg_dumpall --globals-only > globals.sql
+```
 
----
+Base backup fisico:
 
-## Logic layer: Continuous Archiving e PITR
+```bash
+pg_basebackup -D /backup/base -Fp -Xs -P
+```
 
-Per database di grandi dimensioni o critici, si utilizza il **Point-In-Time Recovery**. 
-Si basa sulla combinazione di:
-1.  **Base Backup**: Una copia fisica dei file di dati (usando `pg_basebackup`).
-2.  **WAL Archiving**: Il salvataggio continuo dei file WAL generati.
+## Esempio pratico
 
-Questo permette di ripristinare il database a un qualsiasi istante temporale passato (es. un secondo prima di un errore umano).
+Backup e restore di test:
 
----
+```bash
+createdb restored_app_db
+pg_dump -Fc app_db -f app_db.dump
+pg_restore --clean --if-exists -d restored_app_db app_db.dump
+```
 
-##  Tool di Manutenzione Avanzata
-Per gestire cicli di backup complessi in modo automatico, la comunità Postgres consiglia:
-- **Barman** (Backup and Recovery Manager): Ideale per archiviare WAL in remoto.
-- **pgBackRest**: Estremamente veloce, supporta compressione, backup incrementali e delta restore.
+Verifica minima dopo il restore:
 
----
+```sql
+SELECT count(*) FROM users;
+SELECT count(*) FROM orders;
+```
 
-##  Best Practices
-- **Test di ripristino**: Un backup non testato è un backup che potrebbe non esistere. Esegui regolarmente prove di restore su un server di test.
-- **Distanza fisica**: Archivia i backup su un server o storage diverso da quello di produzione (off-site).
-- **Monitoraggio**: Controlla sempre i log dei job di backup per individuare errori di spazio su disco o permessi.
+Per ambienti critici, il test deve includere anche utenti, estensioni, permessi, job applicativi e query principali.
 
----
+## Varianti
+
+- `pg_dump`: backup logico di un database.
+- `pg_dumpall`: backup globale, utile per ruoli e tablespace.
+- `pg_restore`: ripristino di dump custom, tar o directory.
+- `pg_basebackup`: backup fisico del cluster.
+- PITR: restore a un punto temporale specifico.
+- Barman: gestione backup e WAL archiving.
+- pgBackRest: backup compressi, incrementali e restore efficienti.
+
+## Errori comuni
+
+- Fare backup ma non provare mai il ripristino.
+- Salvare backup sullo stesso disco del database.
+- Dimenticare ruoli, permessi o estensioni.
+- Usare solo dump logici su database troppo grandi per il tempo di restore richiesto.
+- Non monitorare esito, dimensione e durata dei job.
+- Non definire RPO e RTO.
+
+## Checklist
+
+- Esiste una politica chiara di retention?
+- I backup sono salvati fuori dal server principale?
+- Il restore e stato testato recentemente?
+- Sono inclusi ruoli, permessi, estensioni e schema?
+- Per produzione critica esiste PITR?
+- I job di backup sono monitorati e generano alert?
+
+## Collegamenti
+
+- [[Programmazione/Postgres/Pagine/Write-Ahead Logging|Write-Ahead Logging]]
+- [[Programmazione/Postgres/Pagine/Replicazione Fisica|Replicazione Fisica]]
+- [[Programmazione/Postgres/Pagine/Manutenzione|Manutenzione]]

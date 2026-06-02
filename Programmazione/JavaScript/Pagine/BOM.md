@@ -1,5 +1,5 @@
----
-date: 2026-05-13
+﻿---
+date: 2026-06-02
 area: Programmazione
 topic: JavaScript
 type: technical-note
@@ -21,8 +21,23 @@ Non e parte del DOM, ma lavora accanto al DOM nelle applicazioni browser.
 
 ---
 
-## `window`
+## Quando usarlo
 
+Usa il BOM quando devi interagire con funzionalita del browser che non riguardano direttamente i nodi HTML.
+
+Casi comuni:
+
+- leggere o modificare l'URL corrente;
+- gestire navigazione e cronologia;
+- rilevare dimensioni della finestra;
+- usare timer;
+- accedere a informazioni di lingua, connessione o capability del browser.
+
+Per modificare contenuto della pagina usa invece il DOM.
+
+## Come funziona
+
+### `window`
 `window` e l'oggetto globale del browser.
 
 ```js
@@ -33,9 +48,7 @@ console.log(window.location.href);
 Variabili globali dichiarate con `var` in script classici possono diventare proprieta di `window`.
 
 ---
-
-## `location`
-
+### `location`
 `location` descrive e modifica l'URL corrente.
 
 ```js
@@ -47,9 +60,7 @@ console.log(location.search);
 Cambiare `location.href` naviga verso un'altra pagina.
 
 ---
-
-## `history`
-
+### `history`
 `history` permette di navigare e modificare la cronologia della sessione.
 
 ```js
@@ -60,9 +71,7 @@ history.back();
 Le SPA usano spesso History API per routing client-side.
 
 ---
-
-## `navigator`
-
+### `navigator`
 `navigator` espone informazioni e capability del browser.
 
 ```js
@@ -74,9 +83,7 @@ console.log(navigator.onLine);
 Non usare `userAgent` come unica fonte affidabile per feature detection.
 
 ---
-
-## Timer
-
+### Timer
 Timer come `setTimeout` e `setInterval` sono API del runtime browser.
 
 ```js
@@ -89,6 +96,52 @@ clearTimeout(id);
 
 ---
 
+## API / Sintassi
+
+Oggetti e API comuni:
+
+```js
+window.innerWidth;
+window.innerHeight;
+
+location.href;
+location.pathname;
+location.search;
+
+history.pushState({}, "", "/settings");
+history.replaceState({}, "", "/profile");
+
+navigator.language;
+navigator.onLine;
+
+setTimeout(callback, 1000);
+setInterval(callback, 1000);
+```
+
+Molte API BOM sono disponibili come globali, ma scrivere `window.location` o `window.setTimeout` puo rendere piu esplicito che dipendono dal browser.
+
+## Esempio pratico
+
+Aggiornare una query string senza ricaricare la pagina:
+
+```js
+const url = new URL(window.location.href);
+url.searchParams.set("tab", "settings");
+
+history.pushState({ tab: "settings" }, "", url);
+```
+
+Questo pattern e utile in filtri, tab e routing client-side.
+
+## Varianti
+
+- **Window API**: dimensioni, scroll, eventi globali.
+- **Location API**: lettura e modifica dell'URL.
+- **History API**: navigazione e routing client-side.
+- **Navigator API**: informazioni e capability dell'ambiente.
+- **Screen API**: informazioni sullo schermo.
+- **Timer API**: scheduling con timeout e interval.
+
 ## Errori comuni
 
 - Confondere DOM e BOM.
@@ -99,8 +152,9 @@ clearTimeout(id);
 
 ---
 
-## Checklist operativa
+## Checklist
 
+### Checklist operativa
 - Usa feature detection invece di sniffing del browser.
 - Pulisci timer quando non servono.
 - Usa History API per routing SPA.

@@ -1,5 +1,5 @@
----
-date: 2026-05-13
+﻿---
+date: 2026-06-02
 area: Programmazione
 topic: JavaScript
 type: technical-note
@@ -13,6 +13,9 @@ related: [Classi, Manipolazione del DOM, Gestione Eventi]
 
 # Web Components
 
+## Sintesi
+
+### Testo introduttivo
 I **Web Components** sono un insieme di API native del browser per creare componenti riutilizzabili, incapsulati e indipendenti da framework.
 
 Le tre tecnologie principali sono:
@@ -23,8 +26,23 @@ Le tre tecnologie principali sono:
 
 ---
 
-## 1. Perche usare Web Components
+## Quando usarlo
 
+Usa Web Components quando vuoi creare componenti riusabili basati su standard browser, indipendenti da un framework specifico.
+
+Casi adatti:
+
+- design system condivisi tra framework diversi;
+- widget embeddabili;
+- componenti isolati;
+- librerie UI framework-agnostic;
+- integrazione in pagine legacy.
+
+Evitali se il progetto e gia completamente legato a un framework che offre un modello componenti sufficiente.
+
+## Come funziona
+
+### 1. Perche usare Web Components
 I Web Components servono quando vuoi creare elementi UI riutilizzabili senza dipendere da React, Vue, Angular o altri framework.
 
 Sono utili per:
@@ -38,9 +56,7 @@ Sono utili per:
 Non sostituiscono sempre un framework, ma offrono una base standard per componenti portabili.
 
 ---
-
-## 2. Custom Elements
-
+### 2. Custom Elements
 I Custom Elements permettono di creare nuovi tag HTML.
 
 Un nome di custom element deve contenere almeno un trattino.
@@ -79,9 +95,7 @@ Uso:
 Quando il browser incontra `<user-card>`, crea una istanza della classe associata.
 
 ---
-
-## 3. Lifecycle dei Custom Elements
-
+### 3. Lifecycle dei Custom Elements
 Un custom element puo definire metodi lifecycle.
 
 ```js
@@ -112,9 +126,7 @@ I callback principali sono:
 - `attributeChangedCallback()`: chiamato quando un attributo osservato cambia.
 
 ---
-
-## 4. Attributi osservati
-
+### 4. Attributi osservati
 Per reagire ai cambiamenti degli attributi bisogna dichiarare `observedAttributes`.
 
 ```js
@@ -151,9 +163,7 @@ Uso:
 Se `name` o `role` cambiano, `attributeChangedCallback()` viene eseguito.
 
 ---
-
-## 5. Properties vs attributes
-
+### 5. Properties vs attributes
 Gli attributi sono stringhe presenti nell'HTML.
 
 ```html
@@ -177,9 +187,7 @@ Regola pratica:
 - usa proprieta per oggetti, array, funzioni o dati complessi.
 
 ---
-
-## 6. Shadow DOM
-
+### 6. Shadow DOM
 Lo Shadow DOM crea un albero DOM separato e incapsulato dentro un elemento.
 
 ```js
@@ -221,9 +229,7 @@ Lo stile definito nello Shadow DOM non si applica automaticamente al resto della
 Allo stesso modo, molti stili globali della pagina non entrano automaticamente nel componente.
 
 ---
-
-## 7. Shadow root open e closed
-
+### 7. Shadow root open e closed
 `attachShadow()` accetta una modalita.
 
 ```js
@@ -249,9 +255,7 @@ In pratica, `open` e piu comune per debug, test e interoperabilita.
 `closed` non deve essere considerato una protezione di sicurezza forte.
 
 ---
-
-## 8. Slot
-
+### 8. Slot
 Gli slot permettono di inserire contenuto esterno dentro lo Shadow DOM.
 
 ```js
@@ -288,9 +292,7 @@ Uso:
 Lo slot senza nome riceve il contenuto non assegnato ad altri slot.
 
 ---
-
-## 9. Template HTML
-
+### 9. Template HTML
 Il tag `<template>` contiene markup che il browser non renderizza subito.
 
 ```html
@@ -321,9 +323,7 @@ document.body.append(clone);
 Nei Web Components, i template aiutano a separare markup e logica.
 
 ---
-
-## 10. Template dentro un componente
-
+### 10. Template dentro un componente
 Esempio completo con template e Shadow DOM.
 
 ```html
@@ -384,9 +384,7 @@ Uso:
 ```
 
 ---
-
-## 11. Eventi nei Web Components
-
+### 11. Eventi nei Web Components
 Un componente puo emettere eventi custom.
 
 ```js
@@ -423,9 +421,7 @@ document.querySelector("app-toggle").addEventListener("toggle-change", event => 
 Gli eventi custom sono il modo principale per comunicare dal componente verso l'esterno.
 
 ---
-
-## 12. Eventi e Shadow DOM
-
+### 12. Eventi e Shadow DOM
 Quando un evento attraversa uno Shadow DOM, il browser puo modificarne il target visibile all'esterno.
 
 Per far uscire un evento da uno Shadow DOM, spesso serve `composed: true`.
@@ -445,9 +441,7 @@ Significato:
 Senza `composed: true`, alcuni eventi custom restano confinati nello Shadow DOM.
 
 ---
-
-## 13. Stili nello Shadow DOM
-
+### 13. Stili nello Shadow DOM
 Lo Shadow DOM isola gli stili, ma esistono modi controllati per personalizzare un componente.
 
 ### CSS custom properties
@@ -492,9 +486,7 @@ app-button::part(button) {
 `::part()` permette personalizzazione controllata senza esporre tutta la struttura interna.
 
 ---
-
-## 14. Form-associated custom elements
-
+### 14. Form-associated custom elements
 Alcuni custom elements possono integrarsi con i form usando la Form-associated Custom Elements API.
 
 ```js
@@ -521,9 +513,7 @@ Questo e utile per componenti custom che devono comportarsi come input nativi.
 E un argomento avanzato e va valutato in base al supporto dei browser target.
 
 ---
-
-## 15. Web Components e framework
-
+### 15. Web Components e framework
 I Web Components possono essere usati con molti framework perche sono elementi HTML standard.
 
 Esempio in HTML:
@@ -548,8 +538,64 @@ Bisogna pero fare attenzione a:
 
 ---
 
-## 16. Limiti
+## API / Sintassi
 
+API principali:
+
+```js
+class MyElement extends HTMLElement {
+  connectedCallback() {}
+  disconnectedCallback() {}
+  attributeChangedCallback(name, oldValue, newValue) {}
+
+  static get observedAttributes() {
+    return ["value"];
+  }
+}
+
+customElements.define("my-element", MyElement);
+```
+
+Shadow DOM:
+
+```js
+const shadow = this.attachShadow({ mode: "open" });
+shadow.innerHTML = `<slot></slot>`;
+```
+
+Template:
+
+```js
+const template = document.querySelector("template");
+this.shadowRoot.append(template.content.cloneNode(true));
+```
+
+## Esempio pratico
+
+Elemento custom semplice:
+
+```js
+class UserBadge extends HTMLElement {
+  connectedCallback() {
+    const name = this.getAttribute("name") ?? "Utente";
+    this.textContent = name;
+  }
+}
+
+customElements.define("user-badge", UserBadge);
+```
+
+Uso:
+
+```html
+<user-badge name="Luca"></user-badge>
+```
+
+Per componenti reali conviene gestire attributi osservati, cleanup e accessibilita.
+
+## Varianti
+
+### 16. Limiti
 I Web Components hanno alcuni limiti pratici:
 
 - non forniscono routing;
@@ -562,36 +608,7 @@ I Web Components hanno alcuni limiti pratici:
 Per componenti complessi, spesso si usano librerie come Lit, ma il concetto base resta quello delle API native.
 
 ---
-
-## 17. Best practice
-
-- Usa nomi con trattino per tutti i custom elements.
-- Mantieni una API pubblica chiara tramite attributi, proprieta ed eventi.
-- Usa Shadow DOM quando serve incapsulamento reale.
-- Usa slot per contenuto esterno.
-- Usa `CustomEvent` per comunicare verso l'esterno.
-- Usa `composed: true` quando un evento deve uscire dallo Shadow DOM.
-- Evita `innerHTML` con input non fidato.
-- Pulisci listener, timer e risorse in `disconnectedCallback()`.
-- Documenta attributi, properties, eventi e slot del componente.
-
----
-
-## 18. Errori comuni
-
-- Definire un custom element senza trattino nel nome.
-- Confondere attributi HTML e proprieta JavaScript.
-- Aspettarsi che CSS globale entri sempre nello Shadow DOM.
-- Dimenticare `composed: true` negli eventi custom.
-- Non gestire cleanup in `disconnectedCallback()`.
-- Usare `innerHTML` con dati utente non sicuri.
-- Pensare che Shadow DOM sia una barriera di sicurezza.
-- Creare componenti troppo grandi senza API chiara.
-
----
-
-## 19. Mappa mentale
-
+### 19. Mappa mentale
 ```text
 Web Components
 |
@@ -621,3 +638,36 @@ Web Components
 ```
 
 ---
+
+## Errori comuni
+
+### 18. Errori comuni
+- Definire un custom element senza trattino nel nome.
+- Confondere attributi HTML e proprieta JavaScript.
+- Aspettarsi che CSS globale entri sempre nello Shadow DOM.
+- Dimenticare `composed: true` negli eventi custom.
+- Non gestire cleanup in `disconnectedCallback()`.
+- Usare `innerHTML` con dati utente non sicuri.
+- Pensare che Shadow DOM sia una barriera di sicurezza.
+- Creare componenti troppo grandi senza API chiara.
+
+---
+
+## Checklist
+
+### 17. Best practice
+- Usa nomi con trattino per tutti i custom elements.
+- Mantieni una API pubblica chiara tramite attributi, proprieta ed eventi.
+- Usa Shadow DOM quando serve incapsulamento reale.
+- Usa slot per contenuto esterno.
+- Usa `CustomEvent` per comunicare verso l'esterno.
+- Usa `composed: true` quando un evento deve uscire dallo Shadow DOM.
+- Evita `innerHTML` con input non fidato.
+- Pulisci listener, timer e risorse in `disconnectedCallback()`.
+- Documenta attributi, properties, eventi e slot del componente.
+
+---
+
+## Collegamenti
+
+- [[Programmazione/JavaScript/Indice javascript|Indice JavaScript]]

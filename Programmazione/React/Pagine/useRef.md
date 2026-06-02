@@ -1,5 +1,5 @@
----
-date: 2026-05-14
+﻿---
+date: 2026-06-02
 area: Programmazione
 topic: React
 type: technical-note
@@ -10,6 +10,7 @@ aliases: [useRef]
 prerequisites: []
 related: []
 ---
+
 # useRef
 
 ## Sintesi
@@ -18,8 +19,9 @@ Nota su useRef in React. Riassume il concetto, quando usarlo, i punti critici e 
 
 Il hook `useRef` è uno strumento versatile in React che permette di mantenere un valore persistente tra i render senza scatenare un nuovo ciclo di rendering quando viene modificato. Restituisce un oggetto "ref" con una singola proprietà: `current`.
 
-## 1. Due casi d'uso principali
+## Quando usarlo
 
+### 1. Due casi d'uso principali
 `useRef` viene utilizzato principalmente per due scopi:
 1. **Accedere direttamente al DOM:** Per interagire con elementi HTML (gestione del focus, misurazione delle dimensioni, integrazione con librerie esterne non React).
 2. **Memorizzare valori mutabili:** Per conservare dati che non influiscono sulla UI (ID di timer, valori precedenti di props o stato) evitando render superflui.
@@ -29,8 +31,9 @@ Il hook `useRef` è uno strumento versatile in React che permette di mantenere u
 
 ---
 
-## 2. Accesso al DOM
+## Come funziona
 
+### 2. Accesso al DOM
 Questo è l'uso più comune. Si assegna la ref all'attributo `ref` di un elemento JSX. React imposterà automaticamente `current` sull'elemento DOM reale una volta montato.
 
 ```jsx
@@ -54,9 +57,7 @@ function TextInputWithFocusButton() {
 ```
 
 ---
-
-## 3. Persistenza dei valori (Senza Render)
-
+### 3. Persistenza dei valori (Senza Render)
 Se hai bisogno di memorizzare un'informazione (come un `setInterval` ID) che deve "sopravvivere" ai render ma che non deve essere mostrata nell'HTML, `useRef` è la scelta corretta.
 
 ```javascript
@@ -72,9 +73,7 @@ useEffect(() => {
 ```
 
 ---
-
-## 4. useRef vs useState
-
+### 4. useRef vs useState
 | Caratteristica | `useState` | `useRef` |
 | :--- | :--- | :--- |
 | **Trigger del Render** | Sì, ad ogni aggiornamento. | No, mai. |
@@ -86,3 +85,27 @@ useEffect(() => {
 > Non leggere o scrivere `ref.current` durante la fase di rendering (ovvero nel corpo principale della funzione componente). Fallo sempre all'interno di `useEffect` o in gestori di eventi (event handlers).
 
 ---
+
+## API / Sintassi
+
+Contenuto da sviluppare: nella nota originale questa sezione non era presente o era solo una traccia.
+
+## Esempio pratico
+
+Contenuto da sviluppare: nella nota originale questa sezione non era presente o era solo una traccia.
+
+## Varianti
+
+Contenuto da sviluppare: nella nota originale questa sezione non era presente o era solo una traccia.
+
+## Errori comuni
+
+Contenuto da sviluppare: nella nota originale questa sezione non era presente o era solo una traccia.
+
+## Checklist
+
+Contenuto da sviluppare: nella nota originale questa sezione non era presente o era solo una traccia.
+
+## Collegamenti
+
+- [[Programmazione/React/Indice react|Indice React]]

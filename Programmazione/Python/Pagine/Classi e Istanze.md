@@ -1,5 +1,5 @@
----
-date: 2026-05-14
+﻿---
+date: 2026-06-02
 area: Programmazione
 topic: Python
 type: technical-note
@@ -10,63 +10,12 @@ aliases: [Classi e Istanze]
 prerequisites: []
 related: []
 ---
+
 # Classi e Istanze in Python
 
 ## Sintesi
 
 Nota su Classi e Istanze in Python. Riassume il concetto, la sintassi principale e i punti da ricordare durante studio, sviluppo o debugging.
-
-## Concetto chiave
-In Python, la Programmazione Orientata agli Oggetti (OOP) si basa su **Classi** e **Istanze**.
-- Una **Classe** è un "progetto" o un "modello" (blueprint) che definisce le caratteristiche e i comportamenti comuni a un gruppo di oggetti.
-- Una **Istanza** è l'oggetto concreto creato a partire da quel progetto.
-
-Immagina la classe come lo stampo per i biscotti e le istanze come i singoli biscotti prodotti.
-
----
-
-##  Sintassi e Definizione
-Si utilizza la keyword `class` seguita dal nome della classe (per convenzione in **PascalCase**).
-
-```python
-class NomeClasse:
-    """Docstring opzionale per descrivere la classe."""
-    
-    # Attributo di Classe (condiviso da tutte le istanze)
-    specie = "Generica"
-
-    def __init__(self, parametro1, parametro2):
-        """Metodo costruttore per inizializzare l'istanza."""
-        # Attributi di Istanza (unici per ogni oggetto)
-        self.parametro1 = parametro1
-        self.parametro2 = parametro2
-
-    def metodo_istanza(self):
-        """Un'azione che l'oggetto può compiere."""
-        print(f"Eseguo azione con {self.parametro1}")
-```
-
-### Il ruolo di `self`
-`self` rappresenta l'istanza corrente della classe. È il primo parametro obbligatorio di ogni metodo di istanza e permette di accedere agli attributi e agli altri metodi dell'oggetto stesso.
-
----
-
-##  Esempi Pratici
-
-### Esempio Base: La classe Cane
-```python
-class Cane:
-    def __init__(self, nome, razza):
-        self.nome = nome
-        self.razza = razza
-
-    def abbaia(self):
-        return f"{self.nome} dice: Bau!"
-
-# Classi e Istanze in Python
-
-## Sintesi
-
 Nota su Classi e Istanze in Python. Riassume il concetto, la sintassi principale e i punti da ricordare durante studio, sviluppo o debugging.
 mio_cane = Cane("Fido", "Pastore Tedesco")
 tuo_cane = Cane("Luna", "Labrador")
@@ -97,9 +46,6 @@ class ContoBancario:
             print("Fondi insufficienti o importo non valido.")
 
 # Classi e Istanze in Python
-
-## Sintesi
-
 Nota su Classi e Istanze in Python. Riassume il concetto, la sintassi principale e i punti da ricordare durante studio, sviluppo o debugging.
 conto = ContoBancario("Mario Rossi", 1000)
 conto.deposita(500)
@@ -108,8 +54,33 @@ conto.preleva(200)
 
 ---
 
-## Logic layer: Cosa succede "sotto il cofano"?
+## Quando usarlo
 
+Contenuto da sviluppare: nella nota originale questa sezione non era presente o era solo una traccia.
+
+## Come funziona
+
+### Concetto chiave
+In Python, la Programmazione Orientata agli Oggetti (OOP) si basa su **Classi** e **Istanze**.
+- Una **Classe** è un "progetto" o un "modello" (blueprint) che definisce le caratteristiche e i comportamenti comuni a un gruppo di oggetti.
+- Una **Istanza** è l'oggetto concreto creato a partire da quel progetto.
+
+Immagina la classe come lo stampo per i biscotti e le istanze come i singoli biscotti prodotti.
+
+---
+### Esempi Pratici
+### Esempio Base: La classe Cane
+```python
+class Cane:
+    def __init__(self, nome, razza):
+        self.nome = nome
+        self.razza = razza
+
+    def abbaia(self):
+        return f"{self.nome} dice: Bau!"
+
+# Classi e Istanze in Python
+### Logic layer: Cosa succede "sotto il cofano"?
 ### 1. Istanziazione e `__init__`
 Quando chiami `Cane("Fido", "Pastore")`, Python:
 1. Crea un nuovo oggetto vuoto in memoria.
@@ -125,8 +96,45 @@ Ogni istanza mantiene un dizionario interno chiamato `__dict__` che contiene tut
 
 ---
 
-##  Best Practices & "Gotchas"
+## API / Sintassi
 
+### Sintassi e Definizione
+Si utilizza la keyword `class` seguita dal nome della classe (per convenzione in **PascalCase**).
+
+```python
+class NomeClasse:
+    """Docstring opzionale per descrivere la classe."""
+    
+    # Attributo di Classe (condiviso da tutte le istanze)
+    specie = "Generica"
+
+    def __init__(self, parametro1, parametro2):
+        """Metodo costruttore per inizializzare l'istanza."""
+        # Attributi di Istanza (unici per ogni oggetto)
+        self.parametro1 = parametro1
+        self.parametro2 = parametro2
+
+    def metodo_istanza(self):
+        """Un'azione che l'oggetto può compiere."""
+        print(f"Eseguo azione con {self.parametro1}")
+```
+
+### Il ruolo di `self`
+`self` rappresenta l'istanza corrente della classe. È il primo parametro obbligatorio di ogni metodo di istanza e permette di accedere agli attributi e agli altri metodi dell'oggetto stesso.
+
+---
+
+## Esempio pratico
+
+Contenuto da sviluppare: nella nota originale questa sezione non era presente o era solo una traccia.
+
+## Varianti
+
+Contenuto da sviluppare: nella nota originale questa sezione non era presente o era solo una traccia.
+
+## Errori comuni
+
+### Best Practices & "Gotchas"
 -  **Da fare**: Usa sempre `self` come primo argomento dei metodi di istanza.
 -  **Da fare**: Segui la convenzione **PascalCase** per i nomi delle classi (es. `UserAccount`, non `user_account`).
 -  **Da evitare**: Non definire troppi attributi fuori dal metodo `__init__`; rende il codice meno prevedibile.
@@ -140,3 +148,11 @@ class ErroreCondivisione:
     def aggiungi(self, item):
         self.lista_comune.append(item)
 ```
+
+## Checklist
+
+Contenuto da sviluppare: nella nota originale questa sezione non era presente o era solo una traccia.
+
+## Collegamenti
+
+- [[Programmazione/Python/Indice python|Indice Python]]

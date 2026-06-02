@@ -1,5 +1,5 @@
----
-date: 2026-05-14
+﻿---
+date: 2026-06-02
 area: Programmazione
 topic: Python
 type: technical-note
@@ -10,13 +10,20 @@ aliases: [Memory Management]
 prerequisites: []
 related: []
 ---
+
 # Memory Management in Python
 
 ## Sintesi
 
 Nota su Memory Management in Python. Riassume il concetto, la sintassi principale e i punti da ricordare durante studio, sviluppo o debugging.
 
-## Concetto chiave
+## Quando usarlo
+
+Contenuto da sviluppare: nella nota originale questa sezione non era presente o era solo una traccia.
+
+## Come funziona
+
+### Concetto chiave
 Python gestisce la memoria in modo **automatico**: il programmatore non alloca e libera manualmente la memoria come avviene in linguaggi come C o C++. Questo non significa pero che la memoria sia "gratuita": capire come Python alloca, riusa e libera gli oggetti aiuta a scrivere codice piu efficiente, evitare memory leak logici e ragionare meglio sulle performance.
 
 L'implementazione standard, **CPython**, combina principalmente:
@@ -27,9 +34,7 @@ L'implementazione standard, **CPython**, combina principalmente:
 > Python semplifica enormemente la gestione della memoria, ma un programma puo comunque consumare troppa RAM, mantenere riferimenti inutili o trattenere risorse come file e socket se non vengono rilasciati correttamente.
 
 ---
-
-##  Componenti principali
-
+### Componenti principali
 ### 1. Reference Counting
 Ogni oggetto in CPython mantiene internamente un contatore di quanti riferimenti puntano a lui. Quando il contatore scende a zero, l'oggetto puo essere distrutto immediatamente.
 
@@ -67,9 +72,7 @@ Se `a` e `b` escono dallo scope, i loro contatori possono non arrivare a zero a 
 CPython usa un allocatore specializzato chiamato **pymalloc**, ottimizzato per gli oggetti piccoli. Questo riduce il costo delle allocazioni frequenti e migliora le prestazioni in programmi che creano molti oggetti di breve durata.
 
 ---
-
-##  Esempi Pratici
-
+### Esempi Pratici
 ### Verificare riferimenti e dimensioni
 
 ```python
@@ -107,9 +110,7 @@ def read_lines(path):
 Un approccio come questo evita di caricare tutto il file in RAM e si collega direttamente al comportamento dei [[Programmazione/Python/Pagine/Generatori]].
 
 ---
-
-##  Funzionamento Interno (Teoria)
-
+### Funzionamento Interno (Teoria)
 ### Stack vs Heap
 - **Stack**: contiene i riferimenti locali delle chiamate di funzione attive.
 - **Heap**: contiene gli oggetti Python creati dinamicamente.
@@ -137,9 +138,7 @@ In CPython, molti oggetti vengono liberati appena il reference count va a zero. 
 Per file, lock, connessioni o socket, la strategia corretta non e aspettare il garbage collector, ma usare `with` e i [[Programmazione/Python/Pagine/Context Managers]].
 
 ---
-
-##  Memory Leak in Python: come possono esistere?
-
+### Memory Leak in Python: come possono esistere?
 Anche in un linguaggio con garbage collection possono comparire memory leak logici.
 
 ### Cause comuni
@@ -160,8 +159,21 @@ In questo esempio Python non ha "perso" memoria: la memoria e ancora raggiungibi
 
 ---
 
-##  Best Practices & "Gotchas"
+## API / Sintassi
 
+Contenuto da sviluppare: nella nota originale questa sezione non era presente o era solo una traccia.
+
+## Esempio pratico
+
+Contenuto da sviluppare: nella nota originale questa sezione non era presente o era solo una traccia.
+
+## Varianti
+
+Contenuto da sviluppare: nella nota originale questa sezione non era presente o era solo una traccia.
+
+## Errori comuni
+
+### Best Practices & "Gotchas"
 -  **Preferisci `with` per le risorse:** file, lock e connessioni non vanno lasciati alla sola distruzione automatica.
 -  **Usa generatori e iterazione lazy:** per dataset grandi, evita di creare liste complete se non servono.
 -  **Controlla le strutture condivise:** liste globali, cache e singleton possono trattenere memoria piu del previsto.
@@ -171,3 +183,11 @@ In questo esempio Python non ha "perso" memoria: la memoria e ancora raggiungibi
 -  **Non confondere memoria con risorse esterne:** liberare RAM e chiudere un file sono due problemi distinti.
 
 ---
+
+## Checklist
+
+Contenuto da sviluppare: nella nota originale questa sezione non era presente o era solo una traccia.
+
+## Collegamenti
+
+- [[Programmazione/Python/Indice python|Indice Python]]

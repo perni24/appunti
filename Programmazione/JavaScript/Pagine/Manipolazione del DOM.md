@@ -1,5 +1,5 @@
----
-date: 2026-05-13
+﻿---
+date: 2026-06-02
 area: Programmazione
 topic: JavaScript
 type: technical-note
@@ -21,8 +21,9 @@ JavaScript puo leggere, modificare, creare e rimuovere nodi del DOM per aggiorna
 
 ---
 
-## Quando usarla
+## Quando usarlo
 
+### Quando usarla
 - Leggere elementi dalla pagina.
 - Modificare testo, attributi o classi.
 - Creare elementi dinamicamente.
@@ -31,8 +32,9 @@ JavaScript puo leggere, modificare, creare e rimuovere nodi del DOM per aggiorna
 
 ---
 
-## Selezionare elementi
+## Come funziona
 
+### Selezionare elementi
 ```js
 const title = document.getElementById("main-title");
 const firstButton = document.querySelector("button");
@@ -59,9 +61,7 @@ for (const item of items) {
 ```
 
 ---
-
-## Controllare se un elemento esiste
-
+### Controllare se un elemento esiste
 `querySelector()` puo restituire `null`.
 
 ```js
@@ -81,9 +81,7 @@ const modal = document.querySelector("#modal");
 ```
 
 ---
-
-## Leggere e modificare testo
-
+### Leggere e modificare testo
 Per testo puro, usa `textContent`.
 
 ```js
@@ -99,9 +97,7 @@ message.textContent = userInput;
 ```
 
 ---
-
-## innerHTML
-
+### innerHTML
 `innerHTML` interpreta stringhe come HTML.
 
 ```js
@@ -119,9 +115,7 @@ container.innerHTML = userInput;
 > Per contenuto proveniente da utenti o sorgenti non fidate, preferisci `textContent` o sanitizza l'HTML.
 
 ---
-
-## Classi CSS
-
+### Classi CSS
 `classList` permette di gestire classi senza manipolare stringhe manualmente.
 
 ```js
@@ -141,9 +135,7 @@ if (panel.classList.contains("open")) {
 ```
 
 ---
-
-## Attributi e dataset
-
+### Attributi e dataset
 ```js
 const link = document.querySelector("a");
 
@@ -166,9 +158,7 @@ console.log(button.dataset.userId); // "42"
 ```
 
 ---
-
-## Creare elementi
-
+### Creare elementi
 ```js
 const item = document.createElement("li");
 
@@ -187,9 +177,7 @@ Metodi utili:
 - `replaceWith()`: sostituisce l'elemento.
 
 ---
-
-## DocumentFragment
-
+### DocumentFragment
 `DocumentFragment` e utile per costruire piu nodi prima di inserirli nel DOM.
 
 ```js
@@ -207,9 +195,7 @@ document.querySelector("ul").append(fragment);
 Riduce modifiche ripetute al DOM.
 
 ---
-
-## Rimuovere elementi
-
+### Rimuovere elementi
 ```js
 const banner = document.querySelector(".banner");
 
@@ -219,9 +205,7 @@ banner?.remove();
 `?.` evita errori se l'elemento non esiste.
 
 ---
-
-## DOM ready
-
+### DOM ready
 Se lo script viene eseguito prima che il DOM sia pronto, gli elementi potrebbero non esistere ancora.
 
 Soluzioni comuni:
@@ -239,9 +223,7 @@ document.addEventListener("DOMContentLoaded", () => {
 ```
 
 ---
-
-## Performance
-
+### Performance
 Operazioni DOM ripetute possono essere costose.
 
 Buone pratiche:
@@ -253,6 +235,69 @@ Buone pratiche:
 - evita `innerHTML += ...` in loop.
 
 ---
+
+## API / Sintassi
+
+Selezione:
+
+```js
+document.querySelector(selector);
+document.querySelectorAll(selector);
+document.getElementById(id);
+```
+
+Modifica:
+
+```js
+element.textContent = "testo";
+element.classList.add("active");
+element.setAttribute("aria-expanded", "true");
+element.dataset.userId;
+```
+
+Creazione e inserimento:
+
+```js
+const element = document.createElement("div");
+parent.append(element);
+element.remove();
+```
+
+Eventi:
+
+```js
+element.addEventListener("click", handler);
+```
+
+## Esempio pratico
+
+Render sicuro di una lista:
+
+```js
+function renderUsers(users) {
+  const list = document.querySelector("#users");
+  const fragment = document.createDocumentFragment();
+
+  for (const user of users) {
+    const item = document.createElement("li");
+    item.textContent = user.name;
+    fragment.append(item);
+  }
+
+  list.replaceChildren(fragment);
+}
+```
+
+`textContent` evita interpretazione HTML e `DocumentFragment` raggruppa gli inserimenti.
+
+## Varianti
+
+- **DOM manuale**: uso diretto di API native.
+- **Template HTML**: markup predefinito da clonare.
+- **DocumentFragment**: inserimenti raggruppati.
+- **Event delegation**: listener su contenitore.
+- **Framework UI**: React, Vue, Svelte e simili gestiscono il DOM in modo dichiarativo.
+- **Web Components**: componenti nativi con custom elements e Shadow DOM.
 
 ## Errori comuni
 

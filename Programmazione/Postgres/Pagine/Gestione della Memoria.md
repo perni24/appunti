@@ -1,5 +1,5 @@
 ---
-date: 2026-05-14
+date: 2026-06-02
 area: Programmazione
 topic: PostgreSQL
 type: technical-note
@@ -10,54 +10,75 @@ aliases: [Gestione della Memoria]
 prerequisites: []
 related: []
 ---
+
 # Gestione della Memoria in PostgreSQL
 
 ## Sintesi
 
-Nota su Gestione della Memoria in PostgreSQL. Riassume il concetto, i meccanismi principali e i punti da ricordare durante studio, progettazione o amministrazione.
+La memoria in PostgreSQL e divisa tra memoria condivisa, usata dal server, e memoria per backend/query. I parametri piu noti sono `shared_buffers`, `work_mem`, `maintenance_work_mem` ed `effective_cache_size`.
 
-## Concetto chiave
-La gestione della memoria in PostgreSQL è suddivisa in due aree principali: la **Shared Memory** (condivisa tra tutti i processi) e la **Local Memory** (specifica per ogni singolo processo backend). Un corretto bilanciamento di queste aree è il fattore più critico per le performance del database.
+## Quando usarlo
 
----
+Serve quando fai tuning, diagnostichi sort su disco, troppi backend, query parallele o consumo RAM superiore alle attese.
 
-##  Architettura della Memoria
+## Come funziona
 
-### 1. Memoria Condivisa (Shared Memory)
-Quest'area viene allocata dal Postmaster all'avvio del server ed è accessibile a tutti i processi backend e ausiliari.
+`shared_buffers` e la cache interna di PostgreSQL. `work_mem` e usata per sort, hash join e aggregazioni per singola operazione, non per database intero. `maintenance_work_mem` riguarda operazioni come vacuum, create index e alter table. `effective_cache_size` stima la cache disponibile tra OS e database e influenza il planner.
 
-| Componente | Parametro Config | Funzione |
-| :--- | :--- | :--- |
-| **Shared Buffers** | `shared_buffers` | La cache principale del DB. Contiene copie delle pagine di dati lette dal disco. |
-| **WAL Buffers** | `wal_buffers` | Buffer temporaneo per i log delle transazioni prima di scriverli nei file WAL. |
-| **CLOG** | (Interno) | Commit LOG: traccia lo stato delle transazioni (commit/abort) per l'isolamento (MVCC). |
+## API / Sintassi
 
-### 2. Memoria Locale (Process-Local Memory)
-Ogni processo backend alloca la propria memoria per eseguire le query. Questa memoria non è condivisa e viene liberata al termine dell'operazione.
+```sql
+SHOW shared_buffers;
+SHOW work_mem;
+SHOW maintenance_work_mem;
+SHOW effective_cache_size;
+```
 
-| Componente | Parametro Config | Funzione |
-| :--- | :--- | :--- |
-| **Work Mem** | `work_mem` | Memoria usata per operazioni di **Sort** (ORDER BY) e **Hash** (JOIN). Allocata per ogni operazione di una query. |
-| **Maintenance Work Mem** | `maintenance_work_mem` | Memoria usata per operazioni di manutenzione come `VACUUM`, `CREATE INDEX`, `ALTER TABLE`. |
-| **Temp Buffers** | `temp_buffers` | Cache per le tabelle temporanee create nella sessione. |
+Impostazione per sessione:
 
----
+```sql
+SET work_mem = '128MB';
+```
 
-## Logic layer: Come funziona il caching?
+## Esempio pratico
 
-### Il doppio buffering (Double Buffering)
-Postgres non scrive direttamente sul disco in modo sincrono. Quando una query richiede dei dati:
-1.  Controlla se la pagina è negli **Shared Buffers**.
-2.  Se non c'è, la richiede al **Sistema Operativo (OS)**.
-3.  L'OS controlla la propria **OS Page Cache**.
-4.  Se non disponibile nell'OS, viene letta dal disco.
+Se `EXPLAIN (ANALYZE, BUFFERS)` mostra sort esterni su disco, puoi testare:
 
-> [!TIP] Tuning consigliato
-> Per un server dedicato, una regola empirica comune è impostare `shared_buffers` al **25% della RAM totale** del sistema, lasciando il resto alla OS Page Cache per evitare ridondanze eccessive.
+```sql
+SET work_mem = '128MB';
+EXPLAIN (ANALYZE, BUFFERS)
+SELECT ...
+ORDER BY ...;
+```
 
----
+La modifica globale va fatta solo dopo calcolo della concorrenza.
 
-##  Attenzione al consumo di RAM
-Il parametro `work_mem` è pericoloso perché viene allocato **per ogni operazione** di una query. Se una query complessa esegue 4 sort simultanei e ci sono 100 client connessi, il consumo totale sarà `4 * 100 * work_mem`. Un valore troppo alto può portare all'esaurimento della RAM (OOM Killer).
+## Varianti
 
----
+- Memoria condivisa: `shared_buffers`.
+- Memoria per operazione: `work_mem`.
+- Memoria per manutenzione: `maintenance_work_mem`.
+- Stima cache OS: `effective_cache_size`.
+- Memoria per autovacuum: `autovacuum_work_mem`.
+
+## Errori comuni
+
+- Impostare `work_mem` troppo alto globalmente.
+- Ignorare che una query puo usare piu volte `work_mem`.
+- Aumentare `max_connections` senza pooling.
+- Confondere cache PostgreSQL e cache del sistema operativo.
+- Fare tuning senza misurare.
+
+## Checklist
+
+- Quante connessioni concorrenti esistono?
+- Le query fanno sort/hash su disco?
+- Il pooling limita i backend?
+- `work_mem` e adeguato ma non pericoloso?
+- Le modifiche sono state testate con query reali?
+
+## Collegamenti
+
+- [[Programmazione/Postgres/Pagine/Analisi delle Query|Analisi delle Query]]
+- [[Programmazione/Postgres/Pagine/Connection Pooling|Connection Pooling]]
+- [[Programmazione/Postgres/Pagine/Configurazione|Configurazione]]

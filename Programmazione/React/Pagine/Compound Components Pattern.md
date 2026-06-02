@@ -1,5 +1,5 @@
----
-date: 2026-05-14
+﻿---
+date: 2026-06-02
 area: Programmazione
 topic: React
 type: technical-note
@@ -10,6 +10,7 @@ aliases: [Compound Components Pattern]
 prerequisites: []
 related: []
 ---
+
 # Compound Components Pattern
 
 ## Sintesi
@@ -25,8 +26,13 @@ L'idea e simile a elementi HTML come `<select>` e `<option>`: i componenti figli
 
 ---
 
-## 1. Il problema che risolve
+## Quando usarlo
 
+Contenuto da sviluppare: nella nota originale questa sezione non era presente o era solo una traccia.
+
+## Come funziona
+
+### 1. Il problema che risolve
 Quando un componente diventa complesso, una API basata solo su props puo diventare rigida o difficile da leggere:
 
 ```jsx
@@ -59,9 +65,7 @@ Con i compound components, invece, l'API diventa piu naturale:
 ```
 
 ---
-
-## 2. Struttura di base
-
+### 2. Struttura di base
 Il pattern di solito contiene:
 
 1. un componente principale che gestisce lo stato;
@@ -111,9 +115,7 @@ Tabs.Panel = Panel;
 ```
 
 ---
-
-## 3. Come funziona
-
+### 3. Come funziona
 Il componente principale (`Tabs`) mantiene lo stato condiviso, mentre i sottocomponenti (`Tabs.Tab`, `Tabs.Panel`) leggono quel contesto e reagiscono di conseguenza.
 
 Questo significa che:
@@ -126,9 +128,7 @@ Dal punto di vista architetturale, il pattern separa:
 - **UI specialization** nei sottocomponenti.
 
 ---
-
-## 4. Perche usare i Compound Components
-
+### 4. Perche usare i Compound Components
 ### API più dichiarativa
 Il JSX descrive la struttura del componente in modo naturale.
 
@@ -143,8 +143,48 @@ Per widget articolati, una API composta e spesso piu chiara di una lista lunga d
 
 ---
 
-## 5. Esempio pratico: Accordion
+## API / Sintassi
 
+### 6. Compound Components vs Props-Based API
+| Approccio | Vantaggi | Limiti |
+| :--- | :--- | :--- |
+| **Props-based API** | Semplice per componenti piccoli | Rigido per casi complessi |
+| **Compound Components** | Flessibile, leggibile, composabile | Richiede piu struttura interna |
+
+La regola pratica e:
+- per componenti semplici, le props bastano;
+- per componenti complessi e altamente compositivi, il pattern composto diventa spesso la scelta migliore.
+
+---
+### 7. Relazione con Context API e Custom Hooks
+Il Compound Components Pattern viene spesso implementato con:
+- [[Programmazione/React/Pagine/Context API]] per condividere lo stato;
+- [[Programmazione/React/Pagine/Custom Hooks]] per incapsulare l'accesso al contesto.
+
+Pattern comune:
+
+```javascript
+function useTabsContext() {
+  const context = useContext(TabsContext);
+
+  if (!context) {
+    throw new Error('Tabs components must be used inside <Tabs>');
+  }
+
+  return context;
+}
+```
+
+Questo migliora:
+- ergonomia;
+- messaggi d'errore;
+- riuso interno del pattern.
+
+---
+
+## Esempio pratico
+
+### 5. Esempio pratico: Accordion
 ```javascript
 import { createContext, useContext, useState } from 'react';
 
@@ -199,48 +239,9 @@ Utilizzo:
 
 ---
 
-## 6. Compound Components vs Props-Based API
+## Varianti
 
-| Approccio | Vantaggi | Limiti |
-| :--- | :--- | :--- |
-| **Props-based API** | Semplice per componenti piccoli | Rigido per casi complessi |
-| **Compound Components** | Flessibile, leggibile, composabile | Richiede piu struttura interna |
-
-La regola pratica e:
-- per componenti semplici, le props bastano;
-- per componenti complessi e altamente compositivi, il pattern composto diventa spesso la scelta migliore.
-
----
-
-## 7. Relazione con Context API e Custom Hooks
-
-Il Compound Components Pattern viene spesso implementato con:
-- [[Programmazione/React/Pagine/Context API]] per condividere lo stato;
-- [[Programmazione/React/Pagine/Custom Hooks]] per incapsulare l'accesso al contesto.
-
-Pattern comune:
-
-```javascript
-function useTabsContext() {
-  const context = useContext(TabsContext);
-
-  if (!context) {
-    throw new Error('Tabs components must be used inside <Tabs>');
-  }
-
-  return context;
-}
-```
-
-Questo migliora:
-- ergonomia;
-- messaggi d'errore;
-- riuso interno del pattern.
-
----
-
-## 8. Limiti e tradeoff
-
+### 8. Limiti e tradeoff
 Il pattern non e sempre la scelta giusta.
 
 ### Svantaggi tipici
@@ -257,8 +258,13 @@ Se si usa il pattern per componenti banali, si introduce overhead architetturale
 
 ---
 
-## 9. Best Practices
+## Errori comuni
 
+Contenuto da sviluppare: nella nota originale questa sezione non era presente o era solo una traccia.
+
+## Checklist
+
+### 9. Best Practices
 1. **Usa il pattern per componenti con parti semantiche chiare:** Tabs, Accordion, Menu, Modal, Stepper.
 2. **Centralizza lo stato nel componente root:** evita duplicazioni o fonti di verita multiple.
 3. **Proteggi l'accesso al contesto con custom hook dedicati:** semplifica l'uso e migliora gli errori.
@@ -267,3 +273,7 @@ Se si usa il pattern per componenti banali, si introduce overhead architetturale
 6. **Non abusare del pattern:** per componenti semplici una normale props API e spesso meglio.
 
 ---
+
+## Collegamenti
+
+- [[Programmazione/React/Indice react|Indice React]]

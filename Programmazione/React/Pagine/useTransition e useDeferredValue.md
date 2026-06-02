@@ -1,5 +1,5 @@
----
-date: 2026-05-14
+﻿---
+date: 2026-06-02
 area: Programmazione
 topic: React
 type: technical-note
@@ -10,6 +10,7 @@ aliases: [useTransition e useDeferredValue (Concurrent React)]
 prerequisites: []
 related: []
 ---
+
 # useTransition e useDeferredValue (Concurrent React)
 
 ## Sintesi
@@ -20,8 +21,13 @@ In React 18, sono stati introdotti nuovi hook per gestire la **priorità del ren
 
 ---
 
-## 1. useTransition
+## Quando usarlo
 
+Contenuto da sviluppare: nella nota originale questa sezione non era presente o era solo una traccia.
+
+## Come funziona
+
+### 1. useTransition
 Il hook `useTransition` permette di marcare alcuni aggiornamenti dello stato come **non urgenti** (transizioni). Questo consente a React di dare priorità ad azioni immediate (come scrivere in un input) rispetto ad aggiornamenti pesanti che possono essere rimandati.
 
 ### Sintassi e Utilizzo
@@ -43,9 +49,7 @@ const handleChange = (e) => {
 > La variabile booleana `isPending` permette di mostrare un indicatore di caricamento o uno stato visivo mentre la transizione è in corso.
 
 ---
-
-## 2. useDeferredValue
-
+### 2. useDeferredValue
 `useDeferredValue` è simile a `useTransition`, ma si applica a un **valore** invece che a una funzione di aggiornamento dello stato. Permette di posticipare il re-render di una parte lenta della UI finché il valore non "si stabilizza".
 
 ### Quando usarlo
@@ -59,18 +63,7 @@ const deferredValue = useDeferredValue(inputValue);
 ```
 
 ---
-
-## 3. Confronto Rapido
-
-| Hook | Meccanismo | Punto d'Uso |
-| :--- | :--- | :--- |
-| **`useTransition`** | Avvolge la funzione `setState`. | Nel componente dove viene gestito lo stato. |
-| **`useDeferredValue`** | Crea una copia "ritardata" di un valore. | Nel componente che riceve il valore (spesso come prop). |
-
----
-
-## 4. Concurrent Rendering: Come funziona
-
+### 4. Concurrent Rendering: Come funziona
 Dietro le quinte, questi hook sfruttano il **Concurrent Mode** di React. Invece di un unico rendering bloccante, React può ora:
 - Interrompere un rendering pesante.
 - Gestire un'interazione utente più urgente (es. un click).
@@ -80,3 +73,33 @@ Dietro le quinte, questi hook sfruttano il **Concurrent Mode** di React. Invece 
 > Questi hook non rendono il codice più veloce in termini assoluti, ma migliorano la **percezione della velocità** da parte dell'utente, evitando che l'interfaccia si "congeli".
 
 ---
+
+## API / Sintassi
+
+### 3. Confronto Rapido
+| Hook | Meccanismo | Punto d'Uso |
+| :--- | :--- | :--- |
+| **`useTransition`** | Avvolge la funzione `setState`. | Nel componente dove viene gestito lo stato. |
+| **`useDeferredValue`** | Crea una copia "ritardata" di un valore. | Nel componente che riceve il valore (spesso come prop). |
+
+---
+
+## Esempio pratico
+
+Contenuto da sviluppare: nella nota originale questa sezione non era presente o era solo una traccia.
+
+## Varianti
+
+Contenuto da sviluppare: nella nota originale questa sezione non era presente o era solo una traccia.
+
+## Errori comuni
+
+Contenuto da sviluppare: nella nota originale questa sezione non era presente o era solo una traccia.
+
+## Checklist
+
+Contenuto da sviluppare: nella nota originale questa sezione non era presente o era solo una traccia.
+
+## Collegamenti
+
+- [[Programmazione/React/Indice react|Indice React]]

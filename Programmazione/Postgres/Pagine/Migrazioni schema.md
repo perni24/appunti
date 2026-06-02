@@ -1,5 +1,5 @@
-﻿---
-date: 2026-05-20
+---
+date: 2026-06-02
 area: Programmazione
 topic: Postgres
 type: operational-note
@@ -9,7 +9,6 @@ tags:
   - programmazione
   - postgres
   - migrazioni
-  - schema
 aliases: []
 prerequisites: []
 related: []
@@ -19,66 +18,70 @@ related: []
 
 ## Sintesi
 
-Le **migrazioni schema** modificano struttura del database in modo versionato e ripetibile.
-
-## Concetto chiave
-
-Ogni modifica a tabelle, indici, vincoli o funzioni dovrebbe essere tracciata come migrazione applicabile in ordine.
-
-```sql
-ALTER TABLE users
-ADD COLUMN last_login_at timestamptz;
-```
-
-## Buone pratiche
-
-- Migrazioni piccole.
-- Script idempotenti quando possibile.
-- Separare deploy applicativo e migrazione rischiosa.
-- Testare su copia realistica.
-- Avere strategia di rollback o forward-fix.
-
-## Errori comuni
-
-- Aggiungere colonne `NOT NULL` con default pesante senza pianificazione.
-- Creare indici bloccanti su tabelle grandi.
-- Rinominare colonne senza compatibilita applicativa.
-
-## Obiettivo
-
-Da completare: descrivere cosa ottenere in pratica.
+Le migrazioni schema modificano struttura, vincoli, indici e dati tecnici del database in modo versionato e ripetibile.
 
 ## Quando usarlo
 
-- Da completare: indicare scenari pratici in cui questa nota e utile.
+Serve per evolvere schema applicativo, aggiungere colonne, creare indici, cambiare vincoli, modificare funzioni o preparare deploy.
 
-## Procedura
+## Come funziona
 
-1. Da completare.
-2. Da completare.
-3. Da completare.
+Una migrazione e uno script ordinato. Gli strumenti di migrazione registrano quali migrazioni sono state applicate. In produzione bisogna considerare lock, durata, compatibilita con versione precedente dell'app e rollback.
 
-## Snippet
+## API / Sintassi
 
-```text
-Da completare con codice o comando riutilizzabile.
+Esempi:
+
+```sql
+ALTER TABLE users ADD COLUMN last_login_at timestamptz;
+CREATE INDEX CONCURRENTLY users_last_login_at_idx ON users (last_login_at);
 ```
 
-## Adattamenti comuni
+Vincolo non validato:
 
-- Da completare: varianti per casi frequenti.
+```sql
+ALTER TABLE orders
+ADD CONSTRAINT orders_total_positive CHECK (total_amount > 0) NOT VALID;
 
-## Debug rapido
+ALTER TABLE orders VALIDATE CONSTRAINT orders_total_positive;
+```
 
-- Da completare: controlli rapidi in caso di errore.
+## Esempio pratico
 
-## Checklist finale
+Aggiunta colonna compatibile:
 
-- Da completare: verifiche finali.
+1. Aggiungi colonna nullable.
+2. Deploy app che scrive nuova colonna.
+3. Backfill a batch.
+4. Aggiungi vincolo `NOT NULL` quando i dati sono pronti.
+
+## Varianti
+
+- Migrazioni DDL.
+- Migrazioni dati.
+- Backfill.
+- Indici concorrenti.
+- Vincoli `NOT VALID`.
+- Migrazioni reversibili e irreversibili.
+
+## Errori comuni
+
+- Eseguire DDL bloccante in orario di picco.
+- Aggiungere colonna `NOT NULL DEFAULT` senza valutare lock/versione.
+- Creare indici senza `CONCURRENTLY` su tabelle grandi.
+- Non testare migrazioni su dati realistici.
+- Mescolare deploy app e schema senza compatibilita.
+
+## Checklist
+
+- La migrazione e compatibile con la versione app precedente?
+- I lock sono noti?
+- Gli indici su tabelle grandi usano `CONCURRENTLY`?
+- Esiste piano di rollback?
+- Il backfill e a batch?
 
 ## Collegamenti
-- [[Programmazione/Postgres/Pagine/Versionamento database|Versionamento database]]
+
 - [[Programmazione/Postgres/Pagine/Strategie zero-downtime|Strategie zero-downtime]]
-- [[Programmazione/Postgres/Pagine/Indici Parziali e Coprenti|Indici Parziali e Coprenti]]
-
-
+- [[Programmazione/Postgres/Pagine/Versionamento database|Versionamento database]]
+- [[Programmazione/Postgres/Pagine/Lock monitoring|Lock monitoring]]

@@ -1,5 +1,5 @@
 ﻿---
-date: 2026-05-20
+date: 2026-06-02
 area: Programmazione
 topic: React
 type: technical-note
@@ -21,8 +21,13 @@ related: []
 
 L'**API layer** isola il codice che comunica con backend, servizi esterni o storage remoto dal resto della UI React.
 
-## Concetto chiave
+## Quando usarlo
 
+Contenuto da sviluppare: nella nota originale questa sezione non era presente o era solo una traccia.
+
+## Come funziona
+
+### Concetto chiave
 I componenti non dovrebbero conoscere dettagli grezzi di endpoint, header, mapping e gestione errori HTTP.
 
 ```javascript
@@ -36,17 +41,13 @@ export async function getUser(id) {
   return response.json();
 }
 ```
-
-## Responsabilita
-
+### Responsabilita
 - Costruire URL e query string.
 - Gestire autenticazione.
 - Normalizzare errori.
 - Validare payload quando serve.
 - Esporre funzioni orientate al dominio.
-
-## Con React Query
-
+### Con React Query
 L'API layer puo essere usato da hook di data fetching.
 
 ```javascript
@@ -56,41 +57,28 @@ const userQuery = useQuery({
 });
 ```
 
-## Quando usarlo
-
-- Da completare: indicare scenari pratici in cui questa nota e utile.
-
-## Come funziona
-
-Da completare: spiegare il meccanismo principale o il comportamento tecnico.
-
 ## API / Sintassi
 
-```text
-Da completare con API o sintassi principale.
-```
+Contenuto da sviluppare: nella nota originale questa sezione non era presente o era solo una traccia.
 
 ## Esempio pratico
 
-```text
-Da completare con un esempio pratico.
-```
+Contenuto da sviluppare: nella nota originale questa sezione non era presente o era solo una traccia.
 
 ## Varianti
 
-- Da completare: varianti, alternative o differenze rispetto ad approcci simili.
+Contenuto da sviluppare: nella nota originale questa sezione non era presente o era solo una traccia.
 
 ## Errori comuni
 
-Da completare durante revisione.
+Contenuto da sviluppare: nella nota originale questa sezione non era presente o era solo una traccia.
 
 ## Checklist
 
-- Da completare: controlli essenziali prima di usare questo concetto in pratica.
+Contenuto da sviluppare: nella nota originale questa sezione non era presente o era solo una traccia.
 
 ## Collegamenti
+
 - [[Programmazione/React/Pagine/Data Fetching e Cache|Data Fetching e Cache]]
 - [[Programmazione/React/Pagine/Validazione Dati|Validazione Dati]]
 - [[Programmazione/React/Pagine/Gestione Autenticazione|Gestione Autenticazione]]
-
-

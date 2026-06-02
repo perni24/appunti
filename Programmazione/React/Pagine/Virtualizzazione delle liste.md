@@ -1,5 +1,5 @@
----
-date: 2026-05-14
+﻿---
+date: 2026-06-02
 area: Programmazione
 topic: React
 type: technical-note
@@ -10,6 +10,7 @@ aliases: [Virtualizzazione delle liste]
 prerequisites: []
 related: []
 ---
+
 # Virtualizzazione delle liste
 
 ## Sintesi
@@ -25,8 +26,13 @@ In React e una strategia molto utile quando una lista contiene centinaia o migli
 
 ---
 
-## 1. Il problema che risolve
+## Quando usarlo
 
+Contenuto da sviluppare: nella nota originale questa sezione non era presente o era solo una traccia.
+
+## Come funziona
+
+### 1. Il problema che risolve
 Quando renderizzi una lista molto grande con `.map()`, React crea un albero di componenti potenzialmente enorme.
 
 Esempio concettuale:
@@ -58,9 +64,7 @@ Gli effetti tipici sono:
 Si collega direttamente a [[Programmazione/React/Pagine/Profiler e Debugging]], perche il sintomo emerge spesso come componente lento o interazione poco reattiva.
 
 ---
-
-## 2. Come funziona la virtualizzazione
-
+### 2. Come funziona la virtualizzazione
 L'idea e semplice:
 - la lista completa esiste a livello di dati;
 - il DOM contiene solo gli elementi visibili, o quasi visibili, nella finestra corrente;
@@ -75,9 +79,7 @@ Questo riduce:
 - costo di aggiornamento percepito.
 
 ---
-
-## 3. Windowing
-
+### 3. Windowing
 Spesso la virtualizzazione viene descritta anche come **windowing**.
 
 La "window" e la porzione della lista che in quel momento interessa all'utente:
@@ -90,9 +92,7 @@ Gli elementi extra servono a evitare scroll bruschi o comparsa tardiva dei conte
 Quindi il principio non e "renderizza solo quello che si vede in modo esatto", ma "renderizza una finestra ragionevole attorno alla vista corrente".
 
 ---
-
-## 4. Perche non basta usare key corrette
-
+### 4. Perche non basta usare key corrette
 Le `key` corrette sono fondamentali per il rendering di liste, ma non risolvono il problema del volume.
 
 [[Programmazione/React/Pagine/Rendering Condizionale e Liste]] spiega perche le `key` aiutano React a riconciliare meglio gli elementi.
@@ -105,9 +105,7 @@ Ma anche con key perfette:
 La virtualizzazione affronta un problema diverso: non solo *come* riconciliare la lista, ma *quanta lista* renderizzare davvero.
 
 ---
-
-## 5. react-window
-
+### 5. react-window
 **react-window** e una libreria molto nota per il windowing di liste e griglie.
 
 Esempio concettuale:
@@ -148,9 +146,7 @@ Limite tipico:
 - quando gli elementi hanno altezza molto variabile, la gestione diventa piu delicata.
 
 ---
-
-## 6. react-virtuoso
-
+### 6. react-virtuoso
 **react-virtuoso** e una libreria piu orientata all'ergonomia e ai casi reali complessi.
 
 E spesso apprezzata quando servono:
@@ -166,9 +162,7 @@ La scelta pratica spesso e:
 - `react-virtuoso` se vuoi migliore ergonomia su casi meno banali.
 
 ---
-
-## 7. Altezza fissa vs altezza dinamica
-
+### 7. Altezza fissa vs altezza dinamica
 La virtualizzazione funziona piu facilmente quando ogni riga ha altezza nota e costante.
 
 Per esempio:
@@ -185,9 +179,7 @@ Diventa piu complessa quando:
 Qui la libreria scelta e importante, perche non tutte gestiscono bene il caso dinamico.
 
 ---
-
-## 8. Infinite scroll e virtualizzazione
-
+### 8. Infinite scroll e virtualizzazione
 Virtualizzazione e infinite scroll non sono la stessa cosa, anche se spesso lavorano insieme.
 
 ### Infinite scroll
@@ -206,24 +198,7 @@ In applicazioni grandi, la combinazione delle due tecniche e molto comune.
 Questo si collega anche a [[Programmazione/React/Pagine/Data Fetching e Cache]] quando la lista carica pagine successive via API.
 
 ---
-
-## 9. Tradeoff e complessita
-
-La virtualizzazione migliora molto le performance, ma introduce anche vincoli:
-- maggiore complessita del componente lista;
-- gestione piu attenta delle misure;
-- possibili problemi con layout dinamici;
-- maggiore attenzione ad accessibilita e test.
-
-Non va introdotta automaticamente su ogni lista. Se la lista e piccola, la complessita aggiuntiva potrebbe non essere giustificata.
-
-> [!WARNING] Errore comune
-> Virtualizzare tutto per principio e una forma di ottimizzazione prematura. Prima bisogna capire se la lista e davvero un collo di bottiglia.
-
----
-
-## 10. Accessibilita e UX
-
+### 10. Accessibilita e UX
 Quando virtualizzi una lista, devi fare attenzione a:
 - focus management;
 - navigazione da tastiera;
@@ -236,9 +211,7 @@ Una lista molto performante ma difficile da navigare puo peggiorare l'esperienza
 Quindi performance e accessibilita vanno progettate insieme.
 
 ---
-
-## 11. Quando usarla davvero
-
+### 11. Quando usarla davvero
 La virtualizzazione conviene quando:
 - la lista e molto grande;
 - il rendering iniziale pesa;
@@ -254,9 +227,7 @@ Di solito non serve quando:
 Il criterio corretto resta sempre: misurare prima.
 
 ---
-
-## 12. Relazione con React
-
+### 12. Relazione con React
 La virtualizzazione si collega bene a:
 - [[Programmazione/React/Pagine/Rendering Condizionale e Liste]] per il tema `key` e rendering di array;
 - [[Programmazione/React/Pagine/Profiler e Debugging]] per misurare il costo reale;
@@ -268,8 +239,37 @@ In pratica, non sostituisce una buona architettura del dato, ma riduce il costo 
 
 ---
 
-## 13. Best Practices
+## API / Sintassi
 
+Contenuto da sviluppare: nella nota originale questa sezione non era presente o era solo una traccia.
+
+## Esempio pratico
+
+Contenuto da sviluppare: nella nota originale questa sezione non era presente o era solo una traccia.
+
+## Varianti
+
+### 9. Tradeoff e complessita
+La virtualizzazione migliora molto le performance, ma introduce anche vincoli:
+- maggiore complessita del componente lista;
+- gestione piu attenta delle misure;
+- possibili problemi con layout dinamici;
+- maggiore attenzione ad accessibilita e test.
+
+Non va introdotta automaticamente su ogni lista. Se la lista e piccola, la complessita aggiuntiva potrebbe non essere giustificata.
+
+> [!WARNING] Errore comune
+> Virtualizzare tutto per principio e una forma di ottimizzazione prematura. Prima bisogna capire se la lista e davvero un collo di bottiglia.
+
+---
+
+## Errori comuni
+
+Contenuto da sviluppare: nella nota originale questa sezione non era presente o era solo una traccia.
+
+## Checklist
+
+### 13. Best Practices
 1. **Virtualizza solo quando la lista e davvero grande o misurata come costosa:** evita complessita gratuita.
 2. **Mantieni le righe il piu semplici possibile:** meno lavoro per item significa scroll piu fluido.
 3. **Scegli la libreria in base al caso:** `react-window` per approccio leggero, `react-virtuoso` per scenari piu ergonomici o dinamici.
@@ -278,3 +278,7 @@ In pratica, non sostituisce una buona architettura del dato, ma riduce il costo 
 6. **Usa il profiler per verificare il beneficio reale:** la virtualizzazione deve ridurre un problema misurabile, non solo sembrare una buona idea.
 
 ---
+
+## Collegamenti
+
+- [[Programmazione/React/Indice react|Indice React]]

@@ -1,5 +1,5 @@
----
-date: 2026-05-13
+﻿---
+date: 2026-06-02
 area: Programmazione
 topic: JavaScript
 type: technical-note
@@ -24,8 +24,24 @@ La stessa sintassi produce quindi effetti opposti.
 
 ---
 
-## Spread negli array
+## Quando usarlo
 
+Usa spread quando vuoi espandere array, oggetti o argomenti.
+
+Usa rest quando vuoi raccogliere valori rimanenti in array o oggetti.
+
+Casi comuni:
+
+- copiare array o oggetti in modo superficiale;
+- combinare array;
+- aggiornare oggetti senza mutare l'originale;
+- passare array come argomenti;
+- raccogliere parametri variabili;
+- separare proprieta sensibili dal resto di un oggetto.
+
+## Come funziona
+
+### Spread negli array
 Lo spread espande un array nei suoi elementi.
 
 ```js
@@ -47,9 +63,7 @@ console.log(result); // [1, 2, 3, 4]
 ```
 
 ---
-
-## Spread nelle chiamate di funzione
-
+### Spread nelle chiamate di funzione
 ```js
 const numbers = [4, 8, 2];
 
@@ -59,9 +73,7 @@ console.log(Math.max(...numbers)); // 8
 Senza spread, `Math.max()` riceverebbe un array come singolo argomento.
 
 ---
-
-## Spread negli oggetti
-
+### Spread negli oggetti
 Lo spread copia proprieta enumerabili in un nuovo oggetto.
 
 ```js
@@ -88,9 +100,7 @@ console.log(result.a); // 2
 ```
 
 ---
-
-## Copia superficiale
-
+### Copia superficiale
 Spread crea una copia superficiale.
 
 ```js
@@ -114,9 +124,7 @@ Gli oggetti annidati restano condivisi.
 Per copie profonde, valuta `structuredClone()` quando supportato.
 
 ---
-
-## Rest nei parametri
-
+### Rest nei parametri
 Rest raccoglie piu argomenti in un array.
 
 ```js
@@ -136,9 +144,7 @@ function log(prefix, ...messages) {
 ```
 
 ---
-
-## Rest nel destructuring
-
+### Rest nel destructuring
 Negli array:
 
 ```js
@@ -161,9 +167,7 @@ console.log(safeUser); // { name: "Luca", role: "admin" }
 ```
 
 ---
-
-## Differenza tra spread e rest
-
+### Differenza tra spread e rest
 | Uso | Significato | Esempio |
 | --- | --- | --- |
 | Spread | Espande valori | `[...items]` |
@@ -175,6 +179,60 @@ Regola pratica:
 - in parametri o destructuring tende a essere rest.
 
 ---
+
+## API / Sintassi
+
+Spread:
+
+```js
+const copy = [...items];
+const merged = [...a, ...b];
+const nextUser = { ...user, active: true };
+fn(...args);
+```
+
+Rest:
+
+```js
+function fn(first, ...others) {}
+
+const [head, ...tail] = items;
+const { password, ...publicUser } = user;
+```
+
+Regola: `...` in una posizione che produce valori e spread; `...` in una posizione che dichiara o destruttura valori e rest.
+
+## Esempio pratico
+
+Aggiornare stato senza mutazione:
+
+```js
+function updateUserRole(user, role) {
+  return {
+    ...user,
+    role,
+    updatedAt: new Date().toISOString(),
+  };
+}
+```
+
+Rimuovere un campo sensibile:
+
+```js
+function toPublicUser(user) {
+  const { passwordHash, ...publicUser } = user;
+  return publicUser;
+}
+```
+
+## Varianti
+
+- **Spread array**: copia o concatena elementi.
+- **Spread oggetto**: copia proprieta enumerabili.
+- **Spread argomenti**: passa elementi come argomenti.
+- **Rest parameter**: raccoglie argomenti variabili.
+- **Rest destructuring array**: raccoglie elementi rimanenti.
+- **Rest destructuring oggetto**: raccoglie proprieta rimanenti.
 
 ## Errori comuni
 

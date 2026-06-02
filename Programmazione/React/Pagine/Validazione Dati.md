@@ -1,5 +1,5 @@
----
-date: 2026-05-14
+﻿---
+date: 2026-06-02
 area: Programmazione
 topic: React
 type: technical-note
@@ -10,6 +10,7 @@ aliases: [Validazione Dati]
 prerequisites: []
 related: []
 ---
+
 # Validazione Dati
 
 ## Sintesi
@@ -25,8 +26,13 @@ In React, questo tema e strettamente legato alla gestione dei form, ma non si li
 
 ---
 
-## 1. Perche serve
+## Quando usarlo
 
+Contenuto da sviluppare: nella nota originale questa sezione non era presente o era solo una traccia.
+
+## Come funziona
+
+### 1. Perche serve
 Senza validazione, un form puo inviare:
 - stringhe vuote dove serve un valore obbligatorio;
 - email malformate;
@@ -43,9 +49,7 @@ La validazione serve quindi a:
 Si collega direttamente a [[Programmazione/React/Pagine/Gestione Moduli]], perche la qualita della validazione dipende anche da come il form e costruito.
 
 ---
-
-## 2. Validazione client-side e server-side
-
+### 2. Validazione client-side e server-side
 E importante distinguere due livelli.
 
 ### Client-side validation
@@ -68,9 +72,7 @@ Vantaggi:
 > La validazione client-side migliora UX, ma non sostituisce mai la validazione lato server.
 
 ---
-
-## 3. Validazione imperativa
-
+### 3. Validazione imperativa
 Il modo piu semplice di validare in React e scrivere condizioni manuali nel submit o negli handler.
 
 ```javascript
@@ -108,9 +110,7 @@ Questo approccio funziona bene per casi semplici, ma presenta limiti:
 - manutenzione difficile in form complessi.
 
 ---
-
-## 4. Validazione live vs validazione al submit
-
+### 4. Validazione live vs validazione al submit
 La validazione puo avvenire in momenti diversi.
 
 ### Live validation
@@ -139,9 +139,7 @@ Rischi:
 La scelta dipende dal tipo di campo e dal contesto UX.
 
 ---
-
-## 5. Schema validation
-
+### 5. Schema validation
 Quando i form crescono, conviene separare le regole in uno **schema di validazione**.
 
 Uno schema descrive:
@@ -157,9 +155,7 @@ Questo approccio rende la validazione:
 - piu vicina al dominio applicativo.
 
 ---
-
-## 6. Zod
-
+### 6. Zod
 **Zod** e una libreria molto usata per definire schemi e validare dati in modo dichiarativo.
 
 Esempio:
@@ -182,9 +178,7 @@ Vantaggi principali di Zod:
 Zod e spesso scelto in stack moderni proprio per la buona integrazione tra validazione e tipizzazione.
 
 ---
-
-## 7. Yup
-
+### 7. Yup
 **Yup** e un'altra libreria storica molto diffusa per la schema validation.
 
 Esempio:
@@ -206,9 +200,7 @@ Rispetto a Zod, la scelta oggi dipende spesso da:
 - bisogno o meno di integrazione forte con TypeScript.
 
 ---
-
-## 8. Integrazione con React Hook Form
-
+### 8. Integrazione con React Hook Form
 La validazione schema-based si integra molto bene con **React Hook Form**.
 
 Esempio concettuale:
@@ -253,9 +245,55 @@ function LoginForm() {
 Questo approccio riduce molto la logica manuale distribuita nel componente.
 
 ---
+### 11. Quando usare schema validation
+### Validazione manuale va bene quando
+- il form e molto semplice;
+- i campi sono pochi;
+- le regole sono minime.
 
-## 9. Errori di validazione e UX
+### Schema validation conviene quando
+- il form cresce;
+- le regole sono molte;
+- vuoi riusare vincoli in piu punti;
+- vuoi codice piu leggibile e manutenibile;
+- usi TypeScript e vuoi migliore coerenza del modello dati.
 
+In pratica, oltre una certa complessita, la validazione dichiarativa diventa quasi sempre la scelta piu pulita.
+
+---
+
+## API / Sintassi
+
+### 10. Validazione e submit verso API
+Dopo la validazione client-side, spesso il form effettua una request.
+
+Qui si collegano:
+- [[Programmazione/React/Pagine/Data Fetching e Cache]];
+- gestione di loading e stato di submit;
+- errori restituiti dal server;
+- mapping di errori backend sui campi del form.
+
+Anche con una validazione client perfetta, il backend puo ancora rispondere con errori:
+- email gia esistente;
+- token scaduto;
+- permessi insufficienti;
+- conflitti di concorrenza.
+
+Per questo il componente deve saper gestire sia errori locali sia errori remoti.
+
+---
+
+## Esempio pratico
+
+Contenuto da sviluppare: nella nota originale questa sezione non era presente o era solo una traccia.
+
+## Varianti
+
+Contenuto da sviluppare: nella nota originale questa sezione non era presente o era solo una traccia.
+
+## Errori comuni
+
+### 9. Errori di validazione e UX
 Una buona validazione non si limita a dire "errore".
 
 Serve curare:
@@ -277,46 +315,9 @@ La qualita dell'errore fa parte della UX del form, non e un dettaglio secondario
 
 ---
 
-## 10. Validazione e submit verso API
+## Checklist
 
-Dopo la validazione client-side, spesso il form effettua una request.
-
-Qui si collegano:
-- [[Programmazione/React/Pagine/Data Fetching e Cache]];
-- gestione di loading e stato di submit;
-- errori restituiti dal server;
-- mapping di errori backend sui campi del form.
-
-Anche con una validazione client perfetta, il backend puo ancora rispondere con errori:
-- email gia esistente;
-- token scaduto;
-- permessi insufficienti;
-- conflitti di concorrenza.
-
-Per questo il componente deve saper gestire sia errori locali sia errori remoti.
-
----
-
-## 11. Quando usare schema validation
-
-### Validazione manuale va bene quando
-- il form e molto semplice;
-- i campi sono pochi;
-- le regole sono minime.
-
-### Schema validation conviene quando
-- il form cresce;
-- le regole sono molte;
-- vuoi riusare vincoli in piu punti;
-- vuoi codice piu leggibile e manutenibile;
-- usi TypeScript e vuoi migliore coerenza del modello dati.
-
-In pratica, oltre una certa complessita, la validazione dichiarativa diventa quasi sempre la scelta piu pulita.
-
----
-
-## 12. Best Practices
-
+### 12. Best Practices
 1. **Distingui validazione client-side e server-side:** hanno scopi diversi e servono entrambe.
 2. **Non spargere regole ovunque nel componente:** centralizzare la validazione rende il codice piu chiaro.
 3. **Usa schema validation per form medi e grandi:** Zod o Yup riducono duplicazione e ambiguita.
@@ -325,3 +326,7 @@ In pratica, oltre una certa complessita, la validazione dichiarativa diventa qua
 6. **Allinea i vincoli del frontend con quelli del backend:** differenze tra i due livelli generano frustrazione e bug.
 
 ---
+
+## Collegamenti
+
+- [[Programmazione/React/Indice react|Indice React]]

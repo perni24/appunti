@@ -1,5 +1,5 @@
----
-date: 2026-05-13
+﻿---
+date: 2026-06-02
 area: Programmazione
 topic: JavaScript
 type: technical-note
@@ -21,8 +21,24 @@ La regola principale e misurare prima di ottimizzare. Senza profiling, il rischi
 
 ---
 
-## Misurare prima
+## Quando usarlo
 
+Ottimizza quando hai un problema misurabile: lentezza percepita, frame persi, input bloccato, memoria crescente, bundle pesante o tempi server elevati.
+
+Intervieni soprattutto quando:
+
+- il profiling mostra un hot path;
+- il main thread resta occupato troppo a lungo;
+- il garbage collector lavora spesso;
+- la pagina fa troppe letture/scritture DOM;
+- una lista o una tabella cresce molto;
+- una funzione viene chiamata migliaia di volte.
+
+Non ottimizzare codice non critico solo per renderlo "piu furbo".
+
+## Come funziona
+
+### Misurare prima
 Strumenti principali:
 
 - Performance panel dei DevTools;
@@ -43,9 +59,7 @@ console.log(performance.now() - start);
 Misure locali aiutano, ma non sostituiscono profiling su casi reali.
 
 ---
-
-## Hot path
-
+### Hot path
 Un hot path e una parte di codice eseguita molto spesso o con impatto alto.
 
 Prima di ottimizzare chiedi:
@@ -57,9 +71,7 @@ Prima di ottimizzare chiedi:
 - se il problema e CPU, rete, DOM o memoria.
 
 ---
-
-## Hidden classes
-
+### Hidden classes
 Motori come V8 ottimizzano oggetti con forma stabile.
 
 ```js
@@ -83,9 +95,7 @@ delete user.name;
 Aggiungere e rimuovere proprieta dinamicamente puo rendere alcune ottimizzazioni meno efficaci.
 
 ---
-
-## Allocazioni
-
+### Allocazioni
 Allocare molti oggetti temporanei puo aumentare pressione sul garbage collector.
 
 ```js
@@ -98,9 +108,7 @@ for (const item of items) {
 Non evitare ogni oggetto per principio. Intervieni solo se il profiling mostra pressione reale.
 
 ---
-
-## Array
-
+### Array
 Array omogenei e densi sono piu facili da ottimizzare.
 
 ```js
@@ -115,9 +123,7 @@ Evita, nei percorsi critici:
 - conversioni implicite ripetute.
 
 ---
-
-## DOM e rendering
-
+### DOM e rendering
 Molti problemi performance nel browser non sono nel linguaggio, ma nel rendering.
 
 ```js
@@ -133,9 +139,7 @@ requestAnimationFrame(() => {
 Separare letture e scritture riduce layout thrashing.
 
 ---
-
-## Debounce e throttle
-
+### Debounce e throttle
 Debounce: esegue dopo una pausa negli eventi.
 
 ```js
@@ -169,9 +173,7 @@ function throttle(callback, delay) {
 Debounce e utile per search input. Throttle e utile per scroll e resize.
 
 ---
-
-## Lavoro pesante
-
+### Lavoro pesante
 Se un task CPU blocca il main thread, valuta:
 
 - chunking con `setTimeout`;
@@ -188,6 +190,68 @@ worker.postMessage({ type: "process", payload: data });
 
 ---
 
+## API / Sintassi
+
+Misure locali:
+
+```js
+const start = performance.now();
+runTask();
+const duration = performance.now() - start;
+```
+
+Scheduling browser:
+
+```js
+requestAnimationFrame(updateUi);
+requestIdleCallback(runLowPriorityWork);
+```
+
+Spostare CPU pesante:
+
+```js
+const worker = new Worker("worker.js");
+worker.postMessage(data);
+```
+
+Ridurre lavoro ripetuto:
+
+```js
+const formatter = new Intl.NumberFormat("it-IT");
+items.map((item) => formatter.format(item.price));
+```
+
+## Esempio pratico
+
+Debounce su ricerca:
+
+```js
+function debounce(callback, delay) {
+  let timeoutId;
+
+  return (...args) => {
+    clearTimeout(timeoutId);
+    timeoutId = setTimeout(() => callback(...args), delay);
+  };
+}
+
+const search = debounce(async (query) => {
+  const response = await fetch(`/api/search?q=${encodeURIComponent(query)}`);
+  renderResults(await response.json());
+}, 300);
+```
+
+Questo evita una richiesta a ogni singolo carattere digitato.
+
+## Varianti
+
+- **CPU optimization**: riduce calcoli e hot path.
+- **Memory optimization**: riduce allocazioni e riferimenti longevi.
+- **DOM optimization**: riduce layout, paint e manipolazioni costose.
+- **Network optimization**: riduce richieste, payload e latenza.
+- **Bundle optimization**: code splitting, tree shaking e lazy loading.
+- **Perceived performance**: migliora feedback, skeleton e progressivita.
+
 ## Errori comuni
 
 - Ottimizzare senza misurare.
@@ -198,8 +262,9 @@ worker.postMessage({ type: "process", payload: data });
 
 ---
 
-## Checklist operativa
+## Checklist
 
+### Checklist operativa
 - Misura prima con DevTools o profiler.
 - Identifica hot path reali.
 - Riduci lavoro sul main thread.

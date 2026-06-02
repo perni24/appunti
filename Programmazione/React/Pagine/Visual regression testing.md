@@ -1,5 +1,5 @@
 ﻿---
-date: 2026-05-20
+date: 2026-06-02
 area: Programmazione
 topic: React
 type: operational-note
@@ -21,24 +21,40 @@ related: []
 
 Il **visual regression testing** confronta screenshot della UI nel tempo per rilevare cambiamenti visivi inattesi.
 
-## Concetto chiave
+## Quando usarlo
 
+Contenuto da sviluppare: nella nota originale questa sezione non era presente o era solo una traccia.
+
+## Come funziona
+
+### Concetto chiave
 Un test visivo non controlla solo DOM o comportamento: verifica che l'interfaccia renderizzata sia coerente con un baseline.
-
-## Cosa rileva
-
+### Cosa rileva
 - Layout rotti.
 - Spaziature cambiate.
 - Colori o font errati.
 - Overflow.
 - Componenti mancanti.
-
-## Strumenti comuni
-
+### Strumenti comuni
 - Playwright screenshot tests.
 - Cypress visual testing.
 - Storybook con servizi visuali.
 - Percy, Chromatic o simili.
+
+## API / Sintassi
+
+Contenuto da sviluppare: nella nota originale questa sezione non era presente o era solo una traccia.
+
+## Esempio pratico
+
+### Procedura
+1. Da completare.
+2. Da completare.
+3. Da completare.
+
+## Varianti
+
+Contenuto da sviluppare: nella nota originale questa sezione non era presente o era solo una traccia.
 
 ## Errori comuni
 
@@ -46,41 +62,12 @@ Un test visivo non controlla solo DOM o comportamento: verifica che l'interfacci
 - Test troppo fragili per contenuti dinamici.
 - Mancanza di viewport mobile.
 
-## Obiettivo
+## Checklist
 
-Da completare: descrivere cosa ottenere in pratica.
-
-## Quando usarlo
-
-- Da completare: indicare scenari pratici in cui questa nota e utile.
-
-## Procedura
-
-1. Da completare.
-2. Da completare.
-3. Da completare.
-
-## Snippet
-
-```text
-Da completare con codice o comando riutilizzabile.
-```
-
-## Adattamenti comuni
-
-- Da completare: varianti per casi frequenti.
-
-## Debug rapido
-
-- Da completare: controlli rapidi in caso di errore.
-
-## Checklist finale
-
-- Da completare: verifiche finali.
+Contenuto da sviluppare: nella nota originale questa sezione non era presente o era solo una traccia.
 
 ## Collegamenti
+
 - [[Programmazione/React/Pagine/Storybook|Storybook]]
 - [[Programmazione/React/Pagine/Testing Cypress e Playwright|Testing Cypress e Playwright]]
 - [[Programmazione/React/Pagine/Test di accessibilita|Test di accessibilita]]
-
-

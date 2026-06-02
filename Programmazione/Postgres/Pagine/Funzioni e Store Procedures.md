@@ -1,5 +1,5 @@
 ---
-date: 2026-05-14
+date: 2026-06-02
 area: Programmazione
 topic: PostgreSQL
 type: technical-note
@@ -10,84 +10,140 @@ aliases: [Funzioni e Store Procedures]
 prerequisites: []
 related: []
 ---
+
 # Funzioni e Store Procedures in PostgreSQL
 
 ## Sintesi
 
-Nota su Funzioni e Store Procedures in PostgreSQL. Riassume il concetto, i meccanismi principali e i punti da ricordare durante studio, progettazione o amministrazione.
+Funzioni e stored procedure incapsulano logica nel database. Le funzioni restituiscono valori e possono essere usate nelle query; le procedure si invocano con `CALL` e possono gestire flussi operativi piu procedurali.
 
-In PostgreSQL, la logica di business può essere incapsulata all'interno del database utilizzando **Funzioni** e **Procedure**. Sebbene simili, hanno scopi e comportamenti transazionali diversi.
+## Quando usarlo
 
-## Concetto chiave
-Le **Funzioni** sono progettate per calcolare e restituire dati, mentre le **Procedure** (introdotte in Postgres 11) sono progettate per gestire l'esecuzione di task che richiedono il controllo esplicito delle transazioni (`COMMIT`, `ROLLBACK`).
+Usale quando:
 
----
+- una logica deve stare vicino ai dati;
+- vuoi ridurre round trip tra app e database;
+- devi esporre operazioni controllate con `GRANT EXECUTE`;
+- vuoi riusare calcoli in piu query;
+- devi implementare trigger o validazioni complesse;
+- vuoi nascondere dettagli dello schema all'applicazione.
 
-##  Funzioni (UDF - User Defined Functions)
+Evita di spostare nel database logica applicativa troppo ampia, difficile da versionare o testare.
 
-Una funzione restituisce sempre un valore (o un set di valori) e viene invocata all'interno di una query SQL (`SELECT`).
+## Come funziona
+
+Una funzione ha input, tipo di ritorno, linguaggio e volatilita. Puo essere scritta in SQL, PL/pgSQL o altri linguaggi disponibili.
+
+Una procedura viene chiamata con `CALL`. Rispetto alle funzioni, e pensata per operazioni procedurali e puo gestire transazioni in scenari specifici.
+
+Il planner usa la volatilita:
+
+- `IMMUTABLE`: stesso output per stessi input;
+- `STABLE`: stabile durante una query;
+- `VOLATILE`: puo cambiare a ogni chiamata o avere effetti collaterali.
+
+## API / Sintassi
+
+Funzione SQL:
 
 ```sql
-CREATE OR REPLACE FUNCTION calcola_sconto(prezzo numeric, sconto numeric)
-RETURNS numeric AS $$
-BEGIN
-    RETURN prezzo - (prezzo * sconto / 100);
-END;
-$$ LANGUAGE plpgsql;
-
--- Invocazione
-SELECT nome, calcola_sconto(prezzo, 10) FROM prodotti;
+CREATE FUNCTION discount_price(price numeric, discount numeric)
+RETURNS numeric
+LANGUAGE sql
+IMMUTABLE
+AS $$
+  SELECT price - (price * discount / 100);
+$$;
 ```
 
-### Categorie di Volatilità
-Il Planner usa queste categorie per ottimizzare le query:
-- **VOLATILE:** Può modificare il database o restituire valori diversi (es: `random()`). Viene rieseguita per ogni riga.
-- **STABLE:** Restituisce lo stesso risultato per la stessa riga all'interno di una singola query.
-- **IMMUTABLE:** Restituisce sempre lo stesso risultato per gli stessi input (es: funzioni matematiche). Il Planner può pre-calcolarla.
-
----
-
-##  Stored Procedures
-
-A differenza delle funzioni, le procedure non restituiscono un valore e vengono invocate con il comando `CALL`. La loro caratteristica principale è la capacità di gestire transazioni interne.
+Funzione PL/pgSQL:
 
 ```sql
-CREATE OR REPLACE PROCEDURE trasferisci_fondi(da_id int, a_id int, importo numeric)
+CREATE FUNCTION get_order_total(order_id bigint)
+RETURNS numeric
+LANGUAGE plpgsql
+STABLE
+AS $$
+DECLARE
+  total numeric;
+BEGIN
+  SELECT sum(quantity * unit_price)
+  INTO total
+  FROM order_items
+  WHERE order_items.order_id = get_order_total.order_id;
+
+  RETURN coalesce(total, 0);
+END;
+$$;
+```
+
+Procedura:
+
+```sql
+CREATE PROCEDURE refresh_reporting_tables()
 LANGUAGE plpgsql
 AS $$
 BEGIN
-    UPDATE conti SET bilancio = bilancio - importo WHERE id = da_id;
-    UPDATE conti SET bilancio = bilancio + importo WHERE id = a_id;
-    
-    -- Controllo transazionale esplicito
-    COMMIT;
+  REFRESH MATERIALIZED VIEW reporting_sales;
 END;
 $$;
 
--- Invocazione
-CALL trasferisci_fondi(1, 2, 500.00);
+CALL refresh_reporting_tables();
 ```
 
----
+## Esempio pratico
 
-##  Parametri e Modalità
+Funzione controllata per cancellare un ordine:
 
-| Tipo | Descrizione |
-| :--- | :--- |
-| **IN** | Parametro di input (Default). |
-| **OUT** | Restituisce un valore senza usare `RETURN` (utile per restituire più colonne). |
-| **INOUT** | Funziona sia come input che come output. |
-| **VARIADIC** | Permette di passare un numero variabile di argomenti (array). |
+```sql
+CREATE FUNCTION cancel_order(p_order_id bigint)
+RETURNS void
+LANGUAGE plpgsql
+SECURITY DEFINER
+SET search_path = public, pg_temp
+AS $$
+BEGIN
+  UPDATE orders
+  SET status = 'cancelled'
+  WHERE id = p_order_id
+    AND status = 'pending';
+END;
+$$;
 
----
+REVOKE ALL ON FUNCTION cancel_order(bigint) FROM PUBLIC;
+GRANT EXECUTE ON FUNCTION cancel_order(bigint) TO app_runtime;
+```
 
-## Logic layer: Perché incapsulare la logica?
+## Varianti
 
-1.  **Sicurezza:** Puoi concedere i permessi di esecuzione (`GRANT EXECUTE`) su una funzione senza dare accesso diretto alle tabelle sottostanti.
-2.  **Astrazione:** Se la struttura delle tabelle cambia, basta aggiornare la funzione; il codice dell'applicazione (API, Frontend) rimane invariato.
-3.  **Performance:** Riduce il traffico di rete combinando più query in un'unica chiamata al server.
+- Funzioni `LANGUAGE sql`.
+- Funzioni `LANGUAGE plpgsql`.
+- Funzioni set-returning con `RETURNS TABLE`.
+- Procedure invocate con `CALL`.
+- Funzioni `SECURITY DEFINER`.
+- Funzioni trigger.
+- Funzioni `IMMUTABLE`, `STABLE`, `VOLATILE`.
 
-> [!INFO] Linguaggi Supportati
-> Oltre a [[Programmazione/Postgres/Pagine/PL-pgSQL|PL/pgSQL]], Postgres supporta SQL "puro", C, e tramite estensioni anche Python (PL/Python), JavaScript (V8) e altri.
+## Errori comuni
 
----
+- Dichiarare `IMMUTABLE` una funzione che legge tabelle o usa tempo corrente.
+- Usare `SECURITY DEFINER` senza fissare `search_path`.
+- Mettere troppa logica applicativa nel database.
+- Non revocare `EXECUTE` da `PUBLIC` su funzioni sensibili.
+- Non testare funzioni con ruoli reali.
+- Dimenticare gestione di `NULL`.
+
+## Checklist
+
+- Il linguaggio scelto e il piu semplice possibile?
+- La volatilita dichiarata e corretta?
+- La funzione richiede `SECURITY DEFINER`?
+- `search_path` e fissato nelle funzioni sensibili?
+- I permessi `EXECUTE` sono espliciti?
+- La logica e versionata e testata?
+
+## Collegamenti
+
+- [[Programmazione/Postgres/Pagine/PL-pgSQL|PL/pgSQL]]
+- [[Programmazione/Postgres/Pagine/Ruoli e privilegi avanzati|Ruoli e privilegi avanzati]]
+- [[Programmazione/Postgres/Pagine/Trigger e Event Trigger|Trigger e Event Trigger]]

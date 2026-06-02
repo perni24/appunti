@@ -1,5 +1,5 @@
----
-date: 2026-05-14
+﻿---
+date: 2026-06-02
 area: Programmazione
 topic: React
 type: technical-note
@@ -10,6 +10,7 @@ aliases: [State Management Esterno]
 prerequisites: []
 related: []
 ---
+
 # State Management Esterno
 
 ## Sintesi
@@ -31,8 +32,13 @@ Tra le soluzioni piu comuni nell'ecosistema React ci sono **Zustand** e **Redux 
 
 ---
 
-## 1. Quando nasce il problema
+## Quando usarlo
 
+Contenuto da sviluppare: nella nota originale questa sezione non era presente o era solo una traccia.
+
+## Come funziona
+
+### 1. Quando nasce il problema
 Con [[Programmazione/React/Pagine/useState]], [[Programmazione/React/Pagine/useReducer]] e [[Programmazione/React/Pagine/Context API]] si coprono molti casi reali. Il problema emerge quando:
 - lo stesso dato serve a molti rami dell'albero;
 - il prop drilling diventa pesante;
@@ -43,9 +49,7 @@ Con [[Programmazione/React/Pagine/useState]], [[Programmazione/React/Pagine/useR
 In questi casi uno store esterno puo migliorare organizzazione e manutenibilita.
 
 ---
-
-## 2. Cosa gestisce uno store esterno
-
+### 2. Cosa gestisce uno store esterno
 Tipicamente uno store esterno gestisce:
 - utente autenticato;
 - preferenze globali;
@@ -63,9 +67,7 @@ Regola pratica:
 - **stato condiviso complesso o molto dinamico**: valuta uno store esterno.
 
 ---
-
-## 3. Zustand
-
+### 3. Zustand
 **Zustand** e una libreria leggera che permette di creare store globali con API molto semplici.
 
 Esempio concettuale:
@@ -97,9 +99,7 @@ Punti forti di Zustand:
 E spesso scelto quando si vuole evitare complessita strutturale non necessaria.
 
 ---
-
-## 4. Redux Toolkit
-
+### 4. Redux Toolkit
 **Redux Toolkit** e l'approccio moderno consigliato per usare Redux senza il vecchio eccesso di boilerplate.
 
 Redux si basa su alcuni principi:
@@ -144,9 +144,7 @@ Redux Toolkit e utile quando servono:
 Rispetto a Zustand, impone piu struttura ma offre anche piu disciplina.
 
 ---
-
-## 5. Zustand vs Redux Toolkit
-
+### 5. Zustand vs Redux Toolkit
 | Caratteristica | Zustand | Redux Toolkit |
 | :--- | :--- | :--- |
 | **Boilerplate** | Molto basso | Medio |
@@ -158,9 +156,7 @@ Rispetto a Zustand, impone piu struttura ma offre anche piu disciplina.
 La scelta dipende dal contesto, non da una gerarchia assoluta.
 
 ---
-
-## 6. Stato globale non significa stato migliore
-
+### 6. Stato globale non significa stato migliore
 Uno degli errori piu comuni e spostare troppo stato fuori dai componenti.
 
 Se uno stato riguarda solo un form, un modal o una piccola sezione della pagina, spesso e meglio tenerlo locale. Portarlo in uno store globale puo:
@@ -172,27 +168,7 @@ Se uno stato riguarda solo un form, un modal o una piccola sezione della pagina,
 Lo store globale va usato quando il dato e davvero condiviso o quando il valore architetturale supera il costo della complessita introdotta.
 
 ---
-
-## 7. Relazione con Context API
-
-[[Programmazione/React/Pagine/Context API]] e uno strumento di propagazione del dato nell'albero React. Uno store esterno e invece un contenitore di stato separato dai componenti.
-
-Differenza pratica:
-- il context distribuisce un valore ai discendenti;
-- lo store esterno centralizza stato e aggiornamenti in un livello dedicato.
-
-Molte librerie di state management usano comunque il context internamente, ma l'API pubblica resta piu evoluta:
-- selettori;
-- middleware;
-- DevTools;
-- separazione migliore della logica.
-
-Quindi il confronto corretto non e "uno elimina l'altro", ma "quale livello di struttura serve davvero".
-
----
-
-## 8. Stato server vs stato client
-
+### 8. Stato server vs stato client
 Un altro errore frequente e usare lo store globale per dati che in realta sono **server state**:
 - risultati di fetch;
 - cache remota;
@@ -210,8 +186,40 @@ Confondere i due piani porta a store troppo carichi e difficili da mantenere.
 
 ---
 
-## 9. Criteri pratici di scelta
+## API / Sintassi
 
+### 7. Relazione con Context API
+[[Programmazione/React/Pagine/Context API]] e uno strumento di propagazione del dato nell'albero React. Uno store esterno e invece un contenitore di stato separato dai componenti.
+
+Differenza pratica:
+- il context distribuisce un valore ai discendenti;
+- lo store esterno centralizza stato e aggiornamenti in un livello dedicato.
+
+Molte librerie di state management usano comunque il context internamente, ma l'API pubblica resta piu evoluta:
+- selettori;
+- middleware;
+- DevTools;
+- separazione migliore della logica.
+
+Quindi il confronto corretto non e "uno elimina l'altro", ma "quale livello di struttura serve davvero".
+
+---
+
+## Esempio pratico
+
+Contenuto da sviluppare: nella nota originale questa sezione non era presente o era solo una traccia.
+
+## Varianti
+
+Contenuto da sviluppare: nella nota originale questa sezione non era presente o era solo una traccia.
+
+## Errori comuni
+
+Contenuto da sviluppare: nella nota originale questa sezione non era presente o era solo una traccia.
+
+## Checklist
+
+### 9. Criteri pratici di scelta
 ### Usa solo React nativo quando
 - lo stato e locale o moderatamente condiviso;
 - `useState`, `useReducer` e context bastano;
@@ -229,9 +237,7 @@ Confondere i due piani porta a store troppo carichi e difficili da mantenere.
 - vuoi un modello piu rigoroso e prevedibile.
 
 ---
-
-## 10. Best Practices
-
+### 10. Best Practices
 1. **Non introdurre uno store esterno troppo presto:** prima verifica se React nativo copre gia il problema.
 2. **Tieni locale tutto cio che non e davvero condiviso:** globalizzare stato locale peggiora il design.
 3. **Scegli la libreria in base al team e alla complessita reale:** non in base alla popolarita del momento.
@@ -240,3 +246,7 @@ Confondere i due piani porta a store troppo carichi e difficili da mantenere.
 6. **Evita mega-store monolitici quando possibile:** meglio organizzare slice o domini chiari.
 
 ---
+
+## Collegamenti
+
+- [[Programmazione/React/Indice react|Indice React]]

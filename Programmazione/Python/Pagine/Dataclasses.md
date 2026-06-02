@@ -1,5 +1,5 @@
----
-date: 2026-05-14
+﻿---
+date: 2026-06-02
 area: Programmazione
 topic: Python
 type: technical-note
@@ -19,8 +19,32 @@ related: [Classi e Istanze, Type Hinting, Enum]
 
 Genera automaticamente metodi come `__init__`, `__repr__` e `__eq__` a partire dai campi dichiarati.
 
-## Esempio base
+## Quando usarlo
 
+Contenuto da sviluppare: nella nota originale questa sezione non era presente o era solo una traccia.
+
+## Come funziona
+
+### Opzioni utili
+- `frozen=True`: rende l'istanza immutabile a livello pratico.
+- `order=True`: genera metodi di confronto.
+- `default_factory`: crea valori mutabili in modo sicuro.
+
+```python
+from dataclasses import dataclass, field
+
+@dataclass
+class Team:
+    members: list[str] = field(default_factory=list)
+```
+
+## API / Sintassi
+
+Contenuto da sviluppare: nella nota originale questa sezione non era presente o era solo una traccia.
+
+## Esempio pratico
+
+### Esempio base
 ```python
 from dataclasses import dataclass
 
@@ -35,25 +59,19 @@ user = User(1, "Luca")
 print(user)
 ```
 
-## Opzioni utili
+## Varianti
 
-- `frozen=True`: rende l'istanza immutabile a livello pratico.
-- `order=True`: genera metodi di confronto.
-- `default_factory`: crea valori mutabili in modo sicuro.
-
-```python
-from dataclasses import dataclass, field
-
-@dataclass
-class Team:
-    members: list[str] = field(default_factory=list)
-```
+Contenuto da sviluppare: nella nota originale questa sezione non era presente o era solo una traccia.
 
 ## Errori comuni
 
 - Usare `[]` o `{}` come default diretto.
 - Usare dataclass per oggetti con molta logica e invarianti complesse.
 - Confondere `frozen=True` con immutabilita profonda.
+
+## Checklist
+
+Contenuto da sviluppare: nella nota originale questa sezione non era presente o era solo una traccia.
 
 ## Collegamenti
 

@@ -1,5 +1,5 @@
----
-date: 2026-05-13
+﻿---
+date: 2026-06-02
 area: Programmazione
 topic: JavaScript
 type: technical-note
@@ -13,14 +13,31 @@ related: [Fetch API, Promise avanzate, Async Await, Memory Leaks]
 
 # AbortController
 
+## Sintesi
+
+### Testo introduttivo
 `AbortController` e una Web API che permette di annullare operazioni asincrone che supportano un segnale di cancellazione.
 
 Il caso piu comune e interrompere una richiesta `fetch()`, ma lo stesso meccanismo puo essere usato anche con altri task asincroni, listener di eventi e API moderne che accettano un `AbortSignal`.
 
 ---
 
-## 1. Problema che risolve
+## Quando usarlo
 
+Usa `AbortController` quando un'operazione asincrona non e piu utile e vuoi annullarla in modo esplicito.
+
+Casi comuni:
+
+- timeout di richieste `fetch`;
+- ricerca mentre l'utente continua a digitare;
+- cleanup quando una vista viene smontata;
+- cancellazione manuale da UI;
+- listener DOM da rimuovere con `signal`;
+- prevenzione di race condition tra richieste obsolete e richieste nuove.
+
+## Come funziona
+
+### 1. Problema che risolve
 Una Promise in JavaScript non puo essere cancellata direttamente.
 
 ```js
@@ -34,9 +51,7 @@ Una volta avviata, questa Promise continuera a rappresentare l'operazione fino a
 Se l'operazione supporta quel segnale, puo interrompersi.
 
 ---
-
-## 2. Controller e Signal
-
+### 2. Controller e Signal
 `AbortController` espone due elementi principali:
 
 - `controller.signal`: il segnale da passare all'operazione asincrona;
@@ -57,9 +72,7 @@ Il controller controlla l'annullamento.
 Il signal comunica lo stato di annullamento.
 
 ---
-
-## 3. Annullare una richiesta fetch
-
+### 3. Annullare una richiesta fetch
 Esempio base:
 
 ```js
@@ -84,9 +97,7 @@ try {
 Quando `controller.abort()` viene chiamato, `fetch()` viene rifiutata con un errore di tipo `AbortError`.
 
 ---
-
-## 4. Timeout con AbortController
-
+### 4. Timeout con AbortController
 `AbortController` e spesso usato per evitare richieste troppo lunghe.
 
 ```js
@@ -117,9 +128,7 @@ try {
 Il blocco `finally` evita che il timer rimanga attivo dopo il completamento della richiesta.
 
 ---
-
-## 5. AbortSignal.timeout()
-
+### 5. AbortSignal.timeout()
 In ambienti moderni si puo creare direttamente un signal che si annulla dopo un certo tempo.
 
 ```js
@@ -133,9 +142,7 @@ Questo codice rende piu semplice il caso del timeout.
 Tuttavia, quando serve supportare ambienti meno recenti o gestire piu cause di annullamento, il pattern con `AbortController` manuale rimane utile.
 
 ---
-
-## 6. Annullamento manuale da interfaccia
-
+### 6. Annullamento manuale da interfaccia
 Un caso tipico e annullare una richiesta quando l'utente preme un pulsante.
 
 ```js
@@ -166,9 +173,7 @@ function cancelLoad() {
 Questo evita di continuare a consumare rete e risorse quando il risultato non serve piu.
 
 ---
-
-## 7. Evitare race condition
-
+### 7. Evitare race condition
 `AbortController` e utile quando piu richieste possono sovrapporsi.
 
 Esempio: una ricerca lanciata mentre l'utente digita.
@@ -201,9 +206,7 @@ Prima di avviare la nuova richiesta, la richiesta precedente viene annullata.
 Questo riduce il rischio che una risposta vecchia sovrascriva dati piu recenti.
 
 ---
-
-## 8. Usare signal con addEventListener()
-
+### 8. Usare signal con addEventListener()
 Alcuni metodi del browser accettano `signal` anche fuori da `fetch()`.
 
 Con `addEventListener()`, il listener viene rimosso automaticamente quando il signal viene annullato.
@@ -225,9 +228,56 @@ controller.abort();
 Questo pattern e utile per cleanup automatico di listener temporanei.
 
 ---
+### 10. signal.aborted e signal.reason
+Un `AbortSignal` espone informazioni sul proprio stato.
 
-## 9. Creare API cancellabili
+```js
+const controller = new AbortController();
 
+console.log(controller.signal.aborted); // false
+
+controller.abort("Operazione annullata dall'utente");
+
+console.log(controller.signal.aborted); // true
+console.log(controller.signal.reason);  // "Operazione annullata dall'utente"
+```
+
+`signal.aborted` indica se il signal e gia stato annullato.
+
+`signal.reason` contiene il motivo passato a `abort()`, quando disponibile.
+
+---
+### 11. AbortController e Promise.race()
+`Promise.race()` puo simulare un timeout, ma non cancella automaticamente l'operazione perdente.
+
+```js
+await Promise.race([
+  fetch("/api/data"),
+  timeout(3000),
+]);
+```
+
+Se il timeout vince, la richiesta `fetch()` puo comunque continuare.
+
+Con `AbortController`, invece, si puo interrompere davvero l'operazione supportata.
+
+```js
+const controller = new AbortController();
+
+setTimeout(() => {
+  controller.abort();
+}, 3000);
+
+await fetch("/api/data", {
+  signal: controller.signal,
+});
+```
+
+---
+
+## API / Sintassi
+
+### 9. Creare API cancellabili
 Anche funzioni personalizzate possono accettare un `signal`.
 
 ```js
@@ -262,81 +312,34 @@ Accettare un `signal` rende una funzione asincrona piu componibile.
 
 ---
 
-## 10. signal.aborted e signal.reason
+## Esempio pratico
 
-Un `AbortSignal` espone informazioni sul proprio stato.
-
-```js
-const controller = new AbortController();
-
-console.log(controller.signal.aborted); // false
-
-controller.abort("Operazione annullata dall'utente");
-
-console.log(controller.signal.aborted); // true
-console.log(controller.signal.reason);  // "Operazione annullata dall'utente"
-```
-
-`signal.aborted` indica se il signal e gia stato annullato.
-
-`signal.reason` contiene il motivo passato a `abort()`, quando disponibile.
-
----
-
-## 11. AbortController e Promise.race()
-
-`Promise.race()` puo simulare un timeout, ma non cancella automaticamente l'operazione perdente.
+Ricerca cancellabile:
 
 ```js
-await Promise.race([
-  fetch("/api/data"),
-  timeout(3000),
-]);
+let currentController;
+
+async function searchUsers(query) {
+  currentController?.abort();
+  currentController = new AbortController();
+
+  const response = await fetch(`/api/users?q=${encodeURIComponent(query)}`, {
+    signal: currentController.signal,
+  });
+
+  if (!response.ok) {
+    throw new Error(`HTTP ${response.status}`);
+  }
+
+  return response.json();
+}
 ```
 
-Se il timeout vince, la richiesta `fetch()` puo comunque continuare.
+Ogni nuova ricerca annulla quella precedente, evitando che una risposta vecchia aggiorni la UI dopo una risposta piu recente.
 
-Con `AbortController`, invece, si puo interrompere davvero l'operazione supportata.
+## Varianti
 
-```js
-const controller = new AbortController();
-
-setTimeout(() => {
-  controller.abort();
-}, 3000);
-
-await fetch("/api/data", {
-  signal: controller.signal,
-});
-```
-
----
-
-## 12. Best practice
-
-- Passa sempre `signal` alle API che supportano cancellazione.
-- Gestisci `AbortError` separatamente dagli errori reali.
-- Usa `finally` per pulire timer, loader e riferimenti temporanei.
-- Annulla richieste obsolete in ricerca, navigazione e componenti UI.
-- Non assumere che tutte le Promise siano cancellabili.
-- Evita di riusare lo stesso controller per operazioni indipendenti.
-- Crea un nuovo `AbortController` per ogni ciclo logico di operazioni.
-
----
-
-## 13. Errori comuni
-
-- Pensare che `abort()` cancelli qualunque Promise.
-- Dimenticare di passare `signal` a `fetch()`.
-- Trattare `AbortError` come errore applicativo.
-- Non pulire il timeout dopo una richiesta riuscita.
-- Riusare un controller gia abortito.
-- Usare solo `Promise.race()` per timeout senza annullare la richiesta.
-
----
-
-## 14. Mappa mentale
-
+### 14. Mappa mentale
 ```text
 AbortController
 |
@@ -362,8 +365,34 @@ AbortController
 
 ---
 
-## 15. Collegamenti
+## Errori comuni
 
+### 13. Errori comuni
+- Pensare che `abort()` cancelli qualunque Promise.
+- Dimenticare di passare `signal` a `fetch()`.
+- Trattare `AbortError` come errore applicativo.
+- Non pulire il timeout dopo una richiesta riuscita.
+- Riusare un controller gia abortito.
+- Usare solo `Promise.race()` per timeout senza annullare la richiesta.
+
+---
+
+## Checklist
+
+### 12. Best practice
+- Passa sempre `signal` alle API che supportano cancellazione.
+- Gestisci `AbortError` separatamente dagli errori reali.
+- Usa `finally` per pulire timer, loader e riferimenti temporanei.
+- Annulla richieste obsolete in ricerca, navigazione e componenti UI.
+- Non assumere che tutte le Promise siano cancellabili.
+- Evita di riusare lo stesso controller per operazioni indipendenti.
+- Crea un nuovo `AbortController` per ogni ciclo logico di operazioni.
+
+---
+
+## Collegamenti
+
+### 15. Collegamenti
 - [[Programmazione/JavaScript/Pagine/Fetch API|Fetch API]]
 - [[Programmazione/JavaScript/Pagine/Promise avanzate|Promise avanzate]]
 - [[Programmazione/JavaScript/Pagine/Promises|Promises]]

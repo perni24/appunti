@@ -1,5 +1,5 @@
----
-date: 2026-05-04
+﻿---
+date: 2026-06-02
 area: Programmazione
 topic: JavaScript
 tags: [javascript, binary-data, arraybuffer, typed-arrays, dataview, buffer]
@@ -13,6 +13,9 @@ related: [Web Workers]
 
 # Buffer e Typed Arrays
 
+## Sintesi
+
+### Testo introduttivo
 JavaScript usa oggetti e array normali per molti dati applicativi, ma quando serve lavorare con **dati binari** entrano in gioco `ArrayBuffer`, `TypedArray` e `DataView`.
 
 Questi strumenti permettono di leggere e scrivere byte, numeri interi e floating point in modo efficiente e controllato.
@@ -20,8 +23,25 @@ Questi strumenti permettono di leggere e scrivere byte, numeri interi e floating
 > [!INFO]
 > `ArrayBuffer` rappresenta memoria binaria grezza. Le Typed Arrays e `DataView` sono viste che permettono di interpretare quei byte.
 
-## 1. Perche Servono
+## Quando usarlo
 
+Usa buffer e typed arrays quando devi lavorare con dati binari invece che con stringhe o oggetti JavaScript.
+
+Casi comuni:
+
+- file binari;
+- immagini, audio e video;
+- WebAssembly;
+- WebSocket binari;
+- protocolli di rete;
+- parsing di formati custom;
+- trasferimento efficiente tra thread o worker.
+
+Per testo normale usa stringhe; per dati numerici grezzi e byte usa `ArrayBuffer`, typed arrays o `DataView`.
+
+## Come funziona
+
+### 1. Perche Servono
 Gli array JavaScript normali non sono ideali per dati binari.
 
 ```javascript
@@ -48,9 +68,7 @@ I buffer binari servono per:
 - crittografia;
 - parsing di formati binari;
 - performance su grandi quantita di numeri.
-
-## 2. ArrayBuffer
-
+### 2. ArrayBuffer
 `ArrayBuffer` e un blocco di memoria binaria grezza.
 
 ```javascript
@@ -73,9 +91,7 @@ ArrayBuffer
   -> bytes grezzi
   -> interpretati tramite viste
 ```
-
-## 3. Typed Arrays
-
+### 3. Typed Arrays
 Una Typed Array interpreta un `ArrayBuffer` come sequenza di valori dello stesso tipo.
 
 Esempi:
@@ -104,9 +120,7 @@ console.log(bytes); // Uint8Array [255, 128, 0, 0]
 ```
 
 Qui ogni elemento e un unsigned integer da 8 bit.
-
-## 4. Buffer Condiviso tra Viste
-
+### 4. Buffer Condiviso tra Viste
 Typed Arrays sono viste sopra un buffer.
 
 ```javascript
@@ -124,9 +138,7 @@ console.log(words[0]); // dipende dall'endianness della piattaforma
 Entrambe le viste leggono e scrivono sugli stessi byte.
 
 Questo e potente, ma richiede attenzione: cambiare una vista modifica i dati osservati dalle altre.
-
-## 5. Creare Typed Arrays
-
+### 5. Creare Typed Arrays
 ### Da lunghezza
 
 ```javascript
@@ -161,9 +173,7 @@ Qui:
 
 - offset: 4 byte;
 - lunghezza: 2 elementi `Uint32`.
-
-## 6. byteLength, byteOffset e length
-
+### 6. byteLength, byteOffset e length
 ```javascript
 const buffer = new ArrayBuffer(16);
 const view = new Uint32Array(buffer, 4, 2);
@@ -178,9 +188,7 @@ Differenza:
 - `length`: numero di elementi;
 - `byteLength`: numero di byte coperti dalla vista;
 - `byteOffset`: posizione di partenza dentro il buffer.
-
-## 7. DataView
-
+### 7. DataView
 `DataView` permette di leggere e scrivere tipi diversi nello stesso buffer, scegliendo anche l'endianness.
 
 ```javascript
@@ -203,9 +211,7 @@ console.log(view.getUint16(1, true)); // 500
 - valori multi-byte;
 - protocolli di rete;
 - file format.
-
-## 8. Endianness
-
+### 8. Endianness
 Endianness indica l'ordine dei byte per rappresentare numeri multi-byte.
 
 Esempio: valore `0x1234`.
@@ -223,9 +229,7 @@ view.setUint16(0, 0x1234, true);  // little-endian
 ```
 
 Con Typed Arrays, l'endianness segue la piattaforma. Con `DataView`, lo controlli esplicitamente.
-
-## 9. Uint8Array
-
+### 9. Uint8Array
 `Uint8Array` e una delle Typed Arrays piu usate.
 
 Rappresenta byte da 0 a 255.
@@ -244,9 +248,7 @@ Usi tipici:
 - encoding/decoding testo;
 - WebAssembly memory;
 - immagini e audio.
-
-## 10. TextEncoder e TextDecoder
-
+### 10. TextEncoder e TextDecoder
 Per convertire stringhe in byte e viceversa:
 
 ```javascript
@@ -264,9 +266,7 @@ console.log(text); // "Ciao"
 ```
 
 Questo e preferibile a conversioni manuali carattere-per-carattere.
-
-## 11. Fetch e ArrayBuffer
-
+### 11. Fetch e ArrayBuffer
 `fetch` puo leggere una risposta come `ArrayBuffer`.
 
 ```javascript
@@ -288,9 +288,7 @@ Questo e utile per:
 - protocolli custom.
 
 Collegamento: [[Fetch API]]
-
-## 12. Blob e File
-
+### 12. Blob e File
 Nel browser, `Blob` e `File` rappresentano dati binari o file-like.
 
 ```javascript
@@ -304,9 +302,7 @@ const buffer = await blob.arrayBuffer();
 `File` estende `Blob` e aggiunge metadati come nome e data modifica.
 
 Questo collega buffer binari a upload, download e file input.
-
-## 13. WebSockets
-
+### 13. WebSockets
 WebSocket puo ricevere dati binari come `ArrayBuffer` o `Blob`.
 
 ```javascript
@@ -321,9 +317,7 @@ socket.addEventListener("message", (event) => {
 ```
 
 Collegamento: [[WebSockets]]
-
-## 14. Web Workers
-
+### 14. Web Workers
 I buffer binari possono essere trasferiti a un Web Worker.
 
 ```javascript
@@ -335,9 +329,7 @@ Quando un `ArrayBuffer` viene trasferito, la ownership passa al worker e il buff
 Questo evita copie costose su dati grandi.
 
 Collegamento: [[Web Workers]]
-
-## 15. structuredClone e Transfer
-
+### 15. structuredClone e Transfer
 `structuredClone` puo clonare molti oggetti binari.
 
 ```javascript
@@ -359,9 +351,7 @@ console.log(moved.byteLength); // 1024
 ```
 
 Collegamento: [[Immutabilita e Copia degli Oggetti]]
-
-## 16. SharedArrayBuffer
-
+### 16. SharedArrayBuffer
 `SharedArrayBuffer` permette di condividere memoria tra thread, per esempio tra main thread e Web Worker.
 
 ```javascript
@@ -377,9 +367,7 @@ console.log(Atomics.load(view, 0));
 ```
 
 Questo e un argomento avanzato e richiede attenzione a sicurezza, isolamento e race condition.
-
-## 17. Node.js Buffer
-
+### 17. Node.js Buffer
 In Node.js esiste anche `Buffer`, usato per dati binari.
 
 ```javascript
@@ -399,10 +387,8 @@ Uso tipico in Node:
 - HTTP;
 - encoding.
 
-Collegamento futuro: [[Buffer]]
-
-## 18. Typed Arrays vs Array Normali
-
+Collegamento: [[Programmazione/JavaScript/Pagine/Buffer Node.js|Buffer Node.js]]
+### 18. Typed Arrays vs Array Normali
 | Aspetto | Array normale | Typed Array |
 |---|---|---|
 | Tipo elementi | qualsiasi | tipo numerico fisso |
@@ -412,9 +398,7 @@ Collegamento futuro: [[Buffer]]
 | Uso | dati applicativi | dati numerici/binari |
 
 Typed Arrays non sostituiscono gli array normali. Servono quando il dato e numerico, compatto e binario.
-
-## 19. Performance
-
+### 19. Performance
 Typed Arrays possono essere piu efficienti quando lavori su molti numeri o byte.
 
 Vantaggi:
@@ -437,8 +421,76 @@ Valuta:
 
 Collegamento: [[Optimization]]
 
-## 20. Errori Comuni
+## API / Sintassi
 
+API principali:
+
+```js
+const buffer = new ArrayBuffer(16);
+const bytes = new Uint8Array(buffer);
+const view = new DataView(buffer);
+```
+
+Typed arrays comuni:
+
+```js
+Int8Array;
+Uint8Array;
+Uint8ClampedArray;
+Int16Array;
+Uint16Array;
+Int32Array;
+Uint32Array;
+Float32Array;
+Float64Array;
+BigInt64Array;
+BigUint64Array;
+```
+
+Conversione testo:
+
+```js
+const encoded = new TextEncoder().encode("ciao");
+const decoded = new TextDecoder("utf-8").decode(encoded);
+```
+
+## Esempio pratico
+
+Leggere primi byte di una risposta binaria:
+
+```js
+const response = await fetch("/file.bin");
+const arrayBuffer = await response.arrayBuffer();
+const bytes = new Uint8Array(arrayBuffer);
+
+console.log(bytes[0]);
+console.log(bytes.byteLength);
+```
+
+Se devi leggere valori multi-byte con endianness specifico, usa `DataView`:
+
+```js
+const view = new DataView(arrayBuffer);
+const value = view.getUint32(0, false);
+```
+
+## Varianti
+
+### 22. Mappa Mentale
+```txt
+Buffer e Typed Arrays
+  -> ArrayBuffer: memoria grezza
+  -> TypedArray: vista tipizzata
+  -> DataView: lettura/scrittura con endianness
+  -> Uint8Array: byte
+  -> TextEncoder/TextDecoder: testo <-> byte
+  -> Blob/File/Fetch/WebSocket/Worker
+  -> Node.js Buffer
+```
+
+## Errori comuni
+
+### 20. Errori Comuni
 ### Confondere ArrayBuffer e Typed Array
 
 `ArrayBuffer` e memoria grezza. `Uint8Array` e una vista.
@@ -467,8 +519,9 @@ Le stringhe sono testo Unicode, non byte grezzi.
 
 Typed Arrays non crescono come array normali.
 
-## 21. Best Practices
+## Checklist
 
+### 21. Best Practices
 1. Usa `Uint8Array` per byte generici.
 2. Usa `DataView` quando devi controllare endianness o leggere tipi misti.
 3. Usa `TextEncoder` e `TextDecoder` per testo.
@@ -479,15 +532,6 @@ Typed Arrays non crescono come array normali.
 8. Misura la performance prima di ottimizzare.
 9. In Node.js, usa `Buffer` per API native del runtime.
 
-## 22. Mappa Mentale
+## Collegamenti
 
-```txt
-Buffer e Typed Arrays
-  -> ArrayBuffer: memoria grezza
-  -> TypedArray: vista tipizzata
-  -> DataView: lettura/scrittura con endianness
-  -> Uint8Array: byte
-  -> TextEncoder/TextDecoder: testo <-> byte
-  -> Blob/File/Fetch/WebSocket/Worker
-  -> Node.js Buffer
-```
+- [[Programmazione/JavaScript/Indice javascript|Indice JavaScript]]

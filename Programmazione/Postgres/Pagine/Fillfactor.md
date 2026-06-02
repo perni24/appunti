@@ -1,5 +1,5 @@
-﻿---
-date: 2026-05-20
+---
+date: 2026-06-02
 area: Programmazione
 topic: Postgres
 type: technical-note
@@ -19,62 +19,68 @@ related: []
 
 ## Sintesi
 
-`fillfactor` controlla quanto spazio PostgreSQL riempie nelle pagine di una tabella o di un indice.
-
-## Concetto chiave
-
-Un fillfactor piu basso lascia spazio libero per aggiornamenti futuri, riducendo page split e favorendo HOT updates in alcune tabelle molto aggiornate.
-
-```sql
-ALTER TABLE events SET (fillfactor = 80);
-VACUUM FULL events;
-```
-
-## Quando considerarlo
-
-- Tabelle con molti `UPDATE`.
-- Indici soggetti a molte modifiche.
-- Tabelle con bloat elevato.
-
-## Tradeoff
-
-Lasciare spazio libero migliora alcuni aggiornamenti, ma aumenta lo spazio occupato e puo peggiorare scansioni sequenziali.
+`fillfactor` controlla quanto spazio lasciare libero nelle pagine di una tabella o indice. Un valore piu basso puo favorire update HOT e ridurre page split, al costo di piu spazio usato.
 
 ## Quando usarlo
 
-- Da completare: indicare scenari pratici in cui questa nota e utile.
+Usalo su tabelle o indici molto aggiornati, dove bloat e update frequenti degradano performance.
 
 ## Come funziona
 
-Da completare: spiegare il meccanismo principale o il comportamento tecnico.
+Con fillfactor 100, PostgreSQL riempie molto le pagine. Con valori minori, lascia spazio per future modifiche. Questo puo evitare di spostare tuple aggiornate in altre pagine.
 
 ## API / Sintassi
 
-```text
-Da completare con API o sintassi principale.
+```sql
+CREATE TABLE users (
+  id bigint PRIMARY KEY,
+  name text
+) WITH (fillfactor = 80);
+```
+
+Modifica:
+
+```sql
+ALTER TABLE users SET (fillfactor = 80);
+VACUUM FULL users;
+```
+
+Indice:
+
+```sql
+CREATE INDEX users_name_idx ON users (name) WITH (fillfactor = 90);
 ```
 
 ## Esempio pratico
 
-```text
-Da completare con un esempio pratico.
-```
+Una tabella `accounts` aggiornata spesso sul campo `last_seen_at` puo beneficiare di fillfactor piu basso, ma va verificato con metriche di bloat e performance.
 
 ## Varianti
 
-- Da completare: varianti, alternative o differenze rispetto ad approcci simili.
+- Fillfactor tabella.
+- Fillfactor indice.
+- HOT updates.
+- Tuning per tabelle append-only.
+- Tuning per tabelle update-heavy.
 
 ## Errori comuni
 
-Da completare durante revisione.
+- Applicare fillfactor senza misurare.
+- Ridurlo troppo e sprecare disco.
+- Aspettarsi effetti immediati senza riscrivere/vacuum adeguato.
+- Ignorare indici coinvolti negli update.
+- Usarlo al posto di una buona modellazione.
 
 ## Checklist
 
-- Da completare: controlli essenziali prima di usare questo concetto in pratica.
+- La tabella e update-heavy?
+- C'e bloat misurabile?
+- Gli update possono essere HOT?
+- Lo spazio extra e accettabile?
+- Hai confrontato prima e dopo?
 
 ## Collegamenti
+
+- [[Programmazione/Postgres/Pagine/MVCC|MVCC]]
 - [[Programmazione/Postgres/Pagine/Manutenzione|Manutenzione]]
-- [[Programmazione/Postgres/Pagine/File System Layout e Data Directory|File System Layout e Data Directory]]
-- [[Programmazione/Postgres/Pagine/Manutenzione|Bloat]]
-
-
+- [[Programmazione/Postgres/Pagine/Tipi di Indici|Tipi di Indici]]

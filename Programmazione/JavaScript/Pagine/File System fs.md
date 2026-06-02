@@ -1,5 +1,5 @@
----
-date: 2026-05-13
+﻿---
+date: 2026-06-02
 area: Programmazione
 topic: JavaScript
 type: technical-note
@@ -21,8 +21,24 @@ Per codice moderno si usa spesso `node:fs/promises`, che espone API basate su Pr
 
 ---
 
-## Import
+## Quando usarlo
 
+Usa `node:fs` quando uno script o un'app Node.js deve leggere, scrivere, creare, cancellare o ispezionare file e cartelle.
+
+Casi comuni:
+
+- leggere configurazioni;
+- generare file di output;
+- importare dati locali;
+- creare cartelle di build;
+- leggere log;
+- lavorare con file binari o stream.
+
+Per dati grandi o continui preferisci stream; per file piccoli `fs/promises` e spesso sufficiente.
+
+## Come funziona
+
+### Import
 ```js
 import { readFile, writeFile } from "node:fs/promises";
 ```
@@ -34,9 +50,7 @@ const { readFile, writeFile } = require("node:fs/promises");
 ```
 
 ---
-
-## Leggere file
-
+### Leggere file
 ```js
 import { readFile } from "node:fs/promises";
 
@@ -47,9 +61,7 @@ const config = JSON.parse(content);
 Specifica `"utf8"` quando vuoi una stringa. Senza encoding ottieni un `Buffer`.
 
 ---
-
-## Scrivere file
-
+### Scrivere file
 ```js
 import { writeFile } from "node:fs/promises";
 
@@ -59,9 +71,7 @@ await writeFile("output.txt", "contenuto\n", "utf8");
 `writeFile` sovrascrive il file se esiste.
 
 ---
-
-## Aggiungere contenuto
-
+### Aggiungere contenuto
 ```js
 import { appendFile } from "node:fs/promises";
 
@@ -71,9 +81,7 @@ await appendFile("log.txt", "nuova riga\n", "utf8");
 Utile per log semplici o output incrementale.
 
 ---
-
-## Cartelle
-
+### Cartelle
 ```js
 import { mkdir, readdir } from "node:fs/promises";
 
@@ -85,9 +93,7 @@ const entries = await readdir("dist");
 `recursive: true` evita errore se cartelle intermedie non esistono.
 
 ---
-
-## Stat e controllo file
-
+### Stat e controllo file
 ```js
 import { stat } from "node:fs/promises";
 
@@ -100,9 +106,7 @@ console.log(info.size);
 Usa `stat` per leggere metadati del file system.
 
 ---
-
-## Stream
-
+### Stream
 Per file grandi, evita `readFile`: carica tutto in memoria.
 
 ```js
@@ -119,6 +123,67 @@ Gli stream processano dati a blocchi.
 
 ---
 
+## API / Sintassi
+
+Import moderno:
+
+```js
+import {
+  readFile,
+  writeFile,
+  appendFile,
+  mkdir,
+  readdir,
+  stat,
+  rm,
+} from "node:fs/promises";
+```
+
+Operazioni frequenti:
+
+```js
+await readFile("file.txt", "utf8");
+await writeFile("file.txt", "contenuto", "utf8");
+await appendFile("log.txt", "riga\n", "utf8");
+await mkdir("dist/assets", { recursive: true });
+await readdir("dist");
+await stat("file.txt");
+await rm("dist/file.txt");
+```
+
+Per stream:
+
+```js
+import { createReadStream, createWriteStream } from "node:fs";
+```
+
+## Esempio pratico
+
+Leggere JSON, modificarlo e riscriverlo:
+
+```js
+import { readFile, writeFile } from "node:fs/promises";
+import path from "node:path";
+
+const filePath = path.resolve(process.cwd(), "config.json");
+const content = await readFile(filePath, "utf8");
+const config = JSON.parse(content);
+
+config.updatedAt = new Date().toISOString();
+
+await writeFile(filePath, JSON.stringify(config, null, 2), "utf8");
+```
+
+In codice reale aggiungi `try/catch` per gestire file mancante, JSON non valido o permessi insufficienti.
+
+## Varianti
+
+- **`fs/promises`**: API Promise, consigliata con `async/await`.
+- **Callback API**: forma storica, ancora presente.
+- **Sync API**: blocca il thread, accettabile solo in script piccoli o fase di startup.
+- **Stream API**: adatta a file grandi.
+- **Watcher**: osserva modifiche al file system, con limiti e differenze tra piattaforme.
+
 ## Errori comuni
 
 - Usare path relativi senza sapere da quale cartella parte il processo.
@@ -129,8 +194,9 @@ Gli stream processano dati a blocchi.
 
 ---
 
-## Checklist operativa
+## Checklist
 
+### Checklist operativa
 - Usa `fs/promises` con `async/await`.
 - Usa `path.join` o `path.resolve` per costruire percorsi.
 - Gestisci errori con `try/catch`.

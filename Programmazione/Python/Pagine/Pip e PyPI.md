@@ -1,5 +1,5 @@
----
-date: 2026-05-14
+﻿---
+date: 2026-06-02
 area: Programmazione
 topic: Python
 type: technical-note
@@ -10,13 +10,20 @@ aliases: [Pip e PyPI]
 prerequisites: []
 related: []
 ---
+
 # Pip e PyPI
 
 ## Sintesi
 
 Nota su Pip e PyPI in Python. Riassume il concetto, la sintassi principale e i punti da ricordare durante studio, sviluppo o debugging.
 
-## Concetto chiave
+## Quando usarlo
+
+Contenuto da sviluppare: nella nota originale questa sezione non era presente o era solo una traccia.
+
+## Come funziona
+
+### Concetto chiave
 `pip` e il package manager standard piu usato nell'ecosistema Python. Serve per installare, aggiornare e rimuovere pacchetti.
 
 **PyPI** (*Python Package Index*) e invece il repository pubblico principale dove i pacchetti Python vengono pubblicati e distribuiti.
@@ -29,42 +36,7 @@ In sintesi:
 > Molti confondono `pip` con PyPI, ma non sono la stessa cosa. `pip` e il client; PyPI e il registry remoto da cui il client recupera i pacchetti.
 
 ---
-
-##  Sintassi di base
-
-I comandi piu comuni sono:
-
-```bash
-python -m pip install requests
-python -m pip uninstall requests
-python -m pip list
-python -m pip show requests
-```
-
-Usare `python -m pip` e in genere preferibile a `pip` puro, perche rende esplicito quale interprete Python sta eseguendo il comando.
-
-### Aggiornare `pip`
-
-```bash
-python -m pip install --upgrade pip
-```
-
-### Installare una versione specifica
-
-```bash
-python -m pip install requests==2.32.0
-```
-
-### Installare con vincoli di versione
-
-```bash
-python -m pip install "django>=5.0,<6.0"
-```
-
----
-
-##  Esempi Pratici
-
+### Esempi Pratici
 ### Installare una libreria
 
 ```bash
@@ -97,9 +69,7 @@ python -m pip install -r requirements.txt
 Questo workflow e fondamentale per rendere un progetto replicabile su altre macchine o ambienti.
 
 ---
-
-##  Funzionamento Interno (Teoria)
-
+### Funzionamento Interno (Teoria)
 ### Cosa fa `pip`
 Quando esegui `pip install`, lo strumento:
 
@@ -135,9 +105,7 @@ La destinazione dipende dall'ambiente attivo:
 Per questo `pip` e strettamente collegato alla gestione degli ambienti Python.
 
 ---
-
-##  Versionamento e dipendenze
-
+### Versionamento e dipendenze
 Gestire correttamente le versioni e una parte centrale dell'uso di `pip`.
 
 ### Forme comuni
@@ -156,9 +124,7 @@ Bloccare le versioni aiuta a:
 > Per librerie applicative e progetti condivisi, evitare versioni completamente libere e in genere una scelta migliore.
 
 ---
-
-##  `requirements.txt` e workflow tipico
-
+### `requirements.txt` e workflow tipico
 Un flusso comune in molti progetti Python e questo:
 
 1. creare o attivare un ambiente virtuale;
@@ -178,9 +144,7 @@ python -m pip freeze > requirements.txt
 Questa nota si collega naturalmente al tema degli ambienti virtuali.
 
 ---
-
-##  Sicurezza e affidabilita
-
+### Sicurezza e affidabilita
 Installare un pacchetto significa eseguire codice distribuito da terzi. Quindi:
 - bisogna controllare l'affidabilita del pacchetto;
 - conviene evitare dipendenze inutili;
@@ -194,8 +158,51 @@ Installare un pacchetto significa eseguire codice distribuito da terzi. Quindi:
 
 ---
 
-##  Best Practices & "Gotchas"
+## API / Sintassi
 
+### Sintassi di base
+I comandi piu comuni sono:
+
+```bash
+python -m pip install requests
+python -m pip uninstall requests
+python -m pip list
+python -m pip show requests
+```
+
+Usare `python -m pip` e in genere preferibile a `pip` puro, perche rende esplicito quale interprete Python sta eseguendo il comando.
+
+### Aggiornare `pip`
+
+```bash
+python -m pip install --upgrade pip
+```
+
+### Installare una versione specifica
+
+```bash
+python -m pip install requests==2.32.0
+```
+
+### Installare con vincoli di versione
+
+```bash
+python -m pip install "django>=5.0,<6.0"
+```
+
+---
+
+## Esempio pratico
+
+Contenuto da sviluppare: nella nota originale questa sezione non era presente o era solo una traccia.
+
+## Varianti
+
+Contenuto da sviluppare: nella nota originale questa sezione non era presente o era solo una traccia.
+
+## Errori comuni
+
+### Best Practices & "Gotchas"
 -  **Usa `python -m pip`:** evita ambiguita tra piu interpreti Python installati.
 -  **Lavora dentro ambienti virtuali:** riduce conflitti tra progetti.
 -  **Blocca le versioni quando serve riproducibilita:** soprattutto in produzione e CI.
@@ -207,3 +214,11 @@ Installare un pacchetto significa eseguire codice distribuito da terzi. Quindi:
 -  **Attenzione ai package name shadowing:** creare file locali come `requests.py` o `fastapi.py` puo rompere gli import.
 
 ---
+
+## Checklist
+
+Contenuto da sviluppare: nella nota originale questa sezione non era presente o era solo una traccia.
+
+## Collegamenti
+
+- [[Programmazione/Python/Indice python|Indice Python]]

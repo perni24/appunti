@@ -1,5 +1,5 @@
----
-date: 2026-05-14
+﻿---
+date: 2026-06-02
 area: Programmazione
 topic: Python
 type: technical-note
@@ -10,19 +10,39 @@ aliases: [Operatori]
 prerequisites: []
 related: []
 ---
+
 # Operatori in Python
 
 ## Sintesi
 
 Nota su Operatori in Python. Riassume il concetto, la sintassi principale e i punti da ricordare durante studio, sviluppo o debugging.
+Nota su Operatori in Python. Riassume il concetto, la sintassi principale e i punti da ricordare durante studio, sviluppo o debugging.
+frutta = ["mela", "banana"]
+print("mela" in frutta) # True
 
-## Concetto chiave
-Gli operatori sono simboli speciali che eseguono operazioni su variabili e valori. Python offre una vasta gamma di operatori, dai classici aritmetici a quelli più specifici per il confronto di identità e l'appartenenza.
+# Operatori in Python
+Nota su Operatori in Python. Riassume il concetto, la sintassi principale e i punti da ricordare durante studio, sviluppo o debugging.
+a = [1, 2]
+b = [1, 2]
+c = a
+print(a == b) # True (valore uguale)
+print(a is b) # False (oggetti diversi in memoria)
+print(a is c) # True (stesso oggetto)
+```
 
 ---
 
-##  Tipologie di Operatori
+## Quando usarlo
 
+Contenuto da sviluppare: nella nota originale questa sezione non era presente o era solo una traccia.
+
+## Come funziona
+
+### Concetto chiave
+Gli operatori sono simboli speciali che eseguono operazioni su variabili e valori. Python offre una vasta gamma di operatori, dai classici aritmetici a quelli più specifici per il confronto di identità e l'appartenenza.
+
+---
+### Tipologie di Operatori
 ### 1. Operatori Aritmetici
 Usati per eseguire operazioni matematiche comuni.
 
@@ -68,29 +88,7 @@ Questi operatori sono molto comuni in Python per la loro leggibilità.
 
 ```python
 # Operatori in Python
-
-## Sintesi
-
-Nota su Operatori in Python. Riassume il concetto, la sintassi principale e i punti da ricordare durante studio, sviluppo o debugging.
-frutta = ["mela", "banana"]
-print("mela" in frutta) # True
-
-# Operatori in Python
-
-## Sintesi
-
-Nota su Operatori in Python. Riassume il concetto, la sintassi principale e i punti da ricordare durante studio, sviluppo o debugging.
-a = [1, 2]
-b = [1, 2]
-c = a
-print(a == b) # True (valore uguale)
-print(a is b) # False (oggetti diversi in memoria)
-print(a is c) # True (stesso oggetto)
-```
-
----
-
-## Logic layer: Precedenza degli Operatori
+### Logic layer: Precedenza degli Operatori
 Python segue l'ordine matematico standard (PEMDAS), ma è importante ricordare la gerarchia quando si mescolano tipi diversi:
 
 1.  Parentesi `()`
@@ -102,9 +100,31 @@ Python segue l'ordine matematico standard (PEMDAS), ma è importante ricordare l
 
 ---
 
-##  Best Practices
+## API / Sintassi
+
+Contenuto da sviluppare: nella nota originale questa sezione non era presente o era solo una traccia.
+
+## Esempio pratico
+
+Contenuto da sviluppare: nella nota originale questa sezione non era presente o era solo una traccia.
+
+## Varianti
+
+Contenuto da sviluppare: nella nota originale questa sezione non era presente o era solo una traccia.
+
+## Errori comuni
+
+Contenuto da sviluppare: nella nota originale questa sezione non era presente o era solo una traccia.
+
+## Checklist
+
+### Best Practices
 > [!TIP] Leggibilità
 > Anche se la precedenza è chiara per l'interprete, usa le **parentesi** per rendere il codice più leggibile ai programmatori umani. 
 > Esempio: `(a and b) or c` è meglio di `a and b or c`.
 
 ---
+
+## Collegamenti
+
+- [[Programmazione/Python/Indice python|Indice Python]]

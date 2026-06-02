@@ -1,5 +1,5 @@
----
-date: 2026-05-14
+﻿---
+date: 2026-06-02
 area: Programmazione
 topic: Python
 type: technical-note
@@ -19,8 +19,13 @@ Python include moduli standard per networking HTTP e socket.
 
 Per uso applicativo moderno spesso si usano librerie esterne, ma conoscere le API native aiuta a capire il modello di base.
 
-## HTTP con urllib
+## Quando usarlo
 
+Contenuto da sviluppare: nella nota originale questa sezione non era presente o era solo una traccia.
+
+## Come funziona
+
+### HTTP con urllib
 ```python
 from urllib.request import urlopen
 
@@ -29,9 +34,7 @@ with urlopen("https://example.com") as response:
 ```
 
 `urllib` e disponibile nella standard library, ma per progetti reali spesso si preferiscono librerie piu ergonomiche.
-
-## Socket TCP base
-
+### Socket TCP base
 ```python
 import socket
 
@@ -41,14 +44,24 @@ with socket.create_connection(("example.com", 80), timeout=5) as sock:
 ```
 
 I socket lavorano con byte.
-
-## Timeout
-
+### Timeout
 Imposta sempre timeout su rete e I/O esterno.
 
 ```python
 socket.create_connection(("example.com", 80), timeout=5)
 ```
+
+## API / Sintassi
+
+Contenuto da sviluppare: nella nota originale questa sezione non era presente o era solo una traccia.
+
+## Esempio pratico
+
+Contenuto da sviluppare: nella nota originale questa sezione non era presente o era solo una traccia.
+
+## Varianti
+
+Contenuto da sviluppare: nella nota originale questa sezione non era presente o era solo una traccia.
 
 ## Errori comuni
 
@@ -56,6 +69,10 @@ socket.create_connection(("example.com", 80), timeout=5)
 - Confondere stringhe e byte nei socket.
 - Non chiudere connessioni.
 - Gestire protocolli complessi manualmente senza motivo.
+
+## Checklist
+
+Contenuto da sviluppare: nella nota originale questa sezione non era presente o era solo una traccia.
 
 ## Collegamenti
 

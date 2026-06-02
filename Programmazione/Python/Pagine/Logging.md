@@ -1,5 +1,5 @@
----
-date: 2026-05-14
+﻿---
+date: 2026-06-02
 area: Programmazione
 topic: Python
 type: technical-note
@@ -10,13 +10,20 @@ aliases: [Logging]
 prerequisites: []
 related: []
 ---
+
 # Logging in Python
 
 ## Sintesi
 
 Nota su Logging in Python. Riassume il concetto, la sintassi principale e i punti da ricordare durante studio, sviluppo o debugging.
 
-## Concetto chiave
+## Quando usarlo
+
+Contenuto da sviluppare: nella nota originale questa sezione non era presente o era solo una traccia.
+
+## Come funziona
+
+### Concetto chiave
 Il **logging** e il sistema standard per registrare eventi significativi durante l'esecuzione di un programma. Serve a osservare il comportamento del software, diagnosticare problemi, tracciare errori e capire cosa e successo in produzione o durante il debugging.
 
 In Python, il modulo standard e `logging`, incluso nella Standard Library.
@@ -31,35 +38,7 @@ La differenza chiave rispetto a `print()` e che il logging:
 > `print()` e utile per esperimenti rapidi. `logging` e lo strumento corretto quando il messaggio fa parte dell'osservabilita del programma.
 
 ---
-
-##  Sintassi di base
-
-### Configurazione minima
-
-```python
-import logging
-
-logging.basicConfig(level=logging.INFO)
-
-logging.debug("Messaggio di debug")
-logging.info("Informazione")
-logging.warning("Attenzione")
-logging.error("Errore")
-logging.critical("Errore critico")
-```
-
-### Livelli principali
-
-- `DEBUG`: dettagli utili per sviluppo e diagnosi.
-- `INFO`: eventi normali e significativi.
-- `WARNING`: situazione anomala ma non fatale.
-- `ERROR`: errore che impedisce una specifica operazione.
-- `CRITICAL`: errore grave che puo compromettere l'applicazione.
-
----
-
-##  Esempi Pratici
-
+### Esempi Pratici
 ### Logger dedicato per modulo
 
 ```python
@@ -103,9 +82,7 @@ except ZeroDivisionError:
 `logger.exception()` registra il messaggio e include automaticamente traceback e contesto dell'eccezione. Questo si collega direttamente a [[Programmazione/Python/Pagine/Error Handling]].
 
 ---
-
-##  Funzionamento Interno (Teoria)
-
+### Funzionamento Interno (Teoria)
 ### Componenti principali
 Il sistema di logging ruota attorno a quattro elementi principali:
 
@@ -139,9 +116,7 @@ Esempio:
 Questa gerarchia permette configurazioni centralizzate e propagazione dei messaggi verso logger padre.
 
 ---
-
-##  Perche usare il logging invece di `print()`
-
+### Perche usare il logging invece di `print()`
 `print()`:
 - scrive testo grezzo;
 - non ha livelli;
@@ -158,9 +133,50 @@ Questa gerarchia permette configurazioni centralizzate e propagazione dei messag
 > Se il messaggio ti serve per capire lo stato del programma in modo ripetibile, usa il logging. Se stai solo facendo una prova rapida di pochi secondi, `print()` puo bastare.
 
 ---
+### Cosa loggare e cosa non loggare
+Ha senso loggare:
+- eventi applicativi importanti;
+- errori e warning;
+- punti chiave di workflow;
+- informazioni utili per diagnosi.
 
-##  Configurazione pratica
+Non ha senso loggare indiscriminatamente:
+- ogni singola riga di flusso;
+- dati sensibili;
+- password, token, segreti;
+- log rumorosi che nessuno usera davvero.
 
+Il logging utile ha abbastanza contesto per diagnosticare il problema, ma non abbastanza rumore da nasconderlo.
+
+---
+
+## API / Sintassi
+
+### Sintassi di base
+### Configurazione minima
+
+```python
+import logging
+
+logging.basicConfig(level=logging.INFO)
+
+logging.debug("Messaggio di debug")
+logging.info("Informazione")
+logging.warning("Attenzione")
+logging.error("Errore")
+logging.critical("Errore critico")
+```
+
+### Livelli principali
+
+- `DEBUG`: dettagli utili per sviluppo e diagnosi.
+- `INFO`: eventi normali e significativi.
+- `WARNING`: situazione anomala ma non fatale.
+- `ERROR`: errore che impedisce una specifica operazione.
+- `CRITICAL`: errore grave che puo compromettere l'applicazione.
+
+---
+### Configurazione pratica
 Una configurazione semplice ma utile:
 
 ```python
@@ -196,26 +212,17 @@ perche lascia al logging la gestione della formattazione e riduce lavoro inutile
 
 ---
 
-##  Cosa loggare e cosa non loggare
+## Esempio pratico
 
-Ha senso loggare:
-- eventi applicativi importanti;
-- errori e warning;
-- punti chiave di workflow;
-- informazioni utili per diagnosi.
+Contenuto da sviluppare: nella nota originale questa sezione non era presente o era solo una traccia.
 
-Non ha senso loggare indiscriminatamente:
-- ogni singola riga di flusso;
-- dati sensibili;
-- password, token, segreti;
-- log rumorosi che nessuno usera davvero.
+## Varianti
 
-Il logging utile ha abbastanza contesto per diagnosticare il problema, ma non abbastanza rumore da nasconderlo.
+Contenuto da sviluppare: nella nota originale questa sezione non era presente o era solo una traccia.
 
----
+## Errori comuni
 
-##  Best Practices & "Gotchas"
-
+### Best Practices & "Gotchas"
 -  **Usa `getLogger(__name__)` nei moduli:** mantiene ordine e gerarchia.
 -  **Scegli il livello giusto:** `INFO` non e `ERROR`, e `DEBUG` non va lasciato ovunque in produzione.
 -  **Logga contesto utile:** ID, stato, operazione, modulo.
@@ -228,3 +235,11 @@ Il logging utile ha abbastanza contesto per diagnosticare il problema, ma non ab
 -  **Attenzione al rumore:** troppi log rendono difficile trovare i segnali davvero importanti.
 
 ---
+
+## Checklist
+
+Contenuto da sviluppare: nella nota originale questa sezione non era presente o era solo una traccia.
+
+## Collegamenti
+
+- [[Programmazione/Python/Indice python|Indice Python]]

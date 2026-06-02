@@ -1,5 +1,5 @@
 ﻿---
-date: 2026-05-20
+date: 2026-06-02
 area: Programmazione
 topic: Python
 type: technical-note
@@ -21,10 +21,6 @@ related: []
 
 **Django** e un framework web full-stack Python. Include ORM, routing, template, form, autenticazione, admin e migrazioni.
 
-## Concetto chiave
-
-Django segue il principio "batteries included": molte funzionalita comuni sono integrate e seguono convenzioni forti.
-
 ## Quando usarlo
 
 - Applicazioni web complete.
@@ -32,8 +28,11 @@ Django segue il principio "batteries included": molte funzionalita comuni sono i
 - Progetti CRUD ricchi.
 - Team che beneficiano di convenzioni consolidate.
 
-## Componenti principali
+## Come funziona
 
+### Concetto chiave
+Django segue il principio "batteries included": molte funzionalita comuni sono integrate e seguono convenzioni forti.
+### Componenti principali
 - Models.
 - Views.
 - Templates.
@@ -41,37 +40,28 @@ Django segue il principio "batteries included": molte funzionalita comuni sono i
 - Admin.
 - ORM e migrations.
 
-## Come funziona
-
-Da completare: spiegare il meccanismo principale o il comportamento tecnico.
-
 ## API / Sintassi
 
-```text
-Da completare con API o sintassi principale.
-```
+Contenuto da sviluppare: nella nota originale questa sezione non era presente o era solo una traccia.
 
 ## Esempio pratico
 
-```text
-Da completare con un esempio pratico.
-```
+Contenuto da sviluppare: nella nota originale questa sezione non era presente o era solo una traccia.
 
 ## Varianti
 
-- Da completare: varianti, alternative o differenze rispetto ad approcci simili.
+Contenuto da sviluppare: nella nota originale questa sezione non era presente o era solo una traccia.
 
 ## Errori comuni
 
-Da completare durante revisione.
+Contenuto da sviluppare: nella nota originale questa sezione non era presente o era solo una traccia.
 
 ## Checklist
 
-- Da completare: controlli essenziali prima di usare questo concetto in pratica.
+Contenuto da sviluppare: nella nota originale questa sezione non era presente o era solo una traccia.
 
 ## Collegamenti
+
 - [[Programmazione/Python/Pagine/SQLAlchemy|SQLAlchemy]]
 - [[Programmazione/Python/Pagine/Alembic|Alembic]]
 - [[Programmazione/Postgres/Indice postgres|Postgres]]
-
-

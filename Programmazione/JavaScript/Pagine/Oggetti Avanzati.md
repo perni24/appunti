@@ -1,5 +1,5 @@
----
-date: 2026-05-13
+﻿---
+date: 2026-06-02
 area: Programmazione
 topic: JavaScript
 type: technical-note
@@ -21,8 +21,22 @@ Oltre alla sintassi base, JavaScript offre shorthand, computed properties, metod
 
 ---
 
-## Object literal
+## Quando usarlo
 
+Usa oggetti quando devi rappresentare entita, record, configurazioni o strutture con proprieta nominate.
+
+Approfondisci gli oggetti avanzati quando:
+
+- devi copiare o trasformare record;
+- vuoi iterare chiavi e valori;
+- usi proprieta calcolate;
+- lavori con descriptor o prototipi;
+- devi distinguere oggetti semplici, `Map` e classi;
+- devi evitare mutazioni indesiderate.
+
+## Come funziona
+
+### Object literal
 ```js
 const user = {
   name: "Luca",
@@ -35,9 +49,7 @@ Un oggetto e una collezione di coppie chiave-valore.
 Le chiavi sono normalmente stringhe o simboli.
 
 ---
-
-## Property shorthand
-
+### Property shorthand
 Se variabile e proprieta hanno lo stesso nome, puoi abbreviare.
 
 ```js
@@ -51,9 +63,7 @@ const user = {
 ```
 
 ---
-
-## Method shorthand
-
+### Method shorthand
 ```js
 const calculator = {
   sum(a, b) {
@@ -73,9 +83,7 @@ const calculator = {
 ```
 
 ---
-
-## Computed property names
-
+### Computed property names
 Puoi calcolare il nome di una proprieta.
 
 ```js
@@ -89,9 +97,7 @@ console.log(user.email);
 ```
 
 ---
-
-## Object.keys, values, entries
-
+### Object.keys, values, entries
 ```js
 const user = {
   name: "Luca",
@@ -112,9 +118,7 @@ for (const [key, value] of Object.entries(user)) {
 ```
 
 ---
-
-## Object.fromEntries
-
+### Object.fromEntries
 `Object.fromEntries()` trasforma coppie `[key, value]` in oggetto.
 
 ```js
@@ -127,9 +131,7 @@ const user = Object.fromEntries(entries);
 ```
 
 ---
-
-## Object.assign e spread
-
+### Object.assign e spread
 `Object.assign()` copia proprieta da uno o piu oggetti sorgente.
 
 ```js
@@ -148,9 +150,7 @@ const user = {
 Entrambi fanno una copia superficiale.
 
 ---
-
-## Object.hasOwn
-
+### Object.hasOwn
 `Object.hasOwn()` verifica se una proprieta appartiene direttamente all'oggetto.
 
 ```js
@@ -164,9 +164,7 @@ console.log(Object.hasOwn(user, "name")); // true
 E piu sicuro di chiamare direttamente `hasOwnProperty()` sull'oggetto.
 
 ---
-
-## this nei metodi
-
+### this nei metodi
 Nei metodi normali, `this` dipende da come viene chiamata la funzione.
 
 ```js
@@ -181,9 +179,7 @@ const user = {
 Evita arrow function per metodi che devono usare `this`.
 
 ---
-
-## Copia superficiale
-
+### Copia superficiale
 Spread e `Object.assign()` fanno copie superficiali.
 
 ```js
@@ -205,6 +201,70 @@ console.log(original.profile.name); // "Marco"
 Per copie profonde, vedi [[Immutabilita e Copia degli Oggetti]].
 
 ---
+
+## API / Sintassi
+
+Creazione:
+
+```js
+const user = { name: "Luca", role: "admin" };
+```
+
+Accesso:
+
+```js
+user.name;
+user["role"];
+```
+
+Metodi `Object` comuni:
+
+```js
+Object.keys(user);
+Object.values(user);
+Object.entries(user);
+Object.fromEntries(entries);
+Object.assign({}, source);
+Object.hasOwn(user, "name");
+Object.freeze(user);
+```
+
+Copia superficiale:
+
+```js
+const nextUser = { ...user, active: true };
+```
+
+## Esempio pratico
+
+Normalizzare un oggetto rimuovendo campi vuoti:
+
+```js
+function removeEmptyFields(object) {
+  return Object.fromEntries(
+    Object.entries(object).filter(([, value]) => {
+      return value !== null && value !== undefined && value !== "";
+    }),
+  );
+}
+
+const cleanUser = removeEmptyFields({
+  name: "Luca",
+  email: "",
+  role: "admin",
+});
+```
+
+`Object.entries` trasforma l'oggetto in coppie, `filter` rimuove i campi vuoti e `Object.fromEntries` ricostruisce l'oggetto.
+
+## Varianti
+
+- **Object literal**: record semplice.
+- **Oggetto con metodi**: comportamento legato ai dati.
+- **Oggetto come dizionario**: possibile, ma `Map` puo essere piu esplicita.
+- **Oggetto frozen**: impedisce modifiche superficiali.
+- **Oggetto con descriptor**: controlla writable, enumerable e configurable.
+- **Oggetto con prototipo**: eredita comportamento tramite prototype chain.
 
 ## Errori comuni
 

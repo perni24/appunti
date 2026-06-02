@@ -1,5 +1,5 @@
----
-date: 2026-05-13
+﻿---
+date: 2026-06-02
 area: Programmazione
 topic: JavaScript
 type: technical-note
@@ -13,14 +13,32 @@ related: [Classi, Incapsulamento, Ereditarietà, Prototypes]
 
 # Private Fields e Static Blocks
 
+## Sintesi
+
+### Testo introduttivo
 I private fields e gli static blocks fanno parte della sintassi moderna delle classi JavaScript.
 
 Servono a rendere piu esplicita l'organizzazione dello stato interno di una classe, distinguendo tra dati pubblici, dati privati, membri di istanza e membri statici condivisi dalla classe.
 
 ---
 
-## 1. Campi pubblici
+## Quando usarlo
 
+Usa private fields quando una classe deve proteggere stato interno e mantenere invarianti.
+
+Usa static fields o static blocks quando la classe ha configurazione, cache o inizializzazione legata al tipo, non alle singole istanze.
+
+Casi comuni:
+
+- stato interno non modificabile dall'esterno;
+- contatori o cache di classe;
+- factory e metodi utility;
+- validazione di invarianti;
+- inizializzazione statica complessa.
+
+## Come funziona
+
+### 1. Campi pubblici
 I campi pubblici possono essere dichiarati direttamente nel corpo della classe.
 
 ```js
@@ -51,9 +69,7 @@ class User {
 La dichiarazione nel corpo della classe rende pero piu visibile la forma dell'oggetto.
 
 ---
-
-## 2. Private fields
-
+### 2. Private fields
 I campi privati si dichiarano con `#`.
 
 ```js
@@ -88,9 +104,7 @@ console.log(account.#balance); // SyntaxError
 Questo non e solo una convenzione: e una regola del linguaggio.
 
 ---
-
-## 3. Differenza tra #privato e _convenzione
-
+### 3. Differenza tra #privato e _convenzione
 Prima dei private fields, era comune usare `_` per indicare proprieta interne.
 
 ```js
@@ -122,9 +136,7 @@ console.log(user.#token); // SyntaxError
 Usare `#` e corretto quando si vuole impedire l'accesso diretto allo stato interno.
 
 ---
-
-## 4. Private methods
-
+### 4. Private methods
 Anche i metodi possono essere privati.
 
 ```js
@@ -150,9 +162,7 @@ console.log(validator.validate("abc12345")); // true
 I private methods sono utili per nascondere dettagli implementativi che non fanno parte dell'API pubblica della classe.
 
 ---
-
-## 5. Private getters e setters
-
+### 5. Private getters e setters
 Getter e setter possono essere privati.
 
 ```js
@@ -176,9 +186,7 @@ class Cart {
 Questo consente di calcolare o validare valori interni senza esporli direttamente.
 
 ---
-
-## 6. Static fields
-
+### 6. Static fields
 I membri statici appartengono alla classe, non alle singole istanze.
 
 ```js
@@ -207,9 +215,7 @@ I campi statici sono utili per:
 - contatori globali della classe.
 
 ---
-
-## 7. Private static fields
-
+### 7. Private static fields
 Anche i campi statici possono essere privati.
 
 ```js
@@ -232,9 +238,7 @@ console.log(IdGenerator.#nextId); // SyntaxError
 ```
 
 ---
-
-## 8. Static blocks
-
+### 8. Static blocks
 Uno static block permette di eseguire logica di inizializzazione quando la classe viene definita.
 
 ```js
@@ -255,9 +259,7 @@ console.log(FeatureFlags.flags.darkMode); // true
 Il blocco statico viene eseguito una sola volta, al momento della valutazione della classe.
 
 ---
-
-## 9. Uso con campi privati statici
-
+### 9. Uso con campi privati statici
 Gli static blocks sono particolarmente utili quando bisogna inizializzare stato statico privato.
 
 ```js
@@ -284,9 +286,7 @@ console.log(Registry.get("default"));
 Questo consente inizializzazioni piu complesse rispetto a una semplice assegnazione.
 
 ---
-
-## 10. Ordine di inizializzazione
-
+### 10. Ordine di inizializzazione
 Per una classe, l'ordine generale e:
 
 1. vengono valutati i campi statici e gli static blocks;
@@ -318,9 +318,7 @@ new Example();
 Il campo di istanza viene creato prima del corpo del `constructor()`, ma non stampa nulla perche non contiene log.
 
 ---
-
-## 11. Private fields e ereditarieta
-
+### 11. Private fields e ereditarieta
 I private fields non sono accessibili dalle sottoclassi.
 
 ```js
@@ -354,9 +352,7 @@ class Base {
 JavaScript non ha un modificatore `protected` nativo come altri linguaggi OOP.
 
 ---
-
-## 12. Controllare se un oggetto ha un campo privato
-
+### 12. Controllare se un oggetto ha un campo privato
 Dentro la classe si puo usare la sintassi `#field in object`.
 
 ```js
@@ -381,9 +377,7 @@ console.log(User.isUser({}));   // false
 Questo controllo puo essere utile per validare istanze senza esporre direttamente i campi privati.
 
 ---
-
-## 13. Quando usarli
-
+### 13. Quando usarli
 Private fields e static blocks sono utili quando:
 
 - vuoi proteggere invarianti interne;
@@ -398,32 +392,68 @@ Per semplici oggetti dati, una struttura pubblica puo essere piu leggibile.
 
 ---
 
-## 14. Best practice
+## API / Sintassi
 
-- Usa `#` per stato che non deve essere modificato dall'esterno.
-- Esponi metodi pubblici chiari per leggere o modificare lo stato.
-- Non rendere privato tutto per principio.
-- Usa static fields per dati condivisi dalla classe.
-- Usa static blocks per inizializzazioni statiche non banali.
-- Evita logica pesante negli static blocks.
-- Ricorda che i private fields non sono accessibili dalle sottoclassi.
-- Preferisci nomi espliciti per separare API pubblica e dettagli interni.
+Private field:
 
----
+```js
+class Counter {
+  #count = 0;
+}
+```
 
-## 15. Errori comuni
+Private method:
 
-- Confondere `_field` con un vero campo privato.
-- Tentare di accedere a `#field` fuori dalla classe.
-- Aspettarsi che una sottoclasse possa leggere i private fields della classe base.
-- Riusare lo stesso nome privato pensando che sia condiviso tra classi diverse.
-- Usare static fields quando serve stato per ogni istanza.
-- Mettere logica asincrona complessa dentro uno static block.
+```js
+class Service {
+  #validate() {}
+}
+```
 
----
+Static field:
 
-## 16. Mappa mentale
+```js
+class Config {
+  static defaultTimeout = 5000;
+}
+```
 
+Static block:
+
+```js
+class Registry {
+  static items = new Map();
+
+  static {
+    this.items.set("default", {});
+  }
+}
+```
+
+## Esempio pratico
+
+Contatore con stato privato:
+
+```js
+class Counter {
+  #value = 0;
+
+  increment() {
+    this.#value += 1;
+    return this.#value;
+  }
+
+  get value() {
+    return this.#value;
+  }
+}
+```
+
+Il chiamante puo leggere `value`, ma non puo assegnare direttamente `#value`.
+
+## Varianti
+
+### 16. Mappa mentale
 ```text
 Private Fields e Static Blocks
 |
@@ -450,8 +480,35 @@ Private Fields e Static Blocks
 
 ---
 
-## 17. Collegamenti
+## Errori comuni
 
+### 15. Errori comuni
+- Confondere `_field` con un vero campo privato.
+- Tentare di accedere a `#field` fuori dalla classe.
+- Aspettarsi che una sottoclasse possa leggere i private fields della classe base.
+- Riusare lo stesso nome privato pensando che sia condiviso tra classi diverse.
+- Usare static fields quando serve stato per ogni istanza.
+- Mettere logica asincrona complessa dentro uno static block.
+
+---
+
+## Checklist
+
+### 14. Best practice
+- Usa `#` per stato che non deve essere modificato dall'esterno.
+- Esponi metodi pubblici chiari per leggere o modificare lo stato.
+- Non rendere privato tutto per principio.
+- Usa static fields per dati condivisi dalla classe.
+- Usa static blocks per inizializzazioni statiche non banali.
+- Evita logica pesante negli static blocks.
+- Ricorda che i private fields non sono accessibili dalle sottoclassi.
+- Preferisci nomi espliciti per separare API pubblica e dettagli interni.
+
+---
+
+## Collegamenti
+
+### 17. Collegamenti
 - [[Programmazione/JavaScript/Pagine/Classi|Classi]]
 - [[Programmazione/JavaScript/Pagine/Incapsulamento|Incapsulamento]]
 - [[Programmazione/JavaScript/Pagine/Ereditarietà|Ereditarieta]]

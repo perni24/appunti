@@ -1,5 +1,5 @@
 ﻿---
-date: 2026-05-20
+date: 2026-06-02
 area: Programmazione
 topic: Python
 type: technical-note
@@ -21,8 +21,21 @@ related: []
 
 **FastAPI** e un framework web Python per costruire API usando type hints, validazione automatica e documentazione OpenAPI.
 
-## Esempio
+## Quando usarlo
 
+Contenuto da sviluppare: nella nota originale questa sezione non era presente o era solo una traccia.
+
+## Come funziona
+
+Contenuto da sviluppare: nella nota originale questa sezione non era presente o era solo una traccia.
+
+## API / Sintassi
+
+Contenuto da sviluppare: nella nota originale questa sezione non era presente o era solo una traccia.
+
+## Esempio pratico
+
+### Esempio
 ```python
 from fastapi import FastAPI
 from pydantic import BaseModel
@@ -37,8 +50,9 @@ async def create_user(user: UserIn):
     return user
 ```
 
-## Punti forti
+## Varianti
 
+### Punti forti
 - Validazione con [[Programmazione/Python/Pagine/Pydantic|Pydantic]].
 - Supporto async.
 - OpenAPI automatico.
@@ -50,37 +64,12 @@ async def create_user(user: UserIn):
 - Mettere logica di dominio direttamente negli endpoint.
 - Ignorare gestione errori e versionamento API.
 
-## Quando usarlo
-
-- Da completare: indicare scenari pratici in cui questa nota e utile.
-
-## Come funziona
-
-Da completare: spiegare il meccanismo principale o il comportamento tecnico.
-
-## API / Sintassi
-
-```text
-Da completare con API o sintassi principale.
-```
-
-## Esempio pratico
-
-```text
-Da completare con un esempio pratico.
-```
-
-## Varianti
-
-- Da completare: varianti, alternative o differenze rispetto ad approcci simili.
-
 ## Checklist
 
-- Da completare: controlli essenziali prima di usare questo concetto in pratica.
+Contenuto da sviluppare: nella nota originale questa sezione non era presente o era solo una traccia.
 
 ## Collegamenti
+
 - [[Programmazione/Python/Pagine/Starlette|Starlette]]
 - [[Programmazione/Python/Pagine/Pydantic|Pydantic]]
 - [[Programmazione/Python/Pagine/Asyncio|Asyncio]]
-
-

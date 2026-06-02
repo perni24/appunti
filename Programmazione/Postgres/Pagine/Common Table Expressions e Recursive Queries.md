@@ -1,5 +1,5 @@
----
-date: 2026-05-14
+﻿---
+date: 2026-06-02
 area: Programmazione
 topic: PostgreSQL
 type: technical-note
@@ -10,86 +10,146 @@ aliases: [Common Table Expressions (CTE) e Recursive Queries]
 prerequisites: []
 related: []
 ---
-# Common Table Expressions (CTE) e Recursive Queries
+
+# Common Table Expressions e Recursive Queries
 
 ## Sintesi
 
-Nota su Common Table Expressions (CTE) e Recursive Queries in PostgreSQL. Riassume il concetto, i meccanismi principali e i punti da ricordare durante studio, progettazione o amministrazione.
+Le **Common Table Expressions** o CTE sono query temporanee definite con `WITH` e utilizzabili dalla query principale. In PostgreSQL servono per rendere piu leggibili query complesse, riusare risultati intermedi e costruire query ricorsive con `WITH RECURSIVE`.
 
-## Concetto chiave
-Le **Common Table Expressions (CTE)**, introdotte dallo statement `WITH`, permettono di creare dei set di risultati temporanei che esistono solo durante l'esecuzione di una singola query. Sono strumenti fondamentali per migliorare la leggibilità di query complesse (evitando subquery annidate) e per implementare la **ricorsione** su strutture dati gerarchiche.
+## Quando usarlo
 
----
+Usa una CTE quando vuoi dare un nome a un passaggio intermedio:
 
-##  CTE Standard (Non-Ricorsive)
+- scomporre query lunghe in blocchi leggibili;
+- riusare lo stesso risultato nella query principale;
+- concatenare operazioni DML con `RETURNING`;
+- costruire gerarchie, alberi o grafi con `WITH RECURSIVE`;
+- rendere esplicita una trasformazione prima di aggregare o filtrare.
 
-Una CTE funge da "tabella temporanea" leggibile solo all'interno della query principale.
+Se la CTE contiene logica riusata in molte query, valuta una view o una materialized view.
 
-```sql
-WITH vendite_totali AS (
-    SELECT id_prodotto, SUM(prezzo) as totale
-    FROM vendite
-    GROUP BY id_prodotto
-)
-SELECT p.nome, v.totale
-FROM prodotti p
-JOIN vendite_totali v ON p.id = v.id_prodotto
-WHERE v.totale > 1000;
-```
+## Come funziona
 
-### Vantaggi:
-- **Modularità:** Isola la logica complessa in blocchi separati.
-- **Readability:** Rende la query simile a un programma procedurale ("prima prendi questo, poi quello").
-
----
-
-##  Recursive Queries (WITH RECURSIVE)
-
-Le query ricorsive sono utilizzate quando i dati hanno una struttura gerarchica (es. organigrammi, file system, grafi) e non si conosce a priori la profondità dei livelli.
-
-### Struttura Sintattica:
-1.  **Non-recursive term**: L'ancora di partenza (es. la radice dell'albero).
-2.  **UNION [ALL]**: Unisce i risultati dei cicli successivi.
-3.  **Recursive term**: La query che fa riferimento al nome della CTE stessa per "scendere" di livello.
+Una CTE esiste solo durante l'esecuzione della singola istruzione SQL. Non crea una tabella permanente.
 
 ```sql
-# Common Table Expressions (CTE) e Recursive Queries
-
-## Sintesi
-
-Nota su Common Table Expressions (CTE) e Recursive Queries in PostgreSQL. Riassume il concetto, i meccanismi principali e i punti da ricordare durante studio, progettazione o amministrazione.
-WITH RECURSIVE gerarchia AS (
-    -- 1. Punto di partenza (Radice)
-    SELECT id, nome, padre_id, 1 as livello
-    FROM categorie 
-    WHERE padre_id IS NULL
-    
-    UNION ALL
-    
-    -- 2. Passo ricorsivo (Figli)
-    SELECT c.id, c.nome, c.padre_id, g.livello + 1
-    FROM categorie c
-    JOIN gerarchia g ON c.padre_id = g.id
+WITH customer_totals AS (
+  SELECT customer_id, sum(total_amount) AS total_revenue
+  FROM orders
+  GROUP BY customer_id
 )
-SELECT * FROM gerarchia;
+SELECT customer_id, total_revenue
+FROM customer_totals
+WHERE total_revenue > 1000;
 ```
 
----
+Con `WITH RECURSIVE`, la CTE e composta da:
 
-## Logic layer: Come funziona la ricorsione in SQL?
+- termine non ricorsivo, cioe il punto di partenza;
+- `UNION` o `UNION ALL`;
+- termine ricorsivo, che fa riferimento alla CTE stessa;
+- condizione naturale di terminazione, di solito l'assenza di nuovi figli.
 
-PostgreSQL elabora la ricorsione nel seguente modo:
-1.  Esegue il **termine non ricorsivo** e mette i risultati in una tabella temporanea di lavoro (*Working Table*).
-2.  Esegue il **termine ricorsivo** usando il contenuto della *Working Table* finché non vengono più prodotte nuove righe.
-3.  Ad ogni ciclo, i risultati vengono aggiunti al set finale e sostituiscono il contenuto della *Working Table*.
+PostgreSQL esegue il termine iniziale, poi ripete il termine ricorsivo usando una tabella di lavoro finche non vengono prodotte nuove righe.
 
-> [!CAUTION] Loop Infiniti
-> Assicurati che la tua query ricorsiva abbia sempre una condizione di terminazione (es. una profondità massima o l'esaurimento dei nodi figli), altrimenti la query continuerà all'infinito consumando risorse del server.
+Dal punto di vista delle performance, nelle versioni moderne PostgreSQL puo fare inline di una CTE non ricorsiva. Puoi influenzare il comportamento con `MATERIALIZED` o `NOT MATERIALIZED`.
 
----
+## API / Sintassi
 
-##  CTE e Performance (Materializzazione)
-In passato, Postgres "materializzava" sempre le CTE (le scriveva in memoria temporanea rendendole opache all'ottimizzatore). 
-- **Dalla versione 12+**: L'ottimizzatore può decidere di fare l'inline (unire la CTE alla query principale) per ottimizzare le performance, a meno di non forzare il comportamento con la keyword `MATERIALIZED` o `NOT MATERIALIZED`.
+```sql
+WITH cte_name AS (
+  SELECT ...
+)
+SELECT ...
+FROM cte_name;
+```
 
----
+CTE ricorsiva:
+
+```sql
+WITH RECURSIVE cte_name AS (
+  SELECT ... -- termine iniziale
+
+  UNION ALL
+
+  SELECT ... -- termine ricorsivo
+  FROM cte_name
+  JOIN ...
+)
+SELECT *
+FROM cte_name;
+```
+
+Controllo di materializzazione:
+
+```sql
+WITH expensive_step AS MATERIALIZED (
+  SELECT ...
+)
+SELECT ...
+FROM expensive_step;
+```
+
+## Esempio pratico
+
+Gerarchia di categorie:
+
+```sql
+WITH RECURSIVE category_tree AS (
+  SELECT
+    id,
+    name,
+    parent_id,
+    1 AS depth
+  FROM categories
+  WHERE parent_id IS NULL
+
+  UNION ALL
+
+  SELECT
+    c.id,
+    c.name,
+    c.parent_id,
+    ct.depth + 1
+  FROM categories AS c
+  JOIN category_tree AS ct
+    ON c.parent_id = ct.id
+)
+SELECT *
+FROM category_tree
+ORDER BY depth, name;
+```
+
+La prima `SELECT` trova le radici. La seconda scende di livello unendo ogni categoria ai figli della working table.
+
+## Varianti
+
+- CTE non ricorsiva: migliora la leggibilita di query complesse.
+- CTE ricorsiva: percorre strutture gerarchiche.
+- CTE con `INSERT`, `UPDATE` o `DELETE`: usa `RETURNING` come input di una query successiva.
+- `MATERIALIZED`: forza il calcolo separato della CTE.
+- `NOT MATERIALIZED`: suggerisce all'ottimizzatore di fare inline quando possibile.
+
+## Errori comuni
+
+- Usare CTE solo per estetica quando una subquery semplice sarebbe piu chiara.
+- Creare ricorsioni senza una condizione di terminazione reale.
+- Usare `UNION` invece di `UNION ALL` senza motivo, introducendo deduplicazione costosa.
+- Pensare che una CTE sia sempre materializzata.
+- Non limitare profondita o dimensione in gerarchie potenzialmente cicliche.
+
+## Checklist
+
+- Dare nomi chiari alle CTE.
+- Verificare se la CTE semplifica davvero la query.
+- Usare `EXPLAIN` quando la CTE contiene molti dati.
+- Nelle ricorsive, controllare il caso di cicli o profondita inattesa.
+- Preferire `UNION ALL` quando non serve deduplicare.
+- Valutare view o materialized view se la logica e riusata spesso.
+
+## Collegamenti
+
+- [[Programmazione/Postgres/Pagine/Subquery|Subquery]]
+- [[Programmazione/Postgres/Pagine/RETURNING|RETURNING]]
+- [[Programmazione/Postgres/Pagine/Views e Materialized Views|Views e Materialized Views]]

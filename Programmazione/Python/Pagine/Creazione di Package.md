@@ -1,5 +1,5 @@
----
-date: 2026-05-14
+﻿---
+date: 2026-06-02
 area: Programmazione
 topic: Python
 type: technical-note
@@ -10,13 +10,20 @@ aliases: [Creazione di Package]
 prerequisites: []
 related: []
 ---
+
 # Creazione di Package in Python
 
 ## Sintesi
 
 Nota su Creazione di Package in Python. Riassume il concetto, la sintassi principale e i punti da ricordare durante studio, sviluppo o debugging.
 
-## Concetto chiave
+## Quando usarlo
+
+Contenuto da sviluppare: nella nota originale questa sezione non era presente o era solo una traccia.
+
+## Come funziona
+
+### Concetto chiave
 Un **package** Python e un modo per organizzare moduli correlati dentro una struttura riutilizzabile e importabile. Serve a dare un namespace coerente al codice, migliorare la manutenibilita e preparare il progetto alla distribuzione o al riuso.
 
 In pratica:
@@ -28,9 +35,7 @@ In pratica:
 > Il nome del package importato nel codice e il nome della distribuzione installata con `pip` possono coincidere, ma non sono concetti identici.
 
 ---
-
-##  Struttura minima
-
+### Struttura minima
 Una struttura semplice di package puo essere:
 
 ```text
@@ -55,9 +60,7 @@ my_package/
 Il layout `src/` e oggi molto diffuso per evitare import accidentali dal root del repository.
 
 ---
-
-##  Esempi Pratici
-
+### Esempi Pratici
 ### Package minimale
 
 ```text
@@ -105,9 +108,7 @@ my_app/
 Questa struttura diventa utile quando il progetto cresce e hai bisogno di separare responsabilita diverse.
 
 ---
-
-##  Funzionamento Interno (Teoria)
-
+### Funzionamento Interno (Teoria)
 ### `__init__.py`
 Storicamente `__init__.py` serve a definire una directory come package Python. Oggi esistono anche i namespace package, ma nella pratica usare `__init__.py` resta la soluzione piu chiara e prevedibile.
 
@@ -155,9 +156,7 @@ import my_package
 Questo si collega direttamente a [[Programmazione/Python/Pagine/Pip e PyPI]].
 
 ---
-
-##  `pyproject.toml`
-
+### `pyproject.toml`
 Nel packaging moderno Python, `pyproject.toml` e il file centrale per dichiarare metadati e sistema di build.
 
 Esempio minimale:
@@ -184,8 +183,9 @@ Questo file descrive:
 
 ---
 
-##  Installazione locale e sviluppo
+## API / Sintassi
 
+### Installazione locale e sviluppo
 Durante lo sviluppo, un package viene spesso installato in editable mode:
 
 ```bash
@@ -205,9 +205,7 @@ Il workflow tipico e:
 Questa nota si collega quindi anche a [[Programmazione/Python/Pagine/Ambienti Virtuali]].
 
 ---
-
-##  API pubblica e organizzazione
-
+### API pubblica e organizzazione
 Creare un package non significa solo "mettere file in una cartella". Significa anche definire:
 - quali moduli fanno parte dell'API pubblica;
 - quali componenti sono interni;
@@ -220,8 +218,17 @@ Una convenzione utile e:
 
 ---
 
-##  Best Practices & "Gotchas"
+## Esempio pratico
 
+Contenuto da sviluppare: nella nota originale questa sezione non era presente o era solo una traccia.
+
+## Varianti
+
+Contenuto da sviluppare: nella nota originale questa sezione non era presente o era solo una traccia.
+
+## Errori comuni
+
+### Best Practices & "Gotchas"
 -  **Usa una struttura chiara:** separa codice, test e metadati del progetto.
 -  **Preferisci `pyproject.toml`:** e lo standard moderno del packaging Python.
 -  **Usa `src/` per progetti non banali:** evita import accidentali dal repository root.
@@ -233,3 +240,11 @@ Una convenzione utile e:
 -  **Attenzione agli import relativi profondi:** possono diventare fragili se la struttura evolve male.
 
 ---
+
+## Checklist
+
+Contenuto da sviluppare: nella nota originale questa sezione non era presente o era solo una traccia.
+
+## Collegamenti
+
+- [[Programmazione/Python/Indice python|Indice Python]]

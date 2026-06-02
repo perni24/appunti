@@ -1,5 +1,5 @@
----
-date: 2026-05-13
+﻿---
+date: 2026-06-02
 area: Programmazione
 topic: JavaScript
 type: technical-note
@@ -21,8 +21,24 @@ I generator sono funzioni speciali che producono valori uno alla volta usando `y
 
 ---
 
-## Protocollo iterator
+## Quando usarlo
 
+Usa iterator e generator quando vuoi produrre o consumare una sequenza senza costruire subito un array completo.
+
+Casi utili:
+
+- range numerici;
+- pipeline di trasformazione lazy;
+- lettura progressiva di dati;
+- oggetti custom consumabili con `for...of`;
+- sequenze potenzialmente grandi;
+- stream asincroni con `async function*`.
+
+Se la sequenza e piccola e semplice, un array resta spesso piu leggibile.
+
+## Come funziona
+
+### Protocollo iterator
 Un iterator espone un metodo `next()`.
 
 ```js
@@ -43,9 +59,7 @@ const iterator = {
 Ogni chiamata restituisce `{ value, done }`.
 
 ---
-
-## Iterable
-
+### Iterable
 Un oggetto iterable espone `Symbol.iterator`.
 
 ```js
@@ -76,9 +90,7 @@ for (const value of range) {
 `for...of`, spread e destructuring usano il protocollo iterable.
 
 ---
-
-## Generator function
-
+### Generator function
 ```js
 function* numbers() {
   yield 1;
@@ -94,9 +106,7 @@ for (const value of numbers()) {
 Una generator function restituisce un iterator.
 
 ---
-
-## Generator per range
-
+### Generator per range
 ```js
 function* range(from, to) {
   for (let value = from; value <= to; value += 1) {
@@ -110,9 +120,7 @@ console.log([...range(1, 3)]); // [1, 2, 3]
 I generator sono utili per sequenze lazy.
 
 ---
-
-## `yield*`
-
+### `yield*`
 `yield*` delega a un altro iterable.
 
 ```js
@@ -123,9 +131,7 @@ function* combined() {
 ```
 
 ---
-
-## Async iterators
-
+### Async iterators
 Un async iterator produce valori asincroni.
 
 ```js
@@ -145,6 +151,82 @@ for await (const item of streamItems([1, 2, 3])) {
 
 ---
 
+## API / Sintassi
+
+Iterator protocol:
+
+```js
+iterator.next(); // { value, done }
+```
+
+Iterable protocol:
+
+```js
+object[Symbol.iterator] = function () {
+  return iterator;
+};
+```
+
+Generator function:
+
+```js
+function* generator() {
+  yield value;
+}
+```
+
+Async generator:
+
+```js
+async function* generator() {
+  yield await loadValue();
+}
+```
+
+Consumo:
+
+```js
+for (const value of iterable) {}
+for await (const value of asyncIterable) {}
+```
+
+## Esempio pratico
+
+Paginazione lazy:
+
+```js
+async function* fetchPages(baseUrl) {
+  let page = 1;
+
+  while (true) {
+    const response = await fetch(`${baseUrl}?page=${page}`);
+    const data = await response.json();
+
+    if (data.items.length === 0) {
+      return;
+    }
+
+    yield data.items;
+    page += 1;
+  }
+}
+
+for await (const items of fetchPages("/api/products")) {
+  console.log(items);
+}
+```
+
+Il codice consuma una pagina alla volta senza caricare tutto in memoria.
+
+## Varianti
+
+- **Iterator manuale**: oggetto con `next`.
+- **Iterable custom**: oggetto consumabile da `for...of`.
+- **Generator function**: sintassi compatta per iterator.
+- **Async iterator**: valori prodotti in modo asincrono.
+- **Async generator**: sintassi compatta per async iterator.
+- **Delegazione con `yield*`**: combina sequenze.
+
 ## Errori comuni
 
 - Confondere generator function e funzione normale.
@@ -155,8 +237,9 @@ for await (const item of streamItems([1, 2, 3])) {
 
 ---
 
-## Checklist operativa
+## Checklist
 
+### Checklist operativa
 - Usa generator per sequenze lazy o pipeline.
 - Usa iterable per rendere oggetti consumabili con `for...of`.
 - Usa async generator per stream asincroni.

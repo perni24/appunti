@@ -1,5 +1,5 @@
 ---
-date: 2026-05-14
+date: 2026-06-02
 area: Programmazione
 topic: PostgreSQL
 type: technical-note
@@ -10,54 +10,99 @@ aliases: [Write-Ahead Logging (WAL)]
 prerequisites: []
 related: []
 ---
+
 # Write-Ahead Logging (WAL) in PostgreSQL
 
 ## Sintesi
 
-Nota su Write-Ahead Logging (WAL) in PostgreSQL. Riassume il concetto, i meccanismi principali e i punti da ricordare durante studio, progettazione o amministrazione.
+Il **Write-Ahead Logging** e il meccanismo che garantisce durabilita, crash recovery, backup fisico, Point-In-Time Recovery e replica. Prima di modificare i file dati, PostgreSQL registra la modifica nel WAL.
 
-Il **Write-Ahead Logging (WAL)** è una tecnica standard per garantire l'integrità dei dati e la [[Programmazione/Postgres/Pagine/Proprietà ACID|Durabilità]] in PostgreSQL.
+## Quando usarlo
 
-## Concetto chiave
-L'idea centrale del WAL è che le modifiche ai file dei dati (tabelle e indici) devono essere scritte solo **dopo** che tali modifiche sono state registrate in un log persistente e sequenziale. In caso di crash, il database può ricostruire lo stato corretto rileggendo questo log.
+Studia il WAL quando devi capire:
 
----
+- durabilita delle transazioni;
+- crash recovery;
+- checkpoint;
+- replica fisica e logica;
+- backup con PITR;
+- crescita anomala di `pg_wal`;
+- impatto delle scritture su performance e storage.
 
-##  Come funziona il processo WAL
+## Come funziona
 
-1.  **Buffer Cache:** Quando una riga viene modificata, il cambiamento avviene prima in memoria (nella Shared Buffer Cache).
-2.  **WAL Buffers:** Contemporaneamente, viene generato un record WAL che descrive la modifica.
-3.  **Flush su Disco:** Prima che la transazione venga confermata (`COMMIT`), il record WAL viene scritto fisicamente sul disco nella cartella `pg_wal`.
-4.  **Checkpointer:** Solo successivamente (e in modo asincrono), un processo chiamato `checkpointer` scriverà le pagine modificate dalla memoria ai file delle tabelle definitivi.
+Quando una transazione modifica dati, PostgreSQL cambia prima le pagine in memoria e genera record WAL. Prima del `COMMIT`, i record WAL necessari vengono resi persistenti. Le pagine dati possono essere scritte piu tardi dal checkpointer o dal background writer.
 
----
+In caso di crash, PostgreSQL riparte dall'ultimo checkpoint e riapplica i record WAL necessari per riportare il database a uno stato coerente.
 
-##  Vantaggi del WAL
+Il WAL e anche il flusso usato da replica, logical decoding e archiviazione per backup avanzati.
 
-### 1. Performance (I/O Ottimizzato)
-Scrivere in modo casuale (Random I/O) nei file delle tabelle è lento. Scrivere in modo sequenziale (Sequential I/O) nel log WAL è estremamente veloce. Il WAL permette di raggruppare molte scritture casuali e eseguirle in un unico blocco durante il checkpoint.
+## API / Sintassi
 
-### 2. Crash Recovery
-Se il server perde corrente, i dati in memoria (non ancora scritti nei file delle tabelle) vanno persi. Al riavvio, PostgreSQL legge il log WAL dall'ultimo checkpoint e "riesegue" tutte le transazioni confermate, riportando il database in uno stato coerente.
+Parametri comuni:
 
-### 3. PITR (Point-in-Time Recovery)
-Archiviando i file WAL (WAL Archiving), è possibile ripristinare un backup di base e poi "applicare" i log fino a un secondo specifico nel passato.
+```conf
+wal_level = replica
+archive_mode = on
+archive_command = 'cp %p /backup/wal/%f'
+max_wal_size = '4GB'
+checkpoint_timeout = '15min'
+synchronous_commit = on
+```
 
----
+Informazioni WAL:
 
-##  WAL e Replicazione
+```sql
+SELECT pg_current_wal_lsn();
+SELECT pg_walfile_name(pg_current_wal_lsn());
+```
 
-Il WAL è il cuore della **Streaming Replication**. Il server primario invia il flusso di record WAL ai server standby. Questi ultimi ricevono i record e li applicano ai propri file dei dati, mantenendosi sincronizzati quasi in tempo reale.
+Creare un restore point:
 
----
+```sql
+SELECT pg_create_restore_point('before_migration');
+```
 
-##  Parametri Critici
+## Esempio pratico
 
-- `wal_level`: Definisce quante informazioni scrivere (minimal, replica, logical).
-- `max_wal_size`: Dimensione massima prima di forzare un checkpoint.
-- `archive_mode`: Abilita il salvataggio dei vecchi file WAL per il backup.
+Abilitare archiviazione WAL per PITR:
 
-> [!INFO] Logic Layer: Sync vs Async
-> Di default, Postgres garantisce che il WAL sia su disco prima del `COMMIT` (`synchronous_commit = on`). Disabilitandolo, si ottengono performance altissime sacrificando la durabilità dell'ultima transazione in caso di crash fisico del server.
+```conf
+archive_mode = on
+archive_command = 'test ! -f /archive/%f && cp %p /archive/%f'
+```
 
----
+Con un base backup e gli archivi WAL, puoi ripristinare il database fino a un timestamp precedente a un errore umano.
+
+## Varianti
+
+- `wal_level = replica`: necessario per replica fisica.
+- `wal_level = logical`: necessario per replicazione logica e logical decoding.
+- `synchronous_commit = on`: massima durabilita ordinaria.
+- `synchronous_commit = off`: minore latenza, rischio di perdere transazioni recenti in caso di crash.
+- WAL archiving: conserva file WAL per PITR.
+- Replication slot: trattiene WAL finche un consumer non lo ha ricevuto.
+
+## Errori comuni
+
+- Non monitorare la crescita di `pg_wal`.
+- Creare replication slot non consumati, trattenendo WAL indefinitamente.
+- Confondere checkpoint frequenti con maggiore sicurezza.
+- Abilitare `archive_mode` senza verificare `archive_command`.
+- Usare `synchronous_commit = off` senza accettare il rischio.
+- Non testare restore PITR.
+
+## Checklist
+
+- Il valore di `wal_level` supporta replica o logical decoding richiesti?
+- `archive_command` e testato?
+- La directory WAL ha spazio e alert?
+- Gli slot di replica sono monitorati?
+- I checkpoint non sono troppo frequenti?
+- Il restore da base backup + WAL e stato provato?
+
+## Collegamenti
+
+- [[Programmazione/Postgres/Pagine/Backup e Ripristino|Backup e Ripristino]]
+- [[Programmazione/Postgres/Pagine/Replicazione Fisica|Replicazione Fisica]]
+- [[Programmazione/Postgres/Pagine/Logical decoding|Logical decoding]]

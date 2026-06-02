@@ -1,5 +1,5 @@
----
-date: 2026-05-13
+﻿---
+date: 2026-06-02
 area: Programmazione
 topic: JavaScript
 type: technical-note
@@ -21,8 +21,24 @@ In JavaScript le funzioni sono valori: possono essere assegnate a variabili, pas
 
 ---
 
-## Function declaration
+## Quando usarlo
 
+Usa funzioni per dare un nome a un comportamento, riusare logica e separare responsabilita.
+
+Casi comuni:
+
+- evitare duplicazione;
+- isolare calcoli;
+- validare input;
+- creare API interne;
+- passare comportamento come callback;
+- rendere testabile una parte del codice.
+
+Una buona funzione dovrebbe avere un compito principale e parametri comprensibili.
+
+## Come funziona
+
+### Function declaration
 Una function declaration definisce una funzione con nome.
 
 ```js
@@ -44,9 +60,7 @@ function sum(a, b) {
 ```
 
 ---
-
-## Function expression
-
+### Function expression
 Una function expression assegna una funzione a una variabile.
 
 ```js
@@ -66,9 +80,7 @@ const greet = function (name) {
 ```
 
 ---
-
-## Arrow function
-
+### Arrow function
 Le arrow function sono una sintassi compatta.
 
 ```js
@@ -88,9 +100,7 @@ Le arrow function non hanno un proprio `this`.
 Per dettagli, vedi [[Arrow Functions]] e [[Context]].
 
 ---
-
-## Parametri e argomenti
-
+### Parametri e argomenti
 I parametri sono i nomi nella definizione.
 
 Gli argomenti sono i valori passati alla chiamata.
@@ -109,9 +119,7 @@ In questo esempio:
 - `2` e `3` sono argomenti.
 
 ---
-
-## Parametri di default
-
+### Parametri di default
 ```js
 function greet(name = "Guest") {
   return `Ciao ${name}`;
@@ -124,9 +132,7 @@ console.log(greet("Luca")); // "Ciao Luca"
 I parametri di default evitano controlli manuali semplici.
 
 ---
-
-## Rest parameters
-
+### Rest parameters
 `...` raccoglie piu argomenti in un array.
 
 ```js
@@ -138,9 +144,7 @@ console.log(sumAll(1, 2, 3)); // 6
 ```
 
 ---
-
-## return
-
+### return
 `return` termina la funzione e restituisce un valore.
 
 ```js
@@ -164,9 +168,7 @@ console.log(logMessage("test")); // undefined
 ```
 
 ---
-
-## Funzioni come valori
-
+### Funzioni come valori
 Le funzioni possono essere passate ad altre funzioni.
 
 ```js
@@ -182,9 +184,7 @@ run(() => {
 Questo e alla base di callback, event listener e molte API JavaScript.
 
 ---
-
-## Pure function
-
+### Pure function
 Una funzione pura restituisce lo stesso risultato con gli stessi input e non modifica stato esterno.
 
 ```js
@@ -206,6 +206,66 @@ function addToTotal(value) {
 Le funzioni pure sono piu facili da testare e ragionare.
 
 ---
+
+## API / Sintassi
+
+Forme principali:
+
+```js
+function name(param) {
+  return param;
+}
+```
+
+```js
+const name = function (param) {
+  return param;
+};
+```
+
+```js
+const name = (param) => param;
+```
+
+Parametri:
+
+```js
+function fn(required, optional = "default", ...rest) {}
+```
+
+Chiamata:
+
+```js
+const result = fn("value");
+```
+
+## Esempio pratico
+
+Separare una regola di dominio:
+
+```js
+function calculateFinalPrice(price, discountPercent = 0) {
+  if (price < 0) {
+    throw new Error("Il prezzo non puo essere negativo");
+  }
+
+  return price - price * discountPercent;
+}
+
+const finalPrice = calculateFinalPrice(100, 0.2);
+```
+
+La funzione ha input espliciti, ritorna un valore e puo essere testata senza dipendere da stato esterno.
+
+## Varianti
+
+- **Function declaration**: dichiarazione con hoisting.
+- **Function expression**: funzione assegnata a variabile.
+- **Arrow function**: sintassi compatta, `this` lessicale.
+- **Metodo di oggetto**: funzione come proprieta.
+- **Funzione async**: restituisce sempre Promise.
+- **Generator function**: produce valori con `yield`.
+- **Higher-order function**: riceve o restituisce funzioni.
 
 ## Errori comuni
 

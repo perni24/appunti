@@ -1,5 +1,5 @@
 ---
-date: 2026-05-14
+date: 2026-06-02
 area: Programmazione
 topic: PostgreSQL
 type: technical-note
@@ -10,87 +10,120 @@ aliases: [Configurazione di]
 prerequisites: []
 related: []
 ---
-# Configurazione di PostgreSQL
-
-## Sintesi
-
-Nota su Configurazione di in PostgreSQL. Riassume il concetto, i meccanismi principali e i punti da ricordare durante studio, progettazione o amministrazione.
-
-## Concetto chiave
-La configurazione di PostgreSQL si basa principalmente su due file di testo situati nella [[Programmazione/Postgres/Pagine/File System Layout e Data Directory|Data Directory]]: `postgresql.conf` per il comportamento del server e `pg_hba.conf` per il controllo degli accessi. Una corretta configurazione è l'ago della bilancia tra un database lento/insicuro e uno ottimizzato.
-
----
-
-##  I File di Configurazione Principali
-
-### 1. `postgresql.conf` (Server Configuration)
-Contiene i parametri che regolano l'utilizzo delle risorse, il networking, il logging e il comportamento del Query Planner.
-
-| Categoria | Parametro | Descrizione |
-| :--- | :--- | :--- |
-| **Connessioni** | `listen_addresses` | Definisce su quali interfacce di rete il server accetta connessioni (es. `'*'` per tutte). |
-| **Risorse** | `shared_buffers` | La quantità di memoria dedicata al caching dei dati (Shared Memory). |
-| **Risorse** | `work_mem` | Memoria per operazioni di sort e join (Local Memory). |
-| **Logging** | `log_statement` | Definisce quali query loggare (es. `'all'`, `'mod'`, `'none'`). |
-| **Checkpointer** | `checkpoint_timeout` | Tempo massimo tra due checkpoint automatici. |
-
-### 2. `pg_hba.conf` (Host-Based Authentication)
-Gestisce la sicurezza a livello di rete. Ogni riga definisce un set di regole: chi può connettersi a quale database, da dove e con quale metodo di autenticazione.
-
-**Sintassi di una regola:**
-`TYPE  DATABASE  USER  ADDRESS  METHOD`
-
-```text
-# Configurazione di PostgreSQL
-
-## Sintesi
-
-Nota su Configurazione di in PostgreSQL. Riassume il concetto, i meccanismi principali e i punti da ricordare durante studio, progettazione o amministrazione.
-local   all             all                                     trust
 
 # Configurazione di PostgreSQL
 
 ## Sintesi
 
-Nota su Configurazione di in PostgreSQL. Riassume il concetto, i meccanismi principali e i punti da ricordare durante studio, progettazione o amministrazione.
-host    mio_db          utente_app      192.168.1.0/24          scram-sha-256
+La configurazione di PostgreSQL controlla risorse, connessioni, logging, sicurezza e comportamento del server. I file principali sono `postgresql.conf` e `pg_hba.conf`.
+
+## Quando usarlo
+
+Usa questa nota quando devi modificare o verificare il comportamento del server:
+
+- abilitare connessioni remote;
+- configurare memoria, logging o timeout;
+- cambiare metodi di autenticazione;
+- applicare parametri per database o ruolo;
+- capire se serve reload o restart;
+- documentare tuning e scelte operative.
+
+## Come funziona
+
+`postgresql.conf` contiene parametri del server: memoria, connessioni, logging, WAL, planner e autovacuum.
+
+`pg_hba.conf` controlla chi puo connettersi, da dove, a quale database e con quale metodo di autenticazione.
+
+Alcuni parametri si applicano con reload, altri richiedono restart. I parametri possono anche essere impostati a livello di sessione, ruolo, database o tramite `ALTER SYSTEM`.
+
+## API / Sintassi
+
+Reload:
+
+```sql
+SELECT pg_reload_conf();
 ```
 
----
+Controllare un parametro:
 
-##  Applicare i Cambiamenti
+```sql
+SHOW shared_buffers;
+SELECT name, setting, unit, context
+FROM pg_settings
+WHERE name = 'shared_buffers';
+```
 
-Non tutti i parametri possono essere cambiati "al volo". Esistono due tipi di modifiche:
+Impostare a livello sessione:
 
-1.  **SIGHUP (Reload):** Parametri che possono essere aggiornati senza riavviare il server (es. `log_statement`).
-    ```bash
-    # Usando pg_ctl
-    pg_ctl reload -D /path/to/data
-    
-    # Usando SQL
-    SELECT pg_reload_conf();
-    ```
-2.  **Postmaster Restart:** Parametri critici che richiedono il riavvio completo (es. `shared_buffers`, `port`, `max_connections`).
+```sql
+SET work_mem = '64MB';
+```
 
----
+Impostare a livello ruolo:
 
-## Logic layer: Gerarchia della Configurazione
+```sql
+ALTER ROLE app_user SET statement_timeout = '30s';
+```
 
-In Postgres la configurazione segue una gerarchia di precedenza. Un valore impostato a livello di sessione sovrascrive quello globale:
+Regole `pg_hba.conf`:
 
-1.  **Parametri di sessione**: `SET work_mem = '64MB';` (Valido solo per la connessione corrente).
-2.  **Parametri per utente/db**: `ALTER ROLE developer SET search_path = 'schema_test';`.
-3.  **`postgresql.auto.conf`**: Creato dal comando `ALTER SYSTEM`. Ha la precedenza sul file manuale.
-4.  **`postgresql.conf`**: Il file di testo standard (Priorità minima).
+```text
+local   all      all                         scram-sha-256
+host    app_db   app_user   10.0.0.0/24      scram-sha-256
+hostssl app_db   app_user   10.0.0.0/24      scram-sha-256
+```
 
-> [!IMPORTANT] ALTER SYSTEM
-> Il comando `ALTER SYSTEM SET param = value;` è il modo raccomandato per cambiare configurazioni globali da SQL. Scrive i cambiamenti in `postgresql.auto.conf`, che viene letto dopo `postgresql.conf`.
+## Esempio pratico
 
----
+Abilitare connessioni applicative da una rete privata:
 
-##  Best Practices
-- **Backup dei file**: Fai sempre una copia dei file `.conf` prima di modificarli pesantemente.
-- **Commenti**: Documenta *perché* hai cambiato un parametro, specialmente se per risolvere un problema di performance.
-- **Specificità**: In `pg_hba.conf`, sii il più restrittivo possibile per evitare accessi indesiderati.
+```conf
+# postgresql.conf
+listen_addresses = '10.0.1.10'
+```
 
----
+```text
+# pg_hba.conf
+hostssl app_db app_user 10.0.0.0/24 scram-sha-256
+```
+
+Poi applicare:
+
+```sql
+SELECT pg_reload_conf();
+```
+
+Se il parametro richiede restart, `pg_settings.context` lo indica come `postmaster`.
+
+## Varianti
+
+- `postgresql.conf`: configurazione principale.
+- `postgresql.auto.conf`: scritto da `ALTER SYSTEM`.
+- `pg_hba.conf`: autenticazione client.
+- `ALTER ROLE SET`: default per ruolo.
+- `ALTER DATABASE SET`: default per database.
+- `SET`: valore solo per sessione o transazione.
+
+## Errori comuni
+
+- Usare `trust` fuori da ambienti locali controllati.
+- Mettere regole troppo permissive in `pg_hba.conf`.
+- Cambiare `max_connections` senza considerare memoria e pooling.
+- Aumentare `work_mem` globalmente senza calcolare il numero di operazioni concorrenti.
+- Non documentare perche un parametro e stato cambiato.
+- Aspettarsi che ogni modifica basti con reload.
+
+## Checklist
+
+- Le regole `pg_hba.conf` sono specifiche e sicure?
+- Le modifiche richiedono reload o restart?
+- I parametri sono documentati?
+- Esistono timeout per sessioni e query applicative?
+- La memoria e coerente con carico e connessioni?
+- Le credenziali usano `scram-sha-256` o metodo adeguato?
+
+## Collegamenti
+
+- [[Programmazione/Postgres/Pagine/File System Layout e Data Directory|File System Layout e Data Directory]]
+- [[Programmazione/Postgres/Pagine/Connection Pooling|Connection Pooling]]
+- [[Programmazione/Postgres/Pagine/SSL e TLS|SSL/TLS]]

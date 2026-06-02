@@ -1,5 +1,5 @@
----
-date: 2026-05-13
+﻿---
+date: 2026-06-02
 area: Programmazione
 topic: JavaScript
 type: technical-note
@@ -21,8 +21,23 @@ Oggi il termine indica in generale richieste asincrone dal browser al server sen
 
 ---
 
-## Idea di base
+## Quando usarlo
 
+### Quando sapere XHR serve ancora
+XHR puo comparire in:
+
+- codice legacy;
+- vecchie librerie;
+- esempi storici;
+- casi particolari di upload progress, anche se molte alternative moderne esistono.
+
+Conoscere XHR aiuta a leggere codice vecchio, ma per nuovo codice usa `fetch()` salvo vincoli specifici.
+
+---
+
+## Come funziona
+
+### Idea di base
 Prima delle applicazioni web moderne, molte interazioni richiedevano il caricamento completo di una nuova pagina.
 
 Con AJAX, JavaScript puo:
@@ -33,9 +48,7 @@ Con AJAX, JavaScript puo:
 - mantenere l'utente sulla stessa pagina.
 
 ---
-
-## XMLHttpRequest
-
+### XMLHttpRequest
 `XMLHttpRequest` e l'API storica usata per AJAX.
 
 ```js
@@ -62,9 +75,7 @@ xhr.send();
 Nel codice moderno si preferisce quasi sempre `fetch()`.
 
 ---
-
-## readyState
-
+### readyState
 `readyState` descrive lo stato della richiesta XHR.
 
 | Valore | Nome | Significato |
@@ -76,9 +87,7 @@ Nel codice moderno si preferisce quasi sempre `fetch()`.
 | 4 | DONE | richiesta completata |
 
 ---
-
-## AJAX moderno con fetch
-
+### AJAX moderno con fetch
 ```js
 async function loadUsers() {
   const response = await fetch("/api/users");
@@ -95,9 +104,7 @@ async function loadUsers() {
 Questo e piu leggibile perche usa Promise e `async/await`.
 
 ---
-
-## AJAX e JSON
-
+### AJAX e JSON
 Anche se il nome contiene XML, oggi il formato piu comune e JSON.
 
 ```js
@@ -111,9 +118,7 @@ await fetch("/api/users", {
 ```
 
 ---
-
-## AJAX e CORS
-
+### AJAX e CORS
 Quando una richiesta va verso un dominio diverso, il browser applica le regole CORS.
 
 ```js
@@ -124,18 +129,59 @@ Se il server non espone gli header corretti, il browser blocca la lettura della 
 
 ---
 
-## Quando sapere XHR serve ancora
+## API / Sintassi
 
-XHR puo comparire in:
+API storica XHR:
 
-- codice legacy;
-- vecchie librerie;
-- esempi storici;
-- casi particolari di upload progress, anche se molte alternative moderne esistono.
+```js
+const xhr = new XMLHttpRequest();
+xhr.open("GET", "/api/users");
+xhr.send();
+```
 
-Conoscere XHR aiuta a leggere codice vecchio, ma per nuovo codice usa `fetch()` salvo vincoli specifici.
+Handler principali:
 
----
+```js
+xhr.onreadystatechange = () => {};
+xhr.onload = () => {};
+xhr.onerror = () => {};
+xhr.onprogress = () => {};
+```
+
+API moderna equivalente:
+
+```js
+const response = await fetch("/api/users");
+const data = await response.json();
+```
+
+## Esempio pratico
+
+Aggiornare una lista senza ricaricare pagina:
+
+```js
+async function refreshUsers() {
+  const response = await fetch("/api/users");
+
+  if (!response.ok) {
+    throw new Error(`HTTP ${response.status}`);
+  }
+
+  const users = await response.json();
+  renderUsers(users);
+}
+```
+
+Questo e AJAX nel senso moderno: richiesta asincrona, dati ricevuti e DOM aggiornato parzialmente.
+
+## Varianti
+
+- **XMLHttpRequest**: API storica callback/event-based.
+- **Fetch API**: API moderna Promise-based.
+- **JSON over HTTP**: uso piu comune nelle applicazioni moderne.
+- **FormData upload**: invio di form e file.
+- **Polling AJAX**: richieste periodiche per aggiornamenti.
+- **CORS request**: richiesta cross-origin soggetta a policy browser.
 
 ## Errori comuni
 
@@ -147,8 +193,9 @@ Conoscere XHR aiuta a leggere codice vecchio, ma per nuovo codice usa `fetch()` 
 
 ---
 
-## Checklist operativa
+## Checklist
 
+### Checklist operativa
 - Usa `fetch()` per nuovo codice.
 - Usa XHR solo quando serve compatibilita o una feature specifica.
 - Controlla sempre lo status HTTP.

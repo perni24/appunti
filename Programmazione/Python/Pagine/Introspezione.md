@@ -1,5 +1,5 @@
----
-date: 2026-05-14
+﻿---
+date: 2026-06-02
 area: Programmazione
 topic: Python
 type: technical-note
@@ -10,13 +10,20 @@ aliases: [Introspezione]
 prerequisites: []
 related: []
 ---
+
 # Introspezione in Python
 
 ## Sintesi
 
 Nota su Introspezione in Python. Riassume il concetto, la sintassi principale e i punti da ricordare durante studio, sviluppo o debugging.
 
-## Concetto chiave
+## Quando usarlo
+
+Contenuto da sviluppare: nella nota originale questa sezione non era presente o era solo una traccia.
+
+## Come funziona
+
+### Concetto chiave
 L'**introspezione** e la capacita di un programma di esaminare se stesso a runtime: tipi, attributi, metodi, firme delle funzioni, gerarchie di classi e metadati.
 
 Python supporta molto bene l'introspezione, ed e uno dei motivi per cui il linguaggio risulta flessibile, dinamico e adatto a debugging, tooling, metaprogrammazione e framework.
@@ -25,9 +32,7 @@ Python supporta molto bene l'introspezione, ed e uno dei motivi per cui il lingu
 > L'introspezione non serve solo a "guardare dentro" gli oggetti: e alla base di molte feature pratiche come ORM, dependency injection, serializers, test framework, decorator intelligenti e strumenti di debugging.
 
 ---
-
-##  Strumenti principali
-
+### Strumenti principali
 Python offre molte funzioni built-in e moduli standard per fare introspezione.
 
 ### Built-in piu comuni
@@ -46,9 +51,7 @@ Python offre molte funzioni built-in e moduli standard per fare introspezione.
 - `sys`: per informazioni sul runtime.
 
 ---
-
-##  Esempi Pratici
-
+### Esempi Pratici
 ### Esplorare un oggetto
 
 ```python
@@ -97,9 +100,7 @@ for parameter_name, parameter in signature.parameters.items():
 Questo e utile quando si costruiscono wrapper, decorator o sistemi di validazione automatica.
 
 ---
-
-##  Funzionamento Interno (Teoria)
-
+### Funzionamento Interno (Teoria)
 ### Tutto e un oggetto
 In Python quasi tutto e un oggetto: funzioni, classi, moduli, metodi, eccezioni. Questo rende possibile ispezionare il programma in modo uniforme.
 
@@ -147,9 +148,7 @@ print(Dog.__mro__)
 Questa capacita e molto utile quando si lavora con [[Programmazione/Python/Pagine/Metodi Speciali]], ereditarieta e sistemi basati su plugin.
 
 ---
-
-##  Il modulo `inspect`
-
+### Il modulo `inspect`
 Il modulo `inspect` e lo strumento standard piu potente per l'introspezione avanzata.
 
 ### Operazioni comuni
@@ -173,9 +172,7 @@ print(members)
 > `inspect.getsource()` funziona bene con codice Python disponibile sul filesystem, ma puo fallire con oggetti built-in, moduli compilati o ambienti particolari.
 
 ---
-
-##  Introspezione vs Reflection
-
+### Introspezione vs Reflection
 Spesso i termini vengono usati come sinonimi, ma non sono identici.
 
 - **Introspezione**: osservare struttura e metadati di un oggetto.
@@ -185,8 +182,21 @@ In Python il confine e sottile, perche funzioni come `getattr`, `setattr` e `__d
 
 ---
 
-##  Best Practices & "Gotchas"
+## API / Sintassi
 
+Contenuto da sviluppare: nella nota originale questa sezione non era presente o era solo una traccia.
+
+## Esempio pratico
+
+Contenuto da sviluppare: nella nota originale questa sezione non era presente o era solo una traccia.
+
+## Varianti
+
+Contenuto da sviluppare: nella nota originale questa sezione non era presente o era solo una traccia.
+
+## Errori comuni
+
+### Best Practices & "Gotchas"
 -  **Usa l'introspezione per tooling, debugging e automazione:** e molto potente in questi scenari.
 -  **Preferisci `getattr` con default quando opportuno:** evita errori inutili quando un attributo puo mancare.
 -  **Usa `inspect.signature` nei decorator avanzati:** aiuta a preservare o analizzare l'interfaccia delle funzioni.
@@ -197,3 +207,11 @@ In Python il confine e sottile, perche funzioni come `getattr`, `setattr` e `__d
 -  **L'introspezione non sostituisce il design:** se serve continuamente "indovinare" struttura e tipo degli oggetti, forse l'API puo essere resa piu esplicita.
 
 ---
+
+## Checklist
+
+Contenuto da sviluppare: nella nota originale questa sezione non era presente o era solo una traccia.
+
+## Collegamenti
+
+- [[Programmazione/Python/Indice python|Indice Python]]

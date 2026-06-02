@@ -1,5 +1,5 @@
----
-date: 2026-05-14
+﻿---
+date: 2026-06-02
 area: Programmazione
 topic: React
 type: technical-note
@@ -10,6 +10,7 @@ aliases: [Error Boundaries]
 prerequisites: []
 related: []
 ---
+
 # Error Boundaries
 
 ## Sintesi
@@ -25,8 +26,13 @@ Servono a evitare che un errore in una parte dell'interfaccia faccia crollare l'
 
 ---
 
-## 1. Il problema che risolvono
+## Quando usarlo
 
+Contenuto da sviluppare: nella nota originale questa sezione non era presente o era solo una traccia.
+
+## Come funziona
+
+### 1. Il problema che risolvono
 Senza un error boundary, un errore non gestito nel rendering di un componente React puo far fallire tutto il sottoalbero coinvolto, e in molti casi portare allo smontaggio dell'intera UI.
 
 Esempio:
@@ -48,9 +54,7 @@ Con un error boundary, invece, si puo mostrare un fallback:
 ```
 
 ---
-
-## 2. Come si implementano
-
+### 2. Come si implementano
 In React, un Error Boundary classico e ancora un **componente a classe**.
 
 Questo e uno dei pochi casi moderni in cui i class component restano rilevanti. Si collega direttamente a [[Programmazione/React/Pagine/Componenti Funzionali vs Componenti a Classe]].
@@ -85,9 +89,7 @@ class ErrorBoundary extends React.Component {
 ```
 
 ---
-
-## 3. I due metodi chiave
-
+### 3. I due metodi chiave
 ### `getDerivedStateFromError`
 E un metodo statico che viene usato per aggiornare lo stato dopo un errore.
 
@@ -114,9 +116,7 @@ componentDidCatch(error, errorInfo) {
 Questa parte si collega al tema del logging applicativo e del monitoraggio errori.
 
 ---
-
-## 4. Cosa intercettano davvero
-
+### 4. Cosa intercettano davvero
 Gli Error Boundaries intercettano errori che avvengono:
 - durante il rendering;
 - nei lifecycle methods;
@@ -133,9 +133,39 @@ Non intercettano errori che avvengono:
 > Gli Error Boundaries non sono un equivalente universale di `try/catch`. Servono per errori nella fase di rendering React, non per ogni tipo di eccezione dell'applicazione.
 
 ---
+### 6. Dove posizionarli
+Gli Error Boundaries possono essere usati a livelli diversi dell'applicazione.
 
-## 5. Esempio pratico
+### Boundary globale
+Protegge quasi tutta l'app.
 
+```jsx
+<AppErrorBoundary>
+  <App />
+</AppErrorBoundary>
+```
+
+### Boundary locali
+Proteggono solo sezioni piu fragili o indipendenti, ad esempio:
+- dashboard widgets;
+- moduli caricati dinamicamente;
+- pannelli complessi;
+- integrazioni terze parti.
+
+Questo approccio e spesso migliore, perche limita il danno e preserva il resto dell'interfaccia.
+
+> [!TIP] Regola pratica
+> Meglio piu boundary ben posizionati che un unico boundary gigantesco che copre tutto senza distinzione.
+
+---
+
+## API / Sintassi
+
+Contenuto da sviluppare: nella nota originale questa sezione non era presente o era solo una traccia.
+
+## Esempio pratico
+
+### 5. Esempio pratico
 ```javascript
 import React from 'react';
 
@@ -175,35 +205,13 @@ In questo caso l'errore causato da `user.name` non valido viene intercettato e s
 
 ---
 
-## 6. Dove posizionarli
+## Varianti
 
-Gli Error Boundaries possono essere usati a livelli diversi dell'applicazione.
+Contenuto da sviluppare: nella nota originale questa sezione non era presente o era solo una traccia.
 
-### Boundary globale
-Protegge quasi tutta l'app.
+## Errori comuni
 
-```jsx
-<AppErrorBoundary>
-  <App />
-</AppErrorBoundary>
-```
-
-### Boundary locali
-Proteggono solo sezioni piu fragili o indipendenti, ad esempio:
-- dashboard widgets;
-- moduli caricati dinamicamente;
-- pannelli complessi;
-- integrazioni terze parti.
-
-Questo approccio e spesso migliore, perche limita il danno e preserva il resto dell'interfaccia.
-
-> [!TIP] Regola pratica
-> Meglio piu boundary ben posizionati che un unico boundary gigantesco che copre tutto senza distinzione.
-
----
-
-## 7. Error Boundaries vs `try/catch`
-
+### 7. Error Boundaries vs `try/catch`
 | Meccanismo | Dove funziona | Quando usarlo |
 | :--- | :--- | :--- |
 | **`try/catch`** | Codice imperativo e sincrono | Logica normale JavaScript |
@@ -214,9 +222,7 @@ Quindi:
 - usa error boundaries per isolare crash del rendering.
 
 ---
-
-## 8. Error Boundaries e componenti funzionali
-
+### 8. Error Boundaries e componenti funzionali
 Anche se React moderno usa quasi sempre componenti funzionali, l'implementazione classica degli error boundaries e ancora basata su classi.
 
 Per chi vuole una API piu moderna, esistono librerie come `react-error-boundary` che rendono l'uso piu ergonomico in contesti funzionali.
@@ -233,8 +239,9 @@ Il principio resta lo stesso: isolare il crash e mostrare un fallback.
 
 ---
 
-## 9. Best Practices
+## Checklist
 
+### 9. Best Practices
 1. **Usa gli error boundaries per sezioni UI importanti ma isolate:** widget, panel, moduli complessi, pagine secondarie.
 2. **Mostra fallback UI chiare:** l'utente deve capire che qualcosa e fallito, non vedere uno schermo vuoto.
 3. **Registra gli errori in `componentDidCatch`:** un boundary senza logging ti nasconde il problema ma non ti aiuta a risolverlo.
@@ -243,3 +250,7 @@ Il principio resta lo stesso: isolare il crash e mostrare un fallback.
 6. **Non mettere tutta l'app sotto un unico boundary senza motivo:** boundary piu granulari offrono recovery piu utile.
 
 ---
+
+## Collegamenti
+
+- [[Programmazione/React/Indice react|Indice React]]

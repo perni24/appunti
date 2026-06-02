@@ -1,5 +1,5 @@
----
-date: 2026-05-13
+﻿---
+date: 2026-06-02
 area: Programmazione
 topic: JavaScript
 type: technical-note
@@ -21,8 +21,24 @@ In JavaScript le condizioni non devono essere per forza booleani: qualunque valo
 
 ---
 
-## if, else if, else
+## Quando usarlo
 
+Usa strutture condizionali quando il programma deve scegliere tra percorsi diversi.
+
+Casi comuni:
+
+- validare input;
+- gestire stati applicativi;
+- scegliere messaggi o UI;
+- interrompere funzioni con guard clause;
+- trattare errori o casi limite;
+- selezionare comportamento in base a ruolo, stato o configurazione.
+
+Preferisci condizioni esplicite quando valori falsy come `0` o `""` sono validi.
+
+## Come funziona
+
+### if, else if, else
 `if` esegue un blocco quando la condizione e vera.
 
 ```js
@@ -40,9 +56,7 @@ if (hour < 12) {
 Usa `else if` per condizioni alternative e `else` come fallback.
 
 ---
-
-## Truthy e falsy
-
+### Truthy e falsy
 Valori falsy:
 
 - `false`;
@@ -82,9 +96,7 @@ if ([]) {
 ```
 
 ---
-
-## Condizioni esplicite
-
+### Condizioni esplicite
 Quando il significato e importante, preferisci condizioni esplicite.
 
 ```js
@@ -104,9 +116,7 @@ if (users) {
 ```
 
 ---
-
-## switch
-
+### switch
 `switch` confronta una espressione con piu casi usando uguaglianza stretta.
 
 ```js
@@ -130,9 +140,7 @@ switch (status) {
 `break` evita il fall-through verso i casi successivi.
 
 ---
-
-## Fall-through intenzionale
-
+### Fall-through intenzionale
 A volte il fall-through e voluto, ma deve essere evidente.
 
 ```js
@@ -149,9 +157,7 @@ switch (role) {
 ```
 
 ---
-
-## Operatore ternario
-
+### Operatore ternario
 Il ternario e utile per assegnazioni semplici.
 
 ```js
@@ -169,9 +175,7 @@ const label = score > 90 ? "A" : score > 70 ? "B" : "C";
 In questi casi, usa `if...else` o una funzione.
 
 ---
-
-## Guard clause
-
+### Guard clause
 Una guard clause interrompe subito la funzione se una condizione non e valida.
 
 ```js
@@ -187,6 +191,78 @@ function getUserName(user) {
 Riduce annidamenti e rende piu chiaro il flusso.
 
 ---
+
+## API / Sintassi
+
+Forme principali:
+
+```js
+if (condition) {
+  // ...
+} else if (otherCondition) {
+  // ...
+} else {
+  // ...
+}
+```
+
+```js
+switch (value) {
+  case "a":
+    break;
+  default:
+    break;
+}
+```
+
+```js
+const label = condition ? "si" : "no";
+```
+
+Guard clause:
+
+```js
+function run(input) {
+  if (!input) {
+    return;
+  }
+
+  // percorso principale
+}
+```
+
+## Esempio pratico
+
+Validazione con guard clause:
+
+```js
+function getDiscount(user) {
+  if (!user) {
+    return 0;
+  }
+
+  if (!user.active) {
+    return 0;
+  }
+
+  if (user.role === "premium") {
+    return 0.2;
+  }
+
+  return 0.05;
+}
+```
+
+Le guard clause evitano un blocco annidato e mettono subito in evidenza i casi di uscita.
+
+## Varianti
+
+- **`if` semplice**: una condizione.
+- **`if/else`**: due percorsi.
+- **`else if`**: piu alternative ordinate.
+- **`switch`**: confronto con piu valori discreti.
+- **Ternario**: scelta breve usata in espressioni.
+- **Guard clause**: uscita anticipata per casi non validi.
 
 ## Errori comuni
 

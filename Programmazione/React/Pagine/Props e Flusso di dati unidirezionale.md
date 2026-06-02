@@ -1,5 +1,5 @@
----
-date: 2026-05-14
+﻿---
+date: 2026-06-02
 area: Programmazione
 topic: React
 type: technical-note
@@ -10,6 +10,7 @@ aliases: [Props e Flusso di dati unidirezionale]
 prerequisites: []
 related: []
 ---
+
 # Props e Flusso di dati unidirezionale
 
 ## Sintesi
@@ -18,8 +19,13 @@ Nota su Props e Flusso di dati unidirezionale in React. Riassume il concetto, qu
 
 In React, le **Props** (abbreviazione di *properties*) sono il meccanismo principale per passare dati da un componente genitore (Parent) a un componente figlio (Child). Insieme allo stato, costituiscono il cuore della reattività di React.
 
-## 1. Cosa sono le Props?
+## Quando usarlo
 
+Contenuto da sviluppare: nella nota originale questa sezione non era presente o era solo una traccia.
+
+## Come funziona
+
+### 1. Cosa sono le Props?
 Le props sono oggetti JavaScript che contengono i dati passati a un componente. Possono essere paragonate agli argomenti di una funzione.
 
 ```jsx
@@ -38,9 +44,7 @@ function App() {
 > Le props sono **read-only** (sola lettura). Un componente non deve mai modificare le proprie props. Se i dati devono cambiare, il cambiamento deve avvenire nel genitore tramite lo stato.
 
 ---
-
-## 2. Flusso di dati unidirezionale (One-way Data Flow)
-
+### 2. Flusso di dati unidirezionale (One-way Data Flow)
 React segue un modello di flusso dati rigorosamente **dall'alto verso il basso**. Questo significa che:
 - Il genitore possiede il dato (stato).
 - Il genitore passa il dato al figlio tramite le props.
@@ -49,9 +53,7 @@ React segue un modello di flusso dati rigorosamente **dall'alto verso il basso**
 Questo approccio rende l'applicazione più facile da debuggare, poiché l'origine di un dato è sempre chiara e tracciabile risalendo l'albero dei componenti.
 
 ---
-
-## 3. Comunicazione Figlio-Genitore: Lifting State Up
-
+### 3. Comunicazione Figlio-Genitore: Lifting State Up
 Se un figlio deve comunicare un cambiamento al genitore (ad esempio, l'invio di un form), non può "scrivere" nelle props. Invece, il genitore passa una **funzione di callback** come prop.
 
 ```jsx
@@ -73,9 +75,7 @@ function App() {
 Questo pattern è conosciuto come **Lifting State Up** (Spostamento dello stato verso l'alto).
 
 ---
-
-## 4. Props Destructuring
-
+### 4. Props Destructuring
 Per rendere il codice più pulito, è pratica comune estrarre le proprietà direttamente nella firma della funzione:
 
 ```jsx
@@ -86,3 +86,27 @@ function User({ name, age }) {
 ```
 
 ---
+
+## API / Sintassi
+
+Contenuto da sviluppare: nella nota originale questa sezione non era presente o era solo una traccia.
+
+## Esempio pratico
+
+Contenuto da sviluppare: nella nota originale questa sezione non era presente o era solo una traccia.
+
+## Varianti
+
+Contenuto da sviluppare: nella nota originale questa sezione non era presente o era solo una traccia.
+
+## Errori comuni
+
+Contenuto da sviluppare: nella nota originale questa sezione non era presente o era solo una traccia.
+
+## Checklist
+
+Contenuto da sviluppare: nella nota originale questa sezione non era presente o era solo una traccia.
+
+## Collegamenti
+
+- [[Programmazione/React/Indice react|Indice React]]

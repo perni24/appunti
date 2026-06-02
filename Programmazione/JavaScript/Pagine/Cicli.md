@@ -1,5 +1,5 @@
----
-date: 2026-05-13
+﻿---
+date: 2026-06-02
 area: Programmazione
 topic: JavaScript
 type: technical-note
@@ -21,8 +21,24 @@ In JavaScript si usano sia cicli classici (`for`, `while`) sia forme moderne di 
 
 ---
 
-## for
+## Quando usarlo
 
+Usa un ciclo quando devi ripetere un'operazione su piu valori o finche una condizione resta valida.
+
+Casi comuni:
+
+- iterare array;
+- cercare un elemento;
+- processare input a blocchi;
+- ripetere finche uno stato cambia;
+- eseguire operazioni asincrone sequenziali;
+- generare dati.
+
+Se stai trasformando o filtrando array, valuta prima `map`, `filter`, `find`, `some`, `every` o `reduce`.
+
+## Come funziona
+
+### for
 `for` e utile quando conosci il numero di iterazioni o hai bisogno di un indice.
 
 ```js
@@ -40,9 +56,7 @@ for (inizializzazione; condizione; aggiornamento) {
 ```
 
 ---
-
-## while
-
+### while
 `while` esegue il blocco finche la condizione resta vera.
 
 ```js
@@ -60,9 +74,7 @@ E utile quando non sai in anticipo quante iterazioni serviranno.
 > Assicurati che la condizione possa diventare falsa, altrimenti crei un loop infinito.
 
 ---
-
-## do...while
-
+### do...while
 `do...while` esegue il blocco almeno una volta.
 
 ```js
@@ -77,9 +89,7 @@ do {
 La condizione viene controllata alla fine.
 
 ---
-
-## for...of
-
+### for...of
 `for...of` itera sui valori di un oggetto iterabile.
 
 ```js
@@ -99,9 +109,7 @@ Funziona con:
 - altri iterabili.
 
 ---
-
-## for...in
-
+### for...in
 `for...in` itera sulle chiavi enumerabili di un oggetto.
 
 ```js
@@ -118,9 +126,7 @@ for (const key in user) {
 Per gli array, preferisci `for...of` o i metodi degli array.
 
 ---
-
-## break e continue
-
+### break e continue
 `break` interrompe il ciclo.
 
 ```js
@@ -146,9 +152,7 @@ for (const value of [1, 2, 3, 4]) {
 ```
 
 ---
-
-## Metodi degli array
-
+### Metodi degli array
 Spesso un metodo degli array rende il codice piu dichiarativo.
 
 ```js
@@ -168,9 +172,7 @@ Usa:
 - `reduce()` per accumulare un risultato.
 
 ---
-
-## Iterazione asincrona
-
+### Iterazione asincrona
 Non usare `forEach()` con `await` aspettandoti esecuzione sequenziale.
 
 ```js
@@ -195,6 +197,65 @@ await Promise.all(items.map(item => saveItem(item)));
 ```
 
 ---
+
+## API / Sintassi
+
+Forme principali:
+
+```js
+for (let i = 0; i < items.length; i += 1) {}
+```
+
+```js
+while (condition) {}
+```
+
+```js
+do {} while (condition);
+```
+
+```js
+for (const value of iterable) {}
+```
+
+```js
+for (const key in object) {}
+```
+
+Controllo del flusso:
+
+```js
+break;
+continue;
+```
+
+## Esempio pratico
+
+Salvare elementi in sequenza:
+
+```js
+async function saveAll(items) {
+  for (const item of items) {
+    await saveItem(item);
+  }
+}
+```
+
+Usa questa forma quando ogni operazione deve terminare prima della successiva. Se sono indipendenti, usa concorrenza:
+
+```js
+await Promise.all(items.map((item) => saveItem(item)));
+```
+
+## Varianti
+
+- **`for` classico**: controllo completo su indice e condizione.
+- **`while`**: ripete finche una condizione resta vera.
+- **`do...while`**: esegue almeno una volta.
+- **`for...of`**: itera valori di un iterable.
+- **`for...in`**: itera chiavi enumerabili di un oggetto.
+- **Metodi array**: forma dichiarativa per trasformazioni e ricerche.
+- **`for await...of`**: consuma async iterable.
 
 ## Errori comuni
 

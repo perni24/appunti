@@ -1,5 +1,5 @@
----
-date: 2026-05-14
+﻿---
+date: 2026-06-02
 area: Programmazione
 topic: Python
 type: technical-note
@@ -10,41 +10,21 @@ aliases: [Tuple]
 prerequisites: []
 related: []
 ---
+
 # Tuple in Python
 
 ## Sintesi
 
 Nota su Tuple in Python. Riassume il concetto, la sintassi principale e i punti da ricordare durante studio, sviluppo o debugging.
-
-## Concetto chiave
-Le **tuple** sono collezioni di oggetti **ordinate** e **immutabili**. A differenza delle liste, una volta creata, una tupla non può essere modificata (non si possono aggiungere, rimuovere o sovrascrivere elementi). Sono spesso utilizzate per rappresentare record di dati o collezioni che devono rimanere costanti durante l'esecuzione del programma.
-
----
-
-##  Sintassi e Creazione
-
-Le tuple si definiscono utilizzando le parentesi tonde `()` (anche se tecnicamente è la virgola a definire la tupla).
-
-```python
-# Tuple in Python
-
-## Sintesi
-
 Nota su Tuple in Python. Riassume il concetto, la sintassi principale e i punti da ricordare durante studio, sviluppo o debugging.
 punto = (10, 20)
 colori = ("rosso", "verde", "blu")
 
 # Tuple in Python
-
-## Sintesi
-
 Nota su Tuple in Python. Riassume il concetto, la sintassi principale e i punti da ricordare durante studio, sviluppo o debugging.
 singolo = (5,) # Senza virgola sarebbe solo un intero tra parentesi
 
 # Tuple in Python
-
-## Sintesi
-
 Nota su Tuple in Python. Riassume il concetto, la sintassi principale e i punti da ricordare durante studio, sviluppo o debugging.
 coordinate = 45.0, 9.0
 ```
@@ -57,7 +37,17 @@ print(colori[0]) # "rosso"
 
 ---
 
-##  Tuple Unpacking (Scompattamento)
+## Quando usarlo
+
+Contenuto da sviluppare: nella nota originale questa sezione non era presente o era solo una traccia.
+
+## Come funziona
+
+### Concetto chiave
+Le **tuple** sono collezioni di oggetti **ordinate** e **immutabili**. A differenza delle liste, una volta creata, una tupla non può essere modificata (non si possono aggiungere, rimuovere o sovrascrivere elementi). Sono spesso utilizzate per rappresentare record di dati o collezioni che devono rimanere costanti durante l'esecuzione del programma.
+
+---
+### Tuple Unpacking (Scompattamento)
 Una delle funzionalità più potenti e "Pythonic" delle tuple. Permette di estrarre i valori direttamente in variabili separate.
 
 ```python
@@ -69,9 +59,7 @@ print(nome) # "Luca"
 ```
 
 ---
-
-## Logic layer: Perché usare le Tuple invece delle Liste?
-
+### Logic layer: Perché usare le Tuple invece delle Liste?
 ### 1. Immutabilità e Sicurezza
 Le tuple proteggono l'integrità dei dati. Se passi una tupla a una funzione, hai la garanzia che la funzione non possa modificarne il contenuto.
 
@@ -87,8 +75,7 @@ Poiché sono immutabili, le tuple sono **hashable** (se contengono solo elementi
 > Se una tupla contiene un oggetto mutabile (es. una lista), la lista stessa può essere modificata, ma il riferimento all'oggetto dentro la tupla rimane fisso.
 
 ---
-
-##  Metodi Disponibili
+### Metodi Disponibili
 Essendo immutabili, le tuple hanno solo due metodi di ricerca:
 
 | Metodo | Descrizione |
@@ -97,3 +84,31 @@ Essendo immutabili, le tuple hanno solo due metodi di ricerca:
 | `.index(x)` | Restituisce l'indice della prima occorrenza del valore x. |
 
 ---
+
+## API / Sintassi
+
+### Sintassi e Creazione
+Le tuple si definiscono utilizzando le parentesi tonde `()` (anche se tecnicamente è la virgola a definire la tupla).
+
+```python
+# Tuple in Python
+
+## Esempio pratico
+
+Contenuto da sviluppare: nella nota originale questa sezione non era presente o era solo una traccia.
+
+## Varianti
+
+Contenuto da sviluppare: nella nota originale questa sezione non era presente o era solo una traccia.
+
+## Errori comuni
+
+Contenuto da sviluppare: nella nota originale questa sezione non era presente o era solo una traccia.
+
+## Checklist
+
+Contenuto da sviluppare: nella nota originale questa sezione non era presente o era solo una traccia.
+
+## Collegamenti
+
+- [[Programmazione/Python/Indice python|Indice Python]]

@@ -1,5 +1,5 @@
----
-date: 2026-05-13
+﻿---
+date: 2026-06-02
 area: Programmazione
 topic: JavaScript
 type: technical-note
@@ -21,8 +21,24 @@ In JavaScript e importante conoscere non solo la sintassi, ma anche le conversio
 
 ---
 
-## Operatori aritmetici
+## Quando usarlo
 
+Gli operatori si usano in quasi ogni espressione JavaScript: calcoli, confronti, condizioni, fallback, accesso sicuro e assegnazioni.
+
+Sono particolarmente importanti quando:
+
+- confronti valori;
+- scegli fallback;
+- costruisci condizioni;
+- lavori con valori opzionali;
+- converti input;
+- componi espressioni compatte.
+
+Nel dubbio, preferisci espressioni esplicite e leggibili a combinazioni troppo dense.
+
+## Come funziona
+
+### Operatori aritmetici
 | Operatore | Significato | Esempio |
 | --- | --- | --- |
 | `+` | Addizione o concatenazione | `1 + 2` |
@@ -41,9 +57,7 @@ const power = 2 ** 4;
 ```
 
 ---
-
-## Operatore +
-
+### Operatore +
 `+` somma numeri ma concatena stringhe.
 
 ```js
@@ -64,9 +78,7 @@ console.log(value + 1); // 43
 ```
 
 ---
-
-## Operatori di assegnazione
-
+### Operatori di assegnazione
 ```js
 let count = 0;
 
@@ -84,9 +96,7 @@ count *= 2; // count = count * 2
 ```
 
 ---
-
-## Operatori di confronto
-
+### Operatori di confronto
 | Operatore | Significato |
 | --- | --- |
 | `===` | Uguale per valore e tipo |
@@ -103,9 +113,7 @@ console.log(10 > 3);    // true
 ```
 
 ---
-
-## == vs ===
-
+### == vs ===
 `==` fa conversioni implicite prima del confronto.
 
 ```js
@@ -122,9 +130,7 @@ console.log(5 === "5"); // false
 > Nel codice moderno usa quasi sempre `===` e `!==`.
 
 ---
-
-## Operatori logici
-
+### Operatori logici
 ```js
 const isAdult = true;
 const hasLicense = false;
@@ -149,9 +155,7 @@ console.log("Luca" || "default"); // "Luca"
 ```
 
 ---
-
-## Nullish coalescing
-
+### Nullish coalescing
 `??` restituisce il valore a destra solo se quello a sinistra e `null` o `undefined`.
 
 ```js
@@ -172,9 +176,7 @@ console.log(0 ?? 10); // 0
 `??` e utile quando `0`, `false` o `""` sono valori validi.
 
 ---
-
-## Optional chaining
-
+### Optional chaining
 `?.` permette di leggere proprieta annidate senza generare errore se una parte e `null` o `undefined`.
 
 ```js
@@ -190,9 +192,7 @@ Senza optional chaining:
 ```
 
 ---
-
-## Operatore ternario
-
+### Operatore ternario
 Il ternario e una forma compatta di `if...else` per espressioni semplici.
 
 ```js
@@ -203,9 +203,7 @@ const label = age >= 18 ? "adulto" : "minorenne";
 Evita ternari troppo annidati: diventano difficili da leggere.
 
 ---
-
-## typeof
-
+### typeof
 `typeof` restituisce una stringa con il tipo del valore.
 
 ```js
@@ -217,6 +215,67 @@ typeof null;   // "object"
 Per dettagli sui tipi, vedi [[Tipi di Dati]].
 
 ---
+
+## API / Sintassi
+
+Categorie principali:
+
+```js
+a + b;
+a - b;
+a * b;
+a / b;
+```
+
+```js
+a === b;
+a !== b;
+a > b;
+```
+
+```js
+condition && value;
+condition || fallback;
+value ?? fallback;
+!value;
+```
+
+```js
+object?.property;
+condition ? a : b;
+```
+
+```js
+count += 1;
+```
+
+Usa `===`, `!==` e `??` quando vuoi evitare conversioni o fallback indesiderati.
+
+## Esempio pratico
+
+Fallback corretto con `??`:
+
+```js
+function createPagination({ page, pageSize }) {
+  return {
+    page: page ?? 1,
+    pageSize: pageSize ?? 20,
+  };
+}
+```
+
+Se `page` vale `0`, `??` lo mantiene. Con `||`, invece, `0` verrebbe trattato come mancante.
+
+## Varianti
+
+- **Aritmetici**: calcoli numerici e concatenazione con `+`.
+- **Assegnazione**: modifica variabili.
+- **Confronto**: uguaglianza e ordinamento.
+- **Logici**: `&&`, `||`, `!`.
+- **Nullish**: `??`.
+- **Optional chaining**: `?.`.
+- **Ternario**: scelta compatta tra due valori.
+- **Tipo**: `typeof`, `instanceof`.
 
 ## Errori comuni
 

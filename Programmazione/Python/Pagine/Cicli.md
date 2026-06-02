@@ -1,5 +1,5 @@
----
-date: 2026-05-14
+﻿---
+date: 2026-06-02
 area: Programmazione
 topic: Python
 type: technical-note
@@ -10,36 +10,18 @@ aliases: [Cicli]
 prerequisites: []
 related: []
 ---
+
 # Cicli in Python
 
 ## Sintesi
 
 Nota su Cicli in Python. Riassume il concetto, la sintassi principale e i punti da ricordare durante studio, sviluppo o debugging.
-
-## Concetto chiave
-I cicli permettono di eseguire ripetutamente un blocco di codice. Python offre due strutture principali: `for` (iterazione su collezioni o sequenze) e `while` (ripetizione basata su una condizione). Una caratteristica peculiare di Python è la clausola `else` applicabile ai cicli.
-
----
-
-##  Tipologie di Cicli
-
-### 1. Ciclo `for`
-Utilizzato per iterare su una sequenza (lista, tupla, stringa) o altri oggetti iterabili.
-
-```python
-# Cicli in Python
-
-## Sintesi
-
 Nota su Cicli in Python. Riassume il concetto, la sintassi principale e i punti da ricordare durante studio, sviluppo o debugging.
 frutti = ["mela", "banana", "ciliegia"]
 for frutto in frutti:
     print(frutto)
 
 # Cicli in Python
-
-## Sintesi
-
 Nota su Cicli in Python. Riassume il concetto, la sintassi principale e i punti da ricordare durante studio, sviluppo o debugging.
 for i in range(5): # Da 0 a 4
     print(f"Iterazione {i}")
@@ -56,9 +38,37 @@ while contatore < 5:
 ```
 
 ---
+Nota su Cicli in Python. Riassume il concetto, la sintassi principale e i punti da ricordare durante studio, sviluppo o debugging.
+for i, valore in enumerate(["a", "b", "c"]):
+    print(f"Indice: {i}, Valore: {valore}")
 
-##  Controllo del Flusso (`break`, `continue`, `pass`)
+# Cicli in Python
+Nota su Cicli in Python. Riassume il concetto, la sintassi principale e i punti da ricordare durante studio, sviluppo o debugging.
+nomi = ["Alice", "Bob"]
+punti = [85, 92]
+for nome, punteggio in zip(nomi, punti):
+    print(f"{nome}: {punteggio}")
+```
 
+---
+
+## Quando usarlo
+
+Contenuto da sviluppare: nella nota originale questa sezione non era presente o era solo una traccia.
+
+## Come funziona
+
+### Concetto chiave
+I cicli permettono di eseguire ripetutamente un blocco di codice. Python offre due strutture principali: `for` (iterazione su collezioni o sequenze) e `while` (ripetizione basata su una condizione). Una caratteristica peculiare di Python è la clausola `else` applicabile ai cicli.
+
+---
+### Tipologie di Cicli
+### 1. Ciclo `for`
+Utilizzato per iterare su una sequenza (lista, tupla, stringa) o altri oggetti iterabili.
+
+```python
+# Cicli in Python
+### Controllo del Flusso (`break`, `continue`, `pass`)
 | Comando | Descrizione |
 | :--- | :--- |
 | `break` | Interrompe immediatamente il ciclo corrente. |
@@ -66,9 +76,7 @@ while contatore < 5:
 | `pass` | Operazione nulla, usata come segnaposto sintattico. |
 
 ---
-
-## Logic layer: Ciclo `else` ed Enumerazione
-
+### Logic layer: Ciclo `else` ed Enumerazione
 ### La clausola `else` nei cicli
 In Python, un ciclo può avere un blocco `else`. Questo blocco viene eseguito **solo se il ciclo termina naturalmente** (ovvero non viene interrotto da un `break`).
 
@@ -90,27 +98,30 @@ for n in range(2, 10):
 ```python
 # Cicli in Python
 
-## Sintesi
+## API / Sintassi
 
-Nota su Cicli in Python. Riassume il concetto, la sintassi principale e i punti da ricordare durante studio, sviluppo o debugging.
-for i, valore in enumerate(["a", "b", "c"]):
-    print(f"Indice: {i}, Valore: {valore}")
+Contenuto da sviluppare: nella nota originale questa sezione non era presente o era solo una traccia.
 
-# Cicli in Python
+## Esempio pratico
 
-## Sintesi
+Contenuto da sviluppare: nella nota originale questa sezione non era presente o era solo una traccia.
 
-Nota su Cicli in Python. Riassume il concetto, la sintassi principale e i punti da ricordare durante studio, sviluppo o debugging.
-nomi = ["Alice", "Bob"]
-punti = [85, 92]
-for nome, punteggio in zip(nomi, punti):
-    print(f"{nome}: {punteggio}")
-```
+## Varianti
 
----
+Contenuto da sviluppare: nella nota originale questa sezione non era presente o era solo una traccia.
 
-##  Best Practices
+## Errori comuni
+
+Contenuto da sviluppare: nella nota originale questa sezione non era presente o era solo una traccia.
+
+## Checklist
+
+### Best Practices
 > [!TIP] Pythonic Loops
 > Evita di usare `range(len(lista))` per iterare sui valori. Usa direttamente `for elemento in lista:`. Se ti serve l'indice, usa `enumerate()`.
 
 ---
+
+## Collegamenti
+
+- [[Programmazione/Python/Indice python|Indice Python]]

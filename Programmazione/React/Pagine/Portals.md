@@ -1,5 +1,5 @@
----
-date: 2026-05-14
+﻿---
+date: 2026-06-02
 area: Programmazione
 topic: React
 type: technical-note
@@ -10,6 +10,7 @@ aliases: [Portals]
 prerequisites: []
 related: []
 ---
+
 # Portals
 
 ## Sintesi
@@ -34,8 +35,99 @@ Questo pattern e molto utile per componenti come:
 
 ---
 
-## 1. Sintassi di base
+## Quando usarlo
 
+Contenuto da sviluppare: nella nota originale questa sezione non era presente o era solo una traccia.
+
+## Come funziona
+
+### 3. Come funzionano davvero
+Il punto chiave e questo: un portal cambia la posizione nel DOM, ma **non rompe** la relazione logica nell'albero React.
+
+Questo implica che:
+- il componente continua a ricevere `props` normalmente;
+- puo usare [[Programmazione/React/Pagine/Context API]];
+- puo usare hook come qualunque altro componente;
+- partecipa normalmente al reconciliation di React.
+
+Dal punto di vista concettuale, un portal e un "ponte" tra albero React e destinazione DOM.
+
+---
+### 4. Eventi e bubbling
+Un aspetto importante dei portals e che gli eventi continuano a propagarsi secondo l'albero React, non solo secondo la posizione fisica nel DOM.
+
+Esempio:
+
+```javascript
+function Parent() {
+  function handleClick() {
+    console.log('click catturato dal parent');
+  }
+
+  return (
+    <div onClick={handleClick}>
+      <Modal>
+        <button>Cliccami</button>
+      </Modal>
+    </div>
+  );
+}
+```
+
+Anche se il bottone viene renderizzato fuori dal nodo DOM del parent, React continua a gestire il bubbling in modo coerente con l'albero React.
+
+> [!INFO] Implicazione pratica
+> Questo comportamento e molto utile, ma puo sorprendere se pensi ai portals solo come "spostamento nel DOM". React mantiene la semantica dell'albero componenti, non quella del solo markup fisico.
+
+---
+### 5. Quando usare i Portals
+### Casi tipici
+- modal e dialog;
+- menu contestuali;
+- tooltip e popover;
+- overlay di loading;
+- notifiche flottanti;
+- componenti che devono uscire da contenitori con `overflow: hidden`.
+
+### Quando non servono
+Se il componente non ha problemi di stacking, clipping o layout, introdurre un portal puo aggiungere complessita inutile.
+
+---
+### 6. Portals e accessibilita
+I portals sono spesso usati per componenti accessibili come modal e dialog, ma da soli non risolvono i problemi di accessibilita.
+
+Con una modal, bisogna gestire anche:
+- focus iniziale;
+- focus trap;
+- chiusura con `Escape`;
+- `aria-modal`;
+- `role="dialog"`;
+- ritorno del focus all'elemento di origine.
+
+Quindi un portal aiuta il layout, ma non sostituisce il lavoro semantico e comportamentale.
+
+Questo si collega ai temi di accessibilita presenti nell'indice React.
+
+---
+### 8. Portals vs Conditional Rendering
+Un portal non sostituisce il [[Programmazione/React/Pagine/Rendering Condizionale e Liste]].
+
+I due concetti rispondono a problemi diversi:
+- **rendering condizionale**: decide se un elemento esiste o no;
+- **portal**: decide dove quell'elemento viene montato nel DOM.
+
+Molto spesso si usano insieme:
+
+```javascript
+if (!isOpen) return null;
+return createPortal(...);
+```
+
+---
+
+## API / Sintassi
+
+### 1. Sintassi di base
 In React i portals si creano con `createPortal`.
 
 ```javascript
@@ -55,8 +147,9 @@ Qui il contenuto JSX viene renderizzato dentro `#modal-root`, anche se il compon
 
 ---
 
-## 2. Esempio pratico: modal
+## Esempio pratico
 
+### 2. Esempio pratico: modal
 Markup HTML di base:
 
 ```html
@@ -106,84 +199,9 @@ Questo evita molti problemi tipici di z-index e clipping.
 
 ---
 
-## 3. Come funzionano davvero
+## Varianti
 
-Il punto chiave e questo: un portal cambia la posizione nel DOM, ma **non rompe** la relazione logica nell'albero React.
-
-Questo implica che:
-- il componente continua a ricevere `props` normalmente;
-- puo usare [[Programmazione/React/Pagine/Context API]];
-- puo usare hook come qualunque altro componente;
-- partecipa normalmente al reconciliation di React.
-
-Dal punto di vista concettuale, un portal e un "ponte" tra albero React e destinazione DOM.
-
----
-
-## 4. Eventi e bubbling
-
-Un aspetto importante dei portals e che gli eventi continuano a propagarsi secondo l'albero React, non solo secondo la posizione fisica nel DOM.
-
-Esempio:
-
-```javascript
-function Parent() {
-  function handleClick() {
-    console.log('click catturato dal parent');
-  }
-
-  return (
-    <div onClick={handleClick}>
-      <Modal>
-        <button>Cliccami</button>
-      </Modal>
-    </div>
-  );
-}
-```
-
-Anche se il bottone viene renderizzato fuori dal nodo DOM del parent, React continua a gestire il bubbling in modo coerente con l'albero React.
-
-> [!INFO] Implicazione pratica
-> Questo comportamento e molto utile, ma puo sorprendere se pensi ai portals solo come "spostamento nel DOM". React mantiene la semantica dell'albero componenti, non quella del solo markup fisico.
-
----
-
-## 5. Quando usare i Portals
-
-### Casi tipici
-- modal e dialog;
-- menu contestuali;
-- tooltip e popover;
-- overlay di loading;
-- notifiche flottanti;
-- componenti che devono uscire da contenitori con `overflow: hidden`.
-
-### Quando non servono
-Se il componente non ha problemi di stacking, clipping o layout, introdurre un portal puo aggiungere complessita inutile.
-
----
-
-## 6. Portals e accessibilita
-
-I portals sono spesso usati per componenti accessibili come modal e dialog, ma da soli non risolvono i problemi di accessibilita.
-
-Con una modal, bisogna gestire anche:
-- focus iniziale;
-- focus trap;
-- chiusura con `Escape`;
-- `aria-modal`;
-- `role="dialog"`;
-- ritorno del focus all'elemento di origine.
-
-Quindi un portal aiuta il layout, ma non sostituisce il lavoro semantico e comportamentale.
-
-Questo si collega ai temi di accessibilita presenti nell'indice React.
-
----
-
-## 7. Limiti e tradeoff
-
+### 7. Limiti e tradeoff
 I portals risolvono problemi reali, ma introducono anche qualche complessita.
 
 ### Vantaggi
@@ -204,25 +222,13 @@ Usare portals ovunque per componenti normali crea piu complessita di quanta ne t
 
 ---
 
-## 8. Portals vs Conditional Rendering
+## Errori comuni
 
-Un portal non sostituisce il [[Programmazione/React/Pagine/Rendering Condizionale e Liste]].
+Contenuto da sviluppare: nella nota originale questa sezione non era presente o era solo una traccia.
 
-I due concetti rispondono a problemi diversi:
-- **rendering condizionale**: decide se un elemento esiste o no;
-- **portal**: decide dove quell'elemento viene montato nel DOM.
+## Checklist
 
-Molto spesso si usano insieme:
-
-```javascript
-if (!isOpen) return null;
-return createPortal(...);
-```
-
----
-
-## 9. Best Practices
-
+### 9. Best Practices
 1. **Usa i portals per overlay reali:** modal, tooltip, dropdown, popover, menu flottanti.
 2. **Prevedi un nodo DOM dedicato:** ad esempio `#modal-root` o `#portal-root`.
 3. **Gestisci bene focus e accessibilita:** soprattutto per dialog e componenti interattivi.
@@ -231,3 +237,7 @@ return createPortal(...);
 6. **Ricorda che context ed eventi funzionano comunque:** il portal cambia il DOM, non rompe l'albero React.
 
 ---
+
+## Collegamenti
+
+- [[Programmazione/React/Indice react|Indice React]]

@@ -1,5 +1,5 @@
-﻿---
-date: 2026-05-20
+---
+date: 2026-06-02
 area: Programmazione
 topic: Postgres
 type: technical-note
@@ -19,53 +19,68 @@ related: []
 
 ## Sintesi
 
-Le estensioni PostgreSQL aggiungono funzionalita al database, ma introducono anche codice, privilegi e superfici di attacco da valutare.
-
-## Concetto chiave
-
-Non tutte le estensioni hanno lo stesso profilo di rischio. Alcune espongono funzioni potenti, accesso a file, codice nativo o integrazioni esterne.
-
-## Checklist
-
-- Installare solo estensioni necessarie.
-- Verificare origine e manutenzione.
-- Limitare chi puo eseguire `CREATE EXTENSION`.
-- Controllare privilegi delle funzioni.
-- Aggiornare estensioni insieme al database.
-
-## Errori comuni
-
-- Installare estensioni in produzione senza review.
-- Dare privilegi ampi a ruoli applicativi.
-- Dimenticare estensioni nel processo di restore.
+Le estensioni possono aggiungere codice potente al database. Vanno valutate per origine, privilegi, manutenzione, compatibilita e impatto sulla superficie di attacco.
 
 ## Quando usarlo
 
-- Da completare: indicare scenari pratici in cui questa nota e utile.
+Serve prima di abilitare estensioni in produzione o quando si valuta una dipendenza database.
 
 ## Come funziona
 
-Da completare: spiegare il meccanismo principale o il comportamento tecnico.
+Alcune estensioni sono trusted e installabili da utenti non superuser con privilegi adeguati; altre richiedono superuser o installazione lato sistema. Le estensioni possono creare funzioni, tipi, operatori e oggetti in schema.
 
 ## API / Sintassi
 
-```text
-Da completare con API o sintassi principale.
+```sql
+SELECT name, default_version, installed_version, trusted
+FROM pg_available_extensions;
+```
+
+Estensioni installate:
+
+```sql
+SELECT extname, extversion
+FROM pg_extension;
 ```
 
 ## Esempio pratico
 
-```text
-Da completare con un esempio pratico.
+Schema dedicato per estensioni:
+
+```sql
+CREATE SCHEMA extensions;
+CREATE EXTENSION IF NOT EXISTS pgcrypto WITH SCHEMA extensions;
 ```
+
+Poi usare nomi qualificati se necessario.
 
 ## Varianti
 
-- Da completare: varianti, alternative o differenze rispetto ad approcci simili.
+- Estensioni core.
+- Estensioni trusted.
+- Estensioni non trusted.
+- Estensioni terze.
+- Estensioni con librerie native.
+- Estensioni in schema dedicato.
+
+## Errori comuni
+
+- Installare estensioni da sorgenti non verificate.
+- Abilitare estensioni in `public` senza criterio.
+- Non versionare estensioni richieste.
+- Non testare upgrade di estensioni.
+- Concedere superuser per installare estensioni senza controllo.
+
+## Checklist
+
+- L'estensione e necessaria?
+- La fonte e affidabile?
+- E disponibile in produzione?
+- Lo schema di installazione e controllato?
+- Versione e upgrade sono documentati?
 
 ## Collegamenti
+
 - [[Programmazione/Postgres/Pagine/Gestione delle Estensioni|Gestione delle Estensioni]]
+- [[Programmazione/Postgres/Pagine/Schemi e Search Path|Schemi e Search Path]]
 - [[Programmazione/Postgres/Pagine/Ruoli e privilegi avanzati|Ruoli e privilegi avanzati]]
-- [[Programmazione/Postgres/Pagine/Audit logging|Audit logging]]
-
-

@@ -1,5 +1,5 @@
----
-date: 2026-05-13
+﻿---
+date: 2026-06-02
 area: Programmazione
 topic: JavaScript
 type: technical-note
@@ -21,8 +21,23 @@ Il modulo `node:events` espone `EventEmitter`, una classe per registrare listene
 
 ---
 
-## EventEmitter base
+## Quando usarlo
 
+Usa `EventEmitter` quando un oggetto deve notificare piu eventi nel tempo a uno o piu listener.
+
+Casi adatti:
+
+- stream di dati;
+- progresso di job;
+- lifecycle di servizi;
+- plugin o estensioni;
+- notifiche interne tra componenti Node.js.
+
+Se devi rappresentare un solo risultato asincrono, una Promise e di solito piu semplice.
+
+## Come funziona
+
+### EventEmitter base
 ```js
 import { EventEmitter } from "node:events";
 
@@ -38,9 +53,7 @@ emitter.emit("user:created", { id: 1 });
 `on` registra un listener. `emit` notifica un evento.
 
 ---
-
-## `once`
-
+### `once`
 `once` registra un listener eseguito una sola volta.
 
 ```js
@@ -52,9 +65,7 @@ emitter.once("ready", () => {
 Utile per eventi di inizializzazione.
 
 ---
-
-## Rimuovere listener
-
+### Rimuovere listener
 ```js
 function handleData(data) {
   console.log(data);
@@ -67,23 +78,7 @@ emitter.off("data", handleData);
 Rimuovere listener non piu necessari evita memory leak.
 
 ---
-
-## Evento `error`
-
-In Node.js, un evento `error` non gestito puo terminare il processo.
-
-```js
-emitter.on("error", (error) => {
-  console.error("errore gestito", error);
-});
-```
-
-Se una classe estende `EventEmitter`, documenta sempre quali errori puo emettere.
-
----
-
-## Emettere eventi da una classe
-
+### Emettere eventi da una classe
 ```js
 import { EventEmitter } from "node:events";
 
@@ -103,9 +98,7 @@ class JobRunner extends EventEmitter {
 Questo pattern separa produzione e consumo degli eventi.
 
 ---
-
-## EventEmitter vs Promise
-
+### EventEmitter vs Promise
 Usa Promise per un risultato singolo futuro.
 
 Usa EventEmitter per una sequenza di eventi nel tempo.
@@ -119,8 +112,84 @@ Esempi:
 
 ---
 
+## API / Sintassi
+
+API principali:
+
+```js
+emitter.on("event", listener);
+emitter.once("event", listener);
+emitter.off("event", listener);
+emitter.emit("event", payload);
+emitter.listenerCount("event");
+```
+
+Creazione:
+
+```js
+import { EventEmitter } from "node:events";
+
+const emitter = new EventEmitter();
+```
+
+In una classe:
+
+```js
+class Queue extends EventEmitter {}
+```
+
+Convenzione importante: gestisci sempre `error` se l'emitter puo emetterlo.
+
+## Esempio pratico
+
+Emitter per avanzamento di un job:
+
+```js
+import { EventEmitter } from "node:events";
+
+class Job extends EventEmitter {
+  async run(items) {
+    this.emit("start", { total: items.length });
+
+    for (const [index, item] of items.entries()) {
+      await processItem(item);
+      this.emit("progress", { done: index + 1, total: items.length });
+    }
+
+    this.emit("done");
+  }
+}
+
+const job = new Job();
+job.on("progress", ({ done, total }) => {
+  console.log(`${done}/${total}`);
+});
+```
+
+Questo separa la logica del job da chi osserva stato e progresso.
+
+## Varianti
+
+- **EventEmitter classico**: modello Node.js storico.
+- **`once`**: listener monouso.
+- **EventTarget**: modello piu vicino alle API browser.
+- **Promise**: migliore per un singolo risultato.
+- **Async iterator**: utile per consumare eventi come sequenza asincrona.
+
 ## Errori comuni
 
+### Evento `error`
+In Node.js, un evento `error` non gestito puo terminare il processo.
+
+```js
+emitter.on("error", (error) => {
+  console.error("errore gestito", error);
+});
+```
+
+Se una classe estende `EventEmitter`, documenta sempre quali errori puo emettere.
+
+---
 - Non gestire l'evento `error`.
 - Aggiungere listener in loop senza rimuoverli.
 - Usare eventi dove una Promise sarebbe piu semplice.
@@ -129,8 +198,9 @@ Esempi:
 
 ---
 
-## Checklist operativa
+## Checklist
 
+### Checklist operativa
 - Registra sempre listener per `error` quando serve.
 - Usa `once` per eventi che devono accadere una sola volta.
 - Rimuovi listener temporanei.

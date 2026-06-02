@@ -1,5 +1,5 @@
----
-date: 2026-05-14
+﻿---
+date: 2026-06-02
 area: Programmazione
 topic: React
 type: technical-note
@@ -10,6 +10,7 @@ aliases: [SSR e SSG]
 prerequisites: []
 related: []
 ---
+
 # SSR e SSG
 
 ## Sintesi
@@ -23,8 +24,13 @@ Con il rendering solo lato client, il browser riceve spesso una pagina HTML quas
 > [!INFO]
 > SSR, SSG e [[Programmazione/React/Pagine/Server Components]] non sono la stessa cosa. SSR e SSG descrivono quando viene generato l'HTML; i Server Components descrivono dove viene eseguita una parte dell'albero React e quanto JavaScript viene inviato al client.
 
-## 1. Problema del Client-Side Rendering
+## Quando usarlo
 
+Contenuto da sviluppare: nella nota originale questa sezione non era presente o era solo una traccia.
+
+## Come funziona
+
+### 1. Problema del Client-Side Rendering
 Nel Client-Side Rendering (CSR), il browser riceve una struttura HTML minima e un bundle JavaScript.
 
 Flusso tipico:
@@ -42,9 +48,7 @@ Questo approccio funziona bene per molte SPA, ma puo creare problemi:
 - dipendenza forte dal JavaScript lato client;
 - doppio ritardo quando prima si scarica JS e poi si caricano i dati;
 - peggior esperienza su dispositivi lenti o reti instabili.
-
-## 2. Server-Side Rendering
-
+### 2. Server-Side Rendering
 Il Server-Side Rendering (SSR) genera l'HTML sul server **a ogni richiesta**.
 
 Quando un utente richiede una pagina:
@@ -75,9 +79,7 @@ Esempi:
 - risultati di ricerca;
 - e-commerce con prezzi o disponibilita variabili;
 - contenuti pubblici che cambiano spesso.
-
-## 3. Hydration
-
+### 3. Hydration
 L'hydration e il processo con cui React prende l'HTML generato dal server e lo collega alla logica JavaScript lato client.
 
 Prima dell'hydration:
@@ -130,9 +132,7 @@ function Timestamp() {
   return <p>{value}</p>;
 }
 ```
-
-## 4. Static Site Generation
-
+### 4. Static Site Generation
 La Static Site Generation (SSG) genera l'HTML **durante la build**, non a ogni richiesta.
 
 Flusso tipico:
@@ -162,9 +162,7 @@ Vantaggi principali:
 - minore dipendenza da server applicativi.
 
 Limite principale: i dati possono diventare obsoleti finche non viene eseguita una nuova build o una revalidazione.
-
-## 5. SSR vs SSG
-
+### 5. SSR vs SSG
 | Aspetto | SSR | SSG |
 |---|---|---|
 | Quando genera HTML | A ogni richiesta | Durante la build |
@@ -176,9 +174,7 @@ Limite principale: i dati possono diventare obsoleti finche non viene eseguita u
 | Casi d'uso | Dati dinamici, pagine personalizzate | Contenuti stabili, docs, blog, marketing |
 
 La scelta non e globale per tutta l'applicazione. In molti framework moderni ogni route puo usare una strategia diversa.
-
-## 6. Revalidation e ISR
-
+### 6. Revalidation e ISR
 Tra SSR e SSG esistono strategie ibride.
 
 Una pagina puo essere generata staticamente, ma rigenerata dopo un certo intervallo o quando un evento invalida la cache.
@@ -203,9 +199,7 @@ Dopo scadenza cache
 ```
 
 Questo consente di mantenere performance simili a SSG senza rinunciare del tutto a dati aggiornati.
-
-## 7. Data Fetching e Cache
-
+### 7. Data Fetching e Cache
 SSR e SSG dipendono molto dalla strategia di data fetching.
 
 Domande da chiarire:
@@ -230,9 +224,7 @@ Una pagina puo anche combinare strategie:
 - fetch client-side per dati utente;
 - componenti server per query sicure;
 - suspense boundary per sezioni lente.
-
-## 8. SEO e Performance
-
+### 8. SEO e Performance
 SSR e SSG migliorano la presenza di contenuto nell'HTML iniziale.
 
 Questo aiuta:
@@ -258,9 +250,7 @@ Rimangono importanti:
 Una pagina SSR puo essere lenta se il server impiega troppo tempo a recuperare dati o renderizzare HTML.
 
 Una pagina SSG puo essere veloce ma mostrare dati vecchi se la revalidation non e progettata bene.
-
-## 9. Rapporto con Server Components
-
+### 9. Rapporto con Server Components
 I [[Programmazione/React/Pagine/Server Components]] possono essere usati insieme a SSR o SSG, ma non li sostituiscono concettualmente.
 
 Differenza principale:
@@ -280,9 +270,7 @@ Questa distinzione e importante per non confondere tre livelli diversi:
 - generazione HTML;
 - trasporto dati;
 - interattivita lato client.
-
-## 10. Framework
-
+### 10. Framework
 React da solo non impone una strategia SSR o SSG completa. Di solito queste funzionalita sono gestite da framework.
 
 Esempi comuni:
@@ -302,44 +290,7 @@ Un framework gestisce aspetti che React, da solo, non copre completamente:
 - gestione headers;
 - deploy su server o edge;
 - integrazione con API e database.
-
-## 11. Errori Comuni
-
-### Usare SSR per tutto
-
-SSR non e sempre la scelta migliore. Se una pagina cambia raramente, SSG o caching aggressiva possono essere piu efficienti.
-
-### Ignorare il costo di hydration
-
-Inviare HTML gia pronto non elimina il costo del JavaScript. Se il bundle e grande, la pagina puo essere visibile ma poco reattiva.
-
-### Confondere dati pubblici e dati utente
-
-I dati personalizzati non dovrebbero essere generati staticamente per tutti gli utenti. Serve separare contenuto pubblico, contenuto privato e dati caricati dopo autenticazione.
-
-### Non progettare la cache
-
-SSR senza cache puo sovraccaricare il server. SSG senza revalidation puo mostrare contenuti obsoleti.
-
-### Usare API del browser durante il render server
-
-Oggetti come `window` e `document` non esistono sul server. Il codice che li usa deve essere spostato in effetti, componenti client o controlli condizionali sicuri.
-
-## 12. Best Practices
-
-1. Scegli la strategia per pagina o route, non per moda.
-2. Usa SSG quando il contenuto e stabile e pubblico.
-3. Usa SSR quando i dati devono essere freschi o personalizzati.
-4. Progetta caching e revalidation insieme al data fetching.
-5. Riduci il JavaScript client anche quando usi SSR.
-6. Controlla possibili hydration mismatch.
-7. Separa UI statica, dati server e interazioni client.
-8. Usa [[Programmazione/React/Pagine/Suspense e Lazy Loading]] per dividere caricamenti e sezioni lente.
-9. Valuta i [[Programmazione/React/Pagine/Server Components]] quando vuoi ridurre bundle e lavoro lato client.
-10. Misura performance reali invece di basarti solo sulla strategia di rendering.
-
-## 13. Quando Usare Cosa
-
+### 13. Quando Usare Cosa
 Usa CSR quando:
 
 - la pagina e privata o molto interattiva;
@@ -366,6 +317,55 @@ Usa strategie ibride quando:
 - il contenuto e quasi statico ma deve aggiornarsi periodicamente;
 - alcune sezioni sono pubbliche e altre personalizzate;
 - vuoi performance statiche con dati aggiornabili.
+
+## API / Sintassi
+
+Contenuto da sviluppare: nella nota originale questa sezione non era presente o era solo una traccia.
+
+## Esempio pratico
+
+Contenuto da sviluppare: nella nota originale questa sezione non era presente o era solo una traccia.
+
+## Varianti
+
+Contenuto da sviluppare: nella nota originale questa sezione non era presente o era solo una traccia.
+
+## Errori comuni
+
+### 11. Errori Comuni
+### Usare SSR per tutto
+
+SSR non e sempre la scelta migliore. Se una pagina cambia raramente, SSG o caching aggressiva possono essere piu efficienti.
+
+### Ignorare il costo di hydration
+
+Inviare HTML gia pronto non elimina il costo del JavaScript. Se il bundle e grande, la pagina puo essere visibile ma poco reattiva.
+
+### Confondere dati pubblici e dati utente
+
+I dati personalizzati non dovrebbero essere generati staticamente per tutti gli utenti. Serve separare contenuto pubblico, contenuto privato e dati caricati dopo autenticazione.
+
+### Non progettare la cache
+
+SSR senza cache puo sovraccaricare il server. SSG senza revalidation puo mostrare contenuti obsoleti.
+
+### Usare API del browser durante il render server
+
+Oggetti come `window` e `document` non esistono sul server. Il codice che li usa deve essere spostato in effetti, componenti client o controlli condizionali sicuri.
+
+## Checklist
+
+### 12. Best Practices
+1. Scegli la strategia per pagina o route, non per moda.
+2. Usa SSG quando il contenuto e stabile e pubblico.
+3. Usa SSR quando i dati devono essere freschi o personalizzati.
+4. Progetta caching e revalidation insieme al data fetching.
+5. Riduci il JavaScript client anche quando usi SSR.
+6. Controlla possibili hydration mismatch.
+7. Separa UI statica, dati server e interazioni client.
+8. Usa [[Programmazione/React/Pagine/Suspense e Lazy Loading]] per dividere caricamenti e sezioni lente.
+9. Valuta i [[Programmazione/React/Pagine/Server Components]] quando vuoi ridurre bundle e lavoro lato client.
+10. Misura performance reali invece di basarti solo sulla strategia di rendering.
 
 ## Collegamenti
 

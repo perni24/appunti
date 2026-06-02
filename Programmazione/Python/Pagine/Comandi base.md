@@ -1,5 +1,5 @@
----
-date: 2026-05-14
+﻿---
+date: 2026-06-02
 area: Programmazione
 topic: Python
 type: technical-note
@@ -10,33 +10,16 @@ aliases: [Comandi Base e Toolchain Python]
 prerequisites: []
 related: []
 ---
+
 # Comandi Base e Toolchain Python
 
 ## Sintesi
 
 Nota su Comandi Base e Toolchain Python in Python. Riassume il concetto, la sintassi principale e i punti da ricordare durante studio, sviluppo o debugging.
-
-## Concetto chiave
-Python è un linguaggio **interpretato**: il codice sorgente (`.py`) viene letto ed eseguito direttamente da un interprete (CPython), senza una fase di compilazione esplicita in un eseguibile binario.
-Una caratteristica fondamentale dell'ecosistema Python è la gestione delle dipendenze: poiché i pacchetti vengono installati di default a livello globale, è **essenziale** utilizzare gli **Ambienti Virtuali (`venv`)** per isolare le librerie di ogni singolo progetto, evitando conflitti di versione ("Dependency Hell").
-
----
-
-##  Sintassi
-
-### Esecuzione Script
-```bash
-# Comandi Base e Toolchain Python
-
-## Sintesi
-
 Nota su Comandi Base e Toolchain Python in Python. Riassume il concetto, la sintassi principale e i punti da ricordare durante studio, sviluppo o debugging.
 python nome_file.py
 
 # Comandi Base e Toolchain Python
-
-## Sintesi
-
 Nota su Comandi Base e Toolchain Python in Python. Riassume il concetto, la sintassi principale e i punti da ricordare durante studio, sviluppo o debugging.
 python -m nome_modulo
 ```
@@ -44,30 +27,18 @@ python -m nome_modulo
 ### Gestione Pacchetti (`pip`)
 ```bash
 # Comandi Base e Toolchain Python
-
-## Sintesi
-
 Nota su Comandi Base e Toolchain Python in Python. Riassume il concetto, la sintassi principale e i punti da ricordare durante studio, sviluppo o debugging.
 pip install nome_libreria
 
 # Comandi Base e Toolchain Python
-
-## Sintesi
-
 Nota su Comandi Base e Toolchain Python in Python. Riassume il concetto, la sintassi principale e i punti da ricordare durante studio, sviluppo o debugging.
 pip install nome_libreria==1.0.4
 
 # Comandi Base e Toolchain Python
-
-## Sintesi
-
 Nota su Comandi Base e Toolchain Python in Python. Riassume il concetto, la sintassi principale e i punti da ricordare durante studio, sviluppo o debugging.
 pip list
 
 # Comandi Base e Toolchain Python
-
-## Sintesi
-
 Nota su Comandi Base e Toolchain Python in Python. Riassume il concetto, la sintassi principale e i punti da ricordare durante studio, sviluppo o debugging.
 pip freeze > requirements.txt
 ```
@@ -75,76 +46,41 @@ pip freeze > requirements.txt
 ### Ambienti Virtuali (`venv`)
 ```bash
 # Comandi Base e Toolchain Python
-
-## Sintesi
-
 Nota su Comandi Base e Toolchain Python in Python. Riassume il concetto, la sintassi principale e i punti da ricordare durante studio, sviluppo o debugging.
 python -m venv .venv
 
 # Comandi Base e Toolchain Python
-
-## Sintesi
-
 Nota su Comandi Base e Toolchain Python in Python. Riassume il concetto, la sintassi principale e i punti da ricordare durante studio, sviluppo o debugging.
 .venv\Scripts\activate
 
 # Comandi Base e Toolchain Python
-
-## Sintesi
-
 Nota su Comandi Base e Toolchain Python in Python. Riassume il concetto, la sintassi principale e i punti da ricordare durante studio, sviluppo o debugging.
 source .venv/bin/activate
 
 # Comandi Base e Toolchain Python
-
-## Sintesi
-
 Nota su Comandi Base e Toolchain Python in Python. Riassume il concetto, la sintassi principale e i punti da ricordare durante studio, sviluppo o debugging.
 deactivate
 ```
 
 ---
-
-##  Esempi Pratici
-
-### 1. Workflow Completo: Nuovo Progetto
-La procedura standard per iniziare un progetto pulito e isolato:
-
-```bash
-# Comandi Base e Toolchain Python
-
-## Sintesi
-
 Nota su Comandi Base e Toolchain Python in Python. Riassume il concetto, la sintassi principale e i punti da ricordare durante studio, sviluppo o debugging.
 mkdir progetto_analisi
 cd progetto_analisi
 
 # Comandi Base e Toolchain Python
-
-## Sintesi
-
 Nota su Comandi Base e Toolchain Python in Python. Riassume il concetto, la sintassi principale e i punti da ricordare durante studio, sviluppo o debugging.
 python -m venv .venv
 
 # Comandi Base e Toolchain Python
-
-## Sintesi
-
 Nota su Comandi Base e Toolchain Python in Python. Riassume il concetto, la sintassi principale e i punti da ricordare durante studio, sviluppo o debugging.
 .venv\Scripts\activate
 
 # Comandi Base e Toolchain Python
-
-## Sintesi
-
 Nota su Comandi Base e Toolchain Python in Python. Riassume il concetto, la sintassi principale e i punti da ricordare durante studio, sviluppo o debugging.
 python -m pip install --upgrade pip
 pip install pandas matplotlib
 
 # Comandi Base e Toolchain Python
-
-## Sintesi
-
 Nota su Comandi Base e Toolchain Python in Python. Riassume il concetto, la sintassi principale e i punti da ricordare durante studio, sviluppo o debugging.
 pip freeze > requirements.txt
 ```
@@ -164,8 +100,24 @@ Ciao Luca
 
 ---
 
-##  Funzionamento Interno (Teoria)
+## Quando usarlo
 
+Contenuto da sviluppare: nella nota originale questa sezione non era presente o era solo una traccia.
+
+## Come funziona
+
+### Concetto chiave
+Python è un linguaggio **interpretato**: il codice sorgente (`.py`) viene letto ed eseguito direttamente da un interprete (CPython), senza una fase di compilazione esplicita in un eseguibile binario.
+Una caratteristica fondamentale dell'ecosistema Python è la gestione delle dipendenze: poiché i pacchetti vengono installati di default a livello globale, è **essenziale** utilizzare gli **Ambienti Virtuali (`venv`)** per isolare le librerie di ogni singolo progetto, evitando conflitti di versione ("Dependency Hell").
+
+---
+### Esempi Pratici
+### 1. Workflow Completo: Nuovo Progetto
+La procedura standard per iniziare un progetto pulito e isolato:
+
+```bash
+# Comandi Base e Toolchain Python
+### Funzionamento Interno (Teoria)
 ### Interprete e Bytecode (`.pyc`)
 Nonostante sia "interpretato", Python compila il sorgente in **Bytecode** intermedio.
 1.  Il sorgente `.py` viene letto.
@@ -186,9 +138,29 @@ Il **GIL** è un meccanismo del CPython che impedisce a più thread nativi di es
 - **Soluzione:** Per parallelismo su CPU, si usa il *Multiprocessing* (processi separati) invece del Multithreading.
 
 ---
+### Riferimenti
+- [[Programmazione/Python/Pagine/Sintassi e Variabili|Variabili e Tipi di Dati]]
+- [[Programmazione/Python/Pagine/Error Handling|Eccezioni e Errori]]
+- [Documentazione Ufficiale venv](https://docs.python.org/3/library/venv.html)
 
-##  Best Practices & "Gotchas"
+## API / Sintassi
 
+### Sintassi
+### Esecuzione Script
+```bash
+# Comandi Base e Toolchain Python
+
+## Esempio pratico
+
+Contenuto da sviluppare: nella nota originale questa sezione non era presente o era solo una traccia.
+
+## Varianti
+
+Contenuto da sviluppare: nella nota originale questa sezione non era presente o era solo una traccia.
+
+## Errori comuni
+
+### Best Practices & "Gotchas"
 -  **Usa SEMPRE `python -m pip`:** Su Windows, usare `pip install` direttamente potrebbe richiamare un pip associato a un'altra installazione di Python. Usare `python -m pip` garantisce di usare il pip dell'interprete corrente.
 -  **Nomi dei file:** Non chiamare mai i tuoi file come moduli standard (es. `email.py`, `random.py`). Python importerà il tuo file invece della libreria standard, causando errori incomprensibili (Circular Import).
 -  **Non committare `.venv`:** La cartella dell'ambiente virtuale non va mai su Git. Inseriscila nel `.gitignore`. Committa solo `requirements.txt`.
@@ -196,7 +168,10 @@ Il **GIL** è un meccanismo del CPython che impedisce a più thread nativi di es
 
 ---
 
-##  Riferimenti
-- [[Programmazione/Python/Pagine/Sintassi e Variabili|Variabili e Tipi di Dati]]
-- [[Programmazione/Python/Pagine/Error Handling|Eccezioni e Errori]]
-- [Documentazione Ufficiale venv](https://docs.python.org/3/library/venv.html)
+## Checklist
+
+Contenuto da sviluppare: nella nota originale questa sezione non era presente o era solo una traccia.
+
+## Collegamenti
+
+- [[Programmazione/Python/Indice python|Indice Python]]

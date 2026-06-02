@@ -1,5 +1,5 @@
----
-date: 2026-05-13
+﻿---
+date: 2026-06-02
 area: Programmazione
 topic: JavaScript
 type: technical-note
@@ -21,8 +21,26 @@ Permette di usare JavaScript per server, CLI, script di automazione, tooling, AP
 
 ---
 
-## Runtime vs browser
+## Quando usarlo
 
+Usa Node.js quando vuoi eseguire JavaScript fuori dal browser.
+
+Casi comuni:
+
+- backend HTTP;
+- API REST;
+- script di automazione;
+- CLI;
+- tooling di sviluppo;
+- job batch;
+- accesso a file system e processi;
+- servizi I/O-bound.
+
+Per lavoro CPU-bound pesante serve attenzione: il thread principale puo bloccarsi, quindi valuta worker thread, processi separati o altri runtime.
+
+## Come funziona
+
+### Runtime vs browser
 Nel browser JavaScript ha accesso a DOM, BOM e Web API.
 
 In Node.js JavaScript ha accesso ad API di sistema come file system, processi, stream, rete e moduli nativi.
@@ -35,9 +53,7 @@ console.log(process.platform);
 Node.js non ha `document` o `window`.
 
 ---
-
-## Event loop
-
+### Event loop
 Node.js usa un event loop per gestire I/O asincrono senza bloccare il thread principale.
 
 ```js
@@ -53,9 +69,7 @@ console.log("end");
 Il modello e adatto a server I/O-bound, ma non rende automaticamente parallelo il lavoro CPU-bound.
 
 ---
-
-## Moduli
-
+### Moduli
 Node.js supporta sia CommonJS sia ES modules.
 
 CommonJS:
@@ -73,9 +87,7 @@ import path from "node:path";
 Nel codice moderno conviene usare ES modules quando il progetto lo permette.
 
 ---
-
-## Package manager
-
+### Package manager
 Node.js viene spesso usato con un package manager:
 
 - `npm`;
@@ -93,9 +105,7 @@ Il file `package.json` descrive dipendenze, script, entry point e metadati del p
 ```
 
 ---
-
-## Eseguire script
-
+### Eseguire script
 ```powershell
 node app.js
 ```
@@ -109,9 +119,7 @@ npm run dev
 Gli script sono il punto standard per avviare build, test, lint e tool di progetto.
 
 ---
-
-## Variabili d'ambiente
-
+### Variabili d'ambiente
 Node.js legge variabili d'ambiente tramite `process.env`.
 
 ```js
@@ -121,6 +129,70 @@ const port = process.env.PORT ?? "3000";
 Non salvare segreti nel codice sorgente. Usa variabili d'ambiente o un secret manager.
 
 ---
+
+## API / Sintassi
+
+Comandi base:
+
+```powershell
+node app.js
+npm init
+npm install package-name
+npm run dev
+```
+
+Moduli nativi:
+
+```js
+import path from "node:path";
+import { readFile } from "node:fs/promises";
+```
+
+Variabili di processo:
+
+```js
+process.version;
+process.platform;
+process.cwd();
+process.env.NODE_ENV;
+process.argv;
+```
+
+Script in `package.json`:
+
+```json
+{
+  "scripts": {
+    "start": "node src/index.js",
+    "test": "node --test"
+  }
+}
+```
+
+## Esempio pratico
+
+Script Node.js che legge un file:
+
+```js
+import { readFile } from "node:fs/promises";
+import path from "node:path";
+
+const filePath = path.resolve(process.cwd(), "README.md");
+const content = await readFile(filePath, "utf8");
+
+console.log(content.slice(0, 200));
+```
+
+Questo mostra tre differenze rispetto al browser: accesso al file system, uso di `process.cwd()` e moduli nativi.
+
+## Varianti
+
+- **Script Node.js**: automazione locale.
+- **CLI**: programma invocato da terminale.
+- **Backend HTTP**: server e API.
+- **Tooling frontend**: bundler, test runner, formatter.
+- **Worker thread**: lavoro CPU-bound in thread separati.
+- **Child process**: esecuzione di comandi o processi esterni.
 
 ## Errori comuni
 
@@ -132,8 +204,9 @@ Non salvare segreti nel codice sorgente. Usa variabili d'ambiente o un secret ma
 
 ---
 
-## Checklist operativa
+## Checklist
 
+### Checklist operativa
 - Controlla la versione Node richiesta dal progetto.
 - Usa `node:` prefix per moduli nativi quando possibile.
 - Metti comandi ricorrenti in `package.json`.

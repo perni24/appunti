@@ -1,5 +1,5 @@
----
-date: 2026-05-14
+﻿---
+date: 2026-06-02
 area: Programmazione
 topic: Python
 type: technical-note
@@ -10,41 +10,26 @@ aliases: [Metodi Speciali (Dunder Methods)]
 prerequisites: []
 related: []
 ---
+
 # Metodi Speciali (Dunder Methods)
 
 ## Sintesi
 
 Nota su Metodi Speciali (Dunder Methods) in Python. Riassume il concetto, la sintassi principale e i punti da ricordare durante studio, sviluppo o debugging.
 
-## Concetto chiave
+## Quando usarlo
+
+Contenuto da sviluppare: nella nota originale questa sezione non era presente o era solo una traccia.
+
+## Come funziona
+
+### Concetto chiave
 I **Metodi Speciali** (anche chiamati **Magic Methods** o **Dunder Methods**, da *Double Underscore*) sono metodi predefiniti in Python che iniziano e finiscono con un doppio trattino basso, come `__init__`.
 
 Permettono di implementare l'**Overloading degli Operatori** e di definire come gli oggetti della nostra classe devono comportarsi con le funzioni built-in di Python (es. `len()`, `print()`, `+`, `==`).
 
 ---
-
-##  Sintassi e Categorie Principali
-Non vengono quasi mai chiamati direttamente (`obj.__init__()`), ma vengono invocati implicitamente da Python.
-
-### 1. Inizializzazione e Rappresentazione
-- `__init__(self, ...)`: Il costruttore (inizializzazione).
-- `__str__(self)`: Ritorna una stringa "user-friendly" (usata da `print()` e `str()`).
-- `__repr__(self)`: Ritorna una stringa "developer-friendly", utile per il debugging (rappresentazione ufficiale).
-
-### 2. Operazioni Matematiche
-- `__add__(self, other)`: Comportamento per l'operatore `+`.
-- `__sub__(self, other)`: Comportamento per l'operatore `-`.
-- `__mul__(self, other)`: Comportamento per l'operatore `*`.
-
-### 3. Confronti
-- `__eq__(self, other)`: Uguale a (`==`).
-- `__lt__(self, other)`: Minore di (`<`).
-- `__gt__(self, other)`: Maggiore di (`>`).
-
----
-
-##  Esempi Pratici
-
+### Esempi Pratici
 ### Esempio Base: Rappresentazione e Lunghezza
 ```python
 class Libro:
@@ -85,8 +70,7 @@ print(v3) # Output: Vettore(7, 2)
 ```
 
 ---
-
-##  Funzionamento Interno (Teoria)
+### Funzionamento Interno (Teoria)
 Python mappa le funzioni globali e gli operatori ai relativi metodi dunder:
 - `len(x)` $\rightarrow$ `x.__len__()`
 - `x + y` $\rightarrow$ `x.__add__(y)`
@@ -96,8 +80,39 @@ Python mappa le funzioni globali e gli operatori ai relativi metodi dunder:
 
 ---
 
-##  Best Practices & "Gotchas"
+## API / Sintassi
 
+### Sintassi e Categorie Principali
+Non vengono quasi mai chiamati direttamente (`obj.__init__()`), ma vengono invocati implicitamente da Python.
+
+### 1. Inizializzazione e Rappresentazione
+- `__init__(self, ...)`: Il costruttore (inizializzazione).
+- `__str__(self)`: Ritorna una stringa "user-friendly" (usata da `print()` e `str()`).
+- `__repr__(self)`: Ritorna una stringa "developer-friendly", utile per il debugging (rappresentazione ufficiale).
+
+### 2. Operazioni Matematiche
+- `__add__(self, other)`: Comportamento per l'operatore `+`.
+- `__sub__(self, other)`: Comportamento per l'operatore `-`.
+- `__mul__(self, other)`: Comportamento per l'operatore `*`.
+
+### 3. Confronti
+- `__eq__(self, other)`: Uguale a (`==`).
+- `__lt__(self, other)`: Minore di (`<`).
+- `__gt__(self, other)`: Maggiore di (`>`).
+
+---
+
+## Esempio pratico
+
+Contenuto da sviluppare: nella nota originale questa sezione non era presente o era solo una traccia.
+
+## Varianti
+
+Contenuto da sviluppare: nella nota originale questa sezione non era presente o era solo una traccia.
+
+## Errori comuni
+
+### Best Practices & "Gotchas"
 -  **Da fare**: Implementa `__repr__` sempre; `__str__` è opzionale ma consigliato per classi rivolte all'utente finale.
 -  **Da fare**: In `__repr__`, cerca di restituire una stringa che sembri il codice necessario per ricreare l'oggetto.
 -  **Da evitare**: Non inventare dunder methods personalizzati (es. `__mio_metodo__`). Riservali solo a quelli definiti dal linguaggio.
@@ -110,3 +125,11 @@ def __add__(self, other):
         return NotImplemented # Permette a Python di provare altre strade
     return Vettore(self.x + other.x, self.y + other.y)
 ```
+
+## Checklist
+
+Contenuto da sviluppare: nella nota originale questa sezione non era presente o era solo una traccia.
+
+## Collegamenti
+
+- [[Programmazione/Python/Indice python|Indice Python]]

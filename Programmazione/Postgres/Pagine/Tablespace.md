@@ -1,5 +1,5 @@
-﻿---
-date: 2026-05-20
+---
+date: 2026-06-02
 area: Programmazione
 topic: Postgres
 type: technical-note
@@ -9,7 +9,6 @@ tags:
   - programmazione
   - postgres
   - storage
-  - amministrazione
 aliases: []
 prerequisites: []
 related: []
@@ -19,65 +18,66 @@ related: []
 
 ## Sintesi
 
-Un **tablespace** permette di posizionare fisicamente oggetti PostgreSQL in directory diverse dal data directory principale.
-
-## Concetto chiave
-
-I tablespace separano storage logico e fisico. Possono servire per distribuire I/O o isolare oggetti grandi.
-
-```sql
-CREATE TABLESPACE fastspace
-LOCATION '/mnt/fast-postgres';
-
-CREATE TABLE events (
-  id bigint generated always as identity,
-  payload jsonb
-) TABLESPACE fastspace;
-```
-
-## Quando usarli
-
-- Storage con caratteristiche diverse.
-- Tabelle o indici molto grandi.
-- Migrazioni controllate di oggetti.
-
-## Errori comuni
-
-- Usarli come sostituto di capacity planning.
-- Dimenticare backup e restore del percorso fisico.
-- Spostare oggetti senza misurare I/O reale.
+Un tablespace permette di collocare oggetti PostgreSQL su percorsi filesystem diversi dalla data directory principale.
 
 ## Quando usarlo
 
-- Da completare: indicare scenari pratici in cui questa nota e utile.
+Usalo per separare storage, spostare indici o tabelle grandi, gestire dischi diversi o requisiti operativi specifici.
 
 ## Come funziona
 
-Da completare: spiegare il meccanismo principale o il comportamento tecnico.
+PostgreSQL crea link nella data directory verso il percorso del tablespace. Tabelle, indici e database possono essere creati o spostati in un tablespace.
 
 ## API / Sintassi
 
-```text
-Da completare con API o sintassi principale.
+```sql
+CREATE TABLESPACE fast_storage LOCATION '/mnt/fast/postgres';
+```
+
+Usare tablespace:
+
+```sql
+CREATE INDEX orders_created_at_idx
+ON orders (created_at)
+TABLESPACE fast_storage;
+```
+
+Spostare:
+
+```sql
+ALTER TABLE orders SET TABLESPACE fast_storage;
 ```
 
 ## Esempio pratico
 
-```text
-Da completare con un esempio pratico.
-```
+Mettere indici grandi su storage dedicato puo ridurre contesa I/O, ma va misurato e documentato.
 
 ## Varianti
 
-- Da completare: varianti, alternative o differenze rispetto ad approcci simili.
+- Tablespace per tabelle.
+- Tablespace per indici.
+- Default tablespace per database.
+- Storage veloce per indici.
+- Storage capiente per archivi.
+
+## Errori comuni
+
+- Usare tablespace per correggere problemi di tuning non diagnosticati.
+- Non includere tablespace nel piano backup.
+- Percorsi con permessi errati.
+- Spostare oggetti senza finestra operativa.
+- Dimenticare monitoraggio disco separato.
 
 ## Checklist
 
-- Da completare: controlli essenziali prima di usare questo concetto in pratica.
+- Il percorso e affidabile e monitorato?
+- I backup includono tablespace?
+- I permessi filesystem sono corretti?
+- Il vantaggio I/O e misurato?
+- La scelta e documentata?
 
 ## Collegamenti
+
 - [[Programmazione/Postgres/Pagine/File System Layout e Data Directory|File System Layout e Data Directory]]
 - [[Programmazione/Postgres/Pagine/Backup e Ripristino|Backup e Ripristino]]
-- [[Programmazione/Postgres/Pagine/Manutenzione|Manutenzione]]
-
-
+- [[Programmazione/Postgres/Pagine/Tipi di Indici|Tipi di Indici]]

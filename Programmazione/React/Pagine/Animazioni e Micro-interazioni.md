@@ -1,5 +1,5 @@
----
-date: 2026-05-14
+﻿---
+date: 2026-06-02
 area: Programmazione
 topic: React
 type: technical-note
@@ -10,6 +10,7 @@ aliases: [Animazioni e Micro-interazioni]
 prerequisites: []
 related: []
 ---
+
 # Animazioni e Micro-interazioni
 
 ## Sintesi
@@ -25,8 +26,13 @@ In React non sono solo un tema estetico: aiutano a comunicare cambi di stato, tr
 
 ---
 
-## 1. Cosa sono le micro-interazioni
+## Quando usarlo
 
+Contenuto da sviluppare: nella nota originale questa sezione non era presente o era solo una traccia.
+
+## Come funziona
+
+### 1. Cosa sono le micro-interazioni
 Le micro-interazioni sono feedback piccoli e mirati che accompagnano l'utente durante l'uso dell'interfaccia.
 
 Esempi comuni:
@@ -40,9 +46,7 @@ Esempi comuni:
 Sono dettagli, ma influenzano molto la percezione di qualita dell'app.
 
 ---
-
-## 2. Perche servono davvero
-
+### 2. Perche servono davvero
 Senza motion, molti cambi di interfaccia appaiono bruschi:
 - elementi che compaiono dal nulla;
 - layout che si sposta senza contesto;
@@ -58,9 +62,7 @@ Le animazioni aiutano a:
 In pratica, motion e UX, non solo visual design.
 
 ---
-
-## 3. Quando basta il CSS
-
+### 3. Quando basta il CSS
 Per molte animazioni semplici, il CSS e sufficiente:
 - hover;
 - focus;
@@ -86,9 +88,7 @@ Questo approccio e spesso la scelta migliore quando:
 - non devi coordinare ingresso, uscita e layout complessi.
 
 ---
-
-## 4. Quando il CSS non basta
-
+### 4. Quando il CSS non basta
 Il CSS diventa meno comodo quando devi gestire:
 - mount e unmount di componenti;
 - animazioni di presenza;
@@ -100,9 +100,7 @@ Il CSS diventa meno comodo quando devi gestire:
 In questi casi, una libreria React-oriented puo essere molto piu efficace.
 
 ---
-
-## 5. Framer Motion
-
+### 5. Framer Motion
 **Framer Motion** e una delle librerie piu usate per animazioni in React.
 
 Permette di animare componenti in modo dichiarativo.
@@ -132,9 +130,7 @@ Punti forti di Framer Motion:
 - ottimo per interfacce moderne e componenti complessi.
 
 ---
-
-## 6. React Spring
-
+### 6. React Spring
 **React Spring** e un'altra libreria importante, orientata a un modello basato su fisica e spring animation.
 
 E spesso apprezzata quando vuoi movimenti piu naturali e continui, meno "timeline-based".
@@ -146,9 +142,7 @@ Concettualmente:
 La scelta dipende dal tipo di interazione e dalle preferenze del team.
 
 ---
-
-## 7. Enter, exit e presence
-
+### 7. Enter, exit e presence
 Un problema tipico in React e che un componente puo sparire immediatamente quando non viene piu renderizzato.
 
 Se vuoi animare l'uscita, ti serve un meccanismo che gestisca la **presence** del componente prima della rimozione effettiva.
@@ -165,9 +159,7 @@ E utile per:
 Questo tipo di animazione e difficile da gestire bene solo con CSS, soprattutto quando il componente viene montato e smontato dinamicamente.
 
 ---
-
-## 8. Layout transitions
-
+### 8. Layout transitions
 Le animazioni di layout aiutano quando la UI cambia dimensione o posizione:
 - card che si espandono;
 - liste che si riordinano;
@@ -182,9 +174,7 @@ Qui il valore della motion e molto alto, perche l'utente capisce meglio:
 Se il layout cambia senza transizione, la UI puo sembrare instabile o "saltare".
 
 ---
-
-## 9. Performance
-
+### 9. Performance
 Le animazioni possono migliorare la UX, ma possono anche peggiorarla se progettate male.
 
 Problemi comuni:
@@ -202,9 +192,7 @@ Regole pratiche:
 Un'animazione che scatta o rallenta e peggiore di nessuna animazione.
 
 ---
-
-## 10. Accessibilita e reduced motion
-
+### 10. Accessibilita e reduced motion
 Non tutti gli utenti tollerano bene animazioni intense. Alcune persone usano la preferenza di sistema per ridurre il motion.
 
 Per questo e importante rispettare `prefers-reduced-motion` o usare le opzioni equivalenti offerte dalle librerie.
@@ -217,9 +205,7 @@ Buona pratica:
 La motion deve aiutare, non creare frizione o disagio.
 
 ---
-
-## 11. Micro-interazioni utili
-
+### 11. Micro-interazioni utili
 Le micro-interazioni funzionano bene quando sono:
 - brevi;
 - coerenti;
@@ -240,9 +226,7 @@ Esempi cattivi:
 - transizioni incoerenti tra componenti simili.
 
 ---
-
-## 12. Relazione con React
-
+### 12. Relazione con React
 Le animazioni si collegano spesso a:
 - [[Programmazione/React/Pagine/Gestione Moduli]] per feedback su input e submit;
 - [[Programmazione/React/Pagine/Validazione Dati]] per errori e stati di conferma;
@@ -254,8 +238,25 @@ In pratica, motion e interazione vanno pensate insieme al flusso dello stato e n
 
 ---
 
-## 13. Best Practices
+## API / Sintassi
 
+Contenuto da sviluppare: nella nota originale questa sezione non era presente o era solo una traccia.
+
+## Esempio pratico
+
+Contenuto da sviluppare: nella nota originale questa sezione non era presente o era solo una traccia.
+
+## Varianti
+
+Contenuto da sviluppare: nella nota originale questa sezione non era presente o era solo una traccia.
+
+## Errori comuni
+
+Contenuto da sviluppare: nella nota originale questa sezione non era presente o era solo una traccia.
+
+## Checklist
+
+### 13. Best Practices
 1. **Usa animazioni per chiarire il comportamento dell'interfaccia:** non per aggiungere rumore visivo.
 2. **Parti dal CSS per i casi semplici:** e spesso la soluzione piu economica e robusta.
 3. **Usa Framer Motion o React Spring quando la complessita lo giustifica:** mount/unmount, presence, layout e gesture sono casi tipici.
@@ -264,3 +265,7 @@ In pratica, motion e interazione vanno pensate insieme al flusso dello stato e n
 6. **Misura il costo delle animazioni nelle interfacce dense:** se il motion peggiora fluidita o leggibilita, va ridotto o ripensato.
 
 ---
+
+## Collegamenti
+
+- [[Programmazione/React/Indice react|Indice React]]

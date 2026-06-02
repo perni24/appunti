@@ -1,5 +1,5 @@
----
-date: 2026-05-14
+﻿---
+date: 2026-06-02
 area: Programmazione
 topic: React
 type: technical-note
@@ -10,6 +10,7 @@ aliases: [Testing Jest]
 prerequisites: []
 related: []
 ---
+
 # Testing Jest
 
 ## Sintesi
@@ -25,8 +26,13 @@ Nell'ecosistema React moderno, Jest viene spesso usato insieme a **React Testing
 
 ---
 
-## 1. Ruolo di Jest
+## Quando usarlo
 
+Contenuto da sviluppare: nella nota originale questa sezione non era presente o era solo una traccia.
+
+## Come funziona
+
+### 1. Ruolo di Jest
 **Jest** e un test runner e assertion framework.
 
 In pratica si occupa di:
@@ -47,9 +53,7 @@ test("somma due numeri", () => {
 Nel contesto React, Jest da solo non basta per testare bene componenti renderizzati nel DOM. Per quello si usa spesso React Testing Library.
 
 ---
-
-## 2. React Testing Library
-
+### 2. React Testing Library
 **React Testing Library** e una libreria pensata per testare componenti React dal punto di vista dell'utente.
 
 Permette di:
@@ -73,9 +77,7 @@ test("mostra il titolo", () => {
 Il test non controlla dettagli interni del componente. Controlla il risultato accessibile nel DOM.
 
 ---
-
-## 3. Query orientate all'utente
-
+### 3. Query orientate all'utente
 React Testing Library incoraggia a cercare elementi come farebbe un utente o una tecnologia assistiva.
 
 Esempio consigliato:
@@ -98,9 +100,7 @@ Il primo approccio e migliore perche:
 Questo si collega bene a [[Programmazione/React/Pagine/WAI-ARIA]] e [[Programmazione/React/Pagine/Test di accessibilita]].
 
 ---
-
-## 4. Testare interazioni
-
+### 4. Testare interazioni
 Per testare click, digitazione e interazioni utente si usa spesso `userEvent`.
 
 Esempio:
@@ -123,9 +123,7 @@ test("incrementa il contatore", async () => {
 `userEvent` e preferibile a simulazioni troppo basse di livello perche rappresenta meglio il comportamento reale dell'utente.
 
 ---
-
-## 5. Testare form
-
+### 5. Testare form
 I form sono un caso molto comune.
 
 Esempio concettuale:
@@ -155,9 +153,7 @@ Questo approccio verifica:
 Si collega direttamente a [[Programmazione/React/Pagine/Gestione Moduli]] e [[Programmazione/React/Pagine/Validazione Dati]].
 
 ---
-
-## 6. Testare stati asincroni
-
+### 6. Testare stati asincroni
 Molte UI React cambiano dopo fetch, timeout o aggiornamenti asincroni.
 
 In questi casi si usano query asincrone come `findBy...`.
@@ -177,9 +173,7 @@ test("mostra gli utenti caricati", async () => {
 Questo si collega a [[Programmazione/React/Pagine/Data Fetching e Cache]], dove loading, error e dati remoti sono parte centrale della UI.
 
 ---
-
-## 7. Mock
-
+### 7. Mock
 I mock servono a sostituire dipendenze esterne durante il test.
 
 Esempi:
@@ -204,28 +198,7 @@ expect(onClose).toHaveBeenCalled();
 I mock sono utili, ma vanno usati con criterio. Troppi mock rendono il test meno vicino al comportamento reale.
 
 ---
-
-## 8. Mock delle API
-
-Quando un componente fa data fetching, conviene evitare di chiamare API reali nei test unitari.
-
-Strategie possibili:
-- mockare il modulo API;
-- mockare `fetch`;
-- usare strumenti dedicati come Mock Service Worker.
-
-L'obiettivo e testare il comportamento della UI:
-- stato di loading;
-- successo;
-- errore;
-- retry o empty state.
-
-Non serve verificare il backend in un unit test del componente.
-
----
-
-## 9. Testare routing e provider
-
+### 9. Testare routing e provider
 Molti componenti React dipendono da:
 - [[Programmazione/React/Pagine/React Router]];
 - [[Programmazione/React/Pagine/Context API]];
@@ -252,9 +225,7 @@ function renderWithProviders(ui) {
 Questo evita duplicazione nei test e rende piu chiaro il contesto richiesto dal componente.
 
 ---
-
-## 10. Cosa testare
-
+### 10. Cosa testare
 Conviene testare:
 - rendering di stati importanti;
 - interazioni utente;
@@ -273,9 +244,7 @@ Conviene evitare test troppo fragili su:
 La domanda guida e: se questo comportamento si rompe, l'utente o il prodotto se ne accorgono?
 
 ---
-
-## 11. Unit test, integration test e component test
-
+### 11. Unit test, integration test e component test
 Nel frontend React i confini non sono sempre rigidi.
 
 ### Unit test
@@ -290,9 +259,7 @@ Verifica piu componenti o provider che collaborano.
 React Testing Library tende a favorire test di componente o piccole integrazioni, perche spesso sono piu utili dei test troppo isolati.
 
 ---
-
-## 12. Snapshot test
-
+### 12. Snapshot test
 Jest supporta anche gli snapshot test.
 
 Servono a confrontare l'output renderizzato con una versione salvata.
@@ -305,9 +272,49 @@ Sono utili in alcuni casi, ma spesso diventano fragili:
 Per componenti React interattivi, e spesso meglio scrivere assertion esplicite su testo, ruoli e interazioni.
 
 ---
+### 14. Relazione con React
+Il testing con Jest si collega bene a:
+- [[Programmazione/React/Pagine/Gestione Moduli]] per input, submit e validazione;
+- [[Programmazione/React/Pagine/Data Fetching e Cache]] per stati asincroni;
+- [[Programmazione/React/Pagine/React Router]] per pagine e navigazione;
+- [[Programmazione/React/Pagine/Context API]] per provider condivisi;
+- [[Programmazione/React/Pagine/Test di accessibilita]] per query orientate a ruoli e label.
 
-## 13. Errori comuni
+In React, testare bene significa verificare come stato, props, effetti e interazioni producono una UI corretta.
 
+---
+
+## API / Sintassi
+
+### 8. Mock delle API
+Quando un componente fa data fetching, conviene evitare di chiamare API reali nei test unitari.
+
+Strategie possibili:
+- mockare il modulo API;
+- mockare `fetch`;
+- usare strumenti dedicati come Mock Service Worker.
+
+L'obiettivo e testare il comportamento della UI:
+- stato di loading;
+- successo;
+- errore;
+- retry o empty state.
+
+Non serve verificare il backend in un unit test del componente.
+
+---
+
+## Esempio pratico
+
+Contenuto da sviluppare: nella nota originale questa sezione non era presente o era solo una traccia.
+
+## Varianti
+
+Contenuto da sviluppare: nella nota originale questa sezione non era presente o era solo una traccia.
+
+## Errori comuni
+
+### 13. Errori comuni
 Errori frequenti:
 - testare dettagli interni invece del comportamento;
 - usare selector CSS dove basterebbe `getByRole`;
@@ -321,21 +328,9 @@ Un test utile deve dare fiducia sul comportamento reale, non solo aumentare il n
 
 ---
 
-## 14. Relazione con React
+## Checklist
 
-Il testing con Jest si collega bene a:
-- [[Programmazione/React/Pagine/Gestione Moduli]] per input, submit e validazione;
-- [[Programmazione/React/Pagine/Data Fetching e Cache]] per stati asincroni;
-- [[Programmazione/React/Pagine/React Router]] per pagine e navigazione;
-- [[Programmazione/React/Pagine/Context API]] per provider condivisi;
-- [[Programmazione/React/Pagine/Test di accessibilita]] per query orientate a ruoli e label.
-
-In React, testare bene significa verificare come stato, props, effetti e interazioni producono una UI corretta.
-
----
-
-## 15. Best Practices
-
+### 15. Best Practices
 1. **Testa comportamento visibile, non dettagli interni:** i test devono restare validi anche se rifattorizzi l'implementazione.
 2. **Preferisci query accessibili come `getByRole` e `getByLabelText`:** migliorano sia test sia markup.
 3. **Usa `userEvent` per interazioni realistiche:** click, typing e tab sono parte del comportamento utente.
@@ -344,3 +339,7 @@ In React, testare bene significa verificare come stato, props, effetti e interaz
 6. **Copri loading, successo ed errore:** molte regressioni frontend nascono proprio negli stati non felici.
 
 ---
+
+## Collegamenti
+
+- [[Programmazione/React/Indice react|Indice React]]

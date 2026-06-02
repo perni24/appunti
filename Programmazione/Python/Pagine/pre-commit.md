@@ -1,5 +1,5 @@
 ﻿---
-date: 2026-05-20
+date: 2026-06-02
 area: Programmazione
 topic: Python
 type: operational-note
@@ -21,8 +21,13 @@ related: []
 
 **pre-commit** esegue controlli automatici prima di un commit Git, come formatter, linter, type checker e validazioni sui file.
 
-## Concetto chiave
+## Quando usarlo
 
+Contenuto da sviluppare: nella nota originale questa sezione non era presente o era solo una traccia.
+
+## Come funziona
+
+### Concetto chiave
 I controlli vengono dichiarati in `.pre-commit-config.yaml` e girano in ambienti isolati.
 
 ```yaml
@@ -32,56 +37,42 @@ repos:
     hooks:
       - id: black
 ```
-
-## Uso base
-
+### Uso base
 ```powershell
 pre-commit install
 pre-commit run --all-files
 ```
-
-## Vantaggi
-
+### Vantaggi
 - Riduce errori banali.
 - Uniforma stile.
 - Anticipa controlli CI.
 - Evita commit con file generati male.
 
-## Obiettivo
+## API / Sintassi
 
-Da completare: descrivere cosa ottenere in pratica.
+Contenuto da sviluppare: nella nota originale questa sezione non era presente o era solo una traccia.
 
-## Quando usarlo
+## Esempio pratico
 
-- Da completare: indicare scenari pratici in cui questa nota e utile.
-
-## Procedura
-
+### Procedura
 1. Da completare.
 2. Da completare.
 3. Da completare.
 
-## Snippet
+## Varianti
 
-```text
-Da completare con codice o comando riutilizzabile.
-```
+Contenuto da sviluppare: nella nota originale questa sezione non era presente o era solo una traccia.
 
-## Adattamenti comuni
+## Errori comuni
 
-- Da completare: varianti per casi frequenti.
+Contenuto da sviluppare: nella nota originale questa sezione non era presente o era solo una traccia.
 
-## Debug rapido
+## Checklist
 
-- Da completare: controlli rapidi in caso di errore.
-
-## Checklist finale
-
-- Da completare: verifiche finali.
+Contenuto da sviluppare: nella nota originale questa sezione non era presente o era solo una traccia.
 
 ## Collegamenti
+
 - [[Programmazione/Python/Pagine/Stile|Stile]]
 - [[Programmazione/Python/Pagine/isort|isort]]
 - [[Programmazione/Python/Pagine/Testing|Testing]]
-
-

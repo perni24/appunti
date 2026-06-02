@@ -1,5 +1,5 @@
----
-date: 2026-05-14
+﻿---
+date: 2026-06-02
 area: Programmazione
 topic: Python
 type: technical-note
@@ -19,8 +19,13 @@ La configurazione permette di separare codice e valori che cambiano tra ambienti
 
 In Python le variabili d'ambiente si leggono con `os.environ`.
 
-## Leggere variabili
+## Quando usarlo
 
+Contenuto da sviluppare: nella nota originale questa sezione non era presente o era solo una traccia.
+
+## Come funziona
+
+### Leggere variabili
 ```python
 import os
 
@@ -31,9 +36,7 @@ database_url = os.environ["DATABASE_URL"]
 `os.environ["NAME"]` solleva `KeyError` se la variabile manca.
 
 `os.environ.get("NAME")` restituisce `None` o un default.
-
-## Conversioni
-
+### Conversioni
 Le variabili d'ambiente sono stringhe.
 
 ```python
@@ -42,12 +45,22 @@ debug = os.environ.get("DEBUG", "false").lower() == "true"
 ```
 
 Converti esplicitamente numeri e booleani.
-
-## Segreti
-
+### Segreti
 Non salvare password, token o chiavi API nel codice sorgente.
 
 Usa variabili d'ambiente, secret manager o configurazione esterna non versionata.
+
+## API / Sintassi
+
+Contenuto da sviluppare: nella nota originale questa sezione non era presente o era solo una traccia.
+
+## Esempio pratico
+
+Contenuto da sviluppare: nella nota originale questa sezione non era presente o era solo una traccia.
+
+## Varianti
+
+Contenuto da sviluppare: nella nota originale questa sezione non era presente o era solo una traccia.
 
 ## Errori comuni
 
@@ -55,6 +68,10 @@ Usa variabili d'ambiente, secret manager o configurazione esterna non versionata
 - Dimenticare conversioni di tipo.
 - Loggare segreti.
 - Mescolare configurazione di sviluppo e produzione.
+
+## Checklist
+
+Contenuto da sviluppare: nella nota originale questa sezione non era presente o era solo una traccia.
 
 ## Collegamenti
 

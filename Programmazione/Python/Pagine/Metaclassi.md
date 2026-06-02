@@ -1,5 +1,5 @@
 ﻿---
-date: 2026-05-20
+date: 2026-06-02
 area: Programmazione
 topic: Python
 type: theory-note
@@ -21,8 +21,17 @@ related: []
 
 Le **metaclassi** sono classi che creano classi. Permettono di personalizzare la creazione di classi, validare definizioni e registrare automaticamente tipi.
 
-## Concetto chiave
+## Quando usarlo
 
+### Quando usarle
+- Framework.
+- ORM.
+- Registrazione automatica.
+- Validazione di API di classe.
+
+## Come funziona
+
+### Concetto chiave
 In Python anche le classi sono oggetti. La metaclasse predefinita e `type`.
 
 ```python
@@ -38,42 +47,29 @@ class Plugin(metaclass=RegistryMeta):
     pass
 ```
 
-## Quando usarle
+## API / Sintassi
 
-- Framework.
-- ORM.
-- Registrazione automatica.
-- Validazione di API di classe.
+Contenuto da sviluppare: nella nota originale questa sezione non era presente o era solo una traccia.
 
-## Errore comune
+## Esempio pratico
 
-Usare metaclassi dove bastano decoratori di classe, `__init_subclass__` o composizione.
+Contenuto da sviluppare: nella nota originale questa sezione non era presente o era solo una traccia.
 
-## Problema che risolve
+## Varianti
 
-Da completare: descrivere il problema concettuale o tecnico che questa nota chiarisce.
-
-## Dettagli importanti
-
-- Da completare: aggiungere dettagli, casi limite e differenze da concetti simili.
-
-## Esempio
-
-```text
-Da completare con un esempio minimo.
-```
-
-## Limiti
-
-- Da completare: indicare limiti, ambiguita e casi in cui il concetto non basta.
+Contenuto da sviluppare: nella nota originale questa sezione non era presente o era solo una traccia.
 
 ## Errori comuni
 
-Da completare durante revisione.
+### Errore comune
+Usare metaclassi dove bastano decoratori di classe, `__init_subclass__` o composizione.
+
+## Checklist
+
+Contenuto da sviluppare: nella nota originale questa sezione non era presente o era solo una traccia.
 
 ## Collegamenti
+
 - [[Programmazione/Python/Pagine/Classi e Istanze|Classi e Istanze]]
 - [[Programmazione/Python/Pagine/Data model|Data model]]
 - [[Programmazione/Python/Pagine/Decoratori|Decoratori]]
-
-

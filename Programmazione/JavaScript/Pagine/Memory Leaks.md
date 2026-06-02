@@ -1,5 +1,5 @@
----
-date: 2026-05-13
+﻿---
+date: 2026-06-02
 area: Programmazione
 topic: JavaScript
 type: technical-note
@@ -21,8 +21,23 @@ Il problema tipico non e "JavaScript non libera memoria", ma "il codice mantiene
 
 ---
 
-## Variabili globali accidentali
+## Quando usarlo
 
+Consulta questa nota quando un'app consuma sempre piu memoria, diventa lenta dopo uso prolungato o mantiene dati che dovrebbero essere stati rimossi.
+
+Casi frequenti:
+
+- SPA con cambio viste;
+- componenti montati e smontati;
+- listener globali;
+- timer e polling;
+- cache in memoria;
+- dashboard real-time;
+- rendering di liste grandi.
+
+## Come funziona
+
+### Variabili globali accidentali
 In codice non strict, assegnare a un nome non dichiarato puo creare una globale.
 
 ```js
@@ -42,9 +57,7 @@ function safe() {
 ```
 
 ---
-
-## Timer non puliti
-
+### Timer non puliti
 `setInterval` mantiene viva la callback e tutto cio che la callback referenzia.
 
 ```js
@@ -62,9 +75,7 @@ clearInterval(intervalId);
 ```
 
 ---
-
-## Event listener non rimossi
-
+### Event listener non rimossi
 Un listener puo trattenere riferimenti a oggetti, componenti o nodi DOM.
 
 ```js
@@ -86,9 +97,7 @@ function mount() {
 Il cleanup deve usare la stessa funzione registrata.
 
 ---
-
-## DOM scollegato ma referenziato
-
+### DOM scollegato ma referenziato
 Un nodo rimosso dal DOM puo restare in memoria se JavaScript lo conserva.
 
 ```js
@@ -104,9 +113,7 @@ removedNode = null;
 ```
 
 ---
-
-## Closure troppo longeve
-
+### Closure troppo longeve
 Le closure conservano accesso allo scope esterno.
 
 ```js
@@ -120,9 +127,7 @@ function createHandler(data) {
 Se `handleClick` resta registrata per molto tempo, anche `data` resta raggiungibile.
 
 ---
-
-## Cache senza limite
-
+### Cache senza limite
 ```js
 const cache = new Map();
 
@@ -138,9 +143,7 @@ function getUser(id) {
 Una cache deve avere una strategia di pulizia: TTL, limite dimensione, LRU o invalidazione esplicita.
 
 ---
-
-## Richieste obsolete
-
+### Richieste obsolete
 In UI dinamiche, richieste vecchie possono trattenere dati e aggiornare stato non piu valido.
 
 ```js
@@ -156,9 +159,7 @@ controller.abort();
 `AbortController` aiuta a cancellare operazioni non piu utili.
 
 ---
-
-## Come rilevarli
-
+### Come rilevarli
 Strumenti utili:
 
 - Chrome DevTools, tab Memory;
@@ -178,6 +179,72 @@ Procedura pratica:
 
 ---
 
+## API / Sintassi
+
+Operazioni di cleanup comuni:
+
+```js
+clearTimeout(timeoutId);
+clearInterval(intervalId);
+controller.abort();
+element.removeEventListener("click", listener);
+cache.delete(key);
+cache.clear();
+```
+
+Pattern con funzione di cleanup:
+
+```js
+function setup() {
+  const controller = new AbortController();
+
+  window.addEventListener("resize", onResize, {
+    signal: controller.signal,
+  });
+
+  return () => controller.abort();
+}
+```
+
+Usare `AbortController` con listener supportati permette di centralizzare la cancellazione.
+
+## Esempio pratico
+
+Leak con listener anonimo:
+
+```js
+function mount() {
+  window.addEventListener("resize", () => {
+    console.log("resize");
+  });
+}
+```
+
+Non puoi rimuovere facilmente quella funzione anonima. Versione corretta:
+
+```js
+function mount() {
+  function onResize() {
+    console.log("resize");
+  }
+
+  window.addEventListener("resize", onResize);
+
+  return () => {
+    window.removeEventListener("resize", onResize);
+  };
+}
+```
+
+## Varianti
+
+- **Leak da listener**: callback ancora registrate.
+- **Leak da timer**: interval o timeout non cancellati.
+- **Leak da closure**: scope esterni trattenuti.
+- **Leak da DOM scollegato**: nodi rimossi ma referenziati.
+- **Leak da cache**: strutture senza eviction.
+- **Leak da richieste obsolete**: Promise e fetch non piu utili.
+
 ## Errori comuni
 
 - Rimuovere un nodo DOM ma conservare riferimenti JS.
@@ -188,8 +255,9 @@ Procedura pratica:
 
 ---
 
-## Checklist operativa
+## Checklist
 
+### Checklist operativa
 - Pulisci listener, interval, timeout e subscription.
 - Usa `AbortController` per richieste obsolete.
 - Limita cache e strutture globali.

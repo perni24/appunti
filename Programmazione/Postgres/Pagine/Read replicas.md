@@ -1,5 +1,5 @@
-﻿---
-date: 2026-05-20
+---
+date: 2026-06-02
 area: Programmazione
 topic: Postgres
 type: technical-note
@@ -19,61 +19,81 @@ related: []
 
 ## Sintesi
 
-Le **read replicas** sono repliche usate per servire traffico di lettura, alleggerendo il nodo primario.
-
-## Concetto chiave
-
-Il primario gestisce scritture. Le repliche ricevono cambiamenti tramite replicazione e possono rispondere a query read-only.
-
-## Vantaggi
-
-- Scalare letture.
-- Isolare query analitiche.
-- Migliorare disponibilita.
-- Supportare backup senza caricare il primario.
-
-## Limiti
-
-- Replica lag.
-- Letture potenzialmente stale.
-- Query lunghe sulle repliche possono interferire con cleanup.
-- Le scritture devono andare al primario.
+Le **read replicas** sono repliche usate per servire traffico di lettura, isolare query pesanti e ridurre carico sul primario. Di solito sono basate su replica fisica.
 
 ## Quando usarlo
 
-- Da completare: indicare scenari pratici in cui questa nota e utile.
+Usale quando:
+
+- il primario e saturo da query di lettura;
+- report e dashboard interferiscono con scritture;
+- vuoi eseguire backup senza caricare il primario;
+- serve un nodo caldo per failover;
+- l'applicazione tollera letture leggermente stale.
 
 ## Come funziona
 
-Da completare: spiegare il meccanismo principale o il comportamento tecnico.
+Il primario riceve scritture. Le repliche applicano WAL o eventi logici e rispondono a query read-only. Poiche la replica puo essere asincrona, le letture possono essere in ritardo rispetto al primario.
+
+L'applicazione deve sapere quali query possono andare in replica. Le query che devono leggere subito una scrittura appena fatta dovrebbero restare sul primario o verificare il lag.
 
 ## API / Sintassi
 
-```text
-Da completare con API o sintassi principale.
+Verificare se il nodo e una replica:
+
+```sql
+SELECT pg_is_in_recovery();
 ```
+
+Lag sulla replica:
+
+```sql
+SELECT now() - pg_last_xact_replay_timestamp() AS replica_lag;
+```
+
+Bloccare scritture applicative su replica e naturale: lo standby accetta solo query read-only.
 
 ## Esempio pratico
 
+Routing applicativo:
+
 ```text
-Da completare con un esempio pratico.
+POST /orders       -> primary
+GET /orders/123    -> primary se serve read-after-write
+GET /reports/sales -> read replica
 ```
+
+Se il report e lungo, conviene mandarlo su replica per non competere con transazioni del primario.
 
 ## Varianti
 
-- Da completare: varianti, alternative o differenze rispetto ad approcci simili.
+- Replica asincrona.
+- Replica sincrona.
+- Replica geografica.
+- Replica dedicata a reportistica.
+- Replica dedicata a backup.
+- Replica candidata al failover.
 
 ## Errori comuni
 
-Da completare durante revisione.
+- Ignorare replica lag.
+- Usare replica per letture che richiedono consistenza immediata.
+- Lasciare query lunghissime sulla replica senza limiti.
+- Pensare che la replica sostituisca un backup.
+- Non distinguere endpoint read e write.
+- Non monitorare conflitti o replay ritardato.
 
 ## Checklist
 
-- Da completare: controlli essenziali prima di usare questo concetto in pratica.
+- L'applicazione tollera dati stale?
+- Il lag massimo accettabile e definito?
+- Esistono timeout per query analitiche?
+- Le scritture vanno sempre al primario?
+- La replica e monitorata?
+- I backup sono indipendenti dalla replica?
 
 ## Collegamenti
+
 - [[Programmazione/Postgres/Pagine/Replicazione Fisica|Replicazione Fisica]]
 - [[Programmazione/Postgres/Pagine/Replicazione Logica|Replicazione Logica]]
 - [[Programmazione/Postgres/Pagine/Failover e Load Balancing|Failover e Load Balancing]]
-
-

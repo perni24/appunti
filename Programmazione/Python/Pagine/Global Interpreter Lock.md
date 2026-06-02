@@ -1,5 +1,5 @@
----
-date: 2026-05-14
+﻿---
+date: 2026-06-02
 area: Programmazione
 topic: Python
 type: technical-note
@@ -10,13 +10,20 @@ aliases: [Global Interpreter Lock (GIL)]
 prerequisites: []
 related: []
 ---
+
 # Global Interpreter Lock (GIL)
 
 ## Sintesi
 
 Nota su Global Interpreter Lock (GIL) in Python. Riassume il concetto, la sintassi principale e i punti da ricordare durante studio, sviluppo o debugging.
 
-## Concetto chiave
+## Quando usarlo
+
+Contenuto da sviluppare: nella nota originale questa sezione non era presente o era solo una traccia.
+
+## Come funziona
+
+### Concetto chiave
 Il **Global Interpreter Lock**, o **GIL**, e un meccanismo presente in **CPython** che permette a **un solo thread alla volta** di eseguire bytecode Python all'interno dello stesso processo.
 
 Questo significa che, anche se un programma Python crea piu thread, i thread non eseguono davvero codice Python in parallelo sui core della CPU quando il lavoro e **CPU-bound**.
@@ -25,9 +32,7 @@ Questo significa che, anche se un programma Python crea piu thread, i thread non
 > Il GIL non impedisce l'uso dei thread in assoluto. I thread restano utili soprattutto per task **I/O-bound** come richieste di rete, lettura di file, accesso a database o attesa di eventi esterni.
 
 ---
-
-##  Perche esiste
-
+### Perche esiste
 Il GIL semplifica molto la gestione interna degli oggetti Python in CPython.
 
 In particolare:
@@ -40,9 +45,7 @@ Dal punto di vista progettuale, il GIL e un compromesso:
 - **svantaggio**: limitazione del parallelismo reale nei thread CPU-bound.
 
 ---
-
-##  Esempi Pratici
-
+### Esempi Pratici
 ### Thread CPU-bound
 
 ```python
@@ -87,9 +90,7 @@ for thread in threads:
 Qui i thread possono essere utili: durante le attese di I/O o sleep, il GIL viene rilasciato o comunque il thread non sta consumando CPU in modo intensivo.
 
 ---
-
-##  Funzionamento Interno (Teoria)
-
+### Funzionamento Interno (Teoria)
 ### Un thread alla volta sul bytecode Python
 In CPython, il GIL garantisce che solo un thread esegua bytecode Python per volta. L'interprete rilascia periodicamente il controllo, permettendo ad altri thread di proseguire.
 
@@ -102,9 +103,7 @@ Questo collega direttamente il GIL alla gestione del [[Programmazione/Python/Pag
 Il sistema operativo e l'interprete alternano l'esecuzione dei thread. Il risultato percepito puo sembrare parallelo, ma in realta il codice Python puro viene eseguito a turni quando il carico e CPU-bound.
 
 ---
-
-##  CPU-bound vs I/O-bound
-
+### CPU-bound vs I/O-bound
 ### CPU-bound
 Un task e **CPU-bound** quando passa la maggior parte del tempo a fare calcoli.
 
@@ -131,9 +130,29 @@ In questi scenari il threading resta utile, perche mentre un thread attende, alt
 > Se il collo di bottiglia e la CPU, i thread spesso non bastano. Se il collo di bottiglia e l'attesa di I/O, i thread sono spesso una scelta valida.
 
 ---
+### Fraintendimenti comuni
+### "Python non supporta il multithreading"
+Falso. Python supporta i thread, ma in CPython il GIL limita il parallelismo reale del bytecode Python.
 
-##  Alternative al threading per aggirare il limite
+### "Il GIL rende i thread inutili"
+Falso. Per I/O-bound, i thread restano molto utili e semplici da usare.
 
+### "Il GIL esiste in tutte le implementazioni di Python"
+Non necessariamente nello stesso modo. Il GIL e soprattutto un tema associato a **CPython**, che e l'implementazione standard piu diffusa.
+
+---
+
+## API / Sintassi
+
+Contenuto da sviluppare: nella nota originale questa sezione non era presente o era solo una traccia.
+
+## Esempio pratico
+
+Contenuto da sviluppare: nella nota originale questa sezione non era presente o era solo una traccia.
+
+## Varianti
+
+### Alternative al threading per aggirare il limite
 ### Multiprocessing
 Il modulo `multiprocessing` avvia processi separati. Ogni processo ha il proprio interprete Python e quindi il proprio GIL.
 
@@ -167,21 +186,9 @@ Librerie scritte in C, C++ o Rust possono eseguire parti computazionalmente inte
 
 ---
 
-##  Fraintendimenti comuni
+## Errori comuni
 
-### "Python non supporta il multithreading"
-Falso. Python supporta i thread, ma in CPython il GIL limita il parallelismo reale del bytecode Python.
-
-### "Il GIL rende i thread inutili"
-Falso. Per I/O-bound, i thread restano molto utili e semplici da usare.
-
-### "Il GIL esiste in tutte le implementazioni di Python"
-Non necessariamente nello stesso modo. Il GIL e soprattutto un tema associato a **CPython**, che e l'implementazione standard piu diffusa.
-
----
-
-##  Best Practices & "Gotchas"
-
+### Best Practices & "Gotchas"
 -  **Usa `threading` per task I/O-bound:** rete, file, attese, polling e integrazioni esterne.
 -  **Usa `multiprocessing` per task CPU-bound:** quando vuoi sfruttare davvero piu core della macchina.
 -  **Profilare prima di scegliere:** non tutte le lentezze dipendono dal GIL.
@@ -191,3 +198,11 @@ Non necessariamente nello stesso modo. Il GIL e soprattutto un tema associato a 
 -  **Il GIL non sostituisce i lock applicativi:** strutture condivise e invarianti di business possono richiedere comunque sincronizzazione esplicita.
 
 ---
+
+## Checklist
+
+Contenuto da sviluppare: nella nota originale questa sezione non era presente o era solo una traccia.
+
+## Collegamenti
+
+- [[Programmazione/Python/Indice python|Indice Python]]

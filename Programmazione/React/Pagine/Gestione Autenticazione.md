@@ -1,5 +1,5 @@
----
-date: 2026-05-14
+﻿---
+date: 2026-06-02
 area: Programmazione
 topic: React
 type: technical-note
@@ -10,6 +10,7 @@ aliases: [Gestione Autenticazione]
 prerequisites: []
 related: []
 ---
+
 # Gestione Autenticazione
 
 ## Sintesi
@@ -25,8 +26,13 @@ Nel frontend, pero, l'autenticazione non e solo un problema di UX. E anche un pr
 
 ---
 
-## 1. Autenticazione vs autorizzazione
+## Quando usarlo
 
+Contenuto da sviluppare: nella nota originale questa sezione non era presente o era solo una traccia.
+
+## Come funziona
+
+### 1. Autenticazione vs autorizzazione
 Conviene distinguere due concetti.
 
 ### Autenticazione
@@ -52,9 +58,7 @@ Esempio:
 Nel frontend i due concetti spesso si intrecciano, ma non vanno confusi.
 
 ---
-
-## 2. Cosa gestisce davvero il frontend
-
+### 2. Cosa gestisce davvero il frontend
 Nel frontend React, la gestione auth tipicamente include:
 - sapere se l'utente e loggato;
 - conoscere i dati base dell'utente corrente;
@@ -66,9 +70,7 @@ Nel frontend React, la gestione auth tipicamente include:
 Questa logica viene spesso centralizzata tramite [[Programmazione/React/Pagine/Context API]], custom hook o store esterno.
 
 ---
-
-## 3. Stato di autenticazione nel client
-
+### 3. Stato di autenticazione nel client
 Uno schema comune e questo:
 
 ```javascript
@@ -96,9 +98,7 @@ Il frontend deve spesso fare un bootstrap iniziale per capire:
 Fino a quel momento, la UI puo trovarsi in uno stato intermedio tra "anonimo" e "autenticato".
 
 ---
-
-## 4. Protezione delle route
-
+### 4. Protezione delle route
 Nel frontend e comune limitare certe pagine agli utenti autenticati.
 
 Pattern tipico:
@@ -122,9 +122,7 @@ Ma e importante capire il limite:
 Un utente non autorizzato non deve poter ottenere dati riservati solo perche manipola il frontend.
 
 ---
-
-## 5. JWT: cosa sono
-
+### 5. JWT: cosa sono
 I **JWT** (**JSON Web Token**) sono token firmati che rappresentano informazioni di autenticazione o identita.
 
 Nel frontend spesso vengono usati per:
@@ -141,9 +139,7 @@ Authorization: Bearer <token>
 Il frontend, pero, non dovrebbe considerare un JWT come "prova sufficiente" da verificare da solo. Il controllo reale resta lato server.
 
 ---
-
-## 6. Dove conservare il token
-
+### 6. Dove conservare il token
 Questo e uno dei punti piu delicati.
 
 Le opzioni piu discusse sono:
@@ -155,9 +151,7 @@ Le opzioni piu discusse sono:
 Ognuna ha tradeoff diversi.
 
 ---
-
-## 7. localStorage
-
+### 7. localStorage
 `localStorage` e semplice da usare:
 
 ```javascript
@@ -177,9 +171,7 @@ Problemi:
 Per questo `localStorage` e comodo, ma va valutato con attenzione. Si collega direttamente a [[Programmazione/React/Pagine/Protezione XSS]].
 
 ---
-
-## 8. HttpOnly cookies
-
+### 8. HttpOnly cookies
 I cookie `HttpOnly` sono spesso considerati piu sicuri per la conservazione delle credenziali di sessione, perche:
 - non sono leggibili dal JavaScript del frontend;
 - riducono l'impatto di molte forme di XSS sul furto del token;
@@ -196,9 +188,7 @@ In pratica:
 - ma spostano parte della complessita su configurazione HTTP e backend.
 
 ---
-
-## 9. JWT in localStorage vs HttpOnly cookies
-
+### 9. JWT in localStorage vs HttpOnly cookies
 Il confronto corretto non e "uno e perfetto, l'altro no".
 
 ### localStorage
@@ -216,9 +206,7 @@ Regola pratica:
 - se usi token accessibili al client, devi essere piu rigoroso su XSS e lifecycle del token.
 
 ---
-
-## 10. Login, bootstrap e logout
-
+### 10. Login, bootstrap e logout
 ### Login
 Il frontend invia credenziali al backend e riceve:
 - sessione;
@@ -250,9 +238,7 @@ function logout() {
 Nei sistemi a cookie, il logout passa spesso anche da una chiamata API che invalida la sessione.
 
 ---
-
-## 11. Refresh token e scadenza sessione
-
+### 11. Refresh token e scadenza sessione
 Molti sistemi hanno:
 - access token a breve durata;
 - refresh token piu duraturo.
@@ -266,9 +252,7 @@ Il frontend deve allora gestire:
 Questa parte si collega anche a [[Programmazione/React/Pagine/Data Fetching e Cache]], perche gli errori auth possono influire sulla strategia di fetch, retry e invalidazione dei dati.
 
 ---
-
-## 12. UI auth-aware
-
+### 12. UI auth-aware
 Una UI React autenticata cambia spesso in base allo stato utente:
 - navbar diversa per guest o user loggato;
 - pulsanti login/logout;
@@ -280,8 +264,21 @@ Per questo l'autenticazione non e solo un layer di sicurezza. E anche un layer d
 
 ---
 
-## 13. Errori comuni
+## API / Sintassi
 
+Contenuto da sviluppare: nella nota originale questa sezione non era presente o era solo una traccia.
+
+## Esempio pratico
+
+Contenuto da sviluppare: nella nota originale questa sezione non era presente o era solo una traccia.
+
+## Varianti
+
+Contenuto da sviluppare: nella nota originale questa sezione non era presente o era solo una traccia.
+
+## Errori comuni
+
+### 13. Errori comuni
 Errori frequenti:
 - fidarsi solo della route protection client-side;
 - tenere token sensibili in posti troppo esposti senza considerare XSS;
@@ -294,8 +291,9 @@ Il frontend deve essere chiaro sia sullo stato tecnico sia su quello UX.
 
 ---
 
-## 14. Best Practices
+## Checklist
 
+### 14. Best Practices
 1. **Distingui sempre autenticazione e autorizzazione:** sono problemi collegati ma diversi.
 2. **Usa il frontend per rappresentare lo stato auth, non per fare enforcement finale:** la sicurezza reale resta lato server.
 3. **Preferisci cookie `HttpOnly` quando l'architettura lo consente:** riducono l'esposizione dei token al JavaScript client.
@@ -304,3 +302,7 @@ Il frontend deve essere chiaro sia sullo stato tecnico sia su quello UX.
 6. **Gestisci bene bootstrap, loading iniziale e logout:** sono parti essenziali del flusso, non dettagli secondari.
 
 ---
+
+## Collegamenti
+
+- [[Programmazione/React/Indice react|Indice React]]

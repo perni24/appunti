@@ -1,5 +1,5 @@
 ﻿---
-date: 2026-05-20
+date: 2026-06-02
 area: Programmazione
 topic: Python
 type: theory-note
@@ -20,8 +20,13 @@ related: []
 
 Il **data model** di Python definisce come gli oggetti interagiscono con operatori, funzioni built-in, attributi, contesti e protocolli del linguaggio.
 
-## Concetto chiave
+## Quando usarlo
 
+Contenuto da sviluppare: nella nota originale questa sezione non era presente o era solo una traccia.
+
+## Come funziona
+
+### Concetto chiave
 Molti comportamenti speciali sono controllati da metodi dunder, come `__len__`, `__iter__`, `__enter__`, `__eq__` e `__repr__`.
 
 ```python
@@ -35,36 +40,31 @@ class Cart:
 cart = Cart(["book", "pen"])
 print(len(cart))
 ```
-
-## Perche conta
-
+### Perche conta
 Capire il data model aiuta a scrivere classi idiomatiche, compatibili con funzioni built-in e integrate nei protocolli Python.
 
-## Problema che risolve
+## API / Sintassi
 
-Da completare: descrivere il problema concettuale o tecnico che questa nota chiarisce.
+Contenuto da sviluppare: nella nota originale questa sezione non era presente o era solo una traccia.
 
-## Dettagli importanti
+## Esempio pratico
 
-- Da completare: aggiungere dettagli, casi limite e differenze da concetti simili.
+Contenuto da sviluppare: nella nota originale questa sezione non era presente o era solo una traccia.
 
-## Esempio
+## Varianti
 
-```text
-Da completare con un esempio minimo.
-```
-
-## Limiti
-
-- Da completare: indicare limiti, ambiguita e casi in cui il concetto non basta.
+Contenuto da sviluppare: nella nota originale questa sezione non era presente o era solo una traccia.
 
 ## Errori comuni
 
-Da completare durante revisione.
+Contenuto da sviluppare: nella nota originale questa sezione non era presente o era solo una traccia.
+
+## Checklist
+
+Contenuto da sviluppare: nella nota originale questa sezione non era presente o era solo una traccia.
 
 ## Collegamenti
+
 - [[Programmazione/Python/Pagine/Metodi Speciali|Metodi Speciali]]
 - [[Programmazione/Python/Pagine/Classi e Istanze|Classi e Istanze]]
 - [[Programmazione/Python/Pagine/Descriptor protocol|Descriptor protocol]]
-
-

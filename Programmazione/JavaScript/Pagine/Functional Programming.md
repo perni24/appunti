@@ -1,5 +1,5 @@
----
-date: 2026-05-13
+﻿---
+date: 2026-06-02
 area: Programmazione
 topic: JavaScript
 type: technical-note
@@ -21,8 +21,24 @@ JavaScript e multi-paradigma e supporta bene lo stile funzionale.
 
 ---
 
-## Funzioni pure
+## Quando usarlo
 
+Usa lo stile funzionale quando vuoi rendere trasformazioni dati, regole di dominio e logica pura piu prevedibili e testabili.
+
+E utile per:
+
+- trasformare array e collezioni;
+- validare dati;
+- calcolare valori derivati;
+- isolare side effect;
+- comporre funzioni piccole;
+- ridurre mutazioni implicite.
+
+Non serve essere dogmatici: in JavaScript spesso il risultato migliore combina funzioni pure, moduli, oggetti e side effect ben confinati.
+
+## Come funziona
+
+### Funzioni pure
 Una funzione pura:
 
 - restituisce lo stesso output per lo stesso input;
@@ -49,9 +65,7 @@ function addToTotal(value) {
 Le funzioni pure sono piu facili da testare.
 
 ---
-
-## Immutabilita
-
+### Immutabilita
 Invece di modificare dati esistenti, si creano nuove versioni.
 
 ```js
@@ -66,9 +80,7 @@ const updatedUser = {
 Questo riduce effetti collaterali e rende i cambiamenti piu prevedibili.
 
 ---
-
-## Higher-order functions
-
+### Higher-order functions
 Una higher-order function riceve o restituisce funzioni.
 
 ```js
@@ -84,9 +96,7 @@ console.log(addVat(100)); // 122
 Metodi come `map`, `filter` e `reduce` sono esempi pratici.
 
 ---
-
-## Map, filter, reduce
-
+### Map, filter, reduce
 ```js
 const numbers = [1, 2, 3, 4];
 
@@ -98,9 +108,7 @@ const total = numbers.reduce((sum, n) => sum + n, 0);
 Questi metodi descrivono cosa vuoi ottenere, non ogni passo imperativo.
 
 ---
-
-## Composizione
-
+### Composizione
 La composizione combina funzioni piccole.
 
 ```js
@@ -113,9 +121,7 @@ const normalize = (value) => lower(trim(value));
 Funzioni piccole e pure sono piu semplici da riusare.
 
 ---
-
-## Currying
-
+### Currying
 Il currying trasforma una funzione con piu argomenti in una sequenza di funzioni.
 
 ```js
@@ -129,9 +135,7 @@ console.log(double(5)); // 10
 Utile quando vuoi specializzare funzioni.
 
 ---
-
-## Side effect
-
+### Side effect
 Side effect comuni:
 
 - modificare variabili esterne;
@@ -145,6 +149,62 @@ Non tutti i side effect sono sbagliati. Devono pero essere isolati e controllati
 
 ---
 
+## API / Sintassi
+
+Strumenti comuni:
+
+```js
+array.map(fn);
+array.filter(fn);
+array.reduce(fn, initialValue);
+```
+
+Higher-order function:
+
+```js
+function withPrefix(prefix) {
+  return (value) => `${prefix}${value}`;
+}
+```
+
+Composizione semplice:
+
+```js
+const normalize = (value) => value.trim().toLowerCase();
+```
+
+Copia immutabile:
+
+```js
+const nextUser = { ...user, active: true };
+const nextItems = items.filter((item) => item.id !== removedId);
+```
+
+## Esempio pratico
+
+Trasformare dati senza mutare l'input:
+
+```js
+function getActiveUserNames(users) {
+  return users
+    .filter((user) => user.active)
+    .map((user) => user.name.trim())
+    .filter((name) => name !== "")
+    .sort();
+}
+```
+
+La funzione riceve dati, restituisce un nuovo array e non modifica `users`. Questo la rende facile da testare.
+
+## Varianti
+
+- **Funzioni pure**: nessun side effect osservabile.
+- **Immutabilita**: crea nuove versioni dei dati.
+- **Higher-order functions**: funzioni che ricevono o restituiscono funzioni.
+- **Composizione**: combina funzioni piccole.
+- **Currying/partial application**: specializza funzioni.
+- **Functional core, imperative shell**: logica pura al centro, side effect ai bordi.
+
 ## Errori comuni
 
 - Usare FP in modo dogmatico.
@@ -155,8 +215,9 @@ Non tutti i side effect sono sbagliati. Devono pero essere isolati e controllati
 
 ---
 
-## Checklist operativa
+## Checklist
 
+### Checklist operativa
 - Preferisci funzioni pure per logica di dominio.
 - Isola side effect ai bordi del sistema.
 - Evita mutazioni implicite.

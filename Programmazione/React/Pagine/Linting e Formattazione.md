@@ -1,5 +1,5 @@
----
-date: 2026-05-14
+﻿---
+date: 2026-06-02
 area: Programmazione
 topic: React
 type: technical-note
@@ -10,6 +10,7 @@ aliases: [Linting e Formattazione]
 prerequisites: []
 related: []
 ---
+
 # Linting e Formattazione
 
 ## Sintesi
@@ -27,8 +28,13 @@ Nel frontend moderno, gli strumenti piu comuni sono:
 
 ---
 
-## 1. Linting
+## Quando usarlo
 
+Contenuto da sviluppare: nella nota originale questa sezione non era presente o era solo una traccia.
+
+## Come funziona
+
+### 1. Linting
 Il **linting** analizza il codice alla ricerca di:
 - errori potenziali;
 - pattern rischiosi;
@@ -54,9 +60,7 @@ Qui un linter puo segnalare che `user` manca nelle dipendenze dell'effetto.
 Questo si collega direttamente a [[Programmazione/React/Pagine/useEffect]].
 
 ---
-
-## 2. ESLint
-
+### 2. ESLint
 **ESLint** e lo strumento standard per il linting in progetti JavaScript e React.
 
 Permette di:
@@ -81,9 +85,7 @@ npx eslint src
 La configurazione esatta dipende dalla toolchain usata, come Vite, Next.js o setup personalizzati.
 
 ---
-
-## 3. Regole specifiche per React
-
+### 3. Regole specifiche per React
 In React sono importanti plugin e regole dedicate.
 
 Esempi:
@@ -100,9 +102,7 @@ Le regole sugli hook sono particolarmente importanti:
 Queste regole aiutano a prevenire bug sottili legati al modello di rendering React.
 
 ---
-
-## 4. Formattazione
-
+### 4. Formattazione
 La **formattazione** riguarda l'aspetto del codice:
 - indentazione;
 - lunghezza delle righe;
@@ -116,9 +116,7 @@ Senza formatter automatico, il team spreca tempo in discussioni poco produttive 
 Con un formatter, lo stile diventa una decisione automatica e ripetibile.
 
 ---
-
-## 5. Prettier
-
+### 5. Prettier
 **Prettier** e il formatter piu usato nell'ecosistema JavaScript.
 
 Il suo obiettivo e ridurre al minimo le decisioni manuali sullo stile.
@@ -142,9 +140,7 @@ oppure in uno script:
 Prettier non prova a capire se il codice e logicamente corretto. Si occupa solo di renderlo coerente nel formato.
 
 ---
-
-## 6. ESLint vs Prettier
-
+### 6. ESLint vs Prettier
 | Aspetto | ESLint | Prettier |
 | :--- | :--- | :--- |
 | **Scopo** | Qualita e regole del codice | Formattazione |
@@ -158,9 +154,7 @@ La configurazione migliore evita conflitti:
 - ESLint gestisce correttezza, pattern e regole di progetto.
 
 ---
-
-## 7. Integrazione con editor
-
+### 7. Integrazione con editor
 Una buona configurazione deve funzionare direttamente nell'editor.
 
 Obiettivi:
@@ -175,9 +169,7 @@ Questo riduce il costo cognitivo:
 - meno revisione su dettagli di stile.
 
 ---
-
-## 8. Integrazione con CI
-
+### 8. Integrazione con CI
 Linting e formatting devono essere verificabili anche fuori dal computer dello sviluppatore.
 
 Esempi di script:
@@ -199,9 +191,7 @@ In CI, questi comandi possono bloccare merge con:
 Questo rende la qualita del codice una regola del progetto, non una preferenza individuale.
 
 ---
-
-## 9. Linting e accessibilita
-
+### 9. Linting e accessibilita
 Nel frontend React, il linting puo aiutare anche sull'accessibilita.
 
 Plugin dedicati possono segnalare:
@@ -219,9 +209,7 @@ Questo si collega a:
 Il linter non sostituisce i test manuali, ma intercetta molte regressioni comuni.
 
 ---
-
-## 10. Linting e TypeScript
-
+### 10. Linting e TypeScript
 Se il progetto usa TypeScript, ESLint puo integrarsi con regole specifiche per tipi.
 
 Esempi:
@@ -237,23 +225,7 @@ TypeScript e ESLint non sono la stessa cosa:
 In un progetto maturo lavorano insieme.
 
 ---
-
-## 11. Errori comuni
-
-Errori frequenti:
-- usare ESLint per regole di puro formatting che Prettier gestirebbe meglio;
-- non integrare formatter nell'editor;
-- ignorare warning fino a renderli rumore di fondo;
-- disabilitare regole senza capirne il motivo;
-- avere configurazioni diverse tra editor e CI;
-- non usare regole specifiche per React Hooks.
-
-La configurazione deve aiutare il team, non diventare un ostacolo.
-
----
-
-## 12. Relazione con testing e qualita
-
+### 12. Relazione con testing e qualita
 Linting e formattazione non sostituiscono i test.
 
 Servono a coprire un livello diverso:
@@ -266,8 +238,36 @@ Insieme creano una rete di qualita piu robusta.
 
 ---
 
-## 13. Best Practices
+## API / Sintassi
 
+Contenuto da sviluppare: nella nota originale questa sezione non era presente o era solo una traccia.
+
+## Esempio pratico
+
+Contenuto da sviluppare: nella nota originale questa sezione non era presente o era solo una traccia.
+
+## Varianti
+
+Contenuto da sviluppare: nella nota originale questa sezione non era presente o era solo una traccia.
+
+## Errori comuni
+
+### 11. Errori comuni
+Errori frequenti:
+- usare ESLint per regole di puro formatting che Prettier gestirebbe meglio;
+- non integrare formatter nell'editor;
+- ignorare warning fino a renderli rumore di fondo;
+- disabilitare regole senza capirne il motivo;
+- avere configurazioni diverse tra editor e CI;
+- non usare regole specifiche per React Hooks.
+
+La configurazione deve aiutare il team, non diventare un ostacolo.
+
+---
+
+## Checklist
+
+### 13. Best Practices
 1. **Lascia a Prettier la formattazione:** evita discussioni manuali su stile e spaziatura.
 2. **Usa ESLint per regole semantiche e di qualita:** bug potenziali, hook, import e pattern di progetto.
 3. **Integra tutto nell'editor:** feedback immediato e format on save riducono attrito.
@@ -276,3 +276,7 @@ Insieme creano una rete di qualita piu robusta.
 6. **Aggiungi regole React, Hooks e accessibilita:** sono quelle che portano piu valore nei progetti frontend.
 
 ---
+
+## Collegamenti
+
+- [[Programmazione/React/Indice react|Indice React]]

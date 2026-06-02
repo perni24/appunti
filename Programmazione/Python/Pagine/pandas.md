@@ -1,5 +1,5 @@
 ﻿---
-date: 2026-05-20
+date: 2026-06-02
 area: Programmazione
 topic: Python
 type: technical-note
@@ -21,8 +21,16 @@ related: []
 
 **pandas** e una libreria Python per analisi e manipolazione di dati tabellari.
 
-## Concetto chiave
+## Quando usarlo
 
+- Pulizia dati.
+- Analisi esplorativa.
+- Import/export CSV, Excel, Parquet.
+- Aggregazioni e trasformazioni tabellari.
+
+## Come funziona
+
+### Concetto chiave
 Le strutture principali sono `Series` e `DataFrame`.
 
 ```python
@@ -32,12 +40,17 @@ df = pd.read_csv("sales.csv")
 summary = df.groupby("region")["amount"].sum()
 ```
 
-## Quando usarlo
+## API / Sintassi
 
-- Pulizia dati.
-- Analisi esplorativa.
-- Import/export CSV, Excel, Parquet.
-- Aggregazioni e trasformazioni tabellari.
+Contenuto da sviluppare: nella nota originale questa sezione non era presente o era solo una traccia.
+
+## Esempio pratico
+
+Contenuto da sviluppare: nella nota originale questa sezione non era presente o era solo una traccia.
+
+## Varianti
+
+Contenuto da sviluppare: nella nota originale questa sezione non era presente o era solo una traccia.
 
 ## Errori comuni
 
@@ -45,33 +58,12 @@ summary = df.groupby("region")["amount"].sum()
 - Usare loop Python invece di operazioni vettoriali.
 - Ignorare tipi e valori mancanti.
 
-## Come funziona
-
-Da completare: spiegare il meccanismo principale o il comportamento tecnico.
-
-## API / Sintassi
-
-```text
-Da completare con API o sintassi principale.
-```
-
-## Esempio pratico
-
-```text
-Da completare con un esempio pratico.
-```
-
-## Varianti
-
-- Da completare: varianti, alternative o differenze rispetto ad approcci simili.
-
 ## Checklist
 
-- Da completare: controlli essenziali prima di usare questo concetto in pratica.
+Contenuto da sviluppare: nella nota originale questa sezione non era presente o era solo una traccia.
 
 ## Collegamenti
+
 - [[Programmazione/Python/Pagine/NumPy|NumPy]]
 - [[Programmazione/Python/Pagine/Jupyter|Jupyter]]
 - [[Programmazione/Python/Pagine/Gestione File|Gestione File]]
-
-

@@ -1,5 +1,5 @@
 ---
-date: 2026-05-14
+date: 2026-06-02
 area: Programmazione
 topic: PostgreSQL
 type: technical-note
@@ -10,84 +10,89 @@ aliases: [Comandi psql e Meta-comandi]
 prerequisites: []
 related: []
 ---
+
 # Comandi psql e Meta-comandi
 
 ## Sintesi
 
-Nota su Comandi psql e Meta-comandi in PostgreSQL. Riassume il concetto, i meccanismi principali e i punti da ricordare durante studio, progettazione o amministrazione.
+`psql` e il client CLI principale di PostgreSQL. Oltre a eseguire SQL, offre meta-comandi che iniziano con backslash per esplorare database, tabelle, ruoli, funzioni e configurazione.
 
-## Concetto chiave
-`psql` è l'interfaccia a riga di comando (CLI) interattiva ufficiale per PostgreSQL. Oltre all'esecuzione di query SQL standard, offre una vasta gamma di **meta-comandi** (identificati dal prefisso backslash `\`) che permettono di ispezionare il database, gestire le connessioni e automatizzare script senza dover interrogare direttamente le tabelle di sistema (`information_schema`).
+## Quando usarlo
 
----
+Usalo per ispezione rapida, debugging, restore SQL, amministrazione, test di query e controllo oggetti del database.
 
-##  Meta-comandi di Ispezione
+## Come funziona
 
-Questi comandi sono essenziali per navigare nella struttura del database. Se aggiungi un `+` alla fine (es. `\d+`), otterrai informazioni molto più dettagliate.
+I comandi SQL vengono inviati al server. I meta-comandi `psql` vengono interpretati dal client. Per esempio `\dt` non e SQL: mostra tabelle usando query interne.
 
-| Comando | Descrizione |
-| :--- | :--- |
-| `\l` | Elenca tutti i **database** disponibili nel cluster. |
-| `\c [nome_db]` | Si **connette** a un database specifico. |
-| `\dn` | Elenca tutti gli **schemi**. |
-| `\dt` | Elenca le **tabelle** presenti nello schema corrente. |
-| `\di` | Elenca gli **indici**. |
-| `\df` | Elenca le **funzioni**. |
-| `\dv` | Elenca le **viste**. |
-| `\du` | Elenca gli **utenti** (ruoli) e i loro permessi. |
-| `\d [nome_tabella]` | Mostra la **definizione** della tabella (colonne, tipi, vincoli). |
+## API / Sintassi
 
----
-
-##  Comandi di Gestione e Utility
-
-### 1. `\copy` (Import/Export Client-side)
-A differenza del comando SQL `COPY` (che richiede l'utente superuser e file sul filesystem del server), `\copy` funziona con i permessi dell'utente locale e file residenti sul client.
+Connessione:
 
 ```bash
-# Comandi psql e Meta-comandi
-
-## Sintesi
-
-Nota su Comandi psql e Meta-comandi in PostgreSQL. Riassume il concetto, i meccanismi principali e i punti da ricordare durante studio, progettazione o amministrazione.
-\copy mia_tabella TO 'backup_dati.csv' WITH (FORMAT CSV, HEADER);
-
-# Comandi psql e Meta-comandi
-
-## Sintesi
-
-Nota su Comandi psql e Meta-comandi in PostgreSQL. Riassume il concetto, i meccanismi principali e i punti da ricordare durante studio, progettazione o amministrazione.
-\copy mia_tabella FROM 'nuovi_dati.csv' WITH (FORMAT CSV, HEADER);
+psql -h localhost -p 5432 -U app_user -d app_db
 ```
 
-### 2. `\watch` (Monitoraggio)
-Esegue ripetutamente la query precedente ogni $N$ secondi. Estremamente utile per monitorare processi lunghi o l'occupazione della memoria.
-```sql
-SELECT count(*) FROM sessioni_attive;
-\watch 2
+Meta-comandi utili:
+
+```text
+\l          -- database
+\c dbname   -- cambia database
+\dt         -- tabelle
+\d table    -- descrivi tabella
+\du         -- ruoli
+\dn         -- schemi
+\df         -- funzioni
+\x          -- expanded display
+\timing     -- tempi query
+\q          -- esci
 ```
 
-### 3. `\x` (Expanded Display)
-Attiva o disattiva la visualizzazione estesa. Utile quando le righe hanno molte colonne che non entrano nello schermo (trasforma le colonne in righe verticali).
+## Esempio pratico
 
----
+Analisi rapida:
 
-## Logic layer: Scripting e Output
+```text
+\c app_db
+\dt
+\d orders
+\timing on
+SELECT count(*) FROM orders;
+```
 
-`psql` può essere utilizzato per eseguire script direttamente dal terminale del sistema operativo:
+Output in CSV:
 
-- **Esecuzione file:** `psql -d mio_db -f script.sql`
-- **Singolo comando:** `psql -c "SELECT now();"`
-- **Output pulito:** L'opzione `-t` rimuove le intestazioni delle colonne e i riepiloghi finali, ideale per passare dati a strumenti come `grep` o `awk`.
+```bash
+psql -d app_db -c "SELECT * FROM users" --csv
+```
 
-> [!TIP] Editare query complesse
-> Se stai scrivendo una query molto lunga e complessa, usa il comando `\e`. Si aprirà l'editor di testo predefinito (es. Vim o Nano); salvando e uscendo, la query verrà eseguita immediatamente in psql.
+## Varianti
 
----
+- `psql -c`: esegue un comando.
+- `psql -f`: esegue uno script.
+- `\copy`: copia dati lato client.
+- `COPY`: copia dati lato server.
+- `\watch`: riesegue una query periodicamente.
+- `\gexec`: esegue output generato come SQL.
 
-##  Uscita e Aiuto
-- **`\q`**: Chiude la sessione psql (Quit).
-- **`\?`**: Mostra l'aiuto per tutti i meta-comandi.
-- **`\h [nome_comando]`**: Mostra l'aiuto per un comando SQL specifico (es. `\h SELECT`).
+## Errori comuni
 
----
+- Confondere `\copy` e `COPY`.
+- Incollare comandi distruttivi senza transazione.
+- Non usare `\timing` durante test.
+- Dimenticare database o schema corrente.
+- Esporre password nella shell history.
+
+## Checklist
+
+- Sei connesso al database giusto?
+- L'utente corrente ha i privilegi attesi?
+- Per comandi rischiosi hai aperto una transazione?
+- Output e formato sono adatti allo scopo?
+- La password non finisce in history o log?
+
+## Collegamenti
+
+- [[Programmazione/Postgres/Pagine/SELECT INSERT UPDATE e DELETE|SELECT, INSERT, UPDATE e DELETE]]
+- [[Programmazione/Postgres/Pagine/Gestione Utenti e Ruoli|Gestione Utenti e Ruoli]]
+- [[Programmazione/Postgres/Pagine/Analisi delle Query|Analisi delle Query]]

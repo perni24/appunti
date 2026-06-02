@@ -1,5 +1,5 @@
----
-date: 2026-05-14
+﻿---
+date: 2026-06-02
 area: Programmazione
 topic: React
 type: technical-note
@@ -10,6 +10,7 @@ aliases: [Control Props e State Reducer Pattern]
 prerequisites: []
 related: []
 ---
+
 # Control Props e State Reducer Pattern
 
 ## Sintesi
@@ -25,8 +26,13 @@ Sono particolarmente utili quando stai costruendo componenti riusabili di librer
 
 ---
 
-## 1. Il problema che risolvono
+## Quando usarlo
 
+Contenuto da sviluppare: nella nota originale questa sezione non era presente o era solo una traccia.
+
+## Come funziona
+
+### 1. Il problema che risolvono
 Un componente con stato interno puro e facile da usare:
 
 ```jsx
@@ -42,9 +48,7 @@ ma puo diventare limitante se il chiamante vuole:
 In questi casi servono pattern che spostino parte del controllo dal componente al consumer.
 
 ---
-
-## 2. Control Props Pattern
-
+### 2. Control Props Pattern
 Il **Control Props Pattern** in React segue la stessa logica degli input controllati del DOM.
 
 Esempio nativo:
@@ -84,9 +88,7 @@ Qui il componente puo funzionare in due modi:
 - **controlled**: il valore arriva da fuori tramite prop.
 
 ---
-
-## 3. Come funziona il Control Props Pattern
-
+### 3. Come funziona il Control Props Pattern
 La logica tipica e:
 
 1. controllare se una prop di stato e stata fornita;
@@ -109,22 +111,7 @@ Dal punto di vista architetturale, il controllo del dato passa dal componente fi
 Questo pattern si collega direttamente al tema di [[Programmazione/React/Pagine/Props e Flusso di dati unidirezionale]].
 
 ---
-
-## 4. Limiti del solo Control Props
-
-Il Control Props Pattern funziona bene quando il consumer vuole controllare **il valore**, ma non sempre basta quando serve controllare anche **la logica di transizione dello stato**.
-
-Esempio:
-- un `Toggle` non deve superare un certo numero di cambi;
-- un `Accordion` deve impedire la chiusura dell'ultima sezione;
-- una `Select` deve bloccare certe transizioni.
-
-In questi casi entra in gioco lo **State Reducer Pattern**.
-
----
-
-## 5. State Reducer Pattern
-
+### 5. State Reducer Pattern
 Lo **State Reducer Pattern** permette al consumer di intercettare e modificare la logica di aggiornamento dello stato.
 
 L'idea e:
@@ -170,9 +157,7 @@ function limitedToggleReducer(state, action) {
 ```
 
 ---
-
-## 6. Relazione con `useReducer`
-
+### 6. Relazione con `useReducer`
 Lo State Reducer Pattern si appoggia molto bene a [[Programmazione/React/Pagine/useReducer]], perche separa chiaramente:
 - stato;
 - azioni;
@@ -186,9 +171,7 @@ Questo rende il componente:
 In pratica, il reducer interno diventa il punto di estensione dell'API.
 
 ---
-
-## 7. Control Props vs State Reducer
-
+### 7. Control Props vs State Reducer
 | Pattern | Cosa controlla il consumer | Quando usarlo |
 | :--- | :--- | :--- |
 | **Control Props** | Il valore dello stato | Quando basta controllare il dato finale |
@@ -198,8 +181,13 @@ Molto spesso i due pattern convivono nello stesso componente.
 
 ---
 
-## 8. Esempio combinato
+## API / Sintassi
 
+Contenuto da sviluppare: nella nota originale questa sezione non era presente o era solo una traccia.
+
+## Esempio pratico
+
+### 8. Esempio combinato
 Un componente piu avanzato puo:
 - supportare `isOn` e `onChange` per essere controlled;
 - usare un reducer custom per modificare la logica interna quando non e totalmente controllato.
@@ -210,8 +198,20 @@ Per questo conviene usarlo solo su componenti davvero riusabili o destinati a ca
 
 ---
 
-## 9. Tradeoff e complessita
+## Varianti
 
+### 4. Limiti del solo Control Props
+Il Control Props Pattern funziona bene quando il consumer vuole controllare **il valore**, ma non sempre basta quando serve controllare anche **la logica di transizione dello stato**.
+
+Esempio:
+- un `Toggle` non deve superare un certo numero di cambi;
+- un `Accordion` deve impedire la chiusura dell'ultima sezione;
+- una `Select` deve bloccare certe transizioni.
+
+In questi casi entra in gioco lo **State Reducer Pattern**.
+
+---
+### 9. Tradeoff e complessita
 Questi pattern sono molto utili, ma non sono gratuiti.
 
 ### Vantaggi
@@ -231,8 +231,13 @@ Questi pattern sono molto utili, ma non sono gratuiti.
 
 ---
 
-## 10. Best Practices
+## Errori comuni
 
+Contenuto da sviluppare: nella nota originale questa sezione non era presente o era solo una traccia.
+
+## Checklist
+
+### 10. Best Practices
 1. **Supporta control props solo se il caso d'uso e reale:** non aggiungere complessita "preventiva".
 2. **Mantieni coerente il comportamento controlled/uncontrolled:** i due modi d'uso non devono entrare in conflitto.
 3. **Esplicita bene le callback:** il consumer deve capire quando e con quali dati viene notificato un cambiamento.
@@ -241,3 +246,7 @@ Questi pattern sono molto utili, ma non sono gratuiti.
 6. **Combina questi pattern con criterio:** insieme sono potenti, ma aumentano il carico cognitivo dell'API.
 
 ---
+
+## Collegamenti
+
+- [[Programmazione/React/Indice react|Indice React]]

@@ -1,5 +1,5 @@
-﻿---
-date: 2026-05-20
+---
+date: 2026-06-02
 area: Programmazione
 topic: Postgres
 type: technical-note
@@ -8,7 +8,6 @@ difficulty:
 tags:
   - programmazione
   - postgres
-  - sql
   - views
 aliases: []
 prerequisites: []
@@ -19,9 +18,17 @@ related: []
 
 ## Sintesi
 
-Una **view** salva una query come oggetto logico. Una **materialized view** salva fisicamente il risultato e va aggiornata esplicitamente.
+Una view e una query salvata. Una materialized view salva fisicamente il risultato e deve essere aggiornata con `REFRESH MATERIALIZED VIEW`.
 
-## View
+## Quando usarlo
+
+Usa view per semplificare query, creare astrazioni, limitare colonne esposte o stabilizzare interfacce SQL. Usa materialized view per report costosi da precomputare.
+
+## Come funziona
+
+La view normale non contiene dati: ogni accesso riesegue la query. La materialized view contiene dati e puo essere indicizzata, ma puo diventare stale.
+
+## API / Sintassi
 
 ```sql
 CREATE VIEW active_users AS
@@ -30,58 +37,59 @@ FROM users
 WHERE active = true;
 ```
 
-La view non materializza dati: viene risolta quando la interroghi.
-
-## Materialized view
+Materialized view:
 
 ```sql
 CREATE MATERIALIZED VIEW monthly_sales AS
-SELECT date_trunc('month', created_at) AS month, sum(total) AS total
+SELECT date_trunc('month', created_at) AS month, sum(total_amount) AS total
 FROM orders
-GROUP BY 1;
+GROUP BY date_trunc('month', created_at);
 ```
+
+Refresh:
 
 ```sql
 REFRESH MATERIALIZED VIEW monthly_sales;
 ```
 
-## Errori comuni
-
-- Pensare che una view migliori automaticamente le performance.
-- Dimenticare refresh e concorrenza sulle materialized view.
-- Nascondere query troppo complesse dietro molte view annidate.
-
-## Quando usarlo
-
-- Da completare: indicare scenari pratici in cui questa nota e utile.
-
-## Come funziona
-
-Da completare: spiegare il meccanismo principale o il comportamento tecnico.
-
-## API / Sintassi
-
-```text
-Da completare con API o sintassi principale.
-```
-
 ## Esempio pratico
 
-```text
-Da completare con un esempio pratico.
+Refresh concorrente:
+
+```sql
+CREATE UNIQUE INDEX monthly_sales_month_idx ON monthly_sales (month);
+REFRESH MATERIALIZED VIEW CONCURRENTLY monthly_sales;
 ```
+
+Serve un indice unico per il refresh concorrente.
 
 ## Varianti
 
-- Da completare: varianti, alternative o differenze rispetto ad approcci simili.
+- View semplice.
+- View updatable.
+- View con `security_barrier`.
+- Materialized view.
+- Refresh concorrente.
+- Indici su materialized view.
+
+## Errori comuni
+
+- Pensare che una view migliori automaticamente performance.
+- Dimenticare refresh delle materialized view.
+- Usare materialized view per dati che devono essere sempre freschi.
+- Non indicizzare materialized view.
+- Esporre piu colonne del necessario.
 
 ## Checklist
 
-- Da completare: controlli essenziali prima di usare questo concetto in pratica.
+- Serve astrazione o caching?
+- La freschezza dei dati e accettabile?
+- Esiste una procedura di refresh?
+- La materialized view ha indici adeguati?
+- I permessi sono assegnati alla view, non alle tabelle se serve?
 
 ## Collegamenti
-- [[Programmazione/Postgres/Pagine/Aggregazioni e GROUP BY|Aggregazioni e GROUP BY]]
+
+- [[Programmazione/Postgres/Pagine/Common Table Expressions e Recursive Queries|Common Table Expressions e Recursive Queries]]
 - [[Programmazione/Postgres/Pagine/Analisi delle Query|Analisi delle Query]]
-- [[Programmazione/Postgres/Pagine/Indici Parziali e Coprenti|Indici Parziali e Coprenti]]
-
-
+- [[Programmazione/Postgres/Pagine/Ruoli e privilegi avanzati|Ruoli e privilegi avanzati]]

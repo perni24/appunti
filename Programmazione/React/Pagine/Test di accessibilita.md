@@ -1,5 +1,5 @@
----
-date: 2026-05-14
+﻿---
+date: 2026-06-02
 area: Programmazione
 topic: React
 type: technical-note
@@ -10,6 +10,7 @@ aliases: [Test di accessibilita]
 prerequisites: []
 related: []
 ---
+
 # Test di accessibilita
 
 ## Sintesi
@@ -25,8 +26,13 @@ In React questo tema e importante perche componenti dinamici, custom UI e render
 
 ---
 
-## 1. Perche testare l'accessibilita
+## Quando usarlo
 
+Contenuto da sviluppare: nella nota originale questa sezione non era presente o era solo una traccia.
+
+## Come funziona
+
+### 1. Perche testare l'accessibilita
 Un componente puo sembrare corretto visivamente e restare comunque problematico:
 - focus invisibile;
 - ordine di tab sbagliato;
@@ -40,9 +46,7 @@ Molti di questi problemi non emergono subito durante lo sviluppo normale, soprat
 Per questo l'accessibilita va trattata come una qualita verificabile, non come un'intenzione.
 
 ---
-
-## 2. Test automatici vs test manuali
-
+### 2. Test automatici vs test manuali
 I test di accessibilita si dividono in due famiglie principali.
 
 ### Test automatici
@@ -63,9 +67,7 @@ Servono a verificare il comportamento reale:
 I test automatici sono utili, ma non bastano da soli.
 
 ---
-
-## 3. Cosa non riescono a vedere i tool automatici
-
+### 3. Cosa non riescono a vedere i tool automatici
 Un tool puo dirti che esiste `aria-label`, ma non sempre puo dirti se:
 - il testo e davvero chiaro;
 - il focus si sposta nel punto giusto;
@@ -76,9 +78,7 @@ Un tool puo dirti che esiste `aria-label`, ma non sempre puo dirti se:
 Quindi l'accessibilita non si riduce a "zero warning nel report".
 
 ---
-
-## 4. Axe
-
+### 4. Axe
 **Axe** e uno degli strumenti piu usati per il testing di accessibilita nel frontend.
 
 Puo essere usato:
@@ -96,9 +96,7 @@ Axe e molto utile per trovare problemi frequenti come:
 Nel contesto React e particolarmente utile per intercettare regressioni su componenti dinamici.
 
 ---
-
-## 5. Lighthouse
-
+### 5. Lighthouse
 **Lighthouse** e uno strumento integrato nell'ecosistema Chrome che fornisce audit su vari aspetti, tra cui accessibilita.
 
 Per la parte a11y puo segnalare:
@@ -116,9 +114,7 @@ Limite:
 - non sostituisce test mirati su componenti complessi.
 
 ---
-
-## 6. Tastiera come primo test manuale
-
+### 6. Tastiera come primo test manuale
 Uno dei test manuali piu semplici e potenti e usare solo la tastiera.
 
 Controlli pratici:
@@ -134,9 +130,7 @@ Questo si collega direttamente a [[Programmazione/React/Pagine/Focus Management]
 Se una UI non e usabile con la tastiera, c'e gia un problema reale.
 
 ---
-
-## 7. Screen reader e test reali
-
+### 7. Screen reader e test reali
 Per componenti importanti, conviene testare anche con screen reader.
 
 Obiettivi:
@@ -155,9 +149,7 @@ Qui diventano rilevanti:
 Non serve testare ogni schermata in modo estremo ogni volta, ma i componenti fondamentali dovrebbero essere verificati anche da questo punto di vista.
 
 ---
-
-## 8. Test nei form
-
+### 8. Test nei form
 I form sono uno dei punti dove i problemi di accessibilita emergono piu spesso.
 
 Controlli utili:
@@ -172,9 +164,7 @@ Questo si collega a [[Programmazione/React/Pagine/Gestione Moduli]] e [[Programm
 Un form puo essere corretto sul piano funzionale e restare comunque molto difficile da usare per utenti assistive tech.
 
 ---
-
-## 9. Test nei componenti custom
-
+### 9. Test nei componenti custom
 Componenti come:
 - modal;
 - menu;
@@ -195,9 +185,7 @@ Qui non basta controllare il markup statico. Bisogna testare:
 Questo e il punto in cui i test automatici e quelli manuali devono lavorare insieme.
 
 ---
-
-## 10. Accessibilita come parte dei test UI
-
+### 10. Accessibilita come parte dei test UI
 L'accessibilita va trattata come parte della qualita dell'interfaccia, non come controllo isolato a fine progetto.
 
 Strategie utili:
@@ -209,9 +197,32 @@ Strategie utili:
 Se aspetti la fine del progetto, correggere i problemi costa di piu.
 
 ---
+### 12. Relazione con React
+I test di accessibilita si collegano bene a:
+- [[Programmazione/React/Pagine/WAI-ARIA]] per verificare ruoli, stati e naming;
+- [[Programmazione/React/Pagine/Focus Management]] per tastiera e overlay;
+- [[Programmazione/React/Pagine/Gestione Moduli]] per label, errori e submit;
+- testing UI piu ampio con strumenti automatici e manuali.
 
-## 11. Errori comuni
+In React il rischio principale e che stato, rendering dinamico e componenti custom introducano regressioni invisibili se non verificate esplicitamente.
 
+---
+
+## API / Sintassi
+
+Contenuto da sviluppare: nella nota originale questa sezione non era presente o era solo una traccia.
+
+## Esempio pratico
+
+Contenuto da sviluppare: nella nota originale questa sezione non era presente o era solo una traccia.
+
+## Varianti
+
+Contenuto da sviluppare: nella nota originale questa sezione non era presente o era solo una traccia.
+
+## Errori comuni
+
+### 11. Errori comuni
 Errori frequenti:
 - fidarsi solo del punteggio Lighthouse;
 - pensare che zero warning automatici significhi UI accessibile;
@@ -224,20 +235,9 @@ Il problema non e solo "quale attributo manca", ma se l'interazione completa e d
 
 ---
 
-## 12. Relazione con React
+## Checklist
 
-I test di accessibilita si collegano bene a:
-- [[Programmazione/React/Pagine/WAI-ARIA]] per verificare ruoli, stati e naming;
-- [[Programmazione/React/Pagine/Focus Management]] per tastiera e overlay;
-- [[Programmazione/React/Pagine/Gestione Moduli]] per label, errori e submit;
-- testing UI piu ampio con strumenti automatici e manuali.
-
-In React il rischio principale e che stato, rendering dinamico e componenti custom introducano regressioni invisibili se non verificate esplicitamente.
-
----
-
-## 13. Best Practices
-
+### 13. Best Practices
 1. **Combina sempre test automatici e manuali:** nessuno dei due basta da solo.
 2. **Usa la tastiera come controllo minimo obbligatorio:** e il test manuale piu economico e piu utile.
 3. **Usa Axe per intercettare problemi frequenti in modo ripetibile:** e molto utile per componenti React e regressioni.
@@ -246,3 +246,7 @@ In React il rischio principale e che stato, rendering dinamico e componenti cust
 6. **Tratta l'accessibilita come parte del testing continuo dell'interfaccia:** non come controllo finale opzionale.
 
 ---
+
+## Collegamenti
+
+- [[Programmazione/React/Indice react|Indice React]]

@@ -1,5 +1,5 @@
 ---
-date: 2026-05-14
+date: 2026-06-02
 area: Programmazione
 topic: PostgreSQL
 type: technical-note
@@ -10,60 +10,103 @@ aliases: [Failover e Load Balancing]
 prerequisites: []
 related: []
 ---
+
 # Failover e Load Balancing in PostgreSQL
 
 ## Sintesi
 
-Nota su Failover e Load Balancing in PostgreSQL. Riassume il concetto, i meccanismi principali e i punti da ricordare durante studio, progettazione o amministrazione.
+Il **failover** promuove una replica a primario quando il primario fallisce. Il **load balancing** distribuisce traffico, di solito letture, tra piu nodi. In PostgreSQL richiedono replica, monitoring e routing affidabile.
 
-Per garantire la continuità del servizio e la scalabilità, un cluster PostgreSQL deve gestire correttamente i guasti (**Failover**) e distribuire il carico di lavoro (**Load Balancing**).
+## Quando usarlo
 
-## Concetto chiave
-Mentre la [[Programmazione/Postgres/Pagine/Replicazione Fisica|Replicazione]] sposta i dati, il **Failover** e il **Load Balancing** gestiscono il traffico dei client. Il Failover assicura che un database sia sempre disponibile per le scritture, mentre il Load Balancing ottimizza l'uso delle risorse distribuendo le letture.
+Usalo quando servono:
 
----
+- alta disponibilita;
+- riduzione del downtime;
+- distribuzione delle letture;
+- manutenzione con interruzioni minime;
+- replica geografica;
+- routing automatico verso il primario corrente.
 
-##  Failover (Alta Affidabilità)
+## Come funziona
 
-Il failover è il processo di promozione di un server Standby a Primario quando il Primario originale fallisce.
+La replica mantiene uno o piu standby aggiornati. Il sistema di HA monitora il primario e, se necessario, promuove uno standby. Il routing deve poi indirizzare le scritture al nuovo primario.
 
-### 1. Failover Manuale
-L'amministratore rileva il guasto e promuove lo standby (es. tramite `pg_ctl promote`). Rischi: tempi di inattività lunghi e errore umano.
+Il load balancing in PostgreSQL e quasi sempre read-oriented: le scritture devono andare al primario, mentre query read-only possono andare alle repliche se l'applicazione tollera dati leggermente in ritardo.
 
-### 2. Failover Automatico (HA Solutions)
-Strumenti che monitorano costantemente il cluster e intervengono senza l'intervento umano:
-- **Patroni:** Lo standard de facto. Usa un archivio di configurazione distribuito (come **etcd** o **Consul**) per gestire l'elezione del leader e prevenire lo "Split Brain" (due primari contemporaneamente).
-- **repmgr:** Un set di strumenti più classico per la gestione dei cluster e del failover.
+Strumenti comuni includono Patroni, repmgr, HAProxy, PgBouncer, pgcat e meccanismi di service discovery.
 
----
+## API / Sintassi
 
-##  Load Balancing (Bilanciamento del Carico)
+Promozione manuale:
 
-Poiché il Primario è l'unico che può gestire le scritture, il bilanciamento si concentra sulla distribuzione delle `SELECT` sulle repliche.
+```bash
+pg_ctl promote -D /var/lib/postgresql/data
+```
 
-### Strategie di Bilanciamento
-1.  **Read/Write Splitting a livello Applicativo:** L'applicazione usa due stringhe di connessione diverse: una per il Primario (Write) e una per il bilanciatore delle repliche (Read).
-2.  **Proxy Layer (es. HAProxy):** Un proxy riceve tutto il traffico e lo smista in base a regole predefinite o allo stato dei server (health checks).
-3.  **Connection Poolers Avanzati (es. pgcat):** Possono identificare automaticamente se una query è di sola lettura e inviarla a una replica.
+Oppure via SQL su standby:
 
----
+```sql
+SELECT pg_promote();
+```
 
-##  Indirizzamento del Traffico
+Controllare se un nodo e in recovery:
 
-Quando avviene un failover, i client devono sapere dove si trova il nuovo Primario.
-- **Virtual IP (VIP):** Un indirizzo IP che "salta" dal vecchio al nuovo primario tramite strumenti come `Keepalived`.
-- **DNS Dinamico:** Il record DNS del primario viene aggiornato per puntare al nuovo server.
-- **Service Discovery:** L'applicazione interroga `etcd` o `Consul` per conoscere l'IP del leader attuale.
+```sql
+SELECT pg_is_in_recovery();
+```
 
----
+Misurare lag su replica:
 
-## Logic layer: La gerarchia dell'HA
+```sql
+SELECT now() - pg_last_xact_replay_timestamp() AS replica_lag;
+```
 
-> [!INFO] Workflow di un sistema resiliente
-> 1.  **Replicazione:** Mantiene i dati sincronizzati su più nodi.
-> 2.  **Monitoring:** Rileva se il Primario è "vivo".
-> 3.  **Failover Logic:** Elegge un nuovo leader se necessario.
-> 4.  **Routing Layer:** Reindirizza i client sul nuovo leader in modo trasparente.
+## Esempio pratico
 
----
-[[Programmazione/Postgres/Indice postgres|Torna all'Indice Postgres]]
+Schema tipico:
+
+```text
+app -> HAProxy/PgBouncer -> primary
+                       \-> read replica 1
+                       \-> read replica 2
+```
+
+L'applicazione puo usare due endpoint:
+
+- endpoint write: sempre verso il primario corrente;
+- endpoint read: verso repliche, con controllo del lag.
+
+## Varianti
+
+- Failover manuale.
+- Failover automatico con Patroni o repmgr.
+- Virtual IP.
+- DNS dinamico.
+- Service discovery con etcd/Consul.
+- Read/write split applicativo.
+- Proxy layer con health check.
+
+## Errori comuni
+
+- Non prevenire split brain.
+- Promuovere una replica troppo indietro senza valutare perdita dati.
+- Non aggiornare routing dopo failover.
+- Mandare scritture a repliche read-only.
+- Ignorare replica lag nelle letture.
+- Non testare failover periodicamente.
+
+## Checklist
+
+- Esiste un solo primario alla volta?
+- Il failover e testato?
+- Il routing viene aggiornato automaticamente?
+- Le app distinguono letture e scritture?
+- Il lag delle repliche e monitorato?
+- Esiste una procedura per reintegrare il vecchio primario?
+
+## Collegamenti
+
+- [[Programmazione/Postgres/Pagine/Replicazione Fisica|Replicazione Fisica]]
+- [[Programmazione/Postgres/Pagine/Read replicas|Read replicas]]
+- [[Programmazione/Postgres/Pagine/Connection Pooling|Connection Pooling]]

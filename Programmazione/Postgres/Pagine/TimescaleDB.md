@@ -1,5 +1,5 @@
-﻿---
-date: 2026-05-20
+---
+date: 2026-06-02
 area: Programmazione
 topic: Postgres
 type: technical-note
@@ -8,7 +8,6 @@ difficulty:
 tags:
   - programmazione
   - postgres
-  - estensioni
   - timeseries
 aliases: []
 prerequisites: []
@@ -19,62 +18,73 @@ related: []
 
 ## Sintesi
 
-**TimescaleDB** e un'estensione PostgreSQL orientata a dati time-series, come metriche, eventi, sensori e osservabilita.
-
-## Concetto chiave
-
-TimescaleDB introduce hypertable, compressione e funzioni dedicate per interrogare grandi volumi ordinati nel tempo.
-
-## Quando usarla
-
-- Metriche applicative.
-- IoT e sensori.
-- Eventi temporali ad alto volume.
-- Aggregazioni periodiche.
-
-## Concetti importanti
-
-- Hypertable.
-- Chunk.
-- Continuous aggregates.
-- Compressione.
-- Retention policy.
+TimescaleDB e un'estensione PostgreSQL orientata a dati time-series. Aggiunge hypertable, compressione, continuous aggregates e funzioni utili per metriche/eventi temporali.
 
 ## Quando usarlo
 
-- Da completare: indicare scenari pratici in cui questa nota e utile.
+Usala per metriche, IoT, eventi temporali, osservabilita, prezzi storici o dati append-only con query per intervallo di tempo.
 
 ## Come funziona
 
-Da completare: spiegare il meccanismo principale o il comportamento tecnico.
+Una hypertable divide automaticamente i dati in chunk temporali. Le query restano SQL, ma TimescaleDB gestisce partizionamento temporale e ottimizzazioni.
 
 ## API / Sintassi
 
-```text
-Da completare con API o sintassi principale.
+```sql
+CREATE EXTENSION IF NOT EXISTS timescaledb;
+
+SELECT create_hypertable('metrics', 'time');
+```
+
+Tabella:
+
+```sql
+CREATE TABLE metrics (
+  time timestamptz NOT NULL,
+  device_id text NOT NULL,
+  value double precision NOT NULL
+);
 ```
 
 ## Esempio pratico
 
-```text
-Da completare con un esempio pratico.
+Aggregazione temporale:
+
+```sql
+SELECT time_bucket('1 hour', time) AS bucket, avg(value)
+FROM metrics
+WHERE time >= now() - interval '7 days'
+GROUP BY bucket
+ORDER BY bucket;
 ```
 
 ## Varianti
 
-- Da completare: varianti, alternative o differenze rispetto ad approcci simili.
+- Hypertable.
+- Chunk temporali.
+- Compressione.
+- Retention policy.
+- Continuous aggregates.
+- Time bucket.
 
 ## Errori comuni
 
-Da completare durante revisione.
+- Usarlo per dati non temporali.
+- Non definire bene chunk interval.
+- Ignorare retention e compressione.
+- Trattarlo come sostituto di ogni partizionamento.
+- Non verificare supporto nel provider usato.
 
 ## Checklist
 
-- Da completare: controlli essenziali prima di usare questo concetto in pratica.
+- I dati sono davvero time-series?
+- Le query filtrano per tempo?
+- Retention e compressione sono definite?
+- Il provider supporta TimescaleDB?
+- Gli indici includono tempo e dimensioni principali?
 
 ## Collegamenti
-- [[Programmazione/Postgres/Pagine/Gestione delle Estensioni|Gestione delle Estensioni]]
+
 - [[Programmazione/Postgres/Pagine/Partitioning|Partitioning]]
+- [[Programmazione/Postgres/Pagine/Gestione delle Estensioni|Gestione delle Estensioni]]
 - [[Programmazione/Postgres/Pagine/Metriche e alerting|Metriche e alerting]]
-
-

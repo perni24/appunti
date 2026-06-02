@@ -1,5 +1,5 @@
----
-date: 2026-05-14
+﻿---
+date: 2026-06-02
 area: Programmazione
 topic: React
 type: technical-note
@@ -10,6 +10,7 @@ aliases: [CSRF]
 prerequisites: []
 related: []
 ---
+
 # CSRF
 
 ## Sintesi
@@ -25,8 +26,13 @@ Il punto chiave e che il browser puo allegare automaticamente credenziali valide
 
 ---
 
-## 1. Come funziona l'attacco
+## Quando usarlo
 
+Contenuto da sviluppare: nella nota originale questa sezione non era presente o era solo una traccia.
+
+## Come funziona
+
+### 1. Come funziona l'attacco
 Scenario tipico:
 - l'utente e autenticato su `app.example.com`;
 - il browser conserva cookie validi per quel dominio;
@@ -44,9 +50,7 @@ Se il server accetta quella richiesta solo perche il cookie e valido, l'azione p
 Il browser, dal punto di vista tecnico, non sta "barando": sta solo inviando cookie associati al dominio target.
 
 ---
-
-## 2. Quando il rischio e alto
-
+### 2. Quando il rischio e alto
 La CSRF e particolarmente rilevante quando l'autenticazione usa:
 - cookie di sessione;
 - cookie `HttpOnly`;
@@ -57,9 +61,7 @@ Il rischio e invece diverso quando l'autenticazione usa token esplicitamente inv
 Questa e una delle ragioni per cui la CSRF si collega strettamente a [[Programmazione/React/Pagine/Gestione Autenticazione]].
 
 ---
-
-## 3. CSRF vs XSS
-
+### 3. CSRF vs XSS
 CSRF e XSS sono problemi diversi.
 
 ### CSRF
@@ -75,9 +77,7 @@ Differenza pratica:
 Si collegano, ma non vanno confusi. Una buona nota di riferimento qui e [[Programmazione/React/Pagine/Protezione XSS]].
 
 ---
-
-## 4. Perche il frontend da solo non basta
-
+### 4. Perche il frontend da solo non basta
 Il frontend React puo contribuire alla difesa, ma la mitigazione reale della CSRF e soprattutto un problema di backend e configurazione HTTP.
 
 Il motivo e semplice:
@@ -93,9 +93,7 @@ Il frontend puo:
 Ma il controllo reale resta lato server.
 
 ---
-
-## 5. SameSite cookies
-
+### 5. SameSite cookies
 Una difesa molto importante e l'attributo `SameSite` dei cookie.
 
 Valori tipici:
@@ -114,9 +112,7 @@ In molti casi moderni, `SameSite=Lax` o `SameSite=Strict` abbassano molto il ris
 > `SameSite` aiuta molto, ma non sostituisce una strategia completa se l'applicazione espone operazioni sensibili o usa configurazioni cross-site particolari.
 
 ---
-
-## 6. CSRF token
-
+### 6. CSRF token
 Una strategia classica e usare un **CSRF token**.
 
 L'idea e questa:
@@ -136,9 +132,7 @@ X-CSRF-Token: abc123
 Il browser puo inviare automaticamente il cookie, ma non puo inventare correttamente anche il token protettivo senza passare dal flusso previsto.
 
 ---
-
-## 7. Double Submit Cookie e strategie simili
-
+### 7. Double Submit Cookie e strategie simili
 Un pattern comune e il **double submit cookie**:
 - il server invia un cookie con valore anti-CSRF;
 - il frontend legge o riceve quel valore in modo consentito;
@@ -150,9 +144,7 @@ Esistono varianti architetturali, ma il principio resta simile:
 - richiedi anche una prova aggiuntiva che la richiesta arrivi dal flusso applicativo legittimo.
 
 ---
-
-## 8. Request methods e rischio reale
-
+### 8. Request methods e rischio reale
 In generale:
 - richieste `GET` dovrebbero essere sicure e non cambiare stato;
 - richieste `POST`, `PUT`, `PATCH`, `DELETE` sono le piu sensibili per CSRF.
@@ -162,9 +154,7 @@ Se un endpoint muta stato via `GET`, stai gia creando un problema di design HTTP
 Quindi una parte della difesa consiste anche nel rispettare correttamente la semantica delle API.
 
 ---
-
-## 9. Fetch, credenziali e frontend React
-
+### 9. Fetch, credenziali e frontend React
 Nel frontend React, una richiesta autenticata cookie-based puo apparire cosi:
 
 ```javascript
@@ -185,9 +175,7 @@ Il punto importante e capire che:
 - il frontend deve seguire il protocollo di sicurezza previsto dal server.
 
 ---
-
-## 10. HttpOnly cookies e CSRF
-
+### 10. HttpOnly cookies e CSRF
 I cookie `HttpOnly` migliorano la difesa contro il furto via JavaScript in molti scenari XSS, ma non eliminano automaticamente la CSRF.
 
 Anzi, proprio perche il browser li invia da solo, il tema CSRF resta molto rilevante nelle architetture cookie-based.
@@ -199,9 +187,7 @@ Quindi:
 Sono difese complementari, non alternative.
 
 ---
-
-## 11. Controlli lato server utili
-
+### 11. Controlli lato server utili
 Oltre ai token CSRF, il server puo controllare:
 - header `Origin`;
 - header `Referer` in alcuni contesti;
@@ -213,8 +199,21 @@ Il frontend non deve implementare tutta questa logica, ma deve sapere che la dif
 
 ---
 
-## 12. Errori comuni
+## API / Sintassi
 
+Contenuto da sviluppare: nella nota originale questa sezione non era presente o era solo una traccia.
+
+## Esempio pratico
+
+Contenuto da sviluppare: nella nota originale questa sezione non era presente o era solo una traccia.
+
+## Varianti
+
+Contenuto da sviluppare: nella nota originale questa sezione non era presente o era solo una traccia.
+
+## Errori comuni
+
+### 12. Errori comuni
 Errori frequenti:
 - pensare che `HttpOnly` risolva da solo la CSRF;
 - non usare `SameSite` quando l'architettura lo permetterebbe;
@@ -227,8 +226,9 @@ Questi errori spesso nascono da una comprensione incompleta del comportamento au
 
 ---
 
-## 13. Best Practices
+## Checklist
 
+### 13. Best Practices
 1. **Considera la CSRF soprattutto quando usi autenticazione cookie-based:** li il browser allega credenziali automaticamente.
 2. **Usa `SameSite` in modo corretto:** e una difesa semplice ma molto utile.
 3. **Aggiungi token anti-CSRF o strategia equivalente per azioni sensibili:** il solo cookie di sessione non basta.
@@ -237,3 +237,7 @@ Questi errori spesso nascono da una comprensione incompleta del comportamento au
 6. **Ricorda che la verifica finale e sempre lato server:** React puo partecipare al flusso, ma non fare enforcement autonomo della sicurezza.
 
 ---
+
+## Collegamenti
+
+- [[Programmazione/React/Indice react|Indice React]]

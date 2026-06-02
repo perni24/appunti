@@ -1,5 +1,5 @@
----
-date: 2026-05-14
+﻿---
+date: 2026-06-02
 area: Programmazione
 topic: React
 type: technical-note
@@ -10,6 +10,7 @@ aliases: [Testing Cypress e Playwright]
 prerequisites: []
 related: []
 ---
+
 # Testing Cypress e Playwright
 
 ## Sintesi
@@ -25,8 +26,13 @@ Nel frontend React, gli strumenti piu usati per questo tipo di test sono **Cypre
 
 ---
 
-## 1. Cosa significa E2E
+## Quando usarlo
 
+Contenuto da sviluppare: nella nota originale questa sezione non era presente o era solo una traccia.
+
+## Come funziona
+
+### 1. Cosa significa E2E
 Un test E2E simula un utente che usa l'applicazione nel browser.
 
 Esempi:
@@ -42,9 +48,7 @@ Rispetto a [[Programmazione/React/Pagine/Testing Jest]], il livello e piu alto:
 - E2E testa flussi completi e integrazione tra parti.
 
 ---
-
-## 2. Perche servono
-
+### 2. Perche servono
 I test E2E sono utili per intercettare problemi che i test unitari non vedono:
 - routing rotto;
 - form collegati male alle API;
@@ -56,9 +60,7 @@ I test E2E sono utili per intercettare problemi che i test unitari non vedono:
 Un componente puo passare tutti i test unitari ma fallire nel flusso completo dell'app.
 
 ---
-
-## 3. Cosa testare con E2E
-
+### 3. Cosa testare con E2E
 Conviene usare E2E per i flussi critici:
 - login e logout;
 - registrazione;
@@ -72,9 +74,7 @@ Conviene usare E2E per i flussi critici:
 Non conviene usare E2E per ogni dettaglio piccolo, perche sono test piu costosi da mantenere.
 
 ---
-
-## 4. Cypress
-
+### 4. Cypress
 **Cypress** e uno strumento molto diffuso per test E2E e component testing.
 
 Punti forti:
@@ -104,9 +104,7 @@ describe("Login", () => {
 L'approccio migliore resta orientato all'utente: label, ruoli e testo visibile sono preferibili a selettori fragili.
 
 ---
-
-## 5. Playwright
-
+### 5. Playwright
 **Playwright** e uno strumento moderno per test E2E multi-browser.
 
 Punti forti:
@@ -137,9 +135,7 @@ test("login con credenziali valide", async ({ page }) => {
 Anche qui il test lavora sul comportamento osservabile, non sui dettagli interni React.
 
 ---
-
-## 6. Cypress vs Playwright
-
+### 6. Cypress vs Playwright
 | Caratteristica | Cypress | Playwright |
 | :--- | :--- | :--- |
 | **Developer experience locale** | Molto forte | Molto buona |
@@ -153,9 +149,7 @@ La scelta dipende dal progetto:
 - Playwright e spesso preferito per test cross-browser e pipeline CI robuste.
 
 ---
-
-## 7. Selettori robusti
-
+### 7. Selettori robusti
 Un test E2E fragile spesso fallisce per motivi non importanti.
 
 Selettori fragili:
@@ -182,29 +176,7 @@ Regola pratica:
 - evita classi CSS e struttura DOM interna.
 
 ---
-
-## 8. Gestione delle API nei test E2E
-
-I test E2E possono usare strategie diverse:
-- backend reale in ambiente di test;
-- API mockate;
-- intercept delle request;
-- fixture controllate.
-
-La scelta dipende dallo scopo del test.
-
-### Backend reale
-Piu vicino alla produzione, ma piu lento e fragile.
-
-### Mock o intercept
-Piu controllabile e veloce, ma meno end-to-end in senso stretto.
-
-Non esiste una sola risposta corretta. L'importante e sapere cosa stai validando.
-
----
-
-## 9. Autenticazione nei test
-
+### 9. Autenticazione nei test
 Testare il login completo e utile, ma non va ripetuto in ogni scenario.
 
 Strategie comuni:
@@ -217,9 +189,7 @@ Questo evita test lenti e ripetitivi.
 Si collega a [[Programmazione/React/Pagine/Gestione Autenticazione]] e [[Programmazione/React/Pagine/React Router]], soprattutto per route protette.
 
 ---
-
-## 10. Flakiness
-
+### 10. Flakiness
 La **flakiness** e uno dei problemi principali dei test E2E: un test passa a volte e fallisce altre senza cambi reali nel codice.
 
 Cause comuni:
@@ -243,9 +213,7 @@ await expect(page.getByText("Salvato")).toBeVisible();
 ```
 
 ---
-
-## 11. E2E e accessibilita
-
+### 11. E2E e accessibilita
 I test E2E possono aiutare anche sull'accessibilita:
 - navigazione da tastiera;
 - focus dopo apertura modal;
@@ -257,9 +225,7 @@ Non sostituiscono [[Programmazione/React/Pagine/Test di accessibilita]], ma poss
 Quando i test usano `getByRole` e `getByLabel`, spingono anche il markup verso scelte piu accessibili.
 
 ---
-
-## 12. Quando non usare E2E
-
+### 12. Quando non usare E2E
 Non tutto va testato end-to-end.
 
 Evita E2E per:
@@ -272,9 +238,7 @@ Evita E2E per:
 Per questi casi, [[Programmazione/React/Pagine/Testing Jest]] o test di componente sono spesso piu economici e manutenibili.
 
 ---
-
-## 13. Piramide dei test
-
+### 13. Piramide dei test
 Una strategia sana di test frontend di solito combina:
 - molti unit/component test;
 - alcuni integration test;
@@ -290,8 +254,42 @@ Per questo vanno usati sui percorsi che proteggono davvero il prodotto.
 
 ---
 
-## 14. Best Practices
+## API / Sintassi
 
+### 8. Gestione delle API nei test E2E
+I test E2E possono usare strategie diverse:
+- backend reale in ambiente di test;
+- API mockate;
+- intercept delle request;
+- fixture controllate.
+
+La scelta dipende dallo scopo del test.
+
+### Backend reale
+Piu vicino alla produzione, ma piu lento e fragile.
+
+### Mock o intercept
+Piu controllabile e veloce, ma meno end-to-end in senso stretto.
+
+Non esiste una sola risposta corretta. L'importante e sapere cosa stai validando.
+
+---
+
+## Esempio pratico
+
+Contenuto da sviluppare: nella nota originale questa sezione non era presente o era solo una traccia.
+
+## Varianti
+
+Contenuto da sviluppare: nella nota originale questa sezione non era presente o era solo una traccia.
+
+## Errori comuni
+
+Contenuto da sviluppare: nella nota originale questa sezione non era presente o era solo una traccia.
+
+## Checklist
+
+### 14. Best Practices
 1. **Testa flussi utente critici, non ogni dettaglio:** login, checkout, route protette e submit importanti sono ottimi candidati.
 2. **Usa selettori orientati all'utente:** ruoli, label e testo rendono i test piu robusti e accessibili.
 3. **Evita attese fisse:** aspetta condizioni reali della UI o della rete.
@@ -300,3 +298,7 @@ Per questo vanno usati sui percorsi che proteggono davvero il prodotto.
 6. **Scegli Cypress o Playwright in base al contesto:** debug locale e DX da un lato, cross-browser e CI robusta dall'altro.
 
 ---
+
+## Collegamenti
+
+- [[Programmazione/React/Indice react|Indice React]]

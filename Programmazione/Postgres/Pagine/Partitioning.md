@@ -1,5 +1,5 @@
 ---
-date: 2026-05-14
+date: 2026-06-02
 area: Programmazione
 topic: PostgreSQL
 type: technical-note
@@ -10,92 +10,121 @@ aliases: [Partitioning]
 prerequisites: []
 related: []
 ---
+
 # Partitioning in PostgreSQL
 
 ## Sintesi
 
-Nota su Partitioning in PostgreSQL. Riassume il concetto, i meccanismi principali e i punti da ricordare durante studio, progettazione o amministrazione.
+Il **partitioning** divide una tabella grande in partizioni fisiche piu piccole. Serve soprattutto per dataset molto grandi, retention temporale, manutenzione veloce e query che filtrano sulla chiave di partizionamento.
 
-Il **Table Partitioning** è una tecnica che permette di suddividere logicamente una tabella di grandi dimensioni (la tabella "parent") in pezzi fisici più piccoli (le "partizioni").
+## Quando usarlo
 
-## Concetto chiave
-In PostgreSQL, il partizionamento moderno è chiamato **Declarative Partitioning**. L'obiettivo principale è migliorare le performance di query e manutenzione su dataset massivi (centinaia di GB o TB), permettendo al database di leggere solo le porzioni di dati strettamente necessarie.
+Usalo quando:
 
----
+- una tabella cresce fino a centinaia di GB o TB;
+- i dati hanno una chiara dimensione temporale;
+- devi eliminare velocemente dati vecchi;
+- query frequenti filtrano per data, area o tenant;
+- autovacuum e indici diventano difficili da gestire;
+- vuoi caricare o staccare blocchi di dati in modo operativo.
 
-##  Metodi di Partizionamento
+## Come funziona
 
-Postgres supporta tre strategie principali:
+PostgreSQL usa declarative partitioning. La tabella parent definisce struttura e strategia. Le partizioni contengono fisicamente le righe.
 
-### 1. Range Partitioning
-I dati sono divisi in intervalli basati su una colonna (tipicamente date o ID numerici).
+Il planner puo fare partition pruning: se la query filtra sulla chiave di partizionamento, PostgreSQL scarta le partizioni non rilevanti.
+
+Il partizionamento non e una scorciatoia universale per performance. Funziona bene quando le query e la manutenzione sono allineate alla chiave scelta.
+
+## API / Sintassi
+
+Range partitioning:
+
 ```sql
-CREATE TABLE ordini (
-    id int,
-    data_ordine date NOT NULL,
-    totale decimal
-) PARTITION BY RANGE (data_ordine);
+CREATE TABLE orders (
+  id bigint NOT NULL,
+  created_at date NOT NULL,
+  total_amount numeric(12, 2) NOT NULL,
+  PRIMARY KEY (id, created_at)
+) PARTITION BY RANGE (created_at);
 
--- Creazione di una partizione specifica
-CREATE TABLE ordini_2023_01 PARTITION OF ordini
-    FOR VALUES FROM ('2023-01-01') TO ('2023-02-01');
+CREATE TABLE orders_2026_01
+PARTITION OF orders
+FOR VALUES FROM ('2026-01-01') TO ('2026-02-01');
 ```
 
-### 2. List Partitioning
-I dati sono divisi in base a una lista esplicita di valori discreti.
-```sql
-CREATE TABLE utenti (
-    id int,
-    nazione text
-) PARTITION BY LIST (nazione);
+List partitioning:
 
-CREATE TABLE utenti_italia PARTITION OF utenti
-    FOR VALUES IN ('Italia');
+```sql
+CREATE TABLE users_by_country (
+  id bigint,
+  country text NOT NULL
+) PARTITION BY LIST (country);
 ```
 
-### 3. Hash Partitioning
-I dati sono distribuiti uniformemente tra un numero fisso di partizioni tramite una funzione hash. Ideale per bilanciare il carico I/O.
+Hash partitioning:
+
 ```sql
-CREATE TABLE log_accessi (
-    id int,
-    messaggio text
+CREATE TABLE events (
+  id bigint,
+  payload jsonb
 ) PARTITION BY HASH (id);
-
-CREATE TABLE log_p0 PARTITION OF log_accessi FOR VALUES WITH (MODULUS 4, REMAINDER 0);
-CREATE TABLE log_p1 PARTITION OF log_accessi FOR VALUES WITH (MODULUS 4, REMAINDER 1);
 ```
 
----
+## Esempio pratico
 
-##  Vantaggi: Partition Pruning
+Retention mensile:
 
-Il vantaggio principale in termini di performance è il **Partition Pruning**.
+```sql
+ALTER TABLE orders
+DETACH PARTITION orders_2025_01;
 
-> [!INFO] Logic Layer: Pruning
-> Il Query Planner analizza le clausole `WHERE` della query. Se la condizione riguarda la colonna di partizionamento (es. `WHERE data_ordine = '2023-01-15'`), il database **scarta a priori** tutte le partizioni che non contengono quei dati, riducendo drasticamente il numero di blocchi da leggere dal disco.
+DROP TABLE orders_2025_01;
+```
 
-Per verificare se il pruning è attivo in un [[Programmazione/Postgres/Pagine/Analisi delle Query|EXPLAIN]], controlla se vengono scansionate solo le partizioni interessate.
+Staccare e droppare una partizione vecchia e molto piu efficiente di un grande `DELETE`, perche evita enormi quantita di WAL e bloat.
 
----
+Verifica del pruning:
 
-##  Gestione delle Partizioni (Maintenance)
+```sql
+EXPLAIN
+SELECT *
+FROM orders
+WHERE created_at >= '2026-01-10'
+  AND created_at < '2026-01-11';
+```
 
-Uno dei grandi vantaggi del partizionamento è la velocità di rimozione dei vecchi dati (es. log vecchi di 1 anno).
+Il piano dovrebbe mostrare solo le partizioni rilevanti.
 
-- **Eliminare dati:** Invece di una `DELETE` lenta (che genera molti WAL e [[Programmazione/Postgres/Pagine/MVCC|Vacuum overhead]]), puoi semplicemente staccare la partizione:
-  ```sql
-  ALTER TABLE ordini DETACH PARTITION ordini_2022_vecchi;
-  DROP TABLE ordini_2022_vecchi; -- Istantaneo
-  ```
-- **Aggiungere dati:** Puoi preparare una tabella separata e poi "attaccarla" alla struttura partizionata.
+## Varianti
 
----
+- Range partitioning: date, ID crescenti, intervalli.
+- List partitioning: regioni, stati, tenant.
+- Hash partitioning: distribuzione uniforme.
+- Subpartitioning: partizioni annidate.
+- Partizioni default.
+- Attach/detach partition per manutenzione.
 
-##  Limitazioni Importanti
+## Errori comuni
 
-> [!WARNING] Da considerare prima del design
-> 1.  **Chiave Primaria:** La chiave primaria di una tabella partizionata deve obbligatoriamente includere la colonna di partizionamento.
-> 2.  **Indici:** Gli indici creati sulla tabella parent vengono propagati alle partizioni, ma ogni partizione ha il suo indice fisico indipendente.
-> 3.  **Vincoli:** Non è possibile creare un vincolo di integrità referenziale (Foreign Key) che punti a una tabella partizionata da un'altra tabella (fino alle versioni più recenti di Postgres, dove ci sono restrizioni specifiche).
+- Partizionare tabelle troppo piccole.
+- Scegliere una chiave non usata nei filtri.
+- Creare troppe partizioni.
+- Dimenticare che primary key e unique constraint devono includere la chiave di partizionamento.
+- Aspettarsi pruning se la query usa espressioni non compatibili.
+- Non automatizzare creazione delle nuove partizioni.
 
----
+## Checklist
+
+- La tabella e abbastanza grande da giustificare partizionamento?
+- Le query filtrano sulla chiave di partizionamento?
+- Esiste una procedura per creare nuove partizioni?
+- Esiste una procedura di retention?
+- Gli indici sulle partizioni sono coerenti?
+- `EXPLAIN` mostra partition pruning?
+
+## Collegamenti
+
+- [[Programmazione/Postgres/Pagine/Analisi delle Query|Analisi delle Query]]
+- [[Programmazione/Postgres/Pagine/Manutenzione|Manutenzione]]
+- [[Programmazione/Postgres/Pagine/Write-Ahead Logging|Write-Ahead Logging]]

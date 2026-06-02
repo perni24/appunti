@@ -1,5 +1,5 @@
----
-date: 2026-05-13
+﻿---
+date: 2026-06-02
 area: Programmazione
 topic: JavaScript
 type: technical-note
@@ -21,8 +21,23 @@ Non significa che il codice venga davvero spostato nel file. Significa che duran
 
 ---
 
-## Creazione ed esecuzione
+## Quando usarlo
 
+Studia l'hoisting quando devi capire perche una variabile, funzione o classe sembra disponibile o non disponibile prima della sua dichiarazione.
+
+Serve soprattutto per:
+
+- leggere errori `ReferenceError`;
+- capire differenza tra `var`, `let` e `const`;
+- distinguere function declaration e function expression;
+- evitare dipendenze implicite dall'ordine del codice;
+- comprendere moduli e import statici.
+
+Nel codice moderno conviene non basarsi sull'hoisting come tecnica: dichiara prima di usare.
+
+## Come funziona
+
+### Creazione ed esecuzione
 JavaScript valuta il codice in due fasi concettuali:
 
 - fase di creazione: registra dichiarazioni e prepara gli scope;
@@ -31,9 +46,7 @@ JavaScript valuta il codice in due fasi concettuali:
 Questo spiega perche alcune dichiarazioni sono disponibili prima della riga in cui compaiono.
 
 ---
-
-## Hoisting con `var`
-
+### Hoisting con `var`
 Le dichiarazioni `var` vengono inizializzate a `undefined`.
 
 ```js
@@ -57,9 +70,7 @@ count = 3;
 Solo la dichiarazione viene preparata prima. L'assegnazione resta dove si trova.
 
 ---
-
-## Hoisting con `let` e `const`
-
+### Hoisting con `let` e `const`
 `let` e `const` sono registrati nello scope, ma non sono utilizzabili prima della dichiarazione.
 
 ```js
@@ -71,9 +82,7 @@ const name = "Luca";
 La zona tra l'inizio dello scope e la dichiarazione si chiama Temporal Dead Zone.
 
 ---
-
-## Temporal Dead Zone
-
+### Temporal Dead Zone
 La Temporal Dead Zone impedisce di leggere una variabile prima che sia stata dichiarata.
 
 ```js
@@ -86,9 +95,7 @@ La Temporal Dead Zone impedisce di leggere una variabile prima che sia stata dic
 Questo rende `let` e `const` piu sicuri di `var`, perche evita valori `undefined` accidentali.
 
 ---
-
-## Function declaration
-
+### Function declaration
 Le dichiarazioni di funzione sono disponibili prima della loro posizione nel file.
 
 ```js
@@ -102,9 +109,7 @@ function sayHello() {
 Questo vale per le function declaration, non per tutte le forme di funzione.
 
 ---
-
-## Function expression
-
+### Function expression
 Una funzione assegnata a una variabile segue le regole della variabile.
 
 ```js
@@ -128,9 +133,7 @@ var sayHello = function () {
 La variabile esiste come `undefined`, ma la funzione non e ancora stata assegnata.
 
 ---
-
-## Class declaration
-
+### Class declaration
 Anche le classi sono registrate prima dell'esecuzione, ma restano nella Temporal Dead Zone.
 
 ```js
@@ -146,9 +149,7 @@ class User {
 Le classi vanno dichiarate prima dell'uso.
 
 ---
-
-## Import
-
+### Import
 Gli import dei moduli ES sono statici e vengono risolti prima dell'esecuzione del modulo.
 
 ```js
@@ -161,6 +162,75 @@ Gli import devono stare al top-level del modulo, salvo uso di `import()` dinamic
 
 ---
 
+## API / Sintassi
+
+Comportamenti principali:
+
+```js
+console.log(value); // undefined
+var value = 1;
+```
+
+```js
+console.log(value); // ReferenceError
+let value = 1;
+```
+
+```js
+run(); // ok
+
+function run() {}
+```
+
+```js
+run(); // ReferenceError
+
+const run = function () {};
+```
+
+Le dichiarazioni vengono registrate prima dell'esecuzione, ma inizializzazione e assegnazione seguono regole diverse.
+
+## Esempio pratico
+
+Errore tipico con function expression:
+
+```js
+start();
+
+const start = () => {
+  console.log("start");
+};
+```
+
+Correzione:
+
+```js
+const start = () => {
+  console.log("start");
+};
+
+start();
+```
+
+Oppure usa una function declaration se vuoi poter chiamare la funzione prima della definizione:
+
+```js
+start();
+
+function start() {
+  console.log("start");
+}
+```
+
+## Varianti
+
+- **`var`**: dichiarazione hoisted e inizializzata a `undefined`.
+- **`let` e `const`**: hoisted ma in Temporal Dead Zone.
+- **Function declaration**: callable prima della dichiarazione.
+- **Function expression**: segue le regole della variabile.
+- **Class declaration**: hoisted ma in Temporal Dead Zone.
+- **Import ES module**: risolto staticamente prima dell'esecuzione.
+
 ## Errori comuni
 
 - Pensare che l'hoisting sposti fisicamente le righe di codice.
@@ -171,8 +241,9 @@ Gli import devono stare al top-level del modulo, salvo uso di `import()` dinamic
 
 ---
 
-## Checklist operativa
+## Checklist
 
+### Checklist operativa
 - Dichiara variabili e classi prima di usarle.
 - Preferisci `const` e `let` a `var`.
 - Usa function declaration quando vuoi una funzione richiamabile prima della definizione.

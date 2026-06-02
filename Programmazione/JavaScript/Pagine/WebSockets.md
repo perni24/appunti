@@ -1,5 +1,5 @@
----
-date: 2026-05-13
+﻿---
+date: 2026-06-02
 area: Programmazione
 topic: JavaScript
 type: technical-note
@@ -21,8 +21,9 @@ E utile quando il server deve inviare dati al client senza aspettare una nuova r
 
 ---
 
-## Quando usarli
+## Quando usarlo
 
+### Quando usarli
 WebSocket e indicato per:
 
 - chat;
@@ -36,8 +37,9 @@ Per richieste sporadiche o CRUD classico, spesso basta HTTP con `fetch()`.
 
 ---
 
-## Connessione
+## Come funziona
 
+### Connessione
 ```js
 const socket = new WebSocket("wss://example.com/ws");
 
@@ -61,9 +63,7 @@ socket.addEventListener("close", (event) => {
 In produzione usa `wss://`, non `ws://`.
 
 ---
-
-## Invio messaggi
-
+### Invio messaggi
 ```js
 const message = {
   type: "chat-message",
@@ -78,9 +78,7 @@ socket.send(JSON.stringify(message));
 Il browser puo inviare stringhe, `Blob`, `ArrayBuffer` e altri dati binari supportati.
 
 ---
-
-## Parsing sicuro
-
+### Parsing sicuro
 ```js
 socket.addEventListener("message", (event) => {
   try {
@@ -98,9 +96,7 @@ socket.addEventListener("message", (event) => {
 Non assumere che ogni messaggio ricevuto sia valido.
 
 ---
-
-## Stato della connessione
-
+### Stato della connessione
 `socket.readyState` indica lo stato.
 
 ```js
@@ -117,9 +113,7 @@ Valori principali:
 - `WebSocket.CLOSED`.
 
 ---
-
-## Chiusura
-
+### Chiusura
 ```js
 socket.close(1000, "chiusura normale");
 ```
@@ -127,9 +121,7 @@ socket.close(1000, "chiusura normale");
 Chiudere esplicitamente la connessione e importante quando il socket non serve piu, ad esempio al cambio pagina o allo smontaggio di un componente UI.
 
 ---
-
-## Riconnessione
-
+### Riconnessione
 La WebSocket API non riconnette automaticamente.
 
 ```js
@@ -147,9 +139,7 @@ function connect() {
 In produzione conviene usare backoff progressivo, limite massimo e gestione dello stato offline.
 
 ---
-
-## WebSocket vs HTTP
-
+### WebSocket vs HTTP
 | Aspetto | HTTP con fetch | WebSocket |
 | --- | --- | --- |
 | Modello | richiesta-risposta | connessione persistente |
@@ -159,9 +149,7 @@ In produzione conviene usare backoff progressivo, limite massimo e gestione dell
 | Complessita | minore | maggiore |
 
 ---
-
-## Sicurezza
-
+### Sicurezza
 - Usa `wss://` in produzione.
 - Autentica la connessione.
 - Valida ogni messaggio lato server.
@@ -169,6 +157,63 @@ In produzione conviene usare backoff progressivo, limite massimo e gestione dell
 - Gestisci permessi per canali e stanze.
 
 ---
+
+## API / Sintassi
+
+Creazione:
+
+```js
+const socket = new WebSocket("wss://example.com/ws");
+```
+
+Eventi:
+
+```js
+socket.addEventListener("open", handleOpen);
+socket.addEventListener("message", handleMessage);
+socket.addEventListener("error", handleError);
+socket.addEventListener("close", handleClose);
+```
+
+Invio e chiusura:
+
+```js
+socket.send(JSON.stringify(message));
+socket.close(1000, "normal closure");
+```
+
+Stato:
+
+```js
+socket.readyState === WebSocket.OPEN;
+```
+
+## Esempio pratico
+
+Protocollo messaggi semplice:
+
+```js
+function sendMessage(socket, type, payload) {
+  if (socket.readyState !== WebSocket.OPEN) {
+    return false;
+  }
+
+  socket.send(JSON.stringify({ type, payload }));
+  return true;
+}
+
+sendMessage(socket, "subscribe", { topic: "orders" });
+```
+
+Usare `type` e `payload` rende il protocollo piu leggibile e validabile.
+
+## Varianti
+
+- **WebSocket nativo**: controllo diretto su connessione e protocollo.
+- **Socket.IO o simili**: aggiungono reconnect, fallback e convenzioni.
+- **Server-Sent Events**: server push monodirezionale.
+- **Polling/long polling**: alternative HTTP piu semplici.
+- **WebSocket binario**: usa `ArrayBuffer` o `Blob`.
 
 ## Errori comuni
 
@@ -180,8 +225,9 @@ In produzione conviene usare backoff progressivo, limite massimo e gestione dell
 
 ---
 
-## Checklist operativa
+## Checklist
 
+### Checklist operativa
 - Usa `wss://`.
 - Definisci un protocollo messaggi con `type` e `payload`.
 - Gestisci `open`, `message`, `error` e `close`.

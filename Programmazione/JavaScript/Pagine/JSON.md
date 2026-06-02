@@ -1,5 +1,5 @@
----
-date: 2026-05-13
+﻿---
+date: 2026-06-02
 area: Programmazione
 topic: JavaScript
 type: technical-note
@@ -21,8 +21,24 @@ E un formato testuale leggero per scambiare dati tra sistemi. Deriva dalla sinta
 
 ---
 
-## Regole del formato
+## Quando usarlo
 
+Usa JSON quando devi scambiare dati strutturati tra sistemi o serializzare dati semplici in formato testuale.
+
+Casi comuni:
+
+- richieste e risposte API;
+- file di configurazione senza commenti;
+- storage browser;
+- log strutturati;
+- payload tra frontend e backend;
+- dati compatibili tra linguaggi diversi.
+
+Non usarlo per dati con funzioni, riferimenti circolari, tipi complessi o commenti.
+
+## Come funziona
+
+### Regole del formato
 JSON supporta:
 
 - stringhe;
@@ -51,9 +67,7 @@ Regole importanti:
 - non sono supportati `undefined`, funzioni, `Symbol`, `Map`, `Set`.
 
 ---
-
-## JSON.stringify
-
+### JSON.stringify
 `JSON.stringify()` converte un valore JavaScript in stringa JSON.
 
 ```js
@@ -68,9 +82,7 @@ console.log(json); // {"name":"Luca","active":true}
 ```
 
 ---
-
-## JSON.parse
-
+### JSON.parse
 `JSON.parse()` converte una stringa JSON in valore JavaScript.
 
 ```js
@@ -91,9 +103,7 @@ try {
 ```
 
 ---
-
-## Invio con fetch
-
+### Invio con fetch
 ```js
 await fetch("/api/users", {
   method: "POST",
@@ -114,9 +124,7 @@ const user = await response.json();
 ```
 
 ---
-
-## Replacer e space
-
+### Replacer e space
 `JSON.stringify()` accetta un replacer e un numero di spazi.
 
 ```js
@@ -133,9 +141,7 @@ const json = JSON.stringify(
 ```
 
 ---
-
-## Reviver
-
+### Reviver
 `JSON.parse()` puo ricevere un reviver.
 
 ```js
@@ -151,9 +157,7 @@ const data = JSON.parse(json, (key, value) => {
 ```
 
 ---
-
-## Deep clone con JSON
-
+### Deep clone con JSON
 ```js
 const original = {
   user: {
@@ -180,6 +184,71 @@ Perde:
 Per copie profonde moderne, valuta `structuredClone()`.
 
 ---
+
+## API / Sintassi
+
+API JavaScript principali:
+
+```js
+JSON.stringify(value);
+JSON.stringify(value, replacer, space);
+JSON.parse(text);
+JSON.parse(text, reviver);
+```
+
+Esempio:
+
+```js
+const text = JSON.stringify({ ok: true }, null, 2);
+const data = JSON.parse(text);
+```
+
+Con `fetch`:
+
+```js
+const response = await fetch("/api/data");
+const data = await response.json();
+```
+
+Per inviare JSON:
+
+```js
+await fetch("/api/data", {
+  method: "POST",
+  headers: { "Content-Type": "application/json" },
+  body: JSON.stringify(data),
+});
+```
+
+## Esempio pratico
+
+Parsing sicuro di una stringa JSON:
+
+```js
+function parseJsonSafe(text) {
+  try {
+    return {
+      ok: true,
+      value: JSON.parse(text),
+    };
+  } catch (error) {
+    return {
+      ok: false,
+      error,
+    };
+  }
+}
+```
+
+Questo pattern evita che un input non valido interrompa il flusso normale senza controllo.
+
+## Varianti
+
+- **JSON compatto**: senza spazi, adatto a rete e storage.
+- **JSON pretty printed**: indentato, piu leggibile per file e debug.
+- **NDJSON**: un oggetto JSON per riga, utile per log e stream.
+- **JSON con reviver/replacer**: trasforma valori durante parse/stringify.
+- **JSON-safe data**: dati composti solo da tipi supportati dal formato.
 
 ## Errori comuni
 

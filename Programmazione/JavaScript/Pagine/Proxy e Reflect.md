@@ -1,5 +1,5 @@
----
-date: 2026-05-13
+﻿---
+date: 2026-06-02
 area: Programmazione
 topic: JavaScript
 type: technical-note
@@ -21,8 +21,26 @@ related: [Prototypes, Property Descriptors, Error Handling]
 
 ---
 
-## Proxy base
+## Quando usarlo
 
+### Casi d'uso
+`Proxy` e utile per:
+
+- validazione;
+- logging;
+- reactive state;
+- lazy loading;
+- virtualizzazione di oggetti;
+- API fluenti;
+- controllo accessi.
+
+Va usato con attenzione perche rende il comportamento meno esplicito.
+
+---
+
+## Come funziona
+
+### Proxy base
 ```js
 const target = { name: "Luca" };
 
@@ -39,9 +57,7 @@ console.log(proxy.name);
 Il secondo argomento e un handler con trap.
 
 ---
-
-## Trap comuni
-
+### Trap comuni
 Trap frequenti:
 
 - `get`;
@@ -66,9 +82,7 @@ const user = new Proxy({}, {
 ```
 
 ---
-
-## Reflect
-
+### Reflect
 `Reflect` contiene metodi equivalenti alle operazioni intercettabili.
 
 ```js
@@ -83,24 +97,62 @@ Usare `Reflect` riduce errori in trap complessi e preserva semantica standard.
 
 ---
 
-## Casi d'uso
+## API / Sintassi
 
-`Proxy` e utile per:
+Forma base:
 
-- validazione;
-- logging;
-- reactive state;
-- lazy loading;
-- virtualizzazione di oggetti;
-- API fluenti;
-- controllo accessi.
+```js
+const proxy = new Proxy(target, handler);
+```
 
-Va usato con attenzione perche rende il comportamento meno esplicito.
+Trap comuni:
 
----
+```js
+const handler = {
+  get(target, property, receiver) {
+    return Reflect.get(target, property, receiver);
+  },
 
-## Limiti
+  set(target, property, value, receiver) {
+    return Reflect.set(target, property, value, receiver);
+  },
+};
+```
 
+`Reflect` espone metodi come:
+
+- `Reflect.get`;
+- `Reflect.set`;
+- `Reflect.has`;
+- `Reflect.deleteProperty`;
+- `Reflect.ownKeys`;
+- `Reflect.apply`;
+- `Reflect.construct`.
+
+## Esempio pratico
+
+Validazione di proprieta:
+
+```js
+const user = new Proxy({}, {
+  set(target, property, value, receiver) {
+    if (property === "age" && (!Number.isInteger(value) || value < 0)) {
+      throw new TypeError("age deve essere un intero positivo");
+    }
+
+    return Reflect.set(target, property, value, receiver);
+  },
+});
+
+user.age = 30;
+user.age = -1; // TypeError
+```
+
+Il trap intercetta ogni scrittura e mantiene il comportamento standard tramite `Reflect.set`.
+
+## Varianti
+
+### Limiti
 - Puo impattare performance.
 - Puo rendere il debug piu difficile.
 - Non intercetta accessi a private fields.
@@ -118,8 +170,9 @@ Va usato con attenzione perche rende il comportamento meno esplicito.
 
 ---
 
-## Checklist operativa
+## Checklist
 
+### Checklist operativa
 - Usa Proxy solo quando serve intercettare operazioni generiche.
 - Mantieni handler piccoli.
 - Usa `Reflect` per comportamento base.

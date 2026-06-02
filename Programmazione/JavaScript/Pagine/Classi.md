@@ -1,5 +1,5 @@
----
-date: 2026-05-13
+﻿---
+date: 2026-06-02
 area: Programmazione
 topic: JavaScript
 type: technical-note
@@ -21,30 +21,24 @@ Sotto il cofano, restano basate sul modello prototipale di JavaScript.
 
 ---
 
-## Sintassi base
+## Quando usarlo
 
-```js
-class User {
-  constructor(name) {
-    this.name = name;
-  }
+Usa classi quando dati e comportamento appartengono naturalmente allo stesso concetto e devono mantenere stato nel tempo.
 
-  greet() {
-    return `Ciao, sono ${this.name}`;
-  }
-}
+Casi comuni:
 
-const user = new User("Luca");
+- modelli con invarianti;
+- servizi con configurazione;
+- componenti non banali;
+- errori custom;
+- oggetti con metodi condivisi;
+- API dove `new` e istanze rendono il codice piu chiaro.
 
-console.log(user.greet()); // "Ciao, sono Luca"
-```
+Per semplici record di dati, un object literal e spesso sufficiente.
 
-`constructor` viene eseguito quando crei una nuova istanza con `new`.
+## Come funziona
 
----
-
-## Metodi di istanza
-
+### Metodi di istanza
 I metodi dichiarati nel corpo della classe finiscono sul prototipo.
 
 ```js
@@ -62,9 +56,7 @@ class Counter {
 Ogni istanza condivide gli stessi metodi, invece di duplicarli.
 
 ---
-
-## Campi pubblici
-
+### Campi pubblici
 I campi pubblici definiscono proprieta di istanza.
 
 ```js
@@ -80,9 +72,7 @@ class User {
 Sono utili per rendere visibile la forma dell'oggetto.
 
 ---
-
-## Metodi statici
-
+### Metodi statici
 I metodi statici appartengono alla classe, non alle istanze.
 
 ```js
@@ -98,9 +88,7 @@ console.log(MathUtils.sum(2, 3)); // 5
 Sono adatti a factory, utility e metodi che non dipendono dallo stato di una istanza.
 
 ---
-
-## Getter e setter
-
+### Getter e setter
 Getter e setter espongono accesso controllato a proprieta calcolate o validate.
 
 ```js
@@ -126,9 +114,7 @@ class Rectangle {
 ```
 
 ---
-
-## `this` nelle classi
-
+### `this` nelle classi
 I metodi di classe seguono le normali regole di `this`.
 
 ```js
@@ -141,9 +127,7 @@ increment(); // this perso
 Se passi un metodo come callback, puo essere necessario usare `bind`, una wrapper function o campi con arrow function.
 
 ---
-
-## Classi e prototipi
-
+### Classi e prototipi
 ```js
 class User {
   greet() {
@@ -160,6 +144,70 @@ console.log(Object.getPrototypeOf(user) === User.prototype); // true
 
 ---
 
+## API / Sintassi
+
+### Sintassi base
+```js
+class User {
+  constructor(name) {
+    this.name = name;
+  }
+
+  greet() {
+    return `Ciao, sono ${this.name}`;
+  }
+}
+
+const user = new User("Luca");
+
+console.log(user.greet()); // "Ciao, sono Luca"
+```
+
+`constructor` viene eseguito quando crei una nuova istanza con `new`.
+
+---
+
+## Esempio pratico
+
+Classe per una sessione:
+
+```js
+class UserSession {
+  #token = null;
+
+  login(token) {
+    this.#token = token;
+  }
+
+  logout() {
+    this.#token = null;
+  }
+
+  get isAuthenticated() {
+    return this.#token !== null;
+  }
+
+  getAuthHeader() {
+    if (!this.#token) {
+      throw new Error("Utente non autenticato");
+    }
+
+    return `Bearer ${this.#token}`;
+  }
+}
+```
+
+La classe protegge lo stato interno e offre operazioni coerenti al chiamante.
+
+## Varianti
+
+- **Classe semplice**: stato e metodi di istanza.
+- **Classe con private fields**: stato interno protetto.
+- **Classe con metodi statici**: utility o factory legate al tipo.
+- **Classe derivata**: usa `extends`.
+- **Error class**: specializza `Error`.
+- **Object literal**: alternativa piu semplice quando non serve istanziazione.
+
 ## Errori comuni
 
 - Pensare che le classi JavaScript funzionino come classi Java o C#.
@@ -170,8 +218,9 @@ console.log(Object.getPrototypeOf(user) === User.prototype); // true
 
 ---
 
-## Checklist operativa
+## Checklist
 
+### Checklist operativa
 - Usa classi quando hai stato e comportamento legati.
 - Usa metodi statici per utility legate al tipo.
 - Usa private fields per invarianti interne reali.

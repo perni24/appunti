@@ -1,5 +1,5 @@
----
-date: 2026-05-13
+﻿---
+date: 2026-06-02
 area: Programmazione
 topic: JavaScript
 type: technical-note
@@ -21,25 +21,20 @@ In pratica: una funzione puo ricordare variabili esterne.
 
 ---
 
-## Esempio base
+## Quando usarlo
 
-```js
-function createMessage(name) {
-  const prefix = "Ciao";
+Usa closures quando una funzione deve ricordare dati definiti nel suo scope di creazione.
 
-  return function printMessage() {
-    console.log(`${prefix}, ${name}`);
-  };
-}
+Casi comuni:
 
-const message = createMessage("Luca");
+- callback;
+- factory function;
+- stato privato semplice;
+- configurazione parziale;
+- memoizzazione;
+- handler che devono accedere a dati del contesto.
 
-message(); // "Ciao, Luca"
-```
-
-`printMessage` continua ad accedere a `prefix` e `name` anche dopo la fine di `createMessage`.
-
----
+Usale con attenzione quando catturano oggetti grandi o vivono a lungo.
 
 ## Come funziona
 
@@ -67,9 +62,7 @@ console.log(counter()); // 3
 `count` resta privata rispetto al codice esterno, ma resta modificabile dalla funzione `increment`.
 
 ---
-
-## Stato privato
-
+### Stato privato
 Le closures sono spesso usate per incapsulare stato.
 
 ```js
@@ -98,9 +91,7 @@ console.log(session.getAuthHeader()); // "Bearer abc123"
 Il codice esterno non puo leggere direttamente `token`.
 
 ---
-
-## Function factory
-
+### Function factory
 Una function factory crea funzioni specializzate partendo da una configurazione.
 
 ```js
@@ -123,9 +114,7 @@ console.log(formatEuro(19.99)); // "19,99 EUR"
 La funzione restituita riusa la configurazione senza doverla ricevere a ogni chiamata.
 
 ---
-
-## Closures nei callback
-
+### Closures nei callback
 I callback mantengono accesso alle variabili esterne.
 
 ```js
@@ -141,9 +130,7 @@ delayLog("Operazione completata");
 Il callback passato a `setTimeout` puo leggere `message` anche quando `delayLog` ha gia terminato.
 
 ---
-
-## Loop e closure
-
+### Loop e closure
 Con `var`, tutte le funzioni condividono la stessa variabile del ciclo.
 
 ```js
@@ -173,9 +160,7 @@ for (let i = 0; i < 3; i += 1) {
 ```
 
 ---
-
-## Memoria
-
+### Memoria
 Una closure mantiene vivi gli oggetti a cui fa riferimento.
 
 ```js
@@ -196,6 +181,57 @@ Per evitare leak:
 
 ---
 
+## API / Sintassi
+
+Non esiste una API specifica: una closure nasce quando una funzione interna usa variabili dello scope esterno.
+
+```js
+function outer(value) {
+  return function inner() {
+    return value;
+  };
+}
+```
+
+Pattern frequenti:
+
+```js
+const fn = createFunction(config);
+element.addEventListener("click", () => use(value));
+```
+
+La variabile catturata resta raggiungibile finche la funzione che la usa resta raggiungibile.
+
+## Esempio pratico
+
+### Esempio base
+```js
+function createMessage(name) {
+  const prefix = "Ciao";
+
+  return function printMessage() {
+    console.log(`${prefix}, ${name}`);
+  };
+}
+
+const message = createMessage("Luca");
+
+message(); // "Ciao, Luca"
+```
+
+`printMessage` continua ad accedere a `prefix` e `name` anche dopo la fine di `createMessage`.
+
+---
+
+## Varianti
+
+- **Closure in callback**: usa dati esterni dentro eventi o timer.
+- **Function factory**: restituisce funzioni configurate.
+- **Stato privato**: nasconde variabili nello scope.
+- **Memoization**: conserva risultati tra chiamate.
+- **Currying/partial application**: specializza funzioni.
+- **Closure longeva**: utile ma possibile fonte di memory leak.
+
 ## Errori comuni
 
 - Pensare che una closure copi i valori invece di mantenere riferimenti.
@@ -206,8 +242,9 @@ Per evitare leak:
 
 ---
 
-## Checklist operativa
+## Checklist
 
+### Checklist operativa
 - Usa closures per factory, callback e stato privato semplice.
 - Preferisci `let` e `const` nei loop.
 - Rimuovi listener e timer quando non servono.

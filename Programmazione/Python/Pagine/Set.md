@@ -1,5 +1,5 @@
----
-date: 2026-05-14
+﻿---
+date: 2026-06-02
 area: Programmazione
 topic: Python
 type: technical-note
@@ -10,47 +10,24 @@ aliases: [Set]
 prerequisites: []
 related: []
 ---
+
 # Set in Python
 
 ## Sintesi
 
 Nota su Set in Python. Riassume il concetto, la sintassi principale e i punti da ricordare durante studio, sviluppo o debugging.
-
-## Concetto chiave
-I **Set** (Insiemi) sono collezioni **non ordinate** di elementi **unici**. Sono fondamentali quando è necessario eliminare duplicati o eseguire operazioni matematiche sugli insiemi (unione, intersezione, ecc.). In Python, gli elementi di un set devono essere **hashable** (immutabili).
-
----
-
-##  Sintassi e Creazione
-
-I set si definiscono utilizzando le parentesi graffe `{}` oppure la funzione `set()`.
-
-```python
-# Set in Python
-
-## Sintesi
-
 Nota su Set in Python. Riassume il concetto, la sintassi principale e i punti da ricordare durante studio, sviluppo o debugging.
 colori = {"rosso", "verde", "blu"}
 
 # Set in Python
-
-## Sintesi
-
 Nota su Set in Python. Riassume il concetto, la sintassi principale e i punti da ricordare durante studio, sviluppo o debugging.
 numeri = {1, 2, 2, 3, 4, 4, 4}
 print(numeri) # {1, 2, 3, 4}
 
 # Set in Python
-
-## Sintesi
-
 Nota su Set in Python. Riassume il concetto, la sintassi principale e i punti da ricordare durante studio, sviluppo o debugging.
 vuoto = set() 
 # Set in Python
-
-## Sintesi
-
 Nota su Set in Python. Riassume il concetto, la sintassi principale e i punti da ricordare durante studio, sviluppo o debugging.
 ```
 
@@ -60,9 +37,39 @@ Nota su Set in Python. Riassume il concetto, la sintassi principale e i punti da
 - **Mutabili:** Puoi aggiungere o rimuovere elementi.
 
 ---
+Nota su Set in Python. Riassume il concetto, la sintassi principale e i punti da ricordare durante studio, sviluppo o debugging.
+print(a | b) # {1, 2, 3, 4, 5}
 
-##  Operazioni comuni
+# Set in Python
+Nota su Set in Python. Riassume il concetto, la sintassi principale e i punti da ricordare durante studio, sviluppo o debugging.
+print(a & b) # {3}
 
+# Set in Python
+Nota su Set in Python. Riassume il concetto, la sintassi principale e i punti da ricordare durante studio, sviluppo o debugging.
+print(a - b) # {1, 2}
+
+# Set in Python
+Nota su Set in Python. Riassume il concetto, la sintassi principale e i punti da ricordare durante studio, sviluppo o debugging.
+print(a ^ b) # {1, 2, 4, 5}
+```
+
+---
+Nota su Set in Python. Riassume il concetto, la sintassi principale e i punti da ricordare durante studio, sviluppo o debugging.
+```
+
+---
+
+## Quando usarlo
+
+Contenuto da sviluppare: nella nota originale questa sezione non era presente o era solo una traccia.
+
+## Come funziona
+
+### Concetto chiave
+I **Set** (Insiemi) sono collezioni **non ordinate** di elementi **unici**. Sono fondamentali quando è necessario eliminare duplicati o eseguire operazioni matematiche sugli insiemi (unione, intersezione, ecc.). In Python, gli elementi di un set devono essere **hashable** (immutabili).
+
+---
+### Operazioni comuni
 | Metodo | Descrizione |
 | :--- | :--- |
 | `.add(x)` | Aggiunge l'elemento x al set. |
@@ -72,8 +79,7 @@ Nota su Set in Python. Riassume il concetto, la sintassi principale e i punti da
 | `.clear()` | Svuota completamente il set. |
 
 ---
-
-##  Operazioni Matematiche sugli Insiemi
+### Operazioni Matematiche sugli Insiemi
 Python offre operatori (concisi) per la logica degli insiemi:
 
 ```python
@@ -81,37 +87,7 @@ a = {1, 2, 3}
 b = {3, 4, 5}
 
 # Set in Python
-
-## Sintesi
-
-Nota su Set in Python. Riassume il concetto, la sintassi principale e i punti da ricordare durante studio, sviluppo o debugging.
-print(a | b) # {1, 2, 3, 4, 5}
-
-# Set in Python
-
-## Sintesi
-
-Nota su Set in Python. Riassume il concetto, la sintassi principale e i punti da ricordare durante studio, sviluppo o debugging.
-print(a & b) # {3}
-
-# Set in Python
-
-## Sintesi
-
-Nota su Set in Python. Riassume il concetto, la sintassi principale e i punti da ricordare durante studio, sviluppo o debugging.
-print(a - b) # {1, 2}
-
-# Set in Python
-
-## Sintesi
-
-Nota su Set in Python. Riassume il concetto, la sintassi principale e i punti da ricordare durante studio, sviluppo o debugging.
-print(a ^ b) # {1, 2, 4, 5}
-```
-
----
-
-## Logic layer: Performance e Hash Table
+### Logic layer: Performance e Hash Table
 I set in Python sono implementati internamente tramite una **Hash Table** (simile ai dizionari).
 
 > [!INFO] Complessità Computazionale (Big O)
@@ -127,9 +103,30 @@ Se hai bisogno di un set che sia a sua volta immutabile (e quindi utilizzabile c
 fs = frozenset([1, 2, 3])
 # Set in Python
 
-## Sintesi
+## API / Sintassi
 
-Nota su Set in Python. Riassume il concetto, la sintassi principale e i punti da ricordare durante studio, sviluppo o debugging.
-```
+### Sintassi e Creazione
+I set si definiscono utilizzando le parentesi graffe `{}` oppure la funzione `set()`.
 
----
+```python
+# Set in Python
+
+## Esempio pratico
+
+Contenuto da sviluppare: nella nota originale questa sezione non era presente o era solo una traccia.
+
+## Varianti
+
+Contenuto da sviluppare: nella nota originale questa sezione non era presente o era solo una traccia.
+
+## Errori comuni
+
+Contenuto da sviluppare: nella nota originale questa sezione non era presente o era solo una traccia.
+
+## Checklist
+
+Contenuto da sviluppare: nella nota originale questa sezione non era presente o era solo una traccia.
+
+## Collegamenti
+
+- [[Programmazione/Python/Indice python|Indice Python]]

@@ -1,5 +1,5 @@
----
-date: 2026-05-13
+﻿---
+date: 2026-06-02
 area: Programmazione
 topic: JavaScript
 type: technical-note
@@ -21,8 +21,21 @@ JavaScript gestisce il rilascio in modo automatico tramite garbage collection, m
 
 ---
 
-## Fasi principali
+## Quando usarlo
 
+Consulta questa nota quando devi capire perche memoria e performance peggiorano nel tempo o quando lavori con oggetti grandi, cache, listener, timer e closure.
+
+E utile per:
+
+- diagnosticare crescita dell'heap;
+- capire differenza tra primitivi e riferimenti;
+- evitare cache illimitate;
+- progettare cleanup di componenti e subscription;
+- ragionare su closure e durata dei dati.
+
+## Come funziona
+
+### Fasi principali
 Il ciclo e composto da tre fasi:
 
 - allocazione: il runtime riserva memoria per valori, oggetti, funzioni e strutture dati;
@@ -41,9 +54,7 @@ console.log(user.name);
 L'oggetto viene allocato, usato e poi potra essere rimosso quando non sara piu raggiungibile.
 
 ---
-
-## Stack
-
+### Stack
 Lo stack contiene dati legati all'esecuzione corrente:
 
 - frame delle funzioni;
@@ -63,9 +74,7 @@ sum(2, 3);
 Quando la funzione termina, il suo frame viene rimosso dallo stack.
 
 ---
-
-## Heap
-
+### Heap
 L'heap contiene dati dinamici:
 
 - oggetti;
@@ -81,9 +90,7 @@ const user = { id: 1, name: "Luca" };
 Le variabili conservano riferimenti agli oggetti nell'heap.
 
 ---
-
-## Primitivi e riferimenti
-
+### Primitivi e riferimenti
 I primitivi vengono copiati per valore.
 
 ```js
@@ -107,9 +114,7 @@ console.log(a.count); // 2
 ```
 
 ---
-
-## Raggiungibilita
-
+### Raggiungibilita
 Un valore resta in memoria finche e raggiungibile da una root.
 
 Root tipiche:
@@ -129,9 +134,7 @@ user = null;
 Dopo l'assegnazione a `null`, l'oggetto puo essere raccolto se non esistono altri riferimenti.
 
 ---
-
-## Memoria e asincronia
-
+### Memoria e asincronia
 Callback, Promise, timer e listener possono mantenere vivi riferimenti piu a lungo del previsto.
 
 ```js
@@ -148,6 +151,61 @@ Finche l'intervallo resta attivo, `data` resta raggiungibile.
 
 ---
 
+## API / Sintassi
+
+Non esiste una API JavaScript standard per liberare memoria manualmente.
+
+Le operazioni utili sono indirette:
+
+```js
+reference = null;
+clearInterval(intervalId);
+removeEventListener("resize", listener);
+cache.delete(key);
+cache.clear();
+```
+
+Per osservare memoria:
+
+- Chrome DevTools Memory;
+- Performance panel;
+- heap snapshot;
+- strumenti runtime di Node.js.
+
+In codice applicativo, il controllo reale consiste nel rimuovere riferimenti non piu necessari.
+
+## Esempio pratico
+
+Cleanup di una risorsa:
+
+```js
+function mountWidget(element, data) {
+  function onClick() {
+    console.log(data.id);
+  }
+
+  element.addEventListener("click", onClick);
+
+  return function cleanup() {
+    element.removeEventListener("click", onClick);
+  };
+}
+
+const cleanup = mountWidget(button, largeData);
+cleanup();
+```
+
+Finche il listener resta registrato, puo mantenere vivi `element`, `data` e la closure.
+
+## Varianti
+
+- **Memoria stack**: frame di chiamata e variabili locali.
+- **Memoria heap**: oggetti dinamici.
+- **Riferimenti forti**: mantengono raggiungibile un oggetto.
+- **Riferimenti deboli**: usati da `WeakMap` e `WeakSet`.
+- **Cache temporanee**: richiedono limiti o invalidazione.
+- **Risorse esterne**: listener, timer, stream e subscription da pulire esplicitamente.
+
 ## Errori comuni
 
 - Pensare che il garbage collector elimini qualunque cosa "non usata mentalmente".
@@ -158,8 +216,9 @@ Finche l'intervallo resta attivo, `data` resta raggiungibile.
 
 ---
 
-## Checklist operativa
+## Checklist
 
+### Checklist operativa
 - Riduci la durata dei riferimenti a oggetti grandi.
 - Pulisci timer e listener quando non servono.
 - Usa scope piccoli.

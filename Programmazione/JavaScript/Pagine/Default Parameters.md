@@ -1,5 +1,5 @@
----
-date: 2026-05-13
+﻿---
+date: 2026-06-02
 area: Programmazione
 topic: JavaScript
 type: technical-note
@@ -21,8 +21,90 @@ Il valore di default viene usato quando l'argomento e assente o vale `undefined`
 
 ---
 
-## Sintassi
+## Quando usarlo
 
+### Quando usarli
+- Parametri opzionali.
+- Valori di configurazione.
+- Oggetti di opzioni.
+- Funzioni con fallback ragionevoli.
+- API piu auto-documentanti.
+
+---
+
+## Come funziona
+
+### undefined vs null
+Il default si applica solo con `undefined`.
+
+```js
+function show(value = "default") {
+  console.log(value);
+}
+
+show();          // "default"
+show(undefined); // "default"
+show(null);      // null
+show("");        // ""
+```
+
+`null` e considerato un valore passato intenzionalmente.
+
+---
+### Espressioni come default
+Il default puo essere il risultato di una espressione.
+
+```js
+function createUser(id = crypto.randomUUID()) {
+  return { id };
+}
+```
+
+L'espressione viene valutata al momento della chiamata, non alla definizione della funzione.
+
+---
+### Parametri precedenti
+Un parametro puo usare parametri dichiarati prima.
+
+```js
+function createRectangle(width, height = width) {
+  return {
+    width,
+    height,
+    area: width * height,
+  };
+}
+
+console.log(createRectangle(10).area); // 100
+```
+
+Non puo invece usare parametri dichiarati dopo.
+
+---
+### Default con destructuring
+Molto utile con oggetti di opzioni.
+
+```js
+function connect({
+  host = "localhost",
+  port = 5432,
+  secure = false,
+} = {}) {
+  return `${secure ? "https" : "http"}://${host}:${port}`;
+}
+```
+
+Il `= {}` finale evita errore quando la funzione viene chiamata senza argomenti.
+
+```js
+connect();
+```
+
+---
+
+## API / Sintassi
+
+### Sintassi
 ```js
 function greet(name = "Guest") {
   return `Ciao ${name}`;
@@ -45,90 +127,37 @@ Questo pero tratta anche `""`, `0` o `false` come mancanti.
 
 ---
 
-## undefined vs null
+## Esempio pratico
 
-Il default si applica solo con `undefined`.
-
-```js
-function show(value = "default") {
-  console.log(value);
-}
-
-show();          // "default"
-show(undefined); // "default"
-show(null);      // null
-show("");        // ""
-```
-
-`null` e considerato un valore passato intenzionalmente.
-
----
-
-## Espressioni come default
-
-Il default puo essere il risultato di una espressione.
+Funzione con opzioni:
 
 ```js
-function createUser(id = crypto.randomUUID()) {
-  return { id };
-}
-```
-
-L'espressione viene valutata al momento della chiamata, non alla definizione della funzione.
-
----
-
-## Parametri precedenti
-
-Un parametro puo usare parametri dichiarati prima.
-
-```js
-function createRectangle(width, height = width) {
+function createRequest(url, {
+  method = "GET",
+  headers = {},
+  timeout = 5000,
+} = {}) {
   return {
-    width,
-    height,
-    area: width * height,
+    url,
+    method,
+    headers,
+    timeout,
   };
 }
 
-console.log(createRectangle(10).area); // 100
+createRequest("/api/users");
+createRequest("/api/users", { method: "POST" });
 ```
 
-Non puo invece usare parametri dichiarati dopo.
+Il default rende esplicito il comportamento normale e permette di specificare solo le opzioni che cambiano.
 
----
+## Varianti
 
-## Default con destructuring
-
-Molto utile con oggetti di opzioni.
-
-```js
-function connect({
-  host = "localhost",
-  port = 5432,
-  secure = false,
-} = {}) {
-  return `${secure ? "https" : "http"}://${host}:${port}`;
-}
-```
-
-Il `= {}` finale evita errore quando la funzione viene chiamata senza argomenti.
-
-```js
-connect();
-```
-
----
-
-## Quando usarli
-
-- Parametri opzionali.
-- Valori di configurazione.
-- Oggetti di opzioni.
-- Funzioni con fallback ragionevoli.
-- API piu auto-documentanti.
-
----
+- **Default semplice**: `function fn(value = 1)`.
+- **Default da espressione**: `function fn(id = crypto.randomUUID())`.
+- **Default basato su parametro precedente**: `function fn(width, height = width)`.
+- **Default con destructuring**: `function fn({ limit = 10 } = {})`.
+- **Fallback nullish dentro la funzione**: utile quando anche `null` deve attivare il default.
 
 ## Errori comuni
 

@@ -1,5 +1,5 @@
 ﻿---
-date: 2026-05-20
+date: 2026-06-02
 area: Programmazione
 topic: Python
 type: operational-note
@@ -21,8 +21,23 @@ related: []
 
 **BeautifulSoup** analizza HTML e XML, permettendo di estrarre dati da pagine web.
 
-## Esempio
+## Quando usarlo
 
+- Estrazione da HTML statico.
+- Pulizia markup.
+- Parsing di pagine semplici.
+
+## Come funziona
+
+Contenuto da sviluppare: nella nota originale questa sezione non era presente o era solo una traccia.
+
+## API / Sintassi
+
+Contenuto da sviluppare: nella nota originale questa sezione non era presente o era solo una traccia.
+
+## Esempio pratico
+
+### Esempio
 ```python
 import requests
 from bs4 import BeautifulSoup
@@ -32,50 +47,28 @@ soup = BeautifulSoup(html, "html.parser")
 
 title = soup.select_one("h1").get_text(strip=True)
 ```
-
-## Quando usarlo
-
-- Estrazione da HTML statico.
-- Pulizia markup.
-- Parsing di pagine semplici.
-
-## Attenzione
-
-- Rispetta robots.txt, termini d'uso e limiti di traffico.
-- Per siti dinamici puo servire un browser automation tool.
-- Gestisci errori HTTP e cambiamenti del markup.
-
-## Obiettivo
-
-Da completare: descrivere cosa ottenere in pratica.
-
-## Procedura
-
+### Procedura
 1. Da completare.
 2. Da completare.
 3. Da completare.
 
-## Snippet
+## Varianti
 
-```text
-Da completare con codice o comando riutilizzabile.
-```
+Contenuto da sviluppare: nella nota originale questa sezione non era presente o era solo una traccia.
 
-## Adattamenti comuni
+## Errori comuni
 
-- Da completare: varianti per casi frequenti.
+### Attenzione
+- Rispetta robots.txt, termini d'uso e limiti di traffico.
+- Per siti dinamici puo servire un browser automation tool.
+- Gestisci errori HTTP e cambiamenti del markup.
 
-## Debug rapido
+## Checklist
 
-- Da completare: controlli rapidi in caso di errore.
-
-## Checklist finale
-
-- Da completare: verifiche finali.
+Contenuto da sviluppare: nella nota originale questa sezione non era presente o era solo una traccia.
 
 ## Collegamenti
+
 - [[Programmazione/Python/Pagine/HTTPX e requests|HTTPX e requests]]
 - [[Programmazione/Python/Pagine/Gestione File|Gestione File]]
 - [[Programmazione/Python/Pagine/Automazione file e script|Automazione file e script]]
-
-

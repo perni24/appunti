@@ -1,5 +1,5 @@
 ﻿---
-date: 2026-05-20
+date: 2026-06-02
 area: Programmazione
 topic: Python
 type: technical-note
@@ -29,48 +29,37 @@ related: []
 - Data science.
 - Didattica.
 
-## Limiti
+## Come funziona
 
-I notebook possono diventare difficili da versionare e riprodurre se celle, stato e ordine di esecuzione non sono controllati.
-
-## Buone pratiche
-
+### Buone pratiche
 - Eseguire notebook dall'inizio alla fine.
 - Spostare logica riusabile in moduli `.py`.
 - Versionare dati di input o descrivere come ottenerli.
 - Pulire output pesanti se non servono.
 
-## Come funziona
-
-Da completare: spiegare il meccanismo principale o il comportamento tecnico.
-
 ## API / Sintassi
 
-```text
-Da completare con API o sintassi principale.
-```
+Contenuto da sviluppare: nella nota originale questa sezione non era presente o era solo una traccia.
 
 ## Esempio pratico
 
-```text
-Da completare con un esempio pratico.
-```
+Contenuto da sviluppare: nella nota originale questa sezione non era presente o era solo una traccia.
 
 ## Varianti
 
-- Da completare: varianti, alternative o differenze rispetto ad approcci simili.
+### Limiti
+I notebook possono diventare difficili da versionare e riprodurre se celle, stato e ordine di esecuzione non sono controllati.
 
 ## Errori comuni
 
-Da completare durante revisione.
+Contenuto da sviluppare: nella nota originale questa sezione non era presente o era solo una traccia.
 
 ## Checklist
 
-- Da completare: controlli essenziali prima di usare questo concetto in pratica.
+Contenuto da sviluppare: nella nota originale questa sezione non era presente o era solo una traccia.
 
 ## Collegamenti
+
 - [[Programmazione/Python/Pagine/pandas|pandas]]
 - [[Programmazione/Python/Pagine/NumPy|NumPy]]
 - [[Programmazione/Python/Pagine/Ambienti Virtuali|Ambienti Virtuali]]
-
-

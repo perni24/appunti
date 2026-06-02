@@ -1,5 +1,5 @@
----
-date: 2026-05-13
+﻿---
+date: 2026-06-02
 area: Programmazione
 topic: JavaScript
 type: technical-note
@@ -13,6 +13,9 @@ related: [Web Workers, Fetch API, Browser Storage, CORS]
 
 # Service Workers e PWA
 
+## Sintesi
+
+### Testo introduttivo
 I **Service Workers** sono script JavaScript eseguiti dal browser in background, separati dalla pagina web.
 
 Permettono di intercettare richieste di rete, gestire cache, supportare modalita offline, ricevere push notification e creare esperienze simili ad app native.
@@ -21,8 +24,24 @@ Una **PWA** (**Progressive Web App**) e una applicazione web che usa standard we
 
 ---
 
-## 1. Cos'e un Service Worker
+## Quando usarlo
 
+Usa service worker e PWA quando l'app deve migliorare esperienza offline, caching, installabilita o gestione di risorse di rete.
+
+Casi comuni:
+
+- cache di asset statici;
+- navigazione offline;
+- app installabile;
+- update controllati;
+- strategie cache-first o network-first;
+- background sync o push notification, dove supportati.
+
+Evita service worker se non hai una strategia chiara di cache e aggiornamento: possono rendere il debug piu difficile.
+
+## Come funziona
+
+### 1. Cos'e un Service Worker
 Un Service Worker e un worker speciale controllato dal browser.
 
 Caratteristiche principali:
@@ -38,9 +57,7 @@ Caratteristiche principali:
 Non va trattato come un normale script persistente sempre attivo.
 
 ---
-
-## 2. Registrare un Service Worker
-
+### 2. Registrare un Service Worker
 La registrazione avviene dal codice della pagina.
 
 ```js
@@ -62,9 +79,7 @@ Il file `/sw.js` definisce la logica del Service Worker.
 Lo scope dipende dalla posizione del file. Un Service Worker in `/sw.js` puo controllare l'intero sito. Un Service Worker in `/app/sw.js` controlla solo `/app/` e sotto-percorsi.
 
 ---
-
-## 3. Lifecycle
-
+### 3. Lifecycle
 Il ciclo di vita di un Service Worker ha fasi precise:
 
 - **register**: la pagina registra il worker;
@@ -80,9 +95,7 @@ register -> install -> waiting -> activate -> fetch
 Il lifecycle e intenzionalmente rigoroso per evitare che una nuova versione rompa pagine ancora aperte con codice vecchio.
 
 ---
-
-## 4. Install event
-
+### 4. Install event
 Durante `install` si possono salvare in cache risorse essenziali.
 
 ```js
@@ -109,9 +122,7 @@ self.addEventListener("install", event => {
 Se la Promise fallisce, l'installazione fallisce.
 
 ---
-
-## 5. Activate event
-
+### 5. Activate event
 Durante `activate` si puliscono cache vecchie o dati non piu necessari.
 
 ```js
@@ -133,9 +144,7 @@ self.addEventListener("activate", event => {
 Questa fase e importante per evitare accumulo di cache obsolete.
 
 ---
-
-## 6. Fetch event
-
+### 6. Fetch event
 Il Service Worker puo intercettare richieste di rete.
 
 ```js
@@ -156,30 +165,7 @@ self.addEventListener("fetch", event => {
 - una combinazione di strategie.
 
 ---
-
-## 7. Cache API
-
-La Cache API permette di salvare coppie richiesta/risposta.
-
-```js
-const cache = await caches.open("assets-v1");
-
-await cache.add("/styles.css");
-await cache.addAll(["/index.html", "/app.js"]);
-
-const response = await cache.match("/app.js");
-
-await cache.delete("/styles.css");
-```
-
-La Cache API e asincrona e disponibile sia nel Service Worker sia nella pagina, anche se il caso piu comune e usarla nel Service Worker.
-
-Non va confusa con `localStorage` o `IndexedDB`: la Cache API e pensata per risposte HTTP.
-
----
-
-## 8. Strategie di caching
-
+### 8. Strategie di caching
 ### Cache first
 
 Prima controlla la cache, poi la rete.
@@ -235,9 +221,7 @@ async function staleWhileRevalidate(request) {
 Utile per migliorare velocita percepita mantenendo dati abbastanza aggiornati.
 
 ---
-
-## 9. Offline fallback
-
+### 9. Offline fallback
 Una PWA dovrebbe gestire il caso offline in modo esplicito.
 
 ```js
@@ -255,9 +239,7 @@ In questo caso, se una navigazione fallisce per assenza di rete, viene mostrata 
 La pagina `/offline.html` deve essere salvata in cache durante `install`.
 
 ---
-
-## 10. Aggiornamento del Service Worker
-
+### 10. Aggiornamento del Service Worker
 Il browser controlla periodicamente se il file del Service Worker e cambiato.
 
 Quando trova una nuova versione:
@@ -270,9 +252,7 @@ Quando trova una nuova versione:
 Questo evita incoerenze tra vecchio codice pagina e nuovo Service Worker.
 
 ---
-
-## 11. skipWaiting e clients.claim
-
+### 11. skipWaiting e clients.claim
 `skipWaiting()` forza il nuovo worker ad attivarsi subito.
 
 ```js
@@ -292,9 +272,7 @@ self.addEventListener("activate", event => {
 Questi metodi sono potenti, ma vanno usati con attenzione: possono creare mismatch se la pagina aperta usa asset vecchi e il Service Worker nuovo serve asset diversi.
 
 ---
-
-## 12. Comunicazione con la pagina
-
+### 12. Comunicazione con la pagina
 La pagina puo inviare messaggi al Service Worker.
 
 ```js
@@ -318,9 +296,7 @@ self.addEventListener("message", event => {
 La comunicazione e utile per aggiornamenti, debug, pulizia cache e sincronizzazione stato.
 
 ---
-
-## 13. Web App Manifest
-
+### 13. Web App Manifest
 Una PWA usa un file manifest per dichiarare metadati dell'app.
 
 ```json
@@ -355,9 +331,7 @@ Il manifest si collega nell'HTML.
 Il manifest contribuisce a installabilita, nome app, icone, colore tema e comportamento di apertura.
 
 ---
-
-## 14. Requisiti comuni di una PWA
-
+### 14. Requisiti comuni di una PWA
 Una PWA solida di solito include:
 
 - HTTPS;
@@ -373,9 +347,7 @@ Una PWA solida di solito include:
 Non tutti i browser applicano gli stessi criteri, quindi va testata sugli ambienti target.
 
 ---
-
-## 15. Push notification
-
+### 15. Push notification
 I Service Workers possono ricevere push notification anche quando la pagina non e aperta.
 
 Schema generale:
@@ -415,9 +387,7 @@ self.addEventListener("push", event => {
 Le push notification richiedono permesso utente e infrastruttura backend.
 
 ---
-
-## 16. Background Sync
-
+### 16. Background Sync
 La Background Sync API permette di rimandare operazioni finche la rete torna disponibile.
 
 Esempio concettuale:
@@ -441,9 +411,7 @@ E utile per form, messaggi o azioni create offline e inviate appena possibile.
 Il supporto va verificato per i browser target.
 
 ---
-
-## 17. Debugging
-
+### 17. Debugging
 Nei browser Chromium, i Service Workers si controllano da DevTools.
 
 Percorsi utili:
@@ -466,9 +434,7 @@ Operazioni frequenti:
 - controllare il manifest.
 
 ---
-
-## 18. Sicurezza
-
+### 18. Sicurezza
 I Service Workers sono potenti perche possono intercettare richieste.
 
 Per questo:
@@ -484,35 +450,53 @@ Un Service Worker compromesso puo alterare il comportamento dell'app fino a quan
 
 ---
 
-## 19. Best practice
+## API / Sintassi
 
-- Versiona le cache con nomi espliciti.
-- Pulisci cache vecchie in `activate`.
-- Usa strategie diverse per asset statici e dati API.
-- Non cacheare risposte private senza una strategia chiara.
-- Gestisci una pagina offline per le navigazioni.
-- Testa update e rollback del Service Worker.
-- Non usare `skipWaiting()` senza capire le conseguenze.
-- Usa DevTools per verificare cache, manifest e stato del worker.
-- Mantieni il Service Worker piccolo e focalizzato.
+### 7. Cache API
+La Cache API permette di salvare coppie richiesta/risposta.
 
----
+```js
+const cache = await caches.open("assets-v1");
 
-## 20. Errori comuni
+await cache.add("/styles.css");
+await cache.addAll(["/index.html", "/app.js"]);
 
-- Pensare che il Service Worker abbia accesso diretto al DOM.
-- Dimenticare che funziona solo su HTTPS o localhost.
-- Non gestire la richiesta `fetch` per navigazioni offline.
-- Cacheare tutto senza strategia.
-- Non cancellare cache vecchie.
-- Usare `skipWaiting()` creando mismatch tra asset vecchi e nuovi.
-- Dimenticare che il Service Worker puo restare installato anche dopo deploy successivi.
-- Confondere Cache API con `localStorage`.
+const response = await cache.match("/app.js");
+
+await cache.delete("/styles.css");
+```
+
+La Cache API e asincrona e disponibile sia nel Service Worker sia nella pagina, anche se il caso piu comune e usarla nel Service Worker.
+
+Non va confusa con `localStorage` o `IndexedDB`: la Cache API e pensata per risposte HTTP.
 
 ---
 
-## 21. Mappa mentale
+## Esempio pratico
 
+Registrazione base:
+
+```js
+if ("serviceWorker" in navigator) {
+  window.addEventListener("load", async () => {
+    await navigator.serviceWorker.register("/service-worker.js");
+  });
+}
+```
+
+Service worker minimale:
+
+```js
+self.addEventListener("fetch", (event) => {
+  event.respondWith(fetch(event.request));
+});
+```
+
+Questo esempio non aggiunge caching: mostra solo il punto in cui il service worker intercetta le richieste.
+
+## Varianti
+
+### 21. Mappa mentale
 ```text
 Service Workers e PWA
 |
@@ -547,8 +531,38 @@ Service Workers e PWA
 
 ---
 
-## 22. Collegamenti
+## Errori comuni
 
+### 20. Errori comuni
+- Pensare che il Service Worker abbia accesso diretto al DOM.
+- Dimenticare che funziona solo su HTTPS o localhost.
+- Non gestire la richiesta `fetch` per navigazioni offline.
+- Cacheare tutto senza strategia.
+- Non cancellare cache vecchie.
+- Usare `skipWaiting()` creando mismatch tra asset vecchi e nuovi.
+- Dimenticare che il Service Worker puo restare installato anche dopo deploy successivi.
+- Confondere Cache API con `localStorage`.
+
+---
+
+## Checklist
+
+### 19. Best practice
+- Versiona le cache con nomi espliciti.
+- Pulisci cache vecchie in `activate`.
+- Usa strategie diverse per asset statici e dati API.
+- Non cacheare risposte private senza una strategia chiara.
+- Gestisci una pagina offline per le navigazioni.
+- Testa update e rollback del Service Worker.
+- Non usare `skipWaiting()` senza capire le conseguenze.
+- Usa DevTools per verificare cache, manifest e stato del worker.
+- Mantieni il Service Worker piccolo e focalizzato.
+
+---
+
+## Collegamenti
+
+### 22. Collegamenti
 - [[Fetch API]]
 - [[Promises]]
 - [[Promise avanzate]]

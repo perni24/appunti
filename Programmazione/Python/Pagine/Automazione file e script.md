@@ -1,5 +1,5 @@
 ﻿---
-date: 2026-05-20
+date: 2026-06-02
 area: Programmazione
 topic: Python
 type: operational-note
@@ -21,8 +21,13 @@ related: []
 
 Python e molto usato per automatizzare operazioni su file, cartelle, dati e comandi di sistema.
 
-## Concetto chiave
+## Quando usarlo
 
+Contenuto da sviluppare: nella nota originale questa sezione non era presente o era solo una traccia.
+
+## Come funziona
+
+### Concetto chiave
 Script piccoli e chiari possono sostituire procedure manuali ripetitive.
 
 ```python
@@ -32,14 +37,27 @@ for path in Path("logs").glob("*.log"):
     if path.stat().st_size == 0:
         path.unlink()
 ```
-
-## Casi comuni
-
+### Casi comuni
 - Rinominare file.
 - Convertire formati.
 - Pulire cartelle.
 - Generare report.
 - Lanciare comandi esterni.
+
+## API / Sintassi
+
+Contenuto da sviluppare: nella nota originale questa sezione non era presente o era solo una traccia.
+
+## Esempio pratico
+
+### Procedura
+1. Da completare.
+2. Da completare.
+3. Da completare.
+
+## Varianti
+
+Contenuto da sviluppare: nella nota originale questa sezione non era presente o era solo una traccia.
 
 ## Errori comuni
 
@@ -47,41 +65,12 @@ for path in Path("logs").glob("*.log"):
 - Usare path come stringhe invece di `pathlib`.
 - Non gestire encoding e file bloccati.
 
-## Obiettivo
+## Checklist
 
-Da completare: descrivere cosa ottenere in pratica.
-
-## Quando usarlo
-
-- Da completare: indicare scenari pratici in cui questa nota e utile.
-
-## Procedura
-
-1. Da completare.
-2. Da completare.
-3. Da completare.
-
-## Snippet
-
-```text
-Da completare con codice o comando riutilizzabile.
-```
-
-## Adattamenti comuni
-
-- Da completare: varianti per casi frequenti.
-
-## Debug rapido
-
-- Da completare: controlli rapidi in caso di errore.
-
-## Checklist finale
-
-- Da completare: verifiche finali.
+Contenuto da sviluppare: nella nota originale questa sezione non era presente o era solo una traccia.
 
 ## Collegamenti
+
 - [[Programmazione/Python/Pagine/Gestione File|Gestione File]]
 - [[Programmazione/Python/Pagine/Subprocess|Subprocess]]
 - [[Programmazione/Python/Pagine/Standard Library|Standard Library]]
-
-

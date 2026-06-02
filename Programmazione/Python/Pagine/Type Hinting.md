@@ -1,5 +1,5 @@
----
-date: 2026-05-14
+﻿---
+date: 2026-06-02
 area: Programmazione
 topic: Python
 type: technical-note
@@ -10,13 +10,20 @@ aliases: [Type Hinting]
 prerequisites: []
 related: []
 ---
+
 # Type Hinting in Python
 
 ## Sintesi
 
 Nota su Type Hinting in Python. Riassume il concetto, la sintassi principale e i punti da ricordare durante studio, sviluppo o debugging.
 
-## Concetto chiave
+## Quando usarlo
+
+Contenuto da sviluppare: nella nota originale questa sezione non era presente o era solo una traccia.
+
+## Come funziona
+
+### Concetto chiave
 Il **Type Hinting** e il sistema di annotazioni dei tipi introdotto in Python per rendere il codice piu leggibile, piu analizzabile e meno soggetto a errori. Le annotazioni non cambiano da sole il comportamento runtime del programma, ma permettono a IDE, linters e type checker statici di verificare incoerenze prima dell'esecuzione.
 
 In pratica, il type hinting aggiunge un contratto esplicito al codice:
@@ -28,38 +35,7 @@ In pratica, il type hinting aggiunge un contratto esplicito al codice:
 > Python resta un linguaggio dinamico. I type hints non trasformano Python in un linguaggio staticamente tipizzato in senso forte: servono come supporto al tooling e alla chiarezza del codice.
 
 ---
-
-##  Sintassi di base
-
-### Annotare parametri e valore di ritorno
-
-```python
-def greet(name: str) -> str:
-    return f"Ciao {name}"
-```
-
-Qui:
-- `name: str` indica che il parametro atteso e una stringa;
-- `-> str` indica che la funzione restituisce una stringa.
-
-### Annotare variabili
-
-```python
-user_count: int = 0
-names: list[str] = ["Luca", "Marco"]
-```
-
-### Funzione che non restituisce nulla
-
-```python
-def log_message(message: str) -> None:
-    print(message)
-```
-
----
-
-##  Esempi Pratici
-
+### Esempi Pratici
 ### Liste, dizionari e tuple
 
 ```python
@@ -93,9 +69,7 @@ def normalize(value: int | float) -> float:
 Nelle versioni moderne di Python, `int | float` e spesso preferibile a `Union[int, float]`.
 
 ---
-
-##  Funzionamento Interno (Teoria)
-
+### Funzionamento Interno (Teoria)
 ### Le annotazioni sono metadati
 Python memorizza i type hints nell'attributo `__annotations__`.
 
@@ -132,9 +106,7 @@ Il type hinting diventa utile quando entra in gioco il tooling:
 Il type hinting funziona meglio quando funzioni, classi e moduli hanno responsabilita chiare. Se il codice e troppo ambiguo o eccessivamente dinamico, i tipi diventano rumorosi o poco affidabili.
 
 ---
-
-##  Tipi utili da conoscere
-
+### Tipi utili da conoscere
 ### `Any`
 
 ```python
@@ -194,9 +166,7 @@ class SupportsClose(Protocol):
 `Protocol` permette di descrivere comportamenti attesi senza dipendere da una classe concreta.
 
 ---
-
-##  Type Hinting e tooling
-
+### Type Hinting e tooling
 Il valore reale del type hinting emerge quando il codice viene controllato con strumenti esterni.
 
 ### Tool comuni
@@ -217,9 +187,7 @@ Questi strumenti possono segnalare:
 - accessi a membri inesistenti.
 
 ---
-
-##  Type Hinting nelle funzioni e nelle classi
-
+### Type Hinting nelle funzioni e nelle classi
 Le annotazioni sono particolarmente utili in:
 - [[Programmazione/Python/Pagine/Funzioni]];
 - metodi di classi;
@@ -243,8 +211,47 @@ Questo rende esplicita l'interfaccia della classe gia a colpo d'occhio.
 
 ---
 
-##  Best Practices & "Gotchas"
+## API / Sintassi
 
+### Sintassi di base
+### Annotare parametri e valore di ritorno
+
+```python
+def greet(name: str) -> str:
+    return f"Ciao {name}"
+```
+
+Qui:
+- `name: str` indica che il parametro atteso e una stringa;
+- `-> str` indica che la funzione restituisce una stringa.
+
+### Annotare variabili
+
+```python
+user_count: int = 0
+names: list[str] = ["Luca", "Marco"]
+```
+
+### Funzione che non restituisce nulla
+
+```python
+def log_message(message: str) -> None:
+    print(message)
+```
+
+---
+
+## Esempio pratico
+
+Contenuto da sviluppare: nella nota originale questa sezione non era presente o era solo una traccia.
+
+## Varianti
+
+Contenuto da sviluppare: nella nota originale questa sezione non era presente o era solo una traccia.
+
+## Errori comuni
+
+### Best Practices & "Gotchas"
 -  **Annota prima le API pubbliche:** funzioni, metodi e moduli usati da altri.
 -  **Usa tipi concreti ma leggibili:** l'obiettivo e chiarezza, non esibire complessita.
 -  **Preferisci la sintassi moderna quando disponibile:** `list[str]`, `dict[str, int]`, `str | None`.
@@ -256,3 +263,11 @@ Questo rende esplicita l'interfaccia della classe gia a colpo d'occhio.
 -  **Attenzione ai nomi shadowing:** variabili o file con nomi come `typing.py` possono rompere import e tooling.
 
 ---
+
+## Checklist
+
+Contenuto da sviluppare: nella nota originale questa sezione non era presente o era solo una traccia.
+
+## Collegamenti
+
+- [[Programmazione/Python/Indice python|Indice Python]]

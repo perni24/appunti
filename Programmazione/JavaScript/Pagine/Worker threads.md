@@ -1,5 +1,5 @@
 ﻿---
-date: 2026-05-20
+date: 2026-06-02
 area: Programmazione
 topic: JavaScript
 type: technical-note
@@ -21,8 +21,21 @@ related: []
 
 I **worker threads** permettono a Node.js di eseguire codice JavaScript in thread separati. Sono utili per lavoro CPU-bound che bloccherebbe l'event loop principale.
 
-## Concetto chiave
+## Quando usarlo
 
+### Quando usarli
+- Compressione o cifratura pesante.
+- Elaborazione immagini.
+- Parsing grande e costoso.
+- Calcoli numerici.
+### Quando evitarli
+- Operazioni I/O-bound normali.
+- Task piccoli dove il costo di creazione del worker supera il beneficio.
+- Condivisione di stato complessa.
+
+## Come funziona
+
+### Concetto chiave
 Node.js gestisce bene I/O concorrente, ma il codice JavaScript CPU-bound gira su un singolo thread. I worker spostano calcoli pesanti fuori dal thread principale.
 
 ```javascript
@@ -35,54 +48,92 @@ worker.on("message", result => {
 });
 ```
 
-## Quando usarli
-
-- Compressione o cifratura pesante.
-- Elaborazione immagini.
-- Parsing grande e costoso.
-- Calcoli numerici.
-
-## Quando evitarli
-
-- Operazioni I/O-bound normali.
-- Task piccoli dove il costo di creazione del worker supera il beneficio.
-- Condivisione di stato complessa.
-
-## Quando usarlo
-
-- Da completare: indicare scenari pratici in cui questa nota e utile.
-
-## Come funziona
-
-Da completare: spiegare il meccanismo principale o il comportamento tecnico.
-
 ## API / Sintassi
 
-```text
-Da completare con API o sintassi principale.
+In Node.js i worker thread si usano tramite il modulo `worker_threads`.
+
+```javascript
+import { Worker, parentPort, workerData } from "node:worker_threads";
+```
+
+Nel thread principale crei un `Worker`:
+
+```javascript
+const worker = new Worker(new URL("./worker.js", import.meta.url), {
+  workerData: { input: 42 },
+});
+
+worker.on("message", (result) => {
+  console.log(result);
+});
+```
+
+Nel file worker usi `parentPort` per comunicare:
+
+```javascript
+parentPort.postMessage(workerData.input * 2);
 ```
 
 ## Esempio pratico
 
-```text
-Da completare con un esempio pratico.
+Esempio per spostare lavoro CPU-bound fuori dal thread principale:
+
+```javascript
+// main.js
+import { Worker } from "node:worker_threads";
+
+function runJob(payload) {
+  return new Promise((resolve, reject) => {
+    const worker = new Worker(new URL("./job.js", import.meta.url), {
+      workerData: payload,
+    });
+
+    worker.once("message", resolve);
+    worker.once("error", reject);
+    worker.once("exit", (code) => {
+      if (code !== 0) {
+        reject(new Error(`Worker exited with ${code}`));
+      }
+    });
+  });
+}
+```
+
+```javascript
+// job.js
+import { parentPort, workerData } from "node:worker_threads";
+
+const result = heavyCalculation(workerData);
+parentPort.postMessage(result);
 ```
 
 ## Varianti
 
-- Da completare: varianti, alternative o differenze rispetto ad approcci simili.
+- **Worker singolo**: utile per job rari o molto pesanti.
+- **Worker pool**: riusa un numero fisso di worker per molti job.
+- **Transferable objects**: trasferiscono buffer senza copiarli.
+- **SharedArrayBuffer**: memoria condivisa, da usare solo con sincronizzazione chiara.
+- **Child process**: alternativa piu isolata, con processo separato.
 
 ## Errori comuni
 
-Da completare durante revisione.
+- Usare worker thread per I/O normale, dove async I/O di Node.js basta gia.
+- Creare troppi worker invece di usare un pool.
+- Passare grandi oggetti copiati invece di usare transfer quando possibile.
+- Dimenticare gestione di `error` ed `exit`.
+- Condividere memoria senza una strategia chiara di sincronizzazione.
 
 ## Checklist
 
-- Da completare: controlli essenziali prima di usare questo concetto in pratica.
+- Usa worker thread solo per lavoro CPU-bound.
+- Limita il numero di worker attivi.
+- Gestisci `message`, `error` ed `exit`.
+- Valuta un worker pool per job frequenti.
+- Misura overhead di serializzazione e trasferimento dati.
+- Evita stato condiviso se non e necessario.
 
 ## Collegamenti
+
 - [[Programmazione/JavaScript/Pagine/Event Loop|Event Loop]]
 - [[Programmazione/JavaScript/Pagine/Web Workers|Web Workers]]
 - [[Programmazione/JavaScript/Pagine/Node.js Basics|Node.js Basics]]
-
-

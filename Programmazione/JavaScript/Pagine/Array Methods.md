@@ -1,5 +1,5 @@
----
-date: 2026-05-13
+﻿---
+date: 2026-06-02
 area: Programmazione
 topic: JavaScript
 type: technical-note
@@ -21,8 +21,9 @@ Molti metodi restituiscono un nuovo array, altri modificano l'array originale. Q
 
 ---
 
-## Quando usarli
+## Quando usarlo
 
+### Quando usarli
 - Usa `map()` per trasformare ogni elemento.
 - Usa `filter()` per tenere solo alcuni elementi.
 - Usa `find()` per cercare il primo elemento che soddisfa una condizione.
@@ -32,8 +33,9 @@ Molti metodi restituiscono un nuovo array, altri modificano l'array originale. Q
 
 ---
 
-## map
+## Come funziona
 
+### map
 `map()` crea un nuovo array applicando una funzione a ogni elemento.
 
 ```js
@@ -46,9 +48,7 @@ console.log(doubled); // [2, 4, 6]
 Non modifica l'array originale.
 
 ---
-
-## filter
-
+### filter
 `filter()` crea un nuovo array con gli elementi che superano una condizione.
 
 ```js
@@ -61,9 +61,7 @@ const activeUsers = users.filter(user => user.active);
 ```
 
 ---
-
-## find e findIndex
-
+### find e findIndex
 `find()` restituisce il primo elemento trovato.
 
 ```js
@@ -84,9 +82,7 @@ const index = users.findIndex(user => user.id === 2);
 ```
 
 ---
-
-## some ed every
-
+### some ed every
 `some()` verifica se almeno un elemento soddisfa la condizione.
 
 ```js
@@ -102,9 +98,7 @@ console.log(numbers.every(number => number > 0)); // true
 ```
 
 ---
-
-## reduce
-
+### reduce
 `reduce()` accumula un risultato.
 
 ```js
@@ -133,9 +127,7 @@ const countByRole = users.reduce((acc, user) => {
 ```
 
 ---
-
-## forEach
-
+### forEach
 `forEach()` esegue una funzione per ogni elemento e restituisce `undefined`.
 
 ```js
@@ -153,9 +145,7 @@ const upperNames = names.map(name => name.toUpperCase());
 ```
 
 ---
-
-## includes
-
+### includes
 `includes()` verifica se un array contiene un valore.
 
 ```js
@@ -171,9 +161,7 @@ console.log([{ id: 1 }].includes({ id: 1 })); // false
 ```
 
 ---
-
-## sort
-
+### sort
 `sort()` ordina l'array in-place.
 
 ```js
@@ -201,9 +189,7 @@ const sorted = [...numbers].sort((a, b) => a - b);
 ```
 
 ---
-
-## Metodi che mutano
-
+### Metodi che mutano
 Alcuni metodi modificano l'array originale:
 
 - `push()`;
@@ -227,9 +213,7 @@ Altri restituiscono nuovi array o valori:
 - `toSpliced()`.
 
 ---
-
-## Async e map
-
+### Async e map
 `map(async ...)` restituisce un array di Promise.
 
 ```js
@@ -247,6 +231,57 @@ const users = await Promise.all(
 ```
 
 ---
+
+## API / Sintassi
+
+Metodi frequenti:
+
+```js
+array.map(callback);
+array.filter(callback);
+array.find(callback);
+array.some(callback);
+array.every(callback);
+array.reduce(callback, initialValue);
+array.forEach(callback);
+array.includes(value);
+array.sort(compareFn);
+```
+
+Callback tipica:
+
+```js
+array.map((value, index, array) => {
+  return transform(value);
+});
+```
+
+Alcuni metodi restituiscono nuovi array, altri mutano l'array originale. Controlla sempre questo dettaglio.
+
+## Esempio pratico
+
+Trasformare una lista utenti in nomi ordinati:
+
+```js
+const names = users
+  .filter((user) => user.active)
+  .map((user) => user.name.trim())
+  .filter((name) => name !== "")
+  .sort((a, b) => a.localeCompare(b));
+```
+
+La catena e leggibile se ogni passaggio ha uno scopo chiaro. Se la logica cresce, estrai funzioni con nome.
+
+## Varianti
+
+- **Trasformazione**: `map`.
+- **Filtro**: `filter`.
+- **Ricerca**: `find`, `findIndex`.
+- **Verifica**: `some`, `every`, `includes`.
+- **Accumulo**: `reduce`.
+- **Iterazione con side effect**: `forEach`.
+- **Ordinamento**: `sort`, attenzione perche muta l'array.
+- **Metodi immutabili moderni**: `toSorted`, `toReversed`, `toSpliced` dove supportati.
 
 ## Errori comuni
 

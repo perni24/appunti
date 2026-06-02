@@ -1,5 +1,5 @@
----
-date: 2026-05-14
+﻿---
+date: 2026-06-02
 area: Programmazione
 topic: Python
 type: technical-note
@@ -10,27 +10,12 @@ aliases: [Dizionari]
 prerequisites: []
 related: []
 ---
+
 # Dizionari in Python
 
 ## Sintesi
 
 Nota su Dizionari in Python. Riassume il concetto, la sintassi principale e i punti da ricordare durante studio, sviluppo o debugging.
-
-## Concetto chiave
-I **Dizionari** (`dict`) sono collezioni **mutabili** di elementi archiviati come coppie **Chiave-Valore** (*Key-Value*). Sono ottimizzati per il recupero rapido dei dati: invece di usare un indice numerico, si utilizza una chiave unica per "mappare" e trovare il valore associato.
-
----
-
-##  Sintassi e Operazioni Base
-
-### Creazione e Accesso
-Le chiavi devono essere **immutabili** (stringhe, numeri o tuple), mentre i valori possono essere di qualsiasi tipo.
-
-```python
-# Dizionari in Python
-
-## Sintesi
-
 Nota su Dizionari in Python. Riassume il concetto, la sintassi principale e i punti da ricordare durante studio, sviluppo o debugging.
 utente = {
     "id": 101,
@@ -39,21 +24,12 @@ utente = {
 }
 
 # Dizionari in Python
-
-## Sintesi
-
 Nota su Dizionari in Python. Riassume il concetto, la sintassi principale e i punti da ricordare durante studio, sviluppo o debugging.
 print(utente["nome"]) # "Luca"
 
 # Dizionari in Python
-
-## Sintesi
-
 Nota su Dizionari in Python. Riassume il concetto, la sintassi principale e i punti da ricordare durante studio, sviluppo o debugging.
 # Dizionari in Python
-
-## Sintesi
-
 Nota su Dizionari in Python. Riassume il concetto, la sintassi principale e i punti da ricordare durante studio, sviluppo o debugging.
 print(utente.get("telefono", "N/A")) # Restituisce "N/A" invece di un errore
 ```
@@ -66,8 +42,17 @@ utente["attivo"] = True                      # Aggiunta di una nuova coppia
 
 ---
 
-##  Metodi Principali
+## Quando usarlo
 
+Contenuto da sviluppare: nella nota originale questa sezione non era presente o era solo una traccia.
+
+## Come funziona
+
+### Concetto chiave
+I **Dizionari** (`dict`) sono collezioni **mutabili** di elementi archiviati come coppie **Chiave-Valore** (*Key-Value*). Sono ottimizzati per il recupero rapido dei dati: invece di usare un indice numerico, si utilizza una chiave unica per "mappare" e trovare il valore associato.
+
+---
+### Metodi Principali
 | Metodo | Descrizione |
 | :--- | :--- |
 | `.keys()` | Restituisce una vista di tutte le **chiavi**. |
@@ -77,8 +62,7 @@ utente["attivo"] = True                      # Aggiunta di una nuova coppia
 | `.pop(key)` | Rimuove la chiave specificata e ne restituisce il valore. |
 
 ---
-
-##  Iterazione sui Dizionari
+### Iterazione sui Dizionari
 Il modo più comune per iterare è usare `.items()` per ottenere sia la chiave che il valore contemporaneamente.
 
 ```python
@@ -87,9 +71,7 @@ for chiave, valore in utente.items():
 ```
 
 ---
-
-## Logic layer: Come funzionano i Dizionari?
-
+### Logic layer: Come funzionano i Dizionari?
 ### 1. Performance (Hash Table)
 I dizionari in Python sono implementati come **Hash Table**. Quando cerchi una chiave, Python calcola il suo "hash" per trovare direttamente la posizione in memoria.
 
@@ -102,3 +84,32 @@ Fino a Python 3.6, l'ordine degli elementi in un dizionario era casuale.
 **Da Python 3.7+**, i dizionari garantiscono di mantenere l'**ordine di inserimento** degli elementi.
 
 ---
+
+## API / Sintassi
+
+### Sintassi e Operazioni Base
+### Creazione e Accesso
+Le chiavi devono essere **immutabili** (stringhe, numeri o tuple), mentre i valori possono essere di qualsiasi tipo.
+
+```python
+# Dizionari in Python
+
+## Esempio pratico
+
+Contenuto da sviluppare: nella nota originale questa sezione non era presente o era solo una traccia.
+
+## Varianti
+
+Contenuto da sviluppare: nella nota originale questa sezione non era presente o era solo una traccia.
+
+## Errori comuni
+
+Contenuto da sviluppare: nella nota originale questa sezione non era presente o era solo una traccia.
+
+## Checklist
+
+Contenuto da sviluppare: nella nota originale questa sezione non era presente o era solo una traccia.
+
+## Collegamenti
+
+- [[Programmazione/Python/Indice python|Indice Python]]

@@ -1,5 +1,5 @@
----
-date: 2026-05-14
+﻿---
+date: 2026-06-02
 area: Programmazione
 topic: React
 type: technical-note
@@ -10,6 +10,7 @@ aliases: [Gestione della memoria e AbortController]
 prerequisites: []
 related: []
 ---
+
 # Gestione della memoria e AbortController
 
 ## Sintesi
@@ -30,8 +31,13 @@ In questo contesto, `AbortController` e uno strumento pratico per interrompere o
 
 ---
 
-## 1. Da dove nascono i problemi
+## Quando usarlo
 
+Contenuto da sviluppare: nella nota originale questa sezione non era presente o era solo una traccia.
+
+## Come funziona
+
+### 1. Da dove nascono i problemi
 I problemi tipici nascono dentro [[Programmazione/React/Pagine/useEffect]], quando un componente:
 - monta e avvia un side effect;
 - cambia dipendenze e riavvia lo stesso effetto;
@@ -47,9 +53,7 @@ Esempi comuni:
 Il rischio non e solo sprecare memoria: e anche sporcare lo stato della UI con risultati non piu validi.
 
 ---
-
-## 2. Cleanup in useEffect
-
+### 2. Cleanup in useEffect
 La prima difesa e la funzione di cleanup di [[Programmazione/React/Pagine/useEffect]].
 
 ```javascript
@@ -78,31 +82,7 @@ Questa regola vale per:
 - operazioni asincrone che supportano cancellazione.
 
 ---
-
-## 3. Il caso delle fetch API
-
-Un caso molto frequente e questo:
-
-```javascript
-useEffect(() => {
-  fetch(`/api/users/${userId}`)
-    .then(response => response.json())
-    .then(data => {
-      setUser(data);
-    });
-}, [userId]);
-```
-
-Il codice funziona, ma ha due problemi tipici:
-- se il componente si smonta, la richiesta puo completarsi comunque;
-- se `userId` cambia rapidamente, una risposta vecchia puo arrivare dopo quella nuova.
-
-Il secondo problema genera **race condition**: la UI mostra dati non coerenti con l'input piu recente.
-
----
-
-## 4. AbortController
-
+### 4. AbortController
 `AbortController` permette di creare un segnale di cancellazione da passare a `fetch`.
 
 ```javascript
@@ -141,9 +121,7 @@ Quando l'effetto viene pulito:
 Questo evita di processare una risposta che non serve piu.
 
 ---
-
-## 5. Perche AbortController e utile davvero
-
+### 5. Perche AbortController e utile davvero
 `AbortController` non serve solo a "silenziare warning". Serve a migliorare il comportamento reale dell'applicazione:
 - evita lavoro inutile lato client;
 - riduce il rischio di aggiornare stato non piu valido;
@@ -153,9 +131,7 @@ Questo evita di processare una risposta che non serve piu.
 Non sostituisce una buona architettura di data fetching, ma migliora molto i casi semplici e medi.
 
 ---
-
-## 6. AbortController non risolve tutto
-
+### 6. AbortController non risolve tutto
 Ci sono due limiti da capire bene.
 
 ### Non cancella qualsiasi API
@@ -167,9 +143,7 @@ Se hai richieste multiple, cache, retry, deduplicazione e sincronizzazione compl
 Quindi `AbortController` e utile, ma non va scambiato per una soluzione universale.
 
 ---
-
-## 7. Memory leak vs stale update
-
+### 7. Memory leak vs stale update
 Spesso si parla genericamente di "memory leak", ma conviene distinguere:
 
 ### Memory leak logico
@@ -187,9 +161,7 @@ Aggiornamento corretto dal punto di vista sintattico, ma sbagliato dal punto di 
 Nel lavoro React quotidiano, il secondo problema e spesso piu frequente del leak classico.
 
 ---
-
-## 8. Pattern pratici
-
+### 8. Pattern pratici
 ### Fetch con cleanup
 Usa `AbortController` quando fai richieste in `useEffect` che dipendono da props o stato.
 
@@ -226,9 +198,7 @@ useEffect(() => {
 La regola e semplice: se l'effetto registra qualcosa nel mondo esterno, deve quasi sempre anche smontarlo.
 
 ---
-
-## 9. Relazione con il rendering React
-
+### 9. Relazione con il rendering React
 Questi problemi non dipendono dal [[Programmazione/React/Pagine/Virtual DOM]] in senso stretto, ma dal fatto che React:
 - monta;
 - aggiorna;
@@ -244,8 +214,44 @@ Questo si collega bene a:
 
 ---
 
-## 10. Best Practices
+## API / Sintassi
 
+### 3. Il caso delle fetch API
+Un caso molto frequente e questo:
+
+```javascript
+useEffect(() => {
+  fetch(`/api/users/${userId}`)
+    .then(response => response.json())
+    .then(data => {
+      setUser(data);
+    });
+}, [userId]);
+```
+
+Il codice funziona, ma ha due problemi tipici:
+- se il componente si smonta, la richiesta puo completarsi comunque;
+- se `userId` cambia rapidamente, una risposta vecchia puo arrivare dopo quella nuova.
+
+Il secondo problema genera **race condition**: la UI mostra dati non coerenti con l'input piu recente.
+
+---
+
+## Esempio pratico
+
+Contenuto da sviluppare: nella nota originale questa sezione non era presente o era solo una traccia.
+
+## Varianti
+
+Contenuto da sviluppare: nella nota originale questa sezione non era presente o era solo una traccia.
+
+## Errori comuni
+
+Contenuto da sviluppare: nella nota originale questa sezione non era presente o era solo una traccia.
+
+## Checklist
+
+### 10. Best Practices
 1. **Ogni effetto che apre una risorsa deve avere una strategia di cleanup:** listener, timer, subscription e fetch non vanno lasciati impliciti.
 2. **Usa `AbortController` per le fetch dipendenti dal ciclo di vita del componente:** e il modo piu diretto per evitare lavoro inutile e risultati obsoleti.
 3. **Gestisci `AbortError` separatamente dagli errori reali:** una richiesta abortita non e un fallimento applicativo.
@@ -254,3 +260,7 @@ Questo si collega bene a:
 6. **Per scenari complessi valuta una libreria di data fetching:** caching, retry e deduplicazione sono spesso meglio gestiti da strumenti dedicati.
 
 ---
+
+## Collegamenti
+
+- [[Programmazione/React/Indice react|Indice React]]

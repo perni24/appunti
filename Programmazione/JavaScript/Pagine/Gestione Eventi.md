@@ -1,5 +1,5 @@
----
-date: 2026-05-13
+﻿---
+date: 2026-06-02
 area: Programmazione
 topic: JavaScript
 type: technical-note
@@ -21,8 +21,25 @@ JavaScript puo ascoltare questi eventi ed eseguire funzioni di callback.
 
 ---
 
-## addEventListener
+## Quando usarlo
 
+Usa la gestione eventi quando il codice deve reagire a interazioni utente o segnali del browser.
+
+Casi comuni:
+
+- click su pulsanti;
+- submit di form;
+- input di testo;
+- navigazione e caricamento pagina;
+- scorciatoie da tastiera;
+- menu, modali e dropdown;
+- liste con elementi dinamici.
+
+Quando molti elementi simili devono reagire allo stesso evento, valuta event delegation.
+
+## Come funziona
+
+### addEventListener
 `addEventListener()` e il metodo standard per registrare un listener.
 
 ```js
@@ -40,9 +57,7 @@ Vantaggi rispetto ad attributi HTML come `onclick`:
 - supporta opzioni come `once`, `passive`, `capture` e `signal`.
 
 ---
-
-## Event object
-
+### Event object
 Il browser passa al listener un oggetto evento.
 
 ```js
@@ -59,9 +74,7 @@ Differenza importante:
 - `event.currentTarget`: elemento su cui e registrato il listener.
 
 ---
-
-## preventDefault
-
+### preventDefault
 `preventDefault()` blocca il comportamento predefinito del browser.
 
 Esempio con form:
@@ -85,9 +98,7 @@ link.addEventListener("click", event => {
 ```
 
 ---
-
-## Propagazione
-
+### Propagazione
 Un evento attraversa il DOM in tre fasi:
 
 1. capturing;
@@ -113,9 +124,7 @@ document.querySelector("#child").addEventListener("click", () => {
 Di default, `addEventListener()` ascolta in fase di bubbling.
 
 ---
-
-## stopPropagation
-
+### stopPropagation
 `stopPropagation()` impedisce all'evento di continuare la propagazione.
 
 ```js
@@ -129,9 +138,7 @@ child.addEventListener("click", event => {
 Usalo con criterio: bloccare la propagazione puo rompere event delegation o listener globali.
 
 ---
-
-## Event delegation
-
+### Event delegation
 La delegazione consiste nel mettere un listener su un contenitore e gestire eventi dei figli.
 
 ```js
@@ -155,9 +162,7 @@ Vantaggi:
 - utile per liste, tabelle e menu.
 
 ---
-
-## Opzioni del listener
-
+### Opzioni del listener
 `addEventListener()` accetta un oggetto di opzioni.
 
 ```js
@@ -176,9 +181,7 @@ Opzioni comuni:
 - `signal`: collega il listener a un `AbortSignal`.
 
 ---
-
-## Rimuovere listener
-
+### Rimuovere listener
 Per rimuovere un listener devi passare la stessa funzione usata in registrazione.
 
 ```js
@@ -205,9 +208,7 @@ button.removeEventListener("click", () => {
 Le due arrow function sono riferimenti diversi.
 
 ---
-
-## Cleanup con AbortController
-
+### Cleanup con AbortController
 `AbortController` puo rimuovere listener in modo pulito.
 
 ```js
@@ -223,9 +224,7 @@ controller.abort();
 Utile quando una parte dell'interfaccia viene smontata o non serve piu.
 
 ---
-
-## Eventi di caricamento
-
+### Eventi di caricamento
 `DOMContentLoaded` scatta quando l'HTML e stato letto e il DOM e pronto.
 
 ```js
@@ -245,9 +244,7 @@ window.addEventListener("load", () => {
 Nel codice moderno, spesso si usa `<script defer>`.
 
 ---
-
-## Eventi comuni
-
+### Eventi comuni
 | Evento | Uso |
 | --- | --- |
 | `click` | Click mouse o tap |
@@ -260,6 +257,69 @@ Nel codice moderno, spesso si usa `<script defer>`.
 | `blur` | Elemento perde focus |
 
 ---
+
+## API / Sintassi
+
+Registrare listener:
+
+```js
+element.addEventListener("click", handleClick);
+```
+
+Rimuovere listener:
+
+```js
+element.removeEventListener("click", handleClick);
+```
+
+Opzioni:
+
+```js
+element.addEventListener("click", handleClick, {
+  once: true,
+  passive: true,
+  signal: controller.signal,
+});
+```
+
+Oggetto evento:
+
+```js
+event.target;
+event.currentTarget;
+event.preventDefault();
+event.stopPropagation();
+```
+
+## Esempio pratico
+
+Delegazione per una lista:
+
+```js
+const list = document.querySelector("[data-user-list]");
+
+list.addEventListener("click", (event) => {
+  const button = event.target.closest("[data-action='delete']");
+
+  if (!button || !list.contains(button)) {
+    return;
+  }
+
+  const item = button.closest("[data-user-id]");
+  deleteUser(item.dataset.userId);
+});
+```
+
+Un solo listener gestisce anche elementi aggiunti dinamicamente.
+
+## Varianti
+
+- **Listener diretto**: registrato sul singolo elemento.
+- **Event delegation**: registrato su un contenitore.
+- **Listener monouso**: opzione `once`.
+- **Listener passivo**: opzione `passive`, utile per scroll/touch.
+- **Cleanup con AbortSignal**: rimozione centralizzata.
+- **CustomEvent**: eventi personalizzati tra componenti.
 
 ## Errori comuni
 

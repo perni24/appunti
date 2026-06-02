@@ -1,5 +1,5 @@
 ﻿---
-date: 2026-05-20
+date: 2026-06-02
 area: Programmazione
 topic: React
 type: theory-note
@@ -21,8 +21,17 @@ related: []
 
 Lo **state colocato** consiste nel tenere lo stato il piu vicino possibile al componente o alla feature che lo usa.
 
-## Concetto chiave
+## Quando usarlo
 
+### Quando alzare lo stato
+- Quando piu componenti fratelli devono leggerlo.
+- Quando deve sopravvivere a navigazioni.
+- Quando deve essere condiviso tra feature.
+- Quando rappresenta cache server o sessione utente.
+
+## Come funziona
+
+### Concetto chiave
 Non tutto lo stato deve essere globale. Uno stato locale e piu semplice da capire, testare e rimuovere.
 
 ```jsx
@@ -33,12 +42,17 @@ function SearchBox() {
 }
 ```
 
-## Quando alzare lo stato
+## API / Sintassi
 
-- Quando piu componenti fratelli devono leggerlo.
-- Quando deve sopravvivere a navigazioni.
-- Quando deve essere condiviso tra feature.
-- Quando rappresenta cache server o sessione utente.
+Contenuto da sviluppare: nella nota originale questa sezione non era presente o era solo una traccia.
+
+## Esempio pratico
+
+Contenuto da sviluppare: nella nota originale questa sezione non era presente o era solo una traccia.
+
+## Varianti
+
+Contenuto da sviluppare: nella nota originale questa sezione non era presente o era solo una traccia.
 
 ## Errori comuni
 
@@ -46,27 +60,12 @@ function SearchBox() {
 - Duplicare lo stesso stato in componenti diversi.
 - Confondere stato UI, stato server e stato di dominio.
 
-## Problema che risolve
+## Checklist
 
-Da completare: descrivere il problema concettuale o tecnico che questa nota chiarisce.
-
-## Dettagli importanti
-
-- Da completare: aggiungere dettagli, casi limite e differenze da concetti simili.
-
-## Esempio
-
-```text
-Da completare con un esempio minimo.
-```
-
-## Limiti
-
-- Da completare: indicare limiti, ambiguita e casi in cui il concetto non basta.
+Contenuto da sviluppare: nella nota originale questa sezione non era presente o era solo una traccia.
 
 ## Collegamenti
+
 - [[Programmazione/React/Pagine/useState|useState]]
 - [[Programmazione/React/Pagine/State Management Esterno|State Management Esterno]]
 - [[Programmazione/React/Pagine/Derived state|Derived state]]
-
-

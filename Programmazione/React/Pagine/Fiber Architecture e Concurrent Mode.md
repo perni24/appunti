@@ -1,5 +1,5 @@
----
-date: 2026-05-14
+﻿---
+date: 2026-06-02
 area: Programmazione
 topic: React
 type: technical-note
@@ -10,6 +10,7 @@ aliases: [Fiber Architecture e Concurrent Mode]
 prerequisites: []
 related: []
 ---
+
 # Fiber Architecture e Concurrent Mode
 
 ## Sintesi
@@ -25,8 +26,13 @@ Il cosiddetto **Concurrent Mode**, oggi piu correttamente inteso come **concurre
 
 ---
 
-## 1. Il problema che risolve
+## Quando usarlo
 
+Contenuto da sviluppare: nella nota originale questa sezione non era presente o era solo una traccia.
+
+## Come funziona
+
+### 1. Il problema che risolve
 Nel vecchio modello di rendering, React eseguiva il lavoro in modo piu monolitico:
 - parte un aggiornamento;
 - React processa il lavoro;
@@ -41,9 +47,7 @@ Se quel lavoro e pesante, la UI puo diventare meno responsiva:
 Fiber nasce per gestire meglio questo problema, dando a React un modello piu granulare del lavoro da eseguire.
 
 ---
-
-## 2. Cos'è Fiber
-
+### 2. Cos'è Fiber
 Una **fiber** e, in termini semplificati, un'unità di lavoro che rappresenta un componente o una parte dell'albero React.
 
 Grazie a Fiber, React puo:
@@ -55,9 +59,7 @@ Grazie a Fiber, React puo:
 Dal punto di vista pratico, Fiber trasforma il rendering da processo "tutto o niente" a processo piu controllabile.
 
 ---
-
-## 3. Come cambia il rendering
-
+### 3. Come cambia il rendering
 Con Fiber, React distingue meglio tra:
 - aggiornamenti urgenti;
 - aggiornamenti non urgenti;
@@ -73,9 +75,7 @@ Senza un sistema di priorita, tutto entra nello stesso flusso di lavoro. Con Fib
 Questo si collega direttamente a [[Programmazione/React/Pagine/useTransition e useDeferredValue]].
 
 ---
-
-## 4. Concurrent Rendering: cosa significa davvero
-
+### 4. Concurrent Rendering: cosa significa davvero
 Il termine "Concurrent Mode" ha creato molta confusione. Il punto corretto da capire e questo:
 
 React non esegue il rendering concorrente come "thread paralleli" nel browser JavaScript.
@@ -90,9 +90,7 @@ Significa piuttosto che React puo:
 > Concurrent rendering non significa che React rende tutto in parallelo nel senso tradizionale del termine. Significa che il lavoro di rendering puo essere schedulato in modo piu flessibile.
 
 ---
-
-## 5. Relazione con il Virtual DOM
-
+### 5. Relazione con il Virtual DOM
 Il [[Programmazione/React/Pagine/Virtual DOM]] descrive la rappresentazione virtuale dell'interfaccia e il processo di diffing.
 
 Fiber aggiunge un livello in piu:
@@ -104,9 +102,44 @@ Quindi:
 - Fiber spiega il motore che organizza quel lavoro.
 
 ---
+### 7. Fasi del lavoro React
+In termini concettuali, React separa il lavoro in due grandi fasi:
 
-## 6. Esempio concettuale
+### Render phase
+React calcola il nuovo albero e prepara il lavoro da eseguire.
 
+Questa fase puo essere:
+- spezzata;
+- interrotta;
+- ripresa.
+
+### Commit phase
+React applica le modifiche al DOM reale.
+
+Questa fase e invece critica e va completata in modo coerente.
+
+Questa distinzione aiuta a capire perche React puo essere flessibile nel rendering, ma deve comunque mantenere consistenza quando applica il risultato finale.
+
+---
+### 8. Fiber e feature moderne
+La Fiber Architecture rende possibili molte feature moderne di React:
+- [[Programmazione/React/Pagine/Suspense e Lazy Loading]];
+- [[Programmazione/React/Pagine/useTransition e useDeferredValue]];
+- scheduling piu intelligente;
+- rendering piu responsivo;
+- basi per strategie moderne di streaming e server rendering.
+
+In pratica, Fiber e l'infrastruttura che permette a React di fare piu di un semplice diffing dell'albero.
+
+---
+
+## API / Sintassi
+
+Contenuto da sviluppare: nella nota originale questa sezione non era presente o era solo una traccia.
+
+## Esempio pratico
+
+### 6. Esempio concettuale
 Scenario:
 - l'utente digita in un campo di ricerca;
 - l'app deve aggiornare subito il testo digitato;
@@ -135,42 +168,9 @@ Qui l'API visibile e `useTransition`, ma il comportamento reso possibile dipende
 
 ---
 
-## 7. Fasi del lavoro React
+## Varianti
 
-In termini concettuali, React separa il lavoro in due grandi fasi:
-
-### Render phase
-React calcola il nuovo albero e prepara il lavoro da eseguire.
-
-Questa fase puo essere:
-- spezzata;
-- interrotta;
-- ripresa.
-
-### Commit phase
-React applica le modifiche al DOM reale.
-
-Questa fase e invece critica e va completata in modo coerente.
-
-Questa distinzione aiuta a capire perche React puo essere flessibile nel rendering, ma deve comunque mantenere consistenza quando applica il risultato finale.
-
----
-
-## 8. Fiber e feature moderne
-
-La Fiber Architecture rende possibili molte feature moderne di React:
-- [[Programmazione/React/Pagine/Suspense e Lazy Loading]];
-- [[Programmazione/React/Pagine/useTransition e useDeferredValue]];
-- scheduling piu intelligente;
-- rendering piu responsivo;
-- basi per strategie moderne di streaming e server rendering.
-
-In pratica, Fiber e l'infrastruttura che permette a React di fare piu di un semplice diffing dell'albero.
-
----
-
-## 9. Limiti e tradeoff
-
+### 9. Limiti e tradeoff
 Fiber e concurrent rendering migliorano molto la gestione del lavoro UI, ma non eliminano i problemi architetturali.
 
 ### Vantaggi
@@ -189,8 +189,13 @@ Pensare che "React 18 risolve le performance da solo" porta a diagnosi sbagliate
 
 ---
 
-## 10. Best Practices
+## Errori comuni
 
+Contenuto da sviluppare: nella nota originale questa sezione non era presente o era solo una traccia.
+
+## Checklist
+
+### 10. Best Practices
 1. **Considera Fiber come modello interno utile da capire, non come API da usare direttamente:** il valore pratico sta nel capire cosa rende possibile.
 2. **Usa le API moderne che lo sfruttano davvero:** `useTransition`, `useDeferredValue`, `Suspense`.
 3. **Distingui aggiornamenti urgenti da non urgenti:** e il modo corretto di sfruttare il concurrent rendering.
@@ -199,3 +204,7 @@ Pensare che "React 18 risolve le performance da solo" porta a diagnosi sbagliate
 6. **Mantieni comunque buona architettura UI:** stato locale ben posizionato, liste ottimizzate e componenti coerenti restano fondamentali.
 
 ---
+
+## Collegamenti
+
+- [[Programmazione/React/Indice react|Indice React]]

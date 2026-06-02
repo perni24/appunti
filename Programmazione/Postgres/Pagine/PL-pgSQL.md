@@ -1,5 +1,5 @@
 ---
-date: 2026-05-14
+date: 2026-06-02
 area: Programmazione
 topic: PostgreSQL
 type: technical-note
@@ -10,102 +10,129 @@ aliases: [PL/pgSQL]
 prerequisites: []
 related: []
 ---
+
 # PL/pgSQL in PostgreSQL
 
 ## Sintesi
 
-Nota su PL/pgSQL in PostgreSQL. Riassume il concetto, i meccanismi principali e i punti da ricordare durante studio, progettazione o amministrazione.
+**PL/pgSQL** e il linguaggio procedurale principale di PostgreSQL. Aggiunge variabili, blocchi, condizioni, cicli, eccezioni e query dinamiche al normale SQL.
 
-**PL/pgSQL** (Procedural Language/PostgreSQL) è un linguaggio procedurale caricabile per il database PostgreSQL. Permette di estendere il classico SQL aggiungendo strutture di controllo, variabili e gestione degli errori.
+## Quando usarlo
 
-## Concetto chiave
-PL/pgSQL consente di eseguire logica complessa direttamente sul server. Questo riduce drasticamente il traffico di rete (round-trips) tra client e server, poiché i dati vengono elaborati internamente senza essere trasferiti per ogni passaggio intermedio.
+Usalo quando SQL dichiarativo non basta:
 
----
+- funzioni con piu passaggi;
+- trigger complessi;
+- validazioni procedurali;
+- operazioni amministrative ripetibili;
+- trasformazioni vicine ai dati;
+- gestione controllata di errori e condizioni.
 
-##  Struttura di un Blocco
+Preferisci SQL puro quando una singola query e sufficiente: e spesso piu leggibile e ottimizzabile.
 
-Il codice PL/pgSQL è organizzato in blocchi delimitati dalle keyword `BEGIN` e `END`.
+## Come funziona
+
+Un blocco PL/pgSQL contiene una sezione opzionale `DECLARE`, un corpo `BEGIN ... END` e una eventuale sezione `EXCEPTION`.
+
+Le query possono assegnare valori con `SELECT ... INTO`. I cicli permettono di iterare su risultati. Le eccezioni permettono di gestire errori specifici, ma hanno costo e non vanno usate come controllo di flusso ordinario.
+
+## API / Sintassi
+
+Blocco anonimo:
 
 ```sql
-DO $$ -- Blocco anonimo per test rapidi
+DO $$
 DECLARE
-    contatore integer := 0;
+  counter integer := 0;
 BEGIN
-    contatore := contatore + 1;
-    RAISE NOTICE 'Il valore è %', contatore;
-END $$;
+  counter := counter + 1;
+  RAISE NOTICE 'counter = %', counter;
+END;
+$$;
 ```
 
----
-
-##  Variabili e Tipi
-
-Le variabili devono essere dichiarate nella sezione `DECLARE`.
-
-### Assegnazione e %TYPE
-Una delle funzionalità più potenti è `%TYPE`, che permette di ereditare il tipo di dato direttamente da una colonna esistente.
+Funzione:
 
 ```sql
-DECLARE
-    v_nome utenti.nome%TYPE; -- Eredita il tipo dalla colonna 'nome'
-    v_totale numeric(10,2) DEFAULT 0.0;
+CREATE FUNCTION mark_order_paid(p_order_id bigint)
+RETURNS void
+LANGUAGE plpgsql
+AS $$
 BEGIN
-    SELECT nome INTO v_nome FROM utenti WHERE id = 1;
-    v_totale := 100.50;
+  UPDATE orders
+  SET status = 'paid',
+      paid_at = now()
+  WHERE id = p_order_id;
+END;
+$$;
+```
+
+Gestione eccezioni:
+
+```sql
+BEGIN
+  INSERT INTO users (email) VALUES (p_email);
+EXCEPTION WHEN unique_violation THEN
+  RAISE EXCEPTION 'Email gia registrata: %', p_email;
 END;
 ```
 
----
+## Esempio pratico
 
-##  Controllo del Flusso
-
-### IF / THEN / ELSE
-```sql
-IF v_totale > 1000 THEN
-    -- logica
-ELSIF v_totale > 500 THEN
-    -- logica
-ELSE
-    -- logica
-END IF;
-```
-
-### Cicli (LOOP, WHILE, FOR)
-Il ciclo `FOR` è particolarmente utile per iterare sui risultati di una query.
-```sql
-FOR riga IN SELECT * FROM ordini LOOP
-    RAISE NOTICE 'Ordine ID: %', riga.id;
-END LOOP;
-```
-
----
-
-##  Cursori
-
-I cursori permettono di incapsulare una query e scorrere i risultati riga per riga, utile per gestire dataset molto grandi senza saturare la memoria.
+Funzione con controllo esplicito:
 
 ```sql
+CREATE FUNCTION reserve_stock(p_product_id bigint, p_quantity integer)
+RETURNS boolean
+LANGUAGE plpgsql
+AS $$
 DECLARE
-    cur_utenti CURSOR FOR SELECT nome FROM utenti;
-    v_nome text;
+  updated_count integer;
 BEGIN
-    OPEN cur_utenti;
-    FETCH cur_utenti INTO v_nome;
-    -- elaborazione
-    CLOSE cur_utenti;
+  UPDATE products
+  SET stock = stock - p_quantity
+  WHERE id = p_product_id
+    AND stock >= p_quantity;
+
+  GET DIAGNOSTICS updated_count = ROW_COUNT;
+
+  RETURN updated_count = 1;
 END;
+$$;
 ```
 
-> [!TIP] Cursor vs FOR loop
-> Nella maggior parte dei casi, un ciclo `FOR` implicitamente gestisce l'apertura e la chiusura dei cursori in modo più pulito e leggibile. Usa i cursori espliciti solo se hai bisogno di logiche di navigazione complesse (es. tornare indietro con `FETCH PRIOR`).
+La funzione usa una singola `UPDATE` atomica e controlla quante righe sono state modificate.
 
----
+## Varianti
 
-## Logic layer: Perché usare PL/pgSQL?
+- `DO $$ ... $$`: blocchi anonimi.
+- Funzioni PL/pgSQL.
+- Trigger functions.
+- Query dinamiche con `EXECUTE`.
+- Cicli `FOR`, `WHILE`, `LOOP`.
+- `RAISE NOTICE`, `RAISE EXCEPTION`.
+- `GET DIAGNOSTICS`.
 
-1.  **Performance:** Sposta la logica vicino ai dati.
-2.  **Sicurezza:** Può essere usato per creare API di database (tramite Funzioni), nascondendo la complessità delle tabelle sottostanti.
-3.  **Integrità:** Fondamentale per la scrittura di Trigger complessi che garantiscono vincoli di business non esprimibili con semplici `CHECK`.
+## Errori comuni
 
----
+- Scrivere codice riga-per-riga quando una query set-based sarebbe migliore.
+- Usare query dinamiche senza `format()` e quoting sicuro.
+- Catturare eccezioni generiche nascondendo errori reali.
+- Dimenticare che funzioni lunghe tengono transazioni e lock.
+- Usare `SELECT INTO` aspettandosi sempre una sola riga senza controlli.
+- Non testare con dati concorrenti.
+
+## Checklist
+
+- La logica richiede davvero PL/pgSQL?
+- Esiste una soluzione SQL set-based piu semplice?
+- Gli errori sono gestiti senza nasconderli?
+- Le query dinamiche sono quotate correttamente?
+- La funzione e breve e testabile?
+- I permessi sono coerenti con il ruolo che la esegue?
+
+## Collegamenti
+
+- [[Programmazione/Postgres/Pagine/Funzioni e Store Procedures|Funzioni e Store Procedures]]
+- [[Programmazione/Postgres/Pagine/Trigger e Event Trigger|Trigger e Event Trigger]]
+- [[Programmazione/Postgres/Pagine/Ruoli e privilegi avanzati|Ruoli e privilegi avanzati]]

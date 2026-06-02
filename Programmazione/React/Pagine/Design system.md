@@ -1,5 +1,5 @@
 ﻿---
-date: 2026-05-20
+date: 2026-06-02
 area: Programmazione
 topic: React
 type: theory-note
@@ -21,16 +21,19 @@ related: []
 
 Un **design system** e l'insieme di regole, token, componenti e pattern che rendono coerente una UI.
 
-## Componenti principali
+## Quando usarlo
 
+Contenuto da sviluppare: nella nota originale questa sezione non era presente o era solo una traccia.
+
+## Come funziona
+
+### Componenti principali
 - Design tokens: colori, spacing, typography.
 - Componenti base: Button, Input, Modal.
 - Pattern: form, table, navigation.
 - Linee guida di accessibilita.
 - Documentazione e versionamento.
-
-## In React
-
+### In React
 Un design system React espone componenti riusabili con API coerenti.
 
 ```jsx
@@ -39,6 +42,18 @@ Un design system React espone componenti riusabili con API coerenti.
 </Button>
 ```
 
+## API / Sintassi
+
+Contenuto da sviluppare: nella nota originale questa sezione non era presente o era solo una traccia.
+
+## Esempio pratico
+
+Contenuto da sviluppare: nella nota originale questa sezione non era presente o era solo una traccia.
+
+## Varianti
+
+Contenuto da sviluppare: nella nota originale questa sezione non era presente o era solo una traccia.
+
 ## Errori comuni
 
 - Creare componenti troppo generici.
@@ -46,31 +61,12 @@ Un design system React espone componenti riusabili con API coerenti.
 - Ignorare accessibilita e focus management.
 - Non stabilire ownership.
 
-## Problema che risolve
+## Checklist
 
-Da completare: descrivere il problema concettuale o tecnico che questa nota chiarisce.
-
-## Concetto chiave
-
-Da completare durante revisione.
-
-## Dettagli importanti
-
-- Da completare: aggiungere dettagli, casi limite e differenze da concetti simili.
-
-## Esempio
-
-```text
-Da completare con un esempio minimo.
-```
-
-## Limiti
-
-- Da completare: indicare limiti, ambiguita e casi in cui il concetto non basta.
+Contenuto da sviluppare: nella nota originale questa sezione non era presente o era solo una traccia.
 
 ## Collegamenti
+
 - [[Programmazione/React/Pagine/Storybook|Storybook]]
 - [[Programmazione/React/Pagine/CSS Modules|CSS Modules]]
 - [[Programmazione/React/Pagine/WAI-ARIA|WAI-ARIA]]
-
-

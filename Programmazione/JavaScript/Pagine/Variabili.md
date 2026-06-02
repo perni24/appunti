@@ -1,9 +1,9 @@
----
-date: 2026-05-13
+﻿---
+date: 2026-06-02
 area: Programmazione
 topic: JavaScript
 type: technical-note
-status: non revisionato
+status: "non revisionato"
 difficulty: beginner
 tags:
   - javascript
@@ -31,8 +31,9 @@ La scelta tra `const`, `let` e `var` influenza scope, riassegnazione e comportam
 
 ---
 
-## Quando usarle
+## Quando usarlo
 
+### Quando usarle
 - Usa `const` quando il binding non deve essere riassegnato.
 - Usa `let` quando il valore deve cambiare nel tempo.
 - Evita `var` nel codice nuovo.
@@ -40,8 +41,9 @@ La scelta tra `const`, `let` e `var` influenza scope, riassegnazione e comportam
 
 ---
 
-## Tipizzazione dinamica
+## Come funziona
 
+### Tipizzazione dinamica
 JavaScript e un linguaggio a tipizzazione dinamica: il tipo appartiene al valore, non alla variabile.
 
 ```js
@@ -53,9 +55,7 @@ output = true;
 La stessa variabile puo contenere valori di tipo diverso, anche se abusare di questa possibilita rende il codice meno leggibile.
 
 ---
-
-## const
-
+### const
 `const` crea un binding non riassegnabile.
 
 ```js
@@ -80,9 +80,7 @@ user.name = "Marco"; // Valido
 > `const` blocca la riassegnazione della variabile, non la mutazione dell'oggetto referenziato.
 
 ---
-
-## let
-
+### let
 `let` crea una variabile riassegnabile con scope di blocco.
 
 ```js
@@ -97,9 +95,7 @@ console.log(counter); // 2
 E utile per contatori, accumulatori, variabili aggiornate in un algoritmo o stato temporaneo.
 
 ---
-
-## var
-
+### var
 `var` ha scope di funzione, non scope di blocco.
 
 ```js
@@ -125,9 +121,7 @@ function example() {
 ```
 
 ---
-
-## Scope
-
+### Scope
 Lo scope definisce dove una variabile e visibile.
 
 ```js
@@ -156,9 +150,7 @@ if (true) {
 ```
 
 ---
-
-## Hoisting e Temporal Dead Zone
-
+### Hoisting e Temporal Dead Zone
 Le dichiarazioni vengono gestite durante la fase di creazione dello scope.
 
 Con `var`, la variabile viene inizializzata a `undefined`.
@@ -176,9 +168,7 @@ let count = 1;
 ```
 
 ---
-
-## Tabella comparativa
-
+### Tabella comparativa
 | Keyword | Scope | Riassegnabile | Riedichiarabile | Uso consigliato |
 | --- | --- | --- | --- | --- |
 | `const` | Blocco | No | No | Default nel codice moderno |
@@ -186,6 +176,58 @@ let count = 1;
 | `var` | Funzione | Si | Si | Solo codice legacy |
 
 ---
+
+## API / Sintassi
+
+Sintassi principali:
+
+```js
+const name = "Luca";
+let count = 0;
+var legacy = true;
+```
+
+Riassegnazione:
+
+```js
+let count = 0;
+count += 1;
+```
+
+Mutazione di oggetto con `const`:
+
+```js
+const user = { name: "Luca" };
+user.name = "Marco";
+```
+
+`const` impedisce la riassegnazione del binding, non la mutazione del valore referenziato.
+
+## Esempio pratico
+
+Uso pratico di `const` e `let`:
+
+```js
+const users = await loadUsers();
+let activeCount = 0;
+
+for (const user of users) {
+  if (user.active) {
+    activeCount += 1;
+  }
+}
+```
+
+`users` non viene riassegnato, quindi e `const`. `activeCount` cambia durante il ciclo, quindi e `let`.
+
+## Varianti
+
+- **`const`**: binding non riassegnabile.
+- **`let`**: binding riassegnabile con scope di blocco.
+- **`var`**: scope di funzione e comportamento legacy.
+- **Globale**: da evitare salvo casi espliciti.
+- **Locale**: preferibile, nello scope piu piccolo possibile.
+- **Binding vs valore**: la variabile punta a un valore, ma l'oggetto puo restare mutabile.
 
 ## Errori comuni
 

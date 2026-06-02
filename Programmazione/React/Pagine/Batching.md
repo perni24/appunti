@@ -1,5 +1,5 @@
----
-date: 2026-05-14
+﻿---
+date: 2026-06-02
 area: Programmazione
 topic: React
 type: technical-note
@@ -10,6 +10,7 @@ aliases: [Batching]
 prerequisites: []
 related: []
 ---
+
 # Batching
 
 ## Sintesi
@@ -25,8 +26,13 @@ In pratica, se dentro lo stesso flusso logico esegui piu `setState`, React prova
 
 ---
 
-## 1. Perche esiste
+## Quando usarlo
 
+Contenuto da sviluppare: nella nota originale questa sezione non era presente o era solo una traccia.
+
+## Come funziona
+
+### 1. Perche esiste
 Senza batching, ogni aggiornamento di stato potrebbe causare un nuovo render:
 - piu lavoro per React;
 - piu diffing del [[Programmazione/React/Pagine/Virtual DOM]];
@@ -42,38 +48,7 @@ Con il batching, React puo:
 Questo si collega direttamente al modo in cui React gestisce scheduling e priorita nella [[Programmazione/React/Pagine/Fiber Architecture e Concurrent Mode]].
 
 ---
-
-## 2. Esempio base
-
-```javascript
-function Counter() {
-  const [count, setCount] = useState(0);
-  const [isVisible, setIsVisible] = useState(false);
-
-  function handleClick() {
-    setCount(count + 1);
-    setIsVisible(true);
-  }
-
-  return (
-    <button onClick={handleClick}>
-      {count} - {isVisible ? "visibile" : "nascosto"}
-    </button>
-  );
-}
-```
-
-Quando l'utente clicca:
-- React riceve due aggiornamenti;
-- li puo raggruppare;
-- esegue un solo render finale con `count` aggiornato e `isVisible` a `true`.
-
-Il vantaggio non e solo prestazionale: la UI viene aggiornata in modo piu coerente.
-
----
-
-## 3. Perche leggere subito lo stato puo confondere
-
+### 3. Perche leggere subito lo stato puo confondere
 Un errore comune e pensare che il setter aggiorni immediatamente la variabile locale:
 
 ```javascript
@@ -93,9 +68,7 @@ Questo non dipende solo dal batching: dipende anche dal modello dichiarativo di 
 Per questo [[Programmazione/React/Pagine/useState]] va pensato come "richiesta di aggiornamento", non come assegnazione immediata a una variabile.
 
 ---
-
-## 4. Aggiornamenti multipli sullo stesso stato
-
+### 4. Aggiornamenti multipli sullo stesso stato
 Se fai piu aggiornamenti consecutivi basati sullo stesso valore, puoi ottenere un risultato inatteso:
 
 ```javascript
@@ -126,9 +99,7 @@ Qui React applica gli aggiornamenti in sequenza usando ogni volta il valore piu 
 > Se il nuovo stato dipende dal precedente, usa la forma funzionale del setter.
 
 ---
-
-## 5. Automatic batching in React 18
-
+### 5. Automatic batching in React 18
 Nelle versioni moderne di React, il batching e diventato piu ampio.
 
 Storicamente React faceva batching soprattutto negli event handler React. Con React 18, l'**automatic batching** copre meglio anche altri contesti, come callback asincrone e promise, quando il rendering passa dal nuovo root API.
@@ -149,9 +120,7 @@ Questo rende il comportamento piu coerente, ma non cambia una regola fondamental
 - non bisogna scrivere logica che dipende da letture immediate dello stato appena settato.
 
 ---
-
-## 6. Relazione con useReducer
-
+### 6. Relazione con useReducer
 Il batching non riguarda solo `useState`. Anche con [[Programmazione/React/Pagine/useReducer]], piu `dispatch` ravvicinati possono essere raggruppati nello stesso flusso di render.
 
 La differenza e concettuale:
@@ -162,9 +131,7 @@ La differenza e concettuale:
 Quindi il batching e un comportamento del motore React, non una feature esclusiva di un hook specifico.
 
 ---
-
-## 7. Quando forzare un aggiornamento sincrono
-
+### 7. Quando forzare un aggiornamento sincrono
 Esistono casi rari in cui serve leggere il DOM aggiornato immediatamente dopo un cambio di stato, per esempio per misure layout o integrazione con API imperative.
 
 In questi casi React espone `flushSync`:
@@ -189,9 +156,7 @@ function handleOpen() {
 Va considerato un'eccezione, non il flusso normale.
 
 ---
-
-## 8. Batching non significa deferred rendering totale
-
+### 8. Batching non significa deferred rendering totale
 Un'altra confusione comune e pensare che batching, concurrent rendering e `useTransition` siano la stessa cosa.
 
 Non lo sono:
@@ -203,8 +168,51 @@ Sono concetti collegati, ma distinti.
 
 ---
 
-## 9. Best Practices
+## API / Sintassi
 
+Contenuto da sviluppare: nella nota originale questa sezione non era presente o era solo una traccia.
+
+## Esempio pratico
+
+### 2. Esempio base
+```javascript
+function Counter() {
+  const [count, setCount] = useState(0);
+  const [isVisible, setIsVisible] = useState(false);
+
+  function handleClick() {
+    setCount(count + 1);
+    setIsVisible(true);
+  }
+
+  return (
+    <button onClick={handleClick}>
+      {count} - {isVisible ? "visibile" : "nascosto"}
+    </button>
+  );
+}
+```
+
+Quando l'utente clicca:
+- React riceve due aggiornamenti;
+- li puo raggruppare;
+- esegue un solo render finale con `count` aggiornato e `isVisible` a `true`.
+
+Il vantaggio non e solo prestazionale: la UI viene aggiornata in modo piu coerente.
+
+---
+
+## Varianti
+
+Contenuto da sviluppare: nella nota originale questa sezione non era presente o era solo una traccia.
+
+## Errori comuni
+
+Contenuto da sviluppare: nella nota originale questa sezione non era presente o era solo una traccia.
+
+## Checklist
+
+### 9. Best Practices
 1. **Assumi che lo stato non venga aggiornato immediatamente nel corpo corrente della funzione:** evita logica fragile basata su letture subito dopo `setState`.
 2. **Usa la updater function quando dipendi dal valore precedente:** e la difesa principale contro errori nei batch di aggiornamenti.
 3. **Non ottimizzare manualmente contro il batching senza motivo:** React gestisce gia bene i casi comuni.
@@ -213,3 +221,7 @@ Sono concetti collegati, ma distinti.
 6. **Tieni distinti i concetti di batching, async state e concurrent rendering:** mescolarli porta a diagnosi sbagliate.
 
 ---
+
+## Collegamenti
+
+- [[Programmazione/React/Indice react|Indice React]]

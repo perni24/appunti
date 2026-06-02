@@ -1,5 +1,5 @@
----
-date: 2026-05-14
+﻿---
+date: 2026-06-02
 area: Programmazione
 topic: Python
 type: technical-note
@@ -10,37 +10,29 @@ aliases: [Ereditarietà]
 prerequisites: []
 related: []
 ---
+
 # Ereditarietà in Python
 
 ## Sintesi
 
 Nota su Ereditarietà in Python. Riassume il concetto, la sintassi principale e i punti da ricordare durante studio, sviluppo o debugging.
+Nota su Ereditarietà in Python. Riassume il concetto, la sintassi principale e i punti da ricordare durante studio, sviluppo o debugging.
+print(Cane.mro())
+```
 
-## Concetto chiave
+## Quando usarlo
+
+Contenuto da sviluppare: nella nota originale questa sezione non era presente o era solo una traccia.
+
+## Come funziona
+
+### Concetto chiave
 L'**Ereditarietà** permette a una classe (classe **figlia** o sottoclasse) di derivare attributi e metodi da un'altra classe (classe **padre** o superclasse).
 
 Questo meccanismo favorisce il **riutilizzo del codice** e permette di creare gerarchie logiche tra gli oggetti, modellando relazioni del tipo "is-a" (un Gatto *è un* Animale).
 
 ---
-
-##  Sintassi e Definizione
-Per far ereditare una classe, basta inserire il nome della superclasse tra parentesi dopo il nome della sottoclasse.
-
-```python
-class SuperClasse:
-    pass
-
-class SottoClasse(SuperClasse):
-    pass
-```
-
-### Funzione `super()`
-La funzione `super()` viene utilizzata per accedere ai metodi della classe padre, specialmente all'interno del costruttore `__init__`, per assicurarsi che l'inizializzazione della classe base venga eseguita correttamente.
-
----
-
-##  Esempi Pratici
-
+### Esempi Pratici
 ### Esempio Base: Animali e Cani
 ```python
 class Animale:
@@ -77,9 +69,7 @@ uccellino.mangia() # Output: Cip becca i semi.
 ```
 
 ---
-
-## Logic layer: Concetti Avanzati
-
+### Logic layer: Concetti Avanzati
 ### 1. Ereditarietà Multipla
 Python supporta l'ereditarietà multipla, dove una classe può derivare da più classi base.
 ```python
@@ -102,8 +92,35 @@ Quando Python cerca un metodo o un attributo, segue un ordine preciso chiamato *
 
 ---
 
-##  Best Practices & "Gotchas"
+## API / Sintassi
 
+### Sintassi e Definizione
+Per far ereditare una classe, basta inserire il nome della superclasse tra parentesi dopo il nome della sottoclasse.
+
+```python
+class SuperClasse:
+    pass
+
+class SottoClasse(SuperClasse):
+    pass
+```
+
+### Funzione `super()`
+La funzione `super()` viene utilizzata per accedere ai metodi della classe padre, specialmente all'interno del costruttore `__init__`, per assicurarsi che l'inizializzazione della classe base venga eseguita correttamente.
+
+---
+
+## Esempio pratico
+
+Contenuto da sviluppare: nella nota originale questa sezione non era presente o era solo una traccia.
+
+## Varianti
+
+Contenuto da sviluppare: nella nota originale questa sezione non era presente o era solo una traccia.
+
+## Errori comuni
+
+### Best Practices & "Gotchas"
 -  **Da fare**: Usa sempre `super().__init__()` nelle sottoclassi per garantire una corretta inizializzazione.
 -  **Da fare**: Favorisci la composizione rispetto all'ereditarietà se la relazione non è strettamente "is-a".
 -  **Da evitare**: Evita gerarchie di ereditarietà troppo profonde (difficili da mantenere).
@@ -114,8 +131,10 @@ Quando Python cerca un metodo o un attributo, segue un ordine preciso chiamato *
 ```python
 # Ereditarietà in Python
 
-## Sintesi
+## Checklist
 
-Nota su Ereditarietà in Python. Riassume il concetto, la sintassi principale e i punti da ricordare durante studio, sviluppo o debugging.
-print(Cane.mro())
-```
+Contenuto da sviluppare: nella nota originale questa sezione non era presente o era solo una traccia.
+
+## Collegamenti
+
+- [[Programmazione/Python/Indice python|Indice Python]]

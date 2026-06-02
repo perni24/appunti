@@ -1,5 +1,5 @@
-﻿---
-date: 2026-05-20
+---
+date: 2026-06-02
 area: Programmazione
 topic: Postgres
 type: technical-note
@@ -10,7 +10,6 @@ tags:
   - postgres
   - estensioni
   - uuid
-  - sicurezza
 aliases: []
 prerequisites: []
 related: []
@@ -20,65 +19,71 @@ related: []
 
 ## Sintesi
 
-`uuid-ossp` e `pgcrypto` sono estensioni spesso usate per UUID e funzioni crittografiche.
+`uuid-ossp` e `pgcrypto` sono estensioni usate per UUID e funzioni crittografiche. Oggi `pgcrypto` con `gen_random_uuid()` e spesso la scelta piu semplice per generare UUID.
 
-## uuid-ossp
+## Quando usarlo
 
-Fornisce funzioni per generare UUID.
+Usale per identificatori UUID, hash, funzioni random e alcune operazioni crittografiche di base.
 
-```sql
-CREATE EXTENSION IF NOT EXISTS "uuid-ossp";
-SELECT uuid_generate_v4();
-```
+## Come funziona
 
-## pgcrypto
+`uuid-ossp` espone funzioni storiche come `uuid_generate_v4()`. `pgcrypto` espone `gen_random_uuid()`, funzioni digest e funzioni di cifratura.
 
-Fornisce funzioni crittografiche, hashing e generazione casuale.
+## API / Sintassi
 
 ```sql
 CREATE EXTENSION IF NOT EXISTS pgcrypto;
 SELECT gen_random_uuid();
 ```
 
-## Nota pratica
+```sql
+CREATE EXTENSION IF NOT EXISTS "uuid-ossp";
+SELECT uuid_generate_v4();
+```
 
-In molti casi moderni `gen_random_uuid()` da `pgcrypto` e sufficiente per generare UUID v4.
+Hash:
 
-## Quando usarlo
-
-- Da completare: indicare scenari pratici in cui questa nota e utile.
-
-## Come funziona
-
-Da completare: spiegare il meccanismo principale o il comportamento tecnico.
-
-## API / Sintassi
-
-```text
-Da completare con API o sintassi principale.
+```sql
+SELECT encode(digest('test', 'sha256'), 'hex');
 ```
 
 ## Esempio pratico
 
-```text
-Da completare con un esempio pratico.
+UUID come default:
+
+```sql
+CREATE TABLE accounts (
+  id uuid PRIMARY KEY DEFAULT gen_random_uuid(),
+  email text NOT NULL UNIQUE
+);
 ```
 
 ## Varianti
 
-- Da completare: varianti, alternative o differenze rispetto ad approcci simili.
+- UUID v4 random.
+- UUID generati applicativamente.
+- UUID generati dal database.
+- Hash con `digest`.
+- Password hashing con funzioni dedicate, valutando bene requisiti di sicurezza.
 
 ## Errori comuni
 
-Da completare durante revisione.
+- Usare UUID senza capire impatto su indici e locality.
+- Salvare UUID come `text` invece di `uuid`.
+- Confondere hashing e cifratura.
+- Gestire password con funzioni non adatte.
+- Abilitare entrambe le estensioni senza necessita.
 
 ## Checklist
 
-- Da completare: controlli essenziali prima di usare questo concetto in pratica.
+- Serve UUID o basta identity/bigint?
+- Il tipo colonna e `uuid`?
+- L'estensione e abilitata in migrazione?
+- La funzione scelta e disponibile in produzione?
+- Per password usi un approccio dedicato e sicuro?
 
 ## Collegamenti
+
 - [[Programmazione/Postgres/Pagine/Gestione delle Estensioni|Gestione delle Estensioni]]
 - [[Programmazione/Postgres/Pagine/Sicurezza delle estensioni|Sicurezza delle estensioni]]
 - [[Programmazione/Postgres/Pagine/Tipi di Dato|Tipi di Dato]]
-
-

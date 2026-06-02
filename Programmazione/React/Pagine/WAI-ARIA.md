@@ -1,5 +1,5 @@
----
-date: 2026-05-14
+﻿---
+date: 2026-06-02
 area: Programmazione
 topic: React
 type: technical-note
@@ -10,6 +10,7 @@ aliases: [WAI-ARIA]
 prerequisites: []
 related: []
 ---
+
 # WAI-ARIA
 
 ## Sintesi
@@ -32,8 +33,13 @@ In React e rilevante soprattutto quando costruiamo componenti interattivi person
 
 ---
 
-## 1. Prima regola: semantica nativa
+## Quando usarlo
 
+Contenuto da sviluppare: nella nota originale questa sezione non era presente o era solo una traccia.
+
+## Come funziona
+
+### 1. Prima regola: semantica nativa
 La regola piu importante e questa:
 
 **prima usa HTML semantico corretto, poi aggiungi ARIA solo dove serve.**
@@ -66,9 +72,7 @@ Il bottone nativo porta gia con se:
 Se usi il tag giusto, spesso non serve ARIA aggiuntiva.
 
 ---
-
-## 2. Cosa aggiunge ARIA
-
+### 2. Cosa aggiunge ARIA
 ARIA aggiunge soprattutto tre categorie di informazione:
 
 ### Ruoli
@@ -97,9 +101,7 @@ Esempi:
 - `aria-controls`
 
 ---
-
-## 3. No ARIA is better than bad ARIA
-
+### 3. No ARIA is better than bad ARIA
 Uno dei principi piu importanti dell'accessibilita web e:
 
 **nessuna ARIA e meglio di ARIA sbagliata.**
@@ -114,9 +116,7 @@ Se metti ruoli o attributi errati:
 Quindi ARIA va usata in modo preciso, non "a intuito".
 
 ---
-
-## 4. Esempi semplici di attributi utili
-
+### 4. Esempi semplici di attributi utili
 ### `aria-label`
 Serve quando un elemento ha bisogno di un nome accessibile ma non ha testo visibile sufficiente.
 
@@ -144,9 +144,7 @@ Indica se un contenuto espandibile e aperto o chiuso.
 ```
 
 ---
-
-## 5. Label accessibili nei form
-
+### 5. Label accessibili nei form
 Uno dei casi piu frequenti in React riguarda i form.
 
 Un input deve avere un nome accessibile chiaro.
@@ -169,9 +167,7 @@ Se proprio serve un'etichetta non visibile, puoi ricorrere a pattern dedicati, m
 Questo si collega direttamente a [[Programmazione/React/Pagine/Gestione Moduli]].
 
 ---
-
-## 6. Componenti custom e tastiera
-
+### 6. Componenti custom e tastiera
 ARIA da sola non rende accessibile un componente custom.
 
 Esempio sbagliato:
@@ -192,9 +188,7 @@ Quindi ARIA non sostituisce il comportamento. Lo descrive soltanto.
 Questo e uno dei motivi per cui usare elementi nativi e quasi sempre la scelta migliore.
 
 ---
-
-## 7. Dialog e modal
-
+### 7. Dialog e modal
 Per una modal accessibile, `role="dialog"` o `role="alertdialog"` puo essere utile, insieme a:
 - `aria-modal="true"`;
 - `aria-labelledby`;
@@ -222,9 +216,7 @@ Ma anche qui ARIA non basta da sola. Una modal accessibile deve gestire:
 Questo si collega bene a [[Programmazione/React/Pagine/Portals]] e ai temi di focus management.
 
 ---
-
-## 8. Tabs, accordion e disclosure
-
+### 8. Tabs, accordion e disclosure
 Componenti come tab e accordion sono casi classici di ARIA.
 
 Esempi di attributi tipici:
@@ -254,9 +246,7 @@ Questo tipo di struttura aiuta molto le tecnologie assistive a capire relazione 
 Si collega bene a [[Programmazione/React/Pagine/Compound Components Pattern]].
 
 ---
-
-## 9. Live regions
-
+### 9. Live regions
 Le **live regions** servono a segnalare cambiamenti dinamici che avvengono senza cambio di focus.
 
 Esempi:
@@ -279,9 +269,7 @@ Esempio:
 Questo permette agli screen reader di annunciare cambiamenti importanti senza che l'utente debba cercarli manualmente.
 
 ---
-
-## 10. React e attributi ARIA
-
+### 10. React e attributi ARIA
 In React gli attributi ARIA si scrivono direttamente in JSX con il nome standard:
 
 ```javascript
@@ -293,23 +281,7 @@ A differenza di alcuni attributi HTML che cambiano naming in JSX, gli attributi 
 Questo rende abbastanza naturale integrare ARIA nei componenti React, ma non elimina la necessita di capire il pattern accessibile corretto.
 
 ---
-
-## 11. Errori comuni
-
-Errori frequenti:
-- aggiungere ARIA a elementi semantici gia corretti senza motivo;
-- usare `div` o `span` al posto di controlli nativi;
-- mettere `role="button"` senza gestire tastiera e focus;
-- usare `aria-hidden` in modo incoerente;
-- applicare ruoli errati a componenti complessi;
-- dimenticare aggiornamento degli stati ARIA quando cambia lo stato React.
-
-Un attributo ARIA statico ma disallineato allo stato reale e un bug di accessibilita.
-
----
-
-## 12. Relazione con React
-
+### 12. Relazione con React
 WAI-ARIA si collega bene a:
 - [[Programmazione/React/Pagine/Gestione Moduli]] per label, errori e descrizioni dei campi;
 - [[Programmazione/React/Pagine/Portals]] per dialog e overlay;
@@ -326,8 +298,36 @@ Se questi quattro aspetti divergono, il componente smette di essere realmente ac
 
 ---
 
-## 13. Best Practices
+## API / Sintassi
 
+Contenuto da sviluppare: nella nota originale questa sezione non era presente o era solo una traccia.
+
+## Esempio pratico
+
+Contenuto da sviluppare: nella nota originale questa sezione non era presente o era solo una traccia.
+
+## Varianti
+
+Contenuto da sviluppare: nella nota originale questa sezione non era presente o era solo una traccia.
+
+## Errori comuni
+
+### 11. Errori comuni
+Errori frequenti:
+- aggiungere ARIA a elementi semantici gia corretti senza motivo;
+- usare `div` o `span` al posto di controlli nativi;
+- mettere `role="button"` senza gestire tastiera e focus;
+- usare `aria-hidden` in modo incoerente;
+- applicare ruoli errati a componenti complessi;
+- dimenticare aggiornamento degli stati ARIA quando cambia lo stato React.
+
+Un attributo ARIA statico ma disallineato allo stato reale e un bug di accessibilita.
+
+---
+
+## Checklist
+
+### 13. Best Practices
 1. **Usa prima HTML semantico nativo:** spesso e gia la soluzione migliore.
 2. **Aggiungi ARIA solo quando la semantica HTML non basta:** specialmente per componenti custom complessi.
 3. **Non usare ruoli o attributi ARIA a caso:** informazioni sbagliate peggiorano l'accessibilita.
@@ -336,3 +336,7 @@ Se questi quattro aspetti divergono, il componente smette di essere realmente ac
 6. **Testa i componenti con tastiera e strumenti di accessibilita:** markup corretto sulla carta non basta senza verifica pratica.
 
 ---
+
+## Collegamenti
+
+- [[Programmazione/React/Indice react|Indice React]]

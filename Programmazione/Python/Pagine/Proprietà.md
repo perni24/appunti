@@ -1,5 +1,5 @@
----
-date: 2026-05-14
+﻿---
+date: 2026-06-02
 area: Programmazione
 topic: Python
 type: technical-note
@@ -10,49 +10,25 @@ aliases: [Proprietà (@property)]
 prerequisites: []
 related: []
 ---
+
 # Proprietà (@property) in Python
 
 ## Sintesi
 
 Nota su Proprietà (@property) in Python. Riassume il concetto, la sintassi principale e i punti da ricordare durante studio, sviluppo o debugging.
 
-## Concetto chiave
+## Quando usarlo
+
+Contenuto da sviluppare: nella nota originale questa sezione non era presente o era solo una traccia.
+
+## Come funziona
+
+### Concetto chiave
 Le **Proprietà** in Python permettono di gestire l'accesso agli attributi di una classe in modo controllato tramite il decoratore `@property`. 
 Invece di accedere direttamente a una variabile, si definisce un metodo che si comporta come un attributo. Questo consente di aggiungere logica di validazione o calcolo senza cambiare l'interfaccia pubblica della classe.
 
 ---
-
-##  Sintassi e Definizione
-
-Si utilizzano i decoratori per definire getter, setter e deleter.
-
-```python
-class Esempio:
-    def __init__(self, valore):
-        self._valore = valore  # Convenzione: '_' per attributi protetti
-
-    @property
-    def valore(self):
-        """Getter: Restituisce il valore."""
-        return self._valore
-
-    @valore.setter
-    def valore(self, nuovo_valore):
-        """Setter: Imposta il valore con validazione."""
-        if nuovo_valore < 0:
-            raise ValueError("Il valore non può essere negativo!")
-        self._valore = nuovo_valore
-
-    @valore.deleter
-    def valore(self):
-        """Deleter: Operazioni prima della cancellazione."""
-        del self._valore
-```
-
----
-
-##  Esempi Pratici
-
+### Esempi Pratici
 ### Esempio Base: Validazione
 ```python
 class Persona:
@@ -83,9 +59,7 @@ class Rettangolo:
 ```
 
 ---
-
-## Logic layer: Descrittori e Incapsulamento
-
+### Logic layer: Descrittori e Incapsulamento
 In Python, le proprietà sono implementate tramite il **Protocollo Descrittore**.
 
 > [!INFO] Definizione: Descrittore
@@ -96,10 +70,57 @@ A differenza di linguaggi come Java (dove si usano `getValore()` e `setValore()`
 
 ---
 
-##  Best Practices & "Gotchas"
+## API / Sintassi
 
+### Sintassi e Definizione
+Si utilizzano i decoratori per definire getter, setter e deleter.
+
+```python
+class Esempio:
+    def __init__(self, valore):
+        self._valore = valore  # Convenzione: '_' per attributi protetti
+
+    @property
+    def valore(self):
+        """Getter: Restituisce il valore."""
+        return self._valore
+
+    @valore.setter
+    def valore(self, nuovo_valore):
+        """Setter: Imposta il valore con validazione."""
+        if nuovo_valore < 0:
+            raise ValueError("Il valore non può essere negativo!")
+        self._valore = nuovo_valore
+
+    @valore.deleter
+    def valore(self):
+        """Deleter: Operazioni prima della cancellazione."""
+        del self._valore
+```
+
+---
+
+## Esempio pratico
+
+Contenuto da sviluppare: nella nota originale questa sezione non era presente o era solo una traccia.
+
+## Varianti
+
+Contenuto da sviluppare: nella nota originale questa sezione non era presente o era solo una traccia.
+
+## Errori comuni
+
+### Best Practices & "Gotchas"
 -  **Da fare**: Usa `@property` per mantenere l'interfaccia pulita e "Pythonica".
 -  **Da fare**: Usa nomi con prefisso `_` per memorizzare i dati reali (es. `self._valore`).
 -  **Da evitare**: Non inserire operazioni pesanti (I/O, DB) dentro una proprietà; deve sembrare un accesso veloce.
 -  **Errore comune**: Causare una **ricorsione infinita** usando `self.attributo = x` dentro il setter della stessa proprietà (invece di `self._attributo = x`).
 -  **Attenzione**: Una proprietà definita solo con `@property` è automaticamente **Read-Only**.
+
+## Checklist
+
+Contenuto da sviluppare: nella nota originale questa sezione non era presente o era solo una traccia.
+
+## Collegamenti
+
+- [[Programmazione/Python/Indice python|Indice Python]]

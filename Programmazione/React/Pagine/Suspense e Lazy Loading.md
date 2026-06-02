@@ -1,5 +1,5 @@
----
-date: 2026-05-14
+﻿---
+date: 2026-06-02
 area: Programmazione
 topic: React
 type: technical-note
@@ -10,6 +10,7 @@ aliases: [Suspense e Lazy Loading]
 prerequisites: []
 related: []
 ---
+
 # Suspense e Lazy Loading
 
 ## Sintesi
@@ -27,8 +28,13 @@ Nel caso piu comune:
 
 ---
 
-## 1. Il problema che risolvono
+## Quando usarlo
 
+Contenuto da sviluppare: nella nota originale questa sezione non era presente o era solo una traccia.
+
+## Come funziona
+
+### 1. Il problema che risolvono
 In una SPA React, tutto il codice puo finire nel bundle iniziale. Questo crea due problemi:
 - tempo di download maggiore;
 - tempo di parsing ed esecuzione piu alto;
@@ -43,9 +49,7 @@ Esempio tipico:
 - componenti admin usati raramente.
 
 ---
-
-## 2. Lazy Loading con `React.lazy`
-
+### 2. Lazy Loading con `React.lazy`
 Il lazy loading di un componente si ottiene con `React.lazy`.
 
 ```javascript
@@ -75,9 +79,7 @@ function App() {
 Finche il modulo non e pronto, React mostra il fallback.
 
 ---
-
-## 3. Come funziona `Suspense`
-
+### 3. Come funziona `Suspense`
 `Suspense` non carica nulla da solo. E un boundary che dice a React:
 
 "Se un componente figlio non e ancora pronto, mostra questo fallback temporaneo."
@@ -91,9 +93,40 @@ Quindi:
 Dal punto di vista architetturale, `Suspense` e una strategia di orchestrazione del rendering asincrono.
 
 ---
+### 5. Code Splitting
+Il lazy loading e una forma di **code splitting**: il bundle viene spezzato in chunk piu piccoli.
 
-## 4. Esempio pratico: route o sezione pesante
+Invece di spedire tutto subito:
+- il bundle iniziale contiene solo il necessario;
+- i chunk secondari vengono scaricati quando richiesti.
 
+Questo riduce il costo iniziale ma introduce una fase di attesa al primo accesso al componente lazy.
+
+> [!TIP] Regola pratica
+> Il lazy loading ha senso per parti pesanti, rare o secondarie dell'app. Non sempre conviene spezzare componenti piccoli o usati immediatamente all'avvio.
+
+---
+### 7. Relazione con rendering concorrente
+In React moderno, `Suspense` si inserisce bene nella strategia di rendering concorrente e si collega ai concetti di [[Programmazione/React/Pagine/useTransition e useDeferredValue]].
+
+In pratica:
+- `Suspense` gestisce stati di attesa visuali;
+- `useTransition` aiuta a marcare aggiornamenti come non urgenti;
+- insieme possono migliorare molto la UX di caricamento.
+
+Non sono però la stessa cosa:
+- `Suspense` gestisce il fallback durante una sospensione;
+- `useTransition` gestisce la priorita dell'aggiornamento.
+
+---
+
+## API / Sintassi
+
+Contenuto da sviluppare: nella nota originale questa sezione non era presente o era solo una traccia.
+
+## Esempio pratico
+
+### 4. Esempio pratico: route o sezione pesante
 ```javascript
 import React, { Suspense, lazy } from 'react';
 
@@ -120,61 +153,9 @@ Questo si integra bene con il [[Programmazione/React/Pagine/Rendering Condiziona
 
 ---
 
-## 5. Code Splitting
+## Varianti
 
-Il lazy loading e una forma di **code splitting**: il bundle viene spezzato in chunk piu piccoli.
-
-Invece di spedire tutto subito:
-- il bundle iniziale contiene solo il necessario;
-- i chunk secondari vengono scaricati quando richiesti.
-
-Questo riduce il costo iniziale ma introduce una fase di attesa al primo accesso al componente lazy.
-
-> [!TIP] Regola pratica
-> Il lazy loading ha senso per parti pesanti, rare o secondarie dell'app. Non sempre conviene spezzare componenti piccoli o usati immediatamente all'avvio.
-
----
-
-## 6. Suspense vs Error Boundaries
-
-`Suspense` e `Error Boundaries` risolvono problemi diversi:
-
-| Strumento | Gestisce | Output |
-| :--- | :--- | :--- |
-| **Suspense** | attesa di codice o risorse | fallback temporaneo |
-| **Error Boundary** | errore nel rendering | fallback di errore |
-
-Molto spesso conviene combinarli:
-
-```jsx
-<ErrorBoundary>
-  <Suspense fallback={<p>Caricamento...</p>}>
-    <LazyWidget />
-  </Suspense>
-</ErrorBoundary>
-```
-
-Questo collega direttamente il pattern a [[Programmazione/React/Pagine/Error Boundaries]].
-
----
-
-## 7. Relazione con rendering concorrente
-
-In React moderno, `Suspense` si inserisce bene nella strategia di rendering concorrente e si collega ai concetti di [[Programmazione/React/Pagine/useTransition e useDeferredValue]].
-
-In pratica:
-- `Suspense` gestisce stati di attesa visuali;
-- `useTransition` aiuta a marcare aggiornamenti come non urgenti;
-- insieme possono migliorare molto la UX di caricamento.
-
-Non sono però la stessa cosa:
-- `Suspense` gestisce il fallback durante una sospensione;
-- `useTransition` gestisce la priorita dell'aggiornamento.
-
----
-
-## 8. Limiti e tradeoff
-
+### 8. Limiti e tradeoff
 Suspense e Lazy Loading non sono gratis.
 
 ### Vantaggi
@@ -197,8 +178,33 @@ Spezzare troppo il codice puo peggiorare la UX invece di migliorarla, soprattutt
 
 ---
 
-## 9. Best Practices
+## Errori comuni
 
+### 6. Suspense vs Error Boundaries
+`Suspense` e `Error Boundaries` risolvono problemi diversi:
+
+| Strumento | Gestisce | Output |
+| :--- | :--- | :--- |
+| **Suspense** | attesa di codice o risorse | fallback temporaneo |
+| **Error Boundary** | errore nel rendering | fallback di errore |
+
+Molto spesso conviene combinarli:
+
+```jsx
+<ErrorBoundary>
+  <Suspense fallback={<p>Caricamento...</p>}>
+    <LazyWidget />
+  </Suspense>
+</ErrorBoundary>
+```
+
+Questo collega direttamente il pattern a [[Programmazione/React/Pagine/Error Boundaries]].
+
+---
+
+## Checklist
+
+### 9. Best Practices
 1. **Usa `React.lazy` per sezioni pesanti o rare:** pannelli admin, editor, analytics, moduli secondari.
 2. **Posiziona `Suspense` vicino al punto giusto di fallback:** evita che un fallback piccolo oscuri parti troppo grandi della UI.
 3. **Combina `Suspense` con Error Boundaries:** attesa e fallimento vanno gestiti separatamente.
@@ -207,3 +213,7 @@ Spezzare troppo il codice puo peggiorare la UX invece di migliorarla, soprattutt
 6. **Pensa alla UX del primo accesso:** lazy loading migliora il bootstrap, ma sposta il costo al primo utilizzo del chunk.
 
 ---
+
+## Collegamenti
+
+- [[Programmazione/React/Indice react|Indice React]]

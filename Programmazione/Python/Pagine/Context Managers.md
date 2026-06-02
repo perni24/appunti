@@ -1,5 +1,5 @@
----
-date: 2026-05-14
+﻿---
+date: 2026-06-02
 area: Programmazione
 topic: Python
 type: technical-note
@@ -10,13 +10,20 @@ aliases: [Context Managers]
 prerequisites: []
 related: []
 ---
+
 # Context Managers in Python
 
 ## Sintesi
 
 Nota su Context Managers in Python. Riassume il concetto, la sintassi principale e i punti da ricordare durante studio, sviluppo o debugging.
 
-## Concetto chiave
+## Quando usarlo
+
+Contenuto da sviluppare: nella nota originale questa sezione non era presente o era solo una traccia.
+
+## Come funziona
+
+### Concetto chiave
 I **Context Managers** sono il meccanismo Pythonic per gestire risorse che devono essere inizializzate e poi rilasciate in modo sicuro, come file, lock, connessioni o transazioni.
 
 Si usano tramite l'istruzione `with`, che garantisce l'esecuzione della fase di pulizia anche in presenza di errori.
@@ -32,40 +39,7 @@ In questo esempio il file viene chiuso automaticamente al termine del blocco, an
 > I context manager non servono solo alla comodita sintattica: rendono il codice piu sicuro, piu leggibile e riducono il rischio di lasciare aperte risorse esterne o di affidarsi troppo al [[Programmazione/Python/Pagine/Memory Management]] automatico.
 
 ---
-
-##  Sintassi
-
-La forma piu comune e:
-
-```python
-with resource_expression as variable:
-    # blocco protetto
-    ...
-```
-
-### Esempio classico: gestione file
-
-```python
-with open("log.txt", "w", encoding="utf-8") as file:
-    file.write("Operazione completata")
-```
-
-Equivale concettualmente a:
-
-```python
-file = open("log.txt", "w", encoding="utf-8")
-try:
-    file.write("Operazione completata")
-finally:
-    file.close()
-```
-
-Il vantaggio del `with` e che incapsula in modo pulito il pattern `try/finally`, molto legato alla gestione delle risorse e a [[Programmazione/Python/Pagine/Error Handling]].
-
----
-
-##  Esempi Pratici
-
+### Esempi Pratici
 ### Gestione di un lock
 
 ```python
@@ -114,9 +88,7 @@ with managed_resource() as resource:
 Questo approccio e molto utile quando vuoi creare context manager leggeri senza definire una classe completa.
 
 ---
-
-##  Funzionamento Interno (Teoria)
-
+### Funzionamento Interno (Teoria)
 ### Il protocollo dei context manager
 Un oggetto puo essere usato con `with` se implementa il protocollo:
 - `__enter__()`
@@ -155,9 +127,7 @@ class IgnoreError:
 Questo comportamento va usato con molta attenzione, perche può nascondere bug importanti.
 
 ---
-
-##  Perche usare `with` invece di affidarsi al garbage collector
-
+### Perche usare `with` invece di affidarsi al garbage collector
 Affidarsi solo alla distruzione automatica degli oggetti non e sufficiente per gestire correttamente risorse esterne.
 
 Esempi di risorse che vanno rilasciate esplicitamente:
@@ -175,8 +145,49 @@ Il rilascio della memoria e un problema diverso dal rilascio delle risorse. Per 
 
 ---
 
-##  Best Practices & "Gotchas"
+## API / Sintassi
 
+### Sintassi
+La forma piu comune e:
+
+```python
+with resource_expression as variable:
+    # blocco protetto
+    ...
+```
+
+### Esempio classico: gestione file
+
+```python
+with open("log.txt", "w", encoding="utf-8") as file:
+    file.write("Operazione completata")
+```
+
+Equivale concettualmente a:
+
+```python
+file = open("log.txt", "w", encoding="utf-8")
+try:
+    file.write("Operazione completata")
+finally:
+    file.close()
+```
+
+Il vantaggio del `with` e che incapsula in modo pulito il pattern `try/finally`, molto legato alla gestione delle risorse e a [[Programmazione/Python/Pagine/Error Handling]].
+
+---
+
+## Esempio pratico
+
+Contenuto da sviluppare: nella nota originale questa sezione non era presente o era solo una traccia.
+
+## Varianti
+
+Contenuto da sviluppare: nella nota originale questa sezione non era presente o era solo una traccia.
+
+## Errori comuni
+
+### Best Practices & "Gotchas"
 -  **Usa `with` ogni volta che puoi:** soprattutto con file, lock, transazioni e connessioni.
 -  **Preferisci context manager espliciti al cleanup implicito:** il codice diventa piu prevedibile.
 -  **Usa `contextlib` per casi semplici:** il decorator `@contextmanager` riduce boilerplate.
@@ -186,3 +197,11 @@ Il rilascio della memoria e un problema diverso dal rilascio delle risorse. Per 
 -  **Attenzione alle risorse annidate:** se gestisci molte risorse insieme, valuta strutture come `ExitStack` per mantenere il controllo ordinato.
 
 ---
+
+## Checklist
+
+Contenuto da sviluppare: nella nota originale questa sezione non era presente o era solo una traccia.
+
+## Collegamenti
+
+- [[Programmazione/Python/Indice python|Indice Python]]

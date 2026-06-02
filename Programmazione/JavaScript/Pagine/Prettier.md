@@ -1,5 +1,5 @@
 ﻿---
-date: 2026-05-20
+date: 2026-06-02
 area: Programmazione
 topic: JavaScript
 type: technical-note
@@ -21,23 +21,38 @@ related: []
 
 **Prettier** e un formatter automatico. Riscrive il codice secondo regole coerenti, riducendo discussioni manuali su spazi, indentazione, virgole e wrapping.
 
-## Concetto chiave
+## Quando usarlo
 
+Usa Prettier quando vuoi una formattazione automatica, stabile e condivisa, senza discutere manualmente spazi, indentazione e layout del codice.
+
+E utile in:
+
+- repository con piu sviluppatori;
+- progetti con CI;
+- codice JavaScript, TypeScript, JSON, CSS, HTML e Markdown;
+- codebase dove vuoi separare stile automatico da regole di qualita.
+
+Non usarlo per imporre regole semantiche: quello e compito di ESLint.
+
+## Come funziona
+
+### Concetto chiave
 Prettier non cerca di capire se il codice e corretto dal punto di vista logico. Il suo scopo e produrre formattazione consistente.
 
 ```powershell
 npx prettier . --write
 ```
-
-## Uso tipico
-
+### Uso tipico
 - Formattazione al salvataggio nell'editor.
 - Check in CI.
 - Hook pre-commit.
 - Standard condiviso nel team.
+### Rapporto con ESLint
+[[Programmazione/JavaScript/Pagine/ESLint|ESLint]] segnala problemi di qualita e possibili bug. Prettier gestisce la forma del codice.
 
-## Esempio di configurazione
+## API / Sintassi
 
+### Esempio di configurazione
 ```json
 {
   "semi": true,
@@ -46,9 +61,33 @@ npx prettier . --write
 }
 ```
 
-## Rapporto con ESLint
+## Esempio pratico
 
-[[Programmazione/JavaScript/Pagine/ESLint|ESLint]] segnala problemi di qualita e possibili bug. Prettier gestisce la forma del codice.
+Codice prima della formattazione:
+
+```javascript
+const user={name:"Luca",roles:["admin","editor"]};function hasRole(role){return user.roles.includes(role)}
+```
+
+Dopo Prettier:
+
+```javascript
+const user = { name: "Luca", roles: ["admin", "editor"] };
+
+function hasRole(role) {
+  return user.roles.includes(role);
+}
+```
+
+Il vantaggio e che il formato non dipende dallo stile personale di chi modifica il file.
+
+## Varianti
+
+- **Format on save**: l'editor formatta automaticamente quando salvi.
+- **CLI manuale**: utile per formattare tutto il progetto.
+- **Check in CI**: verifica che i file siano gia formattati.
+- **Pre-commit hook**: formatta solo i file modificati.
+- **Configurazione condivisa**: opzioni comuni per tutti i membri del progetto.
 
 ## Errori comuni
 
@@ -56,37 +95,17 @@ npx prettier . --write
 - Cambiare impostazioni spesso, generando diff rumorosi.
 - Applicarlo a file generati.
 
-## Quando usarlo
-
-- Da completare: indicare scenari pratici in cui questa nota e utile.
-
-## Come funziona
-
-Da completare: spiegare il meccanismo principale o il comportamento tecnico.
-
-## API / Sintassi
-
-```text
-Da completare con API o sintassi principale.
-```
-
-## Esempio pratico
-
-```text
-Da completare con un esempio pratico.
-```
-
-## Varianti
-
-- Da completare: varianti, alternative o differenze rispetto ad approcci simili.
-
 ## Checklist
 
-- Da completare: controlli essenziali prima di usare questo concetto in pratica.
+- Aggiungi una configurazione Prettier condivisa.
+- Escludi file generati con `.prettierignore`.
+- Integra format on save nell'editor.
+- Esegui controllo formato in CI se serve.
+- Coordina Prettier con ESLint.
+- Evita opzioni personalizzate non necessarie.
 
 ## Collegamenti
+
 - [[Programmazione/JavaScript/Pagine/ESLint|ESLint]]
 - [[Programmazione/JavaScript/Pagine/Testing|Testing]]
 - [[Programmazione/JavaScript/Pagine/Node.js Basics|Node.js Basics]]
-
-

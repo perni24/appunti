@@ -1,5 +1,5 @@
 ﻿---
-date: 2026-05-20
+date: 2026-06-02
 area: Programmazione
 topic: React
 type: theory-note
@@ -20,8 +20,13 @@ related: []
 
 La **feature-based architecture** organizza il codice per funzionalita di prodotto invece che solo per tipo tecnico di file.
 
-## Concetto chiave
+## Quando usarlo
 
+Contenuto da sviluppare: nella nota originale questa sezione non era presente o era solo una traccia.
+
+## Come funziona
+
+### Concetto chiave
 Invece di avere cartelle enormi come `components`, `hooks` e `services`, ogni feature contiene UI, hook, API e logica vicina al suo dominio.
 
 ```text
@@ -36,13 +41,23 @@ src/
       api/
       hooks/
 ```
-
-## Vantaggi
-
+### Vantaggi
 - Maggiore coesione.
 - Meno import incrociati.
 - Ownership piu chiara.
 - Refactor piu localizzati.
+
+## API / Sintassi
+
+Contenuto da sviluppare: nella nota originale questa sezione non era presente o era solo una traccia.
+
+## Esempio pratico
+
+Contenuto da sviluppare: nella nota originale questa sezione non era presente o era solo una traccia.
+
+## Varianti
+
+Contenuto da sviluppare: nella nota originale questa sezione non era presente o era solo una traccia.
 
 ## Errori comuni
 
@@ -50,27 +65,12 @@ src/
 - Non distinguere feature da shared/common.
 - Creare dipendenze cicliche tra feature.
 
-## Problema che risolve
+## Checklist
 
-Da completare: descrivere il problema concettuale o tecnico che questa nota chiarisce.
-
-## Dettagli importanti
-
-- Da completare: aggiungere dettagli, casi limite e differenze da concetti simili.
-
-## Esempio
-
-```text
-Da completare con un esempio minimo.
-```
-
-## Limiti
-
-- Da completare: indicare limiti, ambiguita e casi in cui il concetto non basta.
+Contenuto da sviluppare: nella nota originale questa sezione non era presente o era solo una traccia.
 
 ## Collegamenti
+
 - [[Programmazione/React/Pagine/API layer|API layer]]
 - [[Programmazione/React/Pagine/State colocato|State colocato]]
 - [[Programmazione/React/Pagine/Design system|Design system]]
-
-

@@ -1,5 +1,5 @@
-﻿---
-date: 2026-05-20
+---
+date: 2026-06-02
 area: Programmazione
 topic: Postgres
 type: technical-note
@@ -9,7 +9,6 @@ tags:
   - programmazione
   - postgres
   - scalabilita
-  - architettura
 aliases: []
 prerequisites: []
 related: []
@@ -19,59 +18,61 @@ related: []
 
 ## Sintesi
 
-Lo **sharding** divide i dati su piu database o nodi in base a una chiave di partizionamento.
-
-## Concetto chiave
-
-Quando un singolo database non basta piu per volume, throughput o isolamento, lo sharding distribuisce il carico. In cambio introduce complessita applicativa e operativa.
-
-## Scelte importanti
-
-- Shard key.
-- Strategia di routing.
-- Query cross-shard.
-- Bilanciamento e resharding.
-- Backup e restore per shard.
-
-## Limiti
-
-PostgreSQL non rende lo sharding trasparente come funzionalita core general-purpose. Spesso si usano soluzioni applicative, estensioni o sistemi esterni.
+Lo sharding divide dati su piu nodi indipendenti usando una shard key. Serve quando un singolo cluster non basta piu per volume, throughput o isolamento.
 
 ## Quando usarlo
 
-- Da completare: indicare scenari pratici in cui questa nota e utile.
+Usalo solo dopo aver esaurito opzioni piu semplici: indici, partizionamento, read replicas, tuning e archiviazione.
 
 ## Come funziona
 
-Da completare: spiegare il meccanismo principale o il comportamento tecnico.
+I dati vengono assegnati a shard diversi in base a una chiave, per esempio `tenant_id` o `account_id`. L'applicazione o un middleware indirizza query allo shard corretto.
 
 ## API / Sintassi
 
+Non esiste un comando PostgreSQL standard per sharding generale. Approcci comuni:
+
 ```text
-Da completare con API o sintassi principale.
+tenant_id -> shard_01
+tenant_id -> shard_02
+tenant_id -> shard_03
 ```
 
 ## Esempio pratico
 
-```text
-Da completare con un esempio pratico.
-```
+Multi-tenant:
+
+- ogni tenant appartiene a uno shard;
+- query con `tenant_id` vanno a un solo shard;
+- query globali devono aggregare risultati da piu shard.
 
 ## Varianti
 
-- Da completare: varianti, alternative o differenze rispetto ad approcci simili.
+- Sharding applicativo.
+- Sharding per tenant.
+- Sharding per hash.
+- Sharding per range.
+- Estensioni/sistemi distribuiti.
+- Federazione con FDW.
 
 ## Errori comuni
 
-Da completare durante revisione.
+- Shardare troppo presto.
+- Scegliere shard key sbagliata.
+- Ignorare query cross-shard.
+- Non pianificare rebalancing.
+- Sottovalutare complessita operativa.
 
 ## Checklist
 
-- Da completare: controlli essenziali prima di usare questo concetto in pratica.
+- Il problema non si risolve con partizionamento o replica?
+- La shard key e presente in quasi tutte le query?
+- Le query cross-shard sono rare?
+- Esiste piano di rebalancing?
+- Backup e restore sono pensati per piu shard?
 
 ## Collegamenti
+
 - [[Programmazione/Postgres/Pagine/Partitioning|Partitioning]]
-- [[Programmazione/Postgres/Pagine/Replicazione Logica|Replicazione Logica]]
-- [[Programmazione/Postgres/Pagine/Failover e Load Balancing|Failover e Load Balancing]]
-
-
+- [[Programmazione/Postgres/Pagine/Read replicas|Read replicas]]
+- [[Programmazione/Postgres/Pagine/FDW|FDW]]

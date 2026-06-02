@@ -1,5 +1,5 @@
 ---
-date: 2026-05-14
+date: 2026-06-02
 area: Programmazione
 topic: PostgreSQL
 type: technical-note
@@ -10,67 +10,105 @@ aliases: [Replicazione Fisica]
 prerequisites: []
 related: []
 ---
+
 # Replicazione Fisica in PostgreSQL
 
 ## Sintesi
 
-Nota su Replicazione Fisica in PostgreSQL. Riassume il concetto, i meccanismi principali e i punti da ricordare durante studio, progettazione o amministrazione.
+La **replicazione fisica** crea una copia byte-per-byte del cluster PostgreSQL inviando WAL dal primario a uno o piu standby. Serve per alta disponibilita, read replicas e disaster recovery.
 
-La **Replicazione Fisica** (spesso chiamata *Streaming Replication*) è una tecnica che permette di creare una copia esatta, byte per byte, di un intero cluster PostgreSQL su uno o più server secondari (**Standby**).
+## Quando usarlo
 
-## Concetto chiave
-La replicazione fisica si basa sul flusso dei log [[Programmazione/Postgres/Pagine/Write-Ahead Logging|WAL]]. Il server Primario invia i suoi record WAL al server Standby, che li applica fedelmente ai propri file dei dati. Poiché la replica è a livello di disco, lo Standby è una copia identica (incluso lo schema, gli utenti e le configurazioni).
+Usala quando vuoi:
 
----
+- avere standby promuovibili in caso di guasto;
+- servire query read-only su repliche;
+- spostare backup e reportistica lontano dal primario;
+- mantenere una replica geografica;
+- costruire una base per failover gestito.
 
-##  Architettura e Componenti
+## Come funziona
 
-1.  **Primary (Master):** Il server che accetta query in lettura e scrittura.
-2.  **Standby (Slave/Replica):** Il server che riceve i dati. Di default è in modalità **Hot Standby**, ovvero permette query in sola lettura.
-3.  **WAL Sender:** Un processo sul Primario che invia i record WAL.
-4.  **WAL Receiver:** Un processo sullo Standby che riceve i record dal Primario.
+Il primario genera WAL. Un processo `wal sender` invia il flusso allo standby, dove un `wal receiver` lo riceve e lo applica. In hot standby, la replica puo eseguire query in sola lettura.
 
----
+La replica fisica replica l'intero cluster: database, schema e dati. Richiede compatibilita stretta di versione e non permette di scegliere singole tabelle.
 
-##  Modalità di Sincronizzazione
+La replica puo essere asincrona o sincrona. L'asincrona e piu veloce ma puo perdere gli ultimi WAL se il primario muore prima di inviarli. La sincrona riduce o elimina perdita dati, ma aggiunge latenza.
 
-PostgreSQL permette di scegliere quanto "vicini" debbano essere i server:
+## API / Sintassi
 
-### 1. Replicazione Asincrona (Default)
-Il Primario conferma il `COMMIT` al client non appena il WAL è scritto sul proprio disco locale.
-- **Pro:** Massime performance; il Primario non rallenta se lo Standby è lento o disconnesso.
-- **Contro:** Rischio minimo di perdita dati (Data Loss) se il Primario crasha prima che lo Standby riceva gli ultimi record.
+Creare slot fisico:
 
-### 2. Replicazione Sincrona
-Il Primario aspetta che lo Standby confermi di aver ricevuto e scritto i dati prima di confermare il `COMMIT` al client.
-- **Pro:** Zero Data Loss. Ideale per sistemi finanziari.
-- **Contro:** Performance ridotte dalla latenza di rete; se lo Standby cade, il Primario blocca tutte le scritture.
+```sql
+SELECT pg_create_physical_replication_slot('standby_1');
+```
 
----
+Base backup:
 
-##  Casi d'Uso
+```bash
+pg_basebackup -h primary.example.com -D /var/lib/postgresql/data -U replicator -P -R -S standby_1
+```
 
-1.  **High Availability (HA):** Se il Primario fallisce, uno Standby può essere promosso a nuovo Primario (**Failover**).
-2.  **Read Scalability:** Puoi distribuire il carico delle query `SELECT` pesanti (reportistica, analisi) sui server Standby, lasciando il Primario libero per le transazioni `INSERT/UPDATE`.
-3.  **Disaster Recovery:** Tenere una replica in un data center geograficamente distante.
+Stato replica sul primario:
 
----
+```sql
+SELECT
+  application_name,
+  state,
+  sync_state,
+  sent_lsn,
+  write_lsn,
+  flush_lsn,
+  replay_lsn
+FROM pg_stat_replication;
+```
 
-##  Configurazione Rapida
+## Esempio pratico
 
-Lo Standby viene creato inizialmente tramite un backup fisico (`pg_basebackup`) e poi configurato per connettersi al primario tramite una stringa di connessione (`primary_conninfo`).
+Replica asincrona con slot:
 
-> [!INFO] Slot di Replicazione (Replication Slots)
-> È caldamente consigliato usare gli **Slot di Replicazione** sul Primario. Questi impediscono al Primario di eliminare i vecchi file WAL finché non è sicuro che lo Standby li abbia ricevuti, evitando che la replica "si rompa" se rimane spenta per troppo tempo.
+```sql
+CREATE ROLE replicator WITH REPLICATION LOGIN PASSWORD 'change_me';
+SELECT pg_create_physical_replication_slot('replica_a');
+```
 
----
+Poi sullo standby:
 
-## Logic layer: Replicazione Fisica vs Logica
+```bash
+pg_basebackup -h primary -U replicator -D /data/postgres -P -R -S replica_a
+```
 
-| Caratteristica | Replicazione Fisica | [[Programmazione/Postgres/Pagine/Replicazione Logica|Replicazione Logica]] |
-| :--- | :--- | :--- |
-| **Granularità** | Intero Cluster (tutti i DB). | Singole tabelle o database. |
-| **Versioni** | Stessa versione major di Postgres. | Versioni diverse (utile per upgrade). |
-| **Sola Lettura** | Sì (Hot Standby). | Sì, ma permette anche scritture locali. |
+L'opzione `-R` scrive la configurazione necessaria per collegarsi al primario.
 
----
+## Varianti
+
+- Streaming replication asincrona.
+- Streaming replication sincrona.
+- Cascading replication: una replica alimenta altre repliche.
+- Hot standby: query read-only sulla replica.
+- Replication slot fisici.
+- WAL shipping tramite archiviazione.
+
+## Errori comuni
+
+- Non monitorare replication lag.
+- Usare slot fisici senza controllare crescita WAL.
+- Mandare scritture a una replica read-only.
+- Non testare promozione e failover.
+- Lasciare query lunghe sulla replica che ritardano cleanup.
+- Confondere replica con backup: una replica propaga anche errori logici come delete sbagliati.
+
+## Checklist
+
+- Esiste un utente `REPLICATION` dedicato?
+- Il lag e monitorato?
+- Gli slot fisici sono necessari e controllati?
+- Le app distinguono primario e replica?
+- Il failover e stato testato?
+- Esistono backup indipendenti dalla replica?
+
+## Collegamenti
+
+- [[Programmazione/Postgres/Pagine/Write-Ahead Logging|Write-Ahead Logging]]
+- [[Programmazione/Postgres/Pagine/Read replicas|Read replicas]]
+- [[Programmazione/Postgres/Pagine/Failover e Load Balancing|Failover e Load Balancing]]

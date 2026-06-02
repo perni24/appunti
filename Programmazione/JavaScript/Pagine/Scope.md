@@ -1,5 +1,5 @@
----
-date: 2026-05-13
+﻿---
+date: 2026-06-02
 area: Programmazione
 topic: JavaScript
 type: technical-note
@@ -21,8 +21,22 @@ In JavaScript lo scope e principalmente lessicale: dipende da dove il codice e s
 
 ---
 
-## Perche conta
+## Quando usarlo
 
+Studia lo scope quando devi capire dove una variabile e visibile, perche un nome produce `ReferenceError` o perche una funzione conserva accesso a dati esterni.
+
+Serve per:
+
+- evitare globali accidentali;
+- leggere closure;
+- progettare moduli;
+- capire `let`, `const` e `var`;
+- ridurre collisioni di nomi;
+- mantenere funzioni piccole e leggibili.
+
+## Come funziona
+
+### Perche conta
 Capire lo scope serve per:
 
 - evitare variabili globali accidentali;
@@ -32,9 +46,7 @@ Capire lo scope serve per:
 - organizzare meglio moduli e funzioni.
 
 ---
-
-## Scope globale
-
+### Scope globale
 Una variabile dichiarata nello scope globale e accessibile da tutto il codice caricato nello stesso contesto.
 
 ```js
@@ -64,9 +76,7 @@ console.log(window.modernValue); // undefined
 ```
 
 ---
-
-## Scope di funzione
-
+### Scope di funzione
 Ogni funzione crea un nuovo scope.
 
 ```js
@@ -82,9 +92,7 @@ console.log(name); // ReferenceError
 Le variabili dichiarate dentro una funzione non sono accessibili dall'esterno.
 
 ---
-
-## `var` e scope di funzione
-
+### `var` e scope di funzione
 `var` non rispetta lo scope di blocco: viene limitato alla funzione piu vicina.
 
 ```js
@@ -100,9 +108,7 @@ function example() {
 Per codice moderno, preferire `let` e `const`.
 
 ---
-
-## Scope di blocco
-
+### Scope di blocco
 `let` e `const` sono limitati al blocco in cui vengono dichiarati.
 
 ```js
@@ -118,9 +124,7 @@ console.log(isActive); // ReferenceError
 Un blocco e una coppia di parentesi graffe `{}`: `if`, `for`, `while`, `try`, funzioni e blocchi espliciti.
 
 ---
-
-## Scope di modulo
-
+### Scope di modulo
 Ogni modulo ES ha il proprio scope top-level.
 
 ```js
@@ -137,9 +141,7 @@ export function getApiUrl() {
 I moduli ES sono anche eseguiti in strict mode automaticamente.
 
 ---
-
-## Scope lessicale
-
+### Scope lessicale
 Una funzione puo leggere le variabili definite nello scope in cui e stata creata.
 
 ```js
@@ -156,9 +158,7 @@ greetLuca(); // "Ciao Luca"
 La funzione `greet` mantiene accesso a `name` perche e stata definita dentro `createGreeter`.
 
 ---
-
-## Scope chain
-
+### Scope chain
 Quando JavaScript cerca un identificatore, procede dall'interno verso l'esterno:
 
 - scope locale;
@@ -183,9 +183,7 @@ outer(); // "outer"
 ```
 
 ---
-
-## Shadowing
-
+### Shadowing
 Lo shadowing avviene quando una variabile interna ha lo stesso nome di una variabile esterna.
 
 ```js
@@ -204,6 +202,71 @@ Lo shadowing non e sempre un errore, ma puo rendere il codice meno leggibile se 
 
 ---
 
+## API / Sintassi
+
+Scope di blocco:
+
+```js
+{
+  const value = 1;
+}
+```
+
+Scope di funzione:
+
+```js
+function run() {
+  const value = 1;
+}
+```
+
+Scope di modulo:
+
+```js
+const internal = 1;
+export const publicValue = 2;
+```
+
+Accesso globale moderno:
+
+```js
+globalThis;
+```
+
+Regola pratica: dichiara i valori nello scope piu piccolo possibile.
+
+## Esempio pratico
+
+Evitare stato globale:
+
+```js
+function createCounter() {
+  let count = 0;
+
+  return {
+    increment() {
+      count += 1;
+      return count;
+    },
+  };
+}
+
+const counter = createCounter();
+counter.increment();
+```
+
+`count` resta nello scope di `createCounter` e non diventa accessibile globalmente.
+
+## Varianti
+
+- **Scope globale**: visibile in tutto il contesto.
+- **Scope di modulo**: top-level isolato del modulo ES.
+- **Scope di funzione**: creato da ogni funzione.
+- **Scope di blocco**: creato da blocchi con `let` e `const`.
+- **Scope lessicale**: determinato dalla posizione nel codice.
+- **Scope chain**: ricerca dei nomi dall'interno verso l'esterno.
+- **Shadowing**: nome interno che nasconde nome esterno.
+
 ## Errori comuni
 
 - Usare `var` pensando che sia limitato al blocco.
@@ -214,8 +277,9 @@ Lo shadowing non e sempre un errore, ma puo rendere il codice meno leggibile se 
 
 ---
 
-## Checklist operativa
+## Checklist
 
+### Checklist operativa
 - Usa `const` di default.
 - Usa `let` solo quando il valore deve cambiare.
 - Evita `var` nel codice moderno.

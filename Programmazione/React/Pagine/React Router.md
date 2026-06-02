@@ -1,5 +1,5 @@
----
-date: 2026-05-14
+﻿---
+date: 2026-06-02
 area: Programmazione
 topic: React
 type: technical-note
@@ -10,6 +10,7 @@ aliases: [React Router]
 prerequisites: []
 related: []
 ---
+
 # React Router
 
 ## Sintesi
@@ -25,8 +26,13 @@ Permette di mappare la URL a componenti React, mantenendo il comportamento di na
 
 ---
 
-## 1. Perche serve
+## Quando usarlo
 
+Contenuto da sviluppare: nella nota originale questa sezione non era presente o era solo una traccia.
+
+## Come funziona
+
+### 1. Perche serve
 In un'app React non banale servono quasi sempre piu schermate:
 - home;
 - pagina dettaglio;
@@ -44,9 +50,7 @@ Senza un router, dovresti gestire tutto con rendering condizionale manuale, perd
 React Router risolve questo problema.
 
 ---
-
-## 2. Struttura di base
-
+### 2. Struttura di base
 I concetti principali sono:
 - `BrowserRouter`: integra React con la history API del browser;
 - `Routes`: contenitore che sceglie quale route renderizzare;
@@ -79,9 +83,7 @@ function App() {
 Quando la URL cambia, React Router seleziona il componente corrispondente.
 
 ---
-
-## 3. Link e navigazione
-
+### 3. Link e navigazione
 Per navigare non si usa normalmente il tag HTML `<a>` con URL interne, perche causerebbe un reload completo della pagina.
 
 Si usa invece `Link`:
@@ -98,9 +100,7 @@ Questo mantiene il comportamento da SPA:
 - navigazione piu fluida.
 
 ---
-
-## 4. Parametri URL
-
+### 4. Parametri URL
 React Router permette di definire segmenti dinamici nel path.
 
 ```javascript
@@ -122,9 +122,7 @@ function UserPage() {
 Questo e utile per pagine dettaglio, profili, prodotti, articoli o risorse identificate da ID o slug.
 
 ---
-
-## 5. Nested Routes e Outlet
-
+### 5. Nested Routes e Outlet
 Una delle feature piu importanti e la gestione delle **route annidate**.
 
 Esempio:
@@ -166,9 +164,7 @@ Qui:
 Questo pattern e molto utile per layout persistenti.
 
 ---
-
-## 6. Navigazione programmatica
-
+### 6. Navigazione programmatica
 Non sempre la navigazione parte da un click su un link. A volte serve reindirizzare dopo:
 - login;
 - submit di un form;
@@ -195,9 +191,7 @@ function LoginForm() {
 E il modo corretto di navigare da codice.
 
 ---
-
-## 7. Protezione delle rotte
-
+### 7. Protezione delle rotte
 Un caso molto comune e limitare l'accesso a certe pagine agli utenti autenticati.
 
 Pattern tipico:
@@ -233,9 +227,7 @@ In applicazioni reali, `isAuthenticated` viene spesso letto da [[Programmazione/
 > Proteggere una route lato client migliora UX e controllo del flusso, ma non sostituisce l'autorizzazione lato server. I controlli di sicurezza reali devono esistere anche sulle API.
 
 ---
-
-## 8. Query string e stato della navigazione
-
+### 8. Query string e stato della navigazione
 Oltre ai parametri nel path, una route puo usare anche la query string:
 
 ```javascript
@@ -251,9 +243,7 @@ Questo e utile per:
 La URL diventa cosi parte dello stato dell'applicazione, e spesso e preferibile a tenere tutto solo in [[Programmazione/React/Pagine/useState]].
 
 ---
-
-## 9. Route not found
-
+### 9. Route not found
 Una buona configurazione prevede quasi sempre una pagina di fallback:
 
 ```javascript
@@ -268,9 +258,7 @@ Serve per gestire:
 E migliora robustezza e UX.
 
 ---
-
-## 10. Relazione con React
-
+### 10. Relazione con React
 React Router non sostituisce React: si integra con il suo modello dichiarativo.
 
 Si collega bene a:
@@ -283,8 +271,25 @@ In pratica, React Router organizza **la navigazione**, mentre React continua a g
 
 ---
 
-## 11. Best Practices
+## API / Sintassi
 
+Contenuto da sviluppare: nella nota originale questa sezione non era presente o era solo una traccia.
+
+## Esempio pratico
+
+Contenuto da sviluppare: nella nota originale questa sezione non era presente o era solo una traccia.
+
+## Varianti
+
+Contenuto da sviluppare: nella nota originale questa sezione non era presente o era solo una traccia.
+
+## Errori comuni
+
+Contenuto da sviluppare: nella nota originale questa sezione non era presente o era solo una traccia.
+
+## Checklist
+
+### 11. Best Practices
 1. **Modella le route come struttura dell'app, non come elenco casuale di path:** layout e annidamento devono riflettere la UI reale.
 2. **Usa `Link` o `NavLink` per navigazione interna:** evita `<a>` per route client-side.
 3. **Metti nello URL lo stato che deve essere condivisibile o ricaricabile:** filtri, pagina corrente, identificatori e tab spesso appartengono alla URL.
@@ -293,3 +298,7 @@ In pratica, React Router organizza **la navigazione**, mentre React continua a g
 6. **Non concentrare tutta la logica dell'app nelle route:** le route decidono cosa mostrare, ma il dominio applicativo deve restare nei componenti e nei servizi giusti.
 
 ---
+
+## Collegamenti
+
+- [[Programmazione/React/Indice react|Indice React]]

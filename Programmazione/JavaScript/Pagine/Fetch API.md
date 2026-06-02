@@ -1,5 +1,5 @@
----
-date: 2026-05-13
+﻿---
+date: 2026-06-02
 area: Programmazione
 topic: JavaScript
 type: technical-note
@@ -21,8 +21,24 @@ La Fetch API permette di eseguire richieste HTTP dal browser e da ambienti JavaS
 
 ---
 
-## GET base
+## Quando usarlo
 
+Usa Fetch API quando devi comunicare via HTTP da codice JavaScript moderno.
+
+Casi comuni:
+
+- leggere dati da API REST;
+- inviare JSON;
+- caricare testo o file;
+- gestire upload o download;
+- fare richieste cancellabili con `AbortController`;
+- centralizzare un client HTTP leggero.
+
+Per funzionalita avanzate come retry, cache applicativa, interceptors o gestione automatica complessa, puoi creare wrapper o usare librerie dedicate.
+
+## Come funziona
+
+### GET base
 ```js
 const response = await fetch("/api/users/1");
 const user = await response.json();
@@ -33,9 +49,7 @@ console.log(user);
 Per impostazione predefinita, `fetch()` esegue una richiesta `GET`.
 
 ---
-
-## Oggetto Response
-
+### Oggetto Response
 `Response` contiene metadati e metodi per leggere il body.
 
 ```js
@@ -57,27 +71,7 @@ Metodi comuni:
 I metodi di lettura del body sono asincroni.
 
 ---
-
-## Errori HTTP
-
-`fetch()` non rifiuta la Promise per status HTTP come `404` o `500`.
-
-```js
-const response = await fetch("/api/users/404");
-
-if (!response.ok) {
-  throw new Error(`HTTP ${response.status}`);
-}
-
-const user = await response.json();
-```
-
-La Promise viene rifiutata per errori di rete, CORS, abort o problemi simili.
-
----
-
-## POST JSON
-
+### POST JSON
 ```js
 const response = await fetch("/api/users", {
   method: "POST",
@@ -100,9 +94,7 @@ const createdUser = await response.json();
 Il body deve essere serializzato manualmente quando invii JSON.
 
 ---
-
-## Query string
-
+### Query string
 Usa `URL` e `URLSearchParams` per costruire query sicure.
 
 ```js
@@ -117,9 +109,7 @@ const response = await fetch(url);
 Questo evita errori di encoding manuale.
 
 ---
-
-## Headers
-
+### Headers
 ```js
 const response = await fetch("/api/private", {
   headers: {
@@ -132,9 +122,7 @@ const response = await fetch("/api/private", {
 Alcuni header sono controllati dal browser e non possono essere impostati manualmente.
 
 ---
-
-## Credentials e cookie
-
+### Credentials e cookie
 Per inviare cookie cross-origin bisogna specificare `credentials`.
 
 ```js
@@ -152,9 +140,7 @@ Valori principali:
 Questo interagisce con CORS e configurazione server.
 
 ---
-
-## AbortController
-
+### AbortController
 Per annullare una richiesta usa `AbortController`.
 
 ```js
@@ -176,9 +162,7 @@ try {
 ```
 
 ---
-
-## Wrapper riutilizzabile
-
+### Wrapper riutilizzabile
 ```js
 async function requestJson(url, options = {}) {
   const response = await fetch(url, {
@@ -201,8 +185,94 @@ Un wrapper centralizza parsing, errori e header comuni.
 
 ---
 
+## API / Sintassi
+
+Chiamata base:
+
+```js
+const response = await fetch(url, options);
+```
+
+Opzioni comuni:
+
+```js
+await fetch("/api/users", {
+  method: "POST",
+  headers: {
+    "Content-Type": "application/json",
+  },
+  body: JSON.stringify(data),
+  credentials: "include",
+  signal: controller.signal,
+});
+```
+
+Lettura risposta:
+
+```js
+response.ok;
+response.status;
+response.headers.get("content-type");
+await response.json();
+await response.text();
+await response.blob();
+await response.arrayBuffer();
+```
+
+## Esempio pratico
+
+Wrapper JSON riutilizzabile:
+
+```js
+async function requestJson(url, options = {}) {
+  const response = await fetch(url, {
+    headers: {
+      Accept: "application/json",
+      ...options.headers,
+    },
+    ...options,
+  });
+
+  if (!response.ok) {
+    throw new Error(`HTTP ${response.status}`);
+  }
+
+  return response.json();
+}
+
+const user = await requestJson("/api/users/1");
+```
+
+Il wrapper evita di ripetere controllo `response.ok` e parsing JSON in ogni chiamata.
+
+## Varianti
+
+- **GET semplice**: lettura dati.
+- **POST JSON**: invio dati strutturati.
+- **FormData**: upload form o file.
+- **Blob/ArrayBuffer**: dati binari.
+- **AbortController**: cancellazione e timeout.
+- **Streaming body**: utile in scenari avanzati.
+- **Wrapper applicativo**: centralizza errori, header e parsing.
+
 ## Errori comuni
 
+### Errori HTTP
+`fetch()` non rifiuta la Promise per status HTTP come `404` o `500`.
+
+```js
+const response = await fetch("/api/users/404");
+
+if (!response.ok) {
+  throw new Error(`HTTP ${response.status}`);
+}
+
+const user = await response.json();
+```
+
+La Promise viene rifiutata per errori di rete, CORS, abort o problemi simili.
+
+---
 - Non controllare `response.ok`.
 - Chiamare `response.json()` due volte sullo stesso body.
 - Dimenticare `JSON.stringify` nel body.
@@ -212,8 +282,9 @@ Un wrapper centralizza parsing, errori e header comuni.
 
 ---
 
-## Checklist operativa
+## Checklist
 
+### Checklist operativa
 - Controlla sempre `response.ok`.
 - Gestisci errori con `try/catch`.
 - Usa `AbortController` per timeout e richieste obsolete.

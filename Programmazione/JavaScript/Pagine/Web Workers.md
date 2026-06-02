@@ -1,5 +1,5 @@
----
-date: 2026-05-13
+﻿---
+date: 2026-06-02
 area: Programmazione
 topic: JavaScript
 type: technical-note
@@ -21,8 +21,25 @@ Sono utili per lavoro CPU pesante che altrimenti bloccherebbe UI, input e render
 
 ---
 
-## Worker base
+## Quando usarlo
 
+### Quando usarli
+Usa Web Worker per:
+
+- parsing pesante;
+- compressione;
+- elaborazione immagini;
+- calcoli numerici;
+- ricerca locale su grandi dataset;
+- trasformazioni dati costose.
+
+Non usarli per lavoro leggero: creano complessita e overhead di comunicazione.
+
+---
+
+## Come funziona
+
+### Worker base
 Pagina principale:
 
 ```js
@@ -48,22 +65,7 @@ self.addEventListener("message", (event) => {
 La comunicazione avviene tramite messaggi.
 
 ---
-
-## Limiti
-
-Un Web Worker non ha accesso diretto a:
-
-- DOM;
-- `window`;
-- elementi HTML;
-- API UI legate al main thread.
-
-Ha invece accesso a molte API come `fetch`, timer, Web Crypto e strutture dati standard.
-
----
-
-## Dati copiati e trasferiti
-
+### Dati copiati e trasferiti
 I messaggi vengono serializzati con structured clone.
 
 Per dati binari grandi, puoi trasferire ownership con transferables.
@@ -77,29 +79,81 @@ worker.postMessage(buffer, [buffer]);
 Dopo il trasferimento, il buffer originale non e piu utilizzabile nel thread mittente.
 
 ---
-
-## Quando usarli
-
-Usa Web Worker per:
-
-- parsing pesante;
-- compressione;
-- elaborazione immagini;
-- calcoli numerici;
-- ricerca locale su grandi dataset;
-- trasformazioni dati costose.
-
-Non usarli per lavoro leggero: creano complessita e overhead di comunicazione.
-
----
-
-## Terminazione
-
+### Terminazione
 ```js
 worker.terminate();
 ```
 
 Termina un worker quando non serve piu, soprattutto in applicazioni con viste dinamiche.
+
+---
+
+## API / Sintassi
+
+Creazione:
+
+```js
+const worker = new Worker("worker.js");
+```
+
+Con modulo ES:
+
+```js
+const worker = new Worker(new URL("./worker.js", import.meta.url), {
+  type: "module",
+});
+```
+
+Comunicazione:
+
+```js
+worker.postMessage({ type: "calculate", payload });
+
+worker.addEventListener("message", (event) => {
+  console.log(event.data);
+});
+
+worker.addEventListener("error", (event) => {
+  console.error(event.message);
+});
+```
+
+## Esempio pratico
+
+Somma pesante fuori dal main thread:
+
+```js
+// main.js
+const worker = new Worker("sum-worker.js");
+
+worker.postMessage({ numbers: [1, 2, 3, 4] });
+
+worker.addEventListener("message", (event) => {
+  console.log(event.data.total);
+});
+```
+
+```js
+// sum-worker.js
+self.addEventListener("message", (event) => {
+  const total = event.data.numbers.reduce((sum, value) => sum + value, 0);
+  self.postMessage({ total });
+});
+```
+
+La UI resta libera mentre il worker esegue il calcolo.
+
+## Varianti
+
+### Limiti
+Un Web Worker non ha accesso diretto a:
+
+- DOM;
+- `window`;
+- elementi HTML;
+- API UI legate al main thread.
+
+Ha invece accesso a molte API come `fetch`, timer, Web Crypto e strutture dati standard.
 
 ---
 
@@ -113,8 +167,9 @@ Termina un worker quando non serve piu, soprattutto in applicazioni con viste di
 
 ---
 
-## Checklist operativa
+## Checklist
 
+### Checklist operativa
 - Usa worker solo per CPU pesante o lavoro isolabile.
 - Definisci un protocollo messaggi con `type`.
 - Usa transferables per dati binari grandi.

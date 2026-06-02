@@ -1,5 +1,5 @@
----
-date: 2026-05-14
+﻿---
+date: 2026-06-02
 area: Programmazione
 topic: React
 type: technical-note
@@ -10,6 +10,7 @@ aliases: [Content Security Policy]
 prerequisites: []
 related: []
 ---
+
 # Content Security Policy
 
 ## Sintesi
@@ -25,8 +26,13 @@ Nel contesto React, la CSP e una difesa a strati utile soprattutto contro alcune
 
 ---
 
-## 1. A cosa serve
+## Quando usarlo
 
+Contenuto da sviluppare: nella nota originale questa sezione non era presente o era solo una traccia.
+
+## Come funziona
+
+### 1. A cosa serve
 Senza una policy restrittiva, il browser tende a eseguire:
 - script inline;
 - script caricati da origini esterne;
@@ -42,9 +48,7 @@ La CSP permette invece di dire esplicitamente:
 In pratica, e un modo per ridurre la superficie di esecuzione arbitraria nel browser.
 
 ---
-
-## 2. Relazione con XSS
-
+### 2. Relazione con XSS
 La CSP e fortemente collegata a [[Programmazione/React/Pagine/Protezione XSS]].
 
 Se un'app ha una vulnerabilita XSS, una CSP ben progettata puo limitare alcuni scenari, per esempio:
@@ -60,9 +64,7 @@ Ma e importante capire il limite:
 E una difesa aggiuntiva, non una scorciatoia.
 
 ---
-
-## 3. Come viene definita
-
+### 3. Come viene definita
 La CSP viene tipicamente inviata tramite header HTTP:
 
 ```http
@@ -74,9 +76,7 @@ Oppure, in alcuni casi, tramite meta tag, anche se l'header HTTP e generalmente 
 L'idea generale e che il server comunica al browser una serie di regole su cio che e permesso caricare o eseguire.
 
 ---
-
-## 4. Direttive fondamentali
-
+### 4. Direttive fondamentali
 Alcune direttive molto comuni sono:
 
 ### `default-src`
@@ -108,9 +108,108 @@ Spesso viene impostato a `'none'` per ridurre superfici storicamente rischiose.
 Controlla chi puo embeddare la pagina in un frame.
 
 ---
+### 6. Inline script, nonce e hash
+Uno dei punti piu importanti riguarda gli **inline script**.
 
-## 5. Esempio pratico
+Una CSP robusta tende a evitare `unsafe-inline` in `script-src`, perche:
+- rende molto piu facile l'esecuzione di payload iniettati;
+- indebolisce parecchio il valore della policy.
 
+Quando serve autorizzare script specifici, si usano spesso:
+- **nonce**;
+- **hash**.
+
+### Nonce
+Il server genera un valore casuale per la risposta e lo associa agli script consentiti.
+
+### Hash
+La policy autorizza solo script inline il cui contenuto corrisponde a un hash noto.
+
+Questi meccanismi permettono controllo fine senza aprire indiscriminatamente agli inline script.
+
+---
+### 7. CSP e applicazioni React
+In una app React moderna, la CSP va progettata tenendo conto di:
+- bundle JavaScript generati dal build tool;
+- chiamate API verso backend o servizi esterni;
+- immagini da CDN;
+- font remoti;
+- eventuali analytics;
+- eventuali script di terze parti.
+
+Per esempio, `connect-src` e spesso rilevante perche React usa `fetch` o librerie di data fetching verso endpoint esterni. Qui si collega direttamente a [[Programmazione/React/Pagine/Data Fetching e Cache]].
+
+Se la policy e troppo permissiva, perde valore.
+
+Se e troppo restrittiva senza criterio, rompe l'app.
+
+Quindi va trattata come parte dell'architettura, non come flag finale aggiunto all'ultimo minuto.
+
+---
+### 8. Perche puo rompere un'app
+Una CSP mal calibrata puo bloccare:
+- script di analytics;
+- font esterni;
+- immagini CDN;
+- richieste API cross-origin;
+- stili inline generati da alcune librerie;
+- hot reload o dev tooling.
+
+Per questo spesso bisogna distinguere bene:
+- policy di produzione;
+- esigenze dell'ambiente di sviluppo.
+
+L'errore comune e aprire tutto per "far funzionare l'app", perdendo il beneficio della policy.
+
+---
+### 9. CSP e terze parti
+Ogni script o risorsa di terze parti aumenta la complessita della policy.
+
+Domande utili:
+- serve davvero quel provider esterno?
+- da quali domini deve poter caricare?
+- quel dominio deve eseguire script o solo servire immagini?
+- possiamo limitarlo a una direttiva specifica invece di aprire tutto?
+
+La CSP spinge anche a una disciplina architetturale migliore: ridurre dipendenze esterne inutili migliora sia sicurezza sia chiarezza.
+
+---
+### 10. Report-Only
+Una strategia molto utile e usare inizialmente **Content-Security-Policy-Report-Only**.
+
+In questo modo:
+- il browser non blocca ancora le risorse;
+- segnala pero cosa verrebbe bloccato;
+- puoi osservare violazioni e aggiustare la policy.
+
+Questo aiuta a costruire una CSP reale senza rompere subito l'applicazione in produzione.
+
+E spesso il modo corretto di introdurla gradualmente.
+
+---
+### 11. CSP non risolve tutto
+La CSP non protegge automaticamente da ogni problema:
+- non corregge sanitizzazione assente;
+- non elimina bug logici;
+- non sostituisce controlli server;
+- non annulla il rischio di usare librerie pericolose;
+- non impedisce tutte le varianti di attacco se la policy e troppo aperta.
+
+Va quindi vista come parte di una difesa a strati insieme a:
+- escaping del JSX;
+- sanitizzazione HTML;
+- gestione corretta di token e cookie;
+- difese contro CSRF come in [[Programmazione/React/Pagine/CSRF]].
+
+---
+
+## API / Sintassi
+
+Contenuto da sviluppare: nella nota originale questa sezione non era presente o era solo una traccia.
+
+## Esempio pratico
+
+### 5. Esempio pratico
 Policy concettuale:
 
 ```http
@@ -135,114 +234,13 @@ E ovviamente solo un esempio: la policy reale dipende dall'architettura.
 
 ---
 
-## 6. Inline script, nonce e hash
+## Varianti
 
-Uno dei punti piu importanti riguarda gli **inline script**.
+Contenuto da sviluppare: nella nota originale questa sezione non era presente o era solo una traccia.
 
-Una CSP robusta tende a evitare `unsafe-inline` in `script-src`, perche:
-- rende molto piu facile l'esecuzione di payload iniettati;
-- indebolisce parecchio il valore della policy.
+## Errori comuni
 
-Quando serve autorizzare script specifici, si usano spesso:
-- **nonce**;
-- **hash**.
-
-### Nonce
-Il server genera un valore casuale per la risposta e lo associa agli script consentiti.
-
-### Hash
-La policy autorizza solo script inline il cui contenuto corrisponde a un hash noto.
-
-Questi meccanismi permettono controllo fine senza aprire indiscriminatamente agli inline script.
-
----
-
-## 7. CSP e applicazioni React
-
-In una app React moderna, la CSP va progettata tenendo conto di:
-- bundle JavaScript generati dal build tool;
-- chiamate API verso backend o servizi esterni;
-- immagini da CDN;
-- font remoti;
-- eventuali analytics;
-- eventuali script di terze parti.
-
-Per esempio, `connect-src` e spesso rilevante perche React usa `fetch` o librerie di data fetching verso endpoint esterni. Qui si collega direttamente a [[Programmazione/React/Pagine/Data Fetching e Cache]].
-
-Se la policy e troppo permissiva, perde valore.
-
-Se e troppo restrittiva senza criterio, rompe l'app.
-
-Quindi va trattata come parte dell'architettura, non come flag finale aggiunto all'ultimo minuto.
-
----
-
-## 8. Perche puo rompere un'app
-
-Una CSP mal calibrata puo bloccare:
-- script di analytics;
-- font esterni;
-- immagini CDN;
-- richieste API cross-origin;
-- stili inline generati da alcune librerie;
-- hot reload o dev tooling.
-
-Per questo spesso bisogna distinguere bene:
-- policy di produzione;
-- esigenze dell'ambiente di sviluppo.
-
-L'errore comune e aprire tutto per "far funzionare l'app", perdendo il beneficio della policy.
-
----
-
-## 9. CSP e terze parti
-
-Ogni script o risorsa di terze parti aumenta la complessita della policy.
-
-Domande utili:
-- serve davvero quel provider esterno?
-- da quali domini deve poter caricare?
-- quel dominio deve eseguire script o solo servire immagini?
-- possiamo limitarlo a una direttiva specifica invece di aprire tutto?
-
-La CSP spinge anche a una disciplina architetturale migliore: ridurre dipendenze esterne inutili migliora sia sicurezza sia chiarezza.
-
----
-
-## 10. Report-Only
-
-Una strategia molto utile e usare inizialmente **Content-Security-Policy-Report-Only**.
-
-In questo modo:
-- il browser non blocca ancora le risorse;
-- segnala pero cosa verrebbe bloccato;
-- puoi osservare violazioni e aggiustare la policy.
-
-Questo aiuta a costruire una CSP reale senza rompere subito l'applicazione in produzione.
-
-E spesso il modo corretto di introdurla gradualmente.
-
----
-
-## 11. CSP non risolve tutto
-
-La CSP non protegge automaticamente da ogni problema:
-- non corregge sanitizzazione assente;
-- non elimina bug logici;
-- non sostituisce controlli server;
-- non annulla il rischio di usare librerie pericolose;
-- non impedisce tutte le varianti di attacco se la policy e troppo aperta.
-
-Va quindi vista come parte di una difesa a strati insieme a:
-- escaping del JSX;
-- sanitizzazione HTML;
-- gestione corretta di token e cookie;
-- difese contro CSRF come in [[Programmazione/React/Pagine/CSRF]].
-
----
-
-## 12. Errori comuni
-
+### 12. Errori comuni
 Errori frequenti:
 - usare `unsafe-inline` senza reale necessita;
 - usare `unsafe-eval` troppo liberamente;
@@ -255,8 +253,9 @@ Una CSP debole puo dare un falso senso di sicurezza. Una CSP forte ma non capita
 
 ---
 
-## 13. Best Practices
+## Checklist
 
+### 13. Best Practices
 1. **Considera la CSP una difesa aggiuntiva, non il meccanismo principale:** prima vengono codice sicuro e rendering corretto.
 2. **Evita `unsafe-inline` e `unsafe-eval` quando possibile:** indeboliscono molto la policy.
 3. **Permetti solo origini strettamente necessarie per ogni tipo di risorsa:** meno aperture, meno superficie d'attacco.
@@ -265,3 +264,7 @@ Una CSP debole puo dare un falso senso di sicurezza. Una CSP forte ma non capita
 6. **Collega la CSP al resto della strategia di sicurezza:** XSS, autenticazione cookie-based e sanitizzazione restano temi separati ma connessi.
 
 ---
+
+## Collegamenti
+
+- [[Programmazione/React/Indice react|Indice React]]

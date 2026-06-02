@@ -1,5 +1,5 @@
----
-date: 2026-05-14
+﻿---
+date: 2026-06-02
 area: Programmazione
 topic: Python
 type: technical-note
@@ -10,19 +10,24 @@ aliases: [Error Handling (Gestione delle Eccezioni)]
 prerequisites: []
 related: []
 ---
+
 # Error Handling (Gestione delle Eccezioni) in Python
 
 ## Sintesi
 
 Nota su Error Handling (Gestione delle Eccezioni) in Python. Riassume il concetto, la sintassi principale e i punti da ricordare durante studio, sviluppo o debugging.
 
-## Concetto chiave
+## Quando usarlo
+
+Contenuto da sviluppare: nella nota originale questa sezione non era presente o era solo una traccia.
+
+## Come funziona
+
+### Concetto chiave
 In Python, gli errori rilevati durante l'esecuzione sono chiamati **eccezioni**. La gestione delle eccezioni permette al programma di rispondere a eventi imprevisti (come un file mancante o una divisione per zero) senza interrompersi bruscamente.
 
 ---
-
-##  La Struttura `try-except`
-
+### La Struttura `try-except`
 La gestione avviene tramite un blocco che "tenta" l'esecuzione e uno che "cattura" l'eventuale errore.
 
 ```python
@@ -52,9 +57,7 @@ finally:
 ```
 
 ---
-
-##  Sollevare Eccezioni (`raise`)
-
+### Sollevare Eccezioni (`raise`)
 È possibile forzare il sollevamento di un'eccezione quando si verifica una condizione non valida per la logica dell'applicazione.
 
 ```python
@@ -65,9 +68,7 @@ def imposta_eta(eta):
 ```
 
 ---
-
-## Logic layer: EAFP vs LBYL
-
+### Logic layer: EAFP vs LBYL
 Python sposa fermamente la filosofia **EAFP** (*Easier to Ask for Forgiveness than Permission*), contrapposta alla **LBYL** (*Look Before You Leap*) tipica di linguaggi come il C.
 
 - **LBYL (Non tipico di Python)**: Controlli preventivi con molti `if`.
@@ -75,8 +76,25 @@ Python sposa fermamente la filosofia **EAFP** (*Easier to Ask for Forgiveness th
 
 ---
 
-##  Best Practices
+## API / Sintassi
 
+Contenuto da sviluppare: nella nota originale questa sezione non era presente o era solo una traccia.
+
+## Esempio pratico
+
+Contenuto da sviluppare: nella nota originale questa sezione non era presente o era solo una traccia.
+
+## Varianti
+
+Contenuto da sviluppare: nella nota originale questa sezione non era presente o era solo una traccia.
+
+## Errori comuni
+
+Contenuto da sviluppare: nella nota originale questa sezione non era presente o era solo una traccia.
+
+## Checklist
+
+### Best Practices
 > [!CAUTION] Bare Except
 > Evita sempre di usare un `except:` generico senza specificare l'errore. Questo catturerà anche `SystemExit` e `KeyboardInterrupt` (Ctrl+C), rendendo difficile terminare il programma. Usa almeno `except Exception:` se devi proprio catturare tutto il resto.
 
@@ -84,3 +102,7 @@ Python sposa fermamente la filosofia **EAFP** (*Easier to Ask for Forgiveness th
 > Puoi ottenere l'oggetto eccezione per loggare il messaggio d'errore originale: `except ValueError as e:`.
 
 ---
+
+## Collegamenti
+
+- [[Programmazione/Python/Indice python|Indice Python]]

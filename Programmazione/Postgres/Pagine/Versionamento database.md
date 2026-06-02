@@ -1,5 +1,5 @@
-﻿---
-date: 2026-05-20
+---
+date: 2026-06-02
 area: Programmazione
 topic: Postgres
 type: operational-note
@@ -19,69 +19,69 @@ related: []
 
 ## Sintesi
 
-Il **versionamento database** mantiene una storia ordinata delle modifiche allo schema e, a volte, dei dati di riferimento.
-
-## Concetto chiave
-
-Il database deve evolvere insieme al codice. Le migrazioni sono il contratto tra versione applicativa e schema.
-
-## Strumenti comuni
-
-- Flyway.
-- Liquibase.
-- Sqitch.
-- Migrazioni ORM.
-- Tool custom in CI/CD.
-
-## Cosa versionare
-
-- DDL.
-- Indici.
-- Vincoli.
-- Funzioni e trigger.
-- Seed data controllati.
-
-## Errori comuni
-
-- Modificare schema manualmente in produzione.
-- Non applicare migrazioni in ambiente di test.
-- Avere ambienti con storie divergenti.
-
-## Obiettivo
-
-Da completare: descrivere cosa ottenere in pratica.
+Il versionamento database registra l'evoluzione dello schema con migrazioni ordinate, tracciabili e ripetibili.
 
 ## Quando usarlo
 
-- Da completare: indicare scenari pratici in cui questa nota e utile.
+Serve in ogni progetto applicativo dove schema e codice evolvono insieme.
 
-## Procedura
+## Come funziona
 
-1. Da completare.
-2. Da completare.
-3. Da completare.
+Uno strumento di migrazione mantiene una tabella con le versioni applicate. Ogni modifica al database viene rappresentata da uno script o da una migration file nel repository.
 
-## Snippet
+## API / Sintassi
 
-```text
-Da completare con codice o comando riutilizzabile.
+Tabella concettuale:
+
+```sql
+CREATE TABLE schema_migrations (
+  version text PRIMARY KEY,
+  applied_at timestamptz NOT NULL DEFAULT now()
+);
 ```
 
-## Adattamenti comuni
+Migrazione:
 
-- Da completare: varianti per casi frequenti.
+```sql
+ALTER TABLE users ADD COLUMN timezone text;
+```
 
-## Debug rapido
+## Esempio pratico
 
-- Da completare: controlli rapidi in caso di errore.
+Flusso consigliato:
 
-## Checklist finale
+1. Scrivi migrazione in repository.
+2. Testala su database locale.
+3. Testala su staging con dati realistici.
+4. Applica in produzione con monitoring.
+5. Registra esito e durata.
 
-- Da completare: verifiche finali.
+## Varianti
+
+- Migrazioni up/down.
+- Migrazioni solo forward.
+- Strumenti come Flyway, Liquibase, Alembic, Prisma o Diesel.
+- Migrazioni SQL manuali.
+- Schema dump.
+
+## Errori comuni
+
+- Modificare schema manualmente senza migrazione.
+- Cambiare una migration gia applicata.
+- Non versionare funzioni, trigger e view.
+- Non separare migrazioni lente da deploy applicativo.
+- Non testare rollback o fix forward.
+
+## Checklist
+
+- Ogni cambio schema ha una migrazione?
+- Le migrazioni sono immutabili dopo applicazione?
+- Staging replica dati realistici?
+- Funzioni/view/trigger sono versionati?
+- Esiste procedura per fallimenti?
 
 ## Collegamenti
+
 - [[Programmazione/Postgres/Pagine/Migrazioni schema|Migrazioni schema]]
-- [[Programmazione/Postgres/Pagine/Backup e Ripristino|Backup e Ripristino]]
 - [[Programmazione/Postgres/Pagine/Strategie zero-downtime|Strategie zero-downtime]]
-
-
+- [[Programmazione/Postgres/Pagine/Backup e Ripristino|Backup e Ripristino]]

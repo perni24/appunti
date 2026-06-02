@@ -1,5 +1,5 @@
 ﻿---
-date: 2026-05-20
+date: 2026-06-02
 area: Programmazione
 topic: Python
 type: technical-note
@@ -21,8 +21,16 @@ related: []
 
 **NumPy** fornisce array multidimensionali efficienti e operazioni numeriche vettoriali.
 
-## Concetto chiave
+## Quando usarlo
 
+- Calcolo numerico.
+- Algebra lineare.
+- Elaborazione segnali.
+- Base per librerie scientifiche e data science.
+
+## Come funziona
+
+### Concetto chiave
 Gli array NumPy permettono calcoli su blocchi di dati senza loop Python espliciti.
 
 ```python
@@ -32,12 +40,17 @@ values = np.array([1, 2, 3])
 print(values * 2)
 ```
 
-## Quando usarlo
+## API / Sintassi
 
-- Calcolo numerico.
-- Algebra lineare.
-- Elaborazione segnali.
-- Base per librerie scientifiche e data science.
+Contenuto da sviluppare: nella nota originale questa sezione non era presente o era solo una traccia.
+
+## Esempio pratico
+
+Contenuto da sviluppare: nella nota originale questa sezione non era presente o era solo una traccia.
+
+## Varianti
+
+Contenuto da sviluppare: nella nota originale questa sezione non era presente o era solo una traccia.
 
 ## Errori comuni
 
@@ -45,33 +58,12 @@ print(values * 2)
 - Ignorare broadcasting.
 - Copiare array inutilmente.
 
-## Come funziona
-
-Da completare: spiegare il meccanismo principale o il comportamento tecnico.
-
-## API / Sintassi
-
-```text
-Da completare con API o sintassi principale.
-```
-
-## Esempio pratico
-
-```text
-Da completare con un esempio pratico.
-```
-
-## Varianti
-
-- Da completare: varianti, alternative o differenze rispetto ad approcci simili.
-
 ## Checklist
 
-- Da completare: controlli essenziali prima di usare questo concetto in pratica.
+Contenuto da sviluppare: nella nota originale questa sezione non era presente o era solo una traccia.
 
 ## Collegamenti
+
 - [[Programmazione/Python/Pagine/pandas|pandas]]
 - [[Programmazione/Python/Pagine/Cython|Cython]]
 - [[Programmazione/Python/Pagine/Profiling|Profiling]]
-
-

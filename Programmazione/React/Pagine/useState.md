@@ -1,5 +1,5 @@
----
-date: 2026-05-14
+﻿---
+date: 2026-06-02
 area: Programmazione
 topic: React
 type: technical-note
@@ -10,6 +10,7 @@ aliases: [useState: Gestione dello stato locale]
 prerequisites: []
 related: []
 ---
+
 # useState: Gestione dello stato locale
 
 ## Sintesi
@@ -18,8 +19,46 @@ Nota su useState: Gestione dello stato locale in React. Riassume il concetto, qu
 
 Il hook `useState` è lo strumento fondamentale in React per aggiungere uno **stato locale** ai Componenti Funzionali. Prima della sua introduzione, la gestione dello stato era possibile solo all'interno delle classi.
 
-## 1. Definizione e Sintassi
+## Quando usarlo
 
+Contenuto da sviluppare: nella nota originale questa sezione non era presente o era solo una traccia.
+
+## Come funziona
+
+### 2. Come funziona il triggering del rendering
+A differenza delle variabili normali, quando chiamiamo la funzione `setCount` (o qualsiasi setter di `useState`), React viene notificato del cambiamento. 
+- React confronta la vecchia versione del componente con quella nuova.
+- Se il valore dello stato è cambiato, viene eseguito un nuovo **render**.
+- Le variabili locali vengono reinizializzate, ma il valore di `useState` viene preservato da React tra un render e l'altro.
+### 3. Aggiornamento basato sullo stato precedente
+Se il nuovo stato dipende dal valore precedente (come in un contatore), è Best Practice passare una funzione al setter invece del valore diretto. Questo garantisce che React utilizzi sempre il valore più recente dello stato, evitando race conditions dovute alla natura asincrona degli aggiornamenti.
+
+```javascript
+// Approccio consigliato per aggiornamenti incrementali
+setCount(prevCount => prevCount + 1);
+```
+### 4. Stato come Oggetto o Array
+A differenza di `this.setState` nelle classi, `useState` **non unisce automaticamente** gli oggetti quando vengono aggiornati; li sostituisce completamente.
+
+> [!WARNING] Immutabilità
+> In React, lo stato deve essere trattato come immutabile. Se lo stato è un oggetto o un array, non bisogna modificarlo direttamente (es. `myObject.prop = value`), ma crearne una copia aggiornata utilizzando l'operatore **spread**.
+
+```javascript
+const [user, setUser] = useState({ name: 'Luca', age: 25 });
+
+const updateAge = () => {
+  setUser({
+    ...user,    // Copia tutte le proprietà esistenti
+    age: 26     // Sovrascrivi solo quella desiderata
+  });
+};
+```
+
+---
+
+## API / Sintassi
+
+### 1. Definizione e Sintassi
 `useState` è una funzione che accetta un valore iniziale e restituisce un array con due elementi:
 1. Il **valore corrente** dello stato.
 2. Una **funzione di aggiornamento** (setter) per modificare quel valore.
@@ -45,38 +84,22 @@ function Counter() {
 }
 ```
 
-## 2. Come funziona il triggering del rendering
+## Esempio pratico
 
-A differenza delle variabili normali, quando chiamiamo la funzione `setCount` (o qualsiasi setter di `useState`), React viene notificato del cambiamento. 
-- React confronta la vecchia versione del componente con quella nuova.
-- Se il valore dello stato è cambiato, viene eseguito un nuovo **render**.
-- Le variabili locali vengono reinizializzate, ma il valore di `useState` viene preservato da React tra un render e l'altro.
+Contenuto da sviluppare: nella nota originale questa sezione non era presente o era solo una traccia.
 
-## 3. Aggiornamento basato sullo stato precedente
+## Varianti
 
-Se il nuovo stato dipende dal valore precedente (come in un contatore), è Best Practice passare una funzione al setter invece del valore diretto. Questo garantisce che React utilizzi sempre il valore più recente dello stato, evitando race conditions dovute alla natura asincrona degli aggiornamenti.
+Contenuto da sviluppare: nella nota originale questa sezione non era presente o era solo una traccia.
 
-```javascript
-// Approccio consigliato per aggiornamenti incrementali
-setCount(prevCount => prevCount + 1);
-```
+## Errori comuni
 
-## 4. Stato come Oggetto o Array
+Contenuto da sviluppare: nella nota originale questa sezione non era presente o era solo una traccia.
 
-A differenza di `this.setState` nelle classi, `useState` **non unisce automaticamente** gli oggetti quando vengono aggiornati; li sostituisce completamente.
+## Checklist
 
-> [!WARNING] Immutabilità
-> In React, lo stato deve essere trattato come immutabile. Se lo stato è un oggetto o un array, non bisogna modificarlo direttamente (es. `myObject.prop = value`), ma crearne una copia aggiornata utilizzando l'operatore **spread**.
+Contenuto da sviluppare: nella nota originale questa sezione non era presente o era solo una traccia.
 
-```javascript
-const [user, setUser] = useState({ name: 'Luca', age: 25 });
+## Collegamenti
 
-const updateAge = () => {
-  setUser({
-    ...user,    // Copia tutte le proprietà esistenti
-    age: 26     // Sovrascrivi solo quella desiderata
-  });
-};
-```
-
----
+- [[Programmazione/React/Indice react|Indice React]]

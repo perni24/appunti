@@ -1,5 +1,5 @@
----
-date: 2026-05-14
+﻿---
+date: 2026-06-02
 area: Programmazione
 topic: React
 type: technical-note
@@ -10,6 +10,7 @@ aliases: [Profiler e Debugging (React DevTools)]
 prerequisites: []
 related: []
 ---
+
 # Profiler e Debugging (React DevTools)
 
 ## Sintesi
@@ -30,8 +31,13 @@ In React, lo strumento principale per entrambe le attivita e **React DevTools**,
 
 ---
 
-## 1. Il problema che risolvono
+## Quando usarlo
 
+Contenuto da sviluppare: nella nota originale questa sezione non era presente o era solo una traccia.
+
+## Come funziona
+
+### 1. Il problema che risolvono
 In un'app React, un bug o un rallentamento possono dipendere da molte cause:
 - stato aggiornato nel punto sbagliato;
 - props che cambiano piu del necessario;
@@ -46,9 +52,7 @@ Senza strumenti di osservazione, il rischio e:
 - introdurre complessita senza miglioramenti reali.
 
 ---
-
-## 2. React DevTools: tab Components
-
+### 2. React DevTools: tab Components
 La tab **Components** permette di:
 - ispezionare l'albero React;
 - vedere `props`, `state` e hook;
@@ -63,9 +67,7 @@ Esempio di uso pratico:
 Questo rende il debugging molto piu concreto rispetto al solo `console.log`.
 
 ---
-
-## 3. React DevTools: tab Profiler
-
+### 3. React DevTools: tab Profiler
 La tab **Profiler** serve a misurare i render.
 
 Ti permette di vedere:
@@ -89,9 +91,7 @@ Questo ti aiuta a capire se il problema e:
 - una strategia di memoization inefficace.
 
 ---
-
-## 4. Cosa significa un re-render costoso
-
+### 4. Cosa significa un re-render costoso
 Un re-render non e automaticamente un problema. React e progettato per renderizzare spesso.
 
 Il problema nasce quando:
@@ -104,9 +104,7 @@ Il problema nasce quando:
 > "Sto vedendo tanti render" non significa da solo "sto avendo un problema". La domanda corretta e: quei render costano davvero troppo o degradano la UX?
 
 ---
-
-## 5. Cause comuni di re-render inutili
-
+### 5. Cause comuni di re-render inutili
 ### Props referenzialmente nuove
 
 ```javascript
@@ -132,9 +130,46 @@ Renderizzare molte righe o card puo diventare costoso anche con logica semplice.
 Questi casi si collegano direttamente a [[Programmazione/React/Pagine/useMemo e useCallback]] e [[Programmazione/React/Pagine/useTransition e useDeferredValue]].
 
 ---
+### 7. Debugging pratico oltre DevTools
+Oltre a React DevTools, gli strumenti piu comuni sono:
+- `console.log` mirati;
+- breakpoint nel browser;
+- network tab per problemi di fetch;
+- warnings di React;
+- error boundaries per sezioni instabili.
 
-## 6. Esempio pratico di analisi
+Per i problemi di runtime dell'interfaccia, spesso conviene combinare:
+- **Components tab** per stato e props;
+- **console** per verifiche puntuali;
+- **Profiler** per i costi di rendering;
+- [[Programmazione/React/Pagine/Error Boundaries]] per isolare crash di rendering.
 
+---
+### 8. Profiler vs memoization
+Hook come `useMemo` e `useCallback` non sono il punto di partenza. Sono strumenti di ottimizzazione successivi all'analisi.
+
+Flusso corretto:
+
+1. osserva il problema;
+2. misura con Profiler;
+3. identifica il componente o pattern costoso;
+4. applica un'ottimizzazione mirata;
+5. misura di nuovo.
+
+Se usi memoization ovunque senza profiling:
+- aumenti la complessita;
+- peggiori la leggibilita;
+- rischi di non risolvere il vero collo di bottiglia.
+
+---
+
+## API / Sintassi
+
+Contenuto da sviluppare: nella nota originale questa sezione non era presente o era solo una traccia.
+
+## Esempio pratico
+
+### 6. Esempio pratico di analisi
 Scenario:
 - digiti in un input;
 - tutta la pagina sembra rallentare.
@@ -155,44 +190,9 @@ Il punto chiave e che il profiler non ti dice "usa questo hook", ma ti mostra do
 
 ---
 
-## 7. Debugging pratico oltre DevTools
+## Varianti
 
-Oltre a React DevTools, gli strumenti piu comuni sono:
-- `console.log` mirati;
-- breakpoint nel browser;
-- network tab per problemi di fetch;
-- warnings di React;
-- error boundaries per sezioni instabili.
-
-Per i problemi di runtime dell'interfaccia, spesso conviene combinare:
-- **Components tab** per stato e props;
-- **console** per verifiche puntuali;
-- **Profiler** per i costi di rendering;
-- [[Programmazione/React/Pagine/Error Boundaries]] per isolare crash di rendering.
-
----
-
-## 8. Profiler vs memoization
-
-Hook come `useMemo` e `useCallback` non sono il punto di partenza. Sono strumenti di ottimizzazione successivi all'analisi.
-
-Flusso corretto:
-
-1. osserva il problema;
-2. misura con Profiler;
-3. identifica il componente o pattern costoso;
-4. applica un'ottimizzazione mirata;
-5. misura di nuovo.
-
-Se usi memoization ovunque senza profiling:
-- aumenti la complessita;
-- peggiori la leggibilita;
-- rischi di non risolvere il vero collo di bottiglia.
-
----
-
-## 9. Limiti e tradeoff
-
+### 9. Limiti e tradeoff
 Il profiling e utile, ma va interpretato con criterio.
 
 ### Vantaggi
@@ -210,8 +210,13 @@ Scambiare il sintomo per la causa. Un componente lento puo essere solo l'ultimo 
 
 ---
 
-## 10. Best Practices
+## Errori comuni
 
+Contenuto da sviluppare: nella nota originale questa sezione non era presente o era solo una traccia.
+
+## Checklist
+
+### 10. Best Practices
 1. **Usa React DevTools come primo strumento di osservazione:** in particolare Components e Profiler.
 2. **Misura prima di ottimizzare:** evita memoization e refactor prematuri.
 3. **Cerca la fonte dell'aggiornamento, non solo il componente lento:** spesso il problema nasce piu in alto nell'albero.
@@ -220,3 +225,7 @@ Scambiare il sintomo per la causa. Un componente lento puo essere solo l'ultimo 
 6. **Ricontrolla dopo ogni ottimizzazione:** il profiler deve confermare che l'intervento ha avuto effetto.
 
 ---
+
+## Collegamenti
+
+- [[Programmazione/React/Indice react|Indice React]]

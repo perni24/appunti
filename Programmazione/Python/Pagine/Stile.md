@@ -1,5 +1,5 @@
----
-date: 2026-05-14
+﻿---
+date: 2026-06-02
 area: Programmazione
 topic: Python
 type: technical-note
@@ -10,13 +10,31 @@ aliases: [Stile]
 prerequisites: []
 related: []
 ---
+
 # Stile in Python
 
 ## Sintesi
 
 Nota su Stile in Python. Riassume il concetto, la sintassi principale e i punti da ricordare durante studio, sviluppo o debugging.
+Nota su Stile in Python. Riassume il concetto, la sintassi principale e i punti da ricordare durante studio, sviluppo o debugging.
+```
 
-## Concetto chiave
+che:
+
+```python
+# Stile in Python
+Nota su Stile in Python. Riassume il concetto, la sintassi principale e i punti da ricordare durante studio, sviluppo o debugging.
+```
+
+---
+
+## Quando usarlo
+
+Contenuto da sviluppare: nella nota originale questa sezione non era presente o era solo una traccia.
+
+## Come funziona
+
+### Concetto chiave
 Lo **stile** in Python non riguarda solo l'estetica del codice. Riguarda leggibilita, coerenza e costo di manutenzione. Codice scritto con uno stile chiaro e uniforme e piu facile da capire, testare, correggere e modificare nel tempo.
 
 Python ha una forte cultura della leggibilita, riassunta anche nello **Zen of Python**: il codice dovrebbe essere esplicito, semplice e facile da seguire.
@@ -25,9 +43,7 @@ Python ha una forte cultura della leggibilita, riassunta anche nello **Zen of Py
 > Lo stile non serve a "fare bella figura". Serve a ridurre attrito tra persone, file e revisioni. Se ogni modulo sembra scritto da una lingua diversa, il costo di manutenzione sale subito.
 
 ---
-
-##  Riferimenti principali
-
+### Riferimenti principali
 Il riferimento piu importante e **PEP 8**, la style guide ufficiale di Python.
 
 Punti chiave:
@@ -44,9 +60,7 @@ Altri riferimenti utili:
 - tool automatici come formatter e linter.
 
 ---
-
-##  Convenzioni fondamentali
-
+### Convenzioni fondamentali
 ### Naming
 
 ```python
@@ -84,9 +98,7 @@ from pathlib import Path
 Meglio import espliciti e leggibili che wildcard import o alias inutili.
 
 ---
-
-##  Funzionamento Interno (Teoria)
-
+### Funzionamento Interno (Teoria)
 ### Stile e leggibilita
 In Python, la leggibilita e una priorita progettuale. Per questo molte convenzioni di stile non sono arbitrarie:
 - riducono l'ambiguita;
@@ -107,9 +119,7 @@ Lo stile in Python e fortemente supportato da strumenti automatici:
 Questa area si collega direttamente a [[Programmazione/Python/Pagine/Type Hinting]].
 
 ---
-
-##  Principi pratici di buon stile
-
+### Principi pratici di buon stile
 ### Preferire codice semplice
 
 ```python
@@ -150,26 +160,7 @@ Meglio:
 
 ```python
 # Stile in Python
-
-## Sintesi
-
-Nota su Stile in Python. Riassume il concetto, la sintassi principale e i punti da ricordare durante studio, sviluppo o debugging.
-```
-
-che:
-
-```python
-# Stile in Python
-
-## Sintesi
-
-Nota su Stile in Python. Riassume il concetto, la sintassi principale e i punti da ricordare durante studio, sviluppo o debugging.
-```
-
----
-
-##  Docstring e documentazione del codice
-
+### Docstring e documentazione del codice
 Le docstring sono appropriate quando una funzione, classe o modulo espone un comportamento che merita documentazione stabile.
 
 ```python
@@ -186,9 +177,7 @@ Una docstring utile chiarisce:
 Se il codice e gia ovvio e il nome e buono, una docstring ridondante puo aggiungere poco valore.
 
 ---
-
-##  Formatter, linter e stile applicato
-
+### Formatter, linter e stile applicato
 Nel lavoro reale, lo stile non dovrebbe essere gestito "a mano" piu del necessario.
 
 Strumenti comuni:
@@ -204,8 +193,21 @@ Approccio pragmatico:
 
 ---
 
-##  Best Practices & "Gotchas"
+## API / Sintassi
 
+Contenuto da sviluppare: nella nota originale questa sezione non era presente o era solo una traccia.
+
+## Esempio pratico
+
+Contenuto da sviluppare: nella nota originale questa sezione non era presente o era solo una traccia.
+
+## Varianti
+
+Contenuto da sviluppare: nella nota originale questa sezione non era presente o era solo una traccia.
+
+## Errori comuni
+
+### Best Practices & "Gotchas"
 -  **Segui PEP 8 come baseline:** ti evita di reinventare convenzioni inutilmente.
 -  **Sii coerente con il progetto esistente:** la coerenza locale conta molto.
 -  **Usa nomi chiari e specifici:** riducono il bisogno di commenti superflui.
@@ -218,3 +220,11 @@ Approccio pragmatico:
 -  **Attenzione all'over-formatting manuale:** se il formatter del progetto decide diversamente, segui il formatter.
 
 ---
+
+## Checklist
+
+Contenuto da sviluppare: nella nota originale questa sezione non era presente o era solo una traccia.
+
+## Collegamenti
+
+- [[Programmazione/Python/Indice python|Indice Python]]

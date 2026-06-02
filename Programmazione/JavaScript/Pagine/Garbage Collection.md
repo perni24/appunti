@@ -1,5 +1,5 @@
----
-date: 2026-05-13
+﻿---
+date: 2026-06-02
 area: Programmazione
 topic: JavaScript
 type: technical-note
@@ -21,8 +21,22 @@ Il programmatore non libera memoria manualmente, ma deve evitare di mantenere ri
 
 ---
 
-## Raggiungibilita
+## Quando usarlo
 
+Consulta questa nota quando vuoi capire perche un oggetto resta in memoria o perche il garbage collector non elimina subito dati non piu usati.
+
+Serve soprattutto per:
+
+- analizzare memory leak;
+- ridurre allocazioni in percorsi critici;
+- capire riferimenti circolari;
+- progettare cache;
+- interpretare heap snapshot;
+- distinguere cleanup esplicito da raccolta automatica.
+
+## Come funziona
+
+### Raggiungibilita
 Il concetto chiave e la raggiungibilita.
 
 Un oggetto e mantenuto in memoria se puo essere raggiunto partendo da una root.
@@ -45,9 +59,7 @@ user = null;
 Se nessun altro riferimento punta all'oggetto, il garbage collector potra liberarlo.
 
 ---
-
-## Mark and sweep
-
+### Mark and sweep
 I motori moderni usano varianti di mark and sweep.
 
 Fasi semplificate:
@@ -72,9 +84,7 @@ b = null;
 Anche se i due oggetti si riferiscono a vicenda, possono essere raccolti se non sono raggiungibili da root.
 
 ---
-
-## Reference counting
-
+### Reference counting
 Il reference counting storico contava quanti riferimenti puntavano a un oggetto.
 
 Il problema principale erano i cicli.
@@ -90,9 +100,7 @@ b.a = a;
 Se nessuno dall'esterno raggiunge `a` o `b`, mark and sweep puo liberarli; un reference counting semplice no.
 
 ---
-
-## GC generazionale
-
+### GC generazionale
 Molti motori distinguono oggetti giovani e oggetti vecchi.
 
 Idea pratica:
@@ -104,9 +112,7 @@ Idea pratica:
 Questa e una semplificazione: i dettagli cambiano tra motori e versioni.
 
 ---
-
-## Pause e performance
-
+### Pause e performance
 La garbage collection consuma tempo CPU.
 
 I motori moderni usano tecniche incrementali, concorrenti e in idle time per ridurre pause visibili, ma una pressione eccessiva sulla memoria puo comunque causare rallentamenti.
@@ -119,9 +125,7 @@ Cause frequenti:
 - DOM node trattenuti dopo la rimozione.
 
 ---
-
-## Non determinismo
-
+### Non determinismo
 Non puoi decidere in modo affidabile quando il garbage collector verra eseguito.
 
 ```js
@@ -134,6 +138,70 @@ Questo rende l'oggetto candidabile alla raccolta, ma non forza una raccolta imme
 
 ---
 
+## API / Sintassi
+
+JavaScript standard non espone una API affidabile per forzare garbage collection.
+
+Quello che puoi fare e rendere gli oggetti non piu raggiungibili:
+
+```js
+let data = buildLargeObject();
+
+data = null;
+```
+
+Oppure rimuovere riferimenti da strutture longeve:
+
+```js
+cache.delete(key);
+listeners.delete(listener);
+clearInterval(intervalId);
+```
+
+Per debugging usa strumenti del runtime, non logica applicativa che dipende dal momento esatto della GC.
+
+## Esempio pratico
+
+Riferimento circolare raccoglibile:
+
+```js
+let first = {};
+let second = {};
+
+first.second = second;
+second.first = first;
+
+first = null;
+second = null;
+```
+
+Il ciclo interno non basta a mantenere vivi gli oggetti. Se nessuna root li raggiunge, il garbage collector puo liberarli.
+
+Riferimento circolare non raccoglibile se resta una root:
+
+```js
+const registry = [];
+
+const first = {};
+const second = {};
+
+first.second = second;
+second.first = first;
+
+registry.push(first);
+```
+
+Qui `registry` mantiene raggiungibile l'intero ciclo.
+
+## Varianti
+
+- **Mark and sweep**: marca oggetti raggiungibili e libera gli altri.
+- **GC generazionale**: ottimizza oggetti giovani e longevi.
+- **Incremental GC**: divide il lavoro in parti piu piccole.
+- **Concurrent GC**: svolge parte del lavoro fuori dal thread principale.
+- **Compaction**: riorganizza memoria per ridurre frammentazione.
+- **Weak references**: non impediscono la raccolta.
+
 ## Errori comuni
 
 - Pensare che `obj = null` liberi subito memoria.
@@ -144,8 +212,9 @@ Questo rende l'oggetto candidabile alla raccolta, ma non forza una raccolta imme
 
 ---
 
-## Checklist operativa
+## Checklist
 
+### Checklist operativa
 - Rimuovi riferimenti non necessari.
 - Limita cache e strutture dati longeve.
 - Pulisci listener, interval e subscription.

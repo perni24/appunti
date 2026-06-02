@@ -1,5 +1,5 @@
-﻿---
-date: 2026-05-20
+---
+date: 2026-06-02
 area: Programmazione
 topic: Postgres
 type: technical-note
@@ -9,7 +9,6 @@ tags:
   - programmazione
   - postgres
   - orm
-  - applicazioni
 aliases: []
 prerequisites: []
 related: []
@@ -19,61 +18,63 @@ related: []
 
 ## Sintesi
 
-Un **ORM** mappa tabelle e righe del database su oggetti o modelli del linguaggio applicativo.
-
-## Vantaggi
-
-- Riduce boilerplate.
-- Centralizza modelli e relazioni.
-- Integra migrazioni in alcuni ecosistemi.
-- Aiuta CRUD e query comuni.
-
-## Limiti
-
-- Puo nascondere query inefficienti.
-- N+1 query.
-- Difficolta con SQL avanzato.
-- Migrazioni generate non sempre ottimali.
-
-## Buona pratica
-
-Usa l'ORM per il caso comune, ma conosci SQL e PostgreSQL abbastanza da leggere query generate e piani di esecuzione.
+Un ORM mappa oggetti applicativi a tabelle PostgreSQL. Riduce codice ripetitivo, ma puo nascondere query inefficienti, transazioni sbagliate e problemi di caricamento.
 
 ## Quando usarlo
 
-- Da completare: indicare scenari pratici in cui questa nota e utile.
+Usalo per CRUD applicativo, modelli di dominio semplici, migrazioni integrate e produttivita del team.
 
 ## Come funziona
 
-Da completare: spiegare il meccanismo principale o il comportamento tecnico.
+L'ORM genera SQL a partire da modelli e operazioni. Alcuni usano active record, altri data mapper. Il punto critico e sapere leggere l'SQL prodotto.
 
 ## API / Sintassi
 
+Esempio concettuale:
+
 ```text
-Da completare con API o sintassi principale.
+User.findMany({ where: { active: true } })
+-- genera SELECT ... FROM users WHERE active = true
 ```
 
 ## Esempio pratico
 
+Problema N+1:
+
 ```text
-Da completare con un esempio pratico.
+carica 100 utenti
+per ogni utente carica ordini
 ```
+
+Soluzione: eager loading, join o query esplicita.
 
 ## Varianti
 
-- Da completare: varianti, alternative o differenze rispetto ad approcci simili.
+- Active Record.
+- Data Mapper.
+- Query builder.
+- Migrazioni ORM.
+- Raw SQL.
+- Unit of work.
 
 ## Errori comuni
 
-Da completare durante revisione.
+- Non controllare SQL generato.
+- N+1 query.
+- Transazioni troppo ampie o assenti.
+- Migrazioni ORM bloccanti.
+- Usare ORM per query analitiche complesse.
 
 ## Checklist
 
-- Da completare: controlli essenziali prima di usare questo concetto in pratica.
+- Il logging SQL e abilitabile?
+- Le query critiche sono analizzate con `EXPLAIN`?
+- Le transazioni sono esplicite?
+- Le migrazioni sono controllate?
+- Sai quando usare raw SQL?
 
 ## Collegamenti
+
 - [[Programmazione/Postgres/Pagine/Analisi delle Query|Analisi delle Query]]
 - [[Programmazione/Postgres/Pagine/Migrazioni schema|Migrazioni schema]]
-- [[Programmazione/Postgres/Pagine/JOIN|JOIN]]
-
-
+- [[Programmazione/Postgres/Pagine/Driver e connection string|Driver e connection string]]

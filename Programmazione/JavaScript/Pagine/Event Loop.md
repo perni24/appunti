@@ -1,5 +1,5 @@
----
-date: 2026-05-13
+﻿---
+date: 2026-06-02
 area: Programmazione
 topic: JavaScript
 type: technical-note
@@ -21,8 +21,22 @@ JavaScript esegue il codice sincrono subito. Timer, eventi, fetch e Promise veng
 
 ---
 
-## Componenti principali
+## Quando usarlo
 
+Studia l'Event Loop quando devi capire ordine di esecuzione, Promise, timer, UI bloccata o differenza tra codice asincrono e parallelo.
+
+Serve soprattutto per:
+
+- prevedere output di codice async;
+- evitare blocchi del main thread;
+- capire microtask e task;
+- progettare animazioni e rendering;
+- scegliere tra Promise, timer e Web Worker;
+- diagnosticare input lag.
+
+## Come funziona
+
+### Componenti principali
 - Call stack: contiene le funzioni in esecuzione.
 - Web APIs: funzionalita fornite dal browser, come timer, DOM events e rete.
 - Task queue: contiene task come `setTimeout`, `setInterval` ed eventi.
@@ -30,9 +44,7 @@ JavaScript esegue il codice sincrono subito. Timer, eventi, fetch e Promise veng
 - Rendering: il browser aggiorna layout e paint tra un ciclo e l'altro, quando puo.
 
 ---
-
-## Ordine generale
-
+### Ordine generale
 Il ciclo semplificato e:
 
 1. Esegui tutto il codice sincrono nel call stack.
@@ -44,9 +56,85 @@ Il ciclo semplificato e:
 Le microtask hanno priorita sui task normali.
 
 ---
+### Microtask
+Le microtask vengono eseguite dopo il codice sincrono corrente e prima del prossimo task.
 
-## Esempio di ordine
+```js
+queueMicrotask(() => {
+  console.log("microtask");
+});
 
+console.log("sync");
+
+// sync
+// microtask
+```
+
+Attenzione: troppe microtask consecutive possono ritardare rendering e input, perche la coda deve essere svuotata prima di procedere.
+
+---
+### Task
+I task sono unita di lavoro pianificate dal runtime.
+
+Esempi tipici:
+
+- `setTimeout`;
+- `setInterval`;
+- eventi DOM;
+- messaggi tra contesti;
+- callback di alcune API browser.
+
+```js
+setTimeout(() => {
+  console.log("task futura");
+}, 0);
+```
+
+Anche con `0`, il callback non viene eseguito subito: viene rimandato a un task successivo.
+
+---
+### Rendering
+Il browser deve alternare JavaScript, input utente e rendering.
+
+Se un task sincrono dura troppo, la pagina non puo aggiornarsi.
+
+```js
+while (performance.now() < 5000) {
+  // blocca il main thread
+}
+```
+
+Per animazioni e lavoro visivo usa `requestAnimationFrame`. Per spezzare lavoro pesante usa chunk piccoli o Web Worker.
+
+---
+
+## API / Sintassi
+
+API collegate:
+
+```js
+setTimeout(callback, delay);
+setInterval(callback, delay);
+queueMicrotask(callback);
+Promise.resolve().then(callback);
+requestAnimationFrame(callback);
+```
+
+Ordine tipico:
+
+```js
+console.log("sync");
+
+queueMicrotask(() => console.log("microtask"));
+
+setTimeout(() => console.log("task"), 0);
+```
+
+Il codice sincrono termina prima, poi vengono eseguite microtask, poi task future.
+
+## Esempio pratico
+
+### Esempio di ordine
 ```js
 console.log("A");
 
@@ -71,62 +159,13 @@ console.log("D");
 
 ---
 
-## Microtask
+## Varianti
 
-Le microtask vengono eseguite dopo il codice sincrono corrente e prima del prossimo task.
-
-```js
-queueMicrotask(() => {
-  console.log("microtask");
-});
-
-console.log("sync");
-
-// sync
-// microtask
-```
-
-Attenzione: troppe microtask consecutive possono ritardare rendering e input, perche la coda deve essere svuotata prima di procedere.
-
----
-
-## Task
-
-I task sono unita di lavoro pianificate dal runtime.
-
-Esempi tipici:
-
-- `setTimeout`;
-- `setInterval`;
-- eventi DOM;
-- messaggi tra contesti;
-- callback di alcune API browser.
-
-```js
-setTimeout(() => {
-  console.log("task futura");
-}, 0);
-```
-
-Anche con `0`, il callback non viene eseguito subito: viene rimandato a un task successivo.
-
----
-
-## Rendering
-
-Il browser deve alternare JavaScript, input utente e rendering.
-
-Se un task sincrono dura troppo, la pagina non puo aggiornarsi.
-
-```js
-while (performance.now() < 5000) {
-  // blocca il main thread
-}
-```
-
-Per animazioni e lavoro visivo usa `requestAnimationFrame`. Per spezzare lavoro pesante usa chunk piccoli o Web Worker.
-
----
+- **Browser event loop**: coordina JavaScript, Web APIs, rendering e input.
+- **Node.js event loop**: ha fasi specifiche per timer, I/O, check e close callback.
+- **Task/macrotask**: timer, eventi, messaggi.
+- **Microtask**: Promise callback e `queueMicrotask`.
+- **Rendering frame**: lavoro visuale coordinato con `requestAnimationFrame`.
 
 ## Errori comuni
 
@@ -138,8 +177,9 @@ Per animazioni e lavoro visivo usa `requestAnimationFrame`. Per spezzare lavoro 
 
 ---
 
-## Checklist operativa
+## Checklist
 
+### Checklist operativa
 - Usa Promise e `async/await` per coordinare asincronia.
 - Usa `requestAnimationFrame` per lavoro legato al rendering.
 - Spezza task lunghi se impattano input e UI.

@@ -1,5 +1,5 @@
 ﻿---
-date: 2026-05-20
+date: 2026-06-02
 area: Programmazione
 topic: React
 type: operational-note
@@ -21,8 +21,16 @@ related: []
 
 **Storybook** e uno strumento per sviluppare, documentare e testare componenti UI in isolamento.
 
-## Concetto chiave
+## Quando usarlo
 
+- Design system.
+- Componenti riusabili.
+- Stati complessi: loading, error, empty.
+- Documentazione UI condivisa.
+
+## Come funziona
+
+### Concetto chiave
 Una story descrive uno stato visivo di un componente. Questo permette di vedere varianti senza navigare l'intera applicazione.
 
 ```jsx
@@ -40,12 +48,20 @@ export const Primary = {
 };
 ```
 
-## Quando usarlo
+## API / Sintassi
 
-- Design system.
-- Componenti riusabili.
-- Stati complessi: loading, error, empty.
-- Documentazione UI condivisa.
+Contenuto da sviluppare: nella nota originale questa sezione non era presente o era solo una traccia.
+
+## Esempio pratico
+
+### Procedura
+1. Da completare.
+2. Da completare.
+3. Da completare.
+
+## Varianti
+
+Contenuto da sviluppare: nella nota originale questa sezione non era presente o era solo una traccia.
 
 ## Errori comuni
 
@@ -53,37 +69,12 @@ export const Primary = {
 - Non includere stati limite.
 - Lasciare Storybook scollegato dai test o dal design system.
 
-## Obiettivo
+## Checklist
 
-Da completare: descrivere cosa ottenere in pratica.
-
-## Procedura
-
-1. Da completare.
-2. Da completare.
-3. Da completare.
-
-## Snippet
-
-```text
-Da completare con codice o comando riutilizzabile.
-```
-
-## Adattamenti comuni
-
-- Da completare: varianti per casi frequenti.
-
-## Debug rapido
-
-- Da completare: controlli rapidi in caso di errore.
-
-## Checklist finale
-
-- Da completare: verifiche finali.
+Contenuto da sviluppare: nella nota originale questa sezione non era presente o era solo una traccia.
 
 ## Collegamenti
+
 - [[Programmazione/React/Pagine/Design system|Design system]]
 - [[Programmazione/React/Pagine/Visual regression testing|Visual regression testing]]
 - [[Programmazione/React/Pagine/Testing Jest|Testing Jest]]
-
-

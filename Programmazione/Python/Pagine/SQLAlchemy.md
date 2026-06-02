@@ -1,5 +1,5 @@
 ﻿---
-date: 2026-05-20
+date: 2026-06-02
 area: Programmazione
 topic: Python
 type: technical-note
@@ -21,16 +21,6 @@ related: []
 
 **SQLAlchemy** e una libreria Python per lavorare con database SQL. Offre sia un SQL Expression Language sia un ORM.
 
-## Concetto chiave
-
-SQLAlchemy puo essere usato a diversi livelli: query esplicite simili a SQL oppure mapping tra classi Python e tabelle.
-
-```python
-from sqlalchemy import select
-
-stmt = select(User).where(User.email == "a@example.com")
-```
-
 ## Quando usarlo
 
 - Applicazioni che usano database relazionali.
@@ -39,35 +29,37 @@ stmt = select(User).where(User.email == "a@example.com")
 
 ## Come funziona
 
-Da completare: spiegare il meccanismo principale o il comportamento tecnico.
+### Concetto chiave
+SQLAlchemy puo essere usato a diversi livelli: query esplicite simili a SQL oppure mapping tra classi Python e tabelle.
+
+```python
+from sqlalchemy import select
+
+stmt = select(User).where(User.email == "a@example.com")
+```
 
 ## API / Sintassi
 
-```text
-Da completare con API o sintassi principale.
-```
+Contenuto da sviluppare: nella nota originale questa sezione non era presente o era solo una traccia.
 
 ## Esempio pratico
 
-```text
-Da completare con un esempio pratico.
-```
+Contenuto da sviluppare: nella nota originale questa sezione non era presente o era solo una traccia.
 
 ## Varianti
 
-- Da completare: varianti, alternative o differenze rispetto ad approcci simili.
+Contenuto da sviluppare: nella nota originale questa sezione non era presente o era solo una traccia.
 
 ## Errori comuni
 
-Da completare durante revisione.
+Contenuto da sviluppare: nella nota originale questa sezione non era presente o era solo una traccia.
 
 ## Checklist
 
-- Da completare: controlli essenziali prima di usare questo concetto in pratica.
+Contenuto da sviluppare: nella nota originale questa sezione non era presente o era solo una traccia.
 
 ## Collegamenti
+
 - [[Programmazione/Python/Pagine/Alembic|Alembic]]
 - [[Programmazione/Postgres/Pagine/ORM|ORM]]
 - [[Programmazione/Postgres/Indice postgres|Postgres]]
-
-

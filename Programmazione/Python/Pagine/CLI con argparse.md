@@ -1,5 +1,5 @@
----
-date: 2026-05-14
+﻿---
+date: 2026-06-02
 area: Programmazione
 topic: Python
 type: technical-note
@@ -19,8 +19,32 @@ related: [Subprocess, Standard Library]
 
 Gestisce argomenti, opzioni, help automatico e parsing dei valori.
 
-## Esempio base
+## Quando usarlo
 
+Contenuto da sviluppare: nella nota originale questa sezione non era presente o era solo una traccia.
+
+## Come funziona
+
+### Tipi e default
+```python
+parser.add_argument("--retries", type=int, default=3)
+```
+
+`type` converte il valore letto dalla CLI.
+### Scelte ammesse
+```python
+parser.add_argument("--format", choices=["json", "csv"], default="json")
+```
+
+`choices` limita i valori validi.
+
+## API / Sintassi
+
+Contenuto da sviluppare: nella nota originale questa sezione non era presente o era solo una traccia.
+
+## Esempio pratico
+
+### Esempio base
 ```python
 import argparse
 
@@ -34,21 +58,9 @@ print(args.path)
 print(args.verbose)
 ```
 
-## Tipi e default
+## Varianti
 
-```python
-parser.add_argument("--retries", type=int, default=3)
-```
-
-`type` converte il valore letto dalla CLI.
-
-## Scelte ammesse
-
-```python
-parser.add_argument("--format", choices=["json", "csv"], default="json")
-```
-
-`choices` limita i valori validi.
+Contenuto da sviluppare: nella nota originale questa sezione non era presente o era solo una traccia.
 
 ## Errori comuni
 
@@ -56,6 +68,10 @@ parser.add_argument("--format", choices=["json", "csv"], default="json")
 - Dimenticare help e descrizioni.
 - Non validare path o valori numerici.
 - Mischiare troppa logica applicativa nel parsing.
+
+## Checklist
+
+Contenuto da sviluppare: nella nota originale questa sezione non era presente o era solo una traccia.
 
 ## Collegamenti
 

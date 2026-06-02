@@ -1,5 +1,5 @@
----
-date: 2026-05-14
+﻿---
+date: 2026-06-02
 area: Programmazione
 topic: Python
 type: technical-note
@@ -10,13 +10,20 @@ aliases: [Ambienti Virtuali]
 prerequisites: []
 related: []
 ---
+
 # Ambienti Virtuali in Python
 
 ## Sintesi
 
 Nota su Ambienti Virtuali in Python. Riassume il concetto, la sintassi principale e i punti da ricordare durante studio, sviluppo o debugging.
 
-## Concetto chiave
+## Quando usarlo
+
+Contenuto da sviluppare: nella nota originale questa sezione non era presente o era solo una traccia.
+
+## Come funziona
+
+### Concetto chiave
 Un **ambiente virtuale** e un ambiente Python isolato che contiene un proprio interprete, i propri pacchetti installati e i propri script eseguibili. Serve a separare le dipendenze tra progetti diversi ed evitare conflitti di versione.
 
 Senza ambienti virtuali, installare pacchetti globalmente porta rapidamente a problemi: progetti diversi richiedono versioni diverse della stessa libreria, e l'interprete di sistema finisce per diventare instabile o difficile da gestire.
@@ -25,9 +32,90 @@ Senza ambienti virtuali, installare pacchetti globalmente porta rapidamente a pr
 > Un progetto Python dovrebbe quasi sempre avere un ambiente virtuale dedicato. Questo rende installazioni, aggiornamenti, test e deploy molto piu prevedibili.
 
 ---
+### Esempi Pratici
+### Creare un ambiente e installare dipendenze
 
-##  Sintassi di base con `venv`
+```bash
+python -m venv .venv
+.venv\Scripts\activate
+python -m pip install requests
+```
 
+Da questo momento, `requests` viene installato dentro l'ambiente virtuale del progetto e non nell'interprete globale.
+
+### Salvare e ripristinare le dipendenze
+
+```bash
+python -m pip freeze > requirements.txt
+python -m pip install -r requirements.txt
+```
+
+Questo permette di ricreare lo stesso ambiente su un'altra macchina o in CI.
+
+### Verificare quale interprete stai usando
+
+```bash
+python --version
+python -m pip --version
+```
+
+Questo controllo e utile quando sospetti di stare installando i pacchetti nell'ambiente sbagliato.
+
+---
+### Funzionamento Interno (Teoria)
+### Cosa isola davvero un ambiente virtuale
+Un virtual environment isola soprattutto:
+- pacchetti installati;
+- script CLI dei pacchetti;
+- path dell'interprete Python usato dal progetto.
+
+Non isola invece:
+- il sistema operativo;
+- le variabili d'ambiente di per se;
+- i file del progetto;
+- risorse esterne come database o servizi.
+
+### Relazione con `pip`
+Quando un ambiente virtuale e attivo, `python` e `pip` puntano alla copia locale dentro `.venv`. Quindi:
+
+```bash
+python -m pip install fastapi
+```
+
+installa `fastapi` nell'ambiente corrente, non nel Python di sistema.
+
+Questo collega direttamente gli ambienti virtuali a [[Programmazione/Python/Pagine/Pip e PyPI]].
+
+### Perche `python -m pip` e preferibile
+In macchine con piu installazioni Python, il comando `pip` da solo puo puntare all'interprete sbagliato. `python -m pip` evita questa ambiguita, perche usa esplicitamente il `python` attivo.
+
+---
+### Workflow tipico di progetto
+Per un progetto Python standard, il flusso corretto e in genere questo:
+
+1. creare l'ambiente virtuale;
+2. attivarlo;
+3. installare le dipendenze;
+4. lavorare sempre con quell'interprete;
+5. salvare le dipendenze in un file;
+6. non committare l'ambiente virtuale nel repository.
+
+Esempio:
+
+```bash
+python -m venv .venv
+.venv\Scripts\activate
+python -m pip install fastapi uvicorn
+python -m pip freeze > requirements.txt
+```
+
+Conviene anche aggiungere `.venv/` o `.venv` al `.gitignore`.
+
+---
+
+## API / Sintassi
+
+### Sintassi di base con `venv`
 Il modulo standard piu comune per creare ambienti virtuali e `venv`, incluso nella Standard Library.
 
 ### Creazione dell'ambiente
@@ -60,95 +148,7 @@ deactivate
 ```
 
 ---
-
-##  Esempi Pratici
-
-### Creare un ambiente e installare dipendenze
-
-```bash
-python -m venv .venv
-.venv\Scripts\activate
-python -m pip install requests
-```
-
-Da questo momento, `requests` viene installato dentro l'ambiente virtuale del progetto e non nell'interprete globale.
-
-### Salvare e ripristinare le dipendenze
-
-```bash
-python -m pip freeze > requirements.txt
-python -m pip install -r requirements.txt
-```
-
-Questo permette di ricreare lo stesso ambiente su un'altra macchina o in CI.
-
-### Verificare quale interprete stai usando
-
-```bash
-python --version
-python -m pip --version
-```
-
-Questo controllo e utile quando sospetti di stare installando i pacchetti nell'ambiente sbagliato.
-
----
-
-##  Funzionamento Interno (Teoria)
-
-### Cosa isola davvero un ambiente virtuale
-Un virtual environment isola soprattutto:
-- pacchetti installati;
-- script CLI dei pacchetti;
-- path dell'interprete Python usato dal progetto.
-
-Non isola invece:
-- il sistema operativo;
-- le variabili d'ambiente di per se;
-- i file del progetto;
-- risorse esterne come database o servizi.
-
-### Relazione con `pip`
-Quando un ambiente virtuale e attivo, `python` e `pip` puntano alla copia locale dentro `.venv`. Quindi:
-
-```bash
-python -m pip install fastapi
-```
-
-installa `fastapi` nell'ambiente corrente, non nel Python di sistema.
-
-Questo collega direttamente gli ambienti virtuali a [[Programmazione/Python/Pagine/Pip e PyPI]].
-
-### Perche `python -m pip` e preferibile
-In macchine con piu installazioni Python, il comando `pip` da solo puo puntare all'interprete sbagliato. `python -m pip` evita questa ambiguita, perche usa esplicitamente il `python` attivo.
-
----
-
-##  Workflow tipico di progetto
-
-Per un progetto Python standard, il flusso corretto e in genere questo:
-
-1. creare l'ambiente virtuale;
-2. attivarlo;
-3. installare le dipendenze;
-4. lavorare sempre con quell'interprete;
-5. salvare le dipendenze in un file;
-6. non committare l'ambiente virtuale nel repository.
-
-Esempio:
-
-```bash
-python -m venv .venv
-.venv\Scripts\activate
-python -m pip install fastapi uvicorn
-python -m pip freeze > requirements.txt
-```
-
-Conviene anche aggiungere `.venv/` o `.venv` al `.gitignore`.
-
----
-
-##  `venv` vs installazione globale
-
+### `venv` vs installazione globale
 ### Installazione globale
 - tutti i progetti condividono lo stesso interprete;
 - rischio elevato di conflitti;
@@ -166,8 +166,17 @@ Conviene anche aggiungere `.venv/` o `.venv` al `.gitignore`.
 
 ---
 
-##  Best Practices & "Gotchas"
+## Esempio pratico
 
+Contenuto da sviluppare: nella nota originale questa sezione non era presente o era solo una traccia.
+
+## Varianti
+
+Contenuto da sviluppare: nella nota originale questa sezione non era presente o era solo una traccia.
+
+## Errori comuni
+
+### Best Practices & "Gotchas"
 -  **Crea un ambiente virtuale per ogni progetto:** evita conflitti tra dipendenze.
 -  **Usa nomi convenzionali come `.venv`:** semplifica editor, tooling e `.gitignore`.
 -  **Usa sempre `python -m pip`:** riduce errori di interpreter mismatch.
@@ -179,3 +188,11 @@ Conviene anche aggiungere `.venv/` o `.venv` al `.gitignore`.
 -  **Attenzione ai path hardcoded:** spostare il progetto o l'ambiente puo rompere script che assumono percorsi fissi.
 
 ---
+
+## Checklist
+
+Contenuto da sviluppare: nella nota originale questa sezione non era presente o era solo una traccia.
+
+## Collegamenti
+
+- [[Programmazione/Python/Indice python|Indice Python]]

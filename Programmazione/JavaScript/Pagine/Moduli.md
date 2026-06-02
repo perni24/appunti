@@ -1,5 +1,5 @@
----
-date: 2026-05-13
+﻿---
+date: 2026-06-02
 area: Programmazione
 topic: JavaScript
 type: technical-note
@@ -23,8 +23,24 @@ I moduli migliorano organizzazione, riuso, testabilita e gestione delle dipenden
 
 ---
 
-## Export nominato
+## Quando usarlo
 
+Usa moduli quando vuoi dividere il codice in responsabilita separate e controllare esplicitamente cosa ogni file espone.
+
+Casi comuni:
+
+- riusare funzioni tra file;
+- separare logica, UI e dati;
+- rendere testabili unita piccole;
+- evitare variabili globali;
+- organizzare librerie e applicazioni grandi;
+- abilitare bundling e tree shaking.
+
+Ogni file modulo dovrebbe avere una responsabilita leggibile e una API pubblica piccola.
+
+## Come funziona
+
+### Export nominato
 Un named export esporta un valore con il suo nome.
 
 ```js
@@ -45,9 +61,7 @@ import { pi, sum } from "./math.js";
 I nomi devono corrispondere agli export.
 
 ---
-
-## Export a fine file
-
+### Export a fine file
 ```js
 const pi = 3.14;
 
@@ -61,9 +75,7 @@ export { pi, sum };
 Questa forma rende piu visibile cosa il modulo espone.
 
 ---
-
-## Default export
-
+### Default export
 Ogni modulo puo avere al massimo un default export.
 
 ```js
@@ -82,9 +94,7 @@ import log from "./logger.js";
 Il nome locale puo essere scelto liberamente.
 
 ---
-
-## Named export vs default export
-
+### Named export vs default export
 Named export:
 
 - favorisce refactor piu sicuri;
@@ -100,9 +110,7 @@ Default export:
 Regola pratica: usa named export come default di progetto, default export quando c'e davvero una entita principale.
 
 ---
-
-## Import con alias
-
+### Import con alias
 ```js
 import { sum as add } from "./math.js";
 
@@ -112,9 +120,7 @@ console.log(add(2, 3));
 Utile per evitare collisioni di nomi o rendere il significato piu chiaro nel contesto locale.
 
 ---
-
-## Namespace import
-
+### Namespace import
 ```js
 import * as MathUtils from "./math.js";
 
@@ -126,9 +132,7 @@ Utile quando vuoi raggruppare molte funzioni sotto un nome.
 Evita namespace troppo grandi che diventano contenitori generici.
 
 ---
-
-## Moduli nel browser
-
+### Moduli nel browser
 ```html
 <script type="module" src="app.js"></script>
 ```
@@ -148,9 +152,7 @@ import { initApp } from "./app.js";
 Nel browser, spesso devi includere l'estensione `.js`.
 
 ---
-
-## Scope di modulo
-
+### Scope di modulo
 Le variabili dichiarate in un modulo non diventano globali.
 
 ```js
@@ -164,9 +166,7 @@ export function getValue() {
 Solo cio che esporti e disponibile ad altri moduli.
 
 ---
-
-## Esecuzione singola e cache
-
+### Esecuzione singola e cache
 Un modulo viene valutato una sola volta per runtime.
 
 Se piu file importano lo stesso modulo, condividono la stessa istanza del modulo.
@@ -184,9 +184,7 @@ export function increment() {
 Questo puo essere utile, ma anche creare stato condiviso implicito.
 
 ---
-
-## Import statico e dynamic import
-
+### Import statico e dynamic import
 Import statico:
 
 ```js
@@ -202,6 +200,71 @@ const module = await import("./date.js");
 Usa import statico come scelta normale. Usa dynamic import per lazy loading, code splitting o moduli opzionali.
 
 ---
+
+## API / Sintassi
+
+Named export:
+
+```js
+export function sum(a, b) {
+  return a + b;
+}
+```
+
+Named import:
+
+```js
+import { sum } from "./math.js";
+```
+
+Default export:
+
+```js
+export default function log(message) {}
+```
+
+Default import:
+
+```js
+import log from "./logger.js";
+```
+
+Dynamic import:
+
+```js
+const module = await import("./feature.js");
+```
+
+## Esempio pratico
+
+Separare logica di validazione:
+
+```js
+// validators.js
+export function isEmail(value) {
+  return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(value);
+}
+```
+
+```js
+// signup.js
+import { isEmail } from "./validators.js";
+
+export function validateSignup(form) {
+  return isEmail(form.email);
+}
+```
+
+Il modulo `signup.js` dipende da una funzione esplicita, facile da testare e sostituire.
+
+## Varianti
+
+- **Named export**: piu export espliciti.
+- **Default export**: una entita principale.
+- **Namespace import**: raggruppa export sotto un oggetto.
+- **Re-export**: riespone export da altri moduli.
+- **Dynamic import**: caricamento lazy.
+- **CommonJS**: sistema storico di Node.js con `require` e `module.exports`.
 
 ## Errori comuni
 

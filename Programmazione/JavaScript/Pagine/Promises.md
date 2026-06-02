@@ -1,5 +1,5 @@
----
-date: 2026-05-13
+﻿---
+date: 2026-06-02
 area: Programmazione
 topic: JavaScript
 type: technical-note
@@ -21,8 +21,24 @@ Puo terminare con successo, producendo un valore, oppure fallire, producendo un 
 
 ---
 
-## Stati
+## Quando usarlo
 
+Usa Promise quando devi rappresentare un risultato asincrono che arrivera una volta sola.
+
+Casi comuni:
+
+- richieste HTTP;
+- lettura file in Node.js;
+- timeout;
+- caricamento risorse;
+- inizializzazioni asincrone;
+- operazioni indipendenti da coordinare.
+
+Per sequenze continue di eventi, stream o dati nel tempo, valuta EventEmitter, stream o async iterator.
+
+## Come funziona
+
+### Stati
 Una Promise puo trovarsi in tre stati:
 
 - pending: operazione ancora in corso;
@@ -32,9 +48,62 @@ Una Promise puo trovarsi in tre stati:
 Una volta fulfilled o rejected, la Promise e settled e non cambia piu stato.
 
 ---
+### Chaining
+Ogni `.then()` restituisce una nuova Promise.
 
-## Creare una Promise
+```js
+loadUser(1)
+  .then((user) => loadPosts(user.id))
+  .then((posts) => loadComments(posts[0].id))
+  .then((comments) => render(comments))
+  .catch((error) => showError(error));
+```
 
+Un errore in qualunque punto della catena passa al primo `.catch()` disponibile.
+
+---
+### Return dentro then
+Il valore restituito da un `.then()` diventa il valore ricevuto dal `.then()` successivo.
+
+```js
+Promise.resolve(2)
+  .then((value) => value * 2)
+  .then((value) => {
+    console.log(value); // 4
+  });
+```
+
+Se restituisci una Promise, la catena aspetta che venga risolta.
+
+```js
+fetch("/api/users")
+  .then((response) => response.json())
+  .then((users) => console.log(users));
+```
+
+---
+### Promise e microtask
+I callback di `.then()` e `.catch()` vengono eseguiti come microtask.
+
+```js
+console.log("A");
+
+Promise.resolve().then(() => {
+  console.log("B");
+});
+
+console.log("C");
+
+// A
+// C
+// B
+```
+
+---
+
+## API / Sintassi
+
+### Creare una Promise
 ```js
 const promise = new Promise((resolve, reject) => {
   const success = true;
@@ -50,9 +119,7 @@ const promise = new Promise((resolve, reject) => {
 Nella maggior parte del codice applicativo si consumano Promise create da API esistenti, come `fetch`, invece di crearle manualmente.
 
 ---
-
-## Consumare una Promise
-
+### Consumare una Promise
 ```js
 fetch("/api/users")
   .then((response) => response.json())
@@ -75,46 +142,36 @@ Metodi principali:
 
 ---
 
-## Chaining
+## Esempio pratico
 
-Ogni `.then()` restituisce una nuova Promise.
-
-```js
-loadUser(1)
-  .then((user) => loadPosts(user.id))
-  .then((posts) => loadComments(posts[0].id))
-  .then((comments) => render(comments))
-  .catch((error) => showError(error));
-```
-
-Un errore in qualunque punto della catena passa al primo `.catch()` disponibile.
-
----
-
-## Return dentro then
-
-Il valore restituito da un `.then()` diventa il valore ricevuto dal `.then()` successivo.
+Promisificare una callback semplice:
 
 ```js
-Promise.resolve(2)
-  .then((value) => value * 2)
-  .then((value) => {
-    console.log(value); // 4
+function wait(ms) {
+  return new Promise((resolve) => {
+    setTimeout(resolve, ms);
   });
+}
+
+await wait(1000);
+console.log("Un secondo dopo");
 ```
 
-Se restituisci una Promise, la catena aspetta che venga risolta.
+Creare Promise manualmente e utile quando devi adattare API callback-based o eventi a un risultato singolo.
 
-```js
-fetch("/api/users")
-  .then((response) => response.json())
-  .then((users) => console.log(users));
-```
+## Varianti
 
----
+- **Promise singola**: rappresenta un risultato futuro.
+- **Catena `.then()`**: composizione asincrona esplicita.
+- **`async/await`**: sintassi piu lineare sopra Promise.
+- **`Promise.all`**: aspetta tutte le Promise.
+- **`Promise.race`**: prende la prima Promise settled.
+- **`Promise.allSettled`**: restituisce esito di tutte.
+- **`Promise.any`**: prende la prima fulfilled.
 
-## Error handling
+## Errori comuni
 
+### Error handling
 Lanciare un errore dentro `.then()` rifiuta la Promise successiva.
 
 ```js
@@ -132,29 +189,6 @@ fetch("/api/users")
 ```
 
 ---
-
-## Promise e microtask
-
-I callback di `.then()` e `.catch()` vengono eseguiti come microtask.
-
-```js
-console.log("A");
-
-Promise.resolve().then(() => {
-  console.log("B");
-});
-
-console.log("C");
-
-// A
-// C
-// B
-```
-
----
-
-## Errori comuni
-
 - Dimenticare `return` dentro una catena.
 - Non gestire `.catch()`.
 - Pensare che una Promise possa essere cancellata direttamente.
@@ -163,8 +197,9 @@ console.log("C");
 
 ---
 
-## Checklist operativa
+## Checklist
 
+### Checklist operativa
 - Gestisci sempre il percorso di errore.
 - Usa `async/await` quando rende il flusso piu leggibile.
 - Usa `Promise.all` per operazioni indipendenti necessarie.

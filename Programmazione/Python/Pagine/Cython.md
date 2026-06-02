@@ -1,5 +1,5 @@
 ﻿---
-date: 2026-05-20
+date: 2026-06-02
 area: Programmazione
 topic: Python
 type: technical-note
@@ -21,8 +21,15 @@ related: []
 
 **Cython** e un linguaggio e compilatore che permette di trasformare codice simile a Python in estensioni C, aggiungendo tipizzazione statica opzionale.
 
-## Concetto chiave
+## Quando usarlo
 
+- Loop numerici.
+- Binding a librerie C.
+- Ottimizzazione mirata.
+
+## Come funziona
+
+### Concetto chiave
 Cython e utile quando una parte specifica del codice Python e CPU-bound e misurata come collo di bottiglia.
 
 ```python
@@ -36,11 +43,17 @@ def sum_values(double[:] values):
     return total
 ```
 
-## Quando usarlo
+## API / Sintassi
 
-- Loop numerici.
-- Binding a librerie C.
-- Ottimizzazione mirata.
+Contenuto da sviluppare: nella nota originale questa sezione non era presente o era solo una traccia.
+
+## Esempio pratico
+
+Contenuto da sviluppare: nella nota originale questa sezione non era presente o era solo una traccia.
+
+## Varianti
+
+Contenuto da sviluppare: nella nota originale questa sezione non era presente o era solo una traccia.
 
 ## Errori comuni
 
@@ -48,33 +61,12 @@ def sum_values(double[:] values):
 - Complicare codice non critico.
 - Ignorare packaging e distribuzione delle estensioni compilate.
 
-## Come funziona
-
-Da completare: spiegare il meccanismo principale o il comportamento tecnico.
-
-## API / Sintassi
-
-```text
-Da completare con API o sintassi principale.
-```
-
-## Esempio pratico
-
-```text
-Da completare con un esempio pratico.
-```
-
-## Varianti
-
-- Da completare: varianti, alternative o differenze rispetto ad approcci simili.
-
 ## Checklist
 
-- Da completare: controlli essenziali prima di usare questo concetto in pratica.
+Contenuto da sviluppare: nella nota originale questa sezione non era presente o era solo una traccia.
 
 ## Collegamenti
+
 - [[Programmazione/Python/Pagine/C extensions|C extensions]]
 - [[Programmazione/Python/Pagine/Profiling|Profiling]]
 - [[Programmazione/Python/Pagine/NumPy|NumPy]]
-
-

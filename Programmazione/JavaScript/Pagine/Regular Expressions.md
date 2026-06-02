@@ -1,5 +1,5 @@
----
-date: 2026-05-13
+﻿---
+date: 2026-06-02
 area: Programmazione
 topic: JavaScript
 type: technical-note
@@ -21,8 +21,23 @@ In JavaScript sono rappresentate da oggetti `RegExp` e vengono usate per cercare
 
 ---
 
-## Creazione
+## Quando usarlo
 
+Usa regex quando devi riconoscere o trasformare pattern testuali relativamente regolari.
+
+Esempi:
+
+- validare formati semplici;
+- estrarre parti da una stringa;
+- sostituire pattern ricorrenti;
+- cercare parole, numeri o delimitatori;
+- fare parsing leggero di log o testo.
+
+Evita regex per formati complessi come HTML, JSON o linguaggi annidati: usa parser dedicati.
+
+## Come funziona
+
+### Creazione
 Literal:
 
 ```js
@@ -38,9 +53,7 @@ const pattern = new RegExp("hello", "i");
 Usa il costruttore quando il pattern deve essere costruito dinamicamente.
 
 ---
-
-## Metodi principali
-
+### Metodi principali
 ```js
 const pattern = /js/i;
 
@@ -63,9 +76,7 @@ Metodi comuni:
 - `string.search(regexp)`.
 
 ---
-
-## Flag
-
+### Flag
 Flag principali:
 
 - `i`: case-insensitive;
@@ -81,9 +92,7 @@ const words = "uno due tre".match(/\w+/g);
 ```
 
 ---
-
-## Gruppi
-
+### Gruppi
 ```js
 const pattern = /(\d{4})-(\d{2})-(\d{2})/;
 const match = "2026-05-13".match(pattern);
@@ -101,9 +110,7 @@ console.log(match.groups.year);
 ```
 
 ---
-
-## Sostituzione
-
+### Sostituzione
 ```js
 const result = "hello world".replace(/\b\w/g, (letter) => {
   return letter.toUpperCase();
@@ -116,6 +123,58 @@ La callback di `replace` e utile per trasformazioni non banali.
 
 ---
 
+## API / Sintassi
+
+Sintassi base:
+
+```js
+const pattern = /hello/i;
+pattern.test("Hello"); // true
+```
+
+Costruzione dinamica:
+
+```js
+const pattern = new RegExp(searchTerm, "i");
+```
+
+Metodi principali:
+
+```js
+/\d+/.test("abc123");
+"abc123".match(/\d+/);
+"a,b,c".split(/,/);
+"hello".replace(/h/, "H");
+```
+
+Se il pattern dinamico contiene input utente, fai escape dei caratteri speciali.
+
+## Esempio pratico
+
+Estrarre data in formato ISO semplice:
+
+```js
+const pattern = /(?<year>\d{4})-(?<month>\d{2})-(?<day>\d{2})/;
+const match = "Creato il 2026-06-02".match(pattern);
+
+if (match) {
+  console.log(match.groups.year);
+  console.log(match.groups.month);
+  console.log(match.groups.day);
+}
+```
+
+I gruppi nominati rendono piu leggibile il risultato rispetto agli indici numerici.
+
+## Varianti
+
+- **Literal regex**: `/pattern/flags`, comoda per pattern statici.
+- **RegExp constructor**: utile per pattern costruiti a runtime.
+- **Gruppi catturanti**: estraggono parti del match.
+- **Gruppi nominati**: migliorano leggibilita.
+- **Lookahead/lookbehind**: controllano contesto senza consumare caratteri.
+- **Flag global `g`**: trova piu match, ma influenza `lastIndex`.
+
 ## Errori comuni
 
 - Usare regex troppo complesse quando basta parsing esplicito.
@@ -126,8 +185,9 @@ La callback di `replace` e utile per trasformazioni non banali.
 
 ---
 
-## Checklist operativa
+## Checklist
 
+### Checklist operativa
 - Mantieni regex leggibili e testate.
 - Usa gruppi nominati per estrazioni complesse.
 - Evita regex dinamiche senza escape.

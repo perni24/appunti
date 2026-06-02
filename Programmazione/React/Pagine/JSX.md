@@ -1,5 +1,5 @@
----
-date: 2026-05-14
+﻿---
+date: 2026-06-02
 area: Programmazione
 topic: React
 type: technical-note
@@ -10,6 +10,7 @@ aliases: [JSX (JavaScript XML)]
 prerequisites: []
 related: []
 ---
+
 # JSX (JavaScript XML)
 
 ## Sintesi
@@ -18,8 +19,13 @@ Nota su JSX (JavaScript XML) in React. Riassume il concetto, quando usarlo, i pu
 
 **JSX** è un'estensione della sintassi di JavaScript che permette di scrivere codice simile all'HTML direttamente all'interno dei file JS/JSX. È lo strumento principale di React per descrivere come dovrebbe apparire l'interfaccia utente.
 
-## 1. Natura di JSX
+## Quando usarlo
 
+Contenuto da sviluppare: nella nota originale questa sezione non era presente o era solo una traccia.
+
+## Come funziona
+
+### 1. Natura di JSX
 Nonostante l'aspetto simile all'HTML, JSX è JavaScript a tutti gli effetti. Ogni tag JSX viene trasformato (solitamente tramite strumenti come Babel o Vite) in una chiamata a funzione `React.createElement()`.
 
 > [!INFO] Esempio di Compilazione
@@ -33,9 +39,7 @@ Nonostante l'aspetto simile all'HTML, JSX è JavaScript a tutti gli effetti. Ogn
 > ```
 
 ---
-
-## 2. Regole Fondamentali
-
+### 2. Regole Fondamentali
 Per scrivere JSX correttamente, è necessario seguire alcune regole ferree:
 
 1. **Un solo elemento radice:** Un componente deve restituire un singolo elemento genitore. Se hai più elementi, avvolgili in un `div` o in un **Fragment** (`<>...</>`).
@@ -43,9 +47,7 @@ Per scrivere JSX correttamente, è necessario seguire alcune regole ferree:
 3. **camelCase per gli attributi:** Poiché JSX è JavaScript, molti attributi HTML usano il camelCase. Ad esempio, `class` diventa `className` e `onclick` diventa `onClick`.
 
 ---
-
-## 3. Espressioni in JSX
-
+### 3. Espressioni in JSX
 Uno dei punti di forza di JSX è la possibilità di inserire logica JavaScript direttamente nel markup utilizzando le **parentesi graffe** `{}`.
 
 ```jsx
@@ -56,11 +58,33 @@ const element = <h1>Benvenuto, {name}!</h1>;
 Tutto ciò che si trova tra `{}` deve essere un'**espressione** (qualcosa che restituisce un valore), non uno statement (come un ciclo `for` o un `if`).
 
 ---
-
-## 4. Perché usare JSX?
-
+### 4. Perché usare JSX?
 - **Leggibilità:** È molto più immediato capire la struttura della UI rispetto a chiamate annidate di `createElement`.
 - **Sicurezza:** React esegue l'escape di qualsiasi valore inserito in JSX prima di renderizzarlo, aiutando a prevenire attacchi XSS (Cross-Site Scripting).
 - **Potenza:** Permette di sfruttare tutta la potenza di JavaScript (mappe, filtri, variabili) per generare HTML dinamico.
 
 ---
+
+## API / Sintassi
+
+Contenuto da sviluppare: nella nota originale questa sezione non era presente o era solo una traccia.
+
+## Esempio pratico
+
+Contenuto da sviluppare: nella nota originale questa sezione non era presente o era solo una traccia.
+
+## Varianti
+
+Contenuto da sviluppare: nella nota originale questa sezione non era presente o era solo una traccia.
+
+## Errori comuni
+
+Contenuto da sviluppare: nella nota originale questa sezione non era presente o era solo una traccia.
+
+## Checklist
+
+Contenuto da sviluppare: nella nota originale questa sezione non era presente o era solo una traccia.
+
+## Collegamenti
+
+- [[Programmazione/React/Indice react|Indice React]]

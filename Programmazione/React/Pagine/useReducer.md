@@ -1,5 +1,5 @@
----
-date: 2026-05-14
+﻿---
+date: 2026-06-02
 area: Programmazione
 topic: React
 type: technical-note
@@ -10,6 +10,7 @@ aliases: [useReducer]
 prerequisites: []
 related: []
 ---
+
 # useReducer
 
 ## Sintesi
@@ -18,8 +19,13 @@ Nota su useReducer in React. Riassume il concetto, quando usarlo, i punti critic
 
 Il hook `useReducer` è un'alternativa avanzata a `useState` per la gestione dello stato nei componenti React. È particolarmente utile quando si ha a che fare con logiche di stato complesse, stati che dipendono da altri valori o quando l'aggiornamento dello stato richiede più passaggi.
 
-## 1. Il Pattern Reducer
+## Quando usarlo
 
+Contenuto da sviluppare: nella nota originale questa sezione non era presente o era solo una traccia.
+
+## Come funziona
+
+### 1. Il Pattern Reducer
 Ispirato a Redux, `useReducer` si basa su un'architettura che separa la logica di aggiornamento (il "come" cambia lo stato) dall'azione che scatena il cambiamento (il "cosa" è successo).
 
 ### Gli elementi chiave
@@ -29,9 +35,19 @@ Ispirato a Redux, `useReducer` si basa su un'architettura che separa la logica d
 - **Dispatch:** La funzione utilizzata per "inviare" un'azione al reducer.
 
 ---
+### 3. useReducer vs useState
+| Caratteristica | `useState` | `useReducer` |
+| :--- | :--- | :--- |
+| **Complessità Stato** | Ideale per valori semplici (stringhe, boolean). | Ideale per oggetti complessi o array. |
+| **Logica di Aggiornamento** | Semplice, definita nel componente. | Complessa, definita in una funzione esterna. |
+| **Relazione tra Stati** | Variabili indipendenti tra loro. | Stati correlati captati in un unico oggetto. |
+| **Testabilità** | Più difficile testare la logica isolata. | Molto facile (il reducer è una funzione pura). |
 
-## 2. Sintassi e Utilizzo
+---
 
+## API / Sintassi
+
+### 2. Sintassi e Utilizzo
 ```javascript
 const [state, dispatch] = useReducer(reducer, initialState);
 ```
@@ -68,21 +84,27 @@ function Counter() {
 
 ---
 
-## 3. useReducer vs useState
+## Esempio pratico
 
-| Caratteristica | `useState` | `useReducer` |
-| :--- | :--- | :--- |
-| **Complessità Stato** | Ideale per valori semplici (stringhe, boolean). | Ideale per oggetti complessi o array. |
-| **Logica di Aggiornamento** | Semplice, definita nel componente. | Complessa, definita in una funzione esterna. |
-| **Relazione tra Stati** | Variabili indipendenti tra loro. | Stati correlati captati in un unico oggetto. |
-| **Testabilità** | Più difficile testare la logica isolata. | Molto facile (il reducer è una funzione pura). |
+Contenuto da sviluppare: nella nota originale questa sezione non era presente o era solo una traccia.
 
----
+## Varianti
 
-## 4. Best Practices
+Contenuto da sviluppare: nella nota originale questa sezione non era presente o era solo una traccia.
 
+## Errori comuni
+
+Contenuto da sviluppare: nella nota originale questa sezione non era presente o era solo una traccia.
+
+## Checklist
+
+### 4. Best Practices
 1. **Reducer come Funzione Pura:** Un reducer non deve mai avere effetti collaterali (chiamate API, timer). Per quelli si usa `useEffect`.
 2. **Immutabilità:** Come per `useState`, non bisogna mai mutare lo stato direttamente. Restituisci sempre una **copia** dello stato aggiornato.
 3. **Action Types:** È consigliabile usare costanti per i tipi di azione per evitare refusi (errori di digitazione).
 
 ---
+
+## Collegamenti
+
+- [[Programmazione/React/Indice react|Indice React]]

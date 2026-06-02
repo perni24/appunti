@@ -1,5 +1,5 @@
----
-date: 2026-05-14
+﻿---
+date: 2026-06-02
 area: Programmazione
 topic: Python
 type: technical-note
@@ -10,13 +10,20 @@ aliases: [Testing]
 prerequisites: []
 related: []
 ---
+
 # Testing in Python
 
 ## Sintesi
 
 Nota su Testing in Python. Riassume il concetto, la sintassi principale e i punti da ricordare durante studio, sviluppo o debugging.
 
-## Concetto chiave
+## Quando usarlo
+
+Contenuto da sviluppare: nella nota originale questa sezione non era presente o era solo una traccia.
+
+## Come funziona
+
+### Concetto chiave
 Il **testing** e la pratica di verificare in modo automatico che il codice si comporti come previsto. In Python, i test servono a ridurre regressioni, documentare il comportamento atteso e rendere piu sicuri refactoring, bugfix e nuove feature.
 
 Un buon test non dimostra che il codice e "perfetto": dimostra che, per certi input e certe condizioni, il comportamento osservato corrisponde al contratto del sistema.
@@ -25,9 +32,7 @@ Un buon test non dimostra che il codice e "perfetto": dimostra che, per certi in
 > I test non servono a "decorare" il progetto. Servono a ridurre il costo del cambiamento. Se modificare il codice rompe tutto e nessuno se ne accorge subito, manca una rete di sicurezza.
 
 ---
-
-##  Tipi di test
-
+### Tipi di test
 ### Unit Test
 Verificano unita piccole e isolate di codice:
 - funzioni;
@@ -48,9 +53,7 @@ Verificano flussi completi dal punto di vista dell'utente o del sistema.
 Per la maggior parte dei progetti Python, i primi due livelli sono quelli piu frequenti nel lavoro quotidiano.
 
 ---
-
-##  Esempi Pratici
-
+### Esempi Pratici
 ### Test semplice con `assert`
 
 ```python
@@ -97,9 +100,7 @@ def test_divide_raises_on_zero() -> None:
 Questo si collega direttamente a [[Programmazione/Python/Pagine/Error Handling]].
 
 ---
-
-##  Framework comuni
-
+### Framework comuni
 ### `unittest`
 Fa parte della Standard Library ed e il framework storico incluso in Python.
 
@@ -140,9 +141,7 @@ Vantaggi:
 - ecosistema esteso.
 
 ---
-
-##  Fixture, setup e isolamento
-
+### Fixture, setup e isolamento
 I test devono essere ripetibili e indipendenti. Per questo serve separare bene:
 - preparazione dati;
 - esecuzione;
@@ -171,9 +170,7 @@ Con `unittest` si usano spesso:
 Con `pytest`, molte volte questo pattern viene sostituito da fixture.
 
 ---
-
-##  Mocking e dipendenze esterne
-
+### Mocking e dipendenze esterne
 Un buon test unitario non dovrebbe dipendere realmente da:
 - rete;
 - database esterni;
@@ -202,9 +199,7 @@ def test_send_notification() -> None:
 Il mocking e utile, ma va usato con criterio: se un test mocka tutto, rischia di verificare solo l'implementazione e non il comportamento reale.
 
 ---
-
-##  Dove mettere i test
-
+### Dove mettere i test
 Una struttura comune e:
 
 ```text
@@ -224,9 +219,7 @@ Convenzioni diffuse:
 Questa organizzazione si integra bene con [[Programmazione/Python/Pagine/Creazione di Package]].
 
 ---
-
-##  Cosa rende un test buono
-
+### Cosa rende un test buono
 Un buon test e:
 - veloce;
 - deterministico;
@@ -245,8 +238,21 @@ Un cattivo test e:
 
 ---
 
-##  Best Practices & "Gotchas"
+## API / Sintassi
 
+Contenuto da sviluppare: nella nota originale questa sezione non era presente o era solo una traccia.
+
+## Esempio pratico
+
+Contenuto da sviluppare: nella nota originale questa sezione non era presente o era solo una traccia.
+
+## Varianti
+
+Contenuto da sviluppare: nella nota originale questa sezione non era presente o era solo una traccia.
+
+## Errori comuni
+
+### Best Practices & "Gotchas"
 -  **Testa prima il codice più critico:** logica di dominio, parsing, validazione, flussi con rischio di regressione.
 -  **Mantieni i test piccoli e leggibili:** un test deve spiegare rapidamente cosa sta verificando.
 -  **Usa nomi descrittivi:** il nome del test deve chiarire il comportamento atteso.
@@ -258,3 +264,11 @@ Un cattivo test e:
 -  **Attenzione alla coverage come metrica assoluta:** alta coverage non garantisce test di qualità.
 
 ---
+
+## Checklist
+
+Contenuto da sviluppare: nella nota originale questa sezione non era presente o era solo una traccia.
+
+## Collegamenti
+
+- [[Programmazione/Python/Indice python|Indice Python]]

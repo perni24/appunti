@@ -1,5 +1,5 @@
----
-date: 2026-05-13
+﻿---
+date: 2026-06-02
 area: Programmazione
 topic: JavaScript
 type: technical-note
@@ -21,8 +21,24 @@ In JavaScript si testano funzioni, moduli, componenti, API, integrazioni e fluss
 
 ---
 
-## Tipi di test
+## Quando usarlo
 
+Scrivi test quando il comportamento deve restare stabile nel tempo o quando un bug potrebbe tornare facilmente.
+
+Priorita alte:
+
+- logica di business;
+- parsing e validazione;
+- funzioni pure riusate;
+- flussi critici utente;
+- integrazioni con API;
+- bug fix gia avvenuti.
+
+Per prototipi molto piccoli puoi partire senza test, ma appena il codice diventa riusato conviene aggiungerli.
+
+## Come funziona
+
+### Tipi di test
 - Unit test: verificano una singola funzione, classe o modulo in isolamento.
 - Integration test: verificano piu parti che collaborano.
 - End-to-end test: simulano flussi utente reali.
@@ -30,9 +46,7 @@ In JavaScript si testano funzioni, moduli, componenti, API, integrazioni e fluss
 - Regression test: impediscono il ritorno di bug gia risolti.
 
 ---
-
-## Piramide dei test
-
+### Piramide dei test
 Una strategia comune:
 
 - molti unit test;
@@ -42,9 +56,74 @@ Una strategia comune:
 Gli unit test sono veloci e precisi. Gli E2E danno fiducia sul flusso reale, ma sono piu lenti e fragili.
 
 ---
+### Arrange Act Assert
+Struttura pratica:
 
-## Esempio unit test
+- arrange: prepara input e dipendenze;
+- act: esegui l'azione;
+- assert: verifica il risultato.
 
+```js
+test("applica uno sconto", () => {
+  const price = 100;
+
+  const result = applyDiscount(price, 10);
+
+  expect(result).toBe(90);
+});
+```
+
+---
+### Mock e stub
+I mock sostituiscono dipendenze esterne.
+
+```js
+const api = {
+  loadUser: vi.fn().mockResolvedValue({ id: 1 }),
+};
+```
+
+Usali per isolare il codice, ma non abusarne: troppi mock possono testare l'implementazione invece del comportamento.
+
+---
+### TDD
+TDD segue il ciclo:
+
+- Red: scrivi un test che fallisce;
+- Green: scrivi il minimo codice per farlo passare;
+- Refactor: migliora il codice mantenendo i test verdi.
+
+Non e obbligatorio per ogni task, ma e utile per logica complessa o bug fix.
+
+---
+
+## API / Sintassi
+
+Sintassi tipica in Jest/Vitest:
+
+```js
+describe("applyDiscount", () => {
+  test("applica lo sconto percentuale", () => {
+    expect(applyDiscount(100, 10)).toBe(90);
+  });
+});
+```
+
+Assertion comuni:
+
+```js
+expect(value).toBe(1);
+expect(object).toEqual({ id: 1 });
+expect(fn).toThrow();
+await expect(loadData()).resolves.toEqual(data);
+await expect(loadData()).rejects.toThrow();
+```
+
+La sintassi esatta dipende dal framework, ma il modello arrange-act-assert resta valido.
+
+## Esempio pratico
+
+### Esempio unit test
 ```js
 export function sum(a, b) {
   return a + b;
@@ -65,51 +144,14 @@ La sintassi e compatibile con framework come Jest e Vitest.
 
 ---
 
-## Arrange Act Assert
+## Varianti
 
-Struttura pratica:
-
-- arrange: prepara input e dipendenze;
-- act: esegui l'azione;
-- assert: verifica il risultato.
-
-```js
-test("applica uno sconto", () => {
-  const price = 100;
-
-  const result = applyDiscount(price, 10);
-
-  expect(result).toBe(90);
-});
-```
-
----
-
-## Mock e stub
-
-I mock sostituiscono dipendenze esterne.
-
-```js
-const api = {
-  loadUser: vi.fn().mockResolvedValue({ id: 1 }),
-};
-```
-
-Usali per isolare il codice, ma non abusarne: troppi mock possono testare l'implementazione invece del comportamento.
-
----
-
-## TDD
-
-TDD segue il ciclo:
-
-- Red: scrivi un test che fallisce;
-- Green: scrivi il minimo codice per farlo passare;
-- Refactor: migliora il codice mantenendo i test verdi.
-
-Non e obbligatorio per ogni task, ma e utile per logica complessa o bug fix.
-
----
+- **Unit test**: veloci, isolati, utili per logica piccola.
+- **Integration test**: verificano collaborazione tra moduli.
+- **Component test**: testano componenti UI in isolamento controllato.
+- **End-to-end test**: verificano flussi reali dal punto di vista utente.
+- **Snapshot test**: utili con cautela per output strutturati.
+- **Contract test**: controllano accordi tra client e server.
 
 ## Errori comuni
 
@@ -121,8 +163,9 @@ Non e obbligatorio per ogni task, ma e utile per logica complessa o bug fix.
 
 ---
 
-## Checklist operativa
+## Checklist
 
+### Checklist operativa
 - Testa comportamento osservabile.
 - Copri casi limite ed errori.
 - Mantieni test veloci e indipendenti.

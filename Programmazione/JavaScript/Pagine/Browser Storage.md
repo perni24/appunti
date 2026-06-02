@@ -1,5 +1,5 @@
----
-date: 2026-05-13
+﻿---
+date: 2026-06-02
 area: Programmazione
 topic: JavaScript
 type: technical-note
@@ -21,8 +21,23 @@ Le principali sono `localStorage`, `sessionStorage`, cookie, IndexedDB e Cache A
 
 ---
 
-## localStorage
+## Quando usarlo
 
+Usa storage browser quando devi conservare dati lato client tra interazioni, pagine o sessioni.
+
+Scelte tipiche:
+
+- `sessionStorage` per dati temporanei della singola tab;
+- `localStorage` per preferenze semplici non sensibili;
+- cookie per sessioni e comunicazione automatica con il server;
+- IndexedDB per dati strutturati, grandi o offline;
+- Cache API per risposte HTTP e asset.
+
+Non usarlo come posto sicuro per segreti leggibili da JavaScript.
+
+## Come funziona
+
+### localStorage
 `localStorage` salva coppie chiave-valore persistenti.
 
 ```js
@@ -41,9 +56,7 @@ Limiti:
 - non adatto a dati sensibili.
 
 ---
-
-## sessionStorage
-
+### sessionStorage
 `sessionStorage` ha API simile, ma dura solo per la sessione della tab.
 
 ```js
@@ -53,9 +66,7 @@ sessionStorage.setItem("draft", "testo temporaneo");
 E utile per dati temporanei legati alla pagina corrente.
 
 ---
-
-## Cookie
-
+### Cookie
 I cookie vengono inviati automaticamente al server nelle richieste compatibili.
 
 Sono utili per sessioni e autenticazione, ma vanno configurati correttamente.
@@ -72,9 +83,7 @@ Attributi importanti:
 Per token sensibili, preferire cookie `HttpOnly` quando l'architettura lo permette.
 
 ---
-
-## IndexedDB
-
+### IndexedDB
 IndexedDB e un database client-side asincrono per dati strutturati e volumi piu grandi.
 
 E adatto a:
@@ -88,8 +97,9 @@ Per dati semplici, `localStorage` puo bastare. Per dati grandi o complessi, Inde
 
 ---
 
-## Cache API
+## API / Sintassi
 
+### Cache API
 La Cache API salva richieste e risposte HTTP.
 
 E usata spesso con Service Worker.
@@ -103,6 +113,32 @@ Non e un database generico: serve principalmente per risorse e response.
 
 ---
 
+## Esempio pratico
+
+Salvare una preferenza utente:
+
+```js
+function saveTheme(theme) {
+  localStorage.setItem("theme", theme);
+}
+
+function loadTheme() {
+  return localStorage.getItem("theme") ?? "light";
+}
+
+document.documentElement.dataset.theme = loadTheme();
+```
+
+Questo va bene per preferenze UI. Non e adatto a token o dati sensibili.
+
+## Varianti
+
+- **localStorage**: semplice, persistente, sincrono.
+- **sessionStorage**: temporaneo per tab.
+- **Cookie**: inviati automaticamente al server, utili per sessioni.
+- **IndexedDB**: asincrono, strutturato, adatto a grandi volumi.
+- **Cache API**: cache di request/response, spesso con Service Worker.
+
 ## Errori comuni
 
 - Salvare token sensibili in `localStorage`.
@@ -113,8 +149,9 @@ Non e un database generico: serve principalmente per risorse e response.
 
 ---
 
-## Checklist operativa
+## Checklist
 
+### Checklist operativa
 - Usa `sessionStorage` per dati temporanei di tab.
 - Usa `localStorage` per preferenze non sensibili.
 - Usa IndexedDB per dati grandi o strutturati.

@@ -1,5 +1,5 @@
 ---
-date: 2026-05-14
+date: 2026-06-02
 area: Programmazione
 topic: PostgreSQL
 type: technical-note
@@ -10,91 +10,88 @@ aliases: [Trigger e Event Trigger]
 prerequisites: []
 related: []
 ---
-# Trigger e Event Trigger in PostgreSQL
+
+# Trigger e Event Trigger
 
 ## Sintesi
 
-Nota su Trigger e Event Trigger in PostgreSQL. Riassume il concetto, i meccanismi principali e i punti da ricordare durante studio, progettazione o amministrazione.
+I trigger eseguono funzioni automaticamente quando avvengono `INSERT`, `UPDATE`, `DELETE` o `TRUNCATE`. Gli event trigger reagiscono a eventi DDL come `CREATE TABLE` o `ALTER TABLE`.
 
-## Concetto chiave
-Un **Trigger** è una funzione speciale che viene invocata automaticamente dal database in risposta a determinati eventi legati ai dati (DML) o alla struttura (DDL). Sono strumenti potenti per far rispettare regole di business complesse, mantenere log di audit o sincronizzare tabelle correlate in modo trasparente all'applicazione.
+## Quando usarlo
 
----
+Usali per audit, timestamp automatici, validazioni complesse, sincronizzazione interna o controllo di DDL.
 
-##  Trigger Standard (DML)
+## Come funziona
 
-I trigger standard agiscono su tabelle o viste e rispondono alle operazioni di `INSERT`, `UPDATE`, `DELETE` o `TRUNCATE`.
+Un trigger e collegato a una tabella e chiama una funzione trigger. Puo essere `BEFORE`, `AFTER` o `INSTEAD OF`, per riga o per statement.
 
-### 1. Fasi di Esecuzione
-- **`BEFORE`**: Eseguito prima dell'operazione. Ideale per validare o modificare i dati prima che vengano scritti (es. calcolare un campo).
-- **`AFTER`**: Eseguito dopo l'operazione. Usato per azioni che dipendono dal successo della scrittura (es. aggiornare una tabella di log).
-- **`INSTEAD OF`**: Usato solitamente sulle **viste** per rendere scrivibile ciò che tecnicamente non lo sarebbe.
+## API / Sintassi
 
-### 2. Granularità
-- **`FOR EACH ROW`**: La funzione viene eseguita per ogni riga modificata (es. se aggiorni 100 righe, il trigger gira 100 volte).
-- **`FOR EACH STATEMENT`**: La funzione viene eseguita una sola volta per l'intera operazione SQL.
-
----
-
-##  Creazione di un Trigger
-
-In Postgres, la creazione di un trigger richiede due passaggi: la definizione di una **Trigger Function** e il comando **CREATE TRIGGER**.
-
-### Esempio: Audit Log dei Prezzi
-Crea una funzione che usa le variabili speciali **`NEW`** (la riga in inserimento/aggiornamento) e **`OLD`** (la riga precedente).
+Funzione trigger:
 
 ```sql
-# Trigger e Event Trigger in PostgreSQL
-
-## Sintesi
-
-Nota su Trigger e Event Trigger in PostgreSQL. Riassume il concetto, i meccanismi principali e i punti da ricordare durante studio, progettazione o amministrazione.
-CREATE OR REPLACE FUNCTION log_cambio_prezzo()
-RETURNS TRIGGER AS $$
+CREATE FUNCTION set_updated_at()
+RETURNS trigger
+LANGUAGE plpgsql
+AS $$
 BEGIN
-    IF NEW.prezzo <> OLD.prezzo THEN
-        INSERT INTO audit_prezzi(prodotto_id, vecchio_prezzo, nuovo_prezzo)
-        VALUES (OLD.id, OLD.prezzo, NEW.prezzo);
-    END IF;
-    RETURN NEW;
+  NEW.updated_at = now();
+  RETURN NEW;
 END;
-$$ LANGUAGE plpgsql;
-
-# Trigger e Event Trigger in PostgreSQL
-
-## Sintesi
-
-Nota su Trigger e Event Trigger in PostgreSQL. Riassume il concetto, i meccanismi principali e i punti da ricordare durante studio, progettazione o amministrazione.
-CREATE TRIGGER trg_audit_prezzi
-AFTER UPDATE ON prodotti
-FOR EACH ROW
-EXECUTE FUNCTION log_cambio_prezzo();
+$$;
 ```
 
----
+Trigger:
 
-##  Event Trigger (DDL)
+```sql
+CREATE TRIGGER users_set_updated_at
+BEFORE UPDATE ON users
+FOR EACH ROW
+EXECUTE FUNCTION set_updated_at();
+```
 
-A differenza dei trigger standard, gli **Event Trigger** sono globali a livello di database e rispondono a cambiamenti strutturali (DDL) come `CREATE TABLE`, `ALTER TYPE` o `DROP SCHEMA`.
+## Esempio pratico
 
-- **Scope**: Database-wide.
-- **Eventi principali**: `ddl_command_start`, `ddl_command_end`, `sql_drop`.
-- **Utilizzo**: Implementare sistemi di controllo versioni degli schemi o impedire modifiche strutturali in ambienti di produzione critici.
+Audit minimale:
 
----
+```sql
+CREATE TABLE audit_log (
+  id bigint GENERATED ALWAYS AS IDENTITY PRIMARY KEY,
+  table_name text,
+  operation text,
+  changed_at timestamptz DEFAULT now()
+);
+```
 
-## Logic layer: Automazione vs Logica Nascosta
+Un trigger `AFTER INSERT OR UPDATE OR DELETE` puo scrivere su questa tabella.
 
-> [!WARNING] Attenzione alla Complessità
-> I trigger possono rendere difficile il debugging perché la loro esecuzione è "invisibile" per chi scrive la query. Un abuso di trigger può portare a:
-> 1. **Calo di performance**: Specialmente con trigger `FOR EACH ROW` su grandi volumi di dati.
-> 2. **Effetti collaterali**: Trigger che attivano altri trigger (concatenazione), creando logiche circolari o difficili da tracciare.
+## Varianti
 
----
+- `BEFORE` trigger.
+- `AFTER` trigger.
+- `INSTEAD OF` trigger su view.
+- Row-level trigger.
+- Statement-level trigger.
+- Event trigger per DDL.
 
-##  Best Practices
-- **Preferisci i Vincoli**: Se puoi risolvere un problema con un vincolo (`CHECK`, `FOREIGN KEY`), non usare un trigger. È più veloce e chiaro.
-- **Mantieni le funzioni snelle**: Le funzioni dei trigger devono essere il più rapide possibile per non rallentare le transazioni.
-- **Gestisci i ritorni**: Una funzione `BEFORE` che ritorna `NULL` interrompe l'operazione per quella specifica riga.
+## Errori comuni
 
----
+- Nascondere troppa logica nei trigger.
+- Creare trigger ricorsivi involontari.
+- Ignorare costo su scritture massive.
+- Non documentare effetti collaterali.
+- Usare trigger dove basta un vincolo.
+
+## Checklist
+
+- Il trigger e davvero necessario?
+- La funzione e breve e testabile?
+- Esistono test per insert/update/delete?
+- Il costo su batch e accettabile?
+- Gli effetti collaterali sono documentati?
+
+## Collegamenti
+
+- [[Programmazione/Postgres/Pagine/PL-pgSQL|PL/pgSQL]]
+- [[Programmazione/Postgres/Pagine/Funzioni e Store Procedures|Funzioni e Store Procedures]]
+- [[Programmazione/Postgres/Pagine/Audit logging|Audit logging]]

@@ -1,5 +1,5 @@
----
-date: 2026-05-14
+﻿---
+date: 2026-06-02
 area: Programmazione
 topic: Python
 type: technical-note
@@ -10,41 +10,16 @@ aliases: [Argomenti Flessibili (*args e **kwargs)]
 prerequisites: []
 related: []
 ---
+
 # Argomenti Flessibili (*args e **kwargs)
 
 ## Sintesi
 
 Nota su Argomenti Flessibili (*args e **kwargs) in Python. Riassume il concetto, la sintassi principale e i punti da ricordare durante studio, sviluppo o debugging.
-
-## Concetto chiave
-Python permette di definire funzioni che accettano un numero variabile di argomenti. Questo è estremamente utile quando non si sa in anticipo quanti dati verranno passati alla funzione.
-- `*args`: Raccoglie gli argomenti posizionali extra in una **tupla**.
-- `**kwargs`: Raccoglie gli argomenti nominali (keyword arguments) extra in un **dizionario**.
-
----
-
-##  Sintassi
-
-```python
-def funzione_flessibile(*args, **kwargs):
-    print(f"Args (tupla): {args}")
-    print(f"Kwargs (dizionario): {kwargs}")
-
-funzione_flessibile(1, 2, nome="Luca", età=25)
-# Argomenti Flessibili (*args e **kwargs)
-
-## Sintesi
-
 Nota su Argomenti Flessibili (*args e **kwargs) in Python. Riassume il concetto, la sintassi principale e i punti da ricordare durante studio, sviluppo o debugging.
 # Argomenti Flessibili (*args e **kwargs)
-
-## Sintesi
-
 Nota su Argomenti Flessibili (*args e **kwargs) in Python. Riassume il concetto, la sintassi principale e i punti da ricordare durante studio, sviluppo o debugging.
 # Argomenti Flessibili (*args e **kwargs)
-
-## Sintesi
-
 Nota su Argomenti Flessibili (*args e **kwargs) in Python. Riassume il concetto, la sintassi principale e i punti da ricordare durante studio, sviluppo o debugging.
 ```
 
@@ -57,8 +32,19 @@ L'ordine dei parametri in una funzione deve seguire questa gerarchia:
 
 ---
 
-##  Esempi Pratici
+## Quando usarlo
 
+Contenuto da sviluppare: nella nota originale questa sezione non era presente o era solo una traccia.
+
+## Come funziona
+
+### Concetto chiave
+Python permette di definire funzioni che accettano un numero variabile di argomenti. Questo è estremamente utile quando non si sa in anticipo quanti dati verranno passati alla funzione.
+- `*args`: Raccoglie gli argomenti posizionali extra in una **tupla**.
+- `**kwargs`: Raccoglie gli argomenti nominali (keyword arguments) extra in un **dizionario**.
+
+---
+### Esempi Pratici
 ### Somma di N numeri (*args)
 ```python
 def somma_tutto(*numeri):
@@ -89,16 +75,44 @@ print(moltiplica(*numeri)) # Scompatta la lista in 3 argomenti
 ```
 
 ---
-
-##  Funzionamento Interno (Teoria)
+### Funzionamento Interno (Teoria)
 - **Impacchettamento:** Quando Python vede `*` o `**` nella firma della funzione, intercetta gli argomenti rimanenti e li inserisce in una nuova struttura dati (Tupla per `*`, Dizionario per `**`).
 - **Flessibilità:** Permette di creare API molto potenti (come quelle dei framework web o librerie di data science) che possono accettare decine di parametri opzionali senza doverli definire tutti esplicitamente.
 
 ---
 
-##  Best Practices & "Gotchas"
+## API / Sintassi
+
+### Sintassi
+```python
+def funzione_flessibile(*args, **kwargs):
+    print(f"Args (tupla): {args}")
+    print(f"Kwargs (dizionario): {kwargs}")
+
+funzione_flessibile(1, 2, nome="Luca", età=25)
+# Argomenti Flessibili (*args e **kwargs)
+
+## Esempio pratico
+
+Contenuto da sviluppare: nella nota originale questa sezione non era presente o era solo una traccia.
+
+## Varianti
+
+Contenuto da sviluppare: nella nota originale questa sezione non era presente o era solo una traccia.
+
+## Errori comuni
+
+### Best Practices & "Gotchas"
 -  **Convenzione:** Usa sempre i nomi `args` e `kwargs`. Sebbene qualsiasi nome funzioni (es. `*numeri`), `args` e `kwargs` sono lo standard de facto.
 -  **Abuso:** Non usare `*args` o `**kwargs` se conosci esattamente quali parametri la funzione deve ricevere. Rendono il codice meno esplicito e più difficile da documentare.
 -  **Keyword-only arguments:** Puoi usare `*` da solo per forzare l'utente a passare tutti i parametri successivi come keyword arguments: `def f(a, *, b):` (qui `b` deve essere specificato per nome).
 
 ---
+
+## Checklist
+
+Contenuto da sviluppare: nella nota originale questa sezione non era presente o era solo una traccia.
+
+## Collegamenti
+
+- [[Programmazione/Python/Indice python|Indice Python]]

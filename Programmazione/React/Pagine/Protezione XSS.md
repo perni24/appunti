@@ -1,5 +1,5 @@
----
-date: 2026-05-14
+﻿---
+date: 2026-06-02
 area: Programmazione
 topic: React
 type: technical-note
@@ -10,6 +10,7 @@ aliases: [Protezione XSS]
 prerequisites: []
 related: []
 ---
+
 # Protezione XSS
 
 ## Sintesi
@@ -30,8 +31,13 @@ Nel frontend React questo tema e centrale perche l'interfaccia spesso visualizza
 
 ---
 
-## 1. Cos'e un attacco XSS
+## Quando usarlo
 
+Contenuto da sviluppare: nella nota originale questa sezione non era presente o era solo una traccia.
+
+## Come funziona
+
+### 1. Cos'e un attacco XSS
 Un attacco XSS avviene quando un'applicazione permette a contenuti malevoli di finire nel DOM in modo eseguibile.
 
 Esempio concettuale di input malevolo:
@@ -49,9 +55,7 @@ Le conseguenze possono includere:
 - esfiltrazione di dati sensibili.
 
 ---
-
-## 2. Perche React e relativamente protettivo di default
-
+### 2. Perche React e relativamente protettivo di default
 React, per impostazione predefinita, fa **escaping** dei valori inseriti nel JSX.
 
 Esempio:
@@ -71,9 +75,7 @@ In pratica:
 - non viene interpretato automaticamente come HTML reale.
 
 ---
-
-## 3. Il vero punto critico: dangerouslySetInnerHTML
-
+### 3. Il vero punto critico: dangerouslySetInnerHTML
 Il meccanismo piu delicato in React e `dangerouslySetInnerHTML`.
 
 Esempio:
@@ -94,9 +96,7 @@ Se `html` non e affidabile o non e stato sanitizzato, il rischio XSS diventa con
 > `dangerouslySetInnerHTML` si chiama cosi proprio per segnalare che stai bypassando una protezione importante del rendering React.
 
 ---
-
-## 4. Quando compare davvero il rischio
-
+### 4. Quando compare davvero il rischio
 I casi piu comuni sono:
 - contenuti HTML presi da un CMS;
 - commenti utente con markup;
@@ -111,9 +111,7 @@ Una regola utile e questa:
 - **untrusted HTML**: va sanitizzato prima di essere inserito.
 
 ---
-
-## 5. Sanitizzazione
-
+### 5. Sanitizzazione
 La **sanitizzazione** rimuove o neutralizza parti pericolose dell'HTML prima del rendering.
 
 Non basta "fare replace a mano" di alcuni tag. La sanitizzazione seria richiede una libreria o una strategia pensata per la sicurezza.
@@ -137,9 +135,7 @@ Il punto importante e questo:
 Sono due concetti diversi.
 
 ---
-
-## 6. Non fidarti del backend "a occhi chiusi"
-
+### 6. Non fidarti del backend "a occhi chiusi"
 Un errore comune e pensare:
 
 "Se l'HTML arriva dal backend, allora e sicuro."
@@ -155,9 +151,7 @@ La domanda corretta e:
 La sicurezza reale richiede chiarezza sul trust boundary, non assunzioni vaghe.
 
 ---
-
-## 7. XSS non significa solo tag script
-
+### 7. XSS non significa solo tag script
 Il rischio XSS non si limita al tag `<script>`.
 
 Possono essere pericolosi anche:
@@ -171,9 +165,7 @@ Per questo i filtri manuali e le blacklist improvvisate sono spesso inaffidabili
 Serve un approccio sistematico, non patch ad hoc.
 
 ---
-
-## 8. Dove React aiuta e dove no
-
+### 8. Dove React aiuta e dove no
 React aiuta bene quando:
 - usi JSX normale;
 - mostri testo tramite espressioni `{value}`;
@@ -188,9 +180,7 @@ React non ti protegge automaticamente quando:
 Quindi React riduce il rischio in molti casi comuni, ma non elimina il problema se aggiri il suo modello sicuro.
 
 ---
-
-## 9. CSP e difesa a strati
-
+### 9. CSP e difesa a strati
 Una difesa importante e la **Content Security Policy** (**CSP**).
 
 La CSP aiuta a limitare:
@@ -207,9 +197,7 @@ In pratica:
 La sicurezza qui va pensata a strati, non come singolo fix.
 
 ---
-
-## 10. Relazione con autenticazione e token
-
+### 10. Relazione con autenticazione e token
 Gli attacchi XSS sono particolarmente pericolosi quando l'applicazione gestisce:
 - token in memoria;
 - token in `localStorage`;
@@ -224,9 +212,7 @@ Per questo il tema si collega anche a:
 Un'app con XSS e token leggibili da JavaScript espone un rischio molto piu alto.
 
 ---
-
-## 11. Pattern sicuri
-
+### 11. Pattern sicuri
 Pattern consigliati:
 - renderizzare testo con JSX normale;
 - evitare `dangerouslySetInnerHTML` quando non serve;
@@ -242,8 +228,25 @@ Pattern rischiosi:
 
 ---
 
-## 12. Best Practices
+## API / Sintassi
 
+Contenuto da sviluppare: nella nota originale questa sezione non era presente o era solo una traccia.
+
+## Esempio pratico
+
+Contenuto da sviluppare: nella nota originale questa sezione non era presente o era solo una traccia.
+
+## Varianti
+
+Contenuto da sviluppare: nella nota originale questa sezione non era presente o era solo una traccia.
+
+## Errori comuni
+
+Contenuto da sviluppare: nella nota originale questa sezione non era presente o era solo una traccia.
+
+## Checklist
+
+### 12. Best Practices
 1. **Usa JSX normale per testo e contenuti standard:** React fa escaping automatico e riduce il rischio XSS nei casi comuni.
 2. **Evita `dangerouslySetInnerHTML` se non hai un bisogno reale:** e il punto di ingresso piu critico per il rendering HTML.
 3. **Se devi renderizzare HTML esterno, sanitizzalo prima:** non fidarti di filtri manuali o blacklist improvvisate.
@@ -252,3 +255,7 @@ Pattern rischiosi:
 6. **Riduci l'impatto potenziale di un XSS anche sul piano architetturale:** sessioni, token e dati sensibili non dovrebbero essere esposti inutilmente al JavaScript client.
 
 ---
+
+## Collegamenti
+
+- [[Programmazione/React/Indice react|Indice React]]

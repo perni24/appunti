@@ -1,5 +1,5 @@
----
-date: 2026-05-13
+﻿---
+date: 2026-06-02
 area: Programmazione
 topic: JavaScript
 type: technical-note
@@ -13,6 +13,9 @@ related: [Event Loop, Fetch API, AbortController, Error Handling]
 
 # Promise avanzate
 
+## Sintesi
+
+### Testo introduttivo
 Le Promise avanzate servono a coordinare piu operazioni asincrone, decidendo se attendere tutti i risultati, accettare solo il primo completato, gestire fallimenti parziali o limitare la concorrenza.
 
 Questi strumenti sono fondamentali quando un'applicazione deve lavorare con piu richieste HTTP, task indipendenti, fallback, timeout o batch di operazioni.
@@ -22,8 +25,24 @@ Questi strumenti sono fondamentali quando un'applicazione deve lavorare con piu 
 
 ---
 
-## 1. Promise.all()
+## Quando usarlo
 
+Usa tecniche avanzate con Promise quando devi coordinare piu operazioni asincrone, gestire concorrenza, fallback, timeout o risultati parziali.
+
+Casi comuni:
+
+- richieste indipendenti da eseguire insieme;
+- retry e timeout;
+- uso del primo risultato disponibile;
+- gestione di piu errori;
+- caricamento parallelo di risorse;
+- limitazione della concorrenza.
+
+Se il flusso e semplice, `async/await` con una singola Promise basta.
+
+## Come funziona
+
+### 1. Promise.all()
 `Promise.all()` riceve un iterabile di Promise e restituisce una nuova Promise.
 
 La Promise risultante:
@@ -49,33 +68,7 @@ Esempi tipici:
 - attendere piu file prima di elaborare un risultato finale.
 
 ---
-
-## 2. Comportamento in caso di errore
-
-Se una Promise fallisce, `Promise.all()` rifiuta subito la Promise aggregata.
-
-```js
-try {
-  const results = await Promise.all([
-    loadUser(),
-    loadPermissions(),
-    loadSettings(),
-  ]);
-
-  console.log(results);
-} catch (error) {
-  console.error("Almeno una operazione e fallita:", error);
-}
-```
-
-Le altre operazioni asincrone non vengono cancellate automaticamente. Possono continuare a girare, ma il risultato di `Promise.all()` e ormai rifiutato.
-
-Per annullare operazioni di rete bisogna usare strumenti come `AbortController`.
-
----
-
-## 3. Promise.allSettled()
-
+### 3. Promise.allSettled()
 `Promise.allSettled()` attende che tutte le Promise terminino, sia con successo sia con errore.
 
 Restituisce sempre un array di oggetti con questa forma:
@@ -115,9 +108,7 @@ Esempi tipici:
 - invio di notifiche a piu destinatari.
 
 ---
-
-## 4. Promise.race()
-
+### 4. Promise.race()
 `Promise.race()` restituisce il risultato della prima Promise che termina, sia con successo sia con errore.
 
 ```js
@@ -142,9 +133,7 @@ Se la prima Promise completata viene rifiutata, `Promise.race()` viene rifiutata
 > Le Promise che perdono la race non vengono cancellate automaticamente. Continuano a eseguire il loro lavoro se non vengono annullate esplicitamente.
 
 ---
-
-## 5. Timeout con Promise.race()
-
+### 5. Timeout con Promise.race()
 Un uso comune di `Promise.race()` e creare un timeout.
 
 ```js
@@ -184,9 +173,7 @@ try {
 ```
 
 ---
-
-## 6. Promise.any()
-
+### 6. Promise.any()
 `Promise.any()` restituisce il primo risultato risolto con successo.
 
 Ignora le Promise rifiutate finche almeno una Promise riesce.
@@ -225,9 +212,7 @@ try {
 - strategie "usa il primo successo".
 
 ---
-
-## 7. Confronto tra i metodi
-
+### 7. Confronto tra i metodi
 | Metodo | Quando termina | Se una Promise fallisce | Caso d'uso |
 | --- | --- | --- | --- |
 | `Promise.all()` | Quando tutte hanno successo | Fallisce subito | Tutti i risultati sono obbligatori |
@@ -236,9 +221,7 @@ try {
 | `Promise.any()` | Quando la prima ha successo | Fallisce solo se falliscono tutte | Fallback e primo successo |
 
 ---
-
-## 8. Sequenziale vs concorrente
-
+### 8. Sequenziale vs concorrente
 Questo codice esegue le richieste una alla volta.
 
 ```js
@@ -259,35 +242,7 @@ const responses = await Promise.all(
 La versione concorrente e spesso piu veloce, ma puo creare troppa pressione su rete, server, memoria o rate limit.
 
 ---
-
-## 9. Errore comune con map async
-
-`map(async ...)` restituisce un array di Promise, non un array di risultati.
-
-```js
-const users = ids.map(async id => {
-  const response = await fetch(`/api/users/${id}`);
-  return response.json();
-});
-
-console.log(users); // Array di Promise
-```
-
-Per ottenere i risultati bisogna usare `Promise.all()`.
-
-```js
-const users = await Promise.all(
-  ids.map(async id => {
-    const response = await fetch(`/api/users/${id}`);
-    return response.json();
-  })
-);
-```
-
----
-
-## 10. Concorrenza controllata
-
+### 10. Concorrenza controllata
 Avviare migliaia di Promise contemporaneamente puo causare problemi:
 
 - troppe richieste di rete;
@@ -334,9 +289,7 @@ const results = await runWithLimit(urls, 5, async url => {
 Questo pattern mantiene al massimo 5 operazioni attive nello stesso momento.
 
 ---
-
-## 11. Gestire fallimenti parziali
-
+### 11. Gestire fallimenti parziali
 Quando alcune operazioni possono fallire senza bloccare tutto, `Promise.allSettled()` rende esplicita la gestione dei risultati.
 
 ```js
@@ -360,9 +313,7 @@ console.log("Upload falliti:", failed.length);
 Questo approccio evita di perdere informazioni sugli altri task quando uno solo fallisce.
 
 ---
-
-## 12. Cleanup con finally()
-
+### 12. Cleanup con finally()
 `finally()` e utile per liberare risorse dopo un gruppo di operazioni asincrone.
 
 ```js
@@ -386,32 +337,58 @@ Il blocco `finally` viene eseguito sia in caso di successo sia in caso di errore
 
 ---
 
-## 13. Best practice
+## API / Sintassi
 
-- Usa `Promise.all()` quando tutti i risultati sono necessari.
-- Usa `Promise.allSettled()` quando vuoi conoscere ogni esito.
-- Usa `Promise.race()` per timeout o prima operazione terminata.
-- Usa `Promise.any()` quando basta il primo successo.
-- Non usare `Promise.all()` su liste enormi senza valutare limiti di concorrenza.
-- Ricorda che le Promise non vengono cancellate da sole.
-- Gestisci sempre gli errori con `try/catch` o `.catch()`.
-- Usa `AbortController` quando vuoi annullare richieste HTTP.
+Metodi statici principali:
 
----
+```js
+Promise.all(promises);
+Promise.allSettled(promises);
+Promise.race(promises);
+Promise.any(promises);
+Promise.resolve(value);
+Promise.reject(error);
+```
 
-## 14. Errori comuni
+Pattern timeout:
 
-- Confondere `Promise.race()` con `Promise.any()`.
-- Pensare che `Promise.race()` cancelli le Promise perdenti.
-- Usare `map(async ...)` senza `Promise.all()`.
-- Avviare troppe operazioni concorrenti senza limite.
-- Usare `Promise.all()` quando servirebbe tollerare errori parziali.
-- Ignorare `AggregateError` con `Promise.any()`.
+```js
+const timeout = new Promise((_, reject) => {
+  setTimeout(() => reject(new Error("timeout")), 5000);
+});
 
----
+await Promise.race([operation(), timeout]);
+```
 
-## 15. Mappa mentale
+Per cancellazione reale usa API che supportano `AbortSignal`, non solo `Promise.race`.
 
+## Esempio pratico
+
+Caricare dati indipendenti:
+
+```js
+const [user, settings, notifications] = await Promise.all([
+  loadUser(),
+  loadSettings(),
+  loadNotifications(),
+]);
+```
+
+Se vuoi conservare anche i fallimenti:
+
+```js
+const results = await Promise.allSettled([
+  loadUser(),
+  loadSettings(),
+  loadNotifications(),
+]);
+```
+
+`allSettled` e utile quando un errore non deve cancellare tutto il batch.
+
+## Varianti
+
+### 15. Mappa mentale
 ```text
 Promise avanzate
 |
@@ -438,8 +415,81 @@ Promise avanzate
 
 ---
 
-## 16. Collegamenti
+## Errori comuni
 
+### 2. Comportamento in caso di errore
+Se una Promise fallisce, `Promise.all()` rifiuta subito la Promise aggregata.
+
+```js
+try {
+  const results = await Promise.all([
+    loadUser(),
+    loadPermissions(),
+    loadSettings(),
+  ]);
+
+  console.log(results);
+} catch (error) {
+  console.error("Almeno una operazione e fallita:", error);
+}
+```
+
+Le altre operazioni asincrone non vengono cancellate automaticamente. Possono continuare a girare, ma il risultato di `Promise.all()` e ormai rifiutato.
+
+Per annullare operazioni di rete bisogna usare strumenti come `AbortController`.
+
+---
+### 9. Errore comune con map async
+`map(async ...)` restituisce un array di Promise, non un array di risultati.
+
+```js
+const users = ids.map(async id => {
+  const response = await fetch(`/api/users/${id}`);
+  return response.json();
+});
+
+console.log(users); // Array di Promise
+```
+
+Per ottenere i risultati bisogna usare `Promise.all()`.
+
+```js
+const users = await Promise.all(
+  ids.map(async id => {
+    const response = await fetch(`/api/users/${id}`);
+    return response.json();
+  })
+);
+```
+
+---
+### 14. Errori comuni
+- Confondere `Promise.race()` con `Promise.any()`.
+- Pensare che `Promise.race()` cancelli le Promise perdenti.
+- Usare `map(async ...)` senza `Promise.all()`.
+- Avviare troppe operazioni concorrenti senza limite.
+- Usare `Promise.all()` quando servirebbe tollerare errori parziali.
+- Ignorare `AggregateError` con `Promise.any()`.
+
+---
+
+## Checklist
+
+### 13. Best practice
+- Usa `Promise.all()` quando tutti i risultati sono necessari.
+- Usa `Promise.allSettled()` quando vuoi conoscere ogni esito.
+- Usa `Promise.race()` per timeout o prima operazione terminata.
+- Usa `Promise.any()` quando basta il primo successo.
+- Non usare `Promise.all()` su liste enormi senza valutare limiti di concorrenza.
+- Ricorda che le Promise non vengono cancellate da sole.
+- Gestisci sempre gli errori con `try/catch` o `.catch()`.
+- Usa `AbortController` quando vuoi annullare richieste HTTP.
+
+---
+
+## Collegamenti
+
+### 16. Collegamenti
 - [[Programmazione/JavaScript/Pagine/Promises|Promises]]
 - [[Programmazione/JavaScript/Pagine/Async Await|Async Await]]
 - [[Programmazione/JavaScript/Pagine/Event Loop|Event Loop]]

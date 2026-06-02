@@ -1,5 +1,5 @@
----
-date: 2026-05-14
+﻿---
+date: 2026-06-02
 area: Programmazione
 topic: Python
 type: technical-note
@@ -10,33 +10,17 @@ aliases: [Liste]
 prerequisites: []
 related: []
 ---
+
 # Liste in Python
 
 ## Sintesi
 
 Nota su Liste in Python. Riassume il concetto, la sintassi principale e i punti da ricordare durante studio, sviluppo o debugging.
-
-## Concetto chiave
-Le **liste** sono collezioni di elementi **ordinate**, **mutabili** e indicizzate. Sono probabilmente la struttura dati più versatile e utilizzata in Python. Possono contenere elementi di tipi diversi (eterogenee), anche se solitamente vengono usate per collezionare oggetti omogenei.
-
----
-
-##  Sintassi e Operazioni Base
-
-### Definizione e Accesso
-```python
-# Liste in Python
-
-## Sintesi
-
 Nota su Liste in Python. Riassume il concetto, la sintassi principale e i punti da ricordare durante studio, sviluppo o debugging.
 frutti = ["mela", "banana", "ciliegia"]
 numeri_misti = [1, "test", 3.14, True]
 
 # Liste in Python
-
-## Sintesi
-
 Nota su Liste in Python. Riassume il concetto, la sintassi principale e i punti da ricordare durante studio, sviluppo o debugging.
 print(frutti[0])   # "mela"
 print(frutti[-1])  # "ciliegia" (ultimo elemento)
@@ -49,9 +33,23 @@ frutti[1] = "pera"
 ```
 
 ---
+Nota su Liste in Python. Riassume il concetto, la sintassi principale e i punti da ricordare durante studio, sviluppo o debugging.
+copia = lista_a[:]
+```
 
-##  Metodi Principali
+---
 
+## Quando usarlo
+
+Contenuto da sviluppare: nella nota originale questa sezione non era presente o era solo una traccia.
+
+## Come funziona
+
+### Concetto chiave
+Le **liste** sono collezioni di elementi **ordinate**, **mutabili** e indicizzate. Sono probabilmente la struttura dati più versatile e utilizzata in Python. Possono contenere elementi di tipi diversi (eterogenee), anche se solitamente vengono usate per collezionare oggetti omogenei.
+
+---
+### Metodi Principali
 | Metodo | Descrizione | Esempio |
 | :--- | :--- | :--- |
 | `.append(x)` | Aggiunge un elemento alla **fine**. | `l.append("nuovo")` |
@@ -63,8 +61,7 @@ frutti[1] = "pera"
 | `.clear()` | Svuota completamente la lista. | `l.clear()` |
 
 ---
-
-##  Slicing (Affettamento)
+### Slicing (Affettamento)
 Una delle funzionalità più potenti di Python per estrarre sotto-sequenze.
 **Sintassi:** `lista[inizio:fine:passo]`
 
@@ -79,8 +76,7 @@ print(numeri[::-1])  # [9, 8, 7, 6, 5, 4, 3, 2, 1, 0] (inversione rapida)
 ```
 
 ---
-
-## Logic layer: Gestione della Memoria e Performance
+### Logic layer: Gestione della Memoria e Performance
 In Python, le liste sono implementate come **array dinamici** di riferimenti ad oggetti.
 
 > [!INFO] Complessità Computazionale (Big O)
@@ -95,10 +91,29 @@ Attenzione: `lista_b = lista_a` non crea una copia, ma un nuovo riferimento allo
 copia = lista_a.copy()
 # Liste in Python
 
-## Sintesi
+## API / Sintassi
 
-Nota su Liste in Python. Riassume il concetto, la sintassi principale e i punti da ricordare durante studio, sviluppo o debugging.
-copia = lista_a[:]
-```
+### Sintassi e Operazioni Base
+### Definizione e Accesso
+```python
+# Liste in Python
 
----
+## Esempio pratico
+
+Contenuto da sviluppare: nella nota originale questa sezione non era presente o era solo una traccia.
+
+## Varianti
+
+Contenuto da sviluppare: nella nota originale questa sezione non era presente o era solo una traccia.
+
+## Errori comuni
+
+Contenuto da sviluppare: nella nota originale questa sezione non era presente o era solo una traccia.
+
+## Checklist
+
+Contenuto da sviluppare: nella nota originale questa sezione non era presente o era solo una traccia.
+
+## Collegamenti
+
+- [[Programmazione/Python/Indice python|Indice Python]]

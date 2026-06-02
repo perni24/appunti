@@ -1,5 +1,5 @@
----
-date: 2026-05-04
+﻿---
+date: 2026-06-02
 area: Programmazione
 topic: JavaScript
 tags: [javascript, objects, property-descriptors, defineproperty, getters, setters]
@@ -13,6 +13,9 @@ related: [Oggetti Avanzati, Immutabilita e Copia degli Oggetti]
 
 # Property Descriptors
 
+## Sintesi
+
+### Testo introduttivo
 I **Property Descriptors** descrivono il comportamento interno di una proprieta di un oggetto JavaScript.
 
 Quando scrivi:
@@ -28,8 +31,25 @@ JavaScript non memorizza solo il valore `"Luca"`, ma anche metadati che stabilis
 > [!INFO]
 > Un descriptor e l'oggetto che descrive una proprieta: valore, scrivibilita, enumerabilita, configurabilita oppure funzioni getter/setter.
 
-## 1. Data Properties
+## Quando usarlo
 
+Usa property descriptors quando devi controllare in modo fine il comportamento di una proprieta, non solo assegnarle un valore.
+
+Casi adatti:
+
+- proprieta non enumerabili;
+- getter e setter;
+- valori non scrivibili;
+- API pubbliche controllate;
+- metaprogrammazione;
+- clonazione che preserva descriptor;
+- librerie che espongono oggetti con semantica precisa.
+
+Per oggetti applicativi semplici, object literal e classi sono normalmente piu leggibili.
+
+## Come funziona
+
+### 1. Data Properties
 La forma piu comune di proprieta e una **data property**.
 
 ```javascript
@@ -65,9 +85,7 @@ Output concettuale:
 ```
 
 Collegamento: [[Oggetti Avanzati]]
-
-## 2. Object.getOwnPropertyDescriptor
-
+### 2. Object.getOwnPropertyDescriptor
 `Object.getOwnPropertyDescriptor` restituisce il descriptor di una proprieta propria dell'oggetto.
 
 ```javascript
@@ -92,9 +110,7 @@ console.log(descriptor); // undefined
 `toString` esiste sul prototype, ma non come proprieta diretta di `user`.
 
 Collegamento: [[Prototypes]]
-
-## 3. Object.defineProperty
-
+### 3. Object.defineProperty
 `Object.defineProperty` permette di creare o modificare una proprieta controllandone il descriptor.
 
 ```javascript
@@ -116,9 +132,7 @@ Qui `id`:
 - non puo essere modificata;
 - compare nelle enumerazioni;
 - non puo essere riconfigurata o eliminata.
-
-## 4. Default Diversi
-
+### 4. Default Diversi
 Attenzione: le proprieta create con object literal e quelle create con `Object.defineProperty` hanno default diversi.
 
 ### Object literal
@@ -158,9 +172,7 @@ Default:
 ```
 
 Questo e uno degli errori piu comuni.
-
-## 5. writable
-
+### 5. writable
 `writable` controlla se il valore puo essere cambiato.
 
 ```javascript
@@ -181,9 +193,7 @@ settings.apiUrl = "https://evil.example.com"; // TypeError in strict mode
 Senza strict mode, l'assegnazione puo fallire silenziosamente.
 
 Collegamento: [[Strict Mode]]
-
-## 6. enumerable
-
+### 6. enumerable
 `enumerable` controlla se la proprieta appare nelle enumerazioni.
 
 ```javascript
@@ -215,9 +225,7 @@ Esempio:
 ```javascript
 console.log({ ...user }); // { name: "Luca" }
 ```
-
-## 7. configurable
-
+### 7. configurable
 `configurable` controlla se la proprieta puo essere riconfigurata o eliminata.
 
 ```javascript
@@ -241,9 +249,7 @@ Se `configurable` e `false`:
 - puoi cambiare `writable` da `true` a `false`, ma non viceversa.
 
 Questa opzione va usata con attenzione perche rende l'oggetto meno flessibile.
-
-## 8. Accessor Properties
-
+### 8. Accessor Properties
 Una **accessor property** non ha `value` e `writable`. Usa invece:
 
 - `get`;
@@ -271,9 +277,7 @@ console.log(user.fullName); // "Luca Bellini"
 ```
 
 `fullName` sembra una proprieta, ma il valore viene calcolato dal getter.
-
-## 9. Getter e Setter
-
+### 9. Getter e Setter
 Con un setter puoi controllare l'assegnazione.
 
 ```javascript
@@ -307,28 +311,7 @@ Getter e setter sono utili per:
 - incapsulamento controllato.
 
 Collegamento: [[Incapsulamento]]
-
-## 10. Sintassi Object Literal
-
-Puoi definire getter e setter anche direttamente nell'object literal.
-
-```javascript
-const rectangle = {
-  width: 10,
-  height: 5,
-
-  get area() {
-    return this.width * this.height;
-  },
-};
-
-console.log(rectangle.area); // 50
-```
-
-Questa sintassi e piu leggibile quando non serve controllare manualmente tutti i flag del descriptor.
-
-## 11. Data vs Accessor Descriptor
-
+### 11. Data vs Accessor Descriptor
 Un descriptor non puo essere contemporaneamente data descriptor e accessor descriptor.
 
 Errato:
@@ -350,9 +333,7 @@ Confronto:
 |---|---|
 | Data descriptor | `value`, `writable`, `enumerable`, `configurable` |
 | Accessor descriptor | `get`, `set`, `enumerable`, `configurable` |
-
-## 12. Object.defineProperties
-
+### 12. Object.defineProperties
 Per definire piu proprieta:
 
 ```javascript
@@ -372,9 +353,7 @@ Object.defineProperties(user, {
 ```
 
 E utile quando vuoi creare oggetti con descriptor controllati in modo esplicito.
-
-## 13. Descriptor e Classi
-
+### 13. Descriptor e Classi
 I metodi definiti nelle classi sono non-enumerable.
 
 ```javascript
@@ -395,9 +374,7 @@ console.log(descriptor.enumerable); // false
 Questo evita che i metodi appaiano in enumerazioni comuni.
 
 Collegamento: [[Classi]]
-
-## 14. Descriptor e Prototype
-
+### 14. Descriptor e Prototype
 I descriptor lavorano anche sui prototype.
 
 ```javascript
@@ -419,9 +396,7 @@ console.log(Object.keys(user)); // ["name"]
 `kind` viene risolta tramite prototype chain, ma non appare tra le proprieta own enumerable.
 
 Collegamento: [[Prototypes]]
-
-## 15. Object.getOwnPropertyDescriptors
-
+### 15. Object.getOwnPropertyDescriptors
 Per ottenere tutti i descriptor own:
 
 ```javascript
@@ -446,9 +421,7 @@ const copy = { ...user };
 ```
 
 Lo spread copia solo valori enumerable, non la semantica completa delle proprieta.
-
-## 16. Descriptor e JSON
-
+### 16. Descriptor e JSON
 `JSON.stringify` considera solo proprieta own enumerable.
 
 ```javascript
@@ -467,9 +440,7 @@ console.log(JSON.stringify(user)); // {"name":"Luca"}
 Questo puo essere utile, ma non e una misura di sicurezza sufficiente: una proprieta non-enumerable puo comunque essere letta se conosci il nome.
 
 Collegamento: [[JSON]]
-
-## 17. Descriptor e Immutability
-
+### 17. Descriptor e Immutability
 Property descriptors sono alla base di metodi come:
 
 - `Object.freeze`;
@@ -487,9 +458,7 @@ const config = Object.freeze({
 `Object.freeze` rende le proprieta non-writable e non-configurable.
 
 Collegamento: [[Immutabilita e Copia degli Oggetti]]
-
-## 18. Quando Usarli
-
+### 18. Quando Usarli
 Usa property descriptors quando hai bisogno di controllo fine su:
 
 - API pubbliche;
@@ -503,8 +472,67 @@ Usa property descriptors quando hai bisogno di controllo fine su:
 
 Per codice applicativo normale, object literal e classi sono spesso piu leggibili.
 
-## 19. Errori Comuni
+## API / Sintassi
 
+### 10. Sintassi Object Literal
+Puoi definire getter e setter anche direttamente nell'object literal.
+
+```javascript
+const rectangle = {
+  width: 10,
+  height: 5,
+
+  get area() {
+    return this.width * this.height;
+  },
+};
+
+console.log(rectangle.area); // 50
+```
+
+Questa sintassi e piu leggibile quando non serve controllare manualmente tutti i flag del descriptor.
+
+## Esempio pratico
+
+Proprieta calcolata non enumerabile:
+
+```javascript
+const user = {
+  firstName: "Luca",
+  lastName: "Bellini",
+};
+
+Object.defineProperty(user, "fullName", {
+  get() {
+    return `${this.firstName} ${this.lastName}`;
+  },
+  enumerable: false,
+  configurable: true,
+});
+
+console.log(user.fullName);
+console.log(Object.keys(user)); // ["firstName", "lastName"]
+```
+
+`fullName` e disponibile come proprieta, ma non compare nelle enumerazioni comuni.
+
+## Varianti
+
+### 21. Mappa Mentale
+```txt
+Property Descriptors
+  -> data property: value, writable
+  -> accessor property: get, set
+  -> enumerable: compare in Object.keys / JSON
+  -> configurable: eliminabile o riconfigurabile
+  -> defineProperty controlla i flag
+  -> class methods sono non-enumerable
+  -> base di freeze, seal e metaprogrammazione
+```
+
+## Errori comuni
+
+### 19. Errori Comuni
 ### Dimenticare i default di defineProperty
 
 Se non specifichi `writable`, `enumerable` e `configurable`, valgono `false`.
@@ -525,8 +553,9 @@ Non puoi usare `value` insieme a `get` o `set`.
 
 Molte violazioni falliscono silenziosamente senza strict mode.
 
-## 20. Best Practices
+## Checklist
 
+### 20. Best Practices
 1. Usa object literal per oggetti semplici.
 2. Usa `Object.defineProperty` solo quando serve controllo sui flag.
 3. Specifica sempre `writable`, `enumerable` e `configurable` in modo esplicito.
@@ -534,19 +563,6 @@ Molte violazioni falliscono silenziosamente senza strict mode.
 5. Preferisci getter/setter leggibili quando il comportamento e parte dell'API.
 6. Usa `Object.getOwnPropertyDescriptor` per debug e introspezione.
 7. Evita di bloccare configurabilita se non hai un motivo chiaro.
-
-## 21. Mappa Mentale
-
-```txt
-Property Descriptors
-  -> data property: value, writable
-  -> accessor property: get, set
-  -> enumerable: compare in Object.keys / JSON
-  -> configurable: eliminabile o riconfigurabile
-  -> defineProperty controlla i flag
-  -> class methods sono non-enumerable
-  -> base di freeze, seal e metaprogrammazione
-```
 
 ## Collegamenti
 

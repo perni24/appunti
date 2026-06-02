@@ -1,5 +1,5 @@
 ---
-date: 2026-05-14
+date: 2026-06-02
 area: Programmazione
 topic: PostgreSQL
 type: technical-note
@@ -10,54 +10,79 @@ aliases: [Architettura dei Processi]
 prerequisites: []
 related: []
 ---
+
 # Architettura dei Processi in PostgreSQL
 
 ## Sintesi
 
-Nota su Architettura dei Processi in PostgreSQL. Riassume il concetto, i meccanismi principali e i punti da ricordare durante studio, progettazione o amministrazione.
+PostgreSQL e composto da un processo principale e vari processi di supporto: backend client, checkpointer, background writer, WAL writer, autovacuum, archiver e processi di replica.
 
-## Concetto chiave
-L'architettura di PostgreSQL non è limitata alla sola comunicazione client-server. Dietro le quinte, una serie di processi ausiliari lavorano in armonia con il **Postmaster** e i **Backend Processes** per garantire la persistenza dei dati, la manutenzione automatica e l'efficienza del sistema.
+## Quando usarlo
 
----
+Serve quando devi interpretare processi nel sistema operativo, diagnosticare carico, capire checkpoint, autovacuum, replica o consumo di memoria.
 
-##  I Processi Principali
+## Come funziona
 
-### 1. Il Processo Genitore (Postmaster/Postgres)
-È il primo processo ad essere avviato. Le sue responsabilità sono fondamentali:
-- Inizializzazione della **Shared Memory**.
-- Gestione del ciclo di vita di tutti gli altri processi.
-- Ascolto di nuove connessioni e autenticazione.
+Il postmaster accetta connessioni e coordina il cluster. Ogni connessione client usa un backend. I processi di background gestiscono scritture, manutenzione e replica.
 
-### 2. Backend Processes
-Per ogni client connesso, viene creato un processo backend dedicato che interpreta le query SQL ed esegue l'accesso ai dati.
+I processi principali:
 
----
+- backend process: esegue query del client;
+- checkpointer: forza checkpoint periodici;
+- background writer: scrive pagine dirty in anticipo;
+- WAL writer: scrive record WAL;
+- autovacuum launcher/worker: pulizia e statistiche;
+- archiver: archivia file WAL;
+- wal sender/receiver: replica.
 
-##  Background Workers (Processi Ausiliari)
+## API / Sintassi
 
-Questi processi vengono avviati dal Postmaster al boot del database e rimangono attivi per svolgere compiti di sistema critici:
+Vista attivita:
 
-| Processo | Funzione Principale |
-| :--- | :--- |
-| **Checkpointer** | Crea punti di controllo (Checkpoints) per ridurre i tempi di recovery forzando la scrittura dei dati sporchi su disco. |
-| **Background Writer** | Svuota progressivamente i "dirty buffers" (pagine modificate in RAM) sul disco per liberare spazio nei Shared Buffers. |
-| **WAL Writer** | Scrive il contenuto dei WAL Buffers nel log delle transazioni (`pg_wal`) in modo asincrono. |
-| **Autovacuum Launcher** | Monitora le tabelle e avvia processi **Autovacuum Worker** per ripulire i dati obsoleti (tuples morte). |
-| **Stats Collector** | Raccoglie informazioni statistiche sull'utilizzo del DB (conteggio righe, indici usati) per aiutare il Query Planner. |
-| **Archiver** | Copia i file WAL pieni in una locazione sicura di archiviazione per il Point-In-Time Recovery (PITR). |
-| **Logger** | Cattura tutti i messaggi di errore e di sistema e li scrive nei file di log definiti nella configurazione. |
+```sql
+SELECT pid, backend_type, state, wait_event_type, wait_event
+FROM pg_stat_activity
+ORDER BY backend_type;
+```
 
----
+Processi di background:
 
-## Logic layer: Monitoraggio e Segnali
+```sql
+SELECT backend_type, count(*)
+FROM pg_stat_activity
+GROUP BY backend_type;
+```
 
-Tutti i processi comunicano attraverso la **Shared Memory** e segnali di sistema. Se un processo ausiliario o un backend termina in modo anomalo (crash), il Postmaster reagisce immediatamente:
-- Ferma tutti i processi backend attivi.
-- Svuota e reinizializza la shared memory.
-- Avvia la procedura di **Crash Recovery** leggendo i file WAL.
+## Esempio pratico
 
-> [!INFO] Visualizzazione Processi
-> In ambiente Linux o Windows, è possibile identificare questi processi guardando il nome del comando (es. `postgres: checkpointer`, `postgres: autovacuum launcher`).
+Se molte sessioni attendono `ClientRead`, il database sta aspettando il client. Se attendono `Lock`, il problema e concorrenza. Se attendono I/O, il collo di bottiglia puo essere storage.
 
----
+## Varianti
+
+- Processi backend per client.
+- Processi autovacuum.
+- Processi WAL e checkpoint.
+- Processi replication.
+- Worker paralleli per query.
+
+## Errori comuni
+
+- Interpretare ogni processo PostgreSQL come una query attiva.
+- Ignorare `backend_type`.
+- Uccidere processi senza verificare transazioni.
+- Non distinguere CPU, lock e I/O.
+- Disabilitare autovacuum per ridurre processi.
+
+## Checklist
+
+- Quanti backend sono attivi?
+- Quali processi stanno aspettando?
+- Autovacuum sta lavorando?
+- Ci sono worker paralleli inattesi?
+- Replica e archiver sono attivi se richiesti?
+
+## Collegamenti
+
+- [[Programmazione/Postgres/Pagine/Modello Client-Server|Modello Client-Server]]
+- [[Programmazione/Postgres/Pagine/Write-Ahead Logging|Write-Ahead Logging]]
+- [[Programmazione/Postgres/Pagine/Manutenzione|Manutenzione]]

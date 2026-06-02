@@ -1,5 +1,5 @@
----
-date: 2026-05-13
+﻿---
+date: 2026-06-02
 area: Programmazione
 topic: JavaScript
 type: technical-note
@@ -21,8 +21,24 @@ In JavaScript il context indica soprattutto il valore di `this` durante l'esecuz
 
 ---
 
-## Scope vs context
+## Quando usarlo
 
+Studia il context quando una funzione usa `this`, quando passi metodi come callback o quando un metodo smette di leggere correttamente i dati dell'oggetto.
+
+Serve soprattutto per:
+
+- metodi di oggetto;
+- classi;
+- event listener;
+- callback;
+- `call`, `apply` e `bind`;
+- differenza tra function normale e arrow function.
+
+Se una funzione non ha bisogno di `this`, preferisci parametri espliciti.
+
+## Come funziona
+
+### Scope vs context
 Scope e context non sono la stessa cosa.
 
 - Lo scope decide quali nomi sono visibili.
@@ -42,9 +58,7 @@ user.printName(); // "Luca"
 `name` viene letto tramite `this`, non tramite scope.
 
 ---
-
-## Global context
-
+### Global context
 Nel browser, in uno script classico, `this` al top-level punta a `window`.
 
 ```js
@@ -59,9 +73,7 @@ console.log(this); // undefined
 ```
 
 ---
-
-## Chiamata come metodo
-
+### Chiamata come metodo
 Quando una funzione viene chiamata come proprieta di un oggetto, `this` punta all'oggetto prima del punto.
 
 ```js
@@ -78,9 +90,7 @@ cart.printTotal(); // 100
 La regola pratica e: guarda cosa c'e a sinistra del punto nella chiamata.
 
 ---
-
-## Chiamata come funzione
-
+### Chiamata come funzione
 Quando una funzione normale viene chiamata senza oggetto, `this` dipende dalla modalita di esecuzione.
 
 ```js
@@ -96,9 +106,7 @@ In strict mode, `this` e `undefined`.
 In non-strict mode, `this` puo puntare all'oggetto globale. Nel codice moderno conviene evitare di dipendere da questo comportamento.
 
 ---
-
-## Perdita del context
-
+### Perdita del context
 Se si estrae un metodo da un oggetto, si perde il receiver originale.
 
 ```js
@@ -117,9 +125,7 @@ print(); // undefined o errore, dipende dalla modalita
 La funzione non viene piu chiamata come `user.printName()`, quindi `this` non punta piu a `user`.
 
 ---
-
-## `call`, `apply` e `bind`
-
+### `call`, `apply` e `bind`
 `call` e `apply` eseguono una funzione impostando manualmente `this`.
 
 ```js
@@ -142,9 +148,7 @@ boundPrintRole("Ruolo"); // "Ruolo: admin"
 ```
 
 ---
-
-## Arrow function
-
+### Arrow function
 Le arrow function non hanno un proprio `this`.
 
 ```js
@@ -176,9 +180,7 @@ user.printName(); // di solito undefined
 ```
 
 ---
-
-## Costruttori e classi
-
+### Costruttori e classi
 Con `new`, `this` punta alla nuova istanza.
 
 ```js
@@ -208,9 +210,7 @@ class Counter {
 Se passi `counter.increment` come callback, potresti perdere `this`.
 
 ---
-
-## Event listener
-
+### Event listener
 Nei listener DOM con funzione normale, `this` spesso punta all'elemento che ha ricevuto il listener.
 
 ```js
@@ -231,6 +231,81 @@ Nel codice moderno e spesso piu chiaro usare `event.currentTarget`.
 
 ---
 
+## API / Sintassi
+
+Chiamata come metodo:
+
+```js
+object.method();
+```
+
+Chiamata con context esplicito:
+
+```js
+fn.call(context, arg);
+fn.apply(context, [arg]);
+```
+
+Binding:
+
+```js
+const bound = fn.bind(context);
+```
+
+Arrow function:
+
+```js
+const fn = () => {
+  // this ereditato dallo scope esterno
+};
+```
+
+Regola pratica: per capire `this`, guarda il punto di chiamata, non dove la funzione e stata definita. Le arrow function fanno eccezione.
+
+## Esempio pratico
+
+Perdita di `this` passando un metodo:
+
+```js
+class Counter {
+  count = 0;
+
+  increment() {
+    this.count += 1;
+  }
+}
+
+const counter = new Counter();
+const increment = counter.increment;
+
+increment(); // this perso
+```
+
+Correzione con `bind`:
+
+```js
+const increment = counter.increment.bind(counter);
+increment();
+```
+
+Oppure passa una funzione wrapper:
+
+```js
+button.addEventListener("click", () => {
+  counter.increment();
+});
+```
+
+## Varianti
+
+- **Global context**: top-level in script classici.
+- **Function call**: `this` dipende da strict mode.
+- **Method call**: `this` e l'oggetto prima del punto.
+- **Constructor call**: `this` e la nuova istanza.
+- **Explicit binding**: `call`, `apply`, `bind`.
+- **Arrow function**: `this` lessicale.
+- **DOM listener**: spesso meglio usare `event.currentTarget`.
+
 ## Errori comuni
 
 - Confondere `this` con lo scope.
@@ -241,8 +316,9 @@ Nel codice moderno e spesso piu chiaro usare `event.currentTarget`.
 
 ---
 
-## Checklist operativa
+## Checklist
 
+### Checklist operativa
 - Per capire `this`, guarda come viene chiamata la funzione.
 - Usa arrow function per mantenere il `this` esterno nei callback.
 - Usa metodi normali quando ti serve il `this` dell'oggetto.

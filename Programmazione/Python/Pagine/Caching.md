@@ -1,5 +1,5 @@
 ﻿---
-date: 2026-05-20
+date: 2026-06-02
 area: Programmazione
 topic: Python
 type: technical-note
@@ -20,8 +20,13 @@ related: []
 
 Il **caching** salva risultati gia calcolati per evitare lavoro ripetuto, ridurre latenza e diminuire carico su servizi esterni.
 
-## Cache in memoria
+## Quando usarlo
 
+Contenuto da sviluppare: nella nota originale questa sezione non era presente o era solo una traccia.
+
+## Come funziona
+
+### Cache in memoria
 ```python
 from functools import lru_cache
 
@@ -31,57 +36,40 @@ def fib(n):
         return n
     return fib(n - 1) + fib(n - 2)
 ```
-
-## Tipi comuni
-
+### Tipi comuni
 - Cache in memoria locale.
 - Cache LRU.
 - Cache distribuita.
 - Cache HTTP.
 - Memoization di funzioni pure.
-
-## Rischi
-
+### Rischi
 - Dati stale.
 - Invalidazione difficile.
 - Crescita memoria.
 - Cache key progettate male.
 
-## Quando usarlo
-
-- Da completare: indicare scenari pratici in cui questa nota e utile.
-
-## Come funziona
-
-Da completare: spiegare il meccanismo principale o il comportamento tecnico.
-
 ## API / Sintassi
 
-```text
-Da completare con API o sintassi principale.
-```
+Contenuto da sviluppare: nella nota originale questa sezione non era presente o era solo una traccia.
 
 ## Esempio pratico
 
-```text
-Da completare con un esempio pratico.
-```
+Contenuto da sviluppare: nella nota originale questa sezione non era presente o era solo una traccia.
 
 ## Varianti
 
-- Da completare: varianti, alternative o differenze rispetto ad approcci simili.
+Contenuto da sviluppare: nella nota originale questa sezione non era presente o era solo una traccia.
 
 ## Errori comuni
 
-Da completare durante revisione.
+Contenuto da sviluppare: nella nota originale questa sezione non era presente o era solo una traccia.
 
 ## Checklist
 
-- Da completare: controlli essenziali prima di usare questo concetto in pratica.
+Contenuto da sviluppare: nella nota originale questa sezione non era presente o era solo una traccia.
 
 ## Collegamenti
+
 - [[Programmazione/Python/Pagine/Profiling|Profiling]]
 - [[Programmazione/Python/Pagine/Funzioni|Funzioni]]
 - [[Programmazione/Python/Pagine/Standard Library|Standard Library]]
-
-

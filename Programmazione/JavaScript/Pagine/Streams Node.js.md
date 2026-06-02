@@ -1,5 +1,5 @@
----
-date: 2026-05-13
+﻿---
+date: 2026-06-02
 area: Programmazione
 topic: JavaScript
 type: technical-note
@@ -21,8 +21,24 @@ Sono fondamentali per file grandi, upload/download, rete, compressione e pipelin
 
 ---
 
-## Tipi di stream
+## Quando usarlo
 
+Usa stream quando i dati sono grandi, continui o arrivano a blocchi.
+
+Casi tipici:
+
+- leggere file grandi;
+- gestire upload e download;
+- comprimere o decomprimere dati;
+- processare log;
+- inviare response HTTP progressive;
+- collegare sorgenti e destinazioni senza accumulare tutto in RAM.
+
+Per file piccoli e semplici, `readFile` e piu diretto.
+
+## Come funziona
+
+### Tipi di stream
 - Readable: produce dati.
 - Writable: consuma dati.
 - Duplex: legge e scrive.
@@ -36,9 +52,7 @@ Esempi:
 - stream di compressione.
 
 ---
-
-## Leggere uno stream
-
+### Leggere uno stream
 ```js
 import { createReadStream } from "node:fs";
 
@@ -60,9 +74,7 @@ stream.on("error", (error) => {
 Gli stream sono EventEmitter.
 
 ---
-
-## Scrivere uno stream
-
+### Scrivere uno stream
 ```js
 import { createWriteStream } from "node:fs";
 
@@ -76,9 +88,7 @@ stream.end();
 `end()` segnala che non verranno scritti altri dati.
 
 ---
-
-## Pipe
-
+### Pipe
 `pipe` collega uno stream leggibile a uno scrivibile.
 
 ```js
@@ -90,9 +100,7 @@ createReadStream("input.txt").pipe(createWriteStream("output.txt"));
 Per gestione errori robusta preferisci `pipeline`.
 
 ---
-
-## Pipeline
-
+### Pipeline
 ```js
 import { pipeline } from "node:stream/promises";
 import { createReadStream, createWriteStream } from "node:fs";
@@ -108,9 +116,7 @@ await pipeline(
 `pipeline` propaga errori e chiude correttamente gli stream.
 
 ---
-
-## Backpressure
-
+### Backpressure
 La backpressure avviene quando il consumer non riesce a processare dati alla velocita del producer.
 
 Gli stream gestiscono questo problema meglio rispetto a letture manuali complete in memoria.
@@ -118,9 +124,7 @@ Gli stream gestiscono questo problema meglio rispetto a letture manuali complete
 `pipe` e `pipeline` aiutano a rispettare la capacita dello stream di destinazione.
 
 ---
-
-## Async iterator
-
+### Async iterator
 Molti Readable stream possono essere letti con `for await`.
 
 ```js
@@ -133,6 +137,68 @@ Questa forma e leggibile per trasformazioni semplici.
 
 ---
 
+## API / Sintassi
+
+Import frequenti:
+
+```js
+import { pipeline } from "node:stream/promises";
+import { createReadStream, createWriteStream } from "node:fs";
+```
+
+Lettura:
+
+```js
+const readable = createReadStream("input.txt", "utf8");
+```
+
+Scrittura:
+
+```js
+const writable = createWriteStream("output.txt");
+```
+
+Pipeline:
+
+```js
+await pipeline(readable, transform, writable);
+```
+
+Async iteration:
+
+```js
+for await (const chunk of readable) {
+  // usa chunk
+}
+```
+
+## Esempio pratico
+
+Comprimere un file senza caricarlo tutto in memoria:
+
+```js
+import { pipeline } from "node:stream/promises";
+import { createReadStream, createWriteStream } from "node:fs";
+import { createGzip } from "node:zlib";
+
+await pipeline(
+  createReadStream("report.csv"),
+  createGzip(),
+  createWriteStream("report.csv.gz"),
+);
+```
+
+`pipeline` gestisce propagazione errori e chiusura degli stream meglio di una catena manuale di `pipe`.
+
+## Varianti
+
+- **Readable**: produce dati.
+- **Writable**: riceve dati.
+- **Duplex**: legge e scrive.
+- **Transform**: modifica dati in transito.
+- **Object mode**: passa oggetti invece di Buffer/stringhe.
+- **Web Streams**: API standard usata anche nel browser e in runtime moderni.
+
 ## Errori comuni
 
 - Usare `readFile` per file troppo grandi.
@@ -143,8 +209,9 @@ Questa forma e leggibile per trasformazioni semplici.
 
 ---
 
-## Checklist operativa
+## Checklist
 
+### Checklist operativa
 - Usa stream per dati grandi o continui.
 - Usa `pipeline` per collegare stream in modo robusto.
 - Gestisci sempre errori.

@@ -1,89 +1,84 @@
 ---
-date: 2026-05-14
+date: 2026-06-02
 area: Programmazione
 topic: PostgreSQL
 type: technical-note
 status: "non revisionato"
 difficulty: intermediate
 tags: [postgresql, database]
-aliases: [Il Sistema delle Regole (Rules System)]
+aliases: [Regole]
 prerequisites: []
 related: []
 ---
-# Il Sistema delle Regole (Rules System) in PostgreSQL
+
+# Regole
 
 ## Sintesi
 
-Nota su Il Sistema delle Regole (Rules System) in PostgreSQL. Riassume il concetto, i meccanismi principali e i punti da ricordare durante studio, progettazione o amministrazione.
+Le regole PostgreSQL (`CREATE RULE`) riscrivono query prima dell'esecuzione. Sono storicamente usate per view e comportamenti speciali, ma spesso i trigger sono piu chiari e sicuri.
 
-## Concetto chiave
-Il **Rules System** (o Query Rewrite System) è un meccanismo unico di PostgreSQL che permette di modificare una query in arrivo prima che venga eseguita dal Query Planner. A differenza dei trigger, che agiscono sui dati riga per riga, le regole operano a livello di **struttura della query**, trasformando una richiesta SQL in un'altra (o in più query).
+## Quando usarlo
 
----
+Usale raramente, quando serve capire codice legacy, view riscrivibili o meccanismi di rewrite. Per nuova logica applicativa preferisci trigger, vincoli o funzioni.
 
-##  Come funzionano le Regole
+## Come funziona
 
-Quando Postgres riceve una query, passa attraverso il sistema delle regole che può:
-1.  **Sostituire** la query originale.
-2.  **Aggiungere** altre query da eseguire prima o dopo quella originale.
-3.  **Cancellare** la query (non eseguendo nulla).
+Il rule system intercetta una query e la riscrive in una o piu query alternative. Questo avviene prima dell'esecuzione, quindi il comportamento puo essere meno intuitivo dei trigger.
 
-La sintassi base è:
+## API / Sintassi
+
 ```sql
-CREATE RULE nome_regola AS ON evento
-TO tabella [ WHERE condizione ]
-DO [ INSTEAD | ALSO ] azione;
+CREATE RULE ignore_deletes AS
+ON DELETE TO protected_table
+DO INSTEAD NOTHING;
 ```
 
----
-
-##  Regole vs Trigger
-
-Questa è la distinzione più importante per un amministratore di database:
-
-| Caratteristica | Regole (Rules) | Trigger |
-| :--- | :--- | :--- |
-| **Punto di intervento** | Query Rewrite (Analisi) | Esecuzione (Riga per riga) |
-| **Performance** | Più veloci per operazioni massicive (bulk). | Più lenti per grosse moli di dati (overhead per riga). |
-| **Complessità** | Molto difficili da debuggare e prevedere. | Più intuitivi e documentati. |
-| **Visibilità** | Possono nascondere righe o modificare logiche in modo "magico". | Seguono un flusso procedurale chiaro. |
-
----
-
-##  Esempi di Utilizzo
-
-### 1. Rendere una Vista scrivibile (Uso Storico)
-Prima dell'introduzione dei trigger `INSTEAD OF`, le regole erano l'unico modo per permettere `INSERT` o `UPDATE` su viste complesse.
+Rimozione:
 
 ```sql
-CREATE RULE vista_insert AS ON INSERT TO vista_utenti
+DROP RULE ignore_deletes ON protected_table;
+```
+
+## Esempio pratico
+
+Una regola puo impedire delete:
+
+```sql
+CREATE RULE no_delete_orders AS
+ON DELETE TO orders
 DO INSTEAD
-    INSERT INTO utenti_reali (nome, email) VALUES (NEW.nome, NEW.email);
+  UPDATE orders SET deleted_at = now()
+  WHERE id = OLD.id;
 ```
 
-### 2. Implementare un sistema di "Soft Delete"
-Invece di cancellare una riga, la regola intercetta il `DELETE` e lo trasforma in un `UPDATE` di un campo flag.
+In pratica, per soft delete e spesso piu leggibile usare una funzione o gestire esplicitamente il comando applicativo.
 
-```sql
-CREATE RULE soft_delete AS ON DELETE TO prodotti
-DO INSTEAD
-    UPDATE prodotti SET attivo = false WHERE id = OLD.id;
-```
+## Varianti
 
----
+- `DO INSTEAD`.
+- `DO ALSO`.
+- Regole su view.
+- Regole su `SELECT`, `INSERT`, `UPDATE`, `DELETE`.
+- Rewrite automatico delle view.
 
-## Logic layer: Perché evitarle?
+## Errori comuni
 
-Sebbene potenti, le regole sono spesso considerate **deprecate** per la logica di business quotidiana a favore dei trigger.
+- Usare regole dove un trigger sarebbe piu prevedibile.
+- Non capire che la query viene riscritta, non eseguita riga per riga.
+- Creare comportamenti sorprendenti per chi legge SQL.
+- Nascondere effetti collaterali.
+- Usare regole per business logic complessa.
 
-> [!CAUTION] Il pericolo delle Regole
-> Le regole possono comportarsi in modo inaspettato con le subquery o le funzioni con effetti collaterali. Poiché riscrivono la query, una singola istruzione SQL potrebbe essere trasformata in modo tale da essere eseguita più volte o in un ordine non previsto, portando a risultati inconsistenti o performance degradate.
+## Checklist
 
----
+- Esiste un'alternativa con trigger o vincoli?
+- Il comportamento e documentato?
+- La regola e testata su query multi-riga?
+- Chi usa la tabella conosce la riscrittura?
+- La regola e davvero necessaria?
 
-##  Best Practices
-- **Usa i Trigger**: Nella quasi totalità dei casi, i trigger sono la scelta corretta.
-- **Viste Updatable**: Usa le regole solo se hai bisogno di alte performance su aggiornamenti massivi di viste che i trigger non riescono a gestire efficientemente.
-- **Documentazione**: Se decidi di usare una regola, documentala ossessivamente; è il posto più difficile dove cercare un bug.
+## Collegamenti
 
----
+- [[Programmazione/Postgres/Pagine/Trigger e Event Trigger|Trigger e Event Trigger]]
+- [[Programmazione/Postgres/Pagine/Views e Materialized Views|Views e Materialized Views]]
+- [[Programmazione/Postgres/Pagine/Funzioni e Store Procedures|Funzioni e Store Procedures]]

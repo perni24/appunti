@@ -1,5 +1,5 @@
----
-date: 2026-05-14
+﻿---
+date: 2026-06-02
 area: Programmazione
 topic: React
 type: technical-note
@@ -10,6 +10,7 @@ aliases: [Gestione Moduli]
 prerequisites: []
 related: []
 ---
+
 # Gestione Moduli
 
 ## Sintesi
@@ -25,8 +26,13 @@ Rispetto all'HTML classico, React introduce un livello in piu: il form puo esser
 
 ---
 
-## 1. Controlled Components
+## Quando usarlo
 
+Contenuto da sviluppare: nella nota originale questa sezione non era presente o era solo una traccia.
+
+## Come funziona
+
+### 1. Controlled Components
 Un **controlled component** e un input il cui valore e controllato da React tramite stato.
 
 ```javascript
@@ -51,9 +57,7 @@ Qui il valore dell'input:
 Questo pattern rende il flusso dei dati molto esplicito ed e coerente con [[Programmazione/React/Pagine/useState]] e con il modello dichiarativo di React.
 
 ---
-
-## 2. Vantaggi dei controlled components
-
+### 2. Vantaggi dei controlled components
 I controlled components sono utili quando vuoi:
 - validare mentre l'utente scrive;
 - mostrare errori dinamici;
@@ -81,23 +85,7 @@ function SearchForm() {
 Il vantaggio principale e il controllo completo.
 
 ---
-
-## 3. Limiti dei controlled components
-
-Il controllo totale ha anche un costo:
-- piu boilerplate;
-- un render ad ogni input change;
-- gestione manuale di molti campi;
-- piu complessita in form grandi.
-
-Con pochi campi non e un problema. Con form lunghi, dinamici o ad alte prestazioni, puo diventare rumoroso e meno ergonomico.
-
-Per questo nell'ecosistema React esistono strategie piu leggere.
-
----
-
-## 4. Uncontrolled Components
-
+### 4. Uncontrolled Components
 Un **uncontrolled component** lascia che sia il DOM a mantenere il valore corrente dell'input.
 
 In questo caso React non aggiorna lo stato ad ogni battitura.
@@ -125,9 +113,7 @@ Qui il valore viene letto solo quando serve, tipicamente al submit.
 Questo approccio si collega a [[Programmazione/React/Pagine/useRef]] piu che a `useState`.
 
 ---
-
-## 5. Controlled vs Uncontrolled
-
+### 5. Controlled vs Uncontrolled
 | Caratteristica | Controlled | Uncontrolled |
 | :--- | :--- | :--- |
 | **Dove vive il valore** | Stato React | DOM |
@@ -139,9 +125,7 @@ Questo approccio si collega a [[Programmazione/React/Pagine/useRef]] piu che a `
 La scelta non e ideologica. Dipende dal caso d'uso.
 
 ---
-
-## 6. Gestione del submit
-
+### 6. Gestione del submit
 In React, un form viene quasi sempre gestito intercettando il submit:
 
 ```javascript
@@ -170,9 +154,7 @@ function ContactForm() {
 Qui si collega bene anche [[Programmazione/React/Pagine/React Router]] se il submit porta a navigazione, redirect o pagina successiva.
 
 ---
-
-## 7. Validazione di base
-
+### 7. Validazione di base
 Un form reale deve quasi sempre gestire:
 - campi obbligatori;
 - formato email;
@@ -213,9 +195,7 @@ function SignupForm() {
 Questo funziona, ma in form articolati tende a generare molto codice ripetitivo.
 
 ---
-
-## 8. React Hook Form
-
+### 8. React Hook Form
 **React Hook Form** e una libreria molto usata per semplificare la gestione dei form in React.
 
 Il suo obiettivo e ridurre boilerplate, evitare render non necessari e gestire meglio registrazione dei campi, errori e submit.
@@ -257,9 +237,7 @@ Vantaggi principali:
 - facile integrazione con validazione schema-based.
 
 ---
-
-## 9. Perche React Hook Form e spesso preferito
-
+### 9. Perche React Hook Form e spesso preferito
 React Hook Form adotta un approccio pragmatico:
 - usa bene i meccanismi del DOM;
 - evita di rendere controlled ogni input per forza;
@@ -275,9 +253,7 @@ Questo lo rende adatto a:
 In molti progetti moderni e la scelta standard, soprattutto quando il form non e banale.
 
 ---
-
-## 10. Form state e architettura
-
+### 10. Form state e architettura
 Un errore comune e trattare ogni form come stato globale.
 
 Nella maggior parte dei casi:
@@ -293,9 +269,7 @@ Solo in casi specifici ha senso centralizzarlo:
 - workflow complessi distribuiti.
 
 ---
-
-## 11. Relazione con validazione e data fetching
-
+### 11. Relazione con validazione e data fetching
 La gestione moduli si collega spesso a:
 - validazione dei dati, anche tramite schema;
 - [[Programmazione/React/Pagine/Data Fetching e Cache]] se il submit chiama API;
@@ -306,8 +280,36 @@ Un buon form non raccoglie solo input: coordina anche feedback, invio e stato de
 
 ---
 
-## 12. Best Practices
+## API / Sintassi
 
+Contenuto da sviluppare: nella nota originale questa sezione non era presente o era solo una traccia.
+
+## Esempio pratico
+
+Contenuto da sviluppare: nella nota originale questa sezione non era presente o era solo una traccia.
+
+## Varianti
+
+### 3. Limiti dei controlled components
+Il controllo totale ha anche un costo:
+- piu boilerplate;
+- un render ad ogni input change;
+- gestione manuale di molti campi;
+- piu complessita in form grandi.
+
+Con pochi campi non e un problema. Con form lunghi, dinamici o ad alte prestazioni, puo diventare rumoroso e meno ergonomico.
+
+Per questo nell'ecosistema React esistono strategie piu leggere.
+
+---
+
+## Errori comuni
+
+Contenuto da sviluppare: nella nota originale questa sezione non era presente o era solo una traccia.
+
+## Checklist
+
+### 12. Best Practices
 1. **Usa controlled components quando serve controllo fine sul valore:** validazione live, trasformazioni e dipendenze tra campi.
 2. **Non rendere controlled ogni input per principio:** nei form grandi puo introdurre molto boilerplate inutile.
 3. **Usa React Hook Form quando il form cresce di complessita:** riduce codice ripetitivo e migliora ergonomia.
@@ -316,3 +318,7 @@ Un buon form non raccoglie solo input: coordina anche feedback, invio e stato de
 6. **Progetta bene gli stati UX del form:** loading, errori, successo e disable del submit fanno parte del componente quanto gli input stessi.
 
 ---
+
+## Collegamenti
+
+- [[Programmazione/React/Indice react|Indice React]]
