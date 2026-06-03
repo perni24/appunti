@@ -1,5 +1,5 @@
-﻿---
-date: 2026-06-02
+---
+date: 2026-06-03
 area: Programmazione
 topic: Python
 type: technical-note
@@ -15,121 +15,90 @@ related: []
 
 ## Sintesi
 
-Nota su Sintassi e Variabili in Python. Riassume il concetto, la sintassi principale e i punti da ricordare durante studio, sviluppo o debugging.
-Nota su Sintassi e Variabili in Python. Riassume il concetto, la sintassi principale e i punti da ricordare durante studio, sviluppo o debugging.
-x = 5  # Commento inline
-
-"""
-Questo è un docstring.
-Può estendersi su più righe.
-"""
-```
-
----
-Nota su Sintassi e Variabili in Python. Riassume il concetto, la sintassi principale e i punti da ricordare durante studio, sviluppo o debugging.
-a, b, c = 1, 2, 3
-x = y = z = 0
-```
-
-### Naming Conventions (PEP 8)
-- Usa lo **snake_case** (tutto minuscolo con underscore) per variabili e funzioni: `mia_variabile`, `calcola_prezzo()`.
-- I nomi sono **case-sensitive**: `Valore` e `valore` sono due variabili diverse.
-- Non possono iniziare con un numero.
-
----
+Python usa indentazione significativa, nomi leggibili e assegnazione dinamica. Le variabili sono riferimenti a oggetti, non contenitori tipizzati staticamente.
 
 ## Quando usarlo
 
-Contenuto da sviluppare: nella nota originale questa sezione non era presente o era solo una traccia.
+Serve per leggere e scrivere qualsiasi codice Python: definire valori, capire scope, evitare errori di indentazione e distinguere nome, oggetto e tipo.
 
 ## Come funziona
 
-### Concetto chiave
-Python è progettato per la **leggibilità**. A differenza di molti altri linguaggi che usano parentesi graffe `{}` per definire blocchi di codice, Python usa l'**indentazione**. È un linguaggio a **tipizzazione dinamica** e **fortemente tipizzato**, il che significa che il tipo delle variabili viene determinato a runtime e non avvengono conversioni implicite pericolose tra tipi incompatibili.
+In Python tutto e un oggetto. Una variabile e un nome collegato a un oggetto. Il tipo appartiene all'oggetto, non al nome.
 
----
-### Variabili
-In Python, le variabili sono **etichette** che puntano a oggetti in memoria. Non è necessario dichiarare il tipo o usare keyword (come `let` o `var`).
+Python e dinamicamente tipizzato, perche un nome puo puntare a oggetti di tipo diverso nel tempo. E anche fortemente tipizzato, perche non converte automaticamente tipi incompatibili in modo arbitrario.
 
-### Dichiarazione e Assegnazione
-```python
-nome = "Luca"      # Stringa
-eta = 30           # Intero
-altezza = 1.75     # Float
-is_active = True   # Booleano
-
-# Sintassi e Variabili in Python
-### Tipi di Dati Primitivi
-> [!INFO] Definizione: Tipizzazione Dinamica
-> Significa che una variabile può cambiare "tipo" durante l'esecuzione semplicemente assegnandole un nuovo valore di tipo diverso.
-
-| Tipo | Descrizione | Esempio |
-| :--- | :--- | :--- |
-| `int` | Numeri interi (senza limite di dimensione in Python 3) | `10`, `-5` |
-| `float` | Numeri decimali (virgola mobile) | `3.14`, `2.0` |
-| `str` | Stringhe di caratteri (sequenze immutabili) | `"Ciao"`, `'Python'` |
-| `bool` | Valori booleani | `True`, `False` |
-| `NoneType` | Rappresenta l'assenza di valore | `None` |
-
----
-### Conversione di Tipo (Casting)
-È possibile convertire esplicitamente un dato da un tipo all'altro utilizzando le funzioni costruttore:
-
-```python
-voto_str = "28"
-voto_int = int(voto_str)     # Da stringa a intero
-prezzo = float(10)           # Da intero a float (10.0)
-messaggio = "Anni: " + str(30) # Da intero a stringa per concatenazione
-```
-
----
-### Logic layer: Come funziona la memoria?
-In Python, **tutto è un oggetto**. Quando scrivi `x = 5`:
-1. Viene creato un oggetto di tipo `int` con valore `5` in memoria.
-2. La variabile `x` diventa un riferimento (puntatore) a quell'oggetto.
-3. Se scrivi `y = x`, anche `y` punta allo stesso oggetto `5`.
-
-Questo comportamento è fondamentale per capire come vengono passati i dati alle funzioni (pass-by-object-reference).
-
----
+L'indentazione definisce i blocchi: `if`, `for`, `while`, funzioni e classi non usano parentesi graffe.
 
 ## API / Sintassi
 
-### Sintassi fondamentale
-### Indentazione
-In Python, lo spazio bianco all'inizio di una riga è significativo. Definisce la gerarchia e i blocchi logici (funzioni, cicli, condizioni).
-- **Best Practice (PEP 8):** Usare **4 spazi** per livello di indentazione. Non mischiare tab e spazi.
-
 ```python
-if True:
-    print("Questa riga è indentata e fa parte del blocco if")
-print("Questa riga non è indentata ed è fuori dall'if")
+name = "Luca"
+age = 30
+height = 1.75
+is_active = True
+missing_value = None
 ```
 
-### Commenti
-I commenti sono essenziali per documentare il codice.
-- **Commenti a riga singola:** Usano il carattere `#`.
-- **Docstrings:** Usano tripli apici `"""` e sono usati per documentare moduli, classi e funzioni.
+Assegnazione multipla:
 
 ```python
-# Sintassi e Variabili in Python
+x, y = 10, 20
+a = b = c = 0
+```
+
+Commenti e docstring:
+
+```python
+# Commento a riga singola
+
+def greet(name):
+    """Restituisce un saluto per name."""
+    return f"Ciao {name}"
+```
 
 ## Esempio pratico
 
-Contenuto da sviluppare: nella nota originale questa sezione non era presente o era solo una traccia.
+```python
+user_name = "Ada"
+login_count = 3
+
+if login_count > 0:
+    message = f"{user_name} ha gia effettuato il login"
+else:
+    message = f"{user_name} non ha ancora effettuato il login"
+
+print(message)
+```
+
+L'esempio mostra nomi in `snake_case`, indentazione a 4 spazi e string interpolation con f-string.
 
 ## Varianti
 
-Contenuto da sviluppare: nella nota originale questa sezione non era presente o era solo una traccia.
+- Assegnazione semplice: `x = 1`.
+- Assegnazione multipla: `x, y = y, x`.
+- Annotazioni di tipo: `age: int = 30`.
+- Costanti convenzionali: `MAX_RETRIES = 3`.
+- Valore assente: `None`.
+- Casting esplicito: `int("10")`, `str(10)`, `float("3.5")`.
 
 ## Errori comuni
 
-Contenuto da sviluppare: nella nota originale questa sezione non era presente o era solo una traccia.
+- Mischiare tab e spazi.
+- Usare nomi poco descrittivi.
+- Confondere `None`, stringa vuota e zero.
+- Sovrascrivere nomi built-in come `list`, `dict`, `str`.
+- Pensare che `y = x` copi sempre l'oggetto.
 
 ## Checklist
 
-Contenuto da sviluppare: nella nota originale questa sezione non era presente o era solo una traccia.
+- L'indentazione usa 4 spazi?
+- I nomi seguono `snake_case`?
+- I valori assenti sono rappresentati con `None`?
+- Hai evitato nomi di built-in?
+- Le conversioni di tipo sono esplicite?
 
 ## Collegamenti
 
-- [[Programmazione/Python/Indice python|Indice Python]]
+- [[Programmazione/Python/Pagine/Tipi di Dati|Tipi di Dati]]
+- [[Programmazione/Python/Pagine/Operatori|Operatori]]
+- [[Programmazione/Python/Pagine/Funzioni|Funzioni]]

@@ -1,5 +1,5 @@
-﻿---
-date: 2026-06-02
+---
+date: 2026-06-03
 area: Programmazione
 topic: Python
 type: technical-note
@@ -15,26 +15,33 @@ related: [Standard Library, Asyncio]
 
 ## Sintesi
 
-Python include moduli standard per networking HTTP e socket.
-
-Per uso applicativo moderno spesso si usano librerie esterne, ma conoscere le API native aiuta a capire il modello di base.
+Python include moduli standard per networking HTTP e socket. Per applicazioni moderne spesso si usano librerie esterne piu ergonomiche, ma conoscere le API base aiuta a capire timeout, byte, connessioni e gestione errori.
 
 ## Quando usarlo
 
-Contenuto da sviluppare: nella nota originale questa sezione non era presente o era solo una traccia.
+Studia o usa networking base quando:
+
+- vuoi capire come funzionano richieste HTTP e socket;
+- devi fare una richiesta semplice senza dipendenze esterne;
+- devi integrare codice legacy;
+- devi diagnosticare problemi di rete;
+- vuoi capire cosa astraggono librerie come `requests`, `httpx` o framework async.
+
+Per applicazioni reali, valuta librerie piu comode e robuste.
 
 ## Come funziona
 
-### HTTP con urllib
+HTTP con `urllib`:
+
 ```python
 from urllib.request import urlopen
 
-with urlopen("https://example.com") as response:
+with urlopen("https://example.com", timeout=5) as response:
     body = response.read()
 ```
 
-`urllib` e disponibile nella standard library, ma per progetti reali spesso si preferiscono librerie piu ergonomiche.
-### Socket TCP base
+Socket TCP:
+
 ```python
 import socket
 
@@ -43,39 +50,91 @@ with socket.create_connection(("example.com", 80), timeout=5) as sock:
     data = sock.recv(1024)
 ```
 
-I socket lavorano con byte.
-### Timeout
-Imposta sempre timeout su rete e I/O esterno.
+I socket lavorano con byte, non con stringhe Unicode.
+
+## API / Sintassi
+
+Timeout:
 
 ```python
 socket.create_connection(("example.com", 80), timeout=5)
 ```
 
-## API / Sintassi
+Decodifica byte:
 
-Contenuto da sviluppare: nella nota originale questa sezione non era presente o era solo una traccia.
+```python
+text = data.decode("utf-8", errors="replace")
+```
+
+Gestione errori:
+
+```python
+import socket
+
+try:
+    with socket.create_connection(("example.com", 80), timeout=5) as sock:
+        sock.sendall(b"GET / HTTP/1.0\r\nHost: example.com\r\n\r\n")
+except TimeoutError:
+    print("Timeout di connessione")
+except OSError as error:
+    print(f"Errore di rete: {error}")
+```
 
 ## Esempio pratico
 
-Contenuto da sviluppare: nella nota originale questa sezione non era presente o era solo una traccia.
+Controllare se una porta TCP e raggiungibile:
+
+```python
+import socket
+
+
+def is_port_open(host, port, timeout=3):
+    try:
+        with socket.create_connection((host, port), timeout=timeout):
+            return True
+    except OSError:
+        return False
+
+
+print(is_port_open("example.com", 80))
+```
+
+Questo tipo di funzione e utile in script diagnostici, non come sostituto di client HTTP completi.
 
 ## Varianti
 
-Contenuto da sviluppare: nella nota originale questa sezione non era presente o era solo una traccia.
+- **`urllib`**: HTTP nella standard library.
+- **`socket`**: networking TCP/UDP a basso livello.
+- **`ssl`**: connessioni cifrate.
+- **`http.client`**: client HTTP piu basso livello.
+- **`requests`**: libreria esterna molto usata per HTTP sincrono.
+- **`httpx`**: client moderno con supporto sync e async.
+- **`asyncio`**: networking asincrono.
 
 ## Errori comuni
 
 - Non impostare timeout.
-- Confondere stringhe e byte nei socket.
+- Confondere stringhe e byte.
 - Non chiudere connessioni.
 - Gestire protocolli complessi manualmente senza motivo.
+- Non considerare retry e backoff.
+- Ignorare errori DNS, timeout, TLS e connessioni rifiutate.
+- Usare socket raw quando una libreria HTTP sarebbe piu sicura.
 
 ## Checklist
 
-Contenuto da sviluppare: nella nota originale questa sezione non era presente o era solo una traccia.
+- Serve davvero networking low-level?
+- Il timeout e impostato?
+- Byte e stringhe sono convertiti esplicitamente?
+- Le connessioni vengono chiuse con `with`?
+- Gli errori di rete sono gestiti?
+- Una libreria come `httpx` sarebbe piu adatta?
 
 ## Collegamenti
 
-- [[Programmazione/Python/Pagine/Asyncio|Asyncio]]
-- [[Programmazione/Python/Pagine/Context Managers|Context Managers]]
-- [[Programmazione/Python/Pagine/Standard Library|Standard Library]]
+- [[Programmazione/Python/Indice python|Indice Python]]
+- [[Asyncio]]
+- [[HTTPX e requests]]
+- [[Context Managers]]
+- [[Error Handling]]
+- [[Standard Library]]

@@ -1,5 +1,5 @@
-﻿---
-date: 2026-06-02
+---
+date: 2026-06-03
 area: Programmazione
 topic: Python
 type: technical-note
@@ -15,113 +15,129 @@ related: []
 
 ## Sintesi
 
-Nota su Generatori in Python. Riassume il concetto, la sintassi principale e i punti da ricordare durante studio, sviluppo o debugging.
-Nota su Generatori in Python. Riassume il concetto, la sintassi principale e i punti da ricordare durante studio, sviluppo o debugging.
-quadrati_lista = [x**2 for x in range(1000000)]
+Un generatore e un modo compatto per creare un iteratore. Una funzione diventa generatore quando contiene `yield`: invece di calcolare e restituire tutto subito, produce un valore alla volta e conserva il proprio stato tra una chiamata e la successiva.
 
-# Generatori in Python
-Nota su Generatori in Python. Riassume il concetto, la sintassi principale e i punti da ricordare durante studio, sviluppo o debugging.
-quadrati_gen = (x**2 for x in range(1000000))
-```
-
----
-Nota su Generatori in Python. Riassume il concetto, la sintassi principale e i punti da ricordare durante studio, sviluppo o debugging.
-```
-
----
+I generatori sono uno degli strumenti principali per scrivere codice lazy, efficiente in memoria e componibile.
 
 ## Quando usarlo
 
-Contenuto da sviluppare: nella nota originale questa sezione non era presente o era solo una traccia.
+Usa un generatore quando:
+
+- devi processare molti dati senza caricarli tutti in RAM;
+- vuoi rappresentare una sequenza potenzialmente infinita;
+- vuoi costruire pipeline di trasformazione;
+- non ti serve accesso casuale per indice;
+- vuoi evitare una classe iteratore esplicita.
 
 ## Come funziona
 
-### Concetto chiave
-I **generatori** sono un modo semplice e potente per creare iteratori. A differenza delle funzioni normali che restituiscono un valore e terminano, i generatori utilizzano la keyword `yield` per sospendere la loro esecuzione, "producendo" un valore alla volta e mantenendo il proprio stato interno per la chiamata successiva.
-
-Questo approccio è alla base della **Lazy Evaluation** (valutazione pigra): i dati vengono generati solo quando sono effettivamente necessari, risparmiando memoria.
-
----
-### Esempi Pratici
-### Elaborazione di Grandi File
-Leggere un file enorme riga per riga senza caricarlo interamente in RAM.
+Una funzione normale termina con `return`. Una funzione generatore sospende l'esecuzione con `yield` e riprende da quel punto alla chiamata successiva di `next()`.
 
 ```python
-def leggi_file_enorme(percorso):
-    with open(percorso, 'r') as f:
-        for riga in f:
-            yield riga.strip()
+def count_to(limit):
+    current = 1
+    while current <= limit:
+        yield current
+        current += 1
 
-for riga in leggi_file_enorme("dati_pesanti.txt"):
-    # Elabora la riga
-    pass
+
+counter = count_to(3)
+
+print(next(counter))  # 1
+print(next(counter))  # 2
+print(next(counter))  # 3
 ```
 
-### Sequenze Infinite
-I generatori possono rappresentare flussi di dati potenzialmente infiniti.
+Quando non ci sono piu valori, Python solleva `StopIteration`. Nei cicli `for` questa eccezione viene gestita automaticamente.
 
 ```python
-def numeri_naturali():
-    n = 1
-    while True:
-        yield n
-        n += 1
-
-gen = numeri_naturali()
-# Generatori in Python
-### Funzionamento Interno (Teoria)
-- **Stato locale:** Quando un generatore incontra `yield`, lo stato locale della funzione (variabili, puntatore di istruzione) viene congelato. Alla chiamata successiva di `next()`, riprende esattamente da quel punto.
-- **Protocollo Iteratore:** I generatori implementano automaticamente i metodi `__iter__()` e `__next__()`.
-- **StopIteration:** Quando il generatore esaurisce i valori (o incontra un `return`), solleva automaticamente l'eccezione `StopIteration`, che i cicli `for` gestiscono silenziosamente.
-
----
+for number in count_to(3):
+    print(number)
+```
 
 ## API / Sintassi
 
-### Sintassi
-### Funzione Generatore
-Una funzione che contiene almeno una istruzione `yield` diventa automaticamente un generatore.
+Funzione generatore:
 
 ```python
-def conta_fino_a(n):
-    count = 1
-    while count <= n:
-        yield count
-        count += 1
-
-gen = conta_fino_a(3)
-print(next(gen)) # 1
-print(next(gen)) # 2
-print(next(gen)) # 3
+def squares(numbers):
+    for number in numbers:
+        yield number * number
 ```
 
-### Espressioni Generatrici (Generator Expressions)
-Simili alle List Comprehension, ma utilizzano le parentesi tonde `()`.
+Generator expression:
 
 ```python
-# Generatori in Python
+squares = (number * number for number in range(1_000_000))
+```
+
+`yield from` delega la produzione di valori a un altro iterabile.
+
+```python
+def chain(first, second):
+    yield from first
+    yield from second
+
+
+for item in chain([1, 2], [3, 4]):
+    print(item)
+```
 
 ## Esempio pratico
 
-Contenuto da sviluppare: nella nota originale questa sezione non era presente o era solo una traccia.
+Un caso tipico e leggere un file riga per riga e restituire solo righe significative.
+
+```python
+def non_empty_lines(path):
+    with open(path, encoding="utf-8") as file:
+        for line in file:
+            cleaned = line.strip()
+            if cleaned:
+                yield cleaned
+
+
+for line in non_empty_lines("input.txt"):
+    print(line.upper())
+```
+
+Il file viene attraversato progressivamente. Non viene creata una lista con tutte le righe.
 
 ## Varianti
 
-Contenuto da sviluppare: nella nota originale questa sezione non era presente o era solo una traccia.
+- **Funzione generatore**: usa `yield` dentro una funzione.
+- **Generator expression**: forma compatta simile a una comprehension.
+- **Pipeline di generatori**: piu generatori collegati in sequenza.
+- **Generatore infinito**: produce valori finche il chiamante decide di interrompere.
+- **`yield from`**: semplifica la delega a un altro iterabile.
+
+```python
+def natural_numbers():
+    number = 1
+    while True:
+        yield number
+        number += 1
+```
 
 ## Errori comuni
 
-### Best Practices & "Gotchas"
--  **Efficienza di Memoria:** Usa i generatori per lavorare con dataset che superano la capacità della RAM o per flussi di dati continui.
--  **Accesso Casuale:** Un generatore può essere scorso solo **una volta**. Se hai bisogno di accedere agli elementi per indice o scorrere la sequenza più volte, devi convertirlo in una lista (es. `list(mio_gen)`), ma perderai il risparmio di memoria.
--  **Composizione:** Puoi concatenare i generatori per creare delle "pipeline" di elaborazione dati molto eleganti e performanti.
-
----
+- Iterare due volte sullo stesso generatore aspettandosi gli stessi valori.
+- Convertire un generatore enorme in lista con `list(generator)`.
+- Usare un generatore quando servono lunghezza, ordinamento o accesso per indice.
+- Nascondere troppa logica dentro pipeline lazy difficili da debuggare.
+- Dimenticare che il codice dentro il generatore non parte finche il generatore non viene consumato.
 
 ## Checklist
 
-Contenuto da sviluppare: nella nota originale questa sezione non era presente o era solo una traccia.
+- La sequenza deve essere consumata una sola volta?
+- Serve davvero una lista o basta un flusso di valori?
+- Il generatore chiude correttamente eventuali risorse?
+- La pipeline resta leggibile?
+- I punti in cui il generatore viene consumato sono chiari?
 
 ## Collegamenti
 
 - [[Programmazione/Python/Indice python|Indice Python]]
+- [[Iteratori]]
+- [[Comprehensions]]
+- [[Gestione File]]
+- [[Context Managers]]

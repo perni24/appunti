@@ -1,5 +1,5 @@
-﻿---
-date: 2026-06-02
+---
+date: 2026-06-03
 area: Programmazione
 topic: Python
 type: technical-note
@@ -15,101 +15,67 @@ related: []
 
 ## Sintesi
 
-Nota su Metodi di Classe e Metodi Statici in Python. Riassume il concetto, la sintassi principale e i punti da ricordare durante studio, sviluppo o debugging.
+I metodi di classe ricevono `cls` e lavorano con la classe. I metodi statici non ricevono ne `self` ne `cls` e sono funzioni raggruppate nel namespace della classe.
 
 ## Quando usarlo
 
-Contenuto da sviluppare: nella nota originale questa sezione non era presente o era solo una traccia.
+Usa `@classmethod` per costruttori alternativi o logica che deve rispettare sottoclassi. Usa `@staticmethod` per utility correlate alla classe ma indipendenti dallo stato.
 
 ## Come funziona
 
-### Concetto chiave
-In Python, oltre ai classici **metodi di istanza**, esistono decoratori per definire metodi legati alla classe o funzioni slegate dallo stato dell'oggetto:
-1.  **@classmethod**: Opera sulla **classe** (riceve `cls`). Utile per costruttori alternativi.
-2.  **@staticmethod**: Non ha accesso né a `self` né a `cls`. Funziona come una utility raggruppata logicamente nella classe.
-
----
-### Metodi Principali e Differenze
-| Tipo Metodo | Decoratore | Argomento | Scopo |
-| :--- | :--- | :--- | :--- |
-| **Istanza** | nessuno | `self` | Modificare lo stato di un singolo oggetto. |
-| **Classe** | `@classmethod` | `cls` | Factory Methods o modifiche a variabili di classe. |
-| **Statico** | `@staticmethod` | nessuno | Utility correlate alla classe senza dipendenze di stato. |
-
----
-### Esempi Pratici
-### Factory Method (@classmethod)
-Permette di creare oggetti in modi differenti.
-```python
-class Data:
-    def __init__(self, g, m, a):
-        self.g, self.m, self.a = g, m, a
-
-    @classmethod
-    def da_stringa(cls, data_str):
-        g, m, a = map(int, data_str.split("-"))
-        return cls(g, m, a)
-
-d = Data.da_stringa("17-03-2026")
-```
-
-### Utility (@staticmethod)
-```python
-class Calcolatrice:
-    @staticmethod
-    def somma(a, b):
-        return a + b
-```
-
----
-### Logic layer: Binding Dinamico e Polimorfismo
-> [!INFO] Definizione: Binding di cls
-> Nei `@classmethod`, `cls` non è fisso sulla classe genitrice. Se una sottoclasse eredita il metodo e lo chiama, `cls` punterà alla **sottoclasse**. Questo garantisce che il Factory Method crei un'istanza del tipo corretto anche in caso di ereditarietà.
-
-I metodi statici, invece, non partecipano a questo meccanismo di binding; sono semplicemente funzioni "parcheggiate" nel namespace della classe per pulizia del codice.
-
----
+Un metodo di istanza riceve `self`. Un classmethod riceve la classe effettiva, anche se chiamato da una sottoclasse. Uno staticmethod non ha binding automatico.
 
 ## API / Sintassi
 
-### Sintassi
 ```python
-class MiaClasse:
-    def metodo_istanza(self):
-        return "Accesso a self"
+class User:
+    def __init__(self, email: str) -> None:
+        self.email = email
 
     @classmethod
-    def metodo_classe(cls):
-        return "Accesso a cls"
+    def from_dict(cls, data: dict[str, str]) -> "User":
+        return cls(data["email"])
 
     @staticmethod
-    def metodo_statico():
-        return "Nessun accesso a stato"
+    def normalize_email(email: str) -> str:
+        return email.strip().lower()
 ```
-
----
 
 ## Esempio pratico
 
-Contenuto da sviluppare: nella nota originale questa sezione non era presente o era solo una traccia.
+```python
+raw = {"email": " Ada@Example.com "}
+raw["email"] = User.normalize_email(raw["email"])
+user = User.from_dict(raw)
+```
 
 ## Varianti
 
-Contenuto da sviluppare: nella nota originale questa sezione non era presente o era solo una traccia.
+- Metodo di istanza.
+- `@classmethod`.
+- `@staticmethod`.
+- Factory methods.
+- Utility methods.
+- Costruttori alternativi nelle dataclass.
 
 ## Errori comuni
 
-### Best Practices & "Gotchas"
--  **Da fare**: Usa `@classmethod` per fornire costruttori alternativi (standard molto comune in Python).
--  **Da fare**: Usa nomi chiari per i metodi statici che indichino la loro natura di utility.
--  **Da evitare**: Non usare `@staticmethod` se prevedi di dover accedere ad altri metodi della classe (usa `@classmethod`).
--  **Errore comune**: Dimenticare il parametro `cls` nella definizione del metodo di classe.
--  **Curiosità**: Puoi chiamare questi metodi sia dalla classe (`Classe.metodo()`) che dall'oggetto (`obj.metodo()`), ma la chiamata dalla classe è preferibile per chiarezza.
+- Usare `staticmethod` quando serve accesso a `cls`.
+- Dimenticare `cls` in un classmethod.
+- Mettere troppe utility dentro una classe.
+- Usare classmethod per mutare stato globale senza controllo.
+- Chiamare da istanza metodi che sono concettualmente di classe.
 
 ## Checklist
 
-Contenuto da sviluppare: nella nota originale questa sezione non era presente o era solo una traccia.
+- Serve `self`, `cls` o nessuno dei due?
+- Il metodo crea istanze alternative? Usa `@classmethod`.
+- La funzione e davvero legata alla classe?
+- Le sottoclassi devono ereditare correttamente il comportamento?
+- Il nome del metodo comunica lo scopo?
 
 ## Collegamenti
 
-- [[Programmazione/Python/Indice python|Indice Python]]
+- [[Programmazione/Python/Pagine/Classi e Istanze|Classi e Istanze]]
+- [[Programmazione/Python/Pagine/Ereditarietà|Ereditarietà]]
+- [[Programmazione/Python/Pagine/Descriptor protocol|Descriptor protocol]]

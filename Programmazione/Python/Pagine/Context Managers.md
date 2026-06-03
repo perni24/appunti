@@ -1,5 +1,5 @@
-﻿---
-date: 2026-06-02
+---
+date: 2026-06-03
 area: Programmazione
 topic: Python
 type: technical-note
@@ -15,193 +15,141 @@ related: []
 
 ## Sintesi
 
-Nota su Context Managers in Python. Riassume il concetto, la sintassi principale e i punti da ricordare durante studio, sviluppo o debugging.
+I context manager gestiscono risorse che devono essere aperte e poi rilasciate in modo affidabile. Si usano con `with` e sono fondamentali per file, lock, connessioni, transazioni e cleanup temporanei.
+
+Il vantaggio principale e che la fase di rilascio viene eseguita anche se nel blocco si verifica un'eccezione.
 
 ## Quando usarlo
 
-Contenuto da sviluppare: nella nota originale questa sezione non era presente o era solo una traccia.
+Usa un context manager quando una risorsa ha un ciclo di vita chiaro:
+
+- apertura e chiusura di file;
+- acquisizione e rilascio di lock;
+- apertura e chiusura di connessioni;
+- inizio e fine di una transazione;
+- setup e teardown temporaneo durante test o script.
 
 ## Come funziona
 
-### Concetto chiave
-I **Context Managers** sono il meccanismo Pythonic per gestire risorse che devono essere inizializzate e poi rilasciate in modo sicuro, come file, lock, connessioni o transazioni.
-
-Si usano tramite l'istruzione `with`, che garantisce l'esecuzione della fase di pulizia anche in presenza di errori.
+La sintassi base e:
 
 ```python
-with open("dati.txt", "r", encoding="utf-8") as file:
+with open("data.txt", encoding="utf-8") as file:
     content = file.read()
 ```
 
-In questo esempio il file viene chiuso automaticamente al termine del blocco, anche se durante la lettura si verifica un'eccezione.
+Python chiama:
 
-> [!INFO] Perche sono importanti
-> I context manager non servono solo alla comodita sintattica: rendono il codice piu sicuro, piu leggibile e riducono il rischio di lasciare aperte risorse esterne o di affidarsi troppo al [[Programmazione/Python/Pagine/Memory Management]] automatico.
+- `__enter__()` all'ingresso del blocco;
+- `__exit__(exc_type, exc_value, traceback)` all'uscita del blocco.
 
----
-### Esempi Pratici
-### Gestione di un lock
+`__exit__()` viene chiamato sia in caso di successo sia in caso di errore.
 
 ```python
-from threading import Lock
+class ManagedResource:
+    def __enter__(self):
+        print("acquire")
+        return self
 
-lock = Lock()
-
-with lock:
-    print("Sezione critica protetta")
+    def __exit__(self, exc_type, exc_value, traceback):
+        print("release")
 ```
 
-Qui il lock viene acquisito all'ingresso del blocco e rilasciato in uscita.
+```python
+with ManagedResource() as resource:
+    print("use resource")
+```
 
-### Context manager personalizzato con una classe
+## API / Sintassi
+
+Context manager basato su classe:
 
 ```python
 class DatabaseConnection:
     def __enter__(self):
-        print("Apro la connessione")
-        return self
+        self.connection = connect()
+        return self.connection
 
     def __exit__(self, exc_type, exc_value, traceback):
-        print("Chiudo la connessione")
-
-with DatabaseConnection() as db:
-    print("Uso la connessione")
+        self.connection.close()
+        return False
 ```
 
-### Context manager con `contextlib.contextmanager`
+Context manager basato su `contextlib.contextmanager`:
 
 ```python
 from contextlib import contextmanager
 
+
 @contextmanager
-def managed_resource():
-    print("Acquisizione risorsa")
+def managed_value():
+    print("setup")
     try:
-        yield "resource"
+        yield "value"
     finally:
-        print("Rilascio risorsa")
-
-with managed_resource() as resource:
-    print(resource)
+        print("cleanup")
 ```
 
-Questo approccio e molto utile quando vuoi creare context manager leggeri senza definire una classe completa.
-
----
-### Funzionamento Interno (Teoria)
-### Il protocollo dei context manager
-Un oggetto puo essere usato con `with` se implementa il protocollo:
-- `__enter__()`
-- `__exit__(exc_type, exc_value, traceback)`
-
-#### `__enter__`
-Viene chiamato all'inizio del blocco `with`.
-- inizializza o acquisisce la risorsa;
-- restituisce l'oggetto assegnato alla variabile dopo `as`.
-
-#### `__exit__`
-Viene chiamato sempre all'uscita dal blocco:
-- se il blocco termina normalmente;
-- se il blocco solleva un'eccezione.
-
-Riceve informazioni sull'eventuale eccezione:
-- `exc_type`
-- `exc_value`
-- `traceback`
-
-### Gestione delle eccezioni
-`__exit__` puo decidere se propagare o sopprimere un errore:
-
-- se restituisce `False` o `None`, l'eccezione continua a propagarsi;
-- se restituisce `True`, l'eccezione viene considerata gestita.
-
-```python
-class IgnoreError:
-    def __enter__(self):
-        return self
-
-    def __exit__(self, exc_type, exc_value, traceback):
-        return True
-```
-
-Questo comportamento va usato con molta attenzione, perche può nascondere bug importanti.
-
----
-### Perche usare `with` invece di affidarsi al garbage collector
-Affidarsi solo alla distruzione automatica degli oggetti non e sufficiente per gestire correttamente risorse esterne.
-
-Esempi di risorse che vanno rilasciate esplicitamente:
-- file;
-- socket;
-- connessioni a database;
-- lock;
-- transazioni;
-- stream di rete.
-
-Il rilascio della memoria e un problema diverso dal rilascio delle risorse. Per questo i context manager sono strettamente collegati a [[Programmazione/Python/Pagine/Memory Management]], ma non coincidono con esso.
-
-> [!TIP] Regola pratica
-> Se una risorsa ha una fase chiara di apertura e chiusura, `with` e spesso la soluzione piu sicura e leggibile.
-
----
-
-## API / Sintassi
-
-### Sintassi
-La forma piu comune e:
-
-```python
-with resource_expression as variable:
-    # blocco protetto
-    ...
-```
-
-### Esempio classico: gestione file
-
-```python
-with open("log.txt", "w", encoding="utf-8") as file:
-    file.write("Operazione completata")
-```
-
-Equivale concettualmente a:
-
-```python
-file = open("log.txt", "w", encoding="utf-8")
-try:
-    file.write("Operazione completata")
-finally:
-    file.close()
-```
-
-Il vantaggio del `with` e che incapsula in modo pulito il pattern `try/finally`, molto legato alla gestione delle risorse e a [[Programmazione/Python/Pagine/Error Handling]].
-
----
+Se `__exit__()` restituisce `True`, l'eccezione viene soppressa. Se restituisce `False` o `None`, l'eccezione continua a propagarsi.
 
 ## Esempio pratico
 
-Contenuto da sviluppare: nella nota originale questa sezione non era presente o era solo una traccia.
+Un context manager puo misurare la durata di un blocco senza mescolare la logica di timing con la logica applicativa.
+
+```python
+from contextlib import contextmanager
+from time import perf_counter
+
+
+@contextmanager
+def timer(label):
+    start = perf_counter()
+    try:
+        yield
+    finally:
+        elapsed = perf_counter() - start
+        print(f"{label}: {elapsed:.3f}s")
+
+
+with timer("import"):
+    data = [number * 2 for number in range(1_000_000)]
+```
+
+La parte in `finally` viene eseguita anche se il codice dentro `with` fallisce.
 
 ## Varianti
 
-Contenuto da sviluppare: nella nota originale questa sezione non era presente o era solo una traccia.
+- **`with` singolo**: gestisce una risorsa.
+- **`with` multiplo**: gestisce piu risorse nello stesso blocco.
+- **Classe con `__enter__` e `__exit__`**: utile quando serve stato interno esplicito.
+- **`contextlib.contextmanager`**: adatto a context manager semplici.
+- **`contextlib.ExitStack`**: utile quando il numero di risorse e dinamico.
+
+```python
+with open("input.txt", encoding="utf-8") as source, open("output.txt", "w", encoding="utf-8") as target:
+    for line in source:
+        target.write(line.upper())
+```
 
 ## Errori comuni
 
-### Best Practices & "Gotchas"
--  **Usa `with` ogni volta che puoi:** soprattutto con file, lock, transazioni e connessioni.
--  **Preferisci context manager espliciti al cleanup implicito:** il codice diventa piu prevedibile.
--  **Usa `contextlib` per casi semplici:** il decorator `@contextmanager` riduce boilerplate.
--  **Mantieni piccolo il blocco `with`:** piu il blocco e grande, piu e difficile capire quale risorsa e protetta.
--  **Non sopprimere eccezioni senza motivo:** restituire `True` in `__exit__` puo mascherare errori seri.
--  **Non confondere il context manager con l'oggetto restituito:** `__enter__` puo restituire anche un oggetto diverso da `self`.
--  **Attenzione alle risorse annidate:** se gestisci molte risorse insieme, valuta strutture come `ExitStack` per mantenere il controllo ordinato.
-
----
+- Non usare `with` con file, socket o lock.
+- Restituire `True` da `__exit__()` senza voler davvero sopprimere l'errore.
+- Mettere troppa logica dentro un singolo blocco `with`.
+- Confondere il context manager con l'oggetto restituito da `__enter__()`.
+- Affidarsi al garbage collector per chiudere risorse esterne.
 
 ## Checklist
 
-Contenuto da sviluppare: nella nota originale questa sezione non era presente o era solo una traccia.
+- La risorsa viene sempre rilasciata?
+- Il blocco `with` e abbastanza piccolo da essere leggibile?
+- Le eccezioni devono propagarsi o essere soppresse?
+- `contextlib.contextmanager` e sufficiente o serve una classe?
+- Ci sono piu risorse dinamiche che richiedono `ExitStack`?
 
 ## Collegamenti
 
 - [[Programmazione/Python/Indice python|Indice Python]]
+- [[Gestione File]]
+- [[Error Handling]]
+- [[Memory Management]]

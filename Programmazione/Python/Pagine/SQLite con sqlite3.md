@@ -1,12 +1,12 @@
-﻿---
-date: 2026-06-02
+---
+date: 2026-06-03
 area: Programmazione
 topic: Python
 type: technical-note
 status: "non revisionato"
-difficulty: intermediate
+difficulty: beginner
 tags: [python, sqlite, sqlite3, database, standard-library]
-aliases: [sqlite3 Python]
+aliases: [sqlite3 Python, SQLite Python]
 prerequisites: [Context Managers, Error Handling]
 related: [Standard Library, Gestione File]
 ---
@@ -15,72 +15,144 @@ related: [Standard Library, Gestione File]
 
 ## Sintesi
 
-`sqlite3` e il modulo standard Python per usare database SQLite locali.
+`sqlite3` e il modulo standard Python per usare database SQLite locali. Non richiede un server separato: il database e un file.
 
-E utile per script, prototipi, app desktop, test e piccoli database embedded.
+E utile per script, prototipi, app desktop, test, piccoli database embedded e persistenza locale semplice.
 
 ## Quando usarlo
 
-Contenuto da sviluppare: nella nota originale questa sezione non era presente o era solo una traccia.
+Usa SQLite con `sqlite3` quando:
+
+- vuoi un database locale leggero;
+- stai costruendo un prototipo;
+- devi salvare dati strutturati in uno script;
+- vuoi testare logica SQL senza avviare un server;
+- la concorrenza in scrittura e limitata.
+
+Per applicazioni web con molti utenti concorrenti, valuta database server come PostgreSQL.
 
 ## Come funziona
 
-### Connessione
+Connessione:
+
 ```python
 import sqlite3
 
-with sqlite3.connect("app.db") as conn:
-    cursor = conn.execute("SELECT sqlite_version()")
+with sqlite3.connect("app.db") as connection:
+    cursor = connection.execute("SELECT sqlite_version()")
     print(cursor.fetchone())
 ```
 
-Il context manager gestisce commit o rollback a seconda dell'esito.
-### Query parametrizzate
-```python
-user_id = 1
+Il context manager fa commit se il blocco termina correttamente e rollback se viene sollevata un'eccezione.
 
-cursor = conn.execute(
-    "SELECT id, name FROM users WHERE id = ?",
-    (user_id,),
-)
-```
+Creare una tabella:
 
-Usa sempre parametri invece di concatenare stringhe SQL.
-### Creare tabelle
 ```python
-conn.execute("""
-CREATE TABLE IF NOT EXISTS users (
-    id INTEGER PRIMARY KEY,
-    name TEXT NOT NULL
-)
-""")
+with sqlite3.connect("app.db") as connection:
+    connection.execute("""
+        CREATE TABLE IF NOT EXISTS users (
+            id INTEGER PRIMARY KEY,
+            name TEXT NOT NULL,
+            email TEXT NOT NULL UNIQUE
+        )
+    """)
 ```
 
 ## API / Sintassi
 
-Contenuto da sviluppare: nella nota originale questa sezione non era presente o era solo una traccia.
+Query parametrizzata:
+
+```python
+user_id = 1
+
+cursor = connection.execute(
+    "SELECT id, name, email FROM users WHERE id = ?",
+    (user_id,),
+)
+
+row = cursor.fetchone()
+```
+
+Inserimento:
+
+```python
+connection.execute(
+    "INSERT INTO users (name, email) VALUES (?, ?)",
+    ("Luca", "luca@example.com"),
+)
+```
+
+Restituire righe come dizionari-like:
+
+```python
+connection.row_factory = sqlite3.Row
+
+row = connection.execute("SELECT * FROM users").fetchone()
+print(row["email"])
+```
 
 ## Esempio pratico
 
-Contenuto da sviluppare: nella nota originale questa sezione non era presente o era solo una traccia.
+Repository minimale:
+
+```python
+import sqlite3
+
+
+def create_schema(connection):
+    connection.execute("""
+        CREATE TABLE IF NOT EXISTS users (
+            id INTEGER PRIMARY KEY,
+            name TEXT NOT NULL
+        )
+    """)
+
+
+def create_user(connection, name):
+    cursor = connection.execute(
+        "INSERT INTO users (name) VALUES (?)",
+        (name,),
+    )
+    return cursor.lastrowid
+
+
+with sqlite3.connect("app.db") as connection:
+    create_schema(connection)
+    user_id = create_user(connection, "Luca")
+    print(user_id)
+```
 
 ## Varianti
 
-Contenuto da sviluppare: nella nota originale questa sezione non era presente o era solo una traccia.
+- **Database su file**: `sqlite3.connect("app.db")`.
+- **Database in memoria**: `sqlite3.connect(":memory:")`, utile per test.
+- **`row_factory`**: accesso alle colonne per nome.
+- **Transazioni esplicite**: utili quando vuoi controllo preciso.
+- **SQLite + SQLAlchemy**: quando vuoi ORM o astrazione database.
 
 ## Errori comuni
 
-- Costruire SQL concatenando input utente.
+- Concatenare input utente dentro SQL invece di usare parametri.
 - Dimenticare commit quando non si usa context manager.
-- Usare SQLite per carichi concorrenti non adatti.
+- Usare SQLite per carichi con molte scritture concorrenti.
 - Non gestire migrazioni dello schema.
+- Non impostare vincoli come `NOT NULL`, `UNIQUE` o foreign key quando servono.
+- Confondere database locale leggero con database server multiutente.
 
 ## Checklist
 
-Contenuto da sviluppare: nella nota originale questa sezione non era presente o era solo una traccia.
+- Le query usano parametri?
+- Il ciclo transazionale e chiaro?
+- Lo schema ha vincoli adeguati?
+- La concorrenza prevista e compatibile con SQLite?
+- Esiste una strategia per modifiche schema?
+- I test coprono inserimento, lettura ed errori principali?
 
 ## Collegamenti
 
-- [[Programmazione/Python/Pagine/Context Managers|Context Managers]]
-- [[Programmazione/Python/Pagine/Error Handling|Error Handling]]
-- [[Programmazione/Python/Pagine/Standard Library|Standard Library]]
+- [[Programmazione/Python/Indice python|Indice Python]]
+- [[Context Managers]]
+- [[Error Handling]]
+- [[Standard Library]]
+- [[SQLAlchemy]]
+- [[Programmazione/Postgres/Indice postgres|Postgres]]

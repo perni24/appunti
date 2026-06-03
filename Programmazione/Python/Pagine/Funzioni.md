@@ -1,5 +1,5 @@
-﻿---
-date: 2026-06-02
+---
+date: 2026-06-03
 area: Programmazione
 topic: Python
 type: technical-note
@@ -15,104 +15,81 @@ related: []
 
 ## Sintesi
 
-Nota su Funzioni in Python. Riassume il concetto, la sintassi principale e i punti da ricordare durante studio, sviluppo o debugging.
+Le funzioni incapsulano logica riutilizzabile. Ricevono argomenti, possono restituire valori e rendono il codice piu leggibile e testabile.
 
 ## Quando usarlo
 
-Contenuto da sviluppare: nella nota originale questa sezione non era presente o era solo una traccia.
+Usale quando una logica viene ripetuta, quando vuoi dare un nome a un'operazione o quando devi isolare codice per test e manutenzione.
 
 ## Come funziona
 
-### Concetto chiave
-Le funzioni sono blocchi di codice riutilizzabili che eseguono una specifica operazione. Permettono di ridurre la duplicazione del codice e migliorano la leggibilità e la manutenibilità del progetto seguendo il principio **DRY** (Don't Repeat Yourself).
+Una funzione viene definita con `def`. I parametri ricevono valori al momento della chiamata. `return` restituisce un valore e termina la funzione. Se manca `return`, il risultato e `None`.
 
----
-### Argomenti e Parametri
-Python offre una grande flessibilità nel modo in cui vengono passati i dati alle funzioni.
-
-### 1. Argomenti Posizionali e Keyword
-- **Posizionali**: L'ordine è fondamentale.
-- **Keyword**: È possibile specificare il nome del parametro per ignorare l'ordine.
-
-```python
-def descrivi_pet(tipo, nome):
-    print(f"Ho un {tipo} di nome {nome}")
-
-descrivi_pet("gatto", "Whiskers") # Posizionale
-descrivi_pet(nome="Fido", tipo="cane") # Keyword
-```
-
-### 2. Valori di Default
-È possibile assegnare un valore predefinito a un parametro. Se non viene passato nulla durante la chiamata, verrà usato quello.
-
-```python
-def saluta_utente(nome, saluto="Buongiorno"):
-    print(f"{saluto}, {nome}")
-
-saluta_utente("Marco") # Output: Buongiorno, Marco
-```
-
-> [!CAUTION] Attenzione agli oggetti mutabili
-> Non usare mai oggetti mutabili (come liste o dizionari) come valori di default. Python li crea una sola volta alla definizione della funzione, il che può portare a comportamenti inattesi. Usa `None` e un controllo interno.
-
----
-### ↩ Valori di Ritorno
-La keyword `return` interrompe l'esecuzione della funzione e restituisce un valore al chiamante. Se omessa, la funzione restituisce implicitamente `None`.
-
-```python
-def somma(a, b):
-    return a + b
-
-risultato = somma(5, 3) # risultato = 8
-```
-
----
-### Logic layer: Passaggio dei Parametri
-In Python, il passaggio dei parametri avviene per **assegnazione di riferimento** (Pass-by-object-assignment).
-- Se passi un oggetto **immutabile** (come una stringa o un intero), la funzione non può modificarlo esternamente.
-- Se passi un oggetto **mutabile** (come una lista), la funzione può modificarne il contenuto direttamente, influenzando l'originale in memoria.
-
----
-### Scope (Ambito delle Variabili)
-- **Local Scope**: Variabili definite all'interno della funzione. Esistono solo lì.
-- **Global Scope**: Variabili definite all'esterno, accessibili ma non modificabili direttamente (a meno di usare la keyword `global`, solitamente sconsigliata).
-
----
+Python passa riferimenti a oggetti: se una funzione modifica un oggetto mutabile ricevuto, la modifica e visibile anche fuori.
 
 ## API / Sintassi
 
-### Definizione e Sintassi
-In Python, una funzione si definisce con la keyword `def`.
-
 ```python
-def saluta(nome):
-    """Questa funzione saluta la persona passata come argomento."""
-    print(f"Ciao, {nome}!")
+def add(a, b):
+    return a + b
 
-saluta("Luca")
+result = add(2, 3)
 ```
 
-### Docstrings
-La prima stringa dopo l'intestazione della funzione è il **Docstring**. Descrive cosa fa la funzione ed è accessibile tramite `help(nome_funzione)` o l'attributo `__doc__`.
+Argomenti default:
 
----
+```python
+def greet(name, prefix="Ciao"):
+    return f"{prefix} {name}"
+```
+
+Keyword arguments:
+
+```python
+greet(name="Luca", prefix="Buongiorno")
+```
 
 ## Esempio pratico
 
-Contenuto da sviluppare: nella nota originale questa sezione non era presente o era solo una traccia.
+```python
+def normalize_email(email):
+    if not email:
+        return None
+    return email.strip().lower()
+
+
+emails = [" A@Example.com ", "", "b@example.com"]
+cleaned = [normalize_email(email) for email in emails]
+```
 
 ## Varianti
 
-Contenuto da sviluppare: nella nota originale questa sezione non era presente o era solo una traccia.
+- Funzioni con argomenti posizionali.
+- Keyword arguments.
+- Valori di default.
+- `*args` e `**kwargs`.
+- Parametri keyword-only.
+- Funzioni lambda.
+- Funzioni annidate.
 
 ## Errori comuni
 
-Contenuto da sviluppare: nella nota originale questa sezione non era presente o era solo una traccia.
+- Usare liste o dizionari come default mutabili.
+- Fare funzioni troppo lunghe.
+- Restituire tipi incoerenti senza motivo.
+- Modificare argomenti mutabili in modo inatteso.
+- Usare `global` invece di restituire valori.
 
 ## Checklist
 
-Contenuto da sviluppare: nella nota originale questa sezione non era presente o era solo una traccia.
+- La funzione ha una responsabilita chiara?
+- Il nome descrive il risultato o l'azione?
+- I parametri sono pochi e leggibili?
+- I default sono immutabili?
+- Il valore di ritorno e coerente?
 
 ## Collegamenti
 
-- [[Programmazione/Python/Indice python|Indice Python]]
+- [[Programmazione/Python/Pagine/Argomenti Flessibili|Argomenti Flessibili]]
+- [[Programmazione/Python/Pagine/Funzioni Lambda|Funzioni Lambda]]
+- [[Programmazione/Python/Pagine/Decoratori|Decoratori]]

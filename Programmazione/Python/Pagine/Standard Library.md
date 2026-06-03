@@ -1,11 +1,11 @@
-﻿---
-date: 2026-06-02
+---
+date: 2026-06-03
 area: Programmazione
 topic: Python
 type: technical-note
 status: "non revisionato"
-difficulty: intermediate
-tags: [python, programming]
+difficulty: beginner
+tags: [python, programming, standard-library]
 aliases: [Standard Library di Python]
 prerequisites: []
 related: []
@@ -15,236 +15,140 @@ related: []
 
 ## Sintesi
 
-Nota su Standard Library di Python in Python. Riassume il concetto, la sintassi principale e i punti da ricordare durante studio, sviluppo o debugging.
+La standard library e l'insieme di moduli inclusi con Python. Copre file, path, date, JSON, CSV, logging, test, concorrenza, networking, introspezione, debug e molte utility comuni.
+
+La regola pratica e: prima controlla se il problema e gia risolto dalla standard library; poi valuta una dipendenza esterna se serve piu ergonomia, performance o funzionalita.
 
 ## Quando usarlo
 
-### Quando preferire la Standard Library
-Conviene partire dalla Standard Library quando:
+Parti dalla standard library quando:
+
 - il problema e comune e ben coperto da un modulo standard;
 - vuoi ridurre dipendenze esterne;
-- vuoi massimizzare portabilita e manutenzione a lungo termine;
-- stai costruendo script, utility o tool interni.
+- stai scrivendo script o tool interni;
+- vuoi massimizzare portabilita e manutenzione;
+- devi lavorare in ambienti dove installare pacchetti e difficile.
 
-Ha senso introdurre librerie esterne quando:
-- servono feature molto piu evolute;
-- la DX della libreria standard e troppo bassa per il caso reale;
-- performance, ergonomia o ecosistema richiedono uno strumento dedicato.
-
-> [!TIP] Regola pratica
-> Prima verifica la Standard Library. Se copre il problema in modo chiaro e sufficiente, evita dipendenze in piu. Se invece la soluzione diventa artificiale o troppo limitata, passa a una libreria esterna.
-
----
+Introduci librerie esterne quando la soluzione standard diventa troppo limitata, verbosa o inadatta al caso reale.
 
 ## Come funziona
 
-### Concetto chiave
-La **Standard Library** di Python e l'insieme dei moduli inclusi con il linguaggio, disponibili senza installare pacchetti esterni. E uno dei punti di forza principali di Python: per molte esigenze comuni esiste gia un modulo ufficiale, stabile e ben integrato.
-
-L'idea pratica e semplice: prima di aggiungere una dipendenza esterna, conviene verificare se la Standard Library copre gia il problema in modo sufficiente.
-
-> [!INFO] "Batteries included"
-> Python viene spesso descritto con l'espressione **batteries included**: il linguaggio arriva gia con strumenti per file, path, regex, JSON, HTTP, threading, testing, datetime, logging, serializzazione, parsing e molto altro.
-
----
-### Come e organizzata
-La Standard Library non e un singolo pacchetto, ma una raccolta molto ampia di moduli e package standard.
-
-Alcune aree fondamentali:
-- sistema operativo e file system;
-- strutture dati e algoritmi comuni;
-- date, orari e formati;
-- serializzazione e parsing;
-- concorrenza;
-- networking;
-- debugging, logging e test;
-- introspezione e metaprogrammazione.
+I moduli standard si importano senza `pip install`.
 
 ```python
-import os
 import json
-import pathlib
-import datetime
-```
-
-Questi import non richiedono `pip install`, perche fanno gia parte della distribuzione standard di Python.
-
----
-### Moduli fondamentali da conoscere
-### File system e sistema operativo
-
-- `os`: interazione con ambiente e sistema operativo.
-- `pathlib`: gestione moderna dei percorsi.
-- `shutil`: operazioni di alto livello su file e directory.
-- `tempfile`: file e cartelle temporanei.
-
-```python
 from pathlib import Path
-
-path = Path("documenti") / "report.txt"
-print(path.exists())
+from datetime import datetime
 ```
 
-`pathlib` e spesso preferibile a manipolare path come stringhe raw, ed e direttamente collegato a [[Programmazione/Python/Pagine/Gestione File]].
+La standard library non e un singolo pacchetto: e una raccolta ampia di moduli organizzati per aree.
 
-### Serializzazione e formati dati
+Moduli molto usati:
 
-- `json`: encoding e decoding JSON.
-- `csv`: lettura e scrittura CSV.
-- `pickle`: serializzazione binaria di oggetti Python.
-- `configparser`: parsing di file INI.
-
-```python
-import json
-
-payload = {"name": "Luca", "active": True}
-text = json.dumps(payload)
-data = json.loads(text)
-```
-
-### Date e tempo
-
-- `datetime`: date, orari, intervalli temporali.
-- `time`: funzioni temporali a basso livello.
-- `calendar`: utilita per calendari.
-
-```python
-from datetime import datetime, timedelta
-
-now = datetime.now()
-tomorrow = now + timedelta(days=1)
-```
-
-### Strutture dati utili
-
-- `collections`: `Counter`, `defaultdict`, `deque`, `namedtuple`.
-- `heapq`: heap e priority queue.
-- `bisect`: inserimento e ricerca in liste ordinate.
-- `array`: array tipizzati.
-
-```python
-from collections import Counter
-
-counter = Counter(["a", "b", "a", "c", "a"])
-print(counter["a"])
-```
-
-### Matematica e casualita
-
-- `math`: funzioni matematiche.
-- `statistics`: media, mediana, deviazione standard.
-- `random`: numeri pseudo-casuali.
-- `decimal`: aritmetica decimale precisa.
-- `fractions`: numeri razionali.
-
-### Regex e testo
-
-- `re`: espressioni regolari.
-- `string`: costanti e utility per stringhe.
-- `textwrap`: wrapping e formattazione testo.
-
-```python
-import re
-
-email = "utente@example.com"
-match = re.match(r"^[^@]+@[^@]+\.[^@]+$", email)
-print(bool(match))
-```
-
-### Networking e web
-
-- `urllib`: operazioni HTTP e parsing URL.
-- `http`: primitive HTTP.
-- `socket`: networking a basso livello.
-- `email`: parsing e composizione messaggi email.
-
-### Concorrenza
-
-- `threading`: thread e sincronizzazione.
-- `multiprocessing`: processi separati.
-- `asyncio`: concorrenza asincrona.
-- `queue`: code thread-safe.
-- `concurrent.futures`: API ad alto livello per task concorrenti.
-
-Questi moduli si collegano direttamente a [[Programmazione/Python/Pagine/Threading]], `Multiprocessing`, `Asyncio` e `Concurrent.futures`.
-
-### Debugging, test e osservabilita
-
-- `logging`: logging strutturato.
-- `unittest`: testing standard.
-- `pdb`: debugger interattivo.
-- `traceback`: gestione e stampa traceback.
-- `warnings`: warning runtime.
-
-### Introspezione e runtime
-
-- `inspect`: analisi di firme, funzioni e classi.
-- `sys`: informazioni sull'interprete.
-- `types`: tipi speciali del runtime.
-- `importlib`: import dinamico e gestione moduli.
-
-Questa area e collegata a [[Programmazione/Python/Pagine/Introspezione]].
-
----
-### Funzionamento Interno (Teoria)
-### Moduli built-in vs moduli della libreria standard
-Non tutti i moduli standard sono uguali:
-
-- alcuni sono **built-in**, cioe integrati direttamente nell'interprete;
-- altri sono file Python o estensioni native distribuite con Python.
-
-Dal punto di vista dell'uso quotidiano, la differenza cambia poco: entrambi si importano normalmente.
-
-```python
-import sys
-import json
-```
-
-### Import e namespace
-Quando importi un modulo della Standard Library, i suoi nomi entrano nel namespace secondo la forma scelta:
-
-```python
-import math
-from pathlib import Path
-```
-
-Capire bene gli import e importante per evitare collisioni di nomi e mantenere il codice leggibile.
-
-### Stabilita e portabilita
-La Standard Library tende a essere piu stabile e portabile di molte librerie esterne, ma non significa che tutto sia identico su ogni piattaforma. Moduli come `os`, `signal` o `resource` possono avere differenze tra Windows, Linux e macOS.
-
----
+- `pathlib`, `os`, `shutil`, `tempfile` per filesystem;
+- `json`, `csv`, `configparser`, `tomllib` per formati dati;
+- `datetime`, `time`, `calendar` per date e tempo;
+- `collections`, `itertools`, `functools` per strutture e funzioni;
+- `logging`, `unittest`, `pdb`, `traceback` per debugging e test;
+- `threading`, `multiprocessing`, `asyncio`, `concurrent.futures` per concorrenza;
+- `inspect`, `types`, `sys`, `importlib` per runtime e introspezione.
 
 ## API / Sintassi
 
-Contenuto da sviluppare: nella nota originale questa sezione non era presente o era solo una traccia.
+Import di un modulo:
+
+```python
+import json
+
+text = json.dumps({"active": True})
+data = json.loads(text)
+```
+
+Import di un nome specifico:
+
+```python
+from pathlib import Path
+
+path = Path("notes") / "todo.txt"
+```
+
+Alias:
+
+```python
+import datetime as dt
+
+today = dt.date.today()
+```
+
+Evita wildcard import:
+
+```python
+from math import *  # sconsigliato
+```
 
 ## Esempio pratico
 
-Contenuto da sviluppare: nella nota originale questa sezione non era presente o era solo una traccia.
+Script minimale che legge righe da un file, conta le occorrenze e salva il risultato in JSON.
+
+```python
+import json
+from collections import Counter
+from pathlib import Path
+
+
+source = Path("input.txt")
+target = Path("summary.json")
+
+counter = Counter()
+
+with source.open(encoding="utf-8") as file:
+    for line in file:
+        words = line.lower().split()
+        counter.update(words)
+
+target.write_text(
+    json.dumps(counter.most_common(20), indent=2),
+    encoding="utf-8",
+)
+```
+
+Questo usa solo moduli standard: `pathlib`, `collections` e `json`.
 
 ## Varianti
 
-Contenuto da sviluppare: nella nota originale questa sezione non era presente o era solo una traccia.
+- **Built-in**: funzioni e tipi disponibili senza import, come `len`, `dict`, `list`, `print`.
+- **Moduli built-in**: integrati nell'interprete, come `sys`.
+- **Moduli standard Python**: distribuiti con Python, come `json` o `pathlib`.
+- **Estensioni native standard**: moduli standard implementati in C o con componenti native.
+- **Librerie esterne**: installate con package manager come `pip`.
+
+Alcuni moduli hanno differenze tra sistemi operativi. Per esempio `os`, `signal` e alcune funzionalita legate ai processi possono comportarsi diversamente su Windows, Linux e macOS.
 
 ## Errori comuni
 
-### Best Practices & "Gotchas"
--  **Conosci i moduli base prima di installare dipendenze:** spesso `json`, `pathlib`, `collections`, `datetime` e `logging` bastano gia.
--  **Preferisci moduli moderni quando esistono:** ad esempio `pathlib` e spesso piu chiaro di `os.path`.
--  **Leggi la documentazione ufficiale dei moduli standard:** i dettagli dei corner case contano molto.
--  **Mantieni gli import espliciti e leggibili:** evita wildcard import.
--  **Non usare `pickle` per dati non fidati:** puo eseguire codice arbitrario in fase di deserializzazione.
--  **Non confondere Standard Library con built-in:** `len` e `print` sono built-in, `json` e `pathlib` sono moduli standard.
--  **Attenzione ai nomi dei file locali:** creare file come `json.py`, `threading.py` o `pathlib.py` puo rompere gli import.
--  **Non assumere che ogni modulo standard sia ideale:** "standard" non significa automaticamente "migliore" per ogni contesto.
-
----
+- Installare una libreria esterna prima di controllare il modulo standard equivalente.
+- Usare moduli vecchi quando esiste un'alternativa piu moderna, come `pathlib` rispetto a molte operazioni con `os.path`.
+- Creare file locali con nomi come `json.py`, `logging.py` o `pathlib.py`, rompendo gli import.
+- Usare `pickle` con dati non fidati: puo eseguire codice durante la deserializzazione.
+- Confondere built-in, standard library e pacchetti esterni.
+- Usare wildcard import, rendendo poco chiaro da dove arrivano i nomi.
 
 ## Checklist
 
-Contenuto da sviluppare: nella nota originale questa sezione non era presente o era solo una traccia.
+- Esiste un modulo standard che risolve il problema?
+- La soluzione standard e abbastanza leggibile per il caso reale?
+- Sto usando moduli moderni e mantenuti?
+- Gli import sono espliciti?
+- Ci sono differenze di piattaforma da considerare?
+- Una dipendenza esterna porta un vantaggio reale?
 
 ## Collegamenti
 
 - [[Programmazione/Python/Indice python|Indice Python]]
+- [[Gestione File]]
+- [[Introspezione]]
+- [[Caching]]
+- [[Logging]]
+- [[Testing]]
+- [[Asyncio]]
+- [[Threading]]

@@ -1,5 +1,5 @@
-﻿---
-date: 2026-06-02
+---
+date: 2026-06-03
 area: Programmazione
 topic: Python
 type: technical-note
@@ -15,101 +15,78 @@ related: []
 
 ## Sintesi
 
-Nota su Dizionari in Python. Riassume il concetto, la sintassi principale e i punti da ricordare durante studio, sviluppo o debugging.
-Nota su Dizionari in Python. Riassume il concetto, la sintassi principale e i punti da ricordare durante studio, sviluppo o debugging.
-utente = {
-    "id": 101,
-    "nome": "Luca",
-    "email": "luca@esempio.com"
-}
-
-# Dizionari in Python
-Nota su Dizionari in Python. Riassume il concetto, la sintassi principale e i punti da ricordare durante studio, sviluppo o debugging.
-print(utente["nome"]) # "Luca"
-
-# Dizionari in Python
-Nota su Dizionari in Python. Riassume il concetto, la sintassi principale e i punti da ricordare durante studio, sviluppo o debugging.
-# Dizionari in Python
-Nota su Dizionari in Python. Riassume il concetto, la sintassi principale e i punti da ricordare durante studio, sviluppo o debugging.
-print(utente.get("telefono", "N/A")) # Restituisce "N/A" invece di un errore
-```
-
-### Modifica e Aggiunta
-```python
-utente["email"] = "nuova_email@esempio.com" # Aggiornamento
-utente["attivo"] = True                      # Aggiunta di una nuova coppia
-```
-
----
+I dizionari sono collezioni mutabili di coppie chiave-valore. Sono ottimizzati per recuperare valori tramite chiavi hashable.
 
 ## Quando usarlo
 
-Contenuto da sviluppare: nella nota originale questa sezione non era presente o era solo una traccia.
+Usa un dizionario per rappresentare record, configurazioni, lookup table, conteggi, mapping e dati JSON-like.
 
 ## Come funziona
 
-### Concetto chiave
-I **Dizionari** (`dict`) sono collezioni **mutabili** di elementi archiviati come coppie **Chiave-Valore** (*Key-Value*). Sono ottimizzati per il recupero rapido dei dati: invece di usare un indice numerico, si utilizza una chiave unica per "mappare" e trovare il valore associato.
+Le chiavi devono essere hashable, quindi normalmente stringhe, numeri o tuple immutabili. I valori possono essere di qualsiasi tipo.
 
----
-### Metodi Principali
-| Metodo | Descrizione |
-| :--- | :--- |
-| `.keys()` | Restituisce una vista di tutte le **chiavi**. |
-| `.values()` | Restituisce una vista di tutti i **valori**. |
-| `.items()` | Restituisce una vista di coppie **(chiave, valore)**. |
-| `.update(dict2)` | Unisce dic1 con dic2 (sovrascrivendo le chiavi comuni). |
-| `.pop(key)` | Rimuove la chiave specificata e ne restituisce il valore. |
-
----
-### Iterazione sui Dizionari
-Il modo più comune per iterare è usare `.items()` per ottenere sia la chiave che il valore contemporaneamente.
-
-```python
-for chiave, valore in utente.items():
-    print(f"{chiave}: {valore}")
-```
-
----
-### Logic layer: Come funzionano i Dizionari?
-### 1. Performance (Hash Table)
-I dizionari in Python sono implementati come **Hash Table**. Quando cerchi una chiave, Python calcola il suo "hash" per trovare direttamente la posizione in memoria.
-
-> [!INFO] Complessità Computazionale (Big O)
-> - **Ricerca/Inserimento/Cancellazione:** $O(1)$ in media.
-> Questo rende i dizionari estremamente efficienti per dataset di grandi dimensioni.
-
-### 2. Ordinamento
-Fino a Python 3.6, l'ordine degli elementi in un dizionario era casuale.
-**Da Python 3.7+**, i dizionari garantiscono di mantenere l'**ordine di inserimento** degli elementi.
-
----
+Da Python 3.7 l'ordine di inserimento e garantito.
 
 ## API / Sintassi
 
-### Sintassi e Operazioni Base
-### Creazione e Accesso
-Le chiavi devono essere **immutabili** (stringhe, numeri o tuple), mentre i valori possono essere di qualsiasi tipo.
+```python
+user = {
+    "id": 1,
+    "email": "ada@example.com",
+    "active": True,
+}
+
+email = user["email"]
+phone = user.get("phone", "N/A")
+user["active"] = False
+```
+
+Iterazione:
 
 ```python
-# Dizionari in Python
+for key, value in user.items():
+    print(key, value)
+```
 
 ## Esempio pratico
 
-Contenuto da sviluppare: nella nota originale questa sezione non era presente o era solo una traccia.
+```python
+users = [
+    {"id": 1, "email": "a@example.com"},
+    {"id": 2, "email": "b@example.com"},
+]
+
+users_by_id = {user["id"]: user for user in users}
+selected = users_by_id.get(2)
+```
 
 ## Varianti
 
-Contenuto da sviluppare: nella nota originale questa sezione non era presente o era solo una traccia.
+- Dizionario letterale: `{}`.
+- `dict()`.
+- `defaultdict`.
+- `Counter`.
+- Dizionari annidati.
+- Dictionary comprehension.
 
 ## Errori comuni
 
-Contenuto da sviluppare: nella nota originale questa sezione non era presente o era solo una traccia.
+- Accedere con `dict[key]` quando la chiave puo mancare.
+- Usare chiavi mutabili come liste.
+- Modificare un dizionario durante iterazione sulle chiavi.
+- Confondere copia superficiale e profonda.
+- Usare dizionari troppo annidati senza struttura.
 
 ## Checklist
 
-Contenuto da sviluppare: nella nota originale questa sezione non era presente o era solo una traccia.
+- Le chiavi sono stabili e hashable?
+- Usi `.get()` quando la chiave e opzionale?
+- Il dizionario rappresenta davvero un mapping?
+- Serve una dataclass o modello tipizzato?
+- La copia deve essere superficiale o profonda?
 
 ## Collegamenti
 
-- [[Programmazione/Python/Indice python|Indice Python]]
+- [[Programmazione/Python/Pagine/Set|Set]]
+- [[Programmazione/Python/Pagine/Dataclasses|Dataclasses]]
+- [[Programmazione/Python/Pagine/Comprehensions|Comprehensions]]

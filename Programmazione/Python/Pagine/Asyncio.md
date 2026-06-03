@@ -1,12 +1,12 @@
-﻿---
-date: 2026-06-02
+---
+date: 2026-06-03
 area: Programmazione
 topic: Python
 type: technical-note
 status: "non revisionato"
 difficulty: intermediate
-tags: [python, programming]
-aliases: [Asyncio]
+tags: [python, programming, async]
+aliases: [Asyncio, async await Python]
 prerequisites: []
 related: []
 ---
@@ -15,134 +15,158 @@ related: []
 
 ## Sintesi
 
-Nota su Asyncio in Python. Riassume il concetto, la sintassi principale e i punti da ricordare durante studio, sviluppo o debugging.
-Nota su Asyncio in Python. Riassume il concetto, la sintassi principale e i punti da ricordare durante studio, sviluppo o debugging.
-async def my_coroutine():
-    print("Inizio...")
-    await asyncio.sleep(1) # Sospende la coroutine senza bloccare il thread
-    print("Fine!")
+`asyncio` e la libreria standard per scrivere codice concorrente con `async` e `await`. Usa un event loop e concorrenza cooperativa: una coroutine cede il controllo quando attende I/O, permettendo ad altre coroutine di avanzare.
 
-# Asyncio in Python
-Nota su Asyncio in Python. Riassume il concetto, la sintassi principale e i punti da ricordare durante studio, sviluppo o debugging.
-if __name__ == "__main__":
-    asyncio.run(my_coroutine())
-```
-
----
+E adatto soprattutto a carichi **I/O-bound** con molte attese, come rete, API, websocket, scraping e servizi asincroni.
 
 ## Quando usarlo
 
-Contenuto da sviluppare: nella nota originale questa sezione non era presente o era solo una traccia.
+Usa `asyncio` quando:
+
+- devi gestire molte operazioni di rete concorrenti;
+- usi librerie async come `httpx.AsyncClient`, driver database async o framework ASGI;
+- vuoi evitare un thread per ogni operazione in attesa;
+- hai task che passano molto tempo in `await`;
+- stai costruendo servizi con molte connessioni simultanee.
+
+Evitalo per calcoli CPU-bound lunghi: bloccherebbero l'event loop.
 
 ## Come funziona
 
-### Concetto chiave
-**Asyncio** è una libreria per scrivere codice concorrente utilizzando la sintassi **async/await**. A differenza del [[Programmazione/Python/Pagine/Threading]] (concorrenza preemptive), Asyncio utilizza la **concorrenza cooperativa** su un singolo thread. Un **Event Loop** gestisce l'esecuzione di diverse "coroutine", passando dall'una all'altra quando una di esse è in attesa (solitamente per operazioni di I/O).
-
-> [!TIP]
-> Asyncio è perfetto per gestire migliaia di connessioni simultanee (web server, scraper, chat) dove il collo di bottiglia è l'attesa della rete, non la potenza di calcolo della CPU.
-
----
-### Esempi Pratici
-### Esempio Base: Esecuzione Concorrente
-Utilizzo di `asyncio.gather()` per eseguire più task contemporaneamente.
+Una coroutine si definisce con `async def` e si sospende con `await`.
 
 ```python
 import asyncio
-import time
 
-async def fetch_data(id, delay):
-    print(f"Task {id} iniziato (attesa {delay}s)...")
+
+async def fetch_data(name, delay):
     await asyncio.sleep(delay)
-    print(f"Task {id} completato.")
-    return f"Dati da {id}"
+    return f"data from {name}"
+
 
 async def main():
-    start = time.perf_counter()
-    
-    # Avvia più coroutine e attende che tutte finiscano
-    results = await asyncio.gather(
-        fetch_data(1, 2),
-        fetch_data(2, 1),
-        fetch_data(3, 1.5)
-    )
-    
-    end = time.perf_counter()
-    print(f"Risultati: {results}")
-    print(f"Tempo totale: {end - start:.2f} secondi")
+    result = await fetch_data("api", 1)
+    print(result)
 
-if __name__ == "__main__":
-    asyncio.run(main())
+
+asyncio.run(main())
 ```
 
-### Esempio Avanzato: Gestione di Task
-Creazione di task espliciti per farli girare in "background".
-
-```python
-import asyncio
-
-async def background_worker():
-    while True:
-        print("Worker attivo...")
-        await asyncio.sleep(1)
-
-async def main():
-    # Crea un task (inizia l'esecuzione subito)
-    task = asyncio.create_task(background_worker())
-    
-    print("Main continua a fare altro...")
-    await asyncio.sleep(3)
-    
-    # Possiamo annullare il task se necessario
-    task.cancel()
-    print("Main terminato.")
-
-if __name__ == "__main__":
-    asyncio.run(main())
-```
-
----
-### Funzionamento Interno (Teoria)
-- **Event Loop:** È il cuore di asyncio. Gira in un ciclo infinito e decide quale coroutine eseguire in base agli eventi pronti (es. dati arrivati sulla socket).
-- **Coroutine:** Sono funzioni speciali che possono "mettere in pausa" la loro esecuzione (`yield` sotto il cofano) per restituire il controllo al loop.
-- **Single Threaded:** Tutto gira su un unico thread. Questo elimina il rischio di race condition su variabili globali (nessun bisogno di Lock complessi), ma significa anche che una coroutine che fa calcoli pesanti bloccherà *tutto* il programma.
-- **Bypass del GIL:** Non bypassa il [[Programmazione/Python/Pagine/Global Interpreter Lock|GIL]], ma lo rende irrilevante per task I/O-bound perché il thread viene rilasciato durante l'attesa asincrona.
-
----
+`asyncio.run()` crea e gestisce l'event loop per il punto di ingresso principale.
 
 ## API / Sintassi
 
-### Sintassi
-Le basi di asyncio ruotano attorno a tre concetti: `async def`, `await` e l'Event Loop.
+Eseguire piu coroutine insieme:
 
 ```python
 import asyncio
 
-# Asyncio in Python
+
+async def fetch(name, delay):
+    await asyncio.sleep(delay)
+    return name
+
+
+async def main():
+    results = await asyncio.gather(
+        fetch("a", 2),
+        fetch("b", 1),
+        fetch("c", 1),
+    )
+    print(results)
+
+
+asyncio.run(main())
+```
+
+Creare un task esplicito:
+
+```python
+async def background_worker():
+    while True:
+        print("working")
+        await asyncio.sleep(1)
+
+
+async def main():
+    task = asyncio.create_task(background_worker())
+    await asyncio.sleep(3)
+    task.cancel()
+```
+
+Timeout:
+
+```python
+result = await asyncio.wait_for(fetch("api", 1), timeout=2)
+```
 
 ## Esempio pratico
 
-Contenuto da sviluppare: nella nota originale questa sezione non era presente o era solo una traccia.
+Eseguire richieste simulate in concorrenza:
+
+```python
+import asyncio
+from time import perf_counter
+
+
+async def request(name, delay):
+    await asyncio.sleep(delay)
+    return f"{name}: ok"
+
+
+async def main():
+    start = perf_counter()
+
+    results = await asyncio.gather(
+        request("users", 1),
+        request("orders", 1.5),
+        request("billing", 0.5),
+    )
+
+    elapsed = perf_counter() - start
+    print(results)
+    print(f"elapsed: {elapsed:.2f}s")
+
+
+asyncio.run(main())
+```
+
+Il tempo totale segue l'operazione piu lenta, non la somma di tutte, perche le attese si sovrappongono.
 
 ## Varianti
 
-Contenuto da sviluppare: nella nota originale questa sezione non era presente o era solo una traccia.
+- **`asyncio.gather()`**: attende piu coroutine e restituisce risultati ordinati.
+- **`asyncio.create_task()`**: schedula una coroutine come task.
+- **`asyncio.as_completed()`**: consuma risultati appena sono pronti.
+- **Timeout e cancellazione**: `wait_for()`, `task.cancel()`.
+- **Semaphore**: limita la concorrenza massima.
+- **Async context manager**: `async with` per risorse asincrone.
+- **Async iterator**: `async for` per stream asincroni.
 
 ## Errori comuni
 
-### Best Practices & "Gotchas"
--  **Da fare:** Usa sempre librerie asincrone (es. `aiohttp` invece di `requests`) all'interno di coroutine.
--  **Da fare:** Usa `asyncio.create_task()` per task che non devono bloccare la sequenza principale.
--  **Da evitare:** Mai usare funzioni bloccanti come `time.sleep()` o operazioni di file sincrone in una coroutine; bloccheresti l'intero Event Loop.
--  **"Blocking the Loop":** Se una coroutine esegue un calcolo CPU-bound lungo, nessuna altra coroutine (nemmeno i task in background) potrà avanzare.
--  **Chiamata da sincrono:** È difficile chiamare codice asincrono da un contesto puramente sincrono senza gestire manualmente il loop (usa `asyncio.run()` solo nel main).
-
----
+- Usare `time.sleep()` dentro una coroutine invece di `await asyncio.sleep()`.
+- Chiamare librerie bloccanti dentro codice async.
+- Creare coroutine senza attenderle.
+- Usare `asyncio.run()` dentro un event loop gia attivo.
+- Fare calcoli CPU-bound dentro l'event loop.
+- Non gestire cancellazione e timeout.
+- Mescolare codice sync e async senza confini chiari.
 
 ## Checklist
 
-Contenuto da sviluppare: nella nota originale questa sezione non era presente o era solo una traccia.
+- Il carico e davvero I/O-bound?
+- Le librerie usate supportano davvero async?
+- Ogni coroutine viene attesa o schedulata?
+- Esistono timeout per operazioni esterne?
+- La concorrenza massima e limitata quando serve?
+- Il codice CPU-bound viene spostato fuori dall'event loop?
 
 ## Collegamenti
 
 - [[Programmazione/Python/Indice python|Indice Python]]
+- [[Threading]]
+- [[Concurrent.futures]]
+- [[Global Interpreter Lock]]
+- [[Networking base]]
+- [[HTTPX e requests]]

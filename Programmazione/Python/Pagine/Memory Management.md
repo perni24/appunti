@@ -1,11 +1,11 @@
-﻿---
-date: 2026-06-02
+---
+date: 2026-06-03
 area: Programmazione
 topic: Python
-type: technical-note
+type: theory-note
 status: "non revisionato"
 difficulty: intermediate
-tags: [python, programming]
+tags: [python, programming, memory]
 aliases: [Memory Management]
 prerequisites: []
 related: []
@@ -15,49 +15,43 @@ related: []
 
 ## Sintesi
 
-Nota su Memory Management in Python. Riassume il concetto, la sintassi principale e i punti da ricordare durante studio, sviluppo o debugging.
+Python gestisce la memoria automaticamente, ma questo non significa che la memoria sia irrilevante. Capire riferimenti, mutabilita, garbage collection e risorse esterne aiuta a evitare consumi eccessivi, cache fuori controllo e bug dovuti ad aliasing.
+
+In CPython il modello si basa soprattutto su reference counting e garbage collector ciclico.
 
 ## Quando usarlo
 
-Contenuto da sviluppare: nella nota originale questa sezione non era presente o era solo una traccia.
+Questo argomento diventa importante quando:
+
+- un programma consuma troppa RAM;
+- lavori con file, stream o dataset grandi;
+- usi cache, singleton o strutture globali;
+- devi capire aliasing e mutabilita;
+- fai profiling o debugging di memory leak logici;
+- gestisci risorse esterne come file, socket o lock.
 
 ## Come funziona
 
-### Concetto chiave
-Python gestisce la memoria in modo **automatico**: il programmatore non alloca e libera manualmente la memoria come avviene in linguaggi come C o C++. Questo non significa pero che la memoria sia "gratuita": capire come Python alloca, riusa e libera gli oggetti aiuta a scrivere codice piu efficiente, evitare memory leak logici e ragionare meglio sulle performance.
-
-L'implementazione standard, **CPython**, combina principalmente:
-- **Reference Counting** per liberare subito molti oggetti non piu usati.
-- **Garbage Collector ciclico** per individuare cicli di riferimento che il conteggio dei riferimenti da solo non riesce a eliminare.
-
-> [!INFO] Memoria automatica != assenza di problemi
-> Python semplifica enormemente la gestione della memoria, ma un programma puo comunque consumare troppa RAM, mantenere riferimenti inutili o trattenere risorse come file e socket se non vengono rilasciati correttamente.
-
----
-### Componenti principali
-### 1. Reference Counting
-Ogni oggetto in CPython mantiene internamente un contatore di quanti riferimenti puntano a lui. Quando il contatore scende a zero, l'oggetto puo essere distrutto immediatamente.
+In Python una variabile contiene un riferimento a un oggetto, non l'oggetto stesso.
 
 ```python
-import sys
-
 numbers = [1, 2, 3]
-print(sys.getrefcount(numbers))  # Nota: include anche il riferimento temporaneo della funzione
-
 alias = numbers
-print(sys.getrefcount(numbers))
 
-del alias
-print(sys.getrefcount(numbers))
+alias.append(4)
+
+print(numbers)  # [1, 2, 3, 4]
 ```
 
-### 2. Garbage Collector ciclico
-Il reference counting non basta quando due o piu oggetti si referenziano a vicenda.
+`numbers` e `alias` puntano allo stesso oggetto mutabile.
+
+In CPython ogni oggetto ha un contatore di riferimenti. Quando il contatore arriva a zero, l'oggetto puo essere liberato. Per cicli di riferimento entra in gioco il garbage collector.
 
 ```python
 class Node:
     def __init__(self):
         self.other = None
+
 
 a = Node()
 b = Node()
@@ -66,128 +60,91 @@ a.other = b
 b.other = a
 ```
 
-Se `a` e `b` escono dallo scope, i loro contatori possono non arrivare a zero a causa del ciclo. In questi casi entra in gioco il modulo `gc`, che analizza gli oggetti e rimuove i cicli non piu raggiungibili.
+Qui gli oggetti si referenziano a vicenda. Il garbage collector ciclico serve anche per questi casi.
 
-### 3. Allocatore di memoria di CPython
-CPython usa un allocatore specializzato chiamato **pymalloc**, ottimizzato per gli oggetti piccoli. Questo riduce il costo delle allocazioni frequenti e migliora le prestazioni in programmi che creano molti oggetti di breve durata.
+## API / Sintassi
 
----
-### Esempi Pratici
-### Verificare riferimenti e dimensioni
+Strumenti utili:
+
+- `sys.getrefcount(obj)`: mostra il numero di riferimenti in CPython;
+- `sys.getsizeof(obj)`: dimensione approssimativa dell'oggetto;
+- `gc.collect()`: forza una raccolta del garbage collector;
+- `gc.get_stats()`: mostra statistiche del garbage collector;
+- `tracemalloc`: traccia allocazioni di memoria.
 
 ```python
 import sys
 
-data = {"name": "Luca", "age": 30}
+data = {"name": "Luca", "roles": ["admin", "editor"]}
 
-print(sys.getsizeof(data))      # dimensione approssimativa dell'oggetto contenitore
-print(sys.getrefcount(data))    # numero di riferimenti attivi
+print(sys.getsizeof(data))
+print(sys.getrefcount(data))
 ```
 
-> [!WARNING] `getsizeof` non misura tutto
-> `sys.getsizeof()` misura la dimensione dell'oggetto contenitore, ma non sempre include in modo completo la memoria occupata dagli oggetti referenziati internamente. Per strutture annidate profonde il consumo reale puo essere maggiore.
+`sys.getsizeof()` non misura sempre l'intera memoria di una struttura annidata: misura l'oggetto contenitore, non necessariamente tutti gli oggetti referenziati.
 
-### Forzare un controllo del garbage collector
+## Esempio pratico
+
+Un memory leak logico spesso nasce da strutture che restano raggiungibili per tutta la vita del processo.
 
 ```python
-import gc
+results_cache = {}
 
-unreachable = gc.collect()
-print(f"Oggetti non raggiungibili raccolti: {unreachable}")
+
+def store_result(key, value):
+    results_cache[key] = value
 ```
 
-Questo e utile soprattutto in fase di debug o analisi, non come pratica normale nel codice applicativo.
+Questo non e un leak per il garbage collector: la memoria e ancora raggiungibile. Il problema e che la cache non ha limiti o invalidazione.
 
-### Ridurre l'uso di memoria con i generatori
+Una versione piu controllata usa una cache limitata.
+
+```python
+from functools import lru_cache
+
+
+@lru_cache(maxsize=256)
+def compute_report(user_id):
+    return f"report for {user_id}"
+```
+
+## Varianti
+
+- **Reference counting**: libera molti oggetti appena non sono piu referenziati.
+- **Garbage collector ciclico**: gestisce cicli di oggetti non piu raggiungibili.
+- **Allocator di CPython**: ottimizza allocazioni frequenti di oggetti piccoli.
+- **Lazy evaluation**: generatori e iteratori riducono memoria temporanea.
+- **Context manager**: gestiscono risorse esterne, che non sono la stessa cosa della memoria.
 
 ```python
 def read_lines(path):
-    with open(path, "r", encoding="utf-8") as file:
+    with open(path, encoding="utf-8") as file:
         for line in file:
             yield line.strip()
 ```
 
-Un approccio come questo evita di caricare tutto il file in RAM e si collega direttamente al comportamento dei [[Programmazione/Python/Pagine/Generatori]].
-
----
-### Funzionamento Interno (Teoria)
-### Stack vs Heap
-- **Stack**: contiene i riferimenti locali delle chiamate di funzione attive.
-- **Heap**: contiene gli oggetti Python creati dinamicamente.
-
-Quando dichiari una variabile in Python, in molti casi non stai "contenendo" direttamente l'oggetto, ma un riferimento all'oggetto allocato nell'heap.
-
-```python
-x = [1, 2, 3]
-y = x
-```
-
-Qui `x` e `y` puntano allo stesso oggetto in memoria.
-
-### Identity, mutabilita e condivisione
-Il memory management e strettamente legato ai concetti di:
-- **identita** dell'oggetto (`id(obj)`);
-- **mutabilita**;
-- **aliasing** tra variabili diverse.
-
-Se piu riferimenti puntano allo stesso oggetto mutabile, una modifica fatta tramite uno dei riferimenti sara visibile anche dagli altri.
-
-### Distruzione degli oggetti
-In CPython, molti oggetti vengono liberati appena il reference count va a zero. Questo spiega perche il rilascio della memoria spesso appare "immediato", ma non bisogna farci troppo affidamento a livello logico, specialmente quando si lavora con risorse esterne.
-
-Per file, lock, connessioni o socket, la strategia corretta non e aspettare il garbage collector, ma usare `with` e i [[Programmazione/Python/Pagine/Context Managers]].
-
----
-### Memory Leak in Python: come possono esistere?
-Anche in un linguaggio con garbage collection possono comparire memory leak logici.
-
-### Cause comuni
-- collezioni globali che crescono senza limiti;
-- cache mai svuotate;
-- listener o callback mantenuti oltre il necessario;
-- cicli di riferimento associati a finalizer complessi;
-- strutture dati troppo grandi mantenute vive accidentalmente.
-
-```python
-cache = []
-
-def store_result(result):
-    cache.append(result)  # la lista cresce per tutta la vita del processo
-```
-
-In questo esempio Python non ha "perso" memoria: la memoria e ancora raggiungibile, quindi non puo liberarla. Il problema e nella logica dell'applicazione.
-
----
-
-## API / Sintassi
-
-Contenuto da sviluppare: nella nota originale questa sezione non era presente o era solo una traccia.
-
-## Esempio pratico
-
-Contenuto da sviluppare: nella nota originale questa sezione non era presente o era solo una traccia.
-
-## Varianti
-
-Contenuto da sviluppare: nella nota originale questa sezione non era presente o era solo una traccia.
-
 ## Errori comuni
 
-### Best Practices & "Gotchas"
--  **Preferisci `with` per le risorse:** file, lock e connessioni non vanno lasciati alla sola distruzione automatica.
--  **Usa generatori e iterazione lazy:** per dataset grandi, evita di creare liste complete se non servono.
--  **Controlla le strutture condivise:** liste globali, cache e singleton possono trattenere memoria piu del previsto.
--  **Usa `gc` e `tracemalloc` per analisi mirate:** sono strumenti ottimi per capire dove cresce la memoria.
--  **Non chiamare `gc.collect()` come soluzione generica:** se serve spesso, probabilmente c'e un problema architetturale o di design.
--  **Attenzione all'aliasing:** copiare un riferimento non significa copiare l'oggetto.
--  **Non confondere memoria con risorse esterne:** liberare RAM e chiudere un file sono due problemi distinti.
-
----
+- Pensare che `del variable` liberi sempre subito tutta la memoria osservabile dal sistema operativo.
+- Confondere liberazione della memoria e chiusura di risorse esterne.
+- Lasciare crescere cache, liste globali o code senza limiti.
+- Creare copie grandi non necessarie invece di usare iteratori o generatori.
+- Non considerare aliasing su oggetti mutabili.
+- Usare `gc.collect()` come soluzione abituale invece di correggere i riferimenti mantenuti vivi.
 
 ## Checklist
 
-Contenuto da sviluppare: nella nota originale questa sezione non era presente o era solo una traccia.
+- Sto mantenendo riferimenti inutili a oggetti grandi?
+- Una lista puo essere sostituita da un generatore?
+- Le cache hanno un limite o una strategia di invalidazione?
+- Le risorse esterne sono gestite con `with`?
+- Ho verificato il consumo con strumenti come `tracemalloc` prima di ottimizzare?
 
 ## Collegamenti
 
 - [[Programmazione/Python/Indice python|Indice Python]]
+- [[Generatori]]
+- [[Iteratori]]
+- [[Context Managers]]
+- [[Caching]]
+- [[Profiling]]

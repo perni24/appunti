@@ -1,12 +1,12 @@
-﻿---
-date: 2026-06-02
+---
+date: 2026-06-03
 area: Programmazione
 topic: Python
 type: technical-note
 status: "non revisionato"
-difficulty: intermediate
-tags: [python, programming]
-aliases: [Funzioni Lambda]
+difficulty: beginner
+tags: [python, programming, functions]
+aliases: [Funzioni Lambda, Lambda]
 prerequisites: []
 related: []
 ---
@@ -15,98 +15,122 @@ related: []
 
 ## Sintesi
 
-Nota su Funzioni Lambda in Python. Riassume il concetto, la sintassi principale e i punti da ricordare durante studio, sviluppo o debugging.
-Nota su Funzioni Lambda in Python. Riassume il concetto, la sintassi principale e i punti da ricordare durante studio, sviluppo o debugging.
-somma = lambda x, y: x + y
+Una lambda e una piccola funzione anonima definita con la keyword `lambda`. Contiene una sola espressione e restituisce automaticamente il valore di quell'espressione.
 
-print(somma(5, 3)) # Output: 8
-```
-
-### Ordinamento Personalizzato (Uso tipico)
-Le lambda sono estremamente utili come argomenti per funzioni come `sorted()`, `min()`, `max()`.
-
-```python
-coppie = [(1, 'uno'), (3, 'tre'), (2, 'due')]
-
-# Funzioni Lambda in Python
-Nota su Funzioni Lambda in Python. Riassume il concetto, la sintassi principale e i punti da ricordare durante studio, sviluppo o debugging.
-coppie_ordinate = sorted(coppie, key=lambda x: x[1])
-# Funzioni Lambda in Python
-Nota su Funzioni Lambda in Python. Riassume il concetto, la sintassi principale e i punti da ricordare durante studio, sviluppo o debugging.
-```
-
-### Uso con Map e Filter
-```python
-numeri = [1, 2, 3, 4, 5, 6]
-
-# Funzioni Lambda in Python
-Nota su Funzioni Lambda in Python. Riassume il concetto, la sintassi principale e i punti da ricordare durante studio, sviluppo o debugging.
-pari = list(filter(lambda x: x % 2 == 0, numeri)) # [2, 4, 6]
-
-# Funzioni Lambda in Python
-Nota su Funzioni Lambda in Python. Riassume il concetto, la sintassi principale e i punti da ricordare durante studio, sviluppo o debugging.
-quadrati = list(map(lambda x: x**2, numeri)) # [1, 4, 9, 16, 25, 36]
-```
-
----
+E utile per callback brevi, ordinamenti e trasformazioni semplici. Se la logica cresce, e meglio usare `def`.
 
 ## Quando usarlo
 
-Contenuto da sviluppare: nella nota originale questa sezione non era presente o era solo una traccia.
+Usa una lambda quando:
+
+- la funzione serve una sola volta;
+- la logica e leggibile in una singola espressione;
+- devi passare una funzione come argomento;
+- vuoi definire una chiave di ordinamento;
+- stai scrivendo una trasformazione breve.
 
 ## Come funziona
 
-### Concetto chiave
-Le **funzioni lambda** (o funzioni anonime) sono piccole funzioni ad una riga definite senza un nome. Sono ideali per operazioni brevi e "usa e getta", dove definire una funzione completa con `def` risulterebbe eccessivamente verboso.
+Sintassi:
 
----
-### Esempi Pratici
-### Esempio Base
 ```python
-# Funzioni Lambda in Python
-### Funzionamento Interno (Teoria)
-- **Oggetti di prima classe:** Le lambda sono oggetti funzione a tutti gli effetti, proprio come quelle create con `def`.
-- **Scope & Closures:** Le funzioni lambda hanno accesso alle variabili nel loro scope esterno (lexical scoping), permettendo la creazione di closure semplici.
-- **Limitazioni:** A differenza di `def`, non possono avere annotazioni di tipo (type hints) o docstring, e sono limitate a una singola espressione logica.
+lambda arguments: expression
+```
 
----
+Esempio:
+
+```python
+add = lambda a, b: a + b
+
+print(add(2, 3))
+```
+
+Questo funziona, ma assegnare una lambda a una variabile e spesso meno leggibile di una funzione normale:
+
+```python
+def add(a, b):
+    return a + b
+```
 
 ## API / Sintassi
 
-### Sintassi
-In Python, una funzione lambda si definisce con la keyword `lambda`.
+Uso con `sorted()`:
 
 ```python
-lambda argomenti: espressione
+users = [
+    {"name": "Luca", "age": 30},
+    {"name": "Anna", "age": 24},
+]
+
+ordered = sorted(users, key=lambda user: user["age"])
 ```
 
-- Possono accettare un numero qualsiasi di argomenti.
-- Possono contenere **solo una singola espressione** (non statement come `if`, `for` o `return` espliciti).
-- Restituiscono automaticamente il risultato dell'espressione.
+Uso con `min()`:
 
----
+```python
+youngest = min(users, key=lambda user: user["age"])
+```
+
+Uso con `map()` e `filter()`:
+
+```python
+numbers = [1, 2, 3, 4]
+
+squares = list(map(lambda number: number * number, numbers))
+even = list(filter(lambda number: number % 2 == 0, numbers))
+```
+
+In molti casi una comprehension e piu leggibile:
+
+```python
+squares = [number * number for number in numbers]
+even = [number for number in numbers if number % 2 == 0]
+```
 
 ## Esempio pratico
 
-Contenuto da sviluppare: nella nota originale questa sezione non era presente o era solo una traccia.
+Ordinare righe di report per priorita:
+
+```python
+rows = [
+    {"title": "backup", "priority": 3},
+    {"title": "security patch", "priority": 1},
+    {"title": "cleanup", "priority": 5},
+]
+
+rows_by_priority = sorted(rows, key=lambda row: row["priority"])
+```
+
+La lambda e appropriata perche la logica e breve e locale al punto d'uso.
 
 ## Varianti
 
-Contenuto da sviluppare: nella nota originale questa sezione non era presente o era solo una traccia.
+- **Lambda senza nome**: passata direttamente a una funzione.
+- **Lambda assegnata**: possibile, ma spesso sconsigliata.
+- **Lambda come key function**: uso tipico con `sorted`, `min`, `max`.
+- **Lambda in closure**: puo leggere variabili dello scope esterno.
+- **`def` equivalente**: preferibile quando servono nome, docstring, type hint o piu righe.
 
 ## Errori comuni
 
-### Best Practices & "Gotchas"
--  **Da fare:** Usale quando la logica è così semplice da essere chiara in una sola riga (es. trasformazioni di dati, callback).
--  **Da evitare:** Non assegnare mai una lambda a una variabile (es. `f = lambda x: x`). In quel caso, il PEP 8 raccomanda l'uso di `def f(x): return x` per facilitare il debugging (miglior stack trace).
--  **Leggibilità:** Se la lambda diventa troppo complessa o difficile da leggere, spostala in una funzione regolare con un nome descrittivo.
-
----
+- Usare lambda complesse difficili da leggere.
+- Assegnare lambda a variabili quando `def` sarebbe piu chiaro.
+- Usare lambda per sostituire funzioni con logica significativa.
+- Dimenticare che puo contenere solo una espressione.
+- Creare closure in loop senza considerare il binding delle variabili.
 
 ## Checklist
 
-Contenuto da sviluppare: nella nota originale questa sezione non era presente o era solo una traccia.
+- La lambda e leggibile in una riga?
+- Serve solo localmente?
+- Una funzione `def` renderebbe il codice piu chiaro?
+- Serve una docstring o type hint?
+- Una comprehension sarebbe piu leggibile di `map` o `filter`?
 
 ## Collegamenti
 
 - [[Programmazione/Python/Indice python|Indice Python]]
+- [[Funzioni]]
+- [[Higher-order Functions]]
+- [[Comprehensions]]
+- [[Decoratori]]

@@ -1,5 +1,5 @@
-﻿---
-date: 2026-06-02
+---
+date: 2026-06-03
 area: Programmazione
 topic: Python
 type: technical-note
@@ -15,109 +15,154 @@ related: []
 
 ## Sintesi
 
-Nota su Iteratori in Python. Riassume il concetto, la sintassi principale e i punti da ricordare durante studio, sviluppo o debugging.
-Nota su Iteratori in Python. Riassume il concetto, la sintassi principale e i punti da ricordare durante studio, sviluppo o debugging.
-```
+Un iteratore e un oggetto che produce valori uno alla volta tramite il protocollo `__iter__()` e `__next__()`. E alla base di `for`, comprehension, generatori e molte API della standard library.
 
-### Protocollo Iteratore (Classe Personalizzata)
-Per creare un iteratore personalizzato, una classe deve implementare:
-1. `__iter__(self)`: Deve restituire l'oggetto iteratore stesso (solitamente `self`).
-2. `__next__(self)`: Deve restituire l'elemento successivo o sollevare `StopIteration`.
+La distinzione importante e tra:
 
-```python
-class Contatore:
-    def __init__(self, limite):
-        self.limite = limite
-        self.attuale = 0
-
-    def __iter__(self):
-        return self
-
-    def __next__(self):
-        if self.attuale < self.limite:
-            self.attuale += 1
-            return self.attuale
-        else:
-            raise StopIteration
-
-for n in Contatore(5):
-    print(n) # Stampa da 1 a 5
-```
-
----
-Nota su Iteratori in Python. Riassume il concetto, la sintassi principale e i punti da ricordare durante studio, sviluppo o debugging.
-```
-
----
-
-## Quando usarlo
-
-Contenuto da sviluppare: nella nota originale questa sezione non era presente o era solo una traccia.
-
-## Come funziona
-
-### Concetto chiave
-Un **iteratore** è un oggetto che permette di scorrere una collezione di dati un elemento alla volta. In Python, l'iterazione si basa su due concetti distinti:
-- **Iterabile (Iterable):** Un oggetto che può restituire un iteratore (es. liste, tuple, stringhe, dizionari). Ha il metodo `__iter__()`.
-- **Iteratore (Iterator):** L'oggetto che tiene traccia della posizione durante l'iterazione. Ha il metodo `__next__()`.
+- **iterabile**: oggetto da cui si puo ottenere un iteratore, come `list`, `tuple`, `dict`, `str`;
+- **iteratore**: oggetto che mantiene lo stato dell'iterazione e restituisce il prossimo valore con `next()`.
 
 Tutti gli iteratori sono iterabili, ma non tutti gli iterabili sono iteratori.
 
----
-### Esempi Pratici
-### Iteratori Infiniti
-Un iteratore può non avere mai fine, a differenza di una lista.
+## Quando usarlo
+
+Usa gli iteratori quando vuoi attraversare una sequenza o un flusso senza caricare tutto in memoria.
+
+Sono utili per:
+
+- leggere dati riga per riga;
+- costruire pipeline lazy;
+- modellare sequenze calcolate al momento;
+- evitare liste temporanee molto grandi;
+- implementare oggetti personalizzati compatibili con `for`.
+
+## Come funziona
+
+Il ciclo `for` chiama internamente `iter()` sull'oggetto ricevuto e poi invoca `next()` finche l'iteratore solleva `StopIteration`.
 
 ```python
-class SempreDue:
-    def __iter__(self):
-        return self
-    def __next__(self):
-        return 2
+numbers = [10, 20, 30]
+iterator = iter(numbers)
 
-it = SempreDue()
-# Iteratori in Python
-### Funzionamento Interno (Teoria)
-- **Lazy Evaluation:** Gli iteratori non calcolano tutti i valori subito, ma solo quando richiesti tramite `next()`. Questo permette di gestire sequenze enormi con un consumo di memoria minimo (costante, O(1)).
-- **Stato:** L'iteratore "consuma" se stesso. Una volta arrivato alla fine, non può essere riavviato (bisogna creare un nuovo iteratore dall'iterabile).
-- **Relazione con i Generatori:** I [Generatori](Generatori.md) sono un modo sintatticamente più semplice per creare iteratori senza definire una classe completa.
+print(next(iterator))  # 10
+print(next(iterator))  # 20
+print(next(iterator))  # 30
+```
 
----
+Un iteratore mantiene uno stato interno. Dopo essere stato consumato, non riparte da capo.
+
+```python
+items = iter(["a", "b"])
+
+for item in items:
+    print(item)
+
+for item in items:
+    print(item)  # non stampa nulla: l'iteratore e gia esaurito
+```
 
 ## API / Sintassi
 
-### Sintassi ed Utilizzo
-### Funzioni `iter()` e `next()`
-```python
-numeri = [1, 2, 3]
-it = iter(numeri) # Otteniamo l'iteratore dalla lista
+Funzioni principali:
 
-print(next(it)) # 1
-print(next(it)) # 2
-print(next(it)) # 3
-# Iteratori in Python
+- `iter(obj)`: restituisce un iteratore dall'oggetto iterabile;
+- `next(iterator)`: restituisce il prossimo valore;
+- `StopIteration`: eccezione che segnala la fine dell'iterazione.
+
+Una classe puo diventare un iteratore implementando `__iter__()` e `__next__()`.
+
+```python
+class CountTo:
+    def __init__(self, limit):
+        self.limit = limit
+        self.current = 0
+
+    def __iter__(self):
+        return self
+
+    def __next__(self):
+        if self.current >= self.limit:
+            raise StopIteration
+
+        self.current += 1
+        return self.current
+
+
+for number in CountTo(3):
+    print(number)
+```
+
+Output:
+
+```text
+1
+2
+3
+```
 
 ## Esempio pratico
 
-Contenuto da sviluppare: nella nota originale questa sezione non era presente o era solo una traccia.
+Un iteratore personalizzato puo essere utile quando vuoi rappresentare una sequenza che dipende da uno stato interno.
+
+```python
+class RetryDelays:
+    def __init__(self, attempts, base_delay):
+        self.attempts = attempts
+        self.base_delay = base_delay
+        self.current_attempt = 0
+
+    def __iter__(self):
+        return self
+
+    def __next__(self):
+        if self.current_attempt >= self.attempts:
+            raise StopIteration
+
+        delay = self.base_delay * (2 ** self.current_attempt)
+        self.current_attempt += 1
+        return delay
+
+
+for delay in RetryDelays(attempts=4, base_delay=0.5):
+    print(delay)
+```
+
+Questo produce ritardi progressivi senza creare prima una lista di tutti i valori.
 
 ## Varianti
 
-Contenuto da sviluppare: nella nota originale questa sezione non era presente o era solo una traccia.
+- **Iterabile riutilizzabile**: ogni chiamata a `iter()` crea un nuovo iteratore. Una lista e un esempio tipico.
+- **Iteratore monouso**: l'oggetto e anche il proprio iteratore e viene consumato progressivamente.
+- **Generatori**: funzioni con `yield` che implementano automaticamente il protocollo iteratore.
+- **`itertools`**: modulo della standard library con strumenti per comporre iteratori.
+- **`iter(callable, sentinel)`**: forma speciale che richiama una funzione finche non restituisce un valore sentinella.
+
+```python
+with open("data.txt", encoding="utf-8") as file:
+    for line in iter(file.readline, ""):
+        print(line.strip())
+```
 
 ## Errori comuni
 
-### Best Practices & "Gotchas"
--  **Utilizzo:** Usa gli iteratori per processare dati che non entrano in memoria o per flussi di dati in tempo reale.
--  **Riutilizzo:** Ricorda che un iteratore è "monouso". Se provi a iterare due volte sullo stesso oggetto iteratore, la seconda volta risulterà vuoto.
--  **Ciclo For:** Il ciclo `for` in Python gestisce automaticamente la chiamata a `iter()`, le chiamate a `next()` e l'eccezione `StopIteration`. È il modo più sicuro di consumare un iteratore.
-
----
+- Riutilizzare un iteratore gia consumato aspettandosi che riparta dall'inizio.
+- Convertire sempre tutto in `list()` perdendo il vantaggio della valutazione lazy.
+- Confondere iterabile e iteratore durante la progettazione di classi custom.
+- Sollevare eccezioni diverse da `StopIteration` per indicare la fine della sequenza.
+- Modificare una collezione mentre la si sta iterando, ottenendo risultati difficili da prevedere.
 
 ## Checklist
 
-Contenuto da sviluppare: nella nota originale questa sezione non era presente o era solo una traccia.
+- L'oggetto deve essere riutilizzabile o monouso?
+- La sequenza potrebbe essere grande o infinita?
+- Il comportamento dopo l'esaurimento e chiaro?
+- `StopIteration` viene usato solo per terminare l'iterazione?
+- Un generatore sarebbe piu semplice di una classe iteratore?
 
 ## Collegamenti
 
 - [[Programmazione/Python/Indice python|Indice Python]]
+- [[Generatori]]
+- [[Cicli]]
+- [[Comprehensions]]
+- [[Data model]]

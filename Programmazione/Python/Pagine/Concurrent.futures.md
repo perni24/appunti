@@ -1,12 +1,12 @@
-﻿---
-date: 2026-06-02
+---
+date: 2026-06-03
 area: Programmazione
 topic: Python
 type: technical-note
 status: "non revisionato"
 difficulty: intermediate
-tags: [python, programming]
-aliases: [Concurrent.futures]
+tags: [python, programming, concurrency]
+aliases: [Concurrent.futures, ThreadPoolExecutor, ProcessPoolExecutor]
 prerequisites: []
 related: []
 ---
@@ -15,118 +15,146 @@ related: []
 
 ## Sintesi
 
-Nota su Concurrent.futures in Python. Riassume il concetto, la sintassi principale e i punti da ricordare durante studio, sviluppo o debugging.
-Nota su Concurrent.futures in Python. Riassume il concetto, la sintassi principale e i punti da ricordare durante studio, sviluppo o debugging.
-with ThreadPoolExecutor(max_workers=5) as executor:
-    # Invio di un task
-    future = executor.submit(my_function, arg1, arg2)
-    
-    # Recupero del risultato (bloccante fino al completamento)
-    result = future.result()
-```
+`concurrent.futures` offre una API ad alto livello per eseguire task in pool di thread o processi. L'astrazione centrale e l'`Executor`, che restituisce oggetti `Future` per rappresentare risultati non ancora disponibili.
 
----
+E spesso piu pratico di gestire manualmente `threading` o `multiprocessing`.
 
 ## Quando usarlo
 
-Contenuto da sviluppare: nella nota originale questa sezione non era presente o era solo una traccia.
+Usalo quando:
+
+- devi eseguire molti task indipendenti;
+- vuoi un pool di thread per I/O-bound;
+- vuoi un pool di processi per CPU-bound;
+- ti serve raccogliere risultati ed eccezioni;
+- vuoi una API uniforme tra thread e processi.
 
 ## Come funziona
 
-### Concetto chiave
-Il modulo **`concurrent.futures`** fornisce un'interfaccia ad alto livello per l'esecuzione asincrona di task. Utilizza il concetto di **Executor**, un oggetto che gestisce un pool di thread o di processi, astraendo la complessità di gestione manuale presente nei moduli `threading` e `multiprocessing`.
-
-> [!INFO]
-> È la soluzione consigliata per la maggior parte dei casi d'uso moderni in cui è necessario eseguire task paralleli senza gestire esplicitamente il ciclo di vita di ogni singolo thread o processo.
-
----
-### Esempi Pratici
-### Esempio Base: Utilizzo di `map`
-`executor.map` funziona in modo simile alla funzione `map` integrata, ma esegue le chiamate in parallelo.
+`ThreadPoolExecutor`:
 
 ```python
 from concurrent.futures import ThreadPoolExecutor
-import time
 
-def download_site(url):
-    print(f"Scaricando {url}...")
-    time.sleep(2) # Simula I/O di rete
-    return f"Contenuto di {url}"
 
-urls = ["site-A.com", "site-B.com", "site-C.com"]
+def download(url):
+    return f"data from {url}"
 
-if __name__ == "__main__":
-    with ThreadPoolExecutor() as executor:
-        # map ritorna un generatore con i risultati nell'ordine originale
-        results = list(executor.map(download_site, urls))
-    
-    print(f"Completato: {results}")
+
+urls = ["a", "b", "c"]
+
+with ThreadPoolExecutor(max_workers=5) as executor:
+    results = list(executor.map(download, urls))
 ```
 
-### Esempio Avanzato: `as_completed`
-`as_completed` permette di elaborare i risultati non appena ogni task finisce, indipendentemente dall'ordine di invio.
+`ProcessPoolExecutor`:
 
 ```python
-from concurrent.futures import ProcessPoolExecutor, as_completed
+from concurrent.futures import ProcessPoolExecutor
 
-def heavy_task(n):
-    return sum(i * i for i in range(10**n))
+
+def square(number):
+    return number * number
+
 
 if __name__ == "__main__":
     with ProcessPoolExecutor() as executor:
-        # Crea una mappa tra Future e l'input originale
-        future_to_n = {executor.submit(heavy_task, n): n for n in [5, 7, 6]}
-        
-        for future in as_completed(future_to_n):
-            n = future_to_n[future]
-            try:
-                data = future.result()
-                print(f"Task n={n} terminato con risultato: {data}")
-            except Exception as exc:
-                print(f"Task n={n} ha generato un'eccezione: {exc}")
+        results = list(executor.map(square, [1, 2, 3]))
 ```
-
----
-### Funzionamento Interno (Teoria)
-- **Executor:** Gestisce la coda dei task e il ciclo di vita dei worker.
-- **Future:** Rappresenta il risultato di un'operazione asincrona che non è ancora stata completata. Permette di interrogare lo stato del task (`running()`, `done()`, `cancelled()`).
-- **Abstrazione:** Sotto il cofano, `ThreadPoolExecutor` usa `threading` e `ProcessPoolExecutor` usa `multiprocessing`. L'API unificata permette di passare da thread a processi cambiando solo il nome della classe dell'Executor.
-
----
 
 ## API / Sintassi
 
-### Sintassi
-Esistono due classi principali: `ThreadPoolExecutor` (per task I/O-bound) e `ProcessPoolExecutor` (per task CPU-bound).
+`submit()` restituisce un `Future`:
 
 ```python
-from concurrent.futures import ThreadPoolExecutor, ProcessPoolExecutor
+future = executor.submit(download, "example.com")
+result = future.result()
+```
 
-# Concurrent.futures in Python
+`as_completed()` consuma i risultati appena pronti:
+
+```python
+from concurrent.futures import ThreadPoolExecutor, as_completed
+
+
+with ThreadPoolExecutor() as executor:
+    futures = [executor.submit(download, url) for url in urls]
+
+    for future in as_completed(futures):
+        print(future.result())
+```
+
+Gestione eccezioni:
+
+```python
+try:
+    result = future.result()
+except Exception as error:
+    print(f"Task failed: {error}")
+```
 
 ## Esempio pratico
 
-Contenuto da sviluppare: nella nota originale questa sezione non era presente o era solo una traccia.
+Scaricare piu URL simulati e gestire errori:
+
+```python
+from concurrent.futures import ThreadPoolExecutor, as_completed
+import time
+
+
+def fetch(url):
+    time.sleep(1)
+    if url == "bad":
+        raise RuntimeError("request failed")
+    return f"{url}: ok"
+
+
+urls = ["a", "bad", "c"]
+
+with ThreadPoolExecutor(max_workers=3) as executor:
+    future_to_url = {executor.submit(fetch, url): url for url in urls}
+
+    for future in as_completed(future_to_url):
+        url = future_to_url[future]
+        try:
+            print(future.result())
+        except RuntimeError as error:
+            print(f"{url} failed: {error}")
+```
 
 ## Varianti
 
-Contenuto da sviluppare: nella nota originale questa sezione non era presente o era solo una traccia.
+- **`ThreadPoolExecutor`**: per I/O-bound e librerie sincrone.
+- **`ProcessPoolExecutor`**: per CPU-bound e parallelismo reale.
+- **`map()`**: risultati nell'ordine degli input.
+- **`submit()` + `Future`**: controllo piu esplicito.
+- **`as_completed()`**: risultati appena disponibili.
+- **Timeout**: `future.result(timeout=...)`.
 
 ## Errori comuni
 
-### Best Practices & "Gotchas"
--  **Da fare:** Usa sempre il Context Manager (`with`) per garantire che tutte le risorse vengano liberate correttamente.
--  **Da fare:** Gestisci le eccezioni richiamando `future.result()`; se un task fallisce, l'eccezione viene sollevata in quel momento.
--  **Da evitare:** Non usare `ProcessPoolExecutor` per task estremamente brevi; l'overhead della creazione dei processi supererà il guadagno in termini di tempo.
--  **Interazione con GIL:** Come per il threading standard, `ThreadPoolExecutor` è limitato dal [[Programmazione/Python/Pagine/Global Interpreter Lock|GIL]] per task CPU-bound.
--  **Deadlock:** Fare attenzione se un task inviato all'executor tenta di inviare altri task allo stesso executor (rischio di saturazione del pool).
-
----
+- Usare thread pool per calcoli CPU-bound aspettandosi scaling sui core.
+- Usare process pool per task minuscoli con overhead maggiore del lavoro.
+- Non chiamare `future.result()` e perdere eccezioni.
+- Creare deadlock inviando task allo stesso executor da worker saturi.
+- Non usare `with`, lasciando risorse aperte.
+- Non limitare `max_workers`.
+- Passare oggetti non picklable a `ProcessPoolExecutor`.
 
 ## Checklist
 
-Contenuto da sviluppare: nella nota originale questa sezione non era presente o era solo una traccia.
+- Il task e I/O-bound o CPU-bound?
+- Ho scelto thread o processi di conseguenza?
+- Le eccezioni dei future vengono gestite?
+- `max_workers` e ragionevole?
+- Serve preservare ordine (`map`) o consumare appena pronto (`as_completed`)?
+- I task sono indipendenti?
 
 ## Collegamenti
 
 - [[Programmazione/Python/Indice python|Indice Python]]
+- [[Threading]]
+- [[Multiprocessing]]
+- [[Global Interpreter Lock]]
+- [[Asyncio]]
+- [[Subprocess]]

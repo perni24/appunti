@@ -8,6 +8,26 @@ Mantieni solo le ultime 10 voci operative.
 
 ---
 
+## 2026-06-03 - Completamento contenuto Python
+
+### Fatto
+
+- Completate tutte le 75 pagine Python in `Programmazione/Python/Pagine`.
+- Rimossi tutti i placeholder `Contenuto da sviluppare`, `Da completare` e `TODO` dalle note Python.
+- Sviluppate con contenuto reale le note su basi del linguaggio, OOP, data model, type hinting, iteratori/generatori, file, error handling, runtime, standard library, packaging, ambienti virtuali, tooling, testing, profiling, automazione, concorrenza, database, web framework, data science, notebook, scraping, packaging eseguibili, estensioni native e integrazioni LLM.
+- Ripuliti blocchi Markdown duplicati o spezzati nelle note generate in precedenza.
+
+### Decisioni
+
+- Le note modificate restano con `status: "non revisionato"`.
+- La priorita e stata completare prima il percorso Python applicativo principale e poi chiudere tutte le pagine residue fino a zero placeholder.
+- La nota `OpenAI API` resta volutamente prudente sui nomi modello: rimanda alla documentazione ufficiale per valori correnti e capability aggiornate.
+
+### Prossimi passi
+
+- Rivedere manualmente le note Python completate prima di impostarle a `revisionato (da me)`.
+- Applicare lo stesso controllo finale alle altre aree di Programmazione ancora non chiuse.
+
 ## 2026-06-02 - Completamento contenuto Postgres
 
 ### Fatto
@@ -164,20 +184,3 @@ Mantieni solo le ultime 10 voci operative.
 ### Prossimi passi
 
 - Proseguire con `Backend, Networking e Database` oppure `Testing, Qualita e Sicurezza`.
-
-## 2026-05-26 - Completamento Rust di Sistema
-
-### Fatto
-
-- Completate con contenuto reale le note del capitolo `Rust di Sistema` dell'indice Rust.
-- Sviluppati FFI, bindgen/cbindgen, libc/nix, layout, allocator, no_std, embedded, file descriptor, memory mapping, cross-compilation, linking, performance/profiling e zero-cost abstractions.
-- Aggiunti esempi pratici, errori comuni, checklist e collegamenti interni coerenti.
-
-### Decisioni
-
-- Le note completate restano con `status: "non revisionato"` fino alla revisione dell'utente.
-- Il capitolo separa i confini unsafe/FFI dalle pratiche operative di build, profiling e cross-compilation.
-
-### Prossimi passi
-
-- Proseguire con `Applicazioni e Ecosistema`.

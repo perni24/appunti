@@ -1,5 +1,5 @@
-﻿---
-date: 2026-06-02
+---
+date: 2026-06-03
 area: Programmazione
 topic: Python
 type: technical-note
@@ -15,118 +15,75 @@ related: []
 
 ## Sintesi
 
-Nota su Set in Python. Riassume il concetto, la sintassi principale e i punti da ricordare durante studio, sviluppo o debugging.
-Nota su Set in Python. Riassume il concetto, la sintassi principale e i punti da ricordare durante studio, sviluppo o debugging.
-colori = {"rosso", "verde", "blu"}
-
-# Set in Python
-Nota su Set in Python. Riassume il concetto, la sintassi principale e i punti da ricordare durante studio, sviluppo o debugging.
-numeri = {1, 2, 2, 3, 4, 4, 4}
-print(numeri) # {1, 2, 3, 4}
-
-# Set in Python
-Nota su Set in Python. Riassume il concetto, la sintassi principale e i punti da ricordare durante studio, sviluppo o debugging.
-vuoto = set() 
-# Set in Python
-Nota su Set in Python. Riassume il concetto, la sintassi principale e i punti da ricordare durante studio, sviluppo o debugging.
-```
-
-### Caratteristiche principali
-- **Unicità:** Ogni elemento può apparire una sola volta.
-- **Non ordinati:** Non puoi accedere agli elementi tramite indice (es. `set[0]` darà errore).
-- **Mutabili:** Puoi aggiungere o rimuovere elementi.
-
----
-Nota su Set in Python. Riassume il concetto, la sintassi principale e i punti da ricordare durante studio, sviluppo o debugging.
-print(a | b) # {1, 2, 3, 4, 5}
-
-# Set in Python
-Nota su Set in Python. Riassume il concetto, la sintassi principale e i punti da ricordare durante studio, sviluppo o debugging.
-print(a & b) # {3}
-
-# Set in Python
-Nota su Set in Python. Riassume il concetto, la sintassi principale e i punti da ricordare durante studio, sviluppo o debugging.
-print(a - b) # {1, 2}
-
-# Set in Python
-Nota su Set in Python. Riassume il concetto, la sintassi principale e i punti da ricordare durante studio, sviluppo o debugging.
-print(a ^ b) # {1, 2, 4, 5}
-```
-
----
-Nota su Set in Python. Riassume il concetto, la sintassi principale e i punti da ricordare durante studio, sviluppo o debugging.
-```
-
----
+I set sono collezioni non ordinate di elementi unici. Sono utili per eliminare duplicati e fare operazioni insiemistiche.
 
 ## Quando usarlo
 
-Contenuto da sviluppare: nella nota originale questa sezione non era presente o era solo una traccia.
+Usa un set quando ti interessa appartenenza rapida, unicita, intersezione, unione o differenza tra collezioni.
 
 ## Come funziona
 
-### Concetto chiave
-I **Set** (Insiemi) sono collezioni **non ordinate** di elementi **unici**. Sono fondamentali quando è necessario eliminare duplicati o eseguire operazioni matematiche sugli insiemi (unione, intersezione, ecc.). In Python, gli elementi di un set devono essere **hashable** (immutabili).
+I set sono basati su hash table. La ricerca con `in` e mediamente molto veloce. Gli elementi devono essere hashable.
 
----
-### Operazioni comuni
-| Metodo | Descrizione |
-| :--- | :--- |
-| `.add(x)` | Aggiunge l'elemento x al set. |
-| `.remove(x)` | Rimuove x. Solleva un errore (`KeyError`) se x non esiste. |
-| `.discard(x)` | Rimuove x. **Non** solleva errore se x non esiste. |
-| `.pop()` | Rimuove e restituisce un elemento casuale. |
-| `.clear()` | Svuota completamente il set. |
+Un set non conserva un ordine affidabile per accesso indicizzato e non supporta `set[0]`.
 
----
-### Operazioni Matematiche sugli Insiemi
-Python offre operatori (concisi) per la logica degli insiemi:
+## API / Sintassi
+
+```python
+colors = {"red", "green", "blue"}
+unique_numbers = set([1, 2, 2, 3])
+colors.add("yellow")
+colors.discard("red")
+```
+
+Operazioni:
 
 ```python
 a = {1, 2, 3}
 b = {3, 4, 5}
 
-# Set in Python
-### Logic layer: Performance e Hash Table
-I set in Python sono implementati internamente tramite una **Hash Table** (simile ai dizionari).
-
-> [!INFO] Complessità Computazionale (Big O)
-> - **Ricerca element (`in`):** $O(1)$ - Velocità costante, indipendentemente dalla dimensione.
-> - **Aggiunta/Rimozione:** $O(1)$.
-
-Questo rende i set incredibilmente più efficienti delle liste ($O(n)$) per verificare l'appartenenza di un elemento.
-
-### Frozenset
-Se hai bisogno di un set che sia a sua volta immutabile (e quindi utilizzabile come chiave di un dizionario), Python offre il `frozenset`.
-
-```python
-fs = frozenset([1, 2, 3])
-# Set in Python
-
-## API / Sintassi
-
-### Sintassi e Creazione
-I set si definiscono utilizzando le parentesi graffe `{}` oppure la funzione `set()`.
-
-```python
-# Set in Python
+a | b  # unione
+a & b  # intersezione
+a - b  # differenza
+a ^ b  # differenza simmetrica
+```
 
 ## Esempio pratico
 
-Contenuto da sviluppare: nella nota originale questa sezione non era presente o era solo una traccia.
+```python
+allowed_roles = {"admin", "editor"}
+user_roles = {"viewer", "editor"}
+
+if user_roles & allowed_roles:
+    print("Accesso consentito")
+```
 
 ## Varianti
 
-Contenuto da sviluppare: nella nota originale questa sezione non era presente o era solo una traccia.
+- Set mutabile: `set`.
+- Set immutabile: `frozenset`.
+- Set comprehension.
+- Operazioni con metodi: `.union()`, `.intersection()`, `.difference()`.
+- Deduplica di liste.
 
 ## Errori comuni
 
-Contenuto da sviluppare: nella nota originale questa sezione non era presente o era solo una traccia.
+- Creare set vuoto con `{}`: quello e un dizionario.
+- Aspettarsi ordine stabile.
+- Inserire liste o dizionari dentro un set.
+- Usare lista per membership frequente.
+- Usare `.remove()` quando l'elemento puo mancare.
 
 ## Checklist
 
-Contenuto da sviluppare: nella nota originale questa sezione non era presente o era solo una traccia.
+- Ti serve unicita?
+- Ti serve membership veloce?
+- Gli elementi sono hashable?
+- L'ordine non e importante?
+- Per rimozione sicura puoi usare `.discard()`?
 
 ## Collegamenti
 
-- [[Programmazione/Python/Indice python|Indice Python]]
+- [[Programmazione/Python/Pagine/Liste|Liste]]
+- [[Programmazione/Python/Pagine/Dizionari|Dizionari]]
+- [[Programmazione/Python/Pagine/Operatori|Operatori]]

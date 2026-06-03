@@ -1,118 +1,144 @@
-﻿---
-date: 2026-06-02
+---
+date: 2026-06-03
 area: Programmazione
 topic: Python
-type: technical-note
+type: theory-note
 status: "non revisionato"
 difficulty: intermediate
-tags: [python, programming]
-aliases: [Higher-order Functions (HOF)]
+tags: [python, programming, functions]
+aliases: [Higher-order Functions, HOF]
 prerequisites: []
 related: []
 ---
 
-# Higher-order Functions (HOF) in Python
+# Higher-order Functions in Python
 
 ## Sintesi
 
-Nota su Higher-order Functions (HOF) in Python. Riassume il concetto, la sintassi principale e i punti da ricordare durante studio, sviluppo o debugging.
-Nota su Higher-order Functions (HOF) in Python. Riassume il concetto, la sintassi principale e i punti da ricordare durante studio, sviluppo o debugging.
-maiuscoli = list(map(str.upper, nomi))
+Una higher-order function e una funzione che accetta altre funzioni come argomenti o restituisce una funzione. In Python e naturale, perche le funzioni sono oggetti di prima classe.
 
-# Higher-order Functions (HOF) in Python
-Nota su Higher-order Functions (HOF) in Python. Riassume il concetto, la sintassi principale e i punti da ricordare durante studio, sviluppo o debugging.
-dispari = list(filter(lambda x: x % 2 != 0, numeri))
-
-# Higher-order Functions (HOF) in Python
-Nota su Higher-order Functions (HOF) in Python. Riassume il concetto, la sintassi principale e i punti da ricordare durante studio, sviluppo o debugging.
-somma_totale = reduce(lambda x, y: x + y, numeri) # 15
-```
-
----
+Questo modello e alla base di callback, decoratori, funzioni di trasformazione, factory function e molte API della standard library.
 
 ## Quando usarlo
 
-Contenuto da sviluppare: nella nota originale questa sezione non era presente o era solo una traccia.
+Usa higher-order functions quando:
+
+- vuoi separare iterazione e trasformazione;
+- devi passare una callback;
+- vuoi creare funzioni configurate;
+- stai scrivendo decoratori;
+- vuoi comporre comportamenti riutilizzabili.
+
+Evita astrazioni eccessive: Python privilegia leggibilita e chiarezza.
 
 ## Come funziona
 
-### Concetto chiave
-In Python, le funzioni sono **oggetti di prima classe** (*first-class citizens*). Questo significa che possono essere passate come argomenti ad altre funzioni, restituite da funzioni e assegnate a variabili. Una **Higher-order Function** è una funzione che soddisfa almeno una di queste condizioni:
-1. Accetta una o più funzioni come parametri.
-2. Restituisce una funzione come risultato.
+Funzione passata come argomento:
 
----
-### HOF Integrate nel Linguaggio
-### Map, Filter e Reduce
-Python offre diverse HOF integrate (anche se spesso sostituibili dalle *List Comprehensions*).
+```python
+def apply_to_all(items, function):
+    return [function(item) for item in items]
+
+
+numbers = [1, 2, 3]
+result = apply_to_all(numbers, lambda number: number * 2)
+```
+
+Funzione restituita da una funzione:
+
+```python
+def multiplier(factor):
+    def multiply(value):
+        return value * factor
+
+    return multiply
+
+
+double = multiplier(2)
+print(double(10))
+```
+
+La funzione interna ricorda `factor`: questo e un esempio di closure.
+
+## API / Sintassi
+
+Funzioni comuni:
+
+```python
+names = ["anna", "luca", "marco"]
+upper_names = list(map(str.upper, names))
+```
+
+```python
+numbers = [1, 2, 3, 4, 5]
+odd = list(filter(lambda number: number % 2 != 0, numbers))
+```
+
+Con `functools.reduce`:
 
 ```python
 from functools import reduce
 
-nomi = ["anna", "luca", "marco"]
-numeri = [1, 2, 3, 4, 5]
-
-# Higher-order Functions (HOF) in Python
-### Funzionamento Interno (Teoria)
-- **Modularià:** Le HOF permettono di separare la *logica di iterazione* dalla *logica di elaborazione*.
-- **Closures:** Quando una funzione restituisce un'altra funzione, quest'ultima "ricorda" lo scope in cui è stata creata (le variabili locali della funzione esterna).
-- **Functools:** Il modulo `functools` contiene utility avanzate per HOF, come `partial` (per fissare alcuni argomenti di una funzione) e `lru_cache` (per la memoizzazione).
-
----
-
-## API / Sintassi
-
-### Sintassi ed Esempi Fondamentali
-### 1. Funzioni come Argomenti
-L'esempio più comune è l'uso di callback o trasformazioni.
-
-```python
-def applica_operazione(lista, funzione):
-    return [funzione(x) for x in lista]
-
-numeri = [1, 2, 3, 4]
-raddoppia = lambda x: x * 2
-
-print(applica_operazione(numeri, raddoppia)) # Output: [2, 4, 6, 8]
+numbers = [1, 2, 3, 4]
+total = reduce(lambda left, right: left + right, numbers)
 ```
 
-### 2. Restituire Funzioni (Factory Functions)
-Utilizzato spesso per creare configurazioni o closure.
+In Python, spesso le comprehension sono piu leggibili di `map` e `filter`:
 
 ```python
-def crea_moltiplicatore(n):
-    def moltiplica(x):
-        return x * n
-    return moltiplica
-
-triplica = crea_moltiplicatore(3)
-print(triplica(10)) # Output: 30
+upper_names = [name.upper() for name in names]
+odd = [number for number in numbers if number % 2 != 0]
 ```
-
----
 
 ## Esempio pratico
 
-Contenuto da sviluppare: nella nota originale questa sezione non era presente o era solo una traccia.
+Validatore configurabile:
+
+```python
+def min_length(length):
+    def validate(value):
+        return len(value) >= length
+
+    return validate
+
+
+is_valid_password = min_length(8)
+
+print(is_valid_password("secret"))
+print(is_valid_password("long-secret"))
+```
+
+La funzione esterna crea una regola; quella interna la applica.
 
 ## Varianti
 
-Contenuto da sviluppare: nella nota originale questa sezione non era presente o era solo una traccia.
+- **Callback**: funzione passata per essere chiamata piu tardi.
+- **Factory function**: funzione che crea e restituisce un'altra funzione.
+- **Closure**: funzione che ricorda variabili dello scope esterno.
+- **Decoratore**: higher-order function applicata con sintassi `@`.
+- **`functools.partial`**: crea una funzione fissando alcuni argomenti.
+- **`functools.lru_cache`**: decoratore che aggiunge memoization.
 
 ## Errori comuni
 
-### Best Practices & "Gotchas"
--  **Composizione:** Usa le HOF per scrivere codice più generico e riutilizzabile.
--  **Eccesso di Astrazione:** Non creare HOF troppo nidificate; possono rendere il debugging e la lettura del codice molto difficili.
--  **Preferenza Pythonica:** Per `map` e `filter` semplici, in Python è spesso considerata più leggibile una **List Comprehension**:
-  - `[x**2 for x in lista]` è preferito a `list(map(lambda x: x**2, lista))`.
-
----
+- Usare `map` e `filter` quando una comprehension e piu leggibile.
+- Creare catene funzionali difficili da debuggare.
+- Nascondere side effect dentro funzioni passate come callback.
+- Non dare nomi alle funzioni quando la logica e importante.
+- Dimenticare che le closure catturano variabili, non copie isolate per magia.
 
 ## Checklist
 
-Contenuto da sviluppare: nella nota originale questa sezione non era presente o era solo una traccia.
+- La higher-order function rende il codice piu chiaro?
+- La funzione passata ha un nome utile se la logica non e banale?
+- Una comprehension sarebbe piu semplice?
+- La closure cattura solo cio che serve?
+- Il comportamento resta facile da testare?
 
 ## Collegamenti
 
 - [[Programmazione/Python/Indice python|Indice Python]]
+- [[Funzioni]]
+- [[Funzioni Lambda]]
+- [[Decoratori]]
+- [[Caching]]

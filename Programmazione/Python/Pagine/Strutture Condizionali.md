@@ -1,5 +1,5 @@
-﻿---
-date: 2026-06-02
+---
+date: 2026-06-03
 area: Programmazione
 topic: Python
 type: technical-note
@@ -15,98 +15,87 @@ related: []
 
 ## Sintesi
 
-Nota su Strutture Condizionali in Python. Riassume il concetto, la sintassi principale e i punti da ricordare durante studio, sviluppo o debugging.
-Nota su Strutture Condizionali in Python. Riassume il concetto, la sintassi principale e i punti da ricordare durante studio, sviluppo o debugging.
-stato = "Maggiorenne" if eta >= 18 else "Minorenne"
-```
-
----
+Le strutture condizionali controllano il flusso del programma usando `if`, `elif`, `else`, espressioni condizionali e `match`.
 
 ## Quando usarlo
 
-Contenuto da sviluppare: nella nota originale questa sezione non era presente o era solo una traccia.
+Usale quando il codice deve scegliere percorsi diversi in base a stato, input, errori, permessi o risultati di calcoli.
 
 ## Come funziona
 
-### Concetto chiave
-Le strutture condizionali permettono di deviare il flusso di esecuzione del codice in base al verificarsi di determinate condizioni. In Python, l'elemento fondamentale è l'**indentazione**, che definisce quali istruzioni appartengono a quale blocco decisionale.
+Python valuta una condizione come vera o falsa. Oltre a `True` e `False`, valori come `None`, `0`, stringhe vuote e collezioni vuote sono falsy.
 
----
-### Match Case (Python 3.10+)
-Introdotto con il **Structural Pattern Matching**, è simile allo `switch` di altri linguaggi ma molto più potente.
-
-```python
-status_code = 404
-
-match status_code:
-    case 200:
-        print("Success")
-    case 400 | 404: # Operatore OR (|) nei pattern
-        print("Client Error")
-    case 500:
-        print("Server Error")
-    case _: # Pattern wildcard (default)
-        print("Unknown Status")
-```
-
----
-### Logic layer: Verità in Python (Truthy & Falsy)
-Python valuta come `False` non solo il booleano `False`, ma anche diversi tipi di valori "vuoti":
-- `None`
-- `0` (zero)
-- `""` (stringa vuota)
-- `[]`, `{}`, `()` (collezioni vuote)
-
-Tutto il resto viene generalmente valutato come `True`.
-
-> [!WARNING] Attenzione
-> Non è necessario scrivere `if x == True:`. La forma idiomatica Python (Pythonic) è semplicemente `if x:`.
-
----
+`match` permette pattern matching strutturale, utile quando vuoi distinguere forme diverse di dati.
 
 ## API / Sintassi
 
-### Sintassi fondamentale
-### If, Elif, Else
-La struttura classica per gestire scenari multipli. 
-
 ```python
-eta = 18
-
-if eta < 14:
-    print("Bambino")
-elif eta < 18:
-    print("Adolescente")
+if age < 18:
+    status = "minor"
+elif age < 65:
+    status = "adult"
 else:
-    print("Adulto")
+    status = "senior"
 ```
 
-- **`if`**: La condizione iniziale.
-- **`elif`**: Abbreviazione di "else if", usata per testare condizioni aggiuntive se le precedenti sono false.
-- **`else`**: Cattura tutto ciò che non è stato soddisfatto dalle condizioni precedenti.
-
-### Operatore Ternario (Conditional Expression)
-Python offre una sintassi contratta per assegnazioni condizionali semplici su una sola riga.
+Espressione condizionale:
 
 ```python
-# Strutture Condizionali in Python
+label = "attivo" if is_active else "disattivato"
+```
+
+`match`:
+
+```python
+match status_code:
+    case 200:
+        message = "ok"
+    case 400 | 404:
+        message = "client error"
+    case _:
+        message = "unknown"
+```
 
 ## Esempio pratico
 
-Contenuto da sviluppare: nella nota originale questa sezione non era presente o era solo una traccia.
+```python
+def can_access(user):
+    if not user:
+        return False
+
+    if not user.get("active"):
+        return False
+
+    return user.get("role") in {"admin", "editor"}
+```
 
 ## Varianti
 
-Contenuto da sviluppare: nella nota originale questa sezione non era presente o era solo una traccia.
+- `if`.
+- `if`/`else`.
+- `if`/`elif`/`else`.
+- Espressione condizionale inline.
+- `match`/`case`.
+- Guard clauses con ritorni anticipati.
 
 ## Errori comuni
 
-Contenuto da sviluppare: nella nota originale questa sezione non era presente o era solo una traccia.
+- Scrivere `if value == True` invece di `if value`.
+- Confondere valore mancante e valore vuoto.
+- Annidare troppe condizioni.
+- Usare espressioni condizionali troppo lunghe.
+- Dimenticare il caso di default in `match`.
 
 ## Checklist
 
-Contenuto da sviluppare: nella nota originale questa sezione non era presente o era solo una traccia.
+- I casi sono mutuamente esclusivi?
+- Il caso default e gestito?
+- Le condizioni sono leggibili?
+- I valori falsy sono desiderati?
+- Puoi usare guard clauses per semplificare?
 
 ## Collegamenti
 
-- [[Programmazione/Python/Indice python|Indice Python]]
+- [[Programmazione/Python/Pagine/Operatori|Operatori]]
+- [[Programmazione/Python/Pagine/Funzioni|Funzioni]]
+- [[Programmazione/Python/Pagine/Error Handling|Error Handling]]

@@ -1,16 +1,12 @@
-﻿---
-date: 2026-06-02
+---
+date: 2026-06-03
 area: Programmazione
 topic: Python
 type: technical-note
 status: "non revisionato"
-difficulty: 
-tags:
-  - programmazione
-  - python
-  - web
-  - api
-aliases: []
+difficulty: intermediate
+tags: [programmazione, python, web, api]
+aliases: [FastAPI]
 prerequisites: []
 related: []
 ---
@@ -19,57 +15,133 @@ related: []
 
 ## Sintesi
 
-**FastAPI** e un framework web Python per costruire API usando type hints, validazione automatica e documentazione OpenAPI.
+FastAPI e un framework web Python per costruire API HTTP usando type hints, validazione automatica, dependency injection e documentazione OpenAPI. Si basa su Starlette per il layer ASGI e usa Pydantic per validazione e serializzazione.
 
 ## Quando usarlo
 
-Contenuto da sviluppare: nella nota originale questa sezione non era presente o era solo una traccia.
+Usa FastAPI quando:
+
+- devi costruire API JSON moderne;
+- vuoi documentazione OpenAPI automatica;
+- vuoi validazione forte dei payload;
+- vuoi supporto async;
+- ti serve dependency injection semplice;
+- stai costruendo microservizi o backend API-first.
+
+Per applicazioni web full-stack tradizionali con admin integrato, Django puo essere piu adatto.
 
 ## Come funziona
 
-Contenuto da sviluppare: nella nota originale questa sezione non era presente o era solo una traccia.
+Endpoint base:
 
-## API / Sintassi
-
-Contenuto da sviluppare: nella nota originale questa sezione non era presente o era solo una traccia.
-
-## Esempio pratico
-
-### Esempio
 ```python
 from fastapi import FastAPI
-from pydantic import BaseModel
 
 app = FastAPI()
 
-class UserIn(BaseModel):
-    email: str
 
+@app.get("/health")
+async def health():
+    return {"status": "ok"}
+```
+
+Modello di input:
+
+```python
+from pydantic import BaseModel, EmailStr
+
+
+class UserIn(BaseModel):
+    email: EmailStr
+```
+
+## API / Sintassi
+
+Endpoint POST:
+
+```python
 @app.post("/users")
 async def create_user(user: UserIn):
+    return {"email": user.email}
+```
+
+Path parameter:
+
+```python
+@app.get("/users/{user_id}")
+async def get_user(user_id: int):
+    return {"id": user_id}
+```
+
+Dependency:
+
+```python
+from fastapi import Depends
+
+
+def get_current_user():
+    return {"id": 1}
+
+
+@app.get("/me")
+async def me(user=Depends(get_current_user)):
     return user
+```
+
+## Esempio pratico
+
+Separare endpoint e logica applicativa:
+
+```python
+class UserService:
+    def create(self, email):
+        return {"id": 1, "email": email}
+
+
+def get_user_service():
+    return UserService()
+
+
+@app.post("/users")
+async def create_user(
+    user: UserIn,
+    service: UserService = Depends(get_user_service),
+):
+    return service.create(user.email)
 ```
 
 ## Varianti
 
-### Punti forti
-- Validazione con [[Programmazione/Python/Pagine/Pydantic|Pydantic]].
-- Supporto async.
-- OpenAPI automatico.
-- Dependency injection.
+- **Endpoint sync**: `def`, utile con librerie bloccanti.
+- **Endpoint async**: `async def`, utile con librerie async reali.
+- **Router**: organizza endpoint per area.
+- **Dependency injection**: gestisce configurazione, sessioni e servizi.
+- **Middleware**: logica trasversale.
+- **Background tasks**: lavoro leggero dopo la risposta.
 
 ## Errori comuni
 
-- Usare async con librerie bloccanti.
+- Usare `async def` ma chiamare librerie bloccanti dentro.
 - Mettere logica di dominio direttamente negli endpoint.
-- Ignorare gestione errori e versionamento API.
+- Non gestire errori e codici HTTP in modo coerente.
+- Usare modelli Pydantic come unico modello di dominio ovunque.
+- Aprire connessioni database senza lifecycle chiaro.
+- Ignorare versionamento API e contratti pubblici.
 
 ## Checklist
 
-Contenuto da sviluppare: nella nota originale questa sezione non era presente o era solo una traccia.
+- Gli endpoint sono sottili?
+- I payload sono validati con Pydantic?
+- Le dipendenze hanno ciclo di vita chiaro?
+- Il codice async usa librerie async?
+- Errori e status code sono espliciti?
+- La documentazione OpenAPI rappresenta davvero il contratto?
 
 ## Collegamenti
 
-- [[Programmazione/Python/Pagine/Starlette|Starlette]]
-- [[Programmazione/Python/Pagine/Pydantic|Pydantic]]
-- [[Programmazione/Python/Pagine/Asyncio|Asyncio]]
+- [[Programmazione/Python/Indice python|Indice Python]]
+- [[Starlette]]
+- [[Pydantic]]
+- [[Asyncio]]
+- [[HTTPX e requests]]
+- [[SQLAlchemy]]

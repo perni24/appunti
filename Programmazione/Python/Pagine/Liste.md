@@ -1,5 +1,5 @@
-﻿---
-date: 2026-06-02
+---
+date: 2026-06-03
 area: Programmazione
 topic: Python
 type: technical-note
@@ -15,105 +15,77 @@ related: []
 
 ## Sintesi
 
-Nota su Liste in Python. Riassume il concetto, la sintassi principale e i punti da ricordare durante studio, sviluppo o debugging.
-Nota su Liste in Python. Riassume il concetto, la sintassi principale e i punti da ricordare durante studio, sviluppo o debugging.
-frutti = ["mela", "banana", "ciliegia"]
-numeri_misti = [1, "test", 3.14, True]
-
-# Liste in Python
-Nota su Liste in Python. Riassume il concetto, la sintassi principale e i punti da ricordare durante studio, sviluppo o debugging.
-print(frutti[0])   # "mela"
-print(frutti[-1])  # "ciliegia" (ultimo elemento)
-```
-
-### Modifica
-Le liste sono mutabili, quindi puoi sovrascrivere i valori esistenti:
-```python
-frutti[1] = "pera"
-```
-
----
-Nota su Liste in Python. Riassume il concetto, la sintassi principale e i punti da ricordare durante studio, sviluppo o debugging.
-copia = lista_a[:]
-```
-
----
+Le liste sono collezioni ordinate, mutabili e indicizzate. Sono adatte a sequenze di elementi modificabili.
 
 ## Quando usarlo
 
-Contenuto da sviluppare: nella nota originale questa sezione non era presente o era solo una traccia.
+Usa una lista quando devi mantenere ordine, aggiungere/rimuovere elementi o processare una sequenza di dati.
 
 ## Come funziona
 
-### Concetto chiave
-Le **liste** sono collezioni di elementi **ordinate**, **mutabili** e indicizzate. Sono probabilmente la struttura dati più versatile e utilizzata in Python. Possono contenere elementi di tipi diversi (eterogenee), anche se solitamente vengono usate per collezionare oggetti omogenei.
+Una lista contiene riferimenti a oggetti. L'accesso per indice e veloce, mentre inserimenti e rimozioni all'inizio sono piu costosi perche richiedono spostamenti.
 
----
-### Metodi Principali
-| Metodo | Descrizione | Esempio |
-| :--- | :--- | :--- |
-| `.append(x)` | Aggiunge un elemento alla **fine**. | `l.append("nuovo")` |
-| `.insert(i, x)` | Inserisce un elemento in una **posizione specifica**. | `l.insert(0, "inizio")` |
-| `.remove(x)` | Rimuove la **prima occorrenza** del valore x. | `l.remove("mela")` |
-| `.pop(i)` | Rimuove e restituisce l'elemento all'indice i (default: l'ultimo). | `x = l.pop()` |
-| `.sort()` | Ordina la lista in place. | `l.sort()` |
-| `.reverse()` | Inverte l'ordine degli elementi in place. | `l.reverse()` |
-| `.clear()` | Svuota completamente la lista. | `l.clear()` |
-
----
-### Slicing (Affettamento)
-Una delle funzionalità più potenti di Python per estrarre sotto-sequenze.
-**Sintassi:** `lista[inizio:fine:passo]`
-
-```python
-numeri = [0, 1, 2, 3, 4, 5, 6, 7, 8, 9]
-
-print(numeri[2:5])   # [2, 3, 4] (indice 5 escluso)
-print(numeri[:3])    # [0, 1, 2] (dall'inizio)
-print(numeri[7:])    # [7, 8, 9] (fino alla fine)
-print(numeri[::2])   # [0, 2, 4, 6, 8] (ogni due elementi)
-print(numeri[::-1])  # [9, 8, 7, 6, 5, 4, 3, 2, 1, 0] (inversione rapida)
-```
-
----
-### Logic layer: Gestione della Memoria e Performance
-In Python, le liste sono implementate come **array dinamici** di riferimenti ad oggetti.
-
-> [!INFO] Complessità Computazionale (Big O)
-> - **Accesso per indice:** $O(1)$ - Velocità costante.
-> - **Aggiunta in fondo (`append`):** $O(1)$ - Ammortizzato.
-> - **Inserimento/Rimozione all'inizio:** $O(n)$ - Python deve shiftare tutti gli altri elementi.
-> - **Ricerca per valore (`in`):** $O(n)$ - Deve scansionare la lista.
-
-### Copia delle Liste
-Attenzione: `lista_b = lista_a` non crea una copia, ma un nuovo riferimento allo stesso oggetto. Per copiare davvero usa:
-```python
-copia = lista_a.copy()
-# Liste in Python
+L'assegnazione `b = a` non copia la lista: crea un secondo nome per lo stesso oggetto.
 
 ## API / Sintassi
 
-### Sintassi e Operazioni Base
-### Definizione e Accesso
 ```python
-# Liste in Python
+items = ["apple", "banana", "pear"]
+first = items[0]
+last = items[-1]
+items.append("orange")
+items[1] = "kiwi"
+```
+
+Slicing:
+
+```python
+numbers = [0, 1, 2, 3, 4, 5]
+numbers[1:4]   # [1, 2, 3]
+numbers[:3]    # [0, 1, 2]
+numbers[::-1]  # lista invertita
+```
 
 ## Esempio pratico
 
-Contenuto da sviluppare: nella nota originale questa sezione non era presente o era solo una traccia.
+```python
+raw_scores = [18, 30, 24, 12, 28]
+
+valid_scores = []
+for score in raw_scores:
+    if score >= 18:
+        valid_scores.append(score)
+
+average = sum(valid_scores) / len(valid_scores)
+```
 
 ## Varianti
 
-Contenuto da sviluppare: nella nota originale questa sezione non era presente o era solo una traccia.
+- Lista vuota: `[]`.
+- Lista da iterabile: `list(iterable)`.
+- Copia superficiale: `items.copy()` o `items[:]`.
+- Ordinamento in place: `items.sort()`.
+- Nuova lista ordinata: `sorted(items)`.
+- List comprehension.
 
 ## Errori comuni
 
-Contenuto da sviluppare: nella nota originale questa sezione non era presente o era solo una traccia.
+- Confondere assegnazione e copia.
+- Modificare una lista mentre la si itera.
+- Usare lista per membership frequente quando un set e piu adatto.
+- Usare `pop(0)` per code grandi.
+- Mescolare tipi senza motivo.
 
 ## Checklist
 
-Contenuto da sviluppare: nella nota originale questa sezione non era presente o era solo una traccia.
+- Serve mantenere ordine?
+- Serve mutabilita?
+- Serve ricerca veloce per appartenenza? Valuta `set`.
+- Hai copiato la lista se devi modificarla separatamente?
+- L'uso di `sort()` in place e intenzionale?
 
 ## Collegamenti
 
-- [[Programmazione/Python/Indice python|Indice Python]]
+- [[Programmazione/Python/Pagine/Set|Set]]
+- [[Programmazione/Python/Pagine/Tuple|Tuple]]
+- [[Programmazione/Python/Pagine/Comprehensions|Comprehensions]]

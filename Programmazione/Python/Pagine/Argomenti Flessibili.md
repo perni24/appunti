@@ -1,118 +1,157 @@
-﻿---
-date: 2026-06-02
+---
+date: 2026-06-03
 area: Programmazione
 topic: Python
 type: technical-note
 status: "non revisionato"
 difficulty: intermediate
-tags: [python, programming]
-aliases: [Argomenti Flessibili (*args e **kwargs)]
+tags: [python, programming, functions]
+aliases: [Argomenti Flessibili, args e kwargs, *args e **kwargs]
 prerequisites: []
 related: []
 ---
 
-# Argomenti Flessibili (*args e **kwargs)
+# Argomenti Flessibili in Python
 
 ## Sintesi
 
-Nota su Argomenti Flessibili (*args e **kwargs) in Python. Riassume il concetto, la sintassi principale e i punti da ricordare durante studio, sviluppo o debugging.
-Nota su Argomenti Flessibili (*args e **kwargs) in Python. Riassume il concetto, la sintassi principale e i punti da ricordare durante studio, sviluppo o debugging.
-# Argomenti Flessibili (*args e **kwargs)
-Nota su Argomenti Flessibili (*args e **kwargs) in Python. Riassume il concetto, la sintassi principale e i punti da ricordare durante studio, sviluppo o debugging.
-# Argomenti Flessibili (*args e **kwargs)
-Nota su Argomenti Flessibili (*args e **kwargs) in Python. Riassume il concetto, la sintassi principale e i punti da ricordare durante studio, sviluppo o debugging.
-```
+`*args` e `**kwargs` permettono a una funzione di accettare un numero variabile di argomenti. `*args` raccoglie argomenti posizionali extra in una tupla; `**kwargs` raccoglie keyword arguments extra in un dizionario.
 
-### Ordine dei Parametri
-L'ordine dei parametri in una funzione deve seguire questa gerarchia:
-1. Parametri standard (posizionali)
-2. `*args`
-3. Parametri con valore di default
-4. `**kwargs`
-
----
+Sono utili per wrapper, decoratori, API flessibili e funzioni che inoltrano parametri ad altre funzioni.
 
 ## Quando usarlo
 
-Contenuto da sviluppare: nella nota originale questa sezione non era presente o era solo una traccia.
+Usali quando:
+
+- non conosci in anticipo il numero di argomenti;
+- stai scrivendo un decoratore;
+- devi inoltrare parametri a un'altra funzione;
+- vuoi supportare opzioni aggiuntive senza cambiare subito la firma;
+- stai costruendo una API compatibile con piu chiamanti.
+
+Evitali quando la firma puo essere esplicita: parametri chiari rendono il codice piu leggibile.
 
 ## Come funziona
 
-### Concetto chiave
-Python permette di definire funzioni che accettano un numero variabile di argomenti. Questo è estremamente utile quando non si sa in anticipo quanti dati verranno passati alla funzione.
-- `*args`: Raccoglie gli argomenti posizionali extra in una **tupla**.
-- `**kwargs`: Raccoglie gli argomenti nominali (keyword arguments) extra in un **dizionario**.
-
----
-### Esempi Pratici
-### Somma di N numeri (*args)
-```python
-def somma_tutto(*numeri):
-    return sum(numeri)
-
-print(somma_tutto(10, 20, 30, 40)) # Output: 100
-```
-
-### Configurazione Dinamica (**kwargs)
-```python
-def crea_profilo(nome, cognome, **info_extra):
-    profilo = {"nome": nome, "cognome": cognome}
-    profilo.update(info_extra)
-    return profilo
-
-utente = crea_profilo("Mario", "Rossi", città="Roma", professione="Sviluppatore")
-```
-
-### Unpacking (Scompattamento)
-È possibile usare `*` e `**` anche durante la *chiamata* di una funzione per passare elementi di una lista o un dizionario come argomenti separati.
+`*args` raccoglie argomenti posizionali:
 
 ```python
-numeri = [1, 5, 10]
-def moltiplica(a, b, c):
-    return a * b * c
+def sum_all(*numbers):
+    return sum(numbers)
 
-print(moltiplica(*numeri)) # Scompatta la lista in 3 argomenti
+
+print(sum_all(10, 20, 30))
 ```
 
----
-### Funzionamento Interno (Teoria)
-- **Impacchettamento:** Quando Python vede `*` o `**` nella firma della funzione, intercetta gli argomenti rimanenti e li inserisce in una nuova struttura dati (Tupla per `*`, Dizionario per `**`).
-- **Flessibilità:** Permette di creare API molto potenti (come quelle dei framework web o librerie di data science) che possono accettare decine di parametri opzionali senza doverli definire tutti esplicitamente.
+`**kwargs` raccoglie argomenti nominati:
 
----
+```python
+def create_profile(name, **extra):
+    profile = {"name": name}
+    profile.update(extra)
+    return profile
+
+
+user = create_profile("Luca", role="admin", active=True)
+```
 
 ## API / Sintassi
 
-### Sintassi
-```python
-def funzione_flessibile(*args, **kwargs):
-    print(f"Args (tupla): {args}")
-    print(f"Kwargs (dizionario): {kwargs}")
+Ordine tipico dei parametri:
 
-funzione_flessibile(1, 2, nome="Luca", età=25)
-# Argomenti Flessibili (*args e **kwargs)
+```python
+def function(positional, *args, keyword_only=None, **kwargs):
+    ...
+```
+
+Unpacking in chiamata:
+
+```python
+numbers = [2, 3, 4]
+
+
+def multiply(a, b, c):
+    return a * b * c
+
+
+print(multiply(*numbers))
+```
+
+Unpacking di dizionario:
+
+```python
+options = {"host": "localhost", "port": 8000}
+
+
+def connect(host, port):
+    return f"{host}:{port}"
+
+
+print(connect(**options))
+```
+
+Keyword-only arguments:
+
+```python
+def create_user(name, *, active=True):
+    return {"name": name, "active": active}
+```
+
+`active` deve essere passato per nome.
 
 ## Esempio pratico
 
-Contenuto da sviluppare: nella nota originale questa sezione non era presente o era solo una traccia.
+Decoratore che funziona con qualunque firma:
+
+```python
+from functools import wraps
+
+
+def log_call(function):
+    @wraps(function)
+    def wrapper(*args, **kwargs):
+        print(f"Calling {function.__name__}")
+        return function(*args, **kwargs)
+
+    return wrapper
+
+
+@log_call
+def add(a, b):
+    return a + b
+```
+
+Senza `*args` e `**kwargs`, il decoratore funzionerebbe solo con una firma specifica.
 
 ## Varianti
 
-Contenuto da sviluppare: nella nota originale questa sezione non era presente o era solo una traccia.
+- **`*args` nella definizione**: raccoglie argomenti posizionali extra.
+- **`**kwargs` nella definizione**: raccoglie keyword arguments extra.
+- **`*iterable` nella chiamata**: espande una sequenza.
+- **`**mapping` nella chiamata**: espande un dizionario.
+- **`*` da solo nella firma**: forza parametri keyword-only.
+- **`/` nella firma**: indica parametri positional-only.
 
 ## Errori comuni
 
-### Best Practices & "Gotchas"
--  **Convenzione:** Usa sempre i nomi `args` e `kwargs`. Sebbene qualsiasi nome funzioni (es. `*numeri`), `args` e `kwargs` sono lo standard de facto.
--  **Abuso:** Non usare `*args` o `**kwargs` se conosci esattamente quali parametri la funzione deve ricevere. Rendono il codice meno esplicito e più difficile da documentare.
--  **Keyword-only arguments:** Puoi usare `*` da solo per forzare l'utente a passare tutti i parametri successivi come keyword arguments: `def f(a, *, b):` (qui `b` deve essere specificato per nome).
-
----
+- Usare `*args` e `**kwargs` per nascondere firme poco progettate.
+- Non documentare quali keyword sono accettate.
+- Inoltrare `kwargs` senza filtrare opzioni non valide.
+- Confondere packing nella definizione e unpacking nella chiamata.
+- Perdere type hint e chiarezza dell'API.
 
 ## Checklist
 
-Contenuto da sviluppare: nella nota originale questa sezione non era presente o era solo una traccia.
+- La flessibilita e davvero necessaria?
+- I parametri accettati sono documentati?
+- Gli argomenti extra vengono validati?
+- Una firma esplicita sarebbe piu chiara?
+- Se sto scrivendo un wrapper, preservo il risultato e gli errori originali?
 
 ## Collegamenti
 
 - [[Programmazione/Python/Indice python|Indice Python]]
+- [[Funzioni]]
+- [[Decoratori]]
+- [[Higher-order Functions]]
+- [[Type Hinting]]

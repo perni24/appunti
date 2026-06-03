@@ -1,108 +1,160 @@
-﻿---
-date: 2026-06-02
+---
+date: 2026-06-03
 area: Programmazione
 topic: Python
-type: technical-note
+type: theory-note
 status: "non revisionato"
-difficulty: intermediate
-tags: [python, programming]
-aliases: [Error Handling (Gestione delle Eccezioni)]
+difficulty: beginner
+tags: [python, programming, errors]
+aliases: [Error Handling, Gestione delle Eccezioni]
 prerequisites: []
 related: []
 ---
 
-# Error Handling (Gestione delle Eccezioni) in Python
+# Error Handling in Python
 
 ## Sintesi
 
-Nota su Error Handling (Gestione delle Eccezioni) in Python. Riassume il concetto, la sintassi principale e i punti da ricordare durante studio, sviluppo o debugging.
+L'error handling e il modo in cui Python rappresenta, propaga e gestisce condizioni anomale durante l'esecuzione. Le eccezioni permettono di separare il flusso principale del programma dai casi di errore, mantenendo il codice leggibile.
+
+Python incoraggia spesso lo stile **EAFP**: prova a fare l'operazione e gestisci l'eccezione se fallisce.
 
 ## Quando usarlo
 
-Contenuto da sviluppare: nella nota originale questa sezione non era presente o era solo una traccia.
+Usa la gestione delle eccezioni quando:
+
+- un errore e possibile ma non rappresenta necessariamente un bug;
+- devi validare input esterni;
+- lavori con file, rete, database o API;
+- devi aggiungere contesto prima di propagare un errore;
+- devi garantire cleanup di risorse.
 
 ## Come funziona
 
-### Concetto chiave
-In Python, gli errori rilevati durante l'esecuzione sono chiamati **eccezioni**. La gestione delle eccezioni permette al programma di rispondere a eventi imprevisti (come un file mancante o una divisione per zero) senza interrompersi bruscamente.
-
----
-### La Struttura `try-except`
-La gestione avviene tramite un blocco che "tenta" l'esecuzione e uno che "cattura" l'eventuale errore.
+La struttura base e `try`/`except`.
 
 ```python
 try:
-    numero = int(input("Inserisci un numero: "))
-    risultato = 10 / numero
+    number = int("42")
 except ValueError:
-    print("Errore: devi inserire un numero intero.")
-except ZeroDivisionError:
-    print("Errore: non puoi dividere per zero.")
+    print("Valore non valido")
 ```
 
-### Blocchi Aggiuntivi: `else` e `finally`
-- **`else`**: Viene eseguito solo se il blocco `try` **non** ha sollevato eccezioni.
-- **`finally`**: Viene eseguito **sempre**, indipendentemente dal fatto che sia avvenuto un errore o meno. Utile per la pulizia delle risorse (es. chiudere un database).
+Puoi aggiungere:
+
+- `else`: eseguito solo se non ci sono eccezioni;
+- `finally`: eseguito sempre, utile per cleanup;
+- `raise`: solleva o rilancia un'eccezione.
 
 ```python
 try:
-    file = open("dati.txt", "r")
-except FileNotFoundError:
-    print("File non trovato.")
+    result = 10 / 2
+except ZeroDivisionError:
+    print("Divisione per zero")
 else:
-    print("Lettura completata con successo.")
+    print(f"Risultato: {result}")
 finally:
-    print("Fine operazione.")
-    # Nota: con 'with' questo viene gestito automaticamente
+    print("Fine operazione")
 ```
-
----
-### Sollevare Eccezioni (`raise`)
-È possibile forzare il sollevamento di un'eccezione quando si verifica una condizione non valida per la logica dell'applicazione.
-
-```python
-def imposta_eta(eta):
-    if eta < 0:
-        raise ValueError("L'età non può essere negativa!")
-    print(f"Età impostata a {eta}")
-```
-
----
-### Logic layer: EAFP vs LBYL
-Python sposa fermamente la filosofia **EAFP** (*Easier to Ask for Forgiveness than Permission*), contrapposta alla **LBYL** (*Look Before You Leap*) tipica di linguaggi come il C.
-
-- **LBYL (Non tipico di Python)**: Controlli preventivi con molti `if`.
-- **EAFP (Pythonic)**: Tenta l'operazione e gestisci il fallimento se avviene. È più performante in scenari dove l'eccezione è un evento raro ed evita condizioni di "race condition" (es. controllare se un file esiste e poi aprirlo, ma nel frattempo un altro processo lo cancella).
-
----
 
 ## API / Sintassi
 
-Contenuto da sviluppare: nella nota originale questa sezione non era presente o era solo una traccia.
+Catturare eccezioni specifiche:
+
+```python
+try:
+    value = int(user_input)
+except ValueError as error:
+    print(f"Input non valido: {error}")
+```
+
+Sollevare un'eccezione:
+
+```python
+def set_age(age):
+    if age < 0:
+        raise ValueError("age must be greater than or equal to zero")
+    return age
+```
+
+Creare un'eccezione custom:
+
+```python
+class ConfigurationError(Exception):
+    pass
+```
+
+Concatenare eccezioni:
+
+```python
+try:
+    port = int(config["port"])
+except KeyError as error:
+    raise ConfigurationError("Missing port configuration") from error
+```
 
 ## Esempio pratico
 
-Contenuto da sviluppare: nella nota originale questa sezione non era presente o era solo una traccia.
+Validazione di configurazione letta da un dizionario.
+
+```python
+class InvalidConfigError(Exception):
+    pass
+
+
+def read_timeout(config):
+    try:
+        timeout = int(config["timeout"])
+    except KeyError as error:
+        raise InvalidConfigError("Missing timeout") from error
+    except ValueError as error:
+        raise InvalidConfigError("Timeout must be an integer") from error
+
+    if timeout <= 0:
+        raise InvalidConfigError("Timeout must be positive")
+
+    return timeout
+```
+
+Il chiamante vede un errore di dominio (`InvalidConfigError`), ma la causa originale resta disponibile tramite exception chaining.
 
 ## Varianti
 
-Contenuto da sviluppare: nella nota originale questa sezione non era presente o era solo una traccia.
+- **EAFP**: tenta l'operazione e gestisci l'eccezione.
+- **LBYL**: controlla prima se l'operazione e possibile.
+- **Eccezioni custom**: rendono espliciti gli errori del dominio applicativo.
+- **Exception chaining**: preserva la causa originale con `raise ... from error`.
+- **`finally`**: garantisce cleanup, anche se spesso `with` e piu adatto.
+
+```python
+try:
+    with open("data.txt", encoding="utf-8") as file:
+        content = file.read()
+except FileNotFoundError:
+    content = ""
+```
 
 ## Errori comuni
 
-Contenuto da sviluppare: nella nota originale questa sezione non era presente o era solo una traccia.
+- Usare `except:` senza specificare il tipo di errore.
+- Catturare `Exception` troppo in alto e nascondere bug.
+- Ignorare l'eccezione con `pass` senza log o gestione reale.
+- Usare eccezioni per controllare flussi normali e frequenti.
+- Perdere la causa originale quando si rilancia un errore.
+- Mescolare troppi casi diversi nello stesso blocco `try`.
 
 ## Checklist
 
-### Best Practices
-> [!CAUTION] Bare Except
-> Evita sempre di usare un `except:` generico senza specificare l'errore. Questo catturerà anche `SystemExit` e `KeyboardInterrupt` (Ctrl+C), rendendo difficile terminare il programma. Usa almeno `except Exception:` se devi proprio catturare tutto il resto.
-
-> [!TIP] Informazioni sull'errore
-> Puoi ottenere l'oggetto eccezione per loggare il messaggio d'errore originale: `except ValueError as e:`.
-
----
+- Sto catturando l'eccezione piu specifica possibile?
+- L'errore viene gestito davvero o solo nascosto?
+- Il messaggio contiene contesto utile?
+- Serve una eccezione custom di dominio?
+- Le risorse vengono chiuse con `with` o `finally`?
 
 ## Collegamenti
 
 - [[Programmazione/Python/Indice python|Indice Python]]
+- [[Context Managers]]
+- [[Gestione File]]
+- [[Logging]]
+- [[Testing]]

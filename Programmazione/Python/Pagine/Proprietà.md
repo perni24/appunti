@@ -1,5 +1,5 @@
-﻿---
-date: 2026-06-02
+---
+date: 2026-06-03
 area: Programmazione
 topic: Python
 type: technical-note
@@ -15,112 +15,76 @@ related: []
 
 ## Sintesi
 
-Nota su Proprietà (@property) in Python. Riassume il concetto, la sintassi principale e i punti da ricordare durante studio, sviluppo o debugging.
+`@property` permette di esporre un metodo come attributo, aggiungendo calcolo o validazione senza cambiare l'interfaccia pubblica.
 
 ## Quando usarlo
 
-Contenuto da sviluppare: nella nota originale questa sezione non era presente o era solo una traccia.
+Usalo quando un attributo deve essere calcolato, validato, reso read-only o mantenuto compatibile mentre cambia l'implementazione interna.
 
 ## Come funziona
 
-### Concetto chiave
-Le **Proprietà** in Python permettono di gestire l'accesso agli attributi di una classe in modo controllato tramite il decoratore `@property`. 
-Invece di accedere direttamente a una variabile, si definisce un metodo che si comporta come un attributo. Questo consente di aggiungere logica di validazione o calcolo senza cambiare l'interfaccia pubblica della classe.
-
----
-### Esempi Pratici
-### Esempio Base: Validazione
-```python
-class Persona:
-    def __init__(self, eta):
-        self.eta = eta  # Attiva il setter!
-
-    @property
-    def eta(self):
-        return self._eta
-
-    @eta.setter
-    def eta(self, valore):
-        if not isinstance(valore, int) or valore < 0:
-            raise ValueError("Età non valida!")
-        self._eta = valore
-```
-
-### Esempio Avanzato: Proprietà Calcolate
-```python
-class Rettangolo:
-    def __init__(self, base, altezza):
-        self.base = base
-        self.altezza = altezza
-
-    @property
-    def area(self):
-        return self.base * self.altezza
-```
-
----
-### Logic layer: Descrittori e Incapsulamento
-In Python, le proprietà sono implementate tramite il **Protocollo Descrittore**.
-
-> [!INFO] Definizione: Descrittore
-> Un descrittore è un oggetto che definisce almeno uno dei metodi `__get__`, `__set__` o `__delete__`. Il decoratore `@property` trasforma un metodo in un descrittore di dati, intercettando ogni tentativo di accesso all'attributo.
-
-### Vantaggi dell'approccio Pythonico
-A differenza di linguaggi come Java (dove si usano `getValore()` e `setValore()`), Python incoraggia l'uso di attributi pubblici inizialmente. Se in futuro serve aggiungere logica, si trasforma l'attributo in `@property` senza rompere il codice esterno (che continuerà a usare `oggetto.attributo`).
-
----
+`@property` crea un descriptor. Il getter viene chiamato quando leggi l'attributo. Il setter, se definito, viene chiamato quando assegni un valore.
 
 ## API / Sintassi
 
-### Sintassi e Definizione
-Si utilizzano i decoratori per definire getter, setter e deleter.
-
 ```python
-class Esempio:
-    def __init__(self, valore):
-        self._valore = valore  # Convenzione: '_' per attributi protetti
+class Person:
+    def __init__(self, age: int) -> None:
+        self.age = age
 
     @property
-    def valore(self):
-        """Getter: Restituisce il valore."""
-        return self._valore
+    def age(self) -> int:
+        return self._age
 
-    @valore.setter
-    def valore(self, nuovo_valore):
-        """Setter: Imposta il valore con validazione."""
-        if nuovo_valore < 0:
-            raise ValueError("Il valore non può essere negativo!")
-        self._valore = nuovo_valore
-
-    @valore.deleter
-    def valore(self):
-        """Deleter: Operazioni prima della cancellazione."""
-        del self._valore
+    @age.setter
+    def age(self, value: int) -> None:
+        if value < 0:
+            raise ValueError("age cannot be negative")
+        self._age = value
 ```
-
----
 
 ## Esempio pratico
 
-Contenuto da sviluppare: nella nota originale questa sezione non era presente o era solo una traccia.
+```python
+class Rectangle:
+    def __init__(self, width: float, height: float) -> None:
+        self.width = width
+        self.height = height
+
+    @property
+    def area(self) -> float:
+        return self.width * self.height
+```
+
+`area` si usa come attributo: `rectangle.area`.
 
 ## Varianti
 
-Contenuto da sviluppare: nella nota originale questa sezione non era presente o era solo una traccia.
+- Proprietà read-only.
+- Proprietà con setter.
+- Proprietà con deleter.
+- Proprietà calcolate.
+- Validazione tramite setter.
+- `functools.cached_property` per calcoli costosi memorizzati.
 
 ## Errori comuni
 
-### Best Practices & "Gotchas"
--  **Da fare**: Usa `@property` per mantenere l'interfaccia pulita e "Pythonica".
--  **Da fare**: Usa nomi con prefisso `_` per memorizzare i dati reali (es. `self._valore`).
--  **Da evitare**: Non inserire operazioni pesanti (I/O, DB) dentro una proprietà; deve sembrare un accesso veloce.
--  **Errore comune**: Causare una **ricorsione infinita** usando `self.attributo = x` dentro il setter della stessa proprietà (invece di `self._attributo = x`).
--  **Attenzione**: Una proprietà definita solo con `@property` è automaticamente **Read-Only**.
+- Usare `self.age = value` dentro il setter di `age`, causando ricorsione.
+- Mettere I/O lento dentro una proprietà.
+- Usare proprietà per nascondere logica complessa.
+- Dimenticare che una property read-only non ha setter.
+- Confondere `@property` con metodo normale.
 
 ## Checklist
 
-Contenuto da sviluppare: nella nota originale questa sezione non era presente o era solo una traccia.
+- L'accesso sembra un attributo semplice?
+- Il getter e veloce?
+- Il setter valida senza ricorsione?
+- Il nome interno usa `_name`?
+- Serve `cached_property` invece di `property`?
 
 ## Collegamenti
 
-- [[Programmazione/Python/Indice python|Indice Python]]
+- [[Programmazione/Python/Pagine/Incapsulamento|Incapsulamento]]
+- [[Programmazione/Python/Pagine/Descriptor protocol|Descriptor protocol]]
+- [[Programmazione/Python/Pagine/Classi e Istanze|Classi e Istanze]]

@@ -1,5 +1,5 @@
-﻿---
-date: 2026-06-02
+---
+date: 2026-06-03
 area: Programmazione
 topic: Python
 type: technical-note
@@ -15,66 +15,139 @@ related: [Ambienti Virtuali, CLI con argparse]
 
 ## Sintesi
 
-La configurazione permette di separare codice e valori che cambiano tra ambienti, come porte, path, flag e credenziali.
+La configurazione separa il codice dai valori che cambiano tra ambienti: porte, path, URL, flag, credenziali e parametri di runtime.
 
-In Python le variabili d'ambiente si leggono con `os.environ`.
+In Python le variabili d'ambiente si leggono con `os.environ`. Sono sempre stringhe, quindi vanno convertite esplicitamente quando rappresentano numeri, booleani o liste.
 
 ## Quando usarlo
 
-Contenuto da sviluppare: nella nota originale questa sezione non era presente o era solo una traccia.
+Usa configurazione esterna quando:
+
+- lo stesso codice gira in sviluppo, test e produzione;
+- devi gestire segreti senza metterli nel codice;
+- vuoi cambiare comportamento senza modificare sorgenti;
+- una CLI deve accettare opzioni ma anche default da ambiente;
+- deploy e container devono passare parametri al processo.
 
 ## Come funziona
 
-### Leggere variabili
+Leggere una variabile obbligatoria:
+
 ```python
 import os
 
-debug = os.environ.get("DEBUG", "false")
 database_url = os.environ["DATABASE_URL"]
 ```
 
-`os.environ["NAME"]` solleva `KeyError` se la variabile manca.
+Leggere una variabile opzionale:
 
-`os.environ.get("NAME")` restituisce `None` o un default.
-### Conversioni
-Le variabili d'ambiente sono stringhe.
+```python
+debug = os.environ.get("DEBUG", "false")
+```
+
+Convertire tipi:
 
 ```python
 port = int(os.environ.get("PORT", "8000"))
 debug = os.environ.get("DEBUG", "false").lower() == "true"
 ```
 
-Converti esplicitamente numeri e booleani.
-### Segreti
-Non salvare password, token o chiavi API nel codice sorgente.
-
-Usa variabili d'ambiente, secret manager o configurazione esterna non versionata.
+Le variabili d'ambiente non sono un sistema di typing: la validazione resta responsabilita del programma.
 
 ## API / Sintassi
 
-Contenuto da sviluppare: nella nota originale questa sezione non era presente o era solo una traccia.
+Accesso a `os.environ`:
+
+```python
+import os
+
+value = os.environ.get("NAME")
+required = os.environ["REQUIRED_NAME"]
+```
+
+Impostare una variabile per il processo corrente:
+
+```python
+import os
+
+os.environ["APP_ENV"] = "development"
+```
+
+Parsing centralizzato:
+
+```python
+from dataclasses import dataclass
+import os
+
+
+@dataclass(frozen=True)
+class Settings:
+    database_url: str
+    debug: bool
+    port: int
+
+
+def load_settings() -> Settings:
+    return Settings(
+        database_url=os.environ["DATABASE_URL"],
+        debug=os.environ.get("DEBUG", "false").lower() == "true",
+        port=int(os.environ.get("PORT", "8000")),
+    )
+```
 
 ## Esempio pratico
 
-Contenuto da sviluppare: nella nota originale questa sezione non era presente o era solo una traccia.
+Configurazione per un'applicazione web:
+
+```python
+settings = load_settings()
+
+if settings.debug:
+    print("Debug mode enabled")
+
+print(f"Listening on port {settings.port}")
+```
+
+Con PowerShell:
+
+```powershell
+$env:DATABASE_URL = "postgresql://localhost/app"
+$env:PORT = "8000"
+$env:DEBUG = "true"
+python app.py
+```
 
 ## Varianti
 
-Contenuto da sviluppare: nella nota originale questa sezione non era presente o era solo una traccia.
+- **Variabili d'ambiente**: adatte a configurazione di deploy e segreti.
+- **Argomenti CLI**: adatti a script e tool invocati manualmente.
+- **File `.env`**: comodi in sviluppo, ma da non committare se contengono segreti.
+- **File di configurazione**: utili per impostazioni complesse e non segrete.
+- **Secret manager**: preferibile in produzione per credenziali sensibili.
+- **Pydantic Settings**: scelta frequente in progetti FastAPI o applicazioni strutturate.
 
 ## Errori comuni
 
 - Assumere che una variabile esista sempre.
-- Dimenticare conversioni di tipo.
-- Loggare segreti.
+- Dimenticare che i valori sono stringhe.
+- Loggare segreti o stamparli in debug.
 - Mescolare configurazione di sviluppo e produzione.
+- Spargere letture di `os.environ` in tutto il codice.
+- Salvare credenziali in file versionati.
 
 ## Checklist
 
-Contenuto da sviluppare: nella nota originale questa sezione non era presente o era solo una traccia.
+- Le variabili obbligatorie falliscono presto se mancano?
+- I tipi vengono convertiti e validati?
+- I segreti non sono nel codice o nel repository?
+- La configurazione e caricata in un punto centrale?
+- CLI, ambiente e default hanno priorita chiare?
+- I log non espongono valori sensibili?
 
 ## Collegamenti
 
-- [[Programmazione/Python/Pagine/Ambienti Virtuali|Ambienti Virtuali]]
-- [[Programmazione/Python/Pagine/CLI con argparse|CLI con argparse]]
-- [[Programmazione/Python/Pagine/Comandi base|Comandi base]]
+- [[Programmazione/Python/Indice python|Indice Python]]
+- [[Ambienti Virtuali]]
+- [[CLI con argparse]]
+- [[Pydantic]]
+- [[Comandi base]]

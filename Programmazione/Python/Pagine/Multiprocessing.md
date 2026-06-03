@@ -1,12 +1,12 @@
-﻿---
-date: 2026-06-02
+---
+date: 2026-06-03
 area: Programmazione
 topic: Python
 type: technical-note
 status: "non revisionato"
 difficulty: intermediate
-tags: [python, programming]
-aliases: [Multiprocessing]
+tags: [python, programming, concurrency]
+aliases: [Multiprocessing, Processi Python]
 prerequisites: []
 related: []
 ---
@@ -15,127 +15,141 @@ related: []
 
 ## Sintesi
 
-Nota su Multiprocessing in Python. Riassume il concetto, la sintassi principale e i punti da ricordare durante studio, sviluppo o debugging.
-Nota su Multiprocessing in Python. Riassume il concetto, la sintassi principale e i punti da ricordare durante studio, sviluppo o debugging.
-def worker_function(data):
-    # Logica computazionale
-    return data * 2
+`multiprocessing` permette di eseguire piu processi Python separati. Ogni processo ha il proprio interprete, la propria memoria e il proprio GIL, quindi puo sfruttare piu core per carichi **CPU-bound**.
 
-if __name__ == "__main__":
-    # Creazione del processo
-    p = multiprocessing.Process(target=worker_function, args=(10,))
-    
-    # Avvio
-    p.start()
-    
-    # Attesa
-    p.join()
-```
-
----
+Il costo e maggiore rispetto ai thread: piu memoria, avvio piu lento e comunicazione piu complessa.
 
 ## Quando usarlo
 
-Contenuto da sviluppare: nella nota originale questa sezione non era presente o era solo una traccia.
+Usa multiprocessing quando:
+
+- il collo di bottiglia e la CPU;
+- vuoi sfruttare piu core;
+- i task sono abbastanza pesanti da giustificare l'overhead;
+- i dati passati ai worker sono serializzabili;
+- vuoi isolare lavoro rischioso in processi separati.
+
+Per I/O-bound leggero, spesso bastano thread o `asyncio`.
 
 ## Come funziona
 
-### Concetto chiave
-Il **Multiprocessing** è una tecnica che permette di eseguire più processi indipendenti contemporaneamente, ciascuno con la propria istanza dell'interprete Python e il proprio spazio di memoria. A differenza del [[Programmazione/Python/Pagine/Threading]], il multiprocessing permette di superare i limiti del [[Programmazione/Python/Pagine/Global Interpreter Lock|GIL]], rendendolo la scelta ideale per operazioni **CPU-bound** (calcoli intensivi).
-
-> [!INFO]
-> Ogni processo ha il suo ID (PID) e la sua memoria privata. La comunicazione tra processi è più lenta rispetto ai thread perché richiede meccanismi di IPC (Inter-Process Communication).
-
----
-### Esempi Pratici
-### Esempio Base: Parallelismo Reale
-Calcolo di numeri pesanti utilizzando più core della CPU.
+Processo manuale:
 
 ```python
 import multiprocessing
-import time
 
-def heavy_calculation(n):
-    result = 0
-    for i in range(10**7):
-        result += i
-    print(f"Processo {n} completato.")
+
+def worker(value):
+    print(value * 2)
+
 
 if __name__ == "__main__":
-    processes = []
-    start_time = time.time()
-
-    for i in range(4): # Avvia 4 processi
-        p = multiprocessing.Process(target=heavy_calculation, args=(i,))
-        processes.append(p)
-        p.start()
-
-    for p in processes:
-        p.join()
-
-    print(f"Tempo totale: {time.time() - start_time:.2f} secondi")
+    process = multiprocessing.Process(target=worker, args=(10,))
+    process.start()
+    process.join()
 ```
 
-### Esempio Avanzato: Utilizzo di Pool
-Il `Pool` permette di gestire facilmente un gruppo di worker e distribuire i task.
+Il blocco `if __name__ == "__main__":` e essenziale, specialmente su Windows, per evitare creazioni ricorsive di processi.
+
+## API / Sintassi
+
+Pool di processi:
 
 ```python
 from multiprocessing import Pool
 
-def square(n):
-    return n * n
+
+def square(number):
+    return number * number
+
 
 if __name__ == "__main__":
-    numbers = [1, 2, 3, 4, 5]
-    
-    # Crea un pool di processi (default: numero di core della CPU)
-    with Pool() as p:
-        results = p.map(square, numbers)
-    
-    print(f"Risultati: {results}")
+    with Pool() as pool:
+        results = pool.map(square, [1, 2, 3, 4])
+        print(results)
 ```
 
----
-### Funzionamento Interno (Teoria)
-- **Gestione Memoria:** Ogni processo ha la sua memoria dedicata (heap e stack). Non c'è rischio di race condition su variabili globali (perché non sono condivise), ma la condivisione di dati richiede oggetti speciali come `Queue`, `Pipe` o `Value/Array`.
-- **Bypass del GIL:** Poiché ogni processo ha il proprio interprete Python, ogni processo ha il proprio GIL. Questo permette l'esecuzione parallela effettiva su sistemi multi-core.
-- **Overhead:** La creazione di un processo è più costosa (in termini di tempo e RAM) rispetto a quella di un thread. È consigliato per task lunghi e intensivi, non per migliaia di task brevi.
-
----
-
-## API / Sintassi
-
-### Sintassi
-Il modulo standard è `multiprocessing`.
+Queue tra processi:
 
 ```python
-import multiprocessing
+from multiprocessing import Process, Queue
 
-# Multiprocessing in Python
+
+def worker(queue):
+    queue.put("done")
+
+
+if __name__ == "__main__":
+    queue = Queue()
+    process = Process(target=worker, args=(queue,))
+    process.start()
+    print(queue.get())
+    process.join()
+```
 
 ## Esempio pratico
 
-Contenuto da sviluppare: nella nota originale questa sezione non era presente o era solo una traccia.
+Parallelizzare calcoli indipendenti:
+
+```python
+from multiprocessing import Pool
+
+
+def count_primes(limit):
+    count = 0
+    for number in range(2, limit):
+        for divisor in range(2, int(number ** 0.5) + 1):
+            if number % divisor == 0:
+                break
+        else:
+            count += 1
+    return count
+
+
+if __name__ == "__main__":
+    limits = [20_000, 22_000, 24_000, 26_000]
+
+    with Pool() as pool:
+        results = pool.map(count_primes, limits)
+
+    print(results)
+```
+
+Il lavoro e CPU-bound e ogni input puo essere calcolato indipendentemente.
 
 ## Varianti
 
-Contenuto da sviluppare: nella nota originale questa sezione non era presente o era solo una traccia.
+- **`Process`**: controllo esplicito su singoli processi.
+- **`Pool`**: distribuisce task omogenei su processi worker.
+- **`Queue` e `Pipe`**: comunicazione tra processi.
+- **`Value` e `Array`**: memoria condivisa semplice.
+- **`ProcessPoolExecutor`**: API piu moderna tramite `concurrent.futures`.
+- **Worker esterni**: per sistemi piu grandi, code come Celery o task queue dedicate.
 
 ## Errori comuni
 
-### Best Practices & "Gotchas"
--  **Da fare:** Usa `if __name__ == "__main__":` per evitare ricorsioni infinite nella creazione dei processi (specialmente su Windows).
--  **Da fare:** Usa `Pool` quando devi eseguire lo stesso task su una collezione di dati.
--  **Da evitare:** Non usare il multiprocessing per task I/O-bound leggeri; l'overhead della creazione del processo supererebbe i benefici.
--  **Pickling Error:** I dati passati ai processi devono essere "serializzabili" (picklable). Alcuni oggetti complessi o funzioni lambda potrebbero fallire.
--  **Memoria:** Se crei troppi processi, potresti esaurire rapidamente la RAM disponibile.
-
----
+- Dimenticare `if __name__ == "__main__":`.
+- Passare funzioni lambda o oggetti non picklable ai processi.
+- Usare multiprocessing per task troppo piccoli.
+- Creare troppi processi rispetto ai core e alla RAM.
+- Condividere grandi quantita di dati tra processi senza considerare serializzazione.
+- Aspettarsi memoria condivisa come nei thread.
+- Ignorare eccezioni nei worker.
 
 ## Checklist
 
-Contenuto da sviluppare: nella nota originale questa sezione non era presente o era solo una traccia.
+- Il carico e CPU-bound?
+- I task sono abbastanza grandi?
+- I dati sono picklable?
+- Il codice ha il guard `if __name__ == "__main__":`?
+- Il numero di processi e ragionevole?
+- Il costo di serializzazione e accettabile?
 
 ## Collegamenti
 
 - [[Programmazione/Python/Indice python|Indice Python]]
+- [[Global Interpreter Lock]]
+- [[Concurrent.futures]]
+- [[Threading]]
+- [[Profiling]]
+- [[Memory Management]]

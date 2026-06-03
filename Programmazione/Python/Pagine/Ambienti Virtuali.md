@@ -1,12 +1,12 @@
-﻿---
-date: 2026-06-02
+---
+date: 2026-06-03
 area: Programmazione
 topic: Python
 type: technical-note
 status: "non revisionato"
-difficulty: intermediate
-tags: [python, programming]
-aliases: [Ambienti Virtuali]
+difficulty: beginner
+tags: [python, programming, virtualenv]
+aliases: [Ambienti Virtuali, Virtualenv, venv]
 prerequisites: []
 related: []
 ---
@@ -15,184 +15,137 @@ related: []
 
 ## Sintesi
 
-Nota su Ambienti Virtuali in Python. Riassume il concetto, la sintassi principale e i punti da ricordare durante studio, sviluppo o debugging.
+Un ambiente virtuale e un ambiente Python isolato per un singolo progetto. Contiene il proprio interprete di riferimento, i pacchetti installati e gli script CLI delle dipendenze.
+
+Serve a evitare conflitti tra progetti diversi e a rendere installazione, test e sviluppo piu riproducibili.
 
 ## Quando usarlo
 
-Contenuto da sviluppare: nella nota originale questa sezione non era presente o era solo una traccia.
+Usa un ambiente virtuale quasi sempre quando lavori su un progetto Python:
+
+- applicazioni web;
+- script con dipendenze esterne;
+- librerie installabili;
+- notebook con pacchetti specifici;
+- test e CI;
+- progetti che richiedono versioni precise di librerie.
+
+L'installazione globale ha senso solo per pochi tool generali, e spesso e meglio gestirli con strumenti dedicati come `pipx`.
 
 ## Come funziona
 
-### Concetto chiave
-Un **ambiente virtuale** e un ambiente Python isolato che contiene un proprio interprete, i propri pacchetti installati e i propri script eseguibili. Serve a separare le dipendenze tra progetti diversi ed evitare conflitti di versione.
-
-Senza ambienti virtuali, installare pacchetti globalmente porta rapidamente a problemi: progetti diversi richiedono versioni diverse della stessa libreria, e l'interprete di sistema finisce per diventare instabile o difficile da gestire.
-
-> [!INFO] Obiettivo pratico
-> Un progetto Python dovrebbe quasi sempre avere un ambiente virtuale dedicato. Questo rende installazioni, aggiornamenti, test e deploy molto piu prevedibili.
-
----
-### Esempi Pratici
-### Creare un ambiente e installare dipendenze
+Il modulo standard `venv` crea una directory, spesso chiamata `.venv`, che contiene l'ambiente isolato.
 
 ```bash
 python -m venv .venv
+```
+
+Quando lo attivi, il comando `python` e i comandi installati dai pacchetti puntano all'ambiente del progetto.
+
+Windows:
+
+```bash
 .venv\Scripts\activate
+```
+
+macOS/Linux:
+
+```bash
+source .venv/bin/activate
+```
+
+Da quel momento:
+
+```bash
 python -m pip install requests
 ```
 
-Da questo momento, `requests` viene installato dentro l'ambiente virtuale del progetto e non nell'interprete globale.
+installa `requests` dentro `.venv`, non nell'interprete globale.
 
-### Salvare e ripristinare le dipendenze
+## API / Sintassi
+
+Creare un ambiente:
 
 ```bash
-python -m pip freeze > requirements.txt
-python -m pip install -r requirements.txt
+python -m venv .venv
 ```
 
-Questo permette di ricreare lo stesso ambiente su un'altra macchina o in CI.
+Attivarlo:
 
-### Verificare quale interprete stai usando
+```bash
+.venv\Scripts\activate
+```
+
+Disattivarlo:
+
+```bash
+deactivate
+```
+
+Verificare interprete e `pip`:
 
 ```bash
 python --version
 python -m pip --version
 ```
 
-Questo controllo e utile quando sospetti di stare installando i pacchetti nell'ambiente sbagliato.
-
----
-### Funzionamento Interno (Teoria)
-### Cosa isola davvero un ambiente virtuale
-Un virtual environment isola soprattutto:
-- pacchetti installati;
-- script CLI dei pacchetti;
-- path dell'interprete Python usato dal progetto.
-
-Non isola invece:
-- il sistema operativo;
-- le variabili d'ambiente di per se;
-- i file del progetto;
-- risorse esterne come database o servizi.
-
-### Relazione con `pip`
-Quando un ambiente virtuale e attivo, `python` e `pip` puntano alla copia locale dentro `.venv`. Quindi:
+Salvare dipendenze:
 
 ```bash
-python -m pip install fastapi
-```
-
-installa `fastapi` nell'ambiente corrente, non nel Python di sistema.
-
-Questo collega direttamente gli ambienti virtuali a [[Programmazione/Python/Pagine/Pip e PyPI]].
-
-### Perche `python -m pip` e preferibile
-In macchine con piu installazioni Python, il comando `pip` da solo puo puntare all'interprete sbagliato. `python -m pip` evita questa ambiguita, perche usa esplicitamente il `python` attivo.
-
----
-### Workflow tipico di progetto
-Per un progetto Python standard, il flusso corretto e in genere questo:
-
-1. creare l'ambiente virtuale;
-2. attivarlo;
-3. installare le dipendenze;
-4. lavorare sempre con quell'interprete;
-5. salvare le dipendenze in un file;
-6. non committare l'ambiente virtuale nel repository.
-
-Esempio:
-
-```bash
-python -m venv .venv
-.venv\Scripts\activate
-python -m pip install fastapi uvicorn
 python -m pip freeze > requirements.txt
 ```
 
-Conviene anche aggiungere `.venv/` o `.venv` al `.gitignore`.
-
----
-
-## API / Sintassi
-
-### Sintassi di base con `venv`
-Il modulo standard piu comune per creare ambienti virtuali e `venv`, incluso nella Standard Library.
-
-### Creazione dell'ambiente
+Installare dipendenze da file:
 
 ```bash
-python -m venv .venv
+python -m pip install -r requirements.txt
 ```
-
-Questo comando crea una cartella `.venv` con:
-- interprete Python isolato;
-- script di attivazione;
-- spazio dedicato per i pacchetti installati con `pip`.
-
-### Attivazione su Windows
-
-```bash
-.venv\Scripts\activate
-```
-
-### Attivazione su macOS/Linux
-
-```bash
-source .venv/bin/activate
-```
-
-### Disattivazione
-
-```bash
-deactivate
-```
-
----
-### `venv` vs installazione globale
-### Installazione globale
-- tutti i progetti condividono lo stesso interprete;
-- rischio elevato di conflitti;
-- manutenzione piu fragile;
-- sconsigliata per sviluppo normale.
-
-### Ambiente virtuale
-- isolamento per progetto;
-- dipendenze piu controllate;
-- setup piu riproducibile;
-- minore rischio di rompere altri progetti.
-
-> [!TIP] Regola pratica
-> L'installazione globale ha senso solo per casi molto specifici, come tool di sistema o ambienti volutamente centralizzati. Per lo sviluppo ordinario, usa un ambiente virtuale per ogni progetto.
-
----
 
 ## Esempio pratico
 
-Contenuto da sviluppare: nella nota originale questa sezione non era presente o era solo una traccia.
+Workflow iniziale per un nuovo progetto:
+
+```bash
+python -m venv .venv
+.venv\Scripts\activate
+python -m pip install --upgrade pip
+python -m pip install httpx pytest
+python -m pip freeze > requirements.txt
+```
+
+Poi aggiungi `.venv/` al `.gitignore`, perche l'ambiente si ricrea: non va committato.
 
 ## Varianti
 
-Contenuto da sviluppare: nella nota originale questa sezione non era presente o era solo una traccia.
+- **`venv`**: modulo standard, sufficiente per molti progetti.
+- **`virtualenv`**: strumento storico, ancora usato in alcuni workflow.
+- **`pipx`**: utile per installare tool CLI Python isolati globalmente.
+- **`poetry`**: gestisce dipendenze, lockfile, packaging e virtualenv.
+- **`uv`**: tool moderno e veloce per ambienti e dipendenze.
+- **Conda**: ambiente piu ampio, comune in data science, gestisce anche dipendenze non Python.
 
 ## Errori comuni
 
-### Best Practices & "Gotchas"
--  **Crea un ambiente virtuale per ogni progetto:** evita conflitti tra dipendenze.
--  **Usa nomi convenzionali come `.venv`:** semplifica editor, tooling e `.gitignore`.
--  **Usa sempre `python -m pip`:** riduce errori di interpreter mismatch.
--  **Verifica l'ambiente attivo prima di installare pacchetti:** evita installazioni nel posto sbagliato.
--  **Versiona `requirements.txt` o il file di dipendenze del progetto:** l'ambiente si ricrea, non si committa.
--  **Non committare `.venv` nel repository:** appesantisce il repo e rompe la portabilita.
--  **Non mescolare pacchetti globali e locali senza motivo:** complica debug e manutenzione.
--  **Attenzione ai terminali multipli:** potresti avere shell con ambienti diversi attivi contemporaneamente.
--  **Attenzione ai path hardcoded:** spostare il progetto o l'ambiente puo rompere script che assumono percorsi fissi.
-
----
+- Installare pacchetti globalmente senza accorgersene.
+- Usare `pip` invece di `python -m pip` in macchine con piu interpreti.
+- Committare `.venv` nel repository.
+- Usare lo stesso ambiente per progetti diversi.
+- Dimenticare di attivare l'ambiente nel terminale corretto.
+- Confondere ambiente virtuale e container: un virtualenv non isola sistema operativo o servizi esterni.
 
 ## Checklist
 
-Contenuto da sviluppare: nella nota originale questa sezione non era presente o era solo una traccia.
+- Esiste un ambiente dedicato al progetto?
+- `.venv/` e escluso dal repository?
+- Sto usando `python -m pip`?
+- Le dipendenze sono registrate in un file o lockfile?
+- L'editor usa l'interprete della `.venv`?
+- I comandi di test vengono eseguiti nell'ambiente corretto?
 
 ## Collegamenti
 
 - [[Programmazione/Python/Indice python|Indice Python]]
+- [[Pip e PyPI]]
+- [[uv pipx e poetry]]
+- [[Creazione di Package]]
+- [[Testing]]

@@ -1,5 +1,5 @@
-﻿---
-date: 2026-06-02
+---
+date: 2026-06-03
 area: Programmazione
 topic: Python
 type: technical-note
@@ -15,126 +15,81 @@ related: []
 
 ## Sintesi
 
-Nota su Ereditarietà in Python. Riassume il concetto, la sintassi principale e i punti da ricordare durante studio, sviluppo o debugging.
-Nota su Ereditarietà in Python. Riassume il concetto, la sintassi principale e i punti da ricordare durante studio, sviluppo o debugging.
-print(Cane.mro())
-```
+L'ereditarieta permette a una classe figlia di riusare e specializzare attributi e metodi di una classe padre.
 
 ## Quando usarlo
 
-Contenuto da sviluppare: nella nota originale questa sezione non era presente o era solo una traccia.
+Usala quando esiste una relazione reale "is-a" e vuoi condividere comportamento comune tra tipi compatibili.
 
 ## Come funziona
 
-### Concetto chiave
-L'**Ereditarietà** permette a una classe (classe **figlia** o sottoclasse) di derivare attributi e metodi da un'altra classe (classe **padre** o superclasse).
-
-Questo meccanismo favorisce il **riutilizzo del codice** e permette di creare gerarchie logiche tra gli oggetti, modellando relazioni del tipo "is-a" (un Gatto *è un* Animale).
-
----
-### Esempi Pratici
-### Esempio Base: Animali e Cani
-```python
-class Animale:
-    def __init__(self, nome):
-        self.nome = nome
-
-    def mangia(self):
-        print(f"{self.nome} sta mangiando...")
-
-class Cane(Animale):
-    def __init__(self, nome, razza):
-        # Chiama il costruttore della classe padre (Animale)
-        super().__init__(nome)
-        self.razza = razza
-
-    def abbaia(self):
-        print("Bau bau!")
-
-fido = Cane("Fido", "Pastore Tedesco")
-fido.mangia()  # Metodo ereditato da Animale
-fido.abbaia()  # Metodo specifico di Cane
-```
-
-### Overriding (Sovrascrittura) dei Metodi
-Una sottoclasse può ridefinire un metodo della classe padre per adattarlo alle sue esigenze.
-
-```python
-class Uccello(Animale):
-    def mangia(self):
-        print(f"{self.nome} becca i semi.")
-
-uccellino = Uccello("Cip")
-uccellino.mangia() # Output: Cip becca i semi.
-```
-
----
-### Logic layer: Concetti Avanzati
-### 1. Ereditarietà Multipla
-Python supporta l'ereditarietà multipla, dove una classe può derivare da più classi base.
-```python
-class Terrestre:
-    pass
-
-class Acquatico:
-    pass
-
-class Anfibio(Terrestre, Acquatico):
-    pass
-```
-
-### 2. MRO (Method Resolution Order)
-Quando Python cerca un metodo o un attributo, segue un ordine preciso chiamato **MRO**. Puoi visualizzarlo usando l'attributo `__mro__` o la funzione `help()`. Python utilizza l'algoritmo **C3 Linearization** per risolvere i conflitti in caso di ereditarietà multipla (es. il "problema del diamante").
-
-### 3. `isinstance()` e `issubclass()`
-- `isinstance(obj, Class)`: Controlla se un oggetto è un'istanza di una classe o di una sua sottoclasse.
-- `issubclass(ClassA, ClassB)`: Controlla se `ClassA` è una sottoclasse di `ClassB`.
-
----
+Una sottoclasse eredita metodi e attributi dalla superclasse. Con `super()` puoi chiamare implementazioni della classe padre. Python supporta ereditarieta multipla e risolve i metodi con MRO, cioe Method Resolution Order.
 
 ## API / Sintassi
 
-### Sintassi e Definizione
-Per far ereditare una classe, basta inserire il nome della superclasse tra parentesi dopo il nome della sottoclasse.
-
 ```python
-class SuperClasse:
-    pass
+class Animal:
+    def __init__(self, name: str) -> None:
+        self.name = name
 
-class SottoClasse(SuperClasse):
-    pass
+    def speak(self) -> str:
+        return "..."
+
+
+class Dog(Animal):
+    def speak(self) -> str:
+        return "bau"
 ```
 
-### Funzione `super()`
-La funzione `super()` viene utilizzata per accedere ai metodi della classe padre, specialmente all'interno del costruttore `__init__`, per assicurarsi che l'inizializzazione della classe base venga eseguita correttamente.
+`super()`:
 
----
+```python
+class Dog(Animal):
+    def __init__(self, name: str, breed: str) -> None:
+        super().__init__(name)
+        self.breed = breed
+```
 
 ## Esempio pratico
 
-Contenuto da sviluppare: nella nota originale questa sezione non era presente o era solo una traccia.
+```python
+class Notification:
+    def send(self, message: str) -> None:
+        raise NotImplementedError
+
+
+class EmailNotification(Notification):
+    def send(self, message: str) -> None:
+        print(f"email: {message}")
+```
 
 ## Varianti
 
-Contenuto da sviluppare: nella nota originale questa sezione non era presente o era solo una traccia.
+- Ereditarieta singola.
+- Ereditarieta multipla.
+- Override di metodi.
+- Classi astratte.
+- Mixins.
+- Composizione come alternativa.
 
 ## Errori comuni
 
-### Best Practices & "Gotchas"
--  **Da fare**: Usa sempre `super().__init__()` nelle sottoclassi per garantire una corretta inizializzazione.
--  **Da fare**: Favorisci la composizione rispetto all'ereditarietà se la relazione non è strettamente "is-a".
--  **Da evitare**: Evita gerarchie di ereditarietà troppo profonde (difficili da mantenere).
--  **Da evitare**: Usa l'ereditarietà multipla con estrema cautela; può rendere il flusso del codice molto complesso da seguire.
--  **Errore comune**: Dimenticare di chiamare il costruttore della superclasse, lasciando gli attributi base non inizializzati.
--  **Attenzione**: In Python 3, tutte le classi ereditano implicitamente da `object`.
-
-```python
-# Ereditarietà in Python
+- Usare ereditarieta quando serve composizione.
+- Creare gerarchie troppo profonde.
+- Dimenticare `super().__init__()`.
+- Usare ereditarieta multipla senza capire MRO.
+- Rompere il contratto della classe base.
 
 ## Checklist
 
-Contenuto da sviluppare: nella nota originale questa sezione non era presente o era solo una traccia.
+- La relazione e davvero "is-a"?
+- La sottoclasse rispetta il comportamento atteso?
+- `super()` viene usato correttamente?
+- La gerarchia resta semplice?
+- Un protocollo o composizione sarebbe piu adatto?
 
 ## Collegamenti
 
-- [[Programmazione/Python/Indice python|Indice Python]]
+- [[Programmazione/Python/Pagine/Classi e Istanze|Classi e Istanze]]
+- [[Programmazione/Python/Pagine/Metodi Speciali|Metodi Speciali]]
+- [[Programmazione/Python/Pagine/Type Hinting|Type Hinting]]

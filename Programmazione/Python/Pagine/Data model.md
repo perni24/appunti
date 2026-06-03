@@ -1,5 +1,5 @@
-﻿---
-date: 2026-06-02
+---
+date: 2026-06-03
 area: Programmazione
 topic: Python
 type: theory-note
@@ -18,53 +18,68 @@ related: []
 
 ## Sintesi
 
-Il **data model** di Python definisce come gli oggetti interagiscono con operatori, funzioni built-in, attributi, contesti e protocolli del linguaggio.
+Il data model definisce i protocolli che permettono agli oggetti Python di integrarsi con operatori, attributi, iterazione, contesti e funzioni built-in.
 
 ## Quando usarlo
 
-Contenuto da sviluppare: nella nota originale questa sezione non era presente o era solo una traccia.
+Serve quando vuoi scrivere classi idiomatiche, capire metodi speciali, descriptor, iteratori, context manager o comportamento degli operatori.
 
 ## Come funziona
 
-### Concetto chiave
-Molti comportamenti speciali sono controllati da metodi dunder, come `__len__`, `__iter__`, `__enter__`, `__eq__` e `__repr__`.
-
-```python
-class Cart:
-    def __init__(self, items):
-        self.items = items
-
-    def __len__(self):
-        return len(self.items)
-
-cart = Cart(["book", "pen"])
-print(len(cart))
-```
-### Perche conta
-Capire il data model aiuta a scrivere classi idiomatiche, compatibili con funzioni built-in e integrate nei protocolli Python.
+Python non controlla solo il tipo nominale: cerca metodi e protocolli. Se un oggetto implementa `__iter__`, puo essere iterato. Se implementa `__enter__` e `__exit__`, puo essere usato con `with`.
 
 ## API / Sintassi
 
-Contenuto da sviluppare: nella nota originale questa sezione non era presente o era solo una traccia.
+```python
+class Bag:
+    def __init__(self, items: list[str]) -> None:
+        self.items = items
+
+    def __len__(self) -> int:
+        return len(self.items)
+
+    def __iter__(self):
+        return iter(self.items)
+```
 
 ## Esempio pratico
 
-Contenuto da sviluppare: nella nota originale questa sezione non era presente o era solo una traccia.
+```python
+bag = Bag(["a", "b"])
+
+len(bag)
+list(bag)
+```
+
+Python chiama internamente `bag.__len__()` e `bag.__iter__()`.
 
 ## Varianti
 
-Contenuto da sviluppare: nella nota originale questa sezione non era presente o era solo una traccia.
+- Protocollo iterabile.
+- Protocollo context manager.
+- Protocollo descriptor.
+- Protocollo numerico.
+- Protocollo sequenza.
+- Protocollo mapping.
 
 ## Errori comuni
 
-Contenuto da sviluppare: nella nota originale questa sezione non era presente o era solo una traccia.
+- Implementare metodi speciali con firme sbagliate.
+- Usare ereditarieta quando basta implementare un protocollo.
+- Non rispettare semantica attesa dagli operatori.
+- Rendere oggetti troppo magici e difficili da leggere.
+- Dimenticare che molte funzioni built-in usano dunder.
 
 ## Checklist
 
-Contenuto da sviluppare: nella nota originale questa sezione non era presente o era solo una traccia.
+- Quale protocollo vuoi supportare?
+- I dunder hanno firma corretta?
+- Il comportamento e intuitivo?
+- La classe funziona con built-in come `len`, `iter`, `str`?
+- Serve davvero personalizzare il data model?
 
 ## Collegamenti
 
 - [[Programmazione/Python/Pagine/Metodi Speciali|Metodi Speciali]]
-- [[Programmazione/Python/Pagine/Classi e Istanze|Classi e Istanze]]
 - [[Programmazione/Python/Pagine/Descriptor protocol|Descriptor protocol]]
+- [[Programmazione/Python/Pagine/Context Managers|Context Managers]]

@@ -1,5 +1,5 @@
-﻿---
-date: 2026-06-02
+---
+date: 2026-06-03
 area: Programmazione
 topic: Python
 type: technical-note
@@ -15,23 +15,28 @@ related: [Dataclasses, Type Hinting]
 
 ## Sintesi
 
-`Enum` permette di rappresentare un insieme chiuso di valori nominati.
-
-E utile quando una variabile puo assumere solo alcuni stati validi.
+`Enum` rappresenta un insieme chiuso di valori nominati. Riduce stringhe magiche e rende gli stati validi espliciti.
 
 ## Quando usarlo
 
-Contenuto da sviluppare: nella nota originale questa sezione non era presente o era solo una traccia.
+Usalo per stati, ruoli, tipi evento, categorie stabili e valori che devono appartenere a un insieme finito.
 
 ## Come funziona
 
-### Perche usarlo
-- Evita stringhe magiche sparse nel codice.
-- Rende gli stati espliciti.
-- Migliora type checking e leggibilita.
-- Riduce errori di typo.
-### StrEnum
-Nelle versioni moderne di Python e disponibile `StrEnum`, utile quando vuoi enum che si comportano come stringhe.
+Ogni membro enum ha un nome e un valore. I confronti tra enum sono espliciti e leggibili. `StrEnum` e utile quando serve interoperare con stringhe.
+
+## API / Sintassi
+
+```python
+from enum import Enum
+
+class Status(Enum):
+    DRAFT = "draft"
+    PUBLISHED = "published"
+    ARCHIVED = "archived"
+```
+
+`StrEnum`:
 
 ```python
 from enum import StrEnum
@@ -41,40 +46,42 @@ class Role(StrEnum):
     USER = "user"
 ```
 
-## API / Sintassi
-
-Contenuto da sviluppare: nella nota originale questa sezione non era presente o era solo una traccia.
-
 ## Esempio pratico
 
-### Esempio
 ```python
-from enum import Enum
+def can_publish(status: Status) -> bool:
+    return status is Status.DRAFT
 
-class Status(Enum):
-    DRAFT = "draft"
-    PUBLISHED = "published"
-    ARCHIVED = "archived"
-
-
-status = Status.DRAFT
+status = Status("draft")
 ```
 
 ## Varianti
 
-Contenuto da sviluppare: nella nota originale questa sezione non era presente o era solo una traccia.
+- `Enum`.
+- `StrEnum`.
+- `IntEnum`.
+- `auto()`.
+- Enum con metodi.
+- Enum usati nei type hints.
 
 ## Errori comuni
 
-- Confrontare enum con stringhe quando non si usa `StrEnum`.
-- Usare enum per liste di valori che cambiano spesso a runtime.
-- Salvare il nome invece del valore senza una scelta consapevole.
+- Confrontare `Enum` normale con stringhe.
+- Usare enum per valori dinamici che arrivano da database e cambiano spesso.
+- Salvare nome o valore senza una convenzione.
+- Duplicare gli stessi stati in piu enum.
+- Usare enum dove basta un booleano chiaro.
 
 ## Checklist
 
-Contenuto da sviluppare: nella nota originale questa sezione non era presente o era solo una traccia.
+- I valori sono davvero finiti e stabili?
+- Serve interoperabilita stringa? Valuta `StrEnum`.
+- La serializzazione usa `.value` o `.name` in modo coerente?
+- I type hints usano l'enum?
+- I casi invalidi sono gestiti?
 
 ## Collegamenti
 
 - [[Programmazione/Python/Pagine/Dataclasses|Dataclasses]]
 - [[Programmazione/Python/Pagine/Type Hinting|Type Hinting]]
+- [[Programmazione/Python/Pagine/Strutture Condizionali|Strutture Condizionali]]

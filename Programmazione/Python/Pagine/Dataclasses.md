@@ -1,5 +1,5 @@
-﻿---
-date: 2026-06-02
+---
+date: 2026-06-03
 area: Programmazione
 topic: Python
 type: technical-note
@@ -15,63 +15,75 @@ related: [Classi e Istanze, Type Hinting, Enum]
 
 ## Sintesi
 
-`dataclasses` e un modulo della standard library che riduce boilerplate per classi usate principalmente come contenitori di dati.
-
-Genera automaticamente metodi come `__init__`, `__repr__` e `__eq__` a partire dai campi dichiarati.
+`dataclasses` riduce boilerplate per classi che rappresentano dati, generando metodi come `__init__`, `__repr__` e `__eq__`.
 
 ## Quando usarlo
 
-Contenuto da sviluppare: nella nota originale questa sezione non era presente o era solo una traccia.
+Usale per oggetti dati semplici: configurazioni, DTO, risultati intermedi, value object e record con pochi metodi.
 
 ## Come funziona
 
-### Opzioni utili
-- `frozen=True`: rende l'istanza immutabile a livello pratico.
-- `order=True`: genera metodi di confronto.
-- `default_factory`: crea valori mutabili in modo sicuro.
+Il decoratore `@dataclass` legge le annotazioni dei campi e genera metodi automaticamente. I default mutabili vanno creati con `default_factory`.
+
+## API / Sintassi
 
 ```python
 from dataclasses import dataclass, field
 
 @dataclass
-class Team:
-    members: list[str] = field(default_factory=list)
-```
-
-## API / Sintassi
-
-Contenuto da sviluppare: nella nota originale questa sezione non era presente o era solo una traccia.
-
-## Esempio pratico
-
-### Esempio base
-```python
-from dataclasses import dataclass
-
-@dataclass
 class User:
     id: int
     name: str
-    active: bool = True
+    tags: list[str] = field(default_factory=list)
+```
 
+Opzioni:
 
-user = User(1, "Luca")
-print(user)
+```python
+@dataclass(frozen=True, order=True)
+class Point:
+    x: int
+    y: int
+```
+
+## Esempio pratico
+
+```python
+@dataclass
+class OrderLine:
+    sku: str
+    quantity: int
+    unit_price: float
+
+    @property
+    def total(self) -> float:
+        return self.quantity * self.unit_price
 ```
 
 ## Varianti
 
-Contenuto da sviluppare: nella nota originale questa sezione non era presente o era solo una traccia.
+- `frozen=True`.
+- `order=True`.
+- `field(default_factory=...)`.
+- `slots=True`.
+- `kw_only=True`.
+- `__post_init__`.
 
 ## Errori comuni
 
 - Usare `[]` o `{}` come default diretto.
-- Usare dataclass per oggetti con molta logica e invarianti complesse.
 - Confondere `frozen=True` con immutabilita profonda.
+- Mettere troppa logica in una dataclass.
+- Dimenticare type hints sui campi.
+- Usare dataclass dove serve validazione forte runtime.
 
 ## Checklist
 
-Contenuto da sviluppare: nella nota originale questa sezione non era presente o era solo una traccia.
+- La classe rappresenta soprattutto dati?
+- I campi hanno type hints?
+- I default mutabili usano `default_factory`?
+- Serve `frozen=True`?
+- Serve `__post_init__` per validazioni semplici?
 
 ## Collegamenti
 

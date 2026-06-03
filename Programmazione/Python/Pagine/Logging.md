@@ -1,11 +1,11 @@
-﻿---
-date: 2026-06-02
+---
+date: 2026-06-03
 area: Programmazione
 topic: Python
 type: technical-note
 status: "non revisionato"
 difficulty: intermediate
-tags: [python, programming]
+tags: [python, programming, logging]
 aliases: [Logging]
 prerequisites: []
 related: []
@@ -15,231 +15,144 @@ related: []
 
 ## Sintesi
 
-Nota su Logging in Python. Riassume il concetto, la sintassi principale e i punti da ricordare durante studio, sviluppo o debugging.
+Il logging registra eventi significativi durante l'esecuzione di un programma. A differenza di `print()`, supporta livelli, formati, handler, filtri e configurazioni diverse per sviluppo, test e produzione.
+
+Il modulo standard e `logging`.
 
 ## Quando usarlo
 
-Contenuto da sviluppare: nella nota originale questa sezione non era presente o era solo una traccia.
+Usa logging quando un messaggio serve a osservare o diagnosticare il comportamento del programma:
+
+- avvio e arresto dell'applicazione;
+- errori e warning;
+- operazioni importanti;
+- eventi di business rilevanti;
+- retry, timeout, fallimenti di rete;
+- diagnosi in produzione.
+
+Usa `print()` solo per esperimenti rapidi o output intenzionale di una CLI.
 
 ## Come funziona
 
-### Concetto chiave
-Il **logging** e il sistema standard per registrare eventi significativi durante l'esecuzione di un programma. Serve a osservare il comportamento del software, diagnosticare problemi, tracciare errori e capire cosa e successo in produzione o durante il debugging.
+Il sistema ruota attorno a:
 
-In Python, il modulo standard e `logging`, incluso nella Standard Library.
+- **Logger**: emette eventi;
+- **Handler**: decide dove scrivere;
+- **Formatter**: definisce il formato;
+- **Level**: filtra la severita.
 
-La differenza chiave rispetto a `print()` e che il logging:
-- ha livelli di severita;
-- e configurabile;
-- puo scrivere su console, file o altri canali;
-- e pensato per il software reale, non solo per debug temporaneo.
-
-> [!INFO] Regola pratica
-> `print()` e utile per esperimenti rapidi. `logging` e lo strumento corretto quando il messaggio fa parte dell'osservabilita del programma.
-
----
-### Esempi Pratici
-### Logger dedicato per modulo
+Convenzione per modulo:
 
 ```python
 import logging
 
 logger = logging.getLogger(__name__)
 
-def process_order(order_id: int) -> None:
-    logger.info("Elaborazione ordine %s", order_id)
+
+def process_order(order_id):
+    logger.info("Processing order %s", order_id)
 ```
 
-Usare `getLogger(__name__)` e la convenzione standard: ogni modulo ottiene il proprio logger e il nome del modulo entra automaticamente nella gerarchia dei logger.
-
-### Logging su file
+Configurazione minima:
 
 ```python
-import logging
-
-logging.basicConfig(
-    filename="app.log",
-    level=logging.INFO,
-    format="%(asctime)s %(levelname)s %(name)s %(message)s",
-)
-
-logging.info("Applicazione avviata")
-```
-
-### Logging di eccezioni
-
-```python
-import logging
-
-logger = logging.getLogger(__name__)
-
-try:
-    1 / 0
-except ZeroDivisionError:
-    logger.exception("Errore durante il calcolo")
-```
-
-`logger.exception()` registra il messaggio e include automaticamente traceback e contesto dell'eccezione. Questo si collega direttamente a [[Programmazione/Python/Pagine/Error Handling]].
-
----
-### Funzionamento Interno (Teoria)
-### Componenti principali
-Il sistema di logging ruota attorno a quattro elementi principali:
-
-- **Logger**: l'oggetto che emette i messaggi.
-- **Handler**: decide dove inviare i messaggi, ad esempio console o file.
-- **Formatter**: definisce il formato del messaggio.
-- **Level**: decide quali messaggi passano e quali vengono ignorati.
-
-### Flusso semplificato
-Quando chiami:
-
-```python
-logger.info("Operazione completata")
-```
-
-succede, in sintesi:
-
-1. il logger riceve l'evento;
-2. controlla se il livello e sufficiente;
-3. passa il record agli handler configurati;
-4. ogni handler formatta e scrive il messaggio.
-
-### Gerarchia dei logger
-I logger in Python sono organizzati gerarchicamente, spesso seguendo il namespace dei moduli.
-
-Esempio:
-- `app`
-- `app.api`
-- `app.api.users`
-
-Questa gerarchia permette configurazioni centralizzate e propagazione dei messaggi verso logger padre.
-
----
-### Perche usare il logging invece di `print()`
-`print()`:
-- scrive testo grezzo;
-- non ha livelli;
-- non ha routing configurabile;
-- tende a restare nel codice piu del dovuto.
-
-`logging`:
-- distingue gravita e contesto;
-- puo scrivere su piu destinazioni;
-- puo essere filtrato;
-- si integra meglio con applicazioni reali e tooling.
-
-> [!TIP] Regola pratica
-> Se il messaggio ti serve per capire lo stato del programma in modo ripetibile, usa il logging. Se stai solo facendo una prova rapida di pochi secondi, `print()` puo bastare.
-
----
-### Cosa loggare e cosa non loggare
-Ha senso loggare:
-- eventi applicativi importanti;
-- errori e warning;
-- punti chiave di workflow;
-- informazioni utili per diagnosi.
-
-Non ha senso loggare indiscriminatamente:
-- ogni singola riga di flusso;
-- dati sensibili;
-- password, token, segreti;
-- log rumorosi che nessuno usera davvero.
-
-Il logging utile ha abbastanza contesto per diagnosticare il problema, ma non abbastanza rumore da nasconderlo.
-
----
-
-## API / Sintassi
-
-### Sintassi di base
-### Configurazione minima
-
-```python
-import logging
-
-logging.basicConfig(level=logging.INFO)
-
-logging.debug("Messaggio di debug")
-logging.info("Informazione")
-logging.warning("Attenzione")
-logging.error("Errore")
-logging.critical("Errore critico")
-```
-
-### Livelli principali
-
-- `DEBUG`: dettagli utili per sviluppo e diagnosi.
-- `INFO`: eventi normali e significativi.
-- `WARNING`: situazione anomala ma non fatale.
-- `ERROR`: errore che impedisce una specifica operazione.
-- `CRITICAL`: errore grave che puo compromettere l'applicazione.
-
----
-### Configurazione pratica
-Una configurazione semplice ma utile:
-
-```python
-import logging
-
 logging.basicConfig(
     level=logging.INFO,
     format="%(asctime)s %(levelname)s [%(name)s] %(message)s",
 )
-
-logger = logging.getLogger(__name__)
 ```
 
-Campi comuni nel formatter:
-- `%(asctime)s`: timestamp;
-- `%(levelname)s`: livello del messaggio;
-- `%(name)s`: nome del logger;
-- `%(message)s`: testo del messaggio.
+## API / Sintassi
 
-### Logging parametrizzato
+Livelli principali:
+
+- `DEBUG`: dettagli per sviluppo e diagnosi;
+- `INFO`: eventi normali e significativi;
+- `WARNING`: situazione anomala ma non bloccante;
+- `ERROR`: errore che impedisce una specifica operazione;
+- `CRITICAL`: errore grave per l'applicazione.
+
+Uso:
 
 ```python
-logger.info("Utente %s autenticato", username)
+logger.debug("Payload: %s", payload)
+logger.info("Job completed")
+logger.warning("Retrying request")
+logger.error("Request failed")
+logger.critical("Service unavailable")
 ```
 
-Questo approccio e preferibile a:
+Logging di eccezioni:
 
 ```python
-logger.info(f"Utente {username} autenticato")
+try:
+    1 / 0
+except ZeroDivisionError:
+    logger.exception("Calculation failed")
 ```
 
-perche lascia al logging la gestione della formattazione e riduce lavoro inutile quando il livello e filtrato.
-
----
+`logger.exception()` va usato dentro un blocco `except` e include automaticamente il traceback.
 
 ## Esempio pratico
 
-Contenuto da sviluppare: nella nota originale questa sezione non era presente o era solo una traccia.
+Configurazione semplice per uno script:
+
+```python
+import logging
+
+logger = logging.getLogger(__name__)
+
+
+def configure_logging(verbose=False):
+    level = logging.DEBUG if verbose else logging.INFO
+    logging.basicConfig(
+        level=level,
+        format="%(asctime)s %(levelname)s [%(name)s] %(message)s",
+    )
+
+
+def main():
+    configure_logging(verbose=True)
+    logger.info("Application started")
+    logger.debug("Debug details enabled")
+
+
+if __name__ == "__main__":
+    main()
+```
 
 ## Varianti
 
-Contenuto da sviluppare: nella nota originale questa sezione non era presente o era solo una traccia.
+- **Console logging**: utile in sviluppo e CLI.
+- **File logging**: utile per script e processi persistenti.
+- **Structured logging**: messaggi in formato JSON o simile, frequente in produzione.
+- **Logger per modulo**: `logging.getLogger(__name__)`.
+- **Configurazione centralizzata**: un punto dell'applicazione configura handler e livelli.
+- **Logging di eccezioni**: `logger.exception()` dentro `except`.
 
 ## Errori comuni
 
-### Best Practices & "Gotchas"
--  **Usa `getLogger(__name__)` nei moduli:** mantiene ordine e gerarchia.
--  **Scegli il livello giusto:** `INFO` non e `ERROR`, e `DEBUG` non va lasciato ovunque in produzione.
--  **Logga contesto utile:** ID, stato, operazione, modulo.
--  **Usa `logger.exception()` dentro `except`:** ottieni traceback senza lavoro manuale.
--  **Configura un formato consistente:** timestamp, livello e nome modulo aiutano molto.
--  **Non usare `print()` come sostituto del logging applicativo:** non scala e non si governa.
--  **Non loggare dati sensibili:** password, chiavi API, token, dati personali non necessari.
--  **Non abusare di `ERROR` o `CRITICAL`:** livelli troppo alti per eventi normali rendono i log inutili.
--  **Attenzione al logging duplicato:** configurazioni multiple o handler ridondanti possono produrre messaggi ripetuti.
--  **Attenzione al rumore:** troppi log rendono difficile trovare i segnali davvero importanti.
-
----
+- Usare `print()` per messaggi applicativi permanenti.
+- Loggare password, token o dati sensibili.
+- Usare f-string nei log invece di parametri.
+- Configurare logging in ogni modulo invece che all'avvio dell'applicazione.
+- Usare sempre `ERROR` anche per eventi normali.
+- Creare handler duplicati e ottenere log ripetuti.
+- Loggare troppo rumore senza contesto utile.
 
 ## Checklist
 
-Contenuto da sviluppare: nella nota originale questa sezione non era presente o era solo una traccia.
+- I logger usano `getLogger(__name__)`?
+- La configurazione e centralizzata?
+- I livelli sono coerenti con la severita reale?
+- I messaggi includono contesto utile?
+- I segreti sono esclusi dai log?
+- Le eccezioni vengono loggate con traceback quando serve?
 
 ## Collegamenti
 
 - [[Programmazione/Python/Indice python|Indice Python]]
+- [[Error Handling]]
+- [[Configurazione e Variabili d Ambiente]]
+- [[Standard Library]]
+- [[Testing]]

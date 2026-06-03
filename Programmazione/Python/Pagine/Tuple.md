@@ -1,5 +1,5 @@
-﻿---
-date: 2026-06-02
+---
+date: 2026-06-03
 area: Programmazione
 topic: Python
 type: technical-note
@@ -15,100 +15,73 @@ related: []
 
 ## Sintesi
 
-Nota su Tuple in Python. Riassume il concetto, la sintassi principale e i punti da ricordare durante studio, sviluppo o debugging.
-Nota su Tuple in Python. Riassume il concetto, la sintassi principale e i punti da ricordare durante studio, sviluppo o debugging.
-punto = (10, 20)
-colori = ("rosso", "verde", "blu")
-
-# Tuple in Python
-Nota su Tuple in Python. Riassume il concetto, la sintassi principale e i punti da ricordare durante studio, sviluppo o debugging.
-singolo = (5,) # Senza virgola sarebbe solo un intero tra parentesi
-
-# Tuple in Python
-Nota su Tuple in Python. Riassume il concetto, la sintassi principale e i punti da ricordare durante studio, sviluppo o debugging.
-coordinate = 45.0, 9.0
-```
-
-### Accesso agli Elementi
-L'accesso avviene tramite indice (0-indexed), esattamente come per le liste.
-```python
-print(colori[0]) # "rosso"
-```
-
----
+Le tuple sono collezioni ordinate e immutabili. Sono adatte a dati che non devono cambiare e a ritorni multipli da funzioni.
 
 ## Quando usarlo
 
-Contenuto da sviluppare: nella nota originale questa sezione non era presente o era solo una traccia.
+Usa tuple per coordinate, coppie, record brevi, valori multipli restituiti e chiavi composte di dizionari.
 
 ## Come funziona
 
-### Concetto chiave
-Le **tuple** sono collezioni di oggetti **ordinate** e **immutabili**. A differenza delle liste, una volta creata, una tupla non può essere modificata (non si possono aggiungere, rimuovere o sovrascrivere elementi). Sono spesso utilizzate per rappresentare record di dati o collezioni che devono rimanere costanti durante l'esecuzione del programma.
+Una tupla non permette aggiunte, rimozioni o sostituzioni di elementi. Se contiene oggetti mutabili, quegli oggetti possono comunque essere modificati.
 
----
-### Tuple Unpacking (Scompattamento)
-Una delle funzionalità più potenti e "Pythonic" delle tuple. Permette di estrarre i valori direttamente in variabili separate.
-
-```python
-persona = ("Luca", 30, "Roma")
-
-nome, eta, citta = persona
-
-print(nome) # "Luca"
-```
-
----
-### Logic layer: Perché usare le Tuple invece delle Liste?
-### 1. Immutabilità e Sicurezza
-Le tuple proteggono l'integrità dei dati. Se passi una tupla a una funzione, hai la garanzia che la funzione non possa modificarne il contenuto.
-
-### 2. Performance
-Dal punto di vista dell'implementazione in CPython, le tuple sono più efficienti delle liste:
-- **Memoria:** Le tuple occupano meno spazio perché hanno una dimensione fissa e non necessitano di extra-allocazione per la crescita dinamica.
-- **Velocità:** L'iterazione sulle tuple è leggermente più veloce rispetto alle liste.
-
-### 3. Hashability (Dizionari)
-Poiché sono immutabili, le tuple sono **hashable** (se contengono solo elementi a loro volta immutabili). Questo significa che possono essere utilizzate come **chiavi nei dizionari** o elementi nei **set**, cosa impossibile per le liste.
-
-> [!INFO] Oggetti Mutabili dentro una Tupla
-> Se una tupla contiene un oggetto mutabile (es. una lista), la lista stessa può essere modificata, ma il riferimento all'oggetto dentro la tupla rimane fisso.
-
----
-### Metodi Disponibili
-Essendo immutabili, le tuple hanno solo due metodi di ricerca:
-
-| Metodo | Descrizione |
-| :--- | :--- |
-| `.count(x)` | Restituisce il numero di volte in cui il valore x appare nella tupla. |
-| `.index(x)` | Restituisce l'indice della prima occorrenza del valore x. |
-
----
+Le tuple sono hashable solo se tutti gli elementi sono hashable.
 
 ## API / Sintassi
 
-### Sintassi e Creazione
-Le tuple si definiscono utilizzando le parentesi tonde `()` (anche se tecnicamente è la virgola a definire la tupla).
+```python
+point = (10, 20)
+single = (5,)
+coordinates = 45.0, 9.0
+
+x, y = point
+```
+
+Metodi:
 
 ```python
-# Tuple in Python
+values = (1, 2, 2, 3)
+values.count(2)
+values.index(3)
+```
 
 ## Esempio pratico
 
-Contenuto da sviluppare: nella nota originale questa sezione non era presente o era solo una traccia.
+```python
+def split_full_name(full_name):
+    first, last = full_name.split(" ", 1)
+    return first, last
+
+first_name, last_name = split_full_name("Ada Lovelace")
+```
 
 ## Varianti
 
-Contenuto da sviluppare: nella nota originale questa sezione non era presente o era solo una traccia.
+- Tupla letterale.
+- Tuple unpacking.
+- Extended unpacking: `first, *middle, last`.
+- Named tuple.
+- Dataclass per record piu complessi.
+- Tupla come chiave di dizionario.
 
 ## Errori comuni
 
-Contenuto da sviluppare: nella nota originale questa sezione non era presente o era solo una traccia.
+- Dimenticare la virgola nella tupla a un elemento.
+- Pensare che una tupla renda immutabili gli oggetti contenuti.
+- Usare tuple lunghe e poco leggibili.
+- Confondere tuple con liste solo per abitudine.
+- Scompattare un numero di valori diverso dagli elementi.
 
 ## Checklist
 
-Contenuto da sviluppare: nella nota originale questa sezione non era presente o era solo una traccia.
+- I dati devono essere immutabili?
+- La tupla e abbastanza corta da restare leggibile?
+- Serve una dataclass o namedtuple?
+- Gli elementi sono hashable se la usi come chiave?
+- Lo unpacking ha il numero corretto di variabili?
 
 ## Collegamenti
 
-- [[Programmazione/Python/Indice python|Indice Python]]
+- [[Programmazione/Python/Pagine/Liste|Liste]]
+- [[Programmazione/Python/Pagine/Dataclasses|Dataclasses]]
+- [[Programmazione/Python/Pagine/Funzioni|Funzioni]]

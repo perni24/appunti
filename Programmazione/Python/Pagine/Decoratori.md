@@ -1,12 +1,12 @@
-﻿---
-date: 2026-06-02
+---
+date: 2026-06-03
 area: Programmazione
 topic: Python
 type: technical-note
 status: "non revisionato"
 difficulty: intermediate
-tags: [python, programming]
-aliases: [Decoratori]
+tags: [python, programming, decorators]
+aliases: [Decoratori, Decorator Python]
 prerequisites: []
 related: []
 ---
@@ -15,112 +15,167 @@ related: []
 
 ## Sintesi
 
-Nota su Decoratori in Python. Riassume il concetto, la sintassi principale e i punti da ricordare durante studio, sviluppo o debugging.
+Un decoratore e una funzione che riceve una funzione e ne restituisce una versione modificata o arricchita. Si applica con `@` sopra la definizione della funzione.
+
+I decoratori sono una forma pratica di higher-order function e sono molto usati per logging, caching, autorizzazione, validazione, retry e framework web.
 
 ## Quando usarlo
 
-Contenuto da sviluppare: nella nota originale questa sezione non era presente o era solo una traccia.
+Usa un decoratore quando vuoi aggiungere comportamento trasversale senza modificare il corpo della funzione:
+
+- logging;
+- misurazione tempi;
+- caching;
+- controlli di autorizzazione;
+- retry;
+- validazione;
+- registrazione automatica di handler o route.
 
 ## Come funziona
 
-### Concetto chiave
-I **decoratori** sono funzioni che "avvolgono" (*wrap*) altre funzioni per modificarne o estenderne il comportamento, senza alterarne direttamente il codice sorgente. Sono un'applicazione pratica delle Higher-order Functions.
-
----
-### Esempi Pratici
-### Decoratore Universale (`*args`, `**kwargs`)
-Per decorare funzioni con un numero variabile di argomenti e preservarne il valore di ritorno.
+La sintassi:
 
 ```python
-import functools
+@decorator
+def function():
+    ...
+```
 
-def log_chiamata(funzione):
-    @functools.wraps(funzione) # Importante per non perdere i metadati (nome, docstring)
+equivale a:
+
+```python
+def function():
+    ...
+
+
+function = decorator(function)
+```
+
+Decoratore base:
+
+```python
+from functools import wraps
+
+
+def log_call(function):
+    @wraps(function)
     def wrapper(*args, **kwargs):
-        print(f"Chiamata a {funzione.__name__} con {args} {kwargs}")
-        risultato = funzione(*args, **kwargs)
-        return risultato
+        print(f"Calling {function.__name__}")
+        return function(*args, **kwargs)
+
     return wrapper
-
-@log_chiamata
-def somma(a, b):
-    return a + b
-
-print(somma(10, 5))
 ```
-
-### Decoratore con Argomenti (Decorator Factory)
-Per passare parametri direttamente al decoratore stesso.
-
-```python
-def ripeti(volte):
-    def decoratore(funzione):
-        @functools.wraps(funzione)
-        def wrapper(*args, **kwargs):
-            for _ in range(volte):
-                risultato = funzione(*args, **kwargs)
-            return risultato
-        return wrapper
-    return decoratore
-
-@ripeti(volte=3)
-def bussa():
-    print("Knock knock")
-
-bussa()
-```
-
----
-### Funzionamento Interno (Teoria)
-- **Closures:** Il decoratore restituisce una funzione interna (`wrapper`) che cattura e mantiene il riferimento alla funzione originale (`funzione`) tramite una closure.
-- **`functools.wraps`:** Senza questo decoratore integrato, la funzione decorata perderebbe i suoi metadati originali (es. `__name__` diventerebbe "wrapper").
-- **Stacking:** È possibile applicare più decoratori a una singola funzione. L'ordine di applicazione è dall'alto verso il basso (quello più vicino alla funzione viene applicato per primo).
-
----
 
 ## API / Sintassi
 
-### Sintassi
-Si utilizza il simbolo `@` seguito dal nome della funzione decoratore sopra la definizione della funzione da decorare (zucchero sintattico).
+Uso:
 
 ```python
-def mio_decoratore(funzione):
-    def wrapper():
-        print("Qualcosa prima della funzione.")
-        funzione()
-        print("Qualcosa dopo la funzione.")
-    return wrapper
+@log_call
+def add(a, b):
+    return a + b
 
-@mio_decoratore
-def saluta():
-    print("Ciao!")
 
-saluta()
+print(add(2, 3))
 ```
 
----
+Decoratore con argomenti:
+
+```python
+from functools import wraps
+
+
+def repeat(times):
+    def decorator(function):
+        @wraps(function)
+        def wrapper(*args, **kwargs):
+            result = None
+            for _ in range(times):
+                result = function(*args, **kwargs)
+            return result
+
+        return wrapper
+
+    return decorator
+
+
+@repeat(times=3)
+def say_hello():
+    print("hello")
+```
 
 ## Esempio pratico
 
-Contenuto da sviluppare: nella nota originale questa sezione non era presente o era solo una traccia.
+Misurare la durata di una funzione:
+
+```python
+from functools import wraps
+from time import perf_counter
+
+
+def timed(function):
+    @wraps(function)
+    def wrapper(*args, **kwargs):
+        start = perf_counter()
+        try:
+            return function(*args, **kwargs)
+        finally:
+            elapsed = perf_counter() - start
+            print(f"{function.__name__}: {elapsed:.3f}s")
+
+    return wrapper
+
+
+@timed
+def build_report():
+    return [number * 2 for number in range(100_000)]
+```
 
 ## Varianti
 
-Contenuto da sviluppare: nella nota originale questa sezione non era presente o era solo una traccia.
+- **Decoratore semplice**: funzione che riceve e restituisce una funzione.
+- **Decoratore con argomenti**: factory che restituisce un decoratore.
+- **Decoratori multipli**: piu `@` applicati alla stessa funzione.
+- **Decoratori di classe**: modificano o registrano classi.
+- **Decoratori standard**: `@property`, `@classmethod`, `@staticmethod`, `@lru_cache`.
+
+Ordine di applicazione:
+
+```python
+@outer
+@inner
+def function():
+    ...
+```
+
+equivale a:
+
+```python
+function = outer(inner(function))
+```
 
 ## Errori comuni
 
-### Best Practices & "Gotchas"
--  **Usa sempre `functools.wraps`:** Fondamentale per il debugging e l'introspezione.
--  **Effetti Collaterali:** Evita di eseguire logica pesante nel corpo del decoratore (fuori dal wrapper) perché viene eseguita al momento dell'importazione del modulo.
--  **Prestazioni:** I decoratori aggiungono un piccolo overhead dovuto alla chiamata della funzione wrapper. In sezioni di codice critiche, valuta se è strettamente necessario.
-
----
+- Dimenticare `functools.wraps`, perdendo nome, docstring e metadata.
+- Non restituire il risultato della funzione originale.
+- Non supportare `*args` e `**kwargs`.
+- Eseguire logica pesante nel corpo del decoratore al momento dell'import.
+- Impilare troppi decoratori rendendo il flusso poco leggibile.
+- Nascondere side effect importanti.
 
 ## Checklist
 
-Contenuto da sviluppare: nella nota originale questa sezione non era presente o era solo una traccia.
+- Il decoratore aggiunge comportamento trasversale reale?
+- Usa `functools.wraps`?
+- Preserva argomenti, ritorno ed eccezioni?
+- Il comportamento resta testabile?
+- L'ordine dei decoratori e chiaro?
+- Una funzione esplicita sarebbe piu leggibile?
 
 ## Collegamenti
 
 - [[Programmazione/Python/Indice python|Indice Python]]
+- [[Higher-order Functions]]
+- [[Argomenti Flessibili]]
+- [[Caching]]
+- [[Introspezione]]
