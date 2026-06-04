@@ -1,16 +1,12 @@
-﻿---
-date: 2026-06-02
+---
+date: 2026-06-04
 area: Programmazione
 topic: React
 type: technical-note
 status: "non revisionato"
-difficulty: 
-tags:
-  - programmazione
-  - react
-  - api
-  - architettura
-aliases: []
+difficulty: intermediate
+tags: [react, api, architecture, frontend]
+aliases: [API layer, Client API]
 prerequisites: []
 related: []
 ---
@@ -19,66 +15,100 @@ related: []
 
 ## Sintesi
 
-L'**API layer** isola il codice che comunica con backend, servizi esterni o storage remoto dal resto della UI React.
+L'API layer separa la UI dalle chiamate HTTP e dai dettagli del backend. Invece di chiamare `fetch` ovunque nei componenti, centralizzi client, endpoint, gestione errori, trasformazioni e validazione.
 
 ## Quando usarlo
 
-Contenuto da sviluppare: nella nota originale questa sezione non era presente o era solo una traccia.
+Usalo quando l'app chiama piu endpoint, deve gestire token, errori, base URL, retry, mapping DTO o validazione runtime. Per demo minime puo bastare un fetch locale, ma nei progetti reali l'API layer riduce duplicazione.
 
 ## Come funziona
 
-### Concetto chiave
-I componenti non dovrebbero conoscere dettagli grezzi di endpoint, header, mapping e gestione errori HTTP.
-
-```javascript
-export async function getUser(id) {
-  const response = await fetch(`/api/users/${id}`);
+```jsx
+async function request(path, options = {}) {
+  const response = await fetch(`/api${path}`, {
+    ...options,
+    headers: {
+      "Content-Type": "application/json",
+      ...options.headers,
+    },
+  });
 
   if (!response.ok) {
-    throw new Error("User request failed");
+    throw new Error("API error");
   }
 
   return response.json();
 }
 ```
-### Responsabilita
-- Costruire URL e query string.
-- Gestire autenticazione.
-- Normalizzare errori.
-- Validare payload quando serve.
-- Esporre funzioni orientate al dominio.
-### Con React Query
-L'API layer puo essere usato da hook di data fetching.
-
-```javascript
-const userQuery = useQuery({
-  queryKey: ["user", id],
-  queryFn: () => getUser(id)
-});
-```
 
 ## API / Sintassi
 
-Contenuto da sviluppare: nella nota originale questa sezione non era presente o era solo una traccia.
+Funzioni per dominio:
+
+```jsx
+export function getUsers() {
+  return request("/users");
+}
+
+export function createUser(data) {
+  return request("/users", {
+    method: "POST",
+    body: JSON.stringify(data),
+  });
+}
+```
+
+Uso con cache:
+
+```jsx
+const query = useQuery({
+  queryKey: ["users"],
+  queryFn: getUsers,
+});
+```
 
 ## Esempio pratico
 
-Contenuto da sviluppare: nella nota originale questa sezione non era presente o era solo una traccia.
+```jsx
+export async function getUser(userId) {
+  const data = await request(`/users/${userId}`);
+  return UserSchema.parse(data);
+}
+```
+
+Il componente riceve un oggetto gia validato, non una risposta HTTP grezza.
 
 ## Varianti
 
-Contenuto da sviluppare: nella nota originale questa sezione non era presente o era solo una traccia.
+- **Fetch wrapper**: leggero e interno.
+- **Client HTTP dedicato**: Axios, ky o fetch esteso.
+- **Generated client**: da OpenAPI.
+- **API per feature**: endpoint vicini al dominio.
+- **Repository frontend**: separa chiamate, mapping e validazione.
+- **BFF/framework route**: il frontend chiama route interne del framework.
 
 ## Errori comuni
 
-Contenuto da sviluppare: nella nota originale questa sezione non era presente o era solo una traccia.
+- Chiamare endpoint direttamente in ogni componente.
+- Non centralizzare errori e token.
+- Non validare payload ricevuti.
+- Mescolare DTO backend e modello UI senza mapping.
+- Nascondere troppa logica applicativa nell'API layer.
+- Non distinguere cache server e stato client.
 
 ## Checklist
 
-Contenuto da sviluppare: nella nota originale questa sezione non era presente o era solo una traccia.
+- Esiste un client centralizzato?
+- Gli errori sono normalizzati?
+- I dati ricevuti sono validati?
+- Token e header sono gestiti in un solo punto?
+- Le funzioni API sono organizzate per dominio?
+- Il layer resta indipendente dalla UI?
 
 ## Collegamenti
 
-- [[Programmazione/React/Pagine/Data Fetching e Cache|Data Fetching e Cache]]
-- [[Programmazione/React/Pagine/Validazione Dati|Validazione Dati]]
-- [[Programmazione/React/Pagine/Gestione Autenticazione|Gestione Autenticazione]]
+- [[Programmazione/React/Indice react|Indice React]]
+- [[Data Fetching e Cache]]
+- [[Validazione Dati]]
+- [[Gestione Autenticazione]]
+- [[Feature-based architecture]]

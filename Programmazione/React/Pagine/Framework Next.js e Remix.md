@@ -1,68 +1,94 @@
-﻿---
-date: 2026-06-02
+---
+date: 2026-06-04
 area: Programmazione
 topic: React
 type: technical-note
 status: "non revisionato"
-difficulty: 
-tags:
-  - programmazione
-  - react
-  - nextjs
-  - remix
-aliases:
-  - Framework: Next.js e Remix
+difficulty: intermediate
+tags: [react, nextjs, remix, framework]
+aliases: [Next.js, Remix, Framework React]
 prerequisites: []
 related: []
 ---
 
-# Framework: Next.js e Remix
+# Framework Next.js e Remix
 
 ## Sintesi
 
-**Next.js** e **Remix** sono framework React full-stack. Aggiungono routing, data loading, rendering server, build, deploy e convenzioni architetturali.
+Next.js e Remix sono framework sopra React. Aggiungono routing, data loading, rendering server-side, build, deployment conventions e pattern full-stack.
+
+React da solo gestisce UI; un framework gestisce l'applicazione web completa.
 
 ## Quando usarlo
 
-### Quando usarli
-- App con SSR o SEO.
-- Dashboard complesse.
-- Prodotti full-stack.
-- Routing e data loading strutturati.
+Usa un framework quando servono routing integrato, SSR/SSG, data loading a livello route, SEO, deploy full-stack, server actions o convenzioni solide.
+
+Per SPA interne piccole, Vite + React Router puo bastare.
 
 ## Come funziona
 
-### Perche esistono
-React gestisce UI e rendering dei componenti. Un'app reale ha anche routing, caricamento dati, mutazioni, caching, SEO, errori e deploy.
-### Next.js
-Next.js e fortemente orientato a rendering ibrido, Server Components, routing file-based e integrazione con piattaforme di deploy.
-### Remix
-Remix enfatizza web standards, nested routes, loader/action e gestione esplicita del ciclo richiesta-risposta.
+Next.js usa file-based routing e supporta Server Components nel suo modello moderno.
+
+Remix enfatizza route, loader, action, form web-native e progressive enhancement.
 
 ## API / Sintassi
 
-Contenuto da sviluppare: nella nota originale questa sezione non era presente o era solo una traccia.
+Concetti Next.js:
+
+```text
+app/
+  page.tsx
+  layout.tsx
+```
+
+Concetti Remix:
+
+```text
+routes/
+  _index.tsx
+  users.$id.tsx
+```
+
+Entrambi spostano parte della logica di routing e dati fuori dai componenti client puri.
 
 ## Esempio pratico
 
-Contenuto da sviluppare: nella nota originale questa sezione non era presente o era solo una traccia.
+Scelta:
+
+- pagina marketing statica: SSG;
+- dashboard utente: SSR o data loading server;
+- form con mutazione: action/server action;
+- app interna SPA: React Router puo bastare.
 
 ## Varianti
 
-Contenuto da sviluppare: nella nota originale questa sezione non era presente o era solo una traccia.
+- **Next.js**: ecosystem ampio, App Router, RSC, SSG/SSR.
+- **Remix**: web standards, loader/action, form e nested routing.
+- **React Router framework mode**: evoluzione verso data routing full-stack.
+- **Vite SPA**: client-side puro.
+- **Astro + React**: isole interattive in siti content-heavy.
 
 ## Errori comuni
 
-- Usare un framework full-stack per una SPA molto semplice.
-- Non capire cosa gira sul server e cosa gira nel browser.
-- Mescolare fetching client e server senza strategia.
+- Scegliere framework solo per moda.
+- Non capire quali parti girano server-side.
+- Usare API browser in codice server.
+- Confondere cache framework e cache client.
+- Portare pattern SPA puri in framework server senza adattarli.
 
 ## Checklist
 
-Contenuto da sviluppare: nella nota originale questa sezione non era presente o era solo una traccia.
+- Serve SSR/SSG?
+- Serve data loading a livello route?
+- Il team capisce il confine server/client?
+- La cache e documentata?
+- React puro sarebbe sufficiente?
+- Il framework supporta il deployment target?
 
 ## Collegamenti
 
-- [[Programmazione/React/Pagine/SSR e SSG|SSR e SSG]]
-- [[Programmazione/React/Pagine/Server Components|Server Components]]
-- [[Programmazione/React/Pagine/Data Fetching e Cache|Data Fetching e Cache]]
+- [[Programmazione/React/Indice react|Indice React]]
+- [[SSR e SSG]]
+- [[Server Components]]
+- [[React Router]]
+- [[Data Fetching e Cache]]

@@ -1,99 +1,132 @@
-﻿---
-date: 2026-06-02
+---
+date: 2026-06-04
 area: Programmazione
 topic: React
 type: technical-note
 status: "non revisionato"
 difficulty: intermediate
-tags: [react, frontend, javascript]
-aliases: [useEffect: Side effects e Cleanup]
+tags: [react, hooks, effects]
+aliases: [useEffect, Effect React, Cleanup effect]
 prerequisites: []
 related: []
 ---
 
-# useEffect: Side effects e Cleanup
+# useEffect
 
 ## Sintesi
 
-Nota su useEffect: Side effects e Cleanup in React. Riassume il concetto, quando usarlo, i punti critici e gli errori da evitare durante sviluppo, debugging o revisione di applicazioni React.
-
-Il hook `useEffect` permette di gestire gli **effetti collaterali** (side effects) nei componenti funzionali. È l'equivalente dei metodi del ciclo di vita nelle classi (`componentDidMount`, `componentDidUpdate`, e `componentWillUnmount`).
+`useEffect` sincronizza un componente React con sistemi esterni: DOM imperativo, subscription, timer, rete, storage o librerie non React. Non serve per calcolare valori derivati dal render: per quello usa variabili, `useMemo` solo se necessario, o ristruttura lo stato.
 
 ## Quando usarlo
 
-Contenuto da sviluppare: nella nota originale questa sezione non era presente o era solo una traccia.
+Usa `useEffect` quando devi eseguire side effect dopo il render: registrare listener, avviare timer, sincronizzare document title, fare cleanup, collegarti a API browser o lanciare fetch controllati.
+
+Evitalo per trasformare props in state senza motivo, gestire eventi utente o calcolare dati derivabili.
 
 ## Come funziona
 
-### 1. Cos'è un Side Effect?
-Un effetto collaterale è qualsiasi operazione che interagisce con il mondo esterno al di fuori del puro calcolo del rendereing di React. Esempi comuni includono:
-- **Data Fetching:** Chiamate API per recuperare dati.
-- **Manipolazione manuale del DOM:** Modifica di titoli o focus.
-- **Timer:** Utilizzo di `setTimeout` o `setInterval`.
-- **Sottoscrizioni:** Listener di eventi globali (window resize, scroll) o WebSockets.
-### 3. La Funzione di Cleanup
-Per evitare **memory leak** o comportamenti inattesi, `useEffect` può restituire una funzione di "pulizia". Questa funzione viene eseguita:
-1. Prima che il componente venga rimosso dal DOM (unmounting).
-2. Prima di rieseguire l'effetto se le dipendenze sono cambiate.
-
-> [!IMPORTANT] Prevenzione Memory Leak
-> È fondamentale rimuovere event listener o annullare timer nella funzione di cleanup per evitare che continuino a girare in background consumando risorse.
-
-```javascript
+```jsx
 useEffect(() => {
-  const handleResize = () => console.log(window.innerWidth);
-  window.addEventListener('resize', handleResize);
-
-  // Funzione di Cleanup
-  return () => {
-    window.removeEventListener('resize', handleResize);
-  };
-}, []); // Listener aggiunto una volta e rimosso allo smontaggio
+  document.title = `Messaggi: ${count}`;
+}, [count]);
 ```
 
----
+React esegue l'effect dopo il render. L'array di dipendenze dice quando rieseguirlo.
 
-## API / Sintassi
-
-### 2. Sintassi e Dependencies Array
-`useEffect` accetta due argomenti: una funzione di callback e un array opzionale di dipendenze.
-
-### Comportamento in base alle dipendenze:
-
-| Array di Dipendenze | Quando viene eseguito? |
-| :--- | :--- |
-| **Omesso** (`useEffect(() => {})`) | Ad **ogni render** del componente. |
-| **Vuoto** (`[]`) | Solo **una volta**, al montaggio (mounting). |
-| **Con variabili** (`[count]`) | Al montaggio e ogni volta che `count` cambia. |
+Cleanup:
 
 ```jsx
 useEffect(() => {
-  console.log("L'effetto è stato eseguito");
-}, [data]); // Si riesegue solo se 'data' cambia
+  const id = setInterval(tick, 1000);
+
+  return () => clearInterval(id);
+}, []);
 ```
 
----
+Il cleanup viene eseguito prima del prossimo effect e quando il componente viene smontato.
+
+## API / Sintassi
+
+Effect dopo ogni render:
+
+```jsx
+useEffect(() => {
+  console.log("render completato");
+});
+```
+
+Effect una volta al mount:
+
+```jsx
+useEffect(() => {
+  connect();
+  return disconnect;
+}, []);
+```
+
+Effect dipendente da valore:
+
+```jsx
+useEffect(() => {
+  syncUser(userId);
+}, [userId]);
+```
 
 ## Esempio pratico
 
-Contenuto da sviluppare: nella nota originale questa sezione non era presente o era solo una traccia.
+Fetch con cancellazione:
+
+```jsx
+useEffect(() => {
+  const controller = new AbortController();
+
+  async function loadUser() {
+    const response = await fetch(`/api/users/${userId}`, {
+      signal: controller.signal,
+    });
+    const data = await response.json();
+    setUser(data);
+  }
+
+  loadUser();
+
+  return () => controller.abort();
+}, [userId]);
+```
+
+Questo evita aggiornamenti tardivi quando `userId` cambia o il componente si smonta.
 
 ## Varianti
 
-Contenuto da sviluppare: nella nota originale questa sezione non era presente o era solo una traccia.
+- **Effect con cleanup**: subscription, timer, listener.
+- **Effect senza cleanup**: sincronizzazioni semplici.
+- **Effect con dipendenze**: rieseguito quando cambiano valori.
+- **AbortController**: cancellazione di richieste.
+- **Custom hook**: incapsula effect ripetuti.
+- **Data fetching library**: spesso migliore per cache, retry e stati remoti.
 
 ## Errori comuni
 
-Contenuto da sviluppare: nella nota originale questa sezione non era presente o era solo una traccia.
+- Usare effect per tutto.
+- Dimenticare dipendenze.
+- Ignorare cleanup di listener, timer o fetch.
+- Creare loop aggiornando state dipendente dall'effect.
+- Fare fetch senza gestire race condition.
+- Usare effect per derivare stato calcolabile durante render.
 
 ## Checklist
 
-### 4. Best Practices
-- **Separazione degli interessi:** Usa più `useEffect` separati per logiche diverse invece di un unico grande effetto.
-- **Fetch dei dati:** Quando effettui chiamate API, considera l'uso di un `AbortController` o di librerie come TanStack Query (React Query) per gestire caching e stati di caricamento in modo più professionale.
-
----
+- Sto sincronizzando con un sistema esterno?
+- Le dipendenze sono complete?
+- Serve cleanup?
+- Ci sono race condition?
+- Questo effect puo diventare custom hook?
+- Una libreria di data fetching sarebbe piu adatta?
 
 ## Collegamenti
 
 - [[Programmazione/React/Indice react|Indice React]]
+- [[Gestione della memoria e AbortController]]
+- [[Data Fetching e Cache]]
+- [[Custom Hooks]]
+- [[Derived state]]

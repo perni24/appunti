@@ -8,6 +8,26 @@ Mantieni solo le ultime 10 voci operative.
 
 ---
 
+## 2026-06-04 - Completamento contenuto React
+
+### Fatto
+
+- Completate tutte le pagine React in `Programmazione/React/Pagine`.
+- Portata la sezione React da 53 pagine con placeholder a 59 pagine senza placeholder.
+- Sviluppate con contenuto reale le note su fondamenti, JSX, props, rendering, hook, state management, routing, form, data fetching, pattern componenti, performance, internals, server-side rendering, Server Components, sicurezza, accessibilita, styling, testing e design system.
+- Aggiunte pagine dedicate a `React Compiler`, `Actions e form actions`, `useActionState`, `useOptimistic`, `useFormStatus` e `use hook`.
+- Aggiornato `Programmazione/React/Indice react.md` con i nuovi collegamenti.
+
+### Decisioni
+
+- Le note modificate restano con `status: "non revisionato"`.
+- Gli argomenti React moderni sono stati collegati all'indice ma descritti con prudenza, rimandando alle documentazioni ufficiali quando dipendono da versione, framework o supporto specifico.
+
+### Prossimi passi
+
+- Rivedere manualmente le note React completate prima di impostarle a `revisionato (da me)`.
+- Proseguire con il controllo finale delle altre aree di Programmazione non ancora chiuse.
+
 ## 2026-06-03 - Completamento contenuto Python
 
 ### Fatto
@@ -167,20 +187,3 @@ Mantieni solo le ultime 10 voci operative.
 ### Prossimi passi
 
 - Proseguire con `WebAssembly`, `Embedded` oppure `Testing, Qualita e Sicurezza`.
-
-## 2026-05-27 - Completamento CLI e Tooling Rust
-
-### Fatto
-
-- Completate con contenuto reale le note del capitolo `CLI e Tooling` dell'indice Rust.
-- Sviluppati CLI con `clap`, configurazione applicativa, logging, tracing, error reporting e packaging/release.
-- Aggiunti esempi pratici, errori comuni, checklist e collegamenti interni coerenti.
-
-### Decisioni
-
-- Le note completate restano con `status: "non revisionato"` fino alla revisione dell'utente.
-- Il capitolo tratta la CLI come superficie pubblica dell'applicazione, separando parsing, configurazione, osservabilita, reporting e distribuzione.
-
-### Prossimi passi
-
-- Proseguire con `Backend, Networking e Database` oppure `Testing, Qualita e Sicurezza`.

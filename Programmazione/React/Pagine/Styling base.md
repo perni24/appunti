@@ -1,16 +1,12 @@
-﻿---
-date: 2026-06-02
+---
+date: 2026-06-04
 area: Programmazione
 topic: React
 type: technical-note
 status: "non revisionato"
-difficulty: 
-tags:
-  - programmazione
-  - react
-  - css
-  - styling
-aliases: []
+difficulty: beginner
+tags: [react, css, styling]
+aliases: [Styling base, Styling React]
 prerequisites: []
 related: []
 ---
@@ -19,57 +15,100 @@ related: []
 
 ## Sintesi
 
-Lo **styling base** in React riguarda i modi principali per applicare CSS ai componenti: classi globali, CSS Modules, inline style, utility class e librerie dedicate.
+Lo styling in React puo essere fatto con CSS globale, CSS Modules, utility CSS, CSS-in-JS o design system. La scelta deve dipendere da scala del progetto, team, performance, theming e manutenibilita.
 
 ## Quando usarlo
 
-Contenuto da sviluppare: nella nota originale questa sezione non era presente o era solo una traccia.
+Serve in ogni progetto React. Per app piccole CSS globale e moduli bastano spesso; per prodotti grandi conviene introdurre token e componenti condivisi.
 
 ## Come funziona
 
-### Strategie comuni
-- CSS globale.
-- [[Programmazione/React/Pagine/CSS Modules|CSS Modules]].
-- Inline style.
-- Utility CSS.
-- CSS-in-JS.
-- Component library.
-### Regola pratica
-Usa CSS normale o CSS Modules per componenti semplici. Usa astrazioni piu forti solo quando devi gestire tema, varianti, design system o stati complessi.
+CSS globale:
+
+```jsx
+import "./styles.css";
+```
+
+Classi:
+
+```jsx
+function Button() {
+  return <button className="button">Salva</button>;
+}
+```
 
 ## API / Sintassi
 
-Contenuto da sviluppare: nella nota originale questa sezione non era presente o era solo una traccia.
+Inline style:
+
+```jsx
+<div style={{ display: "flex", gap: 8 }} />
+```
+
+CSS Module:
+
+```jsx
+import styles from "./Card.module.css";
+
+<article className={styles.card} />
+```
+
+Variabili CSS:
+
+```css
+:root {
+  --color-text: #111;
+}
+```
 
 ## Esempio pratico
 
-### Esempio con className
-```jsx
-export function Alert() {
-  return <div className="alert alert-error">Errore</div>;
+```css
+.button {
+  border: 0;
+  padding: 8px 12px;
+}
+
+.button[data-variant="primary"] {
+  background: var(--color-primary);
 }
 ```
-### Esempio con style inline
+
 ```jsx
-export function Box() {
-  return <div style={{ display: "flex", gap: 8 }} />;
-}
+<button className="button" data-variant="primary">Salva</button>
 ```
 
 ## Varianti
 
-Contenuto da sviluppare: nella nota originale questa sezione non era presente o era solo una traccia.
+- **CSS globale**: reset, base, token.
+- **CSS Modules**: scope locale.
+- **Utility CSS**: composizione rapida.
+- **CSS-in-JS**: stile vicino al componente.
+- **Design tokens**: colori, spacing, typografia.
+- **Component library**: stile incapsulato.
 
 ## Errori comuni
 
-Contenuto da sviluppare: nella nota originale questa sezione non era presente o era solo una traccia.
+- Mescolare troppi approcci.
+- Usare inline style per tutto.
+- Non definire token.
+- Ignorare stati hover, focus, disabled.
+- Rompere accessibilita rimuovendo focus visible.
+- Non controllare responsive e overflow.
 
 ## Checklist
 
-Contenuto da sviluppare: nella nota originale questa sezione non era presente o era solo una traccia.
+- La strategia styling e coerente?
+- Token e variabili sono centralizzati?
+- Stati interattivi sono coperti?
+- Focus visible resta evidente?
+- Il CSS scala con il progetto?
+- Le classi sono leggibili e mantenibili?
 
 ## Collegamenti
 
-- [[Programmazione/React/Pagine/CSS Modules|CSS Modules]]
-- [[Programmazione/React/Pagine/Design system|Design system]]
-- [[Programmazione/React/Pagine/Componenti Funzionali vs Componenti a Classe|Componenti]]
+- [[Programmazione/React/Indice react|Indice React]]
+- [[CSS Modules]]
+- [[Design system]]
+- [[WAI-ARIA]]
+- [[Animazioni e Micro-interazioni]]

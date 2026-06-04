@@ -1,105 +1,127 @@
-﻿---
-date: 2026-06-02
+---
+date: 2026-06-04
 area: Programmazione
 topic: React
 type: technical-note
 status: "non revisionato"
-difficulty: intermediate
-tags: [react, frontend, javascript]
-aliases: [useState: Gestione dello stato locale]
+difficulty: beginner
+tags: [react, hooks, state]
+aliases: [useState]
 prerequisites: []
 related: []
 ---
 
-# useState: Gestione dello stato locale
+# useState
 
 ## Sintesi
 
-Nota su useState: Gestione dello stato locale in React. Riassume il concetto, quando usarlo, i punti critici e gli errori da evitare durante sviluppo, debugging o revisione di applicazioni React.
+`useState` e l'hook base per gestire stato locale in un componente funzionale. Restituisce il valore corrente e una funzione per aggiornarlo.
 
-Il hook `useState` è lo strumento fondamentale in React per aggiungere uno **stato locale** ai Componenti Funzionali. Prima della sua introduzione, la gestione dello stato era possibile solo all'interno delle classi.
+Usalo per dati che cambiano nel tempo e influenzano il rendering del componente.
 
 ## Quando usarlo
 
-Contenuto da sviluppare: nella nota originale questa sezione non era presente o era solo una traccia.
+Usa `useState` per input, toggle, selezioni, UI locale, modali, tab attiva, filtri semplici e valori che appartengono a un componente specifico.
+
+Se lo stato dipende da molti eventi o ha transizioni complesse, valuta `useReducer`. Se serve a molti componenti lontani, valuta context o state management esterno.
 
 ## Come funziona
 
-### 2. Come funziona il triggering del rendering
-A differenza delle variabili normali, quando chiamiamo la funzione `setCount` (o qualsiasi setter di `useState`), React viene notificato del cambiamento. 
-- React confronta la vecchia versione del componente con quella nuova.
-- Se il valore dello stato è cambiato, viene eseguito un nuovo **render**.
-- Le variabili locali vengono reinizializzate, ma il valore di `useState` viene preservato da React tra un render e l'altro.
-### 3. Aggiornamento basato sullo stato precedente
-Se il nuovo stato dipende dal valore precedente (come in un contatore), è Best Practice passare una funzione al setter invece del valore diretto. Questo garantisce che React utilizzi sempre il valore più recente dello stato, evitando race conditions dovute alla natura asincrona degli aggiornamenti.
-
-```javascript
-// Approccio consigliato per aggiornamenti incrementali
-setCount(prevCount => prevCount + 1);
-```
-### 4. Stato come Oggetto o Array
-A differenza di `this.setState` nelle classi, `useState` **non unisce automaticamente** gli oggetti quando vengono aggiornati; li sostituisce completamente.
-
-> [!WARNING] Immutabilità
-> In React, lo stato deve essere trattato come immutabile. Se lo stato è un oggetto o un array, non bisogna modificarlo direttamente (es. `myObject.prop = value`), ma crearne una copia aggiornata utilizzando l'operatore **spread**.
-
-```javascript
-const [user, setUser] = useState({ name: 'Luca', age: 25 });
-
-const updateAge = () => {
-  setUser({
-    ...user,    // Copia tutte le proprietà esistenti
-    age: 26     // Sovrascrivi solo quella desiderata
-  });
-};
-```
-
----
-
-## API / Sintassi
-
-### 1. Definizione e Sintassi
-`useState` è una funzione che accetta un valore iniziale e restituisce un array con due elementi:
-1. Il **valore corrente** dello stato.
-2. Una **funzione di aggiornamento** (setter) per modificare quel valore.
-
-> [!INFO] Definizione di Stato
-> Lo stato rappresenta i dati che cambiano nel tempo all'interno di un componente. Quando lo stato cambia, React rileva la modifica e aggiorna automaticamente l'interfaccia tramite il Virtual DOM.
-
-```javascript
-import React, { useState } from 'react';
+```jsx
+import { useState } from "react";
 
 function Counter() {
-  // Dichiarazione dello stato: valore iniziale 0
   const [count, setCount] = useState(0);
 
   return (
-    <div>
-      <p>Hai cliccato {count} volte</p>
-      <button onClick={() => setCount(count + 1)}>
-        Cliccami
-      </button>
-    </div>
+    <button onClick={() => setCount(count + 1)}>
+      {count}
+    </button>
   );
 }
 ```
 
+Quando chiami `setCount`, React pianifica un nuovo render con il valore aggiornato.
+
+## API / Sintassi
+
+Inizializzazione:
+
+```jsx
+const [value, setValue] = useState(initialValue);
+```
+
+Aggiornamento funzionale:
+
+```jsx
+setCount((current) => current + 1);
+```
+
+Inizializzazione lazy:
+
+```jsx
+const [items, setItems] = useState(() => loadInitialItems());
+```
+
+Stato oggetto:
+
+```jsx
+setUser((user) => ({
+  ...user,
+  name: "Luca",
+}));
+```
+
 ## Esempio pratico
 
-Contenuto da sviluppare: nella nota originale questa sezione non era presente o era solo una traccia.
+```jsx
+function SearchForm() {
+  const [query, setQuery] = useState("");
+
+  return (
+    <form>
+      <input
+        value={query}
+        onChange={(event) => setQuery(event.target.value)}
+      />
+      <p>Ricerca: {query}</p>
+    </form>
+  );
+}
+```
+
+L'input e controllato: il valore mostrato deriva dallo state React.
 
 ## Varianti
 
-Contenuto da sviluppare: nella nota originale questa sezione non era presente o era solo una traccia.
+- **Stato primitivo**: stringhe, numeri, booleani.
+- **Stato oggetto**: aggiornare copiando con spread.
+- **Stato array**: creare nuovi array con `map`, `filter`, spread.
+- **Lazy initial state**: funzione passata a `useState`.
+- **Functional update**: quando il nuovo valore dipende dal precedente.
 
 ## Errori comuni
 
-Contenuto da sviluppare: nella nota originale questa sezione non era presente o era solo una traccia.
+- Mutare direttamente oggetti o array nello state.
+- Leggere un valore vecchio dopo `setState`.
+- Usare state per valori derivabili da props.
+- Duplicare lo stesso dato in piu componenti.
+- Tenere stato troppo in alto o troppo in basso.
+- Non usare aggiornamento funzionale quando serve.
 
 ## Checklist
 
-Contenuto da sviluppare: nella nota originale questa sezione non era presente o era solo una traccia.
+- Il valore influenza il rendering?
+- Il dato appartiene davvero a questo componente?
+- Il nuovo stato dipende dal precedente?
+- Oggetti e array vengono copiati?
+- Il dato potrebbe essere derivato invece di salvato?
+- Serve `useReducer` per logica piu complessa?
 
 ## Collegamenti
 
 - [[Programmazione/React/Indice react|Indice React]]
+- [[State colocato]]
+- [[Derived state]]
+- [[useReducer]]
+- [[Props e Flusso di dati unidirezionale]]

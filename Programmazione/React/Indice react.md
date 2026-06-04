@@ -73,6 +73,7 @@
 - [[Programmazione/React/Pagine/Virtual DOM|Virtual DOM]]
 - [[Programmazione/React/Pagine/Fiber Architecture e Concurrent Mode|Fiber Architecture e Concurrent Mode]]
 - [[Programmazione/React/Pagine/Batching|Batching]]
+- [[Programmazione/React/Pagine/React Compiler|React Compiler]]
 - [[Programmazione/React/Pagine/Profiler e Debugging|Profiler e Debugging]]
 - [[Programmazione/React/Pagine/Virtualizzazione delle liste|Virtualizzazione delle liste]]
 - [[Programmazione/React/Pagine/useMemo e useCallback|Memoization strategy]]
@@ -86,6 +87,11 @@
 - [[Programmazione/React/Pagine/SSR e SSG|Streaming SSR]]
 - [[Programmazione/React/Pagine/SSR e SSG|Hydration]]
 - [[Programmazione/React/Pagine/Server Components|Server Actions]]
+- [[Programmazione/React/Pagine/Actions e form actions|Actions e form actions]]
+- [[Programmazione/React/Pagine/useActionState|useActionState]]
+- [[Programmazione/React/Pagine/useOptimistic|useOptimistic]]
+- [[Programmazione/React/Pagine/useFormStatus|useFormStatus]]
+- [[Programmazione/React/Pagine/use hook|use hook]]
 - [[Programmazione/React/Pagine/Framework Next.js e Remix|Framework: Next.js e Remix]]
 
 ### Concorrenza e Gestione Risorse

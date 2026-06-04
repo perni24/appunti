@@ -1,12 +1,12 @@
-﻿---
-date: 2026-06-02
+---
+date: 2026-06-04
 area: Programmazione
 topic: React
 type: technical-note
 status: "non revisionato"
 difficulty: intermediate
-tags: [react, frontend, javascript]
-aliases: [useReducer]
+tags: [react, hooks, reducer, state]
+aliases: [useReducer, Reducer pattern]
 prerequisites: []
 related: []
 ---
@@ -15,96 +15,124 @@ related: []
 
 ## Sintesi
 
-Nota su useReducer in React. Riassume il concetto, quando usarlo, i punti critici e gli errori da evitare durante sviluppo, debugging o revisione di applicazioni React.
-
-Il hook `useReducer` è un'alternativa avanzata a `useState` per la gestione dello stato nei componenti React. È particolarmente utile quando si ha a che fare con logiche di stato complesse, stati che dipendono da altri valori o quando l'aggiornamento dello stato richiede più passaggi.
+`useReducer` gestisce stato locale tramite una funzione reducer e azioni esplicite. E utile quando lo stato ha piu transizioni, quando gli aggiornamenti dipendono dal valore precedente o quando vuoi rendere la logica di aggiornamento piu testabile.
 
 ## Quando usarlo
 
-Contenuto da sviluppare: nella nota originale questa sezione non era presente o era solo una traccia.
+Usa `useReducer` quando:
+
+- lo stato ha molti campi collegati;
+- ci sono molte azioni possibili;
+- la logica di update e complessa;
+- vuoi separare rendering e transizioni;
+- `useState` produce molti setter scollegati.
+
+Per stato semplice, `useState` resta piu chiaro.
 
 ## Come funziona
 
-### 1. Il Pattern Reducer
-Ispirato a Redux, `useReducer` si basa su un'architettura che separa la logica di aggiornamento (il "come" cambia lo stato) dall'azione che scatena il cambiamento (il "cosa" è successo).
-
-### Gli elementi chiave
-- **State:** Il dato corrente (può essere un valore primitivo o, più comunemente, un oggetto).
-- **Action:** Un oggetto che descrive cosa è successo (solitamente ha una proprietà `type`).
-- **Reducer:** Una funzione pura che riceve lo stato corrente e l'azione, e restituisce il **nuovo stato**.
-- **Dispatch:** La funzione utilizzata per "inviare" un'azione al reducer.
-
----
-### 3. useReducer vs useState
-| Caratteristica | `useState` | `useReducer` |
-| :--- | :--- | :--- |
-| **Complessità Stato** | Ideale per valori semplici (stringhe, boolean). | Ideale per oggetti complessi o array. |
-| **Logica di Aggiornamento** | Semplice, definita nel componente. | Complessa, definita in una funzione esterna. |
-| **Relazione tra Stati** | Variabili indipendenti tra loro. | Stati correlati captati in un unico oggetto. |
-| **Testabilità** | Più difficile testare la logica isolata. | Molto facile (il reducer è una funzione pura). |
-
----
-
-## API / Sintassi
-
-### 2. Sintassi e Utilizzo
-```javascript
-const [state, dispatch] = useReducer(reducer, initialState);
-```
-
-### Esempio Pratico: Gestore di Task
-```javascript
-const initialState = { count: 0 };
-
+```jsx
 function reducer(state, action) {
   switch (action.type) {
-    case 'increment':
+    case "increment":
       return { count: state.count + 1 };
-    case 'decrement':
+    case "decrement":
       return { count: state.count - 1 };
-    case 'reset':
-      return initialState;
     default:
-      throw new Error();
+      return state;
   }
 }
 
 function Counter() {
-  const [state, dispatch] = useReducer(reducer, initialState);
+  const [state, dispatch] = useReducer(reducer, { count: 0 });
 
   return (
-    <>
-      Contatore: {state.count}
-      <button onClick={() => dispatch({ type: 'decrement' })}>-</button>
-      <button onClick={() => dispatch({ type: 'increment' })}>+</button>
-    </>
+    <button onClick={() => dispatch({ type: "increment" })}>
+      {state.count}
+    </button>
   );
 }
 ```
 
----
+## API / Sintassi
+
+Firma:
+
+```jsx
+const [state, dispatch] = useReducer(reducer, initialArg, init);
+```
+
+Reducer:
+
+```jsx
+function reducer(state, action) {
+  return nextState;
+}
+```
+
+Inizializzazione lazy:
+
+```jsx
+const [state, dispatch] = useReducer(reducer, rawData, initState);
+```
 
 ## Esempio pratico
 
-Contenuto da sviluppare: nella nota originale questa sezione non era presente o era solo una traccia.
+Form con stati collegati:
+
+```jsx
+function formReducer(state, action) {
+  switch (action.type) {
+    case "change":
+      return {
+        ...state,
+        values: {
+          ...state.values,
+          [action.name]: action.value,
+        },
+      };
+    case "submit":
+      return { ...state, isSubmitting: true };
+    case "error":
+      return { ...state, isSubmitting: false, error: action.error };
+    default:
+      return state;
+  }
+}
+```
+
+Le transizioni diventano nominate e centralizzate.
 
 ## Varianti
 
-Contenuto da sviluppare: nella nota originale questa sezione non era presente o era solo una traccia.
+- **Reducer locale**: dentro un componente.
+- **Reducer estratto**: testabile separatamente.
+- **Reducer + Context**: stato condiviso semplice.
+- **State machine leggera**: azioni come transizioni esplicite.
+- **Redux-like pattern**: utile, ma da non introdurre per stato banale.
 
 ## Errori comuni
 
-Contenuto da sviluppare: nella nota originale questa sezione non era presente o era solo una traccia.
+- Mutare lo stato nel reducer.
+- Usare reducer per stato troppo semplice.
+- Creare azioni vaghe come `setData` per tutto.
+- Mettere side effect dentro reducer.
+- Non gestire azioni sconosciute.
+- Accoppiare reducer a dettagli visuali del componente.
 
 ## Checklist
 
-### 4. Best Practices
-1. **Reducer come Funzione Pura:** Un reducer non deve mai avere effetti collaterali (chiamate API, timer). Per quelli si usa `useEffect`.
-2. **Immutabilità:** Come per `useState`, non bisogna mai mutare lo stato direttamente. Restituisci sempre una **copia** dello stato aggiornato.
-3. **Action Types:** È consigliabile usare costanti per i tipi di azione per evitare refusi (errori di digitazione).
-
----
+- Lo stato ha transizioni abbastanza complesse?
+- Le azioni hanno nomi chiari?
+- Il reducer e puro?
+- Lo stato viene copiato senza mutazioni?
+- La logica e testabile fuori dal componente?
+- `useState` sarebbe piu semplice?
 
 ## Collegamenti
 
 - [[Programmazione/React/Indice react|Indice React]]
+- [[useState]]
+- [[Context API]]
+- [[State Management Esterno]]
+- [[Control Props e State Reducer Pattern]]

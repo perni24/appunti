@@ -13,6 +13,9 @@
 ### Condivisione file
 - [[LocalSend]]
 
+### Download media
+- [[Yt-dlp]]
+
 ### Modellazione CAD
 - [[FreeCAD]]
-- OpenScad
+- [[OpenSCAD]]

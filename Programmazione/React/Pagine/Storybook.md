@@ -1,16 +1,12 @@
-﻿---
-date: 2026-06-02
+---
+date: 2026-06-04
 area: Programmazione
 topic: React
 type: operational-note
 status: "non revisionato"
-difficulty: 
-tags:
-  - programmazione
-  - react
-  - testing
-  - design-system
-aliases: []
+difficulty: intermediate
+tags: [react, storybook, design-system, testing]
+aliases: [Storybook]
 prerequisites: []
 related: []
 ---
@@ -19,62 +15,91 @@ related: []
 
 ## Sintesi
 
-**Storybook** e uno strumento per sviluppare, documentare e testare componenti UI in isolamento.
+Storybook permette di sviluppare, documentare e testare componenti UI in isolamento. E utile per design system, component library, stati visuali e collaborazione tra design e sviluppo.
 
 ## Quando usarlo
 
-- Design system.
-- Componenti riusabili.
-- Stati complessi: loading, error, empty.
-- Documentazione UI condivisa.
+Usalo quando hai componenti riusabili, molte varianti, stati da documentare o un design system. Per app piccole puo essere superfluo.
 
 ## Come funziona
 
-### Concetto chiave
-Una story descrive uno stato visivo di un componente. Questo permette di vedere varianti senza navigare l'intera applicazione.
+Ogni componente ha storie che descrivono varianti:
 
 ```jsx
-import { Button } from "./Button";
-
 export default {
-  component: Button
+  title: "UI/Button",
+  component: Button,
 };
 
 export const Primary = {
   args: {
     variant: "primary",
-    children: "Salva"
-  }
+    children: "Salva",
+  },
 };
 ```
 
 ## API / Sintassi
 
-Contenuto da sviluppare: nella nota originale questa sezione non era presente o era solo una traccia.
+Installazione tipica:
+
+```bash
+npx storybook@latest init
+npm run storybook
+```
+
+Storia con args:
+
+```jsx
+export const Disabled = {
+  args: {
+    disabled: true,
+    children: "Disabilitato",
+  },
+};
+```
 
 ## Esempio pratico
 
-### Procedura
-1. Da completare.
-2. Da completare.
-3. Da completare.
+Per un input documenta:
+
+- default;
+- disabled;
+- errore;
+- con descrizione;
+- con valore lungo;
+- focus/interaction test se previsto.
 
 ## Varianti
 
-Contenuto da sviluppare: nella nota originale questa sezione non era presente o era solo una traccia.
+- **Component stories**: varianti visuali.
+- **Docs mode**: documentazione.
+- **Interaction tests**: test su eventi.
+- **A11y addon**: controlli accessibilita.
+- **Visual regression**: snapshot visuali.
+- **Design system catalog**: libreria componenti.
 
 ## Errori comuni
 
-- Scrivere story non rappresentative.
-- Non includere stati limite.
-- Lasciare Storybook scollegato dai test o dal design system.
+- Scrivere storie solo per happy path.
+- Non documentare stati errore e disabled.
+- Lasciare storie rotte fuori dalla CI.
+- Usare dati reali sensibili.
+- Duplicare documentazione e componenti senza sincronizzazione.
 
 ## Checklist
 
-Contenuto da sviluppare: nella nota originale questa sezione non era presente o era solo una traccia.
+- Ogni componente critico ha storie?
+- Stati principali sono coperti?
+- Le storie usano dati sicuri?
+- Storybook gira in CI?
+- A11y e visual regression sono integrati se servono?
+- Le storie aiutano davvero chi usa il componente?
 
 ## Collegamenti
 
-- [[Programmazione/React/Pagine/Design system|Design system]]
-- [[Programmazione/React/Pagine/Visual regression testing|Visual regression testing]]
-- [[Programmazione/React/Pagine/Testing Jest|Testing Jest]]
+- [[Programmazione/React/Indice react|Indice React]]
+- [[Design system]]
+- [[Visual regression testing]]
+- [[Test di accessibilita]]
+- [[Testing Jest]]

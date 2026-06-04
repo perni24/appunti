@@ -1,16 +1,12 @@
-﻿---
-date: 2026-06-02
+---
+date: 2026-06-04
 area: Programmazione
 topic: React
 type: operational-note
 status: "non revisionato"
-difficulty: 
-tags:
-  - programmazione
-  - react
-  - testing
-  - ui
-aliases: []
+difficulty: intermediate
+tags: [react, testing, visual-regression]
+aliases: [Visual regression testing, Test visuali]
 prerequisites: []
 related: []
 ---
@@ -19,55 +15,72 @@ related: []
 
 ## Sintesi
 
-Il **visual regression testing** confronta screenshot della UI nel tempo per rilevare cambiamenti visivi inattesi.
+Il visual regression testing confronta screenshot o snapshot visuali per rilevare cambiamenti inattesi nella UI. E utile per design system, componenti critici, layout complessi e pagine dove piccoli cambiamenti visuali contano.
 
 ## Quando usarlo
 
-Contenuto da sviluppare: nella nota originale questa sezione non era presente o era solo una traccia.
+Usalo per componenti condivisi, pagine ad alto valore, regressioni CSS, temi, responsive layout e UI documentata in Storybook.
 
 ## Come funziona
 
-### Concetto chiave
-Un test visivo non controlla solo DOM o comportamento: verifica che l'interfaccia renderizzata sia coerente con un baseline.
-### Cosa rileva
-- Layout rotti.
-- Spaziature cambiate.
-- Colori o font errati.
-- Overflow.
-- Componenti mancanti.
-### Strumenti comuni
-- Playwright screenshot tests.
-- Cypress visual testing.
-- Storybook con servizi visuali.
-- Percy, Chromatic o simili.
+Il test produce una immagine corrente e la confronta con una baseline approvata. Se la differenza supera una soglia, il test fallisce.
+
+```text
+baseline screenshot -> nuovo screenshot -> diff visuale
+```
 
 ## API / Sintassi
 
-Contenuto da sviluppare: nella nota originale questa sezione non era presente o era solo una traccia.
+Con Playwright:
+
+```ts
+await expect(page).toHaveScreenshot("dashboard.png");
+```
+
+Con Storybook si possono integrare servizi o addon per snapshot visuali dei componenti.
 
 ## Esempio pratico
 
-### Procedura
-1. Da completare.
-2. Da completare.
-3. Da completare.
+Procedura:
+
+1. scegli componenti o pagine stabili;
+2. cattura baseline;
+3. esegui test in ambiente deterministico;
+4. confronta diff;
+5. approva solo cambiamenti intenzionali;
+6. conserva screenshot falliti in CI.
 
 ## Varianti
 
-Contenuto da sviluppare: nella nota originale questa sezione non era presente o era solo una traccia.
+- **Screenshot page-level**: pagina intera.
+- **Component screenshot**: singolo componente.
+- **Storybook visual tests**: ogni story come caso.
+- **Cross-browser visual**: browser diversi.
+- **Responsive snapshots**: viewport multipli.
+- **Theme snapshots**: tema chiaro/scuro.
 
 ## Errori comuni
 
-- Baseline aggiornati senza review.
-- Test troppo fragili per contenuti dinamici.
-- Mancanza di viewport mobile.
+- Usare dati dinamici non stabilizzati.
+- Non fissare viewport, font o timezone.
+- Approvare diff senza revisione.
+- Testare troppe pagine instabili.
+- Ignorare animazioni e loading state.
+- Non conservare artefatti di fallimento.
 
 ## Checklist
 
-Contenuto da sviluppare: nella nota originale questa sezione non era presente o era solo una traccia.
+- La UI testata e abbastanza stabile?
+- Dati, viewport e font sono controllati?
+- Animazioni sono disabilitate?
+- Le baseline sono revisionate?
+- I diff falliti sono leggibili?
+- Il test copre componenti ad alto rischio?
 
 ## Collegamenti
 
-- [[Programmazione/React/Pagine/Storybook|Storybook]]
-- [[Programmazione/React/Pagine/Testing Cypress e Playwright|Testing Cypress e Playwright]]
-- [[Programmazione/React/Pagine/Test di accessibilita|Test di accessibilita]]
+- [[Programmazione/React/Indice react|Indice React]]
+- [[Storybook]]
+- [[Testing Cypress e Playwright]]
+- [[Design system]]
+- [[Animazioni e Micro-interazioni]]

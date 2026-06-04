@@ -1,15 +1,12 @@
-﻿---
-date: 2026-06-02
+---
+date: 2026-06-04
 area: Programmazione
 topic: React
 type: theory-note
 status: "non revisionato"
-difficulty: 
-tags:
-  - programmazione
-  - react
-  - state
-aliases: []
+difficulty: intermediate
+tags: [react, state, rendering]
+aliases: [Derived state, Stato derivato]
 prerequisites: []
 related: []
 ---
@@ -18,24 +15,19 @@ related: []
 
 ## Sintesi
 
-Il **derived state** e uno stato calcolato a partire da props, state o dati esterni. In React conviene calcolarlo durante il render quando possibile, invece di duplicarlo in `useState`.
+Derived state e un valore calcolabile da props, state o dati esistenti. In React, se un valore puo essere derivato durante il render, di solito non va salvato in uno state separato.
+
+Salvare stato derivato crea duplicazione e rischio di inconsistenza.
 
 ## Quando usarlo
 
-### Quando usare useMemo
-`useMemo` serve solo se il calcolo e costoso o se la stabilita referenziale e importante.
+Deriva valori quando devi filtrare, ordinare, contare, calcolare flag, comporre testo o costruire dati visuali da input gia disponibili.
 
-```jsx
-const filteredItems = useMemo(
-  () => items.filter(item => item.active),
-  [items]
-);
-```
+Memorizza nello state solo cio che non puo essere calcolato in modo affidabile dal resto.
 
 ## Come funziona
 
-### Concetto chiave
-Se un valore puo essere derivato da dati gia presenti, spesso non deve essere salvato come nuovo stato.
+Meglio:
 
 ```jsx
 function Cart({ items }) {
@@ -45,30 +37,78 @@ function Cart({ items }) {
 }
 ```
 
+Peggio:
+
+```jsx
+const [total, setTotal] = useState(0);
+```
+
+Se `total` dipende sempre da `items`, salvarlo separatamente puo desincronizzarlo.
+
 ## API / Sintassi
 
-Contenuto da sviluppare: nella nota originale questa sezione non era presente o era solo una traccia.
+Calcolo semplice:
+
+```jsx
+const fullName = `${user.firstName} ${user.lastName}`;
+```
+
+Filtro:
+
+```jsx
+const visibleItems = items.filter((item) => item.active);
+```
+
+Memoization solo se serve:
+
+```jsx
+const sortedItems = useMemo(() => {
+  return [...items].sort(compareItems);
+}, [items]);
+```
 
 ## Esempio pratico
 
-Contenuto da sviluppare: nella nota originale questa sezione non era presente o era solo una traccia.
+```jsx
+function ProductTable({ products, query }) {
+  const visibleProducts = products.filter((product) =>
+    product.name.toLowerCase().includes(query.toLowerCase())
+  );
+
+  return <Table rows={visibleProducts} />;
+}
+```
+
+`visibleProducts` non deve essere state: e una vista derivata.
 
 ## Varianti
 
-Contenuto da sviluppare: nella nota originale questa sezione non era presente o era solo una traccia.
+- **Valori derivati semplici**: stringhe, booleani, contatori.
+- **Filtri e ordinamenti**: spesso derivati da dati e query.
+- **Memoized derived state**: `useMemo` per calcoli costosi.
+- **URL-derived state**: filtri derivati da query params.
+- **Server-derived state**: dati trasformati da cache remota.
 
 ## Errori comuni
 
 - Copiare props in state senza motivo.
-- Tenere due stati che possono divergere.
-- Usare `useEffect` per sincronizzare valori derivabili nel render.
+- Aggiornare stato derivato con `useEffect`.
+- Salvare sia dato originale sia dato calcolato.
+- Usare `useMemo` per tutto.
+- Dimenticare dipendenze del calcolo memoizzato.
 
 ## Checklist
 
-Contenuto da sviluppare: nella nota originale questa sezione non era presente o era solo una traccia.
+- Il valore puo essere calcolato da dati esistenti?
+- Serve davvero conservarlo?
+- Potrebbe desincronizzarsi?
+- Il calcolo e abbastanza costoso da richiedere `useMemo`?
+- Il valore dovrebbe derivare dall'URL o dalla cache?
 
 ## Collegamenti
 
-- [[Programmazione/React/Pagine/useState|useState]]
-- [[Programmazione/React/Pagine/useMemo e useCallback|useMemo e useCallback]]
-- [[Programmazione/React/Pagine/Props e Flusso di dati unidirezionale|Props e Flusso di dati unidirezionale]]
+- [[Programmazione/React/Indice react|Indice React]]
+- [[useState]]
+- [[useMemo e useCallback]]
+- [[State colocato]]
+- [[Data Fetching e Cache]]

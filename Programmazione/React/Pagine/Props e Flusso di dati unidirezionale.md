@@ -1,12 +1,12 @@
-﻿---
-date: 2026-06-02
+---
+date: 2026-06-04
 area: Programmazione
 topic: React
-type: technical-note
+type: theory-note
 status: "non revisionato"
-difficulty: intermediate
-tags: [react, frontend, javascript]
-aliases: [Props e Flusso di dati unidirezionale]
+difficulty: beginner
+tags: [react, props, state, frontend]
+aliases: [Props, Flusso dati React, Children, Composizione componenti]
 prerequisites: []
 related: []
 ---
@@ -15,98 +15,122 @@ related: []
 
 ## Sintesi
 
-Nota su Props e Flusso di dati unidirezionale in React. Riassume il concetto, quando usarlo, i punti critici e gli errori da evitare durante sviluppo, debugging o revisione di applicazioni React.
+Le props sono dati passati da un componente padre a un componente figlio. In React il flusso dati e unidirezionale: i dati scendono tramite props, gli eventi risalgono tramite callback.
 
-In React, le **Props** (abbreviazione di *properties*) sono il meccanismo principale per passare dati da un componente genitore (Parent) a un componente figlio (Child). Insieme allo stato, costituiscono il cuore della reattività di React.
+Questo rende la UI piu prevedibile: guardando props e state puoi capire da dove arriva un valore e chi puo modificarlo.
 
 ## Quando usarlo
 
-Contenuto da sviluppare: nella nota originale questa sezione non era presente o era solo una traccia.
+Usa props per configurare componenti, passare dati, callback, children e varianti visuali. Usa callback quando il figlio deve notificare al padre un evento.
+
+Non usare props per creare dipendenze globali profonde: se il passaggio diventa troppo lungo, valuta composizione, context o state management.
 
 ## Come funziona
 
-### 1. Cosa sono le Props?
-Le props sono oggetti JavaScript che contengono i dati passati a un componente. Possono essere paragonate agli argomenti di una funzione.
-
 ```jsx
-// Definizione del componente figlio
-function UserProfile(props) {
-  return <h2>Utente: {props.username}</h2>;
-}
-
-// Utilizzo nel componente genitore
-function App() {
-  return <UserProfile username="Luca" />;
-}
-```
-
-> [!IMPORTANT] Immutabilità
-> Le props sono **read-only** (sola lettura). Un componente non deve mai modificare le proprie props. Se i dati devono cambiare, il cambiamento deve avvenire nel genitore tramite lo stato.
-
----
-### 2. Flusso di dati unidirezionale (One-way Data Flow)
-React segue un modello di flusso dati rigorosamente **dall'alto verso il basso**. Questo significa che:
-- Il genitore possiede il dato (stato).
-- Il genitore passa il dato al figlio tramite le props.
-- Il figlio consuma il dato per renderizzare la UI.
-
-Questo approccio rende l'applicazione più facile da debuggare, poiché l'origine di un dato è sempre chiara e tracciabile risalendo l'albero dei componenti.
-
----
-### 3. Comunicazione Figlio-Genitore: Lifting State Up
-Se un figlio deve comunicare un cambiamento al genitore (ad esempio, l'invio di un form), non può "scrivere" nelle props. Invece, il genitore passa una **funzione di callback** come prop.
-
-```jsx
-function SearchBar(props) {
+function UserCard({ user, onSelect }) {
   return (
-    <input 
-      type="text" 
-      onChange={(e) => props.onSearchChange(e.target.value)} 
-    />
+    <button onClick={() => onSelect(user.id)}>
+      {user.name}
+    </button>
   );
 }
 
-function App() {
-  const handleSearch = (value) => console.log("Cercando:", value);
-  return <SearchBar onSearchChange={handleSearch} />;
+function UserList({ users }) {
+  function handleSelect(userId) {
+    console.log(userId);
+  }
+
+  return users.map((user) => (
+    <UserCard key={user.id} user={user} onSelect={handleSelect} />
+  ));
 }
 ```
 
-Questo pattern è conosciuto come **Lifting State Up** (Spostamento dello stato verso l'alto).
-
----
-### 4. Props Destructuring
-Per rendere il codice più pulito, è pratica comune estrarre le proprietà direttamente nella firma della funzione:
-
-```jsx
-// Invece di function User(props) { ... props.name ... }
-function User({ name, age }) {
-  return <div>{name} ha {age} anni</div>;
-}
-```
-
----
+Il padre possiede la logica, il figlio emette eventi.
 
 ## API / Sintassi
 
-Contenuto da sviluppare: nella nota originale questa sezione non era presente o era solo una traccia.
+Props base:
+
+```jsx
+<Button label="Salva" disabled={isSaving} />
+```
+
+Destructuring:
+
+```jsx
+function Button({ label, disabled }) {
+  return <button disabled={disabled}>{label}</button>;
+}
+```
+
+Children:
+
+```jsx
+function Card({ children }) {
+  return <section className="card">{children}</section>;
+}
+```
+
+Composizione:
+
+```jsx
+<Card>
+  <h2>Profilo</h2>
+  <UserDetails user={user} />
+</Card>
+```
 
 ## Esempio pratico
 
-Contenuto da sviluppare: nella nota originale questa sezione non era presente o era solo una traccia.
+Componente controllato:
+
+```jsx
+function SearchBox({ value, onChange }) {
+  return (
+    <input
+      value={value}
+      onChange={(event) => onChange(event.target.value)}
+      aria-label="Cerca"
+    />
+  );
+}
+```
+
+Il valore vive nel padre; il figlio descrive solo input e notifica cambiamenti.
 
 ## Varianti
 
-Contenuto da sviluppare: nella nota originale questa sezione non era presente o era solo una traccia.
+- **Props primitive**: stringhe, numeri, booleani.
+- **Props oggetto**: dati strutturati.
+- **Callback props**: eventi dal figlio al padre.
+- **Children**: composizione dichiarativa.
+- **Render props**: funzione passata come prop per controllare rendering.
+- **Controlled props**: il padre controlla stato e comportamento.
 
 ## Errori comuni
 
-Contenuto da sviluppare: nella nota originale questa sezione non era presente o era solo una traccia.
+- Modificare direttamente una prop.
+- Passare oggetti enormi senza confini chiari.
+- Usare props drilling eccessivo.
+- Nascondere side effect in callback poco nominate.
+- Duplicare lo stesso dato in piu stati locali.
+- Usare children quando una prop esplicita sarebbe piu chiara.
 
 ## Checklist
 
-Contenuto da sviluppare: nella nota originale questa sezione non era presente o era solo una traccia.
+- Il proprietario del dato e chiaro?
+- Il figlio riceve solo cio che gli serve?
+- Gli eventi risalgono con callback nominate bene?
+- `children` migliora davvero la composizione?
+- C'e duplicazione tra props e state?
+- Serve context o basta passare props?
 
 ## Collegamenti
 
 - [[Programmazione/React/Indice react|Indice React]]
+- [[State colocato]]
+- [[Context API]]
+- [[Control Props e State Reducer Pattern]]
+- [[Rendering Condizionale e Liste]]

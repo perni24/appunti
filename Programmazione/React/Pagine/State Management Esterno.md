@@ -1,12 +1,12 @@
-﻿---
-date: 2026-06-02
+---
+date: 2026-06-04
 area: Programmazione
 topic: React
-type: technical-note
+type: theory-note
 status: "non revisionato"
 difficulty: intermediate
-tags: [react, frontend, javascript]
-aliases: [State Management Esterno]
+tags: [react, state-management, frontend]
+aliases: [State Management Esterno, Zustand, Redux Toolkit]
 prerequisites: []
 related: []
 ---
@@ -15,238 +15,106 @@ related: []
 
 ## Sintesi
 
-Nota su State Management Esterno in React. Riassume il concetto, quando usarlo, i punti critici e gli errori da evitare durante sviluppo, debugging o revisione di applicazioni React.
+Lo state management esterno usa librerie fuori da React per gestire stato condiviso. Serve quando props, state locale e Context non bastano piu per coordinare dati client complessi.
 
-Per **state management esterno** si intende l'uso di librerie dedicate per gestire stato condiviso fuori dal singolo componente React.
-
-Queste soluzioni diventano utili quando lo stato applicativo:
-- e usato in molte parti dell'app;
-- ha logiche di aggiornamento complesse;
-- richiede debugging piu rigoroso;
-- deve restare prevedibile anche con molte interazioni concorrenti.
-
-Tra le soluzioni piu comuni nell'ecosistema React ci sono **Zustand** e **Redux Toolkit**.
-
-> [!INFO] Punto chiave
-> Uno store esterno non sostituisce React: sposta fuori dai componenti la responsabilita di conservare e aggiornare parte dello stato globale.
-
----
+Va distinto dalla cache server: stato UI e dati remoti hanno esigenze diverse.
 
 ## Quando usarlo
 
-Contenuto da sviluppare: nella nota originale questa sezione non era presente o era solo una traccia.
+Usalo quando:
+
+- molti componenti lontani aggiornano lo stesso stato;
+- la logica di transizione e complessa;
+- serve stato persistente client-side;
+- Context causa render troppo ampi;
+- vuoi strumenti di debug e pattern espliciti.
+
+Non usarlo solo per evitare props drilling occasionale.
 
 ## Come funziona
 
-### 1. Quando nasce il problema
-Con [[Programmazione/React/Pagine/useState]], [[Programmazione/React/Pagine/useReducer]] e [[Programmazione/React/Pagine/Context API]] si coprono molti casi reali. Il problema emerge quando:
-- lo stesso dato serve a molti rami dell'albero;
-- il prop drilling diventa pesante;
-- il context provoca troppi re-render;
-- la logica di aggiornamento e difficile da seguire;
-- vuoi strumenti di debugging, tracciamento o time travel.
+Esempio concettuale con store:
 
-In questi casi uno store esterno puo migliorare organizzazione e manutenibilita.
-
----
-### 2. Cosa gestisce uno store esterno
-Tipicamente uno store esterno gestisce:
-- utente autenticato;
-- preferenze globali;
-- carrello;
-- stato UI condiviso tra piu pagine;
-- cache locale di dati lato client;
-- workflow multi-step o interazioni complesse.
-
-Non tutto pero deve finire in uno store globale.
-
-Regola pratica:
-- **stato locale del componente**: resta in [[Programmazione/React/Pagine/useState]];
-- **logica locale ma articolata**: spesso va bene [[Programmazione/React/Pagine/useReducer]];
-- **dato condiviso semplice e poco frequente**: puo bastare [[Programmazione/React/Pagine/Context API]];
-- **stato condiviso complesso o molto dinamico**: valuta uno store esterno.
-
----
-### 3. Zustand
-**Zustand** e una libreria leggera che permette di creare store globali con API molto semplici.
-
-Esempio concettuale:
-
-```javascript
-import { create } from "zustand";
-
-const useCounterStore = create(set => ({
-  count: 0,
-  increment: () => set(state => ({ count: state.count + 1 })),
-  decrement: () => set(state => ({ count: state.count - 1 }))
+```jsx
+const useCartStore = create((set) => ({
+  items: [],
+  addItem: (item) =>
+    set((state) => ({ items: [...state.items, item] })),
 }));
 
-function Counter() {
-  const count = useCounterStore(state => state.count);
-  const increment = useCounterStore(state => state.increment);
-
-  return <button onClick={increment}>{count}</button>;
+function CartCount() {
+  const count = useCartStore((state) => state.items.length);
+  return <span>{count}</span>;
 }
 ```
 
-Punti forti di Zustand:
-- API molto compatta;
-- curva di apprendimento bassa;
-- poco boilerplate;
-- selezione fine delle slice di stato;
-- buona ergonomia per app piccole e medie.
+Il componente sottoscrive solo la parte di stato che usa.
 
-E spesso scelto quando si vuole evitare complessita strutturale non necessaria.
+## API / Sintassi
 
----
-### 4. Redux Toolkit
-**Redux Toolkit** e l'approccio moderno consigliato per usare Redux senza il vecchio eccesso di boilerplate.
+Pattern comuni:
 
-Redux si basa su alcuni principi:
-- store centrale;
-- azioni esplicite;
-- reducer puri;
-- aggiornamenti prevedibili;
-- flusso dei dati unidirezionale.
+- creare uno store;
+- definire stato iniziale;
+- definire azioni;
+- selezionare solo i dati necessari;
+- evitare mutazioni non controllate.
 
-Esempio semplificato:
+Redux Toolkit:
 
-```javascript
-import { createSlice, configureStore } from "@reduxjs/toolkit";
-
+```jsx
 const counterSlice = createSlice({
   name: "counter",
   initialState: { value: 0 },
   reducers: {
-    increment: state => {
+    increment: (state) => {
       state.value += 1;
     },
-    decrement: state => {
-      state.value -= 1;
-    }
-  }
-});
-
-const store = configureStore({
-  reducer: {
-    counter: counterSlice.reducer
-  }
+  },
 });
 ```
 
-Redux Toolkit e utile quando servono:
-- forte standardizzazione;
-- prevedibilita rigorosa;
-- middleware;
-- integrazione strutturata con async flow;
-- debugging avanzato con DevTools.
-
-Rispetto a Zustand, impone piu struttura ma offre anche piu disciplina.
-
----
-### 5. Zustand vs Redux Toolkit
-| Caratteristica | Zustand | Redux Toolkit |
-| :--- | :--- | :--- |
-| **Boilerplate** | Molto basso | Medio |
-| **Curva di apprendimento** | Rapida | Piu alta |
-| **Struttura architetturale** | Flessibile | Piu rigorosa |
-| **Debugging e standardizzazione** | Buoni, ma meno prescrittivi | Molto forti |
-| **Adatto per** | App snelle o team che vogliono semplicita | App grandi o team che vogliono convenzioni forti |
-
-La scelta dipende dal contesto, non da una gerarchia assoluta.
-
----
-### 6. Stato globale non significa stato migliore
-Uno degli errori piu comuni e spostare troppo stato fuori dai componenti.
-
-Se uno stato riguarda solo un form, un modal o una piccola sezione della pagina, spesso e meglio tenerlo locale. Portarlo in uno store globale puo:
-- aumentare accoppiamento;
-- rendere il flusso meno chiaro;
-- complicare test e refactor;
-- introdurre dipendenze inutili.
-
-Lo store globale va usato quando il dato e davvero condiviso o quando il valore architetturale supera il costo della complessita introdotta.
-
----
-### 8. Stato server vs stato client
-Un altro errore frequente e usare lo store globale per dati che in realta sono **server state**:
-- risultati di fetch;
-- cache remota;
-- sincronizzazione con API;
-- retry;
-- invalidazione.
-
-Per questi scenari spesso e piu adatto uno strumento come TanStack Query che non e uno state manager generale, ma una libreria per data fetching e cache.
-
-Conviene distinguere:
-- **client state**: tema, sidebar aperta, wizard locale, preferenze utente;
-- **server state**: dati ottenuti dal backend.
-
-Confondere i due piani porta a store troppo carichi e difficili da mantenere.
-
----
-
-## API / Sintassi
-
-### 7. Relazione con Context API
-[[Programmazione/React/Pagine/Context API]] e uno strumento di propagazione del dato nell'albero React. Uno store esterno e invece un contenitore di stato separato dai componenti.
-
-Differenza pratica:
-- il context distribuisce un valore ai discendenti;
-- lo store esterno centralizza stato e aggiornamenti in un livello dedicato.
-
-Molte librerie di state management usano comunque il context internamente, ma l'API pubblica resta piu evoluta:
-- selettori;
-- middleware;
-- DevTools;
-- separazione migliore della logica.
-
-Quindi il confronto corretto non e "uno elimina l'altro", ma "quale livello di struttura serve davvero".
-
----
-
 ## Esempio pratico
 
-Contenuto da sviluppare: nella nota originale questa sezione non era presente o era solo una traccia.
+Usa state esterno per stato client globale, per esempio un pannello laterale aperto da molti punti dell'app:
+
+```jsx
+const useLayoutStore = create((set) => ({
+  sidebarOpen: false,
+  openSidebar: () => set({ sidebarOpen: true }),
+  closeSidebar: () => set({ sidebarOpen: false }),
+}));
+```
 
 ## Varianti
 
-Contenuto da sviluppare: nella nota originale questa sezione non era presente o era solo una traccia.
+- **Zustand**: store leggero e selettori semplici.
+- **Redux Toolkit**: pattern piu strutturato e tooling forte.
+- **Jotai/Recoil-like**: stato atomico.
+- **Context + reducer**: soluzione interna per casi piccoli.
+- **TanStack Query**: non e state client generico, ma cache server.
 
 ## Errori comuni
 
-Contenuto da sviluppare: nella nota originale questa sezione non era presente o era solo una traccia.
+- Mettere dati server nello store invece di usare cache dedicata.
+- Creare store globali per stato locale.
+- Sottoscrivere interi store causando render inutili.
+- Non separare azioni e selettori.
+- Usare librerie complesse senza bisogno reale.
 
 ## Checklist
 
-### 9. Criteri pratici di scelta
-### Usa solo React nativo quando
-- lo stato e locale o moderatamente condiviso;
-- `useState`, `useReducer` e context bastano;
-- il team vuole massima semplicita.
-
-### Valuta Zustand quando
-- vuoi uno store globale semplice;
-- vuoi evitare troppo boilerplate;
-- il team preferisce un approccio pragmatico.
-
-### Valuta Redux Toolkit quando
-- l'app e grande;
-- il team e numeroso;
-- servono convenzioni forti e debugging strutturato;
-- vuoi un modello piu rigoroso e prevedibile.
-
----
-### 10. Best Practices
-1. **Non introdurre uno store esterno troppo presto:** prima verifica se React nativo copre gia il problema.
-2. **Tieni locale tutto cio che non e davvero condiviso:** globalizzare stato locale peggiora il design.
-3. **Scegli la libreria in base al team e alla complessita reale:** non in base alla popolarita del momento.
-4. **Distingui client state da server state:** non usare Redux o Zustand come sostituto automatico del data fetching specializzato.
-5. **Mantieni le azioni e le transizioni leggibili:** lo store deve chiarire il flusso, non nasconderlo.
-6. **Evita mega-store monolitici quando possibile:** meglio organizzare slice o domini chiari.
-
----
+- Il problema e stato client o dati server?
+- Lo stato e davvero globale?
+- I selettori sono granulari?
+- Le azioni sono nominate bene?
+- La soluzione riduce complessita?
+- Esiste una strategia di debug e test?
 
 ## Collegamenti
 
 - [[Programmazione/React/Indice react|Indice React]]
+- [[Context API]]
+- [[State colocato]]
+- [[Data Fetching e Cache]]
+- [[useReducer]]

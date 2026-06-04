@@ -1,12 +1,12 @@
-﻿---
-date: 2026-06-02
+---
+date: 2026-06-04
 area: Programmazione
 topic: React
 type: technical-note
 status: "non revisionato"
-difficulty: intermediate
-tags: [react, frontend, javascript]
-aliases: [useRef]
+difficulty: beginner
+tags: [react, hooks, ref]
+aliases: [useRef, Ref React]
 prerequisites: []
 related: []
 ---
@@ -15,97 +15,119 @@ related: []
 
 ## Sintesi
 
-Nota su useRef in React. Riassume il concetto, quando usarlo, i punti critici e gli errori da evitare durante sviluppo, debugging o revisione di applicazioni React.
+`useRef` crea un oggetto mutabile persistente tra render. Il valore sta in `ref.current`. Modificarlo non causa un nuovo render.
 
-Il hook `useRef` è uno strumento versatile in React che permette di mantenere un valore persistente tra i render senza scatenare un nuovo ciclo di rendering quando viene modificato. Restituisce un oggetto "ref" con una singola proprietà: `current`.
+Si usa per riferimenti DOM, valori imperativi, timer id, istanze di librerie esterne o dati che devono sopravvivere ai render senza influenzare la UI.
 
 ## Quando usarlo
 
-### 1. Due casi d'uso principali
-`useRef` viene utilizzato principalmente per due scopi:
-1. **Accedere direttamente al DOM:** Per interagire con elementi HTML (gestione del focus, misurazione delle dimensioni, integrazione con librerie esterne non React).
-2. **Memorizzare valori mutabili:** Per conservare dati che non influiscono sulla UI (ID di timer, valori precedenti di props o stato) evitando render superflui.
+Usa `useRef` quando:
 
-> [!INFO] Definizione di Ref
-> Una "ref" è come una scatola in cui puoi conservare un qualsiasi valore JavaScript. A differenza di [[Programmazione/React/Pagine/useState]], cambiare il contenuto della scatola (`ref.current = newValue`) **non notifica React** e quindi non causa un aggiornamento visivo.
+- devi accedere a un nodo DOM;
+- devi gestire focus o misure;
+- devi salvare un id di timer;
+- devi mantenere un valore mutabile non renderizzato;
+- devi integrare codice imperativo esterno.
 
----
+Se il valore deve essere mostrato nella UI, usa `useState`.
 
 ## Come funziona
 
-### 2. Accesso al DOM
-Questo è l'uso più comune. Si assegna la ref all'attributo `ref` di un elemento JSX. React imposterà automaticamente `current` sull'elemento DOM reale una volta montato.
-
 ```jsx
-import { useRef } from 'react';
+import { useRef } from "react";
 
-function TextInputWithFocusButton() {
-  const inputEl = useRef(null);
+function SearchInput() {
+  const inputRef = useRef(null);
 
-  const onButtonClick = () => {
-    // Accediamo direttamente al metodo .focus() del DOM
-    inputEl.current.focus();
-  };
+  function focusInput() {
+    inputRef.current?.focus();
+  }
 
   return (
     <>
-      <input ref={inputEl} type="text" />
-      <button onClick={onButtonClick}>Focus the input</button>
+      <input ref={inputRef} />
+      <button onClick={focusInput}>Focus</button>
     </>
   );
 }
 ```
 
----
-### 3. Persistenza dei valori (Senza Render)
-Se hai bisogno di memorizzare un'informazione (come un `setInterval` ID) che deve "sopravvivere" ai render ma che non deve essere mostrata nell'HTML, `useRef` è la scelta corretta.
-
-```javascript
-const timerId = useRef();
-
-useEffect(() => {
-  timerId.current = setInterval(() => {
-    console.log("Tic Tac");
-  }, 1000);
-
-  return () => clearInterval(timerId.current);
-}, []);
-```
-
----
-### 4. useRef vs useState
-| Caratteristica | `useState` | `useRef` |
-| :--- | :--- | :--- |
-| **Trigger del Render** | Sì, ad ogni aggiornamento. | No, mai. |
-| **Persistenza** | Sì, tra i render. | Sì, tra i render. |
-| **Uso ideale** | Informazioni caricate nella UI. | Informazioni tecniche o accesso al DOM. |
-| **Sincronia** | Asincrono (batching). | Sincrono (immediato). |
-
-> [!WARNING] Regola d'oro
-> Non leggere o scrivere `ref.current` durante la fase di rendering (ovvero nel corpo principale della funzione componente). Fallo sempre all'interno di `useEffect` o in gestori di eventi (event handlers).
-
----
+React assegna il nodo DOM a `inputRef.current`.
 
 ## API / Sintassi
 
-Contenuto da sviluppare: nella nota originale questa sezione non era presente o era solo una traccia.
+Creazione:
+
+```jsx
+const ref = useRef(initialValue);
+```
+
+Scrittura:
+
+```jsx
+ref.current = value;
+```
+
+Timer:
+
+```jsx
+const timeoutRef = useRef(null);
+
+timeoutRef.current = setTimeout(() => {
+  console.log("done");
+}, 1000);
+```
 
 ## Esempio pratico
 
-Contenuto da sviluppare: nella nota originale questa sezione non era presente o era solo una traccia.
+Memorizzare valore precedente:
+
+```jsx
+function Price({ value }) {
+  const previousValue = useRef(value);
+
+  useEffect(() => {
+    previousValue.current = value;
+  }, [value]);
+
+  return (
+    <p>
+      Ora: {value}, prima: {previousValue.current}
+    </p>
+  );
+}
+```
 
 ## Varianti
 
-Contenuto da sviluppare: nella nota originale questa sezione non era presente o era solo una traccia.
+- **DOM ref**: accesso a elementi.
+- **Mutable ref**: valore persistente non renderizzato.
+- **Timer ref**: id di timeout o interval.
+- **Integration ref**: istanza di libreria esterna.
+- **forwardRef**: passare ref attraverso componenti.
+- **useImperativeHandle**: esporre API imperative controllate.
 
 ## Errori comuni
 
-Contenuto da sviluppare: nella nota originale questa sezione non era presente o era solo una traccia.
+- Usare ref al posto dello state per dati visibili.
+- Leggere o scrivere ref durante render per controllare output.
+- Non controllare `ref.current` quando puo essere `null`.
+- Usare ref per aggirare il modello dichiarativo.
+- Non pulire timer o istanze esterne.
 
 ## Checklist
 
-Contenuto da sviluppare: nella nota originale questa sezione non era presente o era solo una traccia.
+- Il valore deve causare render? Se si, serve state.
+- La ref puo essere `null`?
+- Il codice imperativo e confinato?
+- Serve cleanup?
+- Il focus o la misura DOM rispettano accessibilita?
+- Una prop controllata sarebbe piu semplice?
 
 ## Collegamenti
 
 - [[Programmazione/React/Indice react|Indice React]]
+- [[Focus Management]]
+- [[Gestione della memoria e AbortController]]
+- [[useEffect]]
+- [[Portals]]

@@ -1,12 +1,12 @@
-﻿---
-date: 2026-06-02
+---
+date: 2026-06-04
 area: Programmazione
 topic: React
 type: technical-note
 status: "non revisionato"
 difficulty: intermediate
-tags: [react, frontend, javascript]
-aliases: [useMemo e useCallback]
+tags: [react, hooks, performance, memoization]
+aliases: [useMemo, useCallback, Memoization strategy]
 prerequisites: []
 related: []
 ---
@@ -15,79 +15,106 @@ related: []
 
 ## Sintesi
 
-Nota su useMemo e useCallback in React. Riassume il concetto, quando usarlo, i punti critici e gli errori da evitare durante sviluppo, debugging o revisione di applicazioni React.
+`useMemo` memorizza il risultato di un calcolo; `useCallback` memorizza una funzione. Entrambi servono a ridurre lavoro o identita instabili tra render, ma non sono strumenti da usare ovunque.
 
-In React, ogni cambiamento allo stato o alle props innesca un nuovo ciclo di rendering del componente e di tutti i suoi figli. Per ottimizzare le prestazioni ed evitare calcoli costosi o re-render non necessari, React fornisce due hook basati sul concetto di **Memoization**: `useMemo` e `useCallback`.
+La memoization va guidata da misure o da un problema chiaro di identita, non da abitudine.
 
 ## Quando usarlo
 
-Contenuto da sviluppare: nella nota originale questa sezione non era presente o era solo una traccia.
+Usa `useMemo` per calcoli costosi o per stabilizzare valori passati a componenti memoizzati. Usa `useCallback` per stabilizzare callback passate a componenti memoizzati o usate come dipendenze di hook.
+
+Evitali su calcoli banali: aggiungono complessita e non garantiscono miglioramenti.
 
 ## Come funziona
 
-### 1. useMemo
-Il hook `useMemo` serve a memorizzare il **risultato** di un calcolo complesso, calcolandolo nuovamente solo quando una delle sue dipendenze cambia.
-
-### Sintassi e Utilizzo
-```javascript
-const memoizedValue = useMemo(() => computeExpensiveValue(a, b), [a, b]);
+```jsx
+const filteredItems = useMemo(() => {
+  return items.filter((item) => item.name.includes(query));
+}, [items, query]);
 ```
 
-> [!INFO] Quando usare useMemo
-> È utile quando hai una funzione "costosa" (che richiede molto tempo o risorse) che viene eseguita ad ogni render. Se i parametri di input (`a`, `b`) rimangono gli stessi, `useMemo` restituisce istantaneamente il valore precedentemente calcolato invece di rieseguire la funzione.
-
----
-### 2. useCallback
-A differenza di `useMemo`, `useCallback` memorizza l'**istanza della funzione** stessa invece del suo risultato.
-
-### Il Problema del Referenziamento
-In JavaScript, ogni volta che un componente React viene renderizzato, tutte le funzioni definite al suo interno vengono ricreate come nuove istanze (con nuovi riferimenti in memoria). Se passi una di queste funzioni come prop a un componente figlio ottimizzato con `React.memo`, il figlio si ri-renderizzerà sempre perché vedrà una prop "diversa" ad ogni ciclo.
-
-```javascript
-const memoizedCallback = useCallback(() => {
-  doSomething(a, b);
-}, [a, b]);
+```jsx
+const handleSelect = useCallback((id) => {
+  onSelect(id);
+}, [onSelect]);
 ```
 
-> [!TIP] Integrazione con React.memo
-> `useCallback` è fondamentale quando passi funzioni a componenti figli pesanti che utilizzano `React.memo` per evitare aggiornamenti superflui dell'interfaccia.
-
----
+React riusa il valore finche le dipendenze non cambiano.
 
 ## API / Sintassi
 
-### 3. Confronto Rapido
-| Hook | Cosa memorizza? | Scopo Principale |
-| :--- | :--- | :--- |
-| **`useMemo`** | Il **Valore di ritorno** | Evitare calcoli pesanti ad ogni render. |
-| **`useCallback`** | L'**Istanza della funzione** | Mantenere l'uguaglianza referenziale delle funzioni passate come prop. |
+`useMemo`:
 
----
+```jsx
+const value = useMemo(() => compute(input), [input]);
+```
+
+`useCallback`:
+
+```jsx
+const callback = useCallback(() => {
+  doSomething(value);
+}, [value]);
+```
+
+Con `React.memo`:
+
+```jsx
+const Row = React.memo(function Row({ item, onSelect }) {
+  return <button onClick={() => onSelect(item.id)}>{item.name}</button>;
+});
+```
 
 ## Esempio pratico
 
-Contenuto da sviluppare: nella nota originale questa sezione non era presente o era solo una traccia.
+```jsx
+function ProductList({ products, query, onSelect }) {
+  const visibleProducts = useMemo(() => {
+    return products.filter((product) =>
+      product.name.toLowerCase().includes(query.toLowerCase())
+    );
+  }, [products, query]);
+
+  const handleSelect = useCallback((id) => {
+    onSelect(id);
+  }, [onSelect]);
+
+  return visibleProducts.map((product) => (
+    <ProductRow key={product.id} product={product} onSelect={handleSelect} />
+  ));
+}
+```
 
 ## Varianti
 
-Contenuto da sviluppare: nella nota originale questa sezione non era presente o era solo una traccia.
+- **`useMemo` per calcolo**: filtri, ordinamenti, trasformazioni costose.
+- **`useMemo` per identita oggetto**: props stabili verso child memoizzati.
+- **`useCallback` per callback**: identita funzione stabile.
+- **`React.memo`**: evita render se props non cambiano.
+- **React Compiler**: puo ridurre il bisogno di memoization manuale in progetti compatibili.
 
 ## Errori comuni
 
-### 4. Attenzione alla Premature Optimization
-Non bisogna usare questi hook ovunque. Entrambi hanno un "costo" in termini di memoria (devono salvare i valori e controllare le dipendenze).
-
-> [!WARNING] Best Practice
-> 1. **Profila prima di ottimizzare:** Usa i React DevTools per individuare colli di bottiglia reali.
-> 2. **Leggibilità del codice:** L'abuso di questi hook rende il codice più difficile da leggere. Usali solo se c'è un beneficio tangibile in termini di performance.
-> 3. **Non saltare i render per logica:** Non usarli per gestire il flusso dell'applicazione, ma solo per l'efficienza.
-
----
+- Memoizzare tutto senza misurare.
+- Usare dipendenze incomplete.
+- Pensare che `useMemo` renda immutabile un valore.
+- Creare piu complessita del beneficio.
+- Usare `useCallback` senza componenti memoizzati o dipendenze rilevanti.
+- Nascondere calcoli che dovrebbero essere spostati fuori dal componente.
 
 ## Checklist
 
-Contenuto da sviluppare: nella nota originale questa sezione non era presente o era solo una traccia.
+- Esiste un problema reale di performance o identita?
+- Le dipendenze sono complete?
+- Il calcolo e davvero costoso?
+- Il componente figlio e memoizzato?
+- Il profiler conferma il beneficio?
+- React Compiler cambia la strategia del progetto?
 
 ## Collegamenti
 
 - [[Programmazione/React/Indice react|Indice React]]
+- [[Profiler e Debugging]]
+- [[Virtualizzazione delle liste]]
+- [[React Compiler]]
+- [[useTransition e useDeferredValue]]

@@ -1,12 +1,12 @@
-﻿---
-date: 2026-06-02
+---
+date: 2026-06-04
 area: Programmazione
 topic: React
 type: technical-note
 status: "non revisionato"
 difficulty: intermediate
-tags: [react, frontend, javascript]
-aliases: [Custom Hooks]
+tags: [react, hooks, architecture]
+aliases: [Custom Hooks, Hook personalizzati]
 prerequisites: []
 related: []
 ---
@@ -15,97 +15,119 @@ related: []
 
 ## Sintesi
 
-Nota su Custom Hooks in React. Riassume il concetto, quando usarlo, i punti critici e gli errori da evitare durante sviluppo, debugging o revisione di applicazioni React.
+Un custom hook e una funzione JavaScript che usa hook React e incapsula logica riusabile. Per convenzione inizia con `use`, per esempio `useDebouncedValue` o `useLocalStorage`.
 
-I **Custom Hooks** sono funzioni JavaScript che permettono di estrarre e riutilizzare la logica di stato tra diversi componenti. Rappresentano lo strumento più potente di React per seguire il principio **DRY** (Don't Repeat Yourself).
+Serve a separare logica di stato/side effect dalla UI senza introdurre componenti wrapper inutili.
 
 ## Quando usarlo
 
-Contenuto da sviluppare: nella nota originale questa sezione non era presente o era solo una traccia.
+Usa custom hook quando:
+
+- la stessa logica viene duplicata in piu componenti;
+- vuoi isolare data fetching, subscription, storage o timer;
+- vuoi rendere un componente piu leggibile;
+- vuoi testare logica separatamente;
+- vuoi creare API interne coerenti.
+
+Evita custom hook prematuri per logica usata una sola volta e ancora instabile.
 
 ## Come funziona
 
-### 1. Cos'è un Custom Hook?
-Un custom hook è una funzione il cui nome inizia convenzionalmente con **`use`** (es: `useFetch`, `useAuth`, `useLocalStorage`). Al suo interno può richiamare altri Hook di React come [[Programmazione/React/Pagine/useState]], [[Programmazione/React/Pagine/useEffect]], ecc.
+```jsx
+function useToggle(initialValue = false) {
+  const [value, setValue] = useState(initialValue);
 
-> [!INFO] Logica vs UI
-> I custom hook servono a condividere la **logica di stato** (stateful logic), non lo stato stesso. Ogni volta che un componente chiama un custom hook, tutti gli stati e gli effetti al suo interno sono completamente isolati e indipendenti tra i vari componenti.
+  function toggle() {
+    setValue((current) => !current);
+  }
 
----
-### 3. Le Regole degli Hook (Recap)
-Poiché un custom hook è a tutti gli effetti un Hook di React, deve rispettare le due regole fondamentali:
-1. **Solo al Top Level:** Non chiamare hook all'interno di cicli, condizioni o funzioni annidate.
-2. **Solo in Funzioni React:** Chiamali solo da componenti funzionali di React o da altri custom hook.
+  return [value, toggle];
+}
+```
 
----
-### 4. Perché usare i Custom Hook?
-- **Pulizia del Codice:** I componenti diventano più snelli, occupandosi principalmente della visualizzazione (UI), mentre la logica complessa viene delegata agli hook.
-- **Testabilità:** La logica estratta in un hook è molto più facile da testare in isolamento rispetto alla logica "affogata" in un componente gigante.
-- **Composizionalità:** È possibile combinare più custom hook per creare logiche ancora più potenti e astratte, mantenendo il codice modulare.
+Uso:
 
----
+```jsx
+function Panel() {
+  const [isOpen, toggleOpen] = useToggle();
+
+  return <button onClick={toggleOpen}>{isOpen ? "Chiudi" : "Apri"}</button>;
+}
+```
 
 ## API / Sintassi
 
-Contenuto da sviluppare: nella nota originale questa sezione non era presente o era solo una traccia.
+Regole:
+
+- il nome deve iniziare con `use`;
+- puo chiamare altri hook;
+- deve rispettare le Rules of Hooks;
+- puo restituire valori, oggetti, funzioni o tuple;
+- non renderizza JSX direttamente.
+
+Hook con effect:
+
+```jsx
+function useDocumentTitle(title) {
+  useEffect(() => {
+    document.title = title;
+  }, [title]);
+}
+```
 
 ## Esempio pratico
 
-### 2. Esempio Pratico: `useWindowSize`
-Immaginiamo di voler monitorare la larghezza della finestra in più componenti. Invece di riscrivere la logica ovunque, creiamo un hook dedicato:
+Debounce:
 
-```javascript
-import { useState, useEffect } from 'react';
-
-function useWindowSize() {
-  const [windowSize, setWindowSize] = useState({
-    width: window.innerWidth,
-    height: window.innerHeight,
-  });
+```jsx
+function useDebouncedValue(value, delay) {
+  const [debouncedValue, setDebouncedValue] = useState(value);
 
   useEffect(() => {
-    function handleResize() {
-      setWindowSize({
-        width: window.innerWidth,
-        height: window.innerHeight,
-      });
-    }
+    const id = setTimeout(() => {
+      setDebouncedValue(value);
+    }, delay);
 
-    window.addEventListener('resize', handleResize);
-    
-    // Cleanup: rimuoviamo l'ascoltatore allo smontaggio
-    return () => window.removeEventListener('resize', handleResize);
-  }, []);
+    return () => clearTimeout(id);
+  }, [value, delay]);
 
-  return windowSize;
-}
-
-export default useWindowSize;
-```
-
-### Utilizzo nel componente
-```jsx
-function MyResponsiveComponent() {
-  const { width } = useWindowSize();
-
-  return <div>La larghezza attuale è: {width}px</div>;
+  return debouncedValue;
 }
 ```
 
----
+Questo hook puo essere riusato in ricerche, filtri e input remoti.
 
 ## Varianti
 
-Contenuto da sviluppare: nella nota originale questa sezione non era presente o era solo una traccia.
+- **Hook di UI state**: toggle, disclosure, tabs.
+- **Hook di effect**: listener, media query, document title.
+- **Hook di data fetching**: wrapper su cache o API.
+- **Hook di form**: stato e validazione.
+- **Hook di integrazione**: librerie esterne, storage, browser API.
+- **Hook compositi**: combinano piu hook semplici.
 
 ## Errori comuni
 
-Contenuto da sviluppare: nella nota originale questa sezione non era presente o era solo una traccia.
+- Creare hook troppo generici e difficili da capire.
+- Nascondere side effect importanti.
+- Restituire API instabili senza motivo.
+- Violare Rules of Hooks.
+- Usare hook per condividere stato quando in realta ogni chiamata ha stato separato.
+- Non documentare dipendenze e comportamento.
 
 ## Checklist
 
-Contenuto da sviluppare: nella nota originale questa sezione non era presente o era solo una traccia.
+- La logica e davvero riusabile?
+- Il nome spiega il comportamento?
+- L'API restituita e stabile e leggibile?
+- Gli effect hanno cleanup?
+- Le dipendenze sono corrette?
+- Il chiamante capisce se lo stato e locale o condiviso?
 
 ## Collegamenti
 
 - [[Programmazione/React/Indice react|Indice React]]
+- [[useState]]
+- [[useEffect]]
+- [[useReducer]]
+- [[Data Fetching e Cache]]

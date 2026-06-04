@@ -1,117 +1,134 @@
-﻿---
-date: 2026-06-02
+---
+date: 2026-06-04
 area: Programmazione
 topic: React
 type: technical-note
 status: "non revisionato"
-difficulty: intermediate
-tags: [react, frontend, javascript]
-aliases: [Rendering Condizionale e Liste (Key prop)]
+difficulty: beginner
+tags: [react, rendering, liste, frontend]
+aliases: [Rendering Condizionale, Liste React, key React]
 prerequisites: []
 related: []
 ---
 
-# Rendering Condizionale e Liste (Key prop)
+# Rendering Condizionale e Liste
 
 ## Sintesi
 
-Nota su Rendering Condizionale e Liste (Key prop) in React. Riassume il concetto, quando usarlo, i punti critici e gli errori da evitare durante sviluppo, debugging o revisione di applicazioni React.
+Il rendering condizionale permette di mostrare UI diverse in base a stato, props o permessi. Le liste permettono di trasformare array di dati in elementi React usando `map`.
 
-In React, le interfacce dinamiche richiedono spesso di mostrare o nascondere elementi in base a determinate condizioni o di generare componenti a partire da array di dati.
+La regola critica per le liste e usare `key` stabili, cosi React puo riconciliare correttamente gli elementi.
 
 ## Quando usarlo
 
-Contenuto da sviluppare: nella nota originale questa sezione non era presente o era solo una traccia.
+Usa rendering condizionale per loading state, error state, permessi, feature flag, empty state e layout alternativi. Usa liste per renderizzare dati ripetuti come utenti, righe tabella, menu, card o notifiche.
 
 ## Come funziona
 
-### 1. Rendering Condizionale
-Il rendering condizionale in React funziona allo stesso modo delle condizioni in JavaScript. Si utilizzano operatori come `if`, l'operatore ternario o l'operatore logico `&&`.
+Condizionale con ternario:
 
-### Operatore Ternario (`condition ? true : false`)
-Ideale per scegliere tra due output differenti.
 ```jsx
-function Welcome({ isLoggedIn }) {
-  return (
-    <div>
-      {isLoggedIn ? <button>Logout</button> : <button>Login</button>}
-    </div>
-  );
+{isLoading ? <Spinner /> : <UserList users={users} />}
+```
+
+Condizionale con `&&`:
+
+```jsx
+{error && <Alert message={error.message} />}
+```
+
+Lista:
+
+```jsx
+{users.map((user) => (
+  <UserCard key={user.id} user={user} />
+))}
+```
+
+## API / Sintassi
+
+Early return:
+
+```jsx
+function UserPanel({ user, isLoading }) {
+  if (isLoading) return <Spinner />;
+  if (!user) return <EmptyState />;
+
+  return <UserDetails user={user} />;
 }
 ```
 
-### Operatore Logico `&&` (Short-circuit)
-Usato quando si vuole renderizzare qualcosa solo se la condizione è vera, altrimenti nulla.
-```jsx
-function Notification({ count }) {
-  return (
-    <div>
-      {count > 0 && <p>Hai {count} nuove notifiche!</p>}
-    </div>
-  );
-}
-```
-
----
-### 2. Rendering di Liste
-Per renderizzare una lista di elementi, si utilizza solitamente il metodo `.map()` di JavaScript per trasformare un array di dati in un array di elementi JSX.
+Lista con empty state:
 
 ```jsx
-const users = ['Alice', 'Bob', 'Charlie'];
+function Notifications({ items }) {
+  if (items.length === 0) {
+    return <p>Nessuna notifica</p>;
+  }
 
-function UserList() {
   return (
     <ul>
-      {users.map((user) => (
-        <li key={user}>{user}</li>
+      {items.map((item) => (
+        <li key={item.id}>{item.title}</li>
       ))}
     </ul>
   );
 }
 ```
 
----
-### 3. L'importanza della `key` prop
-La **key** è un attributo speciale che devi includere quando crei liste di elementi in React. Le chiavi aiutano React a identificare quali elementi sono cambiati, sono stati aggiunti o rimossi.
-
-### Perché è necessaria?
-React utilizza le chiavi per il processo di **Riconciliazione** (Diffing). Senza chiavi univoche, se l'ordine della lista cambia, React non saprebbe se l'elemento è stato rimosso o semplicemente spostato, costringendo a un re-render completo di tutti gli elementi della lista, compromettendo le prestazioni.
-
-> [!WARNING] Regole per le chiavi
-> 1. **Univocità:** Le chiavi devono essere univoche tra gli elementi fratelli (non necessariamente in tutta l'app).
-> 2. **Stabilità:** Non usare valori casuali (`Math.random()`) come chiavi, altrimenti gli elementi verranno distrutti e ricreati a ogni render.
-> 3. **Evita l'indice dell'array:** Usare l'indice (`map((item, index) => ... )`) è sconsigliato se la lista può essere riordinata, filtrata o se gli elementi vengono inseriti in mezzo, poiché causerebbe bug nello stato dei componenti e problemi di performance.
-
-### Esempio corretto con ID
-```jsx
-// Utilizza sempre un ID univoco proveniente dai tuoi dati
-{items.map(item => (
-  <li key={item.id}>{item.text}</li>
-))}
-```
-
----
-
-## API / Sintassi
-
-Contenuto da sviluppare: nella nota originale questa sezione non era presente o era solo una traccia.
-
 ## Esempio pratico
 
-Contenuto da sviluppare: nella nota originale questa sezione non era presente o era solo una traccia.
+```jsx
+function OrdersView({ orders, status }) {
+  if (status === "loading") return <p>Caricamento...</p>;
+  if (status === "error") return <p>Errore nel caricamento</p>;
+  if (orders.length === 0) return <p>Nessun ordine</p>;
+
+  return (
+    <ul>
+      {orders.map((order) => (
+        <li key={order.id}>
+          {order.code} - {order.total}
+        </li>
+      ))}
+    </ul>
+  );
+}
+```
+
+Questo rende espliciti tutti gli stati della UI.
 
 ## Varianti
 
-Contenuto da sviluppare: nella nota originale questa sezione non era presente o era solo una traccia.
+- **Ternario**: due rami alternativi.
+- **`&&`**: rendering opzionale semplice.
+- **Early return**: stati esclusivi e leggibili.
+- **Switch/mappa di componenti**: molti stati possibili.
+- **Liste annidate**: richiedono key a ogni livello.
+- **Virtualizzazione**: utile per liste molto grandi.
 
 ## Errori comuni
 
-Contenuto da sviluppare: nella nota originale questa sezione non era presente o era solo una traccia.
+- Usare indice array come `key` quando l'ordine puo cambiare.
+- Dimenticare empty state.
+- Mescolare troppa logica nel JSX.
+- Usare `&&` con valori numerici che possono renderizzare `0`.
+- Non gestire loading ed error state.
+- Fare `map` su valori potenzialmente `undefined`.
 
 ## Checklist
 
-Contenuto da sviluppare: nella nota originale questa sezione non era presente o era solo una traccia.
+- Ogni lista ha key stabili?
+- Loading, errore e vuoto sono gestiti?
+- Le condizioni sono leggibili?
+- Il rendering non contiene logica di dominio complessa?
+- La lista puo diventare tanto grande da richiedere virtualizzazione?
+- Gli elementi renderizzati hanno markup semantico?
 
 ## Collegamenti
 
 - [[Programmazione/React/Indice react|Indice React]]
+- [[JSX]]
+- [[Props e Flusso di dati unidirezionale]]
+- [[Data Fetching e Cache]]
+- [[Virtualizzazione delle liste]]

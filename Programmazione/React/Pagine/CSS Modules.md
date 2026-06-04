@@ -1,16 +1,12 @@
-﻿---
-date: 2026-06-02
+---
+date: 2026-06-04
 area: Programmazione
 topic: React
 type: technical-note
 status: "non revisionato"
-difficulty: 
-tags:
-  - programmazione
-  - react
-  - css
-  - styling
-aliases: []
+difficulty: beginner
+tags: [react, css, styling]
+aliases: [CSS Modules]
 prerequisites: []
 related: []
 ---
@@ -19,60 +15,92 @@ related: []
 
 ## Sintesi
 
-I **CSS Modules** permettono di scrivere CSS locale a un componente React, evitando collisioni globali tra nomi di classi.
+CSS Modules permette di scrivere CSS locale a un componente. Le classi vengono trasformate in nomi unici in build, evitando collisioni globali.
 
 ## Quando usarlo
 
-### Quando usarli
-- Componenti con stile locale.
-- Progetti piccoli e medi.
-- Design system semplici.
-- App che non richiedono runtime CSS-in-JS.
+Usalo quando vuoi CSS tradizionale ma con scope locale, senza introdurre CSS-in-JS o utility framework. E adatto a componenti, pagine e design system piccoli/medi.
 
 ## Come funziona
 
-### Concetto chiave
-Il file CSS viene importato come oggetto JavaScript. Le classi vengono trasformate in nomi univoci durante la build.
+File `Button.module.css`:
 
 ```css
-/* Button.module.css */
-.button {
+.root {
   padding: 8px 12px;
 }
 ```
 
+Uso:
+
 ```jsx
 import styles from "./Button.module.css";
 
-export function Button() {
-  return <button className={styles.button}>Salva</button>;
+export function Button({ children }) {
+  return <button className={styles.root}>{children}</button>;
 }
 ```
 
 ## API / Sintassi
 
-Contenuto da sviluppare: nella nota originale questa sezione non era presente o era solo una traccia.
+Composizione classi:
+
+```jsx
+<button className={`${styles.root} ${styles.primary}`} />
+```
+
+Variabili CSS:
+
+```css
+.root {
+  color: var(--color-text);
+}
+```
 
 ## Esempio pratico
 
-Contenuto da sviluppare: nella nota originale questa sezione non era presente o era solo una traccia.
+```css
+.card {
+  border: 1px solid var(--border-color);
+  padding: 16px;
+}
+
+.selected {
+  border-color: var(--accent-color);
+}
+```
+
+```jsx
+<article className={selected ? `${styles.card} ${styles.selected}` : styles.card} />
+```
 
 ## Varianti
 
-Contenuto da sviluppare: nella nota originale questa sezione non era presente o era solo una traccia.
+- **CSS globale**: reset, token, base typography.
+- **CSS Modules**: stile locale.
+- **Utility CSS**: classi atomiche.
+- **CSS-in-JS**: stile legato a runtime o build.
+- **Design tokens**: variabili condivise.
 
 ## Errori comuni
 
-- Usare selettori globali dentro moduli locali.
-- Duplicare troppe varianti invece di usare props o classi compose.
-- Confondere CSS Modules con scoped CSS completo.
+- Mettere reset globali dentro module.
+- Creare classi troppo generiche e non semantiche.
+- Duplicare token invece di usare variabili.
+- Costruire stringhe className complesse senza helper.
+- Confondere scope locale e isolamento completo del DOM.
 
 ## Checklist
 
-Contenuto da sviluppare: nella nota originale questa sezione non era presente o era solo una traccia.
+- Il file e `*.module.css`?
+- Gli stili globali restano separati?
+- I token sono centralizzati?
+- Le classi descrivono parti del componente?
+- La composizione resta leggibile?
 
 ## Collegamenti
 
-- [[Programmazione/React/Pagine/Styling base|Styling base]]
-- [[Programmazione/React/Pagine/Design system|Design system]]
-- [[Programmazione/React/Pagine/Introduzione e Toolchain|Introduzione e Toolchain]]
+- [[Programmazione/React/Indice react|Indice React]]
+- [[Styling base]]
+- [[Design system]]
+- [[Linting e Formattazione]]

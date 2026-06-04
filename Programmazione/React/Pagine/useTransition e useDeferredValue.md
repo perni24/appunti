@@ -1,105 +1,105 @@
-﻿---
-date: 2026-06-02
+---
+date: 2026-06-04
 area: Programmazione
 topic: React
 type: technical-note
 status: "non revisionato"
 difficulty: intermediate
-tags: [react, frontend, javascript]
-aliases: [useTransition e useDeferredValue (Concurrent React)]
+tags: [react, hooks, concurrent-rendering]
+aliases: [useTransition, useDeferredValue]
 prerequisites: []
 related: []
 ---
 
-# useTransition e useDeferredValue (Concurrent React)
+# useTransition e useDeferredValue
 
 ## Sintesi
 
-Nota su useTransition e useDeferredValue (Concurrent React) in React. Riassume il concetto, quando usarlo, i punti critici e gli errori da evitare durante sviluppo, debugging o revisione di applicazioni React.
-
-In React 18, sono stati introdotti nuovi hook per gestire la **priorità del rendering**. Questi strumenti permettono di mantenere l'interfaccia utente (UI) reattiva anche durante aggiornamenti pesanti dello stato, come il filtraggio di lunghe liste o la generazione di grafici complessi.
-
----
+`useTransition` e `useDeferredValue` aiutano a mantenere la UI responsiva separando aggiornamenti urgenti da aggiornamenti non urgenti. Sono strumenti di concurrent rendering, non soluzioni generiche per ogni lentezza.
 
 ## Quando usarlo
 
-Contenuto da sviluppare: nella nota originale questa sezione non era presente o era solo una traccia.
+Usa `useTransition` quando un'interazione deve aggiornare subito un input ma puo rimandare una parte pesante della UI. Usa `useDeferredValue` quando vuoi usare una versione ritardata di un valore, per esempio una query che filtra una lista pesante.
 
 ## Come funziona
 
-### 1. useTransition
-Il hook `useTransition` permette di marcare alcuni aggiornamenti dello stato come **non urgenti** (transizioni). Questo consente a React di dare priorità ad azioni immediate (come scrivere in un input) rispetto ad aggiornamenti pesanti che possono essere rimandati.
-
-### Sintassi e Utilizzo
-```javascript
+```jsx
 const [isPending, startTransition] = useTransition();
 
-const handleChange = (e) => {
-  // Aggiornamento urgente: l'input deve essere immediato
-  setInputValue(e.target.value);
+function handleChange(event) {
+  const nextValue = event.target.value;
+  setInputValue(nextValue);
 
-  // Aggiornamento non urgente: il rendering della lista può aspettare
   startTransition(() => {
-    setFilteredList(hugeData.filter(item => item.includes(e.target.value)));
+    setSearchQuery(nextValue);
   });
-};
+}
 ```
-
-> [!INFO] isPending
-> La variabile booleana `isPending` permette di mostrare un indicatore di caricamento o uno stato visivo mentre la transizione è in corso.
-
----
-### 2. useDeferredValue
-`useDeferredValue` è simile a `useTransition`, ma si applica a un **valore** invece che a una funzione di aggiornamento dello stato. Permette di posticipare il re-render di una parte lenta della UI finché il valore non "si stabilizza".
-
-### Quando usarlo
-È ideale quando ricevi un valore come prop da un componente genitore e non hai controllo diretto sulla funzione `setState` che lo genera.
-
-```javascript
-const deferredValue = useDeferredValue(inputValue);
-
-// Questo componente pesante userà il valore differito e non bloccherà l'input principale
-<SlowList text={deferredValue} />
-```
-
----
-### 4. Concurrent Rendering: Come funziona
-Dietro le quinte, questi hook sfruttano il **Concurrent Mode** di React. Invece di un unico rendering bloccante, React può ora:
-- Interrompere un rendering pesante.
-- Gestire un'interazione utente più urgente (es. un click).
-- Riprendere il rendering pesante in background.
-
-> [!TIP] UX vs Performance
-> Questi hook non rendono il codice più veloce in termini assoluti, ma migliorano la **percezione della velocità** da parte dell'utente, evitando che l'interfaccia si "congeli".
-
----
 
 ## API / Sintassi
 
-### 3. Confronto Rapido
-| Hook | Meccanismo | Punto d'Uso |
-| :--- | :--- | :--- |
-| **`useTransition`** | Avvolge la funzione `setState`. | Nel componente dove viene gestito lo stato. |
-| **`useDeferredValue`** | Crea una copia "ritardata" di un valore. | Nel componente che riceve il valore (spesso come prop). |
+`useTransition`:
 
----
+```jsx
+const [isPending, startTransition] = useTransition();
+```
+
+`useDeferredValue`:
+
+```jsx
+const deferredQuery = useDeferredValue(query);
+```
 
 ## Esempio pratico
 
-Contenuto da sviluppare: nella nota originale questa sezione non era presente o era solo una traccia.
+```jsx
+function SearchPage({ items }) {
+  const [query, setQuery] = useState("");
+  const deferredQuery = useDeferredValue(query);
+
+  const results = items.filter((item) =>
+    item.name.includes(deferredQuery)
+  );
+
+  return (
+    <>
+      <input value={query} onChange={(e) => setQuery(e.target.value)} />
+      <Results items={results} stale={query !== deferredQuery} />
+    </>
+  );
+}
+```
+
+L'input resta reattivo mentre i risultati possono aggiornarsi piu lentamente.
 
 ## Varianti
 
-Contenuto da sviluppare: nella nota originale questa sezione non era presente o era solo una traccia.
+- **Transition per navigazione interna**: update non urgente.
+- **Transition per filtri pesanti**: lista o tabella.
+- **Deferred value**: valore ritardato.
+- **Pending UI**: mostra stato leggero durante transizione.
+- **Virtualizzazione**: spesso complementare.
 
 ## Errori comuni
 
-Contenuto da sviluppare: nella nota originale questa sezione non era presente o era solo una traccia.
+- Usarli per mascherare calcoli troppo pesanti non ottimizzati.
+- Mettere update urgenti dentro transizioni.
+- Non mostrare feedback quando `isPending` e vero.
+- Confonderli con debounce.
+- Usarli per risolvere richieste rete senza cache o cancellazione.
 
 ## Checklist
 
-Contenuto da sviluppare: nella nota originale questa sezione non era presente o era solo una traccia.
+- Quale update e urgente?
+- Quale update puo essere rimandato?
+- Il profiler mostra blocco UI?
+- Serve anche virtualizzazione o memoization?
+- L'utente vede feedback durante pending?
 
 ## Collegamenti
 
 - [[Programmazione/React/Indice react|Indice React]]
+- [[Fiber Architecture e Concurrent Mode]]
+- [[Virtualizzazione delle liste]]
+- [[useMemo e useCallback]]
+- [[Profiler e Debugging]]

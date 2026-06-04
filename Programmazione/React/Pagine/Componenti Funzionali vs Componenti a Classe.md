@@ -1,12 +1,12 @@
-﻿---
-date: 2026-06-02
+---
+date: 2026-06-04
 area: Programmazione
 topic: React
-type: technical-note
+type: theory-note
 status: "non revisionato"
-difficulty: intermediate
-tags: [react, frontend, javascript]
-aliases: [Componenti Funzionali vs Componenti a Classe]
+difficulty: beginner
+tags: [react, components, frontend]
+aliases: [Componenti Funzionali, Componenti a Classe]
 prerequisites: []
 related: []
 ---
@@ -15,84 +15,114 @@ related: []
 
 ## Sintesi
 
-Nota su Componenti Funzionali vs Componenti a Classe in React. Riassume il concetto, quando usarlo, i punti critici e gli errori da evitare durante sviluppo, debugging o revisione di applicazioni React.
+I componenti funzionali sono il modo moderno e consigliato per scrivere React. Sono funzioni che ricevono props e restituiscono JSX. I componenti a classe sono il modello storico, ancora presente in codebase legacy, ma raramente usato per nuovo codice.
 
-In React, i componenti sono i mattoni fondamentali della UI. Storicamente, esistono due modi principali per definirli: tramite funzioni (**Functional Components**) o tramite classi ES6 (**Class Components**).
+Gli hook hanno reso i componenti funzionali sufficienti per state, effect, context e logica riusabile.
 
 ## Quando usarlo
 
-Contenuto da sviluppare: nella nota originale questa sezione non era presente o era solo una traccia.
+Scrivi nuovi componenti come funzioni. Studia i componenti a classe se devi mantenere codice esistente, leggere esempi legacy o capire Error Boundaries, che storicamente richiedono classi.
 
 ## Come funziona
 
-### 1. Componenti a Classe (Legacy)
-Prima dell'introduzione dei Hooks (React 16.8), le classi erano l'unico modo per gestire lo **stato locale** (`this.state`) e i **metodi del ciclo di vita** (`componentDidMount`, `componentDidUpdate`, ecc.).
+Componente funzionale:
 
 ```jsx
-class Welcome extends React.Component {
+function Counter({ initialValue = 0 }) {
+  const [count, setCount] = useState(initialValue);
+
+  return <button onClick={() => setCount(count + 1)}>{count}</button>;
+}
+```
+
+Componente a classe:
+
+```jsx
+class Counter extends React.Component {
+  state = { count: 0 };
+
   render() {
-    return <h1>Ciao, {this.props.name}</h1>;
+    return <button>{this.state.count}</button>;
   }
 }
 ```
 
-> [!WARNING] Svantaggi dei Class Components
-> - **Verbosity:** Richiedono molto codice "boilerplate" (constructor, bind dei metodi).
-> - **This context:** La gestione della parola chiave `this` in JavaScript può essere fonte di bug comuni.
-> - **Difficoltà di ottimizzazione:** I tool di minificazione del codice hanno più difficoltà a ottimizzare le classi rispetto alle funzioni.
-
----
-### 2. Componenti Funzionali (Standard Moderno)
-Oggi i componenti funzionali sono la scelta raccomandata. Sono semplici funzioni JavaScript che accettano `props` come argomento e restituiscono JSX.
-
-```jsx
-function Welcome(props) {
-  return <h1>Ciao, {props.name}</h1>;
-}
-```
-
-### La rivoluzione: I Hooks
-Con l'arrivo dei **Hooks**, i componenti funzionali hanno acquisito la capacità di gestire lo stato e gli effetti collaterali, rendendo le classi quasi del tutto superflue.
-- `useState`: Sostituisce `this.state`.
-- `useEffect`: Sostituisce i principali metodi del ciclo di vita.
-
----
-### 4. Quando usare le classi?
-Oggi non c'è quasi alcun motivo per scrivere nuovi componenti a classe. Tuttavia, potresti incontrarle in:
-1. **Legacy Codebases:** Progetti scritti prima del 2019.
-2. **Error Boundaries:** Al momento, la gestione degli errori globali nei componenti richiede ancora l'uso di un metodo della classe (`componentDidCatch`), sebbene esistano librerie esterne che risolvono il problema.
-
----
+La versione funzionale e piu breve e si integra con custom hooks.
 
 ## API / Sintassi
 
-### 3. Confronto Rapido
-| Caratteristica | Componenti Funzionali | Componenti a Classe |
-| :--- | :--- | :--- |
-| **Sintassi** | Funzione JS (Semplice) | Classe ES6 (Complessa) |
-| **Stato** | Gestito tramite `useState` | Gestito tramite `this.state` |
-| **Ciclo di Vita** | Gestito tramite `useEffect` | Metodi predefiniti (`componentDid...`) |
-| **Leggibilità** | Alta (Meno codice) | Bassa (Più boilerplate) |
-| **Performance** | Generalmente migliori | Leggermente più pesanti |
+Funzione:
 
----
+```jsx
+function UserName({ user }) {
+  return <span>{user.name}</span>;
+}
+```
+
+Classe:
+
+```jsx
+class UserName extends React.Component {
+  render() {
+    return <span>{this.props.user.name}</span>;
+  }
+}
+```
+
+Hook:
+
+```jsx
+const [value, setValue] = useState("");
+useEffect(() => {
+  document.title = value;
+}, [value]);
+```
 
 ## Esempio pratico
 
-Contenuto da sviluppare: nella nota originale questa sezione non era presente o era solo una traccia.
+Per nuova UI:
+
+```jsx
+function ProductCard({ product, onSelect }) {
+  return (
+    <article>
+      <h2>{product.name}</h2>
+      <button onClick={() => onSelect(product.id)}>Seleziona</button>
+    </article>
+  );
+}
+```
+
+La logica di interazione arriva tramite props, mentre lo stato locale resta dove serve.
 
 ## Varianti
 
-Contenuto da sviluppare: nella nota originale questa sezione non era presente o era solo una traccia.
+- **Function component**: standard moderno.
+- **Class component**: legacy e alcuni casi di error boundary.
+- **PureComponent**: ottimizzazione storica per classi.
+- **Memoized component**: `React.memo` per componenti funzionali.
+- **Custom hooks**: alternativa moderna a molte logiche condivise tra classi.
 
 ## Errori comuni
 
-Contenuto da sviluppare: nella nota originale questa sezione non era presente o era solo una traccia.
+- Scrivere nuovi componenti a classe senza motivo.
+- Convertire classi legacy solo per estetica, senza test.
+- Usare hook dentro condizioni o funzioni annidate.
+- Confondere props e state.
+- Mettere troppa logica in un singolo componente.
 
 ## Checklist
 
-Contenuto da sviluppare: nella nota originale questa sezione non era presente o era solo una traccia.
+- Il nuovo componente e funzionale?
+- La logica riusabile puo diventare custom hook?
+- Il componente ha responsabilita chiara?
+- Serve davvero mantenere una classe?
+- Esistono test prima di migrare codice legacy?
 
 ## Collegamenti
 
 - [[Programmazione/React/Indice react|Indice React]]
+- [[useState]]
+- [[useEffect]]
+- [[Custom Hooks]]
+- [[Error Boundaries]]

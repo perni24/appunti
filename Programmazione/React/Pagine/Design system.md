@@ -1,16 +1,12 @@
-﻿---
-date: 2026-06-02
+---
+date: 2026-06-04
 area: Programmazione
 topic: React
 type: theory-note
 status: "non revisionato"
-difficulty: 
-tags:
-  - programmazione
-  - react
-  - design-system
-  - architettura
-aliases: []
+difficulty: intermediate
+tags: [react, design-system, ui]
+aliases: [Design system, Component library]
 prerequisites: []
 related: []
 ---
@@ -19,22 +15,21 @@ related: []
 
 ## Sintesi
 
-Un **design system** e l'insieme di regole, token, componenti e pattern che rendono coerente una UI.
+Un design system e un insieme coerente di token, componenti, pattern, linee guida e documentazione per costruire UI consistenti. In React spesso si concretizza in una libreria di componenti riusabili.
 
 ## Quando usarlo
 
-Contenuto da sviluppare: nella nota originale questa sezione non era presente o era solo una traccia.
+Serve quando piu schermate, team o prodotti devono condividere linguaggio visivo, accessibilita e comportamento. Per progetti piccoli basta spesso una UI kit leggera.
 
 ## Come funziona
 
-### Componenti principali
-- Design tokens: colori, spacing, typography.
-- Componenti base: Button, Input, Modal.
-- Pattern: form, table, navigation.
-- Linee guida di accessibilita.
-- Documentazione e versionamento.
-### In React
-Un design system React espone componenti riusabili con API coerenti.
+Livelli:
+
+```text
+design tokens -> componenti base -> pattern composti -> pagine
+```
+
+Esempio:
 
 ```jsx
 <Button variant="primary" size="sm">
@@ -42,31 +37,70 @@ Un design system React espone componenti riusabili con API coerenti.
 </Button>
 ```
 
+Il componente incapsula stile, stati, focus e accessibilita.
+
 ## API / Sintassi
 
-Contenuto da sviluppare: nella nota originale questa sezione non era presente o era solo una traccia.
+Token:
+
+```css
+:root {
+  --color-primary: #1f6feb;
+  --space-2: 8px;
+}
+```
+
+Componente:
+
+```jsx
+function Button({ variant = "primary", children, ...props }) {
+  return <button data-variant={variant} {...props}>{children}</button>;
+}
+```
 
 ## Esempio pratico
 
-Contenuto da sviluppare: nella nota originale questa sezione non era presente o era solo una traccia.
+Un input del design system deve includere:
+
+- label;
+- descrizione opzionale;
+- errore;
+- stato disabled;
+- focus visible;
+- attributi ARIA;
+- test.
 
 ## Varianti
 
-Contenuto da sviluppare: nella nota originale questa sezione non era presente o era solo una traccia.
+- **Token-only**: solo variabili e linee guida.
+- **Component library**: componenti React.
+- **Headless components**: logica senza stile.
+- **Storybook**: documentazione interattiva.
+- **Design system multi-brand**: token per tema.
 
 ## Errori comuni
 
-- Creare componenti troppo generici.
-- Non documentare varianti e stati.
-- Ignorare accessibilita e focus management.
-- Non stabilire ownership.
+- Creare componenti troppo rigidi.
+- Ignorare accessibilita.
+- Non documentare varianti e limiti.
+- Aggiungere componenti duplicati.
+- Non versionare breaking changes.
+- Confondere design system e raccolta casuale di componenti.
 
 ## Checklist
 
-Contenuto da sviluppare: nella nota originale questa sezione non era presente o era solo una traccia.
+- Esistono token condivisi?
+- I componenti sono accessibili?
+- Varianti e stati sono documentati?
+- Storybook o docs sono aggiornati?
+- I componenti sono testati?
+- Le API sono stabili?
 
 ## Collegamenti
 
-- [[Programmazione/React/Pagine/Storybook|Storybook]]
-- [[Programmazione/React/Pagine/CSS Modules|CSS Modules]]
-- [[Programmazione/React/Pagine/WAI-ARIA|WAI-ARIA]]
+- [[Programmazione/React/Indice react|Indice React]]
+- [[Storybook]]
+- [[Visual regression testing]]
+- [[WAI-ARIA]]
+- [[CSS Modules]]
+- [[Compound Components Pattern]]

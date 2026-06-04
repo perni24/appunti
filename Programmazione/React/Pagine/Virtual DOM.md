@@ -1,12 +1,12 @@
-﻿---
-date: 2026-06-02
+---
+date: 2026-06-04
 area: Programmazione
 topic: React
-type: technical-note
+type: theory-note
 status: "non revisionato"
 difficulty: intermediate
-tags: [react, frontend, javascript]
-aliases: [Virtual DOM]
+tags: [react, rendering, internals]
+aliases: [Virtual DOM, VDOM]
 prerequisites: []
 related: []
 ---
@@ -15,197 +15,76 @@ related: []
 
 ## Sintesi
 
-Nota su Virtual DOM in React. Riassume il concetto, quando usarlo, i punti critici e gli errori da evitare durante sviluppo, debugging o revisione di applicazioni React.
-
-Il **Virtual DOM** e una rappresentazione leggera in memoria dell'interfaccia utente. React lo usa per confrontare lo stato precedente e quello successivo della UI e decidere quali modifiche applicare davvero al DOM reale.
-
-L'idea centrale non e "evitare sempre il DOM", ma **minimizzare e orchestrare meglio gli aggiornamenti necessari**.
-
-> [!INFO] Punto chiave
-> Il Virtual DOM non e una copia completa e magica del browser. E una struttura dati che permette a React di ragionare in modo efficiente su cosa e cambiato nell'interfaccia.
-
----
+Il Virtual DOM e una rappresentazione in memoria dell'interfaccia che React usa per calcolare come aggiornare il DOM reale. Non e "magicamente veloce" in ogni caso: il suo valore sta nel rendere il rendering dichiarativo e nel permettere riconciliazione efficiente.
 
 ## Quando usarlo
 
-Contenuto da sviluppare: nella nota originale questa sezione non era presente o era solo una traccia.
+Non lo usi direttamente. Ti serve capirlo quando ragioni su render, key, riconciliazione, performance, memoization e aggiornamenti UI.
 
 ## Come funziona
 
-### 1. Il problema che risolve
-Aggiornare direttamente il DOM a mano puo diventare costoso e difficile da gestire quando l'interfaccia cresce:
-- bisogna capire cosa e cambiato;
-- aggiornare i nodi corretti;
-- evitare modifiche inutili;
-- mantenere il codice coerente con lo stato applicativo.
-
-React risolve questo problema in due fasi:
-
-1. descrivi la UI come funzione di `props` e `state`;
-2. React calcola come aggiornare il DOM reale nel modo piu coerente possibile.
-
-Questo rende l'approccio dichiarativo molto piu praticabile.
-
----
-### 2. Come funziona a grandi linee
-Ogni render produce una nuova rappresentazione virtuale dell'interfaccia.
-
-React poi confronta:
-- il precedente albero virtuale;
-- il nuovo albero virtuale.
-
-Da questo confronto decide quali modifiche fare nel DOM reale.
-
-Flusso semplificato:
-
-1. cambia `state` o `props`;
-2. il componente viene rieseguito;
-3. React genera un nuovo albero virtuale;
-4. React confronta vecchio e nuovo albero;
-5. applica al DOM reale solo gli aggiornamenti necessari.
-
-Questo processo e noto come **riconciliazione**.
-
----
-### 4. Riconciliazione e diffing
-Il Virtual DOM da solo non basta. Il punto cruciale e l'algoritmo con cui React confronta due alberi virtuali.
-
-React usa euristiche pratiche per rendere il confronto efficiente:
-- se il tipo dell'elemento cambia, spesso ricrea quel ramo;
-- se il tipo resta uguale, prova ad aggiornare solo le parti mutate;
-- nelle liste usa le `key` per capire identita e ordine degli elementi.
-
-Questo si collega direttamente a [[Programmazione/React/Pagine/Rendering Condizionale e Liste]].
-
-### Esempio con lista
-
-```jsx
-items.map(item => <li key={item.id}>{item.name}</li>)
-```
-
-Le `key` aiutano React a capire:
-- quale elemento e stato aggiunto;
-- quale e stato rimosso;
-- quale e stato spostato.
-
-Senza chiavi corrette, React puo fare aggiornamenti meno efficienti o persino sbagliare il mapping dello stato locale.
-
----
-### 5. Virtual DOM vs DOM reale
-| Concetto | Ruolo |
-| :--- | :--- |
-| **DOM reale** | struttura effettiva gestita dal browser |
-| **Virtual DOM** | rappresentazione in memoria usata da React |
-
-Il DOM reale:
-- e quello che il browser disegna;
-- ha costi di manipolazione concreti;
-- e collegato a layout, paint e reflow.
-
-Il Virtual DOM:
-- vive nel runtime React;
-- e piu leggero da confrontare;
-- guida gli aggiornamenti del DOM reale.
-
-Quindi il Virtual DOM non sostituisce il browser: aiuta React a decidere come interagire con esso.
-
----
-### 6. Perche non significa "nessun re-render"
-Un malinteso comune e pensare che il Virtual DOM elimini il costo del rendering. Non e cosi.
-
-Quando cambia lo stato:
-- il componente React puo comunque rieseguire il render;
-- React deve comunque produrre il nuovo albero virtuale;
-- poi deve confrontarlo con il precedente.
-
-Il vantaggio e che gli aggiornamenti sul DOM reale vengono gestiti in modo piu mirato, non che il lavoro scompaia.
-
-> [!WARNING] Errore comune
-> "React usa il Virtual DOM, quindi i render non costano". Falso. I render costano comunque; il Virtual DOM rende il processo piu gestibile ed efficiente, ma non gratuito.
-
----
-### 7. Relazione con performance e profiling
-Il Virtual DOM spiega **come** React aggiorna la UI, ma non garantisce automaticamente prestazioni ottimali.
-
-Se un'app e lenta, i motivi possono essere:
-- troppi render;
-- componenti pesanti;
-- liste grandi;
-- props instabili;
-- memoization inefficace;
-- struttura dello stato sbagliata.
-
-Per questo, quando sorgono problemi reali di performance, bisogna guardare strumenti come [[Programmazione/React/Pagine/Profiler e Debugging]] e non fermarsi alla teoria del Virtual DOM.
-
----
-
-## API / Sintassi
-
-Contenuto da sviluppare: nella nota originale questa sezione non era presente o era solo una traccia.
-
-## Esempio pratico
-
-### 3. Esempio concettuale
-Componente:
+Quando state o props cambiano, React riesegue i componenti interessati e produce un nuovo albero React. Poi confronta il nuovo albero con quello precedente e decide quali modifiche applicare al DOM.
 
 ```jsx
 function Counter({ count }) {
-  return <h1>Count: {count}</h1>;
+  return <button>{count}</button>;
 }
 ```
 
-Se `count` passa da `1` a `2`, React non distrugge tutta la pagina. Confronta la rappresentazione precedente con quella nuova e aggiorna solo il testo che cambia.
+Se `count` cambia, React aggiorna il testo del bottone invece di ricostruire tutta la pagina.
 
-Concettualmente:
+## API / Sintassi
+
+Il Virtual DOM emerge da JSX e componenti:
 
 ```jsx
-// prima
-<h1>Count: 1</h1>
-
-// dopo
-<h1>Count: 2</h1>
+const element = <h1>Ciao</h1>;
 ```
 
-Il tag `h1` resta lo stesso; cambia solo il contenuto testuale.
+Le `key` aiutano React a riconoscere elementi in liste:
 
----
+```jsx
+items.map((item) => <Row key={item.id} item={item} />);
+```
+
+## Esempio pratico
+
+Con key stabili:
+
+```jsx
+users.map((user) => <UserRow key={user.id} user={user} />);
+```
+
+React puo preservare correttamente identita e stato delle righe anche se l'ordine cambia.
 
 ## Varianti
 
-### 8. Limiti del concetto
-Il Virtual DOM e utile, ma non va idealizzato.
-
-### Vantaggi
-- semplifica l'approccio dichiarativo;
-- rende piu prevedibili gli aggiornamenti UI;
-- permette ottimizzazioni pratiche via riconciliazione.
-
-### Limiti
-- introduce comunque lavoro computazionale;
-- non risolve automaticamente problemi architetturali;
-- non evita tutti i re-render inutili;
-- non sostituisce una buona gestione di stato, `key` corrette o ottimizzazioni mirate.
-
-### Rischio comune
-Usare "c'e il Virtual DOM" come spiegazione generica di qualunque performance issue porta fuori strada. Il Virtual DOM e solo una parte del modello di rendering React.
-
----
+- **Render phase**: React calcola il nuovo albero.
+- **Commit phase**: React applica modifiche al DOM.
+- **Reconciliation**: confronto tra alberi.
+- **Keys**: identita degli elementi in liste.
+- **Fiber**: architettura interna che rende il lavoro interrompibile e prioritizzabile.
 
 ## Errori comuni
 
-Contenuto da sviluppare: nella nota originale questa sezione non era presente o era solo una traccia.
+- Pensare che Virtual DOM sia sempre piu veloce del DOM diretto.
+- Usare key instabili.
+- Confondere render React con modifica DOM reale.
+- Ottimizzare senza profiler.
+- Mutare dati impedendo confronti affidabili.
 
 ## Checklist
 
-### 9. Best Practices
-1. **Pensa in termini dichiarativi:** descrivi la UI come funzione di stato e props.
-2. **Usa `key` stabili nelle liste:** aiutano React a riconciliare correttamente gli elementi.
-3. **Non assumere che il Virtual DOM risolva tutto:** profiling e architettura restano fondamentali.
-4. **Riduci re-render inutili alla fonte:** stato troppo alto, props instabili e liste pesanti restano problemi reali.
-5. **Usa il Virtual DOM come modello mentale, non come slogan:** e utile per capire React, ma non basta per diagnosticare ogni problema concreto.
-
----
+- Le liste hanno key stabili?
+- Il render e puro?
+- I dati sono aggiornati in modo immutabile?
+- Il problema e render React o commit DOM?
+- Il profiler conferma il collo di bottiglia?
 
 ## Collegamenti
 
 - [[Programmazione/React/Indice react|Indice React]]
+- [[Fiber Architecture e Concurrent Mode]]
+- [[Batching]]
+- [[Profiler e Debugging]]
+- [[Rendering Condizionale e Liste]]
