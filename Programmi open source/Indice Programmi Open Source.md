@@ -16,6 +16,9 @@
 ### Download media
 - [[Yt-dlp]]
 
+### Gestione libreria musicale
+- [[MusicBrainz Picard]]
+
 ### Modellazione CAD
 - [[FreeCAD]]
 - [[OpenSCAD]]
