@@ -1,3 +1,16 @@
+---
+date: 2026-06-09
+area: Programmi open source
+topic: Creazione USB multiboot
+type: technical-note
+status: "non revisionato"
+difficulty: base
+tags: [open-source, usb, multiboot, iso]
+aliases: [YUMI, Your Universal Multiboot Installer]
+prerequisites: []
+related: []
+---
+
 **YUMI** (Your Universal Multiboot Installer) è un software gratuito per creare dispositivi USB avviabili con più sistemi operativi, strumenti di ripristino, e utility di diagnostica. È particolarmente utile per chi desidera avere un'unica chiavetta USB con più opzioni di avvio.
 
 ### Caratteristiche principali:

@@ -1,3 +1,16 @@
+---
+date: 2026-06-09
+area: Programmi open source
+topic: Gestione password
+type: technical-note
+status: "non revisionato"
+difficulty: base
+tags: [open-source, password, sicurezza, privacy]
+aliases: [Bitwarden]
+prerequisites: []
+related: []
+---
+
 **Bitwarden** è un gestore di password open-source che consente di archiviare, generare e sincronizzare password in modo sicuro su diversi dispositivi. È una soluzione affidabile per migliorare la sicurezza digitale, proteggendo le credenziali d'accesso.
 
 ### Caratteristiche principali:

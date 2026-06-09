@@ -8,6 +8,23 @@ Mantieni solo le ultime 10 voci operative.
 
 ---
 
+## 2026-06-09 - Aggiornamento programmi open source
+
+### Fatto
+
+- Creati i contenuti per `Bruno` e `Aider` in `Programmi open source/Pagine`.
+- Aggiornato `Programmi open source/Indice programmi open source.md` con i collegamenti alle nuove pagine.
+- Aggiunto frontmatter YAML alle note esistenti dell'area che ne erano prive.
+
+### Decisioni
+
+- Le note create o modificate restano con `status: "non revisionato"`.
+- Le nuove pagine sono note tecniche brevi, coerenti con lo stile gia usato per `Yt-dlp`, `OpenSCAD` e `MusicBrainz Picard`.
+
+### Prossimi passi
+
+- Rivedere manualmente le note dell'area prima di impostarle a `revisionato (da me)`.
+
 ## 2026-06-04 - Completamento contenuto React
 
 ### Fatto
@@ -170,20 +187,3 @@ Mantieni solo le ultime 10 voci operative.
 ### Prossimi passi
 
 - Proseguire con `Embedded` oppure `Testing, Qualita e Sicurezza`.
-
-## 2026-05-27 - Completamento backend Rust
-
-### Fatto
-
-- Completate con contenuto reale le note del capitolo `Backend, Networking e Database` dell'indice Rust.
-- Sviluppati networking con `reqwest`, backend con `axum`, Tower/middleware, Serde, SQLx, Diesel, SeaORM, connection pooling e background jobs.
-- Aggiunti esempi pratici, errori comuni, checklist e collegamenti interni coerenti.
-
-### Decisioni
-
-- Le note completate restano con `status: "non revisionato"` fino alla revisione dell'utente.
-- Il capitolo distingue chiaramente tra HTTP client, web layer, middleware, serializzazione, accesso dati e lavoro asincrono fuori richiesta.
-
-### Prossimi passi
-
-- Proseguire con `WebAssembly`, `Embedded` oppure `Testing, Qualita e Sicurezza`.

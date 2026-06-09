@@ -1,3 +1,16 @@
+---
+date: 2026-06-09
+area: Programmi open source
+topic: Condivisione file in rete locale
+type: technical-note
+status: "non revisionato"
+difficulty: base
+tags: [open-source, file-sharing, rete-locale, privacy]
+aliases: [LocalSend]
+prerequisites: []
+related: [Barrier]
+---
+
 **LocalSend** è un'applicazione open-source gratuita che consente di condividere file e messaggi tra dispositivi vicini utilizzando la rete Wi-Fi locale, senza necessità di connessione a Internet o server esterni. È compatibile con Windows, macOS, Linux, Android, iOS e Fire OS, offrendo un'alternativa multipiattaforma ad AirDrop e Quick Share .
 
 ---

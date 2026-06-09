@@ -1,3 +1,16 @@
+---
+date: 2026-06-09
+area: Programmi open source
+topic: Modellazione CAD parametrica
+type: technical-note
+status: "non revisionato"
+difficulty: base
+tags: [open-source, cad, modellazione-3d, parametrico]
+aliases: [FreeCAD]
+prerequisites: []
+related: [OpenSCAD]
+---
+
 **FreeCAD** è un software open-source di modellazione 3D parametrica, pensato per l'ingegneria meccanica, il design di prodotto e l'architettura. È una valida alternativa gratuita a programmi commerciali come SolidWorks, AutoCAD o Fusion 360.
 
 ---

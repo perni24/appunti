@@ -22,3 +22,9 @@
 ### Modellazione CAD
 - [[FreeCAD]]
 - [[OpenSCAD]]
+
+### Test chiamate API
+- [[Bruno]]
+
+### Coding
+- [[Aider]]
