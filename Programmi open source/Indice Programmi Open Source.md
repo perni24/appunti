@@ -28,3 +28,12 @@
 
 ### Coding
 - [[Aider]]
+
+### Strumenti web
+- [[OmniTools]]
+
+### Database e backend
+- [[TrailBase]]
+
+### Sintesi vocale
+- [[Kokoro]]

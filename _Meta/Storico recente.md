@@ -8,6 +8,23 @@ Mantieni solo le ultime 10 voci operative.
 
 ---
 
+## 2026-06-16 - Nuove schede programmi open source
+
+### Fatto
+
+- Create le note `OmniTools`, `TrailBase` e `Kokoro` in `Programmi open source/Pagine`.
+- Aggiornato `Programmi open source/Indice programmi open source.md` con sezioni piu chiare per strumenti web, database/backend e sintesi vocale.
+- Aggiunti riferimenti esterni ufficiali nelle nuove note.
+
+### Decisioni
+
+- Le note create restano con `status: "non revisionato"`.
+- Per progetti recenti o di nicchia sono state usate fonti ufficiali prima di sintetizzare il contenuto.
+
+### Prossimi passi
+
+- Rivedere manualmente le nuove schede e decidere se approfondire installazione, deploy o casi d'uso pratici.
+
 ## 2026-06-09 - Aggiornamento programmi open source
 
 ### Fatto
@@ -170,20 +187,3 @@ Mantieni solo le ultime 10 voci operative.
 ### Prossimi passi
 
 - Proseguire con `Testing, Qualita e Sicurezza`.
-
-## 2026-05-27 - Completamento WebAssembly Rust
-
-### Fatto
-
-- Completate con contenuto reale le note del capitolo `WebAssembly` dell'indice Rust.
-- Sviluppati `wasm-bindgen`, `wasm-pack`, interop con JavaScript, WASI e limiti del runtime WebAssembly.
-- Aggiunti esempi pratici, errori comuni, checklist e collegamenti interni coerenti.
-
-### Decisioni
-
-- Le note completate restano con `status: "non revisionato"` fino alla revisione dell'utente.
-- Il capitolo distingue tra browser/JavaScript, packaging npm, runtime WASI e limiti generali del target Wasm.
-
-### Prossimi passi
-
-- Proseguire con `Embedded` oppure `Testing, Qualita e Sicurezza`.
