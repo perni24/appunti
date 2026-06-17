@@ -8,6 +8,23 @@ Mantieni solo le ultime 10 voci operative.
 
 ---
 
+## 2026-06-17 - Espansione indice RISC-V
+
+### Fatto
+
+- Riscritto `Elettronica/RISC-V/Indice RISC-V.md` come mappa completa per ISA, privileged architecture, microarchitettura, piattaforme, firmware, toolchain, sicurezza, verifica e percorsi di studio.
+- Mantenuti i collegamenti alle pagine RISC-V gia esistenti.
+- Aggiunte molte voci ancora da sviluppare come checkbox, senza creare automaticamente nuove pagine.
+
+### Decisioni
+
+- L'indice RISC-V ora distingue tra ISA, implementazione hardware, piattaforma, firmware/OS ed ecosistema.
+- Gli argomenti non ancora sviluppati restano come roadmap, non come link a pagine inesistenti.
+
+### Prossimi passi
+
+- Creare progressivamente le pagine mancanti seguendo l'ordine dei percorsi di studio.
+
 ## 2026-06-16 - Nuove schede programmi open source
 
 ### Fatto
@@ -170,20 +187,3 @@ Mantieni solo le ultime 10 voci operative.
 ### Prossimi passi
 
 - Proseguire con `API Design Idiomatico`.
-
-## 2026-05-27 - Completamento Embedded Rust
-
-### Fatto
-
-- Completate con contenuto reale le note del capitolo `Embedded` dell'indice Rust.
-- Sviluppati `embedded-hal`, `cortex-m`, `probe-rs`, `defmt`, RTIC ed Embassy; aggiornata anche la nota `no_std` con collegamenti al percorso Embedded.
-- Aggiunti esempi pratici, errori comuni, checklist e collegamenti interni coerenti.
-
-### Decisioni
-
-- Le note completate restano con `status: "non revisionato"` fino alla revisione dell'utente.
-- Il capitolo distingue tra astrazioni hardware portabili, runtime Cortex-M, flashing/debug, logging compatto, concorrenza real-time e async embedded.
-
-### Prossimi passi
-
-- Proseguire con `Testing, Qualita e Sicurezza`.

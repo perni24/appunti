@@ -37,3 +37,7 @@
 
 ### Sintesi vocale
 - [[Kokoro]]
+- Vervoice
+
+### Ottimizzazione token LLM
+- [[Token Tamer]]
