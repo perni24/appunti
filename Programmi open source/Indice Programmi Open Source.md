@@ -34,10 +34,15 @@
 
 ### Database e backend
 - [[TrailBase]]
+- [[SQL to ER diagram]]
 
 ### Sintesi vocale
 - [[Kokoro]]
-- Vervoice
 
 ### Ottimizzazione token LLM
 - [[Token Tamer]]
+- [[headroom]]
+
+### organizzazione
+- [[Solid Time]]
+- Job Hunted
