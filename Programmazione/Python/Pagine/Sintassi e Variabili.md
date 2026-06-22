@@ -99,6 +99,5 @@ L'esempio mostra nomi in `snake_case`, indentazione a 4 spazi e string interpola
 
 ## Collegamenti
 
-- [[Programmazione/Python/Pagine/Tipi di Dati|Tipi di Dati]]
 - [[Programmazione/Python/Pagine/Operatori|Operatori]]
 - [[Programmazione/Python/Pagine/Funzioni|Funzioni]]

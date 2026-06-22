@@ -7,7 +7,6 @@
 - [[Programmazione/Rust/Indice rust|Rust]]
 - [[Programmazione/Postgres/Indice postgres|Postgres]]
 - [[Programmazione/React/Indice react|React]]
-- [[Programmazione/YAML/Indice YAML|YAML]]
 
 ## Elettronica
 

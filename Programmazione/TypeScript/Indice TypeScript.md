@@ -13,7 +13,7 @@
 ### Funzioni, Oggetti e Collezioni
 
 - [[Programmazione/TypeScript/Pagine/Funzioni tipizzate|Funzioni tipizzate]]
-- [[Programmazione/TypeScript/Pagine/Oggetti e proprietà opzionali|Oggetti e proprieta opzionali]]
+- [[Programmazione/TypeScript/Pagine/Oggetti e proprieta opzionali|Oggetti e proprieta opzionali]]
 - [[Programmazione/TypeScript/Pagine/Array, Tuple e Readonly|Array, Tuple e Readonly]]
 - [[Programmazione/TypeScript/Pagine/Enums e Literal Types|Enums e Literal Types]]
 - [[Programmazione/TypeScript/Pagine/Assertion e casting dei tipi|Assertion e casting dei tipi]]
@@ -23,7 +23,7 @@
 ### Programmazione ad Oggetti
 
 - [[Programmazione/TypeScript/Pagine/Classi|Classi]]
-- [[Programmazione/TypeScript/Pagine/Visibilità e modificatori di accesso|Visibilita e modificatori di accesso]]
+- [[Programmazione/TypeScript/Pagine/Visibilita e modificatori di accesso|Visibilita e modificatori di accesso]]
 - [[Programmazione/TypeScript/Pagine/Classi astratte|Classi astratte]]
 - [[Programmazione/TypeScript/Pagine/Implementazione di interfacce|Implementazione di interfacce]]
 - [[Programmazione/TypeScript/Pagine/Generics|Generics]]
@@ -36,8 +36,8 @@
 - [[Programmazione/TypeScript/Pagine/Type Guards|Type Guards]]
 - [[Programmazione/TypeScript/Pagine/Discriminated Unions|Discriminated Unions]]
 - [[Programmazione/TypeScript/Pagine/Exhaustiveness Checking|Exhaustiveness Checking]]
-- Type predicates
-- Assertion functions
+- [[Programmazione/TypeScript/Pagine/Type predicates|Type predicates]]
+- [[Programmazione/TypeScript/Pagine/Assertion functions|Assertion functions]]
 
 ### Tipi Avanzati
 
@@ -48,40 +48,40 @@
 - [[Programmazione/TypeScript/Pagine/Indexed Access Types|Indexed Access Types]]
 - [[Programmazione/TypeScript/Pagine/Keyof e typeof|keyof e typeof]]
 - [[Programmazione/TypeScript/Pagine/Infer nei Conditional Types|infer nei Conditional Types]]
-- Recursive types
-- Variadic tuple types
+- [[Programmazione/TypeScript/Pagine/Recursive types|Recursive types]]
+- [[Programmazione/TypeScript/Pagine/Variadic tuple types|Variadic tuple types]]
 
 ### Moduli e Configurazione
 
 - [[Programmazione/TypeScript/Pagine/tsconfig|tsconfig]]
 - [[Programmazione/TypeScript/Pagine/Moduli ES e CommonJS|Moduli ES e CommonJS]]
-- Module resolution
-- Path aliases
-- Project references
-- Strict mode
-- Source maps e debugging
+- [[Programmazione/TypeScript/Pagine/Module resolution|Module resolution]]
+- [[Programmazione/TypeScript/Pagine/Path aliases|Path aliases]]
+- [[Programmazione/TypeScript/Pagine/Project references|Project references]]
+- [[Programmazione/TypeScript/Pagine/Strict mode|Strict mode]]
+- [[Programmazione/TypeScript/Pagine/Source maps e debugging|Source maps e debugging]]
 
 ### Utility e Pattern di Tipo
 
 - [[Programmazione/TypeScript/Pagine/Utility Types|Utility Types]]
 - [[Programmazione/TypeScript/Pagine/Utility Types personalizzati|Utility Types personalizzati]]
 - [[Programmazione/TypeScript/Pagine/Brand Types|Brand Types]]
-- satisfies operator
-- as const
-- const type parameters
+- [[Programmazione/TypeScript/Pagine/satisfies operator|satisfies operator]]
+- [[Programmazione/TypeScript/Pagine/as const|as const]]
+- [[Programmazione/TypeScript/Pagine/const type parameters|const type parameters]]
 
 ## Percorso Avanzato
 
 ### Type System in Profondita
 
-- Structural typing
-- Variance
-- Distributive conditional types
-- Type inference avanzata
-- Declaration merging
-- Module augmentation
-- Namespace
-- Decorators
+- [[Programmazione/TypeScript/Pagine/Structural typing|Structural typing]]
+- [[Programmazione/TypeScript/Pagine/Variance|Variance]]
+- [[Programmazione/TypeScript/Pagine/Distributive conditional types|Distributive conditional types]]
+- [[Programmazione/TypeScript/Pagine/Type inference avanzata|Type inference avanzata]]
+- [[Programmazione/TypeScript/Pagine/Declaration Merging|Declaration merging]]
+- [[Programmazione/TypeScript/Pagine/Module augmentation|Module augmentation]]
+- [[Programmazione/TypeScript/Pagine/Namespace|Namespace]]
+- [[Programmazione/TypeScript/Pagine/Decorators|Decorators]]
 
 ### Interoperabilita con JavaScript
 
@@ -90,16 +90,16 @@
 - [[Programmazione/TypeScript/Pagine/JSDoc e type checking in JavaScript|JSDoc e type checking in JavaScript]]
 - [[Programmazione/TypeScript/Pagine/Declaration Merging|Declaration Merging]]
 - [[Programmazione/TypeScript/Pagine/Dichiarazioni e file d.ts|Dichiarazioni e file d.ts]]
-- DefinitelyTyped
-- Generazione di tipi da API
+- [[Programmazione/TypeScript/Pagine/DefinitelyTyped|DefinitelyTyped]]
+- [[Programmazione/TypeScript/Pagine/Generazione di tipi da API|Generazione di tipi da API]]
 
 ### Validazione e Confine Runtime
 
 - [[Programmazione/TypeScript/Pagine/Validazione runtime e tipi statici|Validazione runtime e tipi statici]]
-- Schema validation con Zod
-- Type guards runtime
-- Parsing sicuro di input esterni
-- API contract
+- [[Programmazione/TypeScript/Pagine/Schema validation con Zod|Schema validation con Zod]]
+- [[Programmazione/TypeScript/Pagine/Type guards runtime|Type guards runtime]]
+- [[Programmazione/TypeScript/Pagine/Parsing sicuro di input esterni|Parsing sicuro di input esterni]]
+- [[Programmazione/TypeScript/Pagine/API contract|API contract]]
 
 ## Applicazioni e Ecosistema
 
@@ -108,9 +108,9 @@
 - [[Programmazione/TypeScript/Pagine/TypeScript con React|TypeScript con React]]
 - [[Programmazione/TypeScript/Pagine/TypeScript con Node.js|TypeScript con Node.js]]
 - [[Programmazione/TypeScript/Pagine/API tipizzate|API tipizzate]]
-- TypeScript con Express/Fastify
-- TypeScript con Next.js
-- TypeScript monorepo
+- [[Programmazione/TypeScript/Pagine/TypeScript con Express-Fastify|TypeScript con Express/Fastify]]
+- [[Programmazione/TypeScript/Pagine/TypeScript con Next.js|TypeScript con Next.js]]
+- [[Programmazione/TypeScript/Pagine/TypeScript monorepo|TypeScript monorepo]]
 
 ### Qualita del Codice
 
@@ -118,16 +118,16 @@
 - [[Programmazione/TypeScript/Pagine/Linting e formattazione|Linting e formattazione]]
 - [[Programmazione/TypeScript/Pagine/Best Practices|Best Practices]]
 - [[Programmazione/TypeScript/Pagine/Error Handling|Error Handling]]
-- Type-level testing
-- ts-reset
+- [[Programmazione/TypeScript/Pagine/Type-level testing|Type-level testing]]
+- [[Programmazione/TypeScript/Pagine/ts-reset|ts-reset]]
 
 ### Pattern e Architettura
 
 - [[Programmazione/TypeScript/Pagine/Pattern Repository e Service|Pattern Repository e Service]]
 - [[Programmazione/TypeScript/Pagine/DTO e modelli di dominio|DTO e modelli di dominio]]
-- Domain modeling
-- Clean architecture
-- Dependency injection
+- [[Programmazione/TypeScript/Pagine/Domain modeling|Domain modeling]]
+- [[Programmazione/TypeScript/Pagine/Clean architecture|Clean architecture]]
+- [[Programmazione/TypeScript/Pagine/Dependency injection|Dependency injection]]
 
 ## Conoscenza Operativa
 

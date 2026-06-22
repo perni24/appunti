@@ -8,6 +8,37 @@ Mantieni solo le ultime 10 voci operative.
 
 ---
 
+## 2026-06-22 - Avvio completamento TypeScript
+
+### Fatto
+
+- Creata la cartella `Programmazione/TypeScript/Pagine`.
+- Completate con contenuto reale le 7 note del capitolo `Fondamenti del Linguaggio` dell'indice TypeScript.
+- Aggiunti esempi, errori comuni, checklist e collegamenti interni per introduzione, tipi primitivi, annotazioni, inferenza, `any/unknown/never`, union/intersection e type alias/interface.
+- Completate anche le 7 note del capitolo `Funzioni, Oggetti e Collezioni`.
+- Completate le 5 note del capitolo `Programmazione ad Oggetti`.
+- Completate le 6 note del capitolo `Narrowing e Controllo dei Tipi`, includendo anche `Type predicates` e `Assertion functions`.
+- Completate le 9 note del capitolo `Tipi Avanzati`, includendo anche `Recursive types` e `Variadic tuple types`.
+- Completate le 7 note del capitolo `Moduli e Configurazione`.
+- Completate le 6 note del capitolo `Utility e Pattern di Tipo`.
+- Completate le 8 note del capitolo `Type System in Profondita`.
+- Completate le 6 note del capitolo `Interoperabilita con JavaScript`.
+- Completate le 5 note del capitolo `Validazione e Confine Runtime`.
+- Completate le 6 note del capitolo `Framework e Applicazioni`.
+- Completate le 6 note del capitolo `Qualita del Codice`.
+- Completate le 5 note del capitolo `Pattern e Architettura`.
+- Portata la sezione TypeScript a 83 pagine create con contenuto reale.
+
+### Decisioni
+
+- Le note create restano con `status: "non revisionato"`.
+- Il completamento e partito dal percorso base, lasciando il resto dell'indice come roadmap progressiva.
+- I link con caratteri accentati corrotti nell'indice sono stati normalizzati verso nomi file ASCII.
+
+### Prossimi passi
+
+- Rivedere la sezione `Conoscenza Operativa` dell'indice TypeScript e decidere se popolarla con snippet pratici.
+
 ## 2026-06-17 - Espansione indice RISC-V
 
 ### Fatto
@@ -170,20 +201,3 @@ Mantieni solo le ultime 10 voci operative.
 ### Prossimi passi
 
 - Completare la sezione `Conoscenza Operativa` dell'indice Rust se deve diventare una guida pratica.
-
-## 2026-05-28 - Completamento testing Rust
-
-### Fatto
-
-- Completate con contenuto reale le note del capitolo `Testing, Qualita e Sicurezza` dell'indice Rust.
-- Sviluppati unit test, integration test, doc test, mocking, benchmark con Criterion, property testing, fuzzing, snapshot testing, cargo-nextest, Clippy, rustfmt, rustdoc, cargo audit e cargo deny.
-- Aggiunti esempi pratici, errori comuni, checklist e collegamenti interni coerenti.
-
-### Decisioni
-
-- Le note completate restano con `status: "non revisionato"` fino alla revisione dell'utente.
-- Il capitolo separa test funzionali, test generativi, benchmark, formattazione/linting, documentazione e controlli supply-chain.
-
-### Prossimi passi
-
-- Proseguire con `API Design Idiomatico`.
