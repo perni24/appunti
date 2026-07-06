@@ -8,6 +8,125 @@ Mantieni solo le ultime 10 voci operative.
 
 ---
 
+## 2026-07-06 - Sicurezza supply chain GitHub
+
+### Fatto
+
+- Create 7 pagine dell'area `Programmazione/GitHub/Pagine` per il blocco `Sicurezza e supply chain`.
+- Compilati contenuti reali su Dependabot, dependency graph, code scanning, secret scanning, security advisories, SBOM/attestazioni e sicurezza dei token.
+- Aggiornato `Programmazione/GitHub/Indice GitHub.md` trasformando in wikilink solo le nuove voci ora esistenti.
+
+### Decisioni
+
+- Le note create restano con `status: "non revisionato"`.
+- Le note di sicurezza includono riferimenti alla documentazione ufficiale GitHub per le parti soggette a cambiamento.
+
+### Prossimi passi
+
+- Passare al blocco `Fondamenti GitHub Actions`.
+
+## 2026-07-06 - Protezione repository GitHub
+
+### Fatto
+
+- Create 7 pagine dell'area `Programmazione/GitHub/Pagine` per il blocco `Protezione del repository`.
+- Compilati contenuti reali su branch protection, repository rulesets, required status checks, protected tags, repository settings, permessi e organizzazioni/team.
+- Aggiornato `Programmazione/GitHub/Indice GitHub.md` trasformando in wikilink solo le nuove voci ora esistenti.
+
+### Decisioni
+
+- Le note create restano con `status: "non revisionato"`.
+- Le voci dell'indice non ancora create restano come testo semplice per evitare link rotti.
+
+### Prossimi passi
+
+- Continuare con `Sicurezza e supply chain` oppure passare al blocco `GitHub Actions`.
+
+## 2026-07-06 - Collaborazione GitHub
+
+### Fatto
+
+- Create 7 pagine dell'area `Programmazione/GitHub/Pagine` per il blocco `Collaborazione e project management`.
+- Compilati contenuti reali su GitHub Projects, Discussions, template issue/PR, CODEOWNERS, Conventional Commits, branching strategy e monorepo.
+- Aggiornato `Programmazione/GitHub/Indice GitHub.md` trasformando in wikilink solo le nuove voci ora esistenti.
+
+### Decisioni
+
+- Le note create restano con `status: "non revisionato"`.
+- Le voci dell'indice non ancora create restano come testo semplice per evitare link rotti.
+
+### Prossimi passi
+
+- Continuare con `Protezione del repository` oppure passare al blocco `GitHub Actions`.
+
+## 2026-07-06 - Interfaccia e strumenti GitHub
+
+### Fatto
+
+- Create 6 pagine dell'area `Programmazione/GitHub/Pagine` per il blocco `Interfaccia e strumenti`.
+- Compilati contenuti reali su GitHub Web UI, GitHub CLI, GitHub Desktop, ricerca codice, notifiche e Markdown su GitHub.
+- Aggiornato `Programmazione/GitHub/Indice GitHub.md` trasformando in wikilink solo le nuove voci ora esistenti.
+
+### Decisioni
+
+- Le note create restano con `status: "non revisionato"`.
+- Le voci dell'indice non ancora create restano come testo semplice per evitare link rotti.
+
+### Prossimi passi
+
+- Continuare con `Collaborazione e project management` o passare al blocco `GitHub Actions`.
+
+## 2026-07-06 - Flusso di lavoro GitHub
+
+### Fatto
+
+- Create 7 pagine dell'area `Programmazione/GitHub/Pagine` per il blocco `Flusso di lavoro base`.
+- Compilati contenuti reali su branch, commit, pull request, code review, strategie di merge, issue e organizzazione con label/milestone/assignee.
+- Aggiornato `Programmazione/GitHub/Indice GitHub.md` trasformando in wikilink solo le nuove voci ora esistenti.
+
+### Decisioni
+
+- Le note create restano con `status: "non revisionato"`.
+- Le voci dell'indice non ancora create restano come testo semplice per evitare link rotti.
+
+### Prossimi passi
+
+- Continuare con il blocco `Interfaccia e strumenti` oppure anticipare `GitHub Actions`.
+
+## 2026-07-06 - Fondamenti GitHub
+
+### Fatto
+
+- Create le prime 7 pagine dell'area `Programmazione/GitHub/Pagine` per il blocco `Fondamenti di GitHub`.
+- Compilati contenuti reali su GitHub, differenza tra Git e GitHub, account/profilo, repository, clone/fork/template, remote `origin/upstream` e file `README`, `LICENSE`, `.gitignore`.
+- Aggiornato `Programmazione/GitHub/Indice GitHub.md` trasformando in wikilink solo le voci ora esistenti.
+
+### Decisioni
+
+- Le nuove note seguono la struttura tecnica del vault e restano con `status: "non revisionato"`.
+- Le voci dell'indice non ancora create restano come testo semplice per evitare link rotti.
+
+### Prossimi passi
+
+- Continuare con il blocco `Flusso di lavoro base` oppure passare direttamente a `GitHub Actions`.
+
+## 2026-07-03 - Nuovo indice GitHub
+
+### Fatto
+
+- Creata la nuova area `Programmazione/GitHub` con cartella `Pagine`.
+- Aggiunto `Programmazione/GitHub/Indice GitHub.md` come roadmap per padroneggiare GitHub, collaborazione, sicurezza, governance, API e GitHub Actions.
+- Collegato GitHub nella sezione `Programmazione` di `Home.md`.
+
+### Decisioni
+
+- L'indice usa voci testuali per le pagine non ancora create, cosi evita wikilink rotti e resta un backlog strutturato.
+- Le future pagine GitHub dovranno usare i template in `_Template/` e restare con `status: "non revisionato"` finche non revisionate.
+
+### Prossimi passi
+
+- Creare le pagine del capitolo `Fondamenti di GitHub` o partire direttamente da `GitHub Actions`.
+
 ## 2026-06-22 - Avvio completamento TypeScript
 
 ### Fatto
@@ -72,132 +191,3 @@ Mantieni solo le ultime 10 voci operative.
 ### Prossimi passi
 
 - Rivedere manualmente le nuove schede e decidere se approfondire installazione, deploy o casi d'uso pratici.
-
-## 2026-06-09 - Aggiornamento programmi open source
-
-### Fatto
-
-- Creati i contenuti per `Bruno` e `Aider` in `Programmi open source/Pagine`.
-- Aggiornato `Programmi open source/Indice programmi open source.md` con i collegamenti alle nuove pagine.
-- Aggiunto frontmatter YAML alle note esistenti dell'area che ne erano prive.
-
-### Decisioni
-
-- Le note create o modificate restano con `status: "non revisionato"`.
-- Le nuove pagine sono note tecniche brevi, coerenti con lo stile gia usato per `Yt-dlp`, `OpenSCAD` e `MusicBrainz Picard`.
-
-### Prossimi passi
-
-- Rivedere manualmente le note dell'area prima di impostarle a `revisionato (da me)`.
-
-## 2026-06-04 - Completamento contenuto React
-
-### Fatto
-
-- Completate tutte le pagine React in `Programmazione/React/Pagine`.
-- Portata la sezione React da 53 pagine con placeholder a 59 pagine senza placeholder.
-- Sviluppate con contenuto reale le note su fondamenti, JSX, props, rendering, hook, state management, routing, form, data fetching, pattern componenti, performance, internals, server-side rendering, Server Components, sicurezza, accessibilita, styling, testing e design system.
-- Aggiunte pagine dedicate a `React Compiler`, `Actions e form actions`, `useActionState`, `useOptimistic`, `useFormStatus` e `use hook`.
-- Aggiornato `Programmazione/React/Indice react.md` con i nuovi collegamenti.
-
-### Decisioni
-
-- Le note modificate restano con `status: "non revisionato"`.
-- Gli argomenti React moderni sono stati collegati all'indice ma descritti con prudenza, rimandando alle documentazioni ufficiali quando dipendono da versione, framework o supporto specifico.
-
-### Prossimi passi
-
-- Rivedere manualmente le note React completate prima di impostarle a `revisionato (da me)`.
-- Proseguire con il controllo finale delle altre aree di Programmazione non ancora chiuse.
-
-## 2026-06-03 - Completamento contenuto Python
-
-### Fatto
-
-- Completate tutte le 75 pagine Python in `Programmazione/Python/Pagine`.
-- Rimossi tutti i placeholder `Contenuto da sviluppare`, `Da completare` e `TODO` dalle note Python.
-- Sviluppate con contenuto reale le note su basi del linguaggio, OOP, data model, type hinting, iteratori/generatori, file, error handling, runtime, standard library, packaging, ambienti virtuali, tooling, testing, profiling, automazione, concorrenza, database, web framework, data science, notebook, scraping, packaging eseguibili, estensioni native e integrazioni LLM.
-- Ripuliti blocchi Markdown duplicati o spezzati nelle note generate in precedenza.
-
-### Decisioni
-
-- Le note modificate restano con `status: "non revisionato"`.
-- La priorita e stata completare prima il percorso Python applicativo principale e poi chiudere tutte le pagine residue fino a zero placeholder.
-- La nota `OpenAI API` resta volutamente prudente sui nomi modello: rimanda alla documentazione ufficiale per valori correnti e capability aggiornate.
-
-### Prossimi passi
-
-- Rivedere manualmente le note Python completate prima di impostarle a `revisionato (da me)`.
-- Applicare lo stesso controllo finale alle altre aree di Programmazione ancora non chiuse.
-
-## 2026-06-02 - Completamento contenuto Postgres
-
-### Fatto
-
-- Completate tutte le 72 pagine Postgres in `Programmazione/Postgres/Pagine`.
-- Rimossi tutti i placeholder `Contenuto da sviluppare`, `Da completare` e `TODO` dalle note Postgres.
-- Sviluppate con contenuto reale le note su query SQL, modellazione dati, indici, planner, transazioni, MVCC, locking, backup, configurazione, ruoli, sicurezza, replica, WAL, partizionamento, full text search, funzioni, PL/pgSQL, estensioni, tooling, osservabilita, migrazioni e pattern applicativi.
-- Ripuliti blocchi Markdown duplicati o spezzati nelle note generate in precedenza.
-
-### Decisioni
-
-- Le note modificate restano con `status: "non revisionato"`.
-- La priorita e stata completare prima gli argomenti fondazionali e poi chiudere tutte le pagine residue fino a zero placeholder.
-
-### Prossimi passi
-
-- Rivedere manualmente le note Postgres completate prima di impostarle a `revisionato (da me)`.
-- Applicare lo stesso completamento alle altre aree di Programmazione che hanno ancora placeholder.
-
-## 2026-06-02 - Completamento contenuto JavaScript
-
-### Fatto
-
-- Completate tutte le 87 pagine JavaScript in `Programmazione/JavaScript/Pagine`.
-- Rimossi tutti i placeholder `Contenuto da sviluppare` dalle note JavaScript.
-- Sviluppate con contenuto reale sezioni come `Quando usarlo`, `API / Sintassi`, `Esempio pratico`, `Varianti`, `Errori comuni` e `Checklist`.
-
-### Decisioni
-
-- Le note modificate restano con `status: "non revisionato"`.
-- La priorita e stata prima data alle pagine piu corte, poi alle sezioni residue fino a portare JavaScript a zero placeholder.
-
-### Prossimi passi
-
-- Applicare lo stesso completamento progressivo alle altre aree di Programmazione che hanno ancora sezioni `Contenuto da sviluppare`.
-- Rivedere manualmente le note JavaScript completate prima di impostarle a `revisionato (da me)`.
-
-## 2026-06-02 - Normalizzazione pagine Programmazione
-
-### Fatto
-
-- Normalizzate le pagine esistenti in `Programmazione/*/Pagine/` alla struttura comune usata per le note tecniche.
-- Uniformate le sezioni top-level: `Sintesi`, `Quando usarlo`, `Come funziona`, `API / Sintassi`, `Esempio pratico`, `Varianti`, `Errori comuni`, `Checklist`, `Collegamenti`.
-- Preservato il contenuto esistente spostandolo sotto le sezioni standard e sistemati alcuni wikilink rotti in JavaScript.
-
-### Decisioni
-
-- Le pagine modificate restano con `status: "non revisionato"`.
-- Le sezioni senza contenuto reale sono marcate come `Contenuto da sviluppare` invece di inventare dettagli non presenti.
-
-### Prossimi passi
-
-- Completare progressivamente le sezioni marcate come contenuto da sviluppare.
-- Creare le pagine mancanti dell'indice TypeScript.
-
-## 2026-05-28 - Completamento API Design Rust
-
-### Fatto
-
-- Completate con contenuto reale le note del capitolo `API Design Idiomatico` dell'indice Rust.
-- Sviluppati public API design, error types pubblici, builder pattern, newtype pattern, extension traits, feature flags, compatibilita/breaking changes e documentazione delle crate.
-- Aggiunti esempi pratici, errori comuni, checklist e collegamenti interni coerenti.
-
-### Decisioni
-
-- Le note completate restano con `status: "non revisionato"` fino alla revisione dell'utente.
-- Il capitolo tratta API pubbliche, feature e documentazione come contratti di compatibilita, non solo come dettagli di implementazione.
-
-### Prossimi passi
-
-- Completare la sezione `Conoscenza Operativa` dell'indice Rust se deve diventare una guida pratica.
