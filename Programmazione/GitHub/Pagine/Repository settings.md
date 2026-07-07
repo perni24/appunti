@@ -111,3 +111,7 @@ Setup iniziale per repository condiviso:
 - [[GitHub Web UI]]
 - [[Branch protection rules]]
 - [[Repository rulesets]]
+
+## Fonti
+
+- [GitHub Docs - Managing repository settings](https://docs.github.com/en/repositories/managing-your-repositorys-settings-and-features/managing-repository-settings)

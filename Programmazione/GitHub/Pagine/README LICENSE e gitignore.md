@@ -129,3 +129,9 @@ Nel `README.md` inserisci almeno:
 - [[Programmazione/GitHub/Indice GitHub]]
 - [[Repository GitHub]]
 - [[GitHub]]
+
+## Fonti
+
+- [GitHub Docs - About READMEs](https://docs.github.com/en/repositories/managing-your-repositorys-settings-and-features/customizing-your-repository/about-readmes)
+- [GitHub Docs - Licensing a repository](https://docs.github.com/en/repositories/managing-your-repositorys-settings-and-features/customizing-your-repository/licensing-a-repository)
+- [GitHub Docs - Ignoring files](https://docs.github.com/en/get-started/git-basics/ignoring-files)

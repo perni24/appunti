@@ -116,3 +116,7 @@ In questo modo una release pubblicata non viene riscritta casualmente.
 - [[Repository GitHub]]
 - [[Repository rulesets]]
 - [[Conventional commits su GitHub]]
+
+## Fonti
+
+- [GitHub Docs - Protected tags](https://docs.github.com/en/repositories/configuring-branches-and-merges-in-your-repository/managing-protected-tags)

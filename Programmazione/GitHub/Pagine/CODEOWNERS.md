@@ -118,3 +118,7 @@ GitHub richiede automaticamente review a `@devops-team`.
 - [[Pull request]]
 - [[Review code su GitHub]]
 - [[Repository GitHub]]
+
+## Fonti
+
+- [GitHub Docs - About code owners](https://docs.github.com/en/repositories/managing-your-repositorys-settings-and-features/customizing-your-repository/about-code-owners)

@@ -129,3 +129,7 @@ Questo porta nel tuo fork le modifiche del repository originale.
 - [[Git e GitHub]]
 - [[Clone fork e template repository]]
 - [[Repository GitHub]]
+
+## Fonti
+
+- [GitHub Docs - About remote repositories](https://docs.github.com/en/get-started/git-basics/about-remote-repositories)

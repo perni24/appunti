@@ -108,3 +108,7 @@ Le issue descrivono il lavoro. Le pull request chiudono o implementano quel lavo
 - [[Issues GitHub]]
 - [[Pull request]]
 - [[Labels milestones e assignees]]
+
+## Fonti
+
+- [GitHub Docs - About Projects](https://docs.github.com/en/issues/planning-and-tracking-with-projects/learning-about-projects/about-projects)

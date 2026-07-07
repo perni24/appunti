@@ -123,3 +123,7 @@ gh pr create --base main --fill
 - [[Git e GitHub]]
 - [[Pull request]]
 - [[Issues GitHub]]
+
+## Fonti
+
+- [GitHub CLI Manual](https://cli.github.com/manual/)

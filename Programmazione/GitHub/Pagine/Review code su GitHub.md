@@ -116,3 +116,7 @@ Il secondo indica problema, impatto e azione verificabile.
 - [[Pull request]]
 - [[Commit e cronologia su GitHub]]
 - [[Merge squash e rebase su GitHub]]
+
+## Fonti
+
+- [GitHub Docs - About pull request reviews](https://docs.github.com/en/pull-requests/collaborating-with-pull-requests/reviewing-changes-in-pull-requests/about-pull-request-reviews)

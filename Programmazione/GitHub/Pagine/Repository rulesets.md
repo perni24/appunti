@@ -111,3 +111,7 @@ Questo rende esplicito quali parti del repository sono critiche.
 - [[Branch protection rules]]
 - [[Protected tags]]
 - [[Required status checks]]
+
+## Fonti
+
+- [GitHub Docs - About rulesets](https://docs.github.com/en/repositories/configuring-branches-and-merges-in-your-repository/managing-rulesets/about-rulesets)

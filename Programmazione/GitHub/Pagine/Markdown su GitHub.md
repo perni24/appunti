@@ -131,3 +131,8 @@ Questo formato aiuta autore e reviewer a controllare sempre gli stessi punti.
 - [[Repository GitHub]]
 - [[Pull request]]
 - [[Issues GitHub]]
+
+## Fonti
+
+- [GitHub Docs - Basic writing and formatting syntax](https://docs.github.com/en/get-started/writing-on-github/getting-started-with-writing-and-formatting-on-github/basic-writing-and-formatting-syntax)
+- [GitHub Docs - GitHub Flavored Markdown Spec](https://github.github.com/gfm/)

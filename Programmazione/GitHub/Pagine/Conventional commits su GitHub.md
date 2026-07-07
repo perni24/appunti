@@ -125,3 +125,7 @@ Il secondo aiuta review, ricerca nella history e generazione changelog.
 - [[Commit e cronologia su GitHub]]
 - [[Pull request]]
 - [[Merge squash e rebase su GitHub]]
+
+## Fonti
+
+- [Conventional Commits - Specification](https://www.conventionalcommits.org/en/v1.0.0/)

@@ -109,3 +109,7 @@ Per capire lo stato di una modifica:
 - [[Repository GitHub]]
 - [[Pull request]]
 - [[Issues GitHub]]
+
+## Fonti
+
+- [GitHub Docs - GitHub quickstart](https://docs.github.com/en/get-started/start-your-journey/hello-world)

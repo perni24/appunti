@@ -109,3 +109,8 @@ Gli accessi vengono gestiti aggiungendo o rimuovendo persone dai team, non modif
 - [[CODEOWNERS]]
 - [[Repository settings]]
 - [[Monorepo su GitHub]]
+
+## Fonti
+
+- [GitHub Docs - About organizations](https://docs.github.com/en/organizations/collaborating-with-groups-in-organizations/about-organizations)
+- [GitHub Docs - About teams](https://docs.github.com/en/organizations/organizing-members-into-teams/about-teams)

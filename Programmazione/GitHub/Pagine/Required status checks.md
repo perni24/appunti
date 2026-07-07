@@ -114,3 +114,8 @@ Se `typecheck` fallisce, GitHub blocca il merge finche la pull request non viene
 - [[Pull request]]
 - [[Branch protection rules]]
 - [[Repository rulesets]]
+
+## Fonti
+
+- [GitHub Docs - About status checks](https://docs.github.com/en/pull-requests/collaborating-with-pull-requests/collaborating-on-repositories-with-code-quality-features/about-status-checks)
+- [GitHub Docs - Required status checks](https://docs.github.com/en/pull-requests/collaborating-with-pull-requests/collaborating-on-repositories-with-code-quality-features/troubleshooting-required-status-checks)

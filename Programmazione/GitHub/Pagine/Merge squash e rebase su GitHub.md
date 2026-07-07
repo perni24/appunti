@@ -121,3 +121,7 @@ Se invece ogni commit e gia atomico e descrittivo, rebase o merge commit possono
 - [[Commit e cronologia su GitHub]]
 - [[Pull request]]
 - [[Review code su GitHub]]
+
+## Fonti
+
+- [GitHub Docs - About merge methods](https://docs.github.com/en/repositories/configuring-branches-and-merges-in-your-repository/configuring-pull-request-merges/about-merge-methods-on-github)

@@ -110,3 +110,7 @@ Questa routine mantiene il lavoro collaborativo sotto controllo.
 - [[Issues GitHub]]
 - [[Pull request]]
 - [[Review code su GitHub]]
+
+## Fonti
+
+- [GitHub Docs - About notifications](https://docs.github.com/en/account-and-profile/managing-subscriptions-and-notifications-on-github/setting-up-notifications/about-notifications)

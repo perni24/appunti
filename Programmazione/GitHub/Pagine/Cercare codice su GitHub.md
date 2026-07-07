@@ -112,3 +112,7 @@ Per risultati migliori, limita per repository, organizzazione o path.
 - [[GitHub Web UI]]
 - [[Repository GitHub]]
 - [[GitHub]]
+
+## Fonti
+
+- [GitHub Docs - Searching code](https://docs.github.com/en/search-github/searching-on-github/searching-code)

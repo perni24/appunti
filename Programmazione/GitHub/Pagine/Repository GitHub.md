@@ -124,3 +124,7 @@ Il `README.md` spiega come installare ed eseguire. `.gitignore` evita file tempo
 - [[Git e GitHub]]
 - [[README LICENSE e gitignore]]
 - [[Clone fork e template repository]]
+
+## Fonti
+
+- [GitHub Docs - About repositories](https://docs.github.com/en/repositories/creating-and-managing-repositories/about-repositories)

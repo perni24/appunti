@@ -113,3 +113,7 @@ Documentare configurazione PostgreSQL
 - [[Issues GitHub]]
 - [[Pull request]]
 - [[Repository GitHub]]
+
+## Fonti
+
+- [GitHub Docs - About discussions](https://docs.github.com/en/discussions/collaborating-with-your-community-using-discussions/about-discussions)

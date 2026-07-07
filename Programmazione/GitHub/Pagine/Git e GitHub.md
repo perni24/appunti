@@ -133,3 +133,7 @@ Qui Git usa GitHub come remoto chiamato `origin`.
 - [[GitHub]]
 - [[Remote origin e upstream]]
 - [[Clone fork e template repository]]
+
+## Fonti
+
+- [GitHub Docs - About GitHub and Git](https://docs.github.com/en/get-started/start-your-journey/about-github-and-git)

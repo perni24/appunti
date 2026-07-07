@@ -115,3 +115,7 @@ Questa configurazione rende difficile rompere il branch principale per errore.
 - [[Review code su GitHub]]
 - [[Required status checks]]
 - [[Repository rulesets]]
+
+## Fonti
+
+- [GitHub Docs - About protected branches](https://docs.github.com/en/repositories/configuring-branches-and-merges-in-your-repository/managing-protected-branches/about-protected-branches)

@@ -117,3 +117,7 @@ Questo modello e semplice e adatto a molti progetti applicativi.
 - [[Pull request]]
 - [[Merge squash e rebase su GitHub]]
 - [[Review code su GitHub]]
+
+## Fonti
+
+- [GitHub Docs - GitHub flow](https://docs.github.com/en/get-started/using-github/github-flow)

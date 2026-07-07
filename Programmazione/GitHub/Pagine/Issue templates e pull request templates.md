@@ -124,3 +124,8 @@ Questo evita che la review parta leggendo solo il diff.
 - [[Pull request]]
 - [[Review code su GitHub]]
 - [[Markdown su GitHub]]
+
+## Fonti
+
+- [GitHub Docs - Configuring issue templates](https://docs.github.com/en/communities/using-templates-to-encourage-useful-issues-and-pull-requests/configuring-issue-templates-for-your-repository)
+- [GitHub Docs - Creating a pull request template](https://docs.github.com/en/communities/using-templates-to-encourage-useful-issues-and-pull-requests/creating-a-pull-request-template-for-your-repository)

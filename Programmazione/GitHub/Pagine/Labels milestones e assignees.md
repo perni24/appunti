@@ -121,3 +121,8 @@ Questa combinazione comunica tipo di lavoro, urgenza, area tecnica, obiettivo e 
 - [[Programmazione/GitHub/Indice GitHub]]
 - [[Issues GitHub]]
 - [[Pull request]]
+
+## Fonti
+
+- [GitHub Docs - Managing labels](https://docs.github.com/en/issues/using-labels-and-milestones-to-track-work/managing-labels)
+- [GitHub Docs - About milestones](https://docs.github.com/en/issues/using-labels-and-milestones-to-track-work/about-milestones)

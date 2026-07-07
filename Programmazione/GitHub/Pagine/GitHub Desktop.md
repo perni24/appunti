@@ -102,3 +102,7 @@ Flusso tipico:
 - [[Git e GitHub]]
 - [[Branch su GitHub]]
 - [[Pull request]]
+
+## Fonti
+
+- [GitHub Docs - GitHub Desktop](https://docs.github.com/en/desktop)

@@ -107,3 +107,7 @@ Evita di dare admin solo per permettere operazioni quotidiane.
 - [[Repository settings]]
 - [[Organizzazioni e team GitHub]]
 - [[Account GitHub e profilo sviluppatore]]
+
+## Fonti
+
+- [GitHub Docs - Repository roles for an organization](https://docs.github.com/en/organizations/managing-access-to-your-organizations-repositories/repository-roles-for-an-organization)

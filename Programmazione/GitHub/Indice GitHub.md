@@ -80,89 +80,89 @@ related: []
 
 ### Fondamenti GitHub Actions
 
-- GitHub Actions
-- Workflow GitHub Actions
-- Eventi e trigger GitHub Actions
-- Jobs, steps e runners
-- Sintassi YAML GitHub Actions
-- Actions marketplace
-- Variabili e secrets GitHub Actions
+- [[Programmazione/GitHub/Pagine/GitHub Actions|GitHub Actions]]
+- [[Programmazione/GitHub/Pagine/Workflow GitHub Actions|Workflow GitHub Actions]]
+- [[Programmazione/GitHub/Pagine/Eventi e trigger GitHub Actions|Eventi e trigger GitHub Actions]]
+- [[Programmazione/GitHub/Pagine/Jobs steps e runners|Jobs, steps e runners]]
+- [[Programmazione/GitHub/Pagine/Sintassi YAML GitHub Actions|Sintassi YAML GitHub Actions]]
+- [[Programmazione/GitHub/Pagine/Actions marketplace|Actions marketplace]]
+- [[Programmazione/GitHub/Pagine/Variabili e secrets GitHub Actions|Variabili e secrets GitHub Actions]]
 
 ### CI con GitHub Actions
 
-- Pipeline CI GitHub Actions
-- Workflow per test, lint e build
-- Matrix strategy GitHub Actions
-- Cache GitHub Actions
-- Artifacts GitHub Actions
-- Service containers GitHub Actions
-- Permissions GitHub Actions
+- [[Programmazione/GitHub/Pagine/Pipeline CI GitHub Actions|Pipeline CI GitHub Actions]]
+- [[Programmazione/GitHub/Pagine/Workflow per test, lint e build|Workflow per test, lint e build]]
+- [[Programmazione/GitHub/Pagine/Matrix strategy GitHub Actions|Matrix strategy GitHub Actions]]
+- [[Programmazione/GitHub/Pagine/Cache GitHub Actions|Cache GitHub Actions]]
+- [[Programmazione/GitHub/Pagine/Artifacts GitHub Actions|Artifacts GitHub Actions]]
+- [[Programmazione/GitHub/Pagine/Service containers GitHub Actions|Service containers GitHub Actions]]
+- [[Programmazione/GitHub/Pagine/Permissions GitHub Actions|Permissions GitHub Actions]]
 
 ### CD, release e deploy
 
-- Deploy con GitHub Actions
-- Environments GitHub Actions
-- Deployment approvals GitHub Actions
-- Release automation GitHub Actions
-- GitHub Pages con Actions
-- GitHub Packages con Actions
-- OIDC GitHub Actions
+- [[Programmazione/GitHub/Pagine/Deploy con GitHub Actions|Deploy con GitHub Actions]]
+- [[Programmazione/GitHub/Pagine/Environments GitHub Actions|Environments GitHub Actions]]
+- [[Programmazione/GitHub/Pagine/Deployment approvals GitHub Actions|Deployment approvals GitHub Actions]]
+- [[Programmazione/GitHub/Pagine/Release automation GitHub Actions|Release automation GitHub Actions]]
+- [[Programmazione/GitHub/Pagine/GitHub Pages con Actions|GitHub Pages con Actions]]
+- [[Programmazione/GitHub/Pagine/GitHub Packages con Actions|GitHub Packages con Actions]]
+- [[Programmazione/GitHub/Pagine/OIDC GitHub Actions|OIDC GitHub Actions]]
 
 ### Actions avanzato
 
-- Reusable workflows
-- Composite actions
-- Self-hosted runners
-- Concurrency e cancel-in-progress
-- Workflow dispatch e scheduled workflows
-- Debug GitHub Actions
-- Costi e limiti GitHub Actions
+- [[Programmazione/GitHub/Pagine/Reusable workflows|Reusable workflows]]
+- [[Programmazione/GitHub/Pagine/Composite actions|Composite actions]]
+- [[Programmazione/GitHub/Pagine/Self-hosted runners|Self-hosted runners]]
+- [[Programmazione/GitHub/Pagine/Concurrency e cancel-in-progress|Concurrency e cancel-in-progress]]
+- [[Programmazione/GitHub/Pagine/Workflow dispatch e scheduled workflows|Workflow dispatch e scheduled workflows]]
+- [[Programmazione/GitHub/Pagine/Debug GitHub Actions|Debug GitHub Actions]]
+- [[Programmazione/GitHub/Pagine/Costi e limiti GitHub Actions|Costi e limiti GitHub Actions]]
 
 ## Percorso Avanzato
 
 ### API e automazione
 
-- GitHub REST API
-- GitHub GraphQL API
-- Webhooks GitHub
-- GitHub Apps
-- Personal access token GitHub
-- Fine-grained token GitHub
-- Automazioni issue e pull request
+- [[Programmazione/GitHub/Pagine/GitHub REST API|GitHub REST API]]
+- [[Programmazione/GitHub/Pagine/GitHub GraphQL API|GitHub GraphQL API]]
+- [[Programmazione/GitHub/Pagine/Webhooks GitHub|Webhooks GitHub]]
+- [[Programmazione/GitHub/Pagine/GitHub Apps|GitHub Apps]]
+- [[Programmazione/GitHub/Pagine/Personal access token GitHub|Personal access token GitHub]]
+- [[Programmazione/GitHub/Pagine/Fine-grained token GitHub|Fine-grained token GitHub]]
+- [[Programmazione/GitHub/Pagine/Automazioni issue e pull request|Automazioni issue e pull request]]
 
 ### Governance e manutenzione
 
-- Governance repository GitHub
-- Repository hygiene
-- Archiviazione repository GitHub
-- Migrazione repository GitHub
-- Gestione release su GitHub
-- Tag, versioni e changelog
-- Template organizzativi GitHub
+- [[Programmazione/GitHub/Pagine/Governance repository GitHub|Governance repository GitHub]]
+- [[Programmazione/GitHub/Pagine/Repository hygiene|Repository hygiene]]
+- [[Programmazione/GitHub/Pagine/Archiviazione repository GitHub|Archiviazione repository GitHub]]
+- [[Programmazione/GitHub/Pagine/Migrazione repository GitHub|Migrazione repository GitHub]]
+- [[Programmazione/GitHub/Pagine/Gestione release su GitHub|Gestione release su GitHub]]
+- [[Programmazione/GitHub/Pagine/Tag, versioni e changelog|Tag, versioni e changelog]]
+- [[Programmazione/GitHub/Pagine/Template organizzativi GitHub|Template organizzativi GitHub]]
 
 ## Conoscenza Operativa
 
 ### Procedure pratiche
 
-- Creare un repository GitHub
-- Aprire una pull request corretta
-- Configurare branch protection
-- Configurare una pipeline CI con GitHub Actions
-- Pubblicare documentazione con GitHub Pages
-- Gestire secrets in GitHub Actions
+- [[Programmazione/GitHub/Pagine/Creare un repository GitHub|Creare un repository GitHub]]
+- [[Programmazione/GitHub/Pagine/Aprire una pull request corretta|Aprire una pull request corretta]]
+- [[Programmazione/GitHub/Pagine/Configurare branch protection|Configurare branch protection]]
+- [[Programmazione/GitHub/Pagine/Configurare una pipeline CI con GitHub Actions|Configurare una pipeline CI con GitHub Actions]]
+- [[Programmazione/GitHub/Pagine/Pubblicare documentazione con GitHub Pages|Pubblicare documentazione con GitHub Pages]]
+- [[Programmazione/GitHub/Pagine/Gestire secrets in GitHub Actions|Gestire secrets in GitHub Actions]]
 
 ### Checklist
 
-- Checklist repository GitHub
-- Checklist pull request GitHub
-- Checklist sicurezza GitHub
-- Checklist GitHub Actions
-- Checklist release GitHub
+- [[Programmazione/GitHub/Pagine/Checklist repository GitHub|Checklist repository GitHub]]
+- [[Programmazione/GitHub/Pagine/Checklist pull request GitHub|Checklist pull request GitHub]]
+- [[Programmazione/GitHub/Pagine/Checklist sicurezza GitHub|Checklist sicurezza GitHub]]
+- [[Programmazione/GitHub/Pagine/Checklist GitHub Actions|Checklist GitHub Actions]]
+- [[Programmazione/GitHub/Pagine/Checklist release GitHub|Checklist release GitHub]]
 
 ### Troubleshooting
 
-- Troubleshooting pull request
-- Troubleshooting merge conflict
-- Troubleshooting GitHub Actions
-- Troubleshooting permissions GitHub Actions
-- Troubleshooting secrets GitHub Actions
+- [[Programmazione/GitHub/Pagine/Troubleshooting pull request|Troubleshooting pull request]]
+- [[Programmazione/GitHub/Pagine/Troubleshooting merge conflict|Troubleshooting merge conflict]]
+- [[Programmazione/GitHub/Pagine/Troubleshooting GitHub Actions|Troubleshooting GitHub Actions]]
+- [[Programmazione/GitHub/Pagine/Troubleshooting permissions GitHub Actions|Troubleshooting permissions GitHub Actions]]
+- [[Programmazione/GitHub/Pagine/Troubleshooting secrets GitHub Actions|Troubleshooting secrets GitHub Actions]]

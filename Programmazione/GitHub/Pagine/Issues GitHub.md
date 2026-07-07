@@ -133,3 +133,7 @@ La pagina resta bloccata in loading.
 - [[Repository GitHub]]
 - [[Pull request]]
 - [[Labels milestones e assignees]]
+
+## Fonti
+
+- [GitHub Docs - About issues](https://docs.github.com/en/issues/tracking-your-work-with-issues/learning-about-issues/about-issues)

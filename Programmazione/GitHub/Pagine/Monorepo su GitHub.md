@@ -121,3 +121,7 @@ Questo e utile se la modifica al componente UI e necessaria per aggiornare una p
 - [[Branch su GitHub]]
 - [[CODEOWNERS]]
 - [[GitHub Projects]]
+
+## Fonti
+
+- [GitHub Docs - About repositories](https://docs.github.com/en/repositories/creating-and-managing-repositories/about-repositories)

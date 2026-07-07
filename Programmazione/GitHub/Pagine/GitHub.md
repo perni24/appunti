@@ -130,3 +130,7 @@ Poi apri una pull request su GitHub e aspetti review e controlli automatici.
 - [[Git e GitHub]]
 - [[Repository GitHub]]
 - Pull request
+
+## Fonti
+
+- [GitHub Docs - About GitHub and Git](https://docs.github.com/en/get-started/start-your-journey/about-github-and-git)

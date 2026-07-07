@@ -118,3 +118,7 @@ Esempio di sezione:
 - [[GitHub]]
 - [[Git e GitHub]]
 - [[Repository GitHub]]
+
+## Fonti
+
+- [GitHub Docs - Signing up for a new GitHub account](https://docs.github.com/en/get-started/start-your-journey/creating-an-account-on-github)

@@ -126,3 +126,7 @@ Una descrizione cosi riduce domande ripetute durante la review.
 - [[Commit e cronologia su GitHub]]
 - [[Review code su GitHub]]
 - [[Issues GitHub]]
+
+## Fonti
+
+- [GitHub Docs - About pull requests](https://docs.github.com/en/pull-requests/collaborating-with-pull-requests/proposing-changes-to-your-work-with-pull-requests/about-pull-requests)

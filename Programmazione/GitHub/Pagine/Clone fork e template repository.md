@@ -127,3 +127,9 @@ Poi apri una pull request dal tuo fork verso il repository originale.
 - [[Repository GitHub]]
 - [[Remote origin e upstream]]
 - [[Git e GitHub]]
+
+## Fonti
+
+- [GitHub Docs - Cloning a repository](https://docs.github.com/en/repositories/creating-and-managing-repositories/cloning-a-repository)
+- [GitHub Docs - About forks](https://docs.github.com/en/pull-requests/collaborating-with-pull-requests/working-with-forks/about-forks)
+- [GitHub Docs - Creating a repository from a template](https://docs.github.com/en/repositories/creating-and-managing-repositories/creating-a-repository-from-a-template)

@@ -120,3 +120,7 @@ Il primo aiuta review e debug. Il secondo costringe a leggere il diff per capire
 - [[Git e GitHub]]
 - [[Branch su GitHub]]
 - [[Pull request]]
+
+## Fonti
+
+- [GitHub Docs - About commits](https://docs.github.com/en/pull-requests/committing-changes-to-your-project/creating-and-editing-commits/about-commits)

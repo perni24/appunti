@@ -121,3 +121,7 @@ Su GitHub puoi poi aprire una pull request da `fix/login-error` verso `main`.
 - [[Repository GitHub]]
 - [[Pull request]]
 - [[Merge squash e rebase su GitHub]]
+
+## Fonti
+
+- [GitHub Docs - About branches](https://docs.github.com/en/pull-requests/collaborating-with-pull-requests/proposing-changes-to-your-work-with-pull-requests/about-branches)
