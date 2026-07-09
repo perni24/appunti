@@ -8,172 +8,172 @@ Mantieni solo le ultime 10 voci operative.
 
 ---
 
-## 2026-07-07 - Revisione qualitativa area GitHub
+## 2026-07-09 - Tooling qualita Clean Code
 
 ### Fatto
 
-- Controllata l'area `Programmazione/GitHub` dopo il completamento dell'indice.
-- Normalizzati i `type` di 4 note che usavano struttura tecnica ma frontmatter operativo.
-- Aggiunta la sezione `Fonti` a 34 note GitHub piu vecchie usando riferimenti ufficiali GitHub o specifiche autorevoli.
+- Create 8 pagine dell'area `Programmazione/Clean Code/Pagine` per il blocco `Tooling e Qualita del Codice`.
+- Compilati contenuti reali su formatter, linter, static analysis, type checking, coverage, mutation testing, code quality gates e pre-commit hooks.
+- Aggiornato `Programmazione/Clean Code/Indice Clean Code.md` trasformando in wikilink solo le nuove voci ora esistenti.
 
 ### Decisioni
 
-- Le note modificate restano con `status: "non revisionato"`.
-- Le note mantengono la struttura gia presente; e stato corretto solo cio che era incoerente a livello di metadati o tracciabilita fonti.
+- Le note trattano gli strumenti come guardrail automatici per coerenza, testabilita e sicurezza del processo, non come sostituti della progettazione.
+- Le note create restano con `status: "non revisionato"`.
 
 ### Prossimi passi
 
-- Eventuale lettura manuale dei contenuti per accorpare duplicazioni concettuali tra note vicine.
+- Continuare con le sezioni operative di `Conoscenza Operativa`.
 
-## 2026-07-07 - Troubleshooting GitHub
+## 2026-07-09 - Data automazione e LLM Clean Code
 
 ### Fatto
 
-- Create 5 pagine operative dell'area `Programmazione/GitHub/Pagine` per il blocco `Troubleshooting`.
-- Compilate note su troubleshooting pull request, merge conflict, GitHub Actions, permissions e secrets.
-- Aggiornato `Programmazione/GitHub/Indice GitHub.md` trasformando in wikilink le ultime voci dell'indice.
+- Create 7 pagine dell'area `Programmazione/Clean Code/Pagine` per il blocco `Data, Automazione e LLM`.
+- Compilati contenuti reali su pipeline dati, notebook mantenibili, script di automazione, parsing input esterni, prompt applicativi, output strutturati e validazione dati generati.
+- Aggiornato `Programmazione/Clean Code/Indice Clean Code.md` trasformando in wikilink solo le nuove voci ora esistenti.
+
+### Decisioni
+
+- Le note trattano automazioni e LLM come parti del codice applicativo, quindi con contratti, validazione, test e tracciabilita.
+- Le note create restano con `status: "non revisionato"`.
+
+### Prossimi passi
+
+- Continuare con il blocco `Tooling e Qualita del Codice`.
+
+## 2026-07-09 - Web API e database Clean Code
+
+### Fatto
+
+- Create 7 pagine dell'area `Programmazione/Clean Code/Pagine` per il blocco `Web, API e Database`.
+- Compilati contenuti reali su controller sottili, service layer, repository pattern, DTO/modelli di dominio, validazione input API, query leggibili e migrazioni/schema evolution.
+- Aggiornato `Programmazione/Clean Code/Indice Clean Code.md` trasformando in wikilink solo le nuove voci ora esistenti.
+
+### Decisioni
+
+- La nota `DTO e modelli di dominio` e stata creata anche in Clean Code per trattare il concetto in modo trasversale, distinto dalla nota specifica TypeScript.
+- Le note create restano con `status: "non revisionato"`.
+
+### Prossimi passi
+
+- Continuare con il blocco `Data, Automazione e LLM`.
+
+## 2026-07-09 - Performance e distribuzione Clean Code
+
+### Fatto
+
+- Create 6 pagine dell'area `Programmazione/Clean Code/Pagine` per completare il blocco `Performance e Distribuzione`.
+- Compilati contenuti reali su performance/leggibilita, ottimizzazione prematura, profiling, hot path, allocazioni inutili e codice pronto al deploy.
+- Aggiornato `Programmazione/Clean Code/Indice Clean Code.md`; `Configurazione applicativa` resta collegata alla pagina condivisa gia creata.
+
+### Decisioni
+
+- Le note trattano la performance come disciplina guidata da misure e vincoli operativi, non come micro-ottimizzazione preventiva.
+- Le note create restano con `status: "non revisionato"`.
+
+### Prossimi passi
+
+- Continuare con il blocco `Web, API e Database`.
+
+## 2026-07-09 - Concorrenza Clean Code
+
+### Fatto
+
+- Create 7 pagine dell'area `Programmazione/Clean Code/Pagine` per il blocco `Concorrenza e Parallelismo`.
+- Compilati contenuti reali su stato condiviso, race condition, lock, idempotenza, operazioni atomiche, code/worker e codice asincrono leggibile.
+- Aggiornato `Programmazione/Clean Code/Indice Clean Code.md` trasformando in wikilink solo le nuove voci ora esistenti.
+
+### Decisioni
+
+- Le note trattano concorrenza e asincronia come problemi di leggibilita, confini e gestione degli effetti, non solo come primitive tecniche.
+- Le note create restano con `status: "non revisionato"`.
+
+### Prossimi passi
+
+- Continuare con il blocco `Performance e Distribuzione`.
+
+## 2026-07-09 - Internals e risorse Clean Code
+
+### Fatto
+
+- Create 9 pagine dell'area `Programmazione/Clean Code/Pagine` per il blocco `Internals e Gestione Risorse`.
+- Compilati contenuti reali su stato, risorse, lifecycle, ownership concettuale, cache, cleanup, invarianti interne, refactoring sicuro e legacy code.
+- Aggiornato `Programmazione/Clean Code/Indice Clean Code.md` trasformando in wikilink solo le nuove voci ora esistenti.
+
+### Decisioni
+
+- Le note distinguono responsabilita concettuali, lifecycle e gestione tecnica delle risorse per evitare duplicazioni con i blocchi precedenti.
+- Le note create restano con `status: "non revisionato"`.
+
+### Prossimi passi
+
+- Continuare con il blocco `Concorrenza e Parallelismo`.
+
+## 2026-07-09 - Standard library pratica Clean Code
+
+### Fatto
+
+- Create 7 pagine dell'area `Programmazione/Clean Code/Pagine` per il blocco `Standard Library Pratica`.
+- Compilati contenuti reali su gestione errori, eccezioni, logging/tracing, configurazione, parsing/serializzazione, date/timezone e file system/I/O.
+- Aggiornato `Programmazione/Clean Code/Indice Clean Code.md` trasformando in wikilink le nuove voci e collegando la voce duplicata `Configurazione applicativa` alla stessa pagina.
+
+### Decisioni
+
+- Le note create usano `type: technical-note` perche descrivono pratiche tecniche e uso disciplinato di API/risorse comuni.
+- `Configurazione applicativa` resta una pagina unica condivisa tra `Standard Library Pratica` e `Performance e Distribuzione`.
+
+### Prossimi passi
+
+- Continuare con il blocco `Internals e Gestione Risorse`.
+
+## 2026-07-09 - Contratti tipi e qualita Clean Code
+
+### Fatto
+
+- Create 15 pagine dell'area `Programmazione/Clean Code/Pagine` per il blocco `Contratti, Tipi e Qualita`.
+- Compilati contenuti reali su contratti, validazione ai confini, tipi significativi, modellazione del dominio, errori, complessita, test, logging e messaggi di errore.
+- Aggiornato `Programmazione/Clean Code/Indice Clean Code.md` trasformando in wikilink solo le nuove voci ora esistenti.
 
 ### Decisioni
 
 - Le note create restano con `status: "non revisionato"`.
-- Il blocco finale privilegia diagnosi rapida, comandi minimi e checklist di verifica.
+- La sezione collega qualita del codice, contratti e testing come strumenti di design, non solo come controlli finali.
 
 ### Prossimi passi
 
-- Rivedere l'intera area GitHub con una lettura qualitativa o collegarla ad altri indici di programmazione se utile.
+- Continuare con il blocco `Standard Library Pratica`.
 
-## 2026-07-07 - Checklist operative GitHub
+## 2026-07-09 - Concetti funzionali Clean Code
 
 ### Fatto
 
-- Create 5 pagine operative dell'area `Programmazione/GitHub/Pagine` per il blocco `Checklist`.
-- Compilate checklist per repository, pull request, sicurezza, GitHub Actions e release.
-- Aggiornato `Programmazione/GitHub/Indice GitHub.md` trasformando in wikilink solo le nuove voci ora esistenti.
+- Create 7 pagine dell'area `Programmazione/Clean Code/Pagine` per il blocco `Concetti Funzionali e Composizione`.
+- Compilati contenuti reali su funzioni pure/impure, composizione, immutabilita, trasformazioni dichiarative, pipeline, guard clauses e side effects controllati.
+- Aggiornato `Programmazione/Clean Code/Indice Clean Code.md` trasformando in wikilink solo le nuove voci ora esistenti.
 
 ### Decisioni
 
 - Le note create restano con `status: "non revisionato"`.
-- Le checklist sono pensate come controlli rapidi prima di considerare una configurazione pronta, non come spiegazioni estese.
+- La sezione tratta i concetti funzionali come strumenti pragmatici per ridurre stato implicito e side effects, non come obbligo di programmazione funzionale pura.
 
 ### Prossimi passi
 
-- Completare il blocco finale `Troubleshooting`.
+- Continuare con il blocco `Contratti, Tipi e Qualita`.
 
-## 2026-07-07 - Procedure pratiche GitHub
+## 2026-07-09 - OOP e design Clean Code
 
 ### Fatto
 
-- Create 6 pagine operative dell'area `Programmazione/GitHub/Pagine` per il blocco `Procedure pratiche`.
-- Compilate procedure su creazione repository, pull request, branch protection, pipeline CI, GitHub Pages e secrets GitHub Actions.
-- Aggiornato `Programmazione/GitHub/Indice GitHub.md` trasformando in wikilink solo le nuove voci ora esistenti.
+- Create 9 pagine dell'area `Programmazione/Clean Code/Pagine` per il blocco `Programmazione ad Oggetti e Design`.
+- Compilati contenuti reali su incapsulamento, coesione/accoppiamento, separazione responsabilita, SOLID, DIP, ISP, Tell Don't Ask, Law of Demeter e code smells.
+- Aggiornato `Programmazione/Clean Code/Indice Clean Code.md` trasformando in wikilink solo le nuove voci ora esistenti.
 
 ### Decisioni
 
 - Le note create restano con `status: "non revisionato"`.
-- Le procedure usano il template operativo, con passaggi, snippet, debug rapido e checklist finale.
+- I principi OOP sono trattati come strumenti per controllare responsabilita e dipendenze, non come regole da applicare meccanicamente.
 
 ### Prossimi passi
 
-- Continuare con il blocco `Checklist`.
-
-## 2026-07-07 - Governance e manutenzione GitHub
-
-### Fatto
-
-- Create 7 pagine dell'area `Programmazione/GitHub/Pagine` per il blocco `Governance e manutenzione`.
-- Compilati contenuti reali su governance repository, repository hygiene, archiviazione, migrazione, release, tag/versioni/changelog e template organizzativi.
-- Aggiornato `Programmazione/GitHub/Indice GitHub.md` trasformando in wikilink solo le nuove voci ora esistenti.
-
-### Decisioni
-
-- Le note create restano con `status: "non revisionato"`.
-- La sezione tratta ciclo di vita, standard organizzativi e manutenzione come parte della padronanza dello strumento, non solo come configurazioni isolate.
-
-### Prossimi passi
-
-- Continuare con il blocco `Procedure pratiche`.
-
-## 2026-07-07 - API e automazione GitHub
-
-### Fatto
-
-- Create 7 pagine dell'area `Programmazione/GitHub/Pagine` per il blocco `API e automazione`.
-- Compilati contenuti reali su REST API, GraphQL API, webhooks, GitHub Apps, personal access token, fine-grained token e automazioni per issue/pull request.
-- Aggiornato `Programmazione/GitHub/Indice GitHub.md` trasformando in wikilink solo le nuove voci ora esistenti.
-
-### Decisioni
-
-- Le note create restano con `status: "non revisionato"`.
-- La sezione distingue script personali, token granulari, GitHub Apps e webhooks come livelli diversi di automazione.
-
-### Prossimi passi
-
-- Continuare con il blocco `Governance e manutenzione`.
-
-## 2026-07-07 - Actions avanzato GitHub
-
-### Fatto
-
-- Create 7 pagine dell'area `Programmazione/GitHub/Pagine` per il blocco `Actions avanzato`.
-- Compilati contenuti reali su reusable workflows, composite actions, self-hosted runners, concurrency, workflow manuali/schedulati, debug e costi/limiti.
-- Aggiornato `Programmazione/GitHub/Indice GitHub.md` trasformando in wikilink solo le nuove voci ora esistenti.
-
-### Decisioni
-
-- Le note create restano con `status: "non revisionato"`.
-- La sezione distingue riuso di step, riuso di workflow, gestione runner e controllo operativo delle run.
-
-### Prossimi passi
-
-- Continuare con il blocco `API e automazione`.
-
-## 2026-07-07 - CD release e deploy GitHub Actions
-
-### Fatto
-
-- Create 7 pagine dell'area `Programmazione/GitHub/Pagine` per il blocco `CD, release e deploy`.
-- Compilati contenuti reali su deploy, environments, approval, release automation, GitHub Pages, GitHub Packages e OIDC.
-- Aggiornato `Programmazione/GitHub/Indice GitHub.md` trasformando in wikilink solo le nuove voci ora esistenti.
-
-### Decisioni
-
-- Le note create restano con `status: "non revisionato"`.
-- La sezione distingue deploy, release asset, package e OIDC come passaggi separati con permessi e rischi diversi.
-
-### Prossimi passi
-
-- Continuare con il blocco `Actions avanzato`.
-
-## 2026-07-07 - CI con GitHub Actions
-
-### Fatto
-
-- Create 7 pagine dell'area `Programmazione/GitHub/Pagine` per il blocco `CI con GitHub Actions`.
-- Compilati contenuti reali su pipeline CI, workflow per test/lint/build, matrix strategy, cache, artifacts, service containers e permissions.
-- Aggiornato `Programmazione/GitHub/Indice GitHub.md` trasformando in wikilink solo le nuove voci ora esistenti.
-
-### Decisioni
-
-- Le note create restano con `status: "non revisionato"`.
-- La sezione distingue cache e artifact, e tratta i permessi del `GITHUB_TOKEN` come parte essenziale della sicurezza CI.
-
-### Prossimi passi
-
-- Continuare con il blocco `CD, release e deploy`.
-
-## 2026-07-07 - Fondamenti GitHub Actions
-
-### Fatto
-
-- Create 7 pagine dell'area `Programmazione/GitHub/Pagine` per il blocco `Fondamenti GitHub Actions`.
-- Compilati contenuti reali su GitHub Actions, workflow, eventi/trigger, jobs/steps/runners, sintassi YAML, marketplace delle action e variabili/secrets.
-- Aggiornato `Programmazione/GitHub/Indice GitHub.md` trasformando in wikilink solo le nuove voci ora esistenti.
-
-### Decisioni
-
-- Le note create restano con `status: "non revisionato"`.
-- Le note GitHub Actions includono riferimenti alla documentazione ufficiale GitHub per le parti soggette a cambiamento.
-
-### Prossimi passi
-
-- Continuare con il blocco `CI con GitHub Actions`.
+- Continuare con il blocco `Concetti Funzionali e Composizione`.

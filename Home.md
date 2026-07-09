@@ -4,6 +4,7 @@
 - [[Programmazione/JavaScript/Indice javascript|JavaScript]]
 - [[Programmazione/TypeScript/Indice TypeScript|TypeScript]]
 - [[Programmazione/GitHub/Indice GitHub|GitHub]]
+- [[Programmazione/Clean Code/Indice Clean Code|Clean Code]]
 - [[Programmazione/Python/Indice python|Python]]
 - [[Programmazione/Rust/Indice rust|Rust]]
 - [[Programmazione/Postgres/Indice postgres|Postgres]]
