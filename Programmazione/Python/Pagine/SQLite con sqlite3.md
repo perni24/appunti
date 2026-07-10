@@ -152,7 +152,7 @@ with sqlite3.connect("app.db") as connection:
 
 - [[Programmazione/Python/Indice python|Indice Python]]
 - [[Context Managers]]
-- [[Error Handling]]
+- [[Programmazione/Python/Pagine/Error Handling|Error Handling]]
 - [[Standard Library]]
 - [[SQLAlchemy]]
 - [[Programmazione/Postgres/Indice postgres|Postgres]]

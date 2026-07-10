@@ -15,7 +15,7 @@ related: []
 
 ## Sintesi
 
-Nota su Livelli di Isolamento delle Transazioni in PostgreSQL. Riassume il concetto, i meccanismi principali e i punti da ricordare durante studio, progettazione o amministrazione.
+I livelli di isolamento stabiliscono quali cambiamenti concorrenti sono visibili e quali anomalie devono essere impedite. In PostgreSQL `READ UNCOMMITTED` si comporta come `READ COMMITTED`, mentre `REPEATABLE READ` usa uno snapshot stabile e `SERIALIZABLE` aggiunge il rilevamento dei conflitti con retry applicativo.
 
 L'isolamento è la "I" delle [[Programmazione/Postgres/Pagine/Proprietà ACID|Proprietà ACID]]. Determina come una transazione vede le modifiche apportate da altre transazioni concorrenti. PostgreSQL gestisce questi livelli tramite il meccanismo [[Programmazione/Postgres/Pagine/MVCC|MVCC]].
 
@@ -175,3 +175,8 @@ Con `SERIALIZABLE`, l'applicazione deve essere pronta a riprovare la transazione
 - [[Programmazione/Postgres/Pagine/MVCC|MVCC]]
 - [[Programmazione/Postgres/Pagine/Meccanismi di Locking|Meccanismi di Locking]]
 - [[Programmazione/Postgres/Pagine/Proprietà ACID|Proprietà ACID]]
+
+## Fonti
+
+- [PostgreSQL - Transaction Isolation](https://www.postgresql.org/docs/current/transaction-iso.html)
+- [PostgreSQL - Serializable Isolation](https://www.postgresql.org/docs/current/transaction-iso.html#XACT-SERIALIZABLE)

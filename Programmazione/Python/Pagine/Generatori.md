@@ -137,7 +137,7 @@ def natural_numbers():
 ## Collegamenti
 
 - [[Programmazione/Python/Indice python|Indice Python]]
-- [[Iteratori]]
+- [[Programmazione/Python/Pagine/Iteratori|Iteratori]]
 - [[Comprehensions]]
 - [[Gestione File]]
 - [[Context Managers]]

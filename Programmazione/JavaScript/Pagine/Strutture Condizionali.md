@@ -1,4 +1,4 @@
-﻿---
+---
 date: 2026-06-02
 area: Programmazione
 topic: JavaScript
@@ -286,7 +286,7 @@ Le guard clause evitano un blocco annidato e mettono subito in evidenza i casi d
 
 ## Collegamenti
 
-- [[Operatori]]
+- [[Programmazione/JavaScript/Pagine/Operatori|Operatori]]
 - [[Tipi di Dati]]
-- [[Cicli]]
-- [[Funzioni]]
+- [[Programmazione/JavaScript/Pagine/Cicli|Cicli]]
+- [[Programmazione/JavaScript/Pagine/Funzioni|Funzioni]]

@@ -8,7 +8,7 @@ difficulty: intermedio
 tags: [typescript, nodejs, backend, esm, commonjs]
 aliases: [Node.js con TypeScript]
 prerequisites: [tsconfig, Moduli ES e CommonJS, Module resolution]
-related: [TypeScript con Express/Fastify, API tipizzate, Source maps e debugging]
+related: [TypeScript con Express-Fastify, API tipizzate, Source maps e debugging]
 ---
 
 # TypeScript con Node.js
@@ -103,5 +103,5 @@ Anche in Node.js i dati letti da file restano input runtime da validare.
 
 - [[Moduli ES e CommonJS]]
 - [[Module resolution]]
-- [[Source maps e debugging]]
-- [[TypeScript con Express/Fastify]]
+- [[Programmazione/TypeScript/Pagine/Source maps e debugging|Source maps e debugging]]
+- [[Programmazione/TypeScript/Pagine/TypeScript con Express-Fastify|TypeScript con Express/Fastify]]

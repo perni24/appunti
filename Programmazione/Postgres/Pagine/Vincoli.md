@@ -15,7 +15,7 @@ related: []
 
 ## Sintesi
 
-Nota su Vincoli (Constraints) in PostgreSQL. Riassume il concetto, i meccanismi principali e i punti da ricordare durante studio, progettazione o amministrazione.
+I vincoli dichiarano nel database quali stati sono ammessi. `NOT NULL`, `CHECK`, `UNIQUE`, `PRIMARY KEY`, `FOREIGN KEY` ed exclusion constraint proteggono invarianti anche quando i dati vengono modificati da applicazioni o procedure diverse.
 
 ## Quando usarlo
 
@@ -181,3 +181,7 @@ Il vincolo di esclusione impedisce che due prenotazioni della stessa stanza abbi
 - [[Programmazione/Postgres/Pagine/Chiavi primarie e foreign key|Chiavi primarie e foreign key]]
 - [[Programmazione/Postgres/Pagine/Tipi di Dato|Tipi di Dato]]
 - [[Programmazione/Postgres/Pagine/Normalizzazione|Normalizzazione]]
+
+## Fonti
+
+- [PostgreSQL - Constraints](https://www.postgresql.org/docs/current/ddl-constraints.html)

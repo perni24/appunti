@@ -84,5 +84,5 @@ Il test verifica il comportamento, mentre TypeScript controlla la firma.
 ## Collegamenti
 
 - [[Type-level testing]]
-- [[Error Handling]]
-- [[Source maps e debugging]]
+- [[Programmazione/TypeScript/Pagine/Error Handling|Error Handling]]
+- [[Programmazione/TypeScript/Pagine/Source maps e debugging|Source maps e debugging]]

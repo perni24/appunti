@@ -138,7 +138,7 @@ La funzione esterna crea una regola; quella interna la applica.
 ## Collegamenti
 
 - [[Programmazione/Python/Indice python|Indice Python]]
-- [[Funzioni]]
+- [[Programmazione/Python/Pagine/Funzioni|Funzioni]]
 - [[Funzioni Lambda]]
 - [[Decoratori]]
 - [[Caching]]

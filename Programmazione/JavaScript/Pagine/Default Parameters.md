@@ -1,4 +1,4 @@
-﻿---
+---
 date: 2026-06-02
 area: Programmazione
 topic: JavaScript
@@ -78,7 +78,15 @@ function createRectangle(width, height = width) {
 console.log(createRectangle(10).area); // 100
 ```
 
-Non puo invece usare parametri dichiarati dopo.
+Un initializer puo contenere il nome di un parametro dichiarato dopo, ma quel binding e ancora nella temporal dead zone quando il default viene valutato. Se la valutazione prova a leggerlo, la chiamata genera `ReferenceError`:
+
+```js
+function example(first = second, second = 1) {
+  return first + second;
+}
+
+example(); // ReferenceError
+```
 
 ---
 ### Default con destructuring
@@ -180,7 +188,11 @@ Il default rende esplicito il comportamento normale e permette di specificare so
 
 ## Collegamenti
 
-- [[Funzioni]]
-- [[Destructuring]]
-- [[Operatori]]
+- [[Programmazione/JavaScript/Pagine/Funzioni|Funzioni]]
+- [[Programmazione/JavaScript/Pagine/Destructuring|Destructuring]]
+- [[Programmazione/JavaScript/Pagine/Operatori|Operatori]]
 - [[Tipi di Dati]]
+
+## Fonti
+
+- [MDN - Default parameters](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Functions/Default_parameters)

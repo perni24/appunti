@@ -1,4 +1,4 @@
-﻿---
+---
 date: 2026-06-02
 area: Programmazione
 topic: JavaScript
@@ -436,7 +436,7 @@ Errori possibili:
 - eccezione durante l'esecuzione top-level del modulo;
 - path non supportato dal bundler.
 
-Collegamento: [[Error Handling]]
+Collegamento: [[Programmazione/JavaScript/Pagine/Error Handling|Error Handling]]
 ### 17. Errori Comuni
 ### Usarlo dove basta un import statico
 

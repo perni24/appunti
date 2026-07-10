@@ -93,7 +93,7 @@ La modifica evita rotture durante deploy parziali.
 - [[Repository pattern]]
 - [[Codice pronto al deploy]]
 - [[Test di integrazione]]
-- [[Configurazione applicativa]]
+- [[Programmazione/Clean Code/Pagine/Configurazione applicativa|Configurazione applicativa]]
 
 ## Fonti
 

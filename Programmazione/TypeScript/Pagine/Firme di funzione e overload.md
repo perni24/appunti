@@ -88,4 +88,4 @@ const host = getValue("host");
 
 - [[Funzioni tipizzate]]
 - [[Union e Intersection Types]]
-- [[Generics]]
+- [[Programmazione/TypeScript/Pagine/Generics|Generics]]

@@ -8,6 +8,24 @@ Mantieni solo le ultime 10 voci operative.
 
 ---
 
+## 2026-07-10 - Revisione accuratezza Programmazione
+
+### Fatto
+
+- Corrette inesattezze in note PostgreSQL su ACID, WAL, MVCC, isolamento, statistiche e scelta degli indici.
+- Precisati i vincoli `Send` e `Sync` di `Arc<T>` in Rust, il supporto free-threaded di CPython e la semantica di Server Components, Server Functions e `useOptimistic` in React.
+- Aggiornata la nota JavaScript sui decorators e riorganizzate le note CORS e Scheduling Browser.
+- Risolto il link TypeScript con Express/Fastify e convertiti 102 wikilink omonimi in percorsi espliciti della rispettiva area.
+
+### Decisioni
+
+- Le note tecniche modificate citano documentazione ufficiale per i punti dipendenti da runtime, versione o implementazione.
+- Le sezioni operative vuote degli indici restano un ampliamento futuro e non sono state riempite con pagine prive di contenuto.
+
+### Prossimi passi
+
+- Completare gradualmente `Conoscenza Operativa` e aggiungere fonti alle note non ancora tracciate.
+
 ## 2026-07-09 - Tooling qualita Clean Code
 
 ### Fatto
@@ -160,20 +178,3 @@ Mantieni solo le ultime 10 voci operative.
 ### Prossimi passi
 
 - Continuare con il blocco `Contratti, Tipi e Qualita`.
-
-## 2026-07-09 - OOP e design Clean Code
-
-### Fatto
-
-- Create 9 pagine dell'area `Programmazione/Clean Code/Pagine` per il blocco `Programmazione ad Oggetti e Design`.
-- Compilati contenuti reali su incapsulamento, coesione/accoppiamento, separazione responsabilita, SOLID, DIP, ISP, Tell Don't Ask, Law of Demeter e code smells.
-- Aggiornato `Programmazione/Clean Code/Indice Clean Code.md` trasformando in wikilink solo le nuove voci ora esistenti.
-
-### Decisioni
-
-- Le note create restano con `status: "non revisionato"`.
-- I principi OOP sono trattati come strumenti per controllare responsabilita e dipendenze, non come regole da applicare meccanicamente.
-
-### Prossimi passi
-
-- Continuare con il blocco `Concetti Funzionali e Composizione`.

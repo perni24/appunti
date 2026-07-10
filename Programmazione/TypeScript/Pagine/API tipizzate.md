@@ -92,5 +92,5 @@ Il tipo del risultato obbliga il chiamante a gestire successo ed errore.
 
 - [[API contract]]
 - [[Generazione di tipi da API]]
-- [[DTO e modelli di dominio]]
+- [[Programmazione/TypeScript/Pagine/DTO e modelli di dominio|DTO e modelli di dominio]]
 - [[Validazione runtime e tipi statici]]

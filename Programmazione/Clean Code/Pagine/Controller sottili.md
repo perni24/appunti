@@ -100,7 +100,7 @@ Il controller mostra il flusso senza contenere tutti i dettagli.
 - [[Validazione ai confini]]
 - [[Service layer]]
 - [[Validazione input API]]
-- [[DTO e modelli di dominio]]
+- [[Programmazione/Clean Code/Pagine/DTO e modelli di dominio|DTO e modelli di dominio]]
 
 ## Fonti
 

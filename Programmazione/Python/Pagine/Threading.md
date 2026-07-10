@@ -17,7 +17,7 @@ related: []
 
 Il modulo `threading` permette di eseguire piu thread nello stesso processo. I thread condividono memoria e sono utili soprattutto per task **I/O-bound**, cioe operazioni che passano molto tempo in attesa di rete, file, database o input esterno.
 
-In CPython, il [[Global Interpreter Lock]] limita il parallelismo reale dei thread per codice Python CPU-bound.
+Nelle build CPython tradizionali, il [[Global Interpreter Lock]] limita il parallelismo reale dei thread per codice Python CPU-bound. Le build free-threaded disponibili da Python 3.13 possono eseguire thread Python in parallelo, ma compatibilita delle estensioni e prestazioni vanno verificate.
 
 ## Quando usarlo
 
@@ -29,7 +29,7 @@ Usa `threading` quando:
 - hai pochi worker e logica relativamente semplice;
 - una coda di lavoro con thread e sufficiente.
 
-Per calcoli CPU-bound, valuta `multiprocessing` o `ProcessPoolExecutor`.
+Per calcoli CPU-bound su una build con GIL, valuta `multiprocessing` o `ProcessPoolExecutor`. Su una build free-threaded misura invece se i thread e le librerie usate scalano realmente.
 
 ## Come funziona
 
@@ -142,7 +142,7 @@ queue.join()
 
 ## Errori comuni
 
-- Usare thread per velocizzare calcoli CPU-bound in CPython.
+- Usare thread per velocizzare calcoli CPU-bound su CPython con GIL aspettandosi parallelismo sui core.
 - Condividere oggetti mutabili senza lock o queue.
 - Dimenticare `join()` quando serve attendere completamento.
 - Creare troppi thread.
@@ -167,3 +167,8 @@ queue.join()
 - [[Multiprocessing]]
 - [[Asyncio]]
 - [[Networking base]]
+
+## Fonti
+
+- [Python - threading](https://docs.python.org/3/library/threading.html)
+- [Python - Support for free threading](https://docs.python.org/3/howto/free-threading-python.html)

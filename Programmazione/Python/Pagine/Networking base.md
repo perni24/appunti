@@ -136,5 +136,5 @@ Questo tipo di funzione e utile in script diagnostici, non come sostituto di cli
 - [[Asyncio]]
 - [[HTTPX e requests]]
 - [[Context Managers]]
-- [[Error Handling]]
+- [[Programmazione/Python/Pagine/Error Handling|Error Handling]]
 - [[Standard Library]]

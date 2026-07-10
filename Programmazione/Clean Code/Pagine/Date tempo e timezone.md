@@ -88,7 +88,7 @@ Passare `now` come parametro rende il comportamento testabile e non dipendente d
 
 - [[Programmazione/Clean Code/Indice Clean Code]]
 - [[Codice testabile]]
-- [[Configurazione applicativa]]
+- [[Programmazione/Clean Code/Pagine/Configurazione applicativa|Configurazione applicativa]]
 - [[Parsing e serializzazione]]
 - [[Test unitari leggibili]]
 

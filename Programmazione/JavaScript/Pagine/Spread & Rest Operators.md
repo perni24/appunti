@@ -1,4 +1,4 @@
-﻿---
+---
 date: 2026-06-02
 area: Programmazione
 topic: JavaScript
@@ -256,8 +256,8 @@ function toPublicUser(user) {
 
 ## Collegamenti
 
-- [[Destructuring]]
-- [[Funzioni]]
+- [[Programmazione/JavaScript/Pagine/Destructuring|Destructuring]]
+- [[Programmazione/JavaScript/Pagine/Funzioni|Funzioni]]
 - [[Array Methods]]
 - [[Immutabilita e Copia degli Oggetti]]
 - [[Property Descriptors]]

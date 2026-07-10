@@ -79,5 +79,5 @@ Regole come `no-floating-promises` possono richiedere di gestire esplicitamente 
 ## Collegamenti
 
 - [[Best Practices]]
-- [[Strict mode]]
+- [[Programmazione/TypeScript/Pagine/Strict mode|Strict mode]]
 - [[Testing in TypeScript]]

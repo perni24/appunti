@@ -1,4 +1,4 @@
-﻿---
+---
 date: 2026-06-02
 area: Programmazione
 topic: JavaScript
@@ -239,7 +239,7 @@ Senza strict mode, alcune assegnazioni falliscono senza segnalare chiaramente il
 ## Collegamenti
 
 - [[Moduli]]
-- [[Classi]]
+- [[Programmazione/JavaScript/Pagine/Classi|Classi]]
 - [[Scope]]
 - [[Hoisting]]
 - [[Variabili]]

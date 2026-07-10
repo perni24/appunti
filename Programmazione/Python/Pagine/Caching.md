@@ -155,7 +155,7 @@ La seconda chiamata non ricalcola il risultato.
 
 - [[Programmazione/Python/Indice python|Indice Python]]
 - [[Profiling]]
-- [[Funzioni]]
+- [[Programmazione/Python/Pagine/Funzioni|Funzioni]]
 - [[Proprietà]]
 - [[Standard Library]]
 - [[Memory Management]]

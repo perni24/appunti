@@ -87,7 +87,7 @@ Il log contiene evento, entita e contesto di correlazione.
 - [[Logging leggibile]]
 - [[Messaggi di errore utili]]
 - [[Side effects controllati]]
-- [[Configurazione applicativa]]
+- [[Programmazione/Clean Code/Pagine/Configurazione applicativa|Configurazione applicativa]]
 
 ## Fonti
 

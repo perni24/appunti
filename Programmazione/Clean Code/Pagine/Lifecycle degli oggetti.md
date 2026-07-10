@@ -85,7 +85,7 @@ Lo stato `closed` protegge il lifecycle della risorsa.
 ## Collegamenti
 
 - [[Programmazione/Clean Code/Indice Clean Code]]
-- [[Incapsulamento]]
+- [[Programmazione/Clean Code/Pagine/Incapsulamento|Incapsulamento]]
 - [[Gestione delle risorse]]
 - [[Ownership concettuale]]
 - [[Cleanup e rilascio risorse]]

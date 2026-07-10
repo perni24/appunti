@@ -15,7 +15,7 @@ related: []
 
 ## Sintesi
 
-Nota su Analisi delle Query in PostgreSQL. Riassume il concetto, i meccanismi principali e i punti da ricordare durante studio, progettazione o amministrazione.
+L'analisi delle query confronta il piano stimato dal planner con l'esecuzione reale. `EXPLAIN`, `ANALYZE` e `BUFFERS` aiutano a individuare stime errate, scansioni costose, join inefficienti, sort su disco e colli di bottiglia dovuti a I/O.
 
 L'analisi delle query è il pilastro fondamentale per il **Database Tuning**. In PostgreSQL, questo processo ruota attorno alla comprensione del **Query Planner** e all'utilizzo del comando `EXPLAIN`.
 
@@ -198,3 +198,8 @@ Dopo l'indice, ripetere l'analisi e verificare se il piano migliora davvero.
 - [[Programmazione/Postgres/Pagine/Statistiche e Query Planner|Statistiche e Query Planner]]
 - [[Programmazione/Postgres/Pagine/Tipi di Indici|Tipi di Indici]]
 - [[Programmazione/Postgres/Pagine/Indici Parziali e Coprenti|Indici Parziali e Coprenti]]
+
+## Fonti
+
+- [PostgreSQL - Using EXPLAIN](https://www.postgresql.org/docs/current/using-explain.html)
+- [PostgreSQL - EXPLAIN](https://www.postgresql.org/docs/current/sql-explain.html)

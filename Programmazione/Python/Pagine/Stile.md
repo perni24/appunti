@@ -143,4 +143,4 @@ Il secondo esempio e piu lungo, ma comunica meglio il dominio.
 - [[isort]]
 - [[pre-commit]]
 - [[Type Hinting]]
-- [[Testing]]
+- [[Programmazione/Python/Pagine/Testing|Testing]]

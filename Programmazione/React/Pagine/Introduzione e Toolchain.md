@@ -128,4 +128,4 @@ export default function App() {
 - [[Componenti Funzionali vs Componenti a Classe]]
 - [[Props e Flusso di dati unidirezionale]]
 - [[Framework Next.js e Remix]]
-- [[Linting e Formattazione]]
+- [[Programmazione/React/Pagine/Linting e Formattazione|Linting e Formattazione]]

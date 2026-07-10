@@ -85,5 +85,5 @@ Il frontend legge un token fornito dal server e lo invia nelle richieste mutativ
 - [[Programmazione/React/Indice react|Indice React]]
 - [[Gestione Autenticazione]]
 - [[Protezione XSS]]
-- [[Content Security Policy]]
+- [[Programmazione/React/Pagine/Content Security Policy|Content Security Policy]]
 - [[API layer]]

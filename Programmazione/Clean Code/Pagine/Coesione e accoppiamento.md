@@ -90,7 +90,7 @@ Ogni componente ha una ragione piu chiara per cambiare.
 - [[Confini tra moduli]]
 - [[Dipendenze esplicite]]
 - [[Separazione delle responsabilita]]
-- [[Incapsulamento]]
+- [[Programmazione/Clean Code/Pagine/Incapsulamento|Incapsulamento]]
 
 ## Fonti
 

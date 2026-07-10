@@ -178,7 +178,7 @@ def test_send_notification():
 ## Collegamenti
 
 - [[Programmazione/Python/Indice python|Indice Python]]
-- [[Error Handling]]
+- [[Programmazione/Python/Pagine/Error Handling|Error Handling]]
 - [[Creazione di Package]]
 - [[Logging]]
 - [[tox e nox]]

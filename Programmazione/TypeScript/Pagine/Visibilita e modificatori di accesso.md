@@ -98,6 +98,6 @@ Il costruttore privato forza la creazione tramite `Password.create`, dove viene 
 
 ## Collegamenti
 
-- [[Classi]]
+- [[Programmazione/TypeScript/Pagine/Classi|Classi]]
 - [[Classi astratte]]
 - [[Implementazione di interfacce]]

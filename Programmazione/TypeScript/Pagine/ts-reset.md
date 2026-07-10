@@ -70,6 +70,6 @@ Questo spinge verso pattern piu sicuri con `unknown`, type guard o schema valida
 
 ## Collegamenti
 
-- [[Strict mode]]
+- [[Programmazione/TypeScript/Pagine/Strict mode|Strict mode]]
 - [[any, unknown e never]]
 - [[Validazione runtime e tipi statici]]

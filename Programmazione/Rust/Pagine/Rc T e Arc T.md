@@ -27,14 +27,14 @@ related:
 
 ## Sintesi
 
-`Rc<T>` e `Arc<T>` permettono ownership condivisa tramite reference counting. `Rc<T>` e per uso single-thread. `Arc<T>` e atomico e puo essere condiviso tra thread.
+`Rc<T>` e `Arc<T>` permettono ownership condivisa tramite reference counting. `Rc<T>` e per uso single-thread. `Arc<T>` rende atomico il contatore e puo attraversare thread solo quando il valore interno soddisfa i vincoli `Send` e `Sync` richiesti.
 
 Entrambi permettono molti proprietari dello stesso valore, ma non permettono mutazione diretta del valore interno senza un meccanismo di interior mutability.
 
 ## Quando usarlo
 
 - Usa `Rc<T>` quando piu parti single-thread devono condividere ownership.
-- Usa `Arc<T>` quando il valore deve essere condiviso tra thread.
+- Usa `Arc<T>` quando il valore deve essere condiviso tra thread e `T` e compatibile con tale condivisione.
 - Usa `Rc<RefCell<T>>` per mutabilita condivisa single-thread.
 - Usa `Arc<Mutex<T>>` o `Arc<RwLock<T>>` per stato condiviso mutabile tra thread.
 
@@ -109,7 +109,7 @@ fn main() {
 ## Varianti
 
 - `Rc<T>`: reference counting non atomico, single-thread.
-- `Arc<T>`: reference counting atomico, thread-safe.
+- `Arc<T>`: reference counting atomico; implementa `Send` e `Sync` quando anche `T` soddisfa i vincoli necessari.
 - `Weak<T>`: riferimento debole che non mantiene vivo il valore.
 - `Rc<RefCell<T>>`: ownership condivisa e mutabilita runtime single-thread.
 - `Arc<Mutex<T>>`: ownership condivisa e mutabilita sincronizzata tra thread.
@@ -120,6 +120,7 @@ fn main() {
 - Pensare che `Rc::clone` cloni il valore interno.
 - Creare cicli di `Rc` senza `Weak`, causando memory leak.
 - Usare `Arc<T>` per mutare dati senza `Mutex`, `RwLock` o atomics.
+- Pensare che `Arc<T>` renda thread-safe un tipo interno che non lo e, per esempio `RefCell<T>`.
 - Usare reference counting quando ownership semplice o borrowing bastano.
 
 ## Checklist
@@ -137,3 +138,9 @@ fn main() {
 - [[Programmazione/Rust/Pagine/Mutex T e RwLock T|Mutex T e RwLock T]]
 - [[Programmazione/Rust/Pagine/Interior mutability|Interior mutability]]
 - [[Programmazione/Rust/Pagine/Threads|Threads]]
+
+## Fonti
+
+- [Rust Standard Library - Arc](https://doc.rust-lang.org/std/sync/struct.Arc.html)
+- [Rust Standard Library - Send](https://doc.rust-lang.org/std/marker/trait.Send.html)
+- [Rust Standard Library - Sync](https://doc.rust-lang.org/std/marker/trait.Sync.html)

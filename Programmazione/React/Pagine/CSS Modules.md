@@ -103,4 +103,4 @@ Variabili CSS:
 - [[Programmazione/React/Indice react|Indice React]]
 - [[Styling base]]
 - [[Design system]]
-- [[Linting e Formattazione]]
+- [[Programmazione/React/Pagine/Linting e Formattazione|Linting e Formattazione]]

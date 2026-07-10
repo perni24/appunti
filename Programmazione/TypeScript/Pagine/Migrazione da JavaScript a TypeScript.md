@@ -98,6 +98,6 @@ La conversione chiarisce il contratto della funzione e protegge i chiamanti.
 ## Collegamenti
 
 - [[JSDoc e type checking in JavaScript]]
-- [[Strict mode]]
+- [[Programmazione/TypeScript/Pagine/Strict mode|Strict mode]]
 - [[any, unknown e never]]
 - [[Validazione runtime e tipi statici]]

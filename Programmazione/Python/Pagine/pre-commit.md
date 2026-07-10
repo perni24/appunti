@@ -140,5 +140,5 @@ repos:
 - [[Programmazione/Python/Indice python|Indice Python]]
 - [[Stile]]
 - [[isort]]
-- [[Testing]]
+- [[Programmazione/Python/Pagine/Testing|Testing]]
 - [[tox e nox]]

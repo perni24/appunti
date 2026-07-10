@@ -151,5 +151,5 @@ with open("input.txt", encoding="utf-8") as source, open("output.txt", "w", enco
 
 - [[Programmazione/Python/Indice python|Indice Python]]
 - [[Gestione File]]
-- [[Error Handling]]
+- [[Programmazione/Python/Pagine/Error Handling|Error Handling]]
 - [[Memory Management]]

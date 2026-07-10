@@ -1,4 +1,4 @@
-﻿---
+---
 date: 2026-06-02
 area: Programmazione
 topic: JavaScript
@@ -192,7 +192,7 @@ settings.apiUrl = "https://evil.example.com"; // TypeError in strict mode
 
 Senza strict mode, l'assegnazione puo fallire silenziosamente.
 
-Collegamento: [[Strict Mode]]
+Collegamento: [[Programmazione/JavaScript/Pagine/Strict Mode|Strict Mode]]
 ### 6. enumerable
 `enumerable` controlla se la proprieta appare nelle enumerazioni.
 
@@ -310,7 +310,7 @@ Getter e setter sono utili per:
 - compatibilita con API esistenti;
 - incapsulamento controllato.
 
-Collegamento: [[Incapsulamento]]
+Collegamento: [[Programmazione/JavaScript/Pagine/Incapsulamento|Incapsulamento]]
 ### 11. Data vs Accessor Descriptor
 Un descriptor non puo essere contemporaneamente data descriptor e accessor descriptor.
 
@@ -373,7 +373,7 @@ console.log(descriptor.enumerable); // false
 
 Questo evita che i metodi appaiano in enumerazioni comuni.
 
-Collegamento: [[Classi]]
+Collegamento: [[Programmazione/JavaScript/Pagine/Classi|Classi]]
 ### 14. Descriptor e Prototype
 I descriptor lavorano anche sui prototype.
 
@@ -568,8 +568,8 @@ Molte violazioni falliscono silenziosamente senza strict mode.
 
 - [[Oggetti Avanzati]]
 - [[Prototypes]]
-- [[Classi]]
-- [[Incapsulamento]]
-- [[Strict Mode]]
+- [[Programmazione/JavaScript/Pagine/Classi|Classi]]
+- [[Programmazione/JavaScript/Pagine/Incapsulamento|Incapsulamento]]
+- [[Programmazione/JavaScript/Pagine/Strict Mode|Strict Mode]]
 - [[JSON]]
 - [[Proxy e Reflect]]

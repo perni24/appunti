@@ -89,5 +89,5 @@ Il client deve gestire sia successo sia errore, invece di assumere sempre rispos
 
 - [[API tipizzate]]
 - [[Generazione di tipi da API]]
-- [[DTO e modelli di dominio]]
+- [[Programmazione/TypeScript/Pagine/DTO e modelli di dominio|DTO e modelli di dominio]]
 - [[Schema validation con Zod]]

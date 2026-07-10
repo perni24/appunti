@@ -93,4 +93,4 @@ Un handler capace di gestire qualsiasi `Animal` puo gestire anche un `Dog`.
 
 - [[Generics avanzati]]
 - [[Structural typing]]
-- [[Strict mode]]
+- [[Programmazione/TypeScript/Pagine/Strict mode|Strict mode]]

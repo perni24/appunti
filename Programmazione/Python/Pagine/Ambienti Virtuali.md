@@ -148,4 +148,4 @@ Poi aggiungi `.venv/` al `.gitignore`, perche l'ambiente si ricrea: non va commi
 - [[Pip e PyPI]]
 - [[uv pipx e poetry]]
 - [[Creazione di Package]]
-- [[Testing]]
+- [[Programmazione/Python/Pagine/Testing|Testing]]

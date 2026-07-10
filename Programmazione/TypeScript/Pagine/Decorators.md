@@ -85,7 +85,7 @@ Questo esempio rappresenta lo stile dei decorators moderni. In progetti legacy l
 
 ## Collegamenti
 
-- [[Classi]]
+- [[Programmazione/TypeScript/Pagine/Classi|Classi]]
 - [[tsconfig]]
 - [[TypeScript con Node.js]]
 - https://www.typescriptlang.org/docs/handbook/decorators.html

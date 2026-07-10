@@ -92,7 +92,7 @@ La classe base fornisce `requireByEmail`, mentre le implementazioni concrete dec
 
 ## Collegamenti
 
-- [[Classi]]
+- [[Programmazione/TypeScript/Pagine/Classi|Classi]]
 - [[Visibilita e modificatori di accesso]]
 - [[Implementazione di interfacce]]
-- [[Generics]]
+- [[Programmazione/TypeScript/Pagine/Generics|Generics]]

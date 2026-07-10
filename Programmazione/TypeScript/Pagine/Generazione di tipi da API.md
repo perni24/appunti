@@ -77,4 +77,4 @@ Il tipo della risposta deriva dallo schema OpenAPI.
 
 - [[API tipizzate]]
 - [[Validazione runtime e tipi statici]]
-- [[DTO e modelli di dominio]]
+- [[Programmazione/TypeScript/Pagine/DTO e modelli di dominio|DTO e modelli di dominio]]

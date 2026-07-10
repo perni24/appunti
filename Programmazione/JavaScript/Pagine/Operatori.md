@@ -1,4 +1,4 @@
-﻿---
+---
 date: 2026-06-02
 area: Programmazione
 topic: JavaScript
@@ -300,6 +300,6 @@ Se `page` vale `0`, `??` lo mantiene. Con `||`, invece, `0` verrebbe trattato co
 ## Collegamenti
 
 - [[Tipi di Dati]]
-- [[Strutture Condizionali]]
+- [[Programmazione/JavaScript/Pagine/Strutture Condizionali|Strutture Condizionali]]
 - [[Variabili]]
 - [[JSON]]

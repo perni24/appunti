@@ -93,7 +93,7 @@ La cache e esplicita e il TTL limita la durata del dato.
 
 - [[Programmazione/Clean Code/Indice Clean Code]]
 - [[Gestione dello stato]]
-- [[Configurazione applicativa]]
+- [[Programmazione/Clean Code/Pagine/Configurazione applicativa|Configurazione applicativa]]
 - [[Side effects controllati]]
 - [[Invarianti interne]]
 

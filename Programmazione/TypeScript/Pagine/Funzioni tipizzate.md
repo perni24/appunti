@@ -94,4 +94,4 @@ La funzione non accetta un oggetto generico: richiede un valore compatibile con 
 
 - [[Variabili e annotazioni di tipo]]
 - [[Firme di funzione e overload]]
-- [[Generics]]
+- [[Programmazione/TypeScript/Pagine/Generics|Generics]]

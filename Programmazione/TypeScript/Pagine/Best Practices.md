@@ -81,7 +81,7 @@ Il tipo rappresenta esplicitamente successo ed errore.
 
 ## Collegamenti
 
-- [[Strict mode]]
+- [[Programmazione/TypeScript/Pagine/Strict mode|Strict mode]]
 - [[Validazione runtime e tipi statici]]
-- [[Error Handling]]
+- [[Programmazione/TypeScript/Pagine/Error Handling|Error Handling]]
 - [[Domain modeling]]

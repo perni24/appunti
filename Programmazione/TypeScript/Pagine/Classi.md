@@ -101,4 +101,4 @@ La classe incapsula lo stato interno `startedAt` e offre metodi pubblici per usa
 - [[Visibilita e modificatori di accesso]]
 - [[Classi astratte]]
 - [[Implementazione di interfacce]]
-- [[Generics]]
+- [[Programmazione/TypeScript/Pagine/Generics|Generics]]

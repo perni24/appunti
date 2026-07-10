@@ -15,7 +15,7 @@ related: []
 
 ## Sintesi
 
-Nota su MVCC (Multi-Version Concurrency Control) in PostgreSQL. Riassume il concetto, i meccanismi principali e i punti da ricordare durante studio, progettazione o amministrazione.
+MVCC permette a PostgreSQL di conservare più versioni logiche delle righe e scegliere quali sono visibili a ogni statement o transazione. Riduce la contesa tra letture e scritture, ma richiede vacuum, controllo delle transazioni lunghe e una corretta comprensione degli snapshot.
 
 Il **Multi-Version Concurrency Control (MVCC)** è il meccanismo fondamentale con cui PostgreSQL gestisce l'accesso simultaneo ai dati da parte di più utenti senza compromettere l'integrità.
 
@@ -33,14 +33,14 @@ Serve capire MVCC quando analizzi concorrenza, bloat, vacuum e visibilita dei da
 ## Come funziona
 
 ### Concetto chiave
-La filosofia di MVCC è: **"I lettori non bloccano i scrittori, e i scrittori non bloccano i lettori"**. Invece di bloccare una riga quando viene modificata, Postgres ne crea una nuova versione, permettendo a chi legge di vedere lo stato dei dati coerente al momento dell'inizio della propria transazione.
+La proprietà pratica di MVCC è che le normali letture di righe non confliggono con le normali scritture sulle stesse righe. Un `UPDATE` crea una nuova versione della tupla e lo snapshot decide quale versione è visibile. Il momento dello snapshot dipende dal livello di isolamento: per statement in `READ COMMITTED`, per transazione in `REPEATABLE READ` e `SERIALIZABLE`.
 
 ---
 ### Come funziona: Versionamento delle Righe
 Ogni riga (tuple) in PostgreSQL contiene dei campi nascosti che gestiscono la visibilità:
 
 - **xmin:** L'ID della transazione che ha inserito la riga.
-- **xmax:** L'ID della transazione che ha eliminato o aggiornato la riga. Se è 0, la riga è attualmente valida.
+- **xmax:** Informazione usata per eliminazioni, aggiornamenti e alcuni lock di riga. Un valore non nullo non basta da solo a stabilire che la tupla sia invisibile: bisogna considerare stato della transazione, bit di hint, eventuali MultiXact e snapshot corrente.
 
 ### UPDATE come DELETE + INSERT
 Quando esegui un `UPDATE`:
@@ -49,9 +49,10 @@ Quando esegui un `UPDATE`:
 
 ---
 ### Visibilità delle Transazioni (Snapshot)
-Ogni transazione opera su uno **Snapshot**. Uno snapshot definisce quali transazioni sono "visibili":
-- Sono visibili le righe il cui `xmin` è una transazione già confermata (`COMMITTED`).
-- Non sono visibili le righe il cui `xmin` è ancora in corso o il cui `xmax` è già stato confermato.
+Ogni statement opera rispetto a uno **snapshot**; il livello di isolamento stabilisce se gli statement successivi riusano lo stesso snapshot. In modo semplificato:
+- una versione inserita da una transazione confermata può essere visibile se il commit precede lo snapshot;
+- una versione inserita da una transazione ancora in corso o abortita non è visibile;
+- un `xmax` confermato rende la vecchia versione invisibile solo agli snapshot successivi alla modifica.
 
 Questo garantisce l'[[Programmazione/Postgres/Pagine/Proprietà ACID|Isolamento]] richiesto dai diversi livelli di transazione.
 
@@ -63,16 +64,16 @@ Poiché gli update e i delete non eliminano fisicamente i dati ma creano nuove v
 Il compito di **VACUUM** è:
 1.  Identificare le Dead Tuples.
 2.  Marcarne lo spazio come riutilizzabile per nuovi inserimenti.
-3.  Aggiornare le mappe di visibilità e le statistiche per il Query Planner.
+3.  Aggiornare visibility map, free space map e alcune statistiche di tabella. Le statistiche sulla distribuzione dei valori usate dal planner vengono raccolte da `ANALYZE`.
 
 > [!INFO] Autovacuum
-> PostgreSQL include un demone chiamato `autovacuum` che esegue queste operazioni automaticamente in background basandosi sulla quantità di modifiche effettuate sulle tabelle.
+> Il sottosistema autovacuum avvia worker che eseguono `VACUUM` e `ANALYZE` in base a soglie distinte, oltre a prevenire il wraparound degli ID di transazione.
 
 ---
 ### Logic layer: Vantaggi di MVCC
 1.  **Alta Concorrenza:** Ideale per sistemi con molti lettori (es: siti web).
-2.  **Performance Costanti:** Le letture non devono mai aspettare che un lock venga rilasciato da una scrittura.
-3.  **Rollback Istantaneo:** Annullare una transazione è semplicissimo: basta ignorare tutte le righe create con quell'ID transazione (non c'è bisogno di "disfare" i dati fisici).
+2.  **Minore contesa tra DML:** Le normali letture non aspettano i row lock delle normali scritture, ma possono comunque attendere lock di tabella incompatibili, per esempio durante alcuni DDL.
+3.  **Rollback logico rapido:** Le versioni create da una transazione abortita diventano invisibili senza un undo fisico immediato; il recupero dello spazio resta compito di `VACUUM`.
 
 ---
 
@@ -158,3 +159,9 @@ Con MVCC, la lettura della transazione A non deve bloccare la scrittura della tr
 - [[Programmazione/Postgres/Pagine/Livelli di Isolamento delle Transazioni|Livelli di Isolamento delle Transazioni]]
 - [[Programmazione/Postgres/Pagine/Meccanismi di Locking|Meccanismi di Locking]]
 - [[Programmazione/Postgres/Pagine/Manutenzione|Manutenzione]]
+
+## Fonti
+
+- [PostgreSQL - Introduction to MVCC](https://www.postgresql.org/docs/current/mvcc-intro.html)
+- [PostgreSQL - Transaction Isolation](https://www.postgresql.org/docs/current/transaction-iso.html)
+- [PostgreSQL - Routine Vacuuming](https://www.postgresql.org/docs/current/routine-vacuuming.html)

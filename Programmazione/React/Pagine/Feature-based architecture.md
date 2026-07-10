@@ -102,4 +102,4 @@ La pagina importa il hook della feature, non dettagli del backend sparsi.
 - [[API layer]]
 - [[Design system]]
 - [[State colocato]]
-- [[Linting e Formattazione]]
+- [[Programmazione/React/Pagine/Linting e Formattazione|Linting e Formattazione]]

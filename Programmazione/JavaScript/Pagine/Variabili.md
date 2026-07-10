@@ -1,4 +1,4 @@
-﻿---
+---
 date: 2026-06-02
 area: Programmazione
 topic: JavaScript
@@ -254,5 +254,5 @@ for (const user of users) {
 - [[Tipi di Dati]]
 - [[Scope]]
 - [[Hoisting]]
-- [[Strict Mode]]
+- [[Programmazione/JavaScript/Pagine/Strict Mode|Strict Mode]]
 - [[Immutabilita e Copia degli Oggetti]]

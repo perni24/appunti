@@ -91,4 +91,4 @@ Il parser non restituisce semplicemente `number`: applica regole di dominio.
 - [[Validazione runtime e tipi statici]]
 - [[Schema validation con Zod]]
 - [[API contract]]
-- [[Error Handling]]
+- [[Programmazione/TypeScript/Pagine/Error Handling|Error Handling]]

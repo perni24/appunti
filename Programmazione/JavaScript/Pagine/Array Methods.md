@@ -1,4 +1,4 @@
-﻿---
+---
 date: 2026-06-02
 area: Programmazione
 topic: JavaScript
@@ -305,8 +305,8 @@ La catena e leggibile se ogni passaggio ha uno scopo chiaro. Se la logica cresce
 
 ## Collegamenti
 
-- [[Cicli]]
-- [[Funzioni]]
+- [[Programmazione/JavaScript/Pagine/Cicli|Cicli]]
+- [[Programmazione/JavaScript/Pagine/Funzioni|Funzioni]]
 - [[Promise avanzate]]
 - [[Functional Programming]]
 - [[Immutabilita e Copia degli Oggetti]]

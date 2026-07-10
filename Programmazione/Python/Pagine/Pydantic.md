@@ -133,4 +133,4 @@ Questo separa input e output, evitando di esporre campi interni per errore.
 - [[Type Hinting]]
 - [[FastAPI]]
 - [[Configurazione e Variabili d Ambiente]]
-- [[Error Handling]]
+- [[Programmazione/Python/Pagine/Error Handling|Error Handling]]

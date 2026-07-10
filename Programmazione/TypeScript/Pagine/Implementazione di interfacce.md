@@ -97,6 +97,6 @@ async function notify(sender: EmailSender): Promise<void> {
 ## Collegamenti
 
 - [[Type Aliases e Interfaces]]
-- [[Classi]]
+- [[Programmazione/TypeScript/Pagine/Classi|Classi]]
 - [[Classi astratte]]
-- [[Generics]]
+- [[Programmazione/TypeScript/Pagine/Generics|Generics]]

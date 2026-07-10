@@ -163,6 +163,6 @@ with open("data.txt", encoding="utf-8") as file:
 
 - [[Programmazione/Python/Indice python|Indice Python]]
 - [[Generatori]]
-- [[Cicli]]
+- [[Programmazione/Python/Pagine/Cicli|Cicli]]
 - [[Comprehensions]]
 - [[Data model]]

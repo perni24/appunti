@@ -97,6 +97,6 @@ Il service dipende da un'interfaccia, quindi puo essere testato con un repositor
 
 ## Collegamenti
 
-- [[DTO e modelli di dominio]]
+- [[Programmazione/TypeScript/Pagine/DTO e modelli di dominio|DTO e modelli di dominio]]
 - [[Dependency injection]]
 - [[Clean architecture]]

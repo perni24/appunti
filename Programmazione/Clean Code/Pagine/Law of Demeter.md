@@ -88,7 +88,7 @@ Il chiamante non conosce piu la struttura interna dell'ordine.
 
 - [[Programmazione/Clean Code/Indice Clean Code]]
 - [[Tell Don't Ask]]
-- [[Incapsulamento]]
+- [[Programmazione/Clean Code/Pagine/Incapsulamento|Incapsulamento]]
 - [[Coesione e accoppiamento]]
 - [[Confini tra moduli]]
 

@@ -120,8 +120,8 @@ fn run(logger: &dyn Logger) {
 
 - `&dyn Trait`: prestito dinamico.
 - `Box<dyn Trait>`: ownership heap del valore dinamico.
-- `Arc<dyn Trait>`: ownership condivisa thread-safe.
-- `dyn Trait + Send + Sync`: trait object con marker trait.
+- `Arc<dyn Trait>`: ownership condivisa con contatore atomico, ma non necessariamente trasferibile tra thread.
+- `Arc<dyn Trait + Send + Sync>`: ownership condivisa utilizzabile tra thread quando le implementazioni rispettano entrambi i marker trait.
 - `impl Trait`: alternativa statica quando il tipo concreto resta unico.
 
 ## Errori comuni
@@ -131,6 +131,7 @@ fn run(logger: &dyn Logger) {
 - Provare a mettere valori di tipi diversi in `Vec<T>` senza usare indirection.
 - Restituire `dyn Trait` senza puntatore: i trait object sono unsized.
 - Confondere `impl Trait` e `dyn Trait`.
+- Presumere che `Arc<dyn Trait>` sia automaticamente `Send + Sync` senza dichiarare i marker trait richiesti.
 
 ## Checklist
 
@@ -147,3 +148,8 @@ fn run(logger: &dyn Logger) {
 - [[Programmazione/Rust/Pagine/Static dispatch vs dynamic dispatch|Static dispatch vs dynamic dispatch]]
 - [[Programmazione/Rust/Pagine/Box T|Box T]]
 - [[Programmazione/Rust/Pagine/Rc T e Arc T|Rc T e Arc T]]
+
+## Fonti
+
+- [The Rust Reference - Trait objects](https://doc.rust-lang.org/reference/types/trait-object.html)
+- [Rust Standard Library - Arc thread safety](https://doc.rust-lang.org/std/sync/struct.Arc.html#thread-safety)

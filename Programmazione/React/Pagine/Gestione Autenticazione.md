@@ -117,6 +117,6 @@ useEffect(() => {
 - [[Programmazione/React/Indice react|Indice React]]
 - [[Protezione XSS]]
 - [[CSRF]]
-- [[Content Security Policy]]
+- [[Programmazione/React/Pagine/Content Security Policy|Content Security Policy]]
 - [[Context API]]
 - [[API layer]]

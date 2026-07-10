@@ -15,7 +15,7 @@ related: []
 
 ## Sintesi
 
-Nota su Tipi di Indici in PostgreSQL. Riassume il concetto, i meccanismi principali e i punti da ricordare durante studio, progettazione o amministrazione.
+PostgreSQL offre diversi access method per collegare operatori e pattern di query a strutture indicizzate. La scelta non dipende solo dal tipo della colonna, ma dagli operatori usati, dalla selettività, dall'ordinamento richiesto, dalla distribuzione fisica dei dati e dal costo sulle scritture.
 
 ## Quando usarlo
 
@@ -60,7 +60,7 @@ Una struttura ad albero bilanciata che permette di implementare schemi di indici
 ### 5. BRIN (Block Range Index)
 Invece di indicizzare ogni riga, BRIN memorizza i valori minimi e massimi di ogni blocco di pagine.
 - **Utilizzo**: Tabelle gigantesche (miliardi di righe) dove i dati hanno una correlazione naturale con l'inserimento fisico (es. log cronologici, sensori).
-- **Vantaggio**: Occupano uno spazio infinitesimale rispetto a un B-Tree.
+- **Vantaggio**: Possono essere molto più piccoli di un B-Tree quando i dati sono fisicamente correlati con il valore indicizzato.
 
 ### 6. SP-GiST (Space-Partitioned GiST)
 Ottimizzato per partizionare spazi non bilanciati.
@@ -69,9 +69,9 @@ Ottimizzato per partizionare spazi non bilanciati.
 ---
 ### Logic layer: Quale indice scegliere?
 > [!IMPORTANT] Criteri di Selezione
-> 1. **Dati standard (Stringhe, Numeri)**: Sempre **B-Tree**.
-> 2. **Dati JSONB**: Quasi sempre **GIN** per permettere ricerche veloci sulle chiavi interne.
-> 3. **Dati Geografici (PostGIS)**: Sempre **GiST**.
+> 1. **Uguaglianza, range e ordinamento su tipi scalari**: parti da **B-Tree**, poi verifica il piano reale.
+> 2. **Contenimento e ricerca interna in `jsonb`**: valuta **GIN** e scegli l'operator class in base agli operatori; per un singolo campo possono essere migliori expression index o B-Tree.
+> 3. **Dati geografici PostGIS**: **GiST** è la scelta comune, ma alcune geometrie e query possono usare SP-GiST o BRIN.
 > 4. **Tabelle di Log enormi (Time Series)**: Considera **BRIN** per risparmiare spazio su disco pur mantenendo prestazioni di scansione accettabili.
 
 ---
@@ -166,3 +166,9 @@ CREATE INDEX events_payload_gin_idx ON events USING gin (payload);
 - [[Programmazione/Postgres/Pagine/Indici Parziali e Coprenti|Indici Parziali e Coprenti]]
 - [[Programmazione/Postgres/Pagine/Analisi delle Query|Analisi delle Query]]
 - [[Programmazione/Postgres/Pagine/Statistiche e Query Planner|Statistiche e Query Planner]]
+
+## Fonti
+
+- [PostgreSQL - Index Types](https://www.postgresql.org/docs/current/indexes-types.html)
+- [PostgreSQL - GIN Indexes](https://www.postgresql.org/docs/current/gin.html)
+- [PostgreSQL - BRIN Indexes](https://www.postgresql.org/docs/current/brin.html)

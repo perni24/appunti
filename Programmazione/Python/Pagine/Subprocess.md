@@ -130,7 +130,7 @@ print(current_branch())
 ## Collegamenti
 
 - [[Programmazione/Python/Indice python|Indice Python]]
-- [[Error Handling]]
+- [[Programmazione/Python/Pagine/Error Handling|Error Handling]]
 - [[CLI con argparse]]
 - [[Standard Library]]
 - [[Automazione file e script]]

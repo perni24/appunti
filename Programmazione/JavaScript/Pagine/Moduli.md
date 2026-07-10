@@ -1,4 +1,4 @@
-﻿---
+---
 date: 2026-06-02
 area: Programmazione
 topic: JavaScript
@@ -291,6 +291,6 @@ Il modulo `signup.js` dipende da una funzione esplicita, facile da testare e sos
 
 - [[Dynamic Import]]
 - [[Circular Dependencies]]
-- [[Strict Mode]]
+- [[Programmazione/JavaScript/Pagine/Strict Mode|Strict Mode]]
 - [[Scope]]
-- [[Funzioni]]
+- [[Programmazione/JavaScript/Pagine/Funzioni|Funzioni]]

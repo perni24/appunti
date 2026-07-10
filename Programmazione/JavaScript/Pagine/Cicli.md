@@ -1,4 +1,4 @@
-﻿---
+---
 date: 2026-06-02
 area: Programmazione
 topic: JavaScript
@@ -282,5 +282,5 @@ await Promise.all(items.map((item) => saveItem(item)));
 - [[Array Methods]]
 - [[Generators e Iterators]]
 - [[Promise avanzate]]
-- [[Async Await]]
-- [[Strutture Condizionali]]
+- [[Programmazione/JavaScript/Pagine/Async Await|Async Await]]
+- [[Programmazione/JavaScript/Pagine/Strutture Condizionali|Strutture Condizionali]]

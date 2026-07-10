@@ -101,7 +101,7 @@ Senza `Box`, `Expr::Add` conterrebbe direttamente altri `Expr` e il tipo avrebbe
 - `Box<dyn Trait>`: trait object posseduto.
 - `Pin<Box<T>>`: valore heap che non deve essere mosso.
 - `Rc<T>`: ownership condivisa single-thread.
-- `Arc<T>`: ownership condivisa thread-safe.
+- `Arc<T>`: ownership condivisa con reference counting atomico; la condivisione tra thread richiede che `T` soddisfi i vincoli `Send` e `Sync` necessari.
 
 ## Errori comuni
 
@@ -126,3 +126,8 @@ Senza `Box`, `Expr::Add` conterrebbe direttamente altri `Expr` e il tipo avrebbe
 - [[Programmazione/Rust/Pagine/Drop Trait|Drop Trait]]
 - [[Programmazione/Rust/Pagine/Trait objects e dyn Trait|Trait objects e dyn Trait]]
 - [[Programmazione/Rust/Pagine/Pin e Unpin|Pin e Unpin]]
+
+## Fonti
+
+- [Rust Standard Library - Box](https://doc.rust-lang.org/std/boxed/struct.Box.html)
+- [Rust Standard Library - Arc](https://doc.rust-lang.org/std/sync/struct.Arc.html)

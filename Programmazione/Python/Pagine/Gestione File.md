@@ -137,6 +137,6 @@ with open("image.png", "rb") as file:
 
 - [[Programmazione/Python/Indice python|Indice Python]]
 - [[Context Managers]]
-- [[Error Handling]]
+- [[Programmazione/Python/Pagine/Error Handling|Error Handling]]
 - [[Generatori]]
 - [[Standard Library]]

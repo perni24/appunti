@@ -94,7 +94,7 @@ Questa configurazione e tipica per un progetto Node.js TypeScript che compila da
 
 ## Collegamenti
 
-- [[Strict mode]]
+- [[Programmazione/TypeScript/Pagine/Strict mode|Strict mode]]
 - [[Module resolution]]
 - [[Path aliases]]
 - [[Project references]]

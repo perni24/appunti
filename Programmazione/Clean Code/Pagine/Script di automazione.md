@@ -86,7 +86,7 @@ Separare `main`, configurazione e logica rende lo script testabile.
 ## Collegamenti
 
 - [[Programmazione/Clean Code/Indice Clean Code]]
-- [[Configurazione applicativa]]
+- [[Programmazione/Clean Code/Pagine/Configurazione applicativa|Configurazione applicativa]]
 - [[Gestione esplicita degli errori]]
 - [[File system e IO]]
 - [[Logging e tracing]]

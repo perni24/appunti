@@ -157,4 +157,4 @@ except FileNotFoundError:
 - [[Context Managers]]
 - [[Gestione File]]
 - [[Logging]]
-- [[Testing]]
+- [[Programmazione/Python/Pagine/Testing|Testing]]

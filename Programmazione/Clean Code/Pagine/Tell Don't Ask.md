@@ -85,7 +85,7 @@ La regola di pagamento resta dentro `Order`.
 ## Collegamenti
 
 - [[Programmazione/Clean Code/Indice Clean Code]]
-- [[Incapsulamento]]
+- [[Programmazione/Clean Code/Pagine/Incapsulamento|Incapsulamento]]
 - [[Oggetti con responsabilita chiara]]
 - [[Invarianti del dominio]]
 - [[Law of Demeter]]

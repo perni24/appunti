@@ -149,6 +149,6 @@ Alcuni moduli hanno differenze tra sistemi operativi. Per esempio `os`, `signal`
 - [[Introspezione]]
 - [[Caching]]
 - [[Logging]]
-- [[Testing]]
+- [[Programmazione/Python/Pagine/Testing|Testing]]
 - [[Asyncio]]
 - [[Threading]]

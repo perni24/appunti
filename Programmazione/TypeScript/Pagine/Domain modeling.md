@@ -86,7 +86,7 @@ Il dominio non accetta una stringa qualunque come email.
 
 ## Collegamenti
 
-- [[DTO e modelli di dominio]]
+- [[Programmazione/TypeScript/Pagine/DTO e modelli di dominio|DTO e modelli di dominio]]
 - [[Brand Types]]
 - [[Discriminated Unions]]
 - [[Clean architecture]]

@@ -90,7 +90,7 @@ Il controller coordina l'input, ma non contiene tutta la logica.
 - [[Funzioni con responsabilita singola]]
 - [[Coesione e accoppiamento]]
 - [[SOLID]]
-- [[Incapsulamento]]
+- [[Programmazione/Clean Code/Pagine/Incapsulamento|Incapsulamento]]
 - [[Oggetti con responsabilita chiara]]
 
 ## Fonti

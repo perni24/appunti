@@ -88,7 +88,7 @@ Passare `fileSystem` come dipendenza permette di testare il comportamento senza 
 - [[Programmazione/Clean Code/Indice Clean Code]]
 - [[Side effects controllati]]
 - [[Gestione esplicita degli errori]]
-- [[Configurazione applicativa]]
+- [[Programmazione/Clean Code/Pagine/Configurazione applicativa|Configurazione applicativa]]
 - [[Parsing e serializzazione]]
 - [[Codice testabile]]
 

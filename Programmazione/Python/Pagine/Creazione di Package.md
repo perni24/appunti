@@ -167,5 +167,5 @@ print(add(2, 3))
 - [[Programmazione/Python/Indice python|Indice Python]]
 - [[Pip e PyPI]]
 - [[Ambienti Virtuali]]
-- [[Testing]]
+- [[Programmazione/Python/Pagine/Testing|Testing]]
 - [[uv pipx e poetry]]

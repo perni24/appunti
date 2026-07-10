@@ -95,4 +95,4 @@ function formatUser(result: ApiResult<User>): string {
 
 - [[Union e Intersection Types]]
 - [[Implementazione di interfacce]]
-- [[Generics]]
+- [[Programmazione/TypeScript/Pagine/Generics|Generics]]

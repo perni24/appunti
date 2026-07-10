@@ -159,7 +159,7 @@ nox -s tests
 ## Collegamenti
 
 - [[Programmazione/Python/Indice python|Indice Python]]
-- [[Testing]]
+- [[Programmazione/Python/Pagine/Testing|Testing]]
 - [[Ambienti Virtuali]]
 - [[pre-commit]]
 - [[uv pipx e poetry]]

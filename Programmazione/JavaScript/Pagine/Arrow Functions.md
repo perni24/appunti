@@ -1,4 +1,4 @@
-﻿---
+---
 date: 2026-06-02
 area: Programmazione
 topic: JavaScript
@@ -214,7 +214,7 @@ L'arrow function mantiene il `this` del metodo `start`.
 
 ## Collegamenti
 
-- [[Funzioni]]
+- [[Programmazione/JavaScript/Pagine/Funzioni|Funzioni]]
 - [[Context]]
 - [[Callback]]
 - [[Array Methods]]

@@ -1,4 +1,4 @@
-﻿---
+---
 date: 2026-06-02
 area: Programmazione
 topic: JavaScript
@@ -517,6 +517,6 @@ Se il ciclo nasce da architettura confusa, lazy loading puo solo spostare il pro
 - [[Dynamic Import]]
 - [[Hoisting]]
 - [[Scope]]
-- [[Classi]]
+- [[Programmazione/JavaScript/Pagine/Classi|Classi]]
 - [[Design Patterns]]
 - [[Optimization]]

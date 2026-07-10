@@ -152,7 +152,7 @@ if __name__ == "__main__":
 ## Collegamenti
 
 - [[Programmazione/Python/Indice python|Indice Python]]
-- [[Error Handling]]
+- [[Programmazione/Python/Pagine/Error Handling|Error Handling]]
 - [[Configurazione e Variabili d Ambiente]]
 - [[Standard Library]]
-- [[Testing]]
+- [[Programmazione/Python/Pagine/Testing|Testing]]

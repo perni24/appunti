@@ -88,6 +88,6 @@ Prima di introdurre il compiler:
 - [[Programmazione/React/Indice react|Indice React]]
 - [[useMemo e useCallback]]
 - [[Profiler e Debugging]]
-- [[Linting e Formattazione]]
+- [[Programmazione/React/Pagine/Linting e Formattazione|Linting e Formattazione]]
 - [[Fiber Architecture e Concurrent Mode]]
 - [React Compiler](https://react.dev/learn/react-compiler)

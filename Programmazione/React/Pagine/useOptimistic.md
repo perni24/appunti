@@ -30,43 +30,58 @@ const [optimisticItems, addOptimisticItem] = useOptimistic(
 );
 ```
 
-Quando invii una action, aggiorni temporaneamente la UI prima della risposta.
+Il setter ottimistico deve essere chiamato dentro una Action, per esempio una funzione passata a `<form action>` oppure una funzione eseguita con `startTransition`. Fuori da una Action React mostra un warning e lo stato ottimistico puo apparire solo brevemente.
 
 ## API / Sintassi
 
 ```jsx
-function Comments({ comments }) {
+function Comments({ comments, createComment }) {
   const [optimisticComments, addOptimisticComment] = useOptimistic(
     comments,
-    (state, comment) => [...state, comment]
+    (state, comment) => [...state, { ...comment, pending: true }]
+  );
+
+  async function submitAction(formData) {
+    const text = formData.get("text");
+    const draft = { id: crypto.randomUUID(), text };
+
+    addOptimisticComment(draft);
+    await createComment(draft);
+  }
+
+  return (
+    <>
+      <form action={submitAction}>
+        <input name="text" />
+        <button type="submit">Invia</button>
+      </form>
+      {optimisticComments.map((comment) => (
+        <p key={comment.id} aria-busy={comment.pending}>
+          {comment.text}
+        </p>
+      ))}
+    </>
   );
 }
 ```
 
 ## Esempio pratico
 
-```jsx
-async function submitComment(formData) {
-  const text = formData.get("text");
-  addOptimisticComment({ id: "temp", text });
-  await createComment({ text });
-}
-```
-
-La UI mostra subito il commento, poi si riallinea con dati reali.
+La prop `action` del form esegue `submitAction` nel contesto richiesto da React. Durante l'attesa viene mostrato il draft; quando il parent aggiorna `comments`, lo stato ottimistico converge con quello canonico. Se l'Action fallisce e il valore base non cambia, React torna automaticamente al valore precedente; l'applicazione deve comunque mostrare l'errore all'utente.
 
 ## Varianti
 
 - **Append ottimistico**: aggiunta lista.
 - **Toggle ottimistico**: like/favorite.
 - **Update ottimistico**: modifica campo.
-- **Rollback manuale**: se action fallisce.
+- **Ripristino dal valore base**: al termine di una Action fallita lo stato ottimistico temporaneo scompare; gestisci separatamente messaggio di errore ed eventuali effetti esterni.
 - **Cache optimistic update**: gestito da librerie data fetching.
 
 ## Errori comuni
 
 - Usarlo per azioni con alta probabilita di fallimento.
-- Non gestire rollback o messaggio errore.
+- Non gestire il messaggio di errore o presumere che gli effetti esterni siano annullati automaticamente.
+- Chiamare il setter ottimistico fuori da una Action.
 - Creare id temporanei non riconciliati.
 - Usare optimistic UI per operazioni critiche senza conferma.
 - Duplicare elementi quando arriva risposta server.
@@ -85,4 +100,8 @@ La UI mostra subito il commento, poi si riallinea con dati reali.
 - [[Actions e form actions]]
 - [[useActionState]]
 - [[Data Fetching e Cache]]
-- [useOptimistic](https://react.dev/reference/react/useOptimistic)
+
+## Fonti
+
+- [React - useOptimistic](https://react.dev/reference/react/useOptimistic)
+- [React - Actions](https://react.dev/reference/react/useTransition#perform-non-blocking-updates-with-actions)

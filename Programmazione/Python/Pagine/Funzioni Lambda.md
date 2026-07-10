@@ -130,7 +130,7 @@ La lambda e appropriata perche la logica e breve e locale al punto d'uso.
 ## Collegamenti
 
 - [[Programmazione/Python/Indice python|Indice Python]]
-- [[Funzioni]]
+- [[Programmazione/Python/Pagine/Funzioni|Funzioni]]
 - [[Higher-order Functions]]
 - [[Comprehensions]]
 - [[Decoratori]]

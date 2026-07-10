@@ -19,7 +19,7 @@ related: []
 
 ## Sintesi
 
-I **decorators** permettono di applicare logica dichiarativa a classi, metodi, accessor o campi. Sono usati per annotare o modificare il comportamento di elementi del codice.
+I **decorators** permettono di applicare logica dichiarativa a classi e loro elementi. La sintassi JavaScript mostrata in questa nota e ancora una proposta TC39 e non va considerata automaticamente disponibile nel runtime: serve verificare supporto e trasformazione del toolchain.
 
 ## Quando usarlo
 
@@ -33,7 +33,7 @@ I **decorators** permettono di applicare logica dichiarativa a classi, metodi, a
 ## Come funziona
 
 ### Concetto chiave
-Un decorator e una funzione applicata a una dichiarazione. In JavaScript moderno sono soprattutto rilevanti in ecosistemi che usano transpiler o TypeScript.
+Un decorator e una funzione applicata durante la definizione di una classe o di un suo elemento. La semantica della proposta moderna differisce dai legacy decorators; TypeScript, Babel e framework possono richiedere configurazioni o versioni specifiche.
 
 ```javascript
 function logged(value, context) {
@@ -53,7 +53,7 @@ class Service {
 
 ## API / Sintassi
 
-Sintassi concettuale:
+Sintassi della proposta moderna, da usare solo con un toolchain compatibile:
 
 ```javascript
 @decorator
@@ -109,11 +109,12 @@ I decorators aumentano la magia implicita del codice. Sono utili quando riducono
 
 - Usarli per nascondere logica fondamentale.
 - Mescolare sintassi e semantiche diverse tra Babel, TypeScript e JavaScript standard.
+- Presentare i decorators come funzionalita ECMAScript gia standardizzata o disponibile in ogni runtime.
 - Applicarli dove una funzione esplicita sarebbe piu leggibile.
 
 ## Checklist
 
-- Verifica quale sintassi supporta il tuo toolchain.
+- Verifica lo stato della proposta e quale semantica supporta il tuo toolchain.
 - Usa decorators solo per logica trasversale e ripetitiva.
 - Mantieni il comportamento decorato comprensibile.
 - Evita side effect nascosti durante la definizione della classe.
@@ -124,3 +125,8 @@ I decorators aumentano la magia implicita del codice. Sono utili quando riducono
 - [[Programmazione/JavaScript/Pagine/Classi|Classi]]
 - [[Programmazione/JavaScript/Pagine/Proxy e Reflect|Proxy e Reflect]]
 - [[Programmazione/TypeScript/Indice TypeScript|TypeScript]]
+
+## Fonti
+
+- [TC39 - Decorators proposal](https://github.com/tc39/proposal-decorators)
+- [TC39 - ECMAScript proposals](https://github.com/tc39/proposals)

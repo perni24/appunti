@@ -15,7 +15,7 @@ related: []
 
 ## Sintesi
 
-Nota su Meccanismi di Locking in PostgreSQL. Riassume il concetto, i meccanismi principali e i punti da ricordare durante studio, progettazione o amministrazione.
+PostgreSQL combina MVCC con lock di tabella, riga, transazione e lock consultivi. Capire compatibilità, durata e ordine di acquisizione dei lock è necessario per diagnosticare attese, prevenire deadlock e costruire code di lavoro concorrenti.
 
 Sebbene il sistema [[Programmazione/Postgres/Pagine/MVCC|MVCC]] permetta a lettori e scrittori di non bloccarsi a vicenda, esistono situazioni in cui PostgreSQL deve utilizzare dei **Lock** (blocchi) per garantire l'integrità dei dati, specialmente quando più transazioni tentano di modificare le stesse risorse contemporaneamente.
 
@@ -181,3 +181,8 @@ COMMIT;
 - [[Programmazione/Postgres/Pagine/Lock monitoring|Lock monitoring]]
 - [[Programmazione/Postgres/Pagine/MVCC|MVCC]]
 - [[Programmazione/Postgres/Pagine/Livelli di Isolamento delle Transazioni|Livelli di Isolamento delle Transazioni]]
+
+## Fonti
+
+- [PostgreSQL - Explicit Locking](https://www.postgresql.org/docs/current/explicit-locking.html)
+- [PostgreSQL - pg_locks](https://www.postgresql.org/docs/current/view-pg-locks.html)

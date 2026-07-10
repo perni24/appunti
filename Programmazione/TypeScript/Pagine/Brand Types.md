@@ -89,5 +89,5 @@ Il brand deve essere creato dopo una validazione o in un punto controllato.
 ## Collegamenti
 
 - [[Type Aliases e Interfaces]]
-- [[DTO e modelli di dominio]]
+- [[Programmazione/TypeScript/Pagine/DTO e modelli di dominio|DTO e modelli di dominio]]
 - [[Validazione runtime e tipi statici]]

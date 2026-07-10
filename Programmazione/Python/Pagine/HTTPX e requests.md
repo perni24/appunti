@@ -144,4 +144,4 @@ async def fetch_json(url):
 - [[Networking base]]
 - [[Asyncio]]
 - [[FastAPI]]
-- [[Error Handling]]
+- [[Programmazione/Python/Pagine/Error Handling|Error Handling]]

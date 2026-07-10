@@ -151,7 +151,7 @@ Senza `*args` e `**kwargs`, il decoratore funzionerebbe solo con una firma speci
 ## Collegamenti
 
 - [[Programmazione/Python/Indice python|Indice Python]]
-- [[Funzioni]]
+- [[Programmazione/Python/Pagine/Funzioni|Funzioni]]
 - [[Decoratori]]
 - [[Higher-order Functions]]
 - [[Type Hinting]]

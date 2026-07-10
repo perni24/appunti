@@ -15,9 +15,9 @@ related: []
 
 ## Sintesi
 
-Nota su Statistiche e Query Planner in PostgreSQL. Riassume il concetto, i meccanismi principali e i punti da ricordare durante studio, progettazione o amministrazione.
+Il planner confronta percorsi di esecuzione usando un modello di costo, statistiche sui dati, operatori disponibili, indici e struttura della query. Stime imprecise sulle cardinalità possono propagarsi nel piano e portare a join, scansioni o ordinamenti inefficienti.
 
-Il **Query Planner** (o Optimizer) è il "cervello" di PostgreSQL che decide il percorso più efficiente per eseguire una query. Questa decisione non è casuale, ma si basa interamente sulle **Statistiche** raccolte sui dati.
+Il **Query Planner** (o Optimizer) sceglie il percorso con costo stimato minore. Le statistiche sono fondamentali, ma la scelta dipende anche dai cost parameters, dagli access path disponibili, dagli operatori e dalla forma della query.
 
 ## Quando usarlo
 
@@ -201,3 +201,8 @@ Poi si riesegue `EXPLAIN (ANALYZE, BUFFERS)` e si confrontano stime, tempi e str
 - [[Programmazione/Postgres/Pagine/Analisi delle Query|Analisi delle Query]]
 - [[Programmazione/Postgres/Pagine/Tipi di Indici|Tipi di Indici]]
 - [[Programmazione/Postgres/Pagine/Indici Parziali e Coprenti|Indici Parziali e Coprenti]]
+
+## Fonti
+
+- [PostgreSQL - Planner Statistics](https://www.postgresql.org/docs/current/planner-stats.html)
+- [PostgreSQL - Planner Cost Constants](https://www.postgresql.org/docs/current/runtime-config-query.html#RUNTIME-CONFIG-QUERY-CONSTANTS)

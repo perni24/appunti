@@ -156,4 +156,4 @@ Dopo aver individuato il collo di bottiglia, modifica solo quella parte e rieseg
 - [[Caching]]
 - [[Generatori]]
 - [[Logging]]
-- [[Testing]]
+- [[Programmazione/Python/Pagine/Testing|Testing]]

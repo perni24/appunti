@@ -1,4 +1,4 @@
-﻿---
+---
 date: 2026-06-02
 area: Programmazione
 topic: JavaScript
@@ -255,7 +255,7 @@ Se `response.data` o `response.data.user` possono mancare, meglio rendere il cod
 ## Collegamenti
 
 - [[Spread & Rest Operators]]
-- [[Funzioni]]
+- [[Programmazione/JavaScript/Pagine/Funzioni|Funzioni]]
 - [[Array Methods]]
 - [[Oggetti Avanzati]]
 - [[Default Parameters]]

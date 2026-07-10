@@ -55,13 +55,16 @@ Direttiva client:
 "use client";
 ```
 
-Direttiva server in contesti supportati:
+I Server Components non richiedono una direttiva `"use server"`: il framework determina quali moduli sono server-side. `"use server"` contrassegna invece una funzione asincrona, o gli export asincroni di un modulo, come **Server Functions** richiamabili dal client.
 
 ```jsx
-"use server";
+async function addToCart(productId) {
+  "use server";
+  await cart.add(productId);
+}
 ```
 
-Le API precise dipendono dal framework.
+Le API precise, il trasporto e il bundling dipendono dal framework. Gli argomenti delle Server Functions provengono dal client e devono essere validati e autorizzati sul server.
 
 ## Esempio pratico
 
@@ -85,7 +88,7 @@ La lista puo essere preparata sul server; solo le parti interattive diventano cl
 
 - **Server Component**: render server, niente state/effect client.
 - **Client Component**: interattivita nel browser.
-- **Server Actions**: mutazioni lato server in framework compatibili.
+- **Server Functions**: funzioni server richiamabili dal client; alcuni framework e materiali precedenti usano il nome Server Actions.
 - **Streaming**: UI inviata progressivamente.
 - **RSC + Suspense**: confini di caricamento granulari.
 
@@ -97,6 +100,7 @@ La lista puo essere preparata sul server; solo le parti interattive diventano cl
 - Spostare tutto sul client per comodita.
 - Non capire il confine dei dati serializzabili.
 - Dipendere da API specifiche di framework senza documentarle.
+- Trattare gli argomenti di una Server Function come affidabili senza validazione e autorizzazione.
 
 ## Checklist
 
@@ -105,7 +109,7 @@ La lista puo essere preparata sul server; solo le parti interattive diventano cl
 - I dati sono serializzabili?
 - Il confine `use client` e minimo?
 - Il framework supporta il pattern usato?
-- Server Actions sono documentate e testate?
+- Le Server Functions sono documentate, autorizzate e testate?
 
 ## Collegamenti
 
@@ -114,3 +118,8 @@ La lista puo essere preparata sul server; solo le parti interattive diventano cl
 - [[Framework Next.js e Remix]]
 - [[Suspense e Lazy Loading]]
 - [[Actions e form actions]]
+
+## Fonti
+
+- [React - Server Components](https://react.dev/reference/rsc/server-components)
+- [React - use server](https://react.dev/reference/rsc/use-server)

@@ -15,7 +15,7 @@ related: []
 
 ## Sintesi
 
-Nota su Proprietà ACID in PostgreSQL. Riassume il concetto, i meccanismi principali e i punti da ricordare durante studio, progettazione o amministrazione.
+Le proprietà ACID descrivono le garanzie attese da una transazione: applicazione atomica delle modifiche, rispetto delle invarianti, isolamento dagli accessi concorrenti e persistenza dei commit secondo il livello di durabilità configurato.
 
 In informatica, le proprietà **ACID** (Atomicity, Consistency, Isolation, Durability) rappresentano un insieme di caratteristiche che garantiscono che le transazioni del database vengano elaborate in modo affidabile.
 
@@ -33,18 +33,18 @@ Usa il modello ACID quando progetti operazioni che devono restare corrette anche
 ## Come funziona
 
 ### Concetto chiave
-PostgreSQL è un database relazionale **ACID-compliant**. Ciò significa che, indipendentemente da crash del sistema, errori di rete o accessi concorrenti, i dati rimarranno sempre in uno stato integro e coerente.
+PostgreSQL fornisce i meccanismi necessari per transazioni ACID, ma la correttezza finale dipende anche da schema, vincoli, livello di isolamento, codice applicativo e configurazione della durabilità. Un errore di rete può inoltre lasciare al client un esito di commit ambiguo, anche quando il server ha completato correttamente la transazione.
 
 ---
 ### Atomicità (Atomicity)
 L'atomicità garantisce che una transazione sia trattata come un'unica unità "tutto o niente". Se una parte della transazione fallisce, l'intera transazione viene annullata (**Rollback**).
 
 - **In Postgres:** Viene gestita tramite i comandi `BEGIN`, `COMMIT` e `ROLLBACK`.
-- **Meccanismo:** PostgreSQL utilizza il **Write-Ahead Logging (WAL)** per tenere traccia dei cambiamenti prima che avvengano, permettendo di annullarli se necessario.
+- **Meccanismo:** PostgreSQL registra lo stato della transazione e usa MVCC per rendere invisibili le versioni create da una transazione abortita. Il **Write-Ahead Log (WAL)** serve principalmente al redo e al recupero dopo un crash, non come log di undo per eseguire il rollback.
 
 ---
 ### Consistenza (Consistency)
-La consistenza garantisce che una transazione porti il database da uno stato valido a un altro stato valido, rispettando tutti i vincoli definiti (regole di integrità).
+La consistenza richiede che una transazione porti il database da uno stato valido a un altro stato valido. PostgreSQL applica tipi e vincoli dichiarati, mentre le invarianti non espresse nello schema restano responsabilità della logica applicativa e del livello di isolamento scelto.
 
 - **In Postgres:** Viene garantita dall'applicazione rigorosa di:
 	- [[Programmazione/Postgres/Pagine/Vincoli|Vincoli (Constraints)]]: NOT NULL, UNIQUE, CHECK.
@@ -53,16 +53,16 @@ La consistenza garantisce che una transazione porti il database da uno stato val
 
 ---
 ### Isolamento (Isolation)
-L'isolamento garantisce che l'esecuzione concorrente di transazioni lasci il database nello stesso stato in cui si troverebbe se le transazioni fossero eseguite sequenzialmente.
+L'isolamento controlla quanto gli effetti delle transazioni concorrenti possono interferire tra loro. Solo `SERIALIZABLE` mira a un risultato equivalente a una possibile esecuzione seriale; livelli più deboli ammettono alcune anomalie in cambio di minore contesa.
 
-- **In Postgres:** Viene implementato tramite il sistema [[Programmazione/Postgres/Pagine/MVCC|MVCC (Multi-Version Concurrency Control)]].
+- **In Postgres:** Viene implementato tramite [[Programmazione/Postgres/Pagine/MVCC|MVCC]], lock e, per `SERIALIZABLE`, Serializable Snapshot Isolation.
 - **Livelli di Isolamento:** Postgres permette di scegliere tra diversi livelli (Read Committed, Repeatable Read, Serializable) per bilanciare performance e rigore.
 
 ---
 ### Durabilità (Durability)
-La durabilità garantisce che, una volta che una transazione è stata confermata (`COMMIT`), rimarrà memorizzata anche in caso di crash del server o interruzione di corrente.
+Con le impostazioni durevoli predefinite, un `COMMIT` confermato sopravvive a un crash perché il relativo record WAL viene reso persistente prima della risposta al client. Impostazioni come `synchronous_commit = off`, `fsync = off` o storage che dichiara flush non realmente completati riducono questa garanzia.
 
-- **In Postgres:** I dati vengono scritti in modo permanente sul disco (tramite `fsync`).
+- **In Postgres:** Il WAL viene sincronizzato sullo storage secondo le impostazioni di durabilità; le pagine dati possono essere scritte successivamente.
 - **Logic Layer:** Anche se i dati non sono ancora stati scritti nei file delle tabelle, la loro presenza nel **WAL** permette al database di "ricostruire" le transazioni mancanti al riavvio dopo un crash.
 
 ---
@@ -158,3 +158,9 @@ Se una parte fallisce, l'intera transazione deve essere annullata con `ROLLBACK`
 - [[Programmazione/Postgres/Pagine/Livelli di Isolamento delle Transazioni|Livelli di Isolamento delle Transazioni]]
 - [[Programmazione/Postgres/Pagine/MVCC|MVCC]]
 - [[Programmazione/Postgres/Pagine/Write-Ahead Logging|Write-Ahead Logging]]
+
+## Fonti
+
+- [PostgreSQL - Write-Ahead Logging](https://www.postgresql.org/docs/current/wal-intro.html)
+- [PostgreSQL - Transaction Isolation](https://www.postgresql.org/docs/current/transaction-iso.html)
+- [PostgreSQL - Asynchronous Commit](https://www.postgresql.org/docs/current/wal-async-commit.html)

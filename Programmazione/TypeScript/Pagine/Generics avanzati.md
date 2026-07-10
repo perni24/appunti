@@ -96,7 +96,7 @@ Il vincolo `T extends Entity` permette al repository di usare `id` senza conosce
 
 ## Collegamenti
 
-- [[Generics]]
+- [[Programmazione/TypeScript/Pagine/Generics|Generics]]
 - [[Conditional Types]]
 - [[Keyof e typeof]]
 - [[Utility Types]]

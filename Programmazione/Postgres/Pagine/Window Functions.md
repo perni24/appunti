@@ -15,7 +15,7 @@ related: []
 
 ## Sintesi
 
-Nota su Window Functions in PostgreSQL. Riassume il concetto, i meccanismi principali e i punti da ricordare durante studio, progettazione o amministrazione.
+Le window function calcolano valori rispetto a gruppi ordinati di righe senza collassare il risultato come farebbe `GROUP BY`. Partizione, ordinamento e frame determinano quali righe partecipano al calcolo di ranking, aggregati progressivi, `lag`, `lead` e confronti temporali.
 
 ## Quando usarlo
 
@@ -163,3 +163,8 @@ FROM orders;
 - [[Programmazione/Postgres/Pagine/Aggregazioni e GROUP BY|Aggregazioni e GROUP BY]]
 - [[Programmazione/Postgres/Pagine/Common Table Expressions e Recursive Queries|Common Table Expressions e Recursive Queries]]
 - [[Programmazione/Postgres/Pagine/Analisi delle Query|Analisi delle Query]]
+
+## Fonti
+
+- [PostgreSQL - Window Functions](https://www.postgresql.org/docs/current/tutorial-window.html)
+- [PostgreSQL - Window Function Calls](https://www.postgresql.org/docs/current/sql-expressions.html#SYNTAX-WINDOW-FUNCTIONS)

@@ -84,7 +84,7 @@ L'oggetto protegge direttamente il proprio limite.
 
 - [[Programmazione/Clean Code/Indice Clean Code]]
 - [[Invarianti del dominio]]
-- [[Incapsulamento]]
+- [[Programmazione/Clean Code/Pagine/Incapsulamento|Incapsulamento]]
 - [[Gestione dello stato]]
 - [[Lifecycle degli oggetti]]
 - [[Modellare stati impossibili]]

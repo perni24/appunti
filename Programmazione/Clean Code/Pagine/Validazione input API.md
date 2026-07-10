@@ -95,7 +95,7 @@ La risposta di validazione e esplicita e testabile.
 - [[Programmazione/Clean Code/Indice Clean Code]]
 - [[Validazione ai confini]]
 - [[Controller sottili]]
-- [[DTO e modelli di dominio]]
+- [[Programmazione/Clean Code/Pagine/DTO e modelli di dominio|DTO e modelli di dominio]]
 - [[Messaggi di errore utili]]
 - [[Contratti impliciti ed espliciti]]
 

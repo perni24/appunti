@@ -15,7 +15,7 @@ related: []
 
 ## Sintesi
 
-Il Global Interpreter Lock, o GIL, e un meccanismo di CPython che permette a un solo thread alla volta di eseguire bytecode Python nello stesso processo.
+Il Global Interpreter Lock, o GIL, e un meccanismo delle build CPython tradizionali che permette a un solo thread alla volta di eseguire bytecode Python nello stesso interprete. Da Python 3.13 sono disponibili anche build **free-threaded** nelle quali il GIL puo essere disabilitato.
 
 Il GIL non rende i thread inutili: limita soprattutto il parallelismo dei task CPU-bound. Per task I/O-bound, i thread restano spesso utili.
 
@@ -31,7 +31,7 @@ Devi capire il GIL quando:
 
 ## Come funziona
 
-In CPython, molti dettagli interni dell'interprete e del memory management sono protetti dal GIL. Questo semplifica l'implementazione, ma impedisce a piu thread nello stesso processo di eseguire contemporaneamente bytecode Python puro.
+Nelle build CPython con GIL, molti dettagli interni dell'interprete e del memory management sono protetti dal lock globale. Questo semplifica l'implementazione, ma impedisce a piu thread dello stesso interprete di eseguire contemporaneamente bytecode Python puro.
 
 Thread CPU-bound:
 
@@ -58,7 +58,7 @@ Questo non raddoppia automaticamente la velocita su due core.
 
 ## API / Sintassi
 
-Il GIL non e una API da chiamare nel codice quotidiano. E un vincolo dell'implementazione CPython da considerare nelle scelte architetturali.
+Il GIL non e una API da chiamare nel codice quotidiano. Devi pero sapere se il runtime in uso e una build tradizionale o free-threaded e se eventuali estensioni native supportano l'esecuzione senza GIL.
 
 Scelte pratiche:
 
@@ -91,7 +91,7 @@ if __name__ == "__main__":
     print(results)
 ```
 
-Ogni processo ha il proprio interprete e quindi il proprio GIL.
+Nelle build tradizionali, ogni processo ha il proprio interprete e il proprio GIL; per questo processi separati possono eseguire Python puro su core diversi.
 
 ## Varianti
 
@@ -100,6 +100,7 @@ Ogni processo ha il proprio interprete e quindi il proprio GIL.
 - **Asyncio**: evita molti thread per alta concorrenza I/O.
 - **Librerie native**: alcune rilasciano il GIL durante calcoli intensivi.
 - **Implementazioni Python diverse**: il tema riguarda soprattutto CPython.
+- **CPython free-threaded**: build disponibili da Python 3.13 che possono eseguire thread Python in parallelo, con compatibilita e overhead da verificare per workload ed estensioni native.
 
 ## Errori comuni
 
@@ -109,11 +110,13 @@ Ogni processo ha il proprio interprete e quindi il proprio GIL.
 - Ignorare race condition perche "tanto c'e il GIL".
 - Ottimizzare contro il GIL senza prima fare profiling.
 - Usare multiprocessing senza considerare serializzazione e memoria.
+- Dare per scontato che ogni installazione CPython abbia il GIL attivo o che ogni estensione supporti le build free-threaded.
 
 ## Checklist
 
 - Il collo di bottiglia e CPU, I/O o memoria?
 - Sto usando CPython?
+- La build e GIL-enabled o free-threaded?
 - I thread stanno aspettando I/O o facendo calcolo puro?
 - Serve parallelismo reale sui core?
 - Multiprocessing ha overhead accettabile?
@@ -128,3 +131,9 @@ Ogni processo ha il proprio interprete e quindi il proprio GIL.
 - [[Asyncio]]
 - [[Memory Management]]
 - [[Profiling]]
+
+## Fonti
+
+- [Python - Global Interpreter Lock](https://docs.python.org/3/glossary.html#term-global-interpreter-lock)
+- [Python - Support for free threading](https://docs.python.org/3/howto/free-threading-python.html)
+- [PEP 703 - Making the GIL Optional](https://peps.python.org/pep-0703/)

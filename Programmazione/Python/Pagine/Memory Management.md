@@ -144,7 +144,7 @@ def read_lines(path):
 
 - [[Programmazione/Python/Indice python|Indice Python]]
 - [[Generatori]]
-- [[Iteratori]]
+- [[Programmazione/Python/Pagine/Iteratori|Iteratori]]
 - [[Context Managers]]
 - [[Caching]]
 - [[Profiling]]

@@ -90,7 +90,7 @@ Il codice non e valutato solo localmente, ma nel suo contesto operativo.
 ## Collegamenti
 
 - [[Programmazione/Clean Code/Indice Clean Code]]
-- [[Configurazione applicativa]]
+- [[Programmazione/Clean Code/Pagine/Configurazione applicativa|Configurazione applicativa]]
 - [[Logging e tracing]]
 - [[Messaggi di errore utili]]
 - [[Test di integrazione]]
