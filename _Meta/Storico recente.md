@@ -8,6 +8,36 @@ Mantieni solo le ultime 10 voci operative.
 
 ---
 
+## 2026-07-11 - Ristrutturazione area Linux
+
+### Fatto
+
+- Rimossa la sottocartella `Linux/Pagine/ArchLinux` e spostata la guida in `Linux/Pagine/Installazione Arch Linux.md`.
+- Riscritto `Linux/Indice Linux.md` con percorsi Base, Intermedio, Avanzato, Applicazioni, Distribuzioni e Conoscenza Operativa.
+- Normalizzate e completate le quattro note esistenti su installazione Arch Linux, utenti e permessi, pacchetti universali e toolchain user-space.
+- Separati i comandi Linux in blocchi individuali, ciascuno accompagnato dalla relativa spiegazione, per facilitarne copia e consultazione.
+- Create e compilate le 6 note del blocco `Fondamenti del sistema` su architettura, distribuzioni, FHS, terminale, ambiente e documentazione locale.
+- Completato il blocco `File, utenti e permessi` con quattro nuove note su file e link, permessi POSIX, `sudo` e ACL, integrate con la nota esistente sulla gestione utenti.
+- Completato il blocco `Shell` con sette note su Bash, flussi I/O, espansioni, quoting, job control, strumenti testuali ed espressioni regolari.
+- Completato il blocco `Processi e servizi` con sette nuove note su processi, monitoraggio, systemd, unit, timer, cron e journal, riutilizzando la nota condivisa sul job control.
+- Completato il blocco `Gestione software` con quattro nuove note su repository, gestori nativi, librerie condivise e compilazione, integrate con le note esistenti sui pacchetti universali e sulle toolchain utente.
+- Completato il blocco `Storage e filesystem` con nove note su partizioni, mount, `fstab`, filesystem, LVM, RAID, swap, quote e procedure di controllo e riparazione.
+- Completato il blocco `Networking` con nove note su interfacce, routing, DNS, socket, SSH, trasferimento file, NetworkManager, nftables e troubleshooting di rete.
+- Completato il blocco `Boot e kernel` con sette note su sequenza di avvio, firmware, bootloader, initramfs, moduli, sysctl e compilazione del kernel.
+- Completato il blocco `Sicurezza` con otto note su minimo privilegio, hardening, MAC, LUKS, GPG, PAM, audit e aggiornamenti di sicurezza.
+- Completato il blocco `Hardware e desktop` con dieci note su rilevamento, driver, udev, D-Bus, energia, PipeWire, sistemi grafici, ambienti desktop, font e portali XDG.
+- Convertite in wikilink le relative voci di `Linux/Indice Linux.md` dopo la creazione effettiva delle pagine.
+- Rimosso da `Home.md` il collegamento alla vecchia macro area Arch Linux, mantenendo il collegamento all'indice Linux.
+
+### Decisioni
+
+- Le conoscenze generali restano indipendenti dalla distribuzione; Arch Linux è trattata come procedura specifica nella sezione Distribuzioni.
+- Gli argomenti senza pagina restano testo semplice nell'indice e diventeranno wikilink solo dopo la creazione di contenuti reali.
+
+### Prossimi passi
+
+- Continuare il percorso Avanzato con il blocco `Virtualizzazione e isolamento`.
+
 ## 2026-07-10 - Revisione accuratezza Programmazione
 
 ### Fatto
@@ -161,20 +191,3 @@ Mantieni solo le ultime 10 voci operative.
 ### Prossimi passi
 
 - Continuare con il blocco `Standard Library Pratica`.
-
-## 2026-07-09 - Concetti funzionali Clean Code
-
-### Fatto
-
-- Create 7 pagine dell'area `Programmazione/Clean Code/Pagine` per il blocco `Concetti Funzionali e Composizione`.
-- Compilati contenuti reali su funzioni pure/impure, composizione, immutabilita, trasformazioni dichiarative, pipeline, guard clauses e side effects controllati.
-- Aggiornato `Programmazione/Clean Code/Indice Clean Code.md` trasformando in wikilink solo le nuove voci ora esistenti.
-
-### Decisioni
-
-- Le note create restano con `status: "non revisionato"`.
-- La sezione tratta i concetti funzionali come strumenti pragmatici per ridurre stato implicito e side effects, non come obbligo di programmazione funzionale pura.
-
-### Prossimi passi
-
-- Continuare con il blocco `Contratti, Tipi e Qualita`.

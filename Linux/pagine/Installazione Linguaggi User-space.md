@@ -1,113 +1,388 @@
 ---
-date: 2026-04-04
-tags: [linux, dev-environment, nodejs, python, rust]
-type: #permanent-note
-status: seedling
+date: 2026-07-11
+area: Linux
+topic: Ambiente di sviluppo
+type: operational-note
+status: "non revisionato"
+difficulty: intermedio
+tags: [linux, user-space, nvm, pyenv, rustup, toolchain]
+aliases: [Installazione linguaggi in user-space, Toolchain per utente]
+prerequisites: [Shell Linux, PATH, package manager]
+related: [Gestione pacchetti universali, Indice Linux]
 ---
 
-# Installazione Linguaggi in User-space
+# Installazione linguaggi in user-space
 
-Questa nota documenta le modalità di installazione e gestione dei principali linguaggi di programmazione senza l'utilizzo del package manager di sistema (come `apt`, `pacman` o `dnf`). Questo approccio permette di evitare conflitti di versione, non richiede privilegi di root e garantisce un ambiente di sviluppo uniforme tra diverse distribuzioni Linux.
+## Obiettivo
 
-> [!INFO] Definizione
-> L'installazione **User-space** avviene interamente all'interno della cartella `$HOME`. I binari e le librerie vengono aggiunti al `PATH` dell'utente tramite i file di configurazione della shell (`.bashrc`, `.zshrc`).
+Installare e gestire versioni di Node.js, Python e Rust nella home dell'utente senza sostituire interpreti o compilatori richiesti dal sistema operativo.
 
----
+NVM, pyenv e rustup modificano il `PATH` della shell. Prima di installarli controlla sempre il repository ufficiale: i comandi che scaricano ed eseguono script remoti sono potenti e la versione indicata nella nota può diventare obsoleta.
 
-## Prerequisiti di Sistema
+## Quando usarlo
 
-Prima di procedere con gli installer user-space, è necessario installare i tool di base e le librerie di sviluppo tramite il package manager della propria distribuzione. Questi strumenti sono necessari per scaricare i file e compilare i sorgenti.
+- Sviluppo con più versioni dello stesso linguaggio.
+- Progetti che richiedono toolchain differenti.
+- Macchina sulla quale non vuoi modificare Python o Node.js di sistema.
+- Ambiente personale senza installazioni globali tramite `sudo`.
 
-### Su Debian / Ubuntu / Mint
+Non è necessariamente la scelta giusta per server minimali, immagini container o build riproducibili: in quei casi possono essere migliori pacchetti fissati, container o immagini CI versionate.
+
+## Procedura
+
+### 1. Preparare i prerequisiti
+
+Installa strumenti di base tramite il package manager della distribuzione:
+
+Su Debian e derivate aggiorna prima l'indice dei pacchetti:
+
 ```bash
 sudo apt update
-sudo apt install curl git build-essential libssl-dev zlib1g-dev \
-libbz2-dev libreadline-dev libsqlite3-dev tk-dev \
-libncursesw5-dev xz-utils libxml2-dev libxmlsec1-dev libffi-dev liblzma-dev
 ```
 
-### Su Arch Linux
+Installa quindi gli strumenti di base:
+
+```bash
+sudo apt install curl git build-essential ca-certificates
+```
+
+Su Arch Linux aggiorna il sistema:
+
 ```bash
 sudo pacman -Syu
-sudo pacman -S base-devel openssl zlib bzip2 readline sqlite tk \
-ncurses xz git curl
 ```
 
----
+Installa gli strumenti di compilazione e download:
 
-## 1. Node.js (NVM - Node Version Manager)
-... (resto del file) ...
-Invece di installare il pacchetto `nodejs` di sistema, si utilizza **NVM** per gestire versioni multiple.
-
-### Installazione
 ```bash
-curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.39.7/install.sh | bash
+sudo pacman -S --needed curl git base-devel
 ```
 
-### Comandi principali
-- `nvm install --lts`: Installa l'ultima versione Long Term Support.
-- `nvm use <version>`: Cambia la versione attiva nella sessione corrente.
-- `npm install -g <package>`: Installa pacchetti globali senza `sudo` (vengono salvati in `~/.nvm`).
+Pyenv compila normalmente CPython dai sorgenti e richiede ulteriori librerie di sviluppo. Consulta la sezione ufficiale sulle build dependencies per la distribuzione e la versione Python scelte.
 
----
+### 2. Installare NVM e Node.js
 
-## 2. Python (Pyenv & Venv)
+Al momento della revisione il repository ufficiale mostra NVM `v0.40.4`. Verifica la versione corrente prima di eseguire il comando:
 
-Python è spesso una dipendenza critica del sistema operativo. Modificare la versione di sistema può "rompere" la distro. Si consiglia l'uso di **Pyenv** per le versioni e **Venv** per i pacchetti.
-
-### Installazione Pyenv
-Il modo più semplice è usare l'installer automatico:
 ```bash
-curl https://pyenv.run | bash
+curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.40.4/install.sh | bash
 ```
 
-### Configurazione della Shell
-Aggiungi queste righe alla fine del tuo file di configurazione (`~/.bashrc` o `~/.zshrc`):
+Apri una nuova shell oppure carica il profilo corretto, poi verifica:
+
+Verifica che NVM sia caricato nella shell:
 
 ```bash
-# Pyenv Configuration
+command -v nvm
+```
+
+Controlla la versione installata:
+
+```bash
+nvm --version
+```
+
+Installa l'ultima versione LTS di Node.js:
+
+```bash
+nvm install --lts
+```
+
+Imposta la linea LTS come predefinita per le nuove shell:
+
+```bash
+nvm alias default 'lts/*'
+```
+
+Verifica Node.js:
+
+```bash
+node --version
+```
+
+Verifica npm:
+
+```bash
+npm --version
+```
+
+NVM è una funzione caricata dalla shell, quindi `which nvm` può non produrre il risultato atteso; usa `command -v nvm`.
+
+Per fissare la versione di un progetto:
+
+Scrivi la versione richiesta dal progetto:
+
+```bash
+echo 'lts/*' > .nvmrc
+```
+
+Installa la versione indicata dal file:
+
+```bash
+nvm install
+```
+
+Attivala nella shell corrente:
+
+```bash
+nvm use
+```
+
+### 3. Installare pyenv
+
+Installer ufficiale consigliato dal progetto:
+
+```bash
+curl -fsSL https://pyenv.run | bash
+```
+
+Per Bash aggiungi innanzitutto la directory principale di pyenv a `~/.bashrc`:
+
+```bash
 export PYENV_ROOT="$HOME/.pyenv"
-[[ -d $PYENV_ROOT/bin ]] && export PATH="$PYENV_ROOT/bin:$PATH"
-eval "$(pyenv init -)"
-eval "$(pyenv virtualenv-init -)"
 ```
-Dopo aver salvato, riavvia la shell o esegui `source ~/.bashrc` (o `source ~/.zshrc`).
 
-### Pyenv (Gestione Versioni)
-Installa diverse versioni di Python indipendenti da quella di sistema:
+Aggiungi i binari di pyenv al `PATH` quando la directory esiste:
+
 ```bash
-# Esempio di installazione di una versione specifica
-pyenv install 3.12.0
-pyenv global 3.12.0
+[[ -d $PYENV_ROOT/bin ]] && export PATH="$PYENV_ROOT/bin:$PATH"
 ```
 
-### Venv (Ambienti Virtuali)
-Per le librerie dei progetti, si creano ambienti isolati:
+Inizializza pyenv nella shell Bash:
+
+```bash
+eval "$(pyenv init - bash)"
+```
+
+Per Zsh usa `~/.zshrc` e `eval "$(pyenv init - zsh)"`. Riavvia la shell e verifica:
+
+Verifica l'installazione:
+
+```bash
+pyenv --version
+```
+
+Elenca le versioni disponibili:
+
+```bash
+pyenv install -l
+```
+
+Installa l'ultima release conosciuta della serie 3.13:
+
+```bash
+pyenv install 3.13
+```
+
+Imposta la serie installata come versione globale dell'utente:
+
+```bash
+pyenv global 3.13
+```
+
+Controlla l'interprete risolto dalla shell:
+
+```bash
+python --version
+```
+
+Un prefisso come `3.13` viene risolto da pyenv verso l'ultima release conosciuta di quella serie.
+
+### 4. Creare un ambiente virtuale Python
+
+Pyenv sceglie l'interprete; `venv` isola i pacchetti del progetto:
+
+Crea la directory del progetto:
+
+```bash
+mkdir progetto-python
+```
+
+Entra nella directory:
+
+```bash
+cd progetto-python
+```
+
+Fissa la versione Python locale:
+
+```bash
+pyenv local 3.13
+```
+
+Crea l'ambiente virtuale:
+
 ```bash
 python -m venv .venv
-source .venv/bin/activate
-pip install <library_name>
 ```
 
----
+Attiva l'ambiente nella shell corrente:
 
-## 3. Rust (Rustup)
+```bash
+source .venv/bin/activate
+```
 
-Rust utilizza un installer ufficiale chiamato **Rustup**, che gestisce il compilatore (`rustc`), il package manager (`cargo`) e le toolchain.
+Aggiorna `pip` dentro l'ambiente:
 
-### Installazione
+```bash
+python -m pip install --upgrade pip
+```
+
+Verifica quale interprete stai usando:
+
+```bash
+python -c 'import sys; print(sys.executable)'
+```
+
+Per uscire dall'ambiente:
+
+```bash
+deactivate
+```
+
+### 5. Installare rustup e Rust
+
+Usa l'installer pubblicato dal progetto Rust:
+
 ```bash
 curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs | sh
 ```
 
-### Gestione Toolchain
-- `rustup update`: Aggiorna tutti gli strumenti di sviluppo.
-- `rustup toolchain install nightly`: Installa la versione sperimentale.
-- `cargo install <crate>`: Installa binari Rust direttamente in `~/.cargo/bin`.
+Apri una nuova shell oppure carica l'ambiente:
 
----
+Carica le variabili installate da rustup nella shell corrente:
 
-## Vantaggi dell'Approccio
-1. **Portabilità:** La configurazione della `$HOME` può essere spostata tra diverse distro (es. da Ubuntu a Arch) mantenendo l'ambiente intatto.
-2. **Sicurezza:** Non è necessario usare `sudo` per installare librerie di sviluppo, riducendo i rischi di sicurezza.
-3. **Flessibilità:** Possibilità di testare applicazioni su versioni diverse dello stesso linguaggio contemporaneamente.
+```bash
+source "$HOME/.cargo/env"
+```
+
+Mostra toolchain e target attivi:
+
+```bash
+rustup show
+```
+
+Verifica il compilatore:
+
+```bash
+rustc --version
+```
+
+Verifica Cargo:
+
+```bash
+cargo --version
+```
+
+Gestione delle toolchain:
+
+Aggiorna le toolchain installate:
+
+```bash
+rustup update
+```
+
+Installa la toolchain nightly quando necessaria:
+
+```bash
+rustup toolchain install nightly
+```
+
+Imposta un override stabile nella directory corrente:
+
+```bash
+rustup override set stable
+```
+
+Rimuovi l'override locale:
+
+```bash
+rustup override unset
+```
+
+Usa `cargo install` per programmi CLI Rust, non per aggiungere dipendenze a un progetto:
+
+```bash
+cargo install nome-crate
+```
+
+## Snippet
+
+File di versione per progetto:
+
+```text
+# .nvmrc
+lts/*
+```
+
+```text
+# .python-version
+3.13
+```
+
+```toml
+# rust-toolchain.toml
+[toolchain]
+channel = "stable"
+components = ["clippy", "rustfmt"]
+```
+
+Controllo rapido del `PATH`:
+
+Mostra tutte le risoluzioni disponibili per i principali eseguibili:
+
+```bash
+type -a node python rustc cargo
+```
+
+Visualizza ogni directory del `PATH` su una riga separata:
+
+```bash
+printf '%s\n' "$PATH" | tr ':' '\n'
+```
+
+## Adattamenti comuni
+
+- **Fish shell**: NVM ufficiale è progettato per shell POSIX; valuta un'integrazione compatibile o una shell supportata.
+- **WSL**: installa i tool dentro la distribuzione Linux, non condividere toolchain Windows tramite il `PATH`.
+- **CI**: preferisci action o immagini ufficiali con versioni fissate invece di installer interattivi.
+- **Container**: usa immagini base versionate quando vuoi build riproducibili e leggere.
+- **Più progetti Python**: usa `pyenv local` e un `.venv` distinto per ogni repository.
+- **Tool CLI Python**: `pipx` o `uv tool` sono spesso più adatti di installazioni globali con `pip`.
+
+## Debug rapido
+
+- **`nvm: command not found`**: controlla quale file di profilo è stato modificato e apri una nuova shell.
+- **NVM installa la versione sbagliata**: verifica `.nvmrc`, alias `default` e output di `nvm current`.
+- **`pyenv: command not found`**: controlla `PYENV_ROOT`, `PATH` e inizializzazione della shell.
+- **Compilazione Python fallita**: installa le build dependencies mancanti e leggi l'ultima parte del log.
+- **`python` punta ancora al sistema**: esegui `pyenv rehash`, controlla `pyenv version` e l'ordine del `PATH`.
+- **`rustc: command not found`**: esegui `source "$HOME/.cargo/env"` o riapri la shell.
+- **Conflitti con installazioni di sistema**: usa `type -a` per capire quale eseguibile viene risolto per primo.
+
+## Checklist finale
+
+- Installer e versione verificati nel repository ufficiale.
+- Script remoto letto o considerato attendibile prima dell'esecuzione.
+- File di configurazione della shell corretto.
+- Nessun `sudo npm install -g` o `sudo pip install` nell'ambiente personale.
+- Versione del progetto fissata in un file tracciabile.
+- Python di sistema non sostituito.
+- Ambiente virtuale Python separato per progetto.
+- `node`, `python`, `rustc` e `cargo` risolti dal percorso atteso.
+
+## Collegamenti
+
+- [[Linux/Indice Linux|Indice Linux]]
+- [[Linux/Pagine/Repository e package manager|Repository e package manager]]
+- [[Linux/Pagine/Dipendenze e librerie condivise|Dipendenze e librerie condivise]]
+- [[Linux/Pagine/Compilazione da sorgente|Compilazione da sorgente]]
+- [[Linux/Pagine/Gestione pacchetti universali|Gestione pacchetti universali]]
+
+## Fonti
+
+- [nvm - repository ufficiale](https://github.com/nvm-sh/nvm)
+- [pyenv - repository ufficiale](https://github.com/pyenv/pyenv)
+- [pyenv-installer](https://github.com/pyenv/pyenv-installer)
+- [rustup](https://rustup.rs/)
+- [Python - venv](https://docs.python.org/3/library/venv.html)

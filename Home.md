@@ -17,7 +17,6 @@
 ## Linux
 
 - [[Linux/Indice Linux|Linux]]
-- [[Linux/Pagine/ArchLinux/Indice ArchLinux|Arch Linux]]
 
 ## Intelligenza Artificiale
 
