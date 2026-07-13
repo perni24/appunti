@@ -1,5 +1,5 @@
 ---
-date: 2026-07-11
+date: 2026-07-13
 area: Linux
 topic: Schedulazione tradizionale
 type: technical-note
@@ -8,7 +8,7 @@ difficulty: intermedio
 tags: [linux, cron, crontab, anacron, schedulazione]
 aliases: [Crontab, Schedulazione cron]
 prerequisites: [Bash, Variabili ambiente e PATH]
-related: [Timer systemd, Logging con journalctl]
+related: [Timer systemd, Logging con journalctl, Script robusti]
 ---
 
 # Cron e Anacron
@@ -141,6 +141,8 @@ Percorsi assoluti e logging esplicito rendono più semplice distinguere un error
 - [[Linux/Pagine/Bash|Bash]]
 - [[Linux/Pagine/Variabili ambiente e PATH|Variabili d'ambiente e PATH]]
 - [[Linux/Pagine/Logging con journalctl|Logging con journalctl]]
+- [[Linux/Pagine/Script robusti|Script robusti]]
+- [[Linux/Pagine/Gestione degli errori negli script|Gestione degli errori negli script]]
 
 ## Fonti
 

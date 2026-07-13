@@ -1,5 +1,3 @@
-# Indice Linux
-
 ## Percorso Base
 
 ### Fondamenti del sistema
@@ -113,48 +111,48 @@
 
 ### Virtualizzazione e isolamento
 
-- Namespace
-- Cgroups
-- Container
-- Docker e Podman
-- KVM e QEMU
-- Macchine virtuali con libvirt
+- [[Linux/Pagine/Namespace|Namespace]]
+- [[Linux/Pagine/Cgroups|Cgroups]]
+- [[Linux/Pagine/Container|Container]]
+- [[Linux/Pagine/Docker e Podman|Docker e Podman]]
+- [[Linux/Pagine/KVM e QEMU|KVM e QEMU]]
+- [[Linux/Pagine/Macchine virtuali con libvirt|Macchine virtuali con libvirt]]
 
 ## Applicazioni e Amministrazione
 
 ### Server
 
-- Server SSH
-- Web server
-- Reverse proxy
-- Condivisioni NFS e Samba
-- Database su Linux
-- Backup e ripristino
-- Monitoraggio del sistema
+- [[Linux/Pagine/SSH|Server SSH]]
+- [[Linux/Pagine/Web server|Web server]]
+- [[Linux/Pagine/Reverse proxy|Reverse proxy]]
+- [[Linux/Pagine/Condivisioni NFS e Samba|Condivisioni NFS e Samba]]
+- [[Linux/Pagine/Database su Linux|Database su Linux]]
+- [[Linux/Pagine/Backup e ripristino|Backup e ripristino]]
+- [[Linux/Pagine/Monitoraggio del sistema|Monitoraggio del sistema]]
 
 ### Automazione
 
-- Bash scripting
-- Script robusti
-- Gestione degli errori negli script
-- Variabili e configurazione
-- Cron e timer systemd
-- Ansible
+- [[Linux/Pagine/Bash scripting|Bash scripting]]
+- [[Linux/Pagine/Script robusti|Script robusti]]
+- [[Linux/Pagine/Gestione degli errori negli script|Gestione degli errori negli script]]
+- [[Linux/Pagine/Variabili e configurazione|Variabili e configurazione]]
+- [[Linux/Pagine/Cron e Anacron|Cron]] e [[Linux/Pagine/Timer systemd|timer systemd]]
+- [[Linux/Pagine/Ansible|Ansible]]
 
 ## Distribuzioni
 
 ### Installazione
 
 - [[Linux/Pagine/Installazione Arch Linux|Installazione Arch Linux]]
-- Installazione Debian
-- Installazione Fedora
+- [[Linux/Pagine/Installazione Debian|Installazione Debian]]
+- [[Linux/Pagine/Installazione Fedora|Installazione Fedora]]
 
 ### Differenze tra distribuzioni
 
-- Package manager delle distribuzioni
-- Rolling release e distribuzioni stabili
-- Configurazioni specifiche delle distribuzioni
-- Scelta della distribuzione
+- [[Linux/Pagine/Package manager delle distribuzioni|Package manager delle distribuzioni]]
+- [[Linux/Pagine/Rolling release e distribuzioni stabili|Rolling release e distribuzioni stabili]]
+- [[Linux/Pagine/Configurazioni specifiche delle distribuzioni|Configurazioni specifiche delle distribuzioni]]
+- [[Linux/Pagine/Scelta della distribuzione|Scelta della distribuzione]]
 
 ## Conoscenza Operativa
 

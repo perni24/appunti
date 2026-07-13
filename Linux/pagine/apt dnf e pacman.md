@@ -1,5 +1,5 @@
 ---
-date: 2026-07-11
+date: 2026-07-13
 area: Linux
 topic: Package manager nativi
 type: technical-note
@@ -8,7 +8,7 @@ difficulty: intermedio
 tags: [linux, apt, dnf, pacman, pacchetti]
 aliases: [APT DNF pacman, Comandi package manager]
 prerequisites: [Repository e package manager, sudo e privilegi amministrativi]
-related: [Dipendenze e librerie condivise, Compilazione da sorgente]
+related: [Package manager delle distribuzioni, Dipendenze e librerie condivise, Compilazione da sorgente]
 ---
 
 # apt, dnf e pacman
@@ -199,6 +199,7 @@ Dopo l'installazione, verificare i file con il database nativo invece di dedurli
 ## Collegamenti
 
 - [[Linux/Indice Linux|Indice Linux]]
+- [[Linux/Pagine/Package manager delle distribuzioni|Package manager delle distribuzioni]]
 - [[Linux/Pagine/Repository e package manager|Repository e package manager]]
 - [[Linux/Pagine/Dipendenze e librerie condivise|Dipendenze e librerie condivise]]
 - [[Linux/Pagine/Compilazione da sorgente|Compilazione da sorgente]]

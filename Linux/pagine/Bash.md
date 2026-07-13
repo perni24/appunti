@@ -1,5 +1,5 @@
 ---
-date: 2026-07-11
+date: 2026-07-13
 area: Linux
 topic: Shell Bash
 type: technical-note
@@ -8,7 +8,7 @@ difficulty: base
 tags: [linux, bash, shell, terminale]
 aliases: [GNU Bash, Bourne Again Shell]
 prerequisites: [Terminale e comandi fondamentali, Variabili ambiente e PATH]
-related: [Pipe e ridirezioni, Espansioni della shell, Variabili e quoting, Job control]
+related: [Pipe e ridirezioni, Espansioni della shell, Variabili e quoting, Job control, Bash scripting]
 ---
 
 # Bash
@@ -164,6 +164,7 @@ La shebang viene usata dal kernel quando il file è eseguito direttamente. Se si
 - [[Linux/Pagine/Espansioni della shell|Espansioni della shell]]
 - [[Linux/Pagine/Variabili e quoting|Variabili e quoting]]
 - [[Linux/Pagine/Job control|Job control]]
+- [[Linux/Pagine/Bash scripting|Bash scripting]]
 
 ## Fonti
 

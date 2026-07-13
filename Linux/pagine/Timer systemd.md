@@ -1,5 +1,5 @@
 ---
-date: 2026-07-11
+date: 2026-07-13
 area: Linux
 topic: Timer systemd
 type: technical-note
@@ -8,7 +8,7 @@ difficulty: intermedio
 tags: [linux, systemd, timer, schedulazione]
 aliases: [systemd timer, Schedulazione con systemd]
 prerequisites: [systemd, Unit e dipendenze systemd]
-related: [Cron e Anacron, Logging con journalctl]
+related: [Cron e Anacron, Logging con journalctl, Script robusti]
 ---
 
 # Timer systemd
@@ -164,6 +164,8 @@ sudo systemctl enable --now backup.timer
 - [[Linux/Pagine/Unit e dipendenze systemd|Unit e dipendenze systemd]]
 - [[Linux/Pagine/Cron e Anacron|Cron e Anacron]]
 - [[Linux/Pagine/Logging con journalctl|Logging con journalctl]]
+- [[Linux/Pagine/Script robusti|Script robusti]]
+- [[Linux/Pagine/Gestione degli errori negli script|Gestione degli errori negli script]]
 
 ## Fonti
 

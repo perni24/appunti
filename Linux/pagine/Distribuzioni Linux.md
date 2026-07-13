@@ -1,5 +1,5 @@
 ---
-date: 2026-07-11
+date: 2026-07-13
 area: Linux
 topic: Distribuzioni
 type: theory-note
@@ -8,7 +8,7 @@ difficulty: base
 tags: [linux, distribuzioni, package-manager, release-model]
 aliases: [Distribuzioni GNU Linux, Distro Linux]
 prerequisites: [Architettura Linux]
-related: [Installazione Arch Linux, Gestione pacchetti universali, Filesystem Hierarchy Standard]
+related: [Package manager delle distribuzioni, Rolling release e distribuzioni stabili, Configurazioni specifiche delle distribuzioni, Scelta della distribuzione]
 ---
 
 # Distribuzioni Linux
@@ -112,6 +112,10 @@ Gli script dovrebbero preferire `ID` e `ID_LIKE` a controlli fragili sul nome vi
 - [[Linux/Pagine/Installazione Arch Linux|Installazione Arch Linux]]
 - [[Linux/Pagine/Gestione pacchetti universali|Gestione pacchetti universali]]
 - [[Linux/Pagine/Filesystem Hierarchy Standard|Filesystem Hierarchy Standard]]
+- [[Linux/Pagine/Package manager delle distribuzioni|Package manager delle distribuzioni]]
+- [[Linux/Pagine/Rolling release e distribuzioni stabili|Rolling release e distribuzioni stabili]]
+- [[Linux/Pagine/Configurazioni specifiche delle distribuzioni|Configurazioni specifiche delle distribuzioni]]
+- [[Linux/Pagine/Scelta della distribuzione|Scelta della distribuzione]]
 
 ## Fonti
 

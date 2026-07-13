@@ -1,5 +1,5 @@
 ---
-date: 2026-07-11
+date: 2026-07-13
 area: Linux
 topic: Arch Linux
 type: operational-note
@@ -400,7 +400,13 @@ visudo -c
 ## Collegamenti
 
 - [[Linux/Indice Linux|Indice Linux]]
+- [[Linux/Pagine/UEFI e BIOS|UEFI e BIOS]]
+- [[Linux/Pagine/Partizionamento dei dischi|Partizionamento dei dischi]]
+- [[Linux/Pagine/Filesystem ext4 Btrfs e XFS|Filesystem ext4, Btrfs e XFS]]
+- [[Linux/Pagine/apt dnf e pacman|apt, dnf e pacman]]
 - [[Linux/Pagine/Gestione utenti|Gestione utenti, gruppi e permessi]]
+- [[Linux/Pagine/Installazione Debian|Installazione Debian]]
+- [[Linux/Pagine/Installazione Fedora|Installazione Fedora]]
 
 ## Fonti
 

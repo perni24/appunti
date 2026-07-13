@@ -8,7 +8,7 @@ Mantieni solo le ultime 10 voci operative.
 
 ---
 
-## 2026-07-11 - Ristrutturazione area Linux
+## 2026-07-13 - Ristrutturazione area Linux
 
 ### Fatto
 
@@ -26,6 +26,11 @@ Mantieni solo le ultime 10 voci operative.
 - Completato il blocco `Boot e kernel` con sette note su sequenza di avvio, firmware, bootloader, initramfs, moduli, sysctl e compilazione del kernel.
 - Completato il blocco `Sicurezza` con otto note su minimo privilegio, hardening, MAC, LUKS, GPG, PAM, audit e aggiornamenti di sicurezza.
 - Completato il blocco `Hardware e desktop` con dieci note su rilevamento, driver, udev, D-Bus, energia, PipeWire, sistemi grafici, ambienti desktop, font e portali XDG.
+- Completato il blocco `Virtualizzazione e isolamento` con sei note su namespace, cgroup, container, Docker e Podman, KVM e QEMU e gestione delle VM con libvirt.
+- Completato il blocco `Server` con sei nuove note su web server, reverse proxy, condivisioni NFS e Samba, database, backup e monitoraggio continuativo, ampliando la nota SSH esistente con l'amministrazione di `sshd`.
+- Completato il blocco `Automazione` con cinque nuove note su scripting Bash, robustezza, gestione degli errori, configurazione e Ansible, riutilizzando e collegando le note esistenti su Bash, cron e timer systemd.
+- Completato il blocco `Installazione` con due nuove guide operative per Debian e Fedora, collegate alla procedura Arch Linux esistente e basate sui flussi UEFI ufficiali.
+- Completato il blocco `Differenze tra distribuzioni` con quattro note su ecosistemi dei package manager, modelli di rilascio, portabilita delle configurazioni e scelta basata sui requisiti.
 - Convertite in wikilink le relative voci di `Linux/Indice Linux.md` dopo la creazione effettiva delle pagine.
 - Rimosso da `Home.md` il collegamento alla vecchia macro area Arch Linux, mantenendo il collegamento all'indice Linux.
 
@@ -36,7 +41,7 @@ Mantieni solo le ultime 10 voci operative.
 
 ### Prossimi passi
 
-- Continuare il percorso Avanzato con il blocco `Virtualizzazione e isolamento`.
+- Continuare con il blocco `Procedure` nella sezione Conoscenza Operativa.
 
 ## 2026-07-10 - Revisione accuratezza Programmazione
 
