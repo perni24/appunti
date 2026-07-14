@@ -8,22 +8,24 @@ Mantieni solo le ultime 10 voci operative.
 
 ---
 
-## 2026-07-14 - Normalizzazione percorsi Pagine
+## 2026-07-14 - Normalizzazione percorsi e integrazione Quartz
 
 ### Fatto
 
 - Normalizzate in `Pagine/` le cartelle tracciate come `pagine/` nelle aree AI, RISC-V, Home assistant, Linux e Stampante 3D.
 - Corretti cinque wikilink verso `Programmi open source/Indice Programmi Open Source` con capitalizzazione non coerente.
 - Eseguito un controllo case-sensitive sui percorsi, in preparazione alla futura build Quartz su GitHub Actions.
+- Importato Quartz 5 nella cartella `site/` tramite `git subtree --squash`, mantenendo il vault e il generatore statico nello stesso repository.
 
 ### Decisioni
 
 - `Pagine/` con `P` maiuscola e il casing canonico per le cartelle di contenuto del vault.
 - I controlli dei wikilink devono confrontare anche maiuscole e minuscole, perche Windows puo nascondere errori che emergono su Linux.
+- Quartz viene mantenuto come subtree aggiornabile dal branch upstream `v5`, non come dipendenza npm o repository Git annidato.
 
 ### Prossimi passi
 
-- Configurare Quartz e definire le aree del vault da pubblicare.
+- Inizializzare Quartz, definire le aree pubblicabili e aggiungere il workflow GitHub Pages.
 
 ## 2026-07-13 - Ristrutturazione area Linux
 
