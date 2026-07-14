@@ -1,5 +1,5 @@
 ---
-date: 2026-06-09
+date: 2026-07-14
 area: Programmi open source
 topic: Client API Git-friendly
 type: technical-note
@@ -64,4 +64,4 @@ Bruno organizza le richieste in collection e le salva su filesystem. Le modifich
 
 ## Collegamenti
 
-- [[Programmi open source/Indice programmi open source]]
+- [[Programmi open source/Indice Programmi Open Source]]

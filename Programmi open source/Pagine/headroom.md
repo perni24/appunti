@@ -1,5 +1,5 @@
 ---
-date: 2026-06-18
+date: 2026-07-14
 area: Programmi open source
 topic: Compressione del contesto LLM
 type: technical-note
@@ -67,5 +67,5 @@ Output grezzo del tool
 ## Collegamenti
 
 - [[Token Tamer]]
-- [[Programmi open source/Indice programmi open source]]
+- [[Programmi open source/Indice Programmi Open Source]]
 - https://github.com/chopratejas/headroom

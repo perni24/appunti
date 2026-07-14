@@ -1,5 +1,5 @@
 ---
-date: 2026-06-18
+date: 2026-07-14
 area: Programmi open source
 topic: Generazione diagrammi ER da SQL
 type: technical-note
@@ -74,6 +74,6 @@ Da questo schema lo strumento puo generare un diagramma con due entita, `users` 
 ## Collegamenti
 
 - [[TrailBase]]
-- [[Programmi open source/Indice programmi open source]]
+- [[Programmi open source/Indice Programmi Open Source]]
 - https://github.com/wangyuheng/ddl2plantuml
 - https://github.com/ystemsrx/sql_to_ER

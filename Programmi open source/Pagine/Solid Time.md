@@ -1,5 +1,5 @@
 ---
-date: 2026-06-18
+date: 2026-07-14
 area: Programmi open source
 topic: Time tracking e gestione del tempo
 type: technical-note
@@ -67,5 +67,5 @@ Il progetto principale e disponibile come applicazione web open source; l'ecosis
 
 ## Collegamenti
 
-- [[Programmi open source/Indice programmi open source]]
+- [[Programmi open source/Indice Programmi Open Source]]
 - https://github.com/solidtime-io/solidtime

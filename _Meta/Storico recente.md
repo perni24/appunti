@@ -8,6 +8,23 @@ Mantieni solo le ultime 10 voci operative.
 
 ---
 
+## 2026-07-14 - Normalizzazione percorsi Pagine
+
+### Fatto
+
+- Normalizzate in `Pagine/` le cartelle tracciate come `pagine/` nelle aree AI, RISC-V, Home assistant, Linux e Stampante 3D.
+- Corretti cinque wikilink verso `Programmi open source/Indice Programmi Open Source` con capitalizzazione non coerente.
+- Eseguito un controllo case-sensitive sui percorsi, in preparazione alla futura build Quartz su GitHub Actions.
+
+### Decisioni
+
+- `Pagine/` con `P` maiuscola e il casing canonico per le cartelle di contenuto del vault.
+- I controlli dei wikilink devono confrontare anche maiuscole e minuscole, perche Windows puo nascondere errori che emergono su Linux.
+
+### Prossimi passi
+
+- Configurare Quartz e definire le aree del vault da pubblicare.
+
 ## 2026-07-13 - Ristrutturazione area Linux
 
 ### Fatto
@@ -179,20 +196,3 @@ Mantieni solo le ultime 10 voci operative.
 ### Prossimi passi
 
 - Continuare con il blocco `Internals e Gestione Risorse`.
-
-## 2026-07-09 - Contratti tipi e qualita Clean Code
-
-### Fatto
-
-- Create 15 pagine dell'area `Programmazione/Clean Code/Pagine` per il blocco `Contratti, Tipi e Qualita`.
-- Compilati contenuti reali su contratti, validazione ai confini, tipi significativi, modellazione del dominio, errori, complessita, test, logging e messaggi di errore.
-- Aggiornato `Programmazione/Clean Code/Indice Clean Code.md` trasformando in wikilink solo le nuove voci ora esistenti.
-
-### Decisioni
-
-- Le note create restano con `status: "non revisionato"`.
-- La sezione collega qualita del codice, contratti e testing come strumenti di design, non solo come controlli finali.
-
-### Prossimi passi
-
-- Continuare con il blocco `Standard Library Pratica`.

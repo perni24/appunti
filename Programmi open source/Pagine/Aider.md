@@ -1,5 +1,5 @@
 ---
-date: 2026-06-09
+date: 2026-07-14
 area: Programmi open source
 topic: Coding assistant da terminale
 type: technical-note
@@ -65,4 +65,4 @@ Correggi il parsing degli argomenti CLI e aggiungi un test.
 
 ## Collegamenti
 
-- [[Programmi open source/Indice programmi open source]]
+- [[Programmi open source/Indice Programmi Open Source]]
