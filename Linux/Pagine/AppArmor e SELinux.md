@@ -4,6 +4,7 @@ area: Linux
 topic: Mandatory Access Control
 type: technical-note
 status: "non revisionato"
+publish: true
 difficulty: avanzato
 tags: [linux, sicurezza, apparmor, selinux, lsm]
 aliases: [MAC Linux, SELinux e AppArmor]

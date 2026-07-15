@@ -4,6 +4,7 @@ area: Linux
 topic: Container engine Docker e Podman
 type: technical-note
 status: "non revisionato"
+publish: true
 difficulty: intermedio
 tags: [linux, docker, podman, container, oci]
 aliases: [Docker vs Podman, Container engine Linux]

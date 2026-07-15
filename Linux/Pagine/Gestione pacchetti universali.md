@@ -4,6 +4,7 @@ area: Linux
 topic: Distribuzione software
 type: technical-note
 status: "non revisionato"
+publish: true
 difficulty: intermedio
 tags: [linux, package-management, flatpak, snap, appimage]
 aliases: [Pacchetti universali Linux, Flatpak Snap e AppImage]

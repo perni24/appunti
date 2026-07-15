@@ -4,6 +4,7 @@ area: Linux
 topic: Monitoraggio continuativo dei server Linux
 type: technical-note
 status: "non revisionato"
+publish: true
 difficulty: avanzato
 tags: [linux, server, monitoring, prometheus, alerting, osservabilita]
 aliases: [Monitoring Linux, Osservabilita server]

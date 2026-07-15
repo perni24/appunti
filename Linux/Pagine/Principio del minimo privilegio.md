@@ -4,6 +4,7 @@ area: Linux
 topic: Minimo privilegio
 type: theory-note
 status: "non revisionato"
+publish: true
 difficulty: intermedio
 tags: [linux, sicurezza, privilegi, autorizzazione]
 aliases: [Least privilege, Minimo privilegio Linux]

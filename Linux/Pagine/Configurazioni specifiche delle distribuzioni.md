@@ -4,6 +4,7 @@ area: Linux
 topic: Portabilita delle configurazioni Linux
 type: technical-note
 status: "non revisionato"
+publish: true
 difficulty: avanzato
 tags: [linux, distribuzioni, configurazione, portabilita, automazione]
 aliases: [Differenze di configurazione tra distribuzioni, Configurazioni distro-specifiche]

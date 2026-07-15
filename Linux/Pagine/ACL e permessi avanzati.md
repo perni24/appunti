@@ -4,6 +4,7 @@ area: Linux
 topic: Access Control List
 type: technical-note
 status: "non revisionato"
+publish: true
 difficulty: intermedio
 tags: [linux, acl, permessi, setfacl, getfacl]
 aliases: [ACL Linux, POSIX ACL]

@@ -4,6 +4,7 @@ area: Linux
 topic: Gestione operativa dei database su Linux
 type: technical-note
 status: "non revisionato"
+publish: true
 difficulty: avanzato
 tags: [linux, server, database, postgresql, mysql, amministrazione]
 aliases: [Database server Linux, PostgreSQL e MySQL su Linux]

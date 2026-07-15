@@ -4,6 +4,7 @@ area: Linux
 topic: systemd
 type: technical-note
 status: "non revisionato"
+publish: true
 difficulty: intermedio
 tags: [linux, systemd, systemctl, servizi, init]
 aliases: [systemd system manager, Gestione servizi con systemctl]

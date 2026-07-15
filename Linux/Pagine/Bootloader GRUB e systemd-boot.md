@@ -4,6 +4,7 @@ area: Linux
 topic: Bootloader Linux
 type: technical-note
 status: "non revisionato"
+publish: true
 difficulty: avanzato
 tags: [linux, bootloader, grub, systemd-boot, uefi]
 aliases: [GRUB e systemd-boot, Boot manager Linux]

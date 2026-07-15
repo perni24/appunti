@@ -4,6 +4,7 @@ area: Linux
 topic: Cifratura storage Linux
 type: technical-note
 status: "non revisionato"
+publish: true
 difficulty: avanzato
 tags: [linux, sicurezza, luks, cryptsetup, dm-crypt]
 aliases: [LUKS, Cifratura disco Linux]

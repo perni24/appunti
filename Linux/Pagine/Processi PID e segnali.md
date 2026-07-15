@@ -4,6 +4,7 @@ area: Linux
 topic: Processi Linux
 type: technical-note
 status: "non revisionato"
+publish: true
 difficulty: intermedio
 tags: [linux, processi, pid, segnali, procfs]
 aliases: [Processi Linux, PID e segnali]

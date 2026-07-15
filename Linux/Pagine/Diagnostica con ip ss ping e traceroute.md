@@ -4,6 +4,7 @@ area: Linux
 topic: Diagnostica di rete
 type: technical-note
 status: "non revisionato"
+publish: true
 difficulty: intermedio
 tags: [linux, networking, diagnostica, ip, ss, ping, traceroute]
 aliases: [Troubleshooting rete Linux, Diagnostica networking]

@@ -4,6 +4,7 @@ area: Linux
 topic: Permessi filesystem
 type: technical-note
 status: "non revisionato"
+publish: true
 difficulty: base
 tags: [linux, permessi, chmod, chown, umask, setgid]
 aliases: [Permessi Linux, chmod chown umask]

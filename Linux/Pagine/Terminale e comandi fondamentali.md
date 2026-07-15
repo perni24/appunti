@@ -4,6 +4,7 @@ area: Linux
 topic: Terminale
 type: technical-note
 status: "non revisionato"
+publish: true
 difficulty: base
 tags: [linux, terminale, shell, comandi, coreutils]
 aliases: [Comandi Linux fondamentali, Terminale Linux]

@@ -4,6 +4,7 @@ area: Linux
 topic: Linux Audit System
 type: technical-note
 status: "non revisionato"
+publish: true
 difficulty: avanzato
 tags: [linux, sicurezza, auditd, log, incident-response]
 aliases: [auditd, Audit Linux]

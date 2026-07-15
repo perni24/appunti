@@ -4,6 +4,7 @@ area: Linux
 topic: Namespace del kernel Linux
 type: technical-note
 status: "non revisionato"
+publish: true
 difficulty: avanzato
 tags: [linux, kernel, namespace, isolamento, container]
 aliases: [Linux namespaces, Namespace Linux]

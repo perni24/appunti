@@ -4,6 +4,7 @@ area: Linux
 topic: File e filesystem
 type: technical-note
 status: "non revisionato"
+publish: true
 difficulty: base
 tags: [linux, filesystem, file, directory, inode, link]
 aliases: [File directory e collegamenti, Hard link e symbolic link]

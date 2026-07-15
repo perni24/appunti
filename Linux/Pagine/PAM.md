@@ -4,6 +4,7 @@ area: Linux
 topic: Pluggable Authentication Modules
 type: technical-note
 status: "non revisionato"
+publish: true
 difficulty: avanzato
 tags: [linux, sicurezza, pam, autenticazione, account]
 aliases: [Linux PAM, Pluggable Authentication Modules]

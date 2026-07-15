@@ -4,6 +4,7 @@ area: Linux
 topic: Routing IP
 type: technical-note
 status: "non revisionato"
+publish: true
 difficulty: intermedio
 tags: [linux, networking, routing, gateway, iproute2]
 aliases: [Routing Linux, Tabelle di routing]

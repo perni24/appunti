@@ -4,6 +4,7 @@ area: Linux
 topic: Unit systemd
 type: technical-note
 status: "non revisionato"
+publish: true
 difficulty: intermedio
 tags: [linux, systemd, unit, service, dipendenze]
 aliases: [Unit systemd, Service unit systemd]

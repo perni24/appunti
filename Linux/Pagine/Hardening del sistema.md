@@ -4,6 +4,7 @@ area: Linux
 topic: Hardening Linux
 type: technical-note
 status: "non revisionato"
+publish: true
 difficulty: avanzato
 tags: [linux, sicurezza, hardening, servizi, configurazione]
 aliases: [Linux hardening, Messa in sicurezza Linux]

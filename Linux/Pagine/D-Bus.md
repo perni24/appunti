@@ -4,6 +4,7 @@ area: Linux
 topic: IPC D-Bus
 type: technical-note
 status: "non revisionato"
+publish: true
 difficulty: avanzato
 tags: [linux, dbus, ipc, desktop, servizi]
 aliases: [D-Bus IPC, Message bus Linux]

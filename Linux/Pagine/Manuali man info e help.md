@@ -4,6 +4,7 @@ area: Linux
 topic: Documentazione locale
 type: technical-note
 status: "non revisionato"
+publish: true
 difficulty: base
 tags: [linux, man, info, help, documentazione]
 aliases: [Manuali e documentazione Linux, man info e help]

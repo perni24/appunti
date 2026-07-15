@@ -4,6 +4,7 @@ area: Linux
 topic: Reverse proxy HTTP
 type: technical-note
 status: "non revisionato"
+publish: true
 difficulty: avanzato
 tags: [linux, server, reverse-proxy, http, tls, nginx]
 aliases: [Proxy inverso, HTTP gateway]

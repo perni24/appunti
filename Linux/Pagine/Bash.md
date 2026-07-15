@@ -4,6 +4,7 @@ area: Linux
 topic: Shell Bash
 type: technical-note
 status: "non revisionato"
+publish: true
 difficulty: base
 tags: [linux, bash, shell, terminale]
 aliases: [GNU Bash, Bourne Again Shell]

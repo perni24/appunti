@@ -4,6 +4,7 @@ area: Linux
 topic: Automazione con Ansible
 type: technical-note
 status: "non revisionato"
+publish: true
 difficulty: avanzato
 tags: [linux, ansible, automazione, configuration-management, yaml]
 aliases: [Ansible playbook, Configuration management con Ansible]

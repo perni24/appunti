@@ -4,6 +4,7 @@ area: Linux
 topic: Ambiente di sviluppo
 type: operational-note
 status: "non revisionato"
+publish: true
 difficulty: intermedio
 tags: [linux, user-space, nvm, pyenv, rustup, toolchain]
 aliases: [Installazione linguaggi in user-space, Toolchain per utente]

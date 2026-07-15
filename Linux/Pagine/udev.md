@@ -4,6 +4,7 @@ area: Linux
 topic: Gestione dinamica device
 type: technical-note
 status: "non revisionato"
+publish: true
 difficulty: avanzato
 tags: [linux, udev, hardware, device, regole]
 aliases: [systemd-udevd, Regole udev]

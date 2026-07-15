@@ -4,6 +4,7 @@ area: Linux
 topic: Utenti e permessi
 type: technical-note
 status: "non revisionato"
+publish: true
 difficulty: intermedio
 tags: [linux, utenti, gruppi, permessi, sudo]
 aliases: [Gestione utenti Linux, Utenti gruppi e permessi]

@@ -4,6 +4,7 @@ area: Linux
 topic: Elaborazione testi
 type: technical-note
 status: "non revisionato"
+publish: true
 difficulty: intermedio
 tags: [linux, grep, sed, awk, testo, pipeline]
 aliases: [grep sed awk, Strumenti Unix per il testo]

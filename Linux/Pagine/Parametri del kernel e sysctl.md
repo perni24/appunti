@@ -4,6 +4,7 @@ area: Linux
 topic: Configurazione kernel runtime
 type: technical-note
 status: "non revisionato"
+publish: true
 difficulty: avanzato
 tags: [linux, kernel, sysctl, procfs, parametri]
 aliases: [sysctl, Kernel parameters]

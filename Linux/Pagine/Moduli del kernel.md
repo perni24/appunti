@@ -4,6 +4,7 @@ area: Linux
 topic: Moduli kernel
 type: technical-note
 status: "non revisionato"
+publish: true
 difficulty: avanzato
 tags: [linux, kernel, moduli, modprobe, driver]
 aliases: [Kernel modules, Driver caricabili Linux]

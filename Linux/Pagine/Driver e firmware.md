@@ -4,6 +4,7 @@ area: Linux
 topic: Supporto hardware kernel
 type: technical-note
 status: "non revisionato"
+publish: true
 difficulty: intermedio
 tags: [linux, driver, firmware, kernel, hardware]
 aliases: [Driver Linux, Firmware Linux]

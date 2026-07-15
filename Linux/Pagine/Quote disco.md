@@ -4,6 +4,7 @@ area: Linux
 topic: Quote filesystem
 type: technical-note
 status: "non revisionato"
+publish: true
 difficulty: avanzato
 tags: [linux, quota, filesystem, utenti, storage]
 aliases: [Disk quota, Quote utenti e gruppi]

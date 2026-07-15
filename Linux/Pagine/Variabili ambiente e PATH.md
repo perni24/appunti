@@ -4,6 +4,7 @@ area: Linux
 topic: Ambiente dei processi
 type: technical-note
 status: "non revisionato"
+publish: true
 difficulty: base
 tags: [linux, environment, path, shell, bash]
 aliases: [Variabili d'ambiente e PATH, Environment variables Linux]

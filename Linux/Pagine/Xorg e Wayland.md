@@ -4,6 +4,7 @@ area: Linux
 topic: Sistemi grafici Linux
 type: theory-note
 status: "non revisionato"
+publish: true
 difficulty: intermedio
 tags: [linux, desktop, xorg, wayland, xwayland]
 aliases: [X11 e Wayland, Display server Linux]

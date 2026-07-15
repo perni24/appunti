@@ -4,6 +4,7 @@ area: Linux
 topic: Domain Name System
 type: technical-note
 status: "non revisionato"
+publish: true
 difficulty: intermedio
 tags: [linux, networking, dns, resolver, systemd-resolved]
 aliases: [DNS Linux, Risoluzione nomi]

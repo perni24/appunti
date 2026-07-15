@@ -4,6 +4,7 @@ area: Linux
 topic: Espansioni Bash
 type: technical-note
 status: "non revisionato"
+publish: true
 difficulty: intermedio
 tags: [linux, bash, espansioni, glob, parameter-expansion]
 aliases: [Shell expansion, Espansioni Bash]

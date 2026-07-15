@@ -4,6 +4,7 @@ area: Linux
 topic: Variabili e quoting Bash
 type: technical-note
 status: "non revisionato"
+publish: true
 difficulty: base
 tags: [linux, bash, variabili, quoting, ambiente]
 aliases: [Quoting Bash, Variabili Bash]

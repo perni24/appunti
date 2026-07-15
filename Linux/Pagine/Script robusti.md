@@ -4,6 +4,7 @@ area: Linux
 topic: Robustezza degli script shell
 type: technical-note
 status: "non revisionato"
+publish: true
 difficulty: avanzato
 tags: [linux, bash, scripting, robustezza, shellcheck]
 aliases: [Shell scripting robusto, Script Bash affidabili]

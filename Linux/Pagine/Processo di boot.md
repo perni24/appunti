@@ -4,6 +4,7 @@ area: Linux
 topic: Avvio Linux
 type: theory-note
 status: "non revisionato"
+publish: true
 difficulty: intermedio
 tags: [linux, boot, kernel, initramfs, systemd]
 aliases: [Boot Linux, Sequenza di avvio Linux]

@@ -4,6 +4,7 @@ area: Linux
 topic: Early user space
 type: technical-note
 status: "non revisionato"
+publish: true
 difficulty: avanzato
 tags: [linux, initramfs, boot, dracut, mkinitcpio]
 aliases: [Initial RAM filesystem, Early userspace]

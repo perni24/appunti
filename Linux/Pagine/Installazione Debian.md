@@ -4,6 +4,7 @@ area: Linux
 topic: Debian
 type: operational-note
 status: "non revisionato"
+publish: true
 difficulty: intermedio
 tags: [linux, debian, installazione, uefi, debian-installer]
 aliases: [Installazione Debian, Installare Debian]
@@ -293,4 +294,3 @@ sudo apt --fix-broken install
 - [Debian - Verifica delle immagini di installazione](https://www.debian.org/CD/verify.en.html)
 - [Debian - Guida di installazione stabile per amd64](https://www.debian.org/releases/stable/amd64/)
 - [Debian Installer - Caricamento del firmware mancante](https://www.debian.org/releases/stable/amd64/ch06s04.en.html)
-

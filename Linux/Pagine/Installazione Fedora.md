@@ -4,6 +4,7 @@ area: Linux
 topic: Fedora Workstation
 type: operational-note
 status: "non revisionato"
+publish: true
 difficulty: intermedio
 tags: [linux, fedora, installazione, uefi, anaconda]
 aliases: [Installazione Fedora, Installare Fedora Workstation]

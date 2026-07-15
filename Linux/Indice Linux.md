@@ -1,3 +1,17 @@
+---
+date: 2026-07-14
+area: Linux
+topic: Indice
+type: permanent-note
+status: "non revisionato"
+publish: true
+difficulty: base
+tags: [linux, indice]
+aliases: [Indice Linux]
+prerequisites: []
+related: []
+---
+
 ## Percorso Base
 
 ### Fondamenti del sistema

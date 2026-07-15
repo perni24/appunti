@@ -4,6 +4,7 @@ area: Linux
 topic: Build del kernel Linux
 type: technical-note
 status: "non revisionato"
+publish: true
 difficulty: avanzato
 tags: [linux, kernel, compilazione, kbuild, configurazione]
 aliases: [Compilare il kernel Linux, Kernel custom]

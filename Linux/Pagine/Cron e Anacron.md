@@ -4,6 +4,7 @@ area: Linux
 topic: Schedulazione tradizionale
 type: technical-note
 status: "non revisionato"
+publish: true
 difficulty: intermedio
 tags: [linux, cron, crontab, anacron, schedulazione]
 aliases: [Crontab, Schedulazione cron]

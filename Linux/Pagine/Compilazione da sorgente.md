@@ -4,6 +4,7 @@ area: Linux
 topic: Build da sorgente
 type: technical-note
 status: "non revisionato"
+publish: true
 difficulty: intermedio
 tags: [linux, compilazione, build, cmake, make, meson]
 aliases: [Compilare software su Linux, Build from source]

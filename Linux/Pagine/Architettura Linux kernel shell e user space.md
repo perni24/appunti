@@ -4,6 +4,7 @@ area: Linux
 topic: Architettura del sistema
 type: theory-note
 status: "non revisionato"
+publish: true
 difficulty: base
 tags: [linux, kernel, user-space, shell, system-call]
 aliases: [Architettura Linux, Kernel shell e user space]

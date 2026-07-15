@@ -4,6 +4,7 @@ area: Linux
 topic: Backup e ripristino dei sistemi Linux
 type: technical-note
 status: "non revisionato"
+publish: true
 difficulty: avanzato
 tags: [linux, server, backup, restore, disaster-recovery]
 aliases: [Backup Linux, Restore Linux]

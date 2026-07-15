@@ -4,6 +4,7 @@ area: Linux
 topic: Condivisioni di rete NFS e Samba
 type: technical-note
 status: "non revisionato"
+publish: true
 difficulty: avanzato
 tags: [linux, server, nfs, samba, smb, filesystem]
 aliases: [File server Linux, NFS e SMB]

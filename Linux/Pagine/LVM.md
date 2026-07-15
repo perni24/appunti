@@ -4,6 +4,7 @@ area: Linux
 topic: Logical Volume Manager
 type: technical-note
 status: "non revisionato"
+publish: true
 difficulty: avanzato
 tags: [linux, lvm, storage, volumi, snapshot]
 aliases: [Logical Volume Manager, Volumi logici Linux]

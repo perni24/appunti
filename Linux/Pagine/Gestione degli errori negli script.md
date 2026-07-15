@@ -4,6 +4,7 @@ area: Linux
 topic: Error handling negli script Bash
 type: technical-note
 status: "non revisionato"
+publish: true
 difficulty: avanzato
 tags: [linux, bash, scripting, error-handling, exit-status]
 aliases: [Error handling Bash, Gestione errori Bash]

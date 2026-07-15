@@ -4,6 +4,7 @@ area: Linux
 topic: Integrazione desktop freedesktop
 type: technical-note
 status: "non revisionato"
+publish: true
 difficulty: intermedio
 tags: [linux, desktop, xdg, portal, mime, applicazioni]
 aliases: [xdg-desktop-portal, Applicazioni predefinite Linux]

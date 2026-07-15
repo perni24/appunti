@@ -4,6 +4,7 @@ area: Linux
 topic: Mount filesystem
 type: technical-note
 status: "non revisionato"
+publish: true
 difficulty: intermedio
 tags: [linux, mount, umount, filesystem, storage]
 aliases: [Montare filesystem, Smontare filesystem]

@@ -4,6 +4,7 @@ area: Linux
 topic: Gestione macchine virtuali con libvirt
 type: technical-note
 status: "non revisionato"
+publish: true
 difficulty: avanzato
 tags: [linux, libvirt, virsh, kvm, qemu, virtualizzazione]
 aliases: [libvirt, VM con libvirt]

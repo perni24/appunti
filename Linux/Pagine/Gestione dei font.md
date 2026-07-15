@@ -4,6 +4,7 @@ area: Linux
 topic: Font Linux
 type: technical-note
 status: "non revisionato"
+publish: true
 difficulty: intermedio
 tags: [linux, desktop, fontconfig, font, freetype]
 aliases: [Font Linux, fontconfig]

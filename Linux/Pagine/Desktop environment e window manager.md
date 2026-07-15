@@ -4,6 +4,7 @@ area: Linux
 topic: Ambiente desktop Linux
 type: theory-note
 status: "non revisionato"
+publish: true
 difficulty: base
 tags: [linux, desktop, window-manager, compositor, sessione]
 aliases: [Desktop environment Linux, Window manager Linux]

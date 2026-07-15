@@ -4,6 +4,7 @@ area: Linux
 topic: Gestione pacchetti
 type: technical-note
 status: "non revisionato"
+publish: true
 difficulty: intermedio
 tags: [linux, repository, package-manager, pacchetti, sicurezza]
 aliases: [Repository Linux, Gestione pacchetti Linux]

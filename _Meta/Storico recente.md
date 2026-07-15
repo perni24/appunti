@@ -8,7 +8,7 @@ Mantieni solo le ultime 10 voci operative.
 
 ---
 
-## 2026-07-14 - Normalizzazione percorsi e integrazione Quartz
+## 2026-07-15 - Normalizzazione percorsi e integrazione Quartz
 
 ### Fatto
 
@@ -16,16 +16,27 @@ Mantieni solo le ultime 10 voci operative.
 - Corretti cinque wikilink verso `Programmi open source/Indice Programmi Open Source` con capitalizzazione non coerente.
 - Eseguito un controllo case-sensitive sui percorsi, in preparazione alla futura build Quartz su GitHub Actions.
 - Importato Quartz 5 nella cartella `site/` tramite `git subtree --squash`, mantenendo il vault e il generatore statico nello stesso repository.
+- Installate le dipendenze npm e i 46 plugin del template Quartz per Obsidian.
+- Creata la configurazione locale in `site/quartz.config.yaml` e verificata una prima homepage di prova.
+- Verificata la build statica e l'anteprima locale su desktop e mobile, senza errori nella console del browser.
+- Aggiunti `site/publish.config.json` e gli script portabili per preparare e compilare solo le aree autorizzate.
+- Marcate come pubblicabili tutte le 99 note dell'area Linux e abilitato il filtro `explicit-publish`.
+- Verificata la build Linux completa con 100 input, includendo la homepage generata, senza wikilink rotti nell'output.
+- Impostato il `baseUrl` definitivo `perni24.github.io/appunti` per la pubblicazione nel sottopercorso GitHub Pages.
+- Creato `.github/workflows/deploy-pages.yml` per compilare Quartz e pubblicare `site/public` a ogni push su `main`.
 
 ### Decisioni
 
 - `Pagine/` con `P` maiuscola e il casing canonico per le cartelle di contenuto del vault.
 - I controlli dei wikilink devono confrontare anche maiuscole e minuscole, perche Windows puo nascondere errori che emergono su Linux.
 - Quartz viene mantenuto come subtree aggiornabile dal branch upstream `v5`, non come dipendenza npm o repository Git annidato.
+- La configurazione usa il template Obsidian, l'interfaccia italiana e il percorso GitHub Pages del repository come `baseUrl`.
+- I contenuti pubblicabili vengono copiati in una directory temporanea esterna al repository, per evitare duplicati tracciati e conflitti con `.gitignore`.
+- L'output statico `site/public` resta escluso da Git: GitHub Actions lo genera e lo carica come artifact di Pages durante ogni deploy.
 
 ### Prossimi passi
 
-- Inizializzare Quartz, definire le aree pubblicabili e aggiungere il workflow GitHub Pages.
+- Abilitare una sola volta `Settings > Pages > Source: GitHub Actions`, quindi eseguire commit e push per verificare il primo deploy online.
 
 ## 2026-07-13 - Ristrutturazione area Linux
 

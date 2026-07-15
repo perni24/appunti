@@ -4,6 +4,7 @@ area: Linux
 topic: Inventario hardware
 type: technical-note
 status: "non revisionato"
+publish: true
 difficulty: intermedio
 tags: [linux, hardware, pci, usb, sysfs]
 aliases: [Hardware detection Linux, Inventario hardware Linux]

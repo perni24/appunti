@@ -4,6 +4,7 @@ area: Linux
 topic: Filesystem Linux
 type: technical-note
 status: "non revisionato"
+publish: true
 difficulty: intermedio
 tags: [linux, filesystem, ext4, btrfs, xfs]
 aliases: [Confronto filesystem Linux, ext4 Btrfs XFS]

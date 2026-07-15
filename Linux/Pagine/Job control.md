@@ -4,6 +4,7 @@ area: Linux
 topic: Job control Bash
 type: technical-note
 status: "non revisionato"
+publish: true
 difficulty: intermedio
 tags: [linux, bash, job-control, processi, segnali]
 aliases: [Controllo dei job, Processi in foreground e background]

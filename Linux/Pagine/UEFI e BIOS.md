@@ -4,6 +4,7 @@ area: Linux
 topic: Firmware di avvio
 type: theory-note
 status: "non revisionato"
+publish: true
 difficulty: intermedio
 tags: [linux, uefi, bios, firmware, secure-boot]
 aliases: [Firmware UEFI, Legacy BIOS]

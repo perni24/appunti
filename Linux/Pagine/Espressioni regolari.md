@@ -4,6 +4,7 @@ area: Linux
 topic: Espressioni regolari
 type: technical-note
 status: "non revisionato"
+publish: true
 difficulty: intermedio
 tags: [linux, regex, grep, sed, awk]
 aliases: [Regex, Regular expression]

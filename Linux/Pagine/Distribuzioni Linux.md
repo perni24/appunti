@@ -4,6 +4,7 @@ area: Linux
 topic: Distribuzioni
 type: theory-note
 status: "non revisionato"
+publish: true
 difficulty: base
 tags: [linux, distribuzioni, package-manager, release-model]
 aliases: [Distribuzioni GNU Linux, Distro Linux]

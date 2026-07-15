@@ -4,6 +4,7 @@ area: Linux
 topic: Memoria swap
 type: technical-note
 status: "non revisionato"
+publish: true
 difficulty: intermedio
 tags: [linux, swap, memoria, paging, zram]
 aliases: [Swap Linux, Area di swap]

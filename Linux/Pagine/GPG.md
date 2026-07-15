@@ -4,6 +4,7 @@ area: Linux
 topic: GNU Privacy Guard
 type: technical-note
 status: "non revisionato"
+publish: true
 difficulty: avanzato
 tags: [linux, sicurezza, gpg, openpgp, firme]
 aliases: [GnuPG, OpenPGP con GPG]

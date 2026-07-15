@@ -4,6 +4,7 @@ area: Linux
 topic: Linking e dipendenze
 type: technical-note
 status: "non revisionato"
+publish: true
 difficulty: intermedio
 tags: [linux, dipendenze, librerie, linker, elf, pkg-config]
 aliases: [Librerie condivise Linux, Dynamic linking]

@@ -4,6 +4,7 @@ area: Linux
 topic: Secure Shell
 type: technical-note
 status: "non revisionato"
+publish: true
 difficulty: intermedio
 tags: [linux, networking, ssh, sicurezza, chiavi]
 aliases: [OpenSSH, Accesso remoto SSH]

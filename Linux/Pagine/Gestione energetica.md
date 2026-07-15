@@ -4,6 +4,7 @@ area: Linux
 topic: Gestione energia Linux
 type: technical-note
 status: "non revisionato"
+publish: true
 difficulty: intermedio
 tags: [linux, energia, sospensione, ibernazione, batteria]
 aliases: [Power management Linux, Sospensione Linux]

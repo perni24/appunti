@@ -4,6 +4,7 @@ area: Linux
 topic: RAID software Linux
 type: technical-note
 status: "non revisionato"
+publish: true
 difficulty: avanzato
 tags: [linux, raid, mdadm, storage, ridondanza]
 aliases: [Linux MD RAID, mdadm]

@@ -4,6 +4,7 @@ area: Linux
 topic: Virtualizzazione con KVM e QEMU
 type: technical-note
 status: "non revisionato"
+publish: true
 difficulty: avanzato
 tags: [linux, kvm, qemu, virtualizzazione, macchina-virtuale]
 aliases: [QEMU KVM, Virtualizzazione hardware Linux]

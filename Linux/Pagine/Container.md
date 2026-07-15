@@ -4,6 +4,7 @@ area: Linux
 topic: Container Linux
 type: technical-note
 status: "non revisionato"
+publish: true
 difficulty: intermedio
 tags: [linux, container, oci, isolamento, runtime]
 aliases: [Linux containers, Container applicativi]

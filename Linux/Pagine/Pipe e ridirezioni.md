@@ -4,6 +4,7 @@ area: Linux
 topic: Flussi della shell
 type: technical-note
 status: "non revisionato"
+publish: true
 difficulty: base
 tags: [linux, bash, pipe, redirezioni, file-descriptor]
 aliases: [Pipe Linux, Ridirezioni Bash]

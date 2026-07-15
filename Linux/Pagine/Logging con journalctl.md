@@ -4,6 +4,7 @@ area: Linux
 topic: systemd journal
 type: technical-note
 status: "non revisionato"
+publish: true
 difficulty: intermedio
 tags: [linux, systemd, journalctl, logging, troubleshooting]
 aliases: [journalctl, systemd journal]

@@ -4,6 +4,7 @@ area: Linux
 topic: Web server su Linux
 type: technical-note
 status: "non revisionato"
+publish: true
 difficulty: intermedio
 tags: [linux, server, http, https, nginx, apache]
 aliases: [Server HTTP Linux, Nginx e Apache]

@@ -4,6 +4,7 @@ area: Linux
 topic: Timer systemd
 type: technical-note
 status: "non revisionato"
+publish: true
 difficulty: intermedio
 tags: [linux, systemd, timer, schedulazione]
 aliases: [systemd timer, Schedulazione con systemd]

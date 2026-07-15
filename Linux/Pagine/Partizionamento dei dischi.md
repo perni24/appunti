@@ -4,6 +4,7 @@ area: Linux
 topic: Partizionamento storage
 type: technical-note
 status: "non revisionato"
+publish: true
 difficulty: intermedio
 tags: [linux, storage, partizioni, gpt, mbr]
 aliases: [Partizioni Linux, GPT e MBR]

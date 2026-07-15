@@ -4,6 +4,7 @@ area: Linux
 topic: Manutenzione filesystem
 type: technical-note
 status: "non revisionato"
+publish: true
 difficulty: avanzato
 tags: [linux, filesystem, fsck, e2fsck, xfs-repair, btrfs]
 aliases: [Riparazione filesystem, Controllo filesystem Linux]

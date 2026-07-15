@@ -4,6 +4,7 @@ area: Linux
 topic: Scripting con Bash
 type: technical-note
 status: "non revisionato"
+publish: true
 difficulty: intermedio
 tags: [linux, bash, scripting, automazione, cli]
 aliases: [Script Bash, Programmazione Bash]

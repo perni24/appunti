@@ -4,6 +4,7 @@ area: Linux
 topic: Arch Linux
 type: operational-note
 status: "non revisionato"
+publish: true
 difficulty: avanzato
 tags: [linux, arch-linux, installazione, uefi, grub]
 aliases: [Installazione Arch Linux, Installare Arch Linux]

@@ -4,6 +4,7 @@ area: Linux
 topic: NetworkManager
 type: technical-note
 status: "non revisionato"
+publish: true
 difficulty: intermedio
 tags: [linux, networking, networkmanager, nmcli, wifi]
 aliases: [nmcli, Gestione rete con NetworkManager]

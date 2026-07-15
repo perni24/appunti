@@ -4,6 +4,7 @@ area: Linux
 topic: Package manager nativi
 type: technical-note
 status: "non revisionato"
+publish: true
 difficulty: intermedio
 tags: [linux, apt, dnf, pacman, pacchetti]
 aliases: [APT DNF pacman, Comandi package manager]

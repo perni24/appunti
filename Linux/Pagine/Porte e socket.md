@@ -4,6 +4,7 @@ area: Linux
 topic: Socket di rete
 type: technical-note
 status: "non revisionato"
+publish: true
 difficulty: intermedio
 tags: [linux, networking, socket, tcp, udp, porte]
 aliases: [Socket Linux, Porte TCP e UDP]

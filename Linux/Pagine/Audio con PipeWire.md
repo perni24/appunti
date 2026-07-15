@@ -4,6 +4,7 @@ area: Linux
 topic: Audio PipeWire
 type: technical-note
 status: "non revisionato"
+publish: true
 difficulty: intermedio
 tags: [linux, audio, pipewire, wireplumber, alsa]
 aliases: [PipeWire, Audio Linux moderno]

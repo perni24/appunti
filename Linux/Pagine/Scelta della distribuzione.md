@@ -4,6 +4,7 @@ area: Linux
 topic: Scelta della distribuzione Linux
 type: theory-note
 status: "non revisionato"
+publish: true
 difficulty: base
 tags: [linux, distribuzioni, selezione, requisiti, supporto]
 aliases: [Come scegliere una distribuzione Linux, Scegliere una distro]

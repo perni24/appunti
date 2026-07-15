@@ -4,6 +4,7 @@ area: Linux
 topic: Filesystem Hierarchy Standard
 type: technical-note
 status: "non revisionato"
+publish: true
 difficulty: base
 tags: [linux, fhs, filesystem, directory]
 aliases: [FHS, Gerarchia filesystem Linux]

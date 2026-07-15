@@ -4,6 +4,7 @@ area: Linux
 topic: Configurazione degli script e dei servizi
 type: technical-note
 status: "non revisionato"
+publish: true
 difficulty: avanzato
 tags: [linux, bash, configurazione, environment, secrets]
 aliases: [Configurazione script, Variabili di configurazione]

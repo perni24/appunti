@@ -4,6 +4,7 @@ area: Linux
 topic: Interfacce di rete
 type: technical-note
 status: "non revisionato"
+publish: true
 difficulty: intermedio
 tags: [linux, networking, ip, ipv4, ipv6, interfacce]
 aliases: [Indirizzi IP Linux, Interfacce di rete Linux]

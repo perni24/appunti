@@ -4,6 +4,7 @@ area: Linux
 topic: Privilegi amministrativi
 type: technical-note
 status: "non revisionato"
+publish: true
 difficulty: intermedio
 tags: [linux, sudo, sudoers, privilegi, sicurezza]
 aliases: [Sudo, Privilegi amministrativi Linux]

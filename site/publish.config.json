@@ -1,0 +1,8 @@
+{
+  "areas": ["Linux"],
+  "homepage": {
+    "title": "Appunti Linux",
+    "description": "Guide, concetti e procedure operative per conoscere e amministrare sistemi Linux.",
+    "target": "Linux/Indice Linux"
+  }
+}

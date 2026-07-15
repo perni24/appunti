@@ -4,6 +4,7 @@ area: Linux
 topic: Patch management
 type: technical-note
 status: "non revisionato"
+publish: true
 difficulty: intermedio
 tags: [linux, sicurezza, aggiornamenti, cve, patch-management]
 aliases: [Security updates Linux, Gestione patch Linux]

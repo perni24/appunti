@@ -4,6 +4,7 @@ area: Linux
 topic: Control group Linux
 type: technical-note
 status: "non revisionato"
+publish: true
 difficulty: avanzato
 tags: [linux, kernel, cgroup, risorse, systemd]
 aliases: [Control groups, cgroup v2]

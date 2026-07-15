@@ -4,6 +4,7 @@ area: Linux
 topic: Trasferimento file remoto
 type: technical-note
 status: "non revisionato"
+publish: true
 difficulty: intermedio
 tags: [linux, networking, scp, rsync, ssh]
 aliases: [scp e rsync, Copia file via SSH]

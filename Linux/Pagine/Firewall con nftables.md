@@ -4,6 +4,7 @@ area: Linux
 topic: Firewall nftables
 type: technical-note
 status: "non revisionato"
+publish: true
 difficulty: avanzato
 tags: [linux, networking, nftables, firewall, netfilter]
 aliases: [nftables, Firewall Linux]

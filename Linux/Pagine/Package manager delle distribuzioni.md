@@ -4,6 +4,7 @@ area: Linux
 topic: Ecosistemi dei package manager
 type: theory-note
 status: "non revisionato"
+publish: true
 difficulty: intermedio
 tags: [linux, distribuzioni, package-manager, pacchetti, repository]
 aliases: [Gestori pacchetti delle distribuzioni, Ecosistemi package manager]
@@ -145,4 +146,3 @@ Questi comandi rispondono alla stessa domanda, ma interrogano database e modelli
 - [DNF5 documentation](https://dnf5.readthedocs.io/en/latest/)
 - [Arch Linux - pacman(8)](https://man.archlinux.org/man/pacman.8)
 - [openSUSE Reference - Zypper](https://doc.opensuse.org/documentation/leap/reference/html/book-reference/cha-sw-cl.html)
-

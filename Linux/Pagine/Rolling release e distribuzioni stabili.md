@@ -4,6 +4,7 @@ area: Linux
 topic: Modelli di rilascio
 type: theory-note
 status: "non revisionato"
+publish: true
 difficulty: intermedio
 tags: [linux, distribuzioni, rolling-release, fixed-release, lts]
 aliases: [Rolling release e fixed release, Modelli di rilascio Linux]
