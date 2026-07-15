@@ -24,6 +24,7 @@ Mantieni solo le ultime 10 voci operative.
 - Verificata la build Linux completa con 100 input, includendo la homepage generata, senza wikilink rotti nell'output.
 - Impostato il `baseUrl` definitivo `perni24.github.io/appunti` per la pubblicazione nel sottopercorso GitHub Pages.
 - Creato `.github/workflows/deploy-pages.yml` per compilare Quartz e pubblicare `site/public` a ogni push su `main`.
+- Corretto lo script di installazione dei plugin affinche usi il CLI Quartz con `quartz.lock.json`; aggiornate le action del workflow alle versioni basate su Node 24.
 
 ### Decisioni
 
