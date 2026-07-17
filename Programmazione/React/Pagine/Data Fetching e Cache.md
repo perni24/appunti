@@ -4,6 +4,7 @@ area: Programmazione
 topic: React
 type: technical-note
 status: "non revisionato"
+publish: true
 difficulty: intermediate
 tags: [react, data-fetching, cache, frontend]
 aliases: [Data Fetching, Cache React, TanStack Query, Optimistic updates]

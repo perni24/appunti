@@ -4,6 +4,7 @@ area: Programmazione
 topic: JavaScript
 type: technical-note
 status: "non revisionato"
+publish: true
 difficulty: intermediate
 tags: [javascript, security, xss, csrf, sanitization, browser]
 aliases: [Sicurezza JS, JavaScript Security]

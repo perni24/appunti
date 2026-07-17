@@ -4,6 +4,7 @@ area: Programmazione
 topic: Clean Code
 type: theory-note
 status: "non revisionato"
+publish: true
 difficulty: base
 tags: [clean-code, documentazione, readme]
 aliases: [README e documentazione tecnica, Documentazione tecnica]

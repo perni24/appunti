@@ -4,6 +4,7 @@ area: Programmazione
 topic: GitHub
 type: technical-note
 status: "non revisionato"
+publish: true
 difficulty: intermedio
 tags: [github, github-actions, service-containers, docker, ci]
 aliases: [Service containers GitHub Actions, Docker service containers]

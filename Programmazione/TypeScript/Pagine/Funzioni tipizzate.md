@@ -4,6 +4,7 @@ area: Programmazione
 topic: TypeScript
 type: technical-note
 status: "non revisionato"
+publish: true
 difficulty: base
 tags: [typescript, funzioni, type-annotations]
 aliases: [Funzioni tipizzate TypeScript]

@@ -5,6 +5,7 @@ topic: JavaScript
 tags: [javascript, objects, property-descriptors, defineproperty, getters, setters]
 type: technical-note
 status: "non revisionato"
+publish: true
 difficulty: advanced
 aliases: [Descriptor proprieta, Object.defineProperty]
 prerequisites: [Oggetti Avanzati]

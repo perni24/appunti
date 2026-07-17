@@ -4,6 +4,7 @@ area: Programmazione
 topic: Rust
 type: technical-note
 status: "non revisionato"
+publish: true
 difficulty: avanzato
 tags:
   - programmazione

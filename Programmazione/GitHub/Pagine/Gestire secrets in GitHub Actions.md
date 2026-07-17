@@ -4,6 +4,7 @@ area: Programmazione
 topic: GitHub
 type: operational-note
 status: "non revisionato"
+publish: true
 difficulty: intermedio
 tags: [github, github-actions, secrets, sicurezza, procedura]
 aliases: [Gestire secrets in GitHub Actions, Gestione secrets GitHub Actions]

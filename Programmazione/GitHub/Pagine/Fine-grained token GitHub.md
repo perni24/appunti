@@ -4,6 +4,7 @@ area: Programmazione
 topic: GitHub
 type: technical-note
 status: "non revisionato"
+publish: true
 difficulty: intermedio
 tags: [github, token, fine-grained-token, autenticazione]
 aliases: [Fine-grained token GitHub, Fine-grained personal access token]

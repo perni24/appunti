@@ -4,6 +4,7 @@ area: Programmazione
 topic: GitHub
 type: technical-note
 status: "non revisionato"
+publish: true
 difficulty: intermedio
 tags: [github, permessi, accessi, ruoli, sicurezza]
 aliases: [Accessi ruoli e permessi GitHub, Permessi GitHub]

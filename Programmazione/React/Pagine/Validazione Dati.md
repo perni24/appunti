@@ -4,6 +4,7 @@ area: Programmazione
 topic: React
 type: technical-note
 status: "non revisionato"
+publish: true
 difficulty: intermediate
 tags: [react, validation, forms, zod]
 aliases: [Validazione Dati, Zod, Validazione Form]

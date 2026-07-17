@@ -4,6 +4,7 @@ area: Programmazione
 topic: JavaScript
 type: technical-note
 status: "non revisionato"
+publish: true
 difficulty: beginner
 tags: [javascript, memory, heap, stack, performance]
 aliases: [Ciclo di vita memoria JS, JavaScript Memory Lifecycle]

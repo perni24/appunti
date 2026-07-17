@@ -4,6 +4,7 @@ area: Programmazione
 topic: React
 type: technical-note
 status: "non revisionato"
+publish: true
 difficulty: intermediate
 tags: [react, hooks, effects]
 aliases: [useEffect, Effect React, Cleanup effect]

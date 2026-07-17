@@ -4,6 +4,7 @@ area: Programmazione
 topic: React
 type: technical-note
 status: "non revisionato"
+publish: true
 difficulty: intermediate
 tags: [react, memory, abortcontroller, effects]
 aliases: [Gestione memoria React, AbortController, Race condition negli effect, Cancellation]

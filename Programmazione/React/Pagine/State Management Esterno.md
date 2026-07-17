@@ -4,6 +4,7 @@ area: Programmazione
 topic: React
 type: theory-note
 status: "non revisionato"
+publish: true
 difficulty: intermediate
 tags: [react, state-management, frontend]
 aliases: [State Management Esterno, Zustand, Redux Toolkit]

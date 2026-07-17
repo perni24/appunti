@@ -4,6 +4,7 @@ area: Programmazione
 topic: Clean Code
 type: technical-note
 status: "non revisionato"
+publish: true
 difficulty: intermedio
 tags: [clean-code, parsing, serializzazione]
 aliases: [Parsing e serializzazione, Parsing and serialization]

@@ -4,6 +4,7 @@ area: Programmazione
 topic: JavaScript
 type: technical-note
 status: "non revisionato"
+publish: true
 difficulty: intermediate
 tags: [javascript, forms, validation, constraint-validation-api, formdata, browser]
 aliases: [Form Handling JS, Constraint Validation API]

@@ -4,6 +4,7 @@ area: Programmazione
 topic: GitHub
 type: technical-note
 status: "non revisionato"
+publish: true
 difficulty: avanzato
 tags: [github, github-actions, concurrency, ci-cd]
 aliases: [Concurrency e cancel-in-progress, Concurrency GitHub Actions]

@@ -4,6 +4,7 @@ area: Programmazione
 topic: GitHub
 type: technical-note
 status: "non revisionato"
+publish: true
 difficulty: intermedio
 tags: [github, monorepo, repository, architettura]
 aliases: [Monorepo su GitHub, Monorepo GitHub]

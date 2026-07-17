@@ -4,6 +4,7 @@ area: Programmazione
 topic: GitHub
 type: technical-note
 status: "non revisionato"
+publish: true
 difficulty: intermedio
 tags: [github, github-actions, variables, secrets, security]
 aliases: [Variabili e secrets GitHub Actions, Secrets GitHub Actions]

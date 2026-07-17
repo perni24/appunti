@@ -4,6 +4,7 @@ area: Programmazione
 topic: Clean Code
 type: theory-note
 status: "non revisionato"
+publish: true
 difficulty: base
 tags: [clean-code, leggibilita, esplicito]
 aliases: [Codice esplicito vs codice implicito, Codice esplicito]

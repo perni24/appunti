@@ -6,6 +6,7 @@ tags: [javascript, binary-data, arraybuffer, typed-arrays, dataview, buffer]
 aliases: ["Typed Arrays, ArrayBuffer e DataView", "Dati Binari e Buffer"]
 type: technical-note
 status: "non revisionato"
+publish: true
 difficulty: advanced
 prerequisites: [Tipi di Dati, Array Methods]
 related: [Web Workers]

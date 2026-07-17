@@ -4,6 +4,7 @@ area: Programmazione
 topic: GitHub
 type: operational-note
 status: "non revisionato"
+publish: true
 difficulty: avanzato
 tags: [github, github-actions, permissions, troubleshooting]
 aliases: [Troubleshooting permissions GitHub Actions, Troubleshooting permessi Actions]

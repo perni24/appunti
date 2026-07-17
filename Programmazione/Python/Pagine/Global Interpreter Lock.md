@@ -4,6 +4,7 @@ area: Programmazione
 topic: Python
 type: theory-note
 status: "non revisionato"
+publish: true
 difficulty: intermediate
 tags: [python, programming, concurrency]
 aliases: [Global Interpreter Lock, GIL]

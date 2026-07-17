@@ -4,6 +4,7 @@ area: Programmazione
 topic: GitHub
 type: technical-note
 status: "non revisionato"
+publish: true
 difficulty: avanzato
 tags: [github, github-actions, runners, self-hosted]
 aliases: [Self-hosted runners, Runner self-hosted GitHub Actions]

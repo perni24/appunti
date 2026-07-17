@@ -4,6 +4,7 @@ area: Programmazione
 topic: Clean Code
 type: theory-note
 status: "non revisionato"
+publish: true
 difficulty: avanzato
 tags: [clean-code, refactoring, testing]
 aliases: [Refactoring sicuro, Safe refactoring]

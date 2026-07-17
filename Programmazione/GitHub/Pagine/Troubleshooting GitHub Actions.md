@@ -4,6 +4,7 @@ area: Programmazione
 topic: GitHub
 type: operational-note
 status: "non revisionato"
+publish: true
 difficulty: intermedio
 tags: [github, github-actions, troubleshooting, ci-cd]
 aliases: [Troubleshooting GitHub Actions, Troubleshooting workflow GitHub Actions]

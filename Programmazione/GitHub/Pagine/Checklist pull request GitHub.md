@@ -4,6 +4,7 @@ area: Programmazione
 topic: GitHub
 type: operational-note
 status: "non revisionato"
+publish: true
 difficulty: base
 tags: [github, pull-request, checklist, review]
 aliases: [Checklist pull request GitHub, Checklist PR GitHub]

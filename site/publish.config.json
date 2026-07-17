@@ -1,8 +1,7 @@
 {
-  "areas": ["Linux"],
+  "areas": ["Linux", "Programmazione"],
   "homepage": {
-    "title": "Appunti Linux",
-    "description": "Guide, concetti e procedure operative per conoscere e amministrare sistemi Linux.",
-    "target": "Linux/Indice Linux"
+    "source": "Home.md",
+    "title": "Appunti di Luca"
   }
 }

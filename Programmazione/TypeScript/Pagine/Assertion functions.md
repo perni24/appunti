@@ -4,6 +4,7 @@ area: Programmazione
 topic: TypeScript
 type: technical-note
 status: "non revisionato"
+publish: true
 difficulty: intermedio
 tags: [typescript, assertion-functions, narrowing, runtime-validation]
 aliases: [Assertion function, asserts]

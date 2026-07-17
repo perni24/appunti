@@ -4,6 +4,7 @@ area: Programmazione
 topic: Clean Code
 type: theory-note
 status: "non revisionato"
+publish: true
 difficulty: intermedio
 tags: [clean-code, dominio, invarianti]
 aliases: [Invarianti del dominio, Domain invariants]

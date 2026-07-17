@@ -4,6 +4,7 @@ area: Programmazione
 topic: React
 type: technical-note
 status: "non revisionato"
+publish: true
 difficulty: intermediate
 tags: [react, nextjs, remix, framework]
 aliases: [Next.js, Remix, Framework React]

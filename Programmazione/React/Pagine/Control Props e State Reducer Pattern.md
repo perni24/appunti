@@ -4,6 +4,7 @@ area: Programmazione
 topic: React
 type: technical-note
 status: "non revisionato"
+publish: true
 difficulty: advanced
 tags: [react, patterns, state]
 aliases: [Control Props, State Reducer Pattern, Render props, Componenti controllati]

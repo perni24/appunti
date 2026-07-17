@@ -4,6 +4,7 @@ area: Programmazione
 topic: GitHub
 type: operational-note
 status: "non revisionato"
+publish: true
 difficulty: avanzato
 tags: [github, sicurezza, checklist, supply-chain]
 aliases: [Checklist sicurezza GitHub, Checklist security GitHub]

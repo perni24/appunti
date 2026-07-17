@@ -4,6 +4,7 @@ area: Programmazione
 topic: React
 type: technical-note
 status: "non revisionato"
+publish: true
 difficulty: intermediate
 tags: [react, i18n, frontend]
 aliases: [Internazionalizzazione, i18n, Localizzazione]

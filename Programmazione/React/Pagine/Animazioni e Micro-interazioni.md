@@ -4,6 +4,7 @@ area: Programmazione
 topic: React
 type: technical-note
 status: "non revisionato"
+publish: true
 difficulty: intermediate
 tags: [react, animation, ux]
 aliases: [Animazioni React, Micro-interazioni, Framer Motion, React Spring]

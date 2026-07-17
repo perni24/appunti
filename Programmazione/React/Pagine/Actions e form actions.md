@@ -4,6 +4,7 @@ area: Programmazione
 topic: React
 type: theory-note
 status: "non revisionato"
+publish: true
 difficulty: advanced
 tags: [react, actions, forms]
 aliases: [Actions, Form actions, React Actions]

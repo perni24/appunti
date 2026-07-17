@@ -4,6 +4,7 @@ area: Programmazione
 topic: GitHub
 type: technical-note
 status: "non revisionato"
+publish: true
 difficulty: avanzato
 tags: [github, sbom, attestations, provenance, supply-chain]
 aliases: [SBOM e attestazioni su GitHub, GitHub artifact attestations, SBOM GitHub]

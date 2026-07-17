@@ -4,6 +4,7 @@ area: Programmazione
 topic: JavaScript
 type: technical-note
 status: "non revisionato"
+publish: true
 difficulty: intermediate
 tags: [javascript, objects, object-methods, es6]
 aliases: [Oggetti JS, Object methods]

@@ -4,6 +4,7 @@ area: Programmazione
 topic: JavaScript
 type: technical-note
 status: "non revisionato"
+publish: true
 difficulty: beginner
 tags: [javascript, basics, conditionals, if, switch, truthy, falsy]
 aliases: [Condizioni JS, Controllo di flusso JS]

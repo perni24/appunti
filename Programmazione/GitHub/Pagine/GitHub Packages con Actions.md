@@ -4,6 +4,7 @@ area: Programmazione
 topic: GitHub
 type: technical-note
 status: "non revisionato"
+publish: true
 difficulty: intermedio
 tags: [github, github-actions, github-packages, packages, registry]
 aliases: [GitHub Packages con Actions, Packages con Actions]

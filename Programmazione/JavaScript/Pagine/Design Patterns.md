@@ -4,6 +4,7 @@ area: Programmazione
 topic: JavaScript
 type: technical-note
 status: "non revisionato"
+publish: true
 difficulty: intermediate
 tags: [javascript, design-patterns, architecture, oop]
 aliases: [Pattern JavaScript, Design Pattern JS]

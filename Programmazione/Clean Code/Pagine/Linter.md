@@ -4,6 +4,7 @@ area: Programmazione
 topic: Clean Code
 type: technical-note
 status: "non revisionato"
+publish: true
 difficulty: base
 tags: [clean-code, tooling, linter]
 aliases: [Linter, Code linter]

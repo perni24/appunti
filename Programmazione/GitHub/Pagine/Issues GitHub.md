@@ -4,6 +4,7 @@ area: Programmazione
 topic: GitHub
 type: technical-note
 status: "non revisionato"
+publish: true
 difficulty: base
 tags: [github, issues, project-management, collaborazione]
 aliases: [Issues GitHub, GitHub Issues]

@@ -4,6 +4,7 @@ area: Programmazione
 topic: GitHub
 type: technical-note
 status: "non revisionato"
+publish: true
 difficulty: intermedio
 tags: [github, github-actions, release, automation]
 aliases: [Release automation GitHub Actions, Automazione release GitHub Actions]

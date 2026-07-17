@@ -4,6 +4,7 @@ area: Programmazione
 topic: React
 type: technical-note
 status: "non revisionato"
+publish: true
 difficulty: beginner
 tags: [react, hooks, ref]
 aliases: [useRef, Ref React]

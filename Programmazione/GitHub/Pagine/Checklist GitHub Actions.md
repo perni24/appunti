@@ -4,6 +4,7 @@ area: Programmazione
 topic: GitHub
 type: operational-note
 status: "non revisionato"
+publish: true
 difficulty: intermedio
 tags: [github, github-actions, checklist, ci-cd]
 aliases: [Checklist GitHub Actions, Checklist Actions]

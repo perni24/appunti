@@ -4,6 +4,7 @@ area: Programmazione
 topic: React
 type: technical-note
 status: "non revisionato"
+publish: true
 difficulty: intermediate
 tags: [react, forms, modules]
 aliases: [Gestione Moduli, Form React, Controlled components, Uncontrolled components, Gestione eventi]

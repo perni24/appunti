@@ -4,6 +4,7 @@ area: Programmazione
 topic: JavaScript
 type: technical-note
 status: "non revisionato"
+publish: true
 difficulty: beginner
 tags: [javascript, bom, browser, window, navigator, location]
 aliases: [Browser Object Model, BOM JS]

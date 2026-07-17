@@ -4,6 +4,7 @@ area: Programmazione
 topic: Python
 type: operational-note
 status: "non revisionato"
+publish: true
 difficulty: beginner
 tags: [programmazione, python, tooling, git]
 aliases: [pre-commit]

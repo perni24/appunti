@@ -4,6 +4,7 @@ area: Programmazione
 topic: GitHub
 type: technical-note
 status: "non revisionato"
+publish: true
 difficulty: intermedio
 tags: [github, github-actions, costi, limiti]
 aliases: [Costi e limiti GitHub Actions, Limiti GitHub Actions]

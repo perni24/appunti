@@ -4,6 +4,7 @@ area: Programmazione
 topic: React
 type: theory-note
 status: "non revisionato"
+publish: true
 difficulty: intermediate
 tags: [react, rendering, performance]
 aliases: [Batching, Automatic batching]

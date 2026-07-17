@@ -4,6 +4,7 @@ area: Programmazione
 topic: TypeScript
 type: technical-note
 status: "non revisionato"
+publish: true
 difficulty: avanzato
 tags: [typescript, monorepo, project-references, workspace]
 aliases: [Monorepo TypeScript]

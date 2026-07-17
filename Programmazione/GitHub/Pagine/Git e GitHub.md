@@ -4,6 +4,7 @@ area: Programmazione
 topic: GitHub
 type: technical-note
 status: "non revisionato"
+publish: true
 difficulty: base
 tags: [github, git, versionamento]
 aliases: [Git e GitHub]

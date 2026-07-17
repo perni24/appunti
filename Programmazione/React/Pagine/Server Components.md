@@ -4,6 +4,7 @@ area: Programmazione
 topic: React
 type: theory-note
 status: "non revisionato"
+publish: true
 difficulty: advanced
 tags: [react, server-components, rsc]
 aliases: [Server Components, React Server Components, Server Actions]

@@ -4,6 +4,7 @@ area: Programmazione
 topic: GitHub
 type: operational-note
 status: "non revisionato"
+publish: true
 difficulty: intermedio
 tags: [github, branch-protection, repository, procedura]
 aliases: [Configurare branch protection, Configurare protezione branch GitHub]

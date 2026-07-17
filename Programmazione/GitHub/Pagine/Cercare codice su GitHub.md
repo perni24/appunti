@@ -4,6 +4,7 @@ area: Programmazione
 topic: GitHub
 type: technical-note
 status: "non revisionato"
+publish: true
 difficulty: base
 tags: [github, ricerca, code-search, repository]
 aliases: [Cercare codice su GitHub, GitHub code search]

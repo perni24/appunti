@@ -4,6 +4,7 @@ area: Programmazione
 topic: TypeScript
 type: technical-note
 status: "non revisionato"
+publish: true
 difficulty: intermedio
 tags: [typescript, express, fastify, backend, api]
 aliases: [TypeScript con Express/Fastify, Express TypeScript, Fastify TypeScript]

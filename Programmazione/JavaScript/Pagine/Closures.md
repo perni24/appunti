@@ -4,6 +4,7 @@ area: Programmazione
 topic: JavaScript
 type: technical-note
 status: "non revisionato"
+publish: true
 difficulty: intermediate
 tags: [javascript, closures, scope, functions]
 aliases: [Closure JS, Chiusure JavaScript]

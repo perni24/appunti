@@ -4,6 +4,7 @@ area: Programmazione
 topic: Python
 type: theory-note
 status: "non revisionato"
+publish: true
 difficulty: beginner
 tags: [python, programming, errors]
 aliases: [Error Handling, Gestione delle Eccezioni]

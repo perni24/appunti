@@ -4,6 +4,7 @@ area: Programmazione
 topic: JavaScript
 type: technical-note
 status: "non revisionato"
+publish: true
 difficulty: beginner
 tags: [javascript, es6, spread, rest, arrays, objects]
 aliases: [Spread operator, Rest operator, Tre puntini JavaScript]

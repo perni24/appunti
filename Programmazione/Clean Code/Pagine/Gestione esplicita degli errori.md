@@ -4,6 +4,7 @@ area: Programmazione
 topic: Clean Code
 type: technical-note
 status: "non revisionato"
+publish: true
 difficulty: intermedio
 tags: [clean-code, errori, standard-library]
 aliases: [Gestione esplicita degli errori, Explicit error handling]

@@ -4,6 +4,7 @@ area: Programmazione
 topic: Clean Code
 type: theory-note
 status: "non revisionato"
+publish: true
 difficulty: avanzato
 tags: [clean-code, legacy-code, refactoring]
 aliases: [Legacy code, Codice legacy]

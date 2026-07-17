@@ -4,6 +4,7 @@ area: Programmazione
 topic: Python
 type: operational-note
 status: "non revisionato"
+publish: true
 difficulty: intermediate
 tags: [programmazione, python, scraping, beautifulsoup]
 aliases: [BeautifulSoup, Web scraping Python]

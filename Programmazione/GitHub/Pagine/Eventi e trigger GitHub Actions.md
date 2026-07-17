@@ -4,6 +4,7 @@ area: Programmazione
 topic: GitHub
 type: technical-note
 status: "non revisionato"
+publish: true
 difficulty: intermedio
 tags: [github, github-actions, events, triggers]
 aliases: [Eventi e trigger GitHub Actions, Trigger GitHub Actions]

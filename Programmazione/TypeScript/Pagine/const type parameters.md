@@ -4,6 +4,7 @@ area: Programmazione
 topic: TypeScript
 type: technical-note
 status: "non revisionato"
+publish: true
 difficulty: avanzato
 tags: [typescript, const-type-parameters, generics, literal-types]
 aliases: [const generics TypeScript]

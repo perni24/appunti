@@ -4,6 +4,7 @@ area: Programmazione
 topic: React
 type: operational-note
 status: "non revisionato"
+publish: true
 difficulty: intermediate
 tags: [react, testing, e2e, cypress, playwright]
 aliases: [Testing Cypress, Testing Playwright, E2E React]

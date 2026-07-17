@@ -4,6 +4,7 @@ area: Programmazione
 topic: Python
 type: theory-note
 status: "non revisionato"
+publish: true
 difficulty: intermediate
 tags: [python, programming, functions]
 aliases: [Higher-order Functions, HOF]

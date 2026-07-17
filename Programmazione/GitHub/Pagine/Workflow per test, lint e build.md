@@ -4,6 +4,7 @@ area: Programmazione
 topic: GitHub
 type: technical-note
 status: "non revisionato"
+publish: true
 difficulty: intermedio
 tags: [github, github-actions, ci, test, lint, build]
 aliases: [Workflow per test lint e build, Test lint build GitHub Actions]

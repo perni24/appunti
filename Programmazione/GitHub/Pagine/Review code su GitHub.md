@@ -4,6 +4,7 @@ area: Programmazione
 topic: GitHub
 type: technical-note
 status: "non revisionato"
+publish: true
 difficulty: base
 tags: [github, code-review, pull-request, collaborazione]
 aliases: [Code review GitHub, Review su GitHub]

@@ -4,6 +4,7 @@ area: Programmazione
 topic: GitHub
 type: technical-note
 status: "non revisionato"
+publish: true
 difficulty: intermedio
 tags: [github, github-actions, yaml, workflow-syntax]
 aliases: [Sintassi YAML GitHub Actions, Workflow syntax GitHub Actions]

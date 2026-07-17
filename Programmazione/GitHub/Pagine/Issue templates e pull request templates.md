@@ -4,6 +4,7 @@ area: Programmazione
 topic: GitHub
 type: technical-note
 status: "non revisionato"
+publish: true
 difficulty: intermedio
 tags: [github, issue-template, pull-request-template, collaborazione]
 aliases: [Issue templates, Pull request templates, Template GitHub]

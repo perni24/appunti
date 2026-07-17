@@ -4,6 +4,7 @@ area: Programmazione
 topic: GitHub
 type: operational-note
 status: "non revisionato"
+publish: true
 difficulty: intermedio
 tags: [github, github-pages, documentazione, procedura]
 aliases: [Pubblicare documentazione con GitHub Pages, Deploy documentazione GitHub Pages]

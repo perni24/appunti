@@ -4,6 +4,7 @@ area: Programmazione
 topic: JavaScript
 type: technical-note
 status: "non revisionato"
+publish: true
 difficulty: intermediate
 tags: [javascript, weakmap, weakset, memory, data-structures]
 aliases: [WeakMap JS, WeakSet JS]

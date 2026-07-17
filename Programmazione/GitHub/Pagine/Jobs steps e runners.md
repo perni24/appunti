@@ -4,6 +4,7 @@ area: Programmazione
 topic: GitHub
 type: technical-note
 status: "non revisionato"
+publish: true
 difficulty: intermedio
 tags: [github, github-actions, jobs, steps, runners]
 aliases: [Jobs steps e runners, Jobs e runners GitHub Actions]

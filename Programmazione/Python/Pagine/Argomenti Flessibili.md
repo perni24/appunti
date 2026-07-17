@@ -4,9 +4,10 @@ area: Programmazione
 topic: Python
 type: technical-note
 status: "non revisionato"
+publish: true
 difficulty: intermediate
 tags: [python, programming, functions]
-aliases: [Argomenti Flessibili, args e kwargs, *args e **kwargs]
+aliases: [Argomenti Flessibili, args e kwargs, "*args e **kwargs"]
 prerequisites: []
 related: []
 ---

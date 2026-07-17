@@ -4,6 +4,7 @@ area: Programmazione
 topic: TypeScript
 type: technical-note
 status: "non revisionato"
+publish: true
 difficulty: intermedio
 tags: [typescript, jsdoc, javascript, checkjs]
 aliases: [JSDoc TypeScript, checkJs]

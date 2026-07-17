@@ -4,6 +4,7 @@ area: Programmazione
 topic: GitHub
 type: technical-note
 status: "non revisionato"
+publish: true
 difficulty: avanzato
 tags: [github, api, graphql, automazione]
 aliases: [GitHub GraphQL API, GraphQL API GitHub]

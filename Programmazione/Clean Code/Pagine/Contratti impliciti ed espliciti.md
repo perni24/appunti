@@ -4,6 +4,7 @@ area: Programmazione
 topic: Clean Code
 type: theory-note
 status: "non revisionato"
+publish: true
 difficulty: intermedio
 tags: [clean-code, contratti, api-design]
 aliases: [Contratti impliciti ed espliciti, Contratti nel codice]

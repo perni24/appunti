@@ -4,6 +4,7 @@ area: Programmazione
 topic: React
 type: operational-note
 status: "non revisionato"
+publish: true
 difficulty: intermediate
 tags: [react, accessibility, testing]
 aliases: [Test di accessibilita, A11y testing]

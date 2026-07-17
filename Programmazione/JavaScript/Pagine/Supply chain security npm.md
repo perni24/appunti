@@ -4,6 +4,7 @@ area: Programmazione
 topic: JavaScript
 type: operational-note
 status: "non revisionato"
+publish: true
 difficulty: 
 tags:
   - programmazione

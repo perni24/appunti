@@ -4,6 +4,7 @@ area: Programmazione
 topic: GitHub
 type: operational-note
 status: "non revisionato"
+publish: true
 difficulty: base
 tags: [github, pull-request, review, procedura]
 aliases: [Aprire una pull request corretta, Creare una PR corretta]

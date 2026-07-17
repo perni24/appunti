@@ -4,6 +4,7 @@ area: Programmazione
 topic: GitHub
 type: technical-note
 status: "non revisionato"
+publish: true
 difficulty: intermedio
 tags: [github, github-actions, deploy, cd]
 aliases: [Deploy con GitHub Actions, Deployment GitHub Actions]

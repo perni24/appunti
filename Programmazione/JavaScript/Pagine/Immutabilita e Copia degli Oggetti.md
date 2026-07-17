@@ -6,6 +6,7 @@ tags: [javascript, objects, immutability, clone, structuredclone, freeze, seal]
 aliases: ["Object.freeze, Object.seal e structuredClone"]
 type: technical-note
 status: "non revisionato"
+publish: true
 difficulty: intermediate
 prerequisites: [Oggetti Avanzati]
 related: [Property Descriptors, Spread & Rest Operators]

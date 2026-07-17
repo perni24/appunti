@@ -4,6 +4,7 @@ area: Programmazione
 topic: GitHub
 type: technical-note
 status: "non revisionato"
+publish: true
 difficulty: base
 tags: [github, markdown, documentazione, readme]
 aliases: [Markdown su GitHub, GitHub Flavored Markdown, GFM]

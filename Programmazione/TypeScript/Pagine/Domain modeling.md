@@ -4,6 +4,7 @@ area: Programmazione
 topic: TypeScript
 type: technical-note
 status: "non revisionato"
+publish: true
 difficulty: avanzato
 tags: [typescript, domain-modeling, architecture, types]
 aliases: [Modellazione dominio TypeScript]

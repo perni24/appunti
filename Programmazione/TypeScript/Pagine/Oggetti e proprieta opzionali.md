@@ -4,6 +4,7 @@ area: Programmazione
 topic: TypeScript
 type: technical-note
 status: "non revisionato"
+publish: true
 difficulty: base
 tags: [typescript, oggetti, optional-properties, object-types]
 aliases: [Oggetti e proprieta opzionali]

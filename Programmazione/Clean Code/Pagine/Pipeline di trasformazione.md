@@ -4,6 +4,7 @@ area: Programmazione
 topic: Clean Code
 type: theory-note
 status: "non revisionato"
+publish: true
 difficulty: intermedio
 tags: [clean-code, pipeline, trasformazioni]
 aliases: [Pipeline di trasformazione, Transformation pipeline]

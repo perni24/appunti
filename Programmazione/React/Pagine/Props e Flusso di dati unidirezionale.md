@@ -4,6 +4,7 @@ area: Programmazione
 topic: React
 type: theory-note
 status: "non revisionato"
+publish: true
 difficulty: beginner
 tags: [react, props, state, frontend]
 aliases: [Props, Flusso dati React, Children, Composizione componenti]

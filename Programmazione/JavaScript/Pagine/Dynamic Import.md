@@ -5,6 +5,7 @@ topic: JavaScript
 tags: [javascript, es-modules, dynamic-import, async, performance, code-splitting]
 type: technical-note
 status: "non revisionato"
+publish: true
 difficulty: intermediate
 aliases: [Import dinamico, import()]
 prerequisites: [Moduli, Promises]

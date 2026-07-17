@@ -4,6 +4,7 @@ area: Programmazione
 topic: GitHub
 type: technical-note
 status: "non revisionato"
+publish: true
 difficulty: intermedio
 tags: [github, github-actions, github-pages, deploy]
 aliases: [GitHub Pages con Actions, Pages con Actions]

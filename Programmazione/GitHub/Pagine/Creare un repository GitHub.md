@@ -4,6 +4,7 @@ area: Programmazione
 topic: GitHub
 type: operational-note
 status: "non revisionato"
+publish: true
 difficulty: base
 tags: [github, repository, procedura]
 aliases: [Creare un repository GitHub, Nuovo repository GitHub]

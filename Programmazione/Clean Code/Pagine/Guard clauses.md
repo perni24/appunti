@@ -4,6 +4,7 @@ area: Programmazione
 topic: Clean Code
 type: theory-note
 status: "non revisionato"
+publish: true
 difficulty: base
 tags: [clean-code, leggibilita, controllo-flusso]
 aliases: [Guard clauses, Clausole di guardia]

@@ -4,6 +4,7 @@ area: Programmazione
 topic: React
 type: operational-note
 status: "non revisionato"
+publish: true
 difficulty: beginner
 tags: [react, linting, formatting, tooling]
 aliases: [Linting React, Formattazione React, ESLint, Prettier]

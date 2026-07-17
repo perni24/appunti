@@ -4,6 +4,7 @@ area: Programmazione
 topic: React
 type: technical-note
 status: "non revisionato"
+publish: true
 difficulty: intermediate
 tags: [react, hooks, architecture]
 aliases: [Custom Hooks, Hook personalizzati]

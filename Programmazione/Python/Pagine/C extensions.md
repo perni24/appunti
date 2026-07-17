@@ -4,6 +4,7 @@ area: Programmazione
 topic: Python
 type: technical-note
 status: "non revisionato"
+publish: true
 difficulty: advanced
 tags: [programmazione, python, performance, c]
 aliases: [C extensions, Estensioni C Python]

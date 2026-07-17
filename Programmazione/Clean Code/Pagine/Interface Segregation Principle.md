@@ -4,6 +4,7 @@ area: Programmazione
 topic: Clean Code
 type: theory-note
 status: "non revisionato"
+publish: true
 difficulty: intermedio
 tags: [clean-code, solid, interfacce]
 aliases: [Interface Segregation Principle, ISP]

@@ -40,16 +40,8 @@ export async function prepareContent(outputRoot = defaultOutputRoot()) {
     await copyPublishedTree(sourceRoot, path.join(outputRoot, area), counters)
   }
 
-  const homepage = createHomepage(config.homepage)
+  const homepage = await createHomepage(config.homepage)
   await writeFile(path.join(outputRoot, "index.md"), homepage, "utf8")
-
-  const homepageTarget = path.join(outputRoot, `${config.homepage.target}.md`)
-  const targetStats = await stat(homepageTarget).catch(() => null)
-  if (!targetStats?.isFile()) {
-    throw new Error(
-      `La destinazione della homepage non e stata pubblicata: ${config.homepage.target}`,
-    )
-  }
 
   console.log(
     `Contenuti preparati in ${outputRoot}: ${counters.publishedNotes} note pubblicate, ${counters.skippedNotes} escluse, ${counters.copiedAssets} asset copiati.`,
@@ -89,13 +81,19 @@ async function copyPublishedTree(sourceDir, destinationDir, counters) {
 
     if (path.extname(entry.name).toLowerCase() === ".md") {
       const markdown = await readFile(sourcePath, "utf8")
-      if (!isPublished(markdown)) {
+      const publishedMarkdown = isPublished(markdown)
+        ? markdown
+        : isAreaIndex(entry.name)
+          ? addPublicationFrontmatter(markdown)
+          : null
+
+      if (!publishedMarkdown) {
         counters.skippedNotes += 1
         continue
       }
 
       await mkdir(destinationDir, { recursive: true })
-      await writeFile(destinationPath, removeLeadingTitle(markdown), "utf8")
+      await writeFile(destinationPath, removeLeadingTitle(publishedMarkdown), "utf8")
       counters.publishedNotes += 1
       continue
     }
@@ -107,50 +105,53 @@ async function copyPublishedTree(sourceDir, destinationDir, counters) {
 }
 
 function isPublished(markdown) {
-  const match = markdown.match(/^---\r?\n([\s\S]*?)\r?\n---(?:\r?\n|$)/)
+  const match = markdown.match(/^\uFEFF?---\r?\n([\s\S]*?)\r?\n---(?:\r?\n|$)/)
   if (!match) return false
 
   const frontmatter = YAML.parse(match[1])
   return frontmatter?.publish === true || frontmatter?.publish === "true"
 }
 
+function isAreaIndex(fileName) {
+  return /^Indice .+\.md$/i.test(fileName)
+}
+
+function addPublicationFrontmatter(markdown) {
+  return `---\npublish: true\n---\n\n${markdown.trimStart()}`
+}
+
 function removeLeadingTitle(markdown) {
-  const frontmatter = markdown.match(/^---\r?\n[\s\S]*?\r?\n---(?:\r?\n|$)/)
+  const frontmatter = markdown.match(/^\uFEFF?---\r?\n[\s\S]*?\r?\n---(?:\r?\n|$)/)
   if (!frontmatter) return markdown
 
   const body = markdown.slice(frontmatter[0].length)
   const bodyWithoutTitle = body.replace(/^(?:\r?\n)*# [^\r\n]+(?:\r?\n){1,2}/, "")
-  return `${frontmatter[0].trimEnd()}\n\n${bodyWithoutTitle}`
+  const normalizedFrontmatter = frontmatter[0].replace(/^\uFEFF/, "").trimEnd()
+  return `${normalizedFrontmatter}\n\n${bodyWithoutTitle}`
 }
 
-function createHomepage(homepageConfig) {
-  if (!homepageConfig?.title || !homepageConfig?.description || !homepageConfig?.target) {
+async function createHomepage(homepageConfig) {
+  if (!homepageConfig?.source || !homepageConfig?.title) {
     throw new Error("Configurazione homepage incompleta in publish.config.json")
   }
 
-  return `---
-date: 2026-07-14
-area: Linux
-topic: Indice
-type: operational-note
-status: "non revisionato"
-publish: true
-difficulty: base
-tags: [linux]
-aliases: []
-prerequisites: []
-related: [${homepageConfig.target}]
-title: ${homepageConfig.title}
----
+  const sourcePath = resolveInside(vaultRoot, homepageConfig.source)
+  const sourceStats = await stat(sourcePath).catch(() => null)
+  if (!sourceStats?.isFile()) {
+    throw new Error(`Homepage non trovata: ${homepageConfig.source}`)
+  }
 
-## Sintesi
+  const markdown = await readFile(sourcePath, "utf8")
+  const frontmatterMatch = markdown.match(
+    /^\uFEFF?---\r?\n([\s\S]*?)\r?\n---(?:\r?\n|$)/,
+  )
+  const frontmatter = frontmatterMatch ? (YAML.parse(frontmatterMatch[1]) ?? {}) : {}
+  const body = frontmatterMatch ? markdown.slice(frontmatterMatch[0].length) : markdown
 
-${homepageConfig.description}
+  frontmatter.title = homepageConfig.title
+  frontmatter.publish = true
 
-## Inizia da qui
-
-- [[${homepageConfig.target}|Apri l'indice Linux]]
-`
+  return `---\n${YAML.stringify(frontmatter).trimEnd()}\n---\n\n${body.trimStart()}`
 }
 
 function resolveInside(root, relativePath) {

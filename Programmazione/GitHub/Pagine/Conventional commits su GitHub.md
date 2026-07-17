@@ -4,6 +4,7 @@ area: Programmazione
 topic: GitHub
 type: technical-note
 status: "non revisionato"
+publish: true
 difficulty: intermedio
 tags: [github, git, conventional-commits, changelog]
 aliases: [Conventional commits su GitHub, Conventional Commits]

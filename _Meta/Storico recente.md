@@ -25,6 +25,8 @@ Mantieni solo le ultime 10 voci operative.
 - Impostato il `baseUrl` definitivo `perni24.github.io/appunti` per la pubblicazione nel sottopercorso GitHub Pages.
 - Creato `.github/workflows/deploy-pages.yml` per compilare Quartz e pubblicare `site/public` a ogni push su `main`.
 - Corretto lo script di installazione dei plugin affinche usi il CLI Quartz con `quartz.lock.json`; aggiornate le action del workflow alle versioni basate su Node 24.
+- Sostituita la homepage Linux generata con il contenuto di `Home.md`, copiato come `index.md` durante la build senza ampliare le aree pubblicabili oltre Linux.
+- Abilitata la pubblicazione dell'area `Programmazione`: le note usano `publish: true`, mentre gli indici senza YAML ricevono il flag soltanto nella copia temporanea usata da Quartz.
 
 ### Decisioni
 

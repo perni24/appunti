@@ -4,6 +4,7 @@ area: Programmazione
 topic: Clean Code
 type: theory-note
 status: "non revisionato"
+publish: true
 difficulty: base
 tags: [clean-code, commenti, documentazione]
 aliases: [Commenti che spiegano il perche, Commenti che spiegano il perche non il cosa]

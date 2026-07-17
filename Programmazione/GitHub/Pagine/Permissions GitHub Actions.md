@@ -4,6 +4,7 @@ area: Programmazione
 topic: GitHub
 type: technical-note
 status: "non revisionato"
+publish: true
 difficulty: intermedio
 tags: [github, github-actions, permissions, github-token, security]
 aliases: [Permissions GitHub Actions, Permessi GitHub Actions, GITHUB_TOKEN permissions]

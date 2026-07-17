@@ -4,6 +4,7 @@ area: Programmazione
 topic: GitHub
 type: operational-note
 status: "non revisionato"
+publish: true
 difficulty: intermedio
 tags: [github, github-actions, ci, procedura]
 aliases: [Configurare una pipeline CI con GitHub Actions, Configurare CI GitHub Actions]

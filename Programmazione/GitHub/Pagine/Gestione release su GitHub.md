@@ -4,6 +4,7 @@ area: Programmazione
 topic: GitHub
 type: technical-note
 status: "non revisionato"
+publish: true
 difficulty: intermedio
 tags: [github, release, versioning, manutenzione]
 aliases: [Gestione release su GitHub, Release GitHub]

@@ -4,6 +4,7 @@ area: Programmazione
 topic: GitHub
 type: operational-note
 status: "non revisionato"
+publish: true
 difficulty: intermedio
 tags: [github, git, merge-conflict, troubleshooting]
 aliases: [Troubleshooting merge conflict, Troubleshooting conflitti GitHub]

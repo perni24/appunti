@@ -5,6 +5,7 @@ topic: JavaScript
 tags: [javascript, es-modules, circular-dependencies, modules, architecture]
 type: technical-note
 status: "non revisionato"
+publish: true
 difficulty: intermediate
 aliases: [Dipendenze circolari, Cicli nei moduli]
 prerequisites: [Moduli]

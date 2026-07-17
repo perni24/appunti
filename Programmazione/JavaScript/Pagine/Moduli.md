@@ -4,6 +4,7 @@ area: Programmazione
 topic: JavaScript
 type: technical-note
 status: "non revisionato"
+publish: true
 difficulty: intermediate
 tags: [javascript, es-modules, modules, import, export]
 aliases: [ES Modules, Moduli ES, import export]

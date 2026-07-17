@@ -4,6 +4,7 @@ area: Programmazione
 topic: JavaScript
 type: technical-note
 status: "non revisionato"
+publish: true
 difficulty: beginner
 tags: [javascript, basics, types, primitives, objects, typeof]
 aliases: [Tipi primitivi JS, Data types JavaScript]

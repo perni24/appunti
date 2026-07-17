@@ -4,9 +4,10 @@ area: Programmazione
 topic: TypeScript
 type: technical-note
 status: "non revisionato"
+publish: true
 difficulty: intermedio
 tags: [typescript, definitelytyped, at-types, typings]
-aliases: [DefinitelyTyped, @types]
+aliases: [DefinitelyTyped, "@types"]
 prerequisites: [Dichiarazioni e file d.ts, Typing di librerie JavaScript]
 related: [Declaration Merging, Module augmentation]
 ---

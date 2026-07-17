@@ -4,6 +4,7 @@ area: Programmazione
 topic: React
 type: technical-note
 status: "non revisionato"
+publish: true
 difficulty: intermediate
 tags: [react, error-handling, architecture]
 aliases: [Error Boundaries, Error handling globale, Boundary UI]

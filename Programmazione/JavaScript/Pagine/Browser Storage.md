@@ -4,6 +4,7 @@ area: Programmazione
 topic: JavaScript
 type: technical-note
 status: "non revisionato"
+publish: true
 difficulty: beginner
 tags: [javascript, browser, storage, localstorage, sessionstorage, indexeddb]
 aliases: [Storage Browser, Web Storage]

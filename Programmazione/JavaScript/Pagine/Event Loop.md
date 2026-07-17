@@ -4,6 +4,7 @@ area: Programmazione
 topic: JavaScript
 type: technical-note
 status: "non revisionato"
+publish: true
 difficulty: intermediate
 tags: [javascript, event-loop, async, microtasks, browser]
 aliases: [Event Loop JS, Loop degli eventi]

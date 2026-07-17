@@ -4,6 +4,7 @@ area: Programmazione
 topic: Python
 type: technical-note
 status: "non revisionato"
+publish: true
 difficulty: beginner
 tags: [python, sqlite, sqlite3, database, standard-library]
 aliases: [sqlite3 Python, SQLite Python]

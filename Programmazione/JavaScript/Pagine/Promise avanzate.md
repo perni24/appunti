@@ -4,6 +4,7 @@ area: Programmazione
 topic: JavaScript
 type: technical-note
 status: "non revisionato"
+publish: true
 difficulty: intermediate
 tags: [javascript, promises, async, concurrency, allsettled, race, error-handling]
 aliases: [Promise all, Promise race, Promise any, Promise allSettled]

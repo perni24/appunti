@@ -4,6 +4,7 @@ area: Programmazione
 topic: TypeScript
 type: technical-note
 status: "non revisionato"
+publish: true
 difficulty: base
 tags: [typescript, classi, oop]
 aliases: [Classi TypeScript]

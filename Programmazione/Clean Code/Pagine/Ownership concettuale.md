@@ -4,6 +4,7 @@ area: Programmazione
 topic: Clean Code
 type: theory-note
 status: "non revisionato"
+publish: true
 difficulty: avanzato
 tags: [clean-code, ownership, responsabilita]
 aliases: [Ownership concettuale, Conceptual ownership]

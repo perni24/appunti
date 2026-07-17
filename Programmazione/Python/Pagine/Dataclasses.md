@@ -4,6 +4,7 @@ area: Programmazione
 topic: Python
 type: technical-note
 status: "non revisionato"
+publish: true
 difficulty: beginner
 tags: [python, dataclasses, oop, standard-library]
 aliases: [dataclass, Dataclasses Python]

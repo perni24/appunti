@@ -4,6 +4,7 @@ area: Programmazione
 topic: Python
 type: technical-note
 status: "non revisionato"
+publish: true
 difficulty: intermediate
 tags: [python, networking, http, sockets, standard-library]
 aliases: [Networking Python]

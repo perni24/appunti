@@ -4,6 +4,7 @@ area: Programmazione
 topic: GitHub
 type: operational-note
 status: "non revisionato"
+publish: true
 difficulty: intermedio
 tags: [github, pull-request, troubleshooting, review]
 aliases: [Troubleshooting pull request, Troubleshooting PR GitHub]

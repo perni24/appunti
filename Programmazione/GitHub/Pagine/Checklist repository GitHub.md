@@ -4,6 +4,7 @@ area: Programmazione
 topic: GitHub
 type: operational-note
 status: "non revisionato"
+publish: true
 difficulty: intermedio
 tags: [github, repository, checklist, governance]
 aliases: [Checklist repository GitHub, Checklist repository]

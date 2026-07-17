@@ -4,6 +4,7 @@ area: Programmazione
 topic: GitHub
 type: technical-note
 status: "non revisionato"
+publish: true
 difficulty: avanzato
 tags: [github, automazione, issues, pull-request]
 aliases: [Automazioni issue e pull request, Automazioni GitHub issue PR]

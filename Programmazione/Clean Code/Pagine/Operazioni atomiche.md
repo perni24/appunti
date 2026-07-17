@@ -4,6 +4,7 @@ area: Programmazione
 topic: Clean Code
 type: technical-note
 status: "non revisionato"
+publish: true
 difficulty: avanzato
 tags: [clean-code, atomicita, concorrenza]
 aliases: [Operazioni atomiche, Atomic operations]

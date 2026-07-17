@@ -4,6 +4,7 @@ area: Programmazione
 topic: TypeScript
 type: technical-note
 status: "non revisionato"
+publish: true
 difficulty: avanzato
 tags: [typescript, tuple, variadic-tuples, generics]
 aliases: [Variadic tuple type, Tuple variadiche]

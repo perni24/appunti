@@ -4,6 +4,7 @@ area: Programmazione
 topic: GitHub
 type: technical-note
 status: "non revisionato"
+publish: true
 difficulty: base
 tags: [github, clone, fork, template, repository]
 aliases: [Clone fork e template repository, Fork GitHub, Template repository]

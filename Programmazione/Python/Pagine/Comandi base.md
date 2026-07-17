@@ -4,6 +4,7 @@ area: Programmazione
 topic: Python
 type: technical-note
 status: "non revisionato"
+publish: true
 difficulty: intermediate
 tags: [python, programming]
 aliases: [Comandi Base e Toolchain Python]

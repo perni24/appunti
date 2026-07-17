@@ -4,6 +4,7 @@ area: Programmazione
 topic: GitHub
 type: technical-note
 status: "non revisionato"
+publish: true
 difficulty: intermedio
 tags: [github, organizzazioni, team, permessi]
 aliases: [Organizzazioni e team GitHub, GitHub Organizations, GitHub Teams]

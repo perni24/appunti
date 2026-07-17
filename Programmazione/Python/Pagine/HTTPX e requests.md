@@ -4,6 +4,7 @@ area: Programmazione
 topic: Python
 type: technical-note
 status: "non revisionato"
+publish: true
 difficulty: beginner
 tags: [programmazione, python, http, networking]
 aliases: [requests, HTTPX, Client HTTP Python]

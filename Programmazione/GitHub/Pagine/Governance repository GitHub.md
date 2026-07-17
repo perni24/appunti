@@ -4,6 +4,7 @@ area: Programmazione
 topic: GitHub
 type: technical-note
 status: "non revisionato"
+publish: true
 difficulty: avanzato
 tags: [github, governance, repository, manutenzione]
 aliases: [Governance repository GitHub, Governance GitHub]

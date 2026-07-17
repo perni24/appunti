@@ -4,6 +4,7 @@ area: Programmazione
 topic: JavaScript
 type: technical-note
 status: "non revisionato"
+publish: true
 difficulty: beginner
 tags: [javascript, basics, loops, iteration, for, while]
 aliases: [Loop JS, Iterazione JavaScript]

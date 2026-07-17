@@ -4,6 +4,7 @@ area: Programmazione
 topic: JavaScript
 type: technical-note
 status: "non revisionato"
+publish: true
 difficulty: intermediate
 tags: [javascript, browser, web-api, cors, fetch, security, http]
 aliases: [Cross-Origin Resource Sharing, CORS JS]

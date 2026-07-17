@@ -4,6 +4,7 @@ area: Programmazione
 topic: React
 type: theory-note
 status: "non revisionato"
+publish: true
 difficulty: advanced
 tags: [react, ssr, ssg, rendering]
 aliases: [SSR, SSG, Streaming SSR, Hydration]

@@ -4,6 +4,7 @@ area: Programmazione
 topic: PostgreSQL
 type: technical-note
 status: "non revisionato"
+publish: true
 difficulty: intermediate
 tags: [postgresql, database]
 aliases: [Funzioni e Store Procedures]

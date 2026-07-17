@@ -4,6 +4,7 @@ area: Programmazione
 topic: GitHub
 type: technical-note
 status: "non revisionato"
+publish: true
 difficulty: intermedio
 tags: [github, secret-scanning, security, credentials]
 aliases: [Secret scanning, GitHub secret scanning]

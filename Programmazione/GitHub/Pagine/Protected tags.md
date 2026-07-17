@@ -4,6 +4,7 @@ area: Programmazione
 topic: GitHub
 type: technical-note
 status: "non revisionato"
+publish: true
 difficulty: intermedio
 tags: [github, tags, release, rulesets]
 aliases: [Protected tags, Tag protetti GitHub]

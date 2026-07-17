@@ -4,6 +4,7 @@ area: Programmazione
 topic: React
 type: theory-note
 status: "non revisionato"
+publish: true
 difficulty: beginner
 tags: [react, state, architecture]
 aliases: [State colocato, Colocation state]

@@ -4,6 +4,7 @@ area: Programmazione
 topic: JavaScript
 type: technical-note
 status: "non revisionato"
+publish: true
 difficulty: intermediate
 tags: [javascript, memory-leaks, memory, performance, debugging]
 aliases: [Memory Leak JS, Perdite di memoria JS]

@@ -4,6 +4,7 @@ area: Programmazione
 topic: Postgres
 type: operational-note
 status: "non revisionato"
+publish: true
 difficulty: 
 tags:
   - programmazione

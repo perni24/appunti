@@ -4,6 +4,7 @@ area: Programmazione
 topic: JavaScript
 type: technical-note
 status: "non revisionato"
+publish: true
 difficulty: advanced
 tags: [javascript, web-components, custom-elements, shadow-dom, templates, browser]
 aliases: [Custom Elements, Shadow DOM, HTML Templates]

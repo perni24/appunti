@@ -4,6 +4,7 @@ area: Programmazione
 topic: Python
 type: technical-note
 status: "non revisionato"
+publish: true
 difficulty: beginner
 tags: [python, configuration, environment-variables, standard-library]
 aliases: [Variabili d Ambiente Python, Configurazione Python]

@@ -4,6 +4,7 @@ area: Programmazione
 topic: Clean Code
 type: theory-note
 status: "non revisionato"
+publish: true
 difficulty: base
 tags: [clean-code, leggibilita, design-api]
 aliases: [Principio del minimo stupore, Principle of least astonishment]
