@@ -8,6 +8,84 @@ Mantieni solo le ultime 10 voci operative.
 
 ---
 
+## 2026-07-26 - Avanzamento guida Marlin
+
+### Fatto
+
+- Completata la nota del blocco `Sonda` su probe Z, offset XYZ, BLTouch, margini, clearances, affidabilita e test di ripetibilita.
+- Aggiunta una procedura di collaudo progressiva con `M119`, `M401`, `M402`, `G28 Z`, `G30`, `M851` e `M48`.
+- Collegata la nuova pagina nell'indice Marlin.
+- Completato il blocco `Livellamento` con due note su metodi ABL/MBL/UBL, mesh, stato `M420`, Z Safe Homing, multi-Z, `G34`, `M422` e `G35`.
+- Collegate entrambe le pagine di livellamento nell'indice Marlin.
+- Completato il blocco `Interfaccia` con due note su display, controller, TFT, DWIN, host G-code, encoder, touch, lingua, menu e feedback acustico.
+- Collegate entrambe le pagine dell'interfaccia nell'indice Marlin.
+- Completato il blocco `Memoria e supporti` con due note su EEPROM, scheda SD, persistenza, migrazione, G-code di configurazione e diagnostica.
+- Collegate entrambe le pagine di memoria e supporti nell'indice Marlin.
+- Completato il blocco `Accessori` con due note su runout, motion sensor, Advanced Pause, power-loss recovery, PSU, rele, luci, LED, buzzer e servo.
+- Collegate entrambe le pagine degli accessori nell'indice Marlin.
+- Completato il blocco `Taratura` con una procedura progressiva di collaudo, calibrazione, salvataggio e stampa di accettazione.
+- Collegata la procedura completa di taratura nell'indice Marlin.
+- Completato il blocco `Diagnostica` con due note su build, upload, boot, EEPROM, movimento, termica, estrusione, probe e leveling.
+- Collegate entrambe le pagine di diagnostica nell'indice Marlin.
+- Completato il blocco `Consultazione` con il riferimento rapido delle direttive e la procedura di migrazione tra release.
+- Collegate entrambe le pagine di consultazione nell'indice Marlin.
+
+### Decisioni
+
+- Cablaggio e livelli logici sono descritti in modo indipendente dai colori dei fili e da una specifica motherboard.
+- Le opzioni avanzate del BLTouch restano disabilitate per impostazione prudente finche l'hardware non e stato verificato.
+- Offset e ripetibilita sono trattati separatamente: una misura precisa puo comunque avere un offset assoluto errato.
+- Tramming, allineamento Z, mesh e offset sono documentati come operazioni distinte.
+- Per lo start G-code sono separati il flusso che misura con `G29` e quello che riusa una mesh con `M420 S1`.
+- Display pilotati da Marlin, smart display e touchscreen host G-code sono documentati come architetture differenti.
+- La selezione hardware usa una sola direttiva controller e, per i TFT, una sola combinazione di driver, interfaccia, risoluzione e UI.
+- Default compilati, valori runtime e dati persistenti sono documentati come livelli distinti.
+- Le modifiche G-code vengono provate in RAM prima di `M500`; slot SD, scrittura e comandi post-abort richiedono una verifica esplicita.
+- Runout e power-loss recovery sono trattati come gestioni di eventi differenti, entrambe dipendenti dallo stato reale del job e della macchina.
+- GPIO, segnali PWM e uscite di potenza sono distinti; carichi, rele, LED e servo richiedono uno stadio elettrico adeguato.
+- La taratura segue dipendenze esplicite: sicurezza e sensori, meccanica, homing, steps, termica, livellamento, dinamica, estrusione e compensazioni.
+- I valori vengono provati in RAM, confrontati con una base registrata e salvati soltanto dopo un criterio di accettazione.
+- Gli errori vengono classificati per fase e corretti partendo dalla prima causa osservabile, senza aggirare `SanityCheck` o le protezioni.
+- La diagnostica operativa distingue hardware, meccanica, firmware, EEPROM, G-code, slicer e materiale prima di modificare i parametri.
+- Il riferimento rapido distingue direttive compile-time, default compilati, RAM, EEPROM e G-code del job.
+- La migrazione usa file puliti della release destinazione e trasferisce decisioni per blocchi verificabili, mantenendo un rollback.
+
+### Prossimi passi
+
+- Eseguire un controllo finale di completezza, frontmatter, collegamenti e coerenza dell'intera sezione Marlin.
+
+## 2026-07-25 - Riprogettazione sezione Marlin
+
+### Fatto
+
+- Rimossa dall'indice `Stampante 3D` l'intera sezione dedicata a Marlin.
+- Eliminate le 14 note Marlin presenti in `Stampante 3D/Pagine`.
+- Conservata la nota generale `Introduzione Stamapante 3D.md` con le modifiche locali gia presenti.
+- Verificata l'assenza di collegamenti alle pagine rimosse nelle altre aree del vault.
+- Creato `Stampante 3D/Marlin/Indice Marlin.md` con un nuovo percorso dedicato alla configurazione completa del firmware.
+- Collegato il nuovo indice Marlin dall'indice principale `Stampante 3D`.
+- Impostata la release stabile `Marlin 2.1.2.8` come riferimento tecnico della guida.
+- Completate le tre note del blocco `Orientamento e configurazione`: introduzione e compatibilita, struttura dei file, metodo di configurazione e build.
+- Completate le note del blocco `Elettronica`: scheda madre, porte seriali e pin; alimentazione e protezioni hardware.
+- Completate le note del blocco `Meccanica`: tipo di stampante e cinematica; dimensioni del piatto, area di lavoro e limiti.
+- Completate le note del blocco `Motori, driver e homing`: passi e direzioni, driver e corrente, endstop e Sensorless Homing.
+- Completate le note di `Pianificazione del movimento`: limiti dinamici, Jerk e Junction Deviation; planner, segmentazione e curve.
+- Completate le note di `Compensazioni`: Linear Advance, Input Shaping, Skew, Backlash, Babystepping e regolazioni runtime.
+- Completate le note di `Estrusione`: architetture hotend e multi-materiale, gestione del filamento, limiti di sicurezza, retrazione e cambio utensile.
+- Completate le note di `Temperature`: sensori e limiti, controlli PID/MPC, protezioni termiche, ventole e circuiti di raffreddamento.
+
+### Decisioni
+
+- La documentazione e organizzata per parte della stampante interessata, non secondo l'ordine delle direttive nei file sorgente.
+- Ogni futura nota raccogliera le opzioni correlate di `Configuration.h` e `Configuration_adv.h`.
+- La guida resta generale e non viene personalizzata per uno specifico modello di stampante.
+- Le voci restano testo semplice fino alla creazione delle pagine, evitando wikilink non ancora risolvibili.
+- Ogni nota Marlin indica esplicitamente la release di riferimento nel frontmatter e usa collegamenti a sorgenti fissate al tag.
+
+### Prossimi passi
+
+- Proseguire con `Sonda`, partendo da probe Z, offset e BLTouch.
+
 ## 2026-07-15 - Normalizzazione percorsi e integrazione Quartz
 
 ### Fatto
@@ -178,37 +256,3 @@ Mantieni solo le ultime 10 voci operative.
 ### Prossimi passi
 
 - Continuare con il blocco `Performance e Distribuzione`.
-
-## 2026-07-09 - Internals e risorse Clean Code
-
-### Fatto
-
-- Create 9 pagine dell'area `Programmazione/Clean Code/Pagine` per il blocco `Internals e Gestione Risorse`.
-- Compilati contenuti reali su stato, risorse, lifecycle, ownership concettuale, cache, cleanup, invarianti interne, refactoring sicuro e legacy code.
-- Aggiornato `Programmazione/Clean Code/Indice Clean Code.md` trasformando in wikilink solo le nuove voci ora esistenti.
-
-### Decisioni
-
-- Le note distinguono responsabilita concettuali, lifecycle e gestione tecnica delle risorse per evitare duplicazioni con i blocchi precedenti.
-- Le note create restano con `status: "non revisionato"`.
-
-### Prossimi passi
-
-- Continuare con il blocco `Concorrenza e Parallelismo`.
-
-## 2026-07-09 - Standard library pratica Clean Code
-
-### Fatto
-
-- Create 7 pagine dell'area `Programmazione/Clean Code/Pagine` per il blocco `Standard Library Pratica`.
-- Compilati contenuti reali su gestione errori, eccezioni, logging/tracing, configurazione, parsing/serializzazione, date/timezone e file system/I/O.
-- Aggiornato `Programmazione/Clean Code/Indice Clean Code.md` trasformando in wikilink le nuove voci e collegando la voce duplicata `Configurazione applicativa` alla stessa pagina.
-
-### Decisioni
-
-- Le note create usano `type: technical-note` perche descrivono pratiche tecniche e uso disciplinato di API/risorse comuni.
-- `Configurazione applicativa` resta una pagina unica condivisa tra `Standard Library Pratica` e `Performance e Distribuzione`.
-
-### Prossimi passi
-
-- Continuare con il blocco `Internals e Gestione Risorse`.
