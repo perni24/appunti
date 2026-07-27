@@ -3,7 +3,8 @@ date: 2026-07-25
 area: Stampante 3D
 topic: Marlin
 type: technical-note
-status: "non revisionato"
+
+publish: true
 difficulty: avanzato
 tags: [marlin, alimentazione, sicurezza, emergenza]
 aliases: [PSU Control Marlin, Sicurezza hardware Marlin]

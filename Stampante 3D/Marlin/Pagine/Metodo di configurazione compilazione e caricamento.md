@@ -3,7 +3,8 @@ date: 2026-07-25
 area: Stampante 3D
 topic: Marlin
 type: operational-note
-status: "non revisionato"
+
+publish: true
 difficulty: base
 tags: [marlin, platformio, compilazione, firmware]
 aliases: [Compilare Marlin, Caricare Marlin]

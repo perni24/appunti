@@ -3,7 +3,8 @@ date: 2026-07-25
 area: Stampante 3D
 topic: Marlin
 type: technical-note
-status: "non revisionato"
+
+publish: true
 difficulty: intermedio
 tags: [marlin, geometria, piatto, limiti-software]
 aliases: [Area di lavoro Marlin, Limiti degli assi Marlin]

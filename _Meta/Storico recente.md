@@ -8,6 +8,24 @@ Mantieni solo le ultime 10 voci operative.
 
 ---
 
+## 2026-07-27 - Pubblicazione area Stampante 3D
+
+### Fatto
+
+- Aggiunta `Stampante 3D` alle aree elaborate dal sito Quartz.
+- Rese pubbliche le note generali e l'intera guida Marlin tramite `publish: true`.
+- Mantenuti gli indici senza frontmatter: lo script di preparazione li pubblica automaticamente.
+- Verificata la build locale: 34 note di contenuto e 2 indici inclusi, con 40 pagine HTML generate considerando gli alias.
+
+### Decisioni
+
+- La pubblicazione resta opt-in e limitata alle aree elencate in `site/publish.config.json`.
+- Le note private delle altre aree non vengono copiate nel contenuto elaborato da Quartz.
+
+### Prossimi passi
+
+- Eseguire commit e push su `main` per avviare il workflow GitHub Pages.
+
 ## 2026-07-26 - Avanzamento guida Marlin
 
 ### Fatto
@@ -239,20 +257,3 @@ Mantieni solo le ultime 10 voci operative.
 ### Prossimi passi
 
 - Continuare con il blocco `Web, API e Database`.
-
-## 2026-07-09 - Concorrenza Clean Code
-
-### Fatto
-
-- Create 7 pagine dell'area `Programmazione/Clean Code/Pagine` per il blocco `Concorrenza e Parallelismo`.
-- Compilati contenuti reali su stato condiviso, race condition, lock, idempotenza, operazioni atomiche, code/worker e codice asincrono leggibile.
-- Aggiornato `Programmazione/Clean Code/Indice Clean Code.md` trasformando in wikilink solo le nuove voci ora esistenti.
-
-### Decisioni
-
-- Le note trattano concorrenza e asincronia come problemi di leggibilita, confini e gestione degli effetti, non solo come primitive tecniche.
-- Le note create restano con `status: "non revisionato"`.
-
-### Prossimi passi
-
-- Continuare con il blocco `Performance e Distribuzione`.

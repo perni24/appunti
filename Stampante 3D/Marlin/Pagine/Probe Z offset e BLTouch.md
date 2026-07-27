@@ -3,7 +3,8 @@ date: 2026-07-26
 area: Stampante 3D
 topic: Marlin
 type: technical-note
-status: "non revisionato"
+
+publish: true
 difficulty: avanzato
 tags: [marlin, z-probe, bltouch, probe-offset, m851]
 aliases: [Sonda Z Marlin, Offset probe Marlin, BLTouch Marlin]

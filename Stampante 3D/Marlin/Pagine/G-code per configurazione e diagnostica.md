@@ -3,7 +3,8 @@ date: 2026-07-26
 area: Stampante 3D
 topic: Marlin
 type: operational-note
-status: "non revisionato"
+
+publish: true
 difficulty: avanzato
 tags: [marlin, g-code, configuration, diagnostics, troubleshooting]
 aliases: [G-code diagnostica Marlin, Comandi configurazione Marlin, Diagnostica seriale Marlin]

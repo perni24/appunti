@@ -1,5 +1,3 @@
-
-
 ## Percorso Base
 
 ### Fondamenti del Codice Pulito

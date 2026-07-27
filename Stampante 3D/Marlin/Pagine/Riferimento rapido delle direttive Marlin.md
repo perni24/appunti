@@ -3,7 +3,8 @@ date: 2026-07-26
 area: Stampante 3D
 topic: Marlin
 type: technical-note
-status: "non revisionato"
+
+publish: true
 difficulty: avanzato
 tags: [marlin, configuration-h, configuration-adv-h, direttive, riferimento]
 aliases: [Cheat sheet Marlin, Direttive Marlin, Riferimento configurazione Marlin]

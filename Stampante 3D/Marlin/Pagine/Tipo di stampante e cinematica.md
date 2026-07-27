@@ -3,7 +3,8 @@ date: 2026-07-25
 area: Stampante 3D
 topic: Marlin
 type: theory-note
-status: "non revisionato"
+
+publish: true
 difficulty: intermedio
 tags: [marlin, cinematica, corexy, delta, scara]
 aliases: [Cinematica Marlin, Tipi di stampante Marlin]

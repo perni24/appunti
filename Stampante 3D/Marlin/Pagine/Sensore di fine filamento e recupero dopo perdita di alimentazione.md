@@ -3,7 +3,8 @@ date: 2026-07-26
 area: Stampante 3D
 topic: Marlin
 type: technical-note
-status: "non revisionato"
+
+publish: true
 difficulty: avanzato
 tags: [marlin, filament-runout, motion-sensor, power-loss-recovery, m600]
 aliases: [Filament Runout Marlin, Sensore filamento Marlin, Power Loss Recovery Marlin]

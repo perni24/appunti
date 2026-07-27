@@ -3,7 +3,8 @@ date: 2026-07-26
 area: Stampante 3D
 topic: Marlin
 type: technical-note
-status: "non revisionato"
+
+publish: true
 difficulty: avanzato
 tags: [marlin, z-safe-homing, g34, z-stepper, gantry-alignment]
 aliases: [Z Safe Homing Marlin, G34 Marlin, Allineamento Z Marlin]

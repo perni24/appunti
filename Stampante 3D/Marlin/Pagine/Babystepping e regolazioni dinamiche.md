@@ -3,7 +3,8 @@ date: 2026-07-25
 area: Stampante 3D
 topic: Marlin
 type: operational-note
-status: "non revisionato"
+
+publish: true
 difficulty: intermedio
 tags: [marlin, babystepping, primo-layer, feedrate, flow]
 aliases: [Babystepping Marlin, Regolazioni durante la stampa Marlin]

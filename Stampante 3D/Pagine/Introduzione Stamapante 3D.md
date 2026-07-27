@@ -1,3 +1,18 @@
+---
+date: 2026-07-27
+area: Stampante 3D
+topic: Fondamenti
+type: theory-note
+status: "non revisionato"
+publish: true
+difficulty: base
+tags: [stampante-3d, fdm, componenti]
+aliases: [Parti di una stampante 3D, Componenti stampante FDM]
+prerequisites: []
+related:
+  - "[[Stampante 3D/Marlin/Indice Marlin]]"
+---
+
 # Parti di una Stampante 3D e il Loro Funzionamento
 
 Ecco le principali parti di una stampante 3D (basata sulla tecnologia FDM) e il loro funzionamento:

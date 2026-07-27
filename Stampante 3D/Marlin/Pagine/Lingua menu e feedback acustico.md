@@ -3,7 +3,8 @@ date: 2026-07-26
 area: Stampante 3D
 topic: Marlin
 type: technical-note
-status: "non revisionato"
+
+publish: true
 difficulty: intermedio
 tags: [marlin, lcd-language, menu, buzzer, user-interface]
 aliases: [Lingua LCD Marlin, Menu Marlin, Feedback acustico Marlin]

@@ -3,7 +3,8 @@ date: 2026-07-25
 area: Stampante 3D
 topic: Marlin
 type: technical-note
-status: "non revisionato"
+
+publish: true
 difficulty: base
 tags: [marlin, configurazione, preprocessore]
 aliases: [Configuration.h e Configuration_adv.h, File di configurazione Marlin]

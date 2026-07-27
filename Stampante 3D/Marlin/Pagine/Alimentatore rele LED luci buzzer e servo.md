@@ -3,7 +3,8 @@ date: 2026-07-26
 area: Stampante 3D
 topic: Marlin
 type: technical-note
-status: "non revisionato"
+
+publish: true
 difficulty: avanzato
 tags: [marlin, psu-control, relay, led, case-light, buzzer, servo]
 aliases: [Accessori Marlin, PSU Control Marlin, Luci e servo Marlin]

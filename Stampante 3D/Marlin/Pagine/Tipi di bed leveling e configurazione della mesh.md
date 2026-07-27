@@ -3,7 +3,8 @@ date: 2026-07-26
 area: Stampante 3D
 topic: Marlin
 type: technical-note
-status: "non revisionato"
+
+publish: true
 difficulty: avanzato
 tags: [marlin, bed-leveling, mesh, g29, m420, ubl]
 aliases: [Bed leveling Marlin, Mesh Marlin, UBL Marlin]
