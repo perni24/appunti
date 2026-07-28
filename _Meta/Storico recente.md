@@ -8,6 +8,29 @@ Mantieni solo le ultime 10 voci operative.
 
 ---
 
+## 2026-07-28 - Area Strutture di Progetto
+
+### Fatto
+
+- Creata `Programmazione/Strutture di Progetto` con un indice essenziale dedicato alle strutture gia documentate.
+- Collegata la nuova area da `Home.md`.
+- Creata la prima nota su una struttura PHP server-rendered senza framework, con front controller, routing, livelli, test e sicurezza.
+- Collegata la pagina PHP nell'indice e resa pubblicabile con Quartz.
+- Creata la nota sulla struttura di un backend API Python a livelli, con routing, service, repository, validazione, persistenza e strategia di test.
+- Creata la nota sulla struttura di un frontend React con Vite, componenti, Context, API layer, tipi e strategia di test.
+
+### Decisioni
+
+- Gli indici restano senza frontmatter YAML.
+- L'indice contiene soltanto le pagine gia create.
+- I file `.http` sono documentati come richieste manuali e restano distinti dai test automatici.
+- Per il frontend React va scelta una strategia coerente tra JavaScript con JSDoc e TypeScript con componenti `.tsx`.
+- Le strutture propongono solo livelli con responsabilita concreta, evitando repository, service e interfacce puramente formali.
+
+### Prossimi passi
+
+- Aggiungere altre strutture solo quando verranno realmente documentate.
+
 ## 2026-07-27 - Pubblicazione area Stampante 3D
 
 ### Fatto
@@ -240,20 +263,3 @@ Mantieni solo le ultime 10 voci operative.
 ### Prossimi passi
 
 - Continuare con il blocco `Data, Automazione e LLM`.
-
-## 2026-07-09 - Performance e distribuzione Clean Code
-
-### Fatto
-
-- Create 6 pagine dell'area `Programmazione/Clean Code/Pagine` per completare il blocco `Performance e Distribuzione`.
-- Compilati contenuti reali su performance/leggibilita, ottimizzazione prematura, profiling, hot path, allocazioni inutili e codice pronto al deploy.
-- Aggiornato `Programmazione/Clean Code/Indice Clean Code.md`; `Configurazione applicativa` resta collegata alla pagina condivisa gia creata.
-
-### Decisioni
-
-- Le note trattano la performance come disciplina guidata da misure e vincoli operativi, non come micro-ottimizzazione preventiva.
-- Le note create restano con `status: "non revisionato"`.
-
-### Prossimi passi
-
-- Continuare con il blocco `Web, API e Database`.

@@ -8,6 +8,7 @@
 - [[Programmazione/Rust/Indice rust|Rust]]
 - [[Programmazione/Postgres/Indice postgres|Postgres]]
 - [[Programmazione/React/Indice react|React]]
+- [[Programmazione/Strutture di Progetto/Indice Strutture di Progetto|Strutture di Progetto]]
 
 ## Elettronica
 
