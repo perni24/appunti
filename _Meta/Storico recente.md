@@ -8,6 +8,28 @@ Mantieni solo le ultime 10 voci operative.
 
 ---
 
+## 2026-07-30 - Promemoria di Programmazione
+
+### Fatto
+
+- Creata `Programmazione/Promemoria` come area di consultazione rapida separata dagli appunti teorici.
+- Aggiunti l'indice generale, l'indice JavaScript e undici promemoria operativi.
+- Aggiunti l'indice Python e tredici promemoria su linguaggio, collezioni, file, dati, HTTP, ambienti, asincronia ed errori.
+- Aggiunti l'indice Rust e quindici promemoria su ownership, tipi, errori, astrazioni, I/O, Cargo, concorrenza e test.
+- Aggiunti l'indice PostgreSQL e quindici promemoria su query, funzioni, schema, prestazioni, transazioni, privilegi, backup e manutenzione.
+- Aggiunti l'indice GitHub e quindici promemoria su Git, collaborazione, Actions, release, regole e sicurezza.
+- Collegata la nuova area da `Home.md`.
+
+### Decisioni
+
+- Le schede contengono soprattutto sintassi, tabelle e snippet copiabili.
+- Le spiegazioni approfondite rimangono nelle note del linguaggio e vengono richiamate tramite wikilink.
+- Le pagine sono organizzate per categoria operativa, non per singola funzione.
+
+### Prossimi passi
+
+- Estendere il promemoria agli altri linguaggi mantenendo la stessa impostazione.
+
 ## 2026-07-28 - Area Strutture di Progetto
 
 ### Fatto
@@ -246,20 +268,3 @@ Mantieni solo le ultime 10 voci operative.
 ### Prossimi passi
 
 - Continuare con il blocco `Tooling e Qualita del Codice`.
-
-## 2026-07-09 - Web API e database Clean Code
-
-### Fatto
-
-- Create 7 pagine dell'area `Programmazione/Clean Code/Pagine` per il blocco `Web, API e Database`.
-- Compilati contenuti reali su controller sottili, service layer, repository pattern, DTO/modelli di dominio, validazione input API, query leggibili e migrazioni/schema evolution.
-- Aggiornato `Programmazione/Clean Code/Indice Clean Code.md` trasformando in wikilink solo le nuove voci ora esistenti.
-
-### Decisioni
-
-- La nota `DTO e modelli di dominio` e stata creata anche in Clean Code per trattare il concetto in modo trasversale, distinto dalla nota specifica TypeScript.
-- Le note create restano con `status: "non revisionato"`.
-
-### Prossimi passi
-
-- Continuare con il blocco `Data, Automazione e LLM`.
