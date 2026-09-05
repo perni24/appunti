@@ -88,9 +88,10 @@ controller.abort()
 ## JSON
 
 ```javascript
-const text = JSON.stringify(data)
-const pretty = JSON.stringify(data, null, 2)
-const data = JSON.parse(text)
+const source = { name: "Ada", active: true }
+const text = JSON.stringify(source)
+const pretty = JSON.stringify(source, null, 2)
+const parsedData = JSON.parse(text)
 ```
 
 ```javascript
@@ -113,7 +114,8 @@ localStorage.clear()
 I valori vengono salvati come stringhe.
 
 ```javascript
-localStorage.setItem("settings", JSON.stringify(settings))
+const settingsToSave = { theme: "dark" }
+localStorage.setItem("settings", JSON.stringify(settingsToSave))
 
 const settings = JSON.parse(
   localStorage.getItem("settings") ?? "{}",
@@ -123,7 +125,8 @@ const settings = JSON.parse(
 ## Session storage
 
 ```javascript
-sessionStorage.setItem("draft", JSON.stringify(draft))
+const draftToSave = { title: "Bozza" }
+sessionStorage.setItem("draft", JSON.stringify(draftToSave))
 const draft = JSON.parse(sessionStorage.getItem("draft") ?? "null")
 ```
 

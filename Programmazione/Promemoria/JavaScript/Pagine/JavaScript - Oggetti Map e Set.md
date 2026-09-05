@@ -109,8 +109,9 @@ const uniqueValues = [...new Set(values)]
 ## Conversioni
 
 ```javascript
-const map = new Map(Object.entries(object))
-const object = Object.fromEntries(map)
+const source = { name: "Ada", active: true }
+const map = new Map(Object.entries(source))
+const restoredObject = Object.fromEntries(map)
 const array = [...uniqueIds]
 ```
 

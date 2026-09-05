@@ -84,7 +84,7 @@ cargo add serde --features derive
 ```
 
 ```powershell
-cargo add serde_json
+cargo add serde_json --optional
 ```
 
 ## Cargo.toml
@@ -97,7 +97,7 @@ edition = "2024"
 
 [dependencies]
 serde = { version = "1", features = ["derive"] }
-serde_json = "1"
+serde_json = { version = "1", optional = true }
 ```
 
 ## Feature
@@ -107,6 +107,8 @@ serde_json = "1"
 default = []
 json = ["dep:serde_json"]
 ```
+
+`dep:serde_json` attiva una dipendenza opzionale. Con queste sezioni nello stesso manifest, `serde_json` si compila solo abilitando `json`.
 
 ```powershell
 cargo build --features json

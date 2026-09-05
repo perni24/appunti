@@ -44,12 +44,12 @@ docs/CODEOWNERS
 Le regole mappano pattern di file a utenti o team.
 
 ```text
-*.md @docs-team
-/src/auth/ @security-team
-/.github/workflows/ @devops-team
+*.md @example-org/docs-team
+/src/auth/ @example-org/security-team
+/.github/workflows/ @example-org/devops-team
 ```
 
-Le regole piu specifiche dovrebbero essere messe con attenzione, perche l'ordine e i pattern influenzano chi viene richiesto in review.
+Prevale l'ultima regola corrispondente, non automaticamente quella piu specifica. Metti i fallback prima delle eccezioni. Se esistono piu file, GitHub usa il primo trovato nell'ordine `.github/`, radice, `docs/`, senza unirli.
 
 ## API / Sintassi
 
@@ -57,19 +57,21 @@ Esempio:
 
 ```text
 # Owner globale
-* @owner-team
+* @example-org/owner-team
 
 # Documentazione
-/docs/ @docs-team
+/docs/ @example-org/docs-team
 
 # Workflow CI/CD
-/.github/workflows/ @devops-team
+/.github/workflows/ @example-org/devops-team
 
 # Area autenticazione
-/src/auth/ @security-team
+/src/auth/ @example-org/security-team
 ```
 
-Team e utenti devono avere accesso al repository per essere usati come owner.
+Sostituisci `example-org` e i team con nomi reali. Un utente si indica con `@username`, un team con `@organizzazione/team`: `@docs-team` da solo identifica un eventuale utente, non un team.
+
+Gli owner devono avere accesso `write`. Un team deve inoltre essere visibile e avere accesso di scrittura esplicito al repository; non basta che lo abbiano i singoli membri. Owner inesistenti o senza permessi adeguati non vengono assegnati.
 
 ## Esempio pratico
 
@@ -82,10 +84,10 @@ Se una PR modifica:
 e il file contiene:
 
 ```text
-/.github/workflows/ @devops-team
+/.github/workflows/ @example-org/devops-team
 ```
 
-GitHub richiede automaticamente review a `@devops-team`.
+GitHub richiede automaticamente review a `@example-org/devops-team` sulle PR non draft. Il file utilizzato e quello del branch di destinazione. Per rendere obbligatoria l'approvazione devi anche configurare la protezione del branch o un ruleset: la sola assegnazione non blocca il merge.
 
 ## Varianti
 
@@ -107,7 +109,7 @@ GitHub richiede automaticamente review a `@devops-team`.
 ## Checklist
 
 - Le aree critiche hanno owner?
-- Gli owner hanno accesso al repository?
+- Gli utenti hanno accesso `write` e i team sono visibili con accesso `write` esplicito?
 - I team sono preferiti agli utenti singoli?
 - Le regole sono leggibili?
 - Le review dei code owner sono richieste sulle branch protette?

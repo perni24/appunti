@@ -45,11 +45,11 @@ type Reader<T> = {
 };
 
 type Writer<T> = {
-  set(value: T): void;
+  set: (value: T) => void;
 };
 ```
 
-`Reader<T>` tende a essere covariante, mentre `Writer<T>` coinvolge posizioni di input e richiede piu cautela.
+Con `strictFunctionTypes: true` (incluso in `strict: true`), `Reader<T>` e covariante e questo `Writer<T>` e contravariante. La sintassi conta: una proprieta funzione `set: (value: T) => void` riceve il controllo contravariante, mentre un metodo `set(value: T): void` mantiene parametri bivarianti per compatibilita.
 
 ## Esempio pratico
 
@@ -67,6 +67,44 @@ const handleDog: Handler<Dog> = handleAnimal;
 ```
 
 Un handler capace di gestire qualsiasi `Animal` puo gestire anche un `Dog`.
+
+### Metodo e proprieta funzione
+
+Continuando con i tipi `Animal`, `Dog` e `Writer` sopra:
+
+```ts
+type MethodWriter<T> = {
+  set(value: T): void;
+};
+
+const dogMethod: MethodWriter<Dog> = {
+  set: (dog) => dog.bark(),
+};
+
+const animalMethod: MethodWriter<Animal> = dogMethod; // Accettato
+// animalMethod.set({ name: "Ada" }); // TypeError a runtime: manca bark
+
+const dogWriter: Writer<Dog> = {
+  set: (dog) => dog.bark(),
+};
+
+// Errore atteso con strictFunctionTypes: il writer non gestisce ogni Animal.
+// @ts-expect-error
+const animalWriter: Writer<Animal> = dogWriter;
+```
+
+L'assegnazione del metodo dimostra una permissivita del compilatore, non la sicurezza dell'operazione. La chiamata problematica resta commentata per non eseguirla accidentalmente.
+
+### Lettura e scrittura insieme
+
+```ts
+type Store<T> = {
+  read: () => T;
+  write: (value: T) => void;
+};
+```
+
+Questo `Store<T>` e invariante in strict mode: uno store di soli `Dog` non puo accettare un `Animal` generico, e uno store di `Animal` non promette di restituire sempre un `Dog`. Non estendere automaticamente questa regola a tutti i container mutabili di TypeScript: array e metodi hanno compromessi di compatibilita.
 
 ## Varianti
 
@@ -95,3 +133,7 @@ Un handler capace di gestire qualsiasi `Animal` puo gestire anche un `Dog`.
 - [[Generics avanzati]]
 - [[Structural typing]]
 - [[Programmazione/TypeScript/Pagine/Strict mode|Strict mode]]
+
+## Fonti
+
+- [TypeScript - strictFunctionTypes](https://www.typescriptlang.org/tsconfig/strictFunctionTypes.html)

@@ -40,7 +40,7 @@ RLS si abilita sulla tabella con `ALTER TABLE ... ENABLE ROW LEVEL SECURITY`. Po
 - `USING`: quali righe sono visibili o modificabili come target;
 - `WITH CHECK`: quali nuove righe o modifiche sono consentite.
 
-Owner e superuser possono bypassare RLS, salvo configurazioni specifiche. Per questo i test vanno eseguiti con ruoli realistici, non con superuser.
+Superuser e ruoli con `BYPASSRLS` bypassano RLS. Il proprietario della tabella normalmente la bypassa, ma puo essere assoggettato alle policy con `FORCE ROW LEVEL SECURITY`; questo non limita superuser o `BYPASSRLS`. I test vanno eseguiti con il ruolo applicativo reale.
 
 ## API / Sintassi
 
@@ -68,11 +68,20 @@ FOR INSERT
 WITH CHECK (tenant_id = current_setting('app.tenant_id')::uuid);
 ```
 
-Impostare il tenant nella sessione:
+Impostare il tenant per la transazione della richiesta, usando la stessa connessione per tutti i comandi:
 
 ```sql
-SET app.tenant_id = '00000000-0000-0000-0000-000000000001';
+BEGIN;
+SET LOCAL app.tenant_id = '00000000-0000-0000-0000-000000000001';
+SELECT id, title FROM documents;
+COMMIT;
 ```
+
+Il backend ricava il tenant dall'identita autenticata e dalle autorizzazioni, non da un parametro client accettato senza verifica. Con query parametrizzate puo usare `SELECT set_config('app.tenant_id', $1, true)` nella stessa transazione; il placeholder dipende dal driver.
+
+`SET` senza `LOCAL` persiste nella sessione anche dopo il commit: una connessione riutilizzata dal pool puo conservare il tenant precedente. `SET LOCAL` dura fino a commit o rollback, ma fuori da una transazione esplicita non imposta il contesto per le query successive. Gestire sempre il rollback in caso di errore e impostare il contesto per ogni richiesta prima delle query protette. Non mescolare questo schema con un tenant persistente di sessione: a fine transazione quel valore tornerebbe attivo.
+
+Un setting `app.*` non autentica un utente: chi puo eseguire SQL arbitrario con quel ruolo puo cambiarlo. Questa policy protegge dai filtri applicativi dimenticati, non da un client SQL non fidato o da SQL injection. Per tali scenari occorre un diverso confine di autorizzazione, per esempio ruoli distinti con policy basate su `current_user`.
 
 ## Esempio pratico
 
@@ -125,6 +134,8 @@ Una query senza filtro esplicito vede comunque solo le righe permesse dalla poli
 - Le policy coprono lettura e scrittura?
 - I test usano il ruolo applicativo reale?
 - Il valore di tenant/user viene impostato in modo sicuro?
+- Ogni richiesta imposta il tenant dentro la propria transazione, sulla stessa connessione?
+- I test coprono due tenant consecutivi sulla stessa connessione e il rollback dopo un errore?
 - L'owner non viene usato come runtime user?
 - Esistono test per tentativi di accesso cross-tenant?
 
@@ -133,3 +144,10 @@ Una query senza filtro esplicito vede comunque solo le righe permesse dalla poli
 - [[Programmazione/Postgres/Pagine/Ruoli e privilegi avanzati|Ruoli e privilegi avanzati]]
 - [[Programmazione/Postgres/Pagine/Gestione Utenti e Ruoli|Gestione Utenti e Ruoli]]
 - [[Programmazione/Postgres/Pagine/Sicurezza delle estensioni|Sicurezza delle estensioni]]
+- [[Programmazione/Postgres/Pagine/Connection Pooling|Connection Pooling]]
+
+## Fonti
+
+- [PostgreSQL - Row Security Policies](https://www.postgresql.org/docs/current/ddl-rowsecurity.html)
+- [PostgreSQL - SET](https://www.postgresql.org/docs/current/sql-set.html)
+- [PostgreSQL - Customized Options](https://www.postgresql.org/docs/current/runtime-config-custom.html)

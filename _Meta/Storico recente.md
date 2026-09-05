@@ -8,6 +8,25 @@ Mantieni solo le ultime 10 voci operative.
 
 ---
 
+## 2026-09-05 - Correzioni contenuti Programmazione
+
+### Fatto
+
+- Corretti gli esempi dei promemoria JavaScript, Python, Rust e PostgreSQL segnalati dalla revisione.
+- Allineate nota e promemoria su RLS, contesto per transazione e connessioni riutilizzate, e su sintassi e permessi dei team CODEOWNERS.
+- Completati caricamento iniziale, retry, selezione e annullamento richieste nell'esempio di struttura frontend React.
+- Approfondite varianza TypeScript, opzioni delle dataclass Python e integrazione delle traduzioni React.
+
+### Decisioni
+
+- I promemoria restano sintetici; spiegazioni e limiti appartengono alle note teoriche collegate.
+- Le note modificate restano con `status: "non revisionato"` in attesa del controllo dell'utente.
+
+### Prossimi passi
+
+- Verificare gli esempi Rust con Cargo e quelli PostgreSQL su un database di prova.
+- Proseguire la revisione tecnica delle note non ancora approfondite.
+
 ## 2026-07-30 - Promemoria di Programmazione
 
 ### Fatto
@@ -251,20 +270,3 @@ Mantieni solo le ultime 10 voci operative.
 ### Prossimi passi
 
 - Continuare con le sezioni operative di `Conoscenza Operativa`.
-
-## 2026-07-09 - Data automazione e LLM Clean Code
-
-### Fatto
-
-- Create 7 pagine dell'area `Programmazione/Clean Code/Pagine` per il blocco `Data, Automazione e LLM`.
-- Compilati contenuti reali su pipeline dati, notebook mantenibili, script di automazione, parsing input esterni, prompt applicativi, output strutturati e validazione dati generati.
-- Aggiornato `Programmazione/Clean Code/Indice Clean Code.md` trasformando in wikilink solo le nuove voci ora esistenti.
-
-### Decisioni
-
-- Le note trattano automazioni e LLM come parti del codice applicativo, quindi con contratti, validazione, test e tracciabilita.
-- Le note create restano con `status: "non revisionato"`.
-
-### Prossimi passi
-
-- Continuare con il blocco `Tooling e Qualita del Codice`.

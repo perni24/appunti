@@ -53,7 +53,7 @@ fn parse_id(value: &str) -> Result<u64, std::num::ParseIntError> {
 
 ```rust
 result.map(transform)
-result.map_err(AppError::Parse)
+result.map_err(AppError::InvalidId)
 result.and_then(validate)
 result.unwrap_or(default)
 ```
@@ -62,10 +62,12 @@ result.unwrap_or(default)
 
 ```rust
 fn load_id(text: &str) -> Result<u64, AppError> {
-    let id = text.trim().parse::<u64>()?;
+    let id = text.trim().parse::<u64>().map_err(AppError::InvalidId)?;
     Ok(id)
 }
 ```
+
+`map_err` converte `ParseIntError` in `AppError` prima di `?`. Per scrivere solo `parse::<u64>()?` serve invece `impl From<std::num::ParseIntError> for AppError`.
 
 ## Match esplicito
 

@@ -30,12 +30,14 @@ Esempio:
 
 ```text
 *                         @owner
-/docs/                    @docs-team
-/src/security/            @security-team
-/.github/workflows/       @devops-team
+/docs/                    @example-org/docs-team
+/src/security/            @example-org/security-team
+/.github/workflows/       @example-org/devops-team
 ```
 
 L'ultima regola corrispondente prevale.
+
+Sostituire utenti, organizzazione e team con quelli reali. Utenti: `@username`; team: `@org/team`. Servono permessi `write`; i team devono essere visibili e avere accesso `write` esplicito. Per bloccare il merge senza approvazione attivare anche la review obbligatoria dei code owner nel ruleset.
 
 ## Ruleset del branch principale
 

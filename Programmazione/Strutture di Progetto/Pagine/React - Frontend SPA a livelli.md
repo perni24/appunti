@@ -260,25 +260,38 @@ Una pagina:
 - compone componenti di layout e di dominio.
 
 ```jsx
+import { useState } from "react"
 import { EntityCard } from "../components/EntityCard"
 import { useEntity } from "../context/useEntity"
 
 
 export default function Home() {
   const { entities, loading, error, refresh } = useEntity()
-
-  if (loading) return <p>Caricamento...</p>
-  if (error) return <p role="alert">{error.message}</p>
-  if (entities.length === 0) return <p>Nessuna entita disponibile.</p>
+  const [selectedId, setSelectedId] = useState(null)
+  const selectedEntity = entities.find((entity) => entity.id === selectedId)
 
   return (
     <section>
-      <button type="button" onClick={refresh}>
+      <button type="button" onClick={refresh} disabled={loading}>
         Aggiorna
       </button>
 
-      {entities.map((entity) => (
-        <EntityCard key={entity.id} entity={entity} />
+      {loading && <p role="status">Caricamento...</p>}
+      {error && <p role="alert">{error.message}</p>}
+      {!loading && !error && entities.length === 0 && (
+        <p>Nessuna entita disponibile.</p>
+      )}
+
+      {selectedEntity ? (
+        <article>
+          <h2>{selectedEntity.name}</h2>
+          <p>ID: {selectedEntity.id}</p>
+          <button type="button" onClick={() => setSelectedId(null)}>
+            Torna all'elenco
+          </button>
+        </article>
+      ) : entities.map((entity) => (
+        <EntityCard key={entity.id} entity={entity} onSelect={setSelectedId} />
       ))}
     </section>
   )
@@ -286,6 +299,8 @@ export default function Home() {
 ```
 
 La directory `pages` non implementa automaticamente il routing. Per associare URL e pagine serve un router o una strategia di navigazione esplicita.
+
+Qui `Apri` seleziona un dettaglio locale senza cambiare URL; un router puo sostituire questa selezione con la navigazione a `pages/Entity.jsx`. Il pulsante `Aggiorna` resta disponibile anche dopo un errore o una risposta vuota. Durante il refresh si conservano gli ultimi dati ricevuti.
 
 ### `src/context/AppProviders.jsx`
 
@@ -316,7 +331,9 @@ Espone stato e operazioni condivise relative alle entita:
 import {
   createContext,
   useCallback,
+  useEffect,
   useMemo,
+  useRef,
   useState,
 } from "react"
 
@@ -328,21 +345,35 @@ export const EntityContext = createContext(null)
 
 export function EntityProvider({ children }) {
   const [entities, setEntities] = useState([])
-  const [loading, setLoading] = useState(false)
+  const [loading, setLoading] = useState(true)
   const [error, setError] = useState(null)
+  const activeRequest = useRef(null)
 
   const refresh = useCallback(async () => {
+    activeRequest.current?.abort()
+    const controller = new AbortController()
+    activeRequest.current = controller
     setLoading(true)
     setError(null)
 
     try {
-      setEntities(await getEntities())
+      const data = await getEntities(controller.signal)
+      if (!controller.signal.aborted) setEntities(data)
     } catch (requestError) {
-      setError(requestError)
+      if (!controller.signal.aborted) {
+        setError(requestError instanceof Error
+          ? requestError
+          : new Error("Caricamento non riuscito"))
+      }
     } finally {
-      setLoading(false)
+      if (!controller.signal.aborted) setLoading(false)
     }
   }, [])
+
+  useEffect(() => {
+    void refresh()
+    return () => activeRequest.current?.abort()
+  }, [refresh])
 
   const value = useMemo(
     () => ({ entities, loading, error, refresh }),
@@ -358,6 +389,8 @@ export function EntityProvider({ children }) {
 ```
 
 Context e utile quando dati e operazioni servono a componenti distanti. Non deve essere usato automaticamente per ogni stato: uno stato locale alla pagina dovrebbe rimanere nella pagina.
+
+L'effetto avvia il primo caricamento. Il cleanup annulla la richiesta all'unmount, e ogni refresh annulla quella precedente. I controlli sul segnale impediscono a una risposta obsoleta di sovrascrivere dati o stato di caricamento, anche nel ciclo aggiuntivo di setup/cleanup di `StrictMode` in sviluppo. `getEntities` inoltra il segnale al livello HTTP mostrato sotto.
 
 Context inoltre non offre da solo deduplicazione, invalidazione, retry o cache persistente dei dati remoti. Per server state complesso puo essere piu adatta una libreria dedicata al data fetching.
 

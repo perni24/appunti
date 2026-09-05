@@ -71,9 +71,11 @@ result = add(*arguments)
 ```
 
 ```python
-options = {"host": "localhost", "timeout": 5}
-connect(**options)
+options = {"port": 5432, "timeout": 5}
+connect("localhost", **options)
 ```
+
+`host` precede `/`: va passato per posizione, anche quando gli altri argomenti usano `**options`.
 
 ## Lambda
 

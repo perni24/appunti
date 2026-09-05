@@ -85,10 +85,10 @@ FROM measurements;
 ```sql
 SELECT
     user_id,
-    FIRST_VALUE(status) OVER window AS first_status,
-    LAST_VALUE(status) OVER window AS last_status
+    FIRST_VALUE(status) OVER w AS first_status,
+    LAST_VALUE(status) OVER w AS last_status
 FROM events
-WINDOW window AS (
+WINDOW w AS (
     PARTITION BY user_id
     ORDER BY created_at
     ROWS BETWEEN UNBOUNDED PRECEDING AND UNBOUNDED FOLLOWING

@@ -99,10 +99,15 @@ WITH CHECK (
 ```
 
 ```sql
+BEGIN;
 SET LOCAL app.user_id = '42';
+SELECT * FROM app.documents;
+COMMIT;
 ```
 
-Il ruolo proprietario della tabella normalmente bypassa RLS. Verificare le policy usando lo stesso ruolo dell'applicazione.
+Eseguire sulla stessa connessione; in caso di errore fare `ROLLBACK`. Il backend imposta l'ID autenticato a ogni transazione: un setting modificabile dal client non e una prova di identita.
+
+Il ruolo proprietario normalmente bypassa RLS; `FORCE ROW LEVEL SECURITY` puo assoggettarlo alle policy, ma non limita superuser o ruoli `BYPASSRLS`. Verificare con il ruolo dell'applicazione. Dettagli in [[Programmazione/Postgres/Pagine/Row Level Security]].
 
 ## Privilegi di una tabella
 

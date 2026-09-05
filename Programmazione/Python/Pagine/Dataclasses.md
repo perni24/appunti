@@ -63,12 +63,34 @@ class OrderLine:
 
 ## Varianti
 
-- `frozen=True`.
-- `order=True`.
-- `field(default_factory=...)`.
-- `slots=True`.
-- `kw_only=True`.
-- `__post_init__`.
+| Opzione | Effetto e uso |
+|---|---|
+| `frozen=True` | Impedisce assegnazioni ai campi; non congela gli oggetti contenuti. |
+| `order=True` | Confronta lessicograficamente i campi nell'ordine dichiarato, tra istanze dello stesso tipo; richiede `eq=True`. |
+| `field(default_factory=...)` | Crea un default nuovo per ogni istanza, evitando liste condivise. |
+| `slots=True` | Genera slot, utili per molti oggetti piccoli; senza `__dict__` ereditato impedisce attributi arbitrari. Richiede Python 3.10+. |
+| `kw_only=True` | Richiede nomi espliciti per gli argomenti del costruttore. Richiede Python 3.10+. |
+| `__post_init__` | Esegue controlli dopo l'assegnazione dei campi da parte dell'`__init__` generato. |
+
+Esempio con configurazione validata:
+
+```python
+@dataclass(slots=True, kw_only=True)
+class RetryPolicy:
+    attempts: int = 3
+
+    def __post_init__(self):
+        if type(self.attempts) is not int:
+            raise TypeError("attempts must be an integer")
+        if self.attempts < 1:
+            raise ValueError("attempts must be positive")
+
+policy = RetryPolicy(attempts=5)
+```
+
+`RetryPolicy(5)` non e ammesso. Le annotazioni non validano i tipi a runtime: qui i controlli sono espliciti. `__post_init__` non viene richiamato automaticamente dopo successive modifiche ai campi.
+
+Con `frozen=True`, una lista interna resta modificabile. Per un record immutabile preferisci campi immutabili, come tuple di valori immutabili. `frozen=True` non garantisce neppure che tutti i campi siano hashable.
 
 ## Errori comuni
 
@@ -91,3 +113,7 @@ class OrderLine:
 - [[Programmazione/Python/Pagine/Classi e Istanze|Classi e Istanze]]
 - [[Programmazione/Python/Pagine/Type Hinting|Type Hinting]]
 - [[Programmazione/Python/Pagine/Enum|Enum]]
+
+## Fonti
+
+- [Python - dataclasses](https://docs.python.org/3/library/dataclasses.html)
