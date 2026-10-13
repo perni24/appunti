@@ -1,15 +1,27 @@
-﻿---
+---
 date: 2026-06-02
 area: Programmazione
 topic: JavaScript
 type: technical-note
-status: "non revisionato"
+status: non revisionato
 publish: true
-difficulty: intermediate
-tags: [javascript, objects, object-methods, es6]
-aliases: [Oggetti JS, Object methods]
-prerequisites: [Tipi di Dati, Variabili]
-related: [Property Descriptors, Immutabilita e Copia degli Oggetti, Prototypes]
+difficulty: intermedio
+tags:
+  - javascript
+  - objects
+  - object-methods
+  - es6
+aliases:
+  - Oggetti JS
+  - Object methods
+prerequisites:
+  - "[[Programmazione/JavaScript/Pagine/Tipi di Dati]]"
+  - "[[Programmazione/JavaScript/Pagine/Variabili]]"
+related:
+  - "[[Programmazione/JavaScript/Pagine/Property Descriptors]]"
+  - "[[Programmazione/JavaScript/Pagine/Immutabilita e Copia degli Oggetti]]"
+  - "[[Programmazione/JavaScript/Pagine/Prototypes]]"
+title: Oggetti Avanzati
 ---
 
 # Oggetti Avanzati
@@ -47,7 +59,7 @@ const user = {
 
 Un oggetto e una collezione di coppie chiave-valore.
 
-Le chiavi sono normalmente stringhe o simboli.
+Le chiavi sono stringhe o simboli. Un numero usato come chiave diventa una stringa: `record[1]` e `record["1"]` indicano la stessa proprieta, diversamente dalle chiavi di una `Map`.
 
 ---
 ### Property shorthand
@@ -73,7 +85,7 @@ const calculator = {
 };
 ```
 
-Evita di scrivere:
+La forma seguente e valida, ma piu verbosa; non e un errore:
 
 ```js
 const calculator = {
@@ -112,6 +124,18 @@ console.log(Object.entries(user)); // [["name", "Luca"], ["role", "admin"]]
 
 `Object.entries()` e utile per trasformare oggetti in array.
 
+`keys`, `values` ed `entries` includono solo proprieta proprie, enumerabili e con chiave stringa. Escludono simboli e proprieta ereditate; `values` ed `entries` possono eseguire getter.
+
+| API | Proprieta considerate |
+| --- | --- |
+| `Object.keys/values/entries` | Proprie, enumerabili, stringhe |
+| `Object.getOwnPropertyNames` | Proprie, anche non enumerabili, stringhe |
+| `Object.getOwnPropertySymbols` | Proprie, simboli |
+| `Reflect.ownKeys` | Tutte le proprie, stringhe e simboli |
+| `for...in` | Enumerabili con chiave stringa, anche ereditate |
+
+Le chiavi che rappresentano indici di array (da `0` a `2^32 - 2`) vengono elencate in ordine numerico prima delle altre stringhe. Un oggetto non e quindi un sostituto di `Map` se serve l'ordine di inserimento di chiavi arbitrarie.
+
 ```js
 for (const [key, value] of Object.entries(user)) {
   console.log(key, value);
@@ -131,9 +155,11 @@ const entries = [
 const user = Object.fromEntries(entries);
 ```
 
+Chiavi ripetute si sovrascrivono: rimane l'ultimo valore. Le chiavi non simboliche vengono convertite in stringhe; non e una conversione senza perdita da una `Map` con chiavi arbitrarie.
+
 ---
 ### Object.assign e spread
-`Object.assign()` copia proprieta da uno o piu oggetti sorgente.
+`Object.assign()` copia proprieta proprie enumerabili, stringhe e simboli, dentro il primo argomento. Modifica e restituisce quel target; `{}` serve a crearne uno nuovo.
 
 ```js
 const user = Object.assign({}, { role: "reader" }, { name: "Luca" });
@@ -150,6 +176,8 @@ const user = {
 
 Entrambi fanno una copia superficiale.
 
+Entrambi leggono i getter sorgente. `Object.assign()` puo chiamare setter sul target, mentre lo spread crea proprieta dati nel nuovo oggetto. Nessuno dei due preserva automaticamente descriptor o prototipi della sorgente.
+
 ---
 ### Object.hasOwn
 `Object.hasOwn()` verifica se una proprieta appartiene direttamente all'oggetto.
@@ -163,6 +191,29 @@ console.log(Object.hasOwn(user, "name")); // true
 ```
 
 E piu sicuro di chiamare direttamente `hasOwnProperty()` sull'oggetto.
+
+Funziona anche con un oggetto senza prototipo o con una proprieta chiamata `hasOwnProperty`. Il controllo e distinto da `in`, che include il prototipo, e da una lettura del valore:
+
+```js
+const record = Object.create({ inherited: 1 });
+record.present = undefined;
+console.log(Object.hasOwn(record, "inherited")); // false
+console.log("inherited" in record); // true
+console.log(Object.hasOwn(record, "present")); // true, anche se vale undefined
+```
+
+### freeze e seal
+
+`Object.freeze()` impedisce aggiunte, rimozioni e riassegnazioni delle proprieta dati dell'oggetto, ma e superficiale:
+
+```js
+const settings = Object.freeze({ theme: "light", nested: { enabled: true } });
+settings.nested.enabled = false;
+console.log(settings.nested.enabled); // false: oggetto annidato ancora modificabile
+// settings.theme = "dark"; // TypeError in strict mode; altrimenti puo fallire silenziosamente
+```
+
+`Object.seal()` impedisce aggiunte e rimozioni, ma lascia modificabili i valori delle proprieta writable. Nessuno dei due e una validazione o una protezione di segreti. Per i dettagli dei descriptor, vedi [[Programmazione/JavaScript/Pagine/Property Descriptors|Property Descriptors]].
 
 ---
 ### this nei metodi
@@ -199,7 +250,7 @@ copy.profile.name = "Marco";
 console.log(original.profile.name); // "Marco"
 ```
 
-Per copie profonde, vedi [[Immutabilita e Copia degli Oggetti]].
+Per copie profonde, vedi [[Programmazione/JavaScript/Pagine/Immutabilita e Copia degli Oggetti|Immutabilita e Copia degli Oggetti]].
 
 ---
 
@@ -238,10 +289,13 @@ const nextUser = { ...user, active: true };
 
 ## Esempio pratico
 
-Normalizzare un oggetto rimuovendo campi vuoti:
+Rimuovere da un record dati i campi con valore `null`, `undefined` o stringa vuota:
 
 ```js
 function removeEmptyFields(object) {
+  if (object === null || typeof object !== "object" || Array.isArray(object)) {
+    throw new TypeError("Serve un record dati, non null o un array");
+  }
   return Object.fromEntries(
     Object.entries(object).filter(([, value]) => {
       return value !== null && value !== undefined && value !== "";
@@ -257,6 +311,8 @@ const cleanUser = removeEmptyFields({
 ```
 
 `Object.entries` trasforma l'oggetto in coppie, `filter` rimuove i campi vuoti e `Object.fromEntries` ricostruisce l'oggetto.
+
+Il contratto e superficiale: conserva `0`, `false`, spazi, array vuoti e oggetti annidati, dei quali non crea copie profonde. Esclude simboli e campi non enumerabili e non preserva una classe personalizzata. Non e un sanitizzatore: non elimina segreti o nomi di campo pericolosi per elaborazioni successive. Per un output pubblico scegli i campi ammessi; per chiavi dinamiche usa `Map` o un dizionario senza prototipo.
 
 ## Varianti
 
@@ -289,8 +345,20 @@ const cleanUser = removeEmptyFields({
 
 ## Collegamenti
 
-- [[Property Descriptors]]
-- [[Immutabilita e Copia degli Oggetti]]
-- [[Map e Set]]
-- [[Prototypes]]
-- [[Context]]
+- [[Programmazione/JavaScript/Pagine/Property Descriptors|Property Descriptors]]
+- [[Programmazione/JavaScript/Pagine/Immutabilita e Copia degli Oggetti|Immutabilita e Copia degli Oggetti]]
+- [[Programmazione/JavaScript/Pagine/Map e Set|Map e Set]]
+- [[Programmazione/JavaScript/Pagine/Prototypes|Prototypes]]
+- [[Programmazione/JavaScript/Pagine/Context|Context]]
+
+
+## Fonti
+
+- [MDN - Proprieta proprie ed enumerabilita](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Guide/Enumerability_and_ownership_of_properties)
+- [MDN - Lavorare con gli oggetti](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Guide/Working_with_objects)
+- [MDN - Object.assign](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object/assign)
+- [MDN - Object.freeze](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object/freeze)
+
+## Navigazione
+
+- [[Programmazione/JavaScript/Indice JavaScript|Indice JavaScript]]

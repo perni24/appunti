@@ -3,11 +3,18 @@ date: 2026-07-28
 area: Programmazione
 topic: Strutture di Progetto
 type: technical-note
-status: "non revisionato"
+status: non revisionato
 publish: true
 difficulty: intermedio
-tags: [python, backend, api, struttura-progetto, architettura-a-livelli]
-aliases: [Struttura backend Python, Python layered backend]
+tags:
+  - python
+  - backend
+  - api
+  - struttura-progetto
+  - architettura-a-livelli
+aliases:
+  - Struttura backend Python
+  - Python layered backend
 prerequisites:
   - "[[Programmazione/Python/Pagine/Creazione di Package]]"
   - "[[Programmazione/Clean Code/Pagine/Separazione delle responsabilita]]"
@@ -20,6 +27,7 @@ related:
   - "[[Programmazione/Clean Code/Pagine/Repository pattern]]"
   - "[[Programmazione/Clean Code/Pagine/Validazione input API]]"
   - "[[Programmazione/Clean Code/Pagine/Test di integrazione]]"
+title: Python - Backend API a livelli
 ---
 
 # Python - Backend API a livelli
@@ -580,13 +588,18 @@ features/
 
 ## Collegamenti
 
-- [[Programmazione/Strutture di Progetto/Pagine/PHP - Applicazione web tradizionale]]
-- [[Programmazione/Python/Pagine/Creazione di Package]]
-- [[Programmazione/Python/Pagine/Configurazione e Variabili d Ambiente]]
-- [[Programmazione/Python/Pagine/Pydantic]]
-- [[Programmazione/Python/Pagine/FastAPI]]
-- [[Programmazione/Clean Code/Pagine/Controller sottili]]
-- [[Programmazione/Clean Code/Pagine/Service layer]]
-- [[Programmazione/Clean Code/Pagine/Repository pattern]]
-- [[Programmazione/Clean Code/Pagine/Validazione input API]]
-- [[Programmazione/Clean Code/Pagine/Test di integrazione]]
+- [[Programmazione/Strutture di Progetto/Pagine/PHP - Applicazione web tradizionale|PHP - Applicazione web tradizionale]]
+- [[Programmazione/Python/Pagine/Creazione di Package|Creazione di Package]]
+- [[Programmazione/Python/Pagine/Configurazione e Variabili d Ambiente|Configurazione e Variabili d Ambiente]]
+- [[Programmazione/Python/Pagine/Pydantic|Pydantic]]
+- [[Programmazione/Python/Pagine/FastAPI|FastAPI]]
+- [[Programmazione/Clean Code/Pagine/Controller sottili|Controller sottili]]
+- [[Programmazione/Clean Code/Pagine/Service layer|Service layer]]
+- [[Programmazione/Clean Code/Pagine/Repository pattern|Repository pattern]]
+- [[Programmazione/Clean Code/Pagine/Validazione input API|Validazione input API]]
+- [[Programmazione/Clean Code/Pagine/Test di integrazione|Test di integrazione]]
+
+
+## Navigazione
+
+- [[Programmazione/Strutture di Progetto/Indice Strutture di Progetto|Indice Strutture di Progetto]]

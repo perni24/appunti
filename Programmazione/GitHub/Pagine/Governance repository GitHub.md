@@ -3,13 +3,27 @@ date: 2026-07-07
 area: Programmazione
 topic: GitHub
 type: technical-note
-status: "non revisionato"
+status: non revisionato
 publish: true
 difficulty: avanzato
-tags: [github, governance, repository, manutenzione]
-aliases: [Governance repository GitHub, Governance GitHub]
-prerequisites: [Repository GitHub, Repository settings, Accessi ruoli e permessi GitHub]
-related: [Repository hygiene, Repository rulesets, Branch protection rules, Organizzazioni e team GitHub]
+tags:
+  - github
+  - governance
+  - repository
+  - manutenzione
+aliases:
+  - Governance repository GitHub
+  - Governance GitHub
+prerequisites:
+  - "[[Programmazione/GitHub/Pagine/Repository GitHub]]"
+  - "[[Programmazione/GitHub/Pagine/Repository settings]]"
+  - "[[Programmazione/GitHub/Pagine/Accessi ruoli e permessi GitHub]]"
+related:
+  - "[[Programmazione/GitHub/Pagine/Repository hygiene]]"
+  - "[[Programmazione/GitHub/Pagine/Repository rulesets]]"
+  - "[[Programmazione/GitHub/Pagine/Branch protection rules]]"
+  - "[[Programmazione/GitHub/Pagine/Organizzazioni e team GitHub]]"
+title: Governance repository GitHub
 ---
 
 # Governance repository GitHub
@@ -105,14 +119,14 @@ Questa configurazione rende piu prevedibili contributi, review e rilasci.
 
 ## Collegamenti
 
-- [[Programmazione/GitHub/Indice GitHub]]
-- [[Repository GitHub]]
-- [[Repository settings]]
-- [[Accessi ruoli e permessi GitHub]]
-- [[Organizzazioni e team GitHub]]
-- [[Repository rulesets]]
-- [[Branch protection rules]]
-- [[Repository hygiene]]
+- [[Programmazione/GitHub/Indice GitHub|Indice GitHub]]
+- [[Programmazione/GitHub/Pagine/Repository GitHub|Repository GitHub]]
+- [[Programmazione/GitHub/Pagine/Repository settings|Repository settings]]
+- [[Programmazione/GitHub/Pagine/Accessi ruoli e permessi GitHub|Accessi ruoli e permessi GitHub]]
+- [[Programmazione/GitHub/Pagine/Organizzazioni e team GitHub|Organizzazioni e team GitHub]]
+- [[Programmazione/GitHub/Pagine/Repository rulesets|Repository rulesets]]
+- [[Programmazione/GitHub/Pagine/Branch protection rules|Branch protection rules]]
+- [[Programmazione/GitHub/Pagine/Repository hygiene|Repository hygiene]]
 
 ## Fonti
 

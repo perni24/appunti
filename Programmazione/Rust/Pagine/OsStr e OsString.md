@@ -3,7 +3,7 @@ date: 2026-05-22
 area: Programmazione
 topic: Rust
 type: technical-note
-status: "non revisionato"
+status: non revisionato
 publish: true
 difficulty: intermedio
 tags:
@@ -11,9 +11,9 @@ tags:
   - rust
   - standard-library
 aliases:
-  - "OsStr"
-  - "OsString"
-  - "Stringhe OS"
+  - OsStr
+  - OsString
+  - Stringhe OS
 prerequisites:
   - "[[Programmazione/Rust/Pagine/Stringhe String e &str]]"
   - "[[Programmazione/Rust/Pagine/Path e PathBuf]]"
@@ -21,6 +21,7 @@ related:
   - "[[Programmazione/Rust/Pagine/Process e Command]]"
   - "[[Programmazione/Rust/Pagine/File I O]]"
   - "[[Programmazione/Rust/Pagine/FFI]]"
+title: OsStr e OsString
 ---
 
 # OsStr e OsString
@@ -129,3 +130,8 @@ Il confronto evita conversioni inutili a `&str`.
 - [[Programmazione/Rust/Pagine/Process e Command|Process e Command]]
 - [[Programmazione/Rust/Pagine/File I O|File I O]]
 - [[Programmazione/Rust/Pagine/FFI|FFI]]
+
+
+## Navigazione
+
+- [[Programmazione/Rust/Indice Rust|Indice Rust]]

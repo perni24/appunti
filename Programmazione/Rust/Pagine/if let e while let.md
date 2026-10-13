@@ -1,15 +1,20 @@
-﻿---
+---
 date: 2026-05-20
 area: Programmazione
 topic: Rust
 type: technical-note
-status: "non revisionato"
+status: non revisionato
 publish: true
 difficulty: base
-tags: [programmazione, rust, pattern-matching, if-let, while-let]
+tags:
+  - programmazione
+  - rust
+  - pattern-matching
+  - if-let
+  - while-let
 aliases:
-  - "if let Rust"
-  - "while let Rust"
+  - if let Rust
+  - while let Rust
 prerequisites:
   - "[[Programmazione/Rust/Pagine/Pattern Matching]]"
   - "[[Programmazione/Rust/Pagine/Option]]"
@@ -17,6 +22,7 @@ related:
   - "[[Programmazione/Rust/Pagine/Enums]]"
   - "[[Programmazione/Rust/Pagine/Result]]"
   - "[[Programmazione/Rust/Pagine/Control flow avanzato]]"
+title: if let e while let
 ---
 
 # if let e while let
@@ -156,3 +162,8 @@ fn main() {
 - [[Programmazione/Rust/Pagine/Control flow avanzato|Control flow avanzato]]
 - [[Programmazione/Rust/Pagine/Destructuring|Destructuring]]
 
+
+
+## Navigazione
+
+- [[Programmazione/Rust/Indice Rust|Indice Rust]]

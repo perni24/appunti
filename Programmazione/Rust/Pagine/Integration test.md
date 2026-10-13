@@ -3,7 +3,7 @@ date: 2026-05-28
 area: Programmazione
 topic: Rust
 type: technical-note
-status: "non revisionato"
+status: non revisionato
 publish: true
 difficulty: intermedio
 tags:
@@ -11,8 +11,8 @@ tags:
   - rust
   - testing-qualita-e-sicurezza
 aliases:
-  - "Integration test"
-  - "Test di integrazione Rust"
+  - Integration test
+  - Test di integrazione Rust
 prerequisites:
   - "[[Programmazione/Rust/Pagine/Cargo]]"
   - "[[Programmazione/Rust/Pagine/Public API design]]"
@@ -20,6 +20,7 @@ related:
   - "[[Programmazione/Rust/Pagine/Unit test]]"
   - "[[Programmazione/Rust/Pagine/Mocking]]"
   - "[[Programmazione/Rust/Pagine/cargo-nextest]]"
+title: Integration test
 ---
 
 # Integration test
@@ -142,9 +143,9 @@ Il test non sa come il parser e implementato: verifica solo il contratto pubblic
 
 ## Collegamenti
 
-- [[Programmazione/Rust/Indice rust|Indice Rust]]
-- [[Programmazione/Rust/Pagine/Unit test]]
-- [[Programmazione/Rust/Pagine/Doc test]]
-- [[Programmazione/Rust/Pagine/Mocking]]
-- [[Programmazione/Rust/Pagine/cargo-nextest]]
-- [[Programmazione/Rust/Pagine/Public API design]]
+- [[Programmazione/Rust/Indice Rust|Indice Rust]]
+- [[Programmazione/Rust/Pagine/Unit test|Unit test]]
+- [[Programmazione/Rust/Pagine/Doc test|Doc test]]
+- [[Programmazione/Rust/Pagine/Mocking|Mocking]]
+- [[Programmazione/Rust/Pagine/cargo-nextest|cargo-nextest]]
+- [[Programmazione/Rust/Pagine/Public API design|Public API design]]

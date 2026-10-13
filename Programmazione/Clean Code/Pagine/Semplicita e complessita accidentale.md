@@ -3,13 +3,22 @@ date: 2026-07-09
 area: Programmazione
 topic: Clean Code
 type: theory-note
-status: "non revisionato"
+status: non revisionato
 publish: true
 difficulty: base
-tags: [clean-code, semplicita, complessita]
-aliases: [Semplicita e complessita accidentale, Complessita accidentale]
-prerequisites: [Clean Code]
-related: [Manutenibilita del codice, Codice esplicito vs codice implicito]
+tags:
+  - clean-code
+  - semplicita
+  - complessita
+aliases:
+  - Semplicita e complessita accidentale
+  - Complessita accidentale
+prerequisites:
+  - "[[Programmazione/Clean Code/Pagine/Clean Code]]"
+related:
+  - "[[Programmazione/Clean Code/Pagine/Manutenibilita del codice]]"
+  - "[[Programmazione/Clean Code/Pagine/Codice esplicito vs codice implicito]]"
+title: Semplicita e complessita accidentale
 ---
 
 # Semplicita e complessita accidentale
@@ -76,11 +85,11 @@ Se esiste una sola strategia reale, l'infrastruttura generica e complessita acci
 
 ## Collegamenti
 
-- [[Programmazione/Clean Code/Indice Clean Code]]
-- [[Clean Code]]
-- [[Manutenibilita del codice]]
-- [[Codice esplicito vs codice implicito]]
-- [[Debito tecnico]]
+- [[Programmazione/Clean Code/Indice Clean Code|Indice Clean Code]]
+- [[Programmazione/Clean Code/Pagine/Clean Code|Clean Code]]
+- [[Programmazione/Clean Code/Pagine/Manutenibilita del codice|Manutenibilita del codice]]
+- [[Programmazione/Clean Code/Pagine/Codice esplicito vs codice implicito|Codice esplicito vs codice implicito]]
+- [[Programmazione/Clean Code/Pagine/Debito tecnico|Debito tecnico]]
 
 ## Fonti
 

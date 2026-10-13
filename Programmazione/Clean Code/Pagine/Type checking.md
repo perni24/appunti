@@ -3,13 +3,24 @@ date: 2026-07-09
 area: Programmazione
 topic: Clean Code
 type: technical-note
-status: "non revisionato"
+status: non revisionato
 publish: true
 difficulty: intermedio
-tags: [clean-code, tooling, type-checking]
-aliases: [Type checking, Controllo dei tipi]
-prerequisites: [Tipi significativi, Contratti impliciti ed espliciti]
-related: [Static analysis, Codice testabile, Validazione ai confini]
+tags:
+  - clean-code
+  - tooling
+  - type-checking
+aliases:
+  - Type checking
+  - Controllo dei tipi
+prerequisites:
+  - "[[Programmazione/Clean Code/Pagine/Tipi significativi]]"
+  - "[[Programmazione/Clean Code/Pagine/Contratti impliciti ed espliciti]]"
+related:
+  - "[[Programmazione/Clean Code/Pagine/Static analysis]]"
+  - "[[Programmazione/Clean Code/Pagine/Codice testabile]]"
+  - "[[Programmazione/Clean Code/Pagine/Validazione ai confini]]"
+title: Type checking
 ---
 
 # Type checking
@@ -80,12 +91,12 @@ Il tipo chiarisce l'intenzione del parametro e aiuta il refactoring.
 
 ## Collegamenti
 
-- [[Programmazione/Clean Code/Indice Clean Code]]
-- [[Tipi significativi]]
-- [[Contratti impliciti ed espliciti]]
-- [[Static analysis]]
-- [[Codice testabile]]
-- [[Validazione ai confini]]
+- [[Programmazione/Clean Code/Indice Clean Code|Indice Clean Code]]
+- [[Programmazione/Clean Code/Pagine/Tipi significativi|Tipi significativi]]
+- [[Programmazione/Clean Code/Pagine/Contratti impliciti ed espliciti|Contratti impliciti ed espliciti]]
+- [[Programmazione/Clean Code/Pagine/Static analysis|Static analysis]]
+- [[Programmazione/Clean Code/Pagine/Codice testabile|Codice testabile]]
+- [[Programmazione/Clean Code/Pagine/Validazione ai confini|Validazione ai confini]]
 
 ## Fonti
 

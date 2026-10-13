@@ -3,13 +3,24 @@ date: 2026-07-09
 area: Programmazione
 topic: Clean Code
 type: theory-note
-status: "non revisionato"
+status: non revisionato
 publish: true
 difficulty: intermedio
-tags: [clean-code, design, coesione, accoppiamento]
-aliases: [Coesione e accoppiamento, Cohesion and coupling]
-prerequisites: [Moduli piccoli]
-related: [Separazione delle responsabilita, Confini tra moduli, Dipendenze esplicite]
+tags:
+  - clean-code
+  - design
+  - coesione
+  - accoppiamento
+aliases:
+  - Coesione e accoppiamento
+  - Cohesion and coupling
+prerequisites:
+  - "[[Programmazione/Clean Code/Pagine/Moduli piccoli]]"
+related:
+  - "[[Programmazione/Clean Code/Pagine/Separazione delle responsabilita]]"
+  - "[[Programmazione/Clean Code/Pagine/Confini tra moduli]]"
+  - "[[Programmazione/Clean Code/Pagine/Dipendenze esplicite]]"
+title: Coesione e accoppiamento
 ---
 
 # Coesione e accoppiamento
@@ -86,11 +97,11 @@ Ogni componente ha una ragione piu chiara per cambiare.
 
 ## Collegamenti
 
-- [[Programmazione/Clean Code/Indice Clean Code]]
-- [[Moduli piccoli]]
-- [[Confini tra moduli]]
-- [[Dipendenze esplicite]]
-- [[Separazione delle responsabilita]]
+- [[Programmazione/Clean Code/Indice Clean Code|Indice Clean Code]]
+- [[Programmazione/Clean Code/Pagine/Moduli piccoli|Moduli piccoli]]
+- [[Programmazione/Clean Code/Pagine/Confini tra moduli|Confini tra moduli]]
+- [[Programmazione/Clean Code/Pagine/Dipendenze esplicite|Dipendenze esplicite]]
+- [[Programmazione/Clean Code/Pagine/Separazione delle responsabilita|Separazione delle responsabilita]]
 - [[Programmazione/Clean Code/Pagine/Incapsulamento|Incapsulamento]]
 
 ## Fonti

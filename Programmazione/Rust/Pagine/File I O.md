@@ -3,7 +3,7 @@ date: 2026-05-22
 area: Programmazione
 topic: Rust
 type: technical-note
-status: "non revisionato"
+status: non revisionato
 publish: true
 difficulty: base
 tags:
@@ -11,9 +11,9 @@ tags:
   - rust
   - standard-library
 aliases:
-  - "File I/O"
-  - "std::fs"
-  - "std::io"
+  - File I/O
+  - std::fs
+  - std::io
 prerequisites:
   - "[[Programmazione/Rust/Pagine/Result]]"
   - "[[Programmazione/Rust/Pagine/Path e PathBuf]]"
@@ -22,6 +22,7 @@ related:
   - "[[Programmazione/Rust/Pagine/OsStr e OsString]]"
   - "[[Programmazione/Rust/Pagine/File descriptor]]"
   - "[[Programmazione/Rust/Pagine/Error handling idiomatico]]"
+title: File I/O
 ---
 
 # File I/O
@@ -122,3 +123,8 @@ La funzione e semplice, ma mantiene path generici ed errori espliciti.
 - [[Programmazione/Rust/Pagine/Result|Result]]
 - [[Programmazione/Rust/Pagine/Error handling idiomatico|Error handling idiomatico]]
 - [[Programmazione/Rust/Pagine/File descriptor|File descriptor]]
+
+
+## Navigazione
+
+- [[Programmazione/Rust/Indice Rust|Indice Rust]]

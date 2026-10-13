@@ -3,13 +3,24 @@ date: 2026-06-22
 area: Programmazione
 topic: TypeScript
 type: technical-note
-status: "non revisionato"
+status: non revisionato
 publish: true
 difficulty: intermedio
-tags: [typescript, as-const, literal-types, readonly]
-aliases: [const assertion]
-prerequisites: [Inferenza dei tipi, Enums e Literal Types]
-related: [satisfies operator, Keyof e typeof, const type parameters]
+tags:
+  - typescript
+  - as-const
+  - literal-types
+  - readonly
+aliases:
+  - const assertion
+prerequisites:
+  - "[[Programmazione/TypeScript/Pagine/Inferenza dei tipi]]"
+  - "[[Programmazione/TypeScript/Pagine/Enums e Literal Types]]"
+related:
+  - "[[Programmazione/TypeScript/Pagine/satisfies operator]]"
+  - "[[Programmazione/TypeScript/Pagine/Keyof e typeof]]"
+  - "[[Programmazione/TypeScript/Pagine/const type parameters]]"
+title: as const
 ---
 
 # as const
@@ -79,7 +90,12 @@ Da un oggetto runtime vengono derivati tipi precisi per nomi e path.
 
 ## Collegamenti
 
-- [[Enums e Literal Types]]
-- [[satisfies operator]]
-- [[Keyof e typeof]]
-- [[const type parameters]]
+- [[Programmazione/TypeScript/Pagine/Enums e Literal Types|Enums e Literal Types]]
+- [[Programmazione/TypeScript/Pagine/satisfies operator|satisfies operator]]
+- [[Programmazione/TypeScript/Pagine/Keyof e typeof|Keyof e typeof]]
+- [[Programmazione/TypeScript/Pagine/const type parameters|const type parameters]]
+
+
+## Navigazione
+
+- [[Programmazione/TypeScript/Indice TypeScript|Indice TypeScript]]

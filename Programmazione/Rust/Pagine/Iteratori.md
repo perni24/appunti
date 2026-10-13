@@ -1,15 +1,19 @@
-﻿---
+---
 date: 2026-05-20
 area: Programmazione
 topic: Rust
 type: technical-note
-status: "non revisionato"
+status: non revisionato
 publish: true
 difficulty: base
-tags: [programmazione, rust, iteratori, collezioni]
+tags:
+  - programmazione
+  - rust
+  - iteratori
+  - collezioni
 aliases:
-  - "Iteratori Rust"
-  - "Iterator"
+  - Iteratori Rust
+  - Iterator
 prerequisites:
   - "[[Programmazione/Rust/Pagine/Vec]]"
   - "[[Programmazione/Rust/Pagine/Closure]]"
@@ -17,6 +21,7 @@ related:
   - "[[Programmazione/Rust/Pagine/Iterator API]]"
   - "[[Programmazione/Rust/Pagine/Vec]]"
   - "[[Programmazione/Rust/Pagine/Zero-cost abstractions]]"
+title: Iteratori
 ---
 
 # Iteratori
@@ -130,3 +135,8 @@ La pipeline legge una slice, produce nuove `String` normalizzate e scarta elemen
 - [[Programmazione/Rust/Pagine/HashMap e HashSet|HashMap e HashSet]]
 - [[Programmazione/Rust/Pagine/Zero-cost abstractions|Zero-cost abstractions]]
 
+
+
+## Navigazione
+
+- [[Programmazione/Rust/Indice Rust|Indice Rust]]

@@ -3,13 +3,20 @@ date: 2026-06-04
 area: Programmazione
 topic: React
 type: theory-note
-status: "non revisionato"
+status: non revisionato
 publish: true
-difficulty: intermediate
-tags: [react, state-management, frontend]
-aliases: [State Management Esterno, Zustand, Redux Toolkit]
+difficulty: intermedio
+tags:
+  - react
+  - state-management
+  - frontend
+aliases:
+  - State Management Esterno
+  - Zustand
+  - Redux Toolkit
 prerequisites: []
 related: []
+title: State Management Esterno
 ---
 
 # State Management Esterno
@@ -114,8 +121,8 @@ const useLayoutStore = create((set) => ({
 
 ## Collegamenti
 
-- [[Programmazione/React/Indice react|Indice React]]
-- [[Context API]]
-- [[State colocato]]
-- [[Data Fetching e Cache]]
-- [[useReducer]]
+- [[Programmazione/React/Indice React|Indice React]]
+- [[Programmazione/React/Pagine/Context API|Context API]]
+- [[Programmazione/React/Pagine/State colocato|State colocato]]
+- [[Programmazione/React/Pagine/Data Fetching e Cache|Data Fetching e Cache]]
+- [[Programmazione/React/Pagine/useReducer|useReducer]]

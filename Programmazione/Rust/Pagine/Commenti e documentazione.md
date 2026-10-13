@@ -1,9 +1,9 @@
-﻿---
+---
 date: 2026-05-20
 area: Programmazione
 topic: Rust
 type: technical-note
-status: "non revisionato"
+status: non revisionato
 publish: true
 difficulty: base
 tags:
@@ -13,6 +13,7 @@ tags:
 aliases: []
 prerequisites: []
 related: []
+title: Commenti e documentazione
 ---
 
 # Commenti e documentazione
@@ -97,3 +98,8 @@ cargo doc --open
 - [[Programmazione/Rust/Pagine/Doc test|Doc test]]
 - [[Programmazione/Rust/Pagine/Public API design|Public API design]]
 
+
+
+## Navigazione
+
+- [[Programmazione/Rust/Indice Rust|Indice Rust]]

@@ -3,18 +3,27 @@ date: 2026-07-25
 area: Stampante 3D
 topic: Marlin
 type: technical-note
-
 publish: true
 difficulty: avanzato
-tags: [marlin, pid, mpc, temperatura, thermal-runaway]
-aliases: [PID Marlin, MPC Marlin, Protezioni termiche Marlin]
+tags:
+  - marlin
+  - pid
+  - mpc
+  - temperatura
+  - thermal-runaway
+aliases:
+  - PID Marlin
+  - MPC Marlin
+  - Protezioni termiche Marlin
 prerequisites:
   - "[[Stampante 3D/Marlin/Pagine/Sensori di temperatura e limiti operativi]]"
   - "[[Stampante 3D/Marlin/Pagine/Alimentazione e protezioni hardware]]"
 related:
   - "[[Stampante 3D/Marlin/Pagine/Ventole e raffreddamento]]"
   - "[[Stampante 3D/Marlin/Pagine/Limiti di estrusione retrazione e cambio utensile]]"
-marlin-version: "2.1.2.8"
+marlin-version: 2.1.2.8
+title: Controllo PID, MPC e protezioni termiche
+status: non revisionato
 ---
 
 # Controllo PID, MPC e protezioni termiche
@@ -511,9 +520,9 @@ Non simulare un guasto staccando sensori o heater mentre sono alimentati. La ver
 
 ## Collegamenti
 
-- [[Stampante 3D/Marlin/Indice Marlin]]
-- [[Stampante 3D/Marlin/Pagine/Sensori di temperatura e limiti operativi]]
-- [[Stampante 3D/Marlin/Pagine/Alimentazione e protezioni hardware]]
-- [[Stampante 3D/Marlin/Pagine/Hotend estrusori e filamento]]
-- [[Stampante 3D/Marlin/Pagine/Limiti di estrusione retrazione e cambio utensile]]
-- [[Stampante 3D/Marlin/Pagine/Ventole e raffreddamento]]
+- [[Stampante 3D/Marlin/Indice Marlin|Indice Marlin]]
+- [[Stampante 3D/Marlin/Pagine/Sensori di temperatura e limiti operativi|Sensori di temperatura e limiti operativi]]
+- [[Stampante 3D/Marlin/Pagine/Alimentazione e protezioni hardware|Alimentazione e protezioni hardware]]
+- [[Stampante 3D/Marlin/Pagine/Hotend estrusori e filamento|Hotend estrusori e filamento]]
+- [[Stampante 3D/Marlin/Pagine/Limiti di estrusione retrazione e cambio utensile|Limiti di estrusione retrazione e cambio utensile]]
+- [[Stampante 3D/Marlin/Pagine/Ventole e raffreddamento|Ventole e raffreddamento]]

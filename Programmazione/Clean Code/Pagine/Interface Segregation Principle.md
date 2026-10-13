@@ -3,13 +3,23 @@ date: 2026-07-09
 area: Programmazione
 topic: Clean Code
 type: theory-note
-status: "non revisionato"
+status: non revisionato
 publish: true
 difficulty: intermedio
-tags: [clean-code, solid, interfacce]
-aliases: [Interface Segregation Principle, ISP]
-prerequisites: [SOLID]
-related: [Coesione e accoppiamento, Dependency Inversion Principle, Moduli piccoli]
+tags:
+  - clean-code
+  - solid
+  - interfacce
+aliases:
+  - Interface Segregation Principle
+  - ISP
+prerequisites:
+  - "[[Programmazione/Clean Code/Pagine/SOLID]]"
+related:
+  - "[[Programmazione/Clean Code/Pagine/Coesione e accoppiamento]]"
+  - "[[Programmazione/Clean Code/Pagine/Dependency Inversion Principle]]"
+  - "[[Programmazione/Clean Code/Pagine/Moduli piccoli]]"
+title: Interface Segregation Principle
 ---
 
 # Interface Segregation Principle
@@ -83,12 +93,12 @@ Un caso d'uso di lettura non dipende piu da operazioni di scrittura.
 
 ## Collegamenti
 
-- [[Programmazione/Clean Code/Indice Clean Code]]
-- [[SOLID]]
-- [[Dependency Inversion Principle]]
-- [[Coesione e accoppiamento]]
-- [[Moduli piccoli]]
-- [[Dipendenze esplicite]]
+- [[Programmazione/Clean Code/Indice Clean Code|Indice Clean Code]]
+- [[Programmazione/Clean Code/Pagine/SOLID|SOLID]]
+- [[Programmazione/Clean Code/Pagine/Dependency Inversion Principle|Dependency Inversion Principle]]
+- [[Programmazione/Clean Code/Pagine/Coesione e accoppiamento|Coesione e accoppiamento]]
+- [[Programmazione/Clean Code/Pagine/Moduli piccoli|Moduli piccoli]]
+- [[Programmazione/Clean Code/Pagine/Dipendenze esplicite|Dipendenze esplicite]]
 
 ## Fonti
 

@@ -3,13 +3,24 @@ date: 2026-07-06
 area: Programmazione
 topic: GitHub
 type: technical-note
-status: "non revisionato"
+status: non revisionato
 publish: true
 difficulty: intermedio
-tags: [github, status-checks, ci, pull-request]
-aliases: [Required status checks, Status checks GitHub]
-prerequisites: [Pull request, Branch protection rules]
-related: [Branch protection rules, GitHub Actions]
+tags:
+  - github
+  - status-checks
+  - ci
+  - pull-request
+aliases:
+  - Required status checks
+  - Status checks GitHub
+prerequisites:
+  - "[[Programmazione/GitHub/Pagine/Pull request]]"
+  - "[[Programmazione/GitHub/Pagine/Branch protection rules]]"
+related:
+  - "[[Programmazione/GitHub/Pagine/Branch protection rules]]"
+  - "[[Programmazione/GitHub/Pagine/GitHub Actions]]"
+title: Required status checks
 ---
 
 # Required status checks
@@ -111,10 +122,10 @@ Se `typecheck` fallisce, GitHub blocca il merge finche la pull request non viene
 
 ## Collegamenti
 
-- [[Programmazione/GitHub/Indice GitHub]]
-- [[Pull request]]
-- [[Branch protection rules]]
-- [[Repository rulesets]]
+- [[Programmazione/GitHub/Indice GitHub|Indice GitHub]]
+- [[Programmazione/GitHub/Pagine/Pull request|Pull request]]
+- [[Programmazione/GitHub/Pagine/Branch protection rules|Branch protection rules]]
+- [[Programmazione/GitHub/Pagine/Repository rulesets|Repository rulesets]]
 
 ## Fonti
 

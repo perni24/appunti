@@ -3,13 +3,24 @@ date: 2026-07-06
 area: Programmazione
 topic: GitHub
 type: technical-note
-status: "non revisionato"
+status: non revisionato
 publish: true
 difficulty: intermedio
-tags: [github, organizzazioni, team, permessi]
-aliases: [Organizzazioni e team GitHub, GitHub Organizations, GitHub Teams]
-prerequisites: [Accessi ruoli e permessi GitHub]
-related: [Accessi ruoli e permessi GitHub, CODEOWNERS]
+tags:
+  - github
+  - organizzazioni
+  - team
+  - permessi
+aliases:
+  - Organizzazioni e team GitHub
+  - GitHub Organizations
+  - GitHub Teams
+prerequisites:
+  - "[[Programmazione/GitHub/Pagine/Accessi ruoli e permessi GitHub]]"
+related:
+  - "[[Programmazione/GitHub/Pagine/Accessi ruoli e permessi GitHub]]"
+  - "[[Programmazione/GitHub/Pagine/CODEOWNERS]]"
+title: Organizzazioni e team GitHub
 ---
 
 # Organizzazioni e team GitHub
@@ -105,11 +116,11 @@ Gli accessi vengono gestiti aggiungendo o rimuovendo persone dai team, non modif
 
 ## Collegamenti
 
-- [[Programmazione/GitHub/Indice GitHub]]
-- [[Accessi ruoli e permessi GitHub]]
-- [[CODEOWNERS]]
-- [[Repository settings]]
-- [[Monorepo su GitHub]]
+- [[Programmazione/GitHub/Indice GitHub|Indice GitHub]]
+- [[Programmazione/GitHub/Pagine/Accessi ruoli e permessi GitHub|Accessi ruoli e permessi GitHub]]
+- [[Programmazione/GitHub/Pagine/CODEOWNERS|CODEOWNERS]]
+- [[Programmazione/GitHub/Pagine/Repository settings|Repository settings]]
+- [[Programmazione/GitHub/Pagine/Monorepo su GitHub|Monorepo su GitHub]]
 
 ## Fonti
 

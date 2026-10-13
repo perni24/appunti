@@ -1,15 +1,19 @@
-﻿---
+---
 date: 2026-05-20
 area: Programmazione
 topic: Rust
 type: technical-note
-status: "non revisionato"
+status: non revisionato
 publish: true
 difficulty: base
-tags: [programmazione, rust, lifetimes, borrowing]
+tags:
+  - programmazione
+  - rust
+  - lifetimes
+  - borrowing
 aliases:
-  - "Lifetimes impliciti"
-  - "Lifetime elision base"
+  - Lifetimes impliciti
+  - Lifetime elision base
 prerequisites:
   - "[[Programmazione/Rust/Pagine/References e Borrowing]]"
   - "[[Programmazione/Rust/Pagine/Borrow checker]]"
@@ -17,6 +21,7 @@ related:
   - "[[Programmazione/Rust/Pagine/Lifetime annotations]]"
   - "[[Programmazione/Rust/Pagine/Lifetime elision]]"
   - "[[Programmazione/Rust/Pagine/Lifetimes nelle struct]]"
+title: Lifetime impliciti
 ---
 
 # Lifetime impliciti
@@ -133,3 +138,8 @@ fn main() {
 - [[Programmazione/Rust/Pagine/Lifetime elision|Lifetime elision]]
 - [[Programmazione/Rust/Pagine/Lifetimes nelle struct|Lifetimes nelle struct]]
 
+
+
+## Navigazione
+
+- [[Programmazione/Rust/Indice Rust|Indice Rust]]

@@ -3,13 +3,24 @@ date: 2026-07-09
 area: Programmazione
 topic: Clean Code
 type: theory-note
-status: "non revisionato"
+status: non revisionato
 publish: true
 difficulty: intermedio
-tags: [clean-code, logging, osservabilita]
-aliases: [Logging leggibile, Readable logging]
-prerequisites: [Side effects controllati, Errori recuperabili e non recuperabili]
-related: [Messaggi di errore utili, Codice pronto al deploy, Configurazione applicativa]
+tags:
+  - clean-code
+  - logging
+  - osservabilita
+aliases:
+  - Logging leggibile
+  - Readable logging
+prerequisites:
+  - "[[Programmazione/Clean Code/Pagine/Side effects controllati]]"
+  - "[[Programmazione/Clean Code/Pagine/Errori recuperabili e non recuperabili]]"
+related:
+  - "[[Programmazione/Clean Code/Pagine/Messaggi di errore utili]]"
+  - "[[Programmazione/Clean Code/Pagine/Codice pronto al deploy]]"
+  - "[[Programmazione/Clean Code/Pagine/Configurazione applicativa]]"
+title: Logging leggibile
 ---
 
 # Logging leggibile
@@ -89,11 +100,11 @@ Il secondo log fornisce contesto diagnostico.
 
 ## Collegamenti
 
-- [[Programmazione/Clean Code/Indice Clean Code]]
-- [[Side effects controllati]]
-- [[Errori recuperabili e non recuperabili]]
-- [[Messaggi di errore utili]]
-- [[Dipendenze esplicite]]
+- [[Programmazione/Clean Code/Indice Clean Code|Indice Clean Code]]
+- [[Programmazione/Clean Code/Pagine/Side effects controllati|Side effects controllati]]
+- [[Programmazione/Clean Code/Pagine/Errori recuperabili e non recuperabili|Errori recuperabili e non recuperabili]]
+- [[Programmazione/Clean Code/Pagine/Messaggi di errore utili|Messaggi di errore utili]]
+- [[Programmazione/Clean Code/Pagine/Dipendenze esplicite|Dipendenze esplicite]]
 
 ## Fonti
 

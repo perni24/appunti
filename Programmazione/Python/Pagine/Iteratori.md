@@ -3,13 +3,17 @@ date: 2026-06-03
 area: Programmazione
 topic: Python
 type: technical-note
-status: "non revisionato"
+status: non revisionato
 publish: true
-difficulty: intermediate
-tags: [python, programming]
-aliases: [Iteratori]
+difficulty: intermedio
+tags:
+  - python
+  - programming
+aliases:
+  - Iteratori
 prerequisites: []
 related: []
+title: Iteratori in Python
 ---
 
 # Iteratori in Python
@@ -162,8 +166,8 @@ with open("data.txt", encoding="utf-8") as file:
 
 ## Collegamenti
 
-- [[Programmazione/Python/Indice python|Indice Python]]
-- [[Generatori]]
+- [[Programmazione/Python/Indice Python|Indice Python]]
+- [[Programmazione/Python/Pagine/Generatori|Generatori]]
 - [[Programmazione/Python/Pagine/Cicli|Cicli]]
-- [[Comprehensions]]
-- [[Data model]]
+- [[Programmazione/Python/Pagine/Comprehensions|Comprehensions]]
+- [[Programmazione/Python/Pagine/Data model|Data model]]

@@ -3,13 +3,19 @@ date: 2026-06-03
 area: Programmazione
 topic: Python
 type: technical-note
-status: "non revisionato"
+status: non revisionato
 publish: true
-difficulty: beginner
-tags: [python, programming, functions]
-aliases: [Funzioni Lambda, Lambda]
+difficulty: base
+tags:
+  - python
+  - programming
+  - functions
+aliases:
+  - Funzioni Lambda
+  - Lambda
 prerequisites: []
 related: []
+title: Funzioni Lambda in Python
 ---
 
 # Funzioni Lambda in Python
@@ -130,8 +136,8 @@ La lambda e appropriata perche la logica e breve e locale al punto d'uso.
 
 ## Collegamenti
 
-- [[Programmazione/Python/Indice python|Indice Python]]
+- [[Programmazione/Python/Indice Python|Indice Python]]
 - [[Programmazione/Python/Pagine/Funzioni|Funzioni]]
-- [[Higher-order Functions]]
-- [[Comprehensions]]
-- [[Decoratori]]
+- [[Programmazione/Python/Pagine/Higher-order Functions|Higher-order Functions]]
+- [[Programmazione/Python/Pagine/Comprehensions|Comprehensions]]
+- [[Programmazione/Python/Pagine/Decoratori|Decoratori]]

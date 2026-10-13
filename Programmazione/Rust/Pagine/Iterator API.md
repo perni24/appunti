@@ -3,7 +3,7 @@ date: 2026-05-22
 area: Programmazione
 topic: Rust
 type: technical-note
-status: "non revisionato"
+status: non revisionato
 publish: true
 difficulty: intermedio
 tags:
@@ -11,8 +11,8 @@ tags:
   - rust
   - standard-library
 aliases:
-  - "Iterator API"
-  - "API Iterator Rust"
+  - Iterator API
+  - API Iterator Rust
 prerequisites:
   - "[[Programmazione/Rust/Pagine/Iteratori]]"
   - "[[Programmazione/Rust/Pagine/Closure]]"
@@ -21,6 +21,7 @@ related:
   - "[[Programmazione/Rust/Pagine/Vec]]"
   - "[[Programmazione/Rust/Pagine/Zero-cost abstractions]]"
   - "[[Programmazione/Rust/Pagine/Rayon e parallel iterators]]"
+title: Iterator API
 ---
 
 # Iterator API
@@ -130,3 +131,8 @@ La pipeline normalizza il testo, poi usa metodi di `Vec` per ordinare e deduplic
 - [[Programmazione/Rust/Pagine/Associated types|Associated types]]
 - [[Programmazione/Rust/Pagine/Zero-cost abstractions|Zero-cost abstractions]]
 - [[Programmazione/Rust/Pagine/Rayon e parallel iterators|Rayon e parallel iterators]]
+
+
+## Navigazione
+
+- [[Programmazione/Rust/Indice Rust|Indice Rust]]

@@ -3,7 +3,7 @@ date: 2026-05-22
 area: Programmazione
 topic: Rust
 type: technical-note
-status: "non revisionato"
+status: non revisionato
 publish: true
 difficulty: intermedio
 tags:
@@ -11,9 +11,9 @@ tags:
   - rust
   - lifetimes
 aliases:
-  - "HRTB"
-  - "Higher-Ranked Trait Bounds"
-  - "for<'a>"
+  - HRTB
+  - Higher-Ranked Trait Bounds
+  - for<'a>
 prerequisites:
   - "[[Programmazione/Rust/Pagine/Lifetime annotations]]"
   - "[[Programmazione/Rust/Pagine/Trait bounds]]"
@@ -22,6 +22,7 @@ related:
   - "[[Programmazione/Rust/Pagine/Generic Associated Types (GAT)]]"
   - "[[Programmazione/Rust/Pagine/Lifetimes avanzati]]"
   - "[[Programmazione/Rust/Pagine/Closure]]"
+title: Higher-Ranked Trait Bounds (HRTB)
 ---
 
 # Higher-Ranked Trait Bounds (HRTB)
@@ -143,3 +144,8 @@ fn main() {
 - [[Programmazione/Rust/Pagine/Lifetimes avanzati|Lifetimes avanzati]]
 - [[Programmazione/Rust/Pagine/Generic Associated Types (GAT)|Generic Associated Types (GAT)]]
 - [[Programmazione/Rust/Pagine/Closure|Closure]]
+
+
+## Navigazione
+
+- [[Programmazione/Rust/Indice Rust|Indice Rust]]

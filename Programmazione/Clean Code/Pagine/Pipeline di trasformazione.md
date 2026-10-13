@@ -3,13 +3,24 @@ date: 2026-07-09
 area: Programmazione
 topic: Clean Code
 type: theory-note
-status: "non revisionato"
+status: non revisionato
 publish: true
 difficulty: intermedio
-tags: [clean-code, pipeline, trasformazioni]
-aliases: [Pipeline di trasformazione, Transformation pipeline]
-prerequisites: [Composizione di funzioni, Trasformazioni dichiarative]
-related: [Funzioni pure e impure, Side effects controllati, Codice esplicito vs codice implicito]
+tags:
+  - clean-code
+  - pipeline
+  - trasformazioni
+aliases:
+  - Pipeline di trasformazione
+  - Transformation pipeline
+prerequisites:
+  - "[[Programmazione/Clean Code/Pagine/Composizione di funzioni]]"
+  - "[[Programmazione/Clean Code/Pagine/Trasformazioni dichiarative]]"
+related:
+  - "[[Programmazione/Clean Code/Pagine/Funzioni pure e impure]]"
+  - "[[Programmazione/Clean Code/Pagine/Side effects controllati]]"
+  - "[[Programmazione/Clean Code/Pagine/Codice esplicito vs codice implicito]]"
+title: Pipeline di trasformazione
 ---
 
 # Pipeline di trasformazione
@@ -81,12 +92,12 @@ La funzione mostra il flusso principale. I dettagli vivono nei passaggi nominati
 
 ## Collegamenti
 
-- [[Programmazione/Clean Code/Indice Clean Code]]
-- [[Composizione di funzioni]]
-- [[Trasformazioni dichiarative]]
-- [[Funzioni pure e impure]]
-- [[Side effects controllati]]
-- [[Codice esplicito vs codice implicito]]
+- [[Programmazione/Clean Code/Indice Clean Code|Indice Clean Code]]
+- [[Programmazione/Clean Code/Pagine/Composizione di funzioni|Composizione di funzioni]]
+- [[Programmazione/Clean Code/Pagine/Trasformazioni dichiarative|Trasformazioni dichiarative]]
+- [[Programmazione/Clean Code/Pagine/Funzioni pure e impure|Funzioni pure e impure]]
+- [[Programmazione/Clean Code/Pagine/Side effects controllati|Side effects controllati]]
+- [[Programmazione/Clean Code/Pagine/Codice esplicito vs codice implicito|Codice esplicito vs codice implicito]]
 
 ## Fonti
 

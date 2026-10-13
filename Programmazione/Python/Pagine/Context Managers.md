@@ -3,13 +3,17 @@ date: 2026-06-03
 area: Programmazione
 topic: Python
 type: technical-note
-status: "non revisionato"
+status: non revisionato
 publish: true
-difficulty: intermediate
-tags: [python, programming]
-aliases: [Context Managers]
+difficulty: intermedio
+tags:
+  - python
+  - programming
+aliases:
+  - Context Managers
 prerequisites: []
 related: []
+title: Context Managers in Python
 ---
 
 # Context Managers in Python
@@ -150,7 +154,7 @@ with open("input.txt", encoding="utf-8") as source, open("output.txt", "w", enco
 
 ## Collegamenti
 
-- [[Programmazione/Python/Indice python|Indice Python]]
-- [[Gestione File]]
+- [[Programmazione/Python/Indice Python|Indice Python]]
+- [[Programmazione/Python/Pagine/Gestione File|Gestione File]]
 - [[Programmazione/Python/Pagine/Error Handling|Error Handling]]
-- [[Memory Management]]
+- [[Programmazione/Python/Pagine/Memory Management|Memory Management]]

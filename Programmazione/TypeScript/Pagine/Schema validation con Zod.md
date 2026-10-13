@@ -3,13 +3,24 @@ date: 2026-06-22
 area: Programmazione
 topic: TypeScript
 type: technical-note
-status: "non revisionato"
+status: non revisionato
 publish: true
 difficulty: intermedio
-tags: [typescript, zod, schema-validation, runtime-validation]
-aliases: [Zod, Validazione con Zod]
-prerequisites: [Validazione runtime e tipi statici, Strict mode]
-related: [Parsing sicuro di input esterni, API contract]
+tags:
+  - typescript
+  - zod
+  - schema-validation
+  - runtime-validation
+aliases:
+  - Zod
+  - Validazione con Zod
+prerequisites:
+  - "[[Programmazione/TypeScript/Pagine/Validazione runtime e tipi statici]]"
+  - "[[Programmazione/TypeScript/Pagine/Strict mode]]"
+related:
+  - "[[Programmazione/TypeScript/Pagine/Parsing sicuro di input esterni]]"
+  - "[[Programmazione/TypeScript/Pagine/API contract]]"
+title: Schema validation con Zod
 ---
 
 # Schema validation con Zod
@@ -90,7 +101,12 @@ function parseCreateUser(input: unknown) {
 
 ## Collegamenti
 
-- [[Validazione runtime e tipi statici]]
-- [[Parsing sicuro di input esterni]]
-- [[API contract]]
+- [[Programmazione/TypeScript/Pagine/Validazione runtime e tipi statici|Validazione runtime e tipi statici]]
+- [[Programmazione/TypeScript/Pagine/Parsing sicuro di input esterni|Parsing sicuro di input esterni]]
+- [[Programmazione/TypeScript/Pagine/API contract|API contract]]
 - https://zod.dev/
+
+
+## Navigazione
+
+- [[Programmazione/TypeScript/Indice TypeScript|Indice TypeScript]]

@@ -3,13 +3,20 @@ date: 2026-06-04
 area: Programmazione
 topic: React
 type: theory-note
-status: "non revisionato"
+status: non revisionato
 publish: true
-difficulty: advanced
-tags: [react, server-components, rsc]
-aliases: [Server Components, React Server Components, Server Actions]
+difficulty: avanzato
+tags:
+  - react
+  - server-components
+  - rsc
+aliases:
+  - Server Components
+  - React Server Components
+  - Server Actions
 prerequisites: []
 related: []
+title: Server Components
 ---
 
 # Server Components
@@ -114,11 +121,11 @@ La lista puo essere preparata sul server; solo le parti interattive diventano cl
 
 ## Collegamenti
 
-- [[Programmazione/React/Indice react|Indice React]]
-- [[SSR e SSG]]
-- [[Framework Next.js e Remix]]
-- [[Suspense e Lazy Loading]]
-- [[Actions e form actions]]
+- [[Programmazione/React/Indice React|Indice React]]
+- [[Programmazione/React/Pagine/SSR e SSG|SSR e SSG]]
+- [[Programmazione/React/Pagine/Framework Next.js e Remix|Framework Next.js e Remix]]
+- [[Programmazione/React/Pagine/Suspense e Lazy Loading|Suspense e Lazy Loading]]
+- [[Programmazione/React/Pagine/Actions e form actions|Actions e form actions]]
 
 ## Fonti
 

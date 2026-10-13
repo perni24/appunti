@@ -3,7 +3,7 @@ date: 2026-05-26
 area: Programmazione
 topic: Rust
 type: technical-note
-status: "non revisionato"
+status: non revisionato
 publish: true
 difficulty: avanzato
 tags:
@@ -11,8 +11,8 @@ tags:
   - rust
   - macros
 aliases:
-  - "Proc macros"
-  - "Macro procedurali"
+  - Proc macros
+  - Macro procedurali
 prerequisites:
   - "[[Programmazione/Rust/Pagine/Macro dichiarative]]"
   - "[[Programmazione/Rust/Pagine/Cargo.toml]]"
@@ -21,6 +21,7 @@ related:
   - "[[Programmazione/Rust/Pagine/Derive macros]]"
   - "[[Programmazione/Rust/Pagine/Attribute macros]]"
   - "[[Programmazione/Rust/Pagine/Function-like macros]]"
+title: Procedural macros
 ---
 
 # Procedural macros
@@ -141,3 +142,8 @@ La macro legge il nome del tipo e genera un metodo associato.
 - [[Programmazione/Rust/Pagine/Function-like macros|Function-like macros]]
 - [[Programmazione/Rust/Pagine/Hygiene|Hygiene]]
 - [[Programmazione/Rust/Pagine/Cargo.toml|Cargo.toml]]
+
+
+## Navigazione
+
+- [[Programmazione/Rust/Indice Rust|Indice Rust]]

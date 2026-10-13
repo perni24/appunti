@@ -3,7 +3,7 @@ date: 2026-05-22
 area: Programmazione
 topic: Rust
 type: technical-note
-status: "non revisionato"
+status: non revisionato
 publish: true
 difficulty: intermedio
 tags:
@@ -11,8 +11,8 @@ tags:
   - rust
   - smart-pointers-e-interior-mutability
 aliases:
-  - "Deref"
-  - "Deref coercion"
+  - Deref
+  - Deref coercion
 prerequisites:
   - "[[Programmazione/Rust/Pagine/Traits]]"
   - "[[Programmazione/Rust/Pagine/Box T]]"
@@ -21,6 +21,7 @@ related:
   - "[[Programmazione/Rust/Pagine/Drop Trait]]"
   - "[[Programmazione/Rust/Pagine/Rc T e Arc T]]"
   - "[[Programmazione/Rust/Pagine/AsRef AsMut e Borrow]]"
+title: Deref Trait
 ---
 
 # Deref Trait
@@ -144,3 +145,8 @@ Il wrapper puo essere usato come `&str`, ma mantiene una invariante in costruzio
 - [[Programmazione/Rust/Pagine/Rc T e Arc T|Rc T e Arc T]]
 - [[Programmazione/Rust/Pagine/AsRef AsMut e Borrow|AsRef AsMut e Borrow]]
 - [[Programmazione/Rust/Pagine/Traits|Traits]]
+
+
+## Navigazione
+
+- [[Programmazione/Rust/Indice Rust|Indice Rust]]

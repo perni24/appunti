@@ -3,13 +3,23 @@ date: 2026-06-22
 area: Programmazione
 topic: TypeScript
 type: technical-note
-status: "non revisionato"
+status: non revisionato
 publish: true
 difficulty: intermedio
-tags: [typescript, nextjs, react, fullstack]
-aliases: [Next.js con TypeScript]
-prerequisites: [TypeScript con React, TypeScript con Node.js]
-related: [API tipizzate, Validazione runtime e tipi statici]
+tags:
+  - typescript
+  - nextjs
+  - react
+  - fullstack
+aliases:
+  - Next.js con TypeScript
+prerequisites:
+  - "[[Programmazione/TypeScript/Pagine/TypeScript con React]]"
+  - "[[Programmazione/TypeScript/Pagine/TypeScript con Node.js]]"
+related:
+  - "[[Programmazione/TypeScript/Pagine/API tipizzate]]"
+  - "[[Programmazione/TypeScript/Pagine/Validazione runtime e tipi statici]]"
+title: TypeScript con Next.js
 ---
 
 # TypeScript con Next.js
@@ -99,7 +109,12 @@ Il dato e tipizzato, ma `getUser` deve comunque gestire errori reali.
 
 ## Collegamenti
 
-- [[TypeScript con React]]
-- [[TypeScript con Node.js]]
-- [[API tipizzate]]
-- [[Schema validation con Zod]]
+- [[Programmazione/TypeScript/Pagine/TypeScript con React|TypeScript con React]]
+- [[Programmazione/TypeScript/Pagine/TypeScript con Node.js|TypeScript con Node.js]]
+- [[Programmazione/TypeScript/Pagine/API tipizzate|API tipizzate]]
+- [[Programmazione/TypeScript/Pagine/Schema validation con Zod|Schema validation con Zod]]
+
+
+## Navigazione
+
+- [[Programmazione/TypeScript/Indice TypeScript|Indice TypeScript]]

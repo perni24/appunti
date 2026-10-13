@@ -3,7 +3,7 @@ date: 2026-05-28
 area: Programmazione
 topic: Rust
 type: technical-note
-status: "non revisionato"
+status: non revisionato
 publish: true
 difficulty: intermedio
 tags:
@@ -11,8 +11,8 @@ tags:
   - rust
   - testing-qualita-e-sicurezza
 aliases:
-  - "rustdoc"
-  - "cargo doc"
+  - rustdoc
+  - cargo doc
 prerequisites:
   - "[[Programmazione/Rust/Pagine/Doc test]]"
   - "[[Programmazione/Rust/Pagine/Public API design]]"
@@ -20,6 +20,7 @@ related:
   - "[[Programmazione/Rust/Pagine/Documentazione delle crate]]"
   - "[[Programmazione/Rust/Pagine/rustfmt]]"
   - "[[Programmazione/Rust/Pagine/Clippy]]"
+title: rustdoc
 ---
 
 # rustdoc
@@ -141,9 +142,9 @@ Questo esempio e leggibile per l'utente e testabile da `cargo test`.
 
 ## Collegamenti
 
-- [[Programmazione/Rust/Indice rust|Indice Rust]]
-- [[Programmazione/Rust/Pagine/Doc test]]
-- [[Programmazione/Rust/Pagine/Documentazione delle crate]]
-- [[Programmazione/Rust/Pagine/Public API design]]
-- [[Programmazione/Rust/Pagine/rustfmt]]
-- [[Programmazione/Rust/Pagine/Clippy]]
+- [[Programmazione/Rust/Indice Rust|Indice Rust]]
+- [[Programmazione/Rust/Pagine/Doc test|Doc test]]
+- [[Programmazione/Rust/Pagine/Documentazione delle crate|Documentazione delle crate]]
+- [[Programmazione/Rust/Pagine/Public API design|Public API design]]
+- [[Programmazione/Rust/Pagine/rustfmt|rustfmt]]
+- [[Programmazione/Rust/Pagine/Clippy|Clippy]]

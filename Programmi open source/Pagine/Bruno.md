@@ -3,12 +3,19 @@ date: 2026-07-14
 area: Programmi open source
 topic: Client API Git-friendly
 type: technical-note
-status: "non revisionato"
+status: non revisionato
 difficulty: base
-tags: [open-source, api, http-client, testing]
-aliases: [Bruno]
+tags:
+  - open-source
+  - api
+  - http-client
+  - testing
+aliases:
+  - Bruno
 prerequisites: []
 related: []
+title: Bruno
+publish: true
 ---
 
 # Bruno
@@ -31,7 +38,7 @@ E utile quando vuoi documentare, provare e condividere richieste API senza dipen
 
 Bruno organizza le richieste in collection e le salva su filesystem. Le modifiche diventano quindi normali modifiche a file, controllabili con Git, revisionabili in pull request e sincronizzabili con il repository del progetto.
 
-## Esempio d'uso
+## Esempio pratico
 
 ```text
 1. Crea una collection per il progetto.
@@ -41,7 +48,7 @@ Bruno organizza le richieste in collection e le salva su filesystem. Le modifich
 5. Versiona i file della collection insieme al progetto.
 ```
 
-## Punti forti
+## Funzionalita
 
 - **Git-friendly**: le collection sono file locali.
 - **Open source**: il formato non dipende da una piattaforma chiusa.
@@ -64,4 +71,4 @@ Bruno organizza le richieste in collection e le salva su filesystem. Le modifich
 
 ## Collegamenti
 
-- [[Programmi open source/Indice Programmi Open Source]]
+- [[Programmi open source/Indice Programmi Open Source|Catalogo open source]]

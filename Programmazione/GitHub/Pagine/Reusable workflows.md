@@ -3,13 +3,26 @@ date: 2026-07-07
 area: Programmazione
 topic: GitHub
 type: technical-note
-status: "non revisionato"
+status: non revisionato
 publish: true
 difficulty: avanzato
-tags: [github, github-actions, reusable-workflows, ci-cd]
-aliases: [Reusable workflows, Workflow riutilizzabili GitHub Actions]
-prerequisites: [GitHub Actions, Workflow GitHub Actions, Sintassi YAML GitHub Actions]
-related: [Composite actions, Workflow GitHub Actions, Permissions GitHub Actions]
+tags:
+  - github
+  - github-actions
+  - reusable-workflows
+  - ci-cd
+aliases:
+  - Reusable workflows
+  - Workflow riutilizzabili GitHub Actions
+prerequisites:
+  - "[[Programmazione/GitHub/Pagine/GitHub Actions]]"
+  - "[[Programmazione/GitHub/Pagine/Workflow GitHub Actions]]"
+  - "[[Programmazione/GitHub/Pagine/Sintassi YAML GitHub Actions]]"
+related:
+  - "[[Programmazione/GitHub/Pagine/Composite actions]]"
+  - "[[Programmazione/GitHub/Pagine/Workflow GitHub Actions]]"
+  - "[[Programmazione/GitHub/Pagine/Permissions GitHub Actions]]"
+title: Reusable workflows
 ---
 
 # Reusable workflows
@@ -134,12 +147,12 @@ Questo rende piu semplice aggiornare versioni, cache e policy di sicurezza.
 
 ## Collegamenti
 
-- [[Programmazione/GitHub/Indice GitHub]]
-- [[GitHub Actions]]
-- [[Workflow GitHub Actions]]
-- [[Composite actions]]
-- [[Permissions GitHub Actions]]
-- [[Sicurezza dei token GitHub]]
+- [[Programmazione/GitHub/Indice GitHub|Indice GitHub]]
+- [[Programmazione/GitHub/Pagine/GitHub Actions|GitHub Actions]]
+- [[Programmazione/GitHub/Pagine/Workflow GitHub Actions|Workflow GitHub Actions]]
+- [[Programmazione/GitHub/Pagine/Composite actions|Composite actions]]
+- [[Programmazione/GitHub/Pagine/Permissions GitHub Actions|Permissions GitHub Actions]]
+- [[Programmazione/GitHub/Pagine/Sicurezza dei token GitHub|Sicurezza dei token GitHub]]
 
 ## Fonti
 

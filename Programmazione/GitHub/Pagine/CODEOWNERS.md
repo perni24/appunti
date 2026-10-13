@@ -3,13 +3,24 @@ date: 2026-07-06
 area: Programmazione
 topic: GitHub
 type: technical-note
-status: "non revisionato"
+status: non revisionato
 publish: true
 difficulty: intermedio
-tags: [github, codeowners, review, permessi]
-aliases: [CODEOWNERS, Code owners]
-prerequisites: [Pull request, Review code su GitHub]
-related: [Pull request, Review code su GitHub]
+tags:
+  - github
+  - codeowners
+  - review
+  - permessi
+aliases:
+  - CODEOWNERS
+  - Code owners
+prerequisites:
+  - "[[Programmazione/GitHub/Pagine/Pull request]]"
+  - "[[Programmazione/GitHub/Pagine/Review code su GitHub]]"
+related:
+  - "[[Programmazione/GitHub/Pagine/Pull request]]"
+  - "[[Programmazione/GitHub/Pagine/Review code su GitHub]]"
+title: CODEOWNERS
 ---
 
 # CODEOWNERS
@@ -117,10 +128,10 @@ GitHub richiede automaticamente review a `@example-org/devops-team` sulle PR non
 
 ## Collegamenti
 
-- [[Programmazione/GitHub/Indice GitHub]]
-- [[Pull request]]
-- [[Review code su GitHub]]
-- [[Repository GitHub]]
+- [[Programmazione/GitHub/Indice GitHub|Indice GitHub]]
+- [[Programmazione/GitHub/Pagine/Pull request|Pull request]]
+- [[Programmazione/GitHub/Pagine/Review code su GitHub|Review code su GitHub]]
+- [[Programmazione/GitHub/Pagine/Repository GitHub|Repository GitHub]]
 
 ## Fonti
 

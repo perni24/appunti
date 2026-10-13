@@ -3,13 +3,27 @@ date: 2026-07-07
 area: Programmazione
 topic: GitHub
 type: technical-note
-status: "non revisionato"
+status: non revisionato
 publish: true
 difficulty: intermedio
-tags: [github, release, versioning, manutenzione]
-aliases: [Gestione release su GitHub, Release GitHub]
-prerequisites: [Repository GitHub, Tag, versioni e changelog]
-related: [Release automation GitHub Actions, Tag, versioni e changelog, GitHub REST API]
+tags:
+  - github
+  - release
+  - versioning
+  - manutenzione
+aliases:
+  - Gestione release su GitHub
+  - Release GitHub
+prerequisites:
+  - "[[Programmazione/GitHub/Pagine/Repository GitHub]]"
+  - "[[Programmazione/GitHub/Pagine/Tag, versioni e changelog]]"
+  - "[[Programmazione/GitHub/Pagine/Tag, versioni e changelog]]"
+related:
+  - "[[Programmazione/GitHub/Pagine/Release automation GitHub Actions]]"
+  - "[[Programmazione/GitHub/Pagine/Tag, versioni e changelog]]"
+  - "[[Programmazione/GitHub/Pagine/Tag, versioni e changelog]]"
+  - "[[Programmazione/GitHub/Pagine/GitHub REST API]]"
+title: Gestione release su GitHub
 ---
 
 # Gestione release su GitHub
@@ -110,12 +124,12 @@ Struttura release:
 
 ## Collegamenti
 
-- [[Programmazione/GitHub/Indice GitHub]]
-- [[Tag, versioni e changelog]]
-- [[Release automation GitHub Actions]]
-- [[GitHub REST API]]
-- [[GitHub CLI]]
-- [[Protected tags]]
+- [[Programmazione/GitHub/Indice GitHub|Indice GitHub]]
+- [[Programmazione/GitHub/Pagine/Tag, versioni e changelog|Tag, versioni e changelog]]
+- [[Programmazione/GitHub/Pagine/Release automation GitHub Actions|Release automation GitHub Actions]]
+- [[Programmazione/GitHub/Pagine/GitHub REST API|GitHub REST API]]
+- [[Programmazione/GitHub/Pagine/GitHub CLI|GitHub CLI]]
+- [[Programmazione/GitHub/Pagine/Protected tags|Protected tags]]
 
 ## Fonti
 

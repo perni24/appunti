@@ -3,7 +3,7 @@ date: 2026-05-28
 area: Programmazione
 topic: Rust
 type: technical-note
-status: "non revisionato"
+status: non revisionato
 publish: true
 difficulty: base
 tags:
@@ -11,8 +11,8 @@ tags:
   - rust
   - testing-qualita-e-sicurezza
 aliases:
-  - "Clippy"
-  - "cargo clippy"
+  - Clippy
+  - cargo clippy
 prerequisites:
   - "[[Programmazione/Rust/Pagine/Cargo]]"
   - "[[Programmazione/Rust/Pagine/rustfmt]]"
@@ -20,6 +20,7 @@ related:
   - "[[Programmazione/Rust/Pagine/cargo-nextest]]"
   - "[[Programmazione/Rust/Pagine/cargo deny]]"
   - "[[Programmazione/Rust/Pagine/Public API design]]"
+title: Clippy
 ---
 
 # Clippy
@@ -131,9 +132,9 @@ Questo ordine evita di discutere stile e lint durante test falliti per problemi 
 
 ## Collegamenti
 
-- [[Programmazione/Rust/Indice rust|Indice Rust]]
-- [[Programmazione/Rust/Pagine/rustfmt]]
-- [[Programmazione/Rust/Pagine/cargo-nextest]]
-- [[Programmazione/Rust/Pagine/cargo deny]]
-- [[Programmazione/Rust/Pagine/Public API design]]
-- [[Programmazione/Rust/Pagine/Cargo]]
+- [[Programmazione/Rust/Indice Rust|Indice Rust]]
+- [[Programmazione/Rust/Pagine/rustfmt|rustfmt]]
+- [[Programmazione/Rust/Pagine/cargo-nextest|cargo-nextest]]
+- [[Programmazione/Rust/Pagine/cargo deny|cargo deny]]
+- [[Programmazione/Rust/Pagine/Public API design|Public API design]]
+- [[Programmazione/Rust/Pagine/Cargo|Cargo]]

@@ -3,13 +3,23 @@ date: 2026-07-09
 area: Programmazione
 topic: Clean Code
 type: theory-note
-status: "non revisionato"
+status: non revisionato
 publish: true
 difficulty: intermedio
-tags: [clean-code, validazione, confini]
-aliases: [Validazione ai confini, Boundary validation]
-prerequisites: [Contratti impliciti ed espliciti]
-related: [Messaggi di errore utili, Modellazione del dominio, Guard clauses]
+tags:
+  - clean-code
+  - validazione
+  - confini
+aliases:
+  - Validazione ai confini
+  - Boundary validation
+prerequisites:
+  - "[[Programmazione/Clean Code/Pagine/Contratti impliciti ed espliciti]]"
+related:
+  - "[[Programmazione/Clean Code/Pagine/Messaggi di errore utili]]"
+  - "[[Programmazione/Clean Code/Pagine/Modellazione del dominio]]"
+  - "[[Programmazione/Clean Code/Pagine/Guard clauses]]"
+title: Validazione ai confini
 ---
 
 # Validazione ai confini
@@ -76,12 +86,12 @@ Il controller valida e traduce. La logica applicativa riceve un comando gia coer
 
 ## Collegamenti
 
-- [[Programmazione/Clean Code/Indice Clean Code]]
-- [[Contratti impliciti ed espliciti]]
-- [[Messaggi di errore utili]]
-- [[Modellazione del dominio]]
-- [[Guard clauses]]
-- [[Modellare stati impossibili]]
+- [[Programmazione/Clean Code/Indice Clean Code|Indice Clean Code]]
+- [[Programmazione/Clean Code/Pagine/Contratti impliciti ed espliciti|Contratti impliciti ed espliciti]]
+- [[Programmazione/Clean Code/Pagine/Messaggi di errore utili|Messaggi di errore utili]]
+- [[Programmazione/Clean Code/Pagine/Modellazione del dominio|Modellazione del dominio]]
+- [[Programmazione/Clean Code/Pagine/Guard clauses|Guard clauses]]
+- [[Programmazione/Clean Code/Pagine/Modellare stati impossibili|Modellare stati impossibili]]
 
 ## Fonti
 

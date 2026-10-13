@@ -1,3 +1,18 @@
 @use "./variables.scss" as *;
 
-// put your custom CSS here!
+// Curated indexes already provide their own complete navigation.
+article.knowledge-index + .page-listing,
+body:has(article.knowledge-index) .content-meta,
+body[data-slug="index"] .backlinks {
+  display: none;
+}
+
+article a.internal {
+  background-color: transparent;
+  text-decoration: underline;
+  text-underline-offset: 0.15em;
+}
+
+body {
+  letter-spacing: 0;
+}

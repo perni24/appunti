@@ -3,7 +3,7 @@ date: 2026-05-22
 area: Programmazione
 topic: Rust
 type: technical-note
-status: "non revisionato"
+status: non revisionato
 publish: true
 difficulty: intermedio
 tags:
@@ -11,8 +11,8 @@ tags:
   - rust
   - lifetimes
 aliases:
-  - "Trait con lifetime"
-  - "Lifetimes nei trait Rust"
+  - Trait con lifetime
+  - Lifetimes nei trait Rust
 prerequisites:
   - "[[Programmazione/Rust/Pagine/Traits]]"
   - "[[Programmazione/Rust/Pagine/Lifetime annotations]]"
@@ -21,6 +21,7 @@ related:
   - "[[Programmazione/Rust/Pagine/Generic Associated Types (GAT)]]"
   - "[[Programmazione/Rust/Pagine/Higher-Ranked Trait Bounds (HRTB)]]"
   - "[[Programmazione/Rust/Pagine/Lifetimes nelle struct]]"
+title: Lifetimes nei trait
 ---
 
 # Lifetimes nei trait
@@ -135,3 +136,8 @@ Il riferimento restituito deriva da `row`, non da `self`. Il lifetime esplicito 
 - [[Programmazione/Rust/Pagine/Generic Associated Types (GAT)|Generic Associated Types (GAT)]]
 - [[Programmazione/Rust/Pagine/Higher-Ranked Trait Bounds (HRTB)|Higher-Ranked Trait Bounds (HRTB)]]
 - [[Programmazione/Rust/Pagine/Trait objects e dyn Trait|Trait objects e dyn Trait]]
+
+
+## Navigazione
+
+- [[Programmazione/Rust/Indice Rust|Indice Rust]]

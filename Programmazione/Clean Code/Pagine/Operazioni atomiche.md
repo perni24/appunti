@@ -3,13 +3,24 @@ date: 2026-07-09
 area: Programmazione
 topic: Clean Code
 type: technical-note
-status: "non revisionato"
+status: non revisionato
 publish: true
 difficulty: avanzato
-tags: [clean-code, atomicita, concorrenza]
-aliases: [Operazioni atomiche, Atomic operations]
-prerequisites: [Race condition e leggibilita, Lock e sezioni critiche]
-related: [Idempotenza, Stato condiviso, Gestione esplicita degli errori]
+tags:
+  - clean-code
+  - atomicita
+  - concorrenza
+aliases:
+  - Operazioni atomiche
+  - Atomic operations
+prerequisites:
+  - "[[Programmazione/Clean Code/Pagine/Race condition e leggibilita]]"
+  - "[[Programmazione/Clean Code/Pagine/Lock e sezioni critiche]]"
+related:
+  - "[[Programmazione/Clean Code/Pagine/Idempotenza]]"
+  - "[[Programmazione/Clean Code/Pagine/Stato condiviso]]"
+  - "[[Programmazione/Clean Code/Pagine/Gestione esplicita degli errori]]"
+title: Operazioni atomiche
 ---
 
 # Operazioni atomiche
@@ -94,12 +105,12 @@ Il repository espone un'operazione atomica, non una sequenza fragile.
 
 ## Collegamenti
 
-- [[Programmazione/Clean Code/Indice Clean Code]]
-- [[Race condition e leggibilita]]
-- [[Lock e sezioni critiche]]
-- [[Idempotenza]]
-- [[Stato condiviso]]
-- [[Gestione esplicita degli errori]]
+- [[Programmazione/Clean Code/Indice Clean Code|Indice Clean Code]]
+- [[Programmazione/Clean Code/Pagine/Race condition e leggibilita|Race condition e leggibilita]]
+- [[Programmazione/Clean Code/Pagine/Lock e sezioni critiche|Lock e sezioni critiche]]
+- [[Programmazione/Clean Code/Pagine/Idempotenza|Idempotenza]]
+- [[Programmazione/Clean Code/Pagine/Stato condiviso|Stato condiviso]]
+- [[Programmazione/Clean Code/Pagine/Gestione esplicita degli errori|Gestione esplicita degli errori]]
 
 ## Fonti
 

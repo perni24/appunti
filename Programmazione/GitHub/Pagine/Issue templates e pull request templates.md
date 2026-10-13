@@ -3,13 +3,25 @@ date: 2026-07-06
 area: Programmazione
 topic: GitHub
 type: technical-note
-status: "non revisionato"
+status: non revisionato
 publish: true
 difficulty: intermedio
-tags: [github, issue-template, pull-request-template, collaborazione]
-aliases: [Issue templates, Pull request templates, Template GitHub]
-prerequisites: [Issues GitHub, Pull request]
-related: [Issues GitHub, Pull request]
+tags:
+  - github
+  - issue-template
+  - pull-request-template
+  - collaborazione
+aliases:
+  - Issue templates
+  - Pull request templates
+  - Template GitHub
+prerequisites:
+  - "[[Programmazione/GitHub/Pagine/Issues GitHub]]"
+  - "[[Programmazione/GitHub/Pagine/Pull request]]"
+related:
+  - "[[Programmazione/GitHub/Pagine/Issues GitHub]]"
+  - "[[Programmazione/GitHub/Pagine/Pull request]]"
+title: Issue templates e pull request templates
 ---
 
 # Issue templates e pull request templates
@@ -120,11 +132,11 @@ Questo evita che la review parta leggendo solo il diff.
 
 ## Collegamenti
 
-- [[Programmazione/GitHub/Indice GitHub]]
-- [[Issues GitHub]]
-- [[Pull request]]
-- [[Review code su GitHub]]
-- [[Markdown su GitHub]]
+- [[Programmazione/GitHub/Indice GitHub|Indice GitHub]]
+- [[Programmazione/GitHub/Pagine/Issues GitHub|Issues GitHub]]
+- [[Programmazione/GitHub/Pagine/Pull request|Pull request]]
+- [[Programmazione/GitHub/Pagine/Review code su GitHub|Review code su GitHub]]
+- [[Programmazione/GitHub/Pagine/Markdown su GitHub|Markdown su GitHub]]
 
 ## Fonti
 

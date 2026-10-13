@@ -3,7 +3,7 @@ date: 2026-05-26
 area: Programmazione
 topic: Rust
 type: technical-note
-status: "non revisionato"
+status: non revisionato
 publish: true
 difficulty: intermedio
 tags:
@@ -11,8 +11,8 @@ tags:
   - rust
   - concorrenza-e-asincronia
 aliases:
-  - "Rayon"
-  - "Parallel iterators"
+  - Rayon
+  - Parallel iterators
 prerequisites:
   - "[[Programmazione/Rust/Pagine/Iteratori]]"
   - "[[Programmazione/Rust/Pagine/Send e Sync Traits]]"
@@ -21,6 +21,7 @@ related:
   - "[[Programmazione/Rust/Pagine/Iterator API]]"
   - "[[Programmazione/Rust/Pagine/Performance e profiling]]"
   - "[[Programmazione/Rust/Pagine/Zero-cost abstractions]]"
+title: Rayon e parallel iterators
 ---
 
 # Rayon e parallel iterators
@@ -126,3 +127,8 @@ Ogni stringa viene elaborata indipendentemente; non serve gestire lock.
 - [[Programmazione/Rust/Pagine/Threads|Threads]]
 - [[Programmazione/Rust/Pagine/Send e Sync Traits|Send e Sync Traits]]
 - [[Programmazione/Rust/Pagine/Performance e profiling|Performance e profiling]]
+
+
+## Navigazione
+
+- [[Programmazione/Rust/Indice Rust|Indice Rust]]

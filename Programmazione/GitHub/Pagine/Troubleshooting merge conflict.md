@@ -3,13 +3,25 @@ date: 2026-07-07
 area: Programmazione
 topic: GitHub
 type: operational-note
-status: "non revisionato"
+status: non revisionato
 publish: true
 difficulty: intermedio
-tags: [github, git, merge-conflict, troubleshooting]
-aliases: [Troubleshooting merge conflict, Troubleshooting conflitti GitHub]
-prerequisites: [Merge squash e rebase su GitHub, Pull request]
-related: [Troubleshooting pull request, Branch su GitHub, Commit e cronologia su GitHub]
+tags:
+  - github
+  - git
+  - merge-conflict
+  - troubleshooting
+aliases:
+  - Troubleshooting merge conflict
+  - Troubleshooting conflitti GitHub
+prerequisites:
+  - "[[Programmazione/GitHub/Pagine/Merge squash e rebase su GitHub]]"
+  - "[[Programmazione/GitHub/Pagine/Pull request]]"
+related:
+  - "[[Programmazione/GitHub/Pagine/Troubleshooting pull request]]"
+  - "[[Programmazione/GitHub/Pagine/Branch su GitHub]]"
+  - "[[Programmazione/GitHub/Pagine/Commit e cronologia su GitHub]]"
+title: Troubleshooting merge conflict
 ---
 
 # Troubleshooting merge conflict
@@ -101,12 +113,12 @@ git rebase --abort
 
 ## Collegamenti
 
-- [[Programmazione/GitHub/Indice GitHub]]
-- [[Merge squash e rebase su GitHub]]
-- [[Pull request]]
-- [[Branch su GitHub]]
-- [[Commit e cronologia su GitHub]]
-- [[Troubleshooting pull request]]
+- [[Programmazione/GitHub/Indice GitHub|Indice GitHub]]
+- [[Programmazione/GitHub/Pagine/Merge squash e rebase su GitHub|Merge squash e rebase su GitHub]]
+- [[Programmazione/GitHub/Pagine/Pull request|Pull request]]
+- [[Programmazione/GitHub/Pagine/Branch su GitHub|Branch su GitHub]]
+- [[Programmazione/GitHub/Pagine/Commit e cronologia su GitHub|Commit e cronologia su GitHub]]
+- [[Programmazione/GitHub/Pagine/Troubleshooting pull request|Troubleshooting pull request]]
 
 ## Fonti
 

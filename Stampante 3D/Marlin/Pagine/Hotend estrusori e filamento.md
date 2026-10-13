@@ -3,17 +3,25 @@ date: 2026-07-25
 area: Stampante 3D
 topic: Marlin
 type: technical-note
-
 publish: true
 difficulty: avanzato
-tags: [marlin, hotend, estrusore, filamento, multi-materiale]
-aliases: [Configurazione estrusori Marlin, Hotend e filamento Marlin]
+tags:
+  - marlin
+  - hotend
+  - estrusore
+  - filamento
+  - multi-materiale
+aliases:
+  - Configurazione estrusori Marlin
+  - Hotend e filamento Marlin
 prerequisites:
   - "[[Stampante 3D/Marlin/Pagine/Scheda madre porte seriali e pin]]"
   - "[[Stampante 3D/Marlin/Pagine/Motori direzione e passi per millimetro]]"
 related:
   - "[[Stampante 3D/Marlin/Pagine/Limiti di estrusione retrazione e cambio utensile]]"
-marlin-version: "2.1.2.8"
+marlin-version: 2.1.2.8
+title: Hotend, estrusori e filamento
+status: non revisionato
 ---
 
 # Hotend, estrusori e filamento
@@ -424,8 +432,8 @@ Un ritardo errato applica la correzione al tratto di filamento sbagliato. Prima 
 
 ## Collegamenti
 
-- [[Stampante 3D/Marlin/Indice Marlin]]
-- [[Stampante 3D/Marlin/Pagine/Motori direzione e passi per millimetro]]
-- [[Stampante 3D/Marlin/Pagine/Driver stepper corrente e microstepping]]
-- [[Stampante 3D/Marlin/Pagine/Linear Advance Input Shaping e compensazioni geometriche]]
-- [[Stampante 3D/Marlin/Pagine/Limiti di estrusione retrazione e cambio utensile]]
+- [[Stampante 3D/Marlin/Indice Marlin|Indice Marlin]]
+- [[Stampante 3D/Marlin/Pagine/Motori direzione e passi per millimetro|Motori direzione e passi per millimetro]]
+- [[Stampante 3D/Marlin/Pagine/Driver stepper corrente e microstepping|Driver stepper corrente e microstepping]]
+- [[Stampante 3D/Marlin/Pagine/Linear Advance Input Shaping e compensazioni geometriche|Linear Advance Input Shaping e compensazioni geometriche]]
+- [[Stampante 3D/Marlin/Pagine/Limiti di estrusione retrazione e cambio utensile|Limiti di estrusione retrazione e cambio utensile]]

@@ -1,16 +1,20 @@
-﻿---
+---
 date: 2026-05-20
 area: Programmazione
 topic: Rust
 type: technical-note
-status: "non revisionato"
+status: non revisionato
 publish: true
 difficulty: base
-tags: [programmazione, rust, vec, collezioni]
+tags:
+  - programmazione
+  - rust
+  - vec
+  - collezioni
 aliases:
-  - "Vec Rust"
-  - "Vector Rust"
-  - "Vec<T>"
+  - Vec Rust
+  - Vector Rust
+  - Vec<T>
 prerequisites:
   - "[[Programmazione/Rust/Pagine/Ownership]]"
   - "[[Programmazione/Rust/Pagine/Slices]]"
@@ -19,6 +23,7 @@ related:
   - "[[Programmazione/Rust/Pagine/Iteratori]]"
   - "[[Programmazione/Rust/Pagine/VecDeque BTreeMap e BTreeSet]]"
   - "[[Programmazione/Rust/Pagine/HashMap e HashSet]]"
+title: Vec
 ---
 
 # Vec
@@ -138,3 +143,8 @@ La funzione accetta una slice per non imporre `Vec` al chiamante e restituisce u
 - [[Programmazione/Rust/Pagine/HashMap e HashSet|HashMap e HashSet]]
 - [[Programmazione/Rust/Pagine/Stack e Heap|Stack e Heap]]
 
+
+
+## Navigazione
+
+- [[Programmazione/Rust/Indice Rust|Indice Rust]]

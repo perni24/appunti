@@ -3,13 +3,26 @@ date: 2026-07-07
 area: Programmazione
 topic: GitHub
 type: technical-note
-status: "non revisionato"
+status: non revisionato
 publish: true
 difficulty: intermedio
-tags: [github, github-actions, debug, troubleshooting]
-aliases: [Debug GitHub Actions, Debug workflow GitHub Actions]
-prerequisites: [GitHub Actions, Workflow GitHub Actions]
-related: [Workflow GitHub Actions, Artifacts GitHub Actions, Permissions GitHub Actions, Troubleshooting GitHub Actions]
+tags:
+  - github
+  - github-actions
+  - debug
+  - troubleshooting
+aliases:
+  - Debug GitHub Actions
+  - Debug workflow GitHub Actions
+prerequisites:
+  - "[[Programmazione/GitHub/Pagine/GitHub Actions]]"
+  - "[[Programmazione/GitHub/Pagine/Workflow GitHub Actions]]"
+related:
+  - "[[Programmazione/GitHub/Pagine/Workflow GitHub Actions]]"
+  - "[[Programmazione/GitHub/Pagine/Artifacts GitHub Actions]]"
+  - "[[Programmazione/GitHub/Pagine/Permissions GitHub Actions]]"
+  - "[[Programmazione/GitHub/Pagine/Troubleshooting GitHub Actions]]"
+title: Debug GitHub Actions
 ---
 
 # Debug GitHub Actions
@@ -108,12 +121,12 @@ Poi controlla se il workflow usa `pull_request`, `pull_request_target`, fork est
 
 ## Collegamenti
 
-- [[Programmazione/GitHub/Indice GitHub]]
-- [[GitHub Actions]]
-- [[Workflow GitHub Actions]]
-- [[Artifacts GitHub Actions]]
-- [[Permissions GitHub Actions]]
-- [[Troubleshooting GitHub Actions]]
+- [[Programmazione/GitHub/Indice GitHub|Indice GitHub]]
+- [[Programmazione/GitHub/Pagine/GitHub Actions|GitHub Actions]]
+- [[Programmazione/GitHub/Pagine/Workflow GitHub Actions|Workflow GitHub Actions]]
+- [[Programmazione/GitHub/Pagine/Artifacts GitHub Actions|Artifacts GitHub Actions]]
+- [[Programmazione/GitHub/Pagine/Permissions GitHub Actions|Permissions GitHub Actions]]
+- [[Programmazione/GitHub/Pagine/Troubleshooting GitHub Actions|Troubleshooting GitHub Actions]]
 
 ## Fonti
 

@@ -3,13 +3,21 @@ date: 2026-06-04
 area: Programmazione
 topic: React
 type: technical-note
-status: "non revisionato"
+status: non revisionato
 publish: true
-difficulty: beginner
-tags: [react, frontend, javascript, toolchain]
-aliases: [Introduzione React, Toolchain React, Vite React]
+difficulty: base
+tags:
+  - react
+  - frontend
+  - javascript
+  - toolchain
+aliases:
+  - Introduzione React
+  - Toolchain React
+  - Vite React
 prerequisites: []
 related: []
+title: Introduzione e Toolchain
 ---
 
 # Introduzione e Toolchain
@@ -124,9 +132,9 @@ export default function App() {
 
 ## Collegamenti
 
-- [[Programmazione/React/Indice react|Indice React]]
-- [[JSX]]
-- [[Componenti Funzionali vs Componenti a Classe]]
-- [[Props e Flusso di dati unidirezionale]]
-- [[Framework Next.js e Remix]]
+- [[Programmazione/React/Indice React|Indice React]]
+- [[Programmazione/React/Pagine/JSX|JSX]]
+- [[Programmazione/React/Pagine/Componenti Funzionali vs Componenti a Classe|Componenti Funzionali vs Componenti a Classe]]
+- [[Programmazione/React/Pagine/Props e Flusso di dati unidirezionale|Props e Flusso di dati unidirezionale]]
+- [[Programmazione/React/Pagine/Framework Next.js e Remix|Framework Next.js e Remix]]
 - [[Programmazione/React/Pagine/Linting e Formattazione|Linting e Formattazione]]

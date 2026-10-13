@@ -3,13 +3,23 @@ date: 2026-07-09
 area: Programmazione
 topic: Clean Code
 type: theory-note
-status: "non revisionato"
+status: non revisionato
 publish: true
 difficulty: base
-tags: [clean-code, convenzioni, team]
-aliases: [Convenzioni di progetto, Project conventions]
-prerequisites: [Clean Code]
-related: [Organizzazione dei file, README e documentazione tecnica, Struttura delle cartelle]
+tags:
+  - clean-code
+  - convenzioni
+  - team
+aliases:
+  - Convenzioni di progetto
+  - Project conventions
+prerequisites:
+  - "[[Programmazione/Clean Code/Pagine/Clean Code]]"
+related:
+  - "[[Programmazione/Clean Code/Pagine/Organizzazione dei file]]"
+  - "[[Programmazione/Clean Code/Pagine/README e documentazione tecnica]]"
+  - "[[Programmazione/Clean Code/Pagine/Struttura delle cartelle]]"
+title: Convenzioni di progetto
 ---
 
 # Convenzioni di progetto
@@ -78,11 +88,11 @@ Queste regole aiutano il team a prendere decisioni coerenti.
 
 ## Collegamenti
 
-- [[Programmazione/Clean Code/Indice Clean Code]]
-- [[Organizzazione dei file]]
-- [[README e documentazione tecnica]]
-- [[Struttura delle cartelle]]
-- [[Naming di variabili e funzioni]]
+- [[Programmazione/Clean Code/Indice Clean Code|Indice Clean Code]]
+- [[Programmazione/Clean Code/Pagine/Organizzazione dei file|Organizzazione dei file]]
+- [[Programmazione/Clean Code/Pagine/README e documentazione tecnica|README e documentazione tecnica]]
+- [[Programmazione/Clean Code/Pagine/Struttura delle cartelle|Struttura delle cartelle]]
+- [[Programmazione/Clean Code/Pagine/Naming di variabili e funzioni|Naming di variabili e funzioni]]
 
 ## Fonti
 

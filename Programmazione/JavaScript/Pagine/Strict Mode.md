@@ -3,13 +3,27 @@ date: 2026-06-02
 area: Programmazione
 topic: JavaScript
 type: technical-note
-status: "non revisionato"
+status: non revisionato
 publish: true
-difficulty: beginner
-tags: [javascript, strict-mode, es5, debugging, best-practices]
-aliases: [Modalita strict, use strict]
-prerequisites: [Variabili, Funzioni]
-related: [Moduli, Classi, Scope, Hoisting]
+difficulty: base
+tags:
+  - javascript
+  - strict-mode
+  - es5
+  - debugging
+  - best-practices
+aliases:
+  - Modalita strict
+  - use strict
+prerequisites:
+  - "[[Programmazione/JavaScript/Pagine/Variabili]]"
+  - "[[Programmazione/JavaScript/Pagine/Funzioni]]"
+related:
+  - "[[Programmazione/JavaScript/Pagine/Moduli]]"
+  - "[[Programmazione/JavaScript/Pagine/Classi]]"
+  - "[[Programmazione/JavaScript/Pagine/Scope]]"
+  - "[[Programmazione/JavaScript/Pagine/Hoisting]]"
+title: Strict Mode
 ---
 
 # Strict Mode
@@ -21,6 +35,8 @@ Lo **Strict Mode** e una modalita piu rigorosa di JavaScript introdotta in ES5.
 Serve a trasformare alcuni errori silenziosi in errori espliciti, impedire comportamenti ambigui e rendere il codice piu prevedibile.
 
 I moduli ES e le classi sono gia automaticamente in strict mode.
+
+Gli esempi sono indipendenti. Esegui quelli che confrontano strict e non-strict come script classici separati: in un modulo ES lo strict mode e gia attivo. Le righe con un errore indicato lo provocano intenzionalmente.
 
 ---
 
@@ -46,7 +62,7 @@ Per attivarlo in un intero file, inserisci la direttiva all'inizio.
 value = 10; // ReferenceError
 ```
 
-La direttiva deve comparire prima di istruzioni reali.
+La direttiva e un letterale stringa nel prologo dello script, prima di istruzioni ordinarie; commenti e altre direttive possono precederla. Non vale per gli altri script della pagina, ne funziona dentro un semplice blocco `if`.
 
 ```js
 console.log("start");
@@ -67,6 +83,26 @@ function run() {
 ```
 
 Questo era utile per migrare codice vecchio gradualmente.
+
+Con parametri default, rest o destrutturati, una direttiva interna e un errore di sintassi:
+
+```js
+// Esempio non valido: SyntaxError prima dell'esecuzione
+function invalidGreeting(name = "Guest") {
+  "use strict";
+  return name;
+}
+```
+
+Attiva invece strict nello script esterno, oppure usa un modulo ES:
+
+```js
+"use strict";
+
+function greet(name = "Guest") {
+  return name;
+}
+```
 
 ---
 ### Moduli e classi
@@ -89,6 +125,8 @@ class User {
 
 Quindi, in codice moderno con `import` ed `export`, `"use strict"` e spesso ridondante.
 
+Una classe non rende strict il resto di uno script classico. Un file CommonJS non e automaticamente strict solo perche usa `require()`.
+
 ---
 ### Variabili globali accidentali
 Senza strict mode, assegnare a una variabile non dichiarata puo creare una proprieta globale.
@@ -110,21 +148,25 @@ Questo evita bug difficili da tracciare.
 
 ---
 ### this nelle funzioni semplici
-In non-strict mode, `this` in una funzione semplice puo puntare all'oggetto globale.
+Per una funzione ordinaria chiamata senza ricevente, come `showThis()`, in non-strict mode `this` viene sostituito con l'oggetto globale.
 
-In strict mode, resta `undefined`.
+In strict mode resta `undefined`; una chiamata come metodo o con `call()` puo invece fornire un altro valore.
 
 ```js
 "use strict";
 
 function showThis() {
-  console.log(this);
+  return this;
 }
 
-showThis(); // undefined
+console.log(showThis());          // undefined
+console.log(showThis.call(null)); // null
+
+const receiver = { showThis };
+console.log(receiver.showThis() === receiver); // true
 ```
 
-Questo riduce comportamenti impliciti pericolosi.
+Conta dove e definita la funzione: chiamare una funzione non-strict da codice strict non la converte in strict.
 
 ---
 ### Restrizioni sintattiche
@@ -239,8 +281,16 @@ Senza strict mode, alcune assegnazioni falliscono senza segnalare chiaramente il
 
 ## Collegamenti
 
-- [[Moduli]]
+- [[Programmazione/JavaScript/Pagine/Moduli|Moduli]]
 - [[Programmazione/JavaScript/Pagine/Classi|Classi]]
-- [[Scope]]
-- [[Hoisting]]
-- [[Variabili]]
+- [[Programmazione/JavaScript/Pagine/Scope|Scope]]
+- [[Programmazione/JavaScript/Pagine/Hoisting|Hoisting]]
+- [[Programmazione/JavaScript/Pagine/Variabili|Variabili]]
+
+## Fonti
+
+- [MDN: strict mode](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Strict_mode).
+
+## Navigazione
+
+- [[Programmazione/JavaScript/Indice JavaScript|Indice JavaScript]]

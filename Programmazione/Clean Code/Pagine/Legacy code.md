@@ -3,13 +3,24 @@ date: 2026-07-09
 area: Programmazione
 topic: Clean Code
 type: theory-note
-status: "non revisionato"
+status: non revisionato
 publish: true
 difficulty: avanzato
-tags: [clean-code, legacy-code, refactoring]
-aliases: [Legacy code, Codice legacy]
-prerequisites: [Refactoring sicuro, Codice testabile]
-related: [Debito tecnico, Code smells, Test di integrazione]
+tags:
+  - clean-code
+  - legacy-code
+  - refactoring
+aliases:
+  - Legacy code
+  - Codice legacy
+prerequisites:
+  - "[[Programmazione/Clean Code/Pagine/Refactoring sicuro]]"
+  - "[[Programmazione/Clean Code/Pagine/Codice testabile]]"
+related:
+  - "[[Programmazione/Clean Code/Pagine/Debito tecnico]]"
+  - "[[Programmazione/Clean Code/Pagine/Code smells]]"
+  - "[[Programmazione/Clean Code/Pagine/Test di integrazione]]"
+title: Legacy code
 ---
 
 # Legacy code
@@ -78,12 +89,12 @@ lasciare il modulo leggermente migliore di prima
 
 ## Collegamenti
 
-- [[Programmazione/Clean Code/Indice Clean Code]]
-- [[Debito tecnico]]
-- [[Code smells]]
-- [[Refactoring sicuro]]
-- [[Codice testabile]]
-- [[Test di integrazione]]
+- [[Programmazione/Clean Code/Indice Clean Code|Indice Clean Code]]
+- [[Programmazione/Clean Code/Pagine/Debito tecnico|Debito tecnico]]
+- [[Programmazione/Clean Code/Pagine/Code smells|Code smells]]
+- [[Programmazione/Clean Code/Pagine/Refactoring sicuro|Refactoring sicuro]]
+- [[Programmazione/Clean Code/Pagine/Codice testabile|Codice testabile]]
+- [[Programmazione/Clean Code/Pagine/Test di integrazione|Test di integrazione]]
 
 ## Fonti
 

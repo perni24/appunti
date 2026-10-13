@@ -3,13 +3,24 @@ date: 2026-07-09
 area: Programmazione
 topic: Clean Code
 type: technical-note
-status: "non revisionato"
+status: non revisionato
 publish: true
 difficulty: intermedio
-tags: [clean-code, output-strutturati, llm]
-aliases: [Output strutturati, Structured outputs]
-prerequisites: [Contratti impliciti ed espliciti, Parsing e serializzazione]
-related: [Prompt e codice applicativo, Validazione dei dati generati, Messaggi di errore utili]
+tags:
+  - clean-code
+  - output-strutturati
+  - llm
+aliases:
+  - Output strutturati
+  - Structured outputs
+prerequisites:
+  - "[[Programmazione/Clean Code/Pagine/Contratti impliciti ed espliciti]]"
+  - "[[Programmazione/Clean Code/Pagine/Parsing e serializzazione]]"
+related:
+  - "[[Programmazione/Clean Code/Pagine/Prompt e codice applicativo]]"
+  - "[[Programmazione/Clean Code/Pagine/Validazione dei dati generati]]"
+  - "[[Programmazione/Clean Code/Pagine/Messaggi di errore utili]]"
+title: Output strutturati
 ---
 
 # Output strutturati
@@ -91,12 +102,12 @@ Il codice non usa l'output finche non e stato controllato.
 
 ## Collegamenti
 
-- [[Programmazione/Clean Code/Indice Clean Code]]
-- [[Contratti impliciti ed espliciti]]
-- [[Parsing e serializzazione]]
-- [[Prompt e codice applicativo]]
-- [[Validazione dei dati generati]]
-- [[Messaggi di errore utili]]
+- [[Programmazione/Clean Code/Indice Clean Code|Indice Clean Code]]
+- [[Programmazione/Clean Code/Pagine/Contratti impliciti ed espliciti|Contratti impliciti ed espliciti]]
+- [[Programmazione/Clean Code/Pagine/Parsing e serializzazione|Parsing e serializzazione]]
+- [[Programmazione/Clean Code/Pagine/Prompt e codice applicativo|Prompt e codice applicativo]]
+- [[Programmazione/Clean Code/Pagine/Validazione dei dati generati|Validazione dei dati generati]]
+- [[Programmazione/Clean Code/Pagine/Messaggi di errore utili|Messaggi di errore utili]]
 
 ## Fonti
 

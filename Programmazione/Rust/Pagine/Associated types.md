@@ -3,7 +3,7 @@ date: 2026-05-21
 area: Programmazione
 topic: Rust
 type: technical-note
-status: "non revisionato"
+status: non revisionato
 publish: true
 difficulty: intermedio
 tags:
@@ -11,8 +11,8 @@ tags:
   - rust
   - astrazione-e-generici
 aliases:
-  - "Tipi associati"
-  - "Associated type Rust"
+  - Tipi associati
+  - Associated type Rust
 prerequisites:
   - "[[Programmazione/Rust/Pagine/Traits]]"
   - "[[Programmazione/Rust/Pagine/Generics]]"
@@ -20,6 +20,7 @@ related:
   - "[[Programmazione/Rust/Pagine/Generic Associated Types (GAT)]]"
   - "[[Programmazione/Rust/Pagine/Iteratori]]"
   - "[[Programmazione/Rust/Pagine/Trait bounds]]"
+title: Associated types
 ---
 
 # Associated types
@@ -150,3 +151,8 @@ Il repository dichiara quali entita ed errori produce senza ripetere parametri g
 - [[Programmazione/Rust/Pagine/Generic Associated Types (GAT)|Generic Associated Types (GAT)]]
 - [[Programmazione/Rust/Pagine/Iteratori|Iteratori]]
 - [[Programmazione/Rust/Pagine/Iterator API|Iterator API]]
+
+
+## Navigazione
+
+- [[Programmazione/Rust/Indice Rust|Indice Rust]]

@@ -1,15 +1,19 @@
-﻿---
+---
 date: 2026-05-20
 area: Programmazione
 topic: Rust
 type: technical-note
-status: "non revisionato"
+status: non revisionato
 publish: true
 difficulty: base
-tags: [programmazione, rust, enums, tipi-dato]
+tags:
+  - programmazione
+  - rust
+  - enums
+  - tipi-dato
 aliases:
-  - "Enum Rust"
-  - "Enumerazioni Rust"
+  - Enum Rust
+  - Enumerazioni Rust
 prerequisites:
   - "[[Programmazione/Rust/Pagine/Structs]]"
   - "[[Programmazione/Rust/Pagine/Pattern Matching]]"
@@ -17,6 +21,7 @@ related:
   - "[[Programmazione/Rust/Pagine/Option]]"
   - "[[Programmazione/Rust/Pagine/Result]]"
   - "[[Programmazione/Rust/Pagine/Pattern Matching]]"
+title: Enums
 ---
 
 # Enums
@@ -143,3 +148,8 @@ Il tipo `Comando` impedisce combinazioni invalide: un comando `Lista` non puo av
 - [[Programmazione/Rust/Pagine/Public API design|Public API design]]
 - [[Programmazione/Rust/Pagine/Structs|Structs]]
 
+
+
+## Navigazione
+
+- [[Programmazione/Rust/Indice Rust|Indice Rust]]

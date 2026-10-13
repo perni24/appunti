@@ -3,13 +3,22 @@ date: 2026-06-04
 area: Programmazione
 topic: React
 type: theory-note
-status: "non revisionato"
+status: non revisionato
 publish: true
-difficulty: beginner
-tags: [react, props, state, frontend]
-aliases: [Props, Flusso dati React, Children, Composizione componenti]
+difficulty: base
+tags:
+  - react
+  - props
+  - state
+  - frontend
+aliases:
+  - Props
+  - Flusso dati React
+  - Children
+  - Composizione componenti
 prerequisites: []
 related: []
+title: Props e Flusso di dati unidirezionale
 ---
 
 # Props e Flusso di dati unidirezionale
@@ -130,8 +139,8 @@ Il valore vive nel padre; il figlio descrive solo input e notifica cambiamenti.
 
 ## Collegamenti
 
-- [[Programmazione/React/Indice react|Indice React]]
-- [[State colocato]]
-- [[Context API]]
-- [[Control Props e State Reducer Pattern]]
-- [[Rendering Condizionale e Liste]]
+- [[Programmazione/React/Indice React|Indice React]]
+- [[Programmazione/React/Pagine/State colocato|State colocato]]
+- [[Programmazione/React/Pagine/Context API|Context API]]
+- [[Programmazione/React/Pagine/Control Props e State Reducer Pattern|Control Props e State Reducer Pattern]]
+- [[Programmazione/React/Pagine/Rendering Condizionale e Liste|Rendering Condizionale e Liste]]

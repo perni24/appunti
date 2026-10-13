@@ -3,13 +3,24 @@ date: 2026-07-06
 area: Programmazione
 topic: GitHub
 type: technical-note
-status: "non revisionato"
+status: non revisionato
 publish: true
 difficulty: intermedio
-tags: [github, projects, project-management, issues]
-aliases: [GitHub Projects, Projects GitHub]
-prerequisites: [Issues GitHub, Labels milestones e assignees]
-related: [Issues GitHub, Pull request]
+tags:
+  - github
+  - projects
+  - project-management
+  - issues
+aliases:
+  - GitHub Projects
+  - Projects GitHub
+prerequisites:
+  - "[[Programmazione/GitHub/Pagine/Issues GitHub]]"
+  - "[[Programmazione/GitHub/Pagine/Labels milestones e assignees]]"
+related:
+  - "[[Programmazione/GitHub/Pagine/Issues GitHub]]"
+  - "[[Programmazione/GitHub/Pagine/Pull request]]"
+title: GitHub Projects
 ---
 
 # GitHub Projects
@@ -105,10 +116,10 @@ Le issue descrivono il lavoro. Le pull request chiudono o implementano quel lavo
 
 ## Collegamenti
 
-- [[Programmazione/GitHub/Indice GitHub]]
-- [[Issues GitHub]]
-- [[Pull request]]
-- [[Labels milestones e assignees]]
+- [[Programmazione/GitHub/Indice GitHub|Indice GitHub]]
+- [[Programmazione/GitHub/Pagine/Issues GitHub|Issues GitHub]]
+- [[Programmazione/GitHub/Pagine/Pull request|Pull request]]
+- [[Programmazione/GitHub/Pagine/Labels milestones e assignees|Labels milestones e assignees]]
 
 ## Fonti
 

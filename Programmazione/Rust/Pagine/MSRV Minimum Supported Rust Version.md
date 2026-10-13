@@ -3,7 +3,7 @@ date: 2026-05-22
 area: Programmazione
 topic: Rust
 type: technical-note
-status: "non revisionato"
+status: non revisionato
 publish: true
 difficulty: intermedio
 tags:
@@ -11,8 +11,8 @@ tags:
   - rust
   - cargo-editions-e-compatibilita
 aliases:
-  - "MSRV"
-  - "Minimum Supported Rust Version"
+  - MSRV
+  - Minimum Supported Rust Version
 prerequisites:
   - "[[Programmazione/Rust/Pagine/Cargo]]"
   - "[[Programmazione/Rust/Pagine/Rust 2018 2021 e 2024]]"
@@ -20,6 +20,7 @@ related:
   - "[[Programmazione/Rust/Pagine/Semantic Versioning]]"
   - "[[Programmazione/Rust/Pagine/Compatibility e breaking changes]]"
   - "[[Programmazione/Rust/Pagine/Cargo.toml]]"
+title: "MSRV: Minimum Supported Rust Version"
 ---
 
 # MSRV: Minimum Supported Rust Version
@@ -123,3 +124,8 @@ Prima di usare una API stabilizzata dopo `1.74`, bisogna decidere se alzare MSRV
 - [[Programmazione/Rust/Pagine/Semantic Versioning|Semantic Versioning]]
 - [[Programmazione/Rust/Pagine/Compatibility e breaking changes|Compatibility e breaking changes]]
 - [[Programmazione/Rust/Pagine/Crates.io|Crates.io]]
+
+
+## Navigazione
+
+- [[Programmazione/Rust/Indice Rust|Indice Rust]]

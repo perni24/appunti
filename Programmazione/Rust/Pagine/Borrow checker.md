@@ -1,15 +1,19 @@
-﻿---
+---
 date: 2026-05-20
 area: Programmazione
 topic: Rust
 type: technical-note
-status: "non revisionato"
+status: non revisionato
 publish: true
 difficulty: base
-tags: [programmazione, rust, borrow-checker, memory-safety]
+tags:
+  - programmazione
+  - rust
+  - borrow-checker
+  - memory-safety
 aliases:
-  - "Controllore dei prestiti"
-  - "Borrow checking"
+  - Controllore dei prestiti
+  - Borrow checking
 prerequisites:
   - "[[Programmazione/Rust/Pagine/Ownership]]"
   - "[[Programmazione/Rust/Pagine/References e Borrowing]]"
@@ -17,6 +21,7 @@ related:
   - "[[Programmazione/Rust/Pagine/Lifetime impliciti]]"
   - "[[Programmazione/Rust/Pagine/Aliasing rules]]"
   - "[[Programmazione/Rust/Pagine/Mutabilita]]"
+title: Borrow checker
 ---
 
 # Borrow checker
@@ -136,3 +141,8 @@ fn esempio(nomi: &mut Vec<String>) {
 - [[Programmazione/Rust/Pagine/Aliasing rules|Aliasing rules]]
 - [[Programmazione/Rust/Pagine/Interior mutability|Interior mutability]]
 
+
+
+## Navigazione
+
+- [[Programmazione/Rust/Indice Rust|Indice Rust]]

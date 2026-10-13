@@ -3,7 +3,7 @@ date: 2026-05-22
 area: Programmazione
 topic: Rust
 type: technical-note
-status: "non revisionato"
+status: non revisionato
 publish: true
 difficulty: intermedio
 tags:
@@ -11,8 +11,8 @@ tags:
   - rust
   - smart-pointers-e-interior-mutability
 aliases:
-  - "Interior mutability"
-  - "Mutabilita interna"
+  - Interior mutability
+  - Mutabilita interna
 prerequisites:
   - "[[Programmazione/Rust/Pagine/Mutabilita]]"
   - "[[Programmazione/Rust/Pagine/Borrow checker]]"
@@ -21,6 +21,7 @@ related:
   - "[[Programmazione/Rust/Pagine/Cell T]]"
   - "[[Programmazione/Rust/Pagine/RefCell T]]"
   - "[[Programmazione/Rust/Pagine/Mutex T e RwLock T]]"
+title: Interior mutability
 ---
 
 # Interior mutability
@@ -136,3 +137,8 @@ La mutazione e un dettaglio interno della metrica; l'API puo restare basata su `
 - [[Programmazione/Rust/Pagine/RefCell T|RefCell T]]
 - [[Programmazione/Rust/Pagine/Mutex T e RwLock T|Mutex T e RwLock T]]
 - [[Programmazione/Rust/Pagine/Borrow checker|Borrow checker]]
+
+
+## Navigazione
+
+- [[Programmazione/Rust/Indice Rust|Indice Rust]]

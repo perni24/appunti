@@ -3,7 +3,7 @@ date: 2026-05-22
 area: Programmazione
 topic: Rust
 type: technical-note
-status: "non revisionato"
+status: non revisionato
 publish: true
 difficulty: intermedio
 tags:
@@ -11,8 +11,8 @@ tags:
   - rust
   - smart-pointers-e-interior-mutability
 aliases:
-  - "Box<T>"
-  - "Box Rust"
+  - Box<T>
+  - Box Rust
 prerequisites:
   - "[[Programmazione/Rust/Pagine/Ownership]]"
   - "[[Programmazione/Rust/Pagine/Stack e Heap]]"
@@ -21,6 +21,7 @@ related:
   - "[[Programmazione/Rust/Pagine/Rc T e Arc T]]"
   - "[[Programmazione/Rust/Pagine/Drop Trait]]"
   - "[[Programmazione/Rust/Pagine/Pin e Unpin]]"
+title: Box<T>
 ---
 
 # Box<T>
@@ -132,3 +133,8 @@ Senza `Box`, `Expr::Add` conterrebbe direttamente altri `Expr` e il tipo avrebbe
 
 - [Rust Standard Library - Box](https://doc.rust-lang.org/std/boxed/struct.Box.html)
 - [Rust Standard Library - Arc](https://doc.rust-lang.org/std/sync/struct.Arc.html)
+
+
+## Navigazione
+
+- [[Programmazione/Rust/Indice Rust|Indice Rust]]

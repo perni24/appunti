@@ -3,13 +3,24 @@ date: 2026-07-09
 area: Programmazione
 topic: Clean Code
 type: technical-note
-status: "non revisionato"
+status: non revisionato
 publish: true
 difficulty: avanzato
-tags: [clean-code, profiling, performance]
-aliases: [Profiling prima del refactoring, Profile before refactoring]
-prerequisites: [Performance e leggibilita, Refactoring sicuro]
-related: [Hot path, Ottimizzazione prematura, Codice testabile]
+tags:
+  - clean-code
+  - profiling
+  - performance
+aliases:
+  - Profiling prima del refactoring
+  - Profile before refactoring
+prerequisites:
+  - "[[Programmazione/Clean Code/Pagine/Performance e leggibilita]]"
+  - "[[Programmazione/Clean Code/Pagine/Refactoring sicuro]]"
+related:
+  - "[[Programmazione/Clean Code/Pagine/Hot path]]"
+  - "[[Programmazione/Clean Code/Pagine/Ottimizzazione prematura]]"
+  - "[[Programmazione/Clean Code/Pagine/Codice testabile]]"
+title: Profiling prima del refactoring
 ---
 
 # Profiling prima del refactoring
@@ -89,12 +100,12 @@ Il profiling indirizza il refactoring verso la causa reale.
 
 ## Collegamenti
 
-- [[Programmazione/Clean Code/Indice Clean Code]]
-- [[Performance e leggibilita]]
-- [[Ottimizzazione prematura]]
-- [[Hot path]]
-- [[Refactoring sicuro]]
-- [[Codice testabile]]
+- [[Programmazione/Clean Code/Indice Clean Code|Indice Clean Code]]
+- [[Programmazione/Clean Code/Pagine/Performance e leggibilita|Performance e leggibilita]]
+- [[Programmazione/Clean Code/Pagine/Ottimizzazione prematura|Ottimizzazione prematura]]
+- [[Programmazione/Clean Code/Pagine/Hot path|Hot path]]
+- [[Programmazione/Clean Code/Pagine/Refactoring sicuro|Refactoring sicuro]]
+- [[Programmazione/Clean Code/Pagine/Codice testabile|Codice testabile]]
 
 ## Fonti
 

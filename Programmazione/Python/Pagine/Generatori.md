@@ -3,13 +3,17 @@ date: 2026-06-03
 area: Programmazione
 topic: Python
 type: technical-note
-status: "non revisionato"
+status: non revisionato
 publish: true
-difficulty: intermediate
-tags: [python, programming]
-aliases: [Generatori]
+difficulty: intermedio
+tags:
+  - python
+  - programming
+aliases:
+  - Generatori
 prerequisites: []
 related: []
+title: Generatori in Python
 ---
 
 # Generatori in Python
@@ -137,8 +141,8 @@ def natural_numbers():
 
 ## Collegamenti
 
-- [[Programmazione/Python/Indice python|Indice Python]]
+- [[Programmazione/Python/Indice Python|Indice Python]]
 - [[Programmazione/Python/Pagine/Iteratori|Iteratori]]
-- [[Comprehensions]]
-- [[Gestione File]]
-- [[Context Managers]]
+- [[Programmazione/Python/Pagine/Comprehensions|Comprehensions]]
+- [[Programmazione/Python/Pagine/Gestione File|Gestione File]]
+- [[Programmazione/Python/Pagine/Context Managers|Context Managers]]

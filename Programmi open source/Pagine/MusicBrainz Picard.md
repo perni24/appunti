@@ -3,12 +3,22 @@ date: 2026-06-05
 area: Programmi open source
 topic: Tagging e organizzazione libreria musicale
 type: technical-note
-status: "non revisionato"
+status: non revisionato
 difficulty: base
-tags: [open-source, musica, metadata, tagging, audio]
-aliases: [Picard, MusicBrainz Picard]
+tags:
+  - open-source
+  - musica
+  - metadata
+  - tagging
+  - audio
+aliases:
+  - Picard
+  - MusicBrainz Picard
 prerequisites: []
-related: [Yt-dlp]
+related:
+  - "[[Programmi open source/Pagine/Yt-dlp]]"
+title: MusicBrainz Picard
+publish: true
 ---
 
 # MusicBrainz Picard
@@ -33,7 +43,7 @@ Picard confronta i file audio con il database MusicBrainz. Quando possibile usa 
 
 Dopo il riconoscimento, propone i metadati corretti e permette di salvarli nei file. Puo anche rinominare e spostare i file seguendo uno schema scelto dall'utente.
 
-## Esempio d'uso
+## Esempio pratico
 
 ```text
 1. Apri MusicBrainz Picard.
@@ -43,7 +53,7 @@ Dopo il riconoscimento, propone i metadati corretti e permette di salvarli nei f
 5. Salva i tag corretti nei file.
 ```
 
-## Punti forti
+## Funzionalita
 
 - **Database ampio**: usa MusicBrainz, un database musicale collaborativo.
 - **Riconoscimento acustico**: puo identificare brani anche con nomi file errati.
@@ -65,3 +75,8 @@ Dopo il riconoscimento, propone i metadati corretti e permette di salvarli nei f
 - Usare il riconoscimento acustico quando i nomi file sono poco affidabili.
 - Definire uno schema di rinominazione coerente.
 - Applicare le modifiche a piccoli gruppi prima di processare tutta la libreria.
+
+
+## Navigazione
+
+- [[Programmi open source/Indice Programmi Open Source|Catalogo open source]]

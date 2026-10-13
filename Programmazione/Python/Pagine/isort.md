@@ -3,13 +3,19 @@ date: 2026-06-03
 area: Programmazione
 topic: Python
 type: operational-note
-status: "non revisionato"
+status: non revisionato
 publish: true
-difficulty: beginner
-tags: [programmazione, python, tooling, import]
-aliases: [isort]
+difficulty: base
+tags:
+  - programmazione
+  - python
+  - tooling
+  - import
+aliases:
+  - isort
 prerequisites: []
 related: []
+title: isort
 ---
 
 # isort
@@ -114,7 +120,7 @@ Con `pre-commit`, `isort` puo girare automaticamente prima del commit, evitando 
 
 ## Collegamenti
 
-- [[Programmazione/Python/Indice python|Indice Python]]
-- [[Stile]]
-- [[pre-commit]]
-- [[uv pipx e poetry]]
+- [[Programmazione/Python/Indice Python|Indice Python]]
+- [[Programmazione/Python/Pagine/Stile|Stile]]
+- [[Programmazione/Python/Pagine/pre-commit|pre-commit]]
+- [[Programmazione/Python/Pagine/uv pipx e poetry|uv pipx e poetry]]

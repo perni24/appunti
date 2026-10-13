@@ -3,13 +3,18 @@ date: 2026-06-04
 area: Programmazione
 topic: React
 type: technical-note
-status: "non revisionato"
+status: non revisionato
 publish: true
-difficulty: beginner
-tags: [react, hooks, state]
-aliases: [useState]
+difficulty: base
+tags:
+  - react
+  - hooks
+  - state
+aliases:
+  - useState
 prerequisites: []
 related: []
+title: useState
 ---
 
 # useState
@@ -121,8 +126,8 @@ L'input e controllato: il valore mostrato deriva dallo state React.
 
 ## Collegamenti
 
-- [[Programmazione/React/Indice react|Indice React]]
-- [[State colocato]]
-- [[Derived state]]
-- [[useReducer]]
-- [[Props e Flusso di dati unidirezionale]]
+- [[Programmazione/React/Indice React|Indice React]]
+- [[Programmazione/React/Pagine/State colocato|State colocato]]
+- [[Programmazione/React/Pagine/Derived state|Derived state]]
+- [[Programmazione/React/Pagine/useReducer|useReducer]]
+- [[Programmazione/React/Pagine/Props e Flusso di dati unidirezionale|Props e Flusso di dati unidirezionale]]

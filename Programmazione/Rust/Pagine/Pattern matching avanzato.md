@@ -1,15 +1,19 @@
-﻿---
+---
 date: 2026-05-20
 area: Programmazione
 topic: Rust
 type: technical-note
-status: "non revisionato"
+status: non revisionato
 publish: true
 difficulty: base
-tags: [programmazione, rust, pattern-matching, avanzato]
+tags:
+  - programmazione
+  - rust
+  - pattern-matching
+  - avanzato
 aliases:
-  - "Pattern avanzati Rust"
-  - "Match avanzato Rust"
+  - Pattern avanzati Rust
+  - Match avanzato Rust
 prerequisites:
   - "[[Programmazione/Rust/Pagine/Pattern Matching]]"
   - "[[Programmazione/Rust/Pagine/Destructuring]]"
@@ -17,6 +21,7 @@ related:
   - "[[Programmazione/Rust/Pagine/Enums]]"
   - "[[Programmazione/Rust/Pagine/Borrow checker]]"
   - "[[Programmazione/Rust/Pagine/Aliasing rules]]"
+title: Pattern matching avanzato
 ---
 
 # Pattern matching avanzato
@@ -160,3 +165,8 @@ Il match combina range, alternative e guardie. In questo esempio il token viene 
 - [[Programmazione/Rust/Pagine/Borrow checker|Borrow checker]]
 - [[Programmazione/Rust/Pagine/Aliasing rules|Aliasing rules]]
 
+
+
+## Navigazione
+
+- [[Programmazione/Rust/Indice Rust|Indice Rust]]

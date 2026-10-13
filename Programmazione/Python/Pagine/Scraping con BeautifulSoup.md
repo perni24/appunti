@@ -3,13 +3,20 @@ date: 2026-06-03
 area: Programmazione
 topic: Python
 type: operational-note
-status: "non revisionato"
+status: non revisionato
 publish: true
-difficulty: intermediate
-tags: [programmazione, python, scraping, beautifulsoup]
-aliases: [BeautifulSoup, Web scraping Python]
+difficulty: intermedio
+tags:
+  - programmazione
+  - python
+  - scraping
+  - beautifulsoup
+aliases:
+  - BeautifulSoup
+  - Web scraping Python
 prerequisites: []
 related: []
+title: Scraping con BeautifulSoup
 ---
 
 # Scraping con BeautifulSoup
@@ -141,8 +148,8 @@ Procedura consigliata:
 
 ## Collegamenti
 
-- [[Programmazione/Python/Indice python|Indice Python]]
-- [[HTTPX e requests]]
-- [[Gestione File]]
-- [[Automazione file e script]]
-- [[pandas]]
+- [[Programmazione/Python/Indice Python|Indice Python]]
+- [[Programmazione/Python/Pagine/HTTPX e requests|HTTPX e requests]]
+- [[Programmazione/Python/Pagine/Gestione File|Gestione File]]
+- [[Programmazione/Python/Pagine/Automazione file e script|Automazione file e script]]
+- [[Programmazione/Python/Pagine/pandas|pandas]]

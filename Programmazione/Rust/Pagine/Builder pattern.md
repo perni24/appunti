@@ -3,7 +3,7 @@ date: 2026-05-28
 area: Programmazione
 topic: Rust
 type: technical-note
-status: "non revisionato"
+status: non revisionato
 publish: true
 difficulty: intermedio
 tags:
@@ -11,8 +11,8 @@ tags:
   - rust
   - api-design-idiomatico
 aliases:
-  - "Builder pattern"
-  - "Builder Rust"
+  - Builder pattern
+  - Builder Rust
 prerequisites:
   - "[[Programmazione/Rust/Pagine/Structs]]"
   - "[[Programmazione/Rust/Pagine/Default]]"
@@ -21,6 +21,7 @@ related:
   - "[[Programmazione/Rust/Pagine/Newtype pattern]]"
   - "[[Programmazione/Rust/Pagine/Typestate pattern]]"
   - "[[Programmazione/Rust/Pagine/Configurazione applicativa]]"
+title: Builder pattern
 ---
 
 # Builder pattern
@@ -173,10 +174,10 @@ Il call site rende chiaro cosa viene configurato, senza dipendere dall'ordine de
 
 ## Collegamenti
 
-- [[Programmazione/Rust/Indice rust|Indice Rust]]
-- [[Programmazione/Rust/Pagine/Public API design]]
-- [[Programmazione/Rust/Pagine/Newtype pattern]]
-- [[Programmazione/Rust/Pagine/Typestate pattern]]
-- [[Programmazione/Rust/Pagine/Configurazione applicativa]]
-- [[Programmazione/Rust/Pagine/Default]]
-- [[Programmazione/Rust/Pagine/Structs]]
+- [[Programmazione/Rust/Indice Rust|Indice Rust]]
+- [[Programmazione/Rust/Pagine/Public API design|Public API design]]
+- [[Programmazione/Rust/Pagine/Newtype pattern|Newtype pattern]]
+- [[Programmazione/Rust/Pagine/Typestate pattern|Typestate pattern]]
+- [[Programmazione/Rust/Pagine/Configurazione applicativa|Configurazione applicativa]]
+- [[Programmazione/Rust/Pagine/Default|Default]]
+- [[Programmazione/Rust/Pagine/Structs|Structs]]

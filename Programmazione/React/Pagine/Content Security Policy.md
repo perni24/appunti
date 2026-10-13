@@ -3,13 +3,19 @@ date: 2026-06-04
 area: Programmazione
 topic: React
 type: technical-note
-status: "non revisionato"
+status: non revisionato
 publish: true
-difficulty: advanced
-tags: [react, security, csp]
-aliases: [Content Security Policy, CSP]
+difficulty: avanzato
+tags:
+  - react
+  - security
+  - csp
+aliases:
+  - Content Security Policy
+  - CSP
 prerequisites: []
 related: []
+title: Content Security Policy
 ---
 
 # Content Security Policy
@@ -102,8 +108,8 @@ Va adattata a CDN, analytics, font e API realmente usati.
 
 ## Collegamenti
 
-- [[Programmazione/React/Indice react|Indice React]]
-- [[Protezione XSS]]
-- [[CSRF]]
-- [[Gestione Autenticazione]]
-- [[API layer]]
+- [[Programmazione/React/Indice React|Indice React]]
+- [[Programmazione/React/Pagine/Protezione XSS|Protezione XSS]]
+- [[Programmazione/React/Pagine/CSRF|CSRF]]
+- [[Programmazione/React/Pagine/Gestione Autenticazione|Gestione Autenticazione]]
+- [[Programmazione/React/Pagine/API layer|API layer]]

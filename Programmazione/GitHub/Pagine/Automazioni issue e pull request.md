@@ -3,13 +3,27 @@ date: 2026-07-07
 area: Programmazione
 topic: GitHub
 type: technical-note
-status: "non revisionato"
+status: non revisionato
 publish: true
 difficulty: avanzato
-tags: [github, automazione, issues, pull-request]
-aliases: [Automazioni issue e pull request, Automazioni GitHub issue PR]
-prerequisites: [Issues GitHub, Pull request, GitHub REST API]
-related: [GitHub Actions, GitHub Apps, Webhooks GitHub, GitHub REST API]
+tags:
+  - github
+  - automazione
+  - issues
+  - pull-request
+aliases:
+  - Automazioni issue e pull request
+  - Automazioni GitHub issue PR
+prerequisites:
+  - "[[Programmazione/GitHub/Pagine/Issues GitHub]]"
+  - "[[Programmazione/GitHub/Pagine/Pull request]]"
+  - "[[Programmazione/GitHub/Pagine/GitHub REST API]]"
+related:
+  - "[[Programmazione/GitHub/Pagine/GitHub Actions]]"
+  - "[[Programmazione/GitHub/Pagine/GitHub Apps]]"
+  - "[[Programmazione/GitHub/Pagine/Webhooks GitHub]]"
+  - "[[Programmazione/GitHub/Pagine/GitHub REST API]]"
+title: Automazioni issue e pull request
 ---
 
 # Automazioni issue e pull request
@@ -109,14 +123,14 @@ La parte importante e separare automazioni informative da controlli bloccanti.
 
 ## Collegamenti
 
-- [[Programmazione/GitHub/Indice GitHub]]
-- [[Issues GitHub]]
-- [[Pull request]]
-- [[Labels milestones e assignees]]
-- [[GitHub Actions]]
-- [[GitHub REST API]]
-- [[GitHub Apps]]
-- [[Webhooks GitHub]]
+- [[Programmazione/GitHub/Indice GitHub|Indice GitHub]]
+- [[Programmazione/GitHub/Pagine/Issues GitHub|Issues GitHub]]
+- [[Programmazione/GitHub/Pagine/Pull request|Pull request]]
+- [[Programmazione/GitHub/Pagine/Labels milestones e assignees|Labels milestones e assignees]]
+- [[Programmazione/GitHub/Pagine/GitHub Actions|GitHub Actions]]
+- [[Programmazione/GitHub/Pagine/GitHub REST API|GitHub REST API]]
+- [[Programmazione/GitHub/Pagine/GitHub Apps|GitHub Apps]]
+- [[Programmazione/GitHub/Pagine/Webhooks GitHub|Webhooks GitHub]]
 
 ## Fonti
 

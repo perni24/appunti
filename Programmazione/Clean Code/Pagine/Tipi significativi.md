@@ -3,13 +3,24 @@ date: 2026-07-09
 area: Programmazione
 topic: Clean Code
 type: theory-note
-status: "non revisionato"
+status: non revisionato
 publish: true
 difficulty: intermedio
-tags: [clean-code, tipi, modellazione]
-aliases: [Tipi significativi, Meaningful types]
-prerequisites: [Primitive obsession, Value objects]
-related: [Modellazione del dominio, Invarianti del dominio, Contratti impliciti ed espliciti]
+tags:
+  - clean-code
+  - tipi
+  - modellazione
+aliases:
+  - Tipi significativi
+  - Meaningful types
+prerequisites:
+  - "[[Programmazione/Clean Code/Pagine/Primitive obsession]]"
+  - "[[Programmazione/Clean Code/Pagine/Value objects]]"
+related:
+  - "[[Programmazione/Clean Code/Pagine/Modellazione del dominio]]"
+  - "[[Programmazione/Clean Code/Pagine/Invarianti del dominio]]"
+  - "[[Programmazione/Clean Code/Pagine/Contratti impliciti ed espliciti]]"
+title: Tipi significativi
 ---
 
 # Tipi significativi
@@ -83,12 +94,12 @@ Il codice distingue importo, valuta e regola.
 
 ## Collegamenti
 
-- [[Programmazione/Clean Code/Indice Clean Code]]
-- [[Primitive obsession]]
-- [[Value objects]]
-- [[Invarianti del dominio]]
-- [[Modellazione del dominio]]
-- [[Contratti impliciti ed espliciti]]
+- [[Programmazione/Clean Code/Indice Clean Code|Indice Clean Code]]
+- [[Programmazione/Clean Code/Pagine/Primitive obsession|Primitive obsession]]
+- [[Programmazione/Clean Code/Pagine/Value objects|Value objects]]
+- [[Programmazione/Clean Code/Pagine/Invarianti del dominio|Invarianti del dominio]]
+- [[Programmazione/Clean Code/Pagine/Modellazione del dominio|Modellazione del dominio]]
+- [[Programmazione/Clean Code/Pagine/Contratti impliciti ed espliciti|Contratti impliciti ed espliciti]]
 
 ## Fonti
 

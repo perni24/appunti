@@ -3,13 +3,24 @@ date: 2026-07-09
 area: Programmazione
 topic: Clean Code
 type: theory-note
-status: "non revisionato"
+status: non revisionato
 publish: true
 difficulty: intermedio
-tags: [clean-code, modellazione, oggetti]
-aliases: [Data objects e behavior objects, Data objects, Behavior objects]
-prerequisites: [Clean Code]
-related: [Oggetti con responsabilita chiara, Incapsulamento, Value objects]
+tags:
+  - clean-code
+  - modellazione
+  - oggetti
+aliases:
+  - Data objects e behavior objects
+  - Data objects
+  - Behavior objects
+prerequisites:
+  - "[[Programmazione/Clean Code/Pagine/Clean Code]]"
+related:
+  - "[[Programmazione/Clean Code/Pagine/Oggetti con responsabilita chiara]]"
+  - "[[Programmazione/Clean Code/Pagine/Incapsulamento]]"
+  - "[[Programmazione/Clean Code/Pagine/Value objects]]"
+title: Data objects e behavior objects
 ---
 
 # Data objects e behavior objects
@@ -89,11 +100,11 @@ Il DTO trasporta dati. L'oggetto `User` espone una regola.
 
 ## Collegamenti
 
-- [[Programmazione/Clean Code/Indice Clean Code]]
-- [[Clean Code]]
-- [[Oggetti con responsabilita chiara]]
-- [[Value objects]]
-- [[Invarianti del dominio]]
+- [[Programmazione/Clean Code/Indice Clean Code|Indice Clean Code]]
+- [[Programmazione/Clean Code/Pagine/Clean Code|Clean Code]]
+- [[Programmazione/Clean Code/Pagine/Oggetti con responsabilita chiara|Oggetti con responsabilita chiara]]
+- [[Programmazione/Clean Code/Pagine/Value objects|Value objects]]
+- [[Programmazione/Clean Code/Pagine/Invarianti del dominio|Invarianti del dominio]]
 
 ## Fonti
 

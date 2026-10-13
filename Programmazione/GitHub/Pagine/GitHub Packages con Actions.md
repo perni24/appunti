@@ -3,13 +3,25 @@ date: 2026-07-07
 area: Programmazione
 topic: GitHub
 type: technical-note
-status: "non revisionato"
+status: non revisionato
 publish: true
 difficulty: intermedio
-tags: [github, github-actions, github-packages, packages, registry]
-aliases: [GitHub Packages con Actions, Packages con Actions]
-prerequisites: [GitHub Actions, Permissions GitHub Actions]
-related: [Release automation GitHub Actions, OIDC GitHub Actions]
+tags:
+  - github
+  - github-actions
+  - github-packages
+  - packages
+  - registry
+aliases:
+  - GitHub Packages con Actions
+  - Packages con Actions
+prerequisites:
+  - "[[Programmazione/GitHub/Pagine/GitHub Actions]]"
+  - "[[Programmazione/GitHub/Pagine/Permissions GitHub Actions]]"
+related:
+  - "[[Programmazione/GitHub/Pagine/Release automation GitHub Actions]]"
+  - "[[Programmazione/GitHub/Pagine/OIDC GitHub Actions]]"
+title: GitHub Packages con Actions
 ---
 
 # GitHub Packages con Actions
@@ -111,11 +123,11 @@ In questo schema il package deriva da codice testato e versionato.
 
 ## Collegamenti
 
-- [[Programmazione/GitHub/Indice GitHub]]
-- [[GitHub Actions]]
-- [[Permissions GitHub Actions]]
-- [[Release automation GitHub Actions]]
-- [[Sicurezza dei token GitHub]]
+- [[Programmazione/GitHub/Indice GitHub|Indice GitHub]]
+- [[Programmazione/GitHub/Pagine/GitHub Actions|GitHub Actions]]
+- [[Programmazione/GitHub/Pagine/Permissions GitHub Actions|Permissions GitHub Actions]]
+- [[Programmazione/GitHub/Pagine/Release automation GitHub Actions|Release automation GitHub Actions]]
+- [[Programmazione/GitHub/Pagine/Sicurezza dei token GitHub|Sicurezza dei token GitHub]]
 
 ## Fonti
 

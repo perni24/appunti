@@ -3,13 +3,23 @@ date: 2026-07-09
 area: Programmazione
 topic: Clean Code
 type: theory-note
-status: "non revisionato"
+status: non revisionato
 publish: true
 difficulty: avanzato
-tags: [clean-code, performance, hot-path]
-aliases: [Hot path, Percorso critico]
-prerequisites: [Profiling prima del refactoring]
-related: [Performance e leggibilita, Allocazioni inutili, Cache e invalidazione]
+tags:
+  - clean-code
+  - performance
+  - hot-path
+aliases:
+  - Hot path
+  - Percorso critico
+prerequisites:
+  - "[[Programmazione/Clean Code/Pagine/Profiling prima del refactoring]]"
+related:
+  - "[[Programmazione/Clean Code/Pagine/Performance e leggibilita]]"
+  - "[[Programmazione/Clean Code/Pagine/Allocazioni inutili]]"
+  - "[[Programmazione/Clean Code/Pagine/Cache e invalidazione]]"
+title: Hot path
 ---
 
 # Hot path
@@ -67,11 +77,11 @@ Questa funzione e semplice. Se viene eseguita miliardi di volte in una pipeline 
 
 ## Collegamenti
 
-- [[Programmazione/Clean Code/Indice Clean Code]]
-- [[Profiling prima del refactoring]]
-- [[Performance e leggibilita]]
-- [[Allocazioni inutili]]
-- [[Cache e invalidazione]]
+- [[Programmazione/Clean Code/Indice Clean Code|Indice Clean Code]]
+- [[Programmazione/Clean Code/Pagine/Profiling prima del refactoring|Profiling prima del refactoring]]
+- [[Programmazione/Clean Code/Pagine/Performance e leggibilita|Performance e leggibilita]]
+- [[Programmazione/Clean Code/Pagine/Allocazioni inutili|Allocazioni inutili]]
+- [[Programmazione/Clean Code/Pagine/Cache e invalidazione|Cache e invalidazione]]
 
 ## Fonti
 

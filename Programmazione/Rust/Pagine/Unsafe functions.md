@@ -3,7 +3,7 @@ date: 2026-05-26
 area: Programmazione
 topic: Rust
 type: technical-note
-status: "non revisionato"
+status: non revisionato
 publish: true
 difficulty: avanzato
 tags:
@@ -11,8 +11,8 @@ tags:
   - rust
   - unsafe-rust-in-profondita
 aliases:
-  - "unsafe fn"
-  - "Funzioni unsafe"
+  - unsafe fn
+  - Funzioni unsafe
 prerequisites:
   - "[[Programmazione/Rust/Pagine/Unsafe Rust]]"
   - "[[Programmazione/Rust/Pagine/Invariants]]"
@@ -20,6 +20,7 @@ related:
   - "[[Programmazione/Rust/Pagine/Raw pointers]]"
   - "[[Programmazione/Rust/Pagine/Unsafe traits]]"
   - "[[Programmazione/Rust/Pagine/Unsafe abstractions sicure]]"
+title: Unsafe functions
 ---
 
 # Unsafe functions
@@ -120,3 +121,8 @@ Questa funzione non puo verificare che memoria e lunghezza siano valide. Il cont
 - [[Programmazione/Rust/Pagine/Invariants|Invariants]]
 - [[Programmazione/Rust/Pagine/Unsafe abstractions sicure|Unsafe abstractions sicure]]
 - [[Programmazione/Rust/Pagine/Undefined behavior|Undefined behavior]]
+
+
+## Navigazione
+
+- [[Programmazione/Rust/Indice Rust|Indice Rust]]

@@ -3,13 +3,22 @@ date: 2026-06-22
 area: Programmazione
 topic: TypeScript
 type: technical-note
-status: "non revisionato"
+status: non revisionato
 publish: true
 difficulty: base
-tags: [typescript, classi, access-modifiers, oop]
-aliases: [Visibilita e modificatori di accesso]
-prerequisites: [Classi]
-related: [Classi astratte, Implementazione di interfacce]
+tags:
+  - typescript
+  - classi
+  - access-modifiers
+  - oop
+aliases:
+  - Visibilita e modificatori di accesso
+prerequisites:
+  - "[[Programmazione/TypeScript/Pagine/Classi]]"
+related:
+  - "[[Programmazione/TypeScript/Pagine/Classi astratte]]"
+  - "[[Programmazione/TypeScript/Pagine/Implementazione di interfacce]]"
+title: Visibilita e modificatori di accesso
 ---
 
 # Visibilita e modificatori di accesso
@@ -100,5 +109,10 @@ Il costruttore privato forza la creazione tramite `Password.create`, dove viene 
 ## Collegamenti
 
 - [[Programmazione/TypeScript/Pagine/Classi|Classi]]
-- [[Classi astratte]]
-- [[Implementazione di interfacce]]
+- [[Programmazione/TypeScript/Pagine/Classi astratte|Classi astratte]]
+- [[Programmazione/TypeScript/Pagine/Implementazione di interfacce|Implementazione di interfacce]]
+
+
+## Navigazione
+
+- [[Programmazione/TypeScript/Indice TypeScript|Indice TypeScript]]

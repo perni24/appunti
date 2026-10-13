@@ -3,13 +3,24 @@ date: 2026-06-22
 area: Programmazione
 topic: TypeScript
 type: technical-note
-status: "non revisionato"
+status: non revisionato
 publish: true
 difficulty: avanzato
-tags: [typescript, mapped-types, keyof, utility-types]
-aliases: [Mapped Type]
-prerequisites: [Keyof e typeof, Type Aliases e Interfaces]
-related: [Utility Types, Utility Types personalizzati, Indexed Access Types]
+tags:
+  - typescript
+  - mapped-types
+  - keyof
+  - utility-types
+aliases:
+  - Mapped Type
+prerequisites:
+  - "[[Programmazione/TypeScript/Pagine/Keyof e typeof]]"
+  - "[[Programmazione/TypeScript/Pagine/Type Aliases e Interfaces]]"
+related:
+  - "[[Programmazione/TypeScript/Pagine/Utility Types]]"
+  - "[[Programmazione/TypeScript/Pagine/Utility Types personalizzati]]"
+  - "[[Programmazione/TypeScript/Pagine/Indexed Access Types]]"
+title: Mapped Types
 ---
 
 # Mapped Types
@@ -86,7 +97,12 @@ type UserForm = FormState<User>;
 
 ## Collegamenti
 
-- [[Keyof e typeof]]
-- [[Indexed Access Types]]
-- [[Utility Types]]
-- [[Utility Types personalizzati]]
+- [[Programmazione/TypeScript/Pagine/Keyof e typeof|Keyof e typeof]]
+- [[Programmazione/TypeScript/Pagine/Indexed Access Types|Indexed Access Types]]
+- [[Programmazione/TypeScript/Pagine/Utility Types|Utility Types]]
+- [[Programmazione/TypeScript/Pagine/Utility Types personalizzati|Utility Types personalizzati]]
+
+
+## Navigazione
+
+- [[Programmazione/TypeScript/Indice TypeScript|Indice TypeScript]]

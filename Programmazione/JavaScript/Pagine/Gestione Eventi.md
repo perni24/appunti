@@ -1,15 +1,28 @@
-﻿---
+---
 date: 2026-06-02
 area: Programmazione
 topic: JavaScript
 type: technical-note
-status: "non revisionato"
+status: non revisionato
 publish: true
-difficulty: beginner
-tags: [javascript, browser, events, dom, event-listener]
-aliases: [Eventi JS, Event handling JavaScript]
-prerequisites: [Funzioni, Manipolazione del DOM]
-related: [Manipolazione del DOM, Callback, AbortController]
+difficulty: base
+tags:
+  - javascript
+  - browser
+  - events
+  - dom
+  - event-listener
+aliases:
+  - Eventi JS
+  - Event handling JavaScript
+prerequisites:
+  - "[[Programmazione/JavaScript/Pagine/Funzioni]]"
+  - "[[Programmazione/JavaScript/Pagine/Manipolazione del DOM]]"
+related:
+  - "[[Programmazione/JavaScript/Pagine/Manipolazione del DOM]]"
+  - "[[Programmazione/JavaScript/Pagine/Callback]]"
+  - "[[Programmazione/JavaScript/Pagine/AbortController]]"
+title: Gestione Eventi
 ---
 
 # Gestione Eventi
@@ -19,6 +32,8 @@ related: [Manipolazione del DOM, Callback, AbortController]
 Gli eventi sono segnali generati dal browser quando accade qualcosa: click, submit, input, caricamento pagina, pressione di tasti, movimento del mouse e altro.
 
 JavaScript puo ascoltare questi eventi ed eseguire funzioni di callback.
+
+Gli esempi presuppongono gli elementi HTML gia disponibili. Nomi come `button`, `link`, `child` e le callback negli schemi vanno definiti dall'applicazione. I listener mostrati nelle diverse sezioni sono alternative didattiche: non registrarli tutti insieme sullo stesso elemento.
 
 ---
 
@@ -71,12 +86,14 @@ button.addEventListener("click", event => {
 
 Differenza importante:
 
-- `event.target`: elemento da cui parte l'evento;
-- `event.currentTarget`: elemento su cui e registrato il listener.
+- `event.target`: destinazione dell'evento, spesso un elemento figlio di quello cliccabile; con Shadow DOM puo essere ritargettizzato;
+- `event.currentTarget`: oggetto sul quale sta venendo eseguito il listener, non necessariamente un elemento HTML.
+
+`currentTarget` e disponibile durante il callback sincrono, poi torna `null`. Se serve dopo un `await`, salvalo subito in una variabile. Per usare `.closest()` verifica prima che `target` sia un `Element`.
 
 ---
 ### preventDefault
-`preventDefault()` blocca il comportamento predefinito del browser.
+`preventDefault()` annulla l'azione predefinita solo per un evento cancellabile e da un listener non passivo. Non interrompe la propagazione. Un `return false` in un listener registrato con `addEventListener()` non ha questo effetto.
 
 Esempio con form:
 
@@ -100,7 +117,7 @@ link.addEventListener("click", event => {
 
 ---
 ### Propagazione
-Un evento attraversa il DOM in tre fasi:
+Il percorso di un evento DOM puo comprendere tre fasi:
 
 1. capturing;
 2. target;
@@ -122,7 +139,7 @@ document.querySelector("#child").addEventListener("click", () => {
 });
 ```
 
-Di default, `addEventListener()` ascolta in fase di bubbling.
+Con `capture: false` (default), il listener viene eseguito al target o quando un evento risale verso il suo contenitore. Non tutti gli eventi fanno bubbling: `focus` e `blur`, per esempio, no; per delegarli valuta `focusin` e `focusout` o il capturing.
 
 ---
 ### stopPropagation
@@ -138,6 +155,8 @@ child.addEventListener("click", event => {
 
 Usalo con criterio: bloccare la propagazione puo rompere event delegation o listener globali.
 
+`stopPropagation()` non blocca gli altri listener sullo stesso target. `stopImmediatePropagation()` interrompe anche quelli successivi sul target corrente. Nessuno dei due annulla automaticamente l'azione predefinita.
+
 ---
 ### Event delegation
 La delegazione consiste nel mettere un listener su un contenitore e gestire eventi dei figli.
@@ -146,6 +165,7 @@ La delegazione consiste nel mettere un listener su un contenitore e gestire even
 const list = document.querySelector("#list");
 
 list.addEventListener("click", event => {
+  if (!(event.target instanceof Element)) return;
   const item = event.target.closest("li");
 
   if (!item || !list.contains(item)) {
@@ -183,7 +203,7 @@ Opzioni comuni:
 
 ---
 ### Rimuovere listener
-Per rimuovere un listener devi passare la stessa funzione usata in registrazione.
+Per rimuovere un listener devono coincidere target, tipo di evento, riferimento della callback e valore di `capture`. Non serve ricreare lo stesso oggetto di opzioni; le altre opzioni non partecipano al confronto per la rimozione.
 
 ```js
 function handleClick() {
@@ -208,6 +228,8 @@ button.removeEventListener("click", () => {
 
 Le due arrow function sono riferimenti diversi.
 
+Registrare nuovamente la stessa callback con stesso tipo e `capture` non la duplica. Creare ogni volta una nuova arrow function invece aggiunge un listener distinto.
+
 ---
 ### Cleanup con AbortController
 `AbortController` puo rimuovere listener in modo pulito.
@@ -226,7 +248,7 @@ Utile quando una parte dell'interfaccia viene smontata o non serve piu.
 
 ---
 ### Eventi di caricamento
-`DOMContentLoaded` scatta quando l'HTML e stato letto e il DOM e pronto.
+`DOMContentLoaded` scatta dopo il parsing e l'esecuzione degli script differiti. Per codice caricato in ritardo usa il controllo `readyState` descritto in [[Programmazione/JavaScript/Pagine/Manipolazione del DOM|Manipolazione del DOM]]. Lo schema qui sotto richiede una funzione `initApp` e registrazione prima dell'evento.
 
 ```js
 document.addEventListener("DOMContentLoaded", () => {
@@ -248,14 +270,20 @@ Nel codice moderno, spesso si usa `<script defer>`.
 ### Eventi comuni
 | Evento | Uso |
 | --- | --- |
-| `click` | Click mouse o tap |
-| `input` | Cambio valore mentre si digita |
+| `click` | Attivazione con mouse, touch o tastiera su controlli nativi |
+| `input` | Modifica del valore da parte dell'utente |
 | `change` | Cambio valore confermato |
 | `submit` | Invio form |
 | `keydown` | Pressione tasto |
 | `mouseover` | Mouse sopra elemento |
 | `focus` | Elemento riceve focus |
 | `blur` | Elemento perde focus |
+
+Assegnare `input.value` da JavaScript non emette automaticamente `input` o `change`: richiama la logica di aggiornamento o emetti esplicitamente un evento se il contratto lo prevede.
+
+### Listener asincroni
+
+`addEventListener()` ignora il valore restituito, incluse le Promise. Gestisci quindi i rifiuti nel listener o con `.catch()`. Per un submit, chiama `preventDefault()` **prima** del primo `await`, quando l'evento e ancora in dispatch. L'esempio completo e in [[Programmazione/JavaScript/Pagine/Form Handling e Validazione|Form Handling e Validazione]].
 
 ---
 
@@ -294,24 +322,43 @@ event.stopPropagation();
 
 ## Esempio pratico
 
-Delegazione per una lista:
+Delegazione con pulsanti accessibili da tastiera. L'esempio rimuove una riga soltanto dalla UI, non da un database:
 
-```js
-const list = document.querySelector("[data-user-list]");
-
-list.addEventListener("click", (event) => {
-  const button = event.target.closest("[data-action='delete']");
-
-  if (!button || !list.contains(button)) {
-    return;
-  }
-
-  const item = button.closest("[data-user-id]");
-  deleteUser(item.dataset.userId);
-});
+```html
+<ul data-user-list>
+  <li data-user-id="42">
+    Ada
+    <button type="button" data-action="delete"><span>Rimuovi</span></button>
+  </li>
+</ul>
 ```
 
-Un solo listener gestisce anche elementi aggiunti dinamicamente.
+```js
+function mountUserList(list) {
+  if (!(list instanceof Element)) {
+    throw new TypeError("Lista DOM mancante");
+  }
+
+  const controller = new AbortController();
+  list.addEventListener("click", event => {
+    if (!(event.target instanceof Element)) return;
+    const button = event.target.closest("button[data-action='delete']");
+    if (!button || button.closest("[data-user-list]") !== list) return;
+
+    const item = button.closest("[data-user-id]");
+    if (!item || item === list || !list.contains(item)) return;
+
+    item.remove();
+  }, { signal: controller.signal });
+
+  return () => controller.abort();
+}
+
+const cleanupUserList = mountUserList(document.querySelector("[data-user-list]"));
+// Allo smontaggio dell'interfaccia: cleanupUserList();
+```
+
+Un solo listener gestisce righe aggiunte dopo la registrazione e click su un figlio del pulsante. Le liste annidate sono escluse dalla gestione del contenitore esterno. Registra una sola volta, oppure esegui il cleanup prima di registrare di nuovo. Per cancellare sul server servono autorizzazione e gestione di attesa/errori, non solo `item.remove()`.
 
 ## Varianti
 
@@ -345,8 +392,24 @@ Un solo listener gestisce anche elementi aggiunti dinamicamente.
 
 ## Collegamenti
 
-- [[Manipolazione del DOM]]
-- [[Callback]]
-- [[AbortController]]
-- [[Form Handling e Validazione]]
-- [[Web Components]]
+- [[Programmazione/JavaScript/Pagine/Manipolazione del DOM|Manipolazione del DOM]]
+- [[Programmazione/JavaScript/Pagine/Callback|Callback]]
+- [[Programmazione/JavaScript/Pagine/AbortController|AbortController]]
+- [[Programmazione/JavaScript/Pagine/Form Handling e Validazione|Form Handling e Validazione]]
+- [[Programmazione/JavaScript/Pagine/Web Components|Web Components]]
+
+
+## Fonti
+
+- [MDN: addEventListener](https://developer.mozilla.org/en-US/docs/Web/API/EventTarget/addEventListener).
+- [MDN: removeEventListener e capture](https://developer.mozilla.org/en-US/docs/Web/API/EventTarget/removeEventListener).
+- [MDN: durata di currentTarget](https://developer.mozilla.org/en-US/docs/Web/API/Event/currentTarget).
+- [MDN: preventDefault](https://developer.mozilla.org/en-US/docs/Web/API/Event/preventDefault).
+- [MDN: stopPropagation](https://developer.mozilla.org/en-US/docs/Web/API/Event/stopPropagation).
+- [MDN: evento input](https://developer.mozilla.org/en-US/docs/Web/API/Element/input_event).
+- [MDN: evento submit](https://developer.mozilla.org/en-US/docs/Web/API/HTMLFormElement/submit_event).
+- [MDN: DOMContentLoaded](https://developer.mozilla.org/en-US/docs/Web/API/Document/DOMContentLoaded_event).
+
+## Navigazione
+
+- [[Programmazione/JavaScript/Indice JavaScript|Indice JavaScript]]

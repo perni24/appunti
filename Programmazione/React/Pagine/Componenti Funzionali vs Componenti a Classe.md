@@ -3,13 +3,19 @@ date: 2026-06-04
 area: Programmazione
 topic: React
 type: theory-note
-status: "non revisionato"
+status: non revisionato
 publish: true
-difficulty: beginner
-tags: [react, components, frontend]
-aliases: [Componenti Funzionali, Componenti a Classe]
+difficulty: base
+tags:
+  - react
+  - components
+  - frontend
+aliases:
+  - Componenti Funzionali
+  - Componenti a Classe
 prerequisites: []
 related: []
+title: Componenti Funzionali vs Componenti a Classe
 ---
 
 # Componenti Funzionali vs Componenti a Classe
@@ -122,8 +128,8 @@ La logica di interazione arriva tramite props, mentre lo stato locale resta dove
 
 ## Collegamenti
 
-- [[Programmazione/React/Indice react|Indice React]]
-- [[useState]]
-- [[useEffect]]
-- [[Custom Hooks]]
-- [[Error Boundaries]]
+- [[Programmazione/React/Indice React|Indice React]]
+- [[Programmazione/React/Pagine/useState|useState]]
+- [[Programmazione/React/Pagine/useEffect|useEffect]]
+- [[Programmazione/React/Pagine/Custom Hooks|Custom Hooks]]
+- [[Programmazione/React/Pagine/Error Boundaries|Error Boundaries]]

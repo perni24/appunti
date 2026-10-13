@@ -3,13 +3,17 @@ date: 2026-06-03
 area: Programmazione
 topic: Python
 type: technical-note
-status: "non revisionato"
+status: non revisionato
 publish: true
-difficulty: intermediate
-tags: [python, programming]
-aliases: [Set]
+difficulty: intermedio
+tags:
+  - python
+  - programming
+aliases:
+  - Set
 prerequisites: []
 related: []
+title: Set in Python
 ---
 
 # Set in Python
@@ -88,3 +92,8 @@ if user_roles & allowed_roles:
 - [[Programmazione/Python/Pagine/Liste|Liste]]
 - [[Programmazione/Python/Pagine/Dizionari|Dizionari]]
 - [[Programmazione/Python/Pagine/Operatori|Operatori]]
+
+
+## Navigazione
+
+- [[Programmazione/Python/Indice Python|Indice Python]]

@@ -3,13 +3,20 @@ date: 2026-06-04
 area: Programmazione
 topic: React
 type: technical-note
-status: "non revisionato"
+status: non revisionato
 publish: true
-difficulty: advanced
-tags: [react, hooks, suspense]
-aliases: [use, use hook, React use]
+difficulty: avanzato
+tags:
+  - react
+  - hooks
+  - suspense
+aliases:
+  - use
+  - use hook
+  - React use
 prerequisites: []
 related: []
+title: use hook
 ---
 
 # use hook
@@ -76,8 +83,8 @@ In un framework compatibile, una promise preparata a livello superiore puo esser
 
 ## Collegamenti
 
-- [[Programmazione/React/Indice react|Indice React]]
-- [[Suspense e Lazy Loading]]
-- [[Server Components]]
-- [[Data Fetching e Cache]]
+- [[Programmazione/React/Indice React|Indice React]]
+- [[Programmazione/React/Pagine/Suspense e Lazy Loading|Suspense e Lazy Loading]]
+- [[Programmazione/React/Pagine/Server Components|Server Components]]
+- [[Programmazione/React/Pagine/Data Fetching e Cache|Data Fetching e Cache]]
 - [React Reference](https://react.dev/reference/react)

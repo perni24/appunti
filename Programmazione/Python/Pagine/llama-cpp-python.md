@@ -3,13 +3,20 @@ date: 2026-06-03
 area: Programmazione
 topic: Python
 type: technical-note
-status: "non revisionato"
+status: non revisionato
 publish: true
-difficulty: intermediate
-tags: [programmazione, python, llm, llama]
-aliases: [llama-cpp-python, llama.cpp Python]
+difficulty: intermedio
+tags:
+  - programmazione
+  - python
+  - llm
+  - llama
+aliases:
+  - llama-cpp-python
+  - llama.cpp Python
 prerequisites: []
 related: []
+title: llama-cpp-python
 ---
 
 # llama-cpp-python
@@ -129,8 +136,7 @@ print(complete("Elenca tre vantaggi di SQLite."))
 
 ## Collegamenti
 
-- [[Programmazione/Python/Indice python|Indice Python]]
-- [[OpenAI API]]
-- [[AI/Indice AI|Indice AI]]
-- [[Ambienti Virtuali]]
-- [[Memory Management]]
+- [[Programmazione/Python/Indice Python|Indice Python]]
+- [[Programmazione/Python/Pagine/OpenAI API|OpenAI API]]
+- [[Programmazione/Python/Pagine/Ambienti Virtuali|Ambienti Virtuali]]
+- [[Programmazione/Python/Pagine/Memory Management|Memory Management]]

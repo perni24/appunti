@@ -3,13 +3,23 @@ date: 2026-07-09
 area: Programmazione
 topic: Clean Code
 type: theory-note
-status: "non revisionato"
+status: non revisionato
 publish: true
 difficulty: intermedio
-tags: [clean-code, design, responsabilita]
-aliases: [Separazione delle responsabilita, Separation of concerns]
-prerequisites: [Clean Code]
-related: [Funzioni con responsabilita singola, Coesione e accoppiamento, SOLID]
+tags:
+  - clean-code
+  - design
+  - responsabilita
+aliases:
+  - Separazione delle responsabilita
+  - Separation of concerns
+prerequisites:
+  - "[[Programmazione/Clean Code/Pagine/Clean Code]]"
+related:
+  - "[[Programmazione/Clean Code/Pagine/Funzioni con responsabilita singola]]"
+  - "[[Programmazione/Clean Code/Pagine/Coesione e accoppiamento]]"
+  - "[[Programmazione/Clean Code/Pagine/SOLID]]"
+title: Separazione delle responsabilita
 ---
 
 # Separazione delle responsabilita
@@ -87,12 +97,12 @@ Il controller coordina l'input, ma non contiene tutta la logica.
 
 ## Collegamenti
 
-- [[Programmazione/Clean Code/Indice Clean Code]]
-- [[Funzioni con responsabilita singola]]
-- [[Coesione e accoppiamento]]
-- [[SOLID]]
+- [[Programmazione/Clean Code/Indice Clean Code|Indice Clean Code]]
+- [[Programmazione/Clean Code/Pagine/Funzioni con responsabilita singola|Funzioni con responsabilita singola]]
+- [[Programmazione/Clean Code/Pagine/Coesione e accoppiamento|Coesione e accoppiamento]]
+- [[Programmazione/Clean Code/Pagine/SOLID|SOLID]]
 - [[Programmazione/Clean Code/Pagine/Incapsulamento|Incapsulamento]]
-- [[Oggetti con responsabilita chiara]]
+- [[Programmazione/Clean Code/Pagine/Oggetti con responsabilita chiara|Oggetti con responsabilita chiara]]
 
 ## Fonti
 

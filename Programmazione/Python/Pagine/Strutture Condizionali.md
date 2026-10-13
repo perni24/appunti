@@ -3,13 +3,17 @@ date: 2026-06-03
 area: Programmazione
 topic: Python
 type: technical-note
-status: "non revisionato"
+status: non revisionato
 publish: true
-difficulty: intermediate
-tags: [python, programming]
-aliases: [Strutture Condizionali]
+difficulty: intermedio
+tags:
+  - python
+  - programming
+aliases:
+  - Strutture Condizionali
 prerequisites: []
 related: []
+title: Strutture Condizionali in Python
 ---
 
 # Strutture Condizionali in Python
@@ -100,3 +104,8 @@ def can_access(user):
 - [[Programmazione/Python/Pagine/Operatori|Operatori]]
 - [[Programmazione/Python/Pagine/Funzioni|Funzioni]]
 - [[Programmazione/Python/Pagine/Error Handling|Error Handling]]
+
+
+## Navigazione
+
+- [[Programmazione/Python/Indice Python|Indice Python]]

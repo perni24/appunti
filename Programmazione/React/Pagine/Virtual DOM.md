@@ -3,13 +3,19 @@ date: 2026-06-04
 area: Programmazione
 topic: React
 type: theory-note
-status: "non revisionato"
+status: non revisionato
 publish: true
-difficulty: intermediate
-tags: [react, rendering, internals]
-aliases: [Virtual DOM, VDOM]
+difficulty: intermedio
+tags:
+  - react
+  - rendering
+  - internals
+aliases:
+  - Virtual DOM
+  - VDOM
 prerequisites: []
 related: []
+title: Virtual DOM
 ---
 
 # Virtual DOM
@@ -84,8 +90,8 @@ React puo preservare correttamente identita e stato delle righe anche se l'ordin
 
 ## Collegamenti
 
-- [[Programmazione/React/Indice react|Indice React]]
-- [[Fiber Architecture e Concurrent Mode]]
-- [[Batching]]
-- [[Profiler e Debugging]]
-- [[Rendering Condizionale e Liste]]
+- [[Programmazione/React/Indice React|Indice React]]
+- [[Programmazione/React/Pagine/Fiber Architecture e Concurrent Mode|Fiber Architecture e Concurrent Mode]]
+- [[Programmazione/React/Pagine/Batching|Batching]]
+- [[Programmazione/React/Pagine/Profiler e Debugging|Profiler e Debugging]]
+- [[Programmazione/React/Pagine/Rendering Condizionale e Liste|Rendering Condizionale e Liste]]

@@ -3,13 +3,24 @@ date: 2026-07-09
 area: Programmazione
 topic: Clean Code
 type: theory-note
-status: "non revisionato"
+status: non revisionato
 publish: true
 difficulty: avanzato
-tags: [clean-code, concorrenza, stato]
-aliases: [Stato condiviso, Shared state]
-prerequisites: [Gestione dello stato, Stato mutabile e immutabile]
-related: [Race condition e leggibilita, Lock e sezioni critiche, Operazioni atomiche]
+tags:
+  - clean-code
+  - concorrenza
+  - stato
+aliases:
+  - Stato condiviso
+  - Shared state
+prerequisites:
+  - "[[Programmazione/Clean Code/Pagine/Gestione dello stato]]"
+  - "[[Programmazione/Clean Code/Pagine/Stato mutabile e immutabile]]"
+related:
+  - "[[Programmazione/Clean Code/Pagine/Race condition e leggibilita]]"
+  - "[[Programmazione/Clean Code/Pagine/Lock e sezioni critiche]]"
+  - "[[Programmazione/Clean Code/Pagine/Operazioni atomiche]]"
+title: Stato condiviso
 ---
 
 # Stato condiviso
@@ -96,12 +107,12 @@ La gestione concorrente viene spostata in un componente responsabile.
 
 ## Collegamenti
 
-- [[Programmazione/Clean Code/Indice Clean Code]]
-- [[Gestione dello stato]]
-- [[Stato mutabile e immutabile]]
-- [[Race condition e leggibilita]]
-- [[Lock e sezioni critiche]]
-- [[Operazioni atomiche]]
+- [[Programmazione/Clean Code/Indice Clean Code|Indice Clean Code]]
+- [[Programmazione/Clean Code/Pagine/Gestione dello stato|Gestione dello stato]]
+- [[Programmazione/Clean Code/Pagine/Stato mutabile e immutabile|Stato mutabile e immutabile]]
+- [[Programmazione/Clean Code/Pagine/Race condition e leggibilita|Race condition e leggibilita]]
+- [[Programmazione/Clean Code/Pagine/Lock e sezioni critiche|Lock e sezioni critiche]]
+- [[Programmazione/Clean Code/Pagine/Operazioni atomiche|Operazioni atomiche]]
 
 ## Fonti
 

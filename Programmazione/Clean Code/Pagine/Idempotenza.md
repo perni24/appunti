@@ -3,13 +3,24 @@ date: 2026-07-09
 area: Programmazione
 topic: Clean Code
 type: theory-note
-status: "non revisionato"
+status: non revisionato
 publish: true
 difficulty: avanzato
-tags: [clean-code, idempotenza, resilienza]
-aliases: [Idempotenza, Idempotency]
-prerequisites: [Gestione esplicita degli errori, Side effects controllati]
-related: [Race condition e leggibilita, Code e worker, Operazioni atomiche]
+tags:
+  - clean-code
+  - idempotenza
+  - resilienza
+aliases:
+  - Idempotenza
+  - Idempotency
+prerequisites:
+  - "[[Programmazione/Clean Code/Pagine/Gestione esplicita degli errori]]"
+  - "[[Programmazione/Clean Code/Pagine/Side effects controllati]]"
+related:
+  - "[[Programmazione/Clean Code/Pagine/Race condition e leggibilita]]"
+  - "[[Programmazione/Clean Code/Pagine/Code e worker]]"
+  - "[[Programmazione/Clean Code/Pagine/Operazioni atomiche]]"
+title: Idempotenza
 ---
 
 # Idempotenza
@@ -98,12 +109,12 @@ La chiave permette al provider di riconoscere tentativi duplicati.
 
 ## Collegamenti
 
-- [[Programmazione/Clean Code/Indice Clean Code]]
-- [[Gestione esplicita degli errori]]
-- [[Side effects controllati]]
-- [[Race condition e leggibilita]]
-- [[Code e worker]]
-- [[Operazioni atomiche]]
+- [[Programmazione/Clean Code/Indice Clean Code|Indice Clean Code]]
+- [[Programmazione/Clean Code/Pagine/Gestione esplicita degli errori|Gestione esplicita degli errori]]
+- [[Programmazione/Clean Code/Pagine/Side effects controllati|Side effects controllati]]
+- [[Programmazione/Clean Code/Pagine/Race condition e leggibilita|Race condition e leggibilita]]
+- [[Programmazione/Clean Code/Pagine/Code e worker|Code e worker]]
+- [[Programmazione/Clean Code/Pagine/Operazioni atomiche|Operazioni atomiche]]
 
 ## Fonti
 

@@ -3,13 +3,23 @@ date: 2026-06-22
 area: Programmazione
 topic: TypeScript
 type: technical-note
-status: "non revisionato"
+status: non revisionato
 publish: true
 difficulty: base
-tags: [typescript, classi, abstract-classes, oop]
-aliases: [Abstract classes TypeScript]
-prerequisites: [Classi, Visibilita e modificatori di accesso]
-related: [Implementazione di interfacce, Generics]
+tags:
+  - typescript
+  - classi
+  - abstract-classes
+  - oop
+aliases:
+  - Abstract classes TypeScript
+prerequisites:
+  - "[[Programmazione/TypeScript/Pagine/Classi]]"
+  - "[[Programmazione/TypeScript/Pagine/Visibilita e modificatori di accesso]]"
+related:
+  - "[[Programmazione/TypeScript/Pagine/Implementazione di interfacce]]"
+  - "[[Programmazione/TypeScript/Pagine/Generics]]"
+title: Classi astratte
 ---
 
 # Classi astratte
@@ -94,6 +104,11 @@ La classe base fornisce `requireByEmail`, mentre le implementazioni concrete dec
 ## Collegamenti
 
 - [[Programmazione/TypeScript/Pagine/Classi|Classi]]
-- [[Visibilita e modificatori di accesso]]
-- [[Implementazione di interfacce]]
+- [[Programmazione/TypeScript/Pagine/Visibilita e modificatori di accesso|Visibilita e modificatori di accesso]]
+- [[Programmazione/TypeScript/Pagine/Implementazione di interfacce|Implementazione di interfacce]]
 - [[Programmazione/TypeScript/Pagine/Generics|Generics]]
+
+
+## Navigazione
+
+- [[Programmazione/TypeScript/Indice TypeScript|Indice TypeScript]]

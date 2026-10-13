@@ -3,13 +3,25 @@ date: 2026-07-07
 area: Programmazione
 topic: GitHub
 type: operational-note
-status: "non revisionato"
+status: non revisionato
 publish: true
 difficulty: intermedio
-tags: [github, github-actions, secrets, troubleshooting]
-aliases: [Troubleshooting secrets GitHub Actions, Troubleshooting secret Actions]
-prerequisites: [Gestire secrets in GitHub Actions, Variabili e secrets GitHub Actions]
-related: [Troubleshooting permissions GitHub Actions, Environments GitHub Actions, Secret scanning]
+tags:
+  - github
+  - github-actions
+  - secrets
+  - troubleshooting
+aliases:
+  - Troubleshooting secrets GitHub Actions
+  - Troubleshooting secret Actions
+prerequisites:
+  - "[[Programmazione/GitHub/Pagine/Gestire secrets in GitHub Actions]]"
+  - "[[Programmazione/GitHub/Pagine/Variabili e secrets GitHub Actions]]"
+related:
+  - "[[Programmazione/GitHub/Pagine/Troubleshooting permissions GitHub Actions]]"
+  - "[[Programmazione/GitHub/Pagine/Environments GitHub Actions]]"
+  - "[[Programmazione/GitHub/Pagine/Secret scanning]]"
+title: Troubleshooting secrets GitHub Actions
 ---
 
 # Troubleshooting secrets GitHub Actions
@@ -101,15 +113,15 @@ Controllo presenza senza stampare il valore:
 
 ## Collegamenti
 
-- [[Programmazione/GitHub/Indice GitHub]]
-- [[Gestire secrets in GitHub Actions]]
-- [[Variabili e secrets GitHub Actions]]
-- [[Environments GitHub Actions]]
-- [[OIDC GitHub Actions]]
-- [[Secret scanning]]
-- [[Sicurezza dei token GitHub]]
-- [[Troubleshooting permissions GitHub Actions]]
-- [[Troubleshooting GitHub Actions]]
+- [[Programmazione/GitHub/Indice GitHub|Indice GitHub]]
+- [[Programmazione/GitHub/Pagine/Gestire secrets in GitHub Actions|Gestire secrets in GitHub Actions]]
+- [[Programmazione/GitHub/Pagine/Variabili e secrets GitHub Actions|Variabili e secrets GitHub Actions]]
+- [[Programmazione/GitHub/Pagine/Environments GitHub Actions|Environments GitHub Actions]]
+- [[Programmazione/GitHub/Pagine/OIDC GitHub Actions|OIDC GitHub Actions]]
+- [[Programmazione/GitHub/Pagine/Secret scanning|Secret scanning]]
+- [[Programmazione/GitHub/Pagine/Sicurezza dei token GitHub|Sicurezza dei token GitHub]]
+- [[Programmazione/GitHub/Pagine/Troubleshooting permissions GitHub Actions|Troubleshooting permissions GitHub Actions]]
+- [[Programmazione/GitHub/Pagine/Troubleshooting GitHub Actions|Troubleshooting GitHub Actions]]
 
 ## Fonti
 

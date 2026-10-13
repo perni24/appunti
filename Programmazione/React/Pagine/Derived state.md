@@ -3,13 +3,19 @@ date: 2026-06-04
 area: Programmazione
 topic: React
 type: theory-note
-status: "non revisionato"
+status: non revisionato
 publish: true
-difficulty: intermediate
-tags: [react, state, rendering]
-aliases: [Derived state, Stato derivato]
+difficulty: intermedio
+tags:
+  - react
+  - state
+  - rendering
+aliases:
+  - Derived state
+  - Stato derivato
 prerequisites: []
 related: []
+title: Derived state
 ---
 
 # Derived state
@@ -108,8 +114,8 @@ function ProductTable({ products, query }) {
 
 ## Collegamenti
 
-- [[Programmazione/React/Indice react|Indice React]]
-- [[useState]]
-- [[useMemo e useCallback]]
-- [[State colocato]]
-- [[Data Fetching e Cache]]
+- [[Programmazione/React/Indice React|Indice React]]
+- [[Programmazione/React/Pagine/useState|useState]]
+- [[Programmazione/React/Pagine/useMemo e useCallback|useMemo e useCallback]]
+- [[Programmazione/React/Pagine/State colocato|State colocato]]
+- [[Programmazione/React/Pagine/Data Fetching e Cache|Data Fetching e Cache]]

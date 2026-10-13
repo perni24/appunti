@@ -3,18 +3,29 @@ date: 2026-07-26
 area: Stampante 3D
 topic: Marlin
 type: technical-note
-
 publish: true
 difficulty: avanzato
-tags: [marlin, psu-control, relay, led, case-light, buzzer, servo]
-aliases: [Accessori Marlin, PSU Control Marlin, Luci e servo Marlin]
+tags:
+  - marlin
+  - psu-control
+  - relay
+  - led
+  - case-light
+  - buzzer
+  - servo
+aliases:
+  - Accessori Marlin
+  - PSU Control Marlin
+  - Luci e servo Marlin
 prerequisites:
   - "[[Stampante 3D/Marlin/Pagine/Scheda madre porte seriali e pin]]"
   - "[[Stampante 3D/Marlin/Pagine/Alimentazione e protezioni hardware]]"
 related:
   - "[[Stampante 3D/Marlin/Pagine/Lingua menu e feedback acustico]]"
   - "[[Stampante 3D/Marlin/Pagine/Sensore di fine filamento e recupero dopo perdita di alimentazione]]"
-marlin-version: "2.1.2.8"
+marlin-version: 2.1.2.8
+title: Alimentatore, rele, LED, luci, buzzer e servo
+status: non revisionato
 ---
 
 # Alimentatore, rele, LED, luci, buzzer e servo
@@ -543,7 +554,7 @@ M300 S880 P200
 
 Se il componente produce sempre lo stesso tono, puo essere un buzzer attivo.
 
-Un trasduttore che richiede piu corrente del pin deve usare un driver. La configurazione completa di menu, mute e feedback e in [[Stampante 3D/Marlin/Pagine/Lingua menu e feedback acustico]].
+Un trasduttore che richiede piu corrente del pin deve usare un driver. La configurazione completa di menu, mute e feedback e in [[Stampante 3D/Marlin/Pagine/Lingua menu e feedback acustico|Lingua menu e feedback acustico]].
 
 ## Servo
 
@@ -659,11 +670,11 @@ Non comandare manualmente un indice usato da:
 - meccanismi di tool change;
 - funzioni proprietarie della scheda.
 
-Un `M280` manuale puo muovere una probe mentre l'ugello e vicino al piano. Per BLTouch usare la procedura in [[Stampante 3D/Marlin/Pagine/Probe Z offset e BLTouch]].
+Un `M280` manuale puo muovere una probe mentre l'ugello e vicino al piano. Per BLTouch usare la procedura in [[Stampante 3D/Marlin/Pagine/Probe Z offset e BLTouch|Probe Z offset e BLTouch]].
 
 ## Sequenza di collaudo
 
-### 1. Verifica a macchina spenta
+### Verifica a macchina spenta
 
 - pinout;
 - tensioni;
@@ -672,23 +683,23 @@ Un `M280` manuale puo muovere una probe mentre l'ugello e vicino al piano. Per B
 - fusibile;
 - stato fail-safe.
 
-### 2. Build minima
+### Build minima
 
 Abilitare una sola periferica e compilare. Controllare conflitti di pin e limiti di flash.
 
-### 3. Accensione senza carico
+### Accensione senza carico
 
 Verificare il segnale con multimetro o strumento adeguato prima di collegare il carico di potenza.
 
-### 4. Prova manuale
+### Prova manuale
 
 Inviare un singolo comando ON, OFF o posizione. Osservare alimentazione e temperatura.
 
-### 5. Prova degli eventi
+### Prova degli eventi
 
 Soltanto dopo il test manuale attivare auto power, event LED, hook di accensione o movimenti servo automatici.
 
-### 6. Riavvio
+### Riavvio
 
 Controllare lo stato durante:
 
@@ -753,8 +764,13 @@ Controllare lo stato durante:
 
 ## Collegamenti
 
-- [[Stampante 3D/Marlin/Pagine/Scheda madre porte seriali e pin]]
-- [[Stampante 3D/Marlin/Pagine/Alimentazione e protezioni hardware]]
-- [[Stampante 3D/Marlin/Pagine/Lingua menu e feedback acustico]]
-- [[Stampante 3D/Marlin/Pagine/Sensore di fine filamento e recupero dopo perdita di alimentazione]]
-- [[Stampante 3D/Marlin/Pagine/Probe Z offset e BLTouch]]
+- [[Stampante 3D/Marlin/Pagine/Scheda madre porte seriali e pin|Scheda madre porte seriali e pin]]
+- [[Stampante 3D/Marlin/Pagine/Alimentazione e protezioni hardware|Alimentazione e protezioni hardware]]
+- [[Stampante 3D/Marlin/Pagine/Lingua menu e feedback acustico|Lingua menu e feedback acustico]]
+- [[Stampante 3D/Marlin/Pagine/Sensore di fine filamento e recupero dopo perdita di alimentazione|Sensore di fine filamento e recupero dopo perdita di alimentazione]]
+- [[Stampante 3D/Marlin/Pagine/Probe Z offset e BLTouch|Probe Z offset e BLTouch]]
+
+
+## Navigazione
+
+- [[Stampante 3D/Marlin/Indice Marlin|Indice Marlin]]

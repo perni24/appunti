@@ -3,12 +3,21 @@ date: 2026-06-16
 area: Programmi open source
 topic: Sintesi vocale text-to-speech
 type: technical-note
-status: "non revisionato"
+status: non revisionato
 difficulty: intermedio
-tags: [open-source, ai, text-to-speech, audio, python]
-aliases: [Kokoro, Kokoro-82M]
+tags:
+  - open-source
+  - ai
+  - text-to-speech
+  - audio
+  - python
+aliases:
+  - Kokoro
+  - Kokoro-82M
 prerequisites: []
 related: []
+title: Kokoro
+publish: true
 ---
 
 # Kokoro
@@ -33,7 +42,7 @@ Il pacchetto `kokoro` fornisce una pipeline di inferenza per trasformare testo i
 
 Per alcune lingue o fallback puo servire supporto aggiuntivo di librerie di fonemizzazione/G2P e dipendenze audio.
 
-## Esempio d'uso
+## Esempio pratico
 
 ```python
 from kokoro import KPipeline
@@ -46,7 +55,7 @@ for i, (_, _, audio) in enumerate(generator):
     sf.write(f"output-{i}.wav", audio, 24000)
 ```
 
-## Punti forti
+## Funzionalita
 
 - **Leggero**: modello da 82 milioni di parametri.
 - **Orientato all'inferenza**: pensato per generare audio da testo.
@@ -71,3 +80,8 @@ for i, (_, _, audio) in enumerate(generator):
 ## Collegamenti
 
 - https://github.com/hexgrad/kokoro
+
+
+## Navigazione
+
+- [[Programmi open source/Indice Programmi Open Source|Catalogo open source]]

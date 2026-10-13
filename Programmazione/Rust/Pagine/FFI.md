@@ -3,7 +3,7 @@ date: 2026-05-26
 area: Programmazione
 topic: Rust
 type: technical-note
-status: "non revisionato"
+status: non revisionato
 publish: true
 difficulty: avanzato
 tags:
@@ -11,8 +11,8 @@ tags:
   - rust
   - rust-di-sistema
 aliases:
-  - "Foreign Function Interface"
-  - "extern C"
+  - Foreign Function Interface
+  - extern C
 prerequisites:
   - "[[Programmazione/Rust/Pagine/Unsafe Rust]]"
   - "[[Programmazione/Rust/Pagine/Raw pointers]]"
@@ -21,6 +21,7 @@ related:
   - "[[Programmazione/Rust/Pagine/bindgen e cbindgen]]"
   - "[[Programmazione/Rust/Pagine/libc e nix]]"
   - "[[Programmazione/Rust/Pagine/Linking]]"
+title: FFI
 ---
 
 # FFI
@@ -129,3 +130,8 @@ La funzione documenta chiaramente il contratto richiesto dal puntatore C.
 - [[Programmazione/Rust/Pagine/Memory layout e alignment|Memory layout e alignment]]
 - [[Programmazione/Rust/Pagine/bindgen e cbindgen|bindgen e cbindgen]]
 - [[Programmazione/Rust/Pagine/Linking|Linking]]
+
+
+## Navigazione
+
+- [[Programmazione/Rust/Indice Rust|Indice Rust]]

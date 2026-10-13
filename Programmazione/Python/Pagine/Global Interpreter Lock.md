@@ -3,13 +3,19 @@ date: 2026-06-03
 area: Programmazione
 topic: Python
 type: theory-note
-status: "non revisionato"
+status: non revisionato
 publish: true
-difficulty: intermediate
-tags: [python, programming, concurrency]
-aliases: [Global Interpreter Lock, GIL]
+difficulty: intermedio
+tags:
+  - python
+  - programming
+  - concurrency
+aliases:
+  - Global Interpreter Lock
+  - GIL
 prerequisites: []
 related: []
+title: Global Interpreter Lock
 ---
 
 # Global Interpreter Lock
@@ -125,13 +131,13 @@ Nelle build tradizionali, ogni processo ha il proprio interprete e il proprio GI
 
 ## Collegamenti
 
-- [[Programmazione/Python/Indice python|Indice Python]]
-- [[Threading]]
-- [[Multiprocessing]]
-- [[Concurrent.futures]]
-- [[Asyncio]]
-- [[Memory Management]]
-- [[Profiling]]
+- [[Programmazione/Python/Indice Python|Indice Python]]
+- [[Programmazione/Python/Pagine/Threading|Threading]]
+- [[Programmazione/Python/Pagine/Multiprocessing|Multiprocessing]]
+- [[Programmazione/Python/Pagine/Concurrent.futures|Concurrent.futures]]
+- [[Programmazione/Python/Pagine/Asyncio|Asyncio]]
+- [[Programmazione/Python/Pagine/Memory Management|Memory Management]]
+- [[Programmazione/Python/Pagine/Profiling|Profiling]]
 
 ## Fonti
 

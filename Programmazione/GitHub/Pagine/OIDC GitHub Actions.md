@@ -3,13 +3,25 @@ date: 2026-07-07
 area: Programmazione
 topic: GitHub
 type: technical-note
-status: "non revisionato"
+status: non revisionato
 publish: true
 difficulty: avanzato
-tags: [github, github-actions, oidc, security, deploy]
-aliases: [OIDC GitHub Actions, OpenID Connect GitHub Actions]
-prerequisites: [Permissions GitHub Actions, Deploy con GitHub Actions]
-related: [Sicurezza dei token GitHub, Environments GitHub Actions]
+tags:
+  - github
+  - github-actions
+  - oidc
+  - security
+  - deploy
+aliases:
+  - OIDC GitHub Actions
+  - OpenID Connect GitHub Actions
+prerequisites:
+  - "[[Programmazione/GitHub/Pagine/Permissions GitHub Actions]]"
+  - "[[Programmazione/GitHub/Pagine/Deploy con GitHub Actions]]"
+related:
+  - "[[Programmazione/GitHub/Pagine/Sicurezza dei token GitHub]]"
+  - "[[Programmazione/GitHub/Pagine/Environments GitHub Actions]]"
+title: OIDC GitHub Actions
 ---
 
 # OIDC GitHub Actions
@@ -115,11 +127,11 @@ In questo modo una pull request non autorizzata non puo ottenere credenziali pro
 
 ## Collegamenti
 
-- [[Programmazione/GitHub/Indice GitHub]]
-- [[Deploy con GitHub Actions]]
-- [[Permissions GitHub Actions]]
-- [[Sicurezza dei token GitHub]]
-- [[Environments GitHub Actions]]
+- [[Programmazione/GitHub/Indice GitHub|Indice GitHub]]
+- [[Programmazione/GitHub/Pagine/Deploy con GitHub Actions|Deploy con GitHub Actions]]
+- [[Programmazione/GitHub/Pagine/Permissions GitHub Actions|Permissions GitHub Actions]]
+- [[Programmazione/GitHub/Pagine/Sicurezza dei token GitHub|Sicurezza dei token GitHub]]
+- [[Programmazione/GitHub/Pagine/Environments GitHub Actions|Environments GitHub Actions]]
 
 ## Fonti
 

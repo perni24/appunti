@@ -3,13 +3,25 @@ date: 2026-07-07
 area: Programmazione
 topic: GitHub
 type: operational-note
-status: "non revisionato"
+status: non revisionato
 publish: true
 difficulty: intermedio
-tags: [github, pull-request, troubleshooting, review]
-aliases: [Troubleshooting pull request, Troubleshooting PR GitHub]
-prerequisites: [Pull request, Aprire una pull request corretta]
-related: [Review code su GitHub, Checklist pull request GitHub, Troubleshooting merge conflict]
+tags:
+  - github
+  - pull-request
+  - troubleshooting
+  - review
+aliases:
+  - Troubleshooting pull request
+  - Troubleshooting PR GitHub
+prerequisites:
+  - "[[Programmazione/GitHub/Pagine/Pull request]]"
+  - "[[Programmazione/GitHub/Pagine/Aprire una pull request corretta]]"
+related:
+  - "[[Programmazione/GitHub/Pagine/Review code su GitHub]]"
+  - "[[Programmazione/GitHub/Pagine/Checklist pull request GitHub]]"
+  - "[[Programmazione/GitHub/Pagine/Troubleshooting merge conflict]]"
+title: Troubleshooting pull request
 ---
 
 # Troubleshooting pull request
@@ -98,14 +110,14 @@ git push
 
 ## Collegamenti
 
-- [[Programmazione/GitHub/Indice GitHub]]
-- [[Pull request]]
-- [[Aprire una pull request corretta]]
-- [[Review code su GitHub]]
-- [[Checklist pull request GitHub]]
-- [[Required status checks]]
-- [[CODEOWNERS]]
-- [[Troubleshooting merge conflict]]
+- [[Programmazione/GitHub/Indice GitHub|Indice GitHub]]
+- [[Programmazione/GitHub/Pagine/Pull request|Pull request]]
+- [[Programmazione/GitHub/Pagine/Aprire una pull request corretta|Aprire una pull request corretta]]
+- [[Programmazione/GitHub/Pagine/Review code su GitHub|Review code su GitHub]]
+- [[Programmazione/GitHub/Pagine/Checklist pull request GitHub|Checklist pull request GitHub]]
+- [[Programmazione/GitHub/Pagine/Required status checks|Required status checks]]
+- [[Programmazione/GitHub/Pagine/CODEOWNERS|CODEOWNERS]]
+- [[Programmazione/GitHub/Pagine/Troubleshooting merge conflict|Troubleshooting merge conflict]]
 
 ## Fonti
 

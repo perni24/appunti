@@ -3,9 +3,8 @@ date: 2026-06-03
 area: Programmazione
 topic: Python
 type: theory-note
-status: "non revisionato"
+status: non revisionato
 publish: true
-difficulty: 
 tags:
   - programmazione
   - python
@@ -13,6 +12,7 @@ tags:
 aliases: []
 prerequisites: []
 related: []
+title: Data model
 ---
 
 # Data model
@@ -84,3 +84,8 @@ Python chiama internamente `bag.__len__()` e `bag.__iter__()`.
 - [[Programmazione/Python/Pagine/Metodi Speciali|Metodi Speciali]]
 - [[Programmazione/Python/Pagine/Descriptor protocol|Descriptor protocol]]
 - [[Programmazione/Python/Pagine/Context Managers|Context Managers]]
+
+
+## Navigazione
+
+- [[Programmazione/Python/Indice Python|Indice Python]]

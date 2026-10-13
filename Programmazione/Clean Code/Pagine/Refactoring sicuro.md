@@ -3,13 +3,24 @@ date: 2026-07-09
 area: Programmazione
 topic: Clean Code
 type: theory-note
-status: "non revisionato"
+status: non revisionato
 publish: true
 difficulty: avanzato
-tags: [clean-code, refactoring, testing]
-aliases: [Refactoring sicuro, Safe refactoring]
-prerequisites: [Codice testabile, Test unitari leggibili]
-related: [Legacy code, Code smells, Test di integrazione]
+tags:
+  - clean-code
+  - refactoring
+  - testing
+aliases:
+  - Refactoring sicuro
+  - Safe refactoring
+prerequisites:
+  - "[[Programmazione/Clean Code/Pagine/Codice testabile]]"
+  - "[[Programmazione/Clean Code/Pagine/Test unitari leggibili]]"
+related:
+  - "[[Programmazione/Clean Code/Pagine/Legacy code]]"
+  - "[[Programmazione/Clean Code/Pagine/Code smells]]"
+  - "[[Programmazione/Clean Code/Pagine/Test di integrazione]]"
+title: Refactoring sicuro
 ---
 
 # Refactoring sicuro
@@ -79,12 +90,12 @@ Ogni passaggio ha rischio limitato.
 
 ## Collegamenti
 
-- [[Programmazione/Clean Code/Indice Clean Code]]
-- [[Code smells]]
-- [[Debito tecnico]]
-- [[Codice testabile]]
-- [[Test unitari leggibili]]
-- [[Legacy code]]
+- [[Programmazione/Clean Code/Indice Clean Code|Indice Clean Code]]
+- [[Programmazione/Clean Code/Pagine/Code smells|Code smells]]
+- [[Programmazione/Clean Code/Pagine/Debito tecnico|Debito tecnico]]
+- [[Programmazione/Clean Code/Pagine/Codice testabile|Codice testabile]]
+- [[Programmazione/Clean Code/Pagine/Test unitari leggibili|Test unitari leggibili]]
+- [[Programmazione/Clean Code/Pagine/Legacy code|Legacy code]]
 
 ## Fonti
 

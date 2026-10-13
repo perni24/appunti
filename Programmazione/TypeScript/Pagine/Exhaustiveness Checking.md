@@ -3,13 +3,25 @@ date: 2026-06-22
 area: Programmazione
 topic: TypeScript
 type: technical-note
-status: "non revisionato"
+status: non revisionato
 publish: true
 difficulty: intermedio
-tags: [typescript, exhaustiveness-checking, never, discriminated-unions]
-aliases: [Controllo esaustivita, Exhaustive switch]
-prerequisites: [Discriminated Unions, any, unknown e never]
-related: [Type Narrowing, Union e Intersection Types]
+tags:
+  - typescript
+  - exhaustiveness-checking
+  - never
+  - discriminated-unions
+aliases:
+  - Controllo esaustivita
+  - Exhaustive switch
+prerequisites:
+  - "[[Programmazione/TypeScript/Pagine/Discriminated Unions]]"
+  - any
+  - unknown e never
+related:
+  - "[[Programmazione/TypeScript/Pagine/Type Narrowing]]"
+  - "[[Programmazione/TypeScript/Pagine/Union e Intersection Types]]"
+title: Exhaustiveness Checking
 ---
 
 # Exhaustiveness Checking
@@ -95,6 +107,11 @@ Se viene aggiunto `status: "empty"` senza aggiornare `render`, il compilatore se
 
 ## Collegamenti
 
-- [[Discriminated Unions]]
-- [[any, unknown e never]]
-- [[Type Narrowing]]
+- [[Programmazione/TypeScript/Pagine/Discriminated Unions|Discriminated Unions]]
+- [[Programmazione/TypeScript/Pagine/any, unknown e never|any, unknown e never]]
+- [[Programmazione/TypeScript/Pagine/Type Narrowing|Type Narrowing]]
+
+
+## Navigazione
+
+- [[Programmazione/TypeScript/Indice TypeScript|Indice TypeScript]]

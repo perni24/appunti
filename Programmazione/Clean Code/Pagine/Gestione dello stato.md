@@ -3,13 +3,24 @@ date: 2026-07-09
 area: Programmazione
 topic: Clean Code
 type: theory-note
-status: "non revisionato"
+status: non revisionato
 publish: true
 difficulty: avanzato
-tags: [clean-code, stato, architettura]
-aliases: [Gestione dello stato, State management]
-prerequisites: [Stato mutabile e immutabile, Side effects controllati]
-related: [Gestione delle risorse, Invarianti interne, Codice testabile]
+tags:
+  - clean-code
+  - stato
+  - architettura
+aliases:
+  - Gestione dello stato
+  - State management
+prerequisites:
+  - "[[Programmazione/Clean Code/Pagine/Stato mutabile e immutabile]]"
+  - "[[Programmazione/Clean Code/Pagine/Side effects controllati]]"
+related:
+  - "[[Programmazione/Clean Code/Pagine/Gestione delle risorse]]"
+  - "[[Programmazione/Clean Code/Pagine/Invarianti interne]]"
+  - "[[Programmazione/Clean Code/Pagine/Codice testabile]]"
+title: Gestione dello stato
 ---
 
 # Gestione dello stato
@@ -84,11 +95,11 @@ La seconda versione rende la dipendenza visibile e testabile.
 
 ## Collegamenti
 
-- [[Programmazione/Clean Code/Indice Clean Code]]
-- [[Stato mutabile e immutabile]]
-- [[Side effects controllati]]
-- [[Invarianti interne]]
-- [[Codice testabile]]
+- [[Programmazione/Clean Code/Indice Clean Code|Indice Clean Code]]
+- [[Programmazione/Clean Code/Pagine/Stato mutabile e immutabile|Stato mutabile e immutabile]]
+- [[Programmazione/Clean Code/Pagine/Side effects controllati|Side effects controllati]]
+- [[Programmazione/Clean Code/Pagine/Invarianti interne|Invarianti interne]]
+- [[Programmazione/Clean Code/Pagine/Codice testabile|Codice testabile]]
 
 ## Fonti
 

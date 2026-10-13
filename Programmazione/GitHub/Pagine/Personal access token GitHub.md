@@ -3,13 +3,25 @@ date: 2026-07-07
 area: Programmazione
 topic: GitHub
 type: technical-note
-status: "non revisionato"
+status: non revisionato
 publish: true
 difficulty: intermedio
-tags: [github, token, pat, autenticazione]
-aliases: [Personal access token GitHub, PAT GitHub]
-prerequisites: [GitHub]
-related: [Fine-grained token GitHub, GitHub REST API, GitHub Apps, Sicurezza dei token GitHub]
+tags:
+  - github
+  - token
+  - pat
+  - autenticazione
+aliases:
+  - Personal access token GitHub
+  - PAT GitHub
+prerequisites:
+  - "[[Programmazione/GitHub/Pagine/GitHub]]"
+related:
+  - "[[Programmazione/GitHub/Pagine/Fine-grained token GitHub]]"
+  - "[[Programmazione/GitHub/Pagine/GitHub REST API]]"
+  - "[[Programmazione/GitHub/Pagine/GitHub Apps]]"
+  - "[[Programmazione/GitHub/Pagine/Sicurezza dei token GitHub]]"
+title: Personal access token GitHub
 ---
 
 # Personal access token GitHub
@@ -101,13 +113,13 @@ Il token deve stare in un secret manager, variabile d'ambiente o strumento sicur
 
 ## Collegamenti
 
-- [[Programmazione/GitHub/Indice GitHub]]
-- [[GitHub REST API]]
-- [[GitHub GraphQL API]]
-- [[Fine-grained token GitHub]]
-- [[GitHub Apps]]
-- [[GitHub CLI]]
-- [[Sicurezza dei token GitHub]]
+- [[Programmazione/GitHub/Indice GitHub|Indice GitHub]]
+- [[Programmazione/GitHub/Pagine/GitHub REST API|GitHub REST API]]
+- [[Programmazione/GitHub/Pagine/GitHub GraphQL API|GitHub GraphQL API]]
+- [[Programmazione/GitHub/Pagine/Fine-grained token GitHub|Fine-grained token GitHub]]
+- [[Programmazione/GitHub/Pagine/GitHub Apps|GitHub Apps]]
+- [[Programmazione/GitHub/Pagine/GitHub CLI|GitHub CLI]]
+- [[Programmazione/GitHub/Pagine/Sicurezza dei token GitHub|Sicurezza dei token GitHub]]
 
 ## Fonti
 

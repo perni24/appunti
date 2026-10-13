@@ -3,13 +3,25 @@ date: 2026-07-06
 area: Programmazione
 topic: GitHub
 type: technical-note
-status: "non revisionato"
+status: non revisionato
 publish: true
 difficulty: base
-tags: [github, clone, fork, template, repository]
-aliases: [Clone fork e template repository, Fork GitHub, Template repository]
-prerequisites: [Repository GitHub]
-related: [Remote origin e upstream, Pull request]
+tags:
+  - github
+  - clone
+  - fork
+  - template
+  - repository
+aliases:
+  - Clone fork e template repository
+  - Fork GitHub
+  - Template repository
+prerequisites:
+  - "[[Programmazione/GitHub/Pagine/Repository GitHub]]"
+related:
+  - "[[Programmazione/GitHub/Pagine/Remote origin e upstream]]"
+  - "[[Programmazione/GitHub/Pagine/Pull request]]"
+title: Clone fork e template repository
 ---
 
 # Clone fork e template repository
@@ -124,10 +136,10 @@ Poi apri una pull request dal tuo fork verso il repository originale.
 
 ## Collegamenti
 
-- [[Programmazione/GitHub/Indice GitHub]]
-- [[Repository GitHub]]
-- [[Remote origin e upstream]]
-- [[Git e GitHub]]
+- [[Programmazione/GitHub/Indice GitHub|Indice GitHub]]
+- [[Programmazione/GitHub/Pagine/Repository GitHub|Repository GitHub]]
+- [[Programmazione/GitHub/Pagine/Remote origin e upstream|Remote origin e upstream]]
+- [[Programmazione/GitHub/Pagine/Git e GitHub|Git e GitHub]]
 
 ## Fonti
 

@@ -3,13 +3,25 @@ date: 2026-07-07
 area: Programmazione
 topic: GitHub
 type: technical-note
-status: "non revisionato"
+status: non revisionato
 publish: true
 difficulty: avanzato
-tags: [github, github-actions, concurrency, ci-cd]
-aliases: [Concurrency e cancel-in-progress, Concurrency GitHub Actions]
-prerequisites: [GitHub Actions, Workflow GitHub Actions]
-related: [Deploy con GitHub Actions, Workflow GitHub Actions, Debug GitHub Actions]
+tags:
+  - github
+  - github-actions
+  - concurrency
+  - ci-cd
+aliases:
+  - Concurrency e cancel-in-progress
+  - Concurrency GitHub Actions
+prerequisites:
+  - "[[Programmazione/GitHub/Pagine/GitHub Actions]]"
+  - "[[Programmazione/GitHub/Pagine/Workflow GitHub Actions]]"
+related:
+  - "[[Programmazione/GitHub/Pagine/Deploy con GitHub Actions]]"
+  - "[[Programmazione/GitHub/Pagine/Workflow GitHub Actions]]"
+  - "[[Programmazione/GitHub/Pagine/Debug GitHub Actions]]"
+title: Concurrency e cancel-in-progress
 ---
 
 # Concurrency e cancel-in-progress
@@ -113,11 +125,11 @@ Questo evita di sprecare tempo su commit ormai superati.
 
 ## Collegamenti
 
-- [[Programmazione/GitHub/Indice GitHub]]
-- [[GitHub Actions]]
-- [[Workflow GitHub Actions]]
-- [[Deploy con GitHub Actions]]
-- [[Debug GitHub Actions]]
+- [[Programmazione/GitHub/Indice GitHub|Indice GitHub]]
+- [[Programmazione/GitHub/Pagine/GitHub Actions|GitHub Actions]]
+- [[Programmazione/GitHub/Pagine/Workflow GitHub Actions|Workflow GitHub Actions]]
+- [[Programmazione/GitHub/Pagine/Deploy con GitHub Actions|Deploy con GitHub Actions]]
+- [[Programmazione/GitHub/Pagine/Debug GitHub Actions|Debug GitHub Actions]]
 
 ## Fonti
 

@@ -3,13 +3,20 @@ date: 2026-06-03
 area: Programmazione
 topic: Python
 type: technical-note
-status: "non revisionato"
+status: non revisionato
 publish: true
-difficulty: intermediate
-tags: [python, programming, functions]
-aliases: [Argomenti Flessibili, args e kwargs, "*args e **kwargs"]
+difficulty: intermedio
+tags:
+  - python
+  - programming
+  - functions
+aliases:
+  - Argomenti Flessibili
+  - args e kwargs
+  - "*args e **kwargs"
 prerequisites: []
 related: []
+title: Argomenti Flessibili in Python
 ---
 
 # Argomenti Flessibili in Python
@@ -151,8 +158,8 @@ Senza `*args` e `**kwargs`, il decoratore funzionerebbe solo con una firma speci
 
 ## Collegamenti
 
-- [[Programmazione/Python/Indice python|Indice Python]]
+- [[Programmazione/Python/Indice Python|Indice Python]]
 - [[Programmazione/Python/Pagine/Funzioni|Funzioni]]
-- [[Decoratori]]
-- [[Higher-order Functions]]
-- [[Type Hinting]]
+- [[Programmazione/Python/Pagine/Decoratori|Decoratori]]
+- [[Programmazione/Python/Pagine/Higher-order Functions|Higher-order Functions]]
+- [[Programmazione/Python/Pagine/Type Hinting|Type Hinting]]

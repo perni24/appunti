@@ -3,13 +3,25 @@ date: 2026-06-22
 area: Programmazione
 topic: TypeScript
 type: technical-note
-status: "non revisionato"
+status: non revisionato
 publish: true
 difficulty: intermedio
-tags: [typescript, best-practices, quality, type-safety]
-aliases: [Best practice TypeScript]
-prerequisites: [Strict mode, any, unknown e never]
-related: [Linting e formattazione, Error Handling, Validazione runtime e tipi statici]
+tags:
+  - typescript
+  - best-practices
+  - quality
+  - type-safety
+aliases:
+  - Best practice TypeScript
+prerequisites:
+  - "[[Programmazione/TypeScript/Pagine/Strict mode]]"
+  - any
+  - unknown e never
+related:
+  - "[[Programmazione/TypeScript/Pagine/Linting e formattazione]]"
+  - "[[Programmazione/TypeScript/Pagine/Error Handling]]"
+  - "[[Programmazione/TypeScript/Pagine/Validazione runtime e tipi statici]]"
+title: Best Practices
 ---
 
 # Best Practices
@@ -83,6 +95,11 @@ Il tipo rappresenta esplicitamente successo ed errore.
 ## Collegamenti
 
 - [[Programmazione/TypeScript/Pagine/Strict mode|Strict mode]]
-- [[Validazione runtime e tipi statici]]
+- [[Programmazione/TypeScript/Pagine/Validazione runtime e tipi statici|Validazione runtime e tipi statici]]
 - [[Programmazione/TypeScript/Pagine/Error Handling|Error Handling]]
-- [[Domain modeling]]
+- [[Programmazione/TypeScript/Pagine/Domain modeling|Domain modeling]]
+
+
+## Navigazione
+
+- [[Programmazione/TypeScript/Indice TypeScript|Indice TypeScript]]

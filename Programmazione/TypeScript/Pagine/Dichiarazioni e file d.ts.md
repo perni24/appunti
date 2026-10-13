@@ -3,13 +3,25 @@ date: 2026-06-22
 area: Programmazione
 topic: TypeScript
 type: technical-note
-status: "non revisionato"
+status: non revisionato
 publish: true
 difficulty: intermedio
-tags: [typescript, declaration-files, dts, typings]
-aliases: [file d.ts, declaration files]
-prerequisites: [Typing di librerie JavaScript, Moduli ES e CommonJS]
-related: [DefinitelyTyped, Declaration Merging, Module augmentation]
+tags:
+  - typescript
+  - declaration-files
+  - dts
+  - typings
+aliases:
+  - file d.ts
+  - declaration files
+prerequisites:
+  - "[[Programmazione/TypeScript/Pagine/Typing di librerie JavaScript]]"
+  - "[[Programmazione/TypeScript/Pagine/Moduli ES e CommonJS]]"
+related:
+  - "[[Programmazione/TypeScript/Pagine/DefinitelyTyped]]"
+  - "[[Programmazione/TypeScript/Pagine/Declaration Merging]]"
+  - "[[Programmazione/TypeScript/Pagine/Module augmentation]]"
+title: Dichiarazioni e file d.ts
 ---
 
 # Dichiarazioni e file d.ts
@@ -84,7 +96,12 @@ Questo file estende il tipo globale `Window` in modo controllato.
 
 ## Collegamenti
 
-- [[Typing di librerie JavaScript]]
-- [[DefinitelyTyped]]
-- [[Declaration Merging]]
-- [[Module augmentation]]
+- [[Programmazione/TypeScript/Pagine/Typing di librerie JavaScript|Typing di librerie JavaScript]]
+- [[Programmazione/TypeScript/Pagine/DefinitelyTyped|DefinitelyTyped]]
+- [[Programmazione/TypeScript/Pagine/Declaration Merging|Declaration Merging]]
+- [[Programmazione/TypeScript/Pagine/Module augmentation|Module augmentation]]
+
+
+## Navigazione
+
+- [[Programmazione/TypeScript/Indice TypeScript|Indice TypeScript]]

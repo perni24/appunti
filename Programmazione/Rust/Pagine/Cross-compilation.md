@@ -3,7 +3,7 @@ date: 2026-05-26
 area: Programmazione
 topic: Rust
 type: technical-note
-status: "non revisionato"
+status: non revisionato
 publish: true
 difficulty: avanzato
 tags:
@@ -11,8 +11,8 @@ tags:
   - rust
   - rust-di-sistema
 aliases:
-  - "Cross-compilation"
-  - "Cross compilation"
+  - Cross-compilation
+  - Cross compilation
 prerequisites:
   - "[[Programmazione/Rust/Pagine/Cargo]]"
   - "[[Programmazione/Rust/Pagine/Build profiles]]"
@@ -22,6 +22,7 @@ related:
   - "[[Programmazione/Rust/Pagine/Embedded Rust]]"
   - "[[Programmazione/Rust/Pagine/Build scripts]]"
   - "[[Programmazione/Rust/Pagine/MSRV Minimum Supported Rust Version]]"
+title: Cross-compilation
 ---
 
 # Cross-compilation
@@ -154,11 +155,11 @@ cargo tree
 
 ## Collegamenti
 
-- [[Programmazione/Rust/Indice rust|Indice Rust]]
-- [[Programmazione/Rust/Pagine/Cargo]]
-- [[Programmazione/Rust/Pagine/Build profiles]]
-- [[Programmazione/Rust/Pagine/Linking]]
-- [[Programmazione/Rust/Pagine/Build scripts]]
-- [[Programmazione/Rust/Pagine/no_std]]
-- [[Programmazione/Rust/Pagine/Embedded Rust]]
-- [[Programmazione/Rust/Pagine/MSRV Minimum Supported Rust Version]]
+- [[Programmazione/Rust/Indice Rust|Indice Rust]]
+- [[Programmazione/Rust/Pagine/Cargo|Cargo]]
+- [[Programmazione/Rust/Pagine/Build profiles|Build profiles]]
+- [[Programmazione/Rust/Pagine/Linking|Linking]]
+- [[Programmazione/Rust/Pagine/Build scripts|Build scripts]]
+- [[Programmazione/Rust/Pagine/no_std|no_std]]
+- [[Programmazione/Rust/Pagine/Embedded Rust|Embedded Rust]]
+- [[Programmazione/Rust/Pagine/MSRV Minimum Supported Rust Version|MSRV Minimum Supported Rust Version]]

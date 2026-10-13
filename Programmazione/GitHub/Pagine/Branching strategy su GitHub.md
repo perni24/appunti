@@ -3,13 +3,25 @@ date: 2026-07-06
 area: Programmazione
 topic: GitHub
 type: technical-note
-status: "non revisionato"
+status: non revisionato
 publish: true
 difficulty: intermedio
-tags: [github, git, branching, workflow]
-aliases: [Branching strategy GitHub, Strategia di branch GitHub]
-prerequisites: [Branch su GitHub, Pull request]
-related: [Branch su GitHub, Pull request, Merge squash e rebase su GitHub]
+tags:
+  - github
+  - git
+  - branching
+  - workflow
+aliases:
+  - Branching strategy GitHub
+  - Strategia di branch GitHub
+prerequisites:
+  - "[[Programmazione/GitHub/Pagine/Branch su GitHub]]"
+  - "[[Programmazione/GitHub/Pagine/Pull request]]"
+related:
+  - "[[Programmazione/GitHub/Pagine/Branch su GitHub]]"
+  - "[[Programmazione/GitHub/Pagine/Pull request]]"
+  - "[[Programmazione/GitHub/Pagine/Merge squash e rebase su GitHub]]"
+title: Branching strategy su GitHub
 ---
 
 # Branching strategy su GitHub
@@ -113,11 +125,11 @@ Questo modello e semplice e adatto a molti progetti applicativi.
 
 ## Collegamenti
 
-- [[Programmazione/GitHub/Indice GitHub]]
-- [[Branch su GitHub]]
-- [[Pull request]]
-- [[Merge squash e rebase su GitHub]]
-- [[Review code su GitHub]]
+- [[Programmazione/GitHub/Indice GitHub|Indice GitHub]]
+- [[Programmazione/GitHub/Pagine/Branch su GitHub|Branch su GitHub]]
+- [[Programmazione/GitHub/Pagine/Pull request|Pull request]]
+- [[Programmazione/GitHub/Pagine/Merge squash e rebase su GitHub|Merge squash e rebase su GitHub]]
+- [[Programmazione/GitHub/Pagine/Review code su GitHub|Review code su GitHub]]
 
 ## Fonti
 

@@ -3,13 +3,20 @@ date: 2026-06-03
 area: Programmazione
 topic: Python
 type: technical-note
-status: "non revisionato"
+status: non revisionato
 publish: true
-difficulty: intermediate
-tags: [programmazione, python, dati, pandas]
-aliases: [pandas, DataFrame]
+difficulty: intermedio
+tags:
+  - programmazione
+  - python
+  - dati
+  - pandas
+aliases:
+  - pandas
+  - DataFrame
 prerequisites: []
 related: []
+title: pandas
 ---
 
 # pandas
@@ -134,8 +141,8 @@ summary.to_csv("sales_by_region.csv", index=False)
 
 ## Collegamenti
 
-- [[Programmazione/Python/Indice python|Indice Python]]
-- [[NumPy]]
-- [[Jupyter]]
-- [[Gestione File]]
-- [[Profiling]]
+- [[Programmazione/Python/Indice Python|Indice Python]]
+- [[Programmazione/Python/Pagine/NumPy|NumPy]]
+- [[Programmazione/Python/Pagine/Jupyter|Jupyter]]
+- [[Programmazione/Python/Pagine/Gestione File|Gestione File]]
+- [[Programmazione/Python/Pagine/Profiling|Profiling]]

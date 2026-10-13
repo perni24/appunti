@@ -3,13 +3,24 @@ date: 2026-06-22
 area: Programmazione
 topic: TypeScript
 type: technical-note
-status: "non revisionato"
+status: non revisionato
 publish: true
 difficulty: intermedio
-tags: [typescript, eslint, prettier, linting, formatting]
-aliases: [Linting TypeScript, Formattazione TypeScript]
-prerequisites: [tsconfig]
-related: [Best Practices, Strict mode]
+tags:
+  - typescript
+  - eslint
+  - prettier
+  - linting
+  - formatting
+aliases:
+  - Linting TypeScript
+  - Formattazione TypeScript
+prerequisites:
+  - "[[Programmazione/TypeScript/Pagine/tsconfig]]"
+related:
+  - "[[Programmazione/TypeScript/Pagine/Best Practices]]"
+  - "[[Programmazione/TypeScript/Pagine/Strict mode]]"
+title: Linting e formattazione
 ---
 
 # Linting e formattazione
@@ -79,6 +90,11 @@ Regole come `no-floating-promises` possono richiedere di gestire esplicitamente 
 
 ## Collegamenti
 
-- [[Best Practices]]
+- [[Programmazione/TypeScript/Pagine/Best Practices|Best Practices]]
 - [[Programmazione/TypeScript/Pagine/Strict mode|Strict mode]]
-- [[Testing in TypeScript]]
+- [[Programmazione/TypeScript/Pagine/Testing in TypeScript|Testing in TypeScript]]
+
+
+## Navigazione
+
+- [[Programmazione/TypeScript/Indice TypeScript|Indice TypeScript]]

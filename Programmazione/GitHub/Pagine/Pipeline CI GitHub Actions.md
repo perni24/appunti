@@ -3,13 +3,25 @@ date: 2026-07-07
 area: Programmazione
 topic: GitHub
 type: technical-note
-status: "non revisionato"
+status: non revisionato
 publish: true
 difficulty: intermedio
-tags: [github, github-actions, ci, pipeline]
-aliases: [Pipeline CI GitHub Actions, CI GitHub Actions]
-prerequisites: [GitHub Actions, Workflow GitHub Actions]
-related: [Workflow per test, lint e build, Required status checks]
+tags:
+  - github
+  - github-actions
+  - ci
+  - pipeline
+aliases:
+  - Pipeline CI GitHub Actions
+  - CI GitHub Actions
+prerequisites:
+  - "[[Programmazione/GitHub/Pagine/GitHub Actions]]"
+  - "[[Programmazione/GitHub/Pagine/Workflow GitHub Actions]]"
+related:
+  - Workflow per test
+  - lint e build
+  - "[[Programmazione/GitHub/Pagine/Required status checks]]"
+title: Pipeline CI GitHub Actions
 ---
 
 # Pipeline CI GitHub Actions
@@ -117,12 +129,12 @@ jobs:
 
 ## Collegamenti
 
-- [[Programmazione/GitHub/Indice GitHub]]
-- [[GitHub Actions]]
-- [[Workflow GitHub Actions]]
-- [[Workflow per test, lint e build]]
-- [[Required status checks]]
-- [[Permissions GitHub Actions]]
+- [[Programmazione/GitHub/Indice GitHub|Indice GitHub]]
+- [[Programmazione/GitHub/Pagine/GitHub Actions|GitHub Actions]]
+- [[Programmazione/GitHub/Pagine/Workflow GitHub Actions|Workflow GitHub Actions]]
+- [[Programmazione/GitHub/Pagine/Workflow per test, lint e build|Workflow per test, lint e build]]
+- [[Programmazione/GitHub/Pagine/Required status checks|Required status checks]]
+- [[Programmazione/GitHub/Pagine/Permissions GitHub Actions|Permissions GitHub Actions]]
 
 ## Fonti
 

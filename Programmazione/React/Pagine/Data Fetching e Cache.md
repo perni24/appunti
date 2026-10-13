@@ -3,13 +3,22 @@ date: 2026-06-04
 area: Programmazione
 topic: React
 type: technical-note
-status: "non revisionato"
+status: non revisionato
 publish: true
-difficulty: intermediate
-tags: [react, data-fetching, cache, frontend]
-aliases: [Data Fetching, Cache React, TanStack Query, Optimistic updates]
+difficulty: intermedio
+tags:
+  - react
+  - data-fetching
+  - cache
+  - frontend
+aliases:
+  - Data Fetching
+  - Cache React
+  - TanStack Query
+  - Optimistic updates
 prerequisites: []
 related: []
+title: Data Fetching e Cache
 ---
 
 # Data Fetching e Cache
@@ -128,8 +137,8 @@ function UsersPage() {
 
 ## Collegamenti
 
-- [[Programmazione/React/Indice react|Indice React]]
-- [[useEffect]]
-- [[Gestione della memoria e AbortController]]
-- [[API layer]]
-- [[State Management Esterno]]
+- [[Programmazione/React/Indice React|Indice React]]
+- [[Programmazione/React/Pagine/useEffect|useEffect]]
+- [[Programmazione/React/Pagine/Gestione della memoria e AbortController|Gestione della memoria e AbortController]]
+- [[Programmazione/React/Pagine/API layer|API layer]]
+- [[Programmazione/React/Pagine/State Management Esterno|State Management Esterno]]

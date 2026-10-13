@@ -3,13 +3,22 @@ date: 2026-07-09
 area: Programmazione
 topic: Clean Code
 type: theory-note
-status: "non revisionato"
+status: non revisionato
 publish: true
 difficulty: base
-tags: [clean-code, leggibilita, esplicito]
-aliases: [Codice esplicito vs codice implicito, Codice esplicito]
-prerequisites: [Clean Code]
-related: [Leggibilita del codice, Principio del minimo stupore]
+tags:
+  - clean-code
+  - leggibilita
+  - esplicito
+aliases:
+  - Codice esplicito vs codice implicito
+  - Codice esplicito
+prerequisites:
+  - "[[Programmazione/Clean Code/Pagine/Clean Code]]"
+related:
+  - "[[Programmazione/Clean Code/Pagine/Leggibilita del codice]]"
+  - "[[Programmazione/Clean Code/Pagine/Principio del minimo stupore]]"
+title: Codice esplicito vs codice implicito
 ---
 
 # Codice esplicito vs codice implicito
@@ -84,11 +93,11 @@ La seconda versione e piu testabile e rende evidente cosa serve alla funzione.
 
 ## Collegamenti
 
-- [[Programmazione/Clean Code/Indice Clean Code]]
-- [[Leggibilita del codice]]
-- [[Principio del minimo stupore]]
-- [[Naming di variabili e funzioni]]
-- [[Funzioni con responsabilita singola]]
+- [[Programmazione/Clean Code/Indice Clean Code|Indice Clean Code]]
+- [[Programmazione/Clean Code/Pagine/Leggibilita del codice|Leggibilita del codice]]
+- [[Programmazione/Clean Code/Pagine/Principio del minimo stupore|Principio del minimo stupore]]
+- [[Programmazione/Clean Code/Pagine/Naming di variabili e funzioni|Naming di variabili e funzioni]]
+- [[Programmazione/Clean Code/Pagine/Funzioni con responsabilita singola|Funzioni con responsabilita singola]]
 
 ## Fonti
 

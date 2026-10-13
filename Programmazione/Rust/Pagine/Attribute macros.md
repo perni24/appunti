@@ -3,7 +3,7 @@ date: 2026-05-26
 area: Programmazione
 topic: Rust
 type: technical-note
-status: "non revisionato"
+status: non revisionato
 publish: true
 difficulty: avanzato
 tags:
@@ -11,8 +11,8 @@ tags:
   - rust
   - macros
 aliases:
-  - "attribute macro"
-  - "proc_macro_attribute"
+  - attribute macro
+  - proc_macro_attribute
 prerequisites:
   - "[[Programmazione/Rust/Pagine/Procedural macros]]"
   - "[[Programmazione/Rust/Pagine/Traits]]"
@@ -20,6 +20,7 @@ related:
   - "[[Programmazione/Rust/Pagine/Derive macros]]"
   - "[[Programmazione/Rust/Pagine/Function-like macros]]"
   - "[[Programmazione/Rust/Pagine/Hygiene]]"
+title: Attribute macros
 ---
 
 # Attribute macros
@@ -123,3 +124,8 @@ Un attributo come `instrument` puo generare codice di tracing attorno alla funzi
 - [[Programmazione/Rust/Pagine/Function-like macros|Function-like macros]]
 - [[Programmazione/Rust/Pagine/Hygiene|Hygiene]]
 - [[Programmazione/Rust/Pagine/Tracing con tracing|Tracing con tracing]]
+
+
+## Navigazione
+
+- [[Programmazione/Rust/Indice Rust|Indice Rust]]

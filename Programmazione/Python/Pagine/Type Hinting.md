@@ -3,13 +3,17 @@ date: 2026-06-03
 area: Programmazione
 topic: Python
 type: technical-note
-status: "non revisionato"
+status: non revisionato
 publish: true
-difficulty: intermediate
-tags: [python, programming]
-aliases: [Type Hinting]
+difficulty: intermedio
+tags:
+  - python
+  - programming
+aliases:
+  - Type Hinting
 prerequisites: []
 related: []
+title: Type Hinting in Python
 ---
 
 # Type Hinting in Python
@@ -93,3 +97,8 @@ def send_email(user: UserData, subject: str) -> None:
 - [[Programmazione/Python/Pagine/Funzioni|Funzioni]]
 - [[Programmazione/Python/Pagine/Dataclasses|Dataclasses]]
 - [[Programmazione/Python/Pagine/Enum|Enum]]
+
+
+## Navigazione
+
+- [[Programmazione/Python/Indice Python|Indice Python]]

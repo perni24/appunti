@@ -1,3 +1,7 @@
+# Indice Strutture di Progetto
+
+- [[Programmazione/Indice Programmazione|Tutti i percorsi di Programmazione]]
+
 ## PHP
 
 - [[Programmazione/Strutture di Progetto/Pagine/PHP - Applicazione web tradizionale|Applicazione web tradizionale]]

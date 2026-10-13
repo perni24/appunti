@@ -3,13 +3,25 @@ date: 2026-06-22
 area: Programmazione
 topic: TypeScript
 type: technical-note
-status: "non revisionato"
+status: non revisionato
 publish: true
 difficulty: intermedio
-tags: [typescript, type-guards, narrowing, runtime-validation]
-aliases: [Type guard]
-prerequisites: [Type Narrowing, any, unknown e never]
-related: [Type predicates, Assertion functions, Validazione runtime e tipi statici]
+tags:
+  - typescript
+  - type-guards
+  - narrowing
+  - runtime-validation
+aliases:
+  - Type guard
+prerequisites:
+  - "[[Programmazione/TypeScript/Pagine/Type Narrowing]]"
+  - any
+  - unknown e never
+related:
+  - "[[Programmazione/TypeScript/Pagine/Type predicates]]"
+  - "[[Programmazione/TypeScript/Pagine/Assertion functions]]"
+  - "[[Programmazione/TypeScript/Pagine/Validazione runtime e tipi statici]]"
+title: Type Guards
 ---
 
 # Type Guards
@@ -94,7 +106,12 @@ La funzione `isUser` permette di usare `value` come `User` solo dopo il controll
 
 ## Collegamenti
 
-- [[Type Narrowing]]
-- [[Type predicates]]
-- [[Assertion functions]]
-- [[Validazione runtime e tipi statici]]
+- [[Programmazione/TypeScript/Pagine/Type Narrowing|Type Narrowing]]
+- [[Programmazione/TypeScript/Pagine/Type predicates|Type predicates]]
+- [[Programmazione/TypeScript/Pagine/Assertion functions|Assertion functions]]
+- [[Programmazione/TypeScript/Pagine/Validazione runtime e tipi statici|Validazione runtime e tipi statici]]
+
+
+## Navigazione
+
+- [[Programmazione/TypeScript/Indice TypeScript|Indice TypeScript]]

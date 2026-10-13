@@ -3,12 +3,20 @@ date: 2026-06-04
 area: Programmi open source
 topic: Modellazione 3D parametrica tramite codice
 type: technical-note
-status: "non revisionato"
+status: non revisionato
 difficulty: base
-tags: [open-source, cad, modellazione-3d, parametrico]
-aliases: [OpenScad, OpenSCAD]
+tags:
+  - open-source
+  - cad
+  - modellazione-3d
+  - parametrico
+aliases:
+  - OpenSCAD
 prerequisites: []
-related: [FreeCAD]
+related:
+  - "[[Programmi open source/Pagine/FreeCAD]]"
+title: OpenSCAD
+publish: true
 ---
 
 # OpenSCAD
@@ -48,7 +56,7 @@ difference() {
 
 Questo esempio crea un cilindro con un foro centrale. Modificando `diametro`, `altezza` o `foro` si ottengono rapidamente varianti dello stesso pezzo.
 
-## Punti forti
+## Funzionalita
 
 - **Parametrico**: le dimensioni possono essere controllate tramite variabili.
 - **Versionabile**: i file sono testo e funzionano bene con Git.
@@ -60,7 +68,7 @@ Questo esempio crea un cilindro con un foro centrale. Modificando `diametro`, `a
 
 - Non e ideale per modellazione organica, scultura 3D o forme molto libere.
 - Richiede familiarita con logica, coordinate e composizione geometrica.
-- Per assiemi meccanici complessi puo essere meno comodo di un CAD parametrico come [[FreeCAD]].
+- Per assiemi meccanici complessi puo essere meno comodo di un CAD parametrico come [[Programmi open source/Pagine/FreeCAD|FreeCAD]].
 
 ## Checklist
 
@@ -69,3 +77,8 @@ Questo esempio crea un cilindro con un foro centrale. Modificando `diametro`, `a
 - Usare `difference()` per fori, scassi e tagli.
 - Esportare in STL solo quando il modello e pronto per la stampa.
 - Controllare sempre dimensioni e tolleranze prima di stampare.
+
+
+## Navigazione
+
+- [[Programmi open source/Indice Programmi Open Source|Catalogo open source]]

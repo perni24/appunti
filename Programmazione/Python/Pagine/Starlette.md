@@ -3,13 +3,20 @@ date: 2026-06-03
 area: Programmazione
 topic: Python
 type: technical-note
-status: "non revisionato"
+status: non revisionato
 publish: true
-difficulty: intermediate
-tags: [programmazione, python, web, asgi]
-aliases: [Starlette, ASGI Starlette]
+difficulty: intermedio
+tags:
+  - programmazione
+  - python
+  - web
+  - asgi
+aliases:
+  - Starlette
+  - ASGI Starlette
 prerequisites: []
 related: []
+title: Starlette
 ---
 
 # Starlette
@@ -128,8 +135,8 @@ routes = [
 
 ## Collegamenti
 
-- [[Programmazione/Python/Indice python|Indice Python]]
-- [[Asyncio]]
-- [[FastAPI]]
-- [[Networking base]]
-- [[HTTPX e requests]]
+- [[Programmazione/Python/Indice Python|Indice Python]]
+- [[Programmazione/Python/Pagine/Asyncio|Asyncio]]
+- [[Programmazione/Python/Pagine/FastAPI|FastAPI]]
+- [[Programmazione/Python/Pagine/Networking base|Networking base]]
+- [[Programmazione/Python/Pagine/HTTPX e requests|HTTPX e requests]]

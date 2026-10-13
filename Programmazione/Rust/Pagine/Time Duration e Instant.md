@@ -3,7 +3,7 @@ date: 2026-05-22
 area: Programmazione
 topic: Rust
 type: technical-note
-status: "non revisionato"
+status: non revisionato
 publish: true
 difficulty: base
 tags:
@@ -11,9 +11,9 @@ tags:
   - rust
   - standard-library
 aliases:
-  - "Time"
-  - "Duration"
-  - "Instant"
+  - Time
+  - Duration
+  - Instant
 prerequisites:
   - "[[Programmazione/Rust/Pagine/Tipi di dato primitivi]]"
   - "[[Programmazione/Rust/Pagine/Result]]"
@@ -21,6 +21,7 @@ related:
   - "[[Programmazione/Rust/Pagine/Async Await]]"
   - "[[Programmazione/Rust/Pagine/Runtime async Tokio e async-std]]"
   - "[[Programmazione/Rust/Pagine/Performance e profiling]]"
+title: Time, Duration e Instant
 ---
 
 # Time, Duration e Instant
@@ -123,3 +124,8 @@ La funzione usa `Instant` per misurare una durata indipendente dall'orologio di 
 - [[Programmazione/Rust/Pagine/Performance e profiling|Performance e profiling]]
 - [[Programmazione/Rust/Pagine/Result|Result]]
 - [[Programmazione/Rust/Pagine/Operatore|Operatore ?]]
+
+
+## Navigazione
+
+- [[Programmazione/Rust/Indice Rust|Indice Rust]]

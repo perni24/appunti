@@ -3,13 +3,19 @@ date: 2026-06-03
 area: Programmazione
 topic: Python
 type: technical-note
-status: "non revisionato"
+status: non revisionato
 publish: true
-difficulty: intermediate
-tags: [programmazione, python, validazione, typing]
-aliases: [Pydantic]
+difficulty: intermedio
+tags:
+  - programmazione
+  - python
+  - validazione
+  - typing
+aliases:
+  - Pydantic
 prerequisites: []
 related: []
+title: Pydantic
 ---
 
 # Pydantic
@@ -130,8 +136,8 @@ Questo separa input e output, evitando di esporre campi interni per errore.
 
 ## Collegamenti
 
-- [[Programmazione/Python/Indice python|Indice Python]]
-- [[Type Hinting]]
-- [[FastAPI]]
-- [[Configurazione e Variabili d Ambiente]]
+- [[Programmazione/Python/Indice Python|Indice Python]]
+- [[Programmazione/Python/Pagine/Type Hinting|Type Hinting]]
+- [[Programmazione/Python/Pagine/FastAPI|FastAPI]]
+- [[Programmazione/Python/Pagine/Configurazione e Variabili d Ambiente|Configurazione e Variabili d Ambiente]]
 - [[Programmazione/Python/Pagine/Error Handling|Error Handling]]

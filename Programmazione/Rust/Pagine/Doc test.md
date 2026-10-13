@@ -3,7 +3,7 @@ date: 2026-05-28
 area: Programmazione
 topic: Rust
 type: technical-note
-status: "non revisionato"
+status: non revisionato
 publish: true
 difficulty: intermedio
 tags:
@@ -11,8 +11,8 @@ tags:
   - rust
   - testing-qualita-e-sicurezza
 aliases:
-  - "Doc test"
-  - "Documentation test"
+  - Doc test
+  - Documentation test
 prerequisites:
   - "[[Programmazione/Rust/Pagine/rustdoc]]"
   - "[[Programmazione/Rust/Pagine/Public API design]]"
@@ -20,6 +20,7 @@ related:
   - "[[Programmazione/Rust/Pagine/Unit test]]"
   - "[[Programmazione/Rust/Pagine/Integration test]]"
   - "[[Programmazione/Rust/Pagine/Documentazione delle crate]]"
+title: Doc test
 ---
 
 # Doc test
@@ -145,9 +146,9 @@ L'esempio diventa parte della suite di test e protegge la documentazione dall'in
 
 ## Collegamenti
 
-- [[Programmazione/Rust/Indice rust|Indice Rust]]
-- [[Programmazione/Rust/Pagine/rustdoc]]
-- [[Programmazione/Rust/Pagine/Unit test]]
-- [[Programmazione/Rust/Pagine/Integration test]]
-- [[Programmazione/Rust/Pagine/Public API design]]
-- [[Programmazione/Rust/Pagine/Documentazione delle crate]]
+- [[Programmazione/Rust/Indice Rust|Indice Rust]]
+- [[Programmazione/Rust/Pagine/rustdoc|rustdoc]]
+- [[Programmazione/Rust/Pagine/Unit test|Unit test]]
+- [[Programmazione/Rust/Pagine/Integration test|Integration test]]
+- [[Programmazione/Rust/Pagine/Public API design|Public API design]]
+- [[Programmazione/Rust/Pagine/Documentazione delle crate|Documentazione delle crate]]

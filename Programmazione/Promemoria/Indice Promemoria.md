@@ -1,7 +1,11 @@
+# Indice Promemoria
+
+- [[Programmazione/Indice Programmazione|Tutti i percorsi di Programmazione]]
+
 ## Linguaggi
 
-- [[Programmazione/Promemoria/JavaScript/Indice Promemoria JavaScript|JavaScript]]
-- [[Programmazione/Promemoria/Python/Indice Promemoria Python|Python]]
-- [[Programmazione/Promemoria/Rust/Indice Promemoria Rust|Rust]]
-- [[Programmazione/Promemoria/Postgres/Indice Promemoria PostgreSQL|PostgreSQL]]
-- [[Programmazione/Promemoria/GitHub/Indice Promemoria GitHub|GitHub]]
+- [[Programmazione/JavaScript/Promemoria/Indice Promemoria JavaScript|JavaScript]]
+- [[Programmazione/Python/Promemoria/Indice Promemoria Python|Python]]
+- [[Programmazione/Rust/Promemoria/Indice Promemoria Rust|Rust]]
+- [[Programmazione/PostgreSQL/Promemoria/Indice Promemoria PostgreSQL|PostgreSQL]]
+- [[Programmazione/GitHub/Promemoria/Indice Promemoria GitHub|GitHub]]

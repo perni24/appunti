@@ -3,13 +3,25 @@ date: 2026-07-07
 area: Programmazione
 topic: GitHub
 type: technical-note
-status: "non revisionato"
+status: non revisionato
 publish: true
 difficulty: intermedio
-tags: [github, github-actions, costi, limiti]
-aliases: [Costi e limiti GitHub Actions, Limiti GitHub Actions]
-prerequisites: [GitHub Actions, Jobs steps e runners]
-related: [Cache GitHub Actions, Artifacts GitHub Actions, Self-hosted runners]
+tags:
+  - github
+  - github-actions
+  - costi
+  - limiti
+aliases:
+  - Costi e limiti GitHub Actions
+  - Limiti GitHub Actions
+prerequisites:
+  - "[[Programmazione/GitHub/Pagine/GitHub Actions]]"
+  - "[[Programmazione/GitHub/Pagine/Jobs steps e runners]]"
+related:
+  - "[[Programmazione/GitHub/Pagine/Cache GitHub Actions]]"
+  - "[[Programmazione/GitHub/Pagine/Artifacts GitHub Actions]]"
+  - "[[Programmazione/GitHub/Pagine/Self-hosted runners]]"
+title: Costi e limiti GitHub Actions
 ---
 
 # Costi e limiti GitHub Actions
@@ -111,12 +123,12 @@ Questa configurazione genera 9 job. Se serve solo compatibilita principale, puoi
 
 ## Collegamenti
 
-- [[Programmazione/GitHub/Indice GitHub]]
-- [[GitHub Actions]]
-- [[Matrix strategy GitHub Actions]]
-- [[Cache GitHub Actions]]
-- [[Artifacts GitHub Actions]]
-- [[Self-hosted runners]]
+- [[Programmazione/GitHub/Indice GitHub|Indice GitHub]]
+- [[Programmazione/GitHub/Pagine/GitHub Actions|GitHub Actions]]
+- [[Programmazione/GitHub/Pagine/Matrix strategy GitHub Actions|Matrix strategy GitHub Actions]]
+- [[Programmazione/GitHub/Pagine/Cache GitHub Actions|Cache GitHub Actions]]
+- [[Programmazione/GitHub/Pagine/Artifacts GitHub Actions|Artifacts GitHub Actions]]
+- [[Programmazione/GitHub/Pagine/Self-hosted runners|Self-hosted runners]]
 
 ## Fonti
 

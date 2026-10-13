@@ -3,13 +3,19 @@ date: 2026-06-04
 area: Programmazione
 topic: React
 type: technical-note
-status: "non revisionato"
+status: non revisionato
 publish: true
-difficulty: beginner
-tags: [react, hooks, ref]
-aliases: [useRef, Ref React]
+difficulty: base
+tags:
+  - react
+  - hooks
+  - ref
+aliases:
+  - useRef
+  - Ref React
 prerequisites: []
 related: []
+title: useRef
 ---
 
 # useRef
@@ -127,8 +133,8 @@ function Price({ value }) {
 
 ## Collegamenti
 
-- [[Programmazione/React/Indice react|Indice React]]
-- [[Focus Management]]
-- [[Gestione della memoria e AbortController]]
-- [[useEffect]]
-- [[Portals]]
+- [[Programmazione/React/Indice React|Indice React]]
+- [[Programmazione/React/Pagine/Focus Management|Focus Management]]
+- [[Programmazione/React/Pagine/Gestione della memoria e AbortController|Gestione della memoria e AbortController]]
+- [[Programmazione/React/Pagine/useEffect|useEffect]]
+- [[Programmazione/React/Pagine/Portals|Portals]]

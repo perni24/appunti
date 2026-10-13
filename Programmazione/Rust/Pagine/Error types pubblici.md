@@ -3,7 +3,7 @@ date: 2026-05-28
 area: Programmazione
 topic: Rust
 type: technical-note
-status: "non revisionato"
+status: non revisionato
 publish: true
 difficulty: avanzato
 tags:
@@ -11,8 +11,8 @@ tags:
   - rust
   - api-design-idiomatico
 aliases:
-  - "Error types pubblici"
-  - "Errori pubblici"
+  - Error types pubblici
+  - Errori pubblici
 prerequisites:
   - "[[Programmazione/Rust/Pagine/Error handling idiomatico]]"
   - "[[Programmazione/Rust/Pagine/thiserror e anyhow]]"
@@ -21,6 +21,7 @@ related:
   - "[[Programmazione/Rust/Pagine/Error reporting]]"
   - "[[Programmazione/Rust/Pagine/Compatibility e breaking changes]]"
   - "[[Programmazione/Rust/Pagine/Semantic Versioning]]"
+title: Error types pubblici
 ---
 
 # Error types pubblici
@@ -150,10 +151,10 @@ L'API non espone il database specifico, ma preserva categorie utili all'utente.
 
 ## Collegamenti
 
-- [[Programmazione/Rust/Indice rust|Indice Rust]]
-- [[Programmazione/Rust/Pagine/Error handling idiomatico]]
-- [[Programmazione/Rust/Pagine/thiserror e anyhow]]
-- [[Programmazione/Rust/Pagine/Error reporting]]
-- [[Programmazione/Rust/Pagine/Public API design]]
-- [[Programmazione/Rust/Pagine/Compatibility e breaking changes]]
-- [[Programmazione/Rust/Pagine/Semantic Versioning]]
+- [[Programmazione/Rust/Indice Rust|Indice Rust]]
+- [[Programmazione/Rust/Pagine/Error handling idiomatico|Error handling idiomatico]]
+- [[Programmazione/Rust/Pagine/thiserror e anyhow|thiserror e anyhow]]
+- [[Programmazione/Rust/Pagine/Error reporting|Error reporting]]
+- [[Programmazione/Rust/Pagine/Public API design|Public API design]]
+- [[Programmazione/Rust/Pagine/Compatibility e breaking changes|Compatibility e breaking changes]]
+- [[Programmazione/Rust/Pagine/Semantic Versioning|Semantic Versioning]]

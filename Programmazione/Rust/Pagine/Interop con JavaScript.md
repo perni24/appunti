@@ -3,7 +3,7 @@ date: 2026-05-27
 area: Programmazione
 topic: Rust
 type: technical-note
-status: "non revisionato"
+status: non revisionato
 publish: true
 difficulty: avanzato
 tags:
@@ -11,8 +11,8 @@ tags:
   - rust
   - webassembly
 aliases:
-  - "Interop con JavaScript"
-  - "Rust JavaScript interop"
+  - Interop con JavaScript
+  - Rust JavaScript interop
 prerequisites:
   - "[[Programmazione/Rust/Pagine/wasm-bindgen]]"
   - "[[Programmazione/Rust/Pagine/Serde e serializzazione]]"
@@ -21,6 +21,7 @@ related:
   - "[[Programmazione/Rust/Pagine/wasm-pack]]"
   - "[[Programmazione/Rust/Pagine/FFI]]"
   - "[[Programmazione/Rust/Pagine/Memory layout e alignment]]"
+title: Interop con JavaScript
 ---
 
 # Interop con JavaScript
@@ -169,10 +170,10 @@ Questo mantiene il confine dinamico vicino all'API pubblica e usa tipi Rust all'
 
 ## Collegamenti
 
-- [[Programmazione/Rust/Indice rust|Indice Rust]]
-- [[Programmazione/Rust/Pagine/wasm-bindgen]]
-- [[Programmazione/Rust/Pagine/wasm-pack]]
-- [[Programmazione/Rust/Pagine/Serde e serializzazione]]
-- [[Programmazione/Rust/Pagine/Limiti del runtime WebAssembly]]
-- [[Programmazione/Rust/Pagine/FFI]]
-- [[Programmazione/Rust/Pagine/Memory layout e alignment]]
+- [[Programmazione/Rust/Indice Rust|Indice Rust]]
+- [[Programmazione/Rust/Pagine/wasm-bindgen|wasm-bindgen]]
+- [[Programmazione/Rust/Pagine/wasm-pack|wasm-pack]]
+- [[Programmazione/Rust/Pagine/Serde e serializzazione|Serde e serializzazione]]
+- [[Programmazione/Rust/Pagine/Limiti del runtime WebAssembly|Limiti del runtime WebAssembly]]
+- [[Programmazione/Rust/Pagine/FFI|FFI]]
+- [[Programmazione/Rust/Pagine/Memory layout e alignment|Memory layout e alignment]]

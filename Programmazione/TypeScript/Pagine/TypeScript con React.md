@@ -3,13 +3,25 @@ date: 2026-06-22
 area: Programmazione
 topic: TypeScript
 type: technical-note
-status: "non revisionato"
+status: non revisionato
 publish: true
 difficulty: intermedio
-tags: [typescript, react, frontend, props, hooks]
-aliases: [React con TypeScript]
-prerequisites: [Type Aliases e Interfaces, Generics, Union e Intersection Types]
-related: [TypeScript con Next.js, API tipizzate]
+tags:
+  - typescript
+  - react
+  - frontend
+  - props
+  - hooks
+aliases:
+  - React con TypeScript
+prerequisites:
+  - "[[Programmazione/TypeScript/Pagine/Type Aliases e Interfaces]]"
+  - "[[Programmazione/TypeScript/Pagine/Generics]]"
+  - "[[Programmazione/TypeScript/Pagine/Union e Intersection Types]]"
+related:
+  - "[[Programmazione/TypeScript/Pagine/TypeScript con Next.js]]"
+  - "[[Programmazione/TypeScript/Pagine/API tipizzate]]"
+title: TypeScript con React
 ---
 
 # TypeScript con React
@@ -107,7 +119,12 @@ Le props dichiarano chiaramente dati richiesti e callback.
 
 ## Collegamenti
 
-- [[TypeScript con Next.js]]
-- [[API tipizzate]]
-- [[Discriminated Unions]]
-- [[Validazione runtime e tipi statici]]
+- [[Programmazione/TypeScript/Pagine/TypeScript con Next.js|TypeScript con Next.js]]
+- [[Programmazione/TypeScript/Pagine/API tipizzate|API tipizzate]]
+- [[Programmazione/TypeScript/Pagine/Discriminated Unions|Discriminated Unions]]
+- [[Programmazione/TypeScript/Pagine/Validazione runtime e tipi statici|Validazione runtime e tipi statici]]
+
+
+## Navigazione
+
+- [[Programmazione/TypeScript/Indice TypeScript|Indice TypeScript]]

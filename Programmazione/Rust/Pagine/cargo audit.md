@@ -3,7 +3,7 @@ date: 2026-05-28
 area: Programmazione
 topic: Rust
 type: technical-note
-status: "non revisionato"
+status: non revisionato
 publish: true
 difficulty: intermedio
 tags:
@@ -11,8 +11,8 @@ tags:
   - rust
   - testing-qualita-e-sicurezza
 aliases:
-  - "cargo audit"
-  - "RustSec audit"
+  - cargo audit
+  - RustSec audit
 prerequisites:
   - "[[Programmazione/Rust/Pagine/Cargo.lock]]"
   - "[[Programmazione/Rust/Pagine/Crates.io]]"
@@ -21,6 +21,7 @@ related:
   - "[[Programmazione/Rust/Pagine/cargo deny]]"
   - "[[Programmazione/Rust/Pagine/Cargo]]"
   - "[[Programmazione/Rust/Pagine/Semantic Versioning]]"
+title: cargo audit
 ---
 
 # cargo audit
@@ -122,10 +123,10 @@ Se l'aggiornamento richiede una major version, devi valutare breaking changes e 
 
 ## Collegamenti
 
-- [[Programmazione/Rust/Indice rust|Indice Rust]]
-- [[Programmazione/Rust/Pagine/cargo deny]]
-- [[Programmazione/Rust/Pagine/Cargo.lock]]
-- [[Programmazione/Rust/Pagine/Crates.io]]
-- [[Programmazione/Rust/Pagine/Packaging e release]]
-- [[Programmazione/Rust/Pagine/Semantic Versioning]]
-- [[Programmazione/Rust/Pagine/Cargo]]
+- [[Programmazione/Rust/Indice Rust|Indice Rust]]
+- [[Programmazione/Rust/Pagine/cargo deny|cargo deny]]
+- [[Programmazione/Rust/Pagine/Cargo.lock|Cargo.lock]]
+- [[Programmazione/Rust/Pagine/Crates.io|Crates.io]]
+- [[Programmazione/Rust/Pagine/Packaging e release|Packaging e release]]
+- [[Programmazione/Rust/Pagine/Semantic Versioning|Semantic Versioning]]
+- [[Programmazione/Rust/Pagine/Cargo|Cargo]]

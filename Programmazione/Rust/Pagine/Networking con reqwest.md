@@ -3,7 +3,7 @@ date: 2026-05-27
 area: Programmazione
 topic: Rust
 type: technical-note
-status: "non revisionato"
+status: non revisionato
 publish: true
 difficulty: intermedio
 tags:
@@ -11,8 +11,8 @@ tags:
   - rust
   - backend-networking-e-database
 aliases:
-  - "Networking con reqwest"
-  - "reqwest"
+  - Networking con reqwest
+  - reqwest
 prerequisites:
   - "[[Programmazione/Rust/Pagine/Async Await]]"
   - "[[Programmazione/Rust/Pagine/Runtime async Tokio e async-std]]"
@@ -21,6 +21,7 @@ related:
   - "[[Programmazione/Rust/Pagine/Error reporting]]"
   - "[[Programmazione/Rust/Pagine/Tracing con tracing]]"
   - "[[Programmazione/Rust/Pagine/Web backend con axum]]"
+title: Networking con reqwest
 ---
 
 # Networking con reqwest
@@ -164,10 +165,10 @@ Il contesto aggiunto agli errori rende piu chiaro dove e fallita l'operazione.
 
 ## Collegamenti
 
-- [[Programmazione/Rust/Indice rust|Indice Rust]]
-- [[Programmazione/Rust/Pagine/Async Await]]
-- [[Programmazione/Rust/Pagine/Runtime async Tokio e async-std]]
-- [[Programmazione/Rust/Pagine/Serde e serializzazione]]
-- [[Programmazione/Rust/Pagine/Error reporting]]
-- [[Programmazione/Rust/Pagine/Tracing con tracing]]
-- [[Programmazione/Rust/Pagine/Web backend con axum]]
+- [[Programmazione/Rust/Indice Rust|Indice Rust]]
+- [[Programmazione/Rust/Pagine/Async Await|Async Await]]
+- [[Programmazione/Rust/Pagine/Runtime async Tokio e async-std|Runtime async Tokio e async-std]]
+- [[Programmazione/Rust/Pagine/Serde e serializzazione|Serde e serializzazione]]
+- [[Programmazione/Rust/Pagine/Error reporting|Error reporting]]
+- [[Programmazione/Rust/Pagine/Tracing con tracing|Tracing con tracing]]
+- [[Programmazione/Rust/Pagine/Web backend con axum|Web backend con axum]]

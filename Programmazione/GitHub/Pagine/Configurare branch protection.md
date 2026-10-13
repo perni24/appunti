@@ -3,13 +3,25 @@ date: 2026-07-07
 area: Programmazione
 topic: GitHub
 type: operational-note
-status: "non revisionato"
+status: non revisionato
 publish: true
 difficulty: intermedio
-tags: [github, branch-protection, repository, procedura]
-aliases: [Configurare branch protection, Configurare protezione branch GitHub]
-prerequisites: [Branch protection rules, Required status checks]
-related: [Repository rulesets, CODEOWNERS, Configurare una pipeline CI con GitHub Actions]
+tags:
+  - github
+  - branch-protection
+  - repository
+  - procedura
+aliases:
+  - Configurare branch protection
+  - Configurare protezione branch GitHub
+prerequisites:
+  - "[[Programmazione/GitHub/Pagine/Branch protection rules]]"
+  - "[[Programmazione/GitHub/Pagine/Required status checks]]"
+related:
+  - "[[Programmazione/GitHub/Pagine/Repository rulesets]]"
+  - "[[Programmazione/GitHub/Pagine/CODEOWNERS]]"
+  - "[[Programmazione/GitHub/Pagine/Configurare una pipeline CI con GitHub Actions]]"
+title: Configurare branch protection
 ---
 
 # Configurare branch protection
@@ -87,13 +99,13 @@ Allow deletions: no
 
 ## Collegamenti
 
-- [[Programmazione/GitHub/Indice GitHub]]
-- [[Branch protection rules]]
-- [[Required status checks]]
-- [[Repository rulesets]]
-- [[CODEOWNERS]]
-- [[Repository settings]]
-- [[Configurare una pipeline CI con GitHub Actions]]
+- [[Programmazione/GitHub/Indice GitHub|Indice GitHub]]
+- [[Programmazione/GitHub/Pagine/Branch protection rules|Branch protection rules]]
+- [[Programmazione/GitHub/Pagine/Required status checks|Required status checks]]
+- [[Programmazione/GitHub/Pagine/Repository rulesets|Repository rulesets]]
+- [[Programmazione/GitHub/Pagine/CODEOWNERS|CODEOWNERS]]
+- [[Programmazione/GitHub/Pagine/Repository settings|Repository settings]]
+- [[Programmazione/GitHub/Pagine/Configurare una pipeline CI con GitHub Actions|Configurare una pipeline CI con GitHub Actions]]
 
 ## Fonti
 

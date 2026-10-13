@@ -3,7 +3,7 @@ date: 2026-05-26
 area: Programmazione
 topic: Rust
 type: technical-note
-status: "non revisionato"
+status: non revisionato
 publish: true
 difficulty: avanzato
 tags:
@@ -11,8 +11,8 @@ tags:
   - rust
   - rust-di-sistema
 aliases:
-  - "Memory layout"
-  - "Alignment"
+  - Memory layout
+  - Alignment
 prerequisites:
   - "[[Programmazione/Rust/Pagine/Stack e Heap]]"
   - "[[Programmazione/Rust/Pagine/Unsafe Rust]]"
@@ -20,6 +20,7 @@ related:
   - "[[Programmazione/Rust/Pagine/FFI]]"
   - "[[Programmazione/Rust/Pagine/Undefined behavior]]"
   - "[[Programmazione/Rust/Pagine/Allocator]]"
+title: Memory layout e alignment
 ---
 
 # Memory layout e alignment
@@ -133,3 +134,8 @@ fn header_size() -> usize {
 - [[Programmazione/Rust/Pagine/Undefined behavior|Undefined behavior]]
 - [[Programmazione/Rust/Pagine/Allocator|Allocator]]
 - [[Programmazione/Rust/Pagine/Performance e profiling|Performance e profiling]]
+
+
+## Navigazione
+
+- [[Programmazione/Rust/Indice Rust|Indice Rust]]

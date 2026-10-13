@@ -3,13 +3,21 @@ date: 2026-06-04
 area: Programmazione
 topic: React
 type: technical-note
-status: "non revisionato"
+status: non revisionato
 publish: true
-difficulty: beginner
-tags: [react, rendering, liste, frontend]
-aliases: [Rendering Condizionale, Liste React, key React]
+difficulty: base
+tags:
+  - react
+  - rendering
+  - liste
+  - frontend
+aliases:
+  - Rendering Condizionale
+  - Liste React
+  - key React
 prerequisites: []
 related: []
+title: Rendering Condizionale e Liste
 ---
 
 # Rendering Condizionale e Liste
@@ -128,8 +136,8 @@ Questo rende espliciti tutti gli stati della UI.
 
 ## Collegamenti
 
-- [[Programmazione/React/Indice react|Indice React]]
-- [[JSX]]
-- [[Props e Flusso di dati unidirezionale]]
-- [[Data Fetching e Cache]]
-- [[Virtualizzazione delle liste]]
+- [[Programmazione/React/Indice React|Indice React]]
+- [[Programmazione/React/Pagine/JSX|JSX]]
+- [[Programmazione/React/Pagine/Props e Flusso di dati unidirezionale|Props e Flusso di dati unidirezionale]]
+- [[Programmazione/React/Pagine/Data Fetching e Cache|Data Fetching e Cache]]
+- [[Programmazione/React/Pagine/Virtualizzazione delle liste|Virtualizzazione delle liste]]

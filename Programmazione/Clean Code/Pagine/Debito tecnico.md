@@ -3,13 +3,22 @@ date: 2026-07-09
 area: Programmazione
 topic: Clean Code
 type: theory-note
-status: "non revisionato"
+status: non revisionato
 publish: true
 difficulty: base
-tags: [clean-code, debito-tecnico, manutenzione]
-aliases: [Debito tecnico, Technical debt]
-prerequisites: [Clean Code]
-related: [Manutenibilita del codice, Semplicita e complessita accidentale]
+tags:
+  - clean-code
+  - debito-tecnico
+  - manutenzione
+aliases:
+  - Debito tecnico
+  - Technical debt
+prerequisites:
+  - "[[Programmazione/Clean Code/Pagine/Clean Code]]"
+related:
+  - "[[Programmazione/Clean Code/Pagine/Manutenibilita del codice]]"
+  - "[[Programmazione/Clean Code/Pagine/Semplicita e complessita accidentale]]"
+title: Debito tecnico
 ---
 
 # Debito tecnico
@@ -83,11 +92,11 @@ Copiamo la stessa logica in cinque punti e nessuno sa quale sia la versione corr
 
 ## Collegamenti
 
-- [[Programmazione/Clean Code/Indice Clean Code]]
-- [[Clean Code]]
-- [[Manutenibilita del codice]]
-- [[Semplicita e complessita accidentale]]
-- [[Commenti che spiegano il perche non il cosa]]
+- [[Programmazione/Clean Code/Indice Clean Code|Indice Clean Code]]
+- [[Programmazione/Clean Code/Pagine/Clean Code|Clean Code]]
+- [[Programmazione/Clean Code/Pagine/Manutenibilita del codice|Manutenibilita del codice]]
+- [[Programmazione/Clean Code/Pagine/Semplicita e complessita accidentale|Semplicita e complessita accidentale]]
+- [[Programmazione/Clean Code/Pagine/Commenti che spiegano il perche non il cosa|Commenti che spiegano il perche non il cosa]]
 
 ## Fonti
 

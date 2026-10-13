@@ -3,13 +3,24 @@ date: 2026-07-09
 area: Programmazione
 topic: Clean Code
 type: technical-note
-status: "non revisionato"
+status: non revisionato
 publish: true
 difficulty: avanzato
-tags: [clean-code, concorrenza, lock]
-aliases: [Lock e sezioni critiche, Critical sections]
-prerequisites: [Stato condiviso, Race condition e leggibilita]
-related: [Operazioni atomiche, Cleanup e rilascio risorse, Gestione delle risorse]
+tags:
+  - clean-code
+  - concorrenza
+  - lock
+aliases:
+  - Lock e sezioni critiche
+  - Critical sections
+prerequisites:
+  - "[[Programmazione/Clean Code/Pagine/Stato condiviso]]"
+  - "[[Programmazione/Clean Code/Pagine/Race condition e leggibilita]]"
+related:
+  - "[[Programmazione/Clean Code/Pagine/Operazioni atomiche]]"
+  - "[[Programmazione/Clean Code/Pagine/Cleanup e rilascio risorse]]"
+  - "[[Programmazione/Clean Code/Pagine/Gestione delle risorse]]"
+title: Lock e sezioni critiche
 ---
 
 # Lock e sezioni critiche
@@ -91,12 +102,12 @@ Il lock rende esplicita la sezione critica della prenotazione.
 
 ## Collegamenti
 
-- [[Programmazione/Clean Code/Indice Clean Code]]
-- [[Stato condiviso]]
-- [[Race condition e leggibilita]]
-- [[Operazioni atomiche]]
-- [[Cleanup e rilascio risorse]]
-- [[Gestione delle risorse]]
+- [[Programmazione/Clean Code/Indice Clean Code|Indice Clean Code]]
+- [[Programmazione/Clean Code/Pagine/Stato condiviso|Stato condiviso]]
+- [[Programmazione/Clean Code/Pagine/Race condition e leggibilita|Race condition e leggibilita]]
+- [[Programmazione/Clean Code/Pagine/Operazioni atomiche|Operazioni atomiche]]
+- [[Programmazione/Clean Code/Pagine/Cleanup e rilascio risorse|Cleanup e rilascio risorse]]
+- [[Programmazione/Clean Code/Pagine/Gestione delle risorse|Gestione delle risorse]]
 
 ## Fonti
 

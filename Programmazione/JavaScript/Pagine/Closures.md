@@ -1,24 +1,37 @@
-﻿---
+---
 date: 2026-06-02
 area: Programmazione
 topic: JavaScript
 type: technical-note
-status: "non revisionato"
+status: non revisionato
 publish: true
-difficulty: intermediate
-tags: [javascript, closures, scope, functions]
-aliases: [Closure JS, Chiusure JavaScript]
-prerequisites: [Scope, Funzioni]
-related: [Scope, Callback, Memory Leaks, Private Fields e Static Blocks]
+difficulty: intermedio
+tags:
+  - javascript
+  - closures
+  - scope
+  - functions
+aliases:
+  - Closure JS
+  - Chiusure JavaScript
+prerequisites:
+  - "[[Programmazione/JavaScript/Pagine/Scope]]"
+  - "[[Programmazione/JavaScript/Pagine/Funzioni]]"
+related:
+  - "[[Programmazione/JavaScript/Pagine/Scope]]"
+  - "[[Programmazione/JavaScript/Pagine/Callback]]"
+  - "[[Programmazione/JavaScript/Pagine/Memory Leaks]]"
+  - "[[Programmazione/JavaScript/Pagine/Private Fields e Static Blocks]]"
+title: Closures
 ---
 
 # Closures
 
 ## Sintesi
 
-Una closure e una funzione che mantiene accesso allo scope lessicale in cui e stata creata, anche dopo che quello scope ha terminato la sua esecuzione.
+Una closure e la combinazione di una funzione e del suo ambiente lessicale. La funzione puo accedere ai binding esterni anche dopo che la chiamata della funzione che li ha creati e terminata.
 
-In pratica: una funzione puo ricordare variabili esterne.
+In pratica: una funzione puo ricordare variabili esterne. Non serve necessariamente restituirla con `return`: anche un callback registrato come listener puo usare una closure.
 
 ---
 
@@ -62,9 +75,31 @@ console.log(counter()); // 3
 
 `count` resta privata rispetto al codice esterno, ma resta modificabile dalla funzione `increment`.
 
+Due chiamate a `createCounter()` creano due contatori indipendenti. Piu funzioni create nella **stessa** chiamata, invece, possono condividere lo stesso binding:
+
+```js
+function createSelection(initialId) {
+  let selectedId = initialId;
+  const initialLabel = `Iniziale: ${selectedId}`;
+
+  return {
+    select(id) { selectedId = id; },
+    read() { return selectedId; },
+    readInitialLabel() { return initialLabel; },
+  };
+}
+
+const selection = createSelection(1);
+selection.select(2);
+console.log(selection.read()); // 2
+console.log(selection.readInitialLabel()); // "Iniziale: 1"
+```
+
+La closure legge il valore attuale di `selectedId`; non ricalcola pero una stringa gia costruita. Questa distinzione aiuta a riconoscere dati derivati diventati obsoleti nei callback.
+
 ---
 ### Stato privato
-Le closures sono spesso usate per incapsulare stato.
+Le closures sono spesso usate per incapsulare stato. Questa factory rappresenta soltanto una sessione in memoria: `login` memorizza un token gia ottenuto da un sistema di autenticazione, non autentica l'utente.
 
 ```js
 function createUserSession(userId) {
@@ -72,10 +107,20 @@ function createUserSession(userId) {
 
   return {
     login(newToken) {
+      if (
+        typeof newToken !== "string" ||
+        /\s/.test(newToken) ||
+        !/^[A-Za-z0-9._~+\/-]+=*$/.test(newToken)
+      ) {
+        throw new TypeError("Token Bearer con formato non valido");
+      }
       token = newToken;
     },
+    logout() {
+      token = null;
+    },
     getAuthHeader() {
-      return `Bearer ${token}`;
+      return token === null ? null : `Bearer ${token}`;
     },
     getUserId() {
       return userId;
@@ -85,11 +130,15 @@ function createUserSession(userId) {
 
 const session = createUserSession(42);
 
-session.login("abc123");
-console.log(session.getAuthHeader()); // "Bearer abc123"
+console.log(session.getAuthHeader()); // null: omettere Authorization
+session.login("example-token"); // segnaposto, non una credenziale reale
+session.logout();
+console.log(session.getAuthHeader()); // null
 ```
 
-Il codice esterno non puo leggere direttamente `token`.
+Il controllo segue solo il formato testuale Bearer della [RFC 6750, sezione 2.1](https://www.rfc-editor.org/rfc/rfc6750.html#section-2.1): non verifica firma, scadenza o permessi. Se `getAuthHeader()` restituisce `null`, non inviare un header `Authorization` con valore `null` o `Bearer null`.
+
+Il codice esterno non accede direttamente al binding `token`, ma il metodo lo espone deliberatamente come header. Una closure e incapsulamento, non un deposito sicuro di segreti: non protegge da codice malevolo gia in esecuzione nella pagina. Non scrivere token reali nei log.
 
 ---
 ### Function factory
@@ -103,16 +152,19 @@ function createFormatter(locale, currency) {
   });
 
   return function formatPrice(value) {
+    if (typeof value !== "number" || !Number.isFinite(value)) {
+      throw new TypeError("Importo numerico finito richiesto");
+    }
     return formatter.format(value);
   };
 }
 
 const formatEuro = createFormatter("it-IT", "EUR");
 
-console.log(formatEuro(19.99)); // "19,99 EUR"
+console.log(formatEuro(19.99)); // importo con simbolo euro e spazi del locale
 ```
 
-La funzione restituita riusa la configurazione senza doverla ricevere a ogni chiamata.
+La funzione restituita riusa la configurazione senza doverla ricevere a ogni chiamata. Il default `currencyDisplay: "symbol"` mostra il simbolo, non necessariamente il codice `EUR`. Per il codice imposta `currencyDisplay: "code"`; gli spazi possono essere non separabili, quindi non confrontare il risultato con una stringa costruita a mano. Il formatter presenta il valore: non risolve la precisione dei calcoli monetari.
 
 ---
 ### Closures nei callback
@@ -120,12 +172,13 @@ I callback mantengono accesso alle variabili esterne.
 
 ```js
 function delayLog(message) {
-  setTimeout(() => {
+  return setTimeout(() => {
     console.log(message);
   }, 1000);
 }
 
-delayLog("Operazione completata");
+const timeoutId = delayLog("Operazione completata");
+// clearTimeout(timeoutId); // annulla il callback se non serve piu
 ```
 
 Il callback passato a `setTimeout` puo leggere `message` anche quando `delayLog` ha gia terminato.
@@ -146,7 +199,7 @@ for (var i = 0; i < 3; i += 1) {
 // 3
 ```
 
-Con `let`, ogni iterazione crea un binding separato.
+Con `let` nell'intestazione del ciclo, ogni iterazione crea un binding separato. Il ritardo `0` non esegue il callback subito: questi callback partono dopo il codice sincrono del ciclo.
 
 ```js
 for (let i = 0; i < 3; i += 1) {
@@ -162,7 +215,7 @@ for (let i = 0; i < 3; i += 1) {
 
 ---
 ### Memoria
-Una closure mantiene vivi gli oggetti a cui fa riferimento.
+Finche una closure e raggiungibile, gli oggetti necessari al suo funzionamento possono restare raggiungibili attraverso l'ambiente catturato. Questo non implica che il motore conservi ogni variabile locale, ne che un ciclo di riferimenti sia da solo un leak.
 
 ```js
 function createHandler(largeData) {
@@ -184,7 +237,7 @@ Per evitare leak:
 
 ## API / Sintassi
 
-Non esiste una API specifica: una closure nasce quando una funzione interna usa variabili dello scope esterno.
+Non esiste una API specifica: la relazione con l'ambiente lessicale viene stabilita quando la funzione viene creata.
 
 ```js
 function outer(value) {
@@ -194,7 +247,7 @@ function outer(value) {
 }
 ```
 
-Pattern frequenti:
+Schema di factory e listener, non un frammento autonomo: `createFunction`, `config`, `element`, `use` e `value` rappresentano dipendenze dell'applicazione.
 
 ```js
 const fn = createFunction(config);
@@ -221,6 +274,48 @@ message(); // "Ciao, Luca"
 ```
 
 `printMessage` continua ad accedere a `prefix` e `name` anche dopo la fine di `createMessage`.
+
+### Listener con smontaggio
+
+In una pagina browser, inserisci prima questo HTML:
+
+```html
+<button id="increment-count" type="button">Incrementa</button>
+<output id="count-value">0</output>
+```
+
+Poi esegui il codice dopo che gli elementi sono nel DOM. La funzione restituita rimuove lo stesso callback registrato, senza modificare altri listener:
+
+```js
+function mountCounter(button, output) {
+  if (
+    !(button instanceof HTMLButtonElement) ||
+    !(output instanceof HTMLOutputElement)
+  ) {
+    throw new TypeError("Servono un button e un output della pagina");
+  }
+  let count = 0;
+  output.textContent = String(count);
+
+  function onClick() {
+    count += 1;
+    output.textContent = String(count);
+  }
+
+  button.addEventListener("click", onClick);
+  return function unmount() {
+    button.removeEventListener("click", onClick);
+  };
+}
+
+const unmountCounter = mountCounter(
+  document.querySelector("#increment-count"),
+  document.querySelector("#count-value"),
+);
+// unmountCounter(); // prima di smontare la vista
+```
+
+Una sola registrazione per coppia di elementi: chiama lo smontaggio prima di montare di nuovo. La verifica `instanceof` presume elementi del documento corrente, non di un altro iframe. La rimozione interrompe gli aggiornamenti, ma non azzera l'output; elimina anche eventuali riferimenti applicativi non piu necessari.
 
 ---
 
@@ -261,3 +356,14 @@ message(); // "Ciao, Luca"
 - [[Programmazione/JavaScript/Pagine/Callback|Callback]]
 - [[Programmazione/JavaScript/Pagine/Memory Leaks|Memory Leaks]]
 - [[Programmazione/JavaScript/Pagine/Private Fields e Static Blocks|Private Fields e Static Blocks]]
+
+
+## Fonti
+
+- [MDN: closures](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Guide/Closures).
+- [MDN: opzioni Intl.NumberFormat](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Intl/NumberFormat/NumberFormat).
+- [MDN: rimozione dei listener](https://developer.mozilla.org/en-US/docs/Web/API/EventTarget/removeEventListener).
+
+## Navigazione
+
+- [[Programmazione/JavaScript/Indice JavaScript|Indice JavaScript]]

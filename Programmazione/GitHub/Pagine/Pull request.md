@@ -3,13 +3,25 @@ date: 2026-07-06
 area: Programmazione
 topic: GitHub
 type: technical-note
-status: "non revisionato"
+status: non revisionato
 publish: true
 difficulty: base
-tags: [github, pull-request, review, collaborazione]
-aliases: [Pull request, PR, Merge request]
-prerequisites: [Branch su GitHub, Commit e cronologia su GitHub]
-related: [Review code su GitHub, Issues GitHub]
+tags:
+  - github
+  - pull-request
+  - review
+  - collaborazione
+aliases:
+  - Pull request
+  - PR
+  - Merge request
+prerequisites:
+  - "[[Programmazione/GitHub/Pagine/Branch su GitHub]]"
+  - "[[Programmazione/GitHub/Pagine/Commit e cronologia su GitHub]]"
+related:
+  - "[[Programmazione/GitHub/Pagine/Review code su GitHub]]"
+  - "[[Programmazione/GitHub/Pagine/Issues GitHub]]"
+title: Pull request
 ---
 
 # Pull request
@@ -122,11 +134,11 @@ Una descrizione cosi riduce domande ripetute durante la review.
 
 ## Collegamenti
 
-- [[Programmazione/GitHub/Indice GitHub]]
-- [[Branch su GitHub]]
-- [[Commit e cronologia su GitHub]]
-- [[Review code su GitHub]]
-- [[Issues GitHub]]
+- [[Programmazione/GitHub/Indice GitHub|Indice GitHub]]
+- [[Programmazione/GitHub/Pagine/Branch su GitHub|Branch su GitHub]]
+- [[Programmazione/GitHub/Pagine/Commit e cronologia su GitHub|Commit e cronologia su GitHub]]
+- [[Programmazione/GitHub/Pagine/Review code su GitHub|Review code su GitHub]]
+- [[Programmazione/GitHub/Pagine/Issues GitHub|Issues GitHub]]
 
 ## Fonti
 

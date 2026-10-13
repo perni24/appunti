@@ -3,13 +3,23 @@ date: 2026-07-09
 area: Programmazione
 topic: Clean Code
 type: theory-note
-status: "non revisionato"
+status: non revisionato
 publish: true
 difficulty: intermedio
-tags: [clean-code, dipendenze, modularita]
-aliases: [Dipendenze esplicite, Dipendenze visibili]
-prerequisites: [Clean Code]
-related: [Codice esplicito vs codice implicito, Confini tra moduli, Moduli piccoli]
+tags:
+  - clean-code
+  - dipendenze
+  - modularita
+aliases:
+  - Dipendenze esplicite
+  - Dipendenze visibili
+prerequisites:
+  - "[[Programmazione/Clean Code/Pagine/Clean Code]]"
+related:
+  - "[[Programmazione/Clean Code/Pagine/Codice esplicito vs codice implicito]]"
+  - "[[Programmazione/Clean Code/Pagine/Confini tra moduli]]"
+  - "[[Programmazione/Clean Code/Pagine/Moduli piccoli]]"
+title: Dipendenze esplicite
 ---
 
 # Dipendenze esplicite
@@ -84,11 +94,11 @@ La seconda versione rende chiaro che la funzione ha bisogno di un repository.
 
 ## Collegamenti
 
-- [[Programmazione/Clean Code/Indice Clean Code]]
-- [[Codice esplicito vs codice implicito]]
-- [[Confini tra moduli]]
-- [[Moduli piccoli]]
-- [[Oggetti con responsabilita chiara]]
+- [[Programmazione/Clean Code/Indice Clean Code|Indice Clean Code]]
+- [[Programmazione/Clean Code/Pagine/Codice esplicito vs codice implicito|Codice esplicito vs codice implicito]]
+- [[Programmazione/Clean Code/Pagine/Confini tra moduli|Confini tra moduli]]
+- [[Programmazione/Clean Code/Pagine/Moduli piccoli|Moduli piccoli]]
+- [[Programmazione/Clean Code/Pagine/Oggetti con responsabilita chiara|Oggetti con responsabilita chiara]]
 
 ## Fonti
 

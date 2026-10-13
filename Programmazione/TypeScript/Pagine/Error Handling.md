@@ -3,13 +3,25 @@ date: 2026-06-22
 area: Programmazione
 topic: TypeScript
 type: technical-note
-status: "non revisionato"
+status: non revisionato
 publish: true
 difficulty: intermedio
-tags: [typescript, error-handling, result, exceptions]
-aliases: [Gestione errori TypeScript]
-prerequisites: [Discriminated Unions, any, unknown e never]
-related: [API tipizzate, Parsing sicuro di input esterni, Best Practices]
+tags:
+  - typescript
+  - error-handling
+  - result
+  - exceptions
+aliases:
+  - Gestione errori TypeScript
+prerequisites:
+  - "[[Programmazione/TypeScript/Pagine/Discriminated Unions]]"
+  - any
+  - unknown e never
+related:
+  - "[[Programmazione/TypeScript/Pagine/API tipizzate]]"
+  - "[[Programmazione/TypeScript/Pagine/Parsing sicuro di input esterni]]"
+  - "[[Programmazione/TypeScript/Pagine/Best Practices]]"
+title: Error Handling
 ---
 
 # Error Handling
@@ -92,6 +104,11 @@ Il chiamante deve gestire entrambi i casi.
 
 ## Collegamenti
 
-- [[Discriminated Unions]]
-- [[API tipizzate]]
-- [[Parsing sicuro di input esterni]]
+- [[Programmazione/TypeScript/Pagine/Discriminated Unions|Discriminated Unions]]
+- [[Programmazione/TypeScript/Pagine/API tipizzate|API tipizzate]]
+- [[Programmazione/TypeScript/Pagine/Parsing sicuro di input esterni|Parsing sicuro di input esterni]]
+
+
+## Navigazione
+
+- [[Programmazione/TypeScript/Indice TypeScript|Indice TypeScript]]

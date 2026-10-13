@@ -3,7 +3,7 @@ date: 2026-05-27
 area: Programmazione
 topic: Rust
 type: technical-note
-status: "non revisionato"
+status: non revisionato
 publish: true
 difficulty: avanzato
 tags:
@@ -11,7 +11,7 @@ tags:
   - rust
   - webassembly
 aliases:
-  - "wasm-bindgen"
+  - wasm-bindgen
 prerequisites:
   - "[[Programmazione/Rust/Pagine/Cross-compilation]]"
   - "[[Programmazione/Rust/Pagine/Interop con JavaScript]]"
@@ -20,6 +20,7 @@ related:
   - "[[Programmazione/Rust/Pagine/wasm-pack]]"
   - "[[Programmazione/Rust/Pagine/Limiti del runtime WebAssembly]]"
   - "[[Programmazione/Rust/Pagine/FFI]]"
+title: wasm-bindgen
 ---
 
 # wasm-bindgen
@@ -162,10 +163,10 @@ Dal lato JavaScript il wrapper generato permette di importare e chiamare la funz
 
 ## Collegamenti
 
-- [[Programmazione/Rust/Indice rust|Indice Rust]]
-- [[Programmazione/Rust/Pagine/wasm-pack]]
-- [[Programmazione/Rust/Pagine/Interop con JavaScript]]
-- [[Programmazione/Rust/Pagine/Limiti del runtime WebAssembly]]
-- [[Programmazione/Rust/Pagine/Cross-compilation]]
-- [[Programmazione/Rust/Pagine/Serde e serializzazione]]
-- [[Programmazione/Rust/Pagine/FFI]]
+- [[Programmazione/Rust/Indice Rust|Indice Rust]]
+- [[Programmazione/Rust/Pagine/wasm-pack|wasm-pack]]
+- [[Programmazione/Rust/Pagine/Interop con JavaScript|Interop con JavaScript]]
+- [[Programmazione/Rust/Pagine/Limiti del runtime WebAssembly|Limiti del runtime WebAssembly]]
+- [[Programmazione/Rust/Pagine/Cross-compilation|Cross-compilation]]
+- [[Programmazione/Rust/Pagine/Serde e serializzazione|Serde e serializzazione]]
+- [[Programmazione/Rust/Pagine/FFI|FFI]]

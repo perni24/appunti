@@ -3,13 +3,19 @@ date: 2026-06-04
 area: Programmazione
 topic: React
 type: operational-note
-status: "non revisionato"
+status: non revisionato
 publish: true
-difficulty: intermediate
-tags: [react, storybook, design-system, testing]
-aliases: [Storybook]
+difficulty: intermedio
+tags:
+  - react
+  - storybook
+  - design-system
+  - testing
+aliases:
+  - Storybook
 prerequisites: []
 related: []
+title: Storybook
 ---
 
 # Storybook
@@ -99,8 +105,8 @@ Per un input documenta:
 
 ## Collegamenti
 
-- [[Programmazione/React/Indice react|Indice React]]
-- [[Design system]]
-- [[Visual regression testing]]
-- [[Test di accessibilita]]
-- [[Testing Jest]]
+- [[Programmazione/React/Indice React|Indice React]]
+- [[Programmazione/React/Pagine/Design system|Design system]]
+- [[Programmazione/React/Pagine/Visual regression testing|Visual regression testing]]
+- [[Programmazione/React/Pagine/Test di accessibilita|Test di accessibilita]]
+- [[Programmazione/React/Pagine/Testing Jest|Testing Jest]]

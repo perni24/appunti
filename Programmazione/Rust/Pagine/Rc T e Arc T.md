@@ -3,7 +3,7 @@ date: 2026-05-22
 area: Programmazione
 topic: Rust
 type: technical-note
-status: "non revisionato"
+status: non revisionato
 publish: true
 difficulty: intermedio
 tags:
@@ -11,9 +11,9 @@ tags:
   - rust
   - smart-pointers-e-interior-mutability
 aliases:
-  - "Rc<T>"
-  - "Arc<T>"
-  - "Reference counting Rust"
+  - Rc<T>
+  - Arc<T>
+  - Reference counting Rust
 prerequisites:
   - "[[Programmazione/Rust/Pagine/Ownership]]"
   - "[[Programmazione/Rust/Pagine/Box T]]"
@@ -22,6 +22,7 @@ related:
   - "[[Programmazione/Rust/Pagine/RefCell T]]"
   - "[[Programmazione/Rust/Pagine/Mutex T e RwLock T]]"
   - "[[Programmazione/Rust/Pagine/Interior mutability]]"
+title: Rc<T> e Arc<T>
 ---
 
 # Rc<T> e Arc<T>
@@ -145,3 +146,8 @@ fn main() {
 - [Rust Standard Library - Arc](https://doc.rust-lang.org/std/sync/struct.Arc.html)
 - [Rust Standard Library - Send](https://doc.rust-lang.org/std/marker/trait.Send.html)
 - [Rust Standard Library - Sync](https://doc.rust-lang.org/std/marker/trait.Sync.html)
+
+
+## Navigazione
+
+- [[Programmazione/Rust/Indice Rust|Indice Rust]]

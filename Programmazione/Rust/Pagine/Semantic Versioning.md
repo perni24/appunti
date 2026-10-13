@@ -3,7 +3,7 @@ date: 2026-05-22
 area: Programmazione
 topic: Rust
 type: technical-note
-status: "non revisionato"
+status: non revisionato
 publish: true
 difficulty: intermedio
 tags:
@@ -11,8 +11,8 @@ tags:
   - rust
   - cargo-editions-e-compatibilita
 aliases:
-  - "SemVer"
-  - "Versionamento semantico"
+  - SemVer
+  - Versionamento semantico
 prerequisites:
   - "[[Programmazione/Rust/Pagine/Cargo.toml]]"
   - "[[Programmazione/Rust/Pagine/Crates.io]]"
@@ -20,6 +20,7 @@ related:
   - "[[Programmazione/Rust/Pagine/Cargo.lock]]"
   - "[[Programmazione/Rust/Pagine/Public API design]]"
   - "[[Programmazione/Rust/Pagine/Compatibility e breaking changes]]"
+title: Semantic Versioning
 ---
 
 # Semantic Versioning
@@ -125,3 +126,8 @@ Cambiare la firma di una funzione pubblica richiede una major release, perche ro
 - [[Programmazione/Rust/Pagine/Cargo.lock|Cargo.lock]]
 - [[Programmazione/Rust/Pagine/Public API design|Public API design]]
 - [[Programmazione/Rust/Pagine/Compatibility e breaking changes|Compatibility e breaking changes]]
+
+
+## Navigazione
+
+- [[Programmazione/Rust/Indice Rust|Indice Rust]]

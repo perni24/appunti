@@ -3,13 +3,25 @@ date: 2026-07-07
 area: Programmazione
 topic: GitHub
 type: technical-note
-status: "non revisionato"
+status: non revisionato
 publish: true
 difficulty: intermedio
-tags: [github, repository, archiviazione, manutenzione]
-aliases: [Archiviazione repository GitHub, Archiviare repository GitHub]
-prerequisites: [Repository GitHub, Repository hygiene]
-related: [Governance repository GitHub, Migrazione repository GitHub, Repository settings]
+tags:
+  - github
+  - repository
+  - archiviazione
+  - manutenzione
+aliases:
+  - Archiviazione repository GitHub
+  - Archiviare repository GitHub
+prerequisites:
+  - "[[Programmazione/GitHub/Pagine/Repository GitHub]]"
+  - "[[Programmazione/GitHub/Pagine/Repository hygiene]]"
+related:
+  - "[[Programmazione/GitHub/Pagine/Governance repository GitHub]]"
+  - "[[Programmazione/GitHub/Pagine/Migrazione repository GitHub]]"
+  - "[[Programmazione/GitHub/Pagine/Repository settings]]"
+title: Archiviazione repository GitHub
 ---
 
 # Archiviazione repository GitHub
@@ -102,12 +114,12 @@ Questo evita che utenti o LLM interpretino il progetto come ancora attivo.
 
 ## Collegamenti
 
-- [[Programmazione/GitHub/Indice GitHub]]
-- [[Repository GitHub]]
-- [[Repository settings]]
-- [[Repository hygiene]]
-- [[Migrazione repository GitHub]]
-- [[Gestione release su GitHub]]
+- [[Programmazione/GitHub/Indice GitHub|Indice GitHub]]
+- [[Programmazione/GitHub/Pagine/Repository GitHub|Repository GitHub]]
+- [[Programmazione/GitHub/Pagine/Repository settings|Repository settings]]
+- [[Programmazione/GitHub/Pagine/Repository hygiene|Repository hygiene]]
+- [[Programmazione/GitHub/Pagine/Migrazione repository GitHub|Migrazione repository GitHub]]
+- [[Programmazione/GitHub/Pagine/Gestione release su GitHub|Gestione release su GitHub]]
 
 ## Fonti
 

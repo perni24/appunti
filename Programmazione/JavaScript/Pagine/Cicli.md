@@ -3,13 +3,26 @@ date: 2026-06-02
 area: Programmazione
 topic: JavaScript
 type: technical-note
-status: "non revisionato"
+status: non revisionato
 publish: true
-difficulty: beginner
-tags: [javascript, basics, loops, iteration, for, while]
-aliases: [Loop JS, Iterazione JavaScript]
-prerequisites: [Variabili, Strutture Condizionali]
-related: [Array Methods, Generators e Iterators]
+difficulty: base
+tags:
+  - javascript
+  - basics
+  - loops
+  - iteration
+  - for
+  - while
+aliases:
+  - Loop JS
+  - Iterazione JavaScript
+prerequisites:
+  - "[[Programmazione/JavaScript/Pagine/Variabili]]"
+  - "[[Programmazione/JavaScript/Pagine/Strutture Condizionali]]"
+related:
+  - "[[Programmazione/JavaScript/Pagine/Array Methods]]"
+  - "[[Programmazione/JavaScript/Pagine/Generators e Iterators]]"
+title: Cicli
 ---
 
 # Cicli
@@ -48,10 +61,10 @@ for (let index = 0; index < 5; index += 1) {
 }
 ```
 
-Struttura:
+Schema della struttura, non un esempio da eseguire:
 
-```js
-for (inizializzazione; condizione; aggiornamento) {
+```text
+for (initialization; condition; update) {
   // corpo del ciclo
 }
 ```
@@ -109,9 +122,11 @@ Funziona con:
 - set;
 - altri iterabili.
 
+Un oggetto ordinario come `{ name: "Ada" }` non e automaticamente iterabile: usa `Object.entries()` se vuoi percorrerne le proprieta proprie. Con `const` nel `for...of` nasce un nuovo binding a ogni iterazione, quindi il valore puo essere diverso a ogni giro.
+
 ---
 ### for...in
-`for...in` itera sulle chiavi enumerabili di un oggetto.
+`for...in` itera sulle chiavi stringa enumerabili, comprese quelle ereditate dal prototipo. Non include le chiavi `Symbol`.
 
 ```js
 const user = {
@@ -120,11 +135,24 @@ const user = {
 };
 
 for (const key in user) {
-  console.log(key, user[key]);
+  if (Object.hasOwn(user, key)) {
+    console.log(key, user[key]);
+  }
 }
 ```
 
-Per gli array, preferisci `for...of` o i metodi degli array.
+Il filtro `Object.hasOwn()` esclude le proprieta ereditate. In alternativa, `Object.entries()` restituisce direttamente le coppie chiave-valore delle sole proprieta proprie, enumerabili e con chiave stringa:
+
+```js
+const user = Object.create({ role: "reader" });
+user.name = "Ada";
+
+for (const [key, value] of Object.entries(user)) {
+  console.log(key, value); // Solo: name Ada
+}
+```
+
+Per gli array, preferisci `for...of` o i metodi degli array: `for...in` puo includere proprieta aggiuntive e restituisce gli indici come stringhe.
 
 ---
 ### break e continue
@@ -174,7 +202,9 @@ Usa:
 
 ---
 ### Iterazione asincrona
-Non usare `forEach()` con `await` aspettandoti esecuzione sequenziale.
+Questa sezione richiede [[Programmazione/JavaScript/Pagine/Async Await|Async Await]]. Nei tre frammenti seguenti `items` e `saveItem` sono forniti dall'applicazione; i frammenti con `await` vanno dentro una funzione `async` o al livello principale di un modulo ES.
+
+`forEach()` scarta il risultato della callback e restituisce `undefined`: non attende le Promise e non ne gestisce gli errori. Anche `await items.forEach(...)` non attende i salvataggi.
 
 ```js
 // Evita se vuoi attendere ogni operazione
@@ -191,17 +221,40 @@ for (const item of items) {
 }
 ```
 
-Per concorrente:
+Per avviare insieme un piccolo insieme di operazioni indipendenti:
 
 ```js
 await Promise.all(items.map(item => saveItem(item)));
 ```
 
+Qui `map()` avvia i salvataggi; `Promise.all()` ne osserva gli esiti. Un rifiuto fa fallire la Promise complessiva, ma non annulla le operazioni gia avviate. Su grandi insiemi di richieste serve un limite di concorrenza, non un `Promise.all()` illimitato.
+
+### for await...of
+
+Per consumare un iterabile asincrono, usa `for await...of` dentro una funzione `async` o in un modulo ES. Il ciclo attende ogni risultato dell'iteratore:
+
+```js
+async function* createItems() {
+  yield "first";
+  yield "second";
+}
+
+async function consumeItems() {
+  for await (const item of createItems()) {
+    console.log(item);
+  }
+}
+
+consumeItems().catch(console.error);
+```
+
+Non rende automaticamente sequenziali lavori gia avviati: un array di Promise puo contenere operazioni partite prima del ciclo. Per il protocollo completo vedi [[Programmazione/JavaScript/Pagine/Generators e Iterators|Generators e Iterators]].
+
 ---
 
 ## API / Sintassi
 
-Forme principali:
+Schemi delle forme principali: `items`, `condition`, `iterable` e `object` sono segnaposto. Nei cicli reali definisci corpo e condizione di uscita prima di eseguirli.
 
 ```js
 for (let i = 0; i < items.length; i += 1) {}
@@ -223,30 +276,42 @@ for (const value of iterable) {}
 for (const key in object) {}
 ```
 
-Controllo del flusso:
+Controllo del flusso, da usare dentro il corpo del ciclo, non come script autonomo:
 
-```js
+```text
 break;
 continue;
 ```
 
 ## Esempio pratico
 
-Salvare elementi in sequenza:
+Salvare elementi in sequenza, ricevendo esplicitamente la funzione che effettua il salvataggio:
 
 ```js
-async function saveAll(items) {
+async function saveAll(items, saveItem) {
   for (const item of items) {
     await saveItem(item);
   }
 }
 ```
 
-Usa questa forma quando ogni operazione deve terminare prima della successiva. Se sono indipendenti, usa concorrenza:
+Esempio d'uso da eseguire dopo la definizione di `saveAll`; simula il salvataggio in memoria, senza richieste di rete:
 
 ```js
-await Promise.all(items.map((item) => saveItem(item)));
+async function example() {
+  const saved = [];
+
+  await saveAll(["a", "b"], async item => {
+    saved.push(item);
+  });
+
+  console.log(saved); // ["a", "b"]
+}
+
+example().catch(console.error);
 ```
+
+Ogni operazione deve terminare prima della successiva. Se `saveItem` fallisce, `saveAll` rigetta e gli elementi successivi non vengono elaborati; quelli gia salvati non vengono annullati. Per continuare dopo un errore serve una politica esplicita, con un `try/catch` interno al ciclo e registrazione degli esiti.
 
 ## Varianti
 
@@ -254,7 +319,7 @@ await Promise.all(items.map((item) => saveItem(item)));
 - **`while`**: ripete finche una condizione resta vera.
 - **`do...while`**: esegue almeno una volta.
 - **`for...of`**: itera valori di un iterable.
-- **`for...in`**: itera chiavi enumerabili di un oggetto.
+- **`for...in`**: itera chiavi stringa enumerabili, anche ereditate.
 - **Metodi array**: forma dichiarativa per trasformazioni e ricerche.
 - **`for await...of`**: consuma async iterable.
 
@@ -280,8 +345,20 @@ await Promise.all(items.map((item) => saveItem(item)));
 
 ## Collegamenti
 
-- [[Array Methods]]
-- [[Generators e Iterators]]
-- [[Promise avanzate]]
+- [[Programmazione/JavaScript/Pagine/Array Methods|Array Methods]]
+- [[Programmazione/JavaScript/Pagine/Generators e Iterators|Generators e Iterators]]
+- [[Programmazione/JavaScript/Pagine/Promise avanzate|Promise avanzate]]
 - [[Programmazione/JavaScript/Pagine/Async Await|Async Await]]
 - [[Programmazione/JavaScript/Pagine/Strutture Condizionali|Strutture Condizionali]]
+
+## Fonti
+
+- [MDN: for...in](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Statements/for...in).
+- [MDN: for...of](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Statements/for...of).
+- [MDN: forEach e callback asincrone](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array/forEach).
+- [MDN: Promise.all](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Promise/all).
+- [MDN: for await...of](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Statements/for-await...of).
+
+## Navigazione
+
+- [[Programmazione/JavaScript/Indice JavaScript|Indice JavaScript]]

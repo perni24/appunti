@@ -3,13 +3,22 @@ date: 2026-06-04
 area: Programmazione
 topic: React
 type: operational-note
-status: "non revisionato"
+status: non revisionato
 publish: true
-difficulty: beginner
-tags: [react, linting, formatting, tooling]
-aliases: [Linting React, Formattazione React, ESLint, Prettier]
+difficulty: base
+tags:
+  - react
+  - linting
+  - formatting
+  - tooling
+aliases:
+  - Linting React
+  - Formattazione React
+  - ESLint
+  - Prettier
 prerequisites: []
 related: []
+title: Linting e Formattazione
 ---
 
 # Linting e Formattazione
@@ -98,8 +107,8 @@ Workflow:
 
 ## Collegamenti
 
-- [[Programmazione/React/Indice react|Indice React]]
-- [[Introduzione e Toolchain]]
-- [[useEffect]]
-- [[React Compiler]]
-- [[Feature-based architecture]]
+- [[Programmazione/React/Indice React|Indice React]]
+- [[Programmazione/React/Pagine/Introduzione e Toolchain|Introduzione e Toolchain]]
+- [[Programmazione/React/Pagine/useEffect|useEffect]]
+- [[Programmazione/React/Pagine/React Compiler|React Compiler]]
+- [[Programmazione/React/Pagine/Feature-based architecture|Feature-based architecture]]

@@ -1,15 +1,28 @@
-﻿---
+---
 date: 2026-06-02
 area: Programmazione
 topic: JavaScript
 type: technical-note
-status: "non revisionato"
+status: non revisionato
 publish: true
-difficulty: beginner
-tags: [javascript, browser, dom, html, web-api]
-aliases: [DOM JS, Manipolare il DOM]
-prerequisites: [Variabili, Funzioni]
-related: [Gestione Eventi, Sicurezza, Web Components]
+difficulty: base
+tags:
+  - javascript
+  - browser
+  - dom
+  - html
+  - web-api
+aliases:
+  - DOM JS
+  - Manipolare il DOM
+prerequisites:
+  - "[[Programmazione/JavaScript/Pagine/Variabili]]"
+  - "[[Programmazione/JavaScript/Pagine/Funzioni]]"
+related:
+  - "[[Programmazione/JavaScript/Pagine/Gestione Eventi]]"
+  - "[[Programmazione/JavaScript/Pagine/Sicurezza]]"
+  - "[[Programmazione/JavaScript/Pagine/Web Components]]"
+title: Manipolazione del DOM
 ---
 
 # Manipolazione del DOM
@@ -20,11 +33,12 @@ Il DOM (**Document Object Model**) e la rappresentazione ad albero di una pagina
 
 JavaScript puo leggere, modificare, creare e rimuovere nodi del DOM per aggiornare l'interfaccia utente.
 
+Gli esempi richiedono un browser e l'HTML con gli elementi selezionati, gia presente al momento dell'esecuzione. I frammenti sono indipendenti, salvo rimandi espliciti; Node.js da solo non espone `document`.
+
 ---
 
 ## Quando usarlo
 
-### Quando usarla
 - Leggere elementi dalla pagina.
 - Modificare testo, attributi o classi.
 - Creare elementi dinamicamente.
@@ -53,7 +67,9 @@ const card = document.querySelector(".card");
 const items = document.querySelectorAll(".menu-item");
 ```
 
-`querySelectorAll()` restituisce una `NodeList`, iterabile con `for...of`.
+`querySelectorAll()` restituisce una `NodeList` **statica**, iterabile con `for...of`: la selezione non si aggiorna quando aggiungi altri nodi. Non e un array, quindi per metodi come `map()` usa `Array.from(items)`. Altre collezioni, come quelle di `getElementsByClassName()`, sono invece live.
+
+Il ciclo seguente usa `items` selezionato sopra:
 
 ```js
 for (const item of items) {
@@ -63,7 +79,9 @@ for (const item of items) {
 
 ---
 ### Controllare se un elemento esiste
-`querySelector()` puo restituire `null`.
+`querySelector()` e `getElementById()` possono restituire `null`. `querySelectorAll()` senza risultati restituisce una lista vuota.
+
+Un selettore CSS non valido genera invece `SyntaxError`. Per un id dinamico preferisci `getElementById(id)`; se lo inserisci in un selettore, usa `CSS.escape(id)`.
 
 ```js
 const modal = document.querySelector("#modal");
@@ -115,6 +133,10 @@ container.innerHTML = userInput;
 > [!WARNING]
 > Per contenuto proveniente da utenti o sorgenti non fidate, preferisci `textContent` o sanitizza l'HTML.
 
+La sanitizzazione deve usare uno strumento mantenuto, non espressioni regolari artigianali; vedi [[Programmazione/JavaScript/Pagine/Sicurezza|Sicurezza]]. Non basta rimuovere i tag `script`: anche attributi evento e URL possono essere pericolosi.
+
+Assegnare `innerHTML` ricrea i discendenti; i listener registrati sui vecchi nodi non vengono trasferiti a quelli nuovi. Anche `textContent = ...` sostituisce i figli: e adatto al testo, non a conservare controlli e stato di un componente.
+
 ---
 ### Classi CSS
 `classList` permette di gestire classi senza manipolare stringhe manualmente.
@@ -158,6 +180,8 @@ const button = document.querySelector("button");
 console.log(button.dataset.userId); // "42"
 ```
 
+I valori di `dataset` sono stringhe. Distingui inoltre attributi HTML e proprieta correnti: `input.value` contiene il valore editato, mentre l'attributo `value` descrive il valore iniziale. Gli attributi booleani valgono per presenza: `disabled="false"` disabilita comunque il controllo; per riabilitarlo usa `button.disabled = false` o rimuovi l'attributo.
+
 ---
 ### Creare elementi
 ```js
@@ -193,7 +217,7 @@ for (const name of ["Luca", "Marco", "Giulia"]) {
 document.querySelector("ul").append(fragment);
 ```
 
-Riduce modifiche ripetute al DOM.
+All'inserimento vengono spostati i figli, non il frammento stesso, che resta vuoto. E utile per organizzare il codice; non garantisce da solo un miglioramento di prestazioni. Misura prima di attribuirgli un vantaggio.
 
 ---
 ### Rimuovere elementi
@@ -215,13 +239,25 @@ Soluzioni comuni:
 <script src="app.js" defer></script>
 ```
 
-Oppure:
+`defer` vale per script classici esterni, non per script inline; i moduli ES sono differiti di default, salvo opzioni come `async`. `DOMContentLoaded` non attende immagini o tutti gli script asincroni.
+
+Per codice caricato anche dopo `DOMContentLoaded`, controlla `readyState` prima di registrare il listener:
 
 ```js
-document.addEventListener("DOMContentLoaded", () => {
-  initApp();
+function onDomReady(initialize) {
+  if (document.readyState === "loading") {
+    document.addEventListener("DOMContentLoaded", initialize, { once: true });
+  } else {
+    initialize();
+  }
+}
+
+onDomReady(() => {
+  document.body.dataset.ready = "true";
 });
 ```
+
+Sostituisci il corpo della callback con l'inizializzazione dell'app. Registrare soltanto un listener dopo che l'evento e gia passato non lo fa rieseguire.
 
 ---
 ### Performance
@@ -238,6 +274,8 @@ Buone pratiche:
 ---
 
 ## API / Sintassi
+
+Schemi di sintassi: `selector`, `id`, `element`, `parent` e `handler` vanno forniti dall'applicazione.
 
 Selezione:
 
@@ -272,11 +310,18 @@ element.addEventListener("click", handler);
 
 ## Esempio pratico
 
-Render sicuro di una lista:
+Render di nomi come testo. `users` e un array gia validato di oggetti con `name` stringa. Inserisci questo HTML e poi esegui JavaScript:
+
+```html
+<ul id="users"></ul>
+```
 
 ```js
-function renderUsers(users) {
-  const list = document.querySelector("#users");
+function renderUsers(list, users) {
+  if (!(list instanceof Element)) {
+    throw new TypeError("Serve un contenitore DOM esistente");
+  }
+
   const fragment = document.createDocumentFragment();
 
   for (const user of users) {
@@ -287,9 +332,14 @@ function renderUsers(users) {
 
   list.replaceChildren(fragment);
 }
+
+renderUsers(document.querySelector("#users"), [
+  { name: "Ada" },
+  { name: "<strong>Grace</strong>" },
+]);
 ```
 
-`textContent` evita interpretazione HTML e `DocumentFragment` raggruppa gli inserimenti.
+Il secondo nome appare con le parentesi angolari: non diventa markup. `replaceChildren()` sostituisce la lista precedente invece di duplicarla; rimuove anche eventuali controlli e listener nei vecchi elementi. Per conservarne lo stato serve un aggiornamento mirato.
 
 ## Varianti
 
@@ -322,8 +372,23 @@ function renderUsers(users) {
 
 ## Collegamenti
 
-- [[Gestione Eventi]]
-- [[Sicurezza]]
-- [[Web Components]]
-- [[Browser Storage]]
-- [[Scheduling Browser]]
+- [[Programmazione/JavaScript/Pagine/Gestione Eventi|Gestione Eventi]]
+- [[Programmazione/JavaScript/Pagine/Sicurezza|Sicurezza]]
+- [[Programmazione/JavaScript/Pagine/Web Components|Web Components]]
+- [[Programmazione/JavaScript/Pagine/Browser Storage|Browser Storage]]
+- [[Programmazione/JavaScript/Pagine/Scheduling Browser|Scheduling Browser]]
+
+
+## Fonti
+
+- [MDN: querySelectorAll](https://developer.mozilla.org/en-US/docs/Web/API/Element/querySelectorAll).
+- [MDN: innerHTML e rischi di iniezione](https://developer.mozilla.org/en-US/docs/Web/API/Element/innerHTML).
+- [MDN: DocumentFragment](https://developer.mozilla.org/en-US/docs/Web/API/DocumentFragment).
+- [MDN: DOMContentLoaded e readyState](https://developer.mozilla.org/en-US/docs/Web/API/Document/DOMContentLoaded_event).
+- [MDN: attributo disabled](https://developer.mozilla.org/en-US/docs/Web/HTML/Reference/Attributes/disabled).
+- [MDN: proprieta value degli input](https://developer.mozilla.org/en-US/docs/Web/API/HTMLInputElement/value).
+- [MDN: dataset](https://developer.mozilla.org/en-US/docs/Web/API/HTMLElement/dataset).
+
+## Navigazione
+
+- [[Programmazione/JavaScript/Indice JavaScript|Indice JavaScript]]

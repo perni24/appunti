@@ -3,7 +3,7 @@ date: 2026-05-22
 area: Programmazione
 topic: Rust
 type: technical-note
-status: "non revisionato"
+status: non revisionato
 publish: true
 difficulty: intermedio
 tags:
@@ -11,8 +11,8 @@ tags:
   - rust
   - lifetimes
 aliases:
-  - "Lifetimes avanzati Rust"
-  - "Outlives e variance"
+  - Lifetimes avanzati Rust
+  - Outlives e variance
 prerequisites:
   - "[[Programmazione/Rust/Pagine/Lifetime annotations]]"
   - "[[Programmazione/Rust/Pagine/Lifetimes nelle struct]]"
@@ -21,6 +21,7 @@ related:
   - "[[Programmazione/Rust/Pagine/Higher-Ranked Trait Bounds (HRTB)]]"
   - "[[Programmazione/Rust/Pagine/PhantomData]]"
   - "[[Programmazione/Rust/Pagine/Unsafe Rust]]"
+title: Lifetimes avanzati
 ---
 
 # Lifetimes avanzati
@@ -141,3 +142,8 @@ La struct accetta anche tipi non `Sized`, come `str`, e conserva un riferimento 
 - [[Programmazione/Rust/Pagine/Higher-Ranked Trait Bounds (HRTB)|Higher-Ranked Trait Bounds (HRTB)]]
 - [[Programmazione/Rust/Pagine/PhantomData|PhantomData]]
 - [[Programmazione/Rust/Pagine/Unsafe Rust|Unsafe Rust]]
+
+
+## Navigazione
+
+- [[Programmazione/Rust/Indice Rust|Indice Rust]]

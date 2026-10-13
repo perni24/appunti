@@ -3,13 +3,24 @@ date: 2026-07-09
 area: Programmazione
 topic: Clean Code
 type: theory-note
-status: "non revisionato"
+status: non revisionato
 publish: true
 difficulty: avanzato
-tags: [clean-code, async, leggibilita]
-aliases: [Async code leggibile, Codice asincrono leggibile]
-prerequisites: [Code e worker, Gestione esplicita degli errori]
-related: [Logging e tracing, Side effects controllati, Race condition e leggibilita]
+tags:
+  - clean-code
+  - async
+  - leggibilita
+aliases:
+  - Async code leggibile
+  - Codice asincrono leggibile
+prerequisites:
+  - "[[Programmazione/Clean Code/Pagine/Code e worker]]"
+  - "[[Programmazione/Clean Code/Pagine/Gestione esplicita degli errori]]"
+related:
+  - "[[Programmazione/Clean Code/Pagine/Logging e tracing]]"
+  - "[[Programmazione/Clean Code/Pagine/Side effects controllati]]"
+  - "[[Programmazione/Clean Code/Pagine/Race condition e leggibilita]]"
+title: Async code leggibile
 ---
 
 # Async code leggibile
@@ -87,12 +98,12 @@ La forma scelta comunica l'intenzione.
 
 ## Collegamenti
 
-- [[Programmazione/Clean Code/Indice Clean Code]]
-- [[Code e worker]]
-- [[Gestione esplicita degli errori]]
-- [[Race condition e leggibilita]]
-- [[Side effects controllati]]
-- [[Logging e tracing]]
+- [[Programmazione/Clean Code/Indice Clean Code|Indice Clean Code]]
+- [[Programmazione/Clean Code/Pagine/Code e worker|Code e worker]]
+- [[Programmazione/Clean Code/Pagine/Gestione esplicita degli errori|Gestione esplicita degli errori]]
+- [[Programmazione/Clean Code/Pagine/Race condition e leggibilita|Race condition e leggibilita]]
+- [[Programmazione/Clean Code/Pagine/Side effects controllati|Side effects controllati]]
+- [[Programmazione/Clean Code/Pagine/Logging e tracing|Logging e tracing]]
 
 ## Fonti
 

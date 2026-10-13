@@ -1,15 +1,19 @@
-﻿---
+---
 date: 2026-05-20
 area: Programmazione
 topic: Rust
 type: technical-note
-status: "non revisionato"
+status: non revisionato
 publish: true
 difficulty: base
-tags: [programmazione, rust, destructuring, pattern]
+tags:
+  - programmazione
+  - rust
+  - destructuring
+  - pattern
 aliases:
-  - "Destrutturazione Rust"
-  - "Destructuring in Rust"
+  - Destrutturazione Rust
+  - Destructuring in Rust
 prerequisites:
   - "[[Programmazione/Rust/Pagine/Pattern Matching]]"
   - "[[Programmazione/Rust/Pagine/Structs]]"
@@ -17,6 +21,7 @@ related:
   - "[[Programmazione/Rust/Pagine/Enums]]"
   - "[[Programmazione/Rust/Pagine/Tuple structs]]"
   - "[[Programmazione/Rust/Pagine/Pattern matching avanzato]]"
+title: Destructuring
 ---
 
 # Destructuring
@@ -135,3 +140,8 @@ La destructuring rende evidente quali parti della richiesta vengono usate.
 - [[Programmazione/Rust/Pagine/Tuple structs|Tuple structs]]
 - [[Programmazione/Rust/Pagine/Pattern matching avanzato|Pattern matching avanzato]]
 
+
+
+## Navigazione
+
+- [[Programmazione/Rust/Indice Rust|Indice Rust]]

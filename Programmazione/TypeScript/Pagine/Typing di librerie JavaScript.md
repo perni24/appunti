@@ -3,13 +3,25 @@ date: 2026-06-22
 area: Programmazione
 topic: TypeScript
 type: technical-note
-status: "non revisionato"
+status: non revisionato
 publish: true
 difficulty: intermedio
-tags: [typescript, javascript, typings, librerie, dts]
-aliases: [Tipizzare librerie JavaScript]
-prerequisites: [Dichiarazioni e file d.ts, Moduli ES e CommonJS]
-related: [DefinitelyTyped, Declaration Merging, Module augmentation]
+tags:
+  - typescript
+  - javascript
+  - typings
+  - librerie
+  - dts
+aliases:
+  - Tipizzare librerie JavaScript
+prerequisites:
+  - "[[Programmazione/TypeScript/Pagine/Dichiarazioni e file d.ts]]"
+  - "[[Programmazione/TypeScript/Pagine/Moduli ES e CommonJS]]"
+related:
+  - "[[Programmazione/TypeScript/Pagine/DefinitelyTyped]]"
+  - "[[Programmazione/TypeScript/Pagine/Declaration Merging]]"
+  - "[[Programmazione/TypeScript/Pagine/Module augmentation]]"
+title: Typing di librerie JavaScript
 ---
 
 # Typing di librerie JavaScript
@@ -83,7 +95,12 @@ Questo file permette di importare `legacy-lib` con tipi minimi invece di `any`.
 
 ## Collegamenti
 
-- [[Dichiarazioni e file d.ts]]
-- [[DefinitelyTyped]]
-- [[Module augmentation]]
-- [[Moduli ES e CommonJS]]
+- [[Programmazione/TypeScript/Pagine/Dichiarazioni e file d.ts|Dichiarazioni e file d.ts]]
+- [[Programmazione/TypeScript/Pagine/DefinitelyTyped|DefinitelyTyped]]
+- [[Programmazione/TypeScript/Pagine/Module augmentation|Module augmentation]]
+- [[Programmazione/TypeScript/Pagine/Moduli ES e CommonJS|Moduli ES e CommonJS]]
+
+
+## Navigazione
+
+- [[Programmazione/TypeScript/Indice TypeScript|Indice TypeScript]]

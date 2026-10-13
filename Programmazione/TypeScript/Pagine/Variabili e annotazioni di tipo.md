@@ -3,13 +3,22 @@ date: 2026-06-22
 area: Programmazione
 topic: TypeScript
 type: technical-note
-status: "non revisionato"
+status: non revisionato
 publish: true
 difficulty: base
-tags: [typescript, variabili, type-annotations]
-aliases: [Annotazioni di tipo]
-prerequisites: [Introduzione a TypeScript, Tipi primitivi]
-related: [Inferenza dei tipi, Type Aliases e Interfaces]
+tags:
+  - typescript
+  - variabili
+  - type-annotations
+aliases:
+  - Annotazioni di tipo
+prerequisites:
+  - "[[Programmazione/TypeScript/Pagine/Introduzione a TypeScript]]"
+  - "[[Programmazione/TypeScript/Pagine/Tipi primitivi]]"
+related:
+  - "[[Programmazione/TypeScript/Pagine/Inferenza dei tipi]]"
+  - "[[Programmazione/TypeScript/Pagine/Type Aliases e Interfaces]]"
+title: Variabili e annotazioni di tipo
 ---
 
 # Variabili e annotazioni di tipo
@@ -89,6 +98,11 @@ L'annotazione su `input` rende chiaro il contratto della funzione. `userId` non 
 
 ## Collegamenti
 
-- [[Tipi primitivi]]
-- [[Inferenza dei tipi]]
-- [[Type Aliases e Interfaces]]
+- [[Programmazione/TypeScript/Pagine/Tipi primitivi|Tipi primitivi]]
+- [[Programmazione/TypeScript/Pagine/Inferenza dei tipi|Inferenza dei tipi]]
+- [[Programmazione/TypeScript/Pagine/Type Aliases e Interfaces|Type Aliases e Interfaces]]
+
+
+## Navigazione
+
+- [[Programmazione/TypeScript/Indice TypeScript|Indice TypeScript]]

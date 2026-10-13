@@ -3,13 +3,17 @@ date: 2026-06-03
 area: Programmazione
 topic: Python
 type: technical-note
-status: "non revisionato"
+status: non revisionato
 publish: true
-difficulty: intermediate
-tags: [python, programming]
-aliases: [Proprietà (@property)]
+difficulty: intermedio
+tags:
+  - python
+  - programming
+aliases:
+  - Proprietà (@property)
 prerequisites: []
 related: []
+title: Proprietà (@property) in Python
 ---
 
 # Proprietà (@property) in Python
@@ -89,3 +93,8 @@ class Rectangle:
 - [[Programmazione/Python/Pagine/Incapsulamento|Incapsulamento]]
 - [[Programmazione/Python/Pagine/Descriptor protocol|Descriptor protocol]]
 - [[Programmazione/Python/Pagine/Classi e Istanze|Classi e Istanze]]
+
+
+## Navigazione
+
+- [[Programmazione/Python/Indice Python|Indice Python]]

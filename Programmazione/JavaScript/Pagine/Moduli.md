@@ -3,13 +3,27 @@ date: 2026-06-02
 area: Programmazione
 topic: JavaScript
 type: technical-note
-status: "non revisionato"
+status: non revisionato
 publish: true
-difficulty: intermediate
-tags: [javascript, es-modules, modules, import, export]
-aliases: [ES Modules, Moduli ES, import export]
-prerequisites: [Funzioni, Scope]
-related: [Dynamic Import, Circular Dependencies, Strict Mode]
+difficulty: intermedio
+tags:
+  - javascript
+  - es-modules
+  - modules
+  - import
+  - export
+aliases:
+  - ES Modules
+  - Moduli ES
+  - import export
+prerequisites:
+  - "[[Programmazione/JavaScript/Pagine/Funzioni]]"
+  - "[[Programmazione/JavaScript/Pagine/Scope]]"
+related:
+  - "[[Programmazione/JavaScript/Pagine/Dynamic Import]]"
+  - "[[Programmazione/JavaScript/Pagine/Circular Dependencies]]"
+  - "[[Programmazione/JavaScript/Pagine/Strict Mode]]"
+title: Moduli
 ---
 
 # Moduli
@@ -142,15 +156,29 @@ Caratteristiche:
 
 - sono strict mode di default;
 - hanno scope di modulo;
-- sono caricati in modo defer;
+- senza `async`, vengono eseguiti dopo il parsing HTML, come gli script deferred;
 - supportano `import` ed `export`;
-- richiedono percorsi espliciti.
+- risolvono gli import come URL; nomi di pacchetto come `react` richiedono una import map o un bundler.
 
 ```js
-import { initApp } from "./app.js";
+// app.js
+import { sum } from "./math.js";
+console.log(sum(2, 3)); // 5
 ```
 
-Nel browser, spesso devi includere l'estensione `.js`.
+Il browser non aggiunge `.js` e non cerca automaticamente un `index.js`. Usa URL che il server espone davvero. Prova gli esempi via HTTP, non aprendo un file `file://`; il server deve inviare un MIME JavaScript corretto e gli import cross-origin richiedono CORS.
+
+### Moduli in Node.js
+
+Per dichiarare esplicitamente ESM usa file `.mjs` oppure `.js` dentro un package con questo `package.json`:
+
+```json
+{
+  "type": "module"
+}
+```
+
+I percorsi relativi ESM in Node richiedono l'estensione; i pacchetti vengono risolti secondo le regole Node. `.cjs` identifica CommonJS. Le versioni moderne possono rilevare sintassi ESM in alcuni file ambigui, ma dichiarare il formato evita di dipendere da tale rilevamento. ESM non rende portabili le API dell'ambiente: `node:fs` non esiste nel browser.
 
 ---
 ### Scope di modulo
@@ -166,15 +194,17 @@ export function getValue() {
 
 Solo cio che esporti e disponibile ad altri moduli.
 
+Al top-level del modulo `this` vale `undefined`. Lo scope non e una protezione per segreti: il codice inviato al browser rimane ispezionabile.
+
 ---
 ### Esecuzione singola e cache
-Un modulo viene valutato una sola volta per runtime.
+Per la stessa identita risolta, un modulo valutato correttamente viene riusato nello stesso ambiente di esecuzione. Un'altra pagina, un worker o un altro processo hanno istanze separate.
 
 Se piu file importano lo stesso modulo, condividono la stessa istanza del modulo.
 
 ```js
 // counter.js
-let count = 0;
+export let count = 0;
 
 export function increment() {
   count += 1;
@@ -183,6 +213,30 @@ export function increment() {
 ```
 
 Questo puo essere utile, ma anche creare stato condiviso implicito.
+
+### Live binding, non copia del valore
+
+```js
+// counter-consumer.js, in un ambiente dove counter.js non e gia stato usato
+import { count, increment } from "./counter.js";
+
+console.log(count); // 0
+increment();
+console.log(count); // 1
+// count = 10; // TypeError: l'importatore non puo riassegnare il binding
+```
+
+Un named import segue gli aggiornamenti fatti dal modulo esportatore. Un oggetto esportato puo comunque essere mutabile: il binding in sola lettura non equivale a `Object.freeze()`.
+
+### Re-export
+
+```js
+// index.js
+export { sum } from "./math.js";
+export { default as log } from "./logger.js";
+```
+
+Questa sintassi riespone gli export senza dichiarare variabili locali `sum` e `log`. `export *` non riesporta il default; per quello serve una forma esplicita.
 
 ---
 ### Import statico e dynamic import
@@ -199,6 +253,8 @@ const module = await import("./date.js");
 ```
 
 Usa import statico come scelta normale. Usa dynamic import per lazy loading, code splitting o moduli opzionali.
+
+Un import statico richiede una stringa letterale e deve stare al top-level, non dentro `if` o funzioni. Le dipendenze vengono collegate prima di eseguire il modulo; nei cicli, leggere un binding non ancora inizializzato puo comunque fallire: vedi [[Programmazione/JavaScript/Pagine/Circular Dependencies|Dipendenze circolari]]. I frammenti con `date.js` e `feature.js` mostrano soltanto la sintassi e presuppongono quei file.
 
 ---
 
@@ -242,21 +298,38 @@ Separare logica di validazione:
 
 ```js
 // validators.js
-export function isEmail(value) {
-  return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(value);
+export function hasEmailShape(value) {
+  return typeof value === "string" && /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(value);
 }
 ```
 
 ```js
 // signup.js
-import { isEmail } from "./validators.js";
+import { hasEmailShape } from "./validators.js";
 
-export function validateSignup(form) {
-  return isEmail(form.email);
+export function hasSignupEmail(form) {
+  return hasEmailShape(form?.email);
 }
 ```
 
 Il modulo `signup.js` dipende da una funzione esplicita, facile da testare e sostituire.
+
+La regex controlla soltanto una forma comune: non copre tutta la sintassi email, non verifica l'esistenza della casella e non valida una registrazione completa. Il nome della funzione rende esplicito questo limite.
+
+Per provare i due file nello stesso package ESM:
+
+```js
+// check-signup.js
+import { hasSignupEmail } from "./signup.js";
+console.log(hasSignupEmail({ email: "ada@example.test" })); // true
+console.log(hasSignupEmail({ email: "@" })); // false
+```
+
+Da terminale, nella cartella contenente i file e il `package.json` mostrato sopra:
+
+```sh
+node check-signup.js
+```
 
 ## Varianti
 
@@ -290,8 +363,20 @@ Il modulo `signup.js` dipende da una funzione esplicita, facile da testare e sos
 
 ## Collegamenti
 
-- [[Dynamic Import]]
-- [[Circular Dependencies]]
+- [[Programmazione/JavaScript/Pagine/Dynamic Import|Dynamic Import]]
+- [[Programmazione/JavaScript/Pagine/Circular Dependencies|Circular Dependencies]]
 - [[Programmazione/JavaScript/Pagine/Strict Mode|Strict Mode]]
-- [[Scope]]
+- [[Programmazione/JavaScript/Pagine/Scope|Scope]]
 - [[Programmazione/JavaScript/Pagine/Funzioni|Funzioni]]
+
+
+## Fonti
+
+- [MDN - Guida ai moduli](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Guide/Modules)
+- [MDN - Import statico](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Statements/import)
+- [MDN - Export e re-export](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Statements/export)
+- [Node.js - ECMAScript modules](https://nodejs.org/api/esm.html)
+
+## Navigazione
+
+- [[Programmazione/JavaScript/Indice JavaScript|Indice JavaScript]]

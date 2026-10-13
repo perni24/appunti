@@ -3,13 +3,25 @@ date: 2026-07-06
 area: Programmazione
 topic: GitHub
 type: technical-note
-status: "non revisionato"
+status: non revisionato
 publish: true
 difficulty: intermedio
-tags: [github, monorepo, repository, architettura]
-aliases: [Monorepo su GitHub, Monorepo GitHub]
-prerequisites: [Repository GitHub, Branch su GitHub]
-related: [Repository GitHub, CODEOWNERS, GitHub Projects]
+tags:
+  - github
+  - monorepo
+  - repository
+  - architettura
+aliases:
+  - Monorepo su GitHub
+  - Monorepo GitHub
+prerequisites:
+  - "[[Programmazione/GitHub/Pagine/Repository GitHub]]"
+  - "[[Programmazione/GitHub/Pagine/Branch su GitHub]]"
+related:
+  - "[[Programmazione/GitHub/Pagine/Repository GitHub]]"
+  - "[[Programmazione/GitHub/Pagine/CODEOWNERS]]"
+  - "[[Programmazione/GitHub/Pagine/GitHub Projects]]"
+title: Monorepo su GitHub
 ---
 
 # Monorepo su GitHub
@@ -117,11 +129,11 @@ Questo e utile se la modifica al componente UI e necessaria per aggiornare una p
 
 ## Collegamenti
 
-- [[Programmazione/GitHub/Indice GitHub]]
-- [[Repository GitHub]]
-- [[Branch su GitHub]]
-- [[CODEOWNERS]]
-- [[GitHub Projects]]
+- [[Programmazione/GitHub/Indice GitHub|Indice GitHub]]
+- [[Programmazione/GitHub/Pagine/Repository GitHub|Repository GitHub]]
+- [[Programmazione/GitHub/Pagine/Branch su GitHub|Branch su GitHub]]
+- [[Programmazione/GitHub/Pagine/CODEOWNERS|CODEOWNERS]]
+- [[Programmazione/GitHub/Pagine/GitHub Projects|GitHub Projects]]
 
 ## Fonti
 

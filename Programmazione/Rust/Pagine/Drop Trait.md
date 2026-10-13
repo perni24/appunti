@@ -3,7 +3,7 @@ date: 2026-05-22
 area: Programmazione
 topic: Rust
 type: technical-note
-status: "non revisionato"
+status: non revisionato
 publish: true
 difficulty: intermedio
 tags:
@@ -11,8 +11,8 @@ tags:
   - rust
   - smart-pointers-e-interior-mutability
 aliases:
-  - "Drop"
-  - "RAII Rust"
+  - Drop
+  - RAII Rust
 prerequisites:
   - "[[Programmazione/Rust/Pagine/Ownership]]"
   - "[[Programmazione/Rust/Pagine/Box T]]"
@@ -21,6 +21,7 @@ related:
   - "[[Programmazione/Rust/Pagine/Deref Trait]]"
   - "[[Programmazione/Rust/Pagine/File descriptor]]"
   - "[[Programmazione/Rust/Pagine/Unsafe Rust]]"
+title: Drop Trait
 ---
 
 # Drop Trait
@@ -129,3 +130,8 @@ Se la transazione esce dallo scope senza commit, `Drop` esegue rollback.
 - [[Programmazione/Rust/Pagine/Deref Trait|Deref Trait]]
 - [[Programmazione/Rust/Pagine/File descriptor|File descriptor]]
 - [[Programmazione/Rust/Pagine/Unsafe Rust|Unsafe Rust]]
+
+
+## Navigazione
+
+- [[Programmazione/Rust/Indice Rust|Indice Rust]]

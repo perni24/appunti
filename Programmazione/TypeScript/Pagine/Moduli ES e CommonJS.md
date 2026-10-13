@@ -3,13 +3,24 @@ date: 2026-06-22
 area: Programmazione
 topic: TypeScript
 type: technical-note
-status: "non revisionato"
+status: non revisionato
 publish: true
 difficulty: intermedio
-tags: [typescript, modules, esm, commonjs, nodejs]
-aliases: [ESM e CommonJS, Moduli TypeScript]
-prerequisites: [tsconfig]
-related: [Module resolution, TypeScript con Node.js]
+tags:
+  - typescript
+  - modules
+  - esm
+  - commonjs
+  - nodejs
+aliases:
+  - ESM e CommonJS
+  - Moduli TypeScript
+prerequisites:
+  - "[[Programmazione/TypeScript/Pagine/tsconfig]]"
+related:
+  - "[[Programmazione/TypeScript/Pagine/Module resolution]]"
+  - "[[Programmazione/TypeScript/Pagine/TypeScript con Node.js]]"
+title: Moduli ES e CommonJS
 ---
 
 # Moduli ES e CommonJS
@@ -89,6 +100,11 @@ Con un bundler moderno questo import funziona normalmente. Con Node.js ESM puro 
 
 ## Collegamenti
 
-- [[tsconfig]]
-- [[Module resolution]]
-- [[TypeScript con Node.js]]
+- [[Programmazione/TypeScript/Pagine/tsconfig|tsconfig]]
+- [[Programmazione/TypeScript/Pagine/Module resolution|Module resolution]]
+- [[Programmazione/TypeScript/Pagine/TypeScript con Node.js|TypeScript con Node.js]]
+
+
+## Navigazione
+
+- [[Programmazione/TypeScript/Indice TypeScript|Indice TypeScript]]

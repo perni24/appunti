@@ -3,13 +3,20 @@ date: 2026-06-04
 area: Programmazione
 topic: React
 type: technical-note
-status: "non revisionato"
+status: non revisionato
 publish: true
-difficulty: intermediate
-tags: [react, hooks, effects]
-aliases: [useEffect, Effect React, Cleanup effect]
+difficulty: intermedio
+tags:
+  - react
+  - hooks
+  - effects
+aliases:
+  - useEffect
+  - Effect React
+  - Cleanup effect
 prerequisites: []
 related: []
+title: useEffect
 ---
 
 # useEffect
@@ -126,8 +133,8 @@ Questo evita aggiornamenti tardivi quando `userId` cambia o il componente si smo
 
 ## Collegamenti
 
-- [[Programmazione/React/Indice react|Indice React]]
-- [[Gestione della memoria e AbortController]]
-- [[Data Fetching e Cache]]
-- [[Custom Hooks]]
-- [[Derived state]]
+- [[Programmazione/React/Indice React|Indice React]]
+- [[Programmazione/React/Pagine/Gestione della memoria e AbortController|Gestione della memoria e AbortController]]
+- [[Programmazione/React/Pagine/Data Fetching e Cache|Data Fetching e Cache]]
+- [[Programmazione/React/Pagine/Custom Hooks|Custom Hooks]]
+- [[Programmazione/React/Pagine/Derived state|Derived state]]

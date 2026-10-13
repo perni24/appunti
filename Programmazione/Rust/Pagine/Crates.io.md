@@ -3,7 +3,7 @@ date: 2026-05-22
 area: Programmazione
 topic: Rust
 type: technical-note
-status: "non revisionato"
+status: non revisionato
 publish: true
 difficulty: base
 tags:
@@ -11,8 +11,8 @@ tags:
   - rust
   - cargo-editions-e-compatibilita
 aliases:
-  - "crates.io"
-  - "Registry Rust"
+  - crates.io
+  - Registry Rust
 prerequisites:
   - "[[Programmazione/Rust/Pagine/Cargo]]"
   - "[[Programmazione/Rust/Pagine/Cargo.toml]]"
@@ -21,6 +21,7 @@ related:
   - "[[Programmazione/Rust/Pagine/Cargo.lock]]"
   - "[[Programmazione/Rust/Pagine/cargo audit]]"
   - "[[Programmazione/Rust/Pagine/cargo deny]]"
+title: Crates.io
 ---
 
 # Crates.io
@@ -123,3 +124,8 @@ Prima della pubblicazione conviene verificare anche README, licenza, changelog e
 - [[Programmazione/Rust/Pagine/Semantic Versioning|Semantic Versioning]]
 - [[Programmazione/Rust/Pagine/cargo audit|cargo audit]]
 - [[Programmazione/Rust/Pagine/cargo deny|cargo deny]]
+
+
+## Navigazione
+
+- [[Programmazione/Rust/Indice Rust|Indice Rust]]

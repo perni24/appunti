@@ -3,7 +3,7 @@ date: 2026-05-26
 area: Programmazione
 topic: Rust
 type: technical-note
-status: "non revisionato"
+status: non revisionato
 publish: true
 difficulty: intermedio
 tags:
@@ -11,8 +11,8 @@ tags:
   - rust
   - compile-time-e-type-level-programming
 aliases:
-  - "Const generics"
-  - "Generics const Rust"
+  - Const generics
+  - Generics const Rust
 prerequisites:
   - "[[Programmazione/Rust/Pagine/Generics]]"
   - "[[Programmazione/Rust/Pagine/const fn]]"
@@ -20,6 +20,7 @@ related:
   - "[[Programmazione/Rust/Pagine/Zero-sized types]]"
   - "[[Programmazione/Rust/Pagine/Typestate pattern]]"
   - "[[Programmazione/Rust/Pagine/PhantomData]]"
+title: Const generics
 ---
 
 # Const generics
@@ -129,3 +130,8 @@ La dimensione e parte del tipo e viene controllata dal compilatore.
 - [[Programmazione/Rust/Pagine/Zero-sized types|Zero-sized types]]
 - [[Programmazione/Rust/Pagine/Typestate pattern|Typestate pattern]]
 - [[Programmazione/Rust/Pagine/PhantomData|PhantomData]]
+
+
+## Navigazione
+
+- [[Programmazione/Rust/Indice Rust|Indice Rust]]

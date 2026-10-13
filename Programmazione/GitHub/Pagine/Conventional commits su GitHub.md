@@ -3,13 +3,23 @@ date: 2026-07-06
 area: Programmazione
 topic: GitHub
 type: technical-note
-status: "non revisionato"
+status: non revisionato
 publish: true
 difficulty: intermedio
-tags: [github, git, conventional-commits, changelog]
-aliases: [Conventional commits su GitHub, Conventional Commits]
-prerequisites: [Commit e cronologia su GitHub]
-related: [Commit e cronologia su GitHub, Pull request]
+tags:
+  - github
+  - git
+  - conventional-commits
+  - changelog
+aliases:
+  - Conventional commits su GitHub
+  - Conventional Commits
+prerequisites:
+  - "[[Programmazione/GitHub/Pagine/Commit e cronologia su GitHub]]"
+related:
+  - "[[Programmazione/GitHub/Pagine/Commit e cronologia su GitHub]]"
+  - "[[Programmazione/GitHub/Pagine/Pull request]]"
+title: Conventional commits su GitHub
 ---
 
 # Conventional commits su GitHub
@@ -122,10 +132,10 @@ Il secondo aiuta review, ricerca nella history e generazione changelog.
 
 ## Collegamenti
 
-- [[Programmazione/GitHub/Indice GitHub]]
-- [[Commit e cronologia su GitHub]]
-- [[Pull request]]
-- [[Merge squash e rebase su GitHub]]
+- [[Programmazione/GitHub/Indice GitHub|Indice GitHub]]
+- [[Programmazione/GitHub/Pagine/Commit e cronologia su GitHub|Commit e cronologia su GitHub]]
+- [[Programmazione/GitHub/Pagine/Pull request|Pull request]]
+- [[Programmazione/GitHub/Pagine/Merge squash e rebase su GitHub|Merge squash e rebase su GitHub]]
 
 ## Fonti
 

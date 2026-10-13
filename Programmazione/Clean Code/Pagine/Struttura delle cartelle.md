@@ -3,13 +3,23 @@ date: 2026-07-09
 area: Programmazione
 topic: Clean Code
 type: theory-note
-status: "non revisionato"
+status: non revisionato
 publish: true
 difficulty: base
-tags: [clean-code, cartelle, architettura]
-aliases: [Struttura delle cartelle, Folder structure]
-prerequisites: [Organizzazione dei file]
-related: [Moduli piccoli, Confini tra moduli, Convenzioni di progetto]
+tags:
+  - clean-code
+  - cartelle
+  - architettura
+aliases:
+  - Struttura delle cartelle
+  - Folder structure
+prerequisites:
+  - "[[Programmazione/Clean Code/Pagine/Organizzazione dei file]]"
+related:
+  - "[[Programmazione/Clean Code/Pagine/Moduli piccoli]]"
+  - "[[Programmazione/Clean Code/Pagine/Confini tra moduli]]"
+  - "[[Programmazione/Clean Code/Pagine/Convenzioni di progetto]]"
+title: Struttura delle cartelle
 ---
 
 # Struttura delle cartelle
@@ -91,11 +101,11 @@ La seconda rende piu visibili i confini di dominio.
 
 ## Collegamenti
 
-- [[Programmazione/Clean Code/Indice Clean Code]]
-- [[Organizzazione dei file]]
-- [[Moduli piccoli]]
-- [[Confini tra moduli]]
-- [[Convenzioni di progetto]]
+- [[Programmazione/Clean Code/Indice Clean Code|Indice Clean Code]]
+- [[Programmazione/Clean Code/Pagine/Organizzazione dei file|Organizzazione dei file]]
+- [[Programmazione/Clean Code/Pagine/Moduli piccoli|Moduli piccoli]]
+- [[Programmazione/Clean Code/Pagine/Confini tra moduli|Confini tra moduli]]
+- [[Programmazione/Clean Code/Pagine/Convenzioni di progetto|Convenzioni di progetto]]
 
 ## Fonti
 

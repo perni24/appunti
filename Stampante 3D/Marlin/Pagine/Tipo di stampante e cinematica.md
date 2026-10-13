@@ -3,17 +3,25 @@ date: 2026-07-25
 area: Stampante 3D
 topic: Marlin
 type: theory-note
-
 publish: true
 difficulty: intermedio
-tags: [marlin, cinematica, corexy, delta, scara]
-aliases: [Cinematica Marlin, Tipi di stampante Marlin]
+tags:
+  - marlin
+  - cinematica
+  - corexy
+  - delta
+  - scara
+aliases:
+  - Cinematica Marlin
+  - Tipi di stampante Marlin
 prerequisites:
   - "[[Stampante 3D/Marlin/Pagine/Introduzione a Marlin 2.1.2.8 e compatibilita]]"
-  - "[[Stampante 3D/Pagine/Introduzione Stamapante 3D]]"
+  - "[[Stampante 3D/Pagine/Componenti di una stampante FDM]]"
 related:
   - "[[Stampante 3D/Marlin/Pagine/Dimensioni del piatto area di lavoro e limiti]]"
-marlin-version: "2.1.2.8"
+marlin-version: 2.1.2.8
+title: Tipo di stampante e cinematica
+status: non revisionato
 ---
 
 # Tipo di stampante e cinematica
@@ -418,7 +426,7 @@ Per questo la cinematica va scelta prima di tarare passi, velocita o livellament
 
 ## Collegamenti
 
-- [[Stampante 3D/Marlin/Indice Marlin]]
-- [[Stampante 3D/Marlin/Pagine/Introduzione a Marlin 2.1.2.8 e compatibilita]]
-- [[Stampante 3D/Marlin/Pagine/Struttura dei file di configurazione Marlin]]
-- [[Stampante 3D/Marlin/Pagine/Dimensioni del piatto area di lavoro e limiti]]
+- [[Stampante 3D/Marlin/Indice Marlin|Indice Marlin]]
+- [[Stampante 3D/Marlin/Pagine/Introduzione a Marlin 2.1.2.8 e compatibilita|Introduzione a Marlin 2.1.2.8 e compatibilita]]
+- [[Stampante 3D/Marlin/Pagine/Struttura dei file di configurazione Marlin|Struttura dei file di configurazione Marlin]]
+- [[Stampante 3D/Marlin/Pagine/Dimensioni del piatto area di lavoro e limiti|Dimensioni del piatto area di lavoro e limiti]]

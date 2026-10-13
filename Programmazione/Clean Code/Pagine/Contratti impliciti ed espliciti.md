@@ -3,13 +3,24 @@ date: 2026-07-09
 area: Programmazione
 topic: Clean Code
 type: theory-note
-status: "non revisionato"
+status: non revisionato
 publish: true
 difficulty: intermedio
-tags: [clean-code, contratti, api-design]
-aliases: [Contratti impliciti ed espliciti, Contratti nel codice]
-prerequisites: [Clean Code, Codice esplicito vs codice implicito]
-related: [Validazione ai confini, Tipi significativi, Messaggi di errore utili]
+tags:
+  - clean-code
+  - contratti
+  - api-design
+aliases:
+  - Contratti impliciti ed espliciti
+  - Contratti nel codice
+prerequisites:
+  - "[[Programmazione/Clean Code/Pagine/Clean Code]]"
+  - "[[Programmazione/Clean Code/Pagine/Codice esplicito vs codice implicito]]"
+related:
+  - "[[Programmazione/Clean Code/Pagine/Validazione ai confini]]"
+  - "[[Programmazione/Clean Code/Pagine/Tipi significativi]]"
+  - "[[Programmazione/Clean Code/Pagine/Messaggi di errore utili]]"
+title: Contratti impliciti ed espliciti
 ---
 
 # Contratti impliciti ed espliciti
@@ -79,11 +90,11 @@ La seconda versione rende visibili requisiti e fallimenti principali.
 
 ## Collegamenti
 
-- [[Programmazione/Clean Code/Indice Clean Code]]
-- [[Codice esplicito vs codice implicito]]
-- [[Validazione ai confini]]
-- [[Tipi significativi]]
-- [[Messaggi di errore utili]]
+- [[Programmazione/Clean Code/Indice Clean Code|Indice Clean Code]]
+- [[Programmazione/Clean Code/Pagine/Codice esplicito vs codice implicito|Codice esplicito vs codice implicito]]
+- [[Programmazione/Clean Code/Pagine/Validazione ai confini|Validazione ai confini]]
+- [[Programmazione/Clean Code/Pagine/Tipi significativi|Tipi significativi]]
+- [[Programmazione/Clean Code/Pagine/Messaggi di errore utili|Messaggi di errore utili]]
 
 ## Fonti
 

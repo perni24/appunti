@@ -3,7 +3,7 @@ date: 2026-05-22
 area: Programmazione
 topic: Rust
 type: technical-note
-status: "non revisionato"
+status: non revisionato
 publish: true
 difficulty: base
 tags:
@@ -11,8 +11,8 @@ tags:
   - rust
   - standard-library
 aliases:
-  - "Default trait"
-  - "Default Rust"
+  - Default trait
+  - Default Rust
 prerequisites:
   - "[[Programmazione/Rust/Pagine/Traits]]"
   - "[[Programmazione/Rust/Pagine/Derive traits]]"
@@ -21,6 +21,7 @@ related:
   - "[[Programmazione/Rust/Pagine/Builder pattern]]"
   - "[[Programmazione/Rust/Pagine/Configurazione applicativa]]"
   - "[[Programmazione/Rust/Pagine/Derive traits]]"
+title: Default
 ---
 
 # Default
@@ -153,3 +154,8 @@ Il default produce una configurazione locale avviabile.
 - [[Programmazione/Rust/Pagine/Builder pattern|Builder pattern]]
 - [[Programmazione/Rust/Pagine/Configurazione applicativa|Configurazione applicativa]]
 - [[Programmazione/Rust/Pagine/Structs|Structs]]
+
+
+## Navigazione
+
+- [[Programmazione/Rust/Indice Rust|Indice Rust]]

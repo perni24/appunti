@@ -3,13 +3,20 @@ date: 2026-06-04
 area: Programmazione
 topic: React
 type: theory-note
-status: "non revisionato"
+status: non revisionato
 publish: true
-difficulty: advanced
-tags: [react, fiber, concurrent-rendering]
-aliases: [Fiber Architecture, Concurrent Mode, Concurrent Rendering]
+difficulty: avanzato
+tags:
+  - react
+  - fiber
+  - concurrent-rendering
+aliases:
+  - Fiber Architecture
+  - Concurrent Mode
+  - Concurrent Rendering
 prerequisites: []
 related: []
+title: Fiber Architecture e Concurrent Mode
 ---
 
 # Fiber Architecture e Concurrent Mode
@@ -93,8 +100,8 @@ L'input resta prioritario, mentre la lista puo aggiornarsi come transizione.
 
 ## Collegamenti
 
-- [[Programmazione/React/Indice react|Indice React]]
-- [[Virtual DOM]]
-- [[Batching]]
-- [[useTransition e useDeferredValue]]
-- [[Suspense e Lazy Loading]]
+- [[Programmazione/React/Indice React|Indice React]]
+- [[Programmazione/React/Pagine/Virtual DOM|Virtual DOM]]
+- [[Programmazione/React/Pagine/Batching|Batching]]
+- [[Programmazione/React/Pagine/useTransition e useDeferredValue|useTransition e useDeferredValue]]
+- [[Programmazione/React/Pagine/Suspense e Lazy Loading|Suspense e Lazy Loading]]

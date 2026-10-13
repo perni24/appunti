@@ -3,7 +3,7 @@ date: 2026-05-26
 area: Programmazione
 topic: Rust
 type: technical-note
-status: "non revisionato"
+status: non revisionato
 publish: true
 difficulty: avanzato
 tags:
@@ -11,8 +11,8 @@ tags:
   - rust
   - unsafe-rust-in-profondita
 aliases:
-  - "Aliasing"
-  - "Regole di aliasing"
+  - Aliasing
+  - Regole di aliasing
 prerequisites:
   - "[[Programmazione/Rust/Pagine/References e Borrowing]]"
   - "[[Programmazione/Rust/Pagine/Raw pointers]]"
@@ -21,6 +21,7 @@ related:
   - "[[Programmazione/Rust/Pagine/Undefined behavior]]"
   - "[[Programmazione/Rust/Pagine/Miri]]"
   - "[[Programmazione/Rust/Pagine/Interior mutability]]"
+title: Aliasing rules
 ---
 
 # Aliasing rules
@@ -127,3 +128,8 @@ I due riferimenti puntano a elementi distinti, quindi non aliasano lo stesso val
 - [[Programmazione/Rust/Pagine/Undefined behavior|Undefined behavior]]
 - [[Programmazione/Rust/Pagine/Interior mutability|Interior mutability]]
 - [[Programmazione/Rust/Pagine/Miri|Miri]]
+
+
+## Navigazione
+
+- [[Programmazione/Rust/Indice Rust|Indice Rust]]

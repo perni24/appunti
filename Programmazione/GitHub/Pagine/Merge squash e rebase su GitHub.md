@@ -3,13 +3,24 @@ date: 2026-07-06
 area: Programmazione
 topic: GitHub
 type: technical-note
-status: "non revisionato"
+status: non revisionato
 publish: true
 difficulty: base
-tags: [github, git, merge, squash, rebase]
-aliases: [Merge squash e rebase, Strategie di merge GitHub]
-prerequisites: [Pull request]
-related: [Branch su GitHub, Commit e cronologia su GitHub]
+tags:
+  - github
+  - git
+  - merge
+  - squash
+  - rebase
+aliases:
+  - Merge squash e rebase
+  - Strategie di merge GitHub
+prerequisites:
+  - "[[Programmazione/GitHub/Pagine/Pull request]]"
+related:
+  - "[[Programmazione/GitHub/Pagine/Branch su GitHub]]"
+  - "[[Programmazione/GitHub/Pagine/Commit e cronologia su GitHub]]"
+title: Merge squash e rebase su GitHub
 ---
 
 # Merge squash e rebase su GitHub
@@ -117,11 +128,11 @@ Se invece ogni commit e gia atomico e descrittivo, rebase o merge commit possono
 
 ## Collegamenti
 
-- [[Programmazione/GitHub/Indice GitHub]]
-- [[Branch su GitHub]]
-- [[Commit e cronologia su GitHub]]
-- [[Pull request]]
-- [[Review code su GitHub]]
+- [[Programmazione/GitHub/Indice GitHub|Indice GitHub]]
+- [[Programmazione/GitHub/Pagine/Branch su GitHub|Branch su GitHub]]
+- [[Programmazione/GitHub/Pagine/Commit e cronologia su GitHub|Commit e cronologia su GitHub]]
+- [[Programmazione/GitHub/Pagine/Pull request|Pull request]]
+- [[Programmazione/GitHub/Pagine/Review code su GitHub|Review code su GitHub]]
 
 ## Fonti
 

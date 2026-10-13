@@ -3,13 +3,23 @@ date: 2026-07-09
 area: Programmazione
 topic: Clean Code
 type: theory-note
-status: "non revisionato"
+status: non revisionato
 publish: true
 difficulty: intermedio
-tags: [clean-code, modellazione, value-object]
-aliases: [Value objects, Value object]
-prerequisites: [Clean Code]
-related: [Primitive obsession, Invarianti del dominio, Modellare stati impossibili]
+tags:
+  - clean-code
+  - modellazione
+  - value-object
+aliases:
+  - Value objects
+  - Value object
+prerequisites:
+  - "[[Programmazione/Clean Code/Pagine/Clean Code]]"
+related:
+  - "[[Programmazione/Clean Code/Pagine/Primitive obsession]]"
+  - "[[Programmazione/Clean Code/Pagine/Invarianti del dominio]]"
+  - "[[Programmazione/Clean Code/Pagine/Modellare stati impossibili]]"
+title: Value objects
 ---
 
 # Value objects
@@ -92,12 +102,12 @@ Il resto del codice non riceve una stringa qualsiasi, ma un valore gia validato.
 
 ## Collegamenti
 
-- [[Programmazione/Clean Code/Indice Clean Code]]
-- [[Clean Code]]
-- [[Primitive obsession]]
-- [[Invarianti del dominio]]
-- [[Modellare stati impossibili]]
-- [[Stato mutabile e immutabile]]
+- [[Programmazione/Clean Code/Indice Clean Code|Indice Clean Code]]
+- [[Programmazione/Clean Code/Pagine/Clean Code|Clean Code]]
+- [[Programmazione/Clean Code/Pagine/Primitive obsession|Primitive obsession]]
+- [[Programmazione/Clean Code/Pagine/Invarianti del dominio|Invarianti del dominio]]
+- [[Programmazione/Clean Code/Pagine/Modellare stati impossibili|Modellare stati impossibili]]
+- [[Programmazione/Clean Code/Pagine/Stato mutabile e immutabile|Stato mutabile e immutabile]]
 
 ## Fonti
 

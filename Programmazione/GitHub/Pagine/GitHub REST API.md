@@ -3,13 +3,26 @@ date: 2026-07-07
 area: Programmazione
 topic: GitHub
 type: technical-note
-status: "non revisionato"
+status: non revisionato
 publish: true
 difficulty: avanzato
-tags: [github, api, rest, automazione]
-aliases: [GitHub REST API, REST API GitHub]
-prerequisites: [GitHub, Personal access token GitHub]
-related: [GitHub GraphQL API, GitHub Apps, Webhooks GitHub, Fine-grained token GitHub]
+tags:
+  - github
+  - api
+  - rest
+  - automazione
+aliases:
+  - GitHub REST API
+  - REST API GitHub
+prerequisites:
+  - "[[Programmazione/GitHub/Pagine/GitHub]]"
+  - "[[Programmazione/GitHub/Pagine/Personal access token GitHub]]"
+related:
+  - "[[Programmazione/GitHub/Pagine/GitHub GraphQL API]]"
+  - "[[Programmazione/GitHub/Pagine/GitHub Apps]]"
+  - "[[Programmazione/GitHub/Pagine/Webhooks GitHub]]"
+  - "[[Programmazione/GitHub/Pagine/Fine-grained token GitHub]]"
+title: GitHub REST API
 ---
 
 # GitHub REST API
@@ -116,13 +129,13 @@ Questo e utile per dashboard, report automatici o controlli pre-release.
 
 ## Collegamenti
 
-- [[Programmazione/GitHub/Indice GitHub]]
-- [[GitHub]]
-- [[GitHub GraphQL API]]
-- [[GitHub Apps]]
-- [[Personal access token GitHub]]
-- [[Fine-grained token GitHub]]
-- [[Webhooks GitHub]]
+- [[Programmazione/GitHub/Indice GitHub|Indice GitHub]]
+- [[Programmazione/GitHub/Pagine/GitHub|GitHub]]
+- [[Programmazione/GitHub/Pagine/GitHub GraphQL API|GitHub GraphQL API]]
+- [[Programmazione/GitHub/Pagine/GitHub Apps|GitHub Apps]]
+- [[Programmazione/GitHub/Pagine/Personal access token GitHub|Personal access token GitHub]]
+- [[Programmazione/GitHub/Pagine/Fine-grained token GitHub|Fine-grained token GitHub]]
+- [[Programmazione/GitHub/Pagine/Webhooks GitHub|Webhooks GitHub]]
 
 ## Fonti
 

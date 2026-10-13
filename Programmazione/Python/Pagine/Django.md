@@ -3,13 +3,19 @@ date: 2026-06-03
 area: Programmazione
 topic: Python
 type: technical-note
-status: "non revisionato"
+status: non revisionato
 publish: true
-difficulty: intermediate
-tags: [programmazione, python, web, django]
-aliases: [Django]
+difficulty: intermedio
+tags:
+  - programmazione
+  - python
+  - web
+  - django
+aliases:
+  - Django
 prerequisites: []
 related: []
+title: Django
 ---
 
 # Django
@@ -141,9 +147,9 @@ class UserProfileAdmin(admin.ModelAdmin):
 
 ## Collegamenti
 
-- [[Programmazione/Python/Indice python|Indice Python]]
-- [[SQLAlchemy]]
-- [[Alembic]]
-- [[FastAPI]]
-- [[Flask]]
-- [[Programmazione/Postgres/Indice postgres|Postgres]]
+- [[Programmazione/Python/Indice Python|Indice Python]]
+- [[Programmazione/Python/Pagine/SQLAlchemy|SQLAlchemy]]
+- [[Programmazione/Python/Pagine/Alembic|Alembic]]
+- [[Programmazione/Python/Pagine/FastAPI|FastAPI]]
+- [[Programmazione/Python/Pagine/Flask|Flask]]
+- [[Programmazione/PostgreSQL/Indice PostgreSQL|Postgres]]

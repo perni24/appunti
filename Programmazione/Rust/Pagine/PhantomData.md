@@ -3,7 +3,7 @@ date: 2026-05-26
 area: Programmazione
 topic: Rust
 type: technical-note
-status: "non revisionato"
+status: non revisionato
 publish: true
 difficulty: avanzato
 tags:
@@ -11,8 +11,8 @@ tags:
   - rust
   - compile-time-e-type-level-programming
 aliases:
-  - "PhantomData"
-  - "std::marker::PhantomData"
+  - PhantomData
+  - std::marker::PhantomData
 prerequisites:
   - "[[Programmazione/Rust/Pagine/Lifetimes avanzati]]"
   - "[[Programmazione/Rust/Pagine/Generics]]"
@@ -21,6 +21,7 @@ related:
   - "[[Programmazione/Rust/Pagine/Marker types]]"
   - "[[Programmazione/Rust/Pagine/Typestate pattern]]"
   - "[[Programmazione/Rust/Pagine/Unsafe Rust]]"
+title: PhantomData
 ---
 
 # PhantomData
@@ -141,3 +142,8 @@ impl<T> Id<T> {
 - [[Programmazione/Rust/Pagine/Typestate pattern|Typestate pattern]]
 - [[Programmazione/Rust/Pagine/Lifetimes avanzati|Lifetimes avanzati]]
 - [[Programmazione/Rust/Pagine/Unsafe Rust|Unsafe Rust]]
+
+
+## Navigazione
+
+- [[Programmazione/Rust/Indice Rust|Indice Rust]]

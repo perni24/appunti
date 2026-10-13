@@ -3,13 +3,24 @@ date: 2026-07-09
 area: Programmazione
 topic: Clean Code
 type: technical-note
-status: "non revisionato"
+status: non revisionato
 publish: true
 difficulty: intermedio
-tags: [clean-code, errori, standard-library]
-aliases: [Gestione esplicita degli errori, Explicit error handling]
-prerequisites: [Errori recuperabili e non recuperabili, Contratti impliciti ed espliciti]
-related: [Eccezioni vs valori di errore, Messaggi di errore utili, Logging leggibile]
+tags:
+  - clean-code
+  - errori
+  - standard-library
+aliases:
+  - Gestione esplicita degli errori
+  - Explicit error handling
+prerequisites:
+  - "[[Programmazione/Clean Code/Pagine/Errori recuperabili e non recuperabili]]"
+  - "[[Programmazione/Clean Code/Pagine/Contratti impliciti ed espliciti]]"
+related:
+  - "[[Programmazione/Clean Code/Pagine/Eccezioni vs valori di errore]]"
+  - "[[Programmazione/Clean Code/Pagine/Messaggi di errore utili]]"
+  - "[[Programmazione/Clean Code/Pagine/Logging leggibile]]"
+title: Gestione esplicita degli errori
 ---
 
 # Gestione esplicita degli errori
@@ -92,11 +103,11 @@ Il chiamante deve gestire esplicitamente il caso `ok: false`.
 
 ## Collegamenti
 
-- [[Programmazione/Clean Code/Indice Clean Code]]
-- [[Errori recuperabili e non recuperabili]]
-- [[Eccezioni vs valori di errore]]
-- [[Messaggi di errore utili]]
-- [[Logging leggibile]]
+- [[Programmazione/Clean Code/Indice Clean Code|Indice Clean Code]]
+- [[Programmazione/Clean Code/Pagine/Errori recuperabili e non recuperabili|Errori recuperabili e non recuperabili]]
+- [[Programmazione/Clean Code/Pagine/Eccezioni vs valori di errore|Eccezioni vs valori di errore]]
+- [[Programmazione/Clean Code/Pagine/Messaggi di errore utili|Messaggi di errore utili]]
+- [[Programmazione/Clean Code/Pagine/Logging leggibile|Logging leggibile]]
 
 ## Fonti
 

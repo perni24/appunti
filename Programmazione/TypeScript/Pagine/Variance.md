@@ -3,13 +3,23 @@ date: 2026-06-22
 area: Programmazione
 topic: TypeScript
 type: technical-note
-status: "non revisionato"
+status: non revisionato
 publish: true
 difficulty: avanzato
-tags: [typescript, variance, generics, type-system]
-aliases: [Varianza TypeScript]
-prerequisites: [Generics avanzati, Structural typing]
-related: [Firme di funzione e overload, Strict mode]
+tags:
+  - typescript
+  - variance
+  - generics
+  - type-system
+aliases:
+  - Varianza TypeScript
+prerequisites:
+  - "[[Programmazione/TypeScript/Pagine/Generics avanzati]]"
+  - "[[Programmazione/TypeScript/Pagine/Structural typing]]"
+related:
+  - "[[Programmazione/TypeScript/Pagine/Firme di funzione e overload]]"
+  - "[[Programmazione/TypeScript/Pagine/Strict mode]]"
+title: Variance
 ---
 
 # Variance
@@ -130,10 +140,15 @@ Questo `Store<T>` e invariante in strict mode: uno store di soli `Dog` non puo a
 
 ## Collegamenti
 
-- [[Generics avanzati]]
-- [[Structural typing]]
+- [[Programmazione/TypeScript/Pagine/Generics avanzati|Generics avanzati]]
+- [[Programmazione/TypeScript/Pagine/Structural typing|Structural typing]]
 - [[Programmazione/TypeScript/Pagine/Strict mode|Strict mode]]
 
 ## Fonti
 
 - [TypeScript - strictFunctionTypes](https://www.typescriptlang.org/tsconfig/strictFunctionTypes.html)
+
+
+## Navigazione
+
+- [[Programmazione/TypeScript/Indice TypeScript|Indice TypeScript]]

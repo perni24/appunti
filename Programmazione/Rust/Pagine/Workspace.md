@@ -1,9 +1,9 @@
-﻿---
+---
 date: 2026-05-20
 area: Programmazione
 topic: Rust
 type: technical-note
-status: "non revisionato"
+status: non revisionato
 publish: true
 difficulty: base
 tags:
@@ -14,6 +14,7 @@ tags:
 aliases: []
 prerequisites: []
 related: []
+title: Workspace
 ---
 
 # Workspace
@@ -94,3 +95,8 @@ cargo check -p core
 - [[Programmazione/Rust/Pagine/Cargo.toml|Cargo.toml]]
 - [[Programmazione/Rust/Pagine/Workspace dependencies|Workspace dependencies]]
 
+
+
+## Navigazione
+
+- [[Programmazione/Rust/Indice Rust|Indice Rust]]

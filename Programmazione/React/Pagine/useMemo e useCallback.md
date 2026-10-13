@@ -3,13 +3,21 @@ date: 2026-06-04
 area: Programmazione
 topic: React
 type: technical-note
-status: "non revisionato"
+status: non revisionato
 publish: true
-difficulty: intermediate
-tags: [react, hooks, performance, memoization]
-aliases: [useMemo, useCallback, Memoization strategy]
+difficulty: intermedio
+tags:
+  - react
+  - hooks
+  - performance
+  - memoization
+aliases:
+  - useMemo
+  - useCallback
+  - Memoization strategy
 prerequisites: []
 related: []
+title: useMemo e useCallback
 ---
 
 # useMemo e useCallback
@@ -114,8 +122,8 @@ function ProductList({ products, query, onSelect }) {
 
 ## Collegamenti
 
-- [[Programmazione/React/Indice react|Indice React]]
-- [[Profiler e Debugging]]
-- [[Virtualizzazione delle liste]]
-- [[React Compiler]]
-- [[useTransition e useDeferredValue]]
+- [[Programmazione/React/Indice React|Indice React]]
+- [[Programmazione/React/Pagine/Profiler e Debugging|Profiler e Debugging]]
+- [[Programmazione/React/Pagine/Virtualizzazione delle liste|Virtualizzazione delle liste]]
+- [[Programmazione/React/Pagine/React Compiler|React Compiler]]
+- [[Programmazione/React/Pagine/useTransition e useDeferredValue|useTransition e useDeferredValue]]

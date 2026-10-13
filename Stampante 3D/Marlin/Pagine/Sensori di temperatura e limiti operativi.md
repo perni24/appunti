@@ -3,18 +3,26 @@ date: 2026-07-25
 area: Stampante 3D
 topic: Marlin
 type: technical-note
-
 publish: true
 difficulty: avanzato
-tags: [marlin, temperatura, termistore, termocoppia, rtd]
-aliases: [Sensori temperatura Marlin, Limiti termici Marlin]
+tags:
+  - marlin
+  - temperatura
+  - termistore
+  - termocoppia
+  - rtd
+aliases:
+  - Sensori temperatura Marlin
+  - Limiti termici Marlin
 prerequisites:
   - "[[Stampante 3D/Marlin/Pagine/Scheda madre porte seriali e pin]]"
   - "[[Stampante 3D/Marlin/Pagine/Hotend estrusori e filamento]]"
 related:
   - "[[Stampante 3D/Marlin/Pagine/Controllo PID MPC e protezioni termiche]]"
   - "[[Stampante 3D/Marlin/Pagine/Ventole e raffreddamento]]"
-marlin-version: "2.1.2.8"
+marlin-version: 2.1.2.8
+title: Sensori di temperatura e limiti operativi
+status: non revisionato
 ---
 
 # Sensori di temperatura e limiti operativi
@@ -377,9 +385,9 @@ L'ADC grezzo aiuta a distinguere un problema di conversione da un ingresso fermo
 
 ## Collegamenti
 
-- [[Stampante 3D/Marlin/Indice Marlin]]
-- [[Stampante 3D/Marlin/Pagine/Scheda madre porte seriali e pin]]
-- [[Stampante 3D/Marlin/Pagine/Alimentazione e protezioni hardware]]
-- [[Stampante 3D/Marlin/Pagine/Hotend estrusori e filamento]]
-- [[Stampante 3D/Marlin/Pagine/Controllo PID MPC e protezioni termiche]]
-- [[Stampante 3D/Marlin/Pagine/Ventole e raffreddamento]]
+- [[Stampante 3D/Marlin/Indice Marlin|Indice Marlin]]
+- [[Stampante 3D/Marlin/Pagine/Scheda madre porte seriali e pin|Scheda madre porte seriali e pin]]
+- [[Stampante 3D/Marlin/Pagine/Alimentazione e protezioni hardware|Alimentazione e protezioni hardware]]
+- [[Stampante 3D/Marlin/Pagine/Hotend estrusori e filamento|Hotend estrusori e filamento]]
+- [[Stampante 3D/Marlin/Pagine/Controllo PID MPC e protezioni termiche|Controllo PID MPC e protezioni termiche]]
+- [[Stampante 3D/Marlin/Pagine/Ventole e raffreddamento|Ventole e raffreddamento]]

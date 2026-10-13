@@ -3,13 +3,26 @@ date: 2026-07-09
 area: Programmazione
 topic: Clean Code
 type: technical-note
-status: "non revisionato"
+status: non revisionato
 publish: true
 difficulty: intermedio
-tags: [clean-code, date, timezone]
-aliases: [Date tempo e timezone, Date, tempo e timezone, Timezone]
-prerequisites: [Codice testabile, Configurazione applicativa]
-related: [Gestione esplicita degli errori, Test unitari leggibili, Parsing e serializzazione]
+tags:
+  - clean-code
+  - date
+  - timezone
+aliases:
+  - Date tempo e timezone
+  - Date
+  - tempo e timezone
+  - Timezone
+prerequisites:
+  - "[[Programmazione/Clean Code/Pagine/Codice testabile]]"
+  - "[[Programmazione/Clean Code/Pagine/Configurazione applicativa]]"
+related:
+  - "[[Programmazione/Clean Code/Pagine/Gestione esplicita degli errori]]"
+  - "[[Programmazione/Clean Code/Pagine/Test unitari leggibili]]"
+  - "[[Programmazione/Clean Code/Pagine/Parsing e serializzazione]]"
+title: Date tempo e timezone
 ---
 
 # Date tempo e timezone
@@ -87,11 +100,11 @@ Passare `now` come parametro rende il comportamento testabile e non dipendente d
 
 ## Collegamenti
 
-- [[Programmazione/Clean Code/Indice Clean Code]]
-- [[Codice testabile]]
+- [[Programmazione/Clean Code/Indice Clean Code|Indice Clean Code]]
+- [[Programmazione/Clean Code/Pagine/Codice testabile|Codice testabile]]
 - [[Programmazione/Clean Code/Pagine/Configurazione applicativa|Configurazione applicativa]]
-- [[Parsing e serializzazione]]
-- [[Test unitari leggibili]]
+- [[Programmazione/Clean Code/Pagine/Parsing e serializzazione|Parsing e serializzazione]]
+- [[Programmazione/Clean Code/Pagine/Test unitari leggibili|Test unitari leggibili]]
 
 ## Fonti
 

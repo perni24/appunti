@@ -3,13 +3,25 @@ date: 2026-07-06
 area: Programmazione
 topic: GitHub
 type: technical-note
-status: "non revisionato"
+status: non revisionato
 publish: true
 difficulty: intermedio
-tags: [github, code-scanning, codeql, security, sast]
-aliases: [Code scanning, GitHub code scanning]
-prerequisites: [Repository GitHub, Required status checks]
-related: [Secret scanning, Required status checks]
+tags:
+  - github
+  - code-scanning
+  - codeql
+  - security
+  - sast
+aliases:
+  - Code scanning
+  - GitHub code scanning
+prerequisites:
+  - "[[Programmazione/GitHub/Pagine/Repository GitHub]]"
+  - "[[Programmazione/GitHub/Pagine/Required status checks]]"
+related:
+  - "[[Programmazione/GitHub/Pagine/Secret scanning]]"
+  - "[[Programmazione/GitHub/Pagine/Required status checks]]"
+title: Code scanning
 ---
 
 # Code scanning
@@ -104,10 +116,10 @@ Per un progetto web:
 
 ## Collegamenti
 
-- [[Programmazione/GitHub/Indice GitHub]]
-- [[Required status checks]]
-- [[Branch protection rules]]
-- [[Secret scanning]]
+- [[Programmazione/GitHub/Indice GitHub|Indice GitHub]]
+- [[Programmazione/GitHub/Pagine/Required status checks|Required status checks]]
+- [[Programmazione/GitHub/Pagine/Branch protection rules|Branch protection rules]]
+- [[Programmazione/GitHub/Pagine/Secret scanning|Secret scanning]]
 
 ## Fonti
 

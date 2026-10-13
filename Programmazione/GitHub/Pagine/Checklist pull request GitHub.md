@@ -3,13 +3,25 @@ date: 2026-07-07
 area: Programmazione
 topic: GitHub
 type: operational-note
-status: "non revisionato"
+status: non revisionato
 publish: true
 difficulty: base
-tags: [github, pull-request, checklist, review]
-aliases: [Checklist pull request GitHub, Checklist PR GitHub]
-prerequisites: [Pull request, Aprire una pull request corretta]
-related: [Review code su GitHub, Required status checks, CODEOWNERS]
+tags:
+  - github
+  - pull-request
+  - checklist
+  - review
+aliases:
+  - Checklist pull request GitHub
+  - Checklist PR GitHub
+prerequisites:
+  - "[[Programmazione/GitHub/Pagine/Pull request]]"
+  - "[[Programmazione/GitHub/Pagine/Aprire una pull request corretta]]"
+related:
+  - "[[Programmazione/GitHub/Pagine/Review code su GitHub]]"
+  - "[[Programmazione/GitHub/Pagine/Required status checks]]"
+  - "[[Programmazione/GitHub/Pagine/CODEOWNERS]]"
+title: Checklist pull request GitHub
 ---
 
 # Checklist pull request GitHub
@@ -90,13 +102,13 @@ Checklist per descrizione PR:
 
 ## Collegamenti
 
-- [[Programmazione/GitHub/Indice GitHub]]
-- [[Pull request]]
-- [[Aprire una pull request corretta]]
-- [[Review code su GitHub]]
-- [[Required status checks]]
-- [[CODEOWNERS]]
-- [[Merge squash e rebase su GitHub]]
+- [[Programmazione/GitHub/Indice GitHub|Indice GitHub]]
+- [[Programmazione/GitHub/Pagine/Pull request|Pull request]]
+- [[Programmazione/GitHub/Pagine/Aprire una pull request corretta|Aprire una pull request corretta]]
+- [[Programmazione/GitHub/Pagine/Review code su GitHub|Review code su GitHub]]
+- [[Programmazione/GitHub/Pagine/Required status checks|Required status checks]]
+- [[Programmazione/GitHub/Pagine/CODEOWNERS|CODEOWNERS]]
+- [[Programmazione/GitHub/Pagine/Merge squash e rebase su GitHub|Merge squash e rebase su GitHub]]
 
 ## Fonti
 

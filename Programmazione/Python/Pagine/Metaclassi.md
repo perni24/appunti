@@ -3,9 +3,8 @@ date: 2026-06-03
 area: Programmazione
 topic: Python
 type: theory-note
-status: "non revisionato"
+status: non revisionato
 publish: true
-difficulty: 
 tags:
   - programmazione
   - python
@@ -14,6 +13,7 @@ tags:
 aliases: []
 prerequisites: []
 related: []
+title: Metaclassi
 ---
 
 # Metaclassi
@@ -87,3 +87,8 @@ Ogni sottoclasse viene registrata automaticamente.
 - [[Programmazione/Python/Pagine/Classi e Istanze|Classi e Istanze]]
 - [[Programmazione/Python/Pagine/Data model|Data model]]
 - [[Programmazione/Python/Pagine/Decoratori|Decoratori]]
+
+
+## Navigazione
+
+- [[Programmazione/Python/Indice Python|Indice Python]]

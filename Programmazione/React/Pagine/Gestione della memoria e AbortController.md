@@ -3,13 +3,22 @@ date: 2026-06-04
 area: Programmazione
 topic: React
 type: technical-note
-status: "non revisionato"
+status: non revisionato
 publish: true
-difficulty: intermediate
-tags: [react, memory, abortcontroller, effects]
-aliases: [Gestione memoria React, AbortController, Race condition negli effect, Cancellation]
+difficulty: intermedio
+tags:
+  - react
+  - memory
+  - abortcontroller
+  - effects
+aliases:
+  - Gestione memoria React
+  - AbortController
+  - Race condition negli effect
+  - Cancellation
 prerequisites: []
 related: []
+title: Gestione della memoria e AbortController
 ---
 
 # Gestione della memoria e AbortController
@@ -107,8 +116,8 @@ useEffect(() => {
 
 ## Collegamenti
 
-- [[Programmazione/React/Indice react|Indice React]]
-- [[useEffect]]
-- [[Data Fetching e Cache]]
-- [[HTTPX e requests]]
-- [[Profiler e Debugging]]
+- [[Programmazione/React/Indice React|Indice React]]
+- [[Programmazione/React/Pagine/useEffect|useEffect]]
+- [[Programmazione/React/Pagine/Data Fetching e Cache|Data Fetching e Cache]]
+- [[Programmazione/Python/Pagine/HTTPX e requests|HTTPX e requests]]
+- [[Programmazione/React/Pagine/Profiler e Debugging|Profiler e Debugging]]

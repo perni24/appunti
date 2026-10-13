@@ -3,7 +3,7 @@ date: 2026-05-22
 area: Programmazione
 topic: Rust
 type: technical-note
-status: "non revisionato"
+status: non revisionato
 publish: true
 difficulty: intermedio
 tags:
@@ -11,8 +11,8 @@ tags:
   - rust
   - lifetimes
 aliases:
-  - "Struct con lifetime"
-  - "Riferimenti nelle struct"
+  - Struct con lifetime
+  - Riferimenti nelle struct
 prerequisites:
   - "[[Programmazione/Rust/Pagine/Structs]]"
   - "[[Programmazione/Rust/Pagine/Lifetime annotations]]"
@@ -21,6 +21,7 @@ related:
   - "[[Programmazione/Rust/Pagine/Lifetimes nei trait]]"
   - "[[Programmazione/Rust/Pagine/Lifetimes avanzati]]"
   - "[[Programmazione/Rust/Pagine/Ownership]]"
+title: Lifetimes nelle struct
 ---
 
 # Lifetimes nelle struct
@@ -141,3 +142,8 @@ fn first_word(input: &str) -> Option<Token<'_>> {
 - [[Programmazione/Rust/Pagine/Structs|Structs]]
 - [[Programmazione/Rust/Pagine/Ownership|Ownership]]
 - [[Programmazione/Rust/Pagine/Lifetimes avanzati|Lifetimes avanzati]]
+
+
+## Navigazione
+
+- [[Programmazione/Rust/Indice Rust|Indice Rust]]

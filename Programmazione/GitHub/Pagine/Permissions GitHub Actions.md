@@ -3,13 +3,26 @@ date: 2026-07-07
 area: Programmazione
 topic: GitHub
 type: technical-note
-status: "non revisionato"
+status: non revisionato
 publish: true
 difficulty: intermedio
-tags: [github, github-actions, permissions, github-token, security]
-aliases: [Permissions GitHub Actions, Permessi GitHub Actions, GITHUB_TOKEN permissions]
-prerequisites: [GitHub Actions, Sicurezza dei token GitHub]
-related: [Variabili e secrets GitHub Actions, Required status checks]
+tags:
+  - github
+  - github-actions
+  - permissions
+  - github-token
+  - security
+aliases:
+  - Permissions GitHub Actions
+  - Permessi GitHub Actions
+  - GITHUB_TOKEN permissions
+prerequisites:
+  - "[[Programmazione/GitHub/Pagine/GitHub Actions]]"
+  - "[[Programmazione/GitHub/Pagine/Sicurezza dei token GitHub]]"
+related:
+  - "[[Programmazione/GitHub/Pagine/Variabili e secrets GitHub Actions]]"
+  - "[[Programmazione/GitHub/Pagine/Required status checks]]"
+title: Permissions GitHub Actions
 ---
 
 # Permissions GitHub Actions
@@ -124,11 +137,11 @@ Questo workflow puo leggere codice ma non scrivere nel repository.
 
 ## Collegamenti
 
-- [[Programmazione/GitHub/Indice GitHub]]
-- [[GitHub Actions]]
-- [[Variabili e secrets GitHub Actions]]
-- [[Sicurezza dei token GitHub]]
-- [[Pipeline CI GitHub Actions]]
+- [[Programmazione/GitHub/Indice GitHub|Indice GitHub]]
+- [[Programmazione/GitHub/Pagine/GitHub Actions|GitHub Actions]]
+- [[Programmazione/GitHub/Pagine/Variabili e secrets GitHub Actions|Variabili e secrets GitHub Actions]]
+- [[Programmazione/GitHub/Pagine/Sicurezza dei token GitHub|Sicurezza dei token GitHub]]
+- [[Programmazione/GitHub/Pagine/Pipeline CI GitHub Actions|Pipeline CI GitHub Actions]]
 
 ## Fonti
 

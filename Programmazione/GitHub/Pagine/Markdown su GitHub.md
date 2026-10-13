@@ -3,13 +3,25 @@ date: 2026-07-06
 area: Programmazione
 topic: GitHub
 type: technical-note
-status: "non revisionato"
+status: non revisionato
 publish: true
 difficulty: base
-tags: [github, markdown, documentazione, readme]
-aliases: [Markdown su GitHub, GitHub Flavored Markdown, GFM]
-prerequisites: [README LICENSE e gitignore]
-related: [Repository GitHub, Pull request, Issues GitHub]
+tags:
+  - github
+  - markdown
+  - documentazione
+  - readme
+aliases:
+  - Markdown su GitHub
+  - GitHub Flavored Markdown
+  - GFM
+prerequisites:
+  - "[[Programmazione/GitHub/Pagine/README LICENSE e gitignore]]"
+related:
+  - "[[Programmazione/GitHub/Pagine/Repository GitHub]]"
+  - "[[Programmazione/GitHub/Pagine/Pull request]]"
+  - "[[Programmazione/GitHub/Pagine/Issues GitHub]]"
+title: Markdown su GitHub
 ---
 
 # Markdown su GitHub
@@ -127,11 +139,11 @@ Questo formato aiuta autore e reviewer a controllare sempre gli stessi punti.
 
 ## Collegamenti
 
-- [[Programmazione/GitHub/Indice GitHub]]
-- [[README LICENSE e gitignore]]
-- [[Repository GitHub]]
-- [[Pull request]]
-- [[Issues GitHub]]
+- [[Programmazione/GitHub/Indice GitHub|Indice GitHub]]
+- [[Programmazione/GitHub/Pagine/README LICENSE e gitignore|README LICENSE e gitignore]]
+- [[Programmazione/GitHub/Pagine/Repository GitHub|Repository GitHub]]
+- [[Programmazione/GitHub/Pagine/Pull request|Pull request]]
+- [[Programmazione/GitHub/Pagine/Issues GitHub|Issues GitHub]]
 
 ## Fonti
 

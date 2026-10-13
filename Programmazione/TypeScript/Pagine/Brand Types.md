@@ -3,13 +3,24 @@ date: 2026-06-22
 area: Programmazione
 topic: TypeScript
 type: technical-note
-status: "non revisionato"
+status: non revisionato
 publish: true
 difficulty: avanzato
-tags: [typescript, brand-types, nominal-typing, domain-modeling]
-aliases: [Branded types, Opaque types]
-prerequisites: [Type Aliases e Interfaces, Intersection Types]
-related: [Domain modeling, DTO e modelli di dominio]
+tags:
+  - typescript
+  - brand-types
+  - nominal-typing
+  - domain-modeling
+aliases:
+  - Branded types
+  - Opaque types
+prerequisites:
+  - "[[Programmazione/TypeScript/Pagine/Type Aliases e Interfaces]]"
+  - "[[Programmazione/TypeScript/Pagine/Union e Intersection Types]]"
+related:
+  - "[[Programmazione/TypeScript/Pagine/Domain modeling]]"
+  - "[[Programmazione/TypeScript/Pagine/DTO e modelli di dominio]]"
+title: Brand Types
 ---
 
 # Brand Types
@@ -89,6 +100,11 @@ Il brand deve essere creato dopo una validazione o in un punto controllato.
 
 ## Collegamenti
 
-- [[Type Aliases e Interfaces]]
+- [[Programmazione/TypeScript/Pagine/Type Aliases e Interfaces|Type Aliases e Interfaces]]
 - [[Programmazione/TypeScript/Pagine/DTO e modelli di dominio|DTO e modelli di dominio]]
-- [[Validazione runtime e tipi statici]]
+- [[Programmazione/TypeScript/Pagine/Validazione runtime e tipi statici|Validazione runtime e tipi statici]]
+
+
+## Navigazione
+
+- [[Programmazione/TypeScript/Indice TypeScript|Indice TypeScript]]

@@ -3,7 +3,7 @@ date: 2026-05-26
 area: Programmazione
 topic: Rust
 type: technical-note
-status: "non revisionato"
+status: non revisionato
 publish: true
 difficulty: avanzato
 tags:
@@ -11,8 +11,8 @@ tags:
   - rust
   - rust-di-sistema
 aliases:
-  - "Embedded Rust"
-  - "Rust embedded"
+  - Embedded Rust
+  - Rust embedded
 prerequisites:
   - "[[Programmazione/Rust/Pagine/no_std]]"
   - "[[Programmazione/Rust/Pagine/cortex-m]]"
@@ -23,6 +23,7 @@ related:
   - "[[Programmazione/Rust/Pagine/probe-rs]]"
   - "[[Programmazione/Rust/Pagine/RTIC]]"
   - "[[Programmazione/Rust/Pagine/Embassy]]"
+title: Embedded Rust
 ---
 
 # Embedded Rust
@@ -190,12 +191,12 @@ L'esempio mostra l'idea: la logica dell'applicazione dipende da un trait (`Outpu
 
 ## Collegamenti
 
-- [[Programmazione/Rust/Indice rust|Indice Rust]]
-- [[Programmazione/Rust/Pagine/no_std]]
-- [[Programmazione/Rust/Pagine/cortex-m]]
-- [[Programmazione/Rust/Pagine/embedded-hal]]
-- [[Programmazione/Rust/Pagine/defmt]]
-- [[Programmazione/Rust/Pagine/probe-rs]]
-- [[Programmazione/Rust/Pagine/RTIC]]
-- [[Programmazione/Rust/Pagine/Embassy]]
-- [[Programmazione/Rust/Pagine/Allocator]]
+- [[Programmazione/Rust/Indice Rust|Indice Rust]]
+- [[Programmazione/Rust/Pagine/no_std|no_std]]
+- [[Programmazione/Rust/Pagine/cortex-m|cortex-m]]
+- [[Programmazione/Rust/Pagine/embedded-hal|embedded-hal]]
+- [[Programmazione/Rust/Pagine/defmt|defmt]]
+- [[Programmazione/Rust/Pagine/probe-rs|probe-rs]]
+- [[Programmazione/Rust/Pagine/RTIC|RTIC]]
+- [[Programmazione/Rust/Pagine/Embassy|Embassy]]
+- [[Programmazione/Rust/Pagine/Allocator|Allocator]]

@@ -3,13 +3,19 @@ date: 2026-06-04
 area: Programmazione
 topic: React
 type: technical-note
-status: "non revisionato"
+status: non revisionato
 publish: true
-difficulty: advanced
-tags: [react, hooks, actions, forms]
-aliases: [useActionState]
+difficulty: avanzato
+tags:
+  - react
+  - hooks
+  - actions
+  - forms
+aliases:
+  - useActionState
 prerequisites: []
 related: []
+title: useActionState
 ---
 
 # useActionState
@@ -91,9 +97,9 @@ async function login(previousState, formData) {
 
 ## Collegamenti
 
-- [[Programmazione/React/Indice react|Indice React]]
-- [[Actions e form actions]]
-- [[useOptimistic]]
-- [[useFormStatus]]
-- [[Gestione Moduli]]
+- [[Programmazione/React/Indice React|Indice React]]
+- [[Programmazione/React/Pagine/Actions e form actions|Actions e form actions]]
+- [[Programmazione/React/Pagine/useOptimistic|useOptimistic]]
+- [[Programmazione/React/Pagine/useFormStatus|useFormStatus]]
+- [[Programmazione/React/Pagine/Gestione Moduli|Gestione Moduli]]
 - [useActionState](https://react.dev/reference/react/useActionState)

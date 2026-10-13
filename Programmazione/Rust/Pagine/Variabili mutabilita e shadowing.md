@@ -1,9 +1,9 @@
-﻿---
+---
 date: 2026-05-20
 area: Programmazione
 topic: Rust
 type: technical-note
-status: "non revisionato"
+status: non revisionato
 publish: true
 difficulty: base
 tags:
@@ -11,9 +11,10 @@ tags:
   - rust
   - variabili
 aliases:
-  - "Variabili, mutabilita e shadowing"
+  - Variabili, mutabilita e shadowing
 prerequisites: []
 related: []
+title: Variabili, mutabilita e shadowing
 ---
 
 # Variabili, mutabilita e shadowing
@@ -84,3 +85,8 @@ Qui ogni `let input` crea un nuovo binding. Non e una mutazione dello stesso val
 - [[Programmazione/Rust/Pagine/References e Borrowing|References e Borrowing]]
 - [[Programmazione/Rust/Pagine/Mutabilita|Mutabilita]]
 
+
+
+## Navigazione
+
+- [[Programmazione/Rust/Indice Rust|Indice Rust]]

@@ -3,13 +3,23 @@ date: 2026-06-22
 area: Programmazione
 topic: TypeScript
 type: technical-note
-status: "non revisionato"
+status: non revisionato
 publish: true
 difficulty: avanzato
-tags: [typescript, decorators, metaprogramming, classes]
-aliases: [Decorator TypeScript]
-prerequisites: [Classi, tsconfig]
-related: [Visibilita e modificatori di accesso, TypeScript con Node.js]
+tags:
+  - typescript
+  - decorators
+  - metaprogramming
+  - classes
+aliases:
+  - Decorator TypeScript
+prerequisites:
+  - "[[Programmazione/TypeScript/Pagine/Classi]]"
+  - "[[Programmazione/TypeScript/Pagine/tsconfig]]"
+related:
+  - "[[Programmazione/TypeScript/Pagine/Visibilita e modificatori di accesso]]"
+  - "[[Programmazione/TypeScript/Pagine/TypeScript con Node.js]]"
+title: Decorators
 ---
 
 # Decorators
@@ -87,7 +97,12 @@ Questo esempio rappresenta lo stile dei decorators moderni. In progetti legacy l
 ## Collegamenti
 
 - [[Programmazione/TypeScript/Pagine/Classi|Classi]]
-- [[tsconfig]]
-- [[TypeScript con Node.js]]
+- [[Programmazione/TypeScript/Pagine/tsconfig|tsconfig]]
+- [[Programmazione/TypeScript/Pagine/TypeScript con Node.js|TypeScript con Node.js]]
 - https://www.typescriptlang.org/docs/handbook/decorators.html
 - https://devblogs.microsoft.com/typescript/announcing-typescript-5-0/#decorators
+
+
+## Navigazione
+
+- [[Programmazione/TypeScript/Indice TypeScript|Indice TypeScript]]

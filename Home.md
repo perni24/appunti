@@ -1,46 +1,22 @@
+# Appunti di Luca
+
 ## Programmazione
 
-- [[Programmazione/JavaScript/Indice javascript|JavaScript]]
-- [[Programmazione/TypeScript/Indice TypeScript|TypeScript]]
-- [[Programmazione/GitHub/Indice GitHub|GitHub]]
-- [[Programmazione/Clean Code/Indice Clean Code|Clean Code]]
-- [[Programmazione/Python/Indice python|Python]]
-- [[Programmazione/Rust/Indice rust|Rust]]
-- [[Programmazione/Postgres/Indice postgres|Postgres]]
-- [[Programmazione/React/Indice react|React]]
-- [[Programmazione/Strutture di Progetto/Indice Strutture di Progetto|Strutture di Progetto]]
-- [[Programmazione/Promemoria/Indice Promemoria|Promemoria]]
+Linguaggi, sviluppo di applicazioni, database e strumenti di lavoro.
 
-## Elettronica
+- [[Programmazione/Indice Programmazione|Indice Programmazione]]
+- [[Programmazione/Promemoria/Indice Promemoria|Promemoria di sintassi e comandi]]
+- [[Programmazione/Strutture di Progetto/Indice Strutture di Progetto|Strutture iniziali delle applicazioni]]
 
-- [[Elettronica/RISC-V/Indice RISC-V|RISC-V]]
+## Stampante 3D
 
-## Linux
+Componenti FDM, configurazione del firmware e procedure di taratura.
 
-- [[Linux/Indice Linux|Linux]]
+- [[Stampante 3D/Indice Stampante 3D|Indice Stampante 3D]]
+- [[Stampante 3D/Marlin/Indice Marlin|Guida Marlin 2.1.2.8]]
 
-## Intelligenza Artificiale
+## Programmi Open Source
 
-- [[AI/Indice AI|AI]]
+Schede per scegliere uno strumento, comprenderne l'uso e riconoscerne i limiti.
 
-## Trading
-
-- [[Trading/Teoria/Indice Trading|Teoria del Trading]]
-- [[Trading/Backtrader/Introduzione a Backtrader|Backtrader]]
-
-## Home Assistant
-
-- [[Home assistant/Indice Home Assistant|Home Assistant]]
-
-## Stampa 3D
-
-- [[Stampante 3D/Indice stampante 3D|Stampante 3D]]
-
-## Software Open Source
-
-- [[Programmi open source/Indice Programmi Open Source|Software Open Source]]
-
-## Progetti
-
-- [[Progetti/Indice progetti|Progetti]]
-- [[Progetti/Sito basket/Indice sito basket|Sito basket]]
+- [[Programmi open source/Indice Programmi Open Source|Catalogo per attivita]]

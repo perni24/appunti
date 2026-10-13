@@ -3,13 +3,28 @@ date: 2026-06-02
 area: Programmazione
 topic: JavaScript
 type: technical-note
-status: "non revisionato"
+status: non revisionato
 publish: true
-difficulty: beginner
-tags: [javascript, es6, spread, rest, arrays, objects]
-aliases: [Spread operator, Rest operator, Tre puntini JavaScript]
-prerequisites: [Array Methods, Oggetti Avanzati, Funzioni]
-related: [Destructuring, Immutabilita e Copia degli Oggetti]
+difficulty: base
+tags:
+  - javascript
+  - es6
+  - spread
+  - rest
+  - arrays
+  - objects
+aliases:
+  - Spread operator
+  - Rest operator
+  - Tre puntini JavaScript
+prerequisites:
+  - "[[Programmazione/JavaScript/Pagine/Array Methods]]"
+  - "[[Programmazione/JavaScript/Pagine/Oggetti Avanzati]]"
+  - "[[Programmazione/JavaScript/Pagine/Funzioni]]"
+related:
+  - "[[Programmazione/JavaScript/Pagine/Destructuring]]"
+  - "[[Programmazione/JavaScript/Pagine/Immutabilita e Copia degli Oggetti]]"
+title: Spread & Rest Operators
 ---
 
 # Spread & Rest Operators
@@ -73,9 +88,11 @@ console.log(Math.max(...numbers)); // 8
 
 Senza spread, `Math.max()` riceverebbe un array come singolo argomento.
 
+Array spread e argument spread richiedono un iterabile. Evita `Math.max(...hugeArray)` per collezioni enormi: il motore impone un limite al numero di argomenti; usa un ciclo o una riduzione.
+
 ---
 ### Spread negli oggetti
-Lo spread copia proprieta enumerabili in un nuovo oggetto.
+Lo spread copia le proprieta proprie enumerabili, anche con chiavi `Symbol`. Non copia il prototipo o i descriptor originali: eventuali getter vengono letti e il risultato diventa una normale proprieta dati.
 
 ```js
 const user = {
@@ -100,6 +117,23 @@ const result = {
 console.log(result.a); // 2
 ```
 
+Questo vale anche quando una proprieta successiva e `undefined`: un merge non applica automaticamente i default.
+
+```js
+const defaults = { limit: 10 };
+const options = { limit: undefined };
+console.log({ ...defaults, ...options }); // { limit: undefined }
+```
+
+Lo spread oggetto, diversamente da quello array, non richiede un iterabile:
+
+```js
+const plain = { count: 2 };
+const copy = { ...plain };
+const empty = { ...null, ...undefined }; // {}, nessuna proprieta da copiare
+// [...plain]; // TypeError: plain non e iterabile
+```
+
 ---
 ### Copia superficiale
 Spread crea una copia superficiale.
@@ -122,7 +156,7 @@ console.log(original.user.name); // "Marco"
 
 Gli oggetti annidati restano condivisi.
 
-Per copie profonde, valuta `structuredClone()` quando supportato.
+Per copie profonde di dati supportati, valuta `structuredClone()`. Gestisce anche riferimenti circolari, ma non e un clone universale: funzioni e nodi DOM non sono clonabili e i prototipi di classi personalizzate non vengono preservati. Vedi [[Programmazione/JavaScript/Pagine/Immutabilita e Copia degli Oggetti|Immutabilita e copia degli oggetti]].
 
 ---
 ### Rest nei parametri
@@ -158,14 +192,16 @@ console.log(others); // [2, 3, 4]
 Negli oggetti:
 
 ```js
-const { password, ...safeUser } = {
+const { password, ...withoutPassword } = {
   name: "Luca",
   password: "secret",
   role: "admin",
 };
 
-console.log(safeUser); // { name: "Luca", role: "admin" }
+console.log(withoutPassword); // { name: "Luca", role: "admin" }
 ```
+
+Object rest raccoglie le altre proprieta proprie enumerabili e mantiene condivisi gli oggetti annidati. Escludere `password` non rende automaticamente pubblici o sicuri tutti gli altri campi.
 
 ---
 ### Differenza tra spread e rest
@@ -198,7 +234,7 @@ Rest:
 function fn(first, ...others) {}
 
 const [head, ...tail] = items;
-const { password, ...publicUser } = user;
+const { password, ...withoutPassword } = user;
 ```
 
 Regola: `...` in una posizione che produce valori e spread; `...` in una posizione che dichiara o destruttura valori e rest.
@@ -217,14 +253,24 @@ function updateUserRole(user, role) {
 }
 ```
 
-Rimuovere un campo sensibile:
+Rimuovere un campo specifico, senza promettere che il resto sia pubblicabile:
+
+```js
+function omitPasswordHash(user) {
+  const { passwordHash, ...remaining } = user;
+  return remaining;
+}
+```
+
+Per una risposta pubblica, preferisci un elenco esplicito di campi ammessi. Qui `user` e gia validato e `id` e `name` sono valori scalari pubblicabili:
 
 ```js
 function toPublicUser(user) {
-  const { passwordHash, ...publicUser } = user;
-  return publicUser;
+  return { id: user.id, name: user.name };
 }
 ```
+
+Cosi un futuro `apiKey` o `resetToken` non viene incluso per errore. La scelta dei campi e la verifica dei permessi restano responsabilita dell'applicazione. Analogamente, `updateUserRole()` costruisce soltanto un oggetto: non autorizza il cambio di ruolo e non effettua una copia profonda.
 
 ## Varianti
 
@@ -259,6 +305,17 @@ function toPublicUser(user) {
 
 - [[Programmazione/JavaScript/Pagine/Destructuring|Destructuring]]
 - [[Programmazione/JavaScript/Pagine/Funzioni|Funzioni]]
-- [[Array Methods]]
-- [[Immutabilita e Copia degli Oggetti]]
-- [[Property Descriptors]]
+- [[Programmazione/JavaScript/Pagine/Array Methods|Array Methods]]
+- [[Programmazione/JavaScript/Pagine/Immutabilita e Copia degli Oggetti|Immutabilita e Copia degli Oggetti]]
+- [[Programmazione/JavaScript/Pagine/Property Descriptors|Property Descriptors]]
+
+
+## Fonti
+
+- [MDN - Spread syntax](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Operators/Spread_syntax)
+- [MDN - structuredClone](https://developer.mozilla.org/en-US/docs/Web/API/Window/structuredClone)
+- [MDN - Structured clone algorithm e limiti](https://developer.mozilla.org/en-US/docs/Web/API/Web_Workers_API/Structured_clone_algorithm)
+
+## Navigazione
+
+- [[Programmazione/JavaScript/Indice JavaScript|Indice JavaScript]]

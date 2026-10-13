@@ -3,7 +3,7 @@ date: 2026-05-26
 area: Programmazione
 topic: Rust
 type: technical-note
-status: "non revisionato"
+status: non revisionato
 publish: true
 difficulty: avanzato
 tags:
@@ -11,8 +11,8 @@ tags:
   - rust
   - unsafe-rust-in-profondita
 aliases:
-  - "unsafe Rust"
-  - "Unsafe code Rust"
+  - unsafe Rust
+  - Unsafe code Rust
 prerequisites:
   - "[[Programmazione/Rust/Pagine/Ownership]]"
   - "[[Programmazione/Rust/Pagine/References e Borrowing]]"
@@ -21,6 +21,7 @@ related:
   - "[[Programmazione/Rust/Pagine/Raw pointers]]"
   - "[[Programmazione/Rust/Pagine/Undefined behavior]]"
   - "[[Programmazione/Rust/Pagine/Unsafe abstractions sicure]]"
+title: Unsafe Rust
 ---
 
 # Unsafe Rust
@@ -135,3 +136,8 @@ Il blocco unsafe e piccolo. La funzione safe controlla `mid` e costruisce due sl
 - [[Programmazione/Rust/Pagine/Unsafe traits|Unsafe traits]]
 - [[Programmazione/Rust/Pagine/Undefined behavior|Undefined behavior]]
 - [[Programmazione/Rust/Pagine/Unsafe abstractions sicure|Unsafe abstractions sicure]]
+
+
+## Navigazione
+
+- [[Programmazione/Rust/Indice Rust|Indice Rust]]

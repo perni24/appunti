@@ -3,13 +3,23 @@ date: 2026-07-09
 area: Programmazione
 topic: Clean Code
 type: theory-note
-status: "non revisionato"
+status: non revisionato
 publish: true
 difficulty: base
-tags: [clean-code, commenti, todo, debito-tecnico]
-aliases: [Commenti temporanei e TODO, TODO nel codice]
-prerequisites: [Commenti che spiegano il perche non il cosa]
-related: [Debito tecnico, README e documentazione tecnica]
+tags:
+  - clean-code
+  - commenti
+  - todo
+  - debito-tecnico
+aliases:
+  - Commenti temporanei e TODO
+  - TODO nel codice
+prerequisites:
+  - "[[Programmazione/Clean Code/Pagine/Commenti che spiegano il perche non il cosa]]"
+related:
+  - "[[Programmazione/Clean Code/Pagine/Debito tecnico]]"
+  - "[[Programmazione/Clean Code/Pagine/README e documentazione tecnica]]"
+title: Commenti temporanei e TODO
 ---
 
 # Commenti temporanei e TODO
@@ -81,11 +91,11 @@ Il secondo commento rende chiaro contesto e tracciamento.
 
 ## Collegamenti
 
-- [[Programmazione/Clean Code/Indice Clean Code]]
-- [[Commenti che spiegano il perche non il cosa]]
-- [[Debito tecnico]]
-- [[README e documentazione tecnica]]
-- [[Convenzioni di progetto]]
+- [[Programmazione/Clean Code/Indice Clean Code|Indice Clean Code]]
+- [[Programmazione/Clean Code/Pagine/Commenti che spiegano il perche non il cosa|Commenti che spiegano il perche non il cosa]]
+- [[Programmazione/Clean Code/Pagine/Debito tecnico|Debito tecnico]]
+- [[Programmazione/Clean Code/Pagine/README e documentazione tecnica|README e documentazione tecnica]]
+- [[Programmazione/Clean Code/Pagine/Convenzioni di progetto|Convenzioni di progetto]]
 
 ## Fonti
 

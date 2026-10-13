@@ -3,13 +3,20 @@ date: 2026-06-03
 area: Programmazione
 topic: Python
 type: technical-note
-status: "non revisionato"
+status: non revisionato
 publish: true
-difficulty: beginner
-tags: [python, programming, virtualenv]
-aliases: [Ambienti Virtuali, Virtualenv, venv]
+difficulty: base
+tags:
+  - python
+  - programming
+  - virtualenv
+aliases:
+  - Ambienti Virtuali
+  - Virtualenv
+  - venv
 prerequisites: []
 related: []
+title: Ambienti Virtuali in Python
 ---
 
 # Ambienti Virtuali in Python
@@ -145,8 +152,8 @@ Poi aggiungi `.venv/` al `.gitignore`, perche l'ambiente si ricrea: non va commi
 
 ## Collegamenti
 
-- [[Programmazione/Python/Indice python|Indice Python]]
-- [[Pip e PyPI]]
-- [[uv pipx e poetry]]
-- [[Creazione di Package]]
+- [[Programmazione/Python/Indice Python|Indice Python]]
+- [[Programmazione/Python/Pagine/Pip e PyPI|Pip e PyPI]]
+- [[Programmazione/Python/Pagine/uv pipx e poetry|uv pipx e poetry]]
+- [[Programmazione/Python/Pagine/Creazione di Package|Creazione di Package]]
 - [[Programmazione/Python/Pagine/Testing|Testing]]

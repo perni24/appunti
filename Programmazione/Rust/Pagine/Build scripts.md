@@ -3,7 +3,7 @@ date: 2026-05-22
 area: Programmazione
 topic: Rust
 type: technical-note
-status: "non revisionato"
+status: non revisionato
 publish: true
 difficulty: intermedio
 tags:
@@ -11,8 +11,8 @@ tags:
   - rust
   - cargo-editions-e-compatibilita
 aliases:
-  - "build.rs"
-  - "Cargo build scripts"
+  - build.rs
+  - Cargo build scripts
 prerequisites:
   - "[[Programmazione/Rust/Pagine/Cargo]]"
   - "[[Programmazione/Rust/Pagine/Cargo.toml]]"
@@ -20,6 +20,7 @@ related:
   - "[[Programmazione/Rust/Pagine/bindgen e cbindgen]]"
   - "[[Programmazione/Rust/Pagine/FFI]]"
   - "[[Programmazione/Rust/Pagine/Build profiles]]"
+title: Build scripts
 ---
 
 # Build scripts
@@ -124,3 +125,8 @@ Il build script passa una variabile d'ambiente al codice compilato.
 - [[Programmazione/Rust/Pagine/Build profiles|Build profiles]]
 - [[Programmazione/Rust/Pagine/FFI|FFI]]
 - [[Programmazione/Rust/Pagine/bindgen e cbindgen|bindgen e cbindgen]]
+
+
+## Navigazione
+
+- [[Programmazione/Rust/Indice Rust|Indice Rust]]

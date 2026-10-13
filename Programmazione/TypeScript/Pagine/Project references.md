@@ -3,13 +3,22 @@ date: 2026-06-22
 area: Programmazione
 topic: TypeScript
 type: technical-note
-status: "non revisionato"
+status: non revisionato
 publish: true
 difficulty: intermedio
-tags: [typescript, project-references, monorepo, build]
-aliases: [TypeScript project references]
-prerequisites: [tsconfig]
-related: [TypeScript monorepo, Path aliases]
+tags:
+  - typescript
+  - project-references
+  - monorepo
+  - build
+aliases:
+  - TypeScript project references
+prerequisites:
+  - "[[Programmazione/TypeScript/Pagine/tsconfig]]"
+related:
+  - "[[Programmazione/TypeScript/Pagine/TypeScript monorepo]]"
+  - "[[Programmazione/TypeScript/Pagine/Path aliases]]"
+title: Project references
 ---
 
 # Project references
@@ -92,6 +101,11 @@ tsconfig.json
 
 ## Collegamenti
 
-- [[tsconfig]]
-- [[Path aliases]]
-- [[TypeScript monorepo]]
+- [[Programmazione/TypeScript/Pagine/tsconfig|tsconfig]]
+- [[Programmazione/TypeScript/Pagine/Path aliases|Path aliases]]
+- [[Programmazione/TypeScript/Pagine/TypeScript monorepo|TypeScript monorepo]]
+
+
+## Navigazione
+
+- [[Programmazione/TypeScript/Indice TypeScript|Indice TypeScript]]

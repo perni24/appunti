@@ -3,13 +3,25 @@ date: 2026-06-22
 area: Programmazione
 topic: TypeScript
 type: technical-note
-status: "non revisionato"
+status: non revisionato
 publish: true
 difficulty: intermedio
-tags: [typescript, dependency-injection, architecture, testing]
-aliases: [DI TypeScript, Iniezione dipendenze]
-prerequisites: [Implementazione di interfacce, Classi]
-related: [Pattern Repository e Service, Clean architecture, Testing in TypeScript]
+tags:
+  - typescript
+  - dependency-injection
+  - architecture
+  - testing
+aliases:
+  - DI TypeScript
+  - Iniezione dipendenze
+prerequisites:
+  - "[[Programmazione/TypeScript/Pagine/Implementazione di interfacce]]"
+  - "[[Programmazione/TypeScript/Pagine/Classi]]"
+related:
+  - "[[Programmazione/TypeScript/Pagine/Pattern Repository e Service]]"
+  - "[[Programmazione/TypeScript/Pagine/Clean architecture]]"
+  - "[[Programmazione/TypeScript/Pagine/Testing in TypeScript]]"
+title: Dependency injection
 ---
 
 # Dependency injection
@@ -89,7 +101,12 @@ Nei test puoi passare un `Mailer` fake senza inviare email reali.
 
 ## Collegamenti
 
-- [[Implementazione di interfacce]]
-- [[Pattern Repository e Service]]
-- [[Clean architecture]]
-- [[Testing in TypeScript]]
+- [[Programmazione/TypeScript/Pagine/Implementazione di interfacce|Implementazione di interfacce]]
+- [[Programmazione/TypeScript/Pagine/Pattern Repository e Service|Pattern Repository e Service]]
+- [[Programmazione/TypeScript/Pagine/Clean architecture|Clean architecture]]
+- [[Programmazione/TypeScript/Pagine/Testing in TypeScript|Testing in TypeScript]]
+
+
+## Navigazione
+
+- [[Programmazione/TypeScript/Indice TypeScript|Indice TypeScript]]

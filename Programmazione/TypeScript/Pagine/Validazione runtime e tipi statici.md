@@ -3,13 +3,25 @@ date: 2026-06-22
 area: Programmazione
 topic: TypeScript
 type: technical-note
-status: "non revisionato"
+status: non revisionato
 publish: true
 difficulty: intermedio
-tags: [typescript, runtime-validation, type-safety, validation]
-aliases: [Validazione runtime TypeScript]
-prerequisites: [any, unknown e never, Type Guards]
-related: [Schema validation con Zod, Parsing sicuro di input esterni, API contract]
+tags:
+  - typescript
+  - runtime-validation
+  - type-safety
+  - validation
+aliases:
+  - Validazione runtime TypeScript
+prerequisites:
+  - any
+  - unknown e never
+  - "[[Programmazione/TypeScript/Pagine/Type Guards]]"
+related:
+  - "[[Programmazione/TypeScript/Pagine/Schema validation con Zod]]"
+  - "[[Programmazione/TypeScript/Pagine/Parsing sicuro di input esterni]]"
+  - "[[Programmazione/TypeScript/Pagine/API contract]]"
+title: Validazione runtime e tipi statici
 ---
 
 # Validazione runtime e tipi statici
@@ -98,7 +110,12 @@ console.log(raw.email);
 
 ## Collegamenti
 
-- [[Schema validation con Zod]]
-- [[Parsing sicuro di input esterni]]
-- [[API contract]]
-- [[Type Guards]]
+- [[Programmazione/TypeScript/Pagine/Schema validation con Zod|Schema validation con Zod]]
+- [[Programmazione/TypeScript/Pagine/Parsing sicuro di input esterni|Parsing sicuro di input esterni]]
+- [[Programmazione/TypeScript/Pagine/API contract|API contract]]
+- [[Programmazione/TypeScript/Pagine/Type Guards|Type Guards]]
+
+
+## Navigazione
+
+- [[Programmazione/TypeScript/Indice TypeScript|Indice TypeScript]]

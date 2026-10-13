@@ -1,15 +1,19 @@
-﻿---
+---
 date: 2026-05-20
 area: Programmazione
 topic: Rust
 type: technical-note
-status: "non revisionato"
+status: non revisionato
 publish: true
 difficulty: base
-tags: [programmazione, rust, option, error-handling]
+tags:
+  - programmazione
+  - rust
+  - option
+  - error-handling
 aliases:
-  - "Option Rust"
-  - "Valori opzionali"
+  - Option Rust
+  - Valori opzionali
 prerequisites:
   - "[[Programmazione/Rust/Pagine/Enums]]"
   - "[[Programmazione/Rust/Pagine/Pattern Matching]]"
@@ -17,6 +21,7 @@ related:
   - "[[Programmazione/Rust/Pagine/Result]]"
   - "[[Programmazione/Rust/Pagine/Operatore]]"
   - "[[Programmazione/Rust/Pagine/if let e while let]]"
+title: Option
 ---
 
 # Option
@@ -136,3 +141,8 @@ fn dominio_email(id: u64) -> Option<String> {
 - [[Programmazione/Rust/Pagine/Operatore|Operatore ?]]
 - [[Programmazione/Rust/Pagine/if let e while let|if let e while let]]
 
+
+
+## Navigazione
+
+- [[Programmazione/Rust/Indice Rust|Indice Rust]]

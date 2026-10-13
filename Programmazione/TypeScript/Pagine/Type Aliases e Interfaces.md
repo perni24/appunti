@@ -3,13 +3,24 @@ date: 2026-06-22
 area: Programmazione
 topic: TypeScript
 type: technical-note
-status: "non revisionato"
+status: non revisionato
 publish: true
 difficulty: base
-tags: [typescript, type-aliases, interfaces, object-types]
-aliases: [Type Alias, Interface]
-prerequisites: [Tipi primitivi, Variabili e annotazioni di tipo]
-related: [Union e Intersection Types, Implementazione di interfacce]
+tags:
+  - typescript
+  - type-aliases
+  - interfaces
+  - object-types
+aliases:
+  - Type Alias
+  - Interface
+prerequisites:
+  - "[[Programmazione/TypeScript/Pagine/Tipi primitivi]]"
+  - "[[Programmazione/TypeScript/Pagine/Variabili e annotazioni di tipo]]"
+related:
+  - "[[Programmazione/TypeScript/Pagine/Union e Intersection Types]]"
+  - "[[Programmazione/TypeScript/Pagine/Implementazione di interfacce]]"
+title: Type Aliases e Interfaces
 ---
 
 # Type Aliases e Interfaces
@@ -94,6 +105,11 @@ function formatUser(result: ApiResult<User>): string {
 
 ## Collegamenti
 
-- [[Union e Intersection Types]]
-- [[Implementazione di interfacce]]
+- [[Programmazione/TypeScript/Pagine/Union e Intersection Types|Union e Intersection Types]]
+- [[Programmazione/TypeScript/Pagine/Implementazione di interfacce|Implementazione di interfacce]]
 - [[Programmazione/TypeScript/Pagine/Generics|Generics]]
+
+
+## Navigazione
+
+- [[Programmazione/TypeScript/Indice TypeScript|Indice TypeScript]]

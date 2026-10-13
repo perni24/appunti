@@ -3,7 +3,7 @@ date: 2026-05-27
 area: Programmazione
 topic: Rust
 type: technical-note
-status: "non revisionato"
+status: non revisionato
 publish: true
 difficulty: intermedio
 tags:
@@ -11,8 +11,8 @@ tags:
   - rust
   - cli-e-tooling
 aliases:
-  - "Logging con log"
-  - "log crate"
+  - Logging con log
+  - log crate
 prerequisites:
   - "[[Programmazione/Rust/Pagine/Error handling idiomatico]]"
   - "[[Programmazione/Rust/Pagine/Configurazione applicativa]]"
@@ -20,6 +20,7 @@ related:
   - "[[Programmazione/Rust/Pagine/Tracing con tracing]]"
   - "[[Programmazione/Rust/Pagine/Error reporting]]"
   - "[[Programmazione/Rust/Pagine/CLI con clap]]"
+title: Logging con log
 ---
 
 # Logging con log
@@ -168,9 +169,9 @@ Il flag `-v` aumenta progressivamente il dettaglio senza cambiare il codice appl
 
 ## Collegamenti
 
-- [[Programmazione/Rust/Indice rust|Indice Rust]]
-- [[Programmazione/Rust/Pagine/Tracing con tracing]]
-- [[Programmazione/Rust/Pagine/Error reporting]]
-- [[Programmazione/Rust/Pagine/Configurazione applicativa]]
-- [[Programmazione/Rust/Pagine/CLI con clap]]
-- [[Programmazione/Rust/Pagine/Error handling idiomatico]]
+- [[Programmazione/Rust/Indice Rust|Indice Rust]]
+- [[Programmazione/Rust/Pagine/Tracing con tracing|Tracing con tracing]]
+- [[Programmazione/Rust/Pagine/Error reporting|Error reporting]]
+- [[Programmazione/Rust/Pagine/Configurazione applicativa|Configurazione applicativa]]
+- [[Programmazione/Rust/Pagine/CLI con clap|CLI con clap]]
+- [[Programmazione/Rust/Pagine/Error handling idiomatico|Error handling idiomatico]]

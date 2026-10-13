@@ -3,13 +3,20 @@ date: 2026-06-03
 area: Programmazione
 topic: Python
 type: technical-note
-status: "non revisionato"
+status: non revisionato
 publish: true
-difficulty: intermediate
-tags: [programmazione, python, openai, llm]
-aliases: [OpenAI API, API OpenAI]
+difficulty: intermedio
+tags:
+  - programmazione
+  - python
+  - openai
+  - llm
+aliases:
+  - OpenAI API
+  - API OpenAI
 prerequisites: []
 related: []
+title: OpenAI API
 ---
 
 # OpenAI API
@@ -31,7 +38,7 @@ Usa la OpenAI API quando:
 - vuoi analizzare immagini, audio o input multimodali;
 - vuoi usare modelli cloud invece di inferenza locale.
 
-Per dati sensibili, valuta requisiti privacy, policy interne e alternative locali come [[llama-cpp-python]].
+Per dati sensibili, valuta requisiti privacy, policy interne e alternative locali come [[Programmazione/Python/Pagine/llama-cpp-python|llama-cpp-python]].
 
 ## Come funziona
 
@@ -149,10 +156,9 @@ Anche quando chiedi output vincolato, valida sempre il risultato se influenza lo
 
 ## Collegamenti
 
-- [[Programmazione/Python/Indice python|Indice Python]]
-- [[llama-cpp-python]]
-- [[HTTPX e requests]]
-- [[Pydantic]]
-- [[AI/Indice AI|Indice AI]]
+- [[Programmazione/Python/Indice Python|Indice Python]]
+- [[Programmazione/Python/Pagine/llama-cpp-python|llama-cpp-python]]
+- [[Programmazione/Python/Pagine/HTTPX e requests|HTTPX e requests]]
+- [[Programmazione/Python/Pagine/Pydantic|Pydantic]]
 - [OpenAI API docs](https://platform.openai.com/docs)
 - [OpenAI API reference](https://platform.openai.com/docs/api-reference)

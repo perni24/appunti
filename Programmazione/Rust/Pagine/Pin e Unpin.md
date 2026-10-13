@@ -3,7 +3,7 @@ date: 2026-05-22
 area: Programmazione
 topic: Rust
 type: technical-note
-status: "non revisionato"
+status: non revisionato
 publish: true
 difficulty: avanzato
 tags:
@@ -11,9 +11,9 @@ tags:
   - rust
   - smart-pointers-e-interior-mutability
 aliases:
-  - "Pin"
-  - "Unpin"
-  - "Pinning Rust"
+  - Pin
+  - Unpin
+  - Pinning Rust
 prerequisites:
   - "[[Programmazione/Rust/Pagine/Box T]]"
   - "[[Programmazione/Rust/Pagine/Move semantics]]"
@@ -22,6 +22,7 @@ related:
   - "[[Programmazione/Rust/Pagine/Future Trait]]"
   - "[[Programmazione/Rust/Pagine/Unsafe Rust]]"
   - "[[Programmazione/Rust/Pagine/Memory layout e alignment]]"
+title: Pin e Unpin
 ---
 
 # Pin e Unpin
@@ -126,3 +127,8 @@ fn use_pinned(value: Pin<&mut NotUnpin>) {
 - [[Programmazione/Rust/Pagine/Future Trait|Future Trait]]
 - [[Programmazione/Rust/Pagine/Async Await|Async Await]]
 - [[Programmazione/Rust/Pagine/Unsafe Rust|Unsafe Rust]]
+
+
+## Navigazione
+
+- [[Programmazione/Rust/Indice Rust|Indice Rust]]

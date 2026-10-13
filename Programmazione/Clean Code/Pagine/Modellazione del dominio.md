@@ -3,13 +3,24 @@ date: 2026-07-09
 area: Programmazione
 topic: Clean Code
 type: theory-note
-status: "non revisionato"
+status: non revisionato
 publish: true
 difficulty: intermedio
-tags: [clean-code, dominio, modellazione]
-aliases: [Modellazione del dominio, Domain modeling]
-prerequisites: [Value objects, Invarianti del dominio]
-related: [Tipi significativi, Modellare stati impossibili, Data objects e behavior objects]
+tags:
+  - clean-code
+  - dominio
+  - modellazione
+aliases:
+  - Modellazione del dominio
+  - Domain modeling
+prerequisites:
+  - "[[Programmazione/Clean Code/Pagine/Value objects]]"
+  - "[[Programmazione/Clean Code/Pagine/Invarianti del dominio]]"
+related:
+  - "[[Programmazione/Clean Code/Pagine/Tipi significativi]]"
+  - "[[Programmazione/Clean Code/Pagine/Modellare stati impossibili]]"
+  - "[[Programmazione/Clean Code/Pagine/Data objects e behavior objects]]"
+title: Modellazione del dominio
 ---
 
 # Modellazione del dominio
@@ -82,12 +93,12 @@ Il metodo `issue` puo proteggere internamente le condizioni valide per emettere 
 
 ## Collegamenti
 
-- [[Programmazione/Clean Code/Indice Clean Code]]
-- [[Value objects]]
-- [[Invarianti del dominio]]
-- [[Modellare stati impossibili]]
-- [[Tipi significativi]]
-- [[Data objects e behavior objects]]
+- [[Programmazione/Clean Code/Indice Clean Code|Indice Clean Code]]
+- [[Programmazione/Clean Code/Pagine/Value objects|Value objects]]
+- [[Programmazione/Clean Code/Pagine/Invarianti del dominio|Invarianti del dominio]]
+- [[Programmazione/Clean Code/Pagine/Modellare stati impossibili|Modellare stati impossibili]]
+- [[Programmazione/Clean Code/Pagine/Tipi significativi|Tipi significativi]]
+- [[Programmazione/Clean Code/Pagine/Data objects e behavior objects|Data objects e behavior objects]]
 
 ## Fonti
 

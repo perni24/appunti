@@ -3,13 +3,24 @@ date: 2026-07-09
 area: Programmazione
 topic: Clean Code
 type: technical-note
-status: "non revisionato"
+status: non revisionato
 publish: true
 difficulty: intermedio
-tags: [clean-code, parsing, input-esterni]
-aliases: [Parsing di input esterni, External input parsing]
-prerequisites: [Parsing e serializzazione, Validazione ai confini]
-related: [Pipeline dati leggibili, Validazione input API, Messaggi di errore utili]
+tags:
+  - clean-code
+  - parsing
+  - input-esterni
+aliases:
+  - Parsing di input esterni
+  - External input parsing
+prerequisites:
+  - "[[Programmazione/Clean Code/Pagine/Parsing e serializzazione]]"
+  - "[[Programmazione/Clean Code/Pagine/Validazione ai confini]]"
+related:
+  - "[[Programmazione/Clean Code/Pagine/Pipeline dati leggibili]]"
+  - "[[Programmazione/Clean Code/Pagine/Validazione input API]]"
+  - "[[Programmazione/Clean Code/Pagine/Messaggi di errore utili]]"
+title: Parsing di input esterni
 ---
 
 # Parsing di input esterni
@@ -88,12 +99,12 @@ Il chiamante non deve indovinare se il parsing e riuscito.
 
 ## Collegamenti
 
-- [[Programmazione/Clean Code/Indice Clean Code]]
-- [[Parsing e serializzazione]]
-- [[Validazione ai confini]]
-- [[Pipeline dati leggibili]]
-- [[Validazione input API]]
-- [[Messaggi di errore utili]]
+- [[Programmazione/Clean Code/Indice Clean Code|Indice Clean Code]]
+- [[Programmazione/Clean Code/Pagine/Parsing e serializzazione|Parsing e serializzazione]]
+- [[Programmazione/Clean Code/Pagine/Validazione ai confini|Validazione ai confini]]
+- [[Programmazione/Clean Code/Pagine/Pipeline dati leggibili|Pipeline dati leggibili]]
+- [[Programmazione/Clean Code/Pagine/Validazione input API|Validazione input API]]
+- [[Programmazione/Clean Code/Pagine/Messaggi di errore utili|Messaggi di errore utili]]
 
 ## Fonti
 

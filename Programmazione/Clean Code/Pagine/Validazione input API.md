@@ -3,13 +3,24 @@ date: 2026-07-09
 area: Programmazione
 topic: Clean Code
 type: technical-note
-status: "non revisionato"
+status: non revisionato
 publish: true
 difficulty: intermedio
-tags: [clean-code, api, validazione]
-aliases: [Validazione input API, API input validation]
-prerequisites: [Validazione ai confini, DTO e modelli di dominio]
-related: [Controller sottili, Messaggi di errore utili, Contratti impliciti ed espliciti]
+tags:
+  - clean-code
+  - api
+  - validazione
+aliases:
+  - Validazione input API
+  - API input validation
+prerequisites:
+  - "[[Programmazione/Clean Code/Pagine/Validazione ai confini]]"
+  - "[[Programmazione/Clean Code/Pagine/DTO e modelli di dominio]]"
+related:
+  - "[[Programmazione/Clean Code/Pagine/Controller sottili]]"
+  - "[[Programmazione/Clean Code/Pagine/Messaggi di errore utili]]"
+  - "[[Programmazione/Clean Code/Pagine/Contratti impliciti ed espliciti]]"
+title: Validazione input API
 ---
 
 # Validazione input API
@@ -93,12 +104,12 @@ La risposta di validazione e esplicita e testabile.
 
 ## Collegamenti
 
-- [[Programmazione/Clean Code/Indice Clean Code]]
-- [[Validazione ai confini]]
-- [[Controller sottili]]
+- [[Programmazione/Clean Code/Indice Clean Code|Indice Clean Code]]
+- [[Programmazione/Clean Code/Pagine/Validazione ai confini|Validazione ai confini]]
+- [[Programmazione/Clean Code/Pagine/Controller sottili|Controller sottili]]
 - [[Programmazione/Clean Code/Pagine/DTO e modelli di dominio|DTO e modelli di dominio]]
-- [[Messaggi di errore utili]]
-- [[Contratti impliciti ed espliciti]]
+- [[Programmazione/Clean Code/Pagine/Messaggi di errore utili|Messaggi di errore utili]]
+- [[Programmazione/Clean Code/Pagine/Contratti impliciti ed espliciti|Contratti impliciti ed espliciti]]
 
 ## Fonti
 

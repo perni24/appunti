@@ -3,13 +3,20 @@ date: 2026-06-04
 area: Programmazione
 topic: React
 type: operational-note
-status: "non revisionato"
+status: non revisionato
 publish: true
-difficulty: intermediate
-tags: [react, debugging, profiler, performance]
-aliases: [Profiler e Debugging, React DevTools]
+difficulty: intermedio
+tags:
+  - react
+  - debugging
+  - profiler
+  - performance
+aliases:
+  - Profiler e Debugging
+  - React DevTools
 prerequisites: []
 related: []
+title: Profiler e Debugging
 ---
 
 # Profiler e Debugging
@@ -93,8 +100,8 @@ Workflow:
 
 ## Collegamenti
 
-- [[Programmazione/React/Indice react|Indice React]]
-- [[useMemo e useCallback]]
-- [[Virtualizzazione delle liste]]
-- [[Batching]]
-- [[React Compiler]]
+- [[Programmazione/React/Indice React|Indice React]]
+- [[Programmazione/React/Pagine/useMemo e useCallback|useMemo e useCallback]]
+- [[Programmazione/React/Pagine/Virtualizzazione delle liste|Virtualizzazione delle liste]]
+- [[Programmazione/React/Pagine/Batching|Batching]]
+- [[Programmazione/React/Pagine/React Compiler|React Compiler]]

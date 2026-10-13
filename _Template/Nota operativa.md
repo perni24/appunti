@@ -1,9 +1,11 @@
 ---
-date: {{date}}
+date: "{{date}}"
+title: "{{title}}"
 area:
 topic:
 type: operational-note
 status: "non revisionato"
+publish: false
 difficulty:
 tags: []
 aliases: []
@@ -11,7 +13,7 @@ prerequisites: []
 related: []
 ---
 
-# Titolo
+# {{title}}
 
 ## Obiettivo
 

@@ -3,13 +3,25 @@ date: 2026-07-07
 area: Programmazione
 topic: GitHub
 type: operational-note
-status: "non revisionato"
+status: non revisionato
 publish: true
 difficulty: intermedio
-tags: [github, github-actions, troubleshooting, ci-cd]
-aliases: [Troubleshooting GitHub Actions, Troubleshooting workflow GitHub Actions]
-prerequisites: [GitHub Actions, Debug GitHub Actions]
-related: [Troubleshooting permissions GitHub Actions, Troubleshooting secrets GitHub Actions, Checklist GitHub Actions]
+tags:
+  - github
+  - github-actions
+  - troubleshooting
+  - ci-cd
+aliases:
+  - Troubleshooting GitHub Actions
+  - Troubleshooting workflow GitHub Actions
+prerequisites:
+  - "[[Programmazione/GitHub/Pagine/GitHub Actions]]"
+  - "[[Programmazione/GitHub/Pagine/Debug GitHub Actions]]"
+related:
+  - "[[Programmazione/GitHub/Pagine/Troubleshooting permissions GitHub Actions]]"
+  - "[[Programmazione/GitHub/Pagine/Troubleshooting secrets GitHub Actions]]"
+  - "[[Programmazione/GitHub/Pagine/Checklist GitHub Actions]]"
+title: Troubleshooting GitHub Actions
 ---
 
 # Troubleshooting GitHub Actions
@@ -103,14 +115,14 @@ jobs:
 
 ## Collegamenti
 
-- [[Programmazione/GitHub/Indice GitHub]]
-- [[GitHub Actions]]
-- [[Workflow GitHub Actions]]
-- [[Eventi e trigger GitHub Actions]]
-- [[Debug GitHub Actions]]
-- [[Checklist GitHub Actions]]
-- [[Troubleshooting permissions GitHub Actions]]
-- [[Troubleshooting secrets GitHub Actions]]
+- [[Programmazione/GitHub/Indice GitHub|Indice GitHub]]
+- [[Programmazione/GitHub/Pagine/GitHub Actions|GitHub Actions]]
+- [[Programmazione/GitHub/Pagine/Workflow GitHub Actions|Workflow GitHub Actions]]
+- [[Programmazione/GitHub/Pagine/Eventi e trigger GitHub Actions|Eventi e trigger GitHub Actions]]
+- [[Programmazione/GitHub/Pagine/Debug GitHub Actions|Debug GitHub Actions]]
+- [[Programmazione/GitHub/Pagine/Checklist GitHub Actions|Checklist GitHub Actions]]
+- [[Programmazione/GitHub/Pagine/Troubleshooting permissions GitHub Actions|Troubleshooting permissions GitHub Actions]]
+- [[Programmazione/GitHub/Pagine/Troubleshooting secrets GitHub Actions|Troubleshooting secrets GitHub Actions]]
 
 ## Fonti
 

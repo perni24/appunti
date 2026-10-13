@@ -3,7 +3,7 @@ date: 2026-05-22
 area: Programmazione
 topic: Rust
 type: technical-note
-status: "non revisionato"
+status: non revisionato
 publish: true
 difficulty: base
 tags:
@@ -11,8 +11,8 @@ tags:
   - rust
   - cargo-editions-e-compatibilita
 aliases:
-  - "Lockfile Cargo"
-  - "Cargo lockfile"
+  - Lockfile Cargo
+  - Cargo lockfile
 prerequisites:
   - "[[Programmazione/Rust/Pagine/Cargo]]"
   - "[[Programmazione/Rust/Pagine/Cargo.toml]]"
@@ -20,6 +20,7 @@ related:
   - "[[Programmazione/Rust/Pagine/Semantic Versioning]]"
   - "[[Programmazione/Rust/Pagine/Crates.io]]"
   - "[[Programmazione/Rust/Pagine/cargo audit]]"
+title: Cargo.lock
 ---
 
 # Cargo.lock
@@ -118,3 +119,8 @@ Questo limita l'aggiornamento e permette di capire chi usa quella dipendenza.
 - [[Programmazione/Rust/Pagine/Semantic Versioning|Semantic Versioning]]
 - [[Programmazione/Rust/Pagine/Crates.io|Crates.io]]
 - [[Programmazione/Rust/Pagine/cargo audit|cargo audit]]
+
+
+## Navigazione
+
+- [[Programmazione/Rust/Indice Rust|Indice Rust]]

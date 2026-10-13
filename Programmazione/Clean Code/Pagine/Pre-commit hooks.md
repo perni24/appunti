@@ -3,13 +3,24 @@ date: 2026-07-09
 area: Programmazione
 topic: Clean Code
 type: technical-note
-status: "non revisionato"
+status: non revisionato
 publish: true
 difficulty: intermedio
-tags: [clean-code, git, pre-commit]
-aliases: [Pre-commit hooks, Hook pre-commit]
-prerequisites: [Formatter, Linter]
-related: [Code quality gates, Type checking, Test unitari leggibili]
+tags:
+  - clean-code
+  - git
+  - pre-commit
+aliases:
+  - Pre-commit hooks
+  - Hook pre-commit
+prerequisites:
+  - "[[Programmazione/Clean Code/Pagine/Formatter]]"
+  - "[[Programmazione/Clean Code/Pagine/Linter]]"
+related:
+  - "[[Programmazione/Clean Code/Pagine/Code quality gates]]"
+  - "[[Programmazione/Clean Code/Pagine/Type checking]]"
+  - "[[Programmazione/Clean Code/Pagine/Test unitari leggibili]]"
+title: Pre-commit hooks
 ---
 
 # Pre-commit hooks
@@ -83,12 +94,12 @@ I controlli locali evitano errori banali prima della pull request.
 
 ## Collegamenti
 
-- [[Programmazione/Clean Code/Indice Clean Code]]
-- [[Formatter]]
-- [[Linter]]
-- [[Code quality gates]]
-- [[Type checking]]
-- [[Test unitari leggibili]]
+- [[Programmazione/Clean Code/Indice Clean Code|Indice Clean Code]]
+- [[Programmazione/Clean Code/Pagine/Formatter|Formatter]]
+- [[Programmazione/Clean Code/Pagine/Linter|Linter]]
+- [[Programmazione/Clean Code/Pagine/Code quality gates|Code quality gates]]
+- [[Programmazione/Clean Code/Pagine/Type checking|Type checking]]
+- [[Programmazione/Clean Code/Pagine/Test unitari leggibili|Test unitari leggibili]]
 
 ## Fonti
 

@@ -3,7 +3,7 @@ date: 2026-05-27
 area: Programmazione
 topic: Rust
 type: technical-note
-status: "non revisionato"
+status: non revisionato
 publish: true
 difficulty: avanzato
 tags:
@@ -11,8 +11,8 @@ tags:
   - rust
   - webassembly
 aliases:
-  - "Limiti del runtime WebAssembly"
-  - "Limiti WebAssembly"
+  - Limiti del runtime WebAssembly
+  - Limiti WebAssembly
 prerequisites:
   - "[[Programmazione/Rust/Pagine/Cross-compilation]]"
   - "[[Programmazione/Rust/Pagine/Memory layout e alignment]]"
@@ -22,6 +22,7 @@ related:
   - "[[Programmazione/Rust/Pagine/wasm-pack]]"
   - "[[Programmazione/Rust/Pagine/WASI]]"
   - "[[Programmazione/Rust/Pagine/no_std]]"
+title: Limiti del runtime WebAssembly
 ---
 
 # Limiti del runtime WebAssembly
@@ -153,11 +154,11 @@ La parte `compute_score` resta indipendente dal runtime. Le integrazioni con bro
 
 ## Collegamenti
 
-- [[Programmazione/Rust/Indice rust|Indice Rust]]
-- [[Programmazione/Rust/Pagine/wasm-bindgen]]
-- [[Programmazione/Rust/Pagine/wasm-pack]]
-- [[Programmazione/Rust/Pagine/Interop con JavaScript]]
-- [[Programmazione/Rust/Pagine/WASI]]
-- [[Programmazione/Rust/Pagine/Cross-compilation]]
-- [[Programmazione/Rust/Pagine/Memory layout e alignment]]
-- [[Programmazione/Rust/Pagine/no_std]]
+- [[Programmazione/Rust/Indice Rust|Indice Rust]]
+- [[Programmazione/Rust/Pagine/wasm-bindgen|wasm-bindgen]]
+- [[Programmazione/Rust/Pagine/wasm-pack|wasm-pack]]
+- [[Programmazione/Rust/Pagine/Interop con JavaScript|Interop con JavaScript]]
+- [[Programmazione/Rust/Pagine/WASI|WASI]]
+- [[Programmazione/Rust/Pagine/Cross-compilation|Cross-compilation]]
+- [[Programmazione/Rust/Pagine/Memory layout e alignment|Memory layout e alignment]]
+- [[Programmazione/Rust/Pagine/no_std|no_std]]

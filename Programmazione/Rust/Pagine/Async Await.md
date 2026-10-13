@@ -3,7 +3,7 @@ date: 2026-05-26
 area: Programmazione
 topic: Rust
 type: technical-note
-status: "non revisionato"
+status: non revisionato
 publish: true
 difficulty: intermedio
 tags:
@@ -11,8 +11,8 @@ tags:
   - rust
   - concorrenza-e-asincronia
 aliases:
-  - "async await Rust"
-  - "Async/Await"
+  - async await Rust
+  - Async/Await
 prerequisites:
   - "[[Programmazione/Rust/Pagine/Future Trait]]"
   - "[[Programmazione/Rust/Pagine/Ownership]]"
@@ -21,6 +21,7 @@ related:
   - "[[Programmazione/Rust/Pagine/Runtime async Tokio e async-std]]"
   - "[[Programmazione/Rust/Pagine/select join e cancellation]]"
   - "[[Programmazione/Rust/Pagine/Pin e Unpin]]"
+title: Async/Await
 ---
 
 # Async/Await
@@ -128,3 +129,8 @@ Il flusso e scritto in modo lineare, ma ogni `.await` puo sospendere la task.
 - [[Programmazione/Rust/Pagine/select join e cancellation|select join e cancellation]]
 - [[Programmazione/Rust/Pagine/Pin e Unpin|Pin e Unpin]]
 - [[Programmazione/Rust/Pagine/Async streams|Async streams]]
+
+
+## Navigazione
+
+- [[Programmazione/Rust/Indice Rust|Indice Rust]]

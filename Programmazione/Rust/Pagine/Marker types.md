@@ -3,7 +3,7 @@ date: 2026-05-26
 area: Programmazione
 topic: Rust
 type: technical-note
-status: "non revisionato"
+status: non revisionato
 publish: true
 difficulty: intermedio
 tags:
@@ -11,8 +11,8 @@ tags:
   - rust
   - compile-time-e-type-level-programming
 aliases:
-  - "Marker types"
-  - "Tipi marker"
+  - Marker types
+  - Tipi marker
 prerequisites:
   - "[[Programmazione/Rust/Pagine/Zero-sized types]]"
   - "[[Programmazione/Rust/Pagine/Traits]]"
@@ -21,6 +21,7 @@ related:
   - "[[Programmazione/Rust/Pagine/Typestate pattern]]"
   - "[[Programmazione/Rust/Pagine/Newtype pattern]]"
   - "[[Programmazione/Rust/Pagine/Send e Sync Traits]]"
+title: Marker types
 ---
 
 # Marker types
@@ -132,3 +133,8 @@ Solo `Email<Validated>` dovrebbe essere accettata dalle API che richiedono email
 - [[Programmazione/Rust/Pagine/Typestate pattern|Typestate pattern]]
 - [[Programmazione/Rust/Pagine/Newtype pattern|Newtype pattern]]
 - [[Programmazione/Rust/Pagine/Send e Sync Traits|Send e Sync Traits]]
+
+
+## Navigazione
+
+- [[Programmazione/Rust/Indice Rust|Indice Rust]]

@@ -3,7 +3,7 @@ date: 2026-05-26
 area: Programmazione
 topic: Rust
 type: technical-note
-status: "non revisionato"
+status: non revisionato
 publish: true
 difficulty: avanzato
 tags:
@@ -11,8 +11,8 @@ tags:
   - rust
   - unsafe-rust-in-profondita
 aliases:
-  - "Miri"
-  - "cargo miri"
+  - Miri
+  - cargo miri
 prerequisites:
   - "[[Programmazione/Rust/Pagine/Undefined behavior]]"
   - "[[Programmazione/Rust/Pagine/Unsafe Rust]]"
@@ -20,6 +20,7 @@ related:
   - "[[Programmazione/Rust/Pagine/Raw pointers]]"
   - "[[Programmazione/Rust/Pagine/Aliasing rules]]"
   - "[[Programmazione/Rust/Pagine/Unsafe abstractions sicure]]"
+title: Miri
 ---
 
 # Miri
@@ -118,3 +119,8 @@ Un test come questo e semplice, ma in codice unsafe reale Miri puo individuare p
 - [[Programmazione/Rust/Pagine/Aliasing rules|Aliasing rules]]
 - [[Programmazione/Rust/Pagine/Unsafe abstractions sicure|Unsafe abstractions sicure]]
 - [[Programmazione/Rust/Pagine/Fuzzing|Fuzzing]]
+
+
+## Navigazione
+
+- [[Programmazione/Rust/Indice Rust|Indice Rust]]

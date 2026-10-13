@@ -3,13 +3,23 @@ date: 2026-07-09
 area: Programmazione
 topic: Clean Code
 type: theory-note
-status: "non revisionato"
+status: non revisionato
 publish: true
 difficulty: intermedio
-tags: [clean-code, dominio, invarianti]
-aliases: [Invarianti del dominio, Domain invariants]
-prerequisites: [Clean Code]
-related: [Value objects, Modellare stati impossibili, Oggetti con responsabilita chiara]
+tags:
+  - clean-code
+  - dominio
+  - invarianti
+aliases:
+  - Invarianti del dominio
+  - Domain invariants
+prerequisites:
+  - "[[Programmazione/Clean Code/Pagine/Clean Code]]"
+related:
+  - "[[Programmazione/Clean Code/Pagine/Value objects]]"
+  - "[[Programmazione/Clean Code/Pagine/Modellare stati impossibili]]"
+  - "[[Programmazione/Clean Code/Pagine/Oggetti con responsabilita chiara]]"
+title: Invarianti del dominio
 ---
 
 # Invarianti del dominio
@@ -94,11 +104,11 @@ La regola viene applicata appena il valore nasce.
 
 ## Collegamenti
 
-- [[Programmazione/Clean Code/Indice Clean Code]]
-- [[Value objects]]
-- [[Modellare stati impossibili]]
-- [[Oggetti con responsabilita chiara]]
-- [[Manutenibilita del codice]]
+- [[Programmazione/Clean Code/Indice Clean Code|Indice Clean Code]]
+- [[Programmazione/Clean Code/Pagine/Value objects|Value objects]]
+- [[Programmazione/Clean Code/Pagine/Modellare stati impossibili|Modellare stati impossibili]]
+- [[Programmazione/Clean Code/Pagine/Oggetti con responsabilita chiara|Oggetti con responsabilita chiara]]
+- [[Programmazione/Clean Code/Pagine/Manutenibilita del codice|Manutenibilita del codice]]
 
 ## Fonti
 

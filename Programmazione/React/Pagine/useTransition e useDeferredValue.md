@@ -3,13 +3,19 @@ date: 2026-06-04
 area: Programmazione
 topic: React
 type: technical-note
-status: "non revisionato"
+status: non revisionato
 publish: true
-difficulty: intermediate
-tags: [react, hooks, concurrent-rendering]
-aliases: [useTransition, useDeferredValue]
+difficulty: intermedio
+tags:
+  - react
+  - hooks
+  - concurrent-rendering
+aliases:
+  - useTransition
+  - useDeferredValue
 prerequisites: []
 related: []
+title: useTransition e useDeferredValue
 ---
 
 # useTransition e useDeferredValue
@@ -99,8 +105,8 @@ L'input resta reattivo mentre i risultati possono aggiornarsi piu lentamente.
 
 ## Collegamenti
 
-- [[Programmazione/React/Indice react|Indice React]]
-- [[Fiber Architecture e Concurrent Mode]]
-- [[Virtualizzazione delle liste]]
-- [[useMemo e useCallback]]
-- [[Profiler e Debugging]]
+- [[Programmazione/React/Indice React|Indice React]]
+- [[Programmazione/React/Pagine/Fiber Architecture e Concurrent Mode|Fiber Architecture e Concurrent Mode]]
+- [[Programmazione/React/Pagine/Virtualizzazione delle liste|Virtualizzazione delle liste]]
+- [[Programmazione/React/Pagine/useMemo e useCallback|useMemo e useCallback]]
+- [[Programmazione/React/Pagine/Profiler e Debugging|Profiler e Debugging]]

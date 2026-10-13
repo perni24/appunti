@@ -3,7 +3,7 @@ date: 2026-05-22
 area: Programmazione
 topic: Rust
 type: technical-note
-status: "non revisionato"
+status: non revisionato
 publish: true
 difficulty: intermedio
 tags:
@@ -11,8 +11,8 @@ tags:
   - rust
   - cargo-editions-e-compatibilita
 aliases:
-  - "workspace.dependencies"
-  - "Dipendenze workspace"
+  - workspace.dependencies
+  - Dipendenze workspace
 prerequisites:
   - "[[Programmazione/Rust/Pagine/Workspace]]"
   - "[[Programmazione/Rust/Pagine/Cargo.toml]]"
@@ -21,6 +21,7 @@ related:
   - "[[Programmazione/Rust/Pagine/Cargo.lock]]"
   - "[[Programmazione/Rust/Pagine/Cargo features]]"
   - "[[Programmazione/Rust/Pagine/Build profiles]]"
+title: Workspace dependencies
 ---
 
 # Workspace dependencies
@@ -140,3 +141,8 @@ Questo mantiene le versioni comuni in un solo punto.
 - [[Programmazione/Rust/Pagine/Cargo features|Cargo features]]
 - [[Programmazione/Rust/Pagine/Cargo.lock|Cargo.lock]]
 - [[Programmazione/Rust/Pagine/Build profiles|Build profiles]]
+
+
+## Navigazione
+
+- [[Programmazione/Rust/Indice Rust|Indice Rust]]

@@ -3,13 +3,25 @@ date: 2026-07-07
 area: Programmazione
 topic: GitHub
 type: technical-note
-status: "non revisionato"
+status: non revisionato
 publish: true
 difficulty: intermedio
-tags: [github, repository, manutenzione, hygiene]
-aliases: [Repository hygiene, Igiene repository GitHub]
-prerequisites: [Repository GitHub, README LICENSE e gitignore]
-related: [Governance repository GitHub, Template organizzativi GitHub, Archiviazione repository GitHub]
+tags:
+  - github
+  - repository
+  - manutenzione
+  - hygiene
+aliases:
+  - Repository hygiene
+  - Igiene repository GitHub
+prerequisites:
+  - "[[Programmazione/GitHub/Pagine/Repository GitHub]]"
+  - "[[Programmazione/GitHub/Pagine/README LICENSE e gitignore]]"
+related:
+  - "[[Programmazione/GitHub/Pagine/Governance repository GitHub]]"
+  - "[[Programmazione/GitHub/Pagine/Template organizzativi GitHub]]"
+  - "[[Programmazione/GitHub/Pagine/Archiviazione repository GitHub]]"
+title: Repository hygiene
 ---
 
 # Repository hygiene
@@ -102,15 +114,15 @@ Routine mensile:
 
 ## Collegamenti
 
-- [[Programmazione/GitHub/Indice GitHub]]
-- [[README LICENSE e gitignore]]
-- [[Issues GitHub]]
-- [[Labels milestones e assignees]]
-- [[Dependabot]]
-- [[Secret scanning]]
-- [[Code scanning]]
-- [[Governance repository GitHub]]
-- [[Archiviazione repository GitHub]]
+- [[Programmazione/GitHub/Indice GitHub|Indice GitHub]]
+- [[Programmazione/GitHub/Pagine/README LICENSE e gitignore|README LICENSE e gitignore]]
+- [[Programmazione/GitHub/Pagine/Issues GitHub|Issues GitHub]]
+- [[Programmazione/GitHub/Pagine/Labels milestones e assignees|Labels milestones e assignees]]
+- [[Programmazione/GitHub/Pagine/Dependabot|Dependabot]]
+- [[Programmazione/GitHub/Pagine/Secret scanning|Secret scanning]]
+- [[Programmazione/GitHub/Pagine/Code scanning|Code scanning]]
+- [[Programmazione/GitHub/Pagine/Governance repository GitHub|Governance repository GitHub]]
+- [[Programmazione/GitHub/Pagine/Archiviazione repository GitHub|Archiviazione repository GitHub]]
 
 ## Fonti
 

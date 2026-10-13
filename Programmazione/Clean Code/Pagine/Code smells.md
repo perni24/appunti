@@ -3,13 +3,23 @@ date: 2026-07-09
 area: Programmazione
 topic: Clean Code
 type: theory-note
-status: "non revisionato"
+status: non revisionato
 publish: true
 difficulty: intermedio
-tags: [clean-code, code-smell, refactoring]
-aliases: [Code smells, Code smell]
-prerequisites: [Clean Code]
-related: [Debito tecnico, Refactoring sicuro, Coesione e accoppiamento]
+tags:
+  - clean-code
+  - code-smell
+  - refactoring
+aliases:
+  - Code smells
+  - Code smell
+prerequisites:
+  - "[[Programmazione/Clean Code/Pagine/Clean Code]]"
+related:
+  - "[[Programmazione/Clean Code/Pagine/Debito tecnico]]"
+  - "[[Programmazione/Clean Code/Pagine/Refactoring sicuro]]"
+  - "[[Programmazione/Clean Code/Pagine/Coesione e accoppiamento]]"
+title: Code smells
 ---
 
 # Code smells
@@ -90,12 +100,12 @@ Concentrare le regole di prezzo in un modulo o policy dedicata.
 
 ## Collegamenti
 
-- [[Programmazione/Clean Code/Indice Clean Code]]
-- [[Debito tecnico]]
-- [[Coesione e accoppiamento]]
-- [[Primitive obsession]]
-- [[Funzioni piccole]]
-- [[Moduli piccoli]]
+- [[Programmazione/Clean Code/Indice Clean Code|Indice Clean Code]]
+- [[Programmazione/Clean Code/Pagine/Debito tecnico|Debito tecnico]]
+- [[Programmazione/Clean Code/Pagine/Coesione e accoppiamento|Coesione e accoppiamento]]
+- [[Programmazione/Clean Code/Pagine/Primitive obsession|Primitive obsession]]
+- [[Programmazione/Clean Code/Pagine/Funzioni piccole|Funzioni piccole]]
+- [[Programmazione/Clean Code/Pagine/Moduli piccoli|Moduli piccoli]]
 
 ## Fonti
 

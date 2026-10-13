@@ -3,13 +3,25 @@ date: 2026-07-07
 area: Programmazione
 topic: GitHub
 type: technical-note
-status: "non revisionato"
+status: non revisionato
 publish: true
 difficulty: intermedio
-tags: [github, github-actions, ci, test, lint, build]
-aliases: [Workflow per test lint e build, Test lint build GitHub Actions]
-prerequisites: [Pipeline CI GitHub Actions]
-related: [Required status checks, Cache GitHub Actions]
+tags:
+  - github
+  - github-actions
+  - ci
+  - test
+  - lint
+  - build
+aliases:
+  - Workflow per test lint e build
+  - Test lint build GitHub Actions
+prerequisites:
+  - "[[Programmazione/GitHub/Pagine/Pipeline CI GitHub Actions]]"
+related:
+  - "[[Programmazione/GitHub/Pagine/Required status checks]]"
+  - "[[Programmazione/GitHub/Pagine/Cache GitHub Actions]]"
+title: Workflow per test, lint e build
 ---
 
 # Workflow per test, lint e build
@@ -111,11 +123,11 @@ Il typecheck intercetta errori che test e lint potrebbero non vedere.
 
 ## Collegamenti
 
-- [[Programmazione/GitHub/Indice GitHub]]
-- [[Pipeline CI GitHub Actions]]
-- [[Cache GitHub Actions]]
-- [[Artifacts GitHub Actions]]
-- [[Required status checks]]
+- [[Programmazione/GitHub/Indice GitHub|Indice GitHub]]
+- [[Programmazione/GitHub/Pagine/Pipeline CI GitHub Actions|Pipeline CI GitHub Actions]]
+- [[Programmazione/GitHub/Pagine/Cache GitHub Actions|Cache GitHub Actions]]
+- [[Programmazione/GitHub/Pagine/Artifacts GitHub Actions|Artifacts GitHub Actions]]
+- [[Programmazione/GitHub/Pagine/Required status checks|Required status checks]]
 
 ## Fonti
 

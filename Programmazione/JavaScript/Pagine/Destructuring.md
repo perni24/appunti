@@ -3,13 +3,25 @@ date: 2026-06-02
 area: Programmazione
 topic: JavaScript
 type: technical-note
-status: "non revisionato"
+status: non revisionato
 publish: true
-difficulty: beginner
-tags: [javascript, es6, destructuring, objects, arrays]
-aliases: [Destrutturazione, Destructuring assignment]
-prerequisites: [Array Methods, Oggetti Avanzati]
-related: [Spread & Rest Operators, Funzioni]
+difficulty: base
+tags:
+  - javascript
+  - es6
+  - destructuring
+  - objects
+  - arrays
+aliases:
+  - Destrutturazione
+  - Destructuring assignment
+prerequisites:
+  - "[[Programmazione/JavaScript/Pagine/Array Methods]]"
+  - "[[Programmazione/JavaScript/Pagine/Oggetti Avanzati]]"
+related:
+  - "[[Programmazione/JavaScript/Pagine/Spread & Rest Operators]]"
+  - "[[Programmazione/JavaScript/Pagine/Funzioni]]"
+title: Destructuring
 ---
 
 # Destructuring
@@ -40,6 +52,13 @@ Evitalo quando la struttura e molto annidata o incerta: il codice puo diventare 
 
 ### Destructuring degli array
 L'estrazione dagli array avviene per posizione.
+
+La forma `[a, b]` usa in realta il protocollo iterabile: funziona anche con un `Set`, non con un semplice oggetto dotato soltanto di chiavi numeriche e `length`.
+
+```js
+const [firstColor, secondColor] = new Set(["red", "green"]);
+console.log(firstColor, secondColor); // "red", "green"
+```
 
 ```js
 const colors = ["red", "green", "blue"];
@@ -102,6 +121,8 @@ console.log(role);
 
 L'ordine non conta.
 
+La lettura puo trovare anche proprieta ereditate ed eseguire getter. Non e una validazione dei dati. Destrutturare `null` o `undefined` genera `TypeError`, anche con un pattern vuoto.
+
 ---
 ### Rinomina
 Puoi estrarre una proprieta usando un nome diverso.
@@ -115,6 +136,19 @@ const { name: userName } = user;
 
 console.log(userName); // "Luca"
 ```
+
+Viene dichiarata `userName`, non una variabile `name`.
+
+### Assegnare a variabili esistenti
+
+```js
+let name;
+const user = { name: "Ada" };
+({ name } = user);
+console.log(name); // "Ada"
+```
+
+Le parentesi impediscono che le graffe iniziali siano interpretate come un blocco. Per riassegnare serve una variabile modificabile, non `const`.
 
 ---
 ### Default negli oggetti
@@ -148,7 +182,7 @@ const {
 console.log(name);
 ```
 
-Attenzione: se una proprieta intermedia e `undefined`, il destructuring puo generare errore.
+Attenzione: se una proprieta intermedia e `undefined` o `null`, il destructuring genera errore. Un default `= {}` coprirebbe soltanto `undefined`, non `null`.
 
 ---
 ### Parametri di funzione
@@ -185,11 +219,17 @@ const [head, ...tail] = values;
 const [name = "Guest"] = values;
 ```
 
-Oggetti:
+Oggetti: queste sono forme alternative, da non incollare nello stesso scope perche ridichiarerebbero `role`.
 
 ```js
 const { name, role } = user;
+```
+
+```js
 const { name: userName } = user;
+```
+
+```js
 const { role = "reader" } = user;
 ```
 
@@ -201,7 +241,7 @@ function createUser({ name, role = "reader" } = {}) {
 }
 ```
 
-La forma `= {}` evita errore quando la funzione viene chiamata senza argomento.
+La forma `= {}` evita errore quando la funzione viene chiamata senza argomento, ma non con `null`. Nei frammenti di sintassi, `values` e `user` rappresentano dati gia disponibili.
 
 ## Esempio pratico
 
@@ -209,20 +249,24 @@ Estrarre solo i campi necessari da una risposta:
 
 ```js
 function renderUserCard(response) {
-  const {
-    data: {
-      user: {
-        name,
-        role = "reader",
-      },
-    },
-  } = response;
+  const user = response?.data?.user;
+  if (user === null || user === undefined) {
+    return "Utente non disponibile";
+  }
+  if (
+    typeof user !== "object" || Array.isArray(user) ||
+    typeof user.name !== "string" ||
+    (user.role !== undefined && typeof user.role !== "string")
+  ) {
+    throw new TypeError("Dati utente non validi");
+  }
 
+  const { name, role = "reader" } = user;
   return `${name} - ${role}`;
 }
 ```
 
-Se `response.data` o `response.data.user` possono mancare, meglio rendere il codice piu difensivo invece di usare destructuring annidato.
+La funzione restituisce una label, non HTML. Distingue un utente assente da campi malformati: il controllo precede il destructuring, che da solo non garantisce i tipi. Anche `role: null` viene rifiutato, non sostituito silenziosamente dal default.
 
 ## Varianti
 
@@ -255,8 +299,17 @@ Se `response.data` o `response.data.user` possono mancare, meglio rendere il cod
 
 ## Collegamenti
 
-- [[Spread & Rest Operators]]
+- [[Programmazione/JavaScript/Pagine/Spread & Rest Operators|Spread & Rest Operators]]
 - [[Programmazione/JavaScript/Pagine/Funzioni|Funzioni]]
-- [[Array Methods]]
-- [[Oggetti Avanzati]]
-- [[Default Parameters]]
+- [[Programmazione/JavaScript/Pagine/Array Methods|Array Methods]]
+- [[Programmazione/JavaScript/Pagine/Oggetti Avanzati|Oggetti Avanzati]]
+- [[Programmazione/JavaScript/Pagine/Default Parameters|Default Parameters]]
+
+
+## Fonti
+
+- [MDN - Destructuring](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Operators/Destructuring)
+
+## Navigazione
+
+- [[Programmazione/JavaScript/Indice JavaScript|Indice JavaScript]]

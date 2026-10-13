@@ -3,7 +3,7 @@ date: 2026-05-27
 area: Programmazione
 topic: Rust
 type: technical-note
-status: "non revisionato"
+status: non revisionato
 publish: true
 difficulty: intermedio
 tags:
@@ -11,7 +11,7 @@ tags:
   - rust
   - embedded
 aliases:
-  - "probe-rs"
+  - probe-rs
 prerequisites:
   - "[[Programmazione/Rust/Pagine/Cross-compilation]]"
   - "[[Programmazione/Rust/Pagine/cortex-m]]"
@@ -21,6 +21,7 @@ related:
   - "[[Programmazione/Rust/Pagine/no_std]]"
   - "[[Programmazione/Rust/Pagine/RTIC]]"
   - "[[Programmazione/Rust/Pagine/Embassy]]"
+title: probe-rs
 ---
 
 # probe-rs
@@ -132,11 +133,11 @@ compila, flasha e avvia il firmware usando il runner configurato.
 
 ## Collegamenti
 
-- [[Programmazione/Rust/Indice rust|Indice Rust]]
-- [[Programmazione/Rust/Pagine/Embedded Rust]]
-- [[Programmazione/Rust/Pagine/cortex-m]]
-- [[Programmazione/Rust/Pagine/defmt]]
-- [[Programmazione/Rust/Pagine/Cross-compilation]]
-- [[Programmazione/Rust/Pagine/no_std]]
-- [[Programmazione/Rust/Pagine/RTIC]]
-- [[Programmazione/Rust/Pagine/Embassy]]
+- [[Programmazione/Rust/Indice Rust|Indice Rust]]
+- [[Programmazione/Rust/Pagine/Embedded Rust|Embedded Rust]]
+- [[Programmazione/Rust/Pagine/cortex-m|cortex-m]]
+- [[Programmazione/Rust/Pagine/defmt|defmt]]
+- [[Programmazione/Rust/Pagine/Cross-compilation|Cross-compilation]]
+- [[Programmazione/Rust/Pagine/no_std|no_std]]
+- [[Programmazione/Rust/Pagine/RTIC|RTIC]]
+- [[Programmazione/Rust/Pagine/Embassy|Embassy]]

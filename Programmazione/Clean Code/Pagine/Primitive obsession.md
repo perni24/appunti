@@ -3,13 +3,23 @@ date: 2026-07-09
 area: Programmazione
 topic: Clean Code
 type: theory-note
-status: "non revisionato"
+status: non revisionato
 publish: true
 difficulty: intermedio
-tags: [clean-code, code-smell, modellazione]
-aliases: [Primitive obsession, Ossessione per le primitive]
-prerequisites: [Clean Code]
-related: [Value objects, Tipi significativi, Invarianti del dominio]
+tags:
+  - clean-code
+  - code-smell
+  - modellazione
+aliases:
+  - Primitive obsession
+  - Ossessione per le primitive
+prerequisites:
+  - "[[Programmazione/Clean Code/Pagine/Clean Code]]"
+related:
+  - "[[Programmazione/Clean Code/Pagine/Value objects]]"
+  - "[[Programmazione/Clean Code/Pagine/Tipi significativi]]"
+  - "[[Programmazione/Clean Code/Pagine/Invarianti del dominio]]"
+title: Primitive obsession
 ---
 
 # Primitive obsession
@@ -96,11 +106,11 @@ Il secondo codice riduce ambiguita tra importo e valuta.
 
 ## Collegamenti
 
-- [[Programmazione/Clean Code/Indice Clean Code]]
-- [[Value objects]]
-- [[Invarianti del dominio]]
-- [[Modellare stati impossibili]]
-- [[Codice esplicito vs codice implicito]]
+- [[Programmazione/Clean Code/Indice Clean Code|Indice Clean Code]]
+- [[Programmazione/Clean Code/Pagine/Value objects|Value objects]]
+- [[Programmazione/Clean Code/Pagine/Invarianti del dominio|Invarianti del dominio]]
+- [[Programmazione/Clean Code/Pagine/Modellare stati impossibili|Modellare stati impossibili]]
+- [[Programmazione/Clean Code/Pagine/Codice esplicito vs codice implicito|Codice esplicito vs codice implicito]]
 
 ## Fonti
 

@@ -3,7 +3,7 @@ date: 2026-05-28
 area: Programmazione
 topic: Rust
 type: technical-note
-status: "non revisionato"
+status: non revisionato
 publish: true
 difficulty: intermedio
 tags:
@@ -11,8 +11,8 @@ tags:
   - rust
   - testing-qualita-e-sicurezza
 aliases:
-  - "Mocking"
-  - "Mock Rust"
+  - Mocking
+  - Mock Rust
 prerequisites:
   - "[[Programmazione/Rust/Pagine/Traits]]"
   - "[[Programmazione/Rust/Pagine/Trait objects e dyn Trait]]"
@@ -20,6 +20,7 @@ related:
   - "[[Programmazione/Rust/Pagine/Unit test]]"
   - "[[Programmazione/Rust/Pagine/Integration test]]"
   - "[[Programmazione/Rust/Pagine/Trait objects e dyn Trait]]"
+title: Mocking
 ---
 
 # Mocking
@@ -149,9 +150,9 @@ Il test non dipende dall'orologio reale, quindi e deterministico.
 
 ## Collegamenti
 
-- [[Programmazione/Rust/Indice rust|Indice Rust]]
-- [[Programmazione/Rust/Pagine/Traits]]
-- [[Programmazione/Rust/Pagine/Trait objects e dyn Trait]]
-- [[Programmazione/Rust/Pagine/Unit test]]
-- [[Programmazione/Rust/Pagine/Integration test]]
-- [[Programmazione/Rust/Pagine/Error handling idiomatico]]
+- [[Programmazione/Rust/Indice Rust|Indice Rust]]
+- [[Programmazione/Rust/Pagine/Traits|Traits]]
+- [[Programmazione/Rust/Pagine/Trait objects e dyn Trait|Trait objects e dyn Trait]]
+- [[Programmazione/Rust/Pagine/Unit test|Unit test]]
+- [[Programmazione/Rust/Pagine/Integration test|Integration test]]
+- [[Programmazione/Rust/Pagine/Error handling idiomatico|Error handling idiomatico]]

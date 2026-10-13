@@ -3,7 +3,7 @@ date: 2026-05-28
 area: Programmazione
 topic: Rust
 type: technical-note
-status: "non revisionato"
+status: non revisionato
 publish: true
 difficulty: avanzato
 tags:
@@ -11,8 +11,8 @@ tags:
   - rust
   - api-design-idiomatico
 aliases:
-  - "Public API design"
-  - "API pubbliche Rust"
+  - Public API design
+  - API pubbliche Rust
 prerequisites:
   - "[[Programmazione/Rust/Pagine/Visibilita pub use e mod]]"
   - "[[Programmazione/Rust/Pagine/Traits]]"
@@ -22,6 +22,7 @@ related:
   - "[[Programmazione/Rust/Pagine/Builder pattern]]"
   - "[[Programmazione/Rust/Pagine/Newtype pattern]]"
   - "[[Programmazione/Rust/Pagine/Documentazione delle crate]]"
+title: Public API design
 ---
 
 # Public API design
@@ -176,12 +177,12 @@ impl UserId {
 
 ## Collegamenti
 
-- [[Programmazione/Rust/Indice rust|Indice Rust]]
-- [[Programmazione/Rust/Pagine/Error types pubblici]]
-- [[Programmazione/Rust/Pagine/Builder pattern]]
-- [[Programmazione/Rust/Pagine/Newtype pattern]]
-- [[Programmazione/Rust/Pagine/Extension traits]]
-- [[Programmazione/Rust/Pagine/Feature flags ben progettate]]
-- [[Programmazione/Rust/Pagine/Compatibility e breaking changes]]
-- [[Programmazione/Rust/Pagine/Documentazione delle crate]]
-- [[Programmazione/Rust/Pagine/Visibilita pub use e mod]]
+- [[Programmazione/Rust/Indice Rust|Indice Rust]]
+- [[Programmazione/Rust/Pagine/Error types pubblici|Error types pubblici]]
+- [[Programmazione/Rust/Pagine/Builder pattern|Builder pattern]]
+- [[Programmazione/Rust/Pagine/Newtype pattern|Newtype pattern]]
+- [[Programmazione/Rust/Pagine/Extension traits|Extension traits]]
+- [[Programmazione/Rust/Pagine/Feature flags ben progettate|Feature flags ben progettate]]
+- [[Programmazione/Rust/Pagine/Compatibility e breaking changes|Compatibility e breaking changes]]
+- [[Programmazione/Rust/Pagine/Documentazione delle crate|Documentazione delle crate]]
+- [[Programmazione/Rust/Pagine/Visibilita pub use e mod|Visibilita pub use e mod]]

@@ -3,7 +3,7 @@ date: 2026-05-26
 area: Programmazione
 topic: Rust
 type: technical-note
-status: "non revisionato"
+status: non revisionato
 publish: true
 difficulty: intermedio
 tags:
@@ -11,8 +11,8 @@ tags:
   - rust
   - macros
 aliases:
-  - "macro_rules!"
-  - "Declarative macros"
+  - macro_rules!
+  - Declarative macros
 prerequisites:
   - "[[Programmazione/Rust/Pagine/Sintassi di base]]"
   - "[[Programmazione/Rust/Pagine/Pattern Matching]]"
@@ -21,6 +21,7 @@ related:
   - "[[Programmazione/Rust/Pagine/Procedural macros]]"
   - "[[Programmazione/Rust/Pagine/Function-like macros]]"
   - "[[Programmazione/Rust/Pagine/rustfmt]]"
+title: Macro dichiarative
 ---
 
 # Macro dichiarative
@@ -148,3 +149,8 @@ La macro genera un early return, cosa che una funzione non potrebbe fare nel chi
 - [[Programmazione/Rust/Pagine/Function-like macros|Function-like macros]]
 - [[Programmazione/Rust/Pagine/rustfmt|rustfmt]]
 - [[Programmazione/Rust/Pagine/Zero-cost abstractions|Zero-cost abstractions]]
+
+
+## Navigazione
+
+- [[Programmazione/Rust/Indice Rust|Indice Rust]]

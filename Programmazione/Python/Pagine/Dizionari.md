@@ -3,13 +3,17 @@ date: 2026-06-03
 area: Programmazione
 topic: Python
 type: technical-note
-status: "non revisionato"
+status: non revisionato
 publish: true
-difficulty: intermediate
-tags: [python, programming]
-aliases: [Dizionari]
+difficulty: intermedio
+tags:
+  - python
+  - programming
+aliases:
+  - Dizionari
 prerequisites: []
 related: []
+title: Dizionari in Python
 ---
 
 # Dizionari in Python
@@ -91,3 +95,8 @@ selected = users_by_id.get(2)
 - [[Programmazione/Python/Pagine/Set|Set]]
 - [[Programmazione/Python/Pagine/Dataclasses|Dataclasses]]
 - [[Programmazione/Python/Pagine/Comprehensions|Comprehensions]]
+
+
+## Navigazione
+
+- [[Programmazione/Python/Indice Python|Indice Python]]

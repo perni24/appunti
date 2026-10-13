@@ -1,15 +1,29 @@
-﻿---
+---
 date: 2026-06-02
 area: Programmazione
 topic: JavaScript
 type: technical-note
-status: "non revisionato"
+status: non revisionato
 publish: true
-difficulty: beginner
-tags: [javascript, browser, storage, localstorage, sessionstorage, indexeddb]
-aliases: [Storage Browser, Web Storage]
-prerequisites: [JSON, BOM]
-related: [CORS, Sicurezza, Service Workers e PWA]
+difficulty: base
+tags:
+  - javascript
+  - browser
+  - storage
+  - localstorage
+  - sessionstorage
+  - indexeddb
+aliases:
+  - Storage Browser
+  - Web Storage
+prerequisites:
+  - "[[Programmazione/JavaScript/Pagine/JSON]]"
+  - "[[Programmazione/JavaScript/Pagine/BOM]]"
+related:
+  - "[[Programmazione/JavaScript/Pagine/CORS]]"
+  - "[[Programmazione/JavaScript/Pagine/Sicurezza]]"
+  - "[[Programmazione/JavaScript/Pagine/Service Workers e PWA]]"
+title: Browser Storage
 ---
 
 # Browser Storage
@@ -47,7 +61,9 @@ localStorage.setItem("theme", "dark");
 const theme = localStorage.getItem("theme");
 ```
 
-I dati restano anche dopo la chiusura del browser, finche non vengono rimossi.
+Non ha una scadenza automatica, ma non e un archivio garantito: utente, impostazioni di privacy o browser possono eliminare i dati. In navigazione privata la durata e limitata alla sessione privata.
+
+Nel normale contesto di prima parte lo spazio e separato per origine (schema, host e porta), non per percorso: `/app-a` e `/app-b` sulla stessa origine condividono lo storage. HTTP e HTTPS, invece, sono origini diverse. Per gli iframe di terze parti valgono ulteriori politiche di partizionamento o blocco del browser.
 
 Limiti:
 
@@ -56,15 +72,19 @@ Limiti:
 - accessibile da JavaScript della stessa origine;
 - non adatto a dati sensibili.
 
+`getItem()` restituisce `null` quando una chiave manca. Per oggetti usa JSON, controllando anche lo schema dopo `JSON.parse()`: dati modificati, vecchi o corrotti non diventano attendibili perche provengono dal browser.
+
+Anche accedere a `window.localStorage` puo generare `SecurityError`; una scrittura puo fallire per quota. Per test affidabili usa HTTP/HTTPS, non basarti sul comportamento degli URL `file:`.
+
 ---
 ### sessionStorage
-`sessionStorage` ha API simile, ma dura solo per la sessione della tab.
+`sessionStorage` ha API simile, ma e separato sia per origine sia per sessione della tab. Sopravvive ai normali reload; termina con la sessione della tab, non con ogni cambio di pagina.
 
 ```js
 sessionStorage.setItem("draft", "testo temporaneo");
 ```
 
-E utile per dati temporanei legati alla pagina corrente.
+E utile per bozze temporanee della tab. Se una nuova finestra ha un `opener`, puo ricevere una copia iniziale del suo `sessionStorage`: le modifiche successive restano separate. Non usare questa API come confine di sicurezza.
 
 ---
 ### Cookie
@@ -74,14 +94,16 @@ Sono utili per sessioni e autenticazione, ma vanno configurati correttamente.
 
 Attributi importanti:
 
-- `HttpOnly`;
-- `Secure`;
-- `SameSite`;
-- `Expires` o `Max-Age`;
-- `Path`;
-- `Domain`.
+- `HttpOnly`: impedisce la lettura da JavaScript, ma il browser continua a inviare il cookie; va impostato dal server con `Set-Cookie`.
+- `Secure`: limita l'invio a connessioni sicure, con le eccezioni di sviluppo previste dal browser.
+- `SameSite`: regola l'invio cross-site; `None` richiede `Secure`.
+- `Expires` o `Max-Age`: definiscono la durata; `Max-Age` prevale se sono presenti entrambi.
+- `Path`: limita i percorsi di invio, non isola i dati dagli script della stessa origine.
+- `Domain`: estende l'ambito al dominio e ai sottodomini consentiti; ometterlo crea un cookie host-only.
 
 Per token sensibili, preferire cookie `HttpOnly` quando l'architettura lo permette.
+
+`HttpOnly` non impedisce a codice XSS di agire tramite il browser autenticato. Le richieste con cookie richiedono anche una strategia CSRF adeguata; `SameSite` non sostituisce ogni controllo applicativo. CORS non e un sistema di autenticazione.
 
 ---
 ### IndexedDB
@@ -98,39 +120,83 @@ Per dati semplici, `localStorage` puo bastare. Per dati grandi o complessi, Inde
 
 ---
 
-## API / Sintassi
-
 ### Cache API
 La Cache API salva richieste e risposte HTTP.
 
 E usata spesso con Service Worker.
 
 ```js
-const cache = await caches.open("assets-v1");
-await cache.add("/app.css");
+async function cacheStyles() {
+  const cache = await caches.open("assets-v1");
+  await cache.add("./app.css");
+}
+
+cacheStyles().catch(() => console.error("Cache degli stili non disponibile"));
 ```
 
-Non e un database generico: serve principalmente per risorse e response.
+Richiede un contesto sicuro (HTTPS o origini locali considerate affidabili) e qui effettua una richiesta a un vero `app.css`. Non e un database generico: conserva coppie request/response. Non applica automaticamente la scadenza degli header HTTP della risposta; versionamento, aggiornamenti e rimozione delle cache vecchie spettano all'app.
+
+### Quote e sincronizzazione
+
+Le quote e le politiche di rimozione dipendono da API, browser e contesto. Non promettere spazio illimitato o persistenza assoluta, nemmeno con IndexedDB o Cache API. I dati essenziali richiedono backup o sincronizzazione, non soltanto storage client.
+
+L'evento `storage` informa gli **altri** documenti che condividono lo spazio: non viene emesso nella finestra che ha scritto. Con `localStorage` puo aggiornare altre tab della stessa origine; `sessionStorage` non sincronizza tab indipendenti. Nel documento che scrive aggiorna la UI esplicitamente.
+
+## API / Sintassi
+
+Salvare una stringa (puo generare un'eccezione):
+
+```js
+localStorage.setItem("app:theme", "dark");
+```
+
+Leggerla:
+
+```js
+const savedTheme = localStorage.getItem("app:theme");
+```
+
+Rimuovere soltanto quella preferenza:
+
+```js
+localStorage.removeItem("app:theme");
+```
+
+Evita `localStorage.clear()` per il reset di una singola funzionalita: cancella tutte le chiavi dello spazio, anche quelle di altre app sulla stessa origine. Il prefisso `app:` evita collisioni accidentali, non crea isolamento.
 
 ---
 
 ## Esempio pratico
 
-Salvare una preferenza utente:
+Preferenza UI con valori ammessi e fallback se lo storage e disabilitato o pieno:
 
 ```js
 function saveTheme(theme) {
-  localStorage.setItem("theme", theme);
+  if (theme !== "light" && theme !== "dark") {
+    throw new TypeError("Tema non supportato");
+  }
+
+  try {
+    window.localStorage.setItem("app:theme", theme);
+    return true;
+  } catch {
+    return false;
+  }
 }
 
 function loadTheme() {
-  return localStorage.getItem("theme") ?? "light";
+  try {
+    const theme = window.localStorage.getItem("app:theme");
+    return theme === "dark" ? "dark" : "light";
+  } catch {
+    return "light";
+  }
 }
 
 document.documentElement.dataset.theme = loadTheme();
 ```
 
-Questo va bene per preferenze UI. Non e adatto a token o dati sensibili.
+`saveTheme()` restituisce `false` se non puo persistere la scelta: il chiamante puo applicarla solo in memoria e segnalare che non verra ricordata. Non nascondere allo stesso modo un fallimento se stai salvando una bozza importante. Qui il fallback silenzioso e una scelta limitata a una preferenza UI non essenziale.
 
 ## Varianti
 
@@ -167,3 +233,17 @@ Questo va bene per preferenze UI. Non e adatto a token o dati sensibili.
 - [[Programmazione/JavaScript/Pagine/Service Workers e PWA|Service Workers e PWA]]
 - [[Programmazione/JavaScript/Pagine/Sicurezza|Sicurezza]]
 - [[Programmazione/JavaScript/Pagine/CORS|CORS]]
+
+
+## Fonti
+
+- [MDN: localStorage e SecurityError](https://developer.mozilla.org/en-US/docs/Web/API/Window/localStorage).
+- [MDN: sessionStorage e opener](https://developer.mozilla.org/en-US/docs/Web/API/Window/sessionStorage).
+- [MDN: quote e rimozione dei dati](https://developer.mozilla.org/en-US/docs/Web/API/Storage_API/Storage_quotas_and_eviction_criteria).
+- [MDN: cookie HTTP](https://developer.mozilla.org/en-US/docs/Web/HTTP/Guides/Cookies).
+- [MDN: Cache API](https://developer.mozilla.org/en-US/docs/Web/API/Cache).
+- [MDN: evento storage](https://developer.mozilla.org/en-US/docs/Web/API/Window/storage_event).
+
+## Navigazione
+
+- [[Programmazione/JavaScript/Indice JavaScript|Indice JavaScript]]

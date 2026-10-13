@@ -3,13 +3,19 @@ date: 2026-06-04
 area: Programmazione
 topic: React
 type: theory-note
-status: "non revisionato"
+status: non revisionato
 publish: true
-difficulty: intermediate
-tags: [react, rendering, performance]
-aliases: [Batching, Automatic batching]
+difficulty: intermedio
+tags:
+  - react
+  - rendering
+  - performance
+aliases:
+  - Batching
+  - Automatic batching
 prerequisites: []
 related: []
+title: Batching
 ---
 
 # Batching
@@ -90,8 +96,8 @@ Con aggiornamenti funzionali il risultato finale e prevedibile.
 
 ## Collegamenti
 
-- [[Programmazione/React/Indice react|Indice React]]
-- [[useState]]
-- [[Fiber Architecture e Concurrent Mode]]
-- [[useTransition e useDeferredValue]]
-- [[Profiler e Debugging]]
+- [[Programmazione/React/Indice React|Indice React]]
+- [[Programmazione/React/Pagine/useState|useState]]
+- [[Programmazione/React/Pagine/Fiber Architecture e Concurrent Mode|Fiber Architecture e Concurrent Mode]]
+- [[Programmazione/React/Pagine/useTransition e useDeferredValue|useTransition e useDeferredValue]]
+- [[Programmazione/React/Pagine/Profiler e Debugging|Profiler e Debugging]]

@@ -3,13 +3,24 @@ date: 2026-07-07
 area: Programmazione
 topic: GitHub
 type: technical-note
-status: "non revisionato"
+status: non revisionato
 publish: true
 difficulty: intermedio
-tags: [github, github-actions, deploy, cd]
-aliases: [Deploy con GitHub Actions, Deployment GitHub Actions]
-prerequisites: [GitHub Actions, Pipeline CI GitHub Actions]
-related: [Environments GitHub Actions, OIDC GitHub Actions]
+tags:
+  - github
+  - github-actions
+  - deploy
+  - cd
+aliases:
+  - Deploy con GitHub Actions
+  - Deployment GitHub Actions
+prerequisites:
+  - "[[Programmazione/GitHub/Pagine/GitHub Actions]]"
+  - "[[Programmazione/GitHub/Pagine/Pipeline CI GitHub Actions]]"
+related:
+  - "[[Programmazione/GitHub/Pagine/Environments GitHub Actions]]"
+  - "[[Programmazione/GitHub/Pagine/OIDC GitHub Actions]]"
+title: Deploy con GitHub Actions
 ---
 
 # Deploy con GitHub Actions
@@ -109,12 +120,12 @@ In questo modo il deploy di produzione non dipende da una modifica casuale o da 
 
 ## Collegamenti
 
-- [[Programmazione/GitHub/Indice GitHub]]
-- [[GitHub Actions]]
-- [[Pipeline CI GitHub Actions]]
-- [[Environments GitHub Actions]]
-- [[Deployment approvals GitHub Actions]]
-- [[OIDC GitHub Actions]]
+- [[Programmazione/GitHub/Indice GitHub|Indice GitHub]]
+- [[Programmazione/GitHub/Pagine/GitHub Actions|GitHub Actions]]
+- [[Programmazione/GitHub/Pagine/Pipeline CI GitHub Actions|Pipeline CI GitHub Actions]]
+- [[Programmazione/GitHub/Pagine/Environments GitHub Actions|Environments GitHub Actions]]
+- [[Programmazione/GitHub/Pagine/Deployment approvals GitHub Actions|Deployment approvals GitHub Actions]]
+- [[Programmazione/GitHub/Pagine/OIDC GitHub Actions|OIDC GitHub Actions]]
 
 ## Fonti
 

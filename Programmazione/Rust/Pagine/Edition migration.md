@@ -3,7 +3,7 @@ date: 2026-05-22
 area: Programmazione
 topic: Rust
 type: technical-note
-status: "non revisionato"
+status: non revisionato
 publish: true
 difficulty: intermedio
 tags:
@@ -11,8 +11,8 @@ tags:
   - rust
   - cargo-editions-e-compatibilita
 aliases:
-  - "Migrazione edition"
-  - "cargo fix edition"
+  - Migrazione edition
+  - cargo fix edition
 prerequisites:
   - "[[Programmazione/Rust/Pagine/Rust 2018 2021 e 2024]]"
   - "[[Programmazione/Rust/Pagine/Cargo]]"
@@ -20,6 +20,7 @@ related:
   - "[[Programmazione/Rust/Pagine/MSRV Minimum Supported Rust Version]]"
   - "[[Programmazione/Rust/Pagine/Build profiles]]"
   - "[[Programmazione/Rust/Pagine/rustfmt]]"
+title: Edition migration
 ---
 
 # Edition migration
@@ -120,3 +121,8 @@ Dopo i fix automatici si rivedono diff, warning e comportamento dei test.
 - [[Programmazione/Rust/Pagine/MSRV Minimum Supported Rust Version|MSRV Minimum Supported Rust Version]]
 - [[Programmazione/Rust/Pagine/rustfmt|rustfmt]]
 - [[Programmazione/Rust/Pagine/Compatibility e breaking changes|Compatibility e breaking changes]]
+
+
+## Navigazione
+
+- [[Programmazione/Rust/Indice Rust|Indice Rust]]

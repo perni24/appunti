@@ -3,13 +3,23 @@ date: 2026-07-06
 area: Programmazione
 topic: GitHub
 type: technical-note
-status: "non revisionato"
+status: non revisionato
 publish: true
 difficulty: intermedio
-tags: [github, dependency-graph, dependencies, supply-chain]
-aliases: [Dependency graph, GitHub dependency graph]
-prerequisites: [Repository GitHub]
-related: [Dependabot, SBOM e attestazioni su GitHub]
+tags:
+  - github
+  - dependency-graph
+  - dependencies
+  - supply-chain
+aliases:
+  - Dependency graph
+  - GitHub dependency graph
+prerequisites:
+  - "[[Programmazione/GitHub/Pagine/Repository GitHub]]"
+related:
+  - "[[Programmazione/GitHub/Pagine/Dependabot]]"
+  - "[[Programmazione/GitHub/Pagine/SBOM e attestazioni su GitHub]]"
+title: Dependency graph
 ---
 
 # Dependency graph
@@ -97,10 +107,10 @@ Il manifest indica dipendenze dichiarate. Il lockfile rende piu precisa la versi
 
 ## Collegamenti
 
-- [[Programmazione/GitHub/Indice GitHub]]
-- [[Repository GitHub]]
-- [[Dependabot]]
-- [[SBOM e attestazioni su GitHub]]
+- [[Programmazione/GitHub/Indice GitHub|Indice GitHub]]
+- [[Programmazione/GitHub/Pagine/Repository GitHub|Repository GitHub]]
+- [[Programmazione/GitHub/Pagine/Dependabot|Dependabot]]
+- [[Programmazione/GitHub/Pagine/SBOM e attestazioni su GitHub|SBOM e attestazioni su GitHub]]
 
 ## Fonti
 

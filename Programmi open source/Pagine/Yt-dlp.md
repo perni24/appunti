@@ -3,12 +3,20 @@ date: 2026-06-04
 area: Programmi open source
 topic: Download media da riga di comando
 type: technical-note
-status: "non revisionato"
+status: non revisionato
 difficulty: base
-tags: [open-source, cli, download, video, audio]
-aliases: [yt-dlp]
+tags:
+  - open-source
+  - cli
+  - download
+  - video
+  - audio
+aliases:
+  - yt-dlp
 prerequisites: []
 related: []
+title: Yt-dlp
+publish: true
 ---
 
 # Yt-dlp
@@ -38,19 +46,29 @@ Per alcune operazioni, come unire video e audio separati o convertire in altri f
 ```bash
 # Scarica un video con le impostazioni predefinite
 yt-dlp "https://example.com/video"
+```
 
+```bash
 # Mostra i formati disponibili
 yt-dlp -F "https://example.com/video"
+```
 
-# Scarica il formato migliore disponibile
-yt-dlp -f best "https://example.com/video"
+```bash
+# Preferisce video e audio migliori separati, con fallback a un formato combinato
+yt-dlp -f "bv*+ba/b" "https://example.com/video"
+```
 
+```bash
 # Estrae solo l'audio in mp3
 yt-dlp -x --audio-format mp3 "https://example.com/video"
+```
 
+```bash
 # Scarica una playlist usando un nome file ordinato
 yt-dlp -o "%(playlist_index)s - %(title)s.%(ext)s" "https://example.com/playlist"
 ```
+
+Sostituire gli URL dimostrativi con indirizzi supportati. `best` seleziona il migliore formato che contiene gia audio e video insieme, non necessariamente la migliore qualita complessiva. Il merge di flussi separati richiede normalmente `ffmpeg`.
 
 ## Errori comuni
 
@@ -67,3 +85,8 @@ yt-dlp -o "%(playlist_index)s - %(title)s.%(ext)s" "https://example.com/playlist
 - Definire `-o` se si vuole controllare il nome dei file scaricati.
 - Controllare sempre permessi, licenze e finalita del download.
 
+
+
+## Navigazione
+
+- [[Programmi open source/Indice Programmi Open Source|Catalogo open source]]

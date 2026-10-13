@@ -3,13 +3,17 @@ date: 2026-06-03
 area: Programmazione
 topic: Python
 type: technical-note
-status: "non revisionato"
+status: non revisionato
 publish: true
-difficulty: intermediate
-tags: [python, programming]
-aliases: [Sintassi e Variabili]
+difficulty: intermedio
+tags:
+  - python
+  - programming
+aliases:
+  - Sintassi e Variabili
 prerequisites: []
 related: []
+title: Sintassi e Variabili in Python
 ---
 
 # Sintassi e Variabili in Python
@@ -102,3 +106,8 @@ L'esempio mostra nomi in `snake_case`, indentazione a 4 spazi e string interpola
 
 - [[Programmazione/Python/Pagine/Operatori|Operatori]]
 - [[Programmazione/Python/Pagine/Funzioni|Funzioni]]
+
+
+## Navigazione
+
+- [[Programmazione/Python/Indice Python|Indice Python]]

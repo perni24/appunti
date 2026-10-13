@@ -3,13 +3,26 @@ date: 2026-07-07
 area: Programmazione
 topic: GitHub
 type: technical-note
-status: "non revisionato"
+status: non revisionato
 publish: true
 difficulty: avanzato
-tags: [github, github-actions, composite-actions, automation]
-aliases: [Composite actions, Composite action GitHub Actions]
-prerequisites: [GitHub Actions, Actions marketplace, Sintassi YAML GitHub Actions]
-related: [Reusable workflows, Actions marketplace, Permissions GitHub Actions]
+tags:
+  - github
+  - github-actions
+  - composite-actions
+  - automation
+aliases:
+  - Composite actions
+  - Composite action GitHub Actions
+prerequisites:
+  - "[[Programmazione/GitHub/Pagine/GitHub Actions]]"
+  - "[[Programmazione/GitHub/Pagine/Actions marketplace]]"
+  - "[[Programmazione/GitHub/Pagine/Sintassi YAML GitHub Actions]]"
+related:
+  - "[[Programmazione/GitHub/Pagine/Reusable workflows]]"
+  - "[[Programmazione/GitHub/Pagine/Actions marketplace]]"
+  - "[[Programmazione/GitHub/Pagine/Permissions GitHub Actions]]"
+title: Composite actions
 ---
 
 # Composite actions
@@ -113,11 +126,11 @@ puoi creare una composite action `project-checks` e richiamarla da CI, release e
 
 ## Collegamenti
 
-- [[Programmazione/GitHub/Indice GitHub]]
-- [[GitHub Actions]]
-- [[Actions marketplace]]
-- [[Reusable workflows]]
-- [[Workflow GitHub Actions]]
+- [[Programmazione/GitHub/Indice GitHub|Indice GitHub]]
+- [[Programmazione/GitHub/Pagine/GitHub Actions|GitHub Actions]]
+- [[Programmazione/GitHub/Pagine/Actions marketplace|Actions marketplace]]
+- [[Programmazione/GitHub/Pagine/Reusable workflows|Reusable workflows]]
+- [[Programmazione/GitHub/Pagine/Workflow GitHub Actions|Workflow GitHub Actions]]
 
 ## Fonti
 

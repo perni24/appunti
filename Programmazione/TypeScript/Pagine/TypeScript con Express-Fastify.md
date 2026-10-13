@@ -3,13 +3,26 @@ date: 2026-06-22
 area: Programmazione
 topic: TypeScript
 type: technical-note
-status: "non revisionato"
+status: non revisionato
 publish: true
 difficulty: intermedio
-tags: [typescript, express, fastify, backend, api]
-aliases: [TypeScript con Express/Fastify, Express TypeScript, Fastify TypeScript]
-prerequisites: [TypeScript con Node.js, API tipizzate]
-related: [Validazione runtime e tipi statici, API contract]
+tags:
+  - typescript
+  - express
+  - fastify
+  - backend
+  - api
+aliases:
+  - TypeScript con Express/Fastify
+  - Express TypeScript
+  - Fastify TypeScript
+prerequisites:
+  - "[[Programmazione/TypeScript/Pagine/TypeScript con Node.js]]"
+  - "[[Programmazione/TypeScript/Pagine/API tipizzate]]"
+related:
+  - "[[Programmazione/TypeScript/Pagine/Validazione runtime e tipi statici]]"
+  - "[[Programmazione/TypeScript/Pagine/API contract]]"
+title: TypeScript con Express-Fastify
 ---
 
 # TypeScript con Express-Fastify
@@ -89,7 +102,12 @@ Questo tipizza `req.body`, ma non garantisce che il body runtime sia valido.
 
 ## Collegamenti
 
-- [[TypeScript con Node.js]]
-- [[API tipizzate]]
-- [[Schema validation con Zod]]
-- [[Module augmentation]]
+- [[Programmazione/TypeScript/Pagine/TypeScript con Node.js|TypeScript con Node.js]]
+- [[Programmazione/TypeScript/Pagine/API tipizzate|API tipizzate]]
+- [[Programmazione/TypeScript/Pagine/Schema validation con Zod|Schema validation con Zod]]
+- [[Programmazione/TypeScript/Pagine/Module augmentation|Module augmentation]]
+
+
+## Navigazione
+
+- [[Programmazione/TypeScript/Indice TypeScript|Indice TypeScript]]

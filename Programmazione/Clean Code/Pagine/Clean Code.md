@@ -3,13 +3,22 @@ date: 2026-07-09
 area: Programmazione
 topic: Clean Code
 type: theory-note
-status: "non revisionato"
+status: non revisionato
 publish: true
 difficulty: base
-tags: [clean-code, qualita-codice, manutenibilita]
-aliases: [Clean Code, Codice pulito]
+tags:
+  - clean-code
+  - qualita-codice
+  - manutenibilita
+aliases:
+  - Clean Code
+  - Codice pulito
 prerequisites: []
-related: [Leggibilita del codice, Manutenibilita del codice, Debito tecnico]
+related:
+  - "[[Programmazione/Clean Code/Pagine/Leggibilita del codice]]"
+  - "[[Programmazione/Clean Code/Pagine/Manutenibilita del codice]]"
+  - "[[Programmazione/Clean Code/Pagine/Debito tecnico]]"
+title: Clean Code
 ---
 
 # Clean Code
@@ -85,11 +94,11 @@ Il secondo esempio non cambia il comportamento, ma riduce il lavoro mentale nece
 
 ## Collegamenti
 
-- [[Programmazione/Clean Code/Indice Clean Code]]
-- [[Leggibilita del codice]]
-- [[Manutenibilita del codice]]
-- [[Debito tecnico]]
-- [[Funzioni con responsabilita singola]]
+- [[Programmazione/Clean Code/Indice Clean Code|Indice Clean Code]]
+- [[Programmazione/Clean Code/Pagine/Leggibilita del codice|Leggibilita del codice]]
+- [[Programmazione/Clean Code/Pagine/Manutenibilita del codice|Manutenibilita del codice]]
+- [[Programmazione/Clean Code/Pagine/Debito tecnico|Debito tecnico]]
+- [[Programmazione/Clean Code/Pagine/Funzioni con responsabilita singola|Funzioni con responsabilita singola]]
 
 ## Fonti
 

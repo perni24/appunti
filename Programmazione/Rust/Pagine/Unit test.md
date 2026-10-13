@@ -3,7 +3,7 @@ date: 2026-05-28
 area: Programmazione
 topic: Rust
 type: technical-note
-status: "non revisionato"
+status: non revisionato
 publish: true
 difficulty: base
 tags:
@@ -11,8 +11,8 @@ tags:
   - rust
   - testing-qualita-e-sicurezza
 aliases:
-  - "Unit test"
-  - "Test unitari Rust"
+  - Unit test
+  - Test unitari Rust
 prerequisites:
   - "[[Programmazione/Rust/Pagine/Funzioni]]"
   - "[[Programmazione/Rust/Pagine/Result]]"
@@ -20,6 +20,7 @@ related:
   - "[[Programmazione/Rust/Pagine/Integration test]]"
   - "[[Programmazione/Rust/Pagine/Doc test]]"
   - "[[Programmazione/Rust/Pagine/cargo-nextest]]"
+title: Unit test
 ---
 
 # Unit test
@@ -152,9 +153,9 @@ Questi test documentano il comportamento atteso meglio di un solo test generico.
 
 ## Collegamenti
 
-- [[Programmazione/Rust/Indice rust|Indice Rust]]
-- [[Programmazione/Rust/Pagine/Integration test]]
-- [[Programmazione/Rust/Pagine/Doc test]]
-- [[Programmazione/Rust/Pagine/cargo-nextest]]
-- [[Programmazione/Rust/Pagine/Result]]
-- [[Programmazione/Rust/Pagine/Error handling idiomatico]]
+- [[Programmazione/Rust/Indice Rust|Indice Rust]]
+- [[Programmazione/Rust/Pagine/Integration test|Integration test]]
+- [[Programmazione/Rust/Pagine/Doc test|Doc test]]
+- [[Programmazione/Rust/Pagine/cargo-nextest|cargo-nextest]]
+- [[Programmazione/Rust/Pagine/Result|Result]]
+- [[Programmazione/Rust/Pagine/Error handling idiomatico|Error handling idiomatico]]

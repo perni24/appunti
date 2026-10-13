@@ -1,21 +1,26 @@
-﻿---
+---
 date: 2026-05-20
 area: Programmazione
 topic: Rust
 type: technical-note
-status: "non revisionato"
+status: non revisionato
 publish: true
 difficulty: base
-tags: [programmazione, rust, ownership, move-semantics]
+tags:
+  - programmazione
+  - rust
+  - ownership
+  - move-semantics
 aliases:
-  - "Move in Rust"
-  - "Semantica di move"
+  - Move in Rust
+  - Semantica di move
 prerequisites:
   - "[[Programmazione/Rust/Pagine/Ownership]]"
   - "[[Programmazione/Rust/Pagine/Stack e Heap]]"
 related:
   - "[[Programmazione/Rust/Pagine/Copy e Clone]]"
   - "[[Programmazione/Rust/Pagine/References e Borrowing]]"
+title: Move semantics
 ---
 
 # Move semantics
@@ -126,3 +131,8 @@ La funzione `enqueue` prende ownership del `Job` per inserirlo nella coda. Quest
 - [[Programmazione/Rust/Pagine/References e Borrowing|References e Borrowing]]
 - [[Programmazione/Rust/Pagine/Closure|Closure]]
 
+
+
+## Navigazione
+
+- [[Programmazione/Rust/Indice Rust|Indice Rust]]

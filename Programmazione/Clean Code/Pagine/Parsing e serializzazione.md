@@ -3,13 +3,24 @@ date: 2026-07-09
 area: Programmazione
 topic: Clean Code
 type: technical-note
-status: "non revisionato"
+status: non revisionato
 publish: true
 difficulty: intermedio
-tags: [clean-code, parsing, serializzazione]
-aliases: [Parsing e serializzazione, Parsing and serialization]
-prerequisites: [Validazione ai confini, Modellazione del dominio]
-related: [DTO e modelli di dominio, Tipi significativi, Messaggi di errore utili]
+tags:
+  - clean-code
+  - parsing
+  - serializzazione
+aliases:
+  - Parsing e serializzazione
+  - Parsing and serialization
+prerequisites:
+  - "[[Programmazione/Clean Code/Pagine/Validazione ai confini]]"
+  - "[[Programmazione/Clean Code/Pagine/Modellazione del dominio]]"
+related:
+  - "[[Programmazione/Clean Code/Pagine/DTO e modelli di dominio]]"
+  - "[[Programmazione/Clean Code/Pagine/Tipi significativi]]"
+  - "[[Programmazione/Clean Code/Pagine/Messaggi di errore utili]]"
+title: Parsing e serializzazione
 ---
 
 # Parsing e serializzazione
@@ -93,11 +104,11 @@ Il parsing normalizza e rende esplicito il fallimento.
 
 ## Collegamenti
 
-- [[Programmazione/Clean Code/Indice Clean Code]]
-- [[Validazione ai confini]]
-- [[Modellazione del dominio]]
-- [[Tipi significativi]]
-- [[Messaggi di errore utili]]
+- [[Programmazione/Clean Code/Indice Clean Code|Indice Clean Code]]
+- [[Programmazione/Clean Code/Pagine/Validazione ai confini|Validazione ai confini]]
+- [[Programmazione/Clean Code/Pagine/Modellazione del dominio|Modellazione del dominio]]
+- [[Programmazione/Clean Code/Pagine/Tipi significativi|Tipi significativi]]
+- [[Programmazione/Clean Code/Pagine/Messaggi di errore utili|Messaggi di errore utili]]
 
 ## Fonti
 

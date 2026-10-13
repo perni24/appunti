@@ -1,7 +1,3 @@
 {
-  "areas": ["Linux", "Programmazione", "Stampante 3D"],
-  "homepage": {
-    "source": "Home.md",
-    "title": "Appunti di Luca"
-  }
+  "areas": ["Programmazione", "Stampante 3D", "Programmi open source"]
 }

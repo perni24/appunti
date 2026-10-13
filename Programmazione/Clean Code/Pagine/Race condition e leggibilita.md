@@ -3,13 +3,23 @@ date: 2026-07-09
 area: Programmazione
 topic: Clean Code
 type: theory-note
-status: "non revisionato"
+status: non revisionato
 publish: true
 difficulty: avanzato
-tags: [clean-code, concorrenza, race-condition]
-aliases: [Race condition e leggibilita, Race conditions]
-prerequisites: [Stato condiviso]
-related: [Lock e sezioni critiche, Operazioni atomiche, Idempotenza]
+tags:
+  - clean-code
+  - concorrenza
+  - race-condition
+aliases:
+  - Race condition e leggibilita
+  - Race conditions
+prerequisites:
+  - "[[Programmazione/Clean Code/Pagine/Stato condiviso]]"
+related:
+  - "[[Programmazione/Clean Code/Pagine/Lock e sezioni critiche]]"
+  - "[[Programmazione/Clean Code/Pagine/Operazioni atomiche]]"
+  - "[[Programmazione/Clean Code/Pagine/Idempotenza]]"
+title: Race condition e leggibilita
 ---
 
 # Race condition e leggibilita
@@ -89,12 +99,12 @@ Il nome segnala che decremento e controllo devono essere un'unica operazione pro
 
 ## Collegamenti
 
-- [[Programmazione/Clean Code/Indice Clean Code]]
-- [[Stato condiviso]]
-- [[Lock e sezioni critiche]]
-- [[Operazioni atomiche]]
-- [[Idempotenza]]
-- [[Test di integrazione]]
+- [[Programmazione/Clean Code/Indice Clean Code|Indice Clean Code]]
+- [[Programmazione/Clean Code/Pagine/Stato condiviso|Stato condiviso]]
+- [[Programmazione/Clean Code/Pagine/Lock e sezioni critiche|Lock e sezioni critiche]]
+- [[Programmazione/Clean Code/Pagine/Operazioni atomiche|Operazioni atomiche]]
+- [[Programmazione/Clean Code/Pagine/Idempotenza|Idempotenza]]
+- [[Programmazione/Clean Code/Pagine/Test di integrazione|Test di integrazione]]
 
 ## Fonti
 

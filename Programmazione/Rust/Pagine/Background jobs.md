@@ -3,7 +3,7 @@ date: 2026-05-27
 area: Programmazione
 topic: Rust
 type: technical-note
-status: "non revisionato"
+status: non revisionato
 publish: true
 difficulty: avanzato
 tags:
@@ -11,8 +11,8 @@ tags:
   - rust
   - backend-networking-e-database
 aliases:
-  - "Background jobs"
-  - "Job in background"
+  - Background jobs
+  - Job in background
 prerequisites:
   - "[[Programmazione/Rust/Pagine/Runtime async Tokio e async-std]]"
   - "[[Programmazione/Rust/Pagine/Channel async]]"
@@ -21,6 +21,7 @@ related:
   - "[[Programmazione/Rust/Pagine/Connection pooling]]"
   - "[[Programmazione/Rust/Pagine/Tracing con tracing]]"
   - "[[Programmazione/Rust/Pagine/Error reporting]]"
+title: Background jobs
 ---
 
 # Background jobs
@@ -159,10 +160,10 @@ Il semaforo evita di avviare troppi job contemporaneamente. In codice reale devi
 
 ## Collegamenti
 
-- [[Programmazione/Rust/Indice rust|Indice Rust]]
-- [[Programmazione/Rust/Pagine/Runtime async Tokio e async-std]]
-- [[Programmazione/Rust/Pagine/Channel async]]
-- [[Programmazione/Rust/Pagine/Graceful shutdown]]
-- [[Programmazione/Rust/Pagine/Connection pooling]]
-- [[Programmazione/Rust/Pagine/Tracing con tracing]]
-- [[Programmazione/Rust/Pagine/Error reporting]]
+- [[Programmazione/Rust/Indice Rust|Indice Rust]]
+- [[Programmazione/Rust/Pagine/Runtime async Tokio e async-std|Runtime async Tokio e async-std]]
+- [[Programmazione/Rust/Pagine/Channel async|Channel async]]
+- [[Programmazione/Rust/Pagine/Graceful shutdown|Graceful shutdown]]
+- [[Programmazione/Rust/Pagine/Connection pooling|Connection pooling]]
+- [[Programmazione/Rust/Pagine/Tracing con tracing|Tracing con tracing]]
+- [[Programmazione/Rust/Pagine/Error reporting|Error reporting]]

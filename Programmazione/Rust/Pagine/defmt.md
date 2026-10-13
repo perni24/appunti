@@ -3,7 +3,7 @@ date: 2026-05-27
 area: Programmazione
 topic: Rust
 type: technical-note
-status: "non revisionato"
+status: non revisionato
 publish: true
 difficulty: intermedio
 tags:
@@ -11,7 +11,7 @@ tags:
   - rust
   - embedded
 aliases:
-  - "defmt"
+  - defmt
 prerequisites:
   - "[[Programmazione/Rust/Pagine/no_std]]"
   - "[[Programmazione/Rust/Pagine/probe-rs]]"
@@ -21,6 +21,7 @@ related:
   - "[[Programmazione/Rust/Pagine/Tracing con tracing]]"
   - "[[Programmazione/Rust/Pagine/RTIC]]"
   - "[[Programmazione/Rust/Pagine/Embassy]]"
+title: defmt
 ---
 
 # defmt
@@ -149,11 +150,11 @@ Con un runner compatibile, i messaggi vengono letti e decodificati sul computer 
 
 ## Collegamenti
 
-- [[Programmazione/Rust/Indice rust|Indice Rust]]
-- [[Programmazione/Rust/Pagine/no_std]]
-- [[Programmazione/Rust/Pagine/probe-rs]]
-- [[Programmazione/Rust/Pagine/Embedded Rust]]
-- [[Programmazione/Rust/Pagine/Logging con log]]
-- [[Programmazione/Rust/Pagine/Tracing con tracing]]
-- [[Programmazione/Rust/Pagine/RTIC]]
-- [[Programmazione/Rust/Pagine/Embassy]]
+- [[Programmazione/Rust/Indice Rust|Indice Rust]]
+- [[Programmazione/Rust/Pagine/no_std|no_std]]
+- [[Programmazione/Rust/Pagine/probe-rs|probe-rs]]
+- [[Programmazione/Rust/Pagine/Embedded Rust|Embedded Rust]]
+- [[Programmazione/Rust/Pagine/Logging con log|Logging con log]]
+- [[Programmazione/Rust/Pagine/Tracing con tracing|Tracing con tracing]]
+- [[Programmazione/Rust/Pagine/RTIC|RTIC]]
+- [[Programmazione/Rust/Pagine/Embassy|Embassy]]

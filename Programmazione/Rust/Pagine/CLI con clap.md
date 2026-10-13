@@ -3,7 +3,7 @@ date: 2026-05-27
 area: Programmazione
 topic: Rust
 type: technical-note
-status: "non revisionato"
+status: non revisionato
 publish: true
 difficulty: intermedio
 tags:
@@ -11,8 +11,8 @@ tags:
   - rust
   - cli-e-tooling
 aliases:
-  - "CLI con clap"
-  - "clap"
+  - CLI con clap
+  - clap
 prerequisites:
   - "[[Programmazione/Rust/Pagine/Cargo]]"
   - "[[Programmazione/Rust/Pagine/Structs]]"
@@ -22,6 +22,7 @@ related:
   - "[[Programmazione/Rust/Pagine/Error reporting]]"
   - "[[Programmazione/Rust/Pagine/Packaging e release]]"
   - "[[Programmazione/Rust/Pagine/OsStr e OsString]]"
+title: CLI con clap
 ---
 
 # CLI con clap
@@ -195,10 +196,10 @@ fn run(cli: Cli) -> Result<(), Box<dyn std::error::Error>> {
 
 ## Collegamenti
 
-- [[Programmazione/Rust/Indice rust|Indice Rust]]
-- [[Programmazione/Rust/Pagine/Configurazione applicativa]]
-- [[Programmazione/Rust/Pagine/Error reporting]]
-- [[Programmazione/Rust/Pagine/Packaging e release]]
-- [[Programmazione/Rust/Pagine/Path e PathBuf]]
-- [[Programmazione/Rust/Pagine/OsStr e OsString]]
-- [[Programmazione/Rust/Pagine/Cargo]]
+- [[Programmazione/Rust/Indice Rust|Indice Rust]]
+- [[Programmazione/Rust/Pagine/Configurazione applicativa|Configurazione applicativa]]
+- [[Programmazione/Rust/Pagine/Error reporting|Error reporting]]
+- [[Programmazione/Rust/Pagine/Packaging e release|Packaging e release]]
+- [[Programmazione/Rust/Pagine/Path e PathBuf|Path e PathBuf]]
+- [[Programmazione/Rust/Pagine/OsStr e OsString|OsStr e OsString]]
+- [[Programmazione/Rust/Pagine/Cargo|Cargo]]

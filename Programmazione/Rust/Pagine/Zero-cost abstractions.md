@@ -3,7 +3,7 @@ date: 2026-05-26
 area: Programmazione
 topic: Rust
 type: technical-note
-status: "non revisionato"
+status: non revisionato
 publish: true
 difficulty: avanzato
 tags:
@@ -11,8 +11,8 @@ tags:
   - rust
   - rust-di-sistema
 aliases:
-  - "Zero-cost abstractions"
-  - "Astrazioni zero-cost"
+  - Zero-cost abstractions
+  - Astrazioni zero-cost
 prerequisites:
   - "[[Programmazione/Rust/Pagine/Generics]]"
   - "[[Programmazione/Rust/Pagine/Traits]]"
@@ -21,6 +21,7 @@ related:
   - "[[Programmazione/Rust/Pagine/Static dispatch vs dynamic dispatch]]"
   - "[[Programmazione/Rust/Pagine/Performance e profiling]]"
   - "[[Programmazione/Rust/Pagine/Rayon e parallel iterators]]"
+title: Zero-cost abstractions
 ---
 
 # Zero-cost abstractions
@@ -161,10 +162,10 @@ In build ottimizzate, la versione con iteratori puo compilare in codice equivale
 
 ## Collegamenti
 
-- [[Programmazione/Rust/Indice rust|Indice Rust]]
-- [[Programmazione/Rust/Pagine/Generics]]
-- [[Programmazione/Rust/Pagine/Traits]]
-- [[Programmazione/Rust/Pagine/Iterator API]]
-- [[Programmazione/Rust/Pagine/Static dispatch vs dynamic dispatch]]
-- [[Programmazione/Rust/Pagine/Performance e profiling]]
-- [[Programmazione/Rust/Pagine/Rayon e parallel iterators]]
+- [[Programmazione/Rust/Indice Rust|Indice Rust]]
+- [[Programmazione/Rust/Pagine/Generics|Generics]]
+- [[Programmazione/Rust/Pagine/Traits|Traits]]
+- [[Programmazione/Rust/Pagine/Iterator API|Iterator API]]
+- [[Programmazione/Rust/Pagine/Static dispatch vs dynamic dispatch|Static dispatch vs dynamic dispatch]]
+- [[Programmazione/Rust/Pagine/Performance e profiling|Performance e profiling]]
+- [[Programmazione/Rust/Pagine/Rayon e parallel iterators|Rayon e parallel iterators]]

@@ -3,13 +3,23 @@ date: 2026-06-22
 area: Programmazione
 topic: TypeScript
 type: technical-note
-status: "non revisionato"
+status: non revisionato
 publish: true
 difficulty: intermedio
-tags: [typescript, module-resolution, modules, nodejs]
-aliases: [Risoluzione moduli TypeScript]
-prerequisites: [tsconfig, Moduli ES e CommonJS]
-related: [Path aliases, TypeScript con Node.js]
+tags:
+  - typescript
+  - module-resolution
+  - modules
+  - nodejs
+aliases:
+  - Risoluzione moduli TypeScript
+prerequisites:
+  - "[[Programmazione/TypeScript/Pagine/tsconfig]]"
+  - "[[Programmazione/TypeScript/Pagine/Moduli ES e CommonJS]]"
+related:
+  - "[[Programmazione/TypeScript/Pagine/Path aliases]]"
+  - "[[Programmazione/TypeScript/Pagine/TypeScript con Node.js]]"
+title: Module resolution
 ---
 
 # Module resolution
@@ -79,6 +89,11 @@ TypeScript deve risolvere tre casi diversi: modulo built-in Node, file relativo 
 
 ## Collegamenti
 
-- [[tsconfig]]
-- [[Moduli ES e CommonJS]]
-- [[Path aliases]]
+- [[Programmazione/TypeScript/Pagine/tsconfig|tsconfig]]
+- [[Programmazione/TypeScript/Pagine/Moduli ES e CommonJS|Moduli ES e CommonJS]]
+- [[Programmazione/TypeScript/Pagine/Path aliases|Path aliases]]
+
+
+## Navigazione
+
+- [[Programmazione/TypeScript/Indice TypeScript|Indice TypeScript]]

@@ -3,30 +3,59 @@ date: 2026-06-09
 area: Programmi open source
 topic: Condivisione file in rete locale
 type: technical-note
-status: "non revisionato"
+status: non revisionato
 difficulty: base
-tags: [open-source, file-sharing, rete-locale, privacy]
-aliases: [LocalSend]
+tags:
+  - open-source
+  - file-sharing
+  - rete-locale
+  - privacy
+aliases:
+  - LocalSend
 prerequisites: []
-related: [Barrier]
+related:
+  - "[[Programmi open source/Pagine/Barrier]]"
+title: LocalSend
+publish: true
 ---
 
-**LocalSend** è un'applicazione open-source gratuita che consente di condividere file e messaggi tra dispositivi vicini utilizzando la rete Wi-Fi locale, senza necessità di connessione a Internet o server esterni. È compatibile con Windows, macOS, Linux, Android, iOS e Fire OS, offrendo un'alternativa multipiattaforma ad AirDrop e Quick Share .
+# LocalSend
 
----
+## Sintesi
 
-### 🔐 Sicurezza e privacy
+LocalSend trasferisce file e messaggi tra dispositivi nella rete locale, senza un server cloud obbligatorio. E disponibile per piu sistemi desktop e mobili.
 
-- **Crittografia end-to-end**: I dati vengono trasmessi in modo sicuro tramite HTTPS, con certificati TLS/SSL generati localmente su ciascun dispositivo.
-- **Nessun tracciamento**: LocalSend non raccoglie, archivia o elabora dati degli utenti, garantendo una condivisione privata e sicura .
+## Quando usarlo
 
----
+Per spostare documenti tra telefono e computer o tra computer vicini senza configurare una condivisione di rete permanente.
 
-### ⚙️ Funzionalità principali
+## Come funziona
 
-- **Condivisione di file, cartelle, testo e contenuti degli appunti** tra dispositivi sulla stessa rete Wi-Fi.
-- **Interfaccia semplice** con tre schede: *Invia*, *Ricevi* e *Impostazioni*.
-- **Rilevamento automatico** dei dispositivi vicini con possibilità di aggiunta manuale tramite IP o hashtag.
-- **Modalità "Quick Save"** per accettare automaticamente i file in arrivo.
-- **Supporto per clipboard sharing**, cronologia dei trasferimenti, modalità chiara/scura e avvio automatico all'accesso.
-- **Condivisione tramite link locale**, permettendo il download dei file da browser senza necessità dell'app .
+I dispositivi si individuano nella rete locale e il mittente sceglie destinatario e contenuto. Il trasferimento e diretto; il progetto usa HTTPS per proteggere il traffico.
+
+## Esempio pratico
+
+1. Aprire LocalSend sui due dispositivi.
+2. Collegarli a una rete che permetta la comunicazione tra client.
+3. Selezionare file e destinatario.
+4. Accettare la ricezione e verificare i file arrivati.
+
+## Limiti
+
+Essere sullo stesso Wi-Fi non basta se il router isola i client. Firewall e permessi possono impedire rilevamento e trasferimento. Non e uno strumento di sincronizzazione continua o un backup.
+
+## Checklist
+
+- Controllare il destinatario prima dell'invio.
+- Evitare ricezione automatica su reti non fidate.
+- Verificare spazio libero e permessi della cartella di destinazione.
+- Per reti diverse scegliere un altro metodo di trasferimento.
+
+## Collegamenti
+
+- [[Programmi open source/Pagine/Barrier|Barrier]]
+- [[Programmi open source/Indice Programmi Open Source|Catalogo open source]]
+
+## Fonti
+
+- [LocalSend: sito ufficiale](https://localsend.org/)

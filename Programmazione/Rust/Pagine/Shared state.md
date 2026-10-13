@@ -3,7 +3,7 @@ date: 2026-05-26
 area: Programmazione
 topic: Rust
 type: technical-note
-status: "non revisionato"
+status: non revisionato
 publish: true
 difficulty: intermedio
 tags:
@@ -11,8 +11,8 @@ tags:
   - rust
   - concorrenza-e-asincronia
 aliases:
-  - "Stato condiviso Rust"
-  - "Shared mutable state"
+  - Stato condiviso Rust
+  - Shared mutable state
 prerequisites:
   - "[[Programmazione/Rust/Pagine/Rc T e Arc T]]"
   - "[[Programmazione/Rust/Pagine/Mutex RwLock e Atomics]]"
@@ -21,6 +21,7 @@ related:
   - "[[Programmazione/Rust/Pagine/Message passing]]"
   - "[[Programmazione/Rust/Pagine/Interior mutability]]"
   - "[[Programmazione/Rust/Pagine/Graceful shutdown]]"
+title: Shared state
 ---
 
 # Shared state
@@ -130,3 +131,8 @@ Il contatore e condiviso, ma ogni aggiornamento avviene sotto lock.
 - [[Programmazione/Rust/Pagine/Message passing|Message passing]]
 - [[Programmazione/Rust/Pagine/Interior mutability|Interior mutability]]
 - [[Programmazione/Rust/Pagine/Graceful shutdown|Graceful shutdown]]
+
+
+## Navigazione
+
+- [[Programmazione/Rust/Indice Rust|Indice Rust]]

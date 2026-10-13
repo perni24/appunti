@@ -3,13 +3,20 @@ date: 2026-06-03
 area: Programmazione
 topic: Python
 type: technical-note
-status: "non revisionato"
+status: non revisionato
 publish: true
-difficulty: intermediate
-tags: [programmazione, python, dati, numpy]
-aliases: [NumPy, ndarray]
+difficulty: intermedio
+tags:
+  - programmazione
+  - python
+  - dati
+  - numpy
+aliases:
+  - NumPy
+  - ndarray
 prerequisites: []
 related: []
+title: NumPy
 ---
 
 # NumPy
@@ -132,8 +139,8 @@ Questo evita loop manuali e rende esplicita l'operazione matematica.
 
 ## Collegamenti
 
-- [[Programmazione/Python/Indice python|Indice Python]]
-- [[pandas]]
-- [[Cython]]
-- [[Profiling]]
-- [[Memory Management]]
+- [[Programmazione/Python/Indice Python|Indice Python]]
+- [[Programmazione/Python/Pagine/pandas|pandas]]
+- [[Programmazione/Python/Pagine/Cython|Cython]]
+- [[Programmazione/Python/Pagine/Profiling|Profiling]]
+- [[Programmazione/Python/Pagine/Memory Management|Memory Management]]

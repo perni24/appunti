@@ -1,6 +1,10 @@
-La guida e organizzata in base alla parte della stampante interessata dalla configurazione. Ogni pagina raccogliera le direttive correlate presenti in `Configuration.h` e `Configuration_adv.h`, indicando dipendenze, valori, rischi, esempi e procedure di verifica.
+# Indice Marlin
 
-Le voci diventeranno collegamenti wiki quando verranno create le relative pagine.
+La guida e organizzata in base alla parte della stampante interessata dalla configurazione. Ogni pagina raccoglie le direttive correlate presenti in `Configuration.h` e `Configuration_adv.h`, indicando dipendenze, valori, rischi, esempi e procedure di verifica.
+
+Il riferimento e la release 2.1.2.8, non una promessa di compatibilita con tutte le release successive. Per cambiare versione usare la procedura di migrazione e confrontare i sorgenti.
+
+- [[Stampante 3D/Indice Stampante 3D|Indice Stampante 3D]]
 
 ## Riferimento della Guida
 

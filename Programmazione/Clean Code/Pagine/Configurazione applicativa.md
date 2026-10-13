@@ -3,13 +3,24 @@ date: 2026-07-09
 area: Programmazione
 topic: Clean Code
 type: technical-note
-status: "non revisionato"
+status: non revisionato
 publish: true
 difficulty: intermedio
-tags: [clean-code, configurazione, deploy]
-aliases: [Configurazione applicativa, Application configuration]
-prerequisites: [Dipendenze esplicite, Contratti impliciti ed espliciti]
-related: [Logging e tracing, Gestione esplicita degli errori, Codice testabile]
+tags:
+  - clean-code
+  - configurazione
+  - deploy
+aliases:
+  - Configurazione applicativa
+  - Application configuration
+prerequisites:
+  - "[[Programmazione/Clean Code/Pagine/Dipendenze esplicite]]"
+  - "[[Programmazione/Clean Code/Pagine/Contratti impliciti ed espliciti]]"
+related:
+  - "[[Programmazione/Clean Code/Pagine/Logging e tracing]]"
+  - "[[Programmazione/Clean Code/Pagine/Gestione esplicita degli errori]]"
+  - "[[Programmazione/Clean Code/Pagine/Codice testabile]]"
+title: Configurazione applicativa
 ---
 
 # Configurazione applicativa
@@ -84,11 +95,11 @@ La configurazione viene validata subito e resa esplicita.
 
 ## Collegamenti
 
-- [[Programmazione/Clean Code/Indice Clean Code]]
-- [[Dipendenze esplicite]]
-- [[Contratti impliciti ed espliciti]]
-- [[Codice testabile]]
-- [[Logging e tracing]]
+- [[Programmazione/Clean Code/Indice Clean Code|Indice Clean Code]]
+- [[Programmazione/Clean Code/Pagine/Dipendenze esplicite|Dipendenze esplicite]]
+- [[Programmazione/Clean Code/Pagine/Contratti impliciti ed espliciti|Contratti impliciti ed espliciti]]
+- [[Programmazione/Clean Code/Pagine/Codice testabile|Codice testabile]]
+- [[Programmazione/Clean Code/Pagine/Logging e tracing|Logging e tracing]]
 
 ## Fonti
 

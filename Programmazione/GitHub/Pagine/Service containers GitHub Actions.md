@@ -3,13 +3,25 @@ date: 2026-07-07
 area: Programmazione
 topic: GitHub
 type: technical-note
-status: "non revisionato"
+status: non revisionato
 publish: true
 difficulty: intermedio
-tags: [github, github-actions, service-containers, docker, ci]
-aliases: [Service containers GitHub Actions, Docker service containers]
-prerequisites: [Pipeline CI GitHub Actions, Jobs steps e runners]
-related: [Workflow per test, lint e build]
+tags:
+  - github
+  - github-actions
+  - service-containers
+  - docker
+  - ci
+aliases:
+  - Service containers GitHub Actions
+  - Docker service containers
+prerequisites:
+  - "[[Programmazione/GitHub/Pagine/Pipeline CI GitHub Actions]]"
+  - "[[Programmazione/GitHub/Pagine/Jobs steps e runners]]"
+related:
+  - Workflow per test
+  - lint e build
+title: Service containers GitHub Actions
 ---
 
 # Service containers GitHub Actions
@@ -116,10 +128,10 @@ redis://localhost:6379
 
 ## Collegamenti
 
-- [[Programmazione/GitHub/Indice GitHub]]
-- [[Pipeline CI GitHub Actions]]
-- [[Jobs steps e runners]]
-- [[Workflow per test, lint e build]]
+- [[Programmazione/GitHub/Indice GitHub|Indice GitHub]]
+- [[Programmazione/GitHub/Pagine/Pipeline CI GitHub Actions|Pipeline CI GitHub Actions]]
+- [[Programmazione/GitHub/Pagine/Jobs steps e runners|Jobs steps e runners]]
+- [[Programmazione/GitHub/Pagine/Workflow per test, lint e build|Workflow per test, lint e build]]
 
 ## Fonti
 

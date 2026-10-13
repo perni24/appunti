@@ -3,7 +3,7 @@ date: 2026-05-22
 area: Programmazione
 topic: Rust
 type: technical-note
-status: "non revisionato"
+status: non revisionato
 publish: true
 difficulty: base
 tags:
@@ -11,14 +11,15 @@ tags:
   - rust
   - cargo-editions-e-compatibilita
 aliases:
-  - "Manifest Cargo"
-  - "Cargo manifest"
+  - Manifest Cargo
+  - Cargo manifest
 prerequisites:
   - "[[Programmazione/Rust/Pagine/Cargo]]"
 related:
   - "[[Programmazione/Rust/Pagine/Cargo.lock]]"
   - "[[Programmazione/Rust/Pagine/Cargo features]]"
   - "[[Programmazione/Rust/Pagine/Workspace dependencies]]"
+title: Cargo.toml
 ---
 
 # Cargo.toml
@@ -135,3 +136,8 @@ Questa configurazione dichiara una CLI con parsing argomenti, error handling app
 - [[Programmazione/Rust/Pagine/Cargo features|Cargo features]]
 - [[Programmazione/Rust/Pagine/Build profiles|Build profiles]]
 - [[Programmazione/Rust/Pagine/Workspace dependencies|Workspace dependencies]]
+
+
+## Navigazione
+
+- [[Programmazione/Rust/Indice Rust|Indice Rust]]

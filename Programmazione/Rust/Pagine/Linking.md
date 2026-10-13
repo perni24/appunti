@@ -3,7 +3,7 @@ date: 2026-05-26
 area: Programmazione
 topic: Rust
 type: technical-note
-status: "non revisionato"
+status: non revisionato
 publish: true
 difficulty: avanzato
 tags:
@@ -11,8 +11,8 @@ tags:
   - rust
   - rust-di-sistema
 aliases:
-  - "Linking"
-  - "Linker"
+  - Linking
+  - Linker
 prerequisites:
   - "[[Programmazione/Rust/Pagine/Cargo]]"
   - "[[Programmazione/Rust/Pagine/Build scripts]]"
@@ -21,6 +21,7 @@ related:
   - "[[Programmazione/Rust/Pagine/Cross-compilation]]"
   - "[[Programmazione/Rust/Pagine/libc e nix]]"
   - "[[Programmazione/Rust/Pagine/bindgen e cbindgen]]"
+title: Linking
 ---
 
 # Linking
@@ -157,10 +158,10 @@ Il wrapper Rust deve trasformare convenzioni C in un'API Rust piu sicura, per es
 
 ## Collegamenti
 
-- [[Programmazione/Rust/Indice rust|Indice Rust]]
-- [[Programmazione/Rust/Pagine/Cargo]]
-- [[Programmazione/Rust/Pagine/Build scripts]]
-- [[Programmazione/Rust/Pagine/FFI]]
-- [[Programmazione/Rust/Pagine/Cross-compilation]]
-- [[Programmazione/Rust/Pagine/libc e nix]]
-- [[Programmazione/Rust/Pagine/bindgen e cbindgen]]
+- [[Programmazione/Rust/Indice Rust|Indice Rust]]
+- [[Programmazione/Rust/Pagine/Cargo|Cargo]]
+- [[Programmazione/Rust/Pagine/Build scripts|Build scripts]]
+- [[Programmazione/Rust/Pagine/FFI|FFI]]
+- [[Programmazione/Rust/Pagine/Cross-compilation|Cross-compilation]]
+- [[Programmazione/Rust/Pagine/libc e nix|libc e nix]]
+- [[Programmazione/Rust/Pagine/bindgen e cbindgen|bindgen e cbindgen]]

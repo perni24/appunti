@@ -3,13 +3,25 @@ date: 2026-06-22
 area: Programmazione
 topic: TypeScript
 type: technical-note
-status: "non revisionato"
+status: non revisionato
 publish: true
 difficulty: base
-tags: [typescript, any, unknown, never, type-safety]
-aliases: [any unknown never]
-prerequisites: [Introduzione a TypeScript, Inferenza dei tipi]
-related: [Type Narrowing, Type Guards, Exhaustiveness Checking]
+tags:
+  - typescript
+  - any
+  - unknown
+  - never
+  - type-safety
+aliases:
+  - any unknown never
+prerequisites:
+  - "[[Programmazione/TypeScript/Pagine/Introduzione a TypeScript]]"
+  - "[[Programmazione/TypeScript/Pagine/Inferenza dei tipi]]"
+related:
+  - "[[Programmazione/TypeScript/Pagine/Type Narrowing]]"
+  - "[[Programmazione/TypeScript/Pagine/Type Guards]]"
+  - "[[Programmazione/TypeScript/Pagine/Exhaustiveness Checking]]"
+title: any, unknown e never
 ---
 
 # any, unknown e never
@@ -91,7 +103,12 @@ function parseUser(input: unknown): { email: string } {
 
 ## Collegamenti
 
-- [[Inferenza dei tipi]]
-- [[Type Narrowing]]
-- [[Type Guards]]
-- [[Exhaustiveness Checking]]
+- [[Programmazione/TypeScript/Pagine/Inferenza dei tipi|Inferenza dei tipi]]
+- [[Programmazione/TypeScript/Pagine/Type Narrowing|Type Narrowing]]
+- [[Programmazione/TypeScript/Pagine/Type Guards|Type Guards]]
+- [[Programmazione/TypeScript/Pagine/Exhaustiveness Checking|Exhaustiveness Checking]]
+
+
+## Navigazione
+
+- [[Programmazione/TypeScript/Indice TypeScript|Indice TypeScript]]

@@ -3,13 +3,24 @@ date: 2026-06-22
 area: Programmazione
 topic: TypeScript
 type: technical-note
-status: "non revisionato"
+status: non revisionato
 publish: true
 difficulty: intermedio
-tags: [typescript, definitelytyped, at-types, typings]
-aliases: [DefinitelyTyped, "@types"]
-prerequisites: [Dichiarazioni e file d.ts, Typing di librerie JavaScript]
-related: [Declaration Merging, Module augmentation]
+tags:
+  - typescript
+  - definitelytyped
+  - at-types
+  - typings
+aliases:
+  - DefinitelyTyped
+  - "@types"
+prerequisites:
+  - "[[Programmazione/TypeScript/Pagine/Dichiarazioni e file d.ts]]"
+  - "[[Programmazione/TypeScript/Pagine/Typing di librerie JavaScript]]"
+related:
+  - "[[Programmazione/TypeScript/Pagine/Declaration Merging]]"
+  - "[[Programmazione/TypeScript/Pagine/Module augmentation]]"
+title: DefinitelyTyped
 ---
 
 # DefinitelyTyped
@@ -74,7 +85,12 @@ Con i tipi installati, TypeScript conosce parametri e ritorno di `debounce`.
 
 ## Collegamenti
 
-- [[Typing di librerie JavaScript]]
-- [[Dichiarazioni e file d.ts]]
-- [[Module augmentation]]
+- [[Programmazione/TypeScript/Pagine/Typing di librerie JavaScript|Typing di librerie JavaScript]]
+- [[Programmazione/TypeScript/Pagine/Dichiarazioni e file d.ts|Dichiarazioni e file d.ts]]
+- [[Programmazione/TypeScript/Pagine/Module augmentation|Module augmentation]]
 - https://github.com/DefinitelyTyped/DefinitelyTyped
+
+
+## Navigazione
+
+- [[Programmazione/TypeScript/Indice TypeScript|Indice TypeScript]]

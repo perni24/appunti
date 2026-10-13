@@ -3,13 +3,23 @@ date: 2026-07-09
 area: Programmazione
 topic: Clean Code
 type: theory-note
-status: "non revisionato"
+status: non revisionato
 publish: true
 difficulty: intermedio
-tags: [clean-code, testing, integrazione]
-aliases: [Test di integrazione, Integration tests]
-prerequisites: [Codice testabile]
-related: [Test unitari leggibili, Test come documentazione, Side effects controllati]
+tags:
+  - clean-code
+  - testing
+  - integrazione
+aliases:
+  - Test di integrazione
+  - Integration tests
+prerequisites:
+  - "[[Programmazione/Clean Code/Pagine/Codice testabile]]"
+related:
+  - "[[Programmazione/Clean Code/Pagine/Test unitari leggibili]]"
+  - "[[Programmazione/Clean Code/Pagine/Test come documentazione]]"
+  - "[[Programmazione/Clean Code/Pagine/Side effects controllati]]"
+title: Test di integrazione
 ---
 
 # Test di integrazione
@@ -73,12 +83,12 @@ Un test di integrazione puo verificare che una richiesta valida crei davvero una
 
 ## Collegamenti
 
-- [[Programmazione/Clean Code/Indice Clean Code]]
-- [[Codice testabile]]
-- [[Test unitari leggibili]]
-- [[Test come documentazione]]
-- [[Side effects controllati]]
-- [[Validazione ai confini]]
+- [[Programmazione/Clean Code/Indice Clean Code|Indice Clean Code]]
+- [[Programmazione/Clean Code/Pagine/Codice testabile|Codice testabile]]
+- [[Programmazione/Clean Code/Pagine/Test unitari leggibili|Test unitari leggibili]]
+- [[Programmazione/Clean Code/Pagine/Test come documentazione|Test come documentazione]]
+- [[Programmazione/Clean Code/Pagine/Side effects controllati|Side effects controllati]]
+- [[Programmazione/Clean Code/Pagine/Validazione ai confini|Validazione ai confini]]
 
 ## Fonti
 

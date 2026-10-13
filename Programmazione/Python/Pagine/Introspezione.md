@@ -3,13 +3,18 @@ date: 2026-06-03
 area: Programmazione
 topic: Python
 type: technical-note
-status: "non revisionato"
+status: non revisionato
 publish: true
-difficulty: intermediate
-tags: [python, programming, runtime]
-aliases: [Introspezione]
+difficulty: intermedio
+tags:
+  - python
+  - programming
+  - runtime
+aliases:
+  - Introspezione
 prerequisites: []
 related: []
+title: Introspezione in Python
 ---
 
 # Introspezione in Python
@@ -160,9 +165,9 @@ Questo tipo di introspezione e comune in framework, dependency injection e libre
 
 ## Collegamenti
 
-- [[Programmazione/Python/Indice python|Indice Python]]
-- [[Data model]]
-- [[Descriptor protocol]]
-- [[Metaclassi]]
-- [[Decoratori]]
-- [[Type Hinting]]
+- [[Programmazione/Python/Indice Python|Indice Python]]
+- [[Programmazione/Python/Pagine/Data model|Data model]]
+- [[Programmazione/Python/Pagine/Descriptor protocol|Descriptor protocol]]
+- [[Programmazione/Python/Pagine/Metaclassi|Metaclassi]]
+- [[Programmazione/Python/Pagine/Decoratori|Decoratori]]
+- [[Programmazione/Python/Pagine/Type Hinting|Type Hinting]]

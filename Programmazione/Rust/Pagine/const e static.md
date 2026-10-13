@@ -3,7 +3,7 @@ date: 2026-05-26
 area: Programmazione
 topic: Rust
 type: technical-note
-status: "non revisionato"
+status: non revisionato
 publish: true
 difficulty: intermedio
 tags:
@@ -11,9 +11,9 @@ tags:
   - rust
   - compile-time-e-type-level-programming
 aliases:
-  - "const"
-  - "static"
-  - "Costanti Rust"
+  - const
+  - static
+  - Costanti Rust
 prerequisites:
   - "[[Programmazione/Rust/Pagine/Tipi di dato primitivi]]"
   - "[[Programmazione/Rust/Pagine/Ownership]]"
@@ -22,6 +22,7 @@ related:
   - "[[Programmazione/Rust/Pagine/const fn]]"
   - "[[Programmazione/Rust/Pagine/OnceLock e LazyLock]]"
   - "[[Programmazione/Rust/Pagine/Unsafe Rust]]"
+title: const e static
 ---
 
 # const e static
@@ -136,3 +137,8 @@ impl Default for ServerConfig {
 - [[Programmazione/Rust/Pagine/Default|Default]]
 - [[Programmazione/Rust/Pagine/Unsafe Rust|Unsafe Rust]]
 - [[Programmazione/Rust/Pagine/Lifetime annotations|Lifetime annotations]]
+
+
+## Navigazione
+
+- [[Programmazione/Rust/Indice Rust|Indice Rust]]

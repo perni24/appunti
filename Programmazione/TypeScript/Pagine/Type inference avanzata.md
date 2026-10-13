@@ -3,13 +3,24 @@ date: 2026-06-22
 area: Programmazione
 topic: TypeScript
 type: technical-note
-status: "non revisionato"
+status: non revisionato
 publish: true
 difficulty: avanzato
-tags: [typescript, inference, generics, type-system]
-aliases: [Inferenza avanzata TypeScript]
-prerequisites: [Inferenza dei tipi, Generics avanzati]
-related: [const type parameters, satisfies operator, Infer nei Conditional Types]
+tags:
+  - typescript
+  - inference
+  - generics
+  - type-system
+aliases:
+  - Inferenza avanzata TypeScript
+prerequisites:
+  - "[[Programmazione/TypeScript/Pagine/Inferenza dei tipi]]"
+  - "[[Programmazione/TypeScript/Pagine/Generics avanzati]]"
+related:
+  - "[[Programmazione/TypeScript/Pagine/const type parameters]]"
+  - "[[Programmazione/TypeScript/Pagine/satisfies operator]]"
+  - "[[Programmazione/TypeScript/Pagine/Infer nei Conditional Types]]"
+title: Type inference avanzata
 ---
 
 # Type inference avanzata
@@ -82,7 +93,12 @@ const flags = createMap(["darkMode", "betaDashboard"]);
 
 ## Collegamenti
 
-- [[Inferenza dei tipi]]
-- [[Generics avanzati]]
-- [[const type parameters]]
-- [[satisfies operator]]
+- [[Programmazione/TypeScript/Pagine/Inferenza dei tipi|Inferenza dei tipi]]
+- [[Programmazione/TypeScript/Pagine/Generics avanzati|Generics avanzati]]
+- [[Programmazione/TypeScript/Pagine/const type parameters|const type parameters]]
+- [[Programmazione/TypeScript/Pagine/satisfies operator|satisfies operator]]
+
+
+## Navigazione
+
+- [[Programmazione/TypeScript/Indice TypeScript|Indice TypeScript]]

@@ -3,13 +3,23 @@ date: 2026-07-09
 area: Programmazione
 topic: Clean Code
 type: theory-note
-status: "non revisionato"
+status: non revisionato
 publish: true
 difficulty: base
-tags: [clean-code, testing, aaa]
-aliases: [Arrange Act Assert, AAA pattern]
-prerequisites: [Codice testabile]
-related: [Test unitari leggibili, Test data builders, Test come documentazione]
+tags:
+  - clean-code
+  - testing
+  - aaa
+aliases:
+  - Arrange Act Assert
+  - AAA pattern
+prerequisites:
+  - "[[Programmazione/Clean Code/Pagine/Codice testabile]]"
+related:
+  - "[[Programmazione/Clean Code/Pagine/Test unitari leggibili]]"
+  - "[[Programmazione/Clean Code/Pagine/Test data builders]]"
+  - "[[Programmazione/Clean Code/Pagine/Test come documentazione]]"
+title: Arrange Act Assert
 ---
 
 # Arrange Act Assert
@@ -76,11 +86,11 @@ Il test separa chiaramente scenario, esecuzione e aspettativa.
 
 ## Collegamenti
 
-- [[Programmazione/Clean Code/Indice Clean Code]]
-- [[Codice testabile]]
-- [[Test unitari leggibili]]
-- [[Test data builders]]
-- [[Test come documentazione]]
+- [[Programmazione/Clean Code/Indice Clean Code|Indice Clean Code]]
+- [[Programmazione/Clean Code/Pagine/Codice testabile|Codice testabile]]
+- [[Programmazione/Clean Code/Pagine/Test unitari leggibili|Test unitari leggibili]]
+- [[Programmazione/Clean Code/Pagine/Test data builders|Test data builders]]
+- [[Programmazione/Clean Code/Pagine/Test come documentazione|Test come documentazione]]
 
 ## Fonti
 

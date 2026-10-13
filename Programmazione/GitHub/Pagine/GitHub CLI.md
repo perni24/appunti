@@ -3,13 +3,24 @@ date: 2026-07-06
 area: Programmazione
 topic: GitHub
 type: technical-note
-status: "non revisionato"
+status: non revisionato
 publish: true
 difficulty: base
-tags: [github, cli, gh, automazione]
-aliases: [GitHub CLI, gh]
-prerequisites: [GitHub, Git e GitHub]
-related: [Pull request, Issues GitHub]
+tags:
+  - github
+  - cli
+  - gh
+  - automazione
+aliases:
+  - GitHub CLI
+  - gh
+prerequisites:
+  - "[[Programmazione/GitHub/Pagine/GitHub]]"
+  - "[[Programmazione/GitHub/Pagine/Git e GitHub]]"
+related:
+  - "[[Programmazione/GitHub/Pagine/Pull request]]"
+  - "[[Programmazione/GitHub/Pagine/Issues GitHub]]"
+title: GitHub CLI
 ---
 
 # GitHub CLI
@@ -119,11 +130,11 @@ gh pr create --base main --fill
 
 ## Collegamenti
 
-- [[Programmazione/GitHub/Indice GitHub]]
-- [[GitHub]]
-- [[Git e GitHub]]
-- [[Pull request]]
-- [[Issues GitHub]]
+- [[Programmazione/GitHub/Indice GitHub|Indice GitHub]]
+- [[Programmazione/GitHub/Pagine/GitHub|GitHub]]
+- [[Programmazione/GitHub/Pagine/Git e GitHub|Git e GitHub]]
+- [[Programmazione/GitHub/Pagine/Pull request|Pull request]]
+- [[Programmazione/GitHub/Pagine/Issues GitHub|Issues GitHub]]
 
 ## Fonti
 

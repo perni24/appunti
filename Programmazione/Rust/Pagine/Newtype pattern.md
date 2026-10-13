@@ -3,7 +3,7 @@ date: 2026-05-28
 area: Programmazione
 topic: Rust
 type: technical-note
-status: "non revisionato"
+status: non revisionato
 publish: true
 difficulty: intermedio
 tags:
@@ -11,8 +11,8 @@ tags:
   - rust
   - api-design-idiomatico
 aliases:
-  - "Newtype"
-  - "Newtype pattern"
+  - Newtype
+  - Newtype pattern
 prerequisites:
   - "[[Programmazione/Rust/Pagine/Tuple structs]]"
   - "[[Programmazione/Rust/Pagine/Traits]]"
@@ -22,6 +22,7 @@ related:
   - "[[Programmazione/Rust/Pagine/Marker types]]"
   - "[[Programmazione/Rust/Pagine/Typestate pattern]]"
   - "[[Programmazione/Rust/Pagine/Deref Trait]]"
+title: Newtype pattern
 ---
 
 # Newtype pattern
@@ -150,10 +151,10 @@ Il tipo impedisce di confondere Celsius e Fahrenheit, anche se entrambi sono rap
 
 ## Collegamenti
 
-- [[Programmazione/Rust/Indice rust|Indice Rust]]
-- [[Programmazione/Rust/Pagine/Tuple structs]]
-- [[Programmazione/Rust/Pagine/Marker types]]
-- [[Programmazione/Rust/Pagine/Typestate pattern]]
-- [[Programmazione/Rust/Pagine/Public API design]]
-- [[Programmazione/Rust/Pagine/Deref Trait]]
-- [[Programmazione/Rust/Pagine/Derive traits]]
+- [[Programmazione/Rust/Indice Rust|Indice Rust]]
+- [[Programmazione/Rust/Pagine/Tuple structs|Tuple structs]]
+- [[Programmazione/Rust/Pagine/Marker types|Marker types]]
+- [[Programmazione/Rust/Pagine/Typestate pattern|Typestate pattern]]
+- [[Programmazione/Rust/Pagine/Public API design|Public API design]]
+- [[Programmazione/Rust/Pagine/Deref Trait|Deref Trait]]
+- [[Programmazione/Rust/Pagine/Derive traits|Derive traits]]

@@ -3,13 +3,25 @@ date: 2026-07-09
 area: Programmazione
 topic: Clean Code
 type: technical-note
-status: "non revisionato"
+status: non revisionato
 publish: true
 difficulty: intermedio
-tags: [clean-code, ci, quality-gates]
-aliases: [Code quality gates, Quality gates]
-prerequisites: [Formatter, Linter, Coverage]
-related: [Static analysis, Pre-commit hooks, Codice pronto al deploy]
+tags:
+  - clean-code
+  - ci
+  - quality-gates
+aliases:
+  - Code quality gates
+  - Quality gates
+prerequisites:
+  - "[[Programmazione/Clean Code/Pagine/Formatter]]"
+  - "[[Programmazione/Clean Code/Pagine/Linter]]"
+  - "[[Programmazione/Clean Code/Pagine/Coverage]]"
+related:
+  - "[[Programmazione/Clean Code/Pagine/Static analysis]]"
+  - "[[Programmazione/Clean Code/Pagine/Pre-commit hooks]]"
+  - "[[Programmazione/Clean Code/Pagine/Codice pronto al deploy]]"
+title: Code quality gates
 ---
 
 # Code quality gates
@@ -91,14 +103,14 @@ Il gate protegge il branch principale.
 
 ## Collegamenti
 
-- [[Programmazione/Clean Code/Indice Clean Code]]
-- [[Formatter]]
-- [[Linter]]
-- [[Type checking]]
-- [[Coverage]]
-- [[Static analysis]]
-- [[Pre-commit hooks]]
-- [[Codice pronto al deploy]]
+- [[Programmazione/Clean Code/Indice Clean Code|Indice Clean Code]]
+- [[Programmazione/Clean Code/Pagine/Formatter|Formatter]]
+- [[Programmazione/Clean Code/Pagine/Linter|Linter]]
+- [[Programmazione/Clean Code/Pagine/Type checking|Type checking]]
+- [[Programmazione/Clean Code/Pagine/Coverage|Coverage]]
+- [[Programmazione/Clean Code/Pagine/Static analysis|Static analysis]]
+- [[Programmazione/Clean Code/Pagine/Pre-commit hooks|Pre-commit hooks]]
+- [[Programmazione/Clean Code/Pagine/Codice pronto al deploy|Codice pronto al deploy]]
 
 ## Fonti
 

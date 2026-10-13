@@ -3,13 +3,25 @@ date: 2026-07-09
 area: Programmazione
 topic: Clean Code
 type: technical-note
-status: "non revisionato"
+status: non revisionato
 publish: true
 difficulty: intermedio
-tags: [clean-code, filesystem, io]
-aliases: [File system e I/O, File system e IO, I/O]
-prerequisites: [Side effects controllati, Gestione esplicita degli errori]
-related: [Configurazione applicativa, Parsing e serializzazione, Codice testabile]
+tags:
+  - clean-code
+  - filesystem
+  - io
+aliases:
+  - File system e I/O
+  - File system e IO
+  - I/O
+prerequisites:
+  - "[[Programmazione/Clean Code/Pagine/Side effects controllati]]"
+  - "[[Programmazione/Clean Code/Pagine/Gestione esplicita degli errori]]"
+related:
+  - "[[Programmazione/Clean Code/Pagine/Configurazione applicativa]]"
+  - "[[Programmazione/Clean Code/Pagine/Parsing e serializzazione]]"
+  - "[[Programmazione/Clean Code/Pagine/Codice testabile]]"
+title: File system e IO
 ---
 
 # File system e IO
@@ -86,12 +98,12 @@ Passare `fileSystem` come dipendenza permette di testare il comportamento senza 
 
 ## Collegamenti
 
-- [[Programmazione/Clean Code/Indice Clean Code]]
-- [[Side effects controllati]]
-- [[Gestione esplicita degli errori]]
+- [[Programmazione/Clean Code/Indice Clean Code|Indice Clean Code]]
+- [[Programmazione/Clean Code/Pagine/Side effects controllati|Side effects controllati]]
+- [[Programmazione/Clean Code/Pagine/Gestione esplicita degli errori|Gestione esplicita degli errori]]
 - [[Programmazione/Clean Code/Pagine/Configurazione applicativa|Configurazione applicativa]]
-- [[Parsing e serializzazione]]
-- [[Codice testabile]]
+- [[Programmazione/Clean Code/Pagine/Parsing e serializzazione|Parsing e serializzazione]]
+- [[Programmazione/Clean Code/Pagine/Codice testabile|Codice testabile]]
 
 ## Fonti
 

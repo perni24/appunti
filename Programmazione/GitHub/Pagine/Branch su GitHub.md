@@ -3,13 +3,24 @@ date: 2026-07-06
 area: Programmazione
 topic: GitHub
 type: technical-note
-status: "non revisionato"
+status: non revisionato
 publish: true
 difficulty: base
-tags: [github, git, branch, workflow]
-aliases: [Branch GitHub, Branch su GitHub]
-prerequisites: [Git e GitHub, Repository GitHub]
-related: [Pull request, Merge squash e rebase su GitHub]
+tags:
+  - github
+  - git
+  - branch
+  - workflow
+aliases:
+  - Branch GitHub
+  - Branch su GitHub
+prerequisites:
+  - "[[Programmazione/GitHub/Pagine/Git e GitHub]]"
+  - "[[Programmazione/GitHub/Pagine/Repository GitHub]]"
+related:
+  - "[[Programmazione/GitHub/Pagine/Pull request]]"
+  - "[[Programmazione/GitHub/Pagine/Merge squash e rebase su GitHub]]"
+title: Branch su GitHub
 ---
 
 # Branch su GitHub
@@ -117,11 +128,11 @@ Su GitHub puoi poi aprire una pull request da `fix/login-error` verso `main`.
 
 ## Collegamenti
 
-- [[Programmazione/GitHub/Indice GitHub]]
-- [[Git e GitHub]]
-- [[Repository GitHub]]
-- [[Pull request]]
-- [[Merge squash e rebase su GitHub]]
+- [[Programmazione/GitHub/Indice GitHub|Indice GitHub]]
+- [[Programmazione/GitHub/Pagine/Git e GitHub|Git e GitHub]]
+- [[Programmazione/GitHub/Pagine/Repository GitHub|Repository GitHub]]
+- [[Programmazione/GitHub/Pagine/Pull request|Pull request]]
+- [[Programmazione/GitHub/Pagine/Merge squash e rebase su GitHub|Merge squash e rebase su GitHub]]
 
 ## Fonti
 

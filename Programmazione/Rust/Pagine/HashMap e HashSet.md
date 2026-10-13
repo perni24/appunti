@@ -1,15 +1,20 @@
-﻿---
+---
 date: 2026-05-20
 area: Programmazione
 topic: Rust
 type: technical-note
-status: "non revisionato"
+status: non revisionato
 publish: true
 difficulty: base
-tags: [programmazione, rust, hashmap, hashset, collezioni]
+tags:
+  - programmazione
+  - rust
+  - hashmap
+  - hashset
+  - collezioni
 aliases:
-  - "HashMap Rust"
-  - "HashSet Rust"
+  - HashMap Rust
+  - HashSet Rust
 prerequisites:
   - "[[Programmazione/Rust/Pagine/Ownership]]"
   - "[[Programmazione/Rust/Pagine/Traits]]"
@@ -18,6 +23,7 @@ related:
   - "[[Programmazione/Rust/Pagine/Vec]]"
   - "[[Programmazione/Rust/Pagine/VecDeque BTreeMap e BTreeSet]]"
   - "[[Programmazione/Rust/Pagine/AsRef AsMut e Borrow]]"
+title: HashMap e HashSet
 ---
 
 # HashMap e HashSet
@@ -134,3 +140,8 @@ Ogni parola normalizzata diventa una chiave posseduta dalla mappa.
 - [[Programmazione/Rust/Pagine/Traits|Traits]]
 - [[Programmazione/Rust/Pagine/AsRef AsMut e Borrow|AsRef AsMut e Borrow]]
 
+
+
+## Navigazione
+
+- [[Programmazione/Rust/Indice Rust|Indice Rust]]

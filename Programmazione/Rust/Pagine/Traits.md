@@ -3,7 +3,7 @@ date: 2026-05-21
 area: Programmazione
 topic: Rust
 type: technical-note
-status: "non revisionato"
+status: non revisionato
 publish: true
 difficulty: intermedio
 tags:
@@ -11,8 +11,8 @@ tags:
   - rust
   - astrazione-e-generici
 aliases:
-  - "Trait Rust"
-  - "Interfacce Rust"
+  - Trait Rust
+  - Interfacce Rust
 prerequisites:
   - "[[Programmazione/Rust/Pagine/Generics]]"
   - "[[Programmazione/Rust/Pagine/Structs]]"
@@ -21,6 +21,7 @@ related:
   - "[[Programmazione/Rust/Pagine/Trait bounds]]"
   - "[[Programmazione/Rust/Pagine/Derive traits]]"
   - "[[Programmazione/Rust/Pagine/Trait objects e dyn Trait]]"
+title: Traits
 ---
 
 # Traits
@@ -163,3 +164,8 @@ La funzione `salva` non conosce il tipo concreto, ma richiede il comportamento `
 - [[Programmazione/Rust/Pagine/Trait objects e dyn Trait|Trait objects e dyn Trait]]
 - [[Programmazione/Rust/Pagine/Extension traits|Extension traits]]
 - [[Programmazione/Rust/Pagine/Public API design|Public API design]]
+
+
+## Navigazione
+
+- [[Programmazione/Rust/Indice Rust|Indice Rust]]

@@ -3,13 +3,23 @@ date: 2026-06-22
 area: Programmazione
 topic: TypeScript
 type: technical-note
-status: "non revisionato"
+status: non revisionato
 publish: true
 difficulty: base
-tags: [typescript, classi, oop]
-aliases: [Classi TypeScript]
-prerequisites: [Type Aliases e Interfaces, Funzioni tipizzate]
-related: [Visibilita e modificatori di accesso, Classi astratte, Implementazione di interfacce]
+tags:
+  - typescript
+  - classi
+  - oop
+aliases:
+  - Classi TypeScript
+prerequisites:
+  - "[[Programmazione/TypeScript/Pagine/Type Aliases e Interfaces]]"
+  - "[[Programmazione/TypeScript/Pagine/Funzioni tipizzate]]"
+related:
+  - "[[Programmazione/TypeScript/Pagine/Visibilita e modificatori di accesso]]"
+  - "[[Programmazione/TypeScript/Pagine/Classi astratte]]"
+  - "[[Programmazione/TypeScript/Pagine/Implementazione di interfacce]]"
+title: Classi
 ---
 
 # Classi
@@ -99,7 +109,12 @@ La classe incapsula lo stato interno `startedAt` e offre metodi pubblici per usa
 
 ## Collegamenti
 
-- [[Visibilita e modificatori di accesso]]
-- [[Classi astratte]]
-- [[Implementazione di interfacce]]
+- [[Programmazione/TypeScript/Pagine/Visibilita e modificatori di accesso|Visibilita e modificatori di accesso]]
+- [[Programmazione/TypeScript/Pagine/Classi astratte|Classi astratte]]
+- [[Programmazione/TypeScript/Pagine/Implementazione di interfacce|Implementazione di interfacce]]
 - [[Programmazione/TypeScript/Pagine/Generics|Generics]]
+
+
+## Navigazione
+
+- [[Programmazione/TypeScript/Indice TypeScript|Indice TypeScript]]

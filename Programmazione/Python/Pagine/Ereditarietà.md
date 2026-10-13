@@ -3,13 +3,17 @@ date: 2026-06-03
 area: Programmazione
 topic: Python
 type: technical-note
-status: "non revisionato"
+status: non revisionato
 publish: true
-difficulty: intermediate
-tags: [python, programming]
-aliases: [Ereditarietà]
+difficulty: intermedio
+tags:
+  - python
+  - programming
+aliases:
+  - Ereditarietà
 prerequisites: []
 related: []
+title: Ereditarietà in Python
 ---
 
 # Ereditarietà in Python
@@ -94,3 +98,8 @@ class EmailNotification(Notification):
 - [[Programmazione/Python/Pagine/Classi e Istanze|Classi e Istanze]]
 - [[Programmazione/Python/Pagine/Metodi Speciali|Metodi Speciali]]
 - [[Programmazione/Python/Pagine/Type Hinting|Type Hinting]]
+
+
+## Navigazione
+
+- [[Programmazione/Python/Indice Python|Indice Python]]

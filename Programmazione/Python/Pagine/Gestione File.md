@@ -3,13 +3,18 @@ date: 2026-06-03
 area: Programmazione
 topic: Python
 type: technical-note
-status: "non revisionato"
+status: non revisionato
 publish: true
-difficulty: beginner
-tags: [python, programming, file]
-aliases: [Gestione dei File]
+difficulty: base
+tags:
+  - python
+  - programming
+  - file
+aliases:
+  - Gestione dei File
 prerequisites: []
 related: []
+title: Gestione dei File in Python
 ---
 
 # Gestione dei File in Python
@@ -136,8 +141,8 @@ with open("image.png", "rb") as file:
 
 ## Collegamenti
 
-- [[Programmazione/Python/Indice python|Indice Python]]
-- [[Context Managers]]
+- [[Programmazione/Python/Indice Python|Indice Python]]
+- [[Programmazione/Python/Pagine/Context Managers|Context Managers]]
 - [[Programmazione/Python/Pagine/Error Handling|Error Handling]]
-- [[Generatori]]
-- [[Standard Library]]
+- [[Programmazione/Python/Pagine/Generatori|Generatori]]
+- [[Programmazione/Python/Pagine/Standard Library|Standard Library]]

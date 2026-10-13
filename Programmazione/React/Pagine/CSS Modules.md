@@ -3,13 +3,18 @@ date: 2026-06-04
 area: Programmazione
 topic: React
 type: technical-note
-status: "non revisionato"
+status: non revisionato
 publish: true
-difficulty: beginner
-tags: [react, css, styling]
-aliases: [CSS Modules]
+difficulty: base
+tags:
+  - react
+  - css
+  - styling
+aliases:
+  - CSS Modules
 prerequisites: []
 related: []
+title: CSS Modules
 ---
 
 # CSS Modules
@@ -101,7 +106,7 @@ Variabili CSS:
 
 ## Collegamenti
 
-- [[Programmazione/React/Indice react|Indice React]]
-- [[Styling base]]
-- [[Design system]]
+- [[Programmazione/React/Indice React|Indice React]]
+- [[Programmazione/React/Pagine/Styling base|Styling base]]
+- [[Programmazione/React/Pagine/Design system|Design system]]
 - [[Programmazione/React/Pagine/Linting e Formattazione|Linting e Formattazione]]

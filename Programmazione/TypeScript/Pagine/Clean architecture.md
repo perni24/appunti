@@ -3,13 +3,23 @@ date: 2026-06-22
 area: Programmazione
 topic: TypeScript
 type: technical-note
-status: "non revisionato"
+status: non revisionato
 publish: true
 difficulty: avanzato
-tags: [typescript, clean-architecture, architecture, backend]
-aliases: [Clean Architecture TypeScript]
-prerequisites: [Domain modeling, Pattern Repository e Service]
-related: [Dependency injection, DTO e modelli di dominio]
+tags:
+  - typescript
+  - clean-architecture
+  - architecture
+  - backend
+aliases:
+  - Clean Architecture TypeScript
+prerequisites:
+  - "[[Programmazione/TypeScript/Pagine/Domain modeling]]"
+  - "[[Programmazione/TypeScript/Pagine/Pattern Repository e Service]]"
+related:
+  - "[[Programmazione/TypeScript/Pagine/Dependency injection]]"
+  - "[[Programmazione/TypeScript/Pagine/DTO e modelli di dominio]]"
+title: Clean architecture
 ---
 
 # Clean architecture
@@ -95,6 +105,11 @@ Il caso d'uso dipende da `UserRepository`, non da SQL o HTTP.
 
 ## Collegamenti
 
-- [[Domain modeling]]
-- [[Pattern Repository e Service]]
-- [[Dependency injection]]
+- [[Programmazione/TypeScript/Pagine/Domain modeling|Domain modeling]]
+- [[Programmazione/TypeScript/Pagine/Pattern Repository e Service|Pattern Repository e Service]]
+- [[Programmazione/TypeScript/Pagine/Dependency injection|Dependency injection]]
+
+
+## Navigazione
+
+- [[Programmazione/TypeScript/Indice TypeScript|Indice TypeScript]]

@@ -3,13 +3,25 @@ date: 2026-06-22
 area: Programmazione
 topic: TypeScript
 type: technical-note
-status: "non revisionato"
+status: non revisionato
 publish: true
 difficulty: avanzato
-tags: [typescript, keyof, typeof, type-operators]
-aliases: [keyof, typeof TypeScript]
-prerequisites: [Type Aliases e Interfaces, Generics]
-related: [Indexed Access Types, Mapped Types, as const]
+tags:
+  - typescript
+  - keyof
+  - typeof
+  - type-operators
+aliases:
+  - keyof
+  - typeof TypeScript
+prerequisites:
+  - "[[Programmazione/TypeScript/Pagine/Type Aliases e Interfaces]]"
+  - "[[Programmazione/TypeScript/Pagine/Generics]]"
+related:
+  - "[[Programmazione/TypeScript/Pagine/Indexed Access Types]]"
+  - "[[Programmazione/TypeScript/Pagine/Mapped Types]]"
+  - "[[Programmazione/TypeScript/Pagine/as const]]"
+title: Keyof e typeof
 ---
 
 # Keyof e typeof
@@ -92,6 +104,11 @@ La funzione accetta solo chiavi realmente presenti in `config`.
 
 ## Collegamenti
 
-- [[Indexed Access Types]]
-- [[Mapped Types]]
-- [[as const]]
+- [[Programmazione/TypeScript/Pagine/Indexed Access Types|Indexed Access Types]]
+- [[Programmazione/TypeScript/Pagine/Mapped Types|Mapped Types]]
+- [[Programmazione/TypeScript/Pagine/as const|as const]]
+
+
+## Navigazione
+
+- [[Programmazione/TypeScript/Indice TypeScript|Indice TypeScript]]

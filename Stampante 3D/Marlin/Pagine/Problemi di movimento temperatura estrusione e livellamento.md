@@ -3,18 +3,28 @@ date: 2026-07-26
 area: Stampante 3D
 topic: Marlin
 type: operational-note
-
 publish: true
 difficulty: avanzato
-tags: [marlin, movimento, temperatura, estrusione, livellamento, troubleshooting]
-aliases: [Diagnostica operativa Marlin, Problemi stampa Marlin, Troubleshooting macchina Marlin]
+tags:
+  - marlin
+  - movimento
+  - temperatura
+  - estrusione
+  - livellamento
+  - troubleshooting
+aliases:
+  - Diagnostica operativa Marlin
+  - Problemi stampa Marlin
+  - Troubleshooting macchina Marlin
 prerequisites:
   - "[[Stampante 3D/Marlin/Pagine/Procedura completa di taratura e verifica]]"
   - "[[Stampante 3D/Marlin/Pagine/G-code per configurazione e diagnostica]]"
 related:
   - "[[Stampante 3D/Marlin/Pagine/Errori di compilazione e avvio]]"
   - "[[Stampante 3D/Marlin/Pagine/Alimentazione e protezioni hardware]]"
-marlin-version: "2.1.2.8"
+marlin-version: 2.1.2.8
+title: Problemi di movimento, temperatura, estrusione e livellamento
+status: non revisionato
 ---
 
 # Problemi di movimento, temperatura, estrusione e livellamento
@@ -432,9 +442,9 @@ Un reset simultaneo all'attivazione di potenza e un problema elettrico fino a pr
 
 Approfondimenti:
 
-- [[Stampante 3D/Marlin/Pagine/Sensori di temperatura e limiti operativi]]
-- [[Stampante 3D/Marlin/Pagine/Controllo PID MPC e protezioni termiche]]
-- [[Stampante 3D/Marlin/Pagine/Alimentazione e protezioni hardware]]
+- [[Stampante 3D/Marlin/Pagine/Sensori di temperatura e limiti operativi|Sensori di temperatura e limiti operativi]]
+- [[Stampante 3D/Marlin/Pagine/Controllo PID MPC e protezioni termiche|Controllo PID MPC e protezioni termiche]]
+- [[Stampante 3D/Marlin/Pagine/Alimentazione e protezioni hardware|Alimentazione e protezioni hardware]]
 
 ## Diagnostica dell'estrusione
 
@@ -568,9 +578,9 @@ Se il difetto scompare, controllare:
 
 Approfondimenti:
 
-- [[Stampante 3D/Marlin/Pagine/Hotend estrusori e filamento]]
-- [[Stampante 3D/Marlin/Pagine/Limiti di estrusione retrazione e cambio utensile]]
-- [[Stampante 3D/Marlin/Pagine/Linear Advance Input Shaping e compensazioni geometriche]]
+- [[Stampante 3D/Marlin/Pagine/Hotend estrusori e filamento|Hotend estrusori e filamento]]
+- [[Stampante 3D/Marlin/Pagine/Limiti di estrusione retrazione e cambio utensile|Limiti di estrusione retrazione e cambio utensile]]
+- [[Stampante 3D/Marlin/Pagine/Linear Advance Input Shaping e compensazioni geometriche|Linear Advance Input Shaping e compensazioni geometriche]]
 
 ## Diagnostica del probe e del livellamento
 
@@ -781,9 +791,9 @@ Il debug mostra coordinate e sequenze, ma non rende sicuro un movimento errato. 
 
 Approfondimenti:
 
-- [[Stampante 3D/Marlin/Pagine/Probe Z offset e BLTouch]]
-- [[Stampante 3D/Marlin/Pagine/Tipi di bed leveling e configurazione della mesh]]
-- [[Stampante 3D/Marlin/Pagine/Z Safe Homing e allineamento degli assi Z]]
+- [[Stampante 3D/Marlin/Pagine/Probe Z offset e BLTouch|Probe Z offset e BLTouch]]
+- [[Stampante 3D/Marlin/Pagine/Tipi di bed leveling e configurazione della mesh|Tipi di bed leveling e configurazione della mesh]]
+- [[Stampante 3D/Marlin/Pagine/Z Safe Homing e allineamento degli assi Z|Z Safe Homing e allineamento degli assi Z]]
 
 ## Problemi che compaiono solo durante la stampa
 
@@ -874,7 +884,7 @@ M503
 
 ## Collegamenti
 
-- [[Stampante 3D/Marlin/Indice Marlin]]
-- [[Stampante 3D/Marlin/Pagine/Procedura completa di taratura e verifica]]
-- [[Stampante 3D/Marlin/Pagine/G-code per configurazione e diagnostica]]
-- [[Stampante 3D/Marlin/Pagine/Errori di compilazione e avvio]]
+- [[Stampante 3D/Marlin/Indice Marlin|Indice Marlin]]
+- [[Stampante 3D/Marlin/Pagine/Procedura completa di taratura e verifica|Procedura completa di taratura e verifica]]
+- [[Stampante 3D/Marlin/Pagine/G-code per configurazione e diagnostica|G-code per configurazione e diagnostica]]
+- [[Stampante 3D/Marlin/Pagine/Errori di compilazione e avvio|Errori di compilazione e avvio]]

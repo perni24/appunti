@@ -3,13 +3,20 @@ date: 2026-06-03
 area: Programmazione
 topic: Python
 type: operational-note
-status: "non revisionato"
+status: non revisionato
 publish: true
-difficulty: intermediate
-tags: [programmazione, python, testing, tooling]
-aliases: [tox, nox]
+difficulty: intermedio
+tags:
+  - programmazione
+  - python
+  - testing
+  - tooling
+aliases:
+  - tox
+  - nox
 prerequisites: []
 related: []
+title: tox e nox
 ---
 
 # tox e nox
@@ -159,8 +166,8 @@ nox -s tests
 
 ## Collegamenti
 
-- [[Programmazione/Python/Indice python|Indice Python]]
+- [[Programmazione/Python/Indice Python|Indice Python]]
 - [[Programmazione/Python/Pagine/Testing|Testing]]
-- [[Ambienti Virtuali]]
-- [[pre-commit]]
-- [[uv pipx e poetry]]
+- [[Programmazione/Python/Pagine/Ambienti Virtuali|Ambienti Virtuali]]
+- [[Programmazione/Python/Pagine/pre-commit|pre-commit]]
+- [[Programmazione/Python/Pagine/uv pipx e poetry|uv pipx e poetry]]

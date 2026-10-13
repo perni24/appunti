@@ -3,13 +3,24 @@ date: 2026-06-22
 area: Programmazione
 topic: TypeScript
 type: technical-note
-status: "non revisionato"
+status: non revisionato
 publish: true
 difficulty: avanzato
-tags: [typescript, monorepo, project-references, workspace]
-aliases: [Monorepo TypeScript]
-prerequisites: [Project references, Path aliases, tsconfig]
-related: [API tipizzate, Generazione di tipi da API]
+tags:
+  - typescript
+  - monorepo
+  - project-references
+  - workspace
+aliases:
+  - Monorepo TypeScript
+prerequisites:
+  - "[[Programmazione/TypeScript/Pagine/Project references]]"
+  - "[[Programmazione/TypeScript/Pagine/Path aliases]]"
+  - "[[Programmazione/TypeScript/Pagine/tsconfig]]"
+related:
+  - "[[Programmazione/TypeScript/Pagine/API tipizzate]]"
+  - "[[Programmazione/TypeScript/Pagine/Generazione di tipi da API]]"
+title: TypeScript monorepo
 ---
 
 # TypeScript monorepo
@@ -85,7 +96,12 @@ Il root `tsconfig` coordina i progetti TypeScript referenziati.
 
 ## Collegamenti
 
-- [[Project references]]
-- [[Path aliases]]
-- [[API tipizzate]]
-- [[Generazione di tipi da API]]
+- [[Programmazione/TypeScript/Pagine/Project references|Project references]]
+- [[Programmazione/TypeScript/Pagine/Path aliases|Path aliases]]
+- [[Programmazione/TypeScript/Pagine/API tipizzate|API tipizzate]]
+- [[Programmazione/TypeScript/Pagine/Generazione di tipi da API|Generazione di tipi da API]]
+
+
+## Navigazione
+
+- [[Programmazione/TypeScript/Indice TypeScript|Indice TypeScript]]

@@ -3,16 +3,22 @@ date: 2026-07-25
 area: Stampante 3D
 topic: Marlin
 type: theory-note
-
 publish: true
 difficulty: base
-tags: [marlin, firmware, stampante-3d]
-aliases: [Introduzione a Marlin, Marlin 2.1.2.8]
+tags:
+  - marlin
+  - firmware
+  - stampante-3d
+aliases:
+  - Introduzione a Marlin
+  - Marlin 2.1.2.8
 prerequisites: []
 related:
   - "[[Stampante 3D/Marlin/Pagine/Struttura dei file di configurazione Marlin]]"
   - "[[Stampante 3D/Marlin/Pagine/Metodo di configurazione compilazione e caricamento]]"
-marlin-version: "2.1.2.8"
+marlin-version: 2.1.2.8
+title: Introduzione a Marlin 2.1.2.8 e compatibilita
+status: non revisionato
 ---
 
 # Introduzione a Marlin 2.1.2.8 e compatibilita
@@ -157,7 +163,7 @@ L'output aiuta a verificare che la scheda stia eseguendo il firmware atteso. Non
 
 ## Collegamenti
 
-- [[Stampante 3D/Marlin/Indice Marlin]]
-- [[Stampante 3D/Marlin/Pagine/Struttura dei file di configurazione Marlin]]
-- [[Stampante 3D/Marlin/Pagine/Metodo di configurazione compilazione e caricamento]]
-- [[Stampante 3D/Pagine/Introduzione Stamapante 3D]]
+- [[Stampante 3D/Marlin/Indice Marlin|Indice Marlin]]
+- [[Stampante 3D/Marlin/Pagine/Struttura dei file di configurazione Marlin|Struttura dei file di configurazione Marlin]]
+- [[Stampante 3D/Marlin/Pagine/Metodo di configurazione compilazione e caricamento|Metodo di configurazione compilazione e caricamento]]
+- [[Stampante 3D/Pagine/Componenti di una stampante FDM|Componenti di una stampante FDM]]

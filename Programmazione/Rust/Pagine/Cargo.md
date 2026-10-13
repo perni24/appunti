@@ -3,7 +3,7 @@ date: 2026-05-22
 area: Programmazione
 topic: Rust
 type: technical-note
-status: "non revisionato"
+status: non revisionato
 publish: true
 difficulty: base
 tags:
@@ -11,8 +11,8 @@ tags:
   - rust
   - cargo-editions-e-compatibilita
 aliases:
-  - "Cargo Rust"
-  - "Rust package manager"
+  - Cargo Rust
+  - Rust package manager
 prerequisites:
   - "[[Programmazione/Rust/Pagine/Rust 2018 2021 e 2024]]"
   - "[[Programmazione/Rust/Pagine/Cargo.toml]]"
@@ -20,6 +20,7 @@ related:
   - "[[Programmazione/Rust/Pagine/Cargo.lock]]"
   - "[[Programmazione/Rust/Pagine/Crates.io]]"
   - "[[Programmazione/Rust/Pagine/Build profiles]]"
+title: Cargo
 ---
 
 # Cargo
@@ -137,3 +138,8 @@ Questo copre formattazione, lint, test e build ottimizzata.
 - [[Programmazione/Rust/Pagine/Crates.io|Crates.io]]
 - [[Programmazione/Rust/Pagine/Build profiles|Build profiles]]
 - [[Programmazione/Rust/Pagine/Workspace|Workspace]]
+
+
+## Navigazione
+
+- [[Programmazione/Rust/Indice Rust|Indice Rust]]

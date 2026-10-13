@@ -3,7 +3,7 @@ date: 2026-05-27
 area: Programmazione
 topic: Rust
 type: technical-note
-status: "non revisionato"
+status: non revisionato
 publish: true
 difficulty: intermedio
 tags:
@@ -11,8 +11,8 @@ tags:
   - rust
   - backend-networking-e-database
 aliases:
-  - "Connection pooling"
-  - "Pool di connessioni"
+  - Connection pooling
+  - Pool di connessioni
 prerequisites:
   - "[[Programmazione/Rust/Pagine/Runtime async Tokio e async-std]]"
   - "[[Programmazione/Rust/Pagine/Web backend con axum]]"
@@ -21,6 +21,7 @@ related:
   - "[[Programmazione/Rust/Pagine/Diesel]]"
   - "[[Programmazione/Rust/Pagine/SeaORM]]"
   - "[[Programmazione/Rust/Pagine/Performance e profiling]]"
+title: Connection pooling
 ---
 
 # Connection pooling
@@ -155,10 +156,10 @@ Il pool viene creato una volta, poi condiviso nello stato applicativo.
 
 ## Collegamenti
 
-- [[Programmazione/Rust/Indice rust|Indice Rust]]
-- [[Programmazione/Rust/Pagine/Web backend con axum]]
-- [[Programmazione/Rust/Pagine/Runtime async Tokio e async-std]]
-- [[Programmazione/Rust/Pagine/SQLx]]
-- [[Programmazione/Rust/Pagine/Diesel]]
-- [[Programmazione/Rust/Pagine/SeaORM]]
-- [[Programmazione/Rust/Pagine/Performance e profiling]]
+- [[Programmazione/Rust/Indice Rust|Indice Rust]]
+- [[Programmazione/Rust/Pagine/Web backend con axum|Web backend con axum]]
+- [[Programmazione/Rust/Pagine/Runtime async Tokio e async-std|Runtime async Tokio e async-std]]
+- [[Programmazione/Rust/Pagine/SQLx|SQLx]]
+- [[Programmazione/Rust/Pagine/Diesel|Diesel]]
+- [[Programmazione/Rust/Pagine/SeaORM|SeaORM]]
+- [[Programmazione/Rust/Pagine/Performance e profiling|Performance e profiling]]

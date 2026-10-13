@@ -3,13 +3,25 @@ date: 2026-07-07
 area: Programmazione
 topic: GitHub
 type: technical-note
-status: "non revisionato"
+status: non revisionato
 publish: true
 difficulty: intermedio
-tags: [github, token, fine-grained-token, autenticazione]
-aliases: [Fine-grained token GitHub, Fine-grained personal access token]
-prerequisites: [Personal access token GitHub]
-related: [Personal access token GitHub, GitHub REST API, GitHub Apps, Sicurezza dei token GitHub]
+tags:
+  - github
+  - token
+  - fine-grained-token
+  - autenticazione
+aliases:
+  - Fine-grained token GitHub
+  - Fine-grained personal access token
+prerequisites:
+  - "[[Programmazione/GitHub/Pagine/Personal access token GitHub]]"
+related:
+  - "[[Programmazione/GitHub/Pagine/Personal access token GitHub]]"
+  - "[[Programmazione/GitHub/Pagine/GitHub REST API]]"
+  - "[[Programmazione/GitHub/Pagine/GitHub Apps]]"
+  - "[[Programmazione/GitHub/Pagine/Sicurezza dei token GitHub]]"
+title: Fine-grained token GitHub
 ---
 
 # Fine-grained token GitHub
@@ -108,12 +120,12 @@ Non serve un token classic con accesso a tutti i repository personali o di organ
 
 ## Collegamenti
 
-- [[Programmazione/GitHub/Indice GitHub]]
-- [[Personal access token GitHub]]
-- [[GitHub REST API]]
-- [[GitHub GraphQL API]]
-- [[GitHub Apps]]
-- [[Sicurezza dei token GitHub]]
+- [[Programmazione/GitHub/Indice GitHub|Indice GitHub]]
+- [[Programmazione/GitHub/Pagine/Personal access token GitHub|Personal access token GitHub]]
+- [[Programmazione/GitHub/Pagine/GitHub REST API|GitHub REST API]]
+- [[Programmazione/GitHub/Pagine/GitHub GraphQL API|GitHub GraphQL API]]
+- [[Programmazione/GitHub/Pagine/GitHub Apps|GitHub Apps]]
+- [[Programmazione/GitHub/Pagine/Sicurezza dei token GitHub|Sicurezza dei token GitHub]]
 
 ## Fonti
 

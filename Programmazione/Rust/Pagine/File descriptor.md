@@ -3,7 +3,7 @@ date: 2026-05-26
 area: Programmazione
 topic: Rust
 type: technical-note
-status: "non revisionato"
+status: non revisionato
 publish: true
 difficulty: avanzato
 tags:
@@ -11,8 +11,8 @@ tags:
   - rust
   - rust-di-sistema
 aliases:
-  - "File descriptor"
-  - "fd"
+  - File descriptor
+  - fd
 prerequisites:
   - "[[Programmazione/Rust/Pagine/File I O]]"
   - "[[Programmazione/Rust/Pagine/Ownership]]"
@@ -21,6 +21,7 @@ related:
   - "[[Programmazione/Rust/Pagine/FFI]]"
   - "[[Programmazione/Rust/Pagine/Process e Command]]"
   - "[[Programmazione/Rust/Pagine/Memory mapping]]"
+title: File descriptor
 ---
 
 # File descriptor
@@ -152,10 +153,10 @@ Questo evita leak e rende la chiusura automatica.
 
 ## Collegamenti
 
-- [[Programmazione/Rust/Indice rust|Indice Rust]]
-- [[Programmazione/Rust/Pagine/File I O]]
-- [[Programmazione/Rust/Pagine/Ownership]]
-- [[Programmazione/Rust/Pagine/libc e nix]]
-- [[Programmazione/Rust/Pagine/FFI]]
-- [[Programmazione/Rust/Pagine/Process e Command]]
-- [[Programmazione/Rust/Pagine/Memory mapping]]
+- [[Programmazione/Rust/Indice Rust|Indice Rust]]
+- [[Programmazione/Rust/Pagine/File I O|File I O]]
+- [[Programmazione/Rust/Pagine/Ownership|Ownership]]
+- [[Programmazione/Rust/Pagine/libc e nix|libc e nix]]
+- [[Programmazione/Rust/Pagine/FFI|FFI]]
+- [[Programmazione/Rust/Pagine/Process e Command|Process e Command]]
+- [[Programmazione/Rust/Pagine/Memory mapping|Memory mapping]]

@@ -3,13 +3,24 @@ date: 2026-06-22
 area: Programmazione
 topic: TypeScript
 type: technical-note
-status: "non revisionato"
+status: non revisionato
 publish: true
 difficulty: avanzato
-tags: [typescript, utility-types, type-system, mapped-types]
-aliases: [Custom utility types]
-prerequisites: [Utility Types, Mapped Types, Conditional Types]
-related: [Generics avanzati, Infer nei Conditional Types]
+tags:
+  - typescript
+  - utility-types
+  - type-system
+  - mapped-types
+aliases:
+  - Custom utility types
+prerequisites:
+  - "[[Programmazione/TypeScript/Pagine/Utility Types]]"
+  - "[[Programmazione/TypeScript/Pagine/Mapped Types]]"
+  - "[[Programmazione/TypeScript/Pagine/Conditional Types]]"
+related:
+  - "[[Programmazione/TypeScript/Pagine/Generics avanzati]]"
+  - "[[Programmazione/TypeScript/Pagine/Infer nei Conditional Types]]"
+title: Utility Types personalizzati
 ---
 
 # Utility Types personalizzati
@@ -83,7 +94,12 @@ type PersistedUser = RequireKeys<DraftUser, "id" | "email">;
 
 ## Collegamenti
 
-- [[Utility Types]]
-- [[Mapped Types]]
-- [[Conditional Types]]
-- [[Infer nei Conditional Types]]
+- [[Programmazione/TypeScript/Pagine/Utility Types|Utility Types]]
+- [[Programmazione/TypeScript/Pagine/Mapped Types|Mapped Types]]
+- [[Programmazione/TypeScript/Pagine/Conditional Types|Conditional Types]]
+- [[Programmazione/TypeScript/Pagine/Infer nei Conditional Types|Infer nei Conditional Types]]
+
+
+## Navigazione
+
+- [[Programmazione/TypeScript/Indice TypeScript|Indice TypeScript]]

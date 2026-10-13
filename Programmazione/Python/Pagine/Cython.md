@@ -3,13 +3,19 @@ date: 2026-06-03
 area: Programmazione
 topic: Python
 type: technical-note
-status: "non revisionato"
+status: non revisionato
 publish: true
-difficulty: advanced
-tags: [programmazione, python, cython, performance]
-aliases: [Cython]
+difficulty: avanzato
+tags:
+  - programmazione
+  - python
+  - cython
+  - performance
+aliases:
+  - Cython
 prerequisites: []
 related: []
+title: Cython
 ---
 
 # Cython
@@ -110,8 +116,8 @@ La parte importante e non perdere correttezza mentre migliori performance.
 
 ## Collegamenti
 
-- [[Programmazione/Python/Indice python|Indice Python]]
-- [[C extensions]]
-- [[Profiling]]
-- [[NumPy]]
-- [[Memory Management]]
+- [[Programmazione/Python/Indice Python|Indice Python]]
+- [[Programmazione/Python/Pagine/C extensions|C extensions]]
+- [[Programmazione/Python/Pagine/Profiling|Profiling]]
+- [[Programmazione/Python/Pagine/NumPy|NumPy]]
+- [[Programmazione/Python/Pagine/Memory Management|Memory Management]]

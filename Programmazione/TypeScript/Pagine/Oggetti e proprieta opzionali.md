@@ -3,13 +3,23 @@ date: 2026-06-22
 area: Programmazione
 topic: TypeScript
 type: technical-note
-status: "non revisionato"
+status: non revisionato
 publish: true
 difficulty: base
-tags: [typescript, oggetti, optional-properties, object-types]
-aliases: [Oggetti e proprieta opzionali]
-prerequisites: [Type Aliases e Interfaces, Tipi primitivi]
-related: [Index Signatures, Type Aliases e Interfaces]
+tags:
+  - typescript
+  - oggetti
+  - optional-properties
+  - object-types
+aliases:
+  - Oggetti e proprieta opzionali
+prerequisites:
+  - "[[Programmazione/TypeScript/Pagine/Type Aliases e Interfaces]]"
+  - "[[Programmazione/TypeScript/Pagine/Tipi primitivi]]"
+related:
+  - "[[Programmazione/TypeScript/Pagine/Index Signatures]]"
+  - "[[Programmazione/TypeScript/Pagine/Type Aliases e Interfaces]]"
+title: Oggetti e proprieta opzionali
 ---
 
 # Oggetti e proprieta opzionali
@@ -89,6 +99,11 @@ function sendMail(options: MailOptions): void {
 
 ## Collegamenti
 
-- [[Type Aliases e Interfaces]]
-- [[Index Signatures]]
-- [[Utility Types]]
+- [[Programmazione/TypeScript/Pagine/Type Aliases e Interfaces|Type Aliases e Interfaces]]
+- [[Programmazione/TypeScript/Pagine/Index Signatures|Index Signatures]]
+- [[Programmazione/TypeScript/Pagine/Utility Types|Utility Types]]
+
+
+## Navigazione
+
+- [[Programmazione/TypeScript/Indice TypeScript|Indice TypeScript]]

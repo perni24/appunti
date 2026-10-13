@@ -3,7 +3,7 @@ date: 2026-05-28
 area: Programmazione
 topic: Rust
 type: technical-note
-status: "non revisionato"
+status: non revisionato
 publish: true
 difficulty: intermedio
 tags:
@@ -11,8 +11,8 @@ tags:
   - rust
   - api-design-idiomatico
 aliases:
-  - "Documentazione delle crate"
-  - "Crate documentation"
+  - Documentazione delle crate
+  - Crate documentation
 prerequisites:
   - "[[Programmazione/Rust/Pagine/rustdoc]]"
   - "[[Programmazione/Rust/Pagine/Doc test]]"
@@ -21,6 +21,7 @@ related:
   - "[[Programmazione/Rust/Pagine/Error types pubblici]]"
   - "[[Programmazione/Rust/Pagine/Feature flags ben progettate]]"
   - "[[Programmazione/Rust/Pagine/Packaging e release]]"
+title: Documentazione delle crate
 ---
 
 # Documentazione delle crate
@@ -169,11 +170,11 @@ La documentazione mostra subito lo scopo e un esempio verificabile.
 
 ## Collegamenti
 
-- [[Programmazione/Rust/Indice rust|Indice Rust]]
-- [[Programmazione/Rust/Pagine/rustdoc]]
-- [[Programmazione/Rust/Pagine/Doc test]]
-- [[Programmazione/Rust/Pagine/Public API design]]
-- [[Programmazione/Rust/Pagine/Error types pubblici]]
-- [[Programmazione/Rust/Pagine/Feature flags ben progettate]]
-- [[Programmazione/Rust/Pagine/Compatibility e breaking changes]]
-- [[Programmazione/Rust/Pagine/Packaging e release]]
+- [[Programmazione/Rust/Indice Rust|Indice Rust]]
+- [[Programmazione/Rust/Pagine/rustdoc|rustdoc]]
+- [[Programmazione/Rust/Pagine/Doc test|Doc test]]
+- [[Programmazione/Rust/Pagine/Public API design|Public API design]]
+- [[Programmazione/Rust/Pagine/Error types pubblici|Error types pubblici]]
+- [[Programmazione/Rust/Pagine/Feature flags ben progettate|Feature flags ben progettate]]
+- [[Programmazione/Rust/Pagine/Compatibility e breaking changes|Compatibility e breaking changes]]
+- [[Programmazione/Rust/Pagine/Packaging e release|Packaging e release]]

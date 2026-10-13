@@ -3,13 +3,24 @@ date: 2026-07-09
 area: Programmazione
 topic: Clean Code
 type: technical-note
-status: "non revisionato"
+status: non revisionato
 publish: true
 difficulty: avanzato
-tags: [clean-code, llm, validazione]
-aliases: [Validazione dei dati generati, Validation of generated data]
-prerequisites: [Output strutturati, Validazione ai confini]
-related: [Prompt e codice applicativo, Parsing di input esterni, Codice pronto al deploy]
+tags:
+  - clean-code
+  - llm
+  - validazione
+aliases:
+  - Validazione dei dati generati
+  - Validation of generated data
+prerequisites:
+  - "[[Programmazione/Clean Code/Pagine/Output strutturati]]"
+  - "[[Programmazione/Clean Code/Pagine/Validazione ai confini]]"
+related:
+  - "[[Programmazione/Clean Code/Pagine/Prompt e codice applicativo]]"
+  - "[[Programmazione/Clean Code/Pagine/Parsing di input esterni]]"
+  - "[[Programmazione/Clean Code/Pagine/Codice pronto al deploy]]"
+title: Validazione dei dati generati
 ---
 
 # Validazione dei dati generati
@@ -96,12 +107,12 @@ Il dato generato viene accettato solo se rispetta schema e valori ammessi.
 
 ## Collegamenti
 
-- [[Programmazione/Clean Code/Indice Clean Code]]
-- [[Output strutturati]]
-- [[Prompt e codice applicativo]]
-- [[Validazione ai confini]]
-- [[Parsing di input esterni]]
-- [[Codice pronto al deploy]]
+- [[Programmazione/Clean Code/Indice Clean Code|Indice Clean Code]]
+- [[Programmazione/Clean Code/Pagine/Output strutturati|Output strutturati]]
+- [[Programmazione/Clean Code/Pagine/Prompt e codice applicativo|Prompt e codice applicativo]]
+- [[Programmazione/Clean Code/Pagine/Validazione ai confini|Validazione ai confini]]
+- [[Programmazione/Clean Code/Pagine/Parsing di input esterni|Parsing di input esterni]]
+- [[Programmazione/Clean Code/Pagine/Codice pronto al deploy|Codice pronto al deploy]]
 
 ## Fonti
 

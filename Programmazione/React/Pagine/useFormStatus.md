@@ -3,13 +3,18 @@ date: 2026-06-04
 area: Programmazione
 topic: React
 type: technical-note
-status: "non revisionato"
+status: non revisionato
 publish: true
-difficulty: advanced
-tags: [react, hooks, forms]
-aliases: [useFormStatus]
+difficulty: avanzato
+tags:
+  - react
+  - hooks
+  - forms
+aliases:
+  - useFormStatus
 prerequisites: []
 related: []
+title: useFormStatus
 ---
 
 # useFormStatus
@@ -88,8 +93,8 @@ function SaveButton() {
 
 ## Collegamenti
 
-- [[Programmazione/React/Indice react|Indice React]]
-- [[Actions e form actions]]
-- [[useActionState]]
-- [[Gestione Moduli]]
+- [[Programmazione/React/Indice React|Indice React]]
+- [[Programmazione/React/Pagine/Actions e form actions|Actions e form actions]]
+- [[Programmazione/React/Pagine/useActionState|useActionState]]
+- [[Programmazione/React/Pagine/Gestione Moduli|Gestione Moduli]]
 - [React Hooks reference](https://react.dev/reference/react/hooks)

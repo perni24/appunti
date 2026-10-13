@@ -3,13 +3,24 @@ date: 2026-07-09
 area: Programmazione
 topic: Clean Code
 type: theory-note
-status: "non revisionato"
+status: non revisionato
 publish: true
 difficulty: intermedio
-tags: [clean-code, testing, unit-test]
-aliases: [Test unitari leggibili, Readable unit tests]
-prerequisites: [Codice testabile, Arrange Act Assert]
-related: [Test come documentazione, Test data builders, Codice testabile]
+tags:
+  - clean-code
+  - testing
+  - unit-test
+aliases:
+  - Test unitari leggibili
+  - Readable unit tests
+prerequisites:
+  - "[[Programmazione/Clean Code/Pagine/Codice testabile]]"
+  - "[[Programmazione/Clean Code/Pagine/Arrange Act Assert]]"
+related:
+  - "[[Programmazione/Clean Code/Pagine/Test come documentazione]]"
+  - "[[Programmazione/Clean Code/Pagine/Test data builders]]"
+  - "[[Programmazione/Clean Code/Pagine/Codice testabile]]"
+title: Test unitari leggibili
 ---
 
 # Test unitari leggibili
@@ -77,12 +88,12 @@ Il test mostra scenario, azione e aspettativa senza dettagli irrilevanti.
 
 ## Collegamenti
 
-- [[Programmazione/Clean Code/Indice Clean Code]]
-- [[Codice testabile]]
-- [[Arrange Act Assert]]
-- [[Test come documentazione]]
-- [[Test data builders]]
-- [[Funzioni piccole]]
+- [[Programmazione/Clean Code/Indice Clean Code|Indice Clean Code]]
+- [[Programmazione/Clean Code/Pagine/Codice testabile|Codice testabile]]
+- [[Programmazione/Clean Code/Pagine/Arrange Act Assert|Arrange Act Assert]]
+- [[Programmazione/Clean Code/Pagine/Test come documentazione|Test come documentazione]]
+- [[Programmazione/Clean Code/Pagine/Test data builders|Test data builders]]
+- [[Programmazione/Clean Code/Pagine/Funzioni piccole|Funzioni piccole]]
 
 ## Fonti
 

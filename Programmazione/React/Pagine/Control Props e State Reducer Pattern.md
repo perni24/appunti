@@ -3,13 +3,21 @@ date: 2026-06-04
 area: Programmazione
 topic: React
 type: technical-note
-status: "non revisionato"
+status: non revisionato
 publish: true
-difficulty: advanced
-tags: [react, patterns, state]
-aliases: [Control Props, State Reducer Pattern, Render props, Componenti controllati]
+difficulty: avanzato
+tags:
+  - react
+  - patterns
+  - state
+aliases:
+  - Control Props
+  - State Reducer Pattern
+  - Render props
+  - Componenti controllati
 prerequisites: []
 related: []
+title: Control Props e State Reducer Pattern
 ---
 
 # Control Props e State Reducer Pattern
@@ -100,8 +108,8 @@ Il componente non possiede piu lo stato: lo riceve dal parent e notifica cambiam
 
 ## Collegamenti
 
-- [[Programmazione/React/Indice react|Indice React]]
-- [[Props e Flusso di dati unidirezionale]]
-- [[Compound Components Pattern]]
-- [[useReducer]]
-- [[Design system]]
+- [[Programmazione/React/Indice React|Indice React]]
+- [[Programmazione/React/Pagine/Props e Flusso di dati unidirezionale|Props e Flusso di dati unidirezionale]]
+- [[Programmazione/React/Pagine/Compound Components Pattern|Compound Components Pattern]]
+- [[Programmazione/React/Pagine/useReducer|useReducer]]
+- [[Programmazione/React/Pagine/Design system|Design system]]

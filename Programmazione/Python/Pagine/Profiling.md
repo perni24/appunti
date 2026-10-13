@@ -3,13 +3,18 @@ date: 2026-06-03
 area: Programmazione
 topic: Python
 type: technical-note
-status: "non revisionato"
+status: non revisionato
 publish: true
-difficulty: intermediate
-tags: [python, programming, performance]
-aliases: [Profiling]
+difficulty: intermedio
+tags:
+  - python
+  - programming
+  - performance
+aliases:
+  - Profiling
 prerequisites: []
 related: []
+title: Profiling in Python
 ---
 
 # Profiling in Python
@@ -152,9 +157,9 @@ Dopo aver individuato il collo di bottiglia, modifica solo quella parte e rieseg
 
 ## Collegamenti
 
-- [[Programmazione/Python/Indice python|Indice Python]]
-- [[Memory Management]]
-- [[Caching]]
-- [[Generatori]]
-- [[Logging]]
+- [[Programmazione/Python/Indice Python|Indice Python]]
+- [[Programmazione/Python/Pagine/Memory Management|Memory Management]]
+- [[Programmazione/Python/Pagine/Caching|Caching]]
+- [[Programmazione/Python/Pagine/Generatori|Generatori]]
+- [[Programmazione/Python/Pagine/Logging|Logging]]
 - [[Programmazione/Python/Pagine/Testing|Testing]]

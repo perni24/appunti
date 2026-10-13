@@ -3,13 +3,24 @@ date: 2026-07-09
 area: Programmazione
 topic: Clean Code
 type: technical-note
-status: "non revisionato"
+status: non revisionato
 publish: true
 difficulty: avanzato
-tags: [clean-code, database, migrazioni]
-aliases: [Migrazioni e schema evolution, Schema evolution]
-prerequisites: [Query leggibili, Codice pronto al deploy]
-related: [Repository pattern, Configurazione applicativa, Test di integrazione]
+tags:
+  - clean-code
+  - database
+  - migrazioni
+aliases:
+  - Migrazioni e schema evolution
+  - Schema evolution
+prerequisites:
+  - "[[Programmazione/Clean Code/Pagine/Query leggibili]]"
+  - "[[Programmazione/Clean Code/Pagine/Codice pronto al deploy]]"
+related:
+  - "[[Programmazione/Clean Code/Pagine/Repository pattern]]"
+  - "[[Programmazione/Clean Code/Pagine/Configurazione applicativa]]"
+  - "[[Programmazione/Clean Code/Pagine/Test di integrazione]]"
+title: Migrazioni e schema evolution
 ---
 
 # Migrazioni e schema evolution
@@ -89,11 +100,11 @@ La modifica evita rotture durante deploy parziali.
 
 ## Collegamenti
 
-- [[Programmazione/Clean Code/Indice Clean Code]]
-- [[Query leggibili]]
-- [[Repository pattern]]
-- [[Codice pronto al deploy]]
-- [[Test di integrazione]]
+- [[Programmazione/Clean Code/Indice Clean Code|Indice Clean Code]]
+- [[Programmazione/Clean Code/Pagine/Query leggibili|Query leggibili]]
+- [[Programmazione/Clean Code/Pagine/Repository pattern|Repository pattern]]
+- [[Programmazione/Clean Code/Pagine/Codice pronto al deploy|Codice pronto al deploy]]
+- [[Programmazione/Clean Code/Pagine/Test di integrazione|Test di integrazione]]
 - [[Programmazione/Clean Code/Pagine/Configurazione applicativa|Configurazione applicativa]]
 
 ## Fonti

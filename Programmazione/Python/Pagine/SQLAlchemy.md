@@ -3,13 +3,19 @@ date: 2026-06-03
 area: Programmazione
 topic: Python
 type: technical-note
-status: "non revisionato"
+status: non revisionato
 publish: true
-difficulty: intermediate
-tags: [programmazione, python, database, orm]
-aliases: [SQLAlchemy]
+difficulty: intermedio
+tags:
+  - programmazione
+  - python
+  - database
+  - orm
+aliases:
+  - SQLAlchemy
 prerequisites: []
 related: []
+title: SQLAlchemy
 ---
 
 # SQLAlchemy
@@ -151,8 +157,8 @@ with Session(engine) as session:
 
 ## Collegamenti
 
-- [[Programmazione/Python/Indice python|Indice Python]]
-- [[Alembic]]
-- [[SQLite con sqlite3]]
-- [[Programmazione/Postgres/Pagine/ORM|ORM]]
-- [[Programmazione/Postgres/Indice postgres|Postgres]]
+- [[Programmazione/Python/Indice Python|Indice Python]]
+- [[Programmazione/Python/Pagine/Alembic|Alembic]]
+- [[Programmazione/Python/Pagine/SQLite con sqlite3|SQLite con sqlite3]]
+- [[Programmazione/PostgreSQL/Pagine/ORM|ORM]]
+- [[Programmazione/PostgreSQL/Indice PostgreSQL|Postgres]]

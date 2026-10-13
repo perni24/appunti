@@ -3,13 +3,24 @@ date: 2026-07-09
 area: Programmazione
 topic: Clean Code
 type: theory-note
-status: "non revisionato"
+status: non revisionato
 publish: true
 difficulty: avanzato
-tags: [clean-code, invarianti, stato]
-aliases: [Invarianti interne, Internal invariants]
-prerequisites: [Invarianti del dominio, Incapsulamento]
-related: [Gestione dello stato, Lifecycle degli oggetti, Modellare stati impossibili]
+tags:
+  - clean-code
+  - invarianti
+  - stato
+aliases:
+  - Invarianti interne
+  - Internal invariants
+prerequisites:
+  - "[[Programmazione/Clean Code/Pagine/Invarianti del dominio]]"
+  - "[[Programmazione/Clean Code/Pagine/Incapsulamento]]"
+related:
+  - "[[Programmazione/Clean Code/Pagine/Gestione dello stato]]"
+  - "[[Programmazione/Clean Code/Pagine/Lifecycle degli oggetti]]"
+  - "[[Programmazione/Clean Code/Pagine/Modellare stati impossibili]]"
+title: Invarianti interne
 ---
 
 # Invarianti interne
@@ -83,12 +94,12 @@ L'oggetto protegge direttamente il proprio limite.
 
 ## Collegamenti
 
-- [[Programmazione/Clean Code/Indice Clean Code]]
-- [[Invarianti del dominio]]
+- [[Programmazione/Clean Code/Indice Clean Code|Indice Clean Code]]
+- [[Programmazione/Clean Code/Pagine/Invarianti del dominio|Invarianti del dominio]]
 - [[Programmazione/Clean Code/Pagine/Incapsulamento|Incapsulamento]]
-- [[Gestione dello stato]]
-- [[Lifecycle degli oggetti]]
-- [[Modellare stati impossibili]]
+- [[Programmazione/Clean Code/Pagine/Gestione dello stato|Gestione dello stato]]
+- [[Programmazione/Clean Code/Pagine/Lifecycle degli oggetti|Lifecycle degli oggetti]]
+- [[Programmazione/Clean Code/Pagine/Modellare stati impossibili|Modellare stati impossibili]]
 
 ## Fonti
 

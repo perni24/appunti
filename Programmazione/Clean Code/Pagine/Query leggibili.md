@@ -3,13 +3,23 @@ date: 2026-07-09
 area: Programmazione
 topic: Clean Code
 type: technical-note
-status: "non revisionato"
+status: non revisionato
 publish: true
 difficulty: intermedio
-tags: [clean-code, database, query]
-aliases: [Query leggibili, Readable queries]
-prerequisites: [Repository pattern]
-related: [Migrazioni e schema evolution, Performance e leggibilita, Messaggi di errore utili]
+tags:
+  - clean-code
+  - database
+  - query
+aliases:
+  - Query leggibili
+  - Readable queries
+prerequisites:
+  - "[[Programmazione/Clean Code/Pagine/Repository pattern]]"
+related:
+  - "[[Programmazione/Clean Code/Pagine/Migrazioni e schema evolution]]"
+  - "[[Programmazione/Clean Code/Pagine/Performance e leggibilita]]"
+  - "[[Programmazione/Clean Code/Pagine/Messaggi di errore utili]]"
+title: Query leggibili
 ---
 
 # Query leggibili
@@ -102,11 +112,11 @@ La seconda evita `SELECT *`, usa join esplicito e mostra i campi necessari.
 
 ## Collegamenti
 
-- [[Programmazione/Clean Code/Indice Clean Code]]
-- [[Repository pattern]]
-- [[Performance e leggibilita]]
-- [[Profiling prima del refactoring]]
-- [[Migrazioni e schema evolution]]
+- [[Programmazione/Clean Code/Indice Clean Code|Indice Clean Code]]
+- [[Programmazione/Clean Code/Pagine/Repository pattern|Repository pattern]]
+- [[Programmazione/Clean Code/Pagine/Performance e leggibilita|Performance e leggibilita]]
+- [[Programmazione/Clean Code/Pagine/Profiling prima del refactoring|Profiling prima del refactoring]]
+- [[Programmazione/Clean Code/Pagine/Migrazioni e schema evolution|Migrazioni e schema evolution]]
 
 ## Fonti
 

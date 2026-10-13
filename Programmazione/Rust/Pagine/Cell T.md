@@ -3,7 +3,7 @@ date: 2026-05-22
 area: Programmazione
 topic: Rust
 type: technical-note
-status: "non revisionato"
+status: non revisionato
 publish: true
 difficulty: intermedio
 tags:
@@ -11,8 +11,8 @@ tags:
   - rust
   - smart-pointers-e-interior-mutability
 aliases:
-  - "Cell<T>"
-  - "Cell Rust"
+  - Cell<T>
+  - Cell Rust
 prerequisites:
   - "[[Programmazione/Rust/Pagine/Interior mutability]]"
   - "[[Programmazione/Rust/Pagine/Copy e Clone]]"
@@ -21,6 +21,7 @@ related:
   - "[[Programmazione/Rust/Pagine/RefCell T]]"
   - "[[Programmazione/Rust/Pagine/OnceLock e LazyLock]]"
   - "[[Programmazione/Rust/Pagine/Send e Sync Traits]]"
+title: Cell<T>
 ---
 
 # Cell<T>
@@ -118,3 +119,8 @@ impl Metrics {
 - [[Programmazione/Rust/Pagine/Copy e Clone|Copy e Clone]]
 - [[Programmazione/Rust/Pagine/OnceLock e LazyLock|OnceLock e LazyLock]]
 - [[Programmazione/Rust/Pagine/Send e Sync Traits|Send e Sync Traits]]
+
+
+## Navigazione
+
+- [[Programmazione/Rust/Indice Rust|Indice Rust]]

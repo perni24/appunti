@@ -3,13 +3,18 @@ date: 2026-06-03
 area: Programmazione
 topic: Python
 type: technical-note
-status: "non revisionato"
+status: non revisionato
 publish: true
-difficulty: beginner
-tags: [python, programming, standard-library]
-aliases: [Standard Library di Python]
+difficulty: base
+tags:
+  - python
+  - programming
+  - standard-library
+aliases:
+  - Standard Library di Python
 prerequisites: []
 related: []
+title: Standard Library di Python
 ---
 
 # Standard Library di Python
@@ -145,11 +150,11 @@ Alcuni moduli hanno differenze tra sistemi operativi. Per esempio `os`, `signal`
 
 ## Collegamenti
 
-- [[Programmazione/Python/Indice python|Indice Python]]
-- [[Gestione File]]
-- [[Introspezione]]
-- [[Caching]]
-- [[Logging]]
+- [[Programmazione/Python/Indice Python|Indice Python]]
+- [[Programmazione/Python/Pagine/Gestione File|Gestione File]]
+- [[Programmazione/Python/Pagine/Introspezione|Introspezione]]
+- [[Programmazione/Python/Pagine/Caching|Caching]]
+- [[Programmazione/Python/Pagine/Logging|Logging]]
 - [[Programmazione/Python/Pagine/Testing|Testing]]
-- [[Asyncio]]
-- [[Threading]]
+- [[Programmazione/Python/Pagine/Asyncio|Asyncio]]
+- [[Programmazione/Python/Pagine/Threading|Threading]]

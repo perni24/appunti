@@ -3,13 +3,22 @@ date: 2026-07-09
 area: Programmazione
 topic: Clean Code
 type: theory-note
-status: "non revisionato"
+status: non revisionato
 publish: true
 difficulty: base
-tags: [clean-code, naming, leggibilita]
-aliases: [Naming di variabili e funzioni, Naming]
-prerequisites: [Clean Code]
-related: [Nomi che rivelano intenzione, Leggibilita del codice]
+tags:
+  - clean-code
+  - naming
+  - leggibilita
+aliases:
+  - Naming di variabili e funzioni
+  - Naming
+prerequisites:
+  - "[[Programmazione/Clean Code/Pagine/Clean Code]]"
+related:
+  - "[[Programmazione/Clean Code/Pagine/Nomi che rivelano intenzione]]"
+  - "[[Programmazione/Clean Code/Pagine/Leggibilita del codice]]"
+title: Naming di variabili e funzioni
 ---
 
 # Naming di variabili e funzioni
@@ -81,11 +90,11 @@ Il secondo esempio comunica il dominio senza leggere l'implementazione.
 
 ## Collegamenti
 
-- [[Programmazione/Clean Code/Indice Clean Code]]
-- [[Nomi che rivelano intenzione]]
-- [[Leggibilita del codice]]
-- [[Funzioni con responsabilita singola]]
-- [[Codice esplicito vs codice implicito]]
+- [[Programmazione/Clean Code/Indice Clean Code|Indice Clean Code]]
+- [[Programmazione/Clean Code/Pagine/Nomi che rivelano intenzione|Nomi che rivelano intenzione]]
+- [[Programmazione/Clean Code/Pagine/Leggibilita del codice|Leggibilita del codice]]
+- [[Programmazione/Clean Code/Pagine/Funzioni con responsabilita singola|Funzioni con responsabilita singola]]
+- [[Programmazione/Clean Code/Pagine/Codice esplicito vs codice implicito|Codice esplicito vs codice implicito]]
 
 ## Fonti
 

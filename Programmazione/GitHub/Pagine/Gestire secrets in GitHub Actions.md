@@ -3,13 +3,26 @@ date: 2026-07-07
 area: Programmazione
 topic: GitHub
 type: operational-note
-status: "non revisionato"
+status: non revisionato
 publish: true
 difficulty: intermedio
-tags: [github, github-actions, secrets, sicurezza, procedura]
-aliases: [Gestire secrets in GitHub Actions, Gestione secrets GitHub Actions]
-prerequisites: [Variabili e secrets GitHub Actions, Permissions GitHub Actions]
-related: [Environments GitHub Actions, OIDC GitHub Actions, Secret scanning]
+tags:
+  - github
+  - github-actions
+  - secrets
+  - sicurezza
+  - procedura
+aliases:
+  - Gestire secrets in GitHub Actions
+  - Gestione secrets GitHub Actions
+prerequisites:
+  - "[[Programmazione/GitHub/Pagine/Variabili e secrets GitHub Actions]]"
+  - "[[Programmazione/GitHub/Pagine/Permissions GitHub Actions]]"
+related:
+  - "[[Programmazione/GitHub/Pagine/Environments GitHub Actions]]"
+  - "[[Programmazione/GitHub/Pagine/OIDC GitHub Actions]]"
+  - "[[Programmazione/GitHub/Pagine/Secret scanning]]"
+title: Gestire secrets in GitHub Actions
 ---
 
 # Gestire secrets in GitHub Actions
@@ -97,13 +110,13 @@ permissions:
 
 ## Collegamenti
 
-- [[Programmazione/GitHub/Indice GitHub]]
-- [[Variabili e secrets GitHub Actions]]
-- [[Permissions GitHub Actions]]
-- [[Environments GitHub Actions]]
-- [[OIDC GitHub Actions]]
-- [[Secret scanning]]
-- [[Sicurezza dei token GitHub]]
+- [[Programmazione/GitHub/Indice GitHub|Indice GitHub]]
+- [[Programmazione/GitHub/Pagine/Variabili e secrets GitHub Actions|Variabili e secrets GitHub Actions]]
+- [[Programmazione/GitHub/Pagine/Permissions GitHub Actions|Permissions GitHub Actions]]
+- [[Programmazione/GitHub/Pagine/Environments GitHub Actions|Environments GitHub Actions]]
+- [[Programmazione/GitHub/Pagine/OIDC GitHub Actions|OIDC GitHub Actions]]
+- [[Programmazione/GitHub/Pagine/Secret scanning|Secret scanning]]
+- [[Programmazione/GitHub/Pagine/Sicurezza dei token GitHub|Sicurezza dei token GitHub]]
 
 ## Fonti
 

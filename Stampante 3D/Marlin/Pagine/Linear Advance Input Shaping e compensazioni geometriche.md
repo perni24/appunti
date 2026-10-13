@@ -3,16 +3,25 @@ date: 2026-07-25
 area: Stampante 3D
 topic: Marlin
 type: technical-note
-
 publish: true
 difficulty: avanzato
-tags: [marlin, linear-advance, input-shaping, skew, backlash]
-aliases: [Compensazioni Marlin, Linear Advance Marlin, Input Shaping Marlin]
+tags:
+  - marlin
+  - linear-advance
+  - input-shaping
+  - skew
+  - backlash
+aliases:
+  - Compensazioni Marlin
+  - Linear Advance Marlin
+  - Input Shaping Marlin
 prerequisites:
   - "[[Stampante 3D/Marlin/Pagine/Velocita accelerazioni Jerk e Junction Deviation]]"
   - "[[Stampante 3D/Marlin/Pagine/Segmentazione curve e precisione dei movimenti]]"
 related: []
-marlin-version: "2.1.2.8"
+marlin-version: 2.1.2.8
+title: Linear Advance, Input Shaping e compensazioni geometriche
+status: non revisionato
 ---
 
 # Linear Advance, Input Shaping e compensazioni geometriche
@@ -624,7 +633,7 @@ Dopo una modifica dei valori compilati, usare `M502` seguito da `M500` se si vuo
 
 ## Collegamenti
 
-- [[Stampante 3D/Marlin/Indice Marlin]]
-- [[Stampante 3D/Marlin/Pagine/Velocita accelerazioni Jerk e Junction Deviation]]
-- [[Stampante 3D/Marlin/Pagine/Segmentazione curve e precisione dei movimenti]]
-- [[Stampante 3D/Marlin/Pagine/Babystepping e regolazioni dinamiche]]
+- [[Stampante 3D/Marlin/Indice Marlin|Indice Marlin]]
+- [[Stampante 3D/Marlin/Pagine/Velocita accelerazioni Jerk e Junction Deviation|Velocita accelerazioni Jerk e Junction Deviation]]
+- [[Stampante 3D/Marlin/Pagine/Segmentazione curve e precisione dei movimenti|Segmentazione curve e precisione dei movimenti]]
+- [[Stampante 3D/Marlin/Pagine/Babystepping e regolazioni dinamiche|Babystepping e regolazioni dinamiche]]

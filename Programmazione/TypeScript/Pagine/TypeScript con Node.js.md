@@ -3,13 +3,26 @@ date: 2026-06-22
 area: Programmazione
 topic: TypeScript
 type: technical-note
-status: "non revisionato"
+status: non revisionato
 publish: true
 difficulty: intermedio
-tags: [typescript, nodejs, backend, esm, commonjs]
-aliases: [Node.js con TypeScript]
-prerequisites: [tsconfig, Moduli ES e CommonJS, Module resolution]
-related: [TypeScript con Express-Fastify, API tipizzate, Source maps e debugging]
+tags:
+  - typescript
+  - nodejs
+  - backend
+  - esm
+  - commonjs
+aliases:
+  - Node.js con TypeScript
+prerequisites:
+  - "[[Programmazione/TypeScript/Pagine/tsconfig]]"
+  - "[[Programmazione/TypeScript/Pagine/Moduli ES e CommonJS]]"
+  - "[[Programmazione/TypeScript/Pagine/Module resolution]]"
+related:
+  - "[[Programmazione/TypeScript/Pagine/TypeScript con Express-Fastify]]"
+  - "[[Programmazione/TypeScript/Pagine/API tipizzate]]"
+  - "[[Programmazione/TypeScript/Pagine/Source maps e debugging]]"
+title: TypeScript con Node.js
 ---
 
 # TypeScript con Node.js
@@ -102,7 +115,12 @@ Anche in Node.js i dati letti da file restano input runtime da validare.
 
 ## Collegamenti
 
-- [[Moduli ES e CommonJS]]
-- [[Module resolution]]
+- [[Programmazione/TypeScript/Pagine/Moduli ES e CommonJS|Moduli ES e CommonJS]]
+- [[Programmazione/TypeScript/Pagine/Module resolution|Module resolution]]
 - [[Programmazione/TypeScript/Pagine/Source maps e debugging|Source maps e debugging]]
 - [[Programmazione/TypeScript/Pagine/TypeScript con Express-Fastify|TypeScript con Express/Fastify]]
+
+
+## Navigazione
+
+- [[Programmazione/TypeScript/Indice TypeScript|Indice TypeScript]]

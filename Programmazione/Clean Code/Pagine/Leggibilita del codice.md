@@ -3,13 +3,22 @@ date: 2026-07-09
 area: Programmazione
 topic: Clean Code
 type: theory-note
-status: "non revisionato"
+status: non revisionato
 publish: true
 difficulty: base
-tags: [clean-code, leggibilita, qualita-codice]
-aliases: [Leggibilita del codice, Codice leggibile]
-prerequisites: [Clean Code]
-related: [Nomi che rivelano intenzione, Codice esplicito vs codice implicito]
+tags:
+  - clean-code
+  - leggibilita
+  - qualita-codice
+aliases:
+  - Leggibilita del codice
+  - Codice leggibile
+prerequisites:
+  - "[[Programmazione/Clean Code/Pagine/Clean Code]]"
+related:
+  - "[[Programmazione/Clean Code/Pagine/Nomi che rivelano intenzione]]"
+  - "[[Programmazione/Clean Code/Pagine/Codice esplicito vs codice implicito]]"
+title: Leggibilita del codice
 ---
 
 # Leggibilita del codice
@@ -83,11 +92,11 @@ La seconda versione permette al lettore di ragionare sul concetto, non solo sui 
 
 ## Collegamenti
 
-- [[Programmazione/Clean Code/Indice Clean Code]]
-- [[Clean Code]]
-- [[Nomi che rivelano intenzione]]
-- [[Codice esplicito vs codice implicito]]
-- [[Funzioni piccole]]
+- [[Programmazione/Clean Code/Indice Clean Code|Indice Clean Code]]
+- [[Programmazione/Clean Code/Pagine/Clean Code|Clean Code]]
+- [[Programmazione/Clean Code/Pagine/Nomi che rivelano intenzione|Nomi che rivelano intenzione]]
+- [[Programmazione/Clean Code/Pagine/Codice esplicito vs codice implicito|Codice esplicito vs codice implicito]]
+- [[Programmazione/Clean Code/Pagine/Funzioni piccole|Funzioni piccole]]
 
 ## Fonti
 

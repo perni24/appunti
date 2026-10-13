@@ -3,13 +3,22 @@ date: 2026-07-09
 area: Programmazione
 topic: Clean Code
 type: theory-note
-status: "non revisionato"
+status: non revisionato
 publish: true
 difficulty: base
-tags: [clean-code, commenti, documentazione]
-aliases: [Commenti che spiegano il perche, Commenti che spiegano il perche non il cosa]
-prerequisites: [Clean Code]
-related: [Leggibilita del codice, Codice esplicito vs codice implicito]
+tags:
+  - clean-code
+  - commenti
+  - documentazione
+aliases:
+  - Commenti che spiegano il perche
+  - Commenti che spiegano il perche non il cosa
+prerequisites:
+  - "[[Programmazione/Clean Code/Pagine/Clean Code]]"
+related:
+  - "[[Programmazione/Clean Code/Pagine/Leggibilita del codice]]"
+  - "[[Programmazione/Clean Code/Pagine/Codice esplicito vs codice implicito]]"
+title: Commenti che spiegano il perche non il cosa
 ---
 
 # Commenti che spiegano il perche non il cosa
@@ -82,11 +91,11 @@ Il secondo commento spiega una ragione esterna non visibile dal codice.
 
 ## Collegamenti
 
-- [[Programmazione/Clean Code/Indice Clean Code]]
-- [[Clean Code]]
-- [[Leggibilita del codice]]
-- [[Codice esplicito vs codice implicito]]
-- [[Debito tecnico]]
+- [[Programmazione/Clean Code/Indice Clean Code|Indice Clean Code]]
+- [[Programmazione/Clean Code/Pagine/Clean Code|Clean Code]]
+- [[Programmazione/Clean Code/Pagine/Leggibilita del codice|Leggibilita del codice]]
+- [[Programmazione/Clean Code/Pagine/Codice esplicito vs codice implicito|Codice esplicito vs codice implicito]]
+- [[Programmazione/Clean Code/Pagine/Debito tecnico|Debito tecnico]]
 
 ## Fonti
 

@@ -3,13 +3,24 @@ date: 2026-07-09
 area: Programmazione
 topic: Clean Code
 type: theory-note
-status: "non revisionato"
+status: non revisionato
 publish: true
 difficulty: intermedio
-tags: [clean-code, complessita, metriche]
-aliases: [Complessita ciclomatica, Cyclomatic complexity]
-prerequisites: [Funzioni piccole, Guard clauses]
-related: [Complessita cognitiva, Codice testabile, Refactoring sicuro]
+tags:
+  - clean-code
+  - complessita
+  - metriche
+aliases:
+  - Complessita ciclomatica
+  - Cyclomatic complexity
+prerequisites:
+  - "[[Programmazione/Clean Code/Pagine/Funzioni piccole]]"
+  - "[[Programmazione/Clean Code/Pagine/Guard clauses]]"
+related:
+  - "[[Programmazione/Clean Code/Pagine/Complessita cognitiva]]"
+  - "[[Programmazione/Clean Code/Pagine/Codice testabile]]"
+  - "[[Programmazione/Clean Code/Pagine/Refactoring sicuro]]"
+title: Complessita ciclomatica
 ---
 
 # Complessita ciclomatica
@@ -71,12 +82,12 @@ La funzione contiene piu rami decisionali. Se le regole crescono, conviene estra
 
 ## Collegamenti
 
-- [[Programmazione/Clean Code/Indice Clean Code]]
-- [[Funzioni piccole]]
-- [[Guard clauses]]
-- [[Complessita cognitiva]]
-- [[Codice testabile]]
-- [[Code smells]]
+- [[Programmazione/Clean Code/Indice Clean Code|Indice Clean Code]]
+- [[Programmazione/Clean Code/Pagine/Funzioni piccole|Funzioni piccole]]
+- [[Programmazione/Clean Code/Pagine/Guard clauses|Guard clauses]]
+- [[Programmazione/Clean Code/Pagine/Complessita cognitiva|Complessita cognitiva]]
+- [[Programmazione/Clean Code/Pagine/Codice testabile|Codice testabile]]
+- [[Programmazione/Clean Code/Pagine/Code smells|Code smells]]
 
 ## Fonti
 

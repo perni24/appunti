@@ -3,13 +3,17 @@ date: 2026-06-03
 area: Programmazione
 topic: Python
 type: technical-note
-status: "non revisionato"
+status: non revisionato
 publish: true
-difficulty: intermediate
-tags: [python, programming]
-aliases: [Cicli]
+difficulty: intermedio
+tags:
+  - python
+  - programming
+aliases:
+  - Cicli
 prerequisites: []
 related: []
+title: Cicli in Python
 ---
 
 # Cicli in Python
@@ -96,3 +100,8 @@ for user in users:
 - [[Programmazione/Python/Pagine/Iteratori|Iteratori]]
 - [[Programmazione/Python/Pagine/Comprehensions|Comprehensions]]
 - [[Programmazione/Python/Pagine/Liste|Liste]]
+
+
+## Navigazione
+
+- [[Programmazione/Python/Indice Python|Indice Python]]

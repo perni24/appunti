@@ -3,13 +3,20 @@ date: 2026-06-03
 area: Programmazione
 topic: Python
 type: technical-note
-status: "non revisionato"
+status: non revisionato
 publish: true
-difficulty: advanced
-tags: [programmazione, python, performance, c]
-aliases: [C extensions, Estensioni C Python]
+difficulty: avanzato
+tags:
+  - programmazione
+  - python
+  - performance
+  - c
+aliases:
+  - C extensions
+  - Estensioni C Python
 prerequisites: []
 related: []
+title: C extensions
 ---
 
 # C extensions
@@ -108,9 +115,9 @@ L'obiettivo non e riscrivere l'applicazione in C, ma ottimizzare un confine rist
 
 ## Collegamenti
 
-- [[Programmazione/Python/Indice python|Indice Python]]
-- [[Profiling]]
-- [[Memory Management]]
-- [[Creazione di Package]]
-- [[Cython]]
-- [[NumPy]]
+- [[Programmazione/Python/Indice Python|Indice Python]]
+- [[Programmazione/Python/Pagine/Profiling|Profiling]]
+- [[Programmazione/Python/Pagine/Memory Management|Memory Management]]
+- [[Programmazione/Python/Pagine/Creazione di Package|Creazione di Package]]
+- [[Programmazione/Python/Pagine/Cython|Cython]]
+- [[Programmazione/Python/Pagine/NumPy|NumPy]]

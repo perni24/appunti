@@ -3,16 +3,26 @@ date: 2026-07-25
 area: Stampante 3D
 topic: Marlin
 type: technical-note
-
 publish: true
 difficulty: avanzato
-tags: [marlin, movimento, velocita, accelerazione, jerk, junction-deviation]
-aliases: [Limiti di movimento Marlin, Accelerazioni Marlin, Junction Deviation Marlin]
+tags:
+  - marlin
+  - movimento
+  - velocita
+  - accelerazione
+  - jerk
+  - junction-deviation
+aliases:
+  - Limiti di movimento Marlin
+  - Accelerazioni Marlin
+  - Junction Deviation Marlin
 prerequisites:
   - "[[Stampante 3D/Marlin/Pagine/Motori direzione e passi per millimetro]]"
   - "[[Stampante 3D/Marlin/Pagine/Driver stepper corrente e microstepping]]"
 related: []
-marlin-version: "2.1.2.8"
+marlin-version: 2.1.2.8
+title: Velocita, accelerazioni, Jerk e Junction Deviation
+status: non revisionato
 ---
 
 # Velocita, accelerazioni, Jerk e Junction Deviation
@@ -459,7 +469,7 @@ Durante la taratura conviene cambiare una sola famiglia di parametri alla volta 
 
 ## Collegamenti
 
-- [[Stampante 3D/Marlin/Indice Marlin]]
-- [[Stampante 3D/Marlin/Pagine/Motori direzione e passi per millimetro]]
-- [[Stampante 3D/Marlin/Pagine/Driver stepper corrente e microstepping]]
-- [[Stampante 3D/Marlin/Pagine/Segmentazione curve e precisione dei movimenti]]
+- [[Stampante 3D/Marlin/Indice Marlin|Indice Marlin]]
+- [[Stampante 3D/Marlin/Pagine/Motori direzione e passi per millimetro|Motori direzione e passi per millimetro]]
+- [[Stampante 3D/Marlin/Pagine/Driver stepper corrente e microstepping|Driver stepper corrente e microstepping]]
+- [[Stampante 3D/Marlin/Pagine/Segmentazione curve e precisione dei movimenti|Segmentazione curve e precisione dei movimenti]]

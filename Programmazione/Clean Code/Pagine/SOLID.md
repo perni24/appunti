@@ -3,13 +3,23 @@ date: 2026-07-09
 area: Programmazione
 topic: Clean Code
 type: theory-note
-status: "non revisionato"
+status: non revisionato
 publish: true
 difficulty: intermedio
-tags: [clean-code, solid, design]
-aliases: [SOLID, Principi SOLID]
-prerequisites: [Separazione delle responsabilita]
-related: [Dependency Inversion Principle, Interface Segregation Principle, Coesione e accoppiamento]
+tags:
+  - clean-code
+  - solid
+  - design
+aliases:
+  - SOLID
+  - Principi SOLID
+prerequisites:
+  - "[[Programmazione/Clean Code/Pagine/Separazione delle responsabilita]]"
+related:
+  - "[[Programmazione/Clean Code/Pagine/Dependency Inversion Principle]]"
+  - "[[Programmazione/Clean Code/Pagine/Interface Segregation Principle]]"
+  - "[[Programmazione/Clean Code/Pagine/Coesione e accoppiamento]]"
+title: SOLID
 ---
 
 # SOLID
@@ -82,12 +92,12 @@ Il servizio conosce contratti, non dettagli specifici.
 
 ## Collegamenti
 
-- [[Programmazione/Clean Code/Indice Clean Code]]
-- [[Separazione delle responsabilita]]
-- [[Dependency Inversion Principle]]
-- [[Interface Segregation Principle]]
-- [[Coesione e accoppiamento]]
-- [[Code smells]]
+- [[Programmazione/Clean Code/Indice Clean Code|Indice Clean Code]]
+- [[Programmazione/Clean Code/Pagine/Separazione delle responsabilita|Separazione delle responsabilita]]
+- [[Programmazione/Clean Code/Pagine/Dependency Inversion Principle|Dependency Inversion Principle]]
+- [[Programmazione/Clean Code/Pagine/Interface Segregation Principle|Interface Segregation Principle]]
+- [[Programmazione/Clean Code/Pagine/Coesione e accoppiamento|Coesione e accoppiamento]]
+- [[Programmazione/Clean Code/Pagine/Code smells|Code smells]]
 
 ## Fonti
 

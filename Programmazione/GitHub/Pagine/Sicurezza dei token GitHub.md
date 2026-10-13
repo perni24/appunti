@@ -3,13 +3,24 @@ date: 2026-07-06
 area: Programmazione
 topic: GitHub
 type: technical-note
-status: "non revisionato"
+status: non revisionato
 publish: true
 difficulty: intermedio
-tags: [github, token, security, authentication]
-aliases: [Sicurezza dei token GitHub, Token GitHub, Personal access token]
-prerequisites: [Accessi ruoli e permessi GitHub]
-related: [Accessi ruoli e permessi GitHub, Secret scanning]
+tags:
+  - github
+  - token
+  - security
+  - authentication
+aliases:
+  - Sicurezza dei token GitHub
+  - Token GitHub
+  - Personal access token
+prerequisites:
+  - "[[Programmazione/GitHub/Pagine/Accessi ruoli e permessi GitHub]]"
+related:
+  - "[[Programmazione/GitHub/Pagine/Accessi ruoli e permessi GitHub]]"
+  - "[[Programmazione/GitHub/Pagine/Secret scanning]]"
+title: Sicurezza dei token GitHub
 ---
 
 # Sicurezza dei token GitHub
@@ -105,10 +116,10 @@ Per uno script che legge issue:
 
 ## Collegamenti
 
-- [[Programmazione/GitHub/Indice GitHub]]
-- [[Accessi ruoli e permessi GitHub]]
-- [[Secret scanning]]
-- [[Repository settings]]
+- [[Programmazione/GitHub/Indice GitHub|Indice GitHub]]
+- [[Programmazione/GitHub/Pagine/Accessi ruoli e permessi GitHub|Accessi ruoli e permessi GitHub]]
+- [[Programmazione/GitHub/Pagine/Secret scanning|Secret scanning]]
+- [[Programmazione/GitHub/Pagine/Repository settings|Repository settings]]
 
 ## Fonti
 

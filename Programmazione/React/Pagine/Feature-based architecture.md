@@ -3,13 +3,19 @@ date: 2026-06-04
 area: Programmazione
 topic: React
 type: theory-note
-status: "non revisionato"
+status: non revisionato
 publish: true
-difficulty: intermediate
-tags: [react, architecture, frontend]
-aliases: [Feature-based architecture, Architettura per feature]
+difficulty: intermedio
+tags:
+  - react
+  - architecture
+  - frontend
+aliases:
+  - Feature-based architecture
+  - Architettura per feature
 prerequisites: []
 related: []
+title: Feature-based architecture
 ---
 
 # Feature-based architecture
@@ -99,8 +105,8 @@ La pagina importa il hook della feature, non dettagli del backend sparsi.
 
 ## Collegamenti
 
-- [[Programmazione/React/Indice react|Indice React]]
-- [[API layer]]
-- [[Design system]]
-- [[State colocato]]
+- [[Programmazione/React/Indice React|Indice React]]
+- [[Programmazione/React/Pagine/API layer|API layer]]
+- [[Programmazione/React/Pagine/Design system|Design system]]
+- [[Programmazione/React/Pagine/State colocato|State colocato]]
 - [[Programmazione/React/Pagine/Linting e Formattazione|Linting e Formattazione]]

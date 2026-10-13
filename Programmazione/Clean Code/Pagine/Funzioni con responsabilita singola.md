@@ -3,13 +3,22 @@ date: 2026-07-09
 area: Programmazione
 topic: Clean Code
 type: theory-note
-status: "non revisionato"
+status: non revisionato
 publish: true
 difficulty: base
-tags: [clean-code, funzioni, responsabilita]
-aliases: [Funzioni con responsabilita singola, Single responsibility functions]
-prerequisites: [Funzioni piccole]
-related: [Funzioni piccole, Manutenibilita del codice]
+tags:
+  - clean-code
+  - funzioni
+  - responsabilita
+aliases:
+  - Funzioni con responsabilita singola
+  - Single responsibility functions
+prerequisites:
+  - "[[Programmazione/Clean Code/Pagine/Funzioni piccole]]"
+related:
+  - "[[Programmazione/Clean Code/Pagine/Funzioni piccole]]"
+  - "[[Programmazione/Clean Code/Pagine/Manutenibilita del codice]]"
+title: Funzioni con responsabilita singola
 ---
 
 # Funzioni con responsabilita singola
@@ -84,11 +93,11 @@ La funzione principale coordina il caso d'uso, mentre i dettagli sono separati.
 
 ## Collegamenti
 
-- [[Programmazione/Clean Code/Indice Clean Code]]
-- [[Funzioni piccole]]
-- [[Manutenibilita del codice]]
-- [[Naming di variabili e funzioni]]
-- [[Debito tecnico]]
+- [[Programmazione/Clean Code/Indice Clean Code|Indice Clean Code]]
+- [[Programmazione/Clean Code/Pagine/Funzioni piccole|Funzioni piccole]]
+- [[Programmazione/Clean Code/Pagine/Manutenibilita del codice|Manutenibilita del codice]]
+- [[Programmazione/Clean Code/Pagine/Naming di variabili e funzioni|Naming di variabili e funzioni]]
+- [[Programmazione/Clean Code/Pagine/Debito tecnico|Debito tecnico]]
 
 ## Fonti
 

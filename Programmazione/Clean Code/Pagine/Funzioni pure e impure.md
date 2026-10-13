@@ -3,13 +3,24 @@ date: 2026-07-09
 area: Programmazione
 topic: Clean Code
 type: theory-note
-status: "non revisionato"
+status: non revisionato
 publish: true
 difficulty: intermedio
-tags: [clean-code, funzioni, side-effects]
-aliases: [Funzioni pure e impure, Pure functions]
-prerequisites: [Clean Code, Funzioni piccole]
-related: [Side effects controllati, Immutabilita, Codice testabile]
+tags:
+  - clean-code
+  - funzioni
+  - side-effects
+aliases:
+  - Funzioni pure e impure
+  - Pure functions
+prerequisites:
+  - "[[Programmazione/Clean Code/Pagine/Clean Code]]"
+  - "[[Programmazione/Clean Code/Pagine/Funzioni piccole]]"
+related:
+  - "[[Programmazione/Clean Code/Pagine/Side effects controllati]]"
+  - "[[Programmazione/Clean Code/Pagine/Immutabilita]]"
+  - "[[Programmazione/Clean Code/Pagine/Codice testabile]]"
+title: Funzioni pure e impure
 ---
 
 # Funzioni pure e impure
@@ -95,12 +106,12 @@ Ora il comportamento dipende solo dagli argomenti.
 
 ## Collegamenti
 
-- [[Programmazione/Clean Code/Indice Clean Code]]
-- [[Funzioni piccole]]
-- [[Funzioni con responsabilita singola]]
-- [[Stato mutabile e immutabile]]
-- [[Side effects controllati]]
-- [[Immutabilita]]
+- [[Programmazione/Clean Code/Indice Clean Code|Indice Clean Code]]
+- [[Programmazione/Clean Code/Pagine/Funzioni piccole|Funzioni piccole]]
+- [[Programmazione/Clean Code/Pagine/Funzioni con responsabilita singola|Funzioni con responsabilita singola]]
+- [[Programmazione/Clean Code/Pagine/Stato mutabile e immutabile|Stato mutabile e immutabile]]
+- [[Programmazione/Clean Code/Pagine/Side effects controllati|Side effects controllati]]
+- [[Programmazione/Clean Code/Pagine/Immutabilita|Immutabilita]]
 
 ## Fonti
 

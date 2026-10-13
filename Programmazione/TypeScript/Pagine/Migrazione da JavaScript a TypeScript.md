@@ -3,13 +3,25 @@ date: 2026-06-22
 area: Programmazione
 topic: TypeScript
 type: technical-note
-status: "non revisionato"
+status: non revisionato
 publish: true
 difficulty: intermedio
-tags: [typescript, javascript, migrazione, gradual-typing]
-aliases: [Migrare da JavaScript a TypeScript]
-prerequisites: [Introduzione a TypeScript, tsconfig]
-related: [JSDoc e type checking in JavaScript, any, unknown e never, Strict mode]
+tags:
+  - typescript
+  - javascript
+  - migrazione
+  - gradual-typing
+aliases:
+  - Migrare da JavaScript a TypeScript
+prerequisites:
+  - "[[Programmazione/TypeScript/Pagine/Introduzione a TypeScript]]"
+  - "[[Programmazione/TypeScript/Pagine/tsconfig]]"
+related:
+  - "[[Programmazione/TypeScript/Pagine/JSDoc e type checking in JavaScript]]"
+  - any
+  - unknown e never
+  - "[[Programmazione/TypeScript/Pagine/Strict mode]]"
+title: Migrazione da JavaScript a TypeScript
 ---
 
 # Migrazione da JavaScript a TypeScript
@@ -98,7 +110,12 @@ La conversione chiarisce il contratto della funzione e protegge i chiamanti.
 
 ## Collegamenti
 
-- [[JSDoc e type checking in JavaScript]]
+- [[Programmazione/TypeScript/Pagine/JSDoc e type checking in JavaScript|JSDoc e type checking in JavaScript]]
 - [[Programmazione/TypeScript/Pagine/Strict mode|Strict mode]]
-- [[any, unknown e never]]
-- [[Validazione runtime e tipi statici]]
+- [[Programmazione/TypeScript/Pagine/any, unknown e never|any, unknown e never]]
+- [[Programmazione/TypeScript/Pagine/Validazione runtime e tipi statici|Validazione runtime e tipi statici]]
+
+
+## Navigazione
+
+- [[Programmazione/TypeScript/Indice TypeScript|Indice TypeScript]]

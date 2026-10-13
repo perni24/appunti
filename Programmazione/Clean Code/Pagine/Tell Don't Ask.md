@@ -3,13 +3,23 @@ date: 2026-07-09
 area: Programmazione
 topic: Clean Code
 type: theory-note
-status: "non revisionato"
+status: non revisionato
 publish: true
 difficulty: intermedio
-tags: [clean-code, oop, design]
-aliases: [Tell Don't Ask, Tell Dont Ask]
-prerequisites: [Incapsulamento]
-related: [Oggetti con responsabilita chiara, Invarianti del dominio, Law of Demeter]
+tags:
+  - clean-code
+  - oop
+  - design
+aliases:
+  - Tell Don't Ask
+  - Tell Dont Ask
+prerequisites:
+  - "[[Programmazione/Clean Code/Pagine/Incapsulamento]]"
+related:
+  - "[[Programmazione/Clean Code/Pagine/Oggetti con responsabilita chiara]]"
+  - "[[Programmazione/Clean Code/Pagine/Invarianti del dominio]]"
+  - "[[Programmazione/Clean Code/Pagine/Law of Demeter]]"
+title: Tell Don't Ask
 ---
 
 # Tell Don't Ask
@@ -85,12 +95,12 @@ La regola di pagamento resta dentro `Order`.
 
 ## Collegamenti
 
-- [[Programmazione/Clean Code/Indice Clean Code]]
+- [[Programmazione/Clean Code/Indice Clean Code|Indice Clean Code]]
 - [[Programmazione/Clean Code/Pagine/Incapsulamento|Incapsulamento]]
-- [[Oggetti con responsabilita chiara]]
-- [[Invarianti del dominio]]
-- [[Law of Demeter]]
-- [[Data objects e behavior objects]]
+- [[Programmazione/Clean Code/Pagine/Oggetti con responsabilita chiara|Oggetti con responsabilita chiara]]
+- [[Programmazione/Clean Code/Pagine/Invarianti del dominio|Invarianti del dominio]]
+- [[Programmazione/Clean Code/Pagine/Law of Demeter|Law of Demeter]]
+- [[Programmazione/Clean Code/Pagine/Data objects e behavior objects|Data objects e behavior objects]]
 
 ## Fonti
 

@@ -3,13 +3,20 @@ date: 2026-06-04
 area: Programmazione
 topic: React
 type: technical-note
-status: "non revisionato"
+status: non revisionato
 publish: true
-difficulty: intermediate
-tags: [react, auth, security]
-aliases: [Gestione Autenticazione, Token React, Sessione utente]
+difficulty: intermedio
+tags:
+  - react
+  - auth
+  - security
+aliases:
+  - Gestione Autenticazione
+  - Token React
+  - Sessione utente
 prerequisites: []
 related: []
+title: Gestione Autenticazione
 ---
 
 # Gestione Autenticazione
@@ -115,9 +122,9 @@ useEffect(() => {
 
 ## Collegamenti
 
-- [[Programmazione/React/Indice react|Indice React]]
-- [[Protezione XSS]]
-- [[CSRF]]
+- [[Programmazione/React/Indice React|Indice React]]
+- [[Programmazione/React/Pagine/Protezione XSS|Protezione XSS]]
+- [[Programmazione/React/Pagine/CSRF|CSRF]]
 - [[Programmazione/React/Pagine/Content Security Policy|Content Security Policy]]
-- [[Context API]]
-- [[API layer]]
+- [[Programmazione/React/Pagine/Context API|Context API]]
+- [[Programmazione/React/Pagine/API layer|API layer]]

@@ -3,13 +3,24 @@ date: 2026-07-09
 area: Programmazione
 topic: Clean Code
 type: technical-note
-status: "non revisionato"
+status: non revisionato
 publish: true
 difficulty: avanzato
-tags: [clean-code, testing, mutation-testing]
-aliases: [Mutation testing, Test mutazionale]
-prerequisites: [Coverage, Test unitari leggibili]
-related: [Codice testabile, Code quality gates, Refactoring sicuro]
+tags:
+  - clean-code
+  - testing
+  - mutation-testing
+aliases:
+  - Mutation testing
+  - Test mutazionale
+prerequisites:
+  - "[[Programmazione/Clean Code/Pagine/Coverage]]"
+  - "[[Programmazione/Clean Code/Pagine/Test unitari leggibili]]"
+related:
+  - "[[Programmazione/Clean Code/Pagine/Codice testabile]]"
+  - "[[Programmazione/Clean Code/Pagine/Code quality gates]]"
+  - "[[Programmazione/Clean Code/Pagine/Refactoring sicuro]]"
+title: Mutation testing
 ---
 
 # Mutation testing
@@ -93,12 +104,12 @@ Se i test non controllano il caso `18`, il mutante puo sopravvivere.
 
 ## Collegamenti
 
-- [[Programmazione/Clean Code/Indice Clean Code]]
-- [[Coverage]]
-- [[Test unitari leggibili]]
-- [[Codice testabile]]
-- [[Refactoring sicuro]]
-- [[Code quality gates]]
+- [[Programmazione/Clean Code/Indice Clean Code|Indice Clean Code]]
+- [[Programmazione/Clean Code/Pagine/Coverage|Coverage]]
+- [[Programmazione/Clean Code/Pagine/Test unitari leggibili|Test unitari leggibili]]
+- [[Programmazione/Clean Code/Pagine/Codice testabile|Codice testabile]]
+- [[Programmazione/Clean Code/Pagine/Refactoring sicuro|Refactoring sicuro]]
+- [[Programmazione/Clean Code/Pagine/Code quality gates|Code quality gates]]
 
 ## Fonti
 

@@ -3,13 +3,25 @@ date: 2026-07-07
 area: Programmazione
 topic: GitHub
 type: operational-note
-status: "non revisionato"
+status: non revisionato
 publish: true
 difficulty: intermedio
-tags: [github, github-pages, documentazione, procedura]
-aliases: [Pubblicare documentazione con GitHub Pages, Deploy documentazione GitHub Pages]
-prerequisites: [GitHub Pages con Actions, Repository GitHub]
-related: [Deploy con GitHub Actions, Environments GitHub Actions, Workflow GitHub Actions]
+tags:
+  - github
+  - github-pages
+  - documentazione
+  - procedura
+aliases:
+  - Pubblicare documentazione con GitHub Pages
+  - Deploy documentazione GitHub Pages
+prerequisites:
+  - "[[Programmazione/GitHub/Pagine/GitHub Pages con Actions]]"
+  - "[[Programmazione/GitHub/Pagine/Repository GitHub]]"
+related:
+  - "[[Programmazione/GitHub/Pagine/Deploy con GitHub Actions]]"
+  - "[[Programmazione/GitHub/Pagine/Environments GitHub Actions]]"
+  - "[[Programmazione/GitHub/Pagine/Workflow GitHub Actions]]"
+title: Pubblicare documentazione con GitHub Pages
 ---
 
 # Pubblicare documentazione con GitHub Pages
@@ -105,12 +117,12 @@ jobs:
 
 ## Collegamenti
 
-- [[Programmazione/GitHub/Indice GitHub]]
-- [[GitHub Pages con Actions]]
-- [[Deploy con GitHub Actions]]
-- [[Workflow GitHub Actions]]
-- [[Environments GitHub Actions]]
-- [[Permissions GitHub Actions]]
+- [[Programmazione/GitHub/Indice GitHub|Indice GitHub]]
+- [[Programmazione/GitHub/Pagine/GitHub Pages con Actions|GitHub Pages con Actions]]
+- [[Programmazione/GitHub/Pagine/Deploy con GitHub Actions|Deploy con GitHub Actions]]
+- [[Programmazione/GitHub/Pagine/Workflow GitHub Actions|Workflow GitHub Actions]]
+- [[Programmazione/GitHub/Pagine/Environments GitHub Actions|Environments GitHub Actions]]
+- [[Programmazione/GitHub/Pagine/Permissions GitHub Actions|Permissions GitHub Actions]]
 
 ## Fonti
 

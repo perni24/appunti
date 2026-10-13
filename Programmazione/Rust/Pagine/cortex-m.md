@@ -3,7 +3,7 @@ date: 2026-05-27
 area: Programmazione
 topic: Rust
 type: technical-note
-status: "non revisionato"
+status: non revisionato
 publish: true
 difficulty: avanzato
 tags:
@@ -11,9 +11,9 @@ tags:
   - rust
   - embedded
 aliases:
-  - "cortex-m"
-  - "cortex-m-rt"
-  - "ARM Cortex-M"
+  - cortex-m
+  - cortex-m-rt
+  - ARM Cortex-M
 prerequisites:
   - "[[Programmazione/Rust/Pagine/no_std]]"
   - "[[Programmazione/Rust/Pagine/Memory layout e alignment]]"
@@ -23,6 +23,7 @@ related:
   - "[[Programmazione/Rust/Pagine/embedded-hal]]"
   - "[[Programmazione/Rust/Pagine/probe-rs]]"
   - "[[Programmazione/Rust/Pagine/RTIC]]"
+title: cortex-m
 ---
 
 # cortex-m
@@ -148,11 +149,11 @@ I nomi reali degli interrupt dipendono dalla PAC della MCU. Non conviene inventa
 
 ## Collegamenti
 
-- [[Programmazione/Rust/Indice rust|Indice Rust]]
-- [[Programmazione/Rust/Pagine/no_std]]
-- [[Programmazione/Rust/Pagine/Embedded Rust]]
-- [[Programmazione/Rust/Pagine/embedded-hal]]
-- [[Programmazione/Rust/Pagine/probe-rs]]
-- [[Programmazione/Rust/Pagine/RTIC]]
-- [[Programmazione/Rust/Pagine/Memory layout e alignment]]
-- [[Programmazione/Rust/Pagine/Cross-compilation]]
+- [[Programmazione/Rust/Indice Rust|Indice Rust]]
+- [[Programmazione/Rust/Pagine/no_std|no_std]]
+- [[Programmazione/Rust/Pagine/Embedded Rust|Embedded Rust]]
+- [[Programmazione/Rust/Pagine/embedded-hal|embedded-hal]]
+- [[Programmazione/Rust/Pagine/probe-rs|probe-rs]]
+- [[Programmazione/Rust/Pagine/RTIC|RTIC]]
+- [[Programmazione/Rust/Pagine/Memory layout e alignment|Memory layout e alignment]]
+- [[Programmazione/Rust/Pagine/Cross-compilation|Cross-compilation]]

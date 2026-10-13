@@ -3,13 +3,23 @@ date: 2026-06-22
 area: Programmazione
 topic: TypeScript
 type: technical-note
-status: "non revisionato"
+status: non revisionato
 publish: true
 difficulty: intermedio
-tags: [typescript, api-contract, validation, dto]
-aliases: [Contratto API]
-prerequisites: [API tipizzate, Validazione runtime e tipi statici]
-related: [Generazione di tipi da API, DTO e modelli di dominio]
+tags:
+  - typescript
+  - api-contract
+  - validation
+  - dto
+aliases:
+  - Contratto API
+prerequisites:
+  - "[[Programmazione/TypeScript/Pagine/API tipizzate]]"
+  - "[[Programmazione/TypeScript/Pagine/Validazione runtime e tipi statici]]"
+related:
+  - "[[Programmazione/TypeScript/Pagine/Generazione di tipi da API]]"
+  - "[[Programmazione/TypeScript/Pagine/DTO e modelli di dominio]]"
+title: API contract
 ---
 
 # API contract
@@ -88,7 +98,12 @@ Il client deve gestire sia successo sia errore, invece di assumere sempre rispos
 
 ## Collegamenti
 
-- [[API tipizzate]]
-- [[Generazione di tipi da API]]
+- [[Programmazione/TypeScript/Pagine/API tipizzate|API tipizzate]]
+- [[Programmazione/TypeScript/Pagine/Generazione di tipi da API|Generazione di tipi da API]]
 - [[Programmazione/TypeScript/Pagine/DTO e modelli di dominio|DTO e modelli di dominio]]
-- [[Schema validation con Zod]]
+- [[Programmazione/TypeScript/Pagine/Schema validation con Zod|Schema validation con Zod]]
+
+
+## Navigazione
+
+- [[Programmazione/TypeScript/Indice TypeScript|Indice TypeScript]]

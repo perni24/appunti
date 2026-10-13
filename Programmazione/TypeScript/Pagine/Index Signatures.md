@@ -3,13 +3,25 @@ date: 2026-06-22
 area: Programmazione
 topic: TypeScript
 type: technical-note
-status: "non revisionato"
+status: non revisionato
 publish: true
 difficulty: base
-tags: [typescript, index-signatures, object-types, dictionary]
-aliases: [Index Signature, Dizionari TypeScript]
-prerequisites: [Oggetti e proprieta opzionali, Type Aliases e Interfaces]
-related: [Mapped Types, Record, Keyof e typeof]
+tags:
+  - typescript
+  - index-signatures
+  - object-types
+  - dictionary
+aliases:
+  - Index Signature
+  - Dizionari TypeScript
+prerequisites:
+  - "[[Programmazione/TypeScript/Pagine/Oggetti e proprieta opzionali]]"
+  - "[[Programmazione/TypeScript/Pagine/Type Aliases e Interfaces]]"
+related:
+  - "[[Programmazione/TypeScript/Pagine/Mapped Types]]"
+  - Record
+  - "[[Programmazione/TypeScript/Pagine/Keyof e typeof]]"
+title: Index Signatures
 ---
 
 # Index Signatures
@@ -90,6 +102,11 @@ La funzione accetta qualunque nome flag e gestisce il caso in cui la chiave non 
 
 ## Collegamenti
 
-- [[Oggetti e proprieta opzionali]]
-- [[Mapped Types]]
-- [[Keyof e typeof]]
+- [[Programmazione/TypeScript/Pagine/Oggetti e proprieta opzionali|Oggetti e proprieta opzionali]]
+- [[Programmazione/TypeScript/Pagine/Mapped Types|Mapped Types]]
+- [[Programmazione/TypeScript/Pagine/Keyof e typeof|Keyof e typeof]]
+
+
+## Navigazione
+
+- [[Programmazione/TypeScript/Indice TypeScript|Indice TypeScript]]

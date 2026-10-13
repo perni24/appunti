@@ -3,13 +3,21 @@ date: 2026-06-03
 area: Programmazione
 topic: Python
 type: technical-note
-status: "non revisionato"
+status: non revisionato
 publish: true
-difficulty: beginner
-tags: [programmazione, python, http, networking]
-aliases: [requests, HTTPX, Client HTTP Python]
+difficulty: base
+tags:
+  - programmazione
+  - python
+  - http
+  - networking
+aliases:
+  - requests
+  - HTTPX
+  - Client HTTP Python
 prerequisites: []
 related: []
+title: HTTPX e requests
 ---
 
 # HTTPX e requests
@@ -141,8 +149,8 @@ async def fetch_json(url):
 
 ## Collegamenti
 
-- [[Programmazione/Python/Indice python|Indice Python]]
-- [[Networking base]]
-- [[Asyncio]]
-- [[FastAPI]]
+- [[Programmazione/Python/Indice Python|Indice Python]]
+- [[Programmazione/Python/Pagine/Networking base|Networking base]]
+- [[Programmazione/Python/Pagine/Asyncio|Asyncio]]
+- [[Programmazione/Python/Pagine/FastAPI|FastAPI]]
 - [[Programmazione/Python/Pagine/Error Handling|Error Handling]]

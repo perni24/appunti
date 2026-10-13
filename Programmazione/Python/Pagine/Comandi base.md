@@ -3,13 +3,17 @@ date: 2026-06-03
 area: Programmazione
 topic: Python
 type: technical-note
-status: "non revisionato"
+status: non revisionato
 publish: true
-difficulty: intermediate
-tags: [python, programming]
-aliases: [Comandi Base e Toolchain Python]
+difficulty: intermedio
+tags:
+  - python
+  - programming
+aliases:
+  - Comandi Base e Toolchain Python
 prerequisites: []
 related: []
+title: Comandi Base e Toolchain Python
 ---
 
 # Comandi Base e Toolchain Python
@@ -96,3 +100,8 @@ python main.py
 - [[Programmazione/Python/Pagine/Ambienti Virtuali|Ambienti Virtuali]]
 - [[Programmazione/Python/Pagine/Pip e PyPI|Pip e PyPI]]
 - [[Programmazione/Python/Pagine/uv pipx e poetry|uv pipx e poetry]]
+
+
+## Navigazione
+
+- [[Programmazione/Python/Indice Python|Indice Python]]

@@ -3,7 +3,7 @@ date: 2026-05-26
 area: Programmazione
 topic: Rust
 type: technical-note
-status: "non revisionato"
+status: non revisionato
 publish: true
 difficulty: avanzato
 tags:
@@ -11,8 +11,8 @@ tags:
   - rust
   - unsafe-rust-in-profondita
 aliases:
-  - "UB"
-  - "Undefined behavior"
+  - UB
+  - Undefined behavior
 prerequisites:
   - "[[Programmazione/Rust/Pagine/Unsafe Rust]]"
   - "[[Programmazione/Rust/Pagine/Aliasing rules]]"
@@ -21,6 +21,7 @@ related:
   - "[[Programmazione/Rust/Pagine/Miri]]"
   - "[[Programmazione/Rust/Pagine/Raw pointers]]"
   - "[[Programmazione/Rust/Pagine/Memory layout e alignment]]"
+title: Undefined behavior
 ---
 
 # Undefined behavior
@@ -124,3 +125,8 @@ Un `bool` Rust puo avere solo rappresentazioni valide. Creare un valore con rapp
 - [[Programmazione/Rust/Pagine/Aliasing rules|Aliasing rules]]
 - [[Programmazione/Rust/Pagine/Memory layout e alignment|Memory layout e alignment]]
 - [[Programmazione/Rust/Pagine/Miri|Miri]]
+
+
+## Navigazione
+
+- [[Programmazione/Rust/Indice Rust|Indice Rust]]

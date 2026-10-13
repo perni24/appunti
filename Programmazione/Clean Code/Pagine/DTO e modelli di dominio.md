@@ -3,13 +3,24 @@ date: 2026-07-09
 area: Programmazione
 topic: Clean Code
 type: theory-note
-status: "non revisionato"
+status: non revisionato
 publish: true
 difficulty: intermedio
-tags: [clean-code, dto, dominio]
-aliases: [DTO e modelli di dominio, DTO vs domain models]
-prerequisites: [Modellazione del dominio, Parsing e serializzazione]
-related: [Validazione input API, Repository pattern, Tipi significativi]
+tags:
+  - clean-code
+  - dto
+  - dominio
+aliases:
+  - DTO e modelli di dominio
+  - DTO vs domain models
+prerequisites:
+  - "[[Programmazione/Clean Code/Pagine/Modellazione del dominio]]"
+  - "[[Programmazione/Clean Code/Pagine/Parsing e serializzazione]]"
+related:
+  - "[[Programmazione/Clean Code/Pagine/Validazione input API]]"
+  - "[[Programmazione/Clean Code/Pagine/Repository pattern]]"
+  - "[[Programmazione/Clean Code/Pagine/Tipi significativi]]"
+title: DTO e modelli di dominio
 ---
 
 # DTO e modelli di dominio
@@ -83,12 +94,12 @@ Il DTO trasporta dati; il dominio valida e costruisce concetti significativi.
 
 ## Collegamenti
 
-- [[Programmazione/Clean Code/Indice Clean Code]]
-- [[Modellazione del dominio]]
-- [[Parsing e serializzazione]]
-- [[Validazione input API]]
-- [[Tipi significativi]]
-- [[Repository pattern]]
+- [[Programmazione/Clean Code/Indice Clean Code|Indice Clean Code]]
+- [[Programmazione/Clean Code/Pagine/Modellazione del dominio|Modellazione del dominio]]
+- [[Programmazione/Clean Code/Pagine/Parsing e serializzazione|Parsing e serializzazione]]
+- [[Programmazione/Clean Code/Pagine/Validazione input API|Validazione input API]]
+- [[Programmazione/Clean Code/Pagine/Tipi significativi|Tipi significativi]]
+- [[Programmazione/Clean Code/Pagine/Repository pattern|Repository pattern]]
 
 ## Fonti
 

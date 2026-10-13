@@ -1,15 +1,28 @@
-﻿---
+---
 date: 2026-06-02
 area: Programmazione
 topic: JavaScript
 type: technical-note
-status: "non revisionato"
+status: non revisionato
 publish: true
-difficulty: beginner
-tags: [javascript, basics, types, primitives, objects, typeof]
-aliases: [Tipi primitivi JS, Data types JavaScript]
-prerequisites: [Variabili]
-related: [Variabili, Oggetti Avanzati, JSON]
+difficulty: base
+tags:
+  - javascript
+  - basics
+  - types
+  - primitives
+  - objects
+  - typeof
+aliases:
+  - Tipi primitivi JS
+  - Data types JavaScript
+prerequisites:
+  - "[[Programmazione/JavaScript/Pagine/Variabili]]"
+related:
+  - "[[Programmazione/JavaScript/Pagine/Variabili]]"
+  - "[[Programmazione/JavaScript/Pagine/Oggetti Avanzati]]"
+  - "[[Programmazione/JavaScript/Pagine/JSON]]"
+title: Tipi di Dati
 ---
 
 # Tipi di Dati
@@ -23,7 +36,7 @@ I tipi principali si dividono in due gruppi:
 - primitivi;
 - oggetti.
 
-I primitivi sono valori semplici e immutabili. Gli oggetti sono strutture mutabili e vengono manipolati tramite riferimento.
+I primitivi sono valori immutabili. Gli oggetti hanno identita e sono normalmente mutabili, ma possono avere proprieta non modificabili o essere congelati. Assegnare un oggetto a un'altra variabile non ne crea una copia indipendente.
 
 ---
 
@@ -87,6 +100,8 @@ console.log(upper); // "CIAO"
 ### Number
 `number` rappresenta sia interi sia decimali.
 
+Usa il formato binario floating point IEEE 754 a 64 bit. L'intervallo degli interi sicuri va da `-(2 ** 53 - 1)` a `2 ** 53 - 1`. Fuori da esso alcuni interi sono ancora rappresentabili esattamente, ma non tutti gli interi consecutivi sono distinguibili: per esempio `2 ** 53` e `2 ** 53 + 1` producono lo stesso `Number`.
+
 ```js
 const integer = 42;
 const decimal = 3.14;
@@ -110,19 +125,30 @@ console.log(1 / 0);                       // Infinity
 console.log(0.1 + 0.2); // 0.30000000000000004
 ```
 
+Per identificatori o contatori interi, `Number.isSafeInteger(value)` controlla anche il limite di precisione. `Number.isInteger()` da solo non basta. Per importi e arrotondamenti occorre una regola esplicita: non presumere che i decimali siano esatti.
+
 ---
 ### BigInt
-`bigint` rappresenta interi molto grandi.
+`bigint` rappresenta interi di precisione arbitraria, nei limiti delle risorse disponibili; non rappresenta frazioni.
 
 ```js
 const value = 9007199254740993n;
 ```
 
-Non si puo mescolare direttamente `bigint` e `number`.
+Gli operatori aritmetici non permettono di mescolare `bigint` e `number`. I confronti relazionali, invece, possono confrontarli.
 
 ```js
 // 1n + 1; // TypeError
 ```
+
+```js
+console.log(2n > 1);      // true
+console.log(2n === 2);    // false: tipi diversi
+console.log(2n == 2);     // true: confronto non stretto
+console.log(5n / 2n);     // 2n: divisione intera, troncata verso zero
+```
+
+Per un intero grande proveniente da testo usa `BigInt("9007199254740993")`, non un literal `number` gia arrotondato. Convertire in `Number` puo perdere precisione; `JSON.stringify()` non serializza i BigInt senza una strategia esplicita. Vedi [[Programmazione/JavaScript/Pagine/JSON|JSON]].
 
 ---
 ### Boolean
@@ -138,6 +164,8 @@ E il tipo piu usato nelle condizioni.
 ---
 ### Undefined e null
 `undefined` indica assenza di valore assegnato.
+
+Puo anche essere assegnato esplicitamente, restituito da una funzione senza risultato o ottenuto leggendo una proprieta assente. La distinzione con `null` e una convenzione del contratto applicativo, non una garanzia di validazione.
 
 ```js
 let value;
@@ -169,9 +197,11 @@ console.log(id === anotherId); // false
 
 E utile per chiavi di oggetto non facilmente collisibili.
 
+L'unicita vale per ogni chiamata a `Symbol()`. `Symbol.for("id")` cerca invece nel registro globale dei simboli e restituisce lo stesso simbolo per la stessa chiave. I simboli non rendono segrete le proprieta: possono essere individuati con `Object.getOwnPropertySymbols()`.
+
 ---
 ### Oggetti
-Tutto cio che non e primitivo e un oggetto o si comporta come riferimento a una struttura oggetto.
+Ogni valore non primitivo e un oggetto; anche le funzioni sono oggetti, con la capacita aggiuntiva di essere chiamate.
 
 Esempi:
 
@@ -191,7 +221,7 @@ const user = {
 const numbers = [1, 2, 3];
 ```
 
-Gli oggetti sono mutabili.
+Le proprieta di un normale oggetto possono essere modificate, salvo vincoli come descrittori non scrivibili o `Object.freeze()`.
 
 ```js
 const user = {
@@ -223,6 +253,10 @@ const b = a;
 console.log(a === b); // true
 ```
 
+Il confronto verifica l'identita, non il contenuto. Anche i primitivi hanno casi particolari: `NaN === NaN` e `false`, mentre `0 === -0` e `true`. Per riconoscere `NaN` usa `Number.isNaN()`; `Object.is()` distingue i due zeri e considera uguali due `NaN`.
+
+Gli argomenti delle funzioni vengono passati per valore: per un oggetto viene copiato il riferimento. Mutare l'oggetto e riassegnare il parametro hanno quindi effetti diversi; vedi [[Programmazione/JavaScript/Pagine/Funzioni|Funzioni]].
+
 ---
 ### typeof
 `typeof` restituisce una stringa con il tipo del valore.
@@ -247,9 +281,11 @@ typeof null; // "object"
 
 `typeof null` restituisce `"object"` per compatibilita storica. Non significa che `null` sia davvero un oggetto utilizzabile.
 
+Per distinguere gli array usa `Array.isArray(value)`. `typeof` su un nome inesistente restituisce `"undefined"`, ma su una variabile lessicale nella TDZ genera `ReferenceError`: non e un controllo universale privo di errori.
+
 ---
 ### Wrapper objects
-I primitivi non sono oggetti, ma JavaScript puo avvolgerli temporaneamente in oggetti wrapper per usare metodi.
+I primitivi non sono oggetti, ma JavaScript puo convertirli temporaneamente in wrapper per accedere a proprieta e metodi. `null` e `undefined` sono esclusi: un accesso diretto alle loro proprieta genera `TypeError`.
 
 ```js
 const text = "ciao";
@@ -271,7 +307,7 @@ console.log(typeof b); // "object"
 
 ## API / Sintassi
 
-Controlli comuni:
+Schemi dei controlli comuni: `value` rappresenta un valore da fornire, non una variabile gia definita da questa sezione.
 
 ```js
 typeof value;
@@ -290,7 +326,7 @@ Boolean(value);
 BigInt(value);
 ```
 
-Confronti:
+Confronti tra valori definiti dall'applicazione:
 
 ```js
 primitiveA === primitiveB;
@@ -301,26 +337,46 @@ Evita conversioni implicite quando il tipo e importante.
 
 ## Esempio pratico
 
-Validazione semplice di input numerico:
+Conversione e validazione sono due operazioni diverse: `Number("")`, `Number("   ")`, `Number(null)` e `Number(false)` producono `0`, non un errore.
+
+Questa funzione accetta un `number` intero non negativo e sicuro oppure una stringa di sole cifre decimali, con spazi esterni facoltativi. Booleani, `null`, stringhe vuote, notazione esponenziale e prefissi esadecimali sono rifiutati. Un limite massimo di eta, se richiesto, appartiene alle regole dell'applicazione.
 
 ```js
 function parseAge(input) {
+  if (typeof input !== "number" && typeof input !== "string") {
+    throw new TypeError("Eta: atteso un numero o una stringa decimale");
+  }
+
+  if (typeof input === "string" && !/^\d+$/.test(input.trim())) {
+    throw new TypeError("Eta: formato decimale non valido");
+  }
+
   const age = Number(input);
 
-  if (!Number.isInteger(age) || age < 0) {
-    throw new Error("Eta non valida");
+  if (!Number.isSafeInteger(age) || age < 0) {
+    throw new RangeError("Eta: atteso un intero non negativo e sicuro");
   }
 
   return age;
 }
 ```
 
-Convertire esplicitamente rende chiaro quando una stringa diventa numero e permette di gestire `NaN`.
+Esempi da eseguire dopo la definizione di `parseAge`:
+
+```js
+console.log(parseAge(" 30 ")); // 30
+console.log(parseAge(0));      // 0
+// parseAge("");              // TypeError
+// parseAge(false);           // TypeError
+// parseAge(-1);              // RangeError
+```
+
+Il controllo del formato precede la conversione; quello del valore la segue. Sono necessari entrambi per rispettare il contratto dichiarato.
 
 ## Varianti
 
 - **Primitivi**: valori immutabili.
-- **Oggetti**: valori mutabili per riferimento.
+- **Oggetti**: valori con identita, normalmente mutabili.
 - **Array**: oggetti indicizzati.
 - **Function**: oggetti chiamabili.
 - **Date, RegExp, Map, Set**: oggetti specializzati.
@@ -332,7 +388,8 @@ Convertire esplicitamente rende chiaro quando una stringa diventa numero e perme
 - Confrontare oggetti diversi aspettandosi confronto per contenuto.
 - Confondere `null` e `undefined`.
 - Usare `new String()`, `new Number()` o `new Boolean()` senza motivo.
-- Mescolare `number` e `bigint`.
+- Mescolare `number` e `bigint` negli operatori aritmetici.
+- Usare `Number()` come se validasse da solo il formato dell'input.
 
 ---
 
@@ -348,8 +405,19 @@ Convertire esplicitamente rende chiaro quando una stringa diventa numero e perme
 
 ## Collegamenti
 
-- [[Variabili]]
-- [[Oggetti Avanzati]]
-- [[JSON]]
-- [[Immutabilita e Copia degli Oggetti]]
-- [[Map e Set]]
+- [[Programmazione/JavaScript/Pagine/Variabili|Variabili]]
+- [[Programmazione/JavaScript/Pagine/Oggetti Avanzati|Oggetti Avanzati]]
+- [[Programmazione/JavaScript/Pagine/JSON|JSON]]
+- [[Programmazione/JavaScript/Pagine/Immutabilita e Copia degli Oggetti|Immutabilita e Copia degli Oggetti]]
+- [[Programmazione/JavaScript/Pagine/Map e Set|Map e Set]]
+
+## Fonti
+
+- [MDN - Tipi e strutture dati](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Guide/Data_structures)
+- [MDN - Number, precisione e conversioni](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Number)
+- [MDN - BigInt](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/BigInt)
+- [MDN - Symbol](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Symbol)
+
+## Navigazione
+
+- [[Programmazione/JavaScript/Indice JavaScript|Indice JavaScript]]

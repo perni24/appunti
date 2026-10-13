@@ -3,13 +3,19 @@ date: 2026-06-04
 area: Programmazione
 topic: React
 type: technical-note
-status: "non revisionato"
+status: non revisionato
 publish: true
-difficulty: intermediate
-tags: [react, hooks, architecture]
-aliases: [Custom Hooks, Hook personalizzati]
+difficulty: intermedio
+tags:
+  - react
+  - hooks
+  - architecture
+aliases:
+  - Custom Hooks
+  - Hook personalizzati
 prerequisites: []
 related: []
+title: Custom Hooks
 ---
 
 # Custom Hooks
@@ -127,8 +133,8 @@ Questo hook puo essere riusato in ricerche, filtri e input remoti.
 
 ## Collegamenti
 
-- [[Programmazione/React/Indice react|Indice React]]
-- [[useState]]
-- [[useEffect]]
-- [[useReducer]]
-- [[Data Fetching e Cache]]
+- [[Programmazione/React/Indice React|Indice React]]
+- [[Programmazione/React/Pagine/useState|useState]]
+- [[Programmazione/React/Pagine/useEffect|useEffect]]
+- [[Programmazione/React/Pagine/useReducer|useReducer]]
+- [[Programmazione/React/Pagine/Data Fetching e Cache|Data Fetching e Cache]]

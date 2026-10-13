@@ -3,13 +3,19 @@ date: 2026-06-04
 area: Programmazione
 topic: React
 type: technical-note
-status: "non revisionato"
+status: non revisionato
 publish: true
-difficulty: intermediate
-tags: [react, routing, frontend]
-aliases: [React Router, Routing React]
+difficulty: intermedio
+tags:
+  - react
+  - routing
+  - frontend
+aliases:
+  - React Router
+  - Routing React
 prerequisites: []
 related: []
+title: React Router
 ---
 
 # React Router
@@ -115,8 +121,8 @@ function UserPage() {
 
 ## Collegamenti
 
-- [[Programmazione/React/Indice react|Indice React]]
-- [[Data Fetching e Cache]]
-- [[Framework Next.js e Remix]]
-- [[API layer]]
-- [[Error Boundaries]]
+- [[Programmazione/React/Indice React|Indice React]]
+- [[Programmazione/React/Pagine/Data Fetching e Cache|Data Fetching e Cache]]
+- [[Programmazione/React/Pagine/Framework Next.js e Remix|Framework Next.js e Remix]]
+- [[Programmazione/React/Pagine/API layer|API layer]]
+- [[Programmazione/React/Pagine/Error Boundaries|Error Boundaries]]

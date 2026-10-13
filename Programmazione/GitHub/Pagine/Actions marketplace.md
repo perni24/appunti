@@ -3,13 +3,24 @@ date: 2026-07-07
 area: Programmazione
 topic: GitHub
 type: technical-note
-status: "non revisionato"
+status: non revisionato
 publish: true
 difficulty: intermedio
-tags: [github, github-actions, marketplace, supply-chain]
-aliases: [Actions marketplace, GitHub Actions marketplace]
-prerequisites: [GitHub Actions, Sintassi YAML GitHub Actions]
-related: [Sicurezza dei token GitHub, Dependabot]
+tags:
+  - github
+  - github-actions
+  - marketplace
+  - supply-chain
+aliases:
+  - Actions marketplace
+  - GitHub Actions marketplace
+prerequisites:
+  - "[[Programmazione/GitHub/Pagine/GitHub Actions]]"
+  - "[[Programmazione/GitHub/Pagine/Sintassi YAML GitHub Actions]]"
+related:
+  - "[[Programmazione/GitHub/Pagine/Sicurezza dei token GitHub]]"
+  - "[[Programmazione/GitHub/Pagine/Dependabot]]"
+title: Actions marketplace
 ---
 
 # Actions marketplace
@@ -118,11 +129,11 @@ Qui `checkout` recupera il codice e `setup-node` prepara il runtime.
 
 ## Collegamenti
 
-- [[Programmazione/GitHub/Indice GitHub]]
-- [[GitHub Actions]]
-- [[Sintassi YAML GitHub Actions]]
-- [[Dependabot]]
-- [[Sicurezza dei token GitHub]]
+- [[Programmazione/GitHub/Indice GitHub|Indice GitHub]]
+- [[Programmazione/GitHub/Pagine/GitHub Actions|GitHub Actions]]
+- [[Programmazione/GitHub/Pagine/Sintassi YAML GitHub Actions|Sintassi YAML GitHub Actions]]
+- [[Programmazione/GitHub/Pagine/Dependabot|Dependabot]]
+- [[Programmazione/GitHub/Pagine/Sicurezza dei token GitHub|Sicurezza dei token GitHub]]
 
 ## Fonti
 

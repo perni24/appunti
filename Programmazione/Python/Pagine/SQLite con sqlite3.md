@@ -3,13 +3,25 @@ date: 2026-06-03
 area: Programmazione
 topic: Python
 type: technical-note
-status: "non revisionato"
+status: non revisionato
 publish: true
-difficulty: beginner
-tags: [python, sqlite, sqlite3, database, standard-library]
-aliases: [sqlite3 Python, SQLite Python]
-prerequisites: [Context Managers, Error Handling]
-related: [Standard Library, Gestione File]
+difficulty: base
+tags:
+  - python
+  - sqlite
+  - sqlite3
+  - database
+  - standard-library
+aliases:
+  - sqlite3 Python
+  - SQLite Python
+prerequisites:
+  - "[[Programmazione/Python/Pagine/Context Managers]]"
+  - "[[Programmazione/Python/Pagine/Error Handling]]"
+related:
+  - "[[Programmazione/Python/Pagine/Standard Library]]"
+  - "[[Programmazione/Python/Pagine/Gestione File]]"
+title: SQLite con sqlite3
 ---
 
 # SQLite con sqlite3
@@ -151,9 +163,9 @@ with sqlite3.connect("app.db") as connection:
 
 ## Collegamenti
 
-- [[Programmazione/Python/Indice python|Indice Python]]
-- [[Context Managers]]
+- [[Programmazione/Python/Indice Python|Indice Python]]
+- [[Programmazione/Python/Pagine/Context Managers|Context Managers]]
 - [[Programmazione/Python/Pagine/Error Handling|Error Handling]]
-- [[Standard Library]]
-- [[SQLAlchemy]]
-- [[Programmazione/Postgres/Indice postgres|Postgres]]
+- [[Programmazione/Python/Pagine/Standard Library|Standard Library]]
+- [[Programmazione/Python/Pagine/SQLAlchemy|SQLAlchemy]]
+- [[Programmazione/PostgreSQL/Indice PostgreSQL|Postgres]]

@@ -3,13 +3,17 @@ date: 2026-06-03
 area: Programmazione
 topic: Python
 type: technical-note
-status: "non revisionato"
+status: non revisionato
 publish: true
-difficulty: intermediate
-tags: [python, programming]
-aliases: [Metodi Speciali (Dunder Methods)]
+difficulty: intermedio
+tags:
+  - python
+  - programming
+aliases:
+  - Metodi Speciali (Dunder Methods)
 prerequisites: []
 related: []
+title: Metodi Speciali (Dunder Methods)
 ---
 
 # Metodi Speciali (Dunder Methods)
@@ -93,3 +97,8 @@ for item in cart:
 - [[Programmazione/Python/Pagine/Data model|Data model]]
 - [[Programmazione/Python/Pagine/Classi e Istanze|Classi e Istanze]]
 - [[Programmazione/Python/Pagine/Iteratori|Iteratori]]
+
+
+## Navigazione
+
+- [[Programmazione/Python/Indice Python|Indice Python]]

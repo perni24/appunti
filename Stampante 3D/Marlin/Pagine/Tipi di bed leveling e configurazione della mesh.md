@@ -3,18 +3,28 @@ date: 2026-07-26
 area: Stampante 3D
 topic: Marlin
 type: technical-note
-
 publish: true
 difficulty: avanzato
-tags: [marlin, bed-leveling, mesh, g29, m420, ubl]
-aliases: [Bed leveling Marlin, Mesh Marlin, UBL Marlin]
+tags:
+  - marlin
+  - bed-leveling
+  - mesh
+  - g29
+  - m420
+  - ubl
+aliases:
+  - Bed leveling Marlin
+  - Mesh Marlin
+  - UBL Marlin
 prerequisites:
   - "[[Stampante 3D/Marlin/Pagine/Probe Z offset e BLTouch]]"
   - "[[Stampante 3D/Marlin/Pagine/Dimensioni del piatto area di lavoro e limiti]]"
 related:
   - "[[Stampante 3D/Marlin/Pagine/Z Safe Homing e allineamento degli assi Z]]"
   - "[[Stampante 3D/Marlin/Pagine/Babystepping e regolazioni dinamiche]]"
-marlin-version: "2.1.2.8"
+marlin-version: 2.1.2.8
+title: Tipi di bed leveling e configurazione della mesh
+status: non revisionato
 ---
 
 # Tipi di bed leveling e configurazione della mesh
@@ -613,7 +623,12 @@ Piu punti possono produrre una mappa piu dettagliata del rumore, non del piatto.
 
 ## Collegamenti
 
-- [[Stampante 3D/Marlin/Pagine/Probe Z offset e BLTouch]]
-- [[Stampante 3D/Marlin/Pagine/Z Safe Homing e allineamento degli assi Z]]
-- [[Stampante 3D/Marlin/Pagine/Dimensioni del piatto area di lavoro e limiti]]
-- [[Stampante 3D/Marlin/Pagine/Babystepping e regolazioni dinamiche]]
+- [[Stampante 3D/Marlin/Pagine/Probe Z offset e BLTouch|Probe Z offset e BLTouch]]
+- [[Stampante 3D/Marlin/Pagine/Z Safe Homing e allineamento degli assi Z|Z Safe Homing e allineamento degli assi Z]]
+- [[Stampante 3D/Marlin/Pagine/Dimensioni del piatto area di lavoro e limiti|Dimensioni del piatto area di lavoro e limiti]]
+- [[Stampante 3D/Marlin/Pagine/Babystepping e regolazioni dinamiche|Babystepping e regolazioni dinamiche]]
+
+
+## Navigazione
+
+- [[Stampante 3D/Marlin/Indice Marlin|Indice Marlin]]

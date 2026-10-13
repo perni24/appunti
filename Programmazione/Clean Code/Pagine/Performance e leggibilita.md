@@ -3,13 +3,24 @@ date: 2026-07-09
 area: Programmazione
 topic: Clean Code
 type: theory-note
-status: "non revisionato"
+status: non revisionato
 publish: true
 difficulty: avanzato
-tags: [clean-code, performance, leggibilita]
-aliases: [Performance e leggibilita, Performance vs readability]
-prerequisites: [Leggibilita del codice, Profiling prima del refactoring]
-related: [Ottimizzazione prematura, Hot path, Allocazioni inutili]
+tags:
+  - clean-code
+  - performance
+  - leggibilita
+aliases:
+  - Performance e leggibilita
+  - Performance vs readability
+prerequisites:
+  - "[[Programmazione/Clean Code/Pagine/Leggibilita del codice]]"
+  - "[[Programmazione/Clean Code/Pagine/Profiling prima del refactoring]]"
+related:
+  - "[[Programmazione/Clean Code/Pagine/Ottimizzazione prematura]]"
+  - "[[Programmazione/Clean Code/Pagine/Hot path]]"
+  - "[[Programmazione/Clean Code/Pagine/Allocazioni inutili]]"
+title: Performance e leggibilita
 ---
 
 # Performance e leggibilita
@@ -76,12 +87,12 @@ In un punto non critico va bene. In un hot path con milioni di elementi, puo ess
 
 ## Collegamenti
 
-- [[Programmazione/Clean Code/Indice Clean Code]]
-- [[Leggibilita del codice]]
-- [[Ottimizzazione prematura]]
-- [[Profiling prima del refactoring]]
-- [[Hot path]]
-- [[Allocazioni inutili]]
+- [[Programmazione/Clean Code/Indice Clean Code|Indice Clean Code]]
+- [[Programmazione/Clean Code/Pagine/Leggibilita del codice|Leggibilita del codice]]
+- [[Programmazione/Clean Code/Pagine/Ottimizzazione prematura|Ottimizzazione prematura]]
+- [[Programmazione/Clean Code/Pagine/Profiling prima del refactoring|Profiling prima del refactoring]]
+- [[Programmazione/Clean Code/Pagine/Hot path|Hot path]]
+- [[Programmazione/Clean Code/Pagine/Allocazioni inutili|Allocazioni inutili]]
 
 ## Fonti
 

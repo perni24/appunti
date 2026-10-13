@@ -3,7 +3,7 @@ date: 2026-05-27
 area: Programmazione
 topic: Rust
 type: technical-note
-status: "non revisionato"
+status: non revisionato
 publish: true
 difficulty: avanzato
 tags:
@@ -11,7 +11,7 @@ tags:
   - rust
   - backend-networking-e-database
 aliases:
-  - "SQLx"
+  - SQLx
 prerequisites:
   - "[[Programmazione/Rust/Pagine/Async Await]]"
   - "[[Programmazione/Rust/Pagine/Connection pooling]]"
@@ -20,6 +20,7 @@ related:
   - "[[Programmazione/Rust/Pagine/Web backend con axum]]"
   - "[[Programmazione/Rust/Pagine/Diesel]]"
   - "[[Programmazione/Rust/Pagine/SeaORM]]"
+title: SQLx
 ---
 
 # SQLx
@@ -150,10 +151,10 @@ La transazione rende atomiche le due modifiche. In un'applicazione reale servono
 
 ## Collegamenti
 
-- [[Programmazione/Rust/Indice rust|Indice Rust]]
-- [[Programmazione/Rust/Pagine/Async Await]]
-- [[Programmazione/Rust/Pagine/Connection pooling]]
-- [[Programmazione/Rust/Pagine/Web backend con axum]]
-- [[Programmazione/Rust/Pagine/Error handling idiomatico]]
-- [[Programmazione/Rust/Pagine/Diesel]]
-- [[Programmazione/Rust/Pagine/SeaORM]]
+- [[Programmazione/Rust/Indice Rust|Indice Rust]]
+- [[Programmazione/Rust/Pagine/Async Await|Async Await]]
+- [[Programmazione/Rust/Pagine/Connection pooling|Connection pooling]]
+- [[Programmazione/Rust/Pagine/Web backend con axum|Web backend con axum]]
+- [[Programmazione/Rust/Pagine/Error handling idiomatico|Error handling idiomatico]]
+- [[Programmazione/Rust/Pagine/Diesel|Diesel]]
+- [[Programmazione/Rust/Pagine/SeaORM|SeaORM]]

@@ -3,12 +3,23 @@ date: 2026-07-14
 area: Programmi open source
 topic: Generazione diagrammi ER da SQL
 type: technical-note
-status: "non revisionato"
+status: non revisionato
 difficulty: base
-tags: [open-source, database, sql, er-diagram, schema]
-aliases: [SQL to ER diagram, SQL to ERD, DDL to ER diagram]
+tags:
+  - open-source
+  - database
+  - sql
+  - er-diagram
+  - schema
+aliases:
+  - SQL to ER diagram
+  - SQL to ERD
+  - DDL to ER diagram
 prerequisites: []
-related: [TrailBase]
+related:
+  - "[[Programmi open source/Pagine/TrailBase]]"
+title: SQL to ER diagram
+publish: true
 ---
 
 # SQL to ER diagram
@@ -33,7 +44,7 @@ Lo strumento legge un input SQL, di solito istruzioni `CREATE TABLE`, estrae tab
 
 Alcuni tool generano direttamente immagini o diagrammi web, altri producono output come PlantUML, Mermaid o DBML.
 
-## Esempio d'uso
+## Esempio pratico
 
 ```sql
 CREATE TABLE users (
@@ -49,7 +60,7 @@ CREATE TABLE orders (
 
 Da questo schema lo strumento puo generare un diagramma con due entita, `users` e `orders`, collegate dalla foreign key `orders.user_id -> users.id`.
 
-## Punti forti
+## Funzionalita
 
 - **Documentazione rapida**: crea una vista visuale dello schema.
 - **Utile in review**: aiuta a discutere modifiche database.
@@ -73,7 +84,7 @@ Da questo schema lo strumento puo generare un diagramma con due entita, `users` 
 
 ## Collegamenti
 
-- [[TrailBase]]
-- [[Programmi open source/Indice Programmi Open Source]]
+- [[Programmi open source/Pagine/TrailBase|TrailBase]]
+- [[Programmi open source/Indice Programmi Open Source|Catalogo open source]]
 - https://github.com/wangyuheng/ddl2plantuml
 - https://github.com/ystemsrx/sql_to_ER

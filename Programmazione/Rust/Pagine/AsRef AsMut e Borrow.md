@@ -3,7 +3,7 @@ date: 2026-05-22
 area: Programmazione
 topic: Rust
 type: technical-note
-status: "non revisionato"
+status: non revisionato
 publish: true
 difficulty: intermedio
 tags:
@@ -11,9 +11,9 @@ tags:
   - rust
   - standard-library
 aliases:
-  - "AsRef"
-  - "AsMut"
-  - "Borrow"
+  - AsRef
+  - AsMut
+  - Borrow
 prerequisites:
   - "[[Programmazione/Rust/Pagine/References e Borrowing]]"
   - "[[Programmazione/Rust/Pagine/Deref Trait]]"
@@ -22,6 +22,7 @@ related:
   - "[[Programmazione/Rust/Pagine/Path e PathBuf]]"
   - "[[Programmazione/Rust/Pagine/HashMap e HashSet]]"
   - "[[Programmazione/Rust/Pagine/Stringhe String e &str]]"
+title: AsRef, AsMut e Borrow
 ---
 
 # AsRef, AsMut e Borrow
@@ -139,3 +140,8 @@ La funzione accetta `&str`, `String`, `PathBuf` e `&Path` senza imporre un tipo 
 - [[Programmazione/Rust/Pagine/Path e PathBuf|Path e PathBuf]]
 - [[Programmazione/Rust/Pagine/HashMap e HashSet|HashMap e HashSet]]
 - [[Programmazione/Rust/Pagine/Stringhe String e &str|Stringhe String e &str]]
+
+
+## Navigazione
+
+- [[Programmazione/Rust/Indice Rust|Indice Rust]]

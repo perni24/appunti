@@ -3,13 +3,24 @@ date: 2026-06-03
 area: Programmazione
 topic: Python
 type: technical-note
-status: "non revisionato"
+status: non revisionato
 publish: true
-difficulty: beginner
-tags: [python, dataclasses, oop, standard-library]
-aliases: [dataclass, Dataclasses Python]
-prerequisites: [Classi e Istanze]
-related: [Classi e Istanze, Type Hinting, Enum]
+difficulty: base
+tags:
+  - python
+  - dataclasses
+  - oop
+  - standard-library
+aliases:
+  - dataclass
+  - Dataclasses Python
+prerequisites:
+  - "[[Programmazione/Python/Pagine/Classi e Istanze]]"
+related:
+  - "[[Programmazione/Python/Pagine/Classi e Istanze]]"
+  - "[[Programmazione/Python/Pagine/Type Hinting]]"
+  - "[[Programmazione/Python/Pagine/Enum]]"
+title: Dataclasses
 ---
 
 # Dataclasses
@@ -117,3 +128,8 @@ Con `frozen=True`, una lista interna resta modificabile. Per un record immutabil
 ## Fonti
 
 - [Python - dataclasses](https://docs.python.org/3/library/dataclasses.html)
+
+
+## Navigazione
+
+- [[Programmazione/Python/Indice Python|Indice Python]]

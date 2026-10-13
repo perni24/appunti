@@ -3,13 +3,19 @@ date: 2026-06-04
 area: Programmazione
 topic: React
 type: technical-note
-status: "non revisionato"
+status: non revisionato
 publish: true
-difficulty: intermediate
-tags: [react, security, xss]
-aliases: [Protezione XSS, Sanitizzazione HTML]
+difficulty: intermedio
+tags:
+  - react
+  - security
+  - xss
+aliases:
+  - Protezione XSS
+  - Sanitizzazione HTML
 prerequisites: []
 related: []
+title: Protezione XSS
 ---
 
 # Protezione XSS
@@ -94,8 +100,8 @@ Per markdown utente:
 
 ## Collegamenti
 
-- [[Programmazione/React/Indice react|Indice React]]
+- [[Programmazione/React/Indice React|Indice React]]
 - [[Programmazione/React/Pagine/Content Security Policy|Content Security Policy]]
-- [[Gestione Autenticazione]]
-- [[Validazione Dati]]
-- [[CSRF]]
+- [[Programmazione/React/Pagine/Gestione Autenticazione|Gestione Autenticazione]]
+- [[Programmazione/React/Pagine/Validazione Dati|Validazione Dati]]
+- [[Programmazione/React/Pagine/CSRF|CSRF]]

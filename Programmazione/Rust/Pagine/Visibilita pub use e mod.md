@@ -1,9 +1,9 @@
-﻿---
+---
 date: 2026-05-20
 area: Programmazione
 topic: Rust
 type: technical-note
-status: "non revisionato"
+status: non revisionato
 publish: true
 difficulty: base
 tags:
@@ -15,6 +15,7 @@ aliases:
   - "Visibilita: pub, use e mod"
 prerequisites: []
 related: []
+title: "Visibilita: pub, use e mod"
 ---
 
 # Visibilita: pub, use e mod
@@ -99,3 +100,8 @@ impl UserRepository {
 - [[Programmazione/Rust/Pagine/Public API design|Public API design]]
 - [[Programmazione/Rust/Pagine/Documentazione delle crate|Documentazione delle crate]]
 
+
+
+## Navigazione
+
+- [[Programmazione/Rust/Indice Rust|Indice Rust]]

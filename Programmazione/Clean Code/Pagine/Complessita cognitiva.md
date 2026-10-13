@@ -3,13 +3,24 @@ date: 2026-07-09
 area: Programmazione
 topic: Clean Code
 type: theory-note
-status: "non revisionato"
+status: non revisionato
 publish: true
 difficulty: intermedio
-tags: [clean-code, complessita, leggibilita]
-aliases: [Complessita cognitiva, Cognitive complexity]
-prerequisites: [Leggibilita del codice, Complessita ciclomatica]
-related: [Guard clauses, Funzioni piccole, Codice testabile]
+tags:
+  - clean-code
+  - complessita
+  - leggibilita
+aliases:
+  - Complessita cognitiva
+  - Cognitive complexity
+prerequisites:
+  - "[[Programmazione/Clean Code/Pagine/Leggibilita del codice]]"
+  - "[[Programmazione/Clean Code/Pagine/Complessita ciclomatica]]"
+related:
+  - "[[Programmazione/Clean Code/Pagine/Guard clauses]]"
+  - "[[Programmazione/Clean Code/Pagine/Funzioni piccole]]"
+  - "[[Programmazione/Clean Code/Pagine/Codice testabile]]"
+title: Complessita cognitiva
 ---
 
 # Complessita cognitiva
@@ -90,12 +101,12 @@ Il secondo esempio riduce profondita e rumore.
 
 ## Collegamenti
 
-- [[Programmazione/Clean Code/Indice Clean Code]]
-- [[Leggibilita del codice]]
-- [[Guard clauses]]
-- [[Complessita ciclomatica]]
-- [[Funzioni piccole]]
-- [[Codice testabile]]
+- [[Programmazione/Clean Code/Indice Clean Code|Indice Clean Code]]
+- [[Programmazione/Clean Code/Pagine/Leggibilita del codice|Leggibilita del codice]]
+- [[Programmazione/Clean Code/Pagine/Guard clauses|Guard clauses]]
+- [[Programmazione/Clean Code/Pagine/Complessita ciclomatica|Complessita ciclomatica]]
+- [[Programmazione/Clean Code/Pagine/Funzioni piccole|Funzioni piccole]]
+- [[Programmazione/Clean Code/Pagine/Codice testabile|Codice testabile]]
 
 ## Fonti
 

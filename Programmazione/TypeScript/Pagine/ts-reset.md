@@ -3,13 +3,24 @@ date: 2026-06-22
 area: Programmazione
 topic: TypeScript
 type: technical-note
-status: "non revisionato"
+status: non revisionato
 publish: true
 difficulty: avanzato
-tags: [typescript, ts-reset, standard-library, type-safety]
-aliases: [ts-reset]
-prerequisites: [Strict mode, Best Practices]
-related: [any, unknown e never, Linting e formattazione]
+tags:
+  - typescript
+  - ts-reset
+  - standard-library
+  - type-safety
+aliases:
+  - ts-reset
+prerequisites:
+  - "[[Programmazione/TypeScript/Pagine/Strict mode]]"
+  - "[[Programmazione/TypeScript/Pagine/Best Practices]]"
+related:
+  - any
+  - unknown e never
+  - "[[Programmazione/TypeScript/Pagine/Linting e formattazione]]"
+title: ts-reset
 ---
 
 # ts-reset
@@ -72,5 +83,10 @@ Questo spinge verso pattern piu sicuri con `unknown`, type guard o schema valida
 ## Collegamenti
 
 - [[Programmazione/TypeScript/Pagine/Strict mode|Strict mode]]
-- [[any, unknown e never]]
-- [[Validazione runtime e tipi statici]]
+- [[Programmazione/TypeScript/Pagine/any, unknown e never|any, unknown e never]]
+- [[Programmazione/TypeScript/Pagine/Validazione runtime e tipi statici|Validazione runtime e tipi statici]]
+
+
+## Navigazione
+
+- [[Programmazione/TypeScript/Indice TypeScript|Indice TypeScript]]

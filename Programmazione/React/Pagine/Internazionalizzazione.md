@@ -3,13 +3,20 @@ date: 2026-06-04
 area: Programmazione
 topic: React
 type: technical-note
-status: "non revisionato"
+status: non revisionato
 publish: true
-difficulty: intermediate
-tags: [react, i18n, frontend]
-aliases: [Internazionalizzazione, i18n, Localizzazione]
+difficulty: intermedio
+tags:
+  - react
+  - i18n
+  - frontend
+aliases:
+  - Internazionalizzazione
+  - i18n
+  - Localizzazione
 prerequisites: []
 related: []
+title: Internazionalizzazione
 ---
 
 # Internazionalizzazione
@@ -190,11 +197,11 @@ function Price({ amount, locale, currency }) {
 
 ## Collegamenti
 
-- [[Programmazione/React/Indice react|Indice React]]
-- [[Context API]]
-- [[Design system]]
-- [[Testing Cypress e Playwright]]
-- [[WAI-ARIA]]
+- [[Programmazione/React/Indice React|Indice React]]
+- [[Programmazione/React/Pagine/Context API|Context API]]
+- [[Programmazione/React/Pagine/Design system|Design system]]
+- [[Programmazione/React/Pagine/Testing Cypress e Playwright|Testing Cypress e Playwright]]
+- [[Programmazione/React/Pagine/WAI-ARIA|WAI-ARIA]]
 
 ## Fonti
 

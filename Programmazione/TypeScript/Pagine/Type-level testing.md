@@ -3,13 +3,23 @@ date: 2026-06-22
 area: Programmazione
 topic: TypeScript
 type: technical-note
-status: "non revisionato"
+status: non revisionato
 publish: true
 difficulty: avanzato
-tags: [typescript, type-level-testing, testing, type-system]
-aliases: [Test type-level]
-prerequisites: [Utility Types, Conditional Types]
-related: [Testing in TypeScript, Utility Types personalizzati]
+tags:
+  - typescript
+  - type-level-testing
+  - testing
+  - type-system
+aliases:
+  - Test type-level
+prerequisites:
+  - "[[Programmazione/TypeScript/Pagine/Utility Types]]"
+  - "[[Programmazione/TypeScript/Pagine/Conditional Types]]"
+related:
+  - "[[Programmazione/TypeScript/Pagine/Testing in TypeScript]]"
+  - "[[Programmazione/TypeScript/Pagine/Utility Types personalizzati]]"
+title: Type-level testing
 ---
 
 # Type-level testing
@@ -84,6 +94,11 @@ Se `UserId` non e piu `string`, il test non compila.
 
 ## Collegamenti
 
-- [[Testing in TypeScript]]
-- [[Utility Types personalizzati]]
-- [[Conditional Types]]
+- [[Programmazione/TypeScript/Pagine/Testing in TypeScript|Testing in TypeScript]]
+- [[Programmazione/TypeScript/Pagine/Utility Types personalizzati|Utility Types personalizzati]]
+- [[Programmazione/TypeScript/Pagine/Conditional Types|Conditional Types]]
+
+
+## Navigazione
+
+- [[Programmazione/TypeScript/Indice TypeScript|Indice TypeScript]]

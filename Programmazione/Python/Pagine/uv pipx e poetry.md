@@ -3,13 +3,22 @@ date: 2026-06-03
 area: Programmazione
 topic: Python
 type: technical-note
-status: "non revisionato"
+status: non revisionato
 publish: true
-difficulty: intermediate
-tags: [programmazione, python, packaging, tooling]
-aliases: [uv, pipx, poetry, pipx e poetry]
+difficulty: intermedio
+tags:
+  - programmazione
+  - python
+  - packaging
+  - tooling
+aliases:
+  - uv
+  - pipx
+  - poetry
+  - pipx e poetry
 prerequisites: []
 related: []
+title: uv, pipx e poetry
 ---
 
 # uv, pipx e poetry
@@ -134,8 +143,8 @@ poetry run pytest
 
 ## Collegamenti
 
-- [[Programmazione/Python/Indice python|Indice Python]]
-- [[Ambienti Virtuali]]
-- [[Pip e PyPI]]
-- [[Creazione di Package]]
-- [[pre-commit]]
+- [[Programmazione/Python/Indice Python|Indice Python]]
+- [[Programmazione/Python/Pagine/Ambienti Virtuali|Ambienti Virtuali]]
+- [[Programmazione/Python/Pagine/Pip e PyPI|Pip e PyPI]]
+- [[Programmazione/Python/Pagine/Creazione di Package|Creazione di Package]]
+- [[Programmazione/Python/Pagine/pre-commit|pre-commit]]

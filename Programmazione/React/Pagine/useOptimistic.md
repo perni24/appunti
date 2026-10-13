@@ -3,13 +3,19 @@ date: 2026-06-04
 area: Programmazione
 topic: React
 type: technical-note
-status: "non revisionato"
+status: non revisionato
 publish: true
-difficulty: advanced
-tags: [react, hooks, optimistic-ui]
-aliases: [useOptimistic, Optimistic UI]
+difficulty: avanzato
+tags:
+  - react
+  - hooks
+  - optimistic-ui
+aliases:
+  - useOptimistic
+  - Optimistic UI
 prerequisites: []
 related: []
+title: useOptimistic
 ---
 
 # useOptimistic
@@ -97,10 +103,10 @@ La prop `action` del form esegue `submitAction` nel contesto richiesto da React.
 
 ## Collegamenti
 
-- [[Programmazione/React/Indice react|Indice React]]
-- [[Actions e form actions]]
-- [[useActionState]]
-- [[Data Fetching e Cache]]
+- [[Programmazione/React/Indice React|Indice React]]
+- [[Programmazione/React/Pagine/Actions e form actions|Actions e form actions]]
+- [[Programmazione/React/Pagine/useActionState|useActionState]]
+- [[Programmazione/React/Pagine/Data Fetching e Cache|Data Fetching e Cache]]
 
 ## Fonti
 

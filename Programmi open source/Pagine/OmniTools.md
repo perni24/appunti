@@ -3,12 +3,21 @@ date: 2026-06-16
 area: Programmi open source
 topic: Raccolta self-hosted di strumenti web
 type: technical-note
-status: "non revisionato"
+status: non revisionato
 difficulty: base
-tags: [open-source, self-hosted, tools, webapp, privacy]
-aliases: [Omnitools, OmniTools, omni-tools]
+tags:
+  - open-source
+  - self-hosted
+  - tools
+  - webapp
+  - privacy
+aliases:
+  - OmniTools
+  - omni-tools
 prerequisites: []
 related: []
+title: OmniTools
+publish: true
 ---
 
 # OmniTools
@@ -31,7 +40,7 @@ E utile quando vuoi avere un'alternativa locale o self-hosted ai classici siti d
 
 OmniTools e una web app: si avvia il servizio e poi si usano gli strumenti dal browser. Il progetto e pensato per essere self-hosted e molte operazioni vengono eseguite lato client, quindi i file possono essere elaborati direttamente nel browser senza inviarli a un server remoto.
 
-## Esempio d'uso
+## Esempio pratico
 
 ```text
 1. Avvia OmniTools in locale o su un server personale.
@@ -41,7 +50,7 @@ OmniTools e una web app: si avvia il servizio e poi si usano gli strumenti dal b
 5. Scarica il risultato elaborato.
 ```
 
-## Punti forti
+## Funzionalita
 
 - **Self-hosted**: puo essere eseguito su infrastruttura propria.
 - **Privacy-oriented**: riduce la necessita di usare utility online di terze parti.
@@ -65,3 +74,8 @@ OmniTools e una web app: si avvia il servizio e poi si usano gli strumenti dal b
 ## Collegamenti
 
 - https://github.com/iib0011/omni-tools
+
+
+## Navigazione
+
+- [[Programmi open source/Indice Programmi Open Source|Catalogo open source]]

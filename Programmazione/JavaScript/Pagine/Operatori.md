@@ -3,13 +3,24 @@ date: 2026-06-02
 area: Programmazione
 topic: JavaScript
 type: technical-note
-status: "non revisionato"
+status: non revisionato
 publish: true
-difficulty: beginner
-tags: [javascript, basics, operators, comparison, logical-operators]
-aliases: [Operatori JS]
-prerequisites: [Variabili, Tipi di Dati]
-related: [Strutture Condizionali, Tipi di Dati]
+difficulty: base
+tags:
+  - javascript
+  - basics
+  - operators
+  - comparison
+  - logical-operators
+aliases:
+  - Operatori JS
+prerequisites:
+  - "[[Programmazione/JavaScript/Pagine/Variabili]]"
+  - "[[Programmazione/JavaScript/Pagine/Tipi di Dati]]"
+related:
+  - "[[Programmazione/JavaScript/Pagine/Strutture Condizionali]]"
+  - "[[Programmazione/JavaScript/Pagine/Tipi di Dati]]"
+title: Operatori
 ---
 
 # Operatori
@@ -68,7 +79,7 @@ console.log(1 + "2");     // "12"
 console.log("a" + "b");   // "ab"
 ```
 
-Se almeno uno degli operandi e una stringa, il risultato tende a diventare concatenazione.
+Prima gli operandi vengono convertiti in primitivi. Se uno dei risultati e una stringa, `+` tenta la concatenazione; altrimenti esegue un'addizione numerica. Non e una validazione del dato: alcune conversioni, per esempio quella implicita di un `Symbol` in stringa, generano `TypeError`.
 
 Per conversioni numeriche esplicite:
 
@@ -91,6 +102,8 @@ count /= 2;
 
 Equivalenze:
 
+Per la semplice variabile `count` definita sopra valgono le forme seguenti. In generale una assegnazione composta valuta il lato sinistro una sola volta: con chiamate, getter o indici con effetti collaterali non espanderla meccanicamente ripetendo quell'espressione.
+
 ```js
 count += 1; // count = count + 1
 count *= 2; // count = count * 2
@@ -100,8 +113,8 @@ count *= 2; // count = count * 2
 ### Operatori di confronto
 | Operatore | Significato |
 | --- | --- |
-| `===` | Uguale per valore e tipo |
-| `!==` | Diverso per valore o tipo |
+| `===` | Uguaglianza senza conversione; identita per gli oggetti |
+| `!==` | Negazione dell'uguaglianza stretta |
 | `>` | Maggiore |
 | `>=` | Maggiore o uguale |
 | `<` | Minore |
@@ -114,7 +127,7 @@ console.log(10 > 3);    // true
 ```
 
 ---
-### == vs ===
+### Confronto tra `==` e `===`
 `==` fa conversioni implicite prima del confronto.
 
 ```js
@@ -129,6 +142,8 @@ console.log(5 === "5"); // false
 
 > [!IMPORTANT]
 > Nel codice moderno usa quasi sempre `===` e `!==`.
+
+`===` non esegue un confronto strutturale degli oggetti. Inoltre `NaN === NaN` e `false` e `0 === -0` e `true`. Per questi casi vedi [[Programmazione/JavaScript/Pagine/Tipi di Dati|Tipi di Dati]].
 
 ---
 ### Operatori logici
@@ -176,9 +191,20 @@ console.log(0 ?? 10); // 0
 
 `??` e utile quando `0`, `false` o `""` sono valori validi.
 
+`&&`, `||` e `??` eseguono **short-circuit**: il lato destro viene valutato soltanto se necessario. Non restituiscono necessariamente booleani. Non puoi mescolare direttamente `??` con `||` o `&&` senza parentesi.
+
+```js
+let calls = 0;
+const keepZero = 0 ?? ++calls;
+const useFallback = 0 || ++calls;
+console.log(keepZero, useFallback, calls); // 0 1 1
+console.log((null ?? false) || "fallback"); // "fallback"
+// null ?? false || "fallback"; // SyntaxError: servono parentesi
+```
+
 ---
 ### Optional chaining
-`?.` permette di leggere proprieta annidate senza generare errore se una parte e `null` o `undefined`.
+`?.` interrompe la catena quando il valore immediatamente a sinistra di quel punto opzionale e `null` o `undefined`. Ogni livello potenzialmente assente va considerato: `user?.profile.name` non protegge da un `profile` assente quando `user` esiste.
 
 ```js
 const user = null;
@@ -190,6 +216,29 @@ Senza optional chaining:
 
 ```js
 // user.profile.name; // TypeError
+```
+
+La variabile di partenza deve essere dichiarata. Le parentesi possono interrompere la catena e `?.()` non rende chiamabile un valore che non e una funzione.
+
+```js
+const customer = { profile: null, notify: 42 };
+console.log(customer?.profile?.name); // undefined
+// (customer?.profile).name;          // TypeError
+// customer.notify?.();               // TypeError
+// missingCustomer?.name;             // ReferenceError se il nome non esiste
+```
+
+### Precedenza e incremento
+
+La precedenza stabilisce come raggruppare l'espressione; le parentesi rendono esplicita la scelta. Il post-incremento restituisce il valore precedente, il pre-incremento quello aggiornato.
+
+```js
+console.log(2 + 3 * 4);   // 14
+console.log((2 + 3) * 4); // 20
+let count = 1;
+const before = count++;
+const after = ++count;
+console.log(before, after, count); // 1 3 3
 ```
 
 ---
@@ -213,13 +262,13 @@ typeof 42;     // "number"
 typeof null;   // "object"
 ```
 
-Per dettagli sui tipi, vedi [[Tipi di Dati]].
+Per dettagli sui tipi, vedi [[Programmazione/JavaScript/Pagine/Tipi di Dati|Tipi di Dati]].
 
 ---
 
 ## API / Sintassi
 
-Categorie principali:
+Schemi delle categorie principali: gli operandi (`a`, `b`, `value`, `object` e gli altri nomi) devono essere forniti dall'applicazione.
 
 ```js
 a + b;
@@ -254,18 +303,26 @@ Usa `===`, `!==` e `??` quando vuoi evitare conversioni o fallback indesiderati.
 
 ## Esempio pratico
 
-Fallback corretto con `??`:
+Paginazione con indice di pagina **a partire da zero**. I fallback e la validazione hanno ruoli distinti:
 
 ```js
-function createPagination({ page, pageSize }) {
-  return {
-    page: page ?? 1,
+function createPagination({ page, pageSize } = {}) {
+  const pagination = {
+    page: page ?? 0,
     pageSize: pageSize ?? 20,
   };
+
+  if (!Number.isSafeInteger(pagination.page) || pagination.page < 0) {
+    throw new RangeError("page deve essere un intero non negativo");
+  }
+  if (!Number.isSafeInteger(pagination.pageSize) || pagination.pageSize <= 0) {
+    throw new RangeError("pageSize deve essere un intero positivo");
+  }
+  return pagination;
 }
 ```
 
-Se `page` vale `0`, `??` lo mantiene. Con `||`, invece, `0` verrebbe trattato come mancante.
+`createPagination()` usa i default; `createPagination({ page: 0 })` conserva lo zero. Le stringhe numeriche non vengono convertite implicitamente e `pageSize: 0` e rifiutato. L'argomento deve essere un oggetto o essere omesso: il default del parametro non si applica a `null`.
 
 ## Varianti
 
@@ -300,7 +357,18 @@ Se `page` vale `0`, `??` lo mantiene. Con `||`, invece, `0` verrebbe trattato co
 
 ## Collegamenti
 
-- [[Tipi di Dati]]
+- [[Programmazione/JavaScript/Pagine/Tipi di Dati|Tipi di Dati]]
 - [[Programmazione/JavaScript/Pagine/Strutture Condizionali|Strutture Condizionali]]
-- [[Variabili]]
-- [[JSON]]
+- [[Programmazione/JavaScript/Pagine/Variabili|Variabili]]
+- [[Programmazione/JavaScript/Pagine/JSON|JSON]]
+
+## Fonti
+
+- [MDN - Operatori](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Guide/Expressions_and_operators)
+- [MDN - Addizione](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Operators/Addition)
+- [MDN - Nullish coalescing](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Operators/Nullish_coalescing)
+- [MDN - Optional chaining](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Operators/Optional_chaining)
+
+## Navigazione
+
+- [[Programmazione/JavaScript/Indice JavaScript|Indice JavaScript]]

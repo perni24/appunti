@@ -3,13 +3,19 @@ date: 2026-06-03
 area: Programmazione
 topic: Python
 type: theory-note
-status: "non revisionato"
+status: non revisionato
 publish: true
-difficulty: intermediate
-tags: [python, programming, functions]
-aliases: [Higher-order Functions, HOF]
+difficulty: intermedio
+tags:
+  - python
+  - programming
+  - functions
+aliases:
+  - Higher-order Functions
+  - HOF
 prerequisites: []
 related: []
+title: Higher-order Functions in Python
 ---
 
 # Higher-order Functions in Python
@@ -138,8 +144,8 @@ La funzione esterna crea una regola; quella interna la applica.
 
 ## Collegamenti
 
-- [[Programmazione/Python/Indice python|Indice Python]]
+- [[Programmazione/Python/Indice Python|Indice Python]]
 - [[Programmazione/Python/Pagine/Funzioni|Funzioni]]
-- [[Funzioni Lambda]]
-- [[Decoratori]]
-- [[Caching]]
+- [[Programmazione/Python/Pagine/Funzioni Lambda|Funzioni Lambda]]
+- [[Programmazione/Python/Pagine/Decoratori|Decoratori]]
+- [[Programmazione/Python/Pagine/Caching|Caching]]

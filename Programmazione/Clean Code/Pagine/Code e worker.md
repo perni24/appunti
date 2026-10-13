@@ -3,13 +3,25 @@ date: 2026-07-09
 area: Programmazione
 topic: Clean Code
 type: technical-note
-status: "non revisionato"
+status: non revisionato
 publish: true
 difficulty: avanzato
-tags: [clean-code, code, worker, asincronia]
-aliases: [Code e worker, Queues and workers]
-prerequisites: [Idempotenza, Side effects controllati]
-related: [Async code leggibile, Logging e tracing, Errori recuperabili e non recuperabili]
+tags:
+  - clean-code
+  - code
+  - worker
+  - asincronia
+aliases:
+  - Code e worker
+  - Queues and workers
+prerequisites:
+  - "[[Programmazione/Clean Code/Pagine/Idempotenza]]"
+  - "[[Programmazione/Clean Code/Pagine/Side effects controllati]]"
+related:
+  - "[[Programmazione/Clean Code/Pagine/Async code leggibile]]"
+  - "[[Programmazione/Clean Code/Pagine/Logging e tracing]]"
+  - "[[Programmazione/Clean Code/Pagine/Errori recuperabili e non recuperabili]]"
+title: Code e worker
 ---
 
 # Code e worker
@@ -87,12 +99,12 @@ Il job contiene dati essenziali e una chiave utile a evitare duplicazioni.
 
 ## Collegamenti
 
-- [[Programmazione/Clean Code/Indice Clean Code]]
-- [[Idempotenza]]
-- [[Side effects controllati]]
-- [[Async code leggibile]]
-- [[Logging e tracing]]
-- [[Errori recuperabili e non recuperabili]]
+- [[Programmazione/Clean Code/Indice Clean Code|Indice Clean Code]]
+- [[Programmazione/Clean Code/Pagine/Idempotenza|Idempotenza]]
+- [[Programmazione/Clean Code/Pagine/Side effects controllati|Side effects controllati]]
+- [[Programmazione/Clean Code/Pagine/Async code leggibile|Async code leggibile]]
+- [[Programmazione/Clean Code/Pagine/Logging e tracing|Logging e tracing]]
+- [[Programmazione/Clean Code/Pagine/Errori recuperabili e non recuperabili|Errori recuperabili e non recuperabili]]
 
 ## Fonti
 

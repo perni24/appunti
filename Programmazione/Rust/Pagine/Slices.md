@@ -1,16 +1,20 @@
-﻿---
+---
 date: 2026-05-20
 area: Programmazione
 topic: Rust
 type: technical-note
-status: "non revisionato"
+status: non revisionato
 publish: true
 difficulty: base
-tags: [programmazione, rust, slices, borrowing]
+tags:
+  - programmazione
+  - rust
+  - slices
+  - borrowing
 aliases:
-  - "Slice Rust"
+  - Slice Rust
   - "&[T]"
-  - "string slice"
+  - string slice
 prerequisites:
   - "[[Programmazione/Rust/Pagine/References e Borrowing]]"
   - "[[Programmazione/Rust/Pagine/Tipi di dato primitivi]]"
@@ -18,6 +22,7 @@ related:
   - "[[Programmazione/Rust/Pagine/Stringhe String e &str]]"
   - "[[Programmazione/Rust/Pagine/Vec]]"
   - "[[Programmazione/Rust/Pagine/Borrow checker]]"
+title: Slices
 ---
 
 # Slices
@@ -133,3 +138,8 @@ La funzione accetta qualsiasi sequenza leggibile come slice.
 - [[Programmazione/Rust/Pagine/Vec|Vec]]
 - [[Programmazione/Rust/Pagine/Borrow checker|Borrow checker]]
 
+
+
+## Navigazione
+
+- [[Programmazione/Rust/Indice Rust|Indice Rust]]

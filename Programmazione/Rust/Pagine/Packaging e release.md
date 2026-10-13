@@ -3,7 +3,7 @@ date: 2026-05-27
 area: Programmazione
 topic: Rust
 type: technical-note
-status: "non revisionato"
+status: non revisionato
 publish: true
 difficulty: intermedio
 tags:
@@ -11,8 +11,8 @@ tags:
   - rust
   - cli-e-tooling
 aliases:
-  - "Packaging e release"
-  - "Release Rust"
+  - Packaging e release
+  - Release Rust
 prerequisites:
   - "[[Programmazione/Rust/Pagine/Cargo]]"
   - "[[Programmazione/Rust/Pagine/Cargo.toml]]"
@@ -23,6 +23,7 @@ related:
   - "[[Programmazione/Rust/Pagine/Crates.io]]"
   - "[[Programmazione/Rust/Pagine/cargo audit]]"
   - "[[Programmazione/Rust/Pagine/cargo deny]]"
+title: Packaging e release
 ---
 
 # Packaging e release
@@ -168,13 +169,13 @@ Il dry run intercetta molti problemi prima della pubblicazione effettiva, come f
 
 ## Collegamenti
 
-- [[Programmazione/Rust/Indice rust|Indice Rust]]
-- [[Programmazione/Rust/Pagine/Cargo]]
-- [[Programmazione/Rust/Pagine/Cargo.toml]]
-- [[Programmazione/Rust/Pagine/Build profiles]]
-- [[Programmazione/Rust/Pagine/Semantic Versioning]]
-- [[Programmazione/Rust/Pagine/Crates.io]]
-- [[Programmazione/Rust/Pagine/Cross-compilation]]
-- [[Programmazione/Rust/Pagine/cargo audit]]
-- [[Programmazione/Rust/Pagine/cargo deny]]
-- [[Programmazione/Rust/Pagine/CLI con clap]]
+- [[Programmazione/Rust/Indice Rust|Indice Rust]]
+- [[Programmazione/Rust/Pagine/Cargo|Cargo]]
+- [[Programmazione/Rust/Pagine/Cargo.toml|Cargo.toml]]
+- [[Programmazione/Rust/Pagine/Build profiles|Build profiles]]
+- [[Programmazione/Rust/Pagine/Semantic Versioning|Semantic Versioning]]
+- [[Programmazione/Rust/Pagine/Crates.io|Crates.io]]
+- [[Programmazione/Rust/Pagine/Cross-compilation|Cross-compilation]]
+- [[Programmazione/Rust/Pagine/cargo audit|cargo audit]]
+- [[Programmazione/Rust/Pagine/cargo deny|cargo deny]]
+- [[Programmazione/Rust/Pagine/CLI con clap|CLI con clap]]

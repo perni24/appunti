@@ -3,7 +3,7 @@ date: 2026-05-21
 area: Programmazione
 topic: Rust
 type: technical-note
-status: "non revisionato"
+status: non revisionato
 publish: true
 difficulty: intermedio
 tags:
@@ -11,8 +11,8 @@ tags:
   - rust
   - astrazione-e-generici
 aliases:
-  - "Bound di trait"
-  - "Vincoli generici Rust"
+  - Bound di trait
+  - Vincoli generici Rust
 prerequisites:
   - "[[Programmazione/Rust/Pagine/Generics]]"
   - "[[Programmazione/Rust/Pagine/Traits]]"
@@ -20,6 +20,7 @@ related:
   - "[[Programmazione/Rust/Pagine/Static dispatch vs dynamic dispatch]]"
   - "[[Programmazione/Rust/Pagine/Associated types]]"
   - "[[Programmazione/Rust/Pagine/From Into TryFrom e TryInto]]"
+title: Trait bounds
 ---
 
 # Trait bounds
@@ -143,3 +144,8 @@ La funzione accetta qualunque slice di valori mostrabili con `Display`.
 - [[Programmazione/Rust/Pagine/Associated types|Associated types]]
 - [[Programmazione/Rust/Pagine/Higher-Ranked Trait Bounds (HRTB)|Higher-Ranked Trait Bounds (HRTB)]]
 - [[Programmazione/Rust/Pagine/Static dispatch vs dynamic dispatch|Static dispatch vs dynamic dispatch]]
+
+
+## Navigazione
+
+- [[Programmazione/Rust/Indice Rust|Indice Rust]]

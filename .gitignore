@@ -1,1 +1,5 @@
 .obsidian/
+site/public/
+site/node_modules/
+site/.quartz/
+site/tsconfig.tsbuildinfo

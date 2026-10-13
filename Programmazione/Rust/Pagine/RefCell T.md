@@ -3,7 +3,7 @@ date: 2026-05-22
 area: Programmazione
 topic: Rust
 type: technical-note
-status: "non revisionato"
+status: non revisionato
 publish: true
 difficulty: intermedio
 tags:
@@ -11,8 +11,8 @@ tags:
   - rust
   - smart-pointers-e-interior-mutability
 aliases:
-  - "RefCell<T>"
-  - "Borrow checking runtime"
+  - RefCell<T>
+  - Borrow checking runtime
 prerequisites:
   - "[[Programmazione/Rust/Pagine/Interior mutability]]"
   - "[[Programmazione/Rust/Pagine/References e Borrowing]]"
@@ -21,6 +21,7 @@ related:
   - "[[Programmazione/Rust/Pagine/Cell T]]"
   - "[[Programmazione/Rust/Pagine/Mutex T e RwLock T]]"
   - "[[Programmazione/Rust/Pagine/Borrow checker]]"
+title: RefCell<T>
 ---
 
 # RefCell<T>
@@ -131,3 +132,8 @@ impl Logger {
 - [[Programmazione/Rust/Pagine/Rc T e Arc T|Rc T e Arc T]]
 - [[Programmazione/Rust/Pagine/Mutex T e RwLock T|Mutex T e RwLock T]]
 - [[Programmazione/Rust/Pagine/Borrow checker|Borrow checker]]
+
+
+## Navigazione
+
+- [[Programmazione/Rust/Indice Rust|Indice Rust]]

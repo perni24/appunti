@@ -3,11 +3,18 @@ date: 2026-07-26
 area: Stampante 3D
 topic: Marlin
 type: technical-note
-
 publish: true
 difficulty: avanzato
-tags: [marlin, filament-runout, motion-sensor, power-loss-recovery, m600]
-aliases: [Filament Runout Marlin, Sensore filamento Marlin, Power Loss Recovery Marlin]
+tags:
+  - marlin
+  - filament-runout
+  - motion-sensor
+  - power-loss-recovery
+  - m600
+aliases:
+  - Filament Runout Marlin
+  - Sensore filamento Marlin
+  - Power Loss Recovery Marlin
 prerequisites:
   - "[[Stampante 3D/Marlin/Pagine/Hotend estrusori e filamento]]"
   - "[[Stampante 3D/Marlin/Pagine/EEPROM scheda SD e salvataggio delle impostazioni]]"
@@ -15,7 +22,9 @@ prerequisites:
 related:
   - "[[Stampante 3D/Marlin/Pagine/Limiti di estrusione retrazione e cambio utensile]]"
   - "[[Stampante 3D/Marlin/Pagine/Alimentatore rele LED luci buzzer e servo]]"
-marlin-version: "2.1.2.8"
+marlin-version: 2.1.2.8
+title: Sensore di fine filamento e recupero dopo perdita di alimentazione
+status: non revisionato
 ---
 
 # Sensore di fine filamento e recupero dopo perdita di alimentazione
@@ -448,11 +457,11 @@ M412 H0
 
 ## Collaudo del runout
 
-### 1. Test elettrico
+### Test elettrico
 
 Usare `M119` con sensore presente e assente. Lo stato deve essere stabile.
 
-### 2. Test della funzione
+### Test della funzione
 
 ```gcode
 M412
@@ -460,7 +469,7 @@ M412
 
 Verificare che il runout sia attivo.
 
-### 3. Test della procedura di cambio
+### Test della procedura di cambio
 
 Eseguire manualmente `M600` con:
 
@@ -476,7 +485,7 @@ M600
 
 Controllare unload, timeout, richiesta utente, load, purge e ritorno.
 
-### 4. Test durante una stampa breve
+### Test durante una stampa breve
 
 Usare un file sacrificabile, simulare il runout e verificare:
 
@@ -735,8 +744,13 @@ Una prova riuscita una volta non copre tutte le altezze, geometrie e durate di b
 
 ## Collegamenti
 
-- [[Stampante 3D/Marlin/Pagine/Hotend estrusori e filamento]]
-- [[Stampante 3D/Marlin/Pagine/Limiti di estrusione retrazione e cambio utensile]]
-- [[Stampante 3D/Marlin/Pagine/EEPROM scheda SD e salvataggio delle impostazioni]]
-- [[Stampante 3D/Marlin/Pagine/Display controller encoder e touchscreen]]
-- [[Stampante 3D/Marlin/Pagine/Alimentatore rele LED luci buzzer e servo]]
+- [[Stampante 3D/Marlin/Pagine/Hotend estrusori e filamento|Hotend estrusori e filamento]]
+- [[Stampante 3D/Marlin/Pagine/Limiti di estrusione retrazione e cambio utensile|Limiti di estrusione retrazione e cambio utensile]]
+- [[Stampante 3D/Marlin/Pagine/EEPROM scheda SD e salvataggio delle impostazioni|EEPROM scheda SD e salvataggio delle impostazioni]]
+- [[Stampante 3D/Marlin/Pagine/Display controller encoder e touchscreen|Display controller encoder e touchscreen]]
+- [[Stampante 3D/Marlin/Pagine/Alimentatore rele LED luci buzzer e servo|Alimentatore rele LED luci buzzer e servo]]
+
+
+## Navigazione
+
+- [[Stampante 3D/Marlin/Indice Marlin|Indice Marlin]]

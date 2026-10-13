@@ -3,7 +3,7 @@ date: 2026-05-28
 area: Programmazione
 topic: Rust
 type: technical-note
-status: "non revisionato"
+status: non revisionato
 publish: true
 difficulty: avanzato
 tags:
@@ -11,8 +11,8 @@ tags:
   - rust
   - api-design-idiomatico
 aliases:
-  - "Extension traits"
-  - "Trait di estensione"
+  - Extension traits
+  - Trait di estensione
 prerequisites:
   - "[[Programmazione/Rust/Pagine/Traits]]"
   - "[[Programmazione/Rust/Pagine/Blanket implementations]]"
@@ -21,6 +21,7 @@ related:
   - "[[Programmazione/Rust/Pagine/Object safety]]"
   - "[[Programmazione/Rust/Pagine/Trait bounds]]"
   - "[[Programmazione/Rust/Pagine/Compatibility e breaking changes]]"
+title: Extension traits
 ---
 
 # Extension traits
@@ -177,10 +178,10 @@ Questo tipo di trait va usato con attenzione: una crate pubblica non dovrebbe so
 
 ## Collegamenti
 
-- [[Programmazione/Rust/Indice rust|Indice Rust]]
-- [[Programmazione/Rust/Pagine/Traits]]
-- [[Programmazione/Rust/Pagine/Blanket implementations]]
-- [[Programmazione/Rust/Pagine/Trait bounds]]
-- [[Programmazione/Rust/Pagine/Object safety]]
-- [[Programmazione/Rust/Pagine/Public API design]]
-- [[Programmazione/Rust/Pagine/Compatibility e breaking changes]]
+- [[Programmazione/Rust/Indice Rust|Indice Rust]]
+- [[Programmazione/Rust/Pagine/Traits|Traits]]
+- [[Programmazione/Rust/Pagine/Blanket implementations|Blanket implementations]]
+- [[Programmazione/Rust/Pagine/Trait bounds|Trait bounds]]
+- [[Programmazione/Rust/Pagine/Object safety|Object safety]]
+- [[Programmazione/Rust/Pagine/Public API design|Public API design]]
+- [[Programmazione/Rust/Pagine/Compatibility e breaking changes|Compatibility e breaking changes]]

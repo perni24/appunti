@@ -3,18 +3,27 @@ date: 2026-07-26
 area: Stampante 3D
 topic: Marlin
 type: technical-note
-
 publish: true
 difficulty: avanzato
-tags: [marlin, z-probe, bltouch, probe-offset, m851]
-aliases: [Sonda Z Marlin, Offset probe Marlin, BLTouch Marlin]
+tags:
+  - marlin
+  - z-probe
+  - bltouch
+  - probe-offset
+  - m851
+aliases:
+  - Sonda Z Marlin
+  - Offset probe Marlin
+  - BLTouch Marlin
 prerequisites:
   - "[[Stampante 3D/Marlin/Pagine/Endstop homing e Sensorless Homing]]"
   - "[[Stampante 3D/Marlin/Pagine/Dimensioni del piatto area di lavoro e limiti]]"
 related:
   - "[[Stampante 3D/Marlin/Pagine/Babystepping e regolazioni dinamiche]]"
   - "[[Stampante 3D/Marlin/Pagine/Scheda madre porte seriali e pin]]"
-marlin-version: "2.1.2.8"
+marlin-version: 2.1.2.8
+title: Probe Z, offset e BLTouch
+status: non revisionato
 ---
 
 # Probe Z, offset e BLTouch
@@ -324,7 +333,7 @@ impedisce di continuare indefinitamente sotto il punto di trigger atteso. Non pr
 
 Il primo test deve essere eseguito con la testina lontana dal piatto, velocita controllate e accesso immediato allo spegnimento.
 
-### 1. Controllare lo stato a riposo
+### Controllare lo stato a riposo
 
 ```gcode
 M119
@@ -332,7 +341,7 @@ M119
 
 La probe libera deve risultare non attivata. Il nome mostrato puo dipendere dalla configurazione.
 
-### 2. Controllare lo stato attivato
+### Controllare lo stato attivato
 
 Attivare manualmente il sensore senza muovere Z e ripetere:
 
@@ -342,7 +351,7 @@ M119
 
 Lo stato deve cambiare in `TRIGGERED`. Se non cambia, non eseguire homing Z.
 
-### 3. Provare deploy e stow
+### Provare deploy e stow
 
 Per estendere una sonda mobile:
 
@@ -358,7 +367,7 @@ M402
 
 Per una sonda fissa i comandi possono non produrre un movimento visibile.
 
-### 4. Simulare il trigger durante la discesa
+### Simulare il trigger durante la discesa
 
 Dopo avere eseguito l'homing degli assi necessari e avere sollevato la testina, avviare un homing Z sorvegliato:
 
@@ -370,7 +379,7 @@ Prima che la sonda raggiunga il piatto, attivarla manualmente. Z deve fermarsi e
 
 Questo test non sostituisce la verifica della posizione sicura di homing: con offset XY la sonda deve trovarsi sopra una zona raggiungibile del piatto.
 
-### 5. Eseguire una singola misura
+### Eseguire una singola misura
 
 Portare la sonda su un punto centrale e libero, quindi:
 
@@ -555,7 +564,12 @@ Le temperature devono essere adatte alla sonda, alla superficie e alla procedura
 
 ## Collegamenti
 
-- [[Stampante 3D/Marlin/Pagine/Endstop homing e Sensorless Homing]]
-- [[Stampante 3D/Marlin/Pagine/Dimensioni del piatto area di lavoro e limiti]]
-- [[Stampante 3D/Marlin/Pagine/Babystepping e regolazioni dinamiche]]
-- [[Stampante 3D/Marlin/Pagine/Scheda madre porte seriali e pin]]
+- [[Stampante 3D/Marlin/Pagine/Endstop homing e Sensorless Homing|Endstop homing e Sensorless Homing]]
+- [[Stampante 3D/Marlin/Pagine/Dimensioni del piatto area di lavoro e limiti|Dimensioni del piatto area di lavoro e limiti]]
+- [[Stampante 3D/Marlin/Pagine/Babystepping e regolazioni dinamiche|Babystepping e regolazioni dinamiche]]
+- [[Stampante 3D/Marlin/Pagine/Scheda madre porte seriali e pin|Scheda madre porte seriali e pin]]
+
+
+## Navigazione
+
+- [[Stampante 3D/Marlin/Indice Marlin|Indice Marlin]]

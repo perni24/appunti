@@ -3,7 +3,7 @@ date: 2026-05-26
 area: Programmazione
 topic: Rust
 type: technical-note
-status: "non revisionato"
+status: non revisionato
 publish: true
 difficulty: avanzato
 tags:
@@ -11,8 +11,8 @@ tags:
   - rust
   - macros
 aliases:
-  - "Macro hygiene"
-  - "Igiene macro"
+  - Macro hygiene
+  - Igiene macro
 prerequisites:
   - "[[Programmazione/Rust/Pagine/Macro dichiarative]]"
   - "[[Programmazione/Rust/Pagine/Procedural macros]]"
@@ -20,6 +20,7 @@ related:
   - "[[Programmazione/Rust/Pagine/Function-like macros]]"
   - "[[Programmazione/Rust/Pagine/Attribute macros]]"
   - "[[Programmazione/Rust/Pagine/Public API design]]"
+title: Hygiene
 ---
 
 # Hygiene
@@ -139,3 +140,8 @@ La macro usa `Err` e `Into` disponibili nel prelude. In macro piu complesse conv
 - [[Programmazione/Rust/Pagine/Function-like macros|Function-like macros]]
 - [[Programmazione/Rust/Pagine/Attribute macros|Attribute macros]]
 - [[Programmazione/Rust/Pagine/Public API design|Public API design]]
+
+
+## Navigazione
+
+- [[Programmazione/Rust/Indice Rust|Indice Rust]]

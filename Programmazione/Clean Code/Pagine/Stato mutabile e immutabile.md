@@ -3,13 +3,23 @@ date: 2026-07-09
 area: Programmazione
 topic: Clean Code
 type: theory-note
-status: "non revisionato"
+status: non revisionato
 publish: true
 difficulty: intermedio
-tags: [clean-code, stato, immutabilita]
-aliases: [Stato mutabile e immutabile, Mutabilita e immutabilita]
-prerequisites: [Clean Code]
-related: [Codice esplicito vs codice implicito, Invarianti del dominio, Value objects]
+tags:
+  - clean-code
+  - stato
+  - immutabilita
+aliases:
+  - Stato mutabile e immutabile
+  - Mutabilita e immutabilita
+prerequisites:
+  - "[[Programmazione/Clean Code/Pagine/Clean Code]]"
+related:
+  - "[[Programmazione/Clean Code/Pagine/Codice esplicito vs codice implicito]]"
+  - "[[Programmazione/Clean Code/Pagine/Invarianti del dominio]]"
+  - "[[Programmazione/Clean Code/Pagine/Value objects]]"
+title: Stato mutabile e immutabile
 ---
 
 # Stato mutabile e immutabile
@@ -93,11 +103,11 @@ La seconda versione rende piu chiaro che nasce un nuovo valore.
 
 ## Collegamenti
 
-- [[Programmazione/Clean Code/Indice Clean Code]]
-- [[Value objects]]
-- [[Invarianti del dominio]]
-- [[Codice esplicito vs codice implicito]]
-- [[Principio del minimo stupore]]
+- [[Programmazione/Clean Code/Indice Clean Code|Indice Clean Code]]
+- [[Programmazione/Clean Code/Pagine/Value objects|Value objects]]
+- [[Programmazione/Clean Code/Pagine/Invarianti del dominio|Invarianti del dominio]]
+- [[Programmazione/Clean Code/Pagine/Codice esplicito vs codice implicito|Codice esplicito vs codice implicito]]
+- [[Programmazione/Clean Code/Pagine/Principio del minimo stupore|Principio del minimo stupore]]
 
 ## Fonti
 

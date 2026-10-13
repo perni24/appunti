@@ -3,13 +3,19 @@ date: 2026-06-04
 area: Programmazione
 topic: React
 type: technical-note
-status: "non revisionato"
+status: non revisionato
 publish: true
-difficulty: intermediate
-tags: [react, accessibility, focus]
-aliases: [Focus Management, Keyboard navigation]
+difficulty: intermedio
+tags:
+  - react
+  - accessibility
+  - focus
+aliases:
+  - Focus Management
+  - Keyboard navigation
 prerequisites: []
 related: []
+title: Focus Management
 ---
 
 # Focus Management
@@ -99,8 +105,8 @@ Dialog:
 
 ## Collegamenti
 
-- [[Programmazione/React/Indice react|Indice React]]
-- [[WAI-ARIA]]
-- [[Portals]]
-- [[Test di accessibilita]]
-- [[Gestione Moduli]]
+- [[Programmazione/React/Indice React|Indice React]]
+- [[Programmazione/React/Pagine/WAI-ARIA|WAI-ARIA]]
+- [[Programmazione/React/Pagine/Portals|Portals]]
+- [[Programmazione/React/Pagine/Test di accessibilita|Test di accessibilita]]
+- [[Programmazione/React/Pagine/Gestione Moduli|Gestione Moduli]]

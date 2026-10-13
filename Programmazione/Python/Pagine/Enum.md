@@ -3,13 +3,21 @@ date: 2026-06-03
 area: Programmazione
 topic: Python
 type: technical-note
-status: "non revisionato"
+status: non revisionato
 publish: true
-difficulty: beginner
-tags: [python, enum, standard-library]
-aliases: [Enum Python]
-prerequisites: [Classi e Istanze]
-related: [Dataclasses, Type Hinting]
+difficulty: base
+tags:
+  - python
+  - enum
+  - standard-library
+aliases:
+  - Enum Python
+prerequisites:
+  - "[[Programmazione/Python/Pagine/Classi e Istanze]]"
+related:
+  - "[[Programmazione/Python/Pagine/Dataclasses]]"
+  - "[[Programmazione/Python/Pagine/Type Hinting]]"
+title: Enum
 ---
 
 # Enum
@@ -86,3 +94,8 @@ status = Status("draft")
 - [[Programmazione/Python/Pagine/Dataclasses|Dataclasses]]
 - [[Programmazione/Python/Pagine/Type Hinting|Type Hinting]]
 - [[Programmazione/Python/Pagine/Strutture Condizionali|Strutture Condizionali]]
+
+
+## Navigazione
+
+- [[Programmazione/Python/Indice Python|Indice Python]]

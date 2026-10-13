@@ -3,13 +3,22 @@ date: 2026-06-22
 area: Programmazione
 topic: TypeScript
 type: technical-note
-status: "non revisionato"
+status: non revisionato
 publish: true
 difficulty: base
-tags: [typescript, funzioni, type-annotations]
-aliases: [Funzioni tipizzate TypeScript]
-prerequisites: [Variabili e annotazioni di tipo, Inferenza dei tipi]
-related: [Firme di funzione e overload, Generics]
+tags:
+  - typescript
+  - funzioni
+  - type-annotations
+aliases:
+  - Funzioni tipizzate TypeScript
+prerequisites:
+  - "[[Programmazione/TypeScript/Pagine/Variabili e annotazioni di tipo]]"
+  - "[[Programmazione/TypeScript/Pagine/Inferenza dei tipi]]"
+related:
+  - "[[Programmazione/TypeScript/Pagine/Firme di funzione e overload]]"
+  - "[[Programmazione/TypeScript/Pagine/Generics]]"
+title: Funzioni tipizzate
 ---
 
 # Funzioni tipizzate
@@ -93,6 +102,11 @@ La funzione non accetta un oggetto generico: richiede un valore compatibile con 
 
 ## Collegamenti
 
-- [[Variabili e annotazioni di tipo]]
-- [[Firme di funzione e overload]]
+- [[Programmazione/TypeScript/Pagine/Variabili e annotazioni di tipo|Variabili e annotazioni di tipo]]
+- [[Programmazione/TypeScript/Pagine/Firme di funzione e overload|Firme di funzione e overload]]
 - [[Programmazione/TypeScript/Pagine/Generics|Generics]]
+
+
+## Navigazione
+
+- [[Programmazione/TypeScript/Indice TypeScript|Indice TypeScript]]

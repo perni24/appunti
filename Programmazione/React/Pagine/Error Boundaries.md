@@ -3,13 +3,20 @@ date: 2026-06-04
 area: Programmazione
 topic: React
 type: technical-note
-status: "non revisionato"
+status: non revisionato
 publish: true
-difficulty: intermediate
-tags: [react, error-handling, architecture]
-aliases: [Error Boundaries, Error handling globale, Boundary UI]
+difficulty: intermedio
+tags:
+  - react
+  - error-handling
+  - architecture
+aliases:
+  - Error Boundaries
+  - Error handling globale
+  - Boundary UI
 prerequisites: []
 related: []
+title: Error Boundaries
 ---
 
 # Error Boundaries
@@ -111,8 +118,8 @@ Ogni area fallisce in modo isolato.
 
 ## Collegamenti
 
-- [[Programmazione/React/Indice react|Indice React]]
-- [[Suspense e Lazy Loading]]
-- [[React Router]]
-- [[Profiler e Debugging]]
-- [[API layer]]
+- [[Programmazione/React/Indice React|Indice React]]
+- [[Programmazione/React/Pagine/Suspense e Lazy Loading|Suspense e Lazy Loading]]
+- [[Programmazione/React/Pagine/React Router|React Router]]
+- [[Programmazione/React/Pagine/Profiler e Debugging|Profiler e Debugging]]
+- [[Programmazione/React/Pagine/API layer|API layer]]

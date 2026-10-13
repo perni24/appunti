@@ -3,13 +3,24 @@ date: 2026-07-06
 area: Programmazione
 topic: GitHub
 type: technical-note
-status: "non revisionato"
+status: non revisionato
 publish: true
 difficulty: intermedio
-tags: [github, discussions, community, collaborazione]
-aliases: [Discussions GitHub, GitHub Discussions]
-prerequisites: [GitHub, Repository GitHub]
-related: [Issues GitHub, Pull request]
+tags:
+  - github
+  - discussions
+  - community
+  - collaborazione
+aliases:
+  - Discussions GitHub
+  - GitHub Discussions
+prerequisites:
+  - "[[Programmazione/GitHub/Pagine/GitHub]]"
+  - "[[Programmazione/GitHub/Pagine/Repository GitHub]]"
+related:
+  - "[[Programmazione/GitHub/Pagine/Issues GitHub]]"
+  - "[[Programmazione/GitHub/Pagine/Pull request]]"
+title: Discussions GitHub
 ---
 
 # Discussions GitHub
@@ -110,10 +121,10 @@ Documentare configurazione PostgreSQL
 
 ## Collegamenti
 
-- [[Programmazione/GitHub/Indice GitHub]]
-- [[Issues GitHub]]
-- [[Pull request]]
-- [[Repository GitHub]]
+- [[Programmazione/GitHub/Indice GitHub|Indice GitHub]]
+- [[Programmazione/GitHub/Pagine/Issues GitHub|Issues GitHub]]
+- [[Programmazione/GitHub/Pagine/Pull request|Pull request]]
+- [[Programmazione/GitHub/Pagine/Repository GitHub|Repository GitHub]]
 
 ## Fonti
 

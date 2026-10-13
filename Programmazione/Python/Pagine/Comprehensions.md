@@ -3,13 +3,17 @@ date: 2026-06-03
 area: Programmazione
 topic: Python
 type: technical-note
-status: "non revisionato"
+status: non revisionato
 publish: true
-difficulty: intermediate
-tags: [python, programming]
-aliases: [Comprehensions]
+difficulty: intermedio
+tags:
+  - python
+  - programming
+aliases:
+  - Comprehensions
 prerequisites: []
 related: []
+title: Comprehensions in Python
 ---
 
 # Comprehensions in Python
@@ -98,3 +102,8 @@ active_emails = [
 - [[Programmazione/Python/Pagine/Cicli|Cicli]]
 - [[Programmazione/Python/Pagine/Liste|Liste]]
 - [[Programmazione/Python/Pagine/Generatori|Generatori]]
+
+
+## Navigazione
+
+- [[Programmazione/Python/Indice Python|Indice Python]]

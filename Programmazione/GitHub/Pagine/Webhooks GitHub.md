@@ -3,13 +3,25 @@ date: 2026-07-07
 area: Programmazione
 topic: GitHub
 type: technical-note
-status: "non revisionato"
+status: non revisionato
 publish: true
 difficulty: avanzato
-tags: [github, webhooks, automazione, integrazioni]
-aliases: [Webhooks GitHub, GitHub webhooks]
-prerequisites: [GitHub, GitHub REST API]
-related: [GitHub Apps, Automazioni issue e pull request, GitHub REST API]
+tags:
+  - github
+  - webhooks
+  - automazione
+  - integrazioni
+aliases:
+  - Webhooks GitHub
+  - GitHub webhooks
+prerequisites:
+  - "[[Programmazione/GitHub/Pagine/GitHub]]"
+  - "[[Programmazione/GitHub/Pagine/GitHub REST API]]"
+related:
+  - "[[Programmazione/GitHub/Pagine/GitHub Apps]]"
+  - "[[Programmazione/GitHub/Pagine/Automazioni issue e pull request]]"
+  - "[[Programmazione/GitHub/Pagine/GitHub REST API]]"
+title: Webhooks GitHub
 ---
 
 # Webhooks GitHub
@@ -104,11 +116,11 @@ Automazione su pull request:
 
 ## Collegamenti
 
-- [[Programmazione/GitHub/Indice GitHub]]
-- [[GitHub REST API]]
-- [[GitHub Apps]]
-- [[Automazioni issue e pull request]]
-- [[Sicurezza dei token GitHub]]
+- [[Programmazione/GitHub/Indice GitHub|Indice GitHub]]
+- [[Programmazione/GitHub/Pagine/GitHub REST API|GitHub REST API]]
+- [[Programmazione/GitHub/Pagine/GitHub Apps|GitHub Apps]]
+- [[Programmazione/GitHub/Pagine/Automazioni issue e pull request|Automazioni issue e pull request]]
+- [[Programmazione/GitHub/Pagine/Sicurezza dei token GitHub|Sicurezza dei token GitHub]]
 
 ## Fonti
 

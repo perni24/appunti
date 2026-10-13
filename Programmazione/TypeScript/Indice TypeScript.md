@@ -1,3 +1,7 @@
+# Indice TypeScript
+
+- [[Programmazione/Indice Programmazione|Tutti i percorsi di Programmazione]]
+
 ## Percorso Base
 
 ### Fondamenti del Linguaggio
@@ -128,17 +132,3 @@
 - [[Programmazione/TypeScript/Pagine/Domain modeling|Domain modeling]]
 - [[Programmazione/TypeScript/Pagine/Clean architecture|Clean architecture]]
 - [[Programmazione/TypeScript/Pagine/Dependency injection|Dependency injection]]
-
-## Conoscenza Operativa
-
-### API Native Rapide
-
-### Soluzioni pratiche
-
-### Debugging
-
-### Snippet
-
-### Checklist
-
-### Troubleshooting

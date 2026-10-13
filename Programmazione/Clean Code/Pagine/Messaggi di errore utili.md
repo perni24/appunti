@@ -3,13 +3,24 @@ date: 2026-07-09
 area: Programmazione
 topic: Clean Code
 type: theory-note
-status: "non revisionato"
+status: non revisionato
 publish: true
 difficulty: intermedio
-tags: [clean-code, errori, ux-tecnica]
-aliases: [Messaggi di errore utili, Useful error messages]
-prerequisites: [Errori recuperabili e non recuperabili, Validazione ai confini]
-related: [Logging leggibile, Contratti impliciti ed espliciti, Test come documentazione]
+tags:
+  - clean-code
+  - errori
+  - ux-tecnica
+aliases:
+  - Messaggi di errore utili
+  - Useful error messages
+prerequisites:
+  - "[[Programmazione/Clean Code/Pagine/Errori recuperabili e non recuperabili]]"
+  - "[[Programmazione/Clean Code/Pagine/Validazione ai confini]]"
+related:
+  - "[[Programmazione/Clean Code/Pagine/Logging leggibile]]"
+  - "[[Programmazione/Clean Code/Pagine/Contratti impliciti ed espliciti]]"
+  - "[[Programmazione/Clean Code/Pagine/Test come documentazione]]"
+title: Messaggi di errore utili
 ---
 
 # Messaggi di errore utili
@@ -86,12 +97,12 @@ Il secondo messaggio indica campo, regola e contesto.
 
 ## Collegamenti
 
-- [[Programmazione/Clean Code/Indice Clean Code]]
-- [[Errori recuperabili e non recuperabili]]
-- [[Validazione ai confini]]
-- [[Logging leggibile]]
-- [[Contratti impliciti ed espliciti]]
-- [[Test come documentazione]]
+- [[Programmazione/Clean Code/Indice Clean Code|Indice Clean Code]]
+- [[Programmazione/Clean Code/Pagine/Errori recuperabili e non recuperabili|Errori recuperabili e non recuperabili]]
+- [[Programmazione/Clean Code/Pagine/Validazione ai confini|Validazione ai confini]]
+- [[Programmazione/Clean Code/Pagine/Logging leggibile|Logging leggibile]]
+- [[Programmazione/Clean Code/Pagine/Contratti impliciti ed espliciti|Contratti impliciti ed espliciti]]
+- [[Programmazione/Clean Code/Pagine/Test come documentazione|Test come documentazione]]
 
 ## Fonti
 

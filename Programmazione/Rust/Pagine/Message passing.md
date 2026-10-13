@@ -3,7 +3,7 @@ date: 2026-05-26
 area: Programmazione
 topic: Rust
 type: technical-note
-status: "non revisionato"
+status: non revisionato
 publish: true
 difficulty: intermedio
 tags:
@@ -11,8 +11,8 @@ tags:
   - rust
   - concorrenza-e-asincronia
 aliases:
-  - "Message passing Rust"
-  - "std::sync::mpsc"
+  - Message passing Rust
+  - std::sync::mpsc
 prerequisites:
   - "[[Programmazione/Rust/Pagine/Threads]]"
   - "[[Programmazione/Rust/Pagine/Ownership]]"
@@ -20,6 +20,7 @@ related:
   - "[[Programmazione/Rust/Pagine/Channel async]]"
   - "[[Programmazione/Rust/Pagine/Shared state]]"
   - "[[Programmazione/Rust/Pagine/Graceful shutdown]]"
+title: Message passing
 ---
 
 # Message passing
@@ -132,3 +133,8 @@ Il messaggio `Stop` rende esplicito lo shutdown.
 - [[Programmazione/Rust/Pagine/Shared state|Shared state]]
 - [[Programmazione/Rust/Pagine/Graceful shutdown|Graceful shutdown]]
 - [[Programmazione/Rust/Pagine/Ownership|Ownership]]
+
+
+## Navigazione
+
+- [[Programmazione/Rust/Indice Rust|Indice Rust]]

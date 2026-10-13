@@ -3,13 +3,25 @@ date: 2026-06-22
 area: Programmazione
 topic: TypeScript
 type: technical-note
-status: "non revisionato"
+status: non revisionato
 publish: true
 difficulty: intermedio
-tags: [typescript, tsconfig, configurazione, compiler]
-aliases: [tsconfig.json, TypeScript config]
-prerequisites: [Introduzione a TypeScript]
-related: [Strict mode, Module resolution, Path aliases, Project references]
+tags:
+  - typescript
+  - tsconfig
+  - configurazione
+  - compiler
+aliases:
+  - tsconfig.json
+  - TypeScript config
+prerequisites:
+  - "[[Programmazione/TypeScript/Pagine/Introduzione a TypeScript]]"
+related:
+  - "[[Programmazione/TypeScript/Pagine/Strict mode]]"
+  - "[[Programmazione/TypeScript/Pagine/Module resolution]]"
+  - "[[Programmazione/TypeScript/Pagine/Path aliases]]"
+  - "[[Programmazione/TypeScript/Pagine/Project references]]"
+title: tsconfig
 ---
 
 # tsconfig
@@ -96,6 +108,11 @@ Questa configurazione e tipica per un progetto Node.js TypeScript che compila da
 ## Collegamenti
 
 - [[Programmazione/TypeScript/Pagine/Strict mode|Strict mode]]
-- [[Module resolution]]
-- [[Path aliases]]
-- [[Project references]]
+- [[Programmazione/TypeScript/Pagine/Module resolution|Module resolution]]
+- [[Programmazione/TypeScript/Pagine/Path aliases|Path aliases]]
+- [[Programmazione/TypeScript/Pagine/Project references|Project references]]
+
+
+## Navigazione
+
+- [[Programmazione/TypeScript/Indice TypeScript|Indice TypeScript]]

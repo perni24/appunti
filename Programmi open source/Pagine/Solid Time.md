@@ -3,12 +3,21 @@ date: 2026-07-14
 area: Programmi open source
 topic: Time tracking e gestione del tempo
 type: technical-note
-status: "non revisionato"
+status: non revisionato
 difficulty: base
-tags: [open-source, time-tracking, produttivita, organizzazione, self-hosted]
-aliases: [Solid Time, solidtime, Solidtime]
+tags:
+  - open-source
+  - time-tracking
+  - produttivita
+  - organizzazione
+  - self-hosted
+aliases:
+  - Solid Time
+  - Solidtime
 prerequisites: []
 related: []
+title: Solid Time
+publish: true
 ---
 
 # Solid Time
@@ -33,7 +42,7 @@ Solid Time permette di creare progetti, clienti e time entry. L'utente avvia o i
 
 Il progetto principale e disponibile come applicazione web open source; l'ecosistema include anche componenti collegati come desktop app, estensioni browser, documentazione e esempi per self-hosting.
 
-## Esempio d'uso
+## Esempio pratico
 
 ```text
 1. Crea un cliente o un progetto.
@@ -43,7 +52,7 @@ Il progetto principale e disponibile come applicazione web open source; l'ecosis
 5. Consulta i report per capire dove e stato speso il tempo.
 ```
 
-## Punti forti
+## Funzionalita
 
 - **Open source**: il codice e consultabile e modificabile.
 - **Self-hostable**: puo essere usato senza dipendere solo da un servizio esterno.
@@ -67,5 +76,5 @@ Il progetto principale e disponibile come applicazione web open source; l'ecosis
 
 ## Collegamenti
 
-- [[Programmi open source/Indice Programmi Open Source]]
+- [[Programmi open source/Indice Programmi Open Source|Catalogo open source]]
 - https://github.com/solidtime-io/solidtime

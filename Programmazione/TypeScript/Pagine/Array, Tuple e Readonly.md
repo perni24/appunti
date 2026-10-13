@@ -3,13 +3,24 @@ date: 2026-06-22
 area: Programmazione
 topic: TypeScript
 type: technical-note
-status: "non revisionato"
+status: non revisionato
 publish: true
 difficulty: base
-tags: [typescript, array, tuple, readonly, collezioni]
-aliases: [Array Tuple Readonly]
-prerequisites: [Tipi primitivi, Inferenza dei tipi]
-related: [Variadic tuple types, Utility Types]
+tags:
+  - typescript
+  - array
+  - tuple
+  - readonly
+  - collezioni
+aliases:
+  - Array Tuple Readonly
+prerequisites:
+  - "[[Programmazione/TypeScript/Pagine/Tipi primitivi]]"
+  - "[[Programmazione/TypeScript/Pagine/Inferenza dei tipi]]"
+related:
+  - "[[Programmazione/TypeScript/Pagine/Variadic tuple types]]"
+  - "[[Programmazione/TypeScript/Pagine/Utility Types]]"
+title: Array, Tuple e Readonly
 ---
 
 # Array, Tuple e Readonly
@@ -85,6 +96,11 @@ La tuple rende esplicito il significato delle posizioni.
 
 ## Collegamenti
 
-- [[Inferenza dei tipi]]
-- [[Utility Types]]
-- [[Variadic tuple types]]
+- [[Programmazione/TypeScript/Pagine/Inferenza dei tipi|Inferenza dei tipi]]
+- [[Programmazione/TypeScript/Pagine/Utility Types|Utility Types]]
+- [[Programmazione/TypeScript/Pagine/Variadic tuple types|Variadic tuple types]]
+
+
+## Navigazione
+
+- [[Programmazione/TypeScript/Indice TypeScript|Indice TypeScript]]

@@ -3,7 +3,7 @@ date: 2026-05-26
 area: Programmazione
 topic: Rust
 type: technical-note
-status: "non revisionato"
+status: non revisionato
 publish: true
 difficulty: avanzato
 tags:
@@ -11,8 +11,8 @@ tags:
   - rust
   - rust-di-sistema
 aliases:
-  - "Allocator Rust"
-  - "Global allocator"
+  - Allocator Rust
+  - Global allocator
 prerequisites:
   - "[[Programmazione/Rust/Pagine/Stack e Heap]]"
   - "[[Programmazione/Rust/Pagine/Unsafe Rust]]"
@@ -20,6 +20,7 @@ related:
   - "[[Programmazione/Rust/Pagine/no_std]]"
   - "[[Programmazione/Rust/Pagine/Memory layout e alignment]]"
   - "[[Programmazione/Rust/Pagine/Performance e profiling]]"
+title: Allocator
 ---
 
 # Allocator
@@ -108,3 +109,8 @@ Il `Vec` usa l'allocator globale per riservare il buffer.
 - [[Programmazione/Rust/Pagine/Memory layout e alignment|Memory layout e alignment]]
 - [[Programmazione/Rust/Pagine/no_std|no_std]]
 - [[Programmazione/Rust/Pagine/Performance e profiling|Performance e profiling]]
+
+
+## Navigazione
+
+- [[Programmazione/Rust/Indice Rust|Indice Rust]]

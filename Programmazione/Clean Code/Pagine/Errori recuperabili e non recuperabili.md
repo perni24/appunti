@@ -3,13 +3,23 @@ date: 2026-07-09
 area: Programmazione
 topic: Clean Code
 type: theory-note
-status: "non revisionato"
+status: non revisionato
 publish: true
 difficulty: intermedio
-tags: [clean-code, errori, resilienza]
-aliases: [Errori recuperabili e non recuperabili, Recoverable and unrecoverable errors]
-prerequisites: [Contratti impliciti ed espliciti]
-related: [Messaggi di errore utili, Validazione ai confini, Logging leggibile]
+tags:
+  - clean-code
+  - errori
+  - resilienza
+aliases:
+  - Errori recuperabili e non recuperabili
+  - Recoverable and unrecoverable errors
+prerequisites:
+  - "[[Programmazione/Clean Code/Pagine/Contratti impliciti ed espliciti]]"
+related:
+  - "[[Programmazione/Clean Code/Pagine/Messaggi di errore utili]]"
+  - "[[Programmazione/Clean Code/Pagine/Validazione ai confini]]"
+  - "[[Programmazione/Clean Code/Pagine/Logging leggibile]]"
+title: Errori recuperabili e non recuperabili
 ---
 
 # Errori recuperabili e non recuperabili
@@ -84,12 +94,12 @@ Nel primo caso l'utente puo correggere l'input. Nel secondo manca una dipendenza
 
 ## Collegamenti
 
-- [[Programmazione/Clean Code/Indice Clean Code]]
-- [[Contratti impliciti ed espliciti]]
-- [[Validazione ai confini]]
-- [[Messaggi di errore utili]]
-- [[Logging leggibile]]
-- [[Side effects controllati]]
+- [[Programmazione/Clean Code/Indice Clean Code|Indice Clean Code]]
+- [[Programmazione/Clean Code/Pagine/Contratti impliciti ed espliciti|Contratti impliciti ed espliciti]]
+- [[Programmazione/Clean Code/Pagine/Validazione ai confini|Validazione ai confini]]
+- [[Programmazione/Clean Code/Pagine/Messaggi di errore utili|Messaggi di errore utili]]
+- [[Programmazione/Clean Code/Pagine/Logging leggibile|Logging leggibile]]
+- [[Programmazione/Clean Code/Pagine/Side effects controllati|Side effects controllati]]
 
 ## Fonti
 

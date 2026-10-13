@@ -3,16 +3,23 @@ date: 2026-07-25
 area: Stampante 3D
 topic: Marlin
 type: operational-note
-
 publish: true
 difficulty: base
-tags: [marlin, platformio, compilazione, firmware]
-aliases: [Compilare Marlin, Caricare Marlin]
+tags:
+  - marlin
+  - platformio
+  - compilazione
+  - firmware
+aliases:
+  - Compilare Marlin
+  - Caricare Marlin
 prerequisites:
   - "[[Stampante 3D/Marlin/Pagine/Introduzione a Marlin 2.1.2.8 e compatibilita]]"
   - "[[Stampante 3D/Marlin/Pagine/Struttura dei file di configurazione Marlin]]"
 related: []
-marlin-version: "2.1.2.8"
+marlin-version: 2.1.2.8
+title: Metodo di configurazione, compilazione e caricamento
+status: non revisionato
 ---
 
 # Metodo di configurazione, compilazione e caricamento
@@ -54,7 +61,7 @@ Il README ufficiale indica PlatformIO con Visual Studio Code come scelta preferi
 
 ## Procedura
 
-### 1. Preparare una copia di lavoro
+### Preparare una copia di lavoro
 
 Scaricare o clonare il tag `2.1.2.8`, quindi lavorare in una cartella separata. Non modificare l'unica copia disponibile del firmware funzionante.
 
@@ -67,7 +74,7 @@ Conservare almeno:
 - output di `M503`;
 - note sulle modifiche hardware.
 
-### 2. Verificare il sorgente pulito
+### Verificare il sorgente pulito
 
 Prima di personalizzare Marlin:
 
@@ -79,7 +86,7 @@ Prima di personalizzare Marlin:
 
 Una build pulita riuscita separa i problemi dell'ambiente di sviluppo da quelli introdotti dalla configurazione.
 
-### 3. Identificare scheda e ambiente
+### Identificare scheda e ambiente
 
 `MOTHERBOARD` seleziona la definizione hardware:
 
@@ -93,7 +100,7 @@ L'ambiente PlatformIO dipende dalla scheda e dal microcontrollore. Il `platformi
 
 Auto Build Marlin puo mostrare gli ambienti associati alla scheda configurata. In alternativa bisogna consultare i file della piattaforma in `ini/` e la documentazione della scheda.
 
-### 4. Configurare prima l'hardware essenziale
+### Configurare prima l'hardware essenziale
 
 Procedere per blocchi:
 
@@ -108,7 +115,7 @@ Procedere per blocchi:
 
 Compilare dopo ogni blocco. Una modifica piccola rende leggibile l'errore e semplifica il rollback.
 
-### 5. Eseguire la build
+### Eseguire la build
 
 Con Auto Build Marlin:
 
@@ -126,7 +133,7 @@ pio run -e <environment>
 
 Non aggiungere o rimuovere direttive casualmente per eliminare un errore. I controlli di Marlin spesso indicano una dipendenza mancante, un'opzione rinominata o una combinazione non valida.
 
-### 6. Individuare l'artefatto
+### Individuare l'artefatto
 
 Gli artefatti PlatformIO vengono normalmente prodotti sotto:
 
@@ -138,7 +145,7 @@ Il formato e il nome dipendono dalla piattaforma. Possono essere presenti file c
 
 Non rinominare o copiare un artefatto sulla scheda SD senza aver verificato la procedura prevista dal bootloader.
 
-### 7. Controllare prima del caricamento
+### Controllare prima del caricamento
 
 Verificare almeno:
 
@@ -153,7 +160,7 @@ Verificare almeno:
 
 Prima accensione e primi test devono avvenire con possibilita di togliere alimentazione immediatamente.
 
-### 8. Caricare il firmware
+### Caricare il firmware
 
 Il caricamento puo essere eseguito da Auto Build Marlin, da PlatformIO o con il metodo specifico della scheda.
 
@@ -165,7 +172,7 @@ pio run -e <environment> -t upload
 
 Questo comando e valido solo quando l'ambiente e il metodo di upload sono gia corretti. Alcune schede richiedono invece di copiare l'artefatto su una scheda SD o usare un bootloader dedicato.
 
-### 9. Verificare la build attiva
+### Verificare la build attiva
 
 Dopo il riavvio inviare:
 
@@ -182,7 +189,7 @@ Controllare almeno:
 
 Un output inatteso puo indicare che il caricamento non e avvenuto o che la scheda ha avviato un altro file.
 
-### 10. Gestire la EEPROM
+### Gestire la EEPROM
 
 Prima di sovrascrivere i valori attivi, ottenere un report:
 
@@ -214,7 +221,7 @@ M503
 
 La sequenza `M502` seguita da `M500` deve essere usata consapevolmente: elimina le regolazioni runtime precedentemente salvate e le sostituisce con i default della nuova build.
 
-### 11. Eseguire test progressivi
+### Eseguire test progressivi
 
 Ordine prudente:
 
@@ -230,7 +237,7 @@ Ordine prudente:
 
 Interrompere il test se una temperatura non e plausibile, un asse si muove verso il lato sbagliato o un finecorsa non cambia stato.
 
-### 12. Registrare la build
+### Registrare la build
 
 Per ogni firmware conservare:
 
@@ -301,6 +308,6 @@ Se la nuova build si avvia ma usa valori errati, verificare prima EEPROM e confi
 
 ## Collegamenti
 
-- [[Stampante 3D/Marlin/Indice Marlin]]
-- [[Stampante 3D/Marlin/Pagine/Introduzione a Marlin 2.1.2.8 e compatibilita]]
-- [[Stampante 3D/Marlin/Pagine/Struttura dei file di configurazione Marlin]]
+- [[Stampante 3D/Marlin/Indice Marlin|Indice Marlin]]
+- [[Stampante 3D/Marlin/Pagine/Introduzione a Marlin 2.1.2.8 e compatibilita|Introduzione a Marlin 2.1.2.8 e compatibilita]]
+- [[Stampante 3D/Marlin/Pagine/Struttura dei file di configurazione Marlin|Struttura dei file di configurazione Marlin]]

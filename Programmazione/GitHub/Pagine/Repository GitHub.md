@@ -3,13 +3,23 @@ date: 2026-07-06
 area: Programmazione
 topic: GitHub
 type: technical-note
-status: "non revisionato"
+status: non revisionato
 publish: true
 difficulty: base
-tags: [github, repository, git]
-aliases: [Repository GitHub, Repo GitHub]
-prerequisites: [GitHub, Git e GitHub]
-related: [README LICENSE e gitignore, Branch su GitHub]
+tags:
+  - github
+  - repository
+  - git
+aliases:
+  - Repository GitHub
+  - Repo GitHub
+prerequisites:
+  - "[[Programmazione/GitHub/Pagine/GitHub]]"
+  - "[[Programmazione/GitHub/Pagine/Git e GitHub]]"
+related:
+  - "[[Programmazione/GitHub/Pagine/README LICENSE e gitignore]]"
+  - "[[Programmazione/GitHub/Pagine/Branch su GitHub]]"
+title: Repository GitHub
 ---
 
 # Repository GitHub
@@ -120,11 +130,11 @@ Il `README.md` spiega come installare ed eseguire. `.gitignore` evita file tempo
 
 ## Collegamenti
 
-- [[Programmazione/GitHub/Indice GitHub]]
-- [[GitHub]]
-- [[Git e GitHub]]
-- [[README LICENSE e gitignore]]
-- [[Clone fork e template repository]]
+- [[Programmazione/GitHub/Indice GitHub|Indice GitHub]]
+- [[Programmazione/GitHub/Pagine/GitHub|GitHub]]
+- [[Programmazione/GitHub/Pagine/Git e GitHub|Git e GitHub]]
+- [[Programmazione/GitHub/Pagine/README LICENSE e gitignore|README LICENSE e gitignore]]
+- [[Programmazione/GitHub/Pagine/Clone fork e template repository|Clone fork e template repository]]
 
 ## Fonti
 

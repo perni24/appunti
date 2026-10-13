@@ -3,13 +3,23 @@ date: 2026-07-06
 area: Programmazione
 topic: GitHub
 type: technical-note
-status: "non revisionato"
+status: non revisionato
 publish: true
 difficulty: intermedio
-tags: [github, repository-settings, configurazione]
-aliases: [Repository settings, Impostazioni repository GitHub]
-prerequisites: [Repository GitHub, GitHub Web UI]
-related: [Branch protection rules, Repository rulesets]
+tags:
+  - github
+  - repository-settings
+  - configurazione
+aliases:
+  - Repository settings
+  - Impostazioni repository GitHub
+prerequisites:
+  - "[[Programmazione/GitHub/Pagine/Repository GitHub]]"
+  - "[[Programmazione/GitHub/Pagine/GitHub Web UI]]"
+related:
+  - "[[Programmazione/GitHub/Pagine/Branch protection rules]]"
+  - "[[Programmazione/GitHub/Pagine/Repository rulesets]]"
+title: Repository settings
 ---
 
 # Repository settings
@@ -107,11 +117,11 @@ Setup iniziale per repository condiviso:
 
 ## Collegamenti
 
-- [[Programmazione/GitHub/Indice GitHub]]
-- [[Repository GitHub]]
-- [[GitHub Web UI]]
-- [[Branch protection rules]]
-- [[Repository rulesets]]
+- [[Programmazione/GitHub/Indice GitHub|Indice GitHub]]
+- [[Programmazione/GitHub/Pagine/Repository GitHub|Repository GitHub]]
+- [[Programmazione/GitHub/Pagine/GitHub Web UI|GitHub Web UI]]
+- [[Programmazione/GitHub/Pagine/Branch protection rules|Branch protection rules]]
+- [[Programmazione/GitHub/Pagine/Repository rulesets|Repository rulesets]]
 
 ## Fonti
 

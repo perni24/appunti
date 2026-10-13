@@ -3,7 +3,7 @@ date: 2026-05-21
 area: Programmazione
 topic: Rust
 type: technical-note
-status: "non revisionato"
+status: non revisionato
 publish: true
 difficulty: intermedio
 tags:
@@ -11,8 +11,8 @@ tags:
   - rust
   - astrazione-e-generici
 aliases:
-  - "Generics Rust"
-  - "Tipi generici Rust"
+  - Generics Rust
+  - Tipi generici Rust
 prerequisites:
   - "[[Programmazione/Rust/Pagine/Structs]]"
   - "[[Programmazione/Rust/Pagine/Enums]]"
@@ -21,6 +21,7 @@ related:
   - "[[Programmazione/Rust/Pagine/Traits]]"
   - "[[Programmazione/Rust/Pagine/Trait bounds]]"
   - "[[Programmazione/Rust/Pagine/Zero-cost abstractions]]"
+title: Generics
 ---
 
 # Generics
@@ -149,3 +150,8 @@ La struct non sa nulla dei tipi concreti di chiave e valore, ma mantiene ownersh
 - [[Programmazione/Rust/Pagine/Const generics|Const generics]]
 - [[Programmazione/Rust/Pagine/Static dispatch vs dynamic dispatch|Static dispatch vs dynamic dispatch]]
 - [[Programmazione/Rust/Pagine/Zero-cost abstractions|Zero-cost abstractions]]
+
+
+## Navigazione
+
+- [[Programmazione/Rust/Indice Rust|Indice Rust]]

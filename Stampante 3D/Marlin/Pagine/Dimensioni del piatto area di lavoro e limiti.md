@@ -3,15 +3,22 @@ date: 2026-07-25
 area: Stampante 3D
 topic: Marlin
 type: technical-note
-
 publish: true
 difficulty: intermedio
-tags: [marlin, geometria, piatto, limiti-software]
-aliases: [Area di lavoro Marlin, Limiti degli assi Marlin]
+tags:
+  - marlin
+  - geometria
+  - piatto
+  - limiti-software
+aliases:
+  - Area di lavoro Marlin
+  - Limiti degli assi Marlin
 prerequisites:
   - "[[Stampante 3D/Marlin/Pagine/Tipo di stampante e cinematica]]"
 related: []
-marlin-version: "2.1.2.8"
+marlin-version: 2.1.2.8
+title: Dimensioni del piatto, area di lavoro e limiti
+status: non revisionato
 ---
 
 # Dimensioni del piatto, area di lavoro e limiti
@@ -394,7 +401,7 @@ Non si usano `X_BED_SIZE` e `Y_BED_SIZE` per sostituire questi parametri special
 
 ## Collegamenti
 
-- [[Stampante 3D/Marlin/Indice Marlin]]
-- [[Stampante 3D/Marlin/Pagine/Introduzione a Marlin 2.1.2.8 e compatibilita]]
-- [[Stampante 3D/Marlin/Pagine/Struttura dei file di configurazione Marlin]]
-- [[Stampante 3D/Marlin/Pagine/Tipo di stampante e cinematica]]
+- [[Stampante 3D/Marlin/Indice Marlin|Indice Marlin]]
+- [[Stampante 3D/Marlin/Pagine/Introduzione a Marlin 2.1.2.8 e compatibilita|Introduzione a Marlin 2.1.2.8 e compatibilita]]
+- [[Stampante 3D/Marlin/Pagine/Struttura dei file di configurazione Marlin|Struttura dei file di configurazione Marlin]]
+- [[Stampante 3D/Marlin/Pagine/Tipo di stampante e cinematica|Tipo di stampante e cinematica]]

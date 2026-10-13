@@ -3,13 +3,26 @@ date: 2026-07-07
 area: Programmazione
 topic: GitHub
 type: operational-note
-status: "non revisionato"
+status: non revisionato
 publish: true
 difficulty: avanzato
-tags: [github, sicurezza, checklist, supply-chain]
-aliases: [Checklist sicurezza GitHub, Checklist security GitHub]
-prerequisites: [Sicurezza dei token GitHub, Secret scanning, Dependabot]
-related: [Code scanning, Dependency graph, SBOM e attestazioni su GitHub]
+tags:
+  - github
+  - sicurezza
+  - checklist
+  - supply-chain
+aliases:
+  - Checklist sicurezza GitHub
+  - Checklist security GitHub
+prerequisites:
+  - "[[Programmazione/GitHub/Pagine/Sicurezza dei token GitHub]]"
+  - "[[Programmazione/GitHub/Pagine/Secret scanning]]"
+  - "[[Programmazione/GitHub/Pagine/Dependabot]]"
+related:
+  - "[[Programmazione/GitHub/Pagine/Code scanning]]"
+  - "[[Programmazione/GitHub/Pagine/Dependency graph]]"
+  - "[[Programmazione/GitHub/Pagine/SBOM e attestazioni su GitHub]]"
+title: Checklist sicurezza GitHub
 ---
 
 # Checklist sicurezza GitHub
@@ -87,15 +100,15 @@ Checklist sintetica:
 
 ## Collegamenti
 
-- [[Programmazione/GitHub/Indice GitHub]]
-- [[Secret scanning]]
-- [[Dependabot]]
-- [[Dependency graph]]
-- [[Code scanning]]
-- [[Sicurezza dei token GitHub]]
-- [[Permissions GitHub Actions]]
-- [[OIDC GitHub Actions]]
-- [[SBOM e attestazioni su GitHub]]
+- [[Programmazione/GitHub/Indice GitHub|Indice GitHub]]
+- [[Programmazione/GitHub/Pagine/Secret scanning|Secret scanning]]
+- [[Programmazione/GitHub/Pagine/Dependabot|Dependabot]]
+- [[Programmazione/GitHub/Pagine/Dependency graph|Dependency graph]]
+- [[Programmazione/GitHub/Pagine/Code scanning|Code scanning]]
+- [[Programmazione/GitHub/Pagine/Sicurezza dei token GitHub|Sicurezza dei token GitHub]]
+- [[Programmazione/GitHub/Pagine/Permissions GitHub Actions|Permissions GitHub Actions]]
+- [[Programmazione/GitHub/Pagine/OIDC GitHub Actions|OIDC GitHub Actions]]
+- [[Programmazione/GitHub/Pagine/SBOM e attestazioni su GitHub|SBOM e attestazioni su GitHub]]
 
 ## Fonti
 

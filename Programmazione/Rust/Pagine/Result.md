@@ -1,15 +1,19 @@
-﻿---
+---
 date: 2026-05-20
 area: Programmazione
 topic: Rust
 type: technical-note
-status: "non revisionato"
+status: non revisionato
 publish: true
 difficulty: base
-tags: [programmazione, rust, result, error-handling]
+tags:
+  - programmazione
+  - rust
+  - result
+  - error-handling
 aliases:
-  - "Result Rust"
-  - "Gestione errori con Result"
+  - Result Rust
+  - Gestione errori con Result
 prerequisites:
   - "[[Programmazione/Rust/Pagine/Enums]]"
   - "[[Programmazione/Rust/Pagine/Pattern Matching]]"
@@ -18,6 +22,7 @@ related:
   - "[[Programmazione/Rust/Pagine/Operatore]]"
   - "[[Programmazione/Rust/Pagine/Error handling idiomatico]]"
   - "[[Programmazione/Rust/Pagine/thiserror e anyhow]]"
+title: Result
 ---
 
 # Result
@@ -137,3 +142,8 @@ fn parse_port(input: Option<&str>) -> Result<u16, ConfigError> {
 - [[Programmazione/Rust/Pagine/thiserror e anyhow|thiserror e anyhow]]
 - [[Programmazione/Rust/Pagine/Enums|Enums]]
 
+
+
+## Navigazione
+
+- [[Programmazione/Rust/Indice Rust|Indice Rust]]

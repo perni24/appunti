@@ -3,13 +3,26 @@ date: 2026-06-02
 area: Programmazione
 topic: JavaScript
 type: technical-note
-status: "non revisionato"
+status: non revisionato
 publish: true
-difficulty: beginner
-tags: [javascript, es6, arrow-functions, functions, this]
-aliases: [Funzioni freccia, Arrow function]
-prerequisites: [Funzioni, Context]
-related: [Funzioni, Context, Callback]
+difficulty: base
+tags:
+  - javascript
+  - es6
+  - arrow-functions
+  - functions
+  - this
+aliases:
+  - Funzioni freccia
+  - Arrow function
+prerequisites:
+  - "[[Programmazione/JavaScript/Pagine/Funzioni]]"
+  - "[[Programmazione/JavaScript/Pagine/Context]]"
+related:
+  - "[[Programmazione/JavaScript/Pagine/Funzioni]]"
+  - "[[Programmazione/JavaScript/Pagine/Context]]"
+  - "[[Programmazione/JavaScript/Pagine/Callback]]"
+title: Arrow Functions
 ---
 
 # Arrow Functions
@@ -18,7 +31,7 @@ related: [Funzioni, Context, Callback]
 
 Le arrow functions sono una sintassi compatta per definire funzioni.
 
-Non sono solo una forma piu breve di `function`: non hanno un proprio `this`, non hanno `arguments` e non possono essere usate come costruttori.
+Non sono solo una forma piu breve di `function`: non hanno un proprio `this` o `arguments` e non possono essere usate come costruttori.
 
 ---
 
@@ -51,8 +64,10 @@ const user = {
   },
 };
 
-user.greet(); // Probabilmente undefined
+user.greet(); // Non usa user come this: esempio da NON usare
 ```
+
+Il risultato dipende dal contesto esterno. Al livello principale di un modulo ES, `this` e `undefined` e leggere `this.name` genera `TypeError`. In uno script classico del browser, invece, puo leggere `window.name`: non e il nome di `user`.
 
 Meglio:
 
@@ -91,7 +106,7 @@ Usano il `this` dello scope esterno.
 const timer = {
   seconds: 0,
   start() {
-    setInterval(() => {
+    return setInterval(() => {
       this.seconds += 1;
       console.log(this.seconds);
     }, 1000);
@@ -99,13 +114,38 @@ const timer = {
 };
 ```
 
-Qui `this` dentro la arrow function resta quello del metodo `start()`.
+Qui `this` dentro la arrow function resta quello del metodo `start()`. Il chiamante deve conservare l'identificatore restituito e passarlo a `clearInterval()` quando il timer non serve piu.
+
+Neppure `call()`, `apply()` o `bind()` sostituiscono il `this` catturato:
+
+```js
+const owner = {
+  name: "Ada",
+  createReader() {
+    return () => this.name;
+  },
+};
+
+const readName = owner.createReader();
+console.log(readName.call({ name: "Marco" })); // "Ada"
+```
 
 ---
 ### arguments
 Le arrow functions non hanno un proprio oggetto `arguments`.
 
-Usa rest parameters.
+Un riferimento a `arguments` cerca quindi quello di una funzione esterna, se esiste:
+
+```js
+function firstArgument(value) {
+  const read = () => arguments[0];
+  return read("ignorato");
+}
+
+console.log(firstArgument("esterno")); // "esterno"
+```
+
+Per gli argomenti ricevuti dalla arrow stessa, usa rest parameters.
 
 ```js
 const sumAll = (...numbers) => {
@@ -144,7 +184,7 @@ Con return implicito:
 const sum = (a, b) => a + b;
 ```
 
-Con un solo parametro, le parentesi sono opzionali.
+Con un solo parametro semplice, le parentesi sono opzionali. Rest, destructuring e valori di default richiedono sempre parentesi.
 
 ```js
 const square = value => value * value;
@@ -163,6 +203,11 @@ const getRandom = () => Math.random();
 Callback concisa:
 
 ```js
+const users = [
+  { name: "Ada", active: true },
+  { name: "Marco", active: false },
+];
+
 const activeNames = users
   .filter((user) => user.active)
   .map((user) => user.name);
@@ -173,16 +218,25 @@ Uso utile con `this` lessicale:
 ```js
 class Timer {
   seconds = 0;
+  intervalId = null;
 
   start() {
-    setInterval(() => {
+    if (this.intervalId !== null) return;
+
+    this.intervalId = setInterval(() => {
       this.seconds += 1;
     }, 1000);
+  }
+
+  stop() {
+    if (this.intervalId === null) return;
+    clearInterval(this.intervalId);
+    this.intervalId = null;
   }
 }
 ```
 
-L'arrow function mantiene il `this` del metodo `start`.
+L'arrow function mantiene il `this` del metodo `start`. `start()` evita timer duplicati; chi crea l'istanza deve chiamare `stop()` alla fine del suo utilizzo. Il contatore conta le callback eseguite: non misura con precisione il tempo trascorso, perche il runtime puo ritardarle.
 
 ## Varianti
 
@@ -197,7 +251,7 @@ L'arrow function mantiene il `this` del metodo `start`.
 
 - Usare arrow function come metodo di oggetto quando serve `this`.
 - Dimenticare le parentesi quando si restituisce un oggetto.
-- Cercare di usare `arguments`.
+- Aspettarsi un `arguments` proprio della arrow.
 - Usarle come costruttori.
 - Rendere poco leggibile una funzione complessa pur di scriverla in una riga.
 
@@ -216,7 +270,16 @@ L'arrow function mantiene il `this` del metodo `start`.
 ## Collegamenti
 
 - [[Programmazione/JavaScript/Pagine/Funzioni|Funzioni]]
-- [[Context]]
-- [[Callback]]
-- [[Array Methods]]
-- [[Spread & Rest Operators]]
+- [[Programmazione/JavaScript/Pagine/Context|Context]]
+- [[Programmazione/JavaScript/Pagine/Callback|Callback]]
+- [[Programmazione/JavaScript/Pagine/Array Methods|Array Methods]]
+- [[Programmazione/JavaScript/Pagine/Spread & Rest Operators|Spread & Rest Operators]]
+
+
+## Fonti
+
+- [MDN - Arrow functions](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Functions/Arrow_functions)
+
+## Navigazione
+
+- [[Programmazione/JavaScript/Indice JavaScript|Indice JavaScript]]

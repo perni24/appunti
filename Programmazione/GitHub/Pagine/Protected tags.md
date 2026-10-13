@@ -3,13 +3,22 @@ date: 2026-07-06
 area: Programmazione
 topic: GitHub
 type: technical-note
-status: "non revisionato"
+status: non revisionato
 publish: true
 difficulty: intermedio
-tags: [github, tags, release, rulesets]
-aliases: [Protected tags, Tag protetti GitHub]
-prerequisites: [Repository GitHub]
-related: [Repository rulesets]
+tags:
+  - github
+  - tags
+  - release
+  - rulesets
+aliases:
+  - Protected tags
+  - Tag protetti GitHub
+prerequisites:
+  - "[[Programmazione/GitHub/Pagine/Repository GitHub]]"
+related:
+  - "[[Programmazione/GitHub/Pagine/Repository rulesets]]"
+title: Protected tags
 ---
 
 # Protected tags
@@ -113,10 +122,10 @@ In questo modo una release pubblicata non viene riscritta casualmente.
 
 ## Collegamenti
 
-- [[Programmazione/GitHub/Indice GitHub]]
-- [[Repository GitHub]]
-- [[Repository rulesets]]
-- [[Conventional commits su GitHub]]
+- [[Programmazione/GitHub/Indice GitHub|Indice GitHub]]
+- [[Programmazione/GitHub/Pagine/Repository GitHub|Repository GitHub]]
+- [[Programmazione/GitHub/Pagine/Repository rulesets|Repository rulesets]]
+- [[Programmazione/GitHub/Pagine/Conventional commits su GitHub|Conventional commits su GitHub]]
 
 ## Fonti
 

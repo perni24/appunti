@@ -3,13 +3,23 @@ date: 2026-07-09
 area: Programmazione
 topic: Clean Code
 type: theory-note
-status: "non revisionato"
+status: non revisionato
 publish: true
 difficulty: intermedio
-tags: [clean-code, solid, dipendenze]
-aliases: [Dependency Inversion Principle, DIP]
-prerequisites: [SOLID]
-related: [Dipendenze esplicite, Confini tra moduli, Coesione e accoppiamento]
+tags:
+  - clean-code
+  - solid
+  - dipendenze
+aliases:
+  - Dependency Inversion Principle
+  - DIP
+prerequisites:
+  - "[[Programmazione/Clean Code/Pagine/SOLID]]"
+related:
+  - "[[Programmazione/Clean Code/Pagine/Dipendenze esplicite]]"
+  - "[[Programmazione/Clean Code/Pagine/Confini tra moduli]]"
+  - "[[Programmazione/Clean Code/Pagine/Coesione e accoppiamento]]"
+title: Dependency Inversion Principle
 ---
 
 # Dependency Inversion Principle
@@ -85,12 +95,12 @@ Il caso d'uso non conosce SMTP, conosce solo il comportamento necessario.
 
 ## Collegamenti
 
-- [[Programmazione/Clean Code/Indice Clean Code]]
-- [[SOLID]]
-- [[Dipendenze esplicite]]
-- [[Confini tra moduli]]
-- [[Coesione e accoppiamento]]
-- [[Separazione delle responsabilita]]
+- [[Programmazione/Clean Code/Indice Clean Code|Indice Clean Code]]
+- [[Programmazione/Clean Code/Pagine/SOLID|SOLID]]
+- [[Programmazione/Clean Code/Pagine/Dipendenze esplicite|Dipendenze esplicite]]
+- [[Programmazione/Clean Code/Pagine/Confini tra moduli|Confini tra moduli]]
+- [[Programmazione/Clean Code/Pagine/Coesione e accoppiamento|Coesione e accoppiamento]]
+- [[Programmazione/Clean Code/Pagine/Separazione delle responsabilita|Separazione delle responsabilita]]
 
 ## Fonti
 

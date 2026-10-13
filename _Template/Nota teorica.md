@@ -1,9 +1,11 @@
 ---
-date: {{date}}
+date: "{{date}}"
+title: "{{title}}"
 area:
 topic:
 type: theory-note
 status: "non revisionato"
+publish: false
 difficulty:
 tags: []
 aliases: []
@@ -11,7 +13,7 @@ prerequisites: []
 related: []
 ---
 
-# Titolo
+# {{title}}
 
 ## Sintesi
 
@@ -52,3 +54,7 @@ Esempio minimo.
 ## Collegamenti
 
 - [[Nota correlata]]
+
+## Fonti
+
+- Documentazione ufficiale e versione di riferimento.

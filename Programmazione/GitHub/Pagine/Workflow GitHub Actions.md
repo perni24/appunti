@@ -3,13 +3,23 @@ date: 2026-07-07
 area: Programmazione
 topic: GitHub
 type: technical-note
-status: "non revisionato"
+status: non revisionato
 publish: true
 difficulty: intermedio
-tags: [github, github-actions, workflow, yaml]
-aliases: [Workflow GitHub Actions, Workflow Actions]
-prerequisites: [GitHub Actions]
-related: [Sintassi YAML GitHub Actions, Eventi e trigger GitHub Actions]
+tags:
+  - github
+  - github-actions
+  - workflow
+  - yaml
+aliases:
+  - Workflow GitHub Actions
+  - Workflow Actions
+prerequisites:
+  - "[[Programmazione/GitHub/Pagine/GitHub Actions]]"
+related:
+  - "[[Programmazione/GitHub/Pagine/Sintassi YAML GitHub Actions]]"
+  - "[[Programmazione/GitHub/Pagine/Eventi e trigger GitHub Actions]]"
+title: Workflow GitHub Actions
 ---
 
 # Workflow GitHub Actions
@@ -116,11 +126,11 @@ Separazione consigliata:
 
 ## Collegamenti
 
-- [[Programmazione/GitHub/Indice GitHub]]
-- [[GitHub Actions]]
-- [[Eventi e trigger GitHub Actions]]
-- [[Jobs steps e runners]]
-- [[Sintassi YAML GitHub Actions]]
+- [[Programmazione/GitHub/Indice GitHub|Indice GitHub]]
+- [[Programmazione/GitHub/Pagine/GitHub Actions|GitHub Actions]]
+- [[Programmazione/GitHub/Pagine/Eventi e trigger GitHub Actions|Eventi e trigger GitHub Actions]]
+- [[Programmazione/GitHub/Pagine/Jobs steps e runners|Jobs steps e runners]]
+- [[Programmazione/GitHub/Pagine/Sintassi YAML GitHub Actions|Sintassi YAML GitHub Actions]]
 
 ## Fonti
 

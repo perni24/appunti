@@ -1,9 +1,9 @@
-﻿---
+---
 date: 2026-05-20
 area: Programmazione
 topic: Rust
 type: technical-note
-status: "non revisionato"
+status: non revisionato
 publish: true
 difficulty: base
 tags:
@@ -13,6 +13,7 @@ tags:
 aliases: []
 prerequisites: []
 related: []
+title: Tipi di dato primitivi
 ---
 
 # Tipi di dato primitivi
@@ -89,3 +90,8 @@ fn main() {
 - [[Programmazione/Rust/Pagine/Slices|Slices]]
 - [[Programmazione/Rust/Pagine/Stack e Heap|Stack e Heap]]
 
+
+
+## Navigazione
+
+- [[Programmazione/Rust/Indice Rust|Indice Rust]]

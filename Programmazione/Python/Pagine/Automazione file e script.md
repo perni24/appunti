@@ -3,13 +3,20 @@ date: 2026-06-03
 area: Programmazione
 topic: Python
 type: operational-note
-status: "non revisionato"
+status: non revisionato
 publish: true
-difficulty: beginner
-tags: [programmazione, python, automazione, scripting]
-aliases: [Automazione Python, Script Python]
+difficulty: base
+tags:
+  - programmazione
+  - python
+  - automazione
+  - scripting
+aliases:
+  - Automazione Python
+  - Script Python
 prerequisites: []
 related: []
+title: Automazione file e script
 ---
 
 # Automazione file e script
@@ -127,9 +134,9 @@ Il primo run deve essere in dry-run. Quando l'elenco e corretto, si puo riesegui
 
 ## Collegamenti
 
-- [[Programmazione/Python/Indice python|Indice Python]]
-- [[Gestione File]]
-- [[Subprocess]]
-- [[CLI con argparse]]
-- [[Logging]]
-- [[Standard Library]]
+- [[Programmazione/Python/Indice Python|Indice Python]]
+- [[Programmazione/Python/Pagine/Gestione File|Gestione File]]
+- [[Programmazione/Python/Pagine/Subprocess|Subprocess]]
+- [[Programmazione/Python/Pagine/CLI con argparse|CLI con argparse]]
+- [[Programmazione/Python/Pagine/Logging|Logging]]
+- [[Programmazione/Python/Pagine/Standard Library|Standard Library]]

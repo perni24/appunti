@@ -3,13 +3,22 @@ date: 2026-07-09
 area: Programmazione
 topic: Clean Code
 type: theory-note
-status: "non revisionato"
+status: non revisionato
 publish: true
 difficulty: base
-tags: [clean-code, manutenibilita, debito-tecnico]
-aliases: [Manutenibilita del codice, Codice manutenibile]
-prerequisites: [Clean Code]
-related: [Debito tecnico, Semplicita e complessita accidentale]
+tags:
+  - clean-code
+  - manutenibilita
+  - debito-tecnico
+aliases:
+  - Manutenibilita del codice
+  - Codice manutenibile
+prerequisites:
+  - "[[Programmazione/Clean Code/Pagine/Clean Code]]"
+related:
+  - "[[Programmazione/Clean Code/Pagine/Debito tecnico]]"
+  - "[[Programmazione/Clean Code/Pagine/Semplicita e complessita accidentale]]"
+title: Manutenibilita del codice
 ---
 
 # Manutenibilita del codice
@@ -81,11 +90,11 @@ La seconda situazione non elimina la complessita del dominio, ma la localizza.
 
 ## Collegamenti
 
-- [[Programmazione/Clean Code/Indice Clean Code]]
-- [[Clean Code]]
-- [[Debito tecnico]]
-- [[Semplicita e complessita accidentale]]
-- [[Funzioni con responsabilita singola]]
+- [[Programmazione/Clean Code/Indice Clean Code|Indice Clean Code]]
+- [[Programmazione/Clean Code/Pagine/Clean Code|Clean Code]]
+- [[Programmazione/Clean Code/Pagine/Debito tecnico|Debito tecnico]]
+- [[Programmazione/Clean Code/Pagine/Semplicita e complessita accidentale|Semplicita e complessita accidentale]]
+- [[Programmazione/Clean Code/Pagine/Funzioni con responsabilita singola|Funzioni con responsabilita singola]]
 
 ## Fonti
 

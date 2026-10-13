@@ -3,7 +3,7 @@ date: 2026-05-27
 area: Programmazione
 topic: Rust
 type: technical-note
-status: "non revisionato"
+status: non revisionato
 publish: true
 difficulty: intermedio
 tags:
@@ -11,8 +11,8 @@ tags:
   - rust
   - cli-e-tooling
 aliases:
-  - "Configurazione applicativa"
-  - "Application configuration"
+  - Configurazione applicativa
+  - Application configuration
 prerequisites:
   - "[[Programmazione/Rust/Pagine/Serde e serializzazione]]"
   - "[[Programmazione/Rust/Pagine/Path e PathBuf]]"
@@ -22,6 +22,7 @@ related:
   - "[[Programmazione/Rust/Pagine/Logging con log]]"
   - "[[Programmazione/Rust/Pagine/Tracing con tracing]]"
   - "[[Programmazione/Rust/Pagine/Cargo features]]"
+title: Configurazione applicativa
 ---
 
 # Configurazione applicativa
@@ -181,11 +182,11 @@ La precedenza e leggibile: il flag CLI vince sul file, poi arriva il default.
 
 ## Collegamenti
 
-- [[Programmazione/Rust/Indice rust|Indice Rust]]
-- [[Programmazione/Rust/Pagine/CLI con clap]]
-- [[Programmazione/Rust/Pagine/Serde e serializzazione]]
-- [[Programmazione/Rust/Pagine/Path e PathBuf]]
-- [[Programmazione/Rust/Pagine/Error reporting]]
-- [[Programmazione/Rust/Pagine/Logging con log]]
-- [[Programmazione/Rust/Pagine/Tracing con tracing]]
-- [[Programmazione/Rust/Pagine/Cargo features]]
+- [[Programmazione/Rust/Indice Rust|Indice Rust]]
+- [[Programmazione/Rust/Pagine/CLI con clap|CLI con clap]]
+- [[Programmazione/Rust/Pagine/Serde e serializzazione|Serde e serializzazione]]
+- [[Programmazione/Rust/Pagine/Path e PathBuf|Path e PathBuf]]
+- [[Programmazione/Rust/Pagine/Error reporting|Error reporting]]
+- [[Programmazione/Rust/Pagine/Logging con log|Logging con log]]
+- [[Programmazione/Rust/Pagine/Tracing con tracing|Tracing con tracing]]
+- [[Programmazione/Rust/Pagine/Cargo features|Cargo features]]

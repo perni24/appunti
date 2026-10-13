@@ -3,13 +3,19 @@ date: 2026-06-03
 area: Programmazione
 topic: Python
 type: technical-note
-status: "non revisionato"
+status: non revisionato
 publish: true
-difficulty: intermediate
-tags: [programmazione, python, performance]
-aliases: [Memoization, Cache]
+difficulty: intermedio
+tags:
+  - programmazione
+  - python
+  - performance
+aliases:
+  - Memoization
+  - Cache
 prerequisites: []
 related: []
+title: Caching in Python
 ---
 
 # Caching in Python
@@ -154,9 +160,9 @@ La seconda chiamata non ricalcola il risultato.
 
 ## Collegamenti
 
-- [[Programmazione/Python/Indice python|Indice Python]]
-- [[Profiling]]
+- [[Programmazione/Python/Indice Python|Indice Python]]
+- [[Programmazione/Python/Pagine/Profiling|Profiling]]
 - [[Programmazione/Python/Pagine/Funzioni|Funzioni]]
-- [[Proprietà]]
-- [[Standard Library]]
-- [[Memory Management]]
+- [[Programmazione/Python/Pagine/Proprietà|Proprietà]]
+- [[Programmazione/Python/Pagine/Standard Library|Standard Library]]
+- [[Programmazione/Python/Pagine/Memory Management|Memory Management]]

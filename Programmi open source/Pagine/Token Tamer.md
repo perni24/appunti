@@ -3,12 +3,24 @@ date: 2026-06-17
 area: Programmi open source
 topic: Compressione contesto LLM
 type: technical-note
-status: "non revisionato"
+status: non revisionato
 difficulty: intermedio
-tags: [open-source, ai, llm, token, proxy, coding]
-aliases: [Token Tamer, TokenTamer, token-tamer]
+tags:
+  - open-source
+  - ai
+  - llm
+  - token
+  - proxy
+  - coding
+aliases:
+  - Token Tamer
+  - TokenTamer
+  - token-tamer
 prerequisites: []
-related: [Aider]
+related:
+  - "[[Programmi open source/Pagine/Aider]]"
+title: Token Tamer
+publish: true
 ---
 
 # Token Tamer
@@ -33,7 +45,7 @@ Token Tamer si mette in mezzo tra il client e l'API del modello. Intercetta il p
 
 L'idea e lasciare intatti i file su cui l'agente sta lavorando e comprimere invece letture ripetute o file non direttamente modificati. Per alcuni strumenti puo bastare configurare una base URL; per altri strumenti con endpoint hardcoded puo servire intercettazione HTTPS locale.
 
-## Esempio d'uso
+## Esempio pratico
 
 ```bash
 # Avvio locale del proxy
@@ -43,11 +55,11 @@ token-tamer --port 8000 --no-dashboard
 aider --openai-api-base http://127.0.0.1:8000/v1
 ```
 
-## Punti forti
+## Funzionalita
 
 - **Proxy drop-in**: in alcuni workflow basta cambiare API base URL.
 - **Compressione strutturale**: conserva firme, classi e import invece di tagliare testo casualmente.
-- **Supporto coding agent**: pensato per strumenti come [[Aider]] e altri agenti che leggono file.
+- **Supporto coding agent**: pensato per strumenti come [[Programmi open source/Pagine/Aider|Aider]] e altri agenti che leggono file.
 - **Tracking locale**: puo mostrare token e costo risparmiati.
 
 ## Limiti
@@ -69,3 +81,8 @@ aider --openai-api-base http://127.0.0.1:8000/v1
 ## Collegamenti
 
 - https://github.com/borhen68/TokenTamer
+
+
+## Navigazione
+
+- [[Programmi open source/Indice Programmi Open Source|Catalogo open source]]

@@ -3,13 +3,25 @@ date: 2026-06-22
 area: Programmazione
 topic: TypeScript
 type: technical-note
-status: "non revisionato"
+status: non revisionato
 publish: true
 difficulty: intermedio
-tags: [typescript, assertion-functions, narrowing, runtime-validation]
-aliases: [Assertion function, asserts]
-prerequisites: [Type Guards, Type predicates]
-related: [Assertion e casting dei tipi, any, unknown e never]
+tags:
+  - typescript
+  - assertion-functions
+  - narrowing
+  - runtime-validation
+aliases:
+  - Assertion function
+  - asserts
+prerequisites:
+  - "[[Programmazione/TypeScript/Pagine/Type Guards]]"
+  - "[[Programmazione/TypeScript/Pagine/Type predicates]]"
+related:
+  - "[[Programmazione/TypeScript/Pagine/Assertion e casting dei tipi]]"
+  - any
+  - unknown e never
+title: Assertion functions
 ---
 
 # Assertion functions
@@ -93,6 +105,11 @@ Dopo `assertConfig(raw)`, TypeScript tratta `raw` come `Config`.
 
 ## Collegamenti
 
-- [[Type Guards]]
-- [[Type predicates]]
-- [[Assertion e casting dei tipi]]
+- [[Programmazione/TypeScript/Pagine/Type Guards|Type Guards]]
+- [[Programmazione/TypeScript/Pagine/Type predicates|Type predicates]]
+- [[Programmazione/TypeScript/Pagine/Assertion e casting dei tipi|Assertion e casting dei tipi]]
+
+
+## Navigazione
+
+- [[Programmazione/TypeScript/Indice TypeScript|Indice TypeScript]]

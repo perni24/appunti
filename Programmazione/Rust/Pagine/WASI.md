@@ -3,7 +3,7 @@ date: 2026-05-27
 area: Programmazione
 topic: Rust
 type: technical-note
-status: "non revisionato"
+status: non revisionato
 publish: true
 difficulty: avanzato
 tags:
@@ -11,8 +11,8 @@ tags:
   - rust
   - webassembly
 aliases:
-  - "WASI"
-  - "WebAssembly System Interface"
+  - WASI
+  - WebAssembly System Interface
 prerequisites:
   - "[[Programmazione/Rust/Pagine/Cross-compilation]]"
   - "[[Programmazione/Rust/Pagine/Limiti del runtime WebAssembly]]"
@@ -20,6 +20,7 @@ prerequisites:
 related:
   - "[[Programmazione/Rust/Pagine/File I O]]"
   - "[[Programmazione/Rust/Pagine/Process e Command]]"
+title: WASI
 ---
 
 # WASI
@@ -138,9 +139,9 @@ Questo tipo di programma e adatto a pipeline, plugin o ambienti dove vuoi esegui
 
 ## Collegamenti
 
-- [[Programmazione/Rust/Indice rust|Indice Rust]]
-- [[Programmazione/Rust/Pagine/Cross-compilation]]
-- [[Programmazione/Rust/Pagine/Limiti del runtime WebAssembly]]
-- [[Programmazione/Rust/Pagine/no_std]]
-- [[Programmazione/Rust/Pagine/File I O]]
-- [[Programmazione/Rust/Pagine/Process e Command]]
+- [[Programmazione/Rust/Indice Rust|Indice Rust]]
+- [[Programmazione/Rust/Pagine/Cross-compilation|Cross-compilation]]
+- [[Programmazione/Rust/Pagine/Limiti del runtime WebAssembly|Limiti del runtime WebAssembly]]
+- [[Programmazione/Rust/Pagine/no_std|no_std]]
+- [[Programmazione/Rust/Pagine/File I O|File I O]]
+- [[Programmazione/Rust/Pagine/Process e Command|Process e Command]]

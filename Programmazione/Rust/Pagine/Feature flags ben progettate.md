@@ -3,7 +3,7 @@ date: 2026-05-28
 area: Programmazione
 topic: Rust
 type: technical-note
-status: "non revisionato"
+status: non revisionato
 publish: true
 difficulty: avanzato
 tags:
@@ -11,8 +11,8 @@ tags:
   - rust
   - api-design-idiomatico
 aliases:
-  - "Feature flags ben progettate"
-  - "Feature Cargo"
+  - Feature flags ben progettate
+  - Feature Cargo
 prerequisites:
   - "[[Programmazione/Rust/Pagine/Cargo features]]"
   - "[[Programmazione/Rust/Pagine/Cargo.toml]]"
@@ -21,6 +21,7 @@ related:
   - "[[Programmazione/Rust/Pagine/no_std]]"
   - "[[Programmazione/Rust/Pagine/Compatibility e breaking changes]]"
   - "[[Programmazione/Rust/Pagine/Semantic Versioning]]"
+title: Feature flags ben progettate
 ---
 
 # Feature flags ben progettate
@@ -136,10 +137,10 @@ Chi non usa `serde` non paga la dipendenza. Chi abilita la feature ottiene integ
 
 ## Collegamenti
 
-- [[Programmazione/Rust/Indice rust|Indice Rust]]
-- [[Programmazione/Rust/Pagine/Cargo features]]
-- [[Programmazione/Rust/Pagine/Cargo.toml]]
-- [[Programmazione/Rust/Pagine/no_std]]
-- [[Programmazione/Rust/Pagine/Public API design]]
-- [[Programmazione/Rust/Pagine/Compatibility e breaking changes]]
-- [[Programmazione/Rust/Pagine/Semantic Versioning]]
+- [[Programmazione/Rust/Indice Rust|Indice Rust]]
+- [[Programmazione/Rust/Pagine/Cargo features|Cargo features]]
+- [[Programmazione/Rust/Pagine/Cargo.toml|Cargo.toml]]
+- [[Programmazione/Rust/Pagine/no_std|no_std]]
+- [[Programmazione/Rust/Pagine/Public API design|Public API design]]
+- [[Programmazione/Rust/Pagine/Compatibility e breaking changes|Compatibility e breaking changes]]
+- [[Programmazione/Rust/Pagine/Semantic Versioning|Semantic Versioning]]

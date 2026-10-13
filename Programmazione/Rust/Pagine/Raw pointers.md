@@ -3,7 +3,7 @@ date: 2026-05-26
 area: Programmazione
 topic: Rust
 type: technical-note
-status: "non revisionato"
+status: non revisionato
 publish: true
 difficulty: avanzato
 tags:
@@ -11,7 +11,7 @@ tags:
   - rust
   - unsafe-rust-in-profondita
 aliases:
-  - "Raw pointer"
+  - Raw pointer
   - "*const T"
   - "*mut T"
 prerequisites:
@@ -21,6 +21,7 @@ related:
   - "[[Programmazione/Rust/Pagine/Aliasing rules]]"
   - "[[Programmazione/Rust/Pagine/Undefined behavior]]"
   - "[[Programmazione/Rust/Pagine/FFI]]"
+title: Raw pointers
 ---
 
 # Raw pointers
@@ -132,3 +133,8 @@ La funzione restituisce un raw pointer, ma non lo dereferenzia. Chi lo usa deve 
 - [[Programmazione/Rust/Pagine/Undefined behavior|Undefined behavior]]
 - [[Programmazione/Rust/Pagine/Memory layout e alignment|Memory layout e alignment]]
 - [[Programmazione/Rust/Pagine/FFI|FFI]]
+
+
+## Navigazione
+
+- [[Programmazione/Rust/Indice Rust|Indice Rust]]

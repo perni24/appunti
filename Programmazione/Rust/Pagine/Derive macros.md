@@ -3,7 +3,7 @@ date: 2026-05-26
 area: Programmazione
 topic: Rust
 type: technical-note
-status: "non revisionato"
+status: non revisionato
 publish: true
 difficulty: avanzato
 tags:
@@ -11,8 +11,8 @@ tags:
   - rust
   - macros
 aliases:
-  - "derive macro"
-  - "proc_macro_derive"
+  - derive macro
+  - proc_macro_derive
 prerequisites:
   - "[[Programmazione/Rust/Pagine/Derive traits]]"
   - "[[Programmazione/Rust/Pagine/Procedural macros]]"
@@ -21,6 +21,7 @@ related:
   - "[[Programmazione/Rust/Pagine/Attribute macros]]"
   - "[[Programmazione/Rust/Pagine/Display e Debug]]"
   - "[[Programmazione/Rust/Pagine/thiserror e anyhow]]"
+title: Derive macros
 ---
 
 # Derive macros
@@ -127,3 +128,8 @@ enum AppError {
 - [[Programmazione/Rust/Pagine/Attribute macros|Attribute macros]]
 - [[Programmazione/Rust/Pagine/thiserror e anyhow|thiserror e anyhow]]
 - [[Programmazione/Rust/Pagine/Display e Debug|Display e Debug]]
+
+
+## Navigazione
+
+- [[Programmazione/Rust/Indice Rust|Indice Rust]]

@@ -3,11 +3,18 @@ date: 2026-07-28
 area: Programmazione
 topic: Strutture di Progetto
 type: technical-note
-status: "non revisionato"
+status: non revisionato
 publish: true
 difficulty: intermedio
-tags: [php, web, struttura-progetto, composer, architettura-a-livelli]
-aliases: [Struttura applicazione PHP, PHP web application structure]
+tags:
+  - php
+  - web
+  - struttura-progetto
+  - composer
+  - architettura-a-livelli
+aliases:
+  - Struttura applicazione PHP
+  - PHP web application structure
 prerequisites:
   - "[[Programmazione/Clean Code/Pagine/Separazione delle responsabilita]]"
 related:
@@ -18,6 +25,7 @@ related:
   - "[[Programmazione/Clean Code/Pagine/Repository pattern]]"
   - "[[Programmazione/Clean Code/Pagine/Configurazione applicativa]]"
   - "[[Programmazione/Clean Code/Pagine/Test unitari leggibili]]"
+title: PHP - Applicazione web tradizionale
 ---
 
 # PHP - Applicazione web tradizionale
@@ -939,10 +947,10 @@ Soluzione: document root su `public/`.
 
 ## Collegamenti
 
-- [[Programmazione/Strutture di Progetto/Indice Strutture di Progetto]]
-- [[Programmazione/Clean Code/Pagine/Separazione delle responsabilita]]
-- [[Programmazione/Clean Code/Pagine/Controller sottili]]
-- [[Programmazione/Clean Code/Pagine/Service layer]]
-- [[Programmazione/Clean Code/Pagine/Repository pattern]]
-- [[Programmazione/Clean Code/Pagine/Validazione ai confini]]
-- [[Programmazione/Clean Code/Pagine/Test unitari leggibili]]
+- [[Programmazione/Strutture di Progetto/Indice Strutture di Progetto|Indice Strutture di Progetto]]
+- [[Programmazione/Clean Code/Pagine/Separazione delle responsabilita|Separazione delle responsabilita]]
+- [[Programmazione/Clean Code/Pagine/Controller sottili|Controller sottili]]
+- [[Programmazione/Clean Code/Pagine/Service layer|Service layer]]
+- [[Programmazione/Clean Code/Pagine/Repository pattern|Repository pattern]]
+- [[Programmazione/Clean Code/Pagine/Validazione ai confini|Validazione ai confini]]
+- [[Programmazione/Clean Code/Pagine/Test unitari leggibili|Test unitari leggibili]]

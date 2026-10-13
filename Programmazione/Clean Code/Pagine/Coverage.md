@@ -3,13 +3,24 @@ date: 2026-07-09
 area: Programmazione
 topic: Clean Code
 type: technical-note
-status: "non revisionato"
+status: non revisionato
 publish: true
 difficulty: intermedio
-tags: [clean-code, testing, coverage]
-aliases: [Coverage, Test coverage]
-prerequisites: [Test unitari leggibili, Test di integrazione]
-related: [Mutation testing, Code quality gates, Codice testabile]
+tags:
+  - clean-code
+  - testing
+  - coverage
+aliases:
+  - Coverage
+  - Test coverage
+prerequisites:
+  - "[[Programmazione/Clean Code/Pagine/Test unitari leggibili]]"
+  - "[[Programmazione/Clean Code/Pagine/Test di integrazione]]"
+related:
+  - "[[Programmazione/Clean Code/Pagine/Mutation testing]]"
+  - "[[Programmazione/Clean Code/Pagine/Code quality gates]]"
+  - "[[Programmazione/Clean Code/Pagine/Codice testabile]]"
+title: Coverage
 ---
 
 # Coverage
@@ -88,12 +99,12 @@ Il numero va interpretato insieme alla qualita delle asserzioni.
 
 ## Collegamenti
 
-- [[Programmazione/Clean Code/Indice Clean Code]]
-- [[Test unitari leggibili]]
-- [[Test di integrazione]]
-- [[Codice testabile]]
-- [[Mutation testing]]
-- [[Code quality gates]]
+- [[Programmazione/Clean Code/Indice Clean Code|Indice Clean Code]]
+- [[Programmazione/Clean Code/Pagine/Test unitari leggibili|Test unitari leggibili]]
+- [[Programmazione/Clean Code/Pagine/Test di integrazione|Test di integrazione]]
+- [[Programmazione/Clean Code/Pagine/Codice testabile|Codice testabile]]
+- [[Programmazione/Clean Code/Pagine/Mutation testing|Mutation testing]]
+- [[Programmazione/Clean Code/Pagine/Code quality gates|Code quality gates]]
 
 ## Fonti
 

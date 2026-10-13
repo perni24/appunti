@@ -3,13 +3,23 @@ date: 2026-06-22
 area: Programmazione
 topic: TypeScript
 type: technical-note
-status: "non revisionato"
+status: non revisionato
 publish: true
 difficulty: avanzato
-tags: [typescript, conditional-types, type-system]
-aliases: [Conditional Type]
-prerequisites: [Generics, Union e Intersection Types]
-related: [Infer nei Conditional Types, Distributive conditional types, Utility Types]
+tags:
+  - typescript
+  - conditional-types
+  - type-system
+aliases:
+  - Conditional Type
+prerequisites:
+  - "[[Programmazione/TypeScript/Pagine/Generics]]"
+  - "[[Programmazione/TypeScript/Pagine/Union e Intersection Types]]"
+related:
+  - "[[Programmazione/TypeScript/Pagine/Infer nei Conditional Types]]"
+  - "[[Programmazione/TypeScript/Pagine/Distributive conditional types]]"
+  - "[[Programmazione/TypeScript/Pagine/Utility Types]]"
+title: Conditional Types
 ---
 
 # Conditional Types
@@ -82,7 +92,12 @@ type B = ApiData<User>;
 
 ## Collegamenti
 
-- [[Infer nei Conditional Types]]
-- [[Distributive conditional types]]
-- [[Utility Types]]
-- [[Generics avanzati]]
+- [[Programmazione/TypeScript/Pagine/Infer nei Conditional Types|Infer nei Conditional Types]]
+- [[Programmazione/TypeScript/Pagine/Distributive conditional types|Distributive conditional types]]
+- [[Programmazione/TypeScript/Pagine/Utility Types|Utility Types]]
+- [[Programmazione/TypeScript/Pagine/Generics avanzati|Generics avanzati]]
+
+
+## Navigazione
+
+- [[Programmazione/TypeScript/Indice TypeScript|Indice TypeScript]]

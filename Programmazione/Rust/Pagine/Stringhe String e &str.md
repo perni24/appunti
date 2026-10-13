@@ -1,16 +1,21 @@
-﻿---
+---
 date: 2026-05-20
 area: Programmazione
 topic: Rust
 type: technical-note
-status: "non revisionato"
+status: non revisionato
 publish: true
 difficulty: base
-tags: [programmazione, rust, string, str, utf8]
+tags:
+  - programmazione
+  - rust
+  - string
+  - str
+  - utf8
 aliases:
-  - "String e str"
-  - "String vs &str"
-  - "String slices"
+  - String e str
+  - String vs &str
+  - String slices
 prerequisites:
   - "[[Programmazione/Rust/Pagine/Ownership]]"
   - "[[Programmazione/Rust/Pagine/Slices]]"
@@ -18,6 +23,7 @@ related:
   - "[[Programmazione/Rust/Pagine/References e Borrowing]]"
   - "[[Programmazione/Rust/Pagine/Vec]]"
   - "[[Programmazione/Rust/Pagine/OsStr e OsString]]"
+title: Stringhe String e &str
 ---
 
 # Stringhe String e &str
@@ -134,3 +140,8 @@ La funzione accetta `&str`, quindi non consuma `titolo`. Restituisce una nuova `
 - [[Programmazione/Rust/Pagine/Vec|Vec]]
 - [[Programmazione/Rust/Pagine/OsStr e OsString|OsStr e OsString]]
 
+
+
+## Navigazione
+
+- [[Programmazione/Rust/Indice Rust|Indice Rust]]

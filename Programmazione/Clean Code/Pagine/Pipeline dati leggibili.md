@@ -3,13 +3,24 @@ date: 2026-07-09
 area: Programmazione
 topic: Clean Code
 type: technical-note
-status: "non revisionato"
+status: non revisionato
 publish: true
 difficulty: intermedio
-tags: [clean-code, data-pipeline, dati]
-aliases: [Pipeline dati leggibili, Readable data pipelines]
-prerequisites: [Pipeline di trasformazione, Parsing e serializzazione]
-related: [Parsing di input esterni, Output strutturati, Validazione dei dati generati]
+tags:
+  - clean-code
+  - data-pipeline
+  - dati
+aliases:
+  - Pipeline dati leggibili
+  - Readable data pipelines
+prerequisites:
+  - "[[Programmazione/Clean Code/Pagine/Pipeline di trasformazione]]"
+  - "[[Programmazione/Clean Code/Pagine/Parsing e serializzazione]]"
+related:
+  - "[[Programmazione/Clean Code/Pagine/Parsing di input esterni]]"
+  - "[[Programmazione/Clean Code/Pagine/Output strutturati]]"
+  - "[[Programmazione/Clean Code/Pagine/Validazione dei dati generati]]"
+title: Pipeline dati leggibili
 ---
 
 # Pipeline dati leggibili
@@ -90,12 +101,12 @@ Il flusso principale e leggibile e ogni passaggio puo essere testato separatamen
 
 ## Collegamenti
 
-- [[Programmazione/Clean Code/Indice Clean Code]]
-- [[Pipeline di trasformazione]]
-- [[Parsing e serializzazione]]
-- [[Parsing di input esterni]]
-- [[Output strutturati]]
-- [[Validazione dei dati generati]]
+- [[Programmazione/Clean Code/Indice Clean Code|Indice Clean Code]]
+- [[Programmazione/Clean Code/Pagine/Pipeline di trasformazione|Pipeline di trasformazione]]
+- [[Programmazione/Clean Code/Pagine/Parsing e serializzazione|Parsing e serializzazione]]
+- [[Programmazione/Clean Code/Pagine/Parsing di input esterni|Parsing di input esterni]]
+- [[Programmazione/Clean Code/Pagine/Output strutturati|Output strutturati]]
+- [[Programmazione/Clean Code/Pagine/Validazione dei dati generati|Validazione dei dati generati]]
 
 ## Fonti
 

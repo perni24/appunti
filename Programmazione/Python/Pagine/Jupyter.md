@@ -3,13 +3,20 @@ date: 2026-06-03
 area: Programmazione
 topic: Python
 type: technical-note
-status: "non revisionato"
+status: non revisionato
 publish: true
-difficulty: beginner
-tags: [programmazione, python, notebook, dati]
-aliases: [Jupyter, Notebook Jupyter]
+difficulty: base
+tags:
+  - programmazione
+  - python
+  - notebook
+  - dati
+aliases:
+  - Jupyter
+  - Notebook Jupyter
 prerequisites: []
 related: []
+title: Jupyter
 ---
 
 # Jupyter
@@ -124,8 +131,8 @@ summary
 
 ## Collegamenti
 
-- [[Programmazione/Python/Indice python|Indice Python]]
-- [[pandas]]
-- [[NumPy]]
-- [[Ambienti Virtuali]]
-- [[Profiling]]
+- [[Programmazione/Python/Indice Python|Indice Python]]
+- [[Programmazione/Python/Pagine/pandas|pandas]]
+- [[Programmazione/Python/Pagine/NumPy|NumPy]]
+- [[Programmazione/Python/Pagine/Ambienti Virtuali|Ambienti Virtuali]]
+- [[Programmazione/Python/Pagine/Profiling|Profiling]]

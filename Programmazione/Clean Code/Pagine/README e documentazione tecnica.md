@@ -3,13 +3,23 @@ date: 2026-07-09
 area: Programmazione
 topic: Clean Code
 type: theory-note
-status: "non revisionato"
+status: non revisionato
 publish: true
 difficulty: base
-tags: [clean-code, documentazione, readme]
-aliases: [README e documentazione tecnica, Documentazione tecnica]
-prerequisites: [Clean Code]
-related: [Organizzazione dei file, Convenzioni di progetto, Commenti temporanei e TODO]
+tags:
+  - clean-code
+  - documentazione
+  - readme
+aliases:
+  - README e documentazione tecnica
+  - Documentazione tecnica
+prerequisites:
+  - "[[Programmazione/Clean Code/Pagine/Clean Code]]"
+related:
+  - "[[Programmazione/Clean Code/Pagine/Organizzazione dei file]]"
+  - "[[Programmazione/Clean Code/Pagine/Convenzioni di progetto]]"
+  - "[[Programmazione/Clean Code/Pagine/Commenti temporanei e TODO]]"
+title: README e documentazione tecnica
 ---
 
 # README e documentazione tecnica
@@ -101,11 +111,11 @@ Un README cosi riduce domande ripetute e onboarding lento.
 
 ## Collegamenti
 
-- [[Programmazione/Clean Code/Indice Clean Code]]
-- [[Organizzazione dei file]]
-- [[Convenzioni di progetto]]
-- [[Commenti temporanei e TODO]]
-- [[Leggibilita del codice]]
+- [[Programmazione/Clean Code/Indice Clean Code|Indice Clean Code]]
+- [[Programmazione/Clean Code/Pagine/Organizzazione dei file|Organizzazione dei file]]
+- [[Programmazione/Clean Code/Pagine/Convenzioni di progetto|Convenzioni di progetto]]
+- [[Programmazione/Clean Code/Pagine/Commenti temporanei e TODO|Commenti temporanei e TODO]]
+- [[Programmazione/Clean Code/Pagine/Leggibilita del codice|Leggibilita del codice]]
 
 ## Fonti
 

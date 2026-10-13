@@ -3,13 +3,18 @@ date: 2026-06-04
 area: Programmazione
 topic: React
 type: technical-note
-status: "non revisionato"
+status: non revisionato
 publish: true
-difficulty: advanced
-tags: [react, compiler, performance]
-aliases: [React Compiler]
+difficulty: avanzato
+tags:
+  - react
+  - compiler
+  - performance
+aliases:
+  - React Compiler
 prerequisites: []
 related: []
+title: React Compiler
 ---
 
 # React Compiler
@@ -86,9 +91,9 @@ Prima di introdurre il compiler:
 
 ## Collegamenti
 
-- [[Programmazione/React/Indice react|Indice React]]
-- [[useMemo e useCallback]]
-- [[Profiler e Debugging]]
+- [[Programmazione/React/Indice React|Indice React]]
+- [[Programmazione/React/Pagine/useMemo e useCallback|useMemo e useCallback]]
+- [[Programmazione/React/Pagine/Profiler e Debugging|Profiler e Debugging]]
 - [[Programmazione/React/Pagine/Linting e Formattazione|Linting e Formattazione]]
-- [[Fiber Architecture e Concurrent Mode]]
+- [[Programmazione/React/Pagine/Fiber Architecture e Concurrent Mode|Fiber Architecture e Concurrent Mode]]
 - [React Compiler](https://react.dev/learn/react-compiler)

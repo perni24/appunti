@@ -3,13 +3,26 @@ date: 2026-07-07
 area: Programmazione
 topic: GitHub
 type: operational-note
-status: "non revisionato"
+status: non revisionato
 publish: true
 difficulty: base
-tags: [github, pull-request, review, procedura]
-aliases: [Aprire una pull request corretta, Creare una PR corretta]
-prerequisites: [Pull request, Branch su GitHub, Commit e cronologia su GitHub]
-related: [Review code su GitHub, Issues GitHub, Conventional commits su GitHub]
+tags:
+  - github
+  - pull-request
+  - review
+  - procedura
+aliases:
+  - Aprire una pull request corretta
+  - Creare una PR corretta
+prerequisites:
+  - "[[Programmazione/GitHub/Pagine/Pull request]]"
+  - "[[Programmazione/GitHub/Pagine/Branch su GitHub]]"
+  - "[[Programmazione/GitHub/Pagine/Commit e cronologia su GitHub]]"
+related:
+  - "[[Programmazione/GitHub/Pagine/Review code su GitHub]]"
+  - "[[Programmazione/GitHub/Pagine/Issues GitHub]]"
+  - "[[Programmazione/GitHub/Pagine/Conventional commits su GitHub]]"
+title: Aprire una pull request corretta
 ---
 
 # Aprire una pull request corretta
@@ -105,13 +118,13 @@ Template descrizione:
 
 ## Collegamenti
 
-- [[Programmazione/GitHub/Indice GitHub]]
-- [[Branch su GitHub]]
-- [[Commit e cronologia su GitHub]]
-- [[Pull request]]
-- [[Review code su GitHub]]
-- [[Issues GitHub]]
-- [[Conventional commits su GitHub]]
+- [[Programmazione/GitHub/Indice GitHub|Indice GitHub]]
+- [[Programmazione/GitHub/Pagine/Branch su GitHub|Branch su GitHub]]
+- [[Programmazione/GitHub/Pagine/Commit e cronologia su GitHub|Commit e cronologia su GitHub]]
+- [[Programmazione/GitHub/Pagine/Pull request|Pull request]]
+- [[Programmazione/GitHub/Pagine/Review code su GitHub|Review code su GitHub]]
+- [[Programmazione/GitHub/Pagine/Issues GitHub|Issues GitHub]]
+- [[Programmazione/GitHub/Pagine/Conventional commits su GitHub|Conventional commits su GitHub]]
 
 ## Fonti
 

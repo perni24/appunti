@@ -3,7 +3,7 @@ date: 2026-05-27
 area: Programmazione
 topic: Rust
 type: technical-note
-status: "non revisionato"
+status: non revisionato
 publish: true
 difficulty: avanzato
 tags:
@@ -11,8 +11,8 @@ tags:
   - rust
   - embedded
 aliases:
-  - "embedded-hal"
-  - "Embedded HAL"
+  - embedded-hal
+  - Embedded HAL
 prerequisites:
   - "[[Programmazione/Rust/Pagine/no_std]]"
   - "[[Programmazione/Rust/Pagine/Traits]]"
@@ -22,6 +22,7 @@ related:
   - "[[Programmazione/Rust/Pagine/cortex-m]]"
   - "[[Programmazione/Rust/Pagine/Embassy]]"
   - "[[Programmazione/Rust/Pagine/RTIC]]"
+title: embedded-hal
 ---
 
 # embedded-hal
@@ -163,11 +164,11 @@ Il driver non conosce la board. L'applicazione passa un pin concreto configurato
 
 ## Collegamenti
 
-- [[Programmazione/Rust/Indice rust|Indice Rust]]
-- [[Programmazione/Rust/Pagine/no_std]]
-- [[Programmazione/Rust/Pagine/Embedded Rust]]
-- [[Programmazione/Rust/Pagine/cortex-m]]
-- [[Programmazione/Rust/Pagine/Embassy]]
-- [[Programmazione/Rust/Pagine/RTIC]]
-- [[Programmazione/Rust/Pagine/Traits]]
-- [[Programmazione/Rust/Pagine/Generics]]
+- [[Programmazione/Rust/Indice Rust|Indice Rust]]
+- [[Programmazione/Rust/Pagine/no_std|no_std]]
+- [[Programmazione/Rust/Pagine/Embedded Rust|Embedded Rust]]
+- [[Programmazione/Rust/Pagine/cortex-m|cortex-m]]
+- [[Programmazione/Rust/Pagine/Embassy|Embassy]]
+- [[Programmazione/Rust/Pagine/RTIC|RTIC]]
+- [[Programmazione/Rust/Pagine/Traits|Traits]]
+- [[Programmazione/Rust/Pagine/Generics|Generics]]

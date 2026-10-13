@@ -3,13 +3,23 @@ date: 2026-06-22
 area: Programmazione
 topic: TypeScript
 type: technical-note
-status: "non revisionato"
+status: non revisionato
 publish: true
 difficulty: base
-tags: [typescript, inferenza, type-inference]
-aliases: [Type inference]
-prerequisites: [Introduzione a TypeScript, Variabili e annotazioni di tipo]
-related: [any, unknown e never, Union e Intersection Types]
+tags:
+  - typescript
+  - inferenza
+  - type-inference
+aliases:
+  - Type inference
+prerequisites:
+  - "[[Programmazione/TypeScript/Pagine/Introduzione a TypeScript]]"
+  - "[[Programmazione/TypeScript/Pagine/Variabili e annotazioni di tipo]]"
+related:
+  - any
+  - unknown e never
+  - "[[Programmazione/TypeScript/Pagine/Union e Intersection Types]]"
+title: Inferenza dei tipi
 ---
 
 # Inferenza dei tipi
@@ -84,6 +94,11 @@ Il ritorno di `getUserEmail` viene inferito come `string`, quindi `email` non ha
 
 ## Collegamenti
 
-- [[Variabili e annotazioni di tipo]]
-- [[any, unknown e never]]
-- [[Union e Intersection Types]]
+- [[Programmazione/TypeScript/Pagine/Variabili e annotazioni di tipo|Variabili e annotazioni di tipo]]
+- [[Programmazione/TypeScript/Pagine/any, unknown e never|any, unknown e never]]
+- [[Programmazione/TypeScript/Pagine/Union e Intersection Types|Union e Intersection Types]]
+
+
+## Navigazione
+
+- [[Programmazione/TypeScript/Indice TypeScript|Indice TypeScript]]

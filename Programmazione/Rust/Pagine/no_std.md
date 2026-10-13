@@ -3,7 +3,7 @@ date: 2026-05-27
 area: Programmazione
 topic: Rust
 type: technical-note
-status: "non revisionato"
+status: non revisionato
 publish: true
 difficulty: avanzato
 tags:
@@ -12,7 +12,7 @@ tags:
   - rust-di-sistema
   - embedded
 aliases:
-  - "no_std"
+  - no_std
   - "#![no_std]"
 prerequisites:
   - "[[Programmazione/Rust/Pagine/Embedded Rust]]"
@@ -23,6 +23,7 @@ related:
   - "[[Programmazione/Rust/Pagine/Cargo features]]"
   - "[[Programmazione/Rust/Pagine/embedded-hal]]"
   - "[[Programmazione/Rust/Pagine/cortex-m]]"
+title: no_std
 ---
 
 # no_std
@@ -128,3 +129,8 @@ Questa funzione lavora solo con slice e tipi primitivi, quindi non ha bisogno di
 - [[Programmazione/Rust/Pagine/Feature flags ben progettate|Feature flags ben progettate]]
 - [[Programmazione/Rust/Pagine/embedded-hal|embedded-hal]]
 - [[Programmazione/Rust/Pagine/cortex-m|cortex-m]]
+
+
+## Navigazione
+
+- [[Programmazione/Rust/Indice Rust|Indice Rust]]

@@ -3,13 +3,27 @@ date: 2026-06-02
 area: Programmazione
 topic: JavaScript
 type: technical-note
-status: "non revisionato"
+status: non revisionato
 publish: true
-difficulty: beginner
-tags: [javascript, basics, conditionals, if, switch, truthy, falsy]
-aliases: [Condizioni JS, Controllo di flusso JS]
-prerequisites: [Operatori, Tipi di Dati]
-related: [Operatori, Cicli]
+difficulty: base
+tags:
+  - javascript
+  - basics
+  - conditionals
+  - if
+  - switch
+  - truthy
+  - falsy
+aliases:
+  - Condizioni JS
+  - Controllo di flusso JS
+prerequisites:
+  - "[[Programmazione/JavaScript/Pagine/Operatori]]"
+  - "[[Programmazione/JavaScript/Pagine/Tipi di Dati]]"
+related:
+  - "[[Programmazione/JavaScript/Pagine/Operatori]]"
+  - "[[Programmazione/JavaScript/Pagine/Cicli]]"
+title: Strutture Condizionali
 ---
 
 # Strutture Condizionali
@@ -69,13 +83,15 @@ Valori falsy:
 - `undefined`;
 - `NaN`.
 
-Tutti gli altri valori sono truthy, inclusi:
+Gli altri valori ordinari sono truthy, inclusi:
 
 - `[]`;
 - `{}`;
 - `"false"`;
 - `"0"`;
 - funzioni.
+
+Nel browser esiste un'eccezione storica: `document.all` e un oggetto falsy. Non usarlo come modello per il codice moderno.
 
 ```js
 const name = "";
@@ -108,9 +124,11 @@ if (users.length > 0) {
 }
 ```
 
-Meglio di:
+Il solo controllo dell'array, invece, non ne verifica il contenuto:
 
 ```js
+const users = [];
+
 if (users) {
   console.log("Questo e sempre true per un array");
 }
@@ -139,6 +157,29 @@ switch (status) {
 ```
 
 `break` evita il fall-through verso i casi successivi.
+
+Il confronto non converte i tipi: `case 1` non corrisponde a `"1"`. Anche `case NaN` non puo riconoscere `NaN`: usa `Number.isNaN()` in una condizione separata.
+
+I `case` condividono lo scope dello `switch`. Se dichiari `let` o `const` con lo stesso nome in piu rami, racchiudi ciascun ramo in un blocco:
+
+```js
+const action = "save";
+
+switch (action) {
+  case "save": {
+    const message = "Salvato";
+    console.log(message);
+    break;
+  }
+  case "delete": {
+    const message = "Eliminato";
+    console.log(message);
+    break;
+  }
+  default:
+    console.log("Azione sconosciuta");
+}
+```
 
 ---
 ### Fall-through intenzionale
@@ -170,6 +211,7 @@ Evita ternari annidati complessi.
 
 ```js
 // Difficile da leggere
+const score = 80;
 const label = score > 90 ? "A" : score > 70 ? "B" : "C";
 ```
 
@@ -191,11 +233,13 @@ function getUserName(user) {
 
 Riduce annidamenti e rende piu chiaro il flusso.
 
+Qui si assume che `user` sia assente oppure un oggetto gia valido con `name`. Il controllo `!user` non verifica lo schema: `{}` supera la guardia e produce `undefined`. La validazione dei dati esterni deve controllare anche tipi e proprieta richieste.
+
 ---
 
 ## API / Sintassi
 
-Forme principali:
+Forme principali (schemi: `condition`, `otherCondition` e `value` rappresentano valori da definire):
 
 ```js
 if (condition) {
@@ -234,7 +278,7 @@ function run(input) {
 
 ## Esempio pratico
 
-Validazione con guard clause:
+Calcolo di uno sconto con guard clause. Il contratto prevede `user` assente oppure un oggetto gia validato, con `active` booleano e `role` stringa:
 
 ```js
 function getDiscount(user) {
@@ -242,7 +286,7 @@ function getDiscount(user) {
     return 0;
   }
 
-  if (!user.active) {
+  if (user.active !== true) {
     return 0;
   }
 
@@ -255,6 +299,8 @@ function getDiscount(user) {
 ```
 
 Le guard clause evitano un blocco annidato e mettono subito in evidenza i casi di uscita.
+
+Il risultato e una frazione: `0.2` significa 20%. Il confronto con `true` evita di trattare stringhe come `"false"` come utenti attivi, ma non sostituisce la validazione completa dell'oggetto.
 
 ## Varianti
 
@@ -272,6 +318,7 @@ Le guard clause evitano un blocco annidato e mettono subito in evidenza i casi d
 - Usare condizioni implicite quando serve distinguere `0`, `""`, `null` e `undefined`.
 - Scrivere ternari troppo lunghi.
 - Annidare troppi `if` invece di usare guard clause.
+- Scambiare un controllo truthy per una validazione di tipo o di schema.
 
 ---
 
@@ -288,6 +335,16 @@ Le guard clause evitano un blocco annidato e mettono subito in evidenza i casi d
 ## Collegamenti
 
 - [[Programmazione/JavaScript/Pagine/Operatori|Operatori]]
-- [[Tipi di Dati]]
+- [[Programmazione/JavaScript/Pagine/Tipi di Dati|Tipi di Dati]]
 - [[Programmazione/JavaScript/Pagine/Cicli|Cicli]]
 - [[Programmazione/JavaScript/Pagine/Funzioni|Funzioni]]
+
+## Fonti
+
+- [MDN: valori falsy](https://developer.mozilla.org/en-US/docs/Glossary/Falsy).
+- [MDN: switch, confronto e scope dei case](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Statements/switch).
+- [MDN: controllo di flusso](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Guide/Control_flow_and_error_handling).
+
+## Navigazione
+
+- [[Programmazione/JavaScript/Indice JavaScript|Indice JavaScript]]

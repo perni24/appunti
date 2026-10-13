@@ -3,13 +3,21 @@ date: 2026-07-06
 area: Programmazione
 topic: GitHub
 type: technical-note
-status: "non revisionato"
+status: non revisionato
 publish: true
 difficulty: base
-tags: [github, git, repository, collaborazione]
-aliases: [GitHub]
+tags:
+  - github
+  - git
+  - repository
+  - collaborazione
+aliases:
+  - GitHub
 prerequisites: []
-related: [Git e GitHub, Repository GitHub]
+related:
+  - "[[Programmazione/GitHub/Pagine/Git e GitHub]]"
+  - "[[Programmazione/GitHub/Pagine/Repository GitHub]]"
+title: GitHub
 ---
 
 # GitHub
@@ -127,9 +135,9 @@ Poi apri una pull request su GitHub e aspetti review e controlli automatici.
 
 ## Collegamenti
 
-- [[Programmazione/GitHub/Indice GitHub]]
-- [[Git e GitHub]]
-- [[Repository GitHub]]
+- [[Programmazione/GitHub/Indice GitHub|Indice GitHub]]
+- [[Programmazione/GitHub/Pagine/Git e GitHub|Git e GitHub]]
+- [[Programmazione/GitHub/Pagine/Repository GitHub|Repository GitHub]]
 - Pull request
 
 ## Fonti

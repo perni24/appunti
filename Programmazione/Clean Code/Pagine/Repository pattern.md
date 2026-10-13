@@ -3,13 +3,24 @@ date: 2026-07-09
 area: Programmazione
 topic: Clean Code
 type: theory-note
-status: "non revisionato"
+status: non revisionato
 publish: true
 difficulty: intermedio
-tags: [clean-code, database, repository-pattern]
-aliases: [Repository pattern, Pattern Repository]
-prerequisites: [Service layer, Dipendenze esplicite]
-related: [Query leggibili, Migrazioni e schema evolution, Modellazione del dominio]
+tags:
+  - clean-code
+  - database
+  - repository-pattern
+aliases:
+  - Repository pattern
+  - Pattern Repository
+prerequisites:
+  - "[[Programmazione/Clean Code/Pagine/Service layer]]"
+  - "[[Programmazione/Clean Code/Pagine/Dipendenze esplicite]]"
+related:
+  - "[[Programmazione/Clean Code/Pagine/Query leggibili]]"
+  - "[[Programmazione/Clean Code/Pagine/Migrazioni e schema evolution]]"
+  - "[[Programmazione/Clean Code/Pagine/Modellazione del dominio]]"
+title: Repository pattern
 ---
 
 # Repository pattern
@@ -87,12 +98,12 @@ Il service non conosce la query concreta, ma richiede un'operazione atomica sign
 
 ## Collegamenti
 
-- [[Programmazione/Clean Code/Indice Clean Code]]
-- [[Service layer]]
-- [[Dipendenze esplicite]]
-- [[Query leggibili]]
-- [[Operazioni atomiche]]
-- [[Modellazione del dominio]]
+- [[Programmazione/Clean Code/Indice Clean Code|Indice Clean Code]]
+- [[Programmazione/Clean Code/Pagine/Service layer|Service layer]]
+- [[Programmazione/Clean Code/Pagine/Dipendenze esplicite|Dipendenze esplicite]]
+- [[Programmazione/Clean Code/Pagine/Query leggibili|Query leggibili]]
+- [[Programmazione/Clean Code/Pagine/Operazioni atomiche|Operazioni atomiche]]
+- [[Programmazione/Clean Code/Pagine/Modellazione del dominio|Modellazione del dominio]]
 
 ## Fonti
 

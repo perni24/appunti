@@ -3,13 +3,26 @@ date: 2026-07-07
 area: Programmazione
 topic: GitHub
 type: operational-note
-status: "non revisionato"
+status: non revisionato
 publish: true
 difficulty: intermedio
-tags: [github, github-actions, ci, procedura]
-aliases: [Configurare una pipeline CI con GitHub Actions, Configurare CI GitHub Actions]
-prerequisites: [GitHub Actions, Pipeline CI GitHub Actions]
-related: [Workflow per test, lint e build, Cache GitHub Actions, Permissions GitHub Actions]
+tags:
+  - github
+  - github-actions
+  - ci
+  - procedura
+aliases:
+  - Configurare una pipeline CI con GitHub Actions
+  - Configurare CI GitHub Actions
+prerequisites:
+  - "[[Programmazione/GitHub/Pagine/GitHub Actions]]"
+  - "[[Programmazione/GitHub/Pagine/Pipeline CI GitHub Actions]]"
+related:
+  - Workflow per test
+  - lint e build
+  - "[[Programmazione/GitHub/Pagine/Cache GitHub Actions]]"
+  - "[[Programmazione/GitHub/Pagine/Permissions GitHub Actions]]"
+title: Configurare una pipeline CI con GitHub Actions
 ---
 
 # Configurare una pipeline CI con GitHub Actions
@@ -103,14 +116,14 @@ jobs:
 
 ## Collegamenti
 
-- [[Programmazione/GitHub/Indice GitHub]]
-- [[GitHub Actions]]
-- [[Workflow GitHub Actions]]
-- [[Pipeline CI GitHub Actions]]
-- [[Workflow per test, lint e build]]
-- [[Cache GitHub Actions]]
-- [[Artifacts GitHub Actions]]
-- [[Permissions GitHub Actions]]
+- [[Programmazione/GitHub/Indice GitHub|Indice GitHub]]
+- [[Programmazione/GitHub/Pagine/GitHub Actions|GitHub Actions]]
+- [[Programmazione/GitHub/Pagine/Workflow GitHub Actions|Workflow GitHub Actions]]
+- [[Programmazione/GitHub/Pagine/Pipeline CI GitHub Actions|Pipeline CI GitHub Actions]]
+- [[Programmazione/GitHub/Pagine/Workflow per test, lint e build|Workflow per test, lint e build]]
+- [[Programmazione/GitHub/Pagine/Cache GitHub Actions|Cache GitHub Actions]]
+- [[Programmazione/GitHub/Pagine/Artifacts GitHub Actions|Artifacts GitHub Actions]]
+- [[Programmazione/GitHub/Pagine/Permissions GitHub Actions|Permissions GitHub Actions]]
 
 ## Fonti
 

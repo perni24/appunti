@@ -3,13 +3,24 @@ date: 2026-07-06
 area: Programmazione
 topic: GitHub
 type: technical-note
-status: "non revisionato"
+status: non revisionato
 publish: true
 difficulty: intermedio
-tags: [github, security-advisories, vulnerability, security]
-aliases: [Security advisories GitHub, GitHub Security Advisories]
-prerequisites: [Repository GitHub]
-related: [Dependabot, Code scanning, Secret scanning]
+tags:
+  - github
+  - security-advisories
+  - vulnerability
+  - security
+aliases:
+  - Security advisories GitHub
+  - GitHub Security Advisories
+prerequisites:
+  - "[[Programmazione/GitHub/Pagine/Repository GitHub]]"
+related:
+  - "[[Programmazione/GitHub/Pagine/Dependabot]]"
+  - "[[Programmazione/GitHub/Pagine/Code scanning]]"
+  - "[[Programmazione/GitHub/Pagine/Secret scanning]]"
+title: Security advisories GitHub
 ---
 
 # Security advisories GitHub
@@ -105,10 +116,10 @@ Per una libreria vulnerabile:
 
 ## Collegamenti
 
-- [[Programmazione/GitHub/Indice GitHub]]
-- [[Dependabot]]
-- [[Code scanning]]
-- [[Secret scanning]]
+- [[Programmazione/GitHub/Indice GitHub|Indice GitHub]]
+- [[Programmazione/GitHub/Pagine/Dependabot|Dependabot]]
+- [[Programmazione/GitHub/Pagine/Code scanning|Code scanning]]
+- [[Programmazione/GitHub/Pagine/Secret scanning|Secret scanning]]
 
 ## Fonti
 

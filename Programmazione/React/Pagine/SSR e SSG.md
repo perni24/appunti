@@ -3,13 +3,22 @@ date: 2026-06-04
 area: Programmazione
 topic: React
 type: theory-note
-status: "non revisionato"
+status: non revisionato
 publish: true
-difficulty: advanced
-tags: [react, ssr, ssg, rendering]
-aliases: [SSR, SSG, Streaming SSR, Hydration]
+difficulty: avanzato
+tags:
+  - react
+  - ssr
+  - ssg
+  - rendering
+aliases:
+  - SSR
+  - SSG
+  - Streaming SSR
+  - Hydration
 prerequisites: []
 related: []
+title: SSR e SSG
 ---
 
 # SSR e SSG
@@ -98,8 +107,8 @@ HTML iniziale personalizzato
 
 ## Collegamenti
 
-- [[Programmazione/React/Indice react|Indice React]]
-- [[Server Components]]
-- [[Framework Next.js e Remix]]
-- [[Suspense e Lazy Loading]]
-- [[Data Fetching e Cache]]
+- [[Programmazione/React/Indice React|Indice React]]
+- [[Programmazione/React/Pagine/Server Components|Server Components]]
+- [[Programmazione/React/Pagine/Framework Next.js e Remix|Framework Next.js e Remix]]
+- [[Programmazione/React/Pagine/Suspense e Lazy Loading|Suspense e Lazy Loading]]
+- [[Programmazione/React/Pagine/Data Fetching e Cache|Data Fetching e Cache]]

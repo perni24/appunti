@@ -3,7 +3,7 @@ date: 2026-05-27
 area: Programmazione
 topic: Rust
 type: technical-note
-status: "non revisionato"
+status: non revisionato
 publish: true
 difficulty: intermedio
 tags:
@@ -11,9 +11,9 @@ tags:
   - rust
   - backend-networking-e-database
 aliases:
-  - "Serde e serializzazione"
-  - "Serde"
-  - "serializzazione Rust"
+  - Serde e serializzazione
+  - Serde
+  - serializzazione Rust
 prerequisites:
   - "[[Programmazione/Rust/Pagine/Structs]]"
   - "[[Programmazione/Rust/Pagine/Enums]]"
@@ -22,6 +22,7 @@ related:
   - "[[Programmazione/Rust/Pagine/Networking con reqwest]]"
   - "[[Programmazione/Rust/Pagine/Web backend con axum]]"
   - "[[Programmazione/Rust/Pagine/Configurazione applicativa]]"
+title: Serde e serializzazione
 ---
 
 # Serde e serializzazione
@@ -175,10 +176,10 @@ Il campo `password_hash` non entra mai nella response pubblica perche il DTO e s
 
 ## Collegamenti
 
-- [[Programmazione/Rust/Indice rust|Indice Rust]]
-- [[Programmazione/Rust/Pagine/Structs]]
-- [[Programmazione/Rust/Pagine/Enums]]
-- [[Programmazione/Rust/Pagine/Derive traits]]
-- [[Programmazione/Rust/Pagine/Networking con reqwest]]
-- [[Programmazione/Rust/Pagine/Web backend con axum]]
-- [[Programmazione/Rust/Pagine/Configurazione applicativa]]
+- [[Programmazione/Rust/Indice Rust|Indice Rust]]
+- [[Programmazione/Rust/Pagine/Structs|Structs]]
+- [[Programmazione/Rust/Pagine/Enums|Enums]]
+- [[Programmazione/Rust/Pagine/Derive traits|Derive traits]]
+- [[Programmazione/Rust/Pagine/Networking con reqwest|Networking con reqwest]]
+- [[Programmazione/Rust/Pagine/Web backend con axum|Web backend con axum]]
+- [[Programmazione/Rust/Pagine/Configurazione applicativa|Configurazione applicativa]]

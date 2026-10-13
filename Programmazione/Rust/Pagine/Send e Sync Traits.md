@@ -3,7 +3,7 @@ date: 2026-05-26
 area: Programmazione
 topic: Rust
 type: technical-note
-status: "non revisionato"
+status: non revisionato
 publish: true
 difficulty: intermedio
 tags:
@@ -11,9 +11,9 @@ tags:
   - rust
   - concorrenza-e-asincronia
 aliases:
-  - "Send"
-  - "Sync"
-  - "Marker trait concorrenza"
+  - Send
+  - Sync
+  - Marker trait concorrenza
 prerequisites:
   - "[[Programmazione/Rust/Pagine/Traits]]"
   - "[[Programmazione/Rust/Pagine/Threads]]"
@@ -22,6 +22,7 @@ related:
   - "[[Programmazione/Rust/Pagine/Unsafe traits]]"
   - "[[Programmazione/Rust/Pagine/Rc T e Arc T]]"
   - "[[Programmazione/Rust/Pagine/Mutex RwLock e Atomics]]"
+title: Send e Sync Traits
 ---
 
 # Send e Sync Traits
@@ -138,3 +139,8 @@ fn main() {
 - [[Programmazione/Rust/Pagine/Mutex RwLock e Atomics|Mutex RwLock e Atomics]]
 - [[Programmazione/Rust/Pagine/Unsafe traits|Unsafe traits]]
 - [[Programmazione/Rust/Pagine/Future Trait|Future Trait]]
+
+
+## Navigazione
+
+- [[Programmazione/Rust/Indice Rust|Indice Rust]]

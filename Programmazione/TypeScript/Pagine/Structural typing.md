@@ -3,13 +3,22 @@ date: 2026-06-22
 area: Programmazione
 topic: TypeScript
 type: technical-note
-status: "non revisionato"
+status: non revisionato
 publish: true
 difficulty: avanzato
-tags: [typescript, structural-typing, type-system]
-aliases: [Tipizzazione strutturale]
-prerequisites: [Type Aliases e Interfaces, Classi]
-related: [Brand Types, Variance]
+tags:
+  - typescript
+  - structural-typing
+  - type-system
+aliases:
+  - Tipizzazione strutturale
+prerequisites:
+  - "[[Programmazione/TypeScript/Pagine/Type Aliases e Interfaces]]"
+  - "[[Programmazione/TypeScript/Pagine/Classi]]"
+related:
+  - "[[Programmazione/TypeScript/Pagine/Brand Types]]"
+  - "[[Programmazione/TypeScript/Pagine/Variance]]"
+title: Structural typing
 ---
 
 # Structural typing
@@ -94,7 +103,12 @@ run(consoleLike);
 
 ## Collegamenti
 
-- [[Type Aliases e Interfaces]]
-- [[Implementazione di interfacce]]
-- [[Brand Types]]
-- [[Variance]]
+- [[Programmazione/TypeScript/Pagine/Type Aliases e Interfaces|Type Aliases e Interfaces]]
+- [[Programmazione/TypeScript/Pagine/Implementazione di interfacce|Implementazione di interfacce]]
+- [[Programmazione/TypeScript/Pagine/Brand Types|Brand Types]]
+- [[Programmazione/TypeScript/Pagine/Variance|Variance]]
+
+
+## Navigazione
+
+- [[Programmazione/TypeScript/Indice TypeScript|Indice TypeScript]]

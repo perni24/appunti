@@ -3,13 +3,22 @@ date: 2026-06-04
 area: Programmazione
 topic: React
 type: technical-note
-status: "non revisionato"
+status: non revisionato
 publish: true
-difficulty: intermediate
-tags: [react, forms, modules]
-aliases: [Gestione Moduli, Form React, Controlled components, Uncontrolled components, Gestione eventi]
+difficulty: intermedio
+tags:
+  - react
+  - forms
+  - modules
+aliases:
+  - Gestione Moduli
+  - Form React
+  - Controlled components
+  - Uncontrolled components
+  - Gestione eventi
 prerequisites: []
 related: []
+title: Gestione Moduli
 ---
 
 # Gestione Moduli
@@ -132,8 +141,8 @@ function LoginForm({ onSubmit }) {
 
 ## Collegamenti
 
-- [[Programmazione/React/Indice react|Indice React]]
-- [[Validazione Dati]]
-- [[Pydantic]]
-- [[Focus Management]]
-- [[Data Fetching e Cache]]
+- [[Programmazione/React/Indice React|Indice React]]
+- [[Programmazione/React/Pagine/Validazione Dati|Validazione Dati]]
+- [[Programmazione/Python/Pagine/Pydantic|Pydantic]]
+- [[Programmazione/React/Pagine/Focus Management|Focus Management]]
+- [[Programmazione/React/Pagine/Data Fetching e Cache|Data Fetching e Cache]]

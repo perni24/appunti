@@ -1,15 +1,19 @@
-﻿---
+---
 date: 2026-05-20
 area: Programmazione
 topic: Rust
 type: technical-note
-status: "non revisionato"
+status: non revisionato
 publish: true
 difficulty: base
-tags: [programmazione, rust, error-handling, idiomatico]
+tags:
+  - programmazione
+  - rust
+  - error-handling
+  - idiomatico
 aliases:
-  - "Gestione errori idiomatica"
-  - "Idiomatic error handling Rust"
+  - Gestione errori idiomatica
+  - Idiomatic error handling Rust
 prerequisites:
   - "[[Programmazione/Rust/Pagine/Option]]"
   - "[[Programmazione/Rust/Pagine/Result]]"
@@ -18,6 +22,7 @@ related:
   - "[[Programmazione/Rust/Pagine/thiserror e anyhow]]"
   - "[[Programmazione/Rust/Pagine/Error types pubblici]]"
   - "[[Programmazione/Rust/Pagine/panic]]"
+title: Error handling idiomatico
 ---
 
 # Error handling idiomatico
@@ -136,3 +141,8 @@ L'assenza iniziale viene convertita in errore di dominio per spiegare cosa non v
 - [[Programmazione/Rust/Pagine/thiserror e anyhow|thiserror e anyhow]]
 - [[Programmazione/Rust/Pagine/Error types pubblici|Error types pubblici]]
 
+
+
+## Navigazione
+
+- [[Programmazione/Rust/Indice Rust|Indice Rust]]

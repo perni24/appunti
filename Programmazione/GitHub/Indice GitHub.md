@@ -1,18 +1,7 @@
----
-date: 2026-07-03
-area: Programmazione
-topic: GitHub
-type: technical-note
-status: "non revisionato"
-publish: true
-difficulty: intermedio
-tags: [programmazione, github, git, cicd, devops]
-aliases: [GitHub, GitHub Actions]
-prerequisites: []
-related: []
----
-
 # Indice GitHub
+
+- [[Programmazione/GitHub/Promemoria/Indice Promemoria GitHub|Promemoria di sintassi e comandi]]
+- [[Programmazione/Indice Programmazione|Tutti i percorsi di Programmazione]]
 
 ## Percorso Base
 

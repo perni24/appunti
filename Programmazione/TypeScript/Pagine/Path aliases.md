@@ -3,13 +3,24 @@ date: 2026-06-22
 area: Programmazione
 topic: TypeScript
 type: technical-note
-status: "non revisionato"
+status: non revisionato
 publish: true
 difficulty: intermedio
-tags: [typescript, path-aliases, tsconfig, module-resolution]
-aliases: [Path alias TypeScript, paths]
-prerequisites: [tsconfig, Module resolution]
-related: [Moduli ES e CommonJS, TypeScript monorepo]
+tags:
+  - typescript
+  - path-aliases
+  - tsconfig
+  - module-resolution
+aliases:
+  - Path alias TypeScript
+  - paths
+prerequisites:
+  - "[[Programmazione/TypeScript/Pagine/tsconfig]]"
+  - "[[Programmazione/TypeScript/Pagine/Module resolution]]"
+related:
+  - "[[Programmazione/TypeScript/Pagine/Moduli ES e CommonJS]]"
+  - "[[Programmazione/TypeScript/Pagine/TypeScript monorepo]]"
+title: Path aliases
 ---
 
 # Path aliases
@@ -80,6 +91,11 @@ Questi import sono piu stabili rispetto a percorsi relativi profondi, ma funzion
 
 ## Collegamenti
 
-- [[tsconfig]]
-- [[Module resolution]]
-- [[TypeScript monorepo]]
+- [[Programmazione/TypeScript/Pagine/tsconfig|tsconfig]]
+- [[Programmazione/TypeScript/Pagine/Module resolution|Module resolution]]
+- [[Programmazione/TypeScript/Pagine/TypeScript monorepo|TypeScript monorepo]]
+
+
+## Navigazione
+
+- [[Programmazione/TypeScript/Indice TypeScript|Indice TypeScript]]

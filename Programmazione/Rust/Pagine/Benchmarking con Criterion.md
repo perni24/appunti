@@ -3,7 +3,7 @@ date: 2026-05-28
 area: Programmazione
 topic: Rust
 type: technical-note
-status: "non revisionato"
+status: non revisionato
 publish: true
 difficulty: intermedio
 tags:
@@ -11,8 +11,8 @@ tags:
   - rust
   - testing-qualita-e-sicurezza
 aliases:
-  - "Benchmarking con Criterion"
-  - "Criterion.rs"
+  - Benchmarking con Criterion
+  - Criterion.rs
 prerequisites:
   - "[[Programmazione/Rust/Pagine/Performance e profiling]]"
   - "[[Programmazione/Rust/Pagine/Build profiles]]"
@@ -20,6 +20,7 @@ related:
   - "[[Programmazione/Rust/Pagine/Unit test]]"
   - "[[Programmazione/Rust/Pagine/cargo-nextest]]"
   - "[[Programmazione/Rust/Pagine/Clippy]]"
+title: Benchmarking con Criterion
 ---
 
 # Benchmarking con Criterion
@@ -149,9 +150,9 @@ Il benchmark misura una differenza specifica, non tutto il comportamento dell'ap
 
 ## Collegamenti
 
-- [[Programmazione/Rust/Indice rust|Indice Rust]]
-- [[Programmazione/Rust/Pagine/Performance e profiling]]
-- [[Programmazione/Rust/Pagine/Build profiles]]
-- [[Programmazione/Rust/Pagine/Unit test]]
-- [[Programmazione/Rust/Pagine/cargo-nextest]]
-- [[Programmazione/Rust/Pagine/Clippy]]
+- [[Programmazione/Rust/Indice Rust|Indice Rust]]
+- [[Programmazione/Rust/Pagine/Performance e profiling|Performance e profiling]]
+- [[Programmazione/Rust/Pagine/Build profiles|Build profiles]]
+- [[Programmazione/Rust/Pagine/Unit test|Unit test]]
+- [[Programmazione/Rust/Pagine/cargo-nextest|cargo-nextest]]
+- [[Programmazione/Rust/Pagine/Clippy|Clippy]]

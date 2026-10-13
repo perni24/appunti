@@ -3,13 +3,24 @@ date: 2026-07-09
 area: Programmazione
 topic: Clean Code
 type: technical-note
-status: "non revisionato"
+status: non revisionato
 publish: true
 difficulty: intermedio
-tags: [clean-code, automazione, script]
-aliases: [Script di automazione, Automation scripts]
-prerequisites: [Configurazione applicativa, Gestione esplicita degli errori]
-related: [File system e IO, Logging e tracing, Pipeline dati leggibili]
+tags:
+  - clean-code
+  - automazione
+  - script
+aliases:
+  - Script di automazione
+  - Automation scripts
+prerequisites:
+  - "[[Programmazione/Clean Code/Pagine/Configurazione applicativa]]"
+  - "[[Programmazione/Clean Code/Pagine/Gestione esplicita degli errori]]"
+related:
+  - "[[Programmazione/Clean Code/Pagine/File system e IO]]"
+  - "[[Programmazione/Clean Code/Pagine/Logging e tracing]]"
+  - "[[Programmazione/Clean Code/Pagine/Pipeline dati leggibili]]"
+title: Script di automazione
 ---
 
 # Script di automazione
@@ -86,12 +97,12 @@ Separare `main`, configurazione e logica rende lo script testabile.
 
 ## Collegamenti
 
-- [[Programmazione/Clean Code/Indice Clean Code]]
+- [[Programmazione/Clean Code/Indice Clean Code|Indice Clean Code]]
 - [[Programmazione/Clean Code/Pagine/Configurazione applicativa|Configurazione applicativa]]
-- [[Gestione esplicita degli errori]]
-- [[File system e IO]]
-- [[Logging e tracing]]
-- [[Pipeline dati leggibili]]
+- [[Programmazione/Clean Code/Pagine/Gestione esplicita degli errori|Gestione esplicita degli errori]]
+- [[Programmazione/Clean Code/Pagine/File system e IO|File system e IO]]
+- [[Programmazione/Clean Code/Pagine/Logging e tracing|Logging e tracing]]
+- [[Programmazione/Clean Code/Pagine/Pipeline dati leggibili|Pipeline dati leggibili]]
 
 ## Fonti
 

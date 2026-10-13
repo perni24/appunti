@@ -3,7 +3,7 @@ date: 2026-05-28
 area: Programmazione
 topic: Rust
 type: technical-note
-status: "non revisionato"
+status: non revisionato
 publish: true
 difficulty: avanzato
 tags:
@@ -11,8 +11,8 @@ tags:
   - rust
   - testing-qualita-e-sicurezza
 aliases:
-  - "Property testing"
-  - "Property-based testing"
+  - Property testing
+  - Property-based testing
 prerequisites:
   - "[[Programmazione/Rust/Pagine/Unit test]]"
   - "[[Programmazione/Rust/Pagine/Invariants]]"
@@ -20,6 +20,7 @@ related:
   - "[[Programmazione/Rust/Pagine/Fuzzing]]"
   - "[[Programmazione/Rust/Pagine/Snapshot testing]]"
   - "[[Programmazione/Rust/Pagine/Option]]"
+title: Property testing
 ---
 
 # Property testing
@@ -139,9 +140,9 @@ Se la proprieta fallisce, il framework prova a ridurre l'input a un caso minimo 
 
 ## Collegamenti
 
-- [[Programmazione/Rust/Indice rust|Indice Rust]]
-- [[Programmazione/Rust/Pagine/Unit test]]
-- [[Programmazione/Rust/Pagine/Invariants]]
-- [[Programmazione/Rust/Pagine/Fuzzing]]
-- [[Programmazione/Rust/Pagine/Snapshot testing]]
-- [[Programmazione/Rust/Pagine/Option]]
+- [[Programmazione/Rust/Indice Rust|Indice Rust]]
+- [[Programmazione/Rust/Pagine/Unit test|Unit test]]
+- [[Programmazione/Rust/Pagine/Invariants|Invariants]]
+- [[Programmazione/Rust/Pagine/Fuzzing|Fuzzing]]
+- [[Programmazione/Rust/Pagine/Snapshot testing|Snapshot testing]]
+- [[Programmazione/Rust/Pagine/Option|Option]]

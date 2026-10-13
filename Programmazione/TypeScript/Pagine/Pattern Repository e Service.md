@@ -3,13 +3,25 @@ date: 2026-06-22
 area: Programmazione
 topic: TypeScript
 type: technical-note
-status: "non revisionato"
+status: non revisionato
 publish: true
 difficulty: intermedio
-tags: [typescript, repository-pattern, service-layer, architecture]
-aliases: [Repository e Service TypeScript]
-prerequisites: [Interfaces, Generics, TypeScript con Node.js]
-related: [DTO e modelli di dominio, Dependency injection, Clean architecture]
+tags:
+  - typescript
+  - repository-pattern
+  - service-layer
+  - architecture
+aliases:
+  - Repository e Service TypeScript
+prerequisites:
+  - Interfaces
+  - "[[Programmazione/TypeScript/Pagine/Generics]]"
+  - "[[Programmazione/TypeScript/Pagine/TypeScript con Node.js]]"
+related:
+  - "[[Programmazione/TypeScript/Pagine/DTO e modelli di dominio]]"
+  - "[[Programmazione/TypeScript/Pagine/Dependency injection]]"
+  - "[[Programmazione/TypeScript/Pagine/Clean architecture]]"
+title: Pattern Repository e Service
 ---
 
 # Pattern Repository e Service
@@ -99,5 +111,10 @@ Il service dipende da un'interfaccia, quindi puo essere testato con un repositor
 ## Collegamenti
 
 - [[Programmazione/TypeScript/Pagine/DTO e modelli di dominio|DTO e modelli di dominio]]
-- [[Dependency injection]]
-- [[Clean architecture]]
+- [[Programmazione/TypeScript/Pagine/Dependency injection|Dependency injection]]
+- [[Programmazione/TypeScript/Pagine/Clean architecture|Clean architecture]]
+
+
+## Navigazione
+
+- [[Programmazione/TypeScript/Indice TypeScript|Indice TypeScript]]

@@ -3,7 +3,7 @@ date: 2026-05-26
 area: Programmazione
 topic: Rust
 type: technical-note
-status: "non revisionato"
+status: non revisionato
 publish: true
 difficulty: intermedio
 tags:
@@ -11,8 +11,8 @@ tags:
   - rust
   - concorrenza-e-asincronia
 aliases:
-  - "Shutdown graceful"
-  - "Graceful shutdown Rust"
+  - Shutdown graceful
+  - Graceful shutdown Rust
 prerequisites:
   - "[[Programmazione/Rust/Pagine/Async Await]]"
   - "[[Programmazione/Rust/Pagine/select join e cancellation]]"
@@ -21,6 +21,7 @@ related:
   - "[[Programmazione/Rust/Pagine/Runtime async Tokio e async-std]]"
   - "[[Programmazione/Rust/Pagine/Message passing]]"
   - "[[Programmazione/Rust/Pagine/Shared state]]"
+title: Graceful shutdown
 ---
 
 # Graceful shutdown
@@ -133,3 +134,8 @@ Il worker controlla periodicamente il segnale e termina volontariamente.
 - [[Programmazione/Rust/Pagine/Runtime async Tokio e async-std|Runtime async Tokio e async-std]]
 - [[Programmazione/Rust/Pagine/Message passing|Message passing]]
 - [[Programmazione/Rust/Pagine/Shared state|Shared state]]
+
+
+## Navigazione
+
+- [[Programmazione/Rust/Indice Rust|Indice Rust]]

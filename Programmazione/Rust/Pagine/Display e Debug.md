@@ -3,7 +3,7 @@ date: 2026-05-22
 area: Programmazione
 topic: Rust
 type: technical-note
-status: "non revisionato"
+status: non revisionato
 publish: true
 difficulty: base
 tags:
@@ -11,9 +11,9 @@ tags:
   - rust
   - standard-library
 aliases:
-  - "Display"
-  - "Debug"
-  - "Formatting Rust"
+  - Display
+  - Debug
+  - Formatting Rust
 prerequisites:
   - "[[Programmazione/Rust/Pagine/Traits]]"
   - "[[Programmazione/Rust/Pagine/Derive traits]]"
@@ -22,6 +22,7 @@ related:
   - "[[Programmazione/Rust/Pagine/thiserror e anyhow]]"
   - "[[Programmazione/Rust/Pagine/Result]]"
   - "[[Programmazione/Rust/Pagine/rustfmt]]"
+title: Display e Debug
 ---
 
 # Display e Debug
@@ -144,3 +145,8 @@ fn main() {
 - [[Programmazione/Rust/Pagine/Error handling idiomatico|Error handling idiomatico]]
 - [[Programmazione/Rust/Pagine/thiserror e anyhow|thiserror e anyhow]]
 - [[Programmazione/Rust/Pagine/rustfmt|rustfmt]]
+
+
+## Navigazione
+
+- [[Programmazione/Rust/Indice Rust|Indice Rust]]

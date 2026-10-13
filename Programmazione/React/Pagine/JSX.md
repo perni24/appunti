@@ -3,13 +3,18 @@ date: 2026-06-04
 area: Programmazione
 topic: React
 type: technical-note
-status: "non revisionato"
+status: non revisionato
 publish: true
-difficulty: beginner
-tags: [react, jsx, frontend]
-aliases: [JSX]
+difficulty: base
+tags:
+  - react
+  - jsx
+  - frontend
+aliases:
+  - JSX
 prerequisites: []
 related: []
+title: JSX
 ---
 
 # JSX
@@ -120,7 +125,7 @@ Il componente descrive direttamente come lo stato dell'utente si riflette nella 
 
 ## Collegamenti
 
-- [[Programmazione/React/Indice react|Indice React]]
-- [[Rendering Condizionale e Liste]]
-- [[Props e Flusso di dati unidirezionale]]
-- [[Componenti Funzionali vs Componenti a Classe]]
+- [[Programmazione/React/Indice React|Indice React]]
+- [[Programmazione/React/Pagine/Rendering Condizionale e Liste|Rendering Condizionale e Liste]]
+- [[Programmazione/React/Pagine/Props e Flusso di dati unidirezionale|Props e Flusso di dati unidirezionale]]
+- [[Programmazione/React/Pagine/Componenti Funzionali vs Componenti a Classe|Componenti Funzionali vs Componenti a Classe]]

@@ -3,13 +3,23 @@ date: 2026-07-09
 area: Programmazione
 topic: Clean Code
 type: theory-note
-status: "non revisionato"
+status: non revisionato
 publish: true
 difficulty: intermedio
-tags: [clean-code, oggetti, responsabilita]
-aliases: [Oggetti con responsabilita chiara, Responsabilita degli oggetti]
-prerequisites: [Clean Code]
-related: [Data objects e behavior objects, Invarianti del dominio, Funzioni con responsabilita singola]
+tags:
+  - clean-code
+  - oggetti
+  - responsabilita
+aliases:
+  - Oggetti con responsabilita chiara
+  - Responsabilita degli oggetti
+prerequisites:
+  - "[[Programmazione/Clean Code/Pagine/Clean Code]]"
+related:
+  - "[[Programmazione/Clean Code/Pagine/Data objects e behavior objects]]"
+  - "[[Programmazione/Clean Code/Pagine/Invarianti del dominio]]"
+  - "[[Programmazione/Clean Code/Pagine/Funzioni con responsabilita singola]]"
+title: Oggetti con responsabilita chiara
 ---
 
 # Oggetti con responsabilita chiara
@@ -94,11 +104,11 @@ Ogni concetto ha un motivo piu chiaro per cambiare.
 
 ## Collegamenti
 
-- [[Programmazione/Clean Code/Indice Clean Code]]
-- [[Data objects e behavior objects]]
-- [[Invarianti del dominio]]
-- [[Funzioni con responsabilita singola]]
-- [[Manutenibilita del codice]]
+- [[Programmazione/Clean Code/Indice Clean Code|Indice Clean Code]]
+- [[Programmazione/Clean Code/Pagine/Data objects e behavior objects|Data objects e behavior objects]]
+- [[Programmazione/Clean Code/Pagine/Invarianti del dominio|Invarianti del dominio]]
+- [[Programmazione/Clean Code/Pagine/Funzioni con responsabilita singola|Funzioni con responsabilita singola]]
+- [[Programmazione/Clean Code/Pagine/Manutenibilita del codice|Manutenibilita del codice]]
 
 ## Fonti
 

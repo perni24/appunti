@@ -3,18 +3,27 @@ date: 2026-07-26
 area: Stampante 3D
 topic: Marlin
 type: operational-note
-
 publish: true
 difficulty: avanzato
-tags: [marlin, migrazione, upgrade, configuration, eeprom]
-aliases: [Aggiornare Marlin, Migrazione Marlin, Upgrade configurazione Marlin]
+tags:
+  - marlin
+  - migrazione
+  - upgrade
+  - configuration
+  - eeprom
+aliases:
+  - Aggiornare Marlin
+  - Migrazione Marlin
+  - Upgrade configurazione Marlin
 prerequisites:
   - "[[Stampante 3D/Marlin/Pagine/Struttura dei file di configurazione Marlin]]"
   - "[[Stampante 3D/Marlin/Pagine/Metodo di configurazione compilazione e caricamento]]"
 related:
   - "[[Stampante 3D/Marlin/Pagine/Riferimento rapido delle direttive Marlin]]"
   - "[[Stampante 3D/Marlin/Pagine/EEPROM scheda SD e salvataggio delle impostazioni]]"
-marlin-version: "2.1.2.8"
+marlin-version: 2.1.2.8
+title: Migrazione della configurazione tra versioni
+status: non revisionato
 ---
 
 # Migrazione della configurazione tra versioni
@@ -116,7 +125,7 @@ Stati utili:
 
 ## Procedura
 
-### 1. Congelare la base funzionante
+### Congelare la base funzionante
 
 Non iniziare modificando direttamente l'unica copia funzionante.
 
@@ -164,7 +173,7 @@ M593
 
 Conservare i log come file di testo associati alla vecchia build.
 
-### 2. Identificare esattamente origine e destinazione
+### Identificare esattamente origine e destinazione
 
 Per entrambe annotare:
 
@@ -188,7 +197,7 @@ ambiente: <ambiente_platformio>
 
 Non usare `bugfix` come se fosse una release immutabile: un branch cambia nel tempo. Se viene scelto consapevolmente, registrare il commit.
 
-### 3. Scaricare sorgenti puliti
+### Scaricare sorgenti puliti
 
 Usare il tag ufficiale della destinazione. Non estrarre i nuovi sorgenti sopra la vecchia cartella.
 
@@ -202,7 +211,7 @@ La directory destinazione deve inizialmente contenere:
 
 Eseguire una build iniziale della configurazione di partenza quando possibile. Questo verifica toolchain e archivio prima di introdurre personalizzazioni.
 
-### 4. Scegliere la configurazione di partenza
+### Scegliere la configurazione di partenza
 
 Ordine di preferenza:
 
@@ -213,7 +222,7 @@ Ordine di preferenza:
 
 Un esempio simile riduce il lavoro, ma non sostituisce il confronto con l'hardware. Produttori diversi possono usare la stessa motherboard con pin, display, sensori e meccanica differenti.
 
-### 5. Confrontare le versioni di configurazione
+### Confrontare le versioni di configurazione
 
 Controllare:
 
@@ -240,7 +249,7 @@ La documentazione ufficiale propone anche di aggiornare temporaneamente i numeri
 
 Una build riuscita dei vecchi file non dimostra che contengano tutte le nuove opzioni e protezioni.
 
-### 6. Trasferire prima identita e motherboard
+### Trasferire prima identita e motherboard
 
 Prima fase:
 
@@ -255,9 +264,9 @@ Compilare.
 
 Non proseguire se l'ambiente non corrisponde a processore, memoria e bootloader.
 
-Approfondimento: [[Stampante 3D/Marlin/Pagine/Scheda madre porte seriali e pin]].
+Approfondimento: [[Stampante 3D/Marlin/Pagine/Scheda madre porte seriali e pin|Scheda madre porte seriali e pin]].
 
-### 7. Trasferire cinematica e volume
+### Trasferire cinematica e volume
 
 Seconda fase:
 
@@ -275,10 +284,10 @@ Valori geometrici specifici di Delta, SCARA e altre cinematiche devono essere ri
 
 Approfondimenti:
 
-- [[Stampante 3D/Marlin/Pagine/Tipo di stampante e cinematica]]
-- [[Stampante 3D/Marlin/Pagine/Dimensioni del piatto area di lavoro e limiti]]
+- [[Stampante 3D/Marlin/Pagine/Tipo di stampante e cinematica|Tipo di stampante e cinematica]]
+- [[Stampante 3D/Marlin/Pagine/Dimensioni del piatto area di lavoro e limiti|Dimensioni del piatto area di lavoro e limiti]]
 
-### 8. Trasferire motori, driver ed endstop
+### Trasferire motori, driver ed endstop
 
 Terza fase:
 
@@ -306,11 +315,11 @@ Non trasferire automaticamente soglie sensorless se cambiano:
 
 Approfondimenti:
 
-- [[Stampante 3D/Marlin/Pagine/Motori direzione e passi per millimetro]]
-- [[Stampante 3D/Marlin/Pagine/Driver stepper corrente e microstepping]]
-- [[Stampante 3D/Marlin/Pagine/Endstop homing e Sensorless Homing]]
+- [[Stampante 3D/Marlin/Pagine/Motori direzione e passi per millimetro|Motori direzione e passi per millimetro]]
+- [[Stampante 3D/Marlin/Pagine/Driver stepper corrente e microstepping|Driver stepper corrente e microstepping]]
+- [[Stampante 3D/Marlin/Pagine/Endstop homing e Sensorless Homing|Endstop homing e Sensorless Homing]]
 
-### 9. Trasferire sensori, heater e protezioni
+### Trasferire sensori, heater e protezioni
 
 Quarta fase:
 
@@ -338,11 +347,11 @@ Classificazione:
 
 Approfondimenti:
 
-- [[Stampante 3D/Marlin/Pagine/Sensori di temperatura e limiti operativi]]
-- [[Stampante 3D/Marlin/Pagine/Controllo PID MPC e protezioni termiche]]
-- [[Stampante 3D/Marlin/Pagine/Ventole e raffreddamento]]
+- [[Stampante 3D/Marlin/Pagine/Sensori di temperatura e limiti operativi|Sensori di temperatura e limiti operativi]]
+- [[Stampante 3D/Marlin/Pagine/Controllo PID MPC e protezioni termiche|Controllo PID MPC e protezioni termiche]]
+- [[Stampante 3D/Marlin/Pagine/Ventole e raffreddamento|Ventole e raffreddamento]]
 
-### 10. Trasferire estrusori e gestione filamento
+### Trasferire estrusori e gestione filamento
 
 Quinta fase:
 
@@ -362,11 +371,11 @@ Flow, temperatura materiale e retrazione dello slicer non appartengono necessari
 
 Approfondimenti:
 
-- [[Stampante 3D/Marlin/Pagine/Hotend estrusori e filamento]]
-- [[Stampante 3D/Marlin/Pagine/Limiti di estrusione retrazione e cambio utensile]]
-- [[Stampante 3D/Marlin/Pagine/Sensore di fine filamento e recupero dopo perdita di alimentazione]]
+- [[Stampante 3D/Marlin/Pagine/Hotend estrusori e filamento|Hotend estrusori e filamento]]
+- [[Stampante 3D/Marlin/Pagine/Limiti di estrusione retrazione e cambio utensile|Limiti di estrusione retrazione e cambio utensile]]
+- [[Stampante 3D/Marlin/Pagine/Sensore di fine filamento e recupero dopo perdita di alimentazione|Sensore di fine filamento e recupero dopo perdita di alimentazione]]
 
-### 11. Trasferire probe e leveling
+### Trasferire probe e leveling
 
 Sesta fase:
 
@@ -396,11 +405,11 @@ Non trattare la vecchia mesh come dato portabile tra implementazioni diverse.
 
 Approfondimenti:
 
-- [[Stampante 3D/Marlin/Pagine/Probe Z offset e BLTouch]]
-- [[Stampante 3D/Marlin/Pagine/Tipi di bed leveling e configurazione della mesh]]
-- [[Stampante 3D/Marlin/Pagine/Z Safe Homing e allineamento degli assi Z]]
+- [[Stampante 3D/Marlin/Pagine/Probe Z offset e BLTouch|Probe Z offset e BLTouch]]
+- [[Stampante 3D/Marlin/Pagine/Tipi di bed leveling e configurazione della mesh|Tipi di bed leveling e configurazione della mesh]]
+- [[Stampante 3D/Marlin/Pagine/Z Safe Homing e allineamento degli assi Z|Z Safe Homing e allineamento degli assi Z]]
 
-### 12. Trasferire UI, SD e accessori
+### Trasferire UI, SD e accessori
 
 Settima fase:
 
@@ -418,11 +427,11 @@ Controllare i pin condivisi: una nuova definizione display puo cambiare disponib
 
 Approfondimenti:
 
-- [[Stampante 3D/Marlin/Pagine/Display controller encoder e touchscreen]]
-- [[Stampante 3D/Marlin/Pagine/EEPROM scheda SD e salvataggio delle impostazioni]]
-- [[Stampante 3D/Marlin/Pagine/Alimentatore rele LED luci buzzer e servo]]
+- [[Stampante 3D/Marlin/Pagine/Display controller encoder e touchscreen|Display controller encoder e touchscreen]]
+- [[Stampante 3D/Marlin/Pagine/EEPROM scheda SD e salvataggio delle impostazioni|EEPROM scheda SD e salvataggio delle impostazioni]]
+- [[Stampante 3D/Marlin/Pagine/Alimentatore rele LED luci buzzer e servo|Alimentatore rele LED luci buzzer e servo]]
 
-### 13. Trasferire compensazioni e ottimizzazioni per ultime
+### Trasferire compensazioni e ottimizzazioni per ultime
 
 Ultima fase:
 
@@ -448,10 +457,10 @@ Ricalibrare Input Shaping se cambiano massa, cinghie, telaio, accelerazioni o su
 
 Approfondimenti:
 
-- [[Stampante 3D/Marlin/Pagine/Linear Advance Input Shaping e compensazioni geometriche]]
-- [[Stampante 3D/Marlin/Pagine/Segmentazione curve e precisione dei movimenti]]
+- [[Stampante 3D/Marlin/Pagine/Linear Advance Input Shaping e compensazioni geometriche|Linear Advance Input Shaping e compensazioni geometriche]]
+- [[Stampante 3D/Marlin/Pagine/Segmentazione curve e precisione dei movimenti|Segmentazione curve e precisione dei movimenti]]
 
-### 14. Gestire modifiche ai pin
+### Gestire modifiche ai pin
 
 Prima cercare se la nuova release supporta gia la revisione hardware.
 
@@ -473,7 +482,7 @@ Non copiare integralmente un vecchio `pins_*.h`. Confrontare:
 
 Preferire override supportati nei file di configurazione quando previsti. Mantenere le modifiche al core in commit separati.
 
-### 15. Usare `SanityCheck` come elenco di lavoro
+### Usare `SanityCheck` come elenco di lavoro
 
 Per ogni errore:
 
@@ -491,9 +500,9 @@ Non:
 - cambiare il numero versione per nascondere incompatibilita;
 - risolvere molti errori insieme senza build intermedia.
 
-Approfondimento: [[Stampante 3D/Marlin/Pagine/Errori di compilazione e avvio]].
+Approfondimento: [[Stampante 3D/Marlin/Pagine/Errori di compilazione e avvio|Errori di compilazione e avvio]].
 
-### 16. Valutare l'esportazione `config.ini`
+### Valutare l'esportazione `config.ini`
 
 Marlin 2.1.2.8 include:
 
@@ -529,7 +538,7 @@ Procedura:
 
 `Config.h` come sostituto degli header e una funzione introdotta in Marlin 2.1.3 e non appartiene alla guida 2.1.2.8.
 
-### 17. Eseguire build pulite
+### Eseguire build pulite
 
 Dopo ogni blocco:
 
@@ -553,7 +562,7 @@ Registrare:
 
 Una build incrementale e comoda; una build pulita prima del rilascio esclude residui della cache.
 
-### 18. Preparare il rollback
+### Preparare il rollback
 
 Prima del flash assicurarsi di poter reinstallare:
 
@@ -567,7 +576,7 @@ Non iniziare l'aggiornamento quando la macchina deve produrre senza una finestra
 
 Il rollback firmware puo non ripristinare automaticamente una EEPROM modificata dalla nuova release.
 
-### 19. Gestire la EEPROM dopo il flash
+### Gestire la EEPROM dopo il flash
 
 La EEPROM puo sopravvivere al flash e sovrascrivere i nuovi default. E anche possibile che layout o CRC non siano compatibili.
 
@@ -615,9 +624,9 @@ M503
 
 `M502` non cancella da solo la EEPROM; carica i default compilati in RAM. `M500` li rende persistenti.
 
-Approfondimento: [[Stampante 3D/Marlin/Pagine/EEPROM scheda SD e salvataggio delle impostazioni]].
+Approfondimento: [[Stampante 3D/Marlin/Pagine/EEPROM scheda SD e salvataggio delle impostazioni|EEPROM scheda SD e salvataggio delle impostazioni]].
 
-### 20. Collaudare dal rischio minore al maggiore
+### Collaudare dal rischio minore al maggiore
 
 Ripetere almeno:
 
@@ -637,9 +646,9 @@ Ripetere almeno:
 14. stampa breve;
 15. prova prolungata.
 
-Approfondimento: [[Stampante 3D/Marlin/Pagine/Procedura completa di taratura e verifica]].
+Approfondimento: [[Stampante 3D/Marlin/Pagine/Procedura completa di taratura e verifica|Procedura completa di taratura e verifica]].
 
-### 21. Aggiornare slicer e procedure
+### Aggiornare slicer e procedure
 
 Controllare:
 
@@ -785,7 +794,7 @@ La suddivisione per componente limita l'aggiornamento alle aree realmente cambia
 
 ## Collegamenti
 
-- [[Stampante 3D/Marlin/Indice Marlin]]
-- [[Stampante 3D/Marlin/Pagine/Riferimento rapido delle direttive Marlin]]
-- [[Stampante 3D/Marlin/Pagine/Errori di compilazione e avvio]]
-- [[Stampante 3D/Marlin/Pagine/Procedura completa di taratura e verifica]]
+- [[Stampante 3D/Marlin/Indice Marlin|Indice Marlin]]
+- [[Stampante 3D/Marlin/Pagine/Riferimento rapido delle direttive Marlin|Riferimento rapido delle direttive Marlin]]
+- [[Stampante 3D/Marlin/Pagine/Errori di compilazione e avvio|Errori di compilazione e avvio]]
+- [[Stampante 3D/Marlin/Pagine/Procedura completa di taratura e verifica|Procedura completa di taratura e verifica]]

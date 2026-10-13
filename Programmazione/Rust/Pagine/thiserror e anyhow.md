@@ -1,16 +1,21 @@
-﻿---
+---
 date: 2026-05-20
 area: Programmazione
 topic: Rust
 type: technical-note
-status: "non revisionato"
+status: non revisionato
 publish: true
 difficulty: base
-tags: [programmazione, rust, thiserror, anyhow, error-handling]
+tags:
+  - programmazione
+  - rust
+  - thiserror
+  - anyhow
+  - error-handling
 aliases:
-  - "thiserror"
-  - "anyhow"
-  - "thiserror vs anyhow"
+  - thiserror
+  - anyhow
+  - thiserror vs anyhow
 prerequisites:
   - "[[Programmazione/Rust/Pagine/Result]]"
   - "[[Programmazione/Rust/Pagine/Error handling idiomatico]]"
@@ -18,6 +23,7 @@ related:
   - "[[Programmazione/Rust/Pagine/Error types pubblici]]"
   - "[[Programmazione/Rust/Pagine/Derive macros]]"
   - "[[Programmazione/Rust/Pagine/Operatore]]"
+title: thiserror e anyhow
 ---
 
 # thiserror e anyhow
@@ -140,3 +146,8 @@ fn parse_age(input: &str) -> Result<u8, ParseUserError> {
 - [[Programmazione/Rust/Pagine/Error types pubblici|Error types pubblici]]
 - [[Programmazione/Rust/Pagine/Derive macros|Derive macros]]
 
+
+
+## Navigazione
+
+- [[Programmazione/Rust/Indice Rust|Indice Rust]]

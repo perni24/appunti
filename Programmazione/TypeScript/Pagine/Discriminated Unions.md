@@ -3,13 +3,24 @@ date: 2026-06-22
 area: Programmazione
 topic: TypeScript
 type: technical-note
-status: "non revisionato"
+status: non revisionato
 publish: true
 difficulty: intermedio
-tags: [typescript, discriminated-unions, union-types, domain-modeling]
-aliases: [Tagged unions, Union discriminate]
-prerequisites: [Union e Intersection Types, Type Narrowing]
-related: [Exhaustiveness Checking, Enums e Literal Types]
+tags:
+  - typescript
+  - discriminated-unions
+  - union-types
+  - domain-modeling
+aliases:
+  - Tagged unions
+  - Union discriminate
+prerequisites:
+  - "[[Programmazione/TypeScript/Pagine/Union e Intersection Types]]"
+  - "[[Programmazione/TypeScript/Pagine/Type Narrowing]]"
+related:
+  - "[[Programmazione/TypeScript/Pagine/Exhaustiveness Checking]]"
+  - "[[Programmazione/TypeScript/Pagine/Enums e Literal Types]]"
+title: Discriminated Unions
 ---
 
 # Discriminated Unions
@@ -88,7 +99,12 @@ Ogni ramo accede solo ai campi presenti nella variante corretta.
 
 ## Collegamenti
 
-- [[Union e Intersection Types]]
-- [[Type Narrowing]]
-- [[Exhaustiveness Checking]]
-- [[Enums e Literal Types]]
+- [[Programmazione/TypeScript/Pagine/Union e Intersection Types|Union e Intersection Types]]
+- [[Programmazione/TypeScript/Pagine/Type Narrowing|Type Narrowing]]
+- [[Programmazione/TypeScript/Pagine/Exhaustiveness Checking|Exhaustiveness Checking]]
+- [[Programmazione/TypeScript/Pagine/Enums e Literal Types|Enums e Literal Types]]
+
+
+## Navigazione
+
+- [[Programmazione/TypeScript/Indice TypeScript|Indice TypeScript]]

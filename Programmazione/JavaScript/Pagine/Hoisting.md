@@ -1,15 +1,28 @@
-﻿---
+---
 date: 2026-06-02
 area: Programmazione
 topic: JavaScript
 type: technical-note
-status: "non revisionato"
+status: non revisionato
 publish: true
-difficulty: beginner
-tags: [javascript, hoisting, declarations, tdz]
-aliases: [Hoisting JS, Temporal Dead Zone]
-prerequisites: [Variabili, Scope]
-related: [Scope, Funzioni, Classi, Moduli]
+difficulty: base
+tags:
+  - javascript
+  - hoisting
+  - declarations
+  - tdz
+aliases:
+  - Hoisting JS
+  - Temporal Dead Zone
+prerequisites:
+  - "[[Programmazione/JavaScript/Pagine/Variabili]]"
+  - "[[Programmazione/JavaScript/Pagine/Scope]]"
+related:
+  - "[[Programmazione/JavaScript/Pagine/Scope]]"
+  - "[[Programmazione/JavaScript/Pagine/Funzioni]]"
+  - "[[Programmazione/JavaScript/Pagine/Classi]]"
+  - "[[Programmazione/JavaScript/Pagine/Moduli]]"
+title: Hoisting
 ---
 
 # Hoisting
@@ -44,7 +57,9 @@ JavaScript valuta il codice in due fasi concettuali:
 - fase di creazione: registra dichiarazioni e prepara gli scope;
 - fase di esecuzione: esegue le istruzioni riga per riga.
 
-Questo spiega perche alcune dichiarazioni sono disponibili prima della riga in cui compaiono.
+Questo e un modello per ragionare sul comportamento, non la promessa che il motore legga tutto il programma esattamente due volte. I binding vengono preparati per il relativo script, modulo, invocazione di funzione o ingresso nel blocco. Un binding e l'associazione tra un nome e il suo stato/valore.
+
+I frammenti sono indipendenti. Quelli annotati con `ReferenceError` o `TypeError` mostrano volutamente un errore: non concatenarli con gli esempi corretti nello stesso file.
 
 ---
 ### Hoisting con `var`
@@ -72,7 +87,7 @@ Solo la dichiarazione viene preparata prima. L'assegnazione resta dove si trova.
 
 ---
 ### Hoisting con `let` e `const`
-`let` e `const` sono registrati nello scope, ma non sono utilizzabili prima della dichiarazione.
+`let` e `const` sono presenti nello scope, ma non sono utilizzabili finche non viene eseguita la loro inizializzazione.
 
 ```js
 console.log(name); // ReferenceError
@@ -80,11 +95,11 @@ console.log(name); // ReferenceError
 const name = "Luca";
 ```
 
-La zona tra l'inizio dello scope e la dichiarazione si chiama Temporal Dead Zone.
+La zona temporale tra l'ingresso nello scope e l'inizializzazione si chiama Temporal Dead Zone (TDZ).
 
 ---
 ### Temporal Dead Zone
-La Temporal Dead Zone impedisce di leggere una variabile prima che sia stata dichiarata.
+La Temporal Dead Zone impedisce di leggere una variabile prima che sia stata inizializzata, anche dentro il suo stesso inizializzatore: `let total = total + 1` non legge un eventuale `total` esterno.
 
 ```js
 {
@@ -95,9 +110,29 @@ La Temporal Dead Zone impedisce di leggere una variabile prima che sia stata dic
 
 Questo rende `let` e `const` piu sicuri di `var`, perche evita valori `undefined` accidentali.
 
+Conta il momento della lettura, non la posizione del corpo della funzione:
+
+```js
+const readLimit = () => limit;
+let limit = 10;
+console.log(readLimit()); // 10: chiamata dopo l'inizializzazione
+```
+
+Una dichiarazione `let pending;` inizializza `pending` a `undefined` quando viene eseguita. Una dichiarazione ordinaria `const pending;` senza inizializzatore e invece un errore di sintassi.
+
+Anche `typeof` distingue un nome assente da uno in TDZ:
+
+```js
+console.log(typeof neverDeclaredHere); // "undefined", se il nome non esiste
+{
+  console.log(typeof pending); // ReferenceError
+  let pending;
+}
+```
+
 ---
 ### Function declaration
-Le dichiarazioni di funzione sono disponibili prima della loro posizione nel file.
+Le dichiarazioni di funzione sono richiamabili prima della loro posizione nel relativo scope, non da qualunque punto del file.
 
 ```js
 sayHello();
@@ -108,6 +143,21 @@ function sayHello() {
 ```
 
 Questo vale per le function declaration, non per tutte le forme di funzione.
+
+In strict mode una funzione dichiarata in un blocco resta nel blocco:
+
+```js
+"use strict";
+{
+  announce(); // "pronto"
+  function announce() {
+    console.log("pronto");
+  }
+}
+console.log(typeof announce); // "undefined"
+```
+
+Le dichiarazioni di funzione nei blocchi di vecchi script non-strict hanno regole legacy aggiuntive: non usarle per far uscire intenzionalmente un nome dal blocco. Vedi [MDN: function declaration](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Statements/function).
 
 ---
 ### Function expression
@@ -153,13 +203,25 @@ Le classi vanno dichiarate prima dell'uso.
 ### Import
 Gli import dei moduli ES sono statici e vengono risolti prima dell'esecuzione del modulo.
 
-```js
-import { createUser } from "./users.js";
+Due file ES module nella stessa cartella. Per Node.js usa un `package.json` con `"type": "module"`; nel browser carica `main.js` con `<script type="module">` da un server HTTP.
 
-createUser();
+```js
+// users.js
+export function createUser(name) {
+  return { name };
+}
 ```
 
-Gli import devono stare al top-level del modulo, salvo uso di `import()` dinamico.
+```js
+// main.js
+const user = createUser("Ada");
+import { createUser } from "./users.js";
+console.log(user.name); // "Ada"
+```
+
+L'import puo comparire dopo l'uso a livello testuale, ma non viene eseguito come una normale istruzione in quel punto. Per leggibilita tienilo comunque all'inizio. Gli import statici devono stare al top-level; `import()` dinamico e un'altra operazione.
+
+Il binding importato non assicura che qualunque valore esportato sia gia inizializzato: nelle dipendenze circolari una lettura anticipata di un export `let`, `const` o `class` puo generare `ReferenceError`. Vedi [[Programmazione/JavaScript/Pagine/Circular Dependencies|Circular Dependencies]].
 
 ---
 
@@ -193,10 +255,10 @@ Le dichiarazioni vengono registrate prima dell'esecuzione, ma inizializzazione e
 
 ## Esempio pratico
 
-Errore tipico con function expression:
+Errore tipico con function expression, da eseguire separatamente dalle due correzioni:
 
 ```js
-start();
+start(); // ReferenceError
 
 const start = () => {
   console.log("start");
@@ -260,3 +322,14 @@ function start() {
 - [[Programmazione/JavaScript/Pagine/Classi|Classi]]
 - [[Programmazione/JavaScript/Pagine/Moduli|Moduli]]
 - [[Programmazione/JavaScript/Pagine/Dynamic Import|Dynamic Import]]
+
+
+## Fonti
+
+- [MDN: hoisting e limiti del termine](https://developer.mozilla.org/en-US/docs/Glossary/Hoisting).
+- [MDN: let e Temporal Dead Zone](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Statements/let#temporal_dead_zone_tdz).
+- [MDN: import statici e hoisting](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Statements/import#hoisting).
+
+## Navigazione
+
+- [[Programmazione/JavaScript/Indice JavaScript|Indice JavaScript]]

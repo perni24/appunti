@@ -1,15 +1,19 @@
-﻿---
+---
 date: 2026-05-20
 area: Programmazione
 topic: Rust
 type: technical-note
-status: "non revisionato"
+status: non revisionato
 publish: true
 difficulty: base
-tags: [programmazione, rust, operatore-question-mark, error-handling]
+tags:
+  - programmazione
+  - rust
+  - operatore-question-mark
+  - error-handling
 aliases:
-  - "Operatore ?"
-  - "Question mark operator"
+  - Operatore ?
+  - Question mark operator
   - "? in Rust"
 prerequisites:
   - "[[Programmazione/Rust/Pagine/Option]]"
@@ -18,6 +22,7 @@ related:
   - "[[Programmazione/Rust/Pagine/Error handling idiomatico]]"
   - "[[Programmazione/Rust/Pagine/thiserror e anyhow]]"
   - "[[Programmazione/Rust/Pagine/Control flow avanzato]]"
+title: Operatore ?
 ---
 
 # Operatore ?
@@ -140,3 +145,8 @@ Il primo esempio propaga `None`. Il secondo propaga errori di I/O e parsing vers
 - [[Programmazione/Rust/Pagine/thiserror e anyhow|thiserror e anyhow]]
 - [[Programmazione/Rust/Pagine/Control flow avanzato|Control flow avanzato]]
 
+
+
+## Navigazione
+
+- [[Programmazione/Rust/Indice Rust|Indice Rust]]

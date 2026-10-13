@@ -3,13 +3,25 @@ date: 2026-07-07
 area: Programmazione
 topic: GitHub
 type: technical-note
-status: "non revisionato"
+status: non revisionato
 publish: true
 difficulty: intermedio
-tags: [github, template, organizzazione, governance]
-aliases: [Template organizzativi GitHub, Template GitHub organizzazione]
-prerequisites: [Organizzazioni e team GitHub, Issue templates e pull request templates]
-related: [Repository hygiene, Governance repository GitHub, CODEOWNERS]
+tags:
+  - github
+  - template
+  - organizzazione
+  - governance
+aliases:
+  - Template organizzativi GitHub
+  - Template GitHub organizzazione
+prerequisites:
+  - "[[Programmazione/GitHub/Pagine/Organizzazioni e team GitHub]]"
+  - "[[Programmazione/GitHub/Pagine/Issue templates e pull request templates]]"
+related:
+  - "[[Programmazione/GitHub/Pagine/Repository hygiene]]"
+  - "[[Programmazione/GitHub/Pagine/Governance repository GitHub]]"
+  - "[[Programmazione/GitHub/Pagine/CODEOWNERS]]"
+title: Template organizzativi GitHub
 ---
 
 # Template organizzativi GitHub
@@ -123,13 +135,13 @@ Il primo standardizza policy. Il secondo accelera la creazione di nuovi progetti
 
 ## Collegamenti
 
-- [[Programmazione/GitHub/Indice GitHub]]
-- [[Organizzazioni e team GitHub]]
-- [[Issue templates e pull request templates]]
-- [[CODEOWNERS]]
-- [[README LICENSE e gitignore]]
-- [[Repository hygiene]]
-- [[Governance repository GitHub]]
+- [[Programmazione/GitHub/Indice GitHub|Indice GitHub]]
+- [[Programmazione/GitHub/Pagine/Organizzazioni e team GitHub|Organizzazioni e team GitHub]]
+- [[Programmazione/GitHub/Pagine/Issue templates e pull request templates|Issue templates e pull request templates]]
+- [[Programmazione/GitHub/Pagine/CODEOWNERS|CODEOWNERS]]
+- [[Programmazione/GitHub/Pagine/README LICENSE e gitignore|README LICENSE e gitignore]]
+- [[Programmazione/GitHub/Pagine/Repository hygiene|Repository hygiene]]
+- [[Programmazione/GitHub/Pagine/Governance repository GitHub|Governance repository GitHub]]
 
 ## Fonti
 

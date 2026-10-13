@@ -3,13 +3,25 @@ date: 2026-06-22
 area: Programmazione
 topic: TypeScript
 type: technical-note
-status: "non revisionato"
+status: non revisionato
 publish: true
 difficulty: base
-tags: [typescript, type-assertion, casting, type-safety]
-aliases: [Type assertions, Casting TypeScript]
-prerequisites: [any, unknown e never, Type Narrowing]
-related: [Type Guards, Assertion functions]
+tags:
+  - typescript
+  - type-assertion
+  - casting
+  - type-safety
+aliases:
+  - Type assertions
+  - Casting TypeScript
+prerequisites:
+  - any
+  - unknown e never
+  - "[[Programmazione/TypeScript/Pagine/Type Narrowing]]"
+related:
+  - "[[Programmazione/TypeScript/Pagine/Type Guards]]"
+  - "[[Programmazione/TypeScript/Pagine/Assertion functions]]"
+title: Assertion e casting dei tipi
 ---
 
 # Assertion e casting dei tipi
@@ -94,7 +106,12 @@ Qui un type guard e piu sicuro di `raw as User`, perche controlla il dato.
 
 ## Collegamenti
 
-- [[any, unknown e never]]
-- [[Type Guards]]
-- [[Assertion functions]]
-- [[as const]]
+- [[Programmazione/TypeScript/Pagine/any, unknown e never|any, unknown e never]]
+- [[Programmazione/TypeScript/Pagine/Type Guards|Type Guards]]
+- [[Programmazione/TypeScript/Pagine/Assertion functions|Assertion functions]]
+- [[Programmazione/TypeScript/Pagine/as const|as const]]
+
+
+## Navigazione
+
+- [[Programmazione/TypeScript/Indice TypeScript|Indice TypeScript]]

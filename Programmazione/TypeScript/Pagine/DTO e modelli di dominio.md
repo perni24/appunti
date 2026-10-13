@@ -3,13 +3,25 @@ date: 2026-06-22
 area: Programmazione
 topic: TypeScript
 type: technical-note
-status: "non revisionato"
+status: non revisionato
 publish: true
 difficulty: intermedio
-tags: [typescript, dto, domain-modeling, architecture]
-aliases: [DTO TypeScript, Modelli di dominio]
-prerequisites: [API tipizzate, Validazione runtime e tipi statici]
-related: [Domain modeling, API contract, Pattern Repository e Service]
+tags:
+  - typescript
+  - dto
+  - domain-modeling
+  - architecture
+aliases:
+  - DTO TypeScript
+  - Modelli di dominio
+prerequisites:
+  - "[[Programmazione/TypeScript/Pagine/API tipizzate]]"
+  - "[[Programmazione/TypeScript/Pagine/Validazione runtime e tipi statici]]"
+related:
+  - "[[Programmazione/TypeScript/Pagine/Domain modeling]]"
+  - "[[Programmazione/TypeScript/Pagine/API contract]]"
+  - "[[Programmazione/TypeScript/Pagine/Pattern Repository e Service]]"
+title: DTO e modelli di dominio
 ---
 
 # DTO e modelli di dominio
@@ -98,6 +110,11 @@ La response pubblica non espone tutti i dettagli del dominio.
 
 ## Collegamenti
 
-- [[Domain modeling]]
-- [[API contract]]
-- [[Pattern Repository e Service]]
+- [[Programmazione/TypeScript/Pagine/Domain modeling|Domain modeling]]
+- [[Programmazione/TypeScript/Pagine/API contract|API contract]]
+- [[Programmazione/TypeScript/Pagine/Pattern Repository e Service|Pattern Repository e Service]]
+
+
+## Navigazione
+
+- [[Programmazione/TypeScript/Indice TypeScript|Indice TypeScript]]

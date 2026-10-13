@@ -3,13 +3,23 @@ date: 2026-07-09
 area: Programmazione
 topic: Clean Code
 type: technical-note
-status: "non revisionato"
+status: non revisionato
 publish: true
 difficulty: intermedio
-tags: [clean-code, errori, eccezioni]
-aliases: [Eccezioni vs valori di errore, Exceptions vs error values]
-prerequisites: [Gestione esplicita degli errori]
-related: [Errori recuperabili e non recuperabili, Contratti impliciti ed espliciti, Codice testabile]
+tags:
+  - clean-code
+  - errori
+  - eccezioni
+aliases:
+  - Eccezioni vs valori di errore
+  - Exceptions vs error values
+prerequisites:
+  - "[[Programmazione/Clean Code/Pagine/Gestione esplicita degli errori]]"
+related:
+  - "[[Programmazione/Clean Code/Pagine/Errori recuperabili e non recuperabili]]"
+  - "[[Programmazione/Clean Code/Pagine/Contratti impliciti ed espliciti]]"
+  - "[[Programmazione/Clean Code/Pagine/Codice testabile]]"
+title: Eccezioni vs valori di errore
 ---
 
 # Eccezioni vs valori di errore
@@ -89,11 +99,11 @@ La mancata presenza dell'utente e un caso previsto, quindi un valore di errore p
 
 ## Collegamenti
 
-- [[Programmazione/Clean Code/Indice Clean Code]]
-- [[Gestione esplicita degli errori]]
-- [[Errori recuperabili e non recuperabili]]
-- [[Contratti impliciti ed espliciti]]
-- [[Codice testabile]]
+- [[Programmazione/Clean Code/Indice Clean Code|Indice Clean Code]]
+- [[Programmazione/Clean Code/Pagine/Gestione esplicita degli errori|Gestione esplicita degli errori]]
+- [[Programmazione/Clean Code/Pagine/Errori recuperabili e non recuperabili|Errori recuperabili e non recuperabili]]
+- [[Programmazione/Clean Code/Pagine/Contratti impliciti ed espliciti|Contratti impliciti ed espliciti]]
+- [[Programmazione/Clean Code/Pagine/Codice testabile|Codice testabile]]
 
 ## Fonti
 

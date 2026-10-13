@@ -3,7 +3,7 @@ date: 2026-05-26
 area: Programmazione
 topic: Rust
 type: technical-note
-status: "non revisionato"
+status: non revisionato
 publish: true
 difficulty: intermedio
 tags:
@@ -11,8 +11,8 @@ tags:
   - rust
   - compile-time-e-type-level-programming
 aliases:
-  - "const fn"
-  - "Funzioni const Rust"
+  - const fn
+  - Funzioni const Rust
 prerequisites:
   - "[[Programmazione/Rust/Pagine/const e static]]"
   - "[[Programmazione/Rust/Pagine/Funzioni]]"
@@ -20,6 +20,7 @@ related:
   - "[[Programmazione/Rust/Pagine/Const generics]]"
   - "[[Programmazione/Rust/Pagine/Default]]"
   - "[[Programmazione/Rust/Pagine/Zero-sized types]]"
+title: const fn
 ---
 
 # const fn
@@ -128,3 +129,8 @@ Il tipo ha un costruttore usabile per configurazione statica.
 - [[Programmazione/Rust/Pagine/Funzioni|Funzioni]]
 - [[Programmazione/Rust/Pagine/Default|Default]]
 - [[Programmazione/Rust/Pagine/Newtype pattern|Newtype pattern]]
+
+
+## Navigazione
+
+- [[Programmazione/Rust/Indice Rust|Indice Rust]]

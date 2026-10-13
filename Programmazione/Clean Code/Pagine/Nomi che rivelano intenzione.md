@@ -3,13 +3,22 @@ date: 2026-07-09
 area: Programmazione
 topic: Clean Code
 type: theory-note
-status: "non revisionato"
+status: non revisionato
 publish: true
 difficulty: base
-tags: [clean-code, naming, intenzione]
-aliases: [Nomi che rivelano intenzione, Intention-revealing names]
-prerequisites: [Naming di variabili e funzioni]
-related: [Leggibilita del codice, Principio del minimo stupore]
+tags:
+  - clean-code
+  - naming
+  - intenzione
+aliases:
+  - Nomi che rivelano intenzione
+  - Intention-revealing names
+prerequisites:
+  - "[[Programmazione/Clean Code/Pagine/Naming di variabili e funzioni]]"
+related:
+  - "[[Programmazione/Clean Code/Pagine/Leggibilita del codice]]"
+  - "[[Programmazione/Clean Code/Pagine/Principio del minimo stupore]]"
+title: Nomi che rivelano intenzione
 ---
 
 # Nomi che rivelano intenzione
@@ -83,11 +92,11 @@ La seconda versione comunica una regola di dominio.
 
 ## Collegamenti
 
-- [[Programmazione/Clean Code/Indice Clean Code]]
-- [[Naming di variabili e funzioni]]
-- [[Leggibilita del codice]]
-- [[Principio del minimo stupore]]
-- [[Codice esplicito vs codice implicito]]
+- [[Programmazione/Clean Code/Indice Clean Code|Indice Clean Code]]
+- [[Programmazione/Clean Code/Pagine/Naming di variabili e funzioni|Naming di variabili e funzioni]]
+- [[Programmazione/Clean Code/Pagine/Leggibilita del codice|Leggibilita del codice]]
+- [[Programmazione/Clean Code/Pagine/Principio del minimo stupore|Principio del minimo stupore]]
+- [[Programmazione/Clean Code/Pagine/Codice esplicito vs codice implicito|Codice esplicito vs codice implicito]]
 
 ## Fonti
 

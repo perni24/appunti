@@ -1,15 +1,19 @@
-﻿---
+---
 date: 2026-05-20
 area: Programmazione
 topic: Rust
 type: technical-note
-status: "non revisionato"
+status: non revisionato
 publish: true
 difficulty: base
-tags: [programmazione, rust, ownership, memory-safety]
+tags:
+  - programmazione
+  - rust
+  - ownership
+  - memory-safety
 aliases:
-  - "Ownership in Rust"
-  - "Sistema di ownership"
+  - Ownership in Rust
+  - Sistema di ownership
 prerequisites:
   - "[[Programmazione/Rust/Pagine/Sintassi di base]]"
   - "[[Programmazione/Rust/Pagine/Variabili mutabilita e shadowing]]"
@@ -18,6 +22,7 @@ related:
   - "[[Programmazione/Rust/Pagine/Move semantics]]"
   - "[[Programmazione/Rust/Pagine/References e Borrowing]]"
   - "[[Programmazione/Rust/Pagine/Borrow checker]]"
+title: Ownership
 ---
 
 # Ownership
@@ -142,3 +147,8 @@ fn main() {
 - [[Programmazione/Rust/Pagine/Borrow checker|Borrow checker]]
 - [[Programmazione/Rust/Pagine/Stack e Heap|Stack e Heap]]
 
+
+
+## Navigazione
+
+- [[Programmazione/Rust/Indice Rust|Indice Rust]]

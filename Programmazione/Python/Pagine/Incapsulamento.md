@@ -3,13 +3,17 @@ date: 2026-06-03
 area: Programmazione
 topic: Python
 type: technical-note
-status: "non revisionato"
+status: non revisionato
 publish: true
-difficulty: intermediate
-tags: [python, programming]
-aliases: [Incapsulamento]
+difficulty: intermedio
+tags:
+  - python
+  - programming
+aliases:
+  - Incapsulamento
 prerequisites: []
 related: []
+title: Incapsulamento in Python
 ---
 
 # Incapsulamento in Python
@@ -90,3 +94,8 @@ L'attributo interno resta modificabile dalla classe, mentre l'interfaccia pubbli
 - [[Programmazione/Python/Pagine/Proprietà|Proprietà]]
 - [[Programmazione/Python/Pagine/Classi e Istanze|Classi e Istanze]]
 - [[Programmazione/Python/Pagine/Descriptor protocol|Descriptor protocol]]
+
+
+## Navigazione
+
+- [[Programmazione/Python/Indice Python|Indice Python]]

@@ -3,13 +3,25 @@ date: 2026-06-22
 area: Programmazione
 topic: TypeScript
 type: technical-note
-status: "non revisionato"
+status: non revisionato
 publish: true
 difficulty: avanzato
-tags: [typescript, tuple, variadic-tuples, generics]
-aliases: [Variadic tuple type, Tuple variadiche]
-prerequisites: [Array, Tuple e Readonly, Generics avanzati]
-related: [Infer nei Conditional Types, Firme di funzione e overload]
+tags:
+  - typescript
+  - tuple
+  - variadic-tuples
+  - generics
+aliases:
+  - Variadic tuple type
+  - Tuple variadiche
+prerequisites:
+  - Array
+  - Tuple e Readonly
+  - "[[Programmazione/TypeScript/Pagine/Generics avanzati]]"
+related:
+  - "[[Programmazione/TypeScript/Pagine/Infer nei Conditional Types]]"
+  - "[[Programmazione/TypeScript/Pagine/Firme di funzione e overload]]"
+title: Variadic tuple types
 ---
 
 # Variadic tuple types
@@ -86,6 +98,11 @@ La funzione wrapper conserva i parametri originali.
 
 ## Collegamenti
 
-- [[Array, Tuple e Readonly]]
-- [[Generics avanzati]]
-- [[Infer nei Conditional Types]]
+- [[Programmazione/TypeScript/Pagine/Array, Tuple e Readonly|Array, Tuple e Readonly]]
+- [[Programmazione/TypeScript/Pagine/Generics avanzati|Generics avanzati]]
+- [[Programmazione/TypeScript/Pagine/Infer nei Conditional Types|Infer nei Conditional Types]]
+
+
+## Navigazione
+
+- [[Programmazione/TypeScript/Indice TypeScript|Indice TypeScript]]

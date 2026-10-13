@@ -3,7 +3,7 @@ date: 2026-05-26
 area: Programmazione
 topic: Rust
 type: technical-note
-status: "non revisionato"
+status: non revisionato
 publish: true
 difficulty: intermedio
 tags:
@@ -11,9 +11,9 @@ tags:
   - rust
   - concorrenza-e-asincronia
 aliases:
-  - "Tokio"
-  - "async-std"
-  - "Runtime async Rust"
+  - Tokio
+  - async-std
+  - Runtime async Rust
 prerequisites:
   - "[[Programmazione/Rust/Pagine/Async Await]]"
   - "[[Programmazione/Rust/Pagine/Future Trait]]"
@@ -21,6 +21,7 @@ related:
   - "[[Programmazione/Rust/Pagine/Channel async]]"
   - "[[Programmazione/Rust/Pagine/select join e cancellation]]"
   - "[[Programmazione/Rust/Pagine/Graceful shutdown]]"
+title: "Runtime async: Tokio e async-std"
 ---
 
 # Runtime async: Tokio e async-std
@@ -134,3 +135,8 @@ La task viene schedulata dal runtime e il risultato viene recuperato dal `JoinHa
 - [[Programmazione/Rust/Pagine/Channel async|Channel async]]
 - [[Programmazione/Rust/Pagine/select join e cancellation|select join e cancellation]]
 - [[Programmazione/Rust/Pagine/Graceful shutdown|Graceful shutdown]]
+
+
+## Navigazione
+
+- [[Programmazione/Rust/Indice Rust|Indice Rust]]

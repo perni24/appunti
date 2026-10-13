@@ -3,12 +3,21 @@ date: 2026-06-16
 area: Programmi open source
 topic: Backend e database self-hosted
 type: technical-note
-status: "non revisionato"
+status: non revisionato
 difficulty: intermedio
-tags: [open-source, database, backend, self-hosted, rust, sqlite]
-aliases: [TrailBase]
+tags:
+  - open-source
+  - database
+  - backend
+  - self-hosted
+  - rust
+  - sqlite
+aliases:
+  - TrailBase
 prerequisites: []
 related: []
+title: TrailBase
+publish: true
 ---
 
 # TrailBase
@@ -33,7 +42,7 @@ TrailBase si avvia come un singolo processo. Alla prima esecuzione crea la strut
 
 La base dati principale e SQLite, mentre il runtime WebAssembly permette di estendere il comportamento server-side con componenti dedicati.
 
-## Esempio d'uso
+## Esempio pratico
 
 ```bash
 # Avvia TrailBase dopo l'installazione
@@ -42,7 +51,7 @@ trail run
 
 Dopo l'avvio si accede all'interfaccia admin dal browser e si configurano dati, utenti, API e componenti necessari all'applicazione.
 
-## Punti forti
+## Funzionalita
 
 - **Single executable**: riduce complessita di deploy e dipendenze.
 - **Self-hosted**: i dati restano sotto controllo dell'utente.
@@ -68,3 +77,8 @@ Dopo l'avvio si accede all'interfaccia admin dal browser e si configurano dati, 
 ## Collegamenti
 
 - https://github.com/trailbaseio/trailbase
+
+
+## Navigazione
+
+- [[Programmi open source/Indice Programmi Open Source|Catalogo open source]]

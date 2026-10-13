@@ -3,13 +3,23 @@ date: 2026-07-09
 area: Programmazione
 topic: Clean Code
 type: theory-note
-status: "non revisionato"
+status: non revisionato
 publish: true
 difficulty: intermedio
-tags: [clean-code, oop, incapsulamento]
-aliases: [Incapsulamento, Encapsulation]
-prerequisites: [Oggetti con responsabilita chiara]
-related: [Coesione e accoppiamento, Separazione delle responsabilita, Invarianti del dominio]
+tags:
+  - clean-code
+  - oop
+  - incapsulamento
+aliases:
+  - Incapsulamento
+  - Encapsulation
+prerequisites:
+  - "[[Programmazione/Clean Code/Pagine/Oggetti con responsabilita chiara]]"
+related:
+  - "[[Programmazione/Clean Code/Pagine/Coesione e accoppiamento]]"
+  - "[[Programmazione/Clean Code/Pagine/Separazione delle responsabilita]]"
+  - "[[Programmazione/Clean Code/Pagine/Invarianti del dominio]]"
+title: Incapsulamento
 ---
 
 # Incapsulamento
@@ -93,11 +103,11 @@ Nel secondo caso la modifica passa da una regola esplicita.
 
 ## Collegamenti
 
-- [[Programmazione/Clean Code/Indice Clean Code]]
-- [[Oggetti con responsabilita chiara]]
-- [[Invarianti del dominio]]
-- [[Coesione e accoppiamento]]
-- [[Separazione delle responsabilita]]
+- [[Programmazione/Clean Code/Indice Clean Code|Indice Clean Code]]
+- [[Programmazione/Clean Code/Pagine/Oggetti con responsabilita chiara|Oggetti con responsabilita chiara]]
+- [[Programmazione/Clean Code/Pagine/Invarianti del dominio|Invarianti del dominio]]
+- [[Programmazione/Clean Code/Pagine/Coesione e accoppiamento|Coesione e accoppiamento]]
+- [[Programmazione/Clean Code/Pagine/Separazione delle responsabilita|Separazione delle responsabilita]]
 
 ## Fonti
 

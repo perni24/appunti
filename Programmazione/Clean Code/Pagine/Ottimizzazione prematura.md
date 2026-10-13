@@ -3,13 +3,23 @@ date: 2026-07-09
 area: Programmazione
 topic: Clean Code
 type: theory-note
-status: "non revisionato"
+status: non revisionato
 publish: true
 difficulty: intermedio
-tags: [clean-code, performance, ottimizzazione]
-aliases: [Ottimizzazione prematura, Premature optimization]
-prerequisites: [Performance e leggibilita]
-related: [Profiling prima del refactoring, Hot path, Debito tecnico]
+tags:
+  - clean-code
+  - performance
+  - ottimizzazione
+aliases:
+  - Ottimizzazione prematura
+  - Premature optimization
+prerequisites:
+  - "[[Programmazione/Clean Code/Pagine/Performance e leggibilita]]"
+related:
+  - "[[Programmazione/Clean Code/Pagine/Profiling prima del refactoring]]"
+  - "[[Programmazione/Clean Code/Pagine/Hot path]]"
+  - "[[Programmazione/Clean Code/Pagine/Debito tecnico]]"
+title: Ottimizzazione prematura
 ---
 
 # Ottimizzazione prematura
@@ -81,11 +91,11 @@ Scelta piu disciplinata:
 
 ## Collegamenti
 
-- [[Programmazione/Clean Code/Indice Clean Code]]
-- [[Performance e leggibilita]]
-- [[Profiling prima del refactoring]]
-- [[Cache e invalidazione]]
-- [[Debito tecnico]]
+- [[Programmazione/Clean Code/Indice Clean Code|Indice Clean Code]]
+- [[Programmazione/Clean Code/Pagine/Performance e leggibilita|Performance e leggibilita]]
+- [[Programmazione/Clean Code/Pagine/Profiling prima del refactoring|Profiling prima del refactoring]]
+- [[Programmazione/Clean Code/Pagine/Cache e invalidazione|Cache e invalidazione]]
+- [[Programmazione/Clean Code/Pagine/Debito tecnico|Debito tecnico]]
 
 ## Fonti
 

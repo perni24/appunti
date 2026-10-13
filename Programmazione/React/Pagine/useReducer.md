@@ -3,13 +3,20 @@ date: 2026-06-04
 area: Programmazione
 topic: React
 type: technical-note
-status: "non revisionato"
+status: non revisionato
 publish: true
-difficulty: intermediate
-tags: [react, hooks, reducer, state]
-aliases: [useReducer, Reducer pattern]
+difficulty: intermedio
+tags:
+  - react
+  - hooks
+  - reducer
+  - state
+aliases:
+  - useReducer
+  - Reducer pattern
 prerequisites: []
 related: []
+title: useReducer
 ---
 
 # useReducer
@@ -132,8 +139,8 @@ Le transizioni diventano nominate e centralizzate.
 
 ## Collegamenti
 
-- [[Programmazione/React/Indice react|Indice React]]
-- [[useState]]
-- [[Context API]]
-- [[State Management Esterno]]
-- [[Control Props e State Reducer Pattern]]
+- [[Programmazione/React/Indice React|Indice React]]
+- [[Programmazione/React/Pagine/useState|useState]]
+- [[Programmazione/React/Pagine/Context API|Context API]]
+- [[Programmazione/React/Pagine/State Management Esterno|State Management Esterno]]
+- [[Programmazione/React/Pagine/Control Props e State Reducer Pattern|Control Props e State Reducer Pattern]]

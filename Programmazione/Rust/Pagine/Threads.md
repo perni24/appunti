@@ -3,7 +3,7 @@ date: 2026-05-26
 area: Programmazione
 topic: Rust
 type: technical-note
-status: "non revisionato"
+status: non revisionato
 publish: true
 difficulty: intermedio
 tags:
@@ -11,8 +11,8 @@ tags:
   - rust
   - concorrenza-e-asincronia
 aliases:
-  - "Thread Rust"
-  - "std::thread"
+  - Thread Rust
+  - std::thread
 prerequisites:
   - "[[Programmazione/Rust/Pagine/Ownership]]"
   - "[[Programmazione/Rust/Pagine/Move semantics]]"
@@ -21,6 +21,7 @@ related:
   - "[[Programmazione/Rust/Pagine/Message passing]]"
   - "[[Programmazione/Rust/Pagine/Shared state]]"
   - "[[Programmazione/Rust/Pagine/Mutex RwLock e Atomics]]"
+title: Threads
 ---
 
 # Threads
@@ -128,3 +129,8 @@ Ogni thread prende ownership del proprio chunk, evitando condivisione mutabile.
 - [[Programmazione/Rust/Pagine/Shared state|Shared state]]
 - [[Programmazione/Rust/Pagine/Mutex RwLock e Atomics|Mutex RwLock e Atomics]]
 - [[Programmazione/Rust/Pagine/Rayon e parallel iterators|Rayon e parallel iterators]]
+
+
+## Navigazione
+
+- [[Programmazione/Rust/Indice Rust|Indice Rust]]

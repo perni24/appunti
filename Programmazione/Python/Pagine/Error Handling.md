@@ -3,13 +3,19 @@ date: 2026-06-03
 area: Programmazione
 topic: Python
 type: theory-note
-status: "non revisionato"
+status: non revisionato
 publish: true
-difficulty: beginner
-tags: [python, programming, errors]
-aliases: [Error Handling, Gestione delle Eccezioni]
+difficulty: base
+tags:
+  - python
+  - programming
+  - errors
+aliases:
+  - Error Handling
+  - Gestione delle Eccezioni
 prerequisites: []
 related: []
+title: Error Handling in Python
 ---
 
 # Error Handling in Python
@@ -154,8 +160,8 @@ except FileNotFoundError:
 
 ## Collegamenti
 
-- [[Programmazione/Python/Indice python|Indice Python]]
-- [[Context Managers]]
-- [[Gestione File]]
-- [[Logging]]
+- [[Programmazione/Python/Indice Python|Indice Python]]
+- [[Programmazione/Python/Pagine/Context Managers|Context Managers]]
+- [[Programmazione/Python/Pagine/Gestione File|Gestione File]]
+- [[Programmazione/Python/Pagine/Logging|Logging]]
 - [[Programmazione/Python/Pagine/Testing|Testing]]

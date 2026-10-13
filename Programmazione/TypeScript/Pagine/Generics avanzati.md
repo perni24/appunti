@@ -3,13 +3,25 @@ date: 2026-06-22
 area: Programmazione
 topic: TypeScript
 type: technical-note
-status: "non revisionato"
+status: non revisionato
 publish: true
 difficulty: avanzato
-tags: [typescript, generics, type-system, advanced-types]
-aliases: [Advanced generics TypeScript]
-prerequisites: [Generics, Conditional Types, Keyof e typeof]
-related: [Utility Types, Mapped Types, Infer nei Conditional Types]
+tags:
+  - typescript
+  - generics
+  - type-system
+  - advanced-types
+aliases:
+  - Advanced generics TypeScript
+prerequisites:
+  - "[[Programmazione/TypeScript/Pagine/Generics]]"
+  - "[[Programmazione/TypeScript/Pagine/Conditional Types]]"
+  - "[[Programmazione/TypeScript/Pagine/Keyof e typeof]]"
+related:
+  - "[[Programmazione/TypeScript/Pagine/Utility Types]]"
+  - "[[Programmazione/TypeScript/Pagine/Mapped Types]]"
+  - "[[Programmazione/TypeScript/Pagine/Infer nei Conditional Types]]"
+title: Generics avanzati
 ---
 
 # Generics avanzati
@@ -98,6 +110,11 @@ Il vincolo `T extends Entity` permette al repository di usare `id` senza conosce
 ## Collegamenti
 
 - [[Programmazione/TypeScript/Pagine/Generics|Generics]]
-- [[Conditional Types]]
-- [[Keyof e typeof]]
-- [[Utility Types]]
+- [[Programmazione/TypeScript/Pagine/Conditional Types|Conditional Types]]
+- [[Programmazione/TypeScript/Pagine/Keyof e typeof|Keyof e typeof]]
+- [[Programmazione/TypeScript/Pagine/Utility Types|Utility Types]]
+
+
+## Navigazione
+
+- [[Programmazione/TypeScript/Indice TypeScript|Indice TypeScript]]

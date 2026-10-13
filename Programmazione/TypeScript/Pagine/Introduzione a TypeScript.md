@@ -3,13 +3,23 @@ date: 2026-06-22
 area: Programmazione
 topic: TypeScript
 type: technical-note
-status: "non revisionato"
+status: non revisionato
 publish: true
 difficulty: base
-tags: [typescript, javascript, type-system, frontend, backend]
-aliases: [Introduzione a TypeScript]
+tags:
+  - typescript
+  - javascript
+  - type-system
+  - frontend
+  - backend
+aliases:
+  - Introduzione a TypeScript
 prerequisites: []
-related: [Tipi primitivi, Variabili e annotazioni di tipo, Inferenza dei tipi]
+related:
+  - "[[Programmazione/TypeScript/Pagine/Tipi primitivi]]"
+  - "[[Programmazione/TypeScript/Pagine/Variabili e annotazioni di tipo]]"
+  - "[[Programmazione/TypeScript/Pagine/Inferenza dei tipi]]"
+title: Introduzione a TypeScript
 ---
 
 # Introduzione a TypeScript
@@ -91,7 +101,12 @@ Qui il tipo `User` descrive la forma minima richiesta dalla funzione. Se manca `
 
 ## Collegamenti
 
-- [[Tipi primitivi]]
-- [[Variabili e annotazioni di tipo]]
-- [[Inferenza dei tipi]]
-- [[any, unknown e never]]
+- [[Programmazione/TypeScript/Pagine/Tipi primitivi|Tipi primitivi]]
+- [[Programmazione/TypeScript/Pagine/Variabili e annotazioni di tipo|Variabili e annotazioni di tipo]]
+- [[Programmazione/TypeScript/Pagine/Inferenza dei tipi|Inferenza dei tipi]]
+- [[Programmazione/TypeScript/Pagine/any, unknown e never|any, unknown e never]]
+
+
+## Navigazione
+
+- [[Programmazione/TypeScript/Indice TypeScript|Indice TypeScript]]

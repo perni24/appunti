@@ -3,13 +3,24 @@ date: 2026-07-09
 area: Programmazione
 topic: Clean Code
 type: theory-note
-status: "non revisionato"
+status: non revisionato
 publish: true
 difficulty: intermedio
-tags: [clean-code, testing, test-data]
-aliases: [Test data builders, Builder per dati di test]
-prerequisites: [Test unitari leggibili, Arrange Act Assert]
-related: [Codice testabile, Test come documentazione, Modellazione del dominio]
+tags:
+  - clean-code
+  - testing
+  - test-data
+aliases:
+  - Test data builders
+  - Builder per dati di test
+prerequisites:
+  - "[[Programmazione/Clean Code/Pagine/Test unitari leggibili]]"
+  - "[[Programmazione/Clean Code/Pagine/Arrange Act Assert]]"
+related:
+  - "[[Programmazione/Clean Code/Pagine/Codice testabile]]"
+  - "[[Programmazione/Clean Code/Pagine/Test come documentazione]]"
+  - "[[Programmazione/Clean Code/Pagine/Modellazione del dominio]]"
+title: Test data builders
 ---
 
 # Test data builders
@@ -75,12 +86,12 @@ Il test mostra solo la variazione importante.
 
 ## Collegamenti
 
-- [[Programmazione/Clean Code/Indice Clean Code]]
-- [[Test unitari leggibili]]
-- [[Arrange Act Assert]]
-- [[Test come documentazione]]
-- [[Modellazione del dominio]]
-- [[Codice testabile]]
+- [[Programmazione/Clean Code/Indice Clean Code|Indice Clean Code]]
+- [[Programmazione/Clean Code/Pagine/Test unitari leggibili|Test unitari leggibili]]
+- [[Programmazione/Clean Code/Pagine/Arrange Act Assert|Arrange Act Assert]]
+- [[Programmazione/Clean Code/Pagine/Test come documentazione|Test come documentazione]]
+- [[Programmazione/Clean Code/Pagine/Modellazione del dominio|Modellazione del dominio]]
+- [[Programmazione/Clean Code/Pagine/Codice testabile|Codice testabile]]
 
 ## Fonti
 

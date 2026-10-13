@@ -3,13 +3,23 @@ date: 2026-07-09
 area: Programmazione
 topic: Clean Code
 type: technical-note
-status: "non revisionato"
+status: non revisionato
 publish: true
 difficulty: base
-tags: [clean-code, tooling, formatter]
-aliases: [Formatter, Code formatter]
-prerequisites: [Convenzioni di progetto]
-related: [Linter, Pre-commit hooks, Code quality gates]
+tags:
+  - clean-code
+  - tooling
+  - formatter
+aliases:
+  - Formatter
+  - Code formatter
+prerequisites:
+  - "[[Programmazione/Clean Code/Pagine/Convenzioni di progetto]]"
+related:
+  - "[[Programmazione/Clean Code/Pagine/Linter]]"
+  - "[[Programmazione/Clean Code/Pagine/Pre-commit hooks]]"
+  - "[[Programmazione/Clean Code/Pagine/Code quality gates]]"
+title: Formatter
 ---
 
 # Formatter
@@ -78,11 +88,11 @@ La formattazione diventa parte del flusso normale.
 
 ## Collegamenti
 
-- [[Programmazione/Clean Code/Indice Clean Code]]
-- [[Convenzioni di progetto]]
-- [[Linter]]
-- [[Pre-commit hooks]]
-- [[Code quality gates]]
+- [[Programmazione/Clean Code/Indice Clean Code|Indice Clean Code]]
+- [[Programmazione/Clean Code/Pagine/Convenzioni di progetto|Convenzioni di progetto]]
+- [[Programmazione/Clean Code/Pagine/Linter|Linter]]
+- [[Programmazione/Clean Code/Pagine/Pre-commit hooks|Pre-commit hooks]]
+- [[Programmazione/Clean Code/Pagine/Code quality gates|Code quality gates]]
 
 ## Fonti
 

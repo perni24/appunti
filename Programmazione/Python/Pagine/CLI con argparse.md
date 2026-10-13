@@ -3,13 +3,23 @@ date: 2026-06-03
 area: Programmazione
 topic: Python
 type: technical-note
-status: "non revisionato"
+status: non revisionato
 publish: true
-difficulty: beginner
-tags: [python, argparse, cli, standard-library]
-aliases: [argparse, CLI Python]
-prerequisites: [Funzioni]
-related: [Subprocess, Standard Library]
+difficulty: base
+tags:
+  - python
+  - argparse
+  - cli
+  - standard-library
+aliases:
+  - argparse
+  - CLI Python
+prerequisites:
+  - "[[Programmazione/Python/Pagine/Funzioni]]"
+related:
+  - "[[Programmazione/Python/Pagine/Subprocess]]"
+  - "[[Programmazione/Python/Pagine/Standard Library]]"
+title: CLI con argparse
 ---
 
 # CLI con argparse
@@ -145,8 +155,8 @@ if __name__ == "__main__":
 
 ## Collegamenti
 
-- [[Programmazione/Python/Indice python|Indice Python]]
-- [[Subprocess]]
-- [[Standard Library]]
-- [[Configurazione e Variabili d Ambiente]]
-- [[Gestione File]]
+- [[Programmazione/Python/Indice Python|Indice Python]]
+- [[Programmazione/Python/Pagine/Subprocess|Subprocess]]
+- [[Programmazione/Python/Pagine/Standard Library|Standard Library]]
+- [[Programmazione/Python/Pagine/Configurazione e Variabili d Ambiente|Configurazione e Variabili d Ambiente]]
+- [[Programmazione/Python/Pagine/Gestione File|Gestione File]]

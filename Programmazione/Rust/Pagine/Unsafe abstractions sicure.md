@@ -3,7 +3,7 @@ date: 2026-05-26
 area: Programmazione
 topic: Rust
 type: technical-note
-status: "non revisionato"
+status: non revisionato
 publish: true
 difficulty: avanzato
 tags:
@@ -11,8 +11,8 @@ tags:
   - rust
   - unsafe-rust-in-profondita
 aliases:
-  - "Safe unsafe abstractions"
-  - "Astrazioni unsafe sicure"
+  - Safe unsafe abstractions
+  - Astrazioni unsafe sicure
 prerequisites:
   - "[[Programmazione/Rust/Pagine/Unsafe Rust]]"
   - "[[Programmazione/Rust/Pagine/Invariants]]"
@@ -21,6 +21,7 @@ related:
   - "[[Programmazione/Rust/Pagine/Miri]]"
   - "[[Programmazione/Rust/Pagine/Raw pointers]]"
   - "[[Programmazione/Rust/Pagine/Public API design]]"
+title: Unsafe abstractions sicure
 ---
 
 # Unsafe abstractions sicure
@@ -146,3 +147,8 @@ Esporre raw pointer puo essere necessario per FFI, ma l'API safe mantiene owners
 - [[Programmazione/Rust/Pagine/Raw pointers|Raw pointers]]
 - [[Programmazione/Rust/Pagine/Miri|Miri]]
 - [[Programmazione/Rust/Pagine/Public API design|Public API design]]
+
+
+## Navigazione
+
+- [[Programmazione/Rust/Indice Rust|Indice Rust]]

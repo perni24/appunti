@@ -3,13 +3,24 @@ date: 2026-07-09
 area: Programmazione
 topic: Clean Code
 type: technical-note
-status: "non revisionato"
+status: non revisionato
 publish: true
 difficulty: avanzato
-tags: [clean-code, performance, memoria]
-aliases: [Allocazioni inutili, Unnecessary allocations]
-prerequisites: [Hot path, Performance e leggibilita]
-related: [Profiling prima del refactoring, Immutabilita, Pipeline di trasformazione]
+tags:
+  - clean-code
+  - performance
+  - memoria
+aliases:
+  - Allocazioni inutili
+  - Unnecessary allocations
+prerequisites:
+  - "[[Programmazione/Clean Code/Pagine/Hot path]]"
+  - "[[Programmazione/Clean Code/Pagine/Performance e leggibilita]]"
+related:
+  - "[[Programmazione/Clean Code/Pagine/Profiling prima del refactoring]]"
+  - "[[Programmazione/Clean Code/Pagine/Immutabilita]]"
+  - "[[Programmazione/Clean Code/Pagine/Pipeline di trasformazione]]"
+title: Allocazioni inutili
 ---
 
 # Allocazioni inutili
@@ -91,12 +102,12 @@ Il ciclo evita un array temporaneo. Ha senso solo se la misura mostra che l'allo
 
 ## Collegamenti
 
-- [[Programmazione/Clean Code/Indice Clean Code]]
-- [[Hot path]]
-- [[Performance e leggibilita]]
-- [[Profiling prima del refactoring]]
-- [[Immutabilita]]
-- [[Pipeline di trasformazione]]
+- [[Programmazione/Clean Code/Indice Clean Code|Indice Clean Code]]
+- [[Programmazione/Clean Code/Pagine/Hot path|Hot path]]
+- [[Programmazione/Clean Code/Pagine/Performance e leggibilita|Performance e leggibilita]]
+- [[Programmazione/Clean Code/Pagine/Profiling prima del refactoring|Profiling prima del refactoring]]
+- [[Programmazione/Clean Code/Pagine/Immutabilita|Immutabilita]]
+- [[Programmazione/Clean Code/Pagine/Pipeline di trasformazione|Pipeline di trasformazione]]
 
 ## Fonti
 

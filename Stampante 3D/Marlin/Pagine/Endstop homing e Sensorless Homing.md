@@ -3,16 +3,25 @@ date: 2026-07-25
 area: Stampante 3D
 topic: Marlin
 type: technical-note
-
 publish: true
 difficulty: avanzato
-tags: [marlin, endstop, homing, sensorless-homing, stallguard]
-aliases: [Endstop Marlin, Homing Marlin, Sensorless Homing Marlin]
+tags:
+  - marlin
+  - endstop
+  - homing
+  - sensorless-homing
+  - stallguard
+aliases:
+  - Endstop Marlin
+  - Homing Marlin
+  - Sensorless Homing Marlin
 prerequisites:
   - "[[Stampante 3D/Marlin/Pagine/Motori direzione e passi per millimetro]]"
   - "[[Stampante 3D/Marlin/Pagine/Driver stepper corrente e microstepping]]"
 related: []
-marlin-version: "2.1.2.8"
+marlin-version: 2.1.2.8
+title: Endstop, homing e Sensorless Homing
+status: non revisionato
 ---
 
 # Endstop, homing e Sensorless Homing
@@ -528,7 +537,7 @@ puo migliorare la ripetibilita portando il motore verso una fase assoluta della 
 
 ## Collegamenti
 
-- [[Stampante 3D/Marlin/Indice Marlin]]
-- [[Stampante 3D/Marlin/Pagine/Motori direzione e passi per millimetro]]
-- [[Stampante 3D/Marlin/Pagine/Driver stepper corrente e microstepping]]
-- [[Stampante 3D/Marlin/Pagine/Dimensioni del piatto area di lavoro e limiti]]
+- [[Stampante 3D/Marlin/Indice Marlin|Indice Marlin]]
+- [[Stampante 3D/Marlin/Pagine/Motori direzione e passi per millimetro|Motori direzione e passi per millimetro]]
+- [[Stampante 3D/Marlin/Pagine/Driver stepper corrente e microstepping|Driver stepper corrente e microstepping]]
+- [[Stampante 3D/Marlin/Pagine/Dimensioni del piatto area di lavoro e limiti|Dimensioni del piatto area di lavoro e limiti]]

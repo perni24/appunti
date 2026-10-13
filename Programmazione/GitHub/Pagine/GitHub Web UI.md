@@ -3,13 +3,24 @@ date: 2026-07-06
 area: Programmazione
 topic: GitHub
 type: technical-note
-status: "non revisionato"
+status: non revisionato
 publish: true
 difficulty: base
-tags: [github, web-ui, repository, collaborazione]
-aliases: [GitHub Web UI, Interfaccia web GitHub]
-prerequisites: [GitHub, Repository GitHub]
-related: [Pull request, Issues GitHub]
+tags:
+  - github
+  - web-ui
+  - repository
+  - collaborazione
+aliases:
+  - GitHub Web UI
+  - Interfaccia web GitHub
+prerequisites:
+  - "[[Programmazione/GitHub/Pagine/GitHub]]"
+  - "[[Programmazione/GitHub/Pagine/Repository GitHub]]"
+related:
+  - "[[Programmazione/GitHub/Pagine/Pull request]]"
+  - "[[Programmazione/GitHub/Pagine/Issues GitHub]]"
+title: GitHub Web UI
 ---
 
 # GitHub Web UI
@@ -105,11 +116,11 @@ Per capire lo stato di una modifica:
 
 ## Collegamenti
 
-- [[Programmazione/GitHub/Indice GitHub]]
-- [[GitHub]]
-- [[Repository GitHub]]
-- [[Pull request]]
-- [[Issues GitHub]]
+- [[Programmazione/GitHub/Indice GitHub|Indice GitHub]]
+- [[Programmazione/GitHub/Pagine/GitHub|GitHub]]
+- [[Programmazione/GitHub/Pagine/Repository GitHub|Repository GitHub]]
+- [[Programmazione/GitHub/Pagine/Pull request|Pull request]]
+- [[Programmazione/GitHub/Pagine/Issues GitHub|Issues GitHub]]
 
 ## Fonti
 

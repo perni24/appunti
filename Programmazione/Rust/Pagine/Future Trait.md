@@ -3,7 +3,7 @@ date: 2026-05-26
 area: Programmazione
 topic: Rust
 type: technical-note
-status: "non revisionato"
+status: non revisionato
 publish: true
 difficulty: intermedio
 tags:
@@ -11,8 +11,8 @@ tags:
   - rust
   - concorrenza-e-asincronia
 aliases:
-  - "Future"
-  - "std::future::Future"
+  - Future
+  - std::future::Future
 prerequisites:
   - "[[Programmazione/Rust/Pagine/Async Await]]"
   - "[[Programmazione/Rust/Pagine/Pin e Unpin]]"
@@ -20,6 +20,7 @@ related:
   - "[[Programmazione/Rust/Pagine/Runtime async Tokio e async-std]]"
   - "[[Programmazione/Rust/Pagine/select join e cancellation]]"
   - "[[Programmazione/Rust/Pagine/Async streams]]"
+title: Future Trait
 ---
 
 # Future Trait
@@ -125,3 +126,8 @@ fn make_future() -> impl Future<Output = i32> {
 - [[Programmazione/Rust/Pagine/Runtime async Tokio e async-std|Runtime async Tokio e async-std]]
 - [[Programmazione/Rust/Pagine/select join e cancellation|select join e cancellation]]
 - [[Programmazione/Rust/Pagine/Async streams|Async streams]]
+
+
+## Navigazione
+
+- [[Programmazione/Rust/Indice Rust|Indice Rust]]

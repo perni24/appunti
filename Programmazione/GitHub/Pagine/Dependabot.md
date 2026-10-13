@@ -3,13 +3,24 @@ date: 2026-07-06
 area: Programmazione
 topic: GitHub
 type: technical-note
-status: "non revisionato"
+status: non revisionato
 publish: true
 difficulty: intermedio
-tags: [github, dependabot, security, dependencies, supply-chain]
-aliases: [Dependabot]
-prerequisites: [Dependency graph, Repository settings]
-related: [Dependency graph, Security advisories GitHub]
+tags:
+  - github
+  - dependabot
+  - security
+  - dependencies
+  - supply-chain
+aliases:
+  - Dependabot
+prerequisites:
+  - "[[Programmazione/GitHub/Pagine/Dependency graph]]"
+  - "[[Programmazione/GitHub/Pagine/Repository settings]]"
+related:
+  - "[[Programmazione/GitHub/Pagine/Dependency graph]]"
+  - "[[Programmazione/GitHub/Pagine/Security advisories GitHub]]"
+title: Dependabot
 ---
 
 # Dependabot
@@ -97,10 +108,10 @@ Per un progetto Node.js con workflow GitHub Actions:
 
 ## Collegamenti
 
-- [[Programmazione/GitHub/Indice GitHub]]
-- [[Dependency graph]]
-- [[Security advisories GitHub]]
-- [[Required status checks]]
+- [[Programmazione/GitHub/Indice GitHub|Indice GitHub]]
+- [[Programmazione/GitHub/Pagine/Dependency graph|Dependency graph]]
+- [[Programmazione/GitHub/Pagine/Security advisories GitHub|Security advisories GitHub]]
+- [[Programmazione/GitHub/Pagine/Required status checks|Required status checks]]
 
 ## Fonti
 

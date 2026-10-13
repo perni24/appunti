@@ -3,13 +3,21 @@ date: 2026-06-04
 area: Programmazione
 topic: React
 type: technical-note
-status: "non revisionato"
+status: non revisionato
 publish: true
-difficulty: intermediate
-tags: [react, animation, ux]
-aliases: [Animazioni React, Micro-interazioni, Framer Motion, React Spring]
+difficulty: intermedio
+tags:
+  - react
+  - animation
+  - ux
+aliases:
+  - Animazioni React
+  - Micro-interazioni
+  - Framer Motion
+  - React Spring
 prerequisites: []
 related: []
+title: Animazioni e Micro-interazioni
 ---
 
 # Animazioni e Micro-interazioni
@@ -101,8 +109,8 @@ Toast:
 
 ## Collegamenti
 
-- [[Programmazione/React/Indice react|Indice React]]
-- [[Focus Management]]
-- [[Design system]]
-- [[Profiler e Debugging]]
-- [[Visual regression testing]]
+- [[Programmazione/React/Indice React|Indice React]]
+- [[Programmazione/React/Pagine/Focus Management|Focus Management]]
+- [[Programmazione/React/Pagine/Design system|Design system]]
+- [[Programmazione/React/Pagine/Profiler e Debugging|Profiler e Debugging]]
+- [[Programmazione/React/Pagine/Visual regression testing|Visual regression testing]]

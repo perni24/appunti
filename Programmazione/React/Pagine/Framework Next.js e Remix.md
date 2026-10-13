@@ -3,13 +3,21 @@ date: 2026-06-04
 area: Programmazione
 topic: React
 type: technical-note
-status: "non revisionato"
+status: non revisionato
 publish: true
-difficulty: intermediate
-tags: [react, nextjs, remix, framework]
-aliases: [Next.js, Remix, Framework React]
+difficulty: intermedio
+tags:
+  - react
+  - nextjs
+  - remix
+  - framework
+aliases:
+  - Next.js
+  - Remix
+  - Framework React
 prerequisites: []
 related: []
+title: Framework Next.js e Remix
 ---
 
 # Framework Next.js e Remix
@@ -88,8 +96,8 @@ Scelta:
 
 ## Collegamenti
 
-- [[Programmazione/React/Indice react|Indice React]]
-- [[SSR e SSG]]
-- [[Server Components]]
-- [[React Router]]
-- [[Data Fetching e Cache]]
+- [[Programmazione/React/Indice React|Indice React]]
+- [[Programmazione/React/Pagine/SSR e SSG|SSR e SSG]]
+- [[Programmazione/React/Pagine/Server Components|Server Components]]
+- [[Programmazione/React/Pagine/React Router|React Router]]
+- [[Programmazione/React/Pagine/Data Fetching e Cache|Data Fetching e Cache]]

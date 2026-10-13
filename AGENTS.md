@@ -2,17 +2,13 @@
 
 Questo repository e un vault Obsidian usato come base di conoscenza personale.
 
-Contiene appunti tecnici, indici tematici, note operative, riferimenti di studio e documentazione personale. Le note sono organizzate per aree di conoscenza, per esempio:
+Contiene appunti tecnici, indici tematici e note operative. Le sole aree di conoscenza mantenute sono:
 
 - `Programmazione`
-- `Elettronica`
-- `Linux`
-- `AI`
-- `Trading`
-- `Home assistant`
 - `Stampante 3D`
 - `Programmi open source`
-- `Progetti`
+
+Le cartelle `_Template`, `_Meta`, `Raw`, `.github` e `site` sono infrastruttura di supporto, non ulteriori aree tematiche. I file Markdown sono la fonte unica; Quartz ne genera una copia pubblicabile senza modificarli.
 
 L'obiettivo del repository e mantenere conoscenza consultabile sia da una persona sia da un modello LLM.
 
@@ -23,9 +19,9 @@ L'obiettivo del repository e mantenere conoscenza consultabile sia da una person
 - Scrivi le note in italiano.
 - Mantieni codice, nomi di variabili, API e riferimenti tecnici in inglese quando sono standard del settore.
 - Usa Markdown compatibile con Obsidian.
-- Usa collegamenti wiki quando colleghi note interne.
+- Usa collegamenti wiki con percorso completo dal vault e label leggibile, per evitare ambiguita tra linguaggi. Nelle tabelle Markdown scrivi il separatore della label come `\|`.
 - Aggiorna l'indice dell'area quando crei una nuova pagina.
-- Ogni macro argomento deve essere collegato in `Home.md`, che funge da indice generale del vault.
+- Le tre aree sono collegate in `Home.md`; ogni sottoargomento deve essere raggiungibile dal rispettivo indice principale.
 - Mantieni gli indici schematici e leggibili.
 - Evita duplicati: prima di creare una nota, controlla se esiste gia una pagina correlata.
 - Non rimuovere contenuti esistenti senza richiesta esplicita.
@@ -88,24 +84,30 @@ Esempi:
 
 ## Frontmatter
 
-Ogni nuova nota deve iniziare con frontmatter YAML.
+Ogni nuova nota di contenuto deve iniziare con frontmatter YAML. `Home.md` e gli indici sono l'eccezione: non usano YAML e contengono un solo titolo H1.
 
 Campi consigliati:
 
 ```yaml
 ---
 date: YYYY-MM-DD
+title: Titolo della nota
 area:
 topic:
 type:
-status:
-difficulty:
+status: "non revisionato"
+publish: false
+difficulty: base
 tags: []
 aliases: []
 prerequisites: []
 related: []
 ---
 ```
+
+`title` corrisponde al titolo H1. `area` e il nome esatto della cartella principale. `difficulty` e facoltativo: usa `base`, `intermedio` o `avanzato`. La data non certifica una revisione tecnica. Usa wikilink quotati in `prerequisites` e `related`.
+
+Imposta `publish: true` solo per contenuti destinati al sito; `publish: false` o `draft: true` escludono una nota. Gli indici vengono inclusi automaticamente nella copia temporanea. Non collegare note private da note pubbliche.
 
 Valori comuni per `type`:
 
@@ -139,16 +141,21 @@ Esempio:
 ```text
 Programmazione/
   JavaScript/
-    Indice javascript.md
+    Indice JavaScript.md
     Pagine/
       Nome pagina.md
+    Promemoria/
+      Indice Promemoria JavaScript.md
+      Sintassi rapida.md
 ```
 
 Le pagine di contenuto vanno preferibilmente nella cartella `Pagine`.
 
-Gli indici devono servire da mappa di navigazione, non da spiegazione estesa.
+Gli indici devono servire da mappa di navigazione, non da spiegazione estesa. Organizzali per percorso di studio o attivita, senza sezioni vuote. Le voci future restano testo semplice, chiaramente separate dalle pagine disponibili.
 
-`Home.md` e l'indice generale del vault. Quando viene creata una nuova macro area o un nuovo macro argomento, aggiungi un link al relativo indice anche in `Home.md`.
+I promemoria operativi stanno nel linguaggio corrispondente; `Programmazione/Promemoria` e soltanto il portale trasversale. Il nome canonico del database e `PostgreSQL`, anche nei percorsi.
+
+`Home.md` e l'indice generale del vault. Non aggiungere altre aree tematiche senza richiesta esplicita dell'utente.
 
 ---
 
@@ -280,14 +287,12 @@ Esempio:
 ```md
 ## Collegamenti
 
-- [[Fetch API]]
-- [[Promises]]
-- [[CORS]]
+- [[Programmazione/JavaScript/Pagine/Fetch API|Fetch API]]
 ```
 
 I collegamenti devono essere utili per navigare il vault e per aiutare un LLM a ricostruire il contesto.
 
-I link a note non ancora esistenti sono ammessi solo se rappresentano argomenti realmente previsti. Non creare link vaghi o casuali.
+Non creare link a note inesistenti: gli argomenti previsti ma non compilati restano testo semplice negli indici.
 
 ---
 
@@ -304,6 +309,18 @@ Una buona nota dovrebbe contenere:
 
 Per note tecniche, non limitarti a spiegare cosa fa una API: spiega anche quando usarla, perche usarla e quali errori evitare.
 
+Adatta le sezioni del template al contenuto: niente API fittizie nelle schede software, niente lunghe spiegazioni duplicate nei promemoria. Separa i comandi indipendenti in blocchi copiabili, indica prerequisiti ed effetti distruttivi. Usa una gerarchia coerente dei titoli, senza saltare livelli. Aggiungi fonti ufficiali per comportamenti dipendenti da versione, compatibilita o piattaforma; la guida Marlin resta riferita al tag `2.1.2.8` finche non viene aggiornata esplicitamente.
+
+## Verifica e Pubblicazione
+
+- Esegui `npm --prefix site run content:check` per YAML, percorsi, collegamenti e raggiungibilita.
+- Esegui `npm --prefix site run content:test` per i test della trasformazione.
+- Esegui `npm --prefix site run site:build` per verificare il sito completo.
+- Genera il rapporto editoriale con `npm --prefix site run content:check -- --report`. Non confondere questi controlli con l'esecuzione di tutti gli esempi tecnici.
+- Se sposti una nota, aggiorna i collegamenti e `site/redirects.json` per i vecchi URL. Gli indici diventano le pagine iniziali delle rispettive cartelle nel sito.
+- Non modificare gli HTML in `site/public`: sono generati e ignorati da Git. Conserva i sorgenti e le licenze del subtree Quartz.
+- Non inserire allegati privati nelle tre aree pubblicabili; `Raw`, template, metadati e infrastruttura non fanno parte del sito.
+
 ---
 
 ## Uso da parte di un LLM
@@ -317,5 +334,9 @@ Quando lavori su questo repository:
 5. Crea o aggiorna la nota.
 6. Aggiorna l'indice.
 7. Mantieni coerenza con stile, struttura e collegamenti gia presenti.
+
+Per cercare conoscenza, limita la ricerca alle tre aree tematiche. `site/docs`, `site/node_modules`, `site/.quartz` e `site/public` contengono documentazione del generatore, dipendenze o copie derivate: non vanno confusi con gli appunti originali.
+
+Per cercare conoscenza, limita la ricerca alle tre aree tematiche. `site/docs`, `site/node_modules`, `site/.quartz` e `site/public` contengono documentazione del generatore, dipendenze o copie derivate: non vanno confusi con gli appunti originali.
 
 L'obiettivo e rendere ogni nota utile sia per lettura umana sia per recupero contestuale da parte di modelli LLM.

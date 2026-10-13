@@ -3,13 +3,21 @@ date: 2026-06-22
 area: Programmazione
 topic: TypeScript
 type: technical-note
-status: "non revisionato"
+status: non revisionato
 publish: true
 difficulty: base
-tags: [typescript, tipi, primitive-types]
-aliases: [Tipi primitivi TypeScript]
-prerequisites: [Introduzione a TypeScript]
-related: [Variabili e annotazioni di tipo, Union e Intersection Types]
+tags:
+  - typescript
+  - tipi
+  - primitive-types
+aliases:
+  - Tipi primitivi TypeScript
+prerequisites:
+  - "[[Programmazione/TypeScript/Pagine/Introduzione a TypeScript]]"
+related:
+  - "[[Programmazione/TypeScript/Pagine/Variabili e annotazioni di tipo]]"
+  - "[[Programmazione/TypeScript/Pagine/Union e Intersection Types]]"
+title: Tipi primitivi
 ---
 
 # Tipi primitivi
@@ -91,6 +99,11 @@ const product: Product = {
 
 ## Collegamenti
 
-- [[Introduzione a TypeScript]]
-- [[Variabili e annotazioni di tipo]]
-- [[Union e Intersection Types]]
+- [[Programmazione/TypeScript/Pagine/Introduzione a TypeScript|Introduzione a TypeScript]]
+- [[Programmazione/TypeScript/Pagine/Variabili e annotazioni di tipo|Variabili e annotazioni di tipo]]
+- [[Programmazione/TypeScript/Pagine/Union e Intersection Types|Union e Intersection Types]]
+
+
+## Navigazione
+
+- [[Programmazione/TypeScript/Indice TypeScript|Indice TypeScript]]

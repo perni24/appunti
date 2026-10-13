@@ -3,13 +3,23 @@ date: 2026-06-22
 area: Programmazione
 topic: TypeScript
 type: technical-note
-status: "non revisionato"
+status: non revisionato
 publish: true
 difficulty: intermedio
-tags: [typescript, jsdoc, javascript, checkjs]
-aliases: [JSDoc TypeScript, checkJs]
-prerequisites: [Migrazione da JavaScript a TypeScript]
-related: [Typing di librerie JavaScript, Dichiarazioni e file d.ts]
+tags:
+  - typescript
+  - jsdoc
+  - javascript
+  - checkjs
+aliases:
+  - JSDoc TypeScript
+  - checkJs
+prerequisites:
+  - "[[Programmazione/TypeScript/Pagine/Migrazione da JavaScript a TypeScript]]"
+related:
+  - "[[Programmazione/TypeScript/Pagine/Typing di librerie JavaScript]]"
+  - "[[Programmazione/TypeScript/Pagine/Dichiarazioni e file d.ts]]"
+title: JSDoc e type checking in JavaScript
 ---
 
 # JSDoc e type checking in JavaScript
@@ -91,6 +101,11 @@ TypeScript controlla che `user` abbia `id` ed `email` stringa.
 
 ## Collegamenti
 
-- [[Migrazione da JavaScript a TypeScript]]
-- [[Typing di librerie JavaScript]]
-- [[Dichiarazioni e file d.ts]]
+- [[Programmazione/TypeScript/Pagine/Migrazione da JavaScript a TypeScript|Migrazione da JavaScript a TypeScript]]
+- [[Programmazione/TypeScript/Pagine/Typing di librerie JavaScript|Typing di librerie JavaScript]]
+- [[Programmazione/TypeScript/Pagine/Dichiarazioni e file d.ts|Dichiarazioni e file d.ts]]
+
+
+## Navigazione
+
+- [[Programmazione/TypeScript/Indice TypeScript|Indice TypeScript]]

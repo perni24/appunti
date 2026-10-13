@@ -3,13 +3,24 @@ date: 2026-07-06
 area: Programmazione
 topic: GitHub
 type: technical-note
-status: "non revisionato"
+status: non revisionato
 publish: true
 difficulty: intermedio
-tags: [github, branch-protection, repository, sicurezza]
-aliases: [Branch protection rules, Protezione branch GitHub]
-prerequisites: [Branch su GitHub, Pull request]
-related: [Required status checks, Repository rulesets]
+tags:
+  - github
+  - branch-protection
+  - repository
+  - sicurezza
+aliases:
+  - Branch protection rules
+  - Protezione branch GitHub
+prerequisites:
+  - "[[Programmazione/GitHub/Pagine/Branch su GitHub]]"
+  - "[[Programmazione/GitHub/Pagine/Pull request]]"
+related:
+  - "[[Programmazione/GitHub/Pagine/Required status checks]]"
+  - "[[Programmazione/GitHub/Pagine/Repository rulesets]]"
+title: Branch protection rules
 ---
 
 # Branch protection rules
@@ -110,12 +121,12 @@ Questa configurazione rende difficile rompere il branch principale per errore.
 
 ## Collegamenti
 
-- [[Programmazione/GitHub/Indice GitHub]]
-- [[Branch su GitHub]]
-- [[Pull request]]
-- [[Review code su GitHub]]
-- [[Required status checks]]
-- [[Repository rulesets]]
+- [[Programmazione/GitHub/Indice GitHub|Indice GitHub]]
+- [[Programmazione/GitHub/Pagine/Branch su GitHub|Branch su GitHub]]
+- [[Programmazione/GitHub/Pagine/Pull request|Pull request]]
+- [[Programmazione/GitHub/Pagine/Review code su GitHub|Review code su GitHub]]
+- [[Programmazione/GitHub/Pagine/Required status checks|Required status checks]]
+- [[Programmazione/GitHub/Pagine/Repository rulesets|Repository rulesets]]
 
 ## Fonti
 

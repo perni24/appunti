@@ -1,9 +1,9 @@
-﻿---
+---
 date: 2026-05-20
 area: Programmazione
 topic: Rust
 type: technical-note
-status: "non revisionato"
+status: non revisionato
 publish: true
 difficulty: base
 tags:
@@ -12,9 +12,10 @@ tags:
   - moduli
   - cargo
 aliases:
-  - "Moduli, crate e package"
+  - Moduli, crate e package
 prerequisites: []
 related: []
+title: Moduli, crate e package
 ---
 
 # Moduli, crate e package
@@ -100,3 +101,8 @@ fn main() {
 - [[Programmazione/Rust/Pagine/Cargo.toml|Cargo.toml]]
 - [[Programmazione/Rust/Pagine/Visibilita pub use e mod|Visibilita: pub, use e mod]]
 
+
+
+## Navigazione
+
+- [[Programmazione/Rust/Indice Rust|Indice Rust]]

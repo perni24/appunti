@@ -3,7 +3,7 @@ date: 2026-05-28
 area: Programmazione
 topic: Rust
 type: technical-note
-status: "non revisionato"
+status: non revisionato
 publish: true
 difficulty: base
 tags:
@@ -11,14 +11,15 @@ tags:
   - rust
   - testing-qualita-e-sicurezza
 aliases:
-  - "rustfmt"
-  - "cargo fmt"
+  - rustfmt
+  - cargo fmt
 prerequisites:
   - "[[Programmazione/Rust/Pagine/Cargo]]"
 related:
   - "[[Programmazione/Rust/Pagine/Clippy]]"
   - "[[Programmazione/Rust/Pagine/rustdoc]]"
   - "[[Programmazione/Rust/Pagine/cargo-nextest]]"
+title: rustfmt
 ---
 
 # rustfmt
@@ -127,8 +128,8 @@ Poi controlli il diff per verificare che il formatter non abbia reso meno leggib
 
 ## Collegamenti
 
-- [[Programmazione/Rust/Indice rust|Indice Rust]]
-- [[Programmazione/Rust/Pagine/Clippy]]
-- [[Programmazione/Rust/Pagine/rustdoc]]
-- [[Programmazione/Rust/Pagine/cargo-nextest]]
-- [[Programmazione/Rust/Pagine/Cargo]]
+- [[Programmazione/Rust/Indice Rust|Indice Rust]]
+- [[Programmazione/Rust/Pagine/Clippy|Clippy]]
+- [[Programmazione/Rust/Pagine/rustdoc|rustdoc]]
+- [[Programmazione/Rust/Pagine/cargo-nextest|cargo-nextest]]
+- [[Programmazione/Rust/Pagine/Cargo|Cargo]]

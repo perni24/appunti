@@ -3,13 +3,18 @@ date: 2026-06-03
 area: Programmazione
 topic: Python
 type: technical-note
-status: "non revisionato"
+status: non revisionato
 publish: true
-difficulty: intermediate
-tags: [python, programming, logging]
-aliases: [Logging]
+difficulty: intermedio
+tags:
+  - python
+  - programming
+  - logging
+aliases:
+  - Logging
 prerequisites: []
 related: []
+title: Logging in Python
 ---
 
 # Logging in Python
@@ -152,8 +157,8 @@ if __name__ == "__main__":
 
 ## Collegamenti
 
-- [[Programmazione/Python/Indice python|Indice Python]]
+- [[Programmazione/Python/Indice Python|Indice Python]]
 - [[Programmazione/Python/Pagine/Error Handling|Error Handling]]
-- [[Configurazione e Variabili d Ambiente]]
-- [[Standard Library]]
+- [[Programmazione/Python/Pagine/Configurazione e Variabili d Ambiente|Configurazione e Variabili d Ambiente]]
+- [[Programmazione/Python/Pagine/Standard Library|Standard Library]]
 - [[Programmazione/Python/Pagine/Testing|Testing]]

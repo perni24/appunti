@@ -3,13 +3,26 @@ date: 2026-06-22
 area: Programmazione
 topic: TypeScript
 type: technical-note
-status: "non revisionato"
+status: non revisionato
 publish: true
 difficulty: intermedio
-tags: [typescript, utility-types, mapped-types, conditional-types]
-aliases: [Utility Types TypeScript]
-prerequisites: [Mapped Types, Conditional Types, Keyof e typeof]
-related: [Utility Types personalizzati, Partial, Pick, Omit]
+tags:
+  - typescript
+  - utility-types
+  - mapped-types
+  - conditional-types
+aliases:
+  - Utility Types TypeScript
+prerequisites:
+  - "[[Programmazione/TypeScript/Pagine/Mapped Types]]"
+  - "[[Programmazione/TypeScript/Pagine/Conditional Types]]"
+  - "[[Programmazione/TypeScript/Pagine/Keyof e typeof]]"
+related:
+  - "[[Programmazione/TypeScript/Pagine/Utility Types personalizzati]]"
+  - Partial
+  - Pick
+  - Omit
+title: Utility Types
 ---
 
 # Utility Types
@@ -89,6 +102,11 @@ function updateConfig(config: Config, patch: Partial<Config>): Config {
 
 ## Collegamenti
 
-- [[Mapped Types]]
-- [[Conditional Types]]
-- [[Utility Types personalizzati]]
+- [[Programmazione/TypeScript/Pagine/Mapped Types|Mapped Types]]
+- [[Programmazione/TypeScript/Pagine/Conditional Types|Conditional Types]]
+- [[Programmazione/TypeScript/Pagine/Utility Types personalizzati|Utility Types personalizzati]]
+
+
+## Navigazione
+
+- [[Programmazione/TypeScript/Indice TypeScript|Indice TypeScript]]

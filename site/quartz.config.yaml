@@ -1,6 +1,6 @@
 # yaml-language-server: $schema=./quartz/plugins/quartz-plugins.schema.json
 # Template: obsidian
-# Optimized for Obsidian vaults with full OFM support and shortest link resolution.
+# Vault Obsidian con percorsi espliciti e indici come pagine iniziali di cartella.
 configuration:
   pageTitle: Appunti di Luca
   pageTitleSuffix: ""
@@ -14,7 +14,7 @@ configuration:
     - templates
     - .obsidian
   theme:
-    fontOrigin: googleFonts
+    fontOrigin: local
     cdnCaching: true
     typography:
       header: Schibsted Grotesk
@@ -87,7 +87,7 @@ plugins:
   - source: github:quartz-community/crawl-links
     enabled: true
     options:
-      markdownLinkResolution: shortest
+      markdownLinkResolution: absolute
       # disableBrokenWikilinks: false  # Set true to add a "broken" CSS class to internal links whose target is not in ctx.allSlugs.
     order: 60
   - source: github:quartz-community/description
@@ -102,7 +102,7 @@ plugins:
     enabled: false
     order: 85
   - source: github:quartz-community/hard-line-breaks
-    enabled: true
+    enabled: false
     order: 90
   - source: github:quartz-community/ox-hugo
     enabled: false
@@ -111,7 +111,7 @@ plugins:
     enabled: false
     order: 92
   - source: github:quartz-community/fonts
-    enabled: true
+    enabled: false
   - source: github:quartz-community/remove-draft
     enabled: true
   - source: github:quartz-community/explicit-publish
@@ -134,7 +134,7 @@ plugins:
       priority: 50
       display: all
   - source: github:quartz-community/alias-redirects
-    enabled: true
+    enabled: false
   - source: github:quartz-community/content-index
     enabled: true
     options:
@@ -161,7 +161,7 @@ plugins:
       priority: 50
       display: desktop-only
   - source: github:quartz-community/graph
-    enabled: true
+    enabled: false
     layout:
       position: right
       priority: 10
@@ -252,7 +252,7 @@ plugins:
         - tags
         - aliases
       excludedProperties: []
-      hidePropertiesView: false
+      hidePropertiesView: true
       delimiters: "---"
       language: yaml
     order: 5
@@ -264,7 +264,7 @@ plugins:
       name: quartz-themes
       repo: github:saberzero1/quartz-themes
       subdir: plugin
-    enabled: true
+    enabled: false
     options:
       theme: default
   - source: github:quartz-community/obsidian-plugin-excalidraw

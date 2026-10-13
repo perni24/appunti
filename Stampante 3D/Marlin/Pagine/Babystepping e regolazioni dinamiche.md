@@ -3,16 +3,24 @@ date: 2026-07-25
 area: Stampante 3D
 topic: Marlin
 type: operational-note
-
 publish: true
 difficulty: intermedio
-tags: [marlin, babystepping, primo-layer, feedrate, flow]
-aliases: [Babystepping Marlin, Regolazioni durante la stampa Marlin]
+tags:
+  - marlin
+  - babystepping
+  - primo-layer
+  - feedrate
+  - flow
+aliases:
+  - Babystepping Marlin
+  - Regolazioni durante la stampa Marlin
 prerequisites:
   - "[[Stampante 3D/Marlin/Pagine/Endstop homing e Sensorless Homing]]"
   - "[[Stampante 3D/Marlin/Pagine/Velocita accelerazioni Jerk e Junction Deviation]]"
 related: []
-marlin-version: "2.1.2.8"
+marlin-version: 2.1.2.8
+title: Babystepping e regolazioni dinamiche
+status: non revisionato
 ---
 
 # Babystepping e regolazioni dinamiche
@@ -472,7 +480,7 @@ La presenza nel report dipende dalle funzioni compilate. Non presumere che un va
 
 ## Collegamenti
 
-- [[Stampante 3D/Marlin/Indice Marlin]]
-- [[Stampante 3D/Marlin/Pagine/Endstop homing e Sensorless Homing]]
-- [[Stampante 3D/Marlin/Pagine/Velocita accelerazioni Jerk e Junction Deviation]]
-- [[Stampante 3D/Marlin/Pagine/Linear Advance Input Shaping e compensazioni geometriche]]
+- [[Stampante 3D/Marlin/Indice Marlin|Indice Marlin]]
+- [[Stampante 3D/Marlin/Pagine/Endstop homing e Sensorless Homing|Endstop homing e Sensorless Homing]]
+- [[Stampante 3D/Marlin/Pagine/Velocita accelerazioni Jerk e Junction Deviation|Velocita accelerazioni Jerk e Junction Deviation]]
+- [[Stampante 3D/Marlin/Pagine/Linear Advance Input Shaping e compensazioni geometriche|Linear Advance Input Shaping e compensazioni geometriche]]

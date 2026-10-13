@@ -3,7 +3,7 @@ date: 2026-05-26
 area: Programmazione
 topic: Rust
 type: technical-note
-status: "non revisionato"
+status: non revisionato
 publish: true
 difficulty: intermedio
 tags:
@@ -11,8 +11,8 @@ tags:
   - rust
   - concorrenza-e-asincronia
 aliases:
-  - "Stream async"
-  - "Async Stream Rust"
+  - Stream async
+  - Async Stream Rust
 prerequisites:
   - "[[Programmazione/Rust/Pagine/Async Await]]"
   - "[[Programmazione/Rust/Pagine/Future Trait]]"
@@ -21,6 +21,7 @@ related:
   - "[[Programmazione/Rust/Pagine/Channel async]]"
   - "[[Programmazione/Rust/Pagine/select join e cancellation]]"
   - "[[Programmazione/Rust/Pagine/Runtime async Tokio e async-std]]"
+title: Async streams
 ---
 
 # Async streams
@@ -123,3 +124,8 @@ La funzione consuma una sequenza asincrona di numeri.
 - [[Programmazione/Rust/Pagine/Channel async|Channel async]]
 - [[Programmazione/Rust/Pagine/select join e cancellation|select join e cancellation]]
 - [[Programmazione/Rust/Pagine/Pin e Unpin|Pin e Unpin]]
+
+
+## Navigazione
+
+- [[Programmazione/Rust/Indice Rust|Indice Rust]]

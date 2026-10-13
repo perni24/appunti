@@ -1,9 +1,9 @@
-﻿---
+---
 date: 2026-05-20
 area: Programmazione
 topic: Rust
 type: technical-note
-status: "non revisionato"
+status: non revisionato
 publish: true
 difficulty: base
 tags:
@@ -13,6 +13,7 @@ tags:
 aliases: []
 prerequisites: []
 related: []
+title: Sintassi di base
 ---
 
 # Sintassi di base
@@ -94,3 +95,8 @@ Il blocco assegnato a `y` restituisce `doubled + 1` perche l'ultima riga non ha 
 - [[Programmazione/Rust/Pagine/Funzioni|Funzioni]]
 - [[Programmazione/Rust/Pagine/Controllo di flusso|Controllo di flusso]]
 
+
+
+## Navigazione
+
+- [[Programmazione/Rust/Indice Rust|Indice Rust]]

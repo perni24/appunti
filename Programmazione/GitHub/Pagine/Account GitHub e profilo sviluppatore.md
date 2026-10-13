@@ -3,13 +3,23 @@ date: 2026-07-06
 area: Programmazione
 topic: GitHub
 type: technical-note
-status: "non revisionato"
+status: non revisionato
 publish: true
 difficulty: base
-tags: [github, account, profilo, sicurezza]
-aliases: [Account GitHub, Profilo GitHub]
-prerequisites: [GitHub]
-related: [Sicurezza dei token GitHub, Accessi ruoli e permessi GitHub]
+tags:
+  - github
+  - account
+  - profilo
+  - sicurezza
+aliases:
+  - Account GitHub
+  - Profilo GitHub
+prerequisites:
+  - "[[Programmazione/GitHub/Pagine/GitHub]]"
+related:
+  - "[[Programmazione/GitHub/Pagine/Sicurezza dei token GitHub]]"
+  - "[[Programmazione/GitHub/Pagine/Accessi ruoli e permessi GitHub]]"
+title: Account GitHub e profilo sviluppatore
 ---
 
 # Account GitHub e profilo sviluppatore
@@ -115,10 +125,10 @@ Esempio di sezione:
 
 ## Collegamenti
 
-- [[Programmazione/GitHub/Indice GitHub]]
-- [[GitHub]]
-- [[Git e GitHub]]
-- [[Repository GitHub]]
+- [[Programmazione/GitHub/Indice GitHub|Indice GitHub]]
+- [[Programmazione/GitHub/Pagine/GitHub|GitHub]]
+- [[Programmazione/GitHub/Pagine/Git e GitHub|Git e GitHub]]
+- [[Programmazione/GitHub/Pagine/Repository GitHub|Repository GitHub]]
 
 ## Fonti
 

@@ -3,13 +3,24 @@ date: 2026-07-09
 area: Programmazione
 topic: Clean Code
 type: technical-note
-status: "non revisionato"
+status: non revisionato
 publish: true
 difficulty: intermedio
-tags: [clean-code, tooling, static-analysis]
-aliases: [Static analysis, Analisi statica]
-prerequisites: [Linter, Type checking]
-related: [Code quality gates, Complessita ciclomatica, Complessita cognitiva]
+tags:
+  - clean-code
+  - tooling
+  - static-analysis
+aliases:
+  - Static analysis
+  - Analisi statica
+prerequisites:
+  - "[[Programmazione/Clean Code/Pagine/Linter]]"
+  - "[[Programmazione/Clean Code/Pagine/Type checking]]"
+related:
+  - "[[Programmazione/Clean Code/Pagine/Code quality gates]]"
+  - "[[Programmazione/Clean Code/Pagine/Complessita ciclomatica]]"
+  - "[[Programmazione/Clean Code/Pagine/Complessita cognitiva]]"
+title: Static analysis
 ---
 
 # Static analysis
@@ -79,12 +90,12 @@ L'analisi statica e un segnale per guidare il refactoring, non un giudice assolu
 
 ## Collegamenti
 
-- [[Programmazione/Clean Code/Indice Clean Code]]
-- [[Linter]]
-- [[Type checking]]
-- [[Code quality gates]]
-- [[Complessita ciclomatica]]
-- [[Complessita cognitiva]]
+- [[Programmazione/Clean Code/Indice Clean Code|Indice Clean Code]]
+- [[Programmazione/Clean Code/Pagine/Linter|Linter]]
+- [[Programmazione/Clean Code/Pagine/Type checking|Type checking]]
+- [[Programmazione/Clean Code/Pagine/Code quality gates|Code quality gates]]
+- [[Programmazione/Clean Code/Pagine/Complessita ciclomatica|Complessita ciclomatica]]
+- [[Programmazione/Clean Code/Pagine/Complessita cognitiva|Complessita cognitiva]]
 
 ## Fonti
 

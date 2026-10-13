@@ -3,13 +3,21 @@ date: 2026-06-04
 area: Programmazione
 topic: React
 type: technical-note
-status: "non revisionato"
+status: non revisionato
 publish: true
-difficulty: intermediate
-tags: [react, validation, forms, zod]
-aliases: [Validazione Dati, Zod, Validazione Form]
+difficulty: intermedio
+tags:
+  - react
+  - validation
+  - forms
+  - zod
+aliases:
+  - Validazione Dati
+  - Zod
+  - Validazione Form
 prerequisites: []
 related: []
+title: Validazione Dati
 ---
 
 # Validazione Dati
@@ -114,8 +122,8 @@ La UI mostra errori specifici e invia solo dati validati.
 
 ## Collegamenti
 
-- [[Programmazione/React/Indice react|Indice React]]
-- [[Gestione Moduli]]
-- [[API layer]]
-- [[Data Fetching e Cache]]
-- [[Protezione XSS]]
+- [[Programmazione/React/Indice React|Indice React]]
+- [[Programmazione/React/Pagine/Gestione Moduli|Gestione Moduli]]
+- [[Programmazione/React/Pagine/API layer|API layer]]
+- [[Programmazione/React/Pagine/Data Fetching e Cache|Data Fetching e Cache]]
+- [[Programmazione/React/Pagine/Protezione XSS|Protezione XSS]]

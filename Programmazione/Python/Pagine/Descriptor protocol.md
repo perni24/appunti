@@ -3,9 +3,8 @@ date: 2026-06-03
 area: Programmazione
 topic: Python
 type: theory-note
-status: "non revisionato"
+status: non revisionato
 publish: true
-difficulty: 
 tags:
   - programmazione
   - python
@@ -14,6 +13,7 @@ tags:
 aliases: []
 prerequisites: []
 related: []
+title: Descriptor protocol
 ---
 
 # Descriptor protocol
@@ -95,3 +95,8 @@ Assegnare `product.price = -1` solleva `ValueError`.
 - [[Programmazione/Python/Pagine/Proprietà|Proprietà]]
 - [[Programmazione/Python/Pagine/Data model|Data model]]
 - [[Programmazione/Python/Pagine/Metodi di classe e statici|Metodi di classe e statici]]
+
+
+## Navigazione
+
+- [[Programmazione/Python/Indice Python|Indice Python]]

@@ -3,13 +3,19 @@ date: 2026-06-03
 area: Programmazione
 topic: Python
 type: technical-note
-status: "non revisionato"
+status: non revisionato
 publish: true
-difficulty: intermediate
-tags: [programmazione, python, web, api]
-aliases: [FastAPI]
+difficulty: intermedio
+tags:
+  - programmazione
+  - python
+  - web
+  - api
+aliases:
+  - FastAPI
 prerequisites: []
 related: []
+title: FastAPI
 ---
 
 # FastAPI
@@ -140,9 +146,9 @@ async def create_user(
 
 ## Collegamenti
 
-- [[Programmazione/Python/Indice python|Indice Python]]
-- [[Starlette]]
-- [[Pydantic]]
-- [[Asyncio]]
-- [[HTTPX e requests]]
-- [[SQLAlchemy]]
+- [[Programmazione/Python/Indice Python|Indice Python]]
+- [[Programmazione/Python/Pagine/Starlette|Starlette]]
+- [[Programmazione/Python/Pagine/Pydantic|Pydantic]]
+- [[Programmazione/Python/Pagine/Asyncio|Asyncio]]
+- [[Programmazione/Python/Pagine/HTTPX e requests|HTTPX e requests]]
+- [[Programmazione/Python/Pagine/SQLAlchemy|SQLAlchemy]]

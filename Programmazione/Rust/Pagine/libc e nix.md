@@ -3,7 +3,7 @@ date: 2026-05-26
 area: Programmazione
 topic: Rust
 type: technical-note
-status: "non revisionato"
+status: non revisionato
 publish: true
 difficulty: avanzato
 tags:
@@ -11,8 +11,8 @@ tags:
   - rust
   - rust-di-sistema
 aliases:
-  - "libc"
-  - "nix crate"
+  - libc
+  - nix crate
 prerequisites:
   - "[[Programmazione/Rust/Pagine/FFI]]"
   - "[[Programmazione/Rust/Pagine/File descriptor]]"
@@ -20,6 +20,7 @@ related:
   - "[[Programmazione/Rust/Pagine/Raw pointers]]"
   - "[[Programmazione/Rust/Pagine/Unsafe abstractions sicure]]"
   - "[[Programmazione/Rust/Pagine/Memory mapping]]"
+title: libc e nix
 ---
 
 # libc e nix
@@ -115,3 +116,8 @@ La funzione restituisce un tipo Rust invece di un intero C grezzo.
 - [[Programmazione/Rust/Pagine/Memory mapping|Memory mapping]]
 - [[Programmazione/Rust/Pagine/Raw pointers|Raw pointers]]
 - [[Programmazione/Rust/Pagine/Unsafe abstractions sicure|Unsafe abstractions sicure]]
+
+
+## Navigazione
+
+- [[Programmazione/Rust/Indice Rust|Indice Rust]]

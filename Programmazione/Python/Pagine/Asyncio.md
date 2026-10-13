@@ -3,13 +3,19 @@ date: 2026-06-03
 area: Programmazione
 topic: Python
 type: technical-note
-status: "non revisionato"
+status: non revisionato
 publish: true
-difficulty: intermediate
-tags: [python, programming, async]
-aliases: [Asyncio, async await Python]
+difficulty: intermedio
+tags:
+  - python
+  - programming
+  - async
+aliases:
+  - Asyncio
+  - async await Python
 prerequisites: []
 related: []
+title: Asyncio in Python
 ---
 
 # Asyncio in Python
@@ -165,9 +171,9 @@ Il tempo totale segue l'operazione piu lenta, non la somma di tutte, perche le a
 
 ## Collegamenti
 
-- [[Programmazione/Python/Indice python|Indice Python]]
-- [[Threading]]
-- [[Concurrent.futures]]
-- [[Global Interpreter Lock]]
-- [[Networking base]]
-- [[HTTPX e requests]]
+- [[Programmazione/Python/Indice Python|Indice Python]]
+- [[Programmazione/Python/Pagine/Threading|Threading]]
+- [[Programmazione/Python/Pagine/Concurrent.futures|Concurrent.futures]]
+- [[Programmazione/Python/Pagine/Global Interpreter Lock|Global Interpreter Lock]]
+- [[Programmazione/Python/Pagine/Networking base|Networking base]]
+- [[Programmazione/Python/Pagine/HTTPX e requests|HTTPX e requests]]

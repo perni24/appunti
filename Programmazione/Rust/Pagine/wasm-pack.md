@@ -3,7 +3,7 @@ date: 2026-05-27
 area: Programmazione
 topic: Rust
 type: technical-note
-status: "non revisionato"
+status: non revisionato
 publish: true
 difficulty: intermedio
 tags:
@@ -11,7 +11,7 @@ tags:
   - rust
   - webassembly
 aliases:
-  - "wasm-pack"
+  - wasm-pack
 prerequisites:
   - "[[Programmazione/Rust/Pagine/Cargo]]"
   - "[[Programmazione/Rust/Pagine/wasm-bindgen]]"
@@ -20,6 +20,7 @@ related:
   - "[[Programmazione/Rust/Pagine/Cross-compilation]]"
   - "[[Programmazione/Rust/Pagine/Interop con JavaScript]]"
   - "[[Programmazione/Rust/Pagine/Build profiles]]"
+title: wasm-pack
 ---
 
 # wasm-pack
@@ -153,10 +154,10 @@ L'inizializzazione e spesso asincrona perche il modulo `.wasm` deve essere caric
 
 ## Collegamenti
 
-- [[Programmazione/Rust/Indice rust|Indice Rust]]
-- [[Programmazione/Rust/Pagine/wasm-bindgen]]
-- [[Programmazione/Rust/Pagine/Interop con JavaScript]]
-- [[Programmazione/Rust/Pagine/Packaging e release]]
-- [[Programmazione/Rust/Pagine/Cargo]]
-- [[Programmazione/Rust/Pagine/Cross-compilation]]
-- [[Programmazione/Rust/Pagine/Build profiles]]
+- [[Programmazione/Rust/Indice Rust|Indice Rust]]
+- [[Programmazione/Rust/Pagine/wasm-bindgen|wasm-bindgen]]
+- [[Programmazione/Rust/Pagine/Interop con JavaScript|Interop con JavaScript]]
+- [[Programmazione/Rust/Pagine/Packaging e release|Packaging e release]]
+- [[Programmazione/Rust/Pagine/Cargo|Cargo]]
+- [[Programmazione/Rust/Pagine/Cross-compilation|Cross-compilation]]
+- [[Programmazione/Rust/Pagine/Build profiles|Build profiles]]

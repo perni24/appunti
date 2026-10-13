@@ -3,13 +3,19 @@ date: 2026-06-04
 area: Programmazione
 topic: React
 type: technical-note
-status: "non revisionato"
+status: non revisionato
 publish: true
-difficulty: beginner
-tags: [react, css, styling]
-aliases: [Styling base, Styling React]
+difficulty: base
+tags:
+  - react
+  - css
+  - styling
+aliases:
+  - Styling base
+  - Styling React
 prerequisites: []
 related: []
+title: Styling base
 ---
 
 # Styling base
@@ -108,8 +114,8 @@ Variabili CSS:
 
 ## Collegamenti
 
-- [[Programmazione/React/Indice react|Indice React]]
-- [[CSS Modules]]
-- [[Design system]]
-- [[WAI-ARIA]]
-- [[Animazioni e Micro-interazioni]]
+- [[Programmazione/React/Indice React|Indice React]]
+- [[Programmazione/React/Pagine/CSS Modules|CSS Modules]]
+- [[Programmazione/React/Pagine/Design system|Design system]]
+- [[Programmazione/React/Pagine/WAI-ARIA|WAI-ARIA]]
+- [[Programmazione/React/Pagine/Animazioni e Micro-interazioni|Animazioni e Micro-interazioni]]

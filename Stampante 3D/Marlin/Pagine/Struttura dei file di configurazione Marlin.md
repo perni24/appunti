@@ -3,16 +3,22 @@ date: 2026-07-25
 area: Stampante 3D
 topic: Marlin
 type: technical-note
-
 publish: true
 difficulty: base
-tags: [marlin, configurazione, preprocessore]
-aliases: [Configuration.h e Configuration_adv.h, File di configurazione Marlin]
+tags:
+  - marlin
+  - configurazione
+  - preprocessore
+aliases:
+  - Configuration.h e Configuration_adv.h
+  - File di configurazione Marlin
 prerequisites:
   - "[[Stampante 3D/Marlin/Pagine/Introduzione a Marlin 2.1.2.8 e compatibilita]]"
 related:
   - "[[Stampante 3D/Marlin/Pagine/Metodo di configurazione compilazione e caricamento]]"
-marlin-version: "2.1.2.8"
+marlin-version: 2.1.2.8
+title: Struttura di Configuration.h e Configuration_adv.h
+status: non revisionato
 ---
 
 # Struttura di Configuration.h e Configuration_adv.h
@@ -268,6 +274,6 @@ Per ogni opzione controllare nell'ordine:
 
 ## Collegamenti
 
-- [[Stampante 3D/Marlin/Indice Marlin]]
-- [[Stampante 3D/Marlin/Pagine/Introduzione a Marlin 2.1.2.8 e compatibilita]]
-- [[Stampante 3D/Marlin/Pagine/Metodo di configurazione compilazione e caricamento]]
+- [[Stampante 3D/Marlin/Indice Marlin|Indice Marlin]]
+- [[Stampante 3D/Marlin/Pagine/Introduzione a Marlin 2.1.2.8 e compatibilita|Introduzione a Marlin 2.1.2.8 e compatibilita]]
+- [[Stampante 3D/Marlin/Pagine/Metodo di configurazione compilazione e caricamento|Metodo di configurazione compilazione e caricamento]]

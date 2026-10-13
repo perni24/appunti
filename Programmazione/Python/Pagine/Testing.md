@@ -3,13 +3,19 @@ date: 2026-06-03
 area: Programmazione
 topic: Python
 type: technical-note
-status: "non revisionato"
+status: non revisionato
 publish: true
-difficulty: intermediate
-tags: [python, programming, testing]
-aliases: [Testing, Test Python]
+difficulty: intermedio
+tags:
+  - python
+  - programming
+  - testing
+aliases:
+  - Testing
+  - Test Python
 prerequisites: []
 related: []
+title: Testing in Python
 ---
 
 # Testing in Python
@@ -178,9 +184,9 @@ def test_send_notification():
 
 ## Collegamenti
 
-- [[Programmazione/Python/Indice python|Indice Python]]
+- [[Programmazione/Python/Indice Python|Indice Python]]
 - [[Programmazione/Python/Pagine/Error Handling|Error Handling]]
-- [[Creazione di Package]]
-- [[Logging]]
-- [[tox e nox]]
-- [[pre-commit]]
+- [[Programmazione/Python/Pagine/Creazione di Package|Creazione di Package]]
+- [[Programmazione/Python/Pagine/Logging|Logging]]
+- [[Programmazione/Python/Pagine/tox e nox|tox e nox]]
+- [[Programmazione/Python/Pagine/pre-commit|pre-commit]]

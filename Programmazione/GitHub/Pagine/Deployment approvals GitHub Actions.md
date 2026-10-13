@@ -3,13 +3,23 @@ date: 2026-07-07
 area: Programmazione
 topic: GitHub
 type: technical-note
-status: "non revisionato"
+status: non revisionato
 publish: true
 difficulty: intermedio
-tags: [github, github-actions, deployment, approvals]
-aliases: [Deployment approvals GitHub Actions, Review deployments]
-prerequisites: [Environments GitHub Actions]
-related: [Deploy con GitHub Actions, Environments GitHub Actions]
+tags:
+  - github
+  - github-actions
+  - deployment
+  - approvals
+aliases:
+  - Deployment approvals GitHub Actions
+  - Review deployments
+prerequisites:
+  - "[[Programmazione/GitHub/Pagine/Environments GitHub Actions]]"
+related:
+  - "[[Programmazione/GitHub/Pagine/Deploy con GitHub Actions]]"
+  - "[[Programmazione/GitHub/Pagine/Environments GitHub Actions]]"
+title: Deployment approvals GitHub Actions
 ---
 
 # Deployment approvals GitHub Actions
@@ -100,10 +110,10 @@ Questo separa automazione e controllo operativo.
 
 ## Collegamenti
 
-- [[Programmazione/GitHub/Indice GitHub]]
-- [[Deploy con GitHub Actions]]
-- [[Environments GitHub Actions]]
-- [[Release automation GitHub Actions]]
+- [[Programmazione/GitHub/Indice GitHub|Indice GitHub]]
+- [[Programmazione/GitHub/Pagine/Deploy con GitHub Actions|Deploy con GitHub Actions]]
+- [[Programmazione/GitHub/Pagine/Environments GitHub Actions|Environments GitHub Actions]]
+- [[Programmazione/GitHub/Pagine/Release automation GitHub Actions|Release automation GitHub Actions]]
 
 ## Fonti
 

@@ -3,13 +3,19 @@ date: 2026-06-04
 area: Programmazione
 topic: React
 type: technical-note
-status: "non revisionato"
+status: non revisionato
 publish: true
-difficulty: intermediate
-tags: [react, portals, ui]
-aliases: [Portals, React Portal]
+difficulty: intermedio
+tags:
+  - react
+  - portals
+  - ui
+aliases:
+  - Portals
+  - React Portal
 prerequisites: []
 related: []
+title: Portals
 ---
 
 # Portals
@@ -94,8 +100,8 @@ function ConfirmDialog({ onConfirm, onCancel }) {
 
 ## Collegamenti
 
-- [[Programmazione/React/Indice react|Indice React]]
-- [[Focus Management]]
-- [[WAI-ARIA]]
-- [[Compound Components Pattern]]
-- [[Design system]]
+- [[Programmazione/React/Indice React|Indice React]]
+- [[Programmazione/React/Pagine/Focus Management|Focus Management]]
+- [[Programmazione/React/Pagine/WAI-ARIA|WAI-ARIA]]
+- [[Programmazione/React/Pagine/Compound Components Pattern|Compound Components Pattern]]
+- [[Programmazione/React/Pagine/Design system|Design system]]

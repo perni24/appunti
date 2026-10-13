@@ -3,13 +3,25 @@ date: 2026-06-22
 area: Programmazione
 topic: TypeScript
 type: technical-note
-status: "non revisionato"
+status: non revisionato
 publish: true
 difficulty: intermedio
-tags: [typescript, api, codegen, openapi, graphql]
-aliases: [API type generation, Codegen tipi API]
-prerequisites: [API tipizzate, Validazione runtime e tipi statici]
-related: [Typing di librerie JavaScript, DTO e modelli di dominio]
+tags:
+  - typescript
+  - api
+  - codegen
+  - openapi
+  - graphql
+aliases:
+  - API type generation
+  - Codegen tipi API
+prerequisites:
+  - "[[Programmazione/TypeScript/Pagine/API tipizzate]]"
+  - "[[Programmazione/TypeScript/Pagine/Validazione runtime e tipi statici]]"
+related:
+  - "[[Programmazione/TypeScript/Pagine/Typing di librerie JavaScript]]"
+  - "[[Programmazione/TypeScript/Pagine/DTO e modelli di dominio]]"
+title: Generazione di tipi da API
 ---
 
 # Generazione di tipi da API
@@ -76,6 +88,11 @@ Il tipo della risposta deriva dallo schema OpenAPI.
 
 ## Collegamenti
 
-- [[API tipizzate]]
-- [[Validazione runtime e tipi statici]]
+- [[Programmazione/TypeScript/Pagine/API tipizzate|API tipizzate]]
+- [[Programmazione/TypeScript/Pagine/Validazione runtime e tipi statici|Validazione runtime e tipi statici]]
 - [[Programmazione/TypeScript/Pagine/DTO e modelli di dominio|DTO e modelli di dominio]]
+
+
+## Navigazione
+
+- [[Programmazione/TypeScript/Indice TypeScript|Indice TypeScript]]

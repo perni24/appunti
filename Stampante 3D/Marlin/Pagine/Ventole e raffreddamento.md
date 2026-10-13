@@ -3,18 +3,27 @@ date: 2026-07-25
 area: Stampante 3D
 topic: Marlin
 type: technical-note
-
 publish: true
 difficulty: avanzato
-tags: [marlin, ventole, raffreddamento, pwm, fan]
-aliases: [Ventole Marlin, Raffreddamento Marlin, Fan control Marlin]
+tags:
+  - marlin
+  - ventole
+  - raffreddamento
+  - pwm
+  - fan
+aliases:
+  - Ventole Marlin
+  - Raffreddamento Marlin
+  - Fan control Marlin
 prerequisites:
   - "[[Stampante 3D/Marlin/Pagine/Scheda madre porte seriali e pin]]"
   - "[[Stampante 3D/Marlin/Pagine/Sensori di temperatura e limiti operativi]]"
 related:
   - "[[Stampante 3D/Marlin/Pagine/Controllo PID MPC e protezioni termiche]]"
   - "[[Stampante 3D/Marlin/Pagine/Driver stepper corrente e microstepping]]"
-marlin-version: "2.1.2.8"
+marlin-version: 2.1.2.8
+title: Ventole e raffreddamento
+status: non revisionato
 ---
 
 # Ventole e raffreddamento
@@ -456,9 +465,9 @@ La funzione aiuta in una condizione transitoria, ma non deve compensare un convo
 
 ## Collegamenti
 
-- [[Stampante 3D/Marlin/Indice Marlin]]
-- [[Stampante 3D/Marlin/Pagine/Sensori di temperatura e limiti operativi]]
-- [[Stampante 3D/Marlin/Pagine/Controllo PID MPC e protezioni termiche]]
-- [[Stampante 3D/Marlin/Pagine/Scheda madre porte seriali e pin]]
-- [[Stampante 3D/Marlin/Pagine/Alimentazione e protezioni hardware]]
-- [[Stampante 3D/Marlin/Pagine/Hotend estrusori e filamento]]
+- [[Stampante 3D/Marlin/Indice Marlin|Indice Marlin]]
+- [[Stampante 3D/Marlin/Pagine/Sensori di temperatura e limiti operativi|Sensori di temperatura e limiti operativi]]
+- [[Stampante 3D/Marlin/Pagine/Controllo PID MPC e protezioni termiche|Controllo PID MPC e protezioni termiche]]
+- [[Stampante 3D/Marlin/Pagine/Scheda madre porte seriali e pin|Scheda madre porte seriali e pin]]
+- [[Stampante 3D/Marlin/Pagine/Alimentazione e protezioni hardware|Alimentazione e protezioni hardware]]
+- [[Stampante 3D/Marlin/Pagine/Hotend estrusori e filamento|Hotend estrusori e filamento]]

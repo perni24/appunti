@@ -3,7 +3,7 @@ date: 2026-05-28
 area: Programmazione
 topic: Rust
 type: technical-note
-status: "non revisionato"
+status: non revisionato
 publish: true
 difficulty: avanzato
 tags:
@@ -11,8 +11,8 @@ tags:
   - rust
   - testing-qualita-e-sicurezza
 aliases:
-  - "cargo deny"
-  - "cargo-deny"
+  - cargo deny
+  - cargo-deny
 prerequisites:
   - "[[Programmazione/Rust/Pagine/Cargo.lock]]"
   - "[[Programmazione/Rust/Pagine/cargo audit]]"
@@ -21,6 +21,7 @@ related:
   - "[[Programmazione/Rust/Pagine/Crates.io]]"
   - "[[Programmazione/Rust/Pagine/Semantic Versioning]]"
   - "[[Programmazione/Rust/Pagine/Packaging e release]]"
+title: cargo deny
 ---
 
 # cargo deny
@@ -137,10 +138,10 @@ Se `cargo deny` fallisce per una licenza o advisory, la soluzione non e ignorare
 
 ## Collegamenti
 
-- [[Programmazione/Rust/Indice rust|Indice Rust]]
-- [[Programmazione/Rust/Pagine/cargo audit]]
-- [[Programmazione/Rust/Pagine/Cargo.lock]]
-- [[Programmazione/Rust/Pagine/Crates.io]]
-- [[Programmazione/Rust/Pagine/Semantic Versioning]]
-- [[Programmazione/Rust/Pagine/Packaging e release]]
-- [[Programmazione/Rust/Pagine/Workspace]]
+- [[Programmazione/Rust/Indice Rust|Indice Rust]]
+- [[Programmazione/Rust/Pagine/cargo audit|cargo audit]]
+- [[Programmazione/Rust/Pagine/Cargo.lock|Cargo.lock]]
+- [[Programmazione/Rust/Pagine/Crates.io|Crates.io]]
+- [[Programmazione/Rust/Pagine/Semantic Versioning|Semantic Versioning]]
+- [[Programmazione/Rust/Pagine/Packaging e release|Packaging e release]]
+- [[Programmazione/Rust/Pagine/Workspace|Workspace]]

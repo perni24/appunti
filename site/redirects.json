@@ -1,0 +1,614 @@
+[
+  {
+    "from": "Programmazione/JavaScript/Indice javascript.md",
+    "to": "Programmazione/JavaScript/Indice JavaScript.md"
+  },
+  {
+    "from": "Programmazione/Postgres/Indice postgres.md",
+    "to": "Programmazione/PostgreSQL/Indice PostgreSQL.md"
+  },
+  {
+    "from": "Programmazione/Postgres/Pagine/Aggregazioni e GROUP BY.md",
+    "to": "Programmazione/PostgreSQL/Pagine/Aggregazioni e GROUP BY.md"
+  },
+  {
+    "from": "Programmazione/Postgres/Pagine/Analisi delle Query.md",
+    "to": "Programmazione/PostgreSQL/Pagine/Analisi delle Query.md"
+  },
+  {
+    "from": "Programmazione/Postgres/Pagine/Architettura dei Processi.md",
+    "to": "Programmazione/PostgreSQL/Pagine/Architettura dei Processi.md"
+  },
+  {
+    "from": "Programmazione/Postgres/Pagine/Audit logging.md",
+    "to": "Programmazione/PostgreSQL/Pagine/Audit logging.md"
+  },
+  {
+    "from": "Programmazione/Postgres/Pagine/Backup e Ripristino.md",
+    "to": "Programmazione/PostgreSQL/Pagine/Backup e Ripristino.md"
+  },
+  {
+    "from": "Programmazione/Postgres/Pagine/Chiavi primarie e foreign key.md",
+    "to": "Programmazione/PostgreSQL/Pagine/Chiavi primarie e foreign key.md"
+  },
+  {
+    "from": "Programmazione/Postgres/Pagine/Code e job table.md",
+    "to": "Programmazione/PostgreSQL/Pagine/Code e job table.md"
+  },
+  {
+    "from": "Programmazione/Postgres/Pagine/Comandi psql e Meta-comandi.md",
+    "to": "Programmazione/PostgreSQL/Pagine/Comandi psql e Meta-comandi.md"
+  },
+  {
+    "from": "Programmazione/Postgres/Pagine/Common Table Expressions e Recursive Queries.md",
+    "to": "Programmazione/PostgreSQL/Pagine/Common Table Expressions e Recursive Queries.md"
+  },
+  {
+    "from": "Programmazione/Postgres/Pagine/Configurazione.md",
+    "to": "Programmazione/PostgreSQL/Pagine/Configurazione.md"
+  },
+  {
+    "from": "Programmazione/Postgres/Pagine/Connection Pooling.md",
+    "to": "Programmazione/PostgreSQL/Pagine/Connection Pooling.md"
+  },
+  {
+    "from": "Programmazione/Postgres/Pagine/Driver e connection string.md",
+    "to": "Programmazione/PostgreSQL/Pagine/Driver e connection string.md"
+  },
+  {
+    "from": "Programmazione/Postgres/Pagine/Failover e Load Balancing.md",
+    "to": "Programmazione/PostgreSQL/Pagine/Failover e Load Balancing.md"
+  },
+  {
+    "from": "Programmazione/Postgres/Pagine/FDW.md",
+    "to": "Programmazione/PostgreSQL/Pagine/FDW.md"
+  },
+  {
+    "from": "Programmazione/Postgres/Pagine/File System Layout e Data Directory.md",
+    "to": "Programmazione/PostgreSQL/Pagine/File System Layout e Data Directory.md"
+  },
+  {
+    "from": "Programmazione/Postgres/Pagine/Fillfactor.md",
+    "to": "Programmazione/PostgreSQL/Pagine/Fillfactor.md"
+  },
+  {
+    "from": "Programmazione/Postgres/Pagine/Full Text Search.md",
+    "to": "Programmazione/PostgreSQL/Pagine/Full Text Search.md"
+  },
+  {
+    "from": "Programmazione/Postgres/Pagine/Funzioni e Store Procedures.md",
+    "to": "Programmazione/PostgreSQL/Pagine/Funzioni e Store Procedures.md"
+  },
+  {
+    "from": "Programmazione/Postgres/Pagine/Gestione della Memoria.md",
+    "to": "Programmazione/PostgreSQL/Pagine/Gestione della Memoria.md"
+  },
+  {
+    "from": "Programmazione/Postgres/Pagine/Gestione delle Estensioni.md",
+    "to": "Programmazione/PostgreSQL/Pagine/Gestione delle Estensioni.md"
+  },
+  {
+    "from": "Programmazione/Postgres/Pagine/Gestione Utenti e Ruoli.md",
+    "to": "Programmazione/PostgreSQL/Pagine/Gestione Utenti e Ruoli.md"
+  },
+  {
+    "from": "Programmazione/Postgres/Pagine/Indici Parziali e Coprenti.md",
+    "to": "Programmazione/PostgreSQL/Pagine/Indici Parziali e Coprenti.md"
+  },
+  {
+    "from": "Programmazione/Postgres/Pagine/Installazione e Inizializzazione.md",
+    "to": "Programmazione/PostgreSQL/Pagine/Installazione e Inizializzazione.md"
+  },
+  {
+    "from": "Programmazione/Postgres/Pagine/JOIN.md",
+    "to": "Programmazione/PostgreSQL/Pagine/JOIN.md"
+  },
+  {
+    "from": "Programmazione/Postgres/Pagine/LATERAL JOIN.md",
+    "to": "Programmazione/PostgreSQL/Pagine/LATERAL JOIN.md"
+  },
+  {
+    "from": "Programmazione/Postgres/Pagine/Livelli di Isolamento delle Transazioni.md",
+    "to": "Programmazione/PostgreSQL/Pagine/Livelli di Isolamento delle Transazioni.md"
+  },
+  {
+    "from": "Programmazione/Postgres/Pagine/Lock monitoring.md",
+    "to": "Programmazione/PostgreSQL/Pagine/Lock monitoring.md"
+  },
+  {
+    "from": "Programmazione/Postgres/Pagine/Logical decoding.md",
+    "to": "Programmazione/PostgreSQL/Pagine/Logical decoding.md"
+  },
+  {
+    "from": "Programmazione/Postgres/Pagine/Manutenzione.md",
+    "to": "Programmazione/PostgreSQL/Pagine/Manutenzione.md"
+  },
+  {
+    "from": "Programmazione/Postgres/Pagine/Meccanismi di Locking.md",
+    "to": "Programmazione/PostgreSQL/Pagine/Meccanismi di Locking.md"
+  },
+  {
+    "from": "Programmazione/Postgres/Pagine/Metriche e alerting.md",
+    "to": "Programmazione/PostgreSQL/Pagine/Metriche e alerting.md"
+  },
+  {
+    "from": "Programmazione/Postgres/Pagine/Migrazioni schema.md",
+    "to": "Programmazione/PostgreSQL/Pagine/Migrazioni schema.md"
+  },
+  {
+    "from": "Programmazione/Postgres/Pagine/Modello Client-Server.md",
+    "to": "Programmazione/PostgreSQL/Pagine/Modello Client-Server.md"
+  },
+  {
+    "from": "Programmazione/Postgres/Pagine/MVCC.md",
+    "to": "Programmazione/PostgreSQL/Pagine/MVCC.md"
+  },
+  {
+    "from": "Programmazione/Postgres/Pagine/Normalizzazione.md",
+    "to": "Programmazione/PostgreSQL/Pagine/Normalizzazione.md"
+  },
+  {
+    "from": "Programmazione/Postgres/Pagine/ORM.md",
+    "to": "Programmazione/PostgreSQL/Pagine/ORM.md"
+  },
+  {
+    "from": "Programmazione/Postgres/Pagine/Partitioning.md",
+    "to": "Programmazione/PostgreSQL/Pagine/Partitioning.md"
+  },
+  {
+    "from": "Programmazione/Postgres/Pagine/Pattern outbox.md",
+    "to": "Programmazione/PostgreSQL/Pagine/Pattern outbox.md"
+  },
+  {
+    "from": "Programmazione/Postgres/Pagine/PL-pgSQL.md",
+    "to": "Programmazione/PostgreSQL/Pagine/PL-pgSQL.md"
+  },
+  {
+    "from": "Programmazione/Postgres/Pagine/Prepared statements.md",
+    "to": "Programmazione/PostgreSQL/Pagine/Prepared statements.md"
+  },
+  {
+    "from": "Programmazione/Postgres/Pagine/Proprietà ACID.md",
+    "to": "Programmazione/PostgreSQL/Pagine/Proprietà ACID.md"
+  },
+  {
+    "from": "Programmazione/Postgres/Pagine/Read replicas.md",
+    "to": "Programmazione/PostgreSQL/Pagine/Read replicas.md"
+  },
+  {
+    "from": "Programmazione/Postgres/Pagine/Regole.md",
+    "to": "Programmazione/PostgreSQL/Pagine/Regole.md"
+  },
+  {
+    "from": "Programmazione/Postgres/Pagine/Relazioni 1 a 1 1 a N e N a N.md",
+    "to": "Programmazione/PostgreSQL/Pagine/Relazioni 1 a 1 1 a N e N a N.md"
+  },
+  {
+    "from": "Programmazione/Postgres/Pagine/Replicazione Fisica.md",
+    "to": "Programmazione/PostgreSQL/Pagine/Replicazione Fisica.md"
+  },
+  {
+    "from": "Programmazione/Postgres/Pagine/Replicazione Logica.md",
+    "to": "Programmazione/PostgreSQL/Pagine/Replicazione Logica.md"
+  },
+  {
+    "from": "Programmazione/Postgres/Pagine/RETURNING.md",
+    "to": "Programmazione/PostgreSQL/Pagine/RETURNING.md"
+  },
+  {
+    "from": "Programmazione/Postgres/Pagine/Row Level Security.md",
+    "to": "Programmazione/PostgreSQL/Pagine/Row Level Security.md"
+  },
+  {
+    "from": "Programmazione/Postgres/Pagine/Ruoli e privilegi avanzati.md",
+    "to": "Programmazione/PostgreSQL/Pagine/Ruoli e privilegi avanzati.md"
+  },
+  {
+    "from": "Programmazione/Postgres/Pagine/Schemi e Search Path.md",
+    "to": "Programmazione/PostgreSQL/Pagine/Schemi e Search Path.md"
+  },
+  {
+    "from": "Programmazione/Postgres/Pagine/Secret management.md",
+    "to": "Programmazione/PostgreSQL/Pagine/Secret management.md"
+  },
+  {
+    "from": "Programmazione/Postgres/Pagine/SELECT INSERT UPDATE e DELETE.md",
+    "to": "Programmazione/PostgreSQL/Pagine/SELECT INSERT UPDATE e DELETE.md"
+  },
+  {
+    "from": "Programmazione/Postgres/Pagine/Sharding.md",
+    "to": "Programmazione/PostgreSQL/Pagine/Sharding.md"
+  },
+  {
+    "from": "Programmazione/Postgres/Pagine/Sicurezza delle estensioni.md",
+    "to": "Programmazione/PostgreSQL/Pagine/Sicurezza delle estensioni.md"
+  },
+  {
+    "from": "Programmazione/Postgres/Pagine/Slow query log.md",
+    "to": "Programmazione/PostgreSQL/Pagine/Slow query log.md"
+  },
+  {
+    "from": "Programmazione/Postgres/Pagine/SSL e TLS.md",
+    "to": "Programmazione/PostgreSQL/Pagine/SSL e TLS.md"
+  },
+  {
+    "from": "Programmazione/Postgres/Pagine/Statistiche e Query Planner.md",
+    "to": "Programmazione/PostgreSQL/Pagine/Statistiche e Query Planner.md"
+  },
+  {
+    "from": "Programmazione/Postgres/Pagine/Strategie zero-downtime.md",
+    "to": "Programmazione/PostgreSQL/Pagine/Strategie zero-downtime.md"
+  },
+  {
+    "from": "Programmazione/Postgres/Pagine/Subquery.md",
+    "to": "Programmazione/PostgreSQL/Pagine/Subquery.md"
+  },
+  {
+    "from": "Programmazione/Postgres/Pagine/Tablespace.md",
+    "to": "Programmazione/PostgreSQL/Pagine/Tablespace.md"
+  },
+  {
+    "from": "Programmazione/Postgres/Pagine/TimescaleDB.md",
+    "to": "Programmazione/PostgreSQL/Pagine/TimescaleDB.md"
+  },
+  {
+    "from": "Programmazione/Postgres/Pagine/Tipi di Dato.md",
+    "to": "Programmazione/PostgreSQL/Pagine/Tipi di Dato.md"
+  },
+  {
+    "from": "Programmazione/Postgres/Pagine/Tipi di Indici.md",
+    "to": "Programmazione/PostgreSQL/Pagine/Tipi di Indici.md"
+  },
+  {
+    "from": "Programmazione/Postgres/Pagine/Tipi numerici testuali e temporali.md",
+    "to": "Programmazione/PostgreSQL/Pagine/Tipi numerici testuali e temporali.md"
+  },
+  {
+    "from": "Programmazione/Postgres/Pagine/Trigger e Event Trigger.md",
+    "to": "Programmazione/PostgreSQL/Pagine/Trigger e Event Trigger.md"
+  },
+  {
+    "from": "Programmazione/Postgres/Pagine/UPSERT con ON CONFLICT.md",
+    "to": "Programmazione/PostgreSQL/Pagine/UPSERT con ON CONFLICT.md"
+  },
+  {
+    "from": "Programmazione/Postgres/Pagine/uuid-ossp e pgcrypto.md",
+    "to": "Programmazione/PostgreSQL/Pagine/uuid-ossp e pgcrypto.md"
+  },
+  {
+    "from": "Programmazione/Postgres/Pagine/Versionamento database.md",
+    "to": "Programmazione/PostgreSQL/Pagine/Versionamento database.md"
+  },
+  {
+    "from": "Programmazione/Postgres/Pagine/Views e Materialized Views.md",
+    "to": "Programmazione/PostgreSQL/Pagine/Views e Materialized Views.md"
+  },
+  {
+    "from": "Programmazione/Postgres/Pagine/Vincoli.md",
+    "to": "Programmazione/PostgreSQL/Pagine/Vincoli.md"
+  },
+  {
+    "from": "Programmazione/Postgres/Pagine/Window Functions.md",
+    "to": "Programmazione/PostgreSQL/Pagine/Window Functions.md"
+  },
+  {
+    "from": "Programmazione/Postgres/Pagine/Write-Ahead Logging.md",
+    "to": "Programmazione/PostgreSQL/Pagine/Write-Ahead Logging.md"
+  },
+  {
+    "from": "Programmazione/Promemoria/GitHub/Indice Promemoria GitHub.md",
+    "to": "Programmazione/GitHub/Promemoria/Indice Promemoria GitHub.md"
+  },
+  {
+    "from": "Programmazione/Promemoria/GitHub/Pagine/GitHub - Annullare e recuperare modifiche.md",
+    "to": "Programmazione/GitHub/Promemoria/Pagine/GitHub - Annullare e recuperare modifiche.md"
+  },
+  {
+    "from": "Programmazione/Promemoria/GitHub/Pagine/GitHub - Branch merge e rebase.md",
+    "to": "Programmazione/GitHub/Promemoria/Pagine/GitHub - Branch merge e rebase.md"
+  },
+  {
+    "from": "Programmazione/Promemoria/GitHub/Pagine/GitHub - Fetch pull e push.md",
+    "to": "Programmazione/GitHub/Promemoria/Pagine/GitHub - Fetch pull e push.md"
+  },
+  {
+    "from": "Programmazione/Promemoria/GitHub/Pagine/GitHub - GitHub CLI.md",
+    "to": "Programmazione/GitHub/Promemoria/Pagine/GitHub - GitHub CLI.md"
+  },
+  {
+    "from": "Programmazione/Promemoria/GitHub/Pagine/GitHub - Issue label e progetti.md",
+    "to": "Programmazione/GitHub/Promemoria/Pagine/GitHub - Issue label e progetti.md"
+  },
+  {
+    "from": "Programmazione/Promemoria/GitHub/Pagine/GitHub - Job matrix cache e artifact Actions.md",
+    "to": "Programmazione/GitHub/Promemoria/Pagine/GitHub - Job matrix cache e artifact Actions.md"
+  },
+  {
+    "from": "Programmazione/Promemoria/GitHub/Pagine/GitHub - Pull request e review.md",
+    "to": "Programmazione/GitHub/Promemoria/Pagine/GitHub - Pull request e review.md"
+  },
+  {
+    "from": "Programmazione/Promemoria/GitHub/Pagine/GitHub - Repository e remote.md",
+    "to": "Programmazione/GitHub/Promemoria/Pagine/GitHub - Repository e remote.md"
+  },
+  {
+    "from": "Programmazione/Promemoria/GitHub/Pagine/GitHub - Ruleset CODEOWNERS e impostazioni.md",
+    "to": "Programmazione/GitHub/Promemoria/Pagine/GitHub - Ruleset CODEOWNERS e impostazioni.md"
+  },
+  {
+    "from": "Programmazione/Promemoria/GitHub/Pagine/GitHub - Secrets environments e OIDC Actions.md",
+    "to": "Programmazione/GitHub/Promemoria/Pagine/GitHub - Secrets environments e OIDC Actions.md"
+  },
+  {
+    "from": "Programmazione/Promemoria/GitHub/Pagine/GitHub - Sicurezza repository.md",
+    "to": "Programmazione/GitHub/Promemoria/Pagine/GitHub - Sicurezza repository.md"
+  },
+  {
+    "from": "Programmazione/Promemoria/GitHub/Pagine/GitHub - Staging commit e cronologia.md",
+    "to": "Programmazione/GitHub/Promemoria/Pagine/GitHub - Staging commit e cronologia.md"
+  },
+  {
+    "from": "Programmazione/Promemoria/GitHub/Pagine/GitHub - Tag release e pubblicazione.md",
+    "to": "Programmazione/GitHub/Promemoria/Pagine/GitHub - Tag release e pubblicazione.md"
+  },
+  {
+    "from": "Programmazione/Promemoria/GitHub/Pagine/GitHub - Trigger espressioni e permessi Actions.md",
+    "to": "Programmazione/GitHub/Promemoria/Pagine/GitHub - Trigger espressioni e permessi Actions.md"
+  },
+  {
+    "from": "Programmazione/Promemoria/GitHub/Pagine/GitHub - Workflow Actions di base.md",
+    "to": "Programmazione/GitHub/Promemoria/Pagine/GitHub - Workflow Actions di base.md"
+  },
+  {
+    "from": "Programmazione/Promemoria/JavaScript/Indice Promemoria JavaScript.md",
+    "to": "Programmazione/JavaScript/Promemoria/Indice Promemoria JavaScript.md"
+  },
+  {
+    "from": "Programmazione/Promemoria/JavaScript/Pagine/JavaScript - Array.md",
+    "to": "Programmazione/JavaScript/Promemoria/Pagine/JavaScript - Array.md"
+  },
+  {
+    "from": "Programmazione/Promemoria/JavaScript/Pagine/JavaScript - DOM ed eventi.md",
+    "to": "Programmazione/JavaScript/Promemoria/Pagine/JavaScript - DOM ed eventi.md"
+  },
+  {
+    "from": "Programmazione/Promemoria/JavaScript/Pagine/JavaScript - Errori e debug.md",
+    "to": "Programmazione/JavaScript/Promemoria/Pagine/JavaScript - Errori e debug.md"
+  },
+  {
+    "from": "Programmazione/Promemoria/JavaScript/Pagine/JavaScript - Fetch JSON e storage.md",
+    "to": "Programmazione/JavaScript/Promemoria/Pagine/JavaScript - Fetch JSON e storage.md"
+  },
+  {
+    "from": "Programmazione/Promemoria/JavaScript/Pagine/JavaScript - Funzioni.md",
+    "to": "Programmazione/JavaScript/Promemoria/Pagine/JavaScript - Funzioni.md"
+  },
+  {
+    "from": "Programmazione/Promemoria/JavaScript/Pagine/JavaScript - Moduli.md",
+    "to": "Programmazione/JavaScript/Promemoria/Pagine/JavaScript - Moduli.md"
+  },
+  {
+    "from": "Programmazione/Promemoria/JavaScript/Pagine/JavaScript - Numeri e date.md",
+    "to": "Programmazione/JavaScript/Promemoria/Pagine/JavaScript - Numeri e date.md"
+  },
+  {
+    "from": "Programmazione/Promemoria/JavaScript/Pagine/JavaScript - Oggetti Map e Set.md",
+    "to": "Programmazione/JavaScript/Promemoria/Pagine/JavaScript - Oggetti Map e Set.md"
+  },
+  {
+    "from": "Programmazione/Promemoria/JavaScript/Pagine/JavaScript - Promise e async await.md",
+    "to": "Programmazione/JavaScript/Promemoria/Pagine/JavaScript - Promise e async await.md"
+  },
+  {
+    "from": "Programmazione/Promemoria/JavaScript/Pagine/JavaScript - Sintassi essenziale.md",
+    "to": "Programmazione/JavaScript/Promemoria/Pagine/JavaScript - Sintassi essenziale.md"
+  },
+  {
+    "from": "Programmazione/Promemoria/JavaScript/Pagine/JavaScript - Stringhe e RegExp.md",
+    "to": "Programmazione/JavaScript/Promemoria/Pagine/JavaScript - Stringhe e RegExp.md"
+  },
+  {
+    "from": "Programmazione/Promemoria/Postgres/Indice Promemoria PostgreSQL.md",
+    "to": "Programmazione/PostgreSQL/Promemoria/Indice Promemoria PostgreSQL.md"
+  },
+  {
+    "from": "Programmazione/Promemoria/Postgres/Pagine/PostgreSQL - Aggregazioni.md",
+    "to": "Programmazione/PostgreSQL/Promemoria/Pagine/PostgreSQL - Aggregazioni.md"
+  },
+  {
+    "from": "Programmazione/Promemoria/Postgres/Pagine/PostgreSQL - CTE subquery e insiemi.md",
+    "to": "Programmazione/PostgreSQL/Promemoria/Pagine/PostgreSQL - CTE subquery e insiemi.md"
+  },
+  {
+    "from": "Programmazione/Promemoria/Postgres/Pagine/PostgreSQL - Date ore e intervalli.md",
+    "to": "Programmazione/PostgreSQL/Promemoria/Pagine/PostgreSQL - Date ore e intervalli.md"
+  },
+  {
+    "from": "Programmazione/Promemoria/Postgres/Pagine/PostgreSQL - Indici ed EXPLAIN.md",
+    "to": "Programmazione/PostgreSQL/Promemoria/Pagine/PostgreSQL - Indici ed EXPLAIN.md"
+  },
+  {
+    "from": "Programmazione/Promemoria/Postgres/Pagine/PostgreSQL - INSERT UPDATE DELETE e UPSERT.md",
+    "to": "Programmazione/PostgreSQL/Promemoria/Pagine/PostgreSQL - INSERT UPDATE DELETE e UPSERT.md"
+  },
+  {
+    "from": "Programmazione/Promemoria/Postgres/Pagine/PostgreSQL - JOIN.md",
+    "to": "Programmazione/PostgreSQL/Promemoria/Pagine/PostgreSQL - JOIN.md"
+  },
+  {
+    "from": "Programmazione/Promemoria/Postgres/Pagine/PostgreSQL - JSONB e array.md",
+    "to": "Programmazione/PostgreSQL/Promemoria/Pagine/PostgreSQL - JSONB e array.md"
+  },
+  {
+    "from": "Programmazione/Promemoria/Postgres/Pagine/PostgreSQL - psql backup e manutenzione.md",
+    "to": "Programmazione/PostgreSQL/Promemoria/Pagine/PostgreSQL - psql backup e manutenzione.md"
+  },
+  {
+    "from": "Programmazione/Promemoria/Postgres/Pagine/PostgreSQL - Ruoli privilegi e RLS.md",
+    "to": "Programmazione/PostgreSQL/Promemoria/Pagine/PostgreSQL - Ruoli privilegi e RLS.md"
+  },
+  {
+    "from": "Programmazione/Promemoria/Postgres/Pagine/PostgreSQL - SELECT e filtri.md",
+    "to": "Programmazione/PostgreSQL/Promemoria/Pagine/PostgreSQL - SELECT e filtri.md"
+  },
+  {
+    "from": "Programmazione/Promemoria/Postgres/Pagine/PostgreSQL - Stringhe e regex.md",
+    "to": "Programmazione/PostgreSQL/Promemoria/Pagine/PostgreSQL - Stringhe e regex.md"
+  },
+  {
+    "from": "Programmazione/Promemoria/Postgres/Pagine/PostgreSQL - Tabelle schemi e vincoli.md",
+    "to": "Programmazione/PostgreSQL/Promemoria/Pagine/PostgreSQL - Tabelle schemi e vincoli.md"
+  },
+  {
+    "from": "Programmazione/Promemoria/Postgres/Pagine/PostgreSQL - Tipi cast e NULL.md",
+    "to": "Programmazione/PostgreSQL/Promemoria/Pagine/PostgreSQL - Tipi cast e NULL.md"
+  },
+  {
+    "from": "Programmazione/Promemoria/Postgres/Pagine/PostgreSQL - Transazioni e lock.md",
+    "to": "Programmazione/PostgreSQL/Promemoria/Pagine/PostgreSQL - Transazioni e lock.md"
+  },
+  {
+    "from": "Programmazione/Promemoria/Postgres/Pagine/PostgreSQL - Window functions.md",
+    "to": "Programmazione/PostgreSQL/Promemoria/Pagine/PostgreSQL - Window functions.md"
+  },
+  {
+    "from": "Programmazione/Promemoria/Python/Indice Promemoria Python.md",
+    "to": "Programmazione/Python/Promemoria/Indice Promemoria Python.md"
+  },
+  {
+    "from": "Programmazione/Promemoria/Python/Pagine/Python - Asyncio e concorrenza.md",
+    "to": "Programmazione/Python/Promemoria/Pagine/Python - Asyncio e concorrenza.md"
+  },
+  {
+    "from": "Programmazione/Promemoria/Python/Pagine/Python - Comprehension iteratori e generatori.md",
+    "to": "Programmazione/Python/Promemoria/Pagine/Python - Comprehension iteratori e generatori.md"
+  },
+  {
+    "from": "Programmazione/Promemoria/Python/Pagine/Python - Dizionari.md",
+    "to": "Programmazione/Python/Promemoria/Pagine/Python - Dizionari.md"
+  },
+  {
+    "from": "Programmazione/Promemoria/Python/Pagine/Python - Eccezioni log e debug.md",
+    "to": "Programmazione/Python/Promemoria/Pagine/Python - Eccezioni log e debug.md"
+  },
+  {
+    "from": "Programmazione/Promemoria/Python/Pagine/Python - File e percorsi.md",
+    "to": "Programmazione/Python/Promemoria/Pagine/Python - File e percorsi.md"
+  },
+  {
+    "from": "Programmazione/Promemoria/Python/Pagine/Python - Funzioni.md",
+    "to": "Programmazione/Python/Promemoria/Pagine/Python - Funzioni.md"
+  },
+  {
+    "from": "Programmazione/Promemoria/Python/Pagine/Python - JSON e CSV.md",
+    "to": "Programmazione/Python/Promemoria/Pagine/Python - JSON e CSV.md"
+  },
+  {
+    "from": "Programmazione/Promemoria/Python/Pagine/Python - Liste tuple e set.md",
+    "to": "Programmazione/Python/Promemoria/Pagine/Python - Liste tuple e set.md"
+  },
+  {
+    "from": "Programmazione/Promemoria/Python/Pagine/Python - Moduli ambienti e dipendenze.md",
+    "to": "Programmazione/Python/Promemoria/Pagine/Python - Moduli ambienti e dipendenze.md"
+  },
+  {
+    "from": "Programmazione/Promemoria/Python/Pagine/Python - Numeri e date.md",
+    "to": "Programmazione/Python/Promemoria/Pagine/Python - Numeri e date.md"
+  },
+  {
+    "from": "Programmazione/Promemoria/Python/Pagine/Python - Richieste HTTP.md",
+    "to": "Programmazione/Python/Promemoria/Pagine/Python - Richieste HTTP.md"
+  },
+  {
+    "from": "Programmazione/Promemoria/Python/Pagine/Python - Sintassi essenziale.md",
+    "to": "Programmazione/Python/Promemoria/Pagine/Python - Sintassi essenziale.md"
+  },
+  {
+    "from": "Programmazione/Promemoria/Python/Pagine/Python - Stringhe e regex.md",
+    "to": "Programmazione/Python/Promemoria/Pagine/Python - Stringhe e regex.md"
+  },
+  {
+    "from": "Programmazione/Promemoria/Rust/Indice Promemoria Rust.md",
+    "to": "Programmazione/Rust/Promemoria/Indice Promemoria Rust.md"
+  },
+  {
+    "from": "Programmazione/Promemoria/Rust/Pagine/Rust - Collezioni.md",
+    "to": "Programmazione/Rust/Promemoria/Pagine/Rust - Collezioni.md"
+  },
+  {
+    "from": "Programmazione/Promemoria/Rust/Pagine/Rust - Concorrenza e async.md",
+    "to": "Programmazione/Rust/Promemoria/Pagine/Rust - Concorrenza e async.md"
+  },
+  {
+    "from": "Programmazione/Promemoria/Rust/Pagine/Rust - File percorsi e Serde.md",
+    "to": "Programmazione/Rust/Promemoria/Pagine/Rust - File percorsi e Serde.md"
+  },
+  {
+    "from": "Programmazione/Promemoria/Rust/Pagine/Rust - Funzioni e closure.md",
+    "to": "Programmazione/Rust/Promemoria/Pagine/Rust - Funzioni e closure.md"
+  },
+  {
+    "from": "Programmazione/Promemoria/Rust/Pagine/Rust - Generics e trait.md",
+    "to": "Programmazione/Rust/Promemoria/Pagine/Rust - Generics e trait.md"
+  },
+  {
+    "from": "Programmazione/Promemoria/Rust/Pagine/Rust - Iteratori.md",
+    "to": "Programmazione/Rust/Promemoria/Pagine/Rust - Iteratori.md"
+  },
+  {
+    "from": "Programmazione/Promemoria/Rust/Pagine/Rust - Lifetime.md",
+    "to": "Programmazione/Rust/Promemoria/Pagine/Rust - Lifetime.md"
+  },
+  {
+    "from": "Programmazione/Promemoria/Rust/Pagine/Rust - Moduli e Cargo.md",
+    "to": "Programmazione/Rust/Promemoria/Pagine/Rust - Moduli e Cargo.md"
+  },
+  {
+    "from": "Programmazione/Promemoria/Rust/Pagine/Rust - Option Result e errori.md",
+    "to": "Programmazione/Rust/Promemoria/Pagine/Rust - Option Result e errori.md"
+  },
+  {
+    "from": "Programmazione/Promemoria/Rust/Pagine/Rust - Ownership e borrowing.md",
+    "to": "Programmazione/Rust/Promemoria/Pagine/Rust - Ownership e borrowing.md"
+  },
+  {
+    "from": "Programmazione/Promemoria/Rust/Pagine/Rust - Sintassi essenziale.md",
+    "to": "Programmazione/Rust/Promemoria/Pagine/Rust - Sintassi essenziale.md"
+  },
+  {
+    "from": "Programmazione/Promemoria/Rust/Pagine/Rust - Smart pointer.md",
+    "to": "Programmazione/Rust/Promemoria/Pagine/Rust - Smart pointer.md"
+  },
+  {
+    "from": "Programmazione/Promemoria/Rust/Pagine/Rust - Stringhe e slice.md",
+    "to": "Programmazione/Rust/Promemoria/Pagine/Rust - Stringhe e slice.md"
+  },
+  {
+    "from": "Programmazione/Promemoria/Rust/Pagine/Rust - Struct enum e pattern matching.md",
+    "to": "Programmazione/Rust/Promemoria/Pagine/Rust - Struct enum e pattern matching.md"
+  },
+  {
+    "from": "Programmazione/Promemoria/Rust/Pagine/Rust - Test e qualita.md",
+    "to": "Programmazione/Rust/Promemoria/Pagine/Rust - Test e qualita.md"
+  },
+  {
+    "from": "Programmazione/Python/Indice python.md",
+    "to": "Programmazione/Python/Indice Python.md"
+  },
+  {
+    "from": "Programmazione/React/Indice react.md",
+    "to": "Programmazione/React/Indice React.md"
+  },
+  {
+    "from": "Programmazione/Rust/Indice rust.md",
+    "to": "Programmazione/Rust/Indice Rust.md"
+  },
+  {
+    "from": "Stampante 3D/Indice stampante 3D.md",
+    "to": "Stampante 3D/Indice Stampante 3D.md"
+  },
+  {
+    "from": "Stampante 3D/Pagine/Introduzione Stamapante 3D.md",
+    "to": "Stampante 3D/Pagine/Componenti di una stampante FDM.md"
+  }
+]

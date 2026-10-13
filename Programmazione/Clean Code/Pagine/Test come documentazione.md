@@ -3,13 +3,23 @@ date: 2026-07-09
 area: Programmazione
 topic: Clean Code
 type: theory-note
-status: "non revisionato"
+status: non revisionato
 publish: true
 difficulty: intermedio
-tags: [clean-code, testing, documentazione]
-aliases: [Test come documentazione, Tests as documentation]
-prerequisites: [Test unitari leggibili]
-related: [Contratti impliciti ed espliciti, Arrange Act Assert, Messaggi di errore utili]
+tags:
+  - clean-code
+  - testing
+  - documentazione
+aliases:
+  - Test come documentazione
+  - Tests as documentation
+prerequisites:
+  - "[[Programmazione/Clean Code/Pagine/Test unitari leggibili]]"
+related:
+  - "[[Programmazione/Clean Code/Pagine/Contratti impliciti ed espliciti]]"
+  - "[[Programmazione/Clean Code/Pagine/Arrange Act Assert]]"
+  - "[[Programmazione/Clean Code/Pagine/Messaggi di errore utili]]"
+title: Test come documentazione
 ---
 
 # Test come documentazione
@@ -75,12 +85,12 @@ Il test documenta una regola di dominio e il messaggio atteso.
 
 ## Collegamenti
 
-- [[Programmazione/Clean Code/Indice Clean Code]]
-- [[Test unitari leggibili]]
-- [[Contratti impliciti ed espliciti]]
-- [[Arrange Act Assert]]
-- [[Messaggi di errore utili]]
-- [[Modellazione del dominio]]
+- [[Programmazione/Clean Code/Indice Clean Code|Indice Clean Code]]
+- [[Programmazione/Clean Code/Pagine/Test unitari leggibili|Test unitari leggibili]]
+- [[Programmazione/Clean Code/Pagine/Contratti impliciti ed espliciti|Contratti impliciti ed espliciti]]
+- [[Programmazione/Clean Code/Pagine/Arrange Act Assert|Arrange Act Assert]]
+- [[Programmazione/Clean Code/Pagine/Messaggi di errore utili|Messaggi di errore utili]]
+- [[Programmazione/Clean Code/Pagine/Modellazione del dominio|Modellazione del dominio]]
 
 ## Fonti
 

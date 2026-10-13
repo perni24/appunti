@@ -3,13 +3,20 @@ date: 2026-06-04
 area: Programmazione
 topic: React
 type: technical-note
-status: "non revisionato"
+status: non revisionato
 publish: true
-difficulty: intermediate
-tags: [react, api, architecture, frontend]
-aliases: [API layer, Client API]
+difficulty: intermedio
+tags:
+  - react
+  - api
+  - architecture
+  - frontend
+aliases:
+  - API layer
+  - Client API
 prerequisites: []
 related: []
+title: API layer
 ---
 
 # API layer
@@ -108,8 +115,8 @@ Il componente riceve un oggetto gia validato, non una risposta HTTP grezza.
 
 ## Collegamenti
 
-- [[Programmazione/React/Indice react|Indice React]]
-- [[Data Fetching e Cache]]
-- [[Validazione Dati]]
-- [[Gestione Autenticazione]]
-- [[Feature-based architecture]]
+- [[Programmazione/React/Indice React|Indice React]]
+- [[Programmazione/React/Pagine/Data Fetching e Cache|Data Fetching e Cache]]
+- [[Programmazione/React/Pagine/Validazione Dati|Validazione Dati]]
+- [[Programmazione/React/Pagine/Gestione Autenticazione|Gestione Autenticazione]]
+- [[Programmazione/React/Pagine/Feature-based architecture|Feature-based architecture]]

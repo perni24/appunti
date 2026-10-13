@@ -3,13 +3,24 @@ date: 2026-06-22
 area: Programmazione
 topic: TypeScript
 type: technical-note
-status: "non revisionato"
+status: non revisionato
 publish: true
 difficulty: avanzato
-tags: [typescript, declaration-merging, interfaces, ambient-declarations]
-aliases: [Declaration merging TypeScript]
-prerequisites: [Type Aliases e Interfaces, Dichiarazioni e file d.ts]
-related: [Module augmentation, Namespace, Typing di librerie JavaScript]
+tags:
+  - typescript
+  - declaration-merging
+  - interfaces
+  - ambient-declarations
+aliases:
+  - Declaration merging TypeScript
+prerequisites:
+  - "[[Programmazione/TypeScript/Pagine/Type Aliases e Interfaces]]"
+  - "[[Programmazione/TypeScript/Pagine/Dichiarazioni e file d.ts]]"
+related:
+  - "[[Programmazione/TypeScript/Pagine/Module augmentation]]"
+  - "[[Programmazione/TypeScript/Pagine/Namespace]]"
+  - "[[Programmazione/TypeScript/Pagine/Typing di librerie JavaScript]]"
+title: Declaration Merging
 ---
 
 # Declaration Merging
@@ -97,6 +108,11 @@ Questo pattern estende il tipo globale `Window`.
 
 ## Collegamenti
 
-- [[Module augmentation]]
-- [[Dichiarazioni e file d.ts]]
-- [[Typing di librerie JavaScript]]
+- [[Programmazione/TypeScript/Pagine/Module augmentation|Module augmentation]]
+- [[Programmazione/TypeScript/Pagine/Dichiarazioni e file d.ts|Dichiarazioni e file d.ts]]
+- [[Programmazione/TypeScript/Pagine/Typing di librerie JavaScript|Typing di librerie JavaScript]]
+
+
+## Navigazione
+
+- [[Programmazione/TypeScript/Indice TypeScript|Indice TypeScript]]

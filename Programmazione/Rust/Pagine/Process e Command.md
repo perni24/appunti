@@ -3,7 +3,7 @@ date: 2026-05-22
 area: Programmazione
 topic: Rust
 type: technical-note
-status: "non revisionato"
+status: non revisionato
 publish: true
 difficulty: intermedio
 tags:
@@ -11,9 +11,9 @@ tags:
   - rust
   - standard-library
 aliases:
-  - "std::process::Command"
-  - "Processi Rust"
-  - "Command Rust"
+  - std::process::Command
+  - Processi Rust
+  - Command Rust
 prerequisites:
   - "[[Programmazione/Rust/Pagine/Result]]"
   - "[[Programmazione/Rust/Pagine/OsStr e OsString]]"
@@ -22,6 +22,7 @@ related:
   - "[[Programmazione/Rust/Pagine/CLI con clap]]"
   - "[[Programmazione/Rust/Pagine/File I O]]"
   - "[[Programmazione/Rust/Pagine/OsStr e OsString]]"
+title: Process e Command
 ---
 
 # Process e Command
@@ -127,3 +128,8 @@ La funzione distingue errore I/O da comando eseguito ma fallito.
 - [[Programmazione/Rust/Pagine/File I O|File I O]]
 - [[Programmazione/Rust/Pagine/CLI con clap|CLI con clap]]
 - [[Programmazione/Rust/Pagine/Result|Result]]
+
+
+## Navigazione
+
+- [[Programmazione/Rust/Indice Rust|Indice Rust]]

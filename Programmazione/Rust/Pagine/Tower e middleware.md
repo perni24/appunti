@@ -3,7 +3,7 @@ date: 2026-05-27
 area: Programmazione
 topic: Rust
 type: technical-note
-status: "non revisionato"
+status: non revisionato
 publish: true
 difficulty: avanzato
 tags:
@@ -11,9 +11,9 @@ tags:
   - rust
   - backend-networking-e-database
 aliases:
-  - "Tower e middleware"
-  - "Tower"
-  - "middleware"
+  - Tower e middleware
+  - Tower
+  - middleware
 prerequisites:
   - "[[Programmazione/Rust/Pagine/Traits]]"
   - "[[Programmazione/Rust/Pagine/Future Trait]]"
@@ -22,6 +22,7 @@ related:
   - "[[Programmazione/Rust/Pagine/Tracing con tracing]]"
   - "[[Programmazione/Rust/Pagine/Runtime async Tokio e async-std]]"
   - "[[Programmazione/Rust/Pagine/Performance e profiling]]"
+title: Tower e middleware
 ---
 
 # Tower e middleware
@@ -142,10 +143,10 @@ Un timeout evita che richieste lente consumino risorse indefinitamente. Va pero 
 
 ## Collegamenti
 
-- [[Programmazione/Rust/Indice rust|Indice Rust]]
-- [[Programmazione/Rust/Pagine/Web backend con axum]]
-- [[Programmazione/Rust/Pagine/Traits]]
-- [[Programmazione/Rust/Pagine/Future Trait]]
-- [[Programmazione/Rust/Pagine/Tracing con tracing]]
-- [[Programmazione/Rust/Pagine/Runtime async Tokio e async-std]]
-- [[Programmazione/Rust/Pagine/Performance e profiling]]
+- [[Programmazione/Rust/Indice Rust|Indice Rust]]
+- [[Programmazione/Rust/Pagine/Web backend con axum|Web backend con axum]]
+- [[Programmazione/Rust/Pagine/Traits|Traits]]
+- [[Programmazione/Rust/Pagine/Future Trait|Future Trait]]
+- [[Programmazione/Rust/Pagine/Tracing con tracing|Tracing con tracing]]
+- [[Programmazione/Rust/Pagine/Runtime async Tokio e async-std|Runtime async Tokio e async-std]]
+- [[Programmazione/Rust/Pagine/Performance e profiling|Performance e profiling]]

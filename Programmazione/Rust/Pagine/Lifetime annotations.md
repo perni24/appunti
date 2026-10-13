@@ -3,7 +3,7 @@ date: 2026-05-22
 area: Programmazione
 topic: Rust
 type: technical-note
-status: "non revisionato"
+status: non revisionato
 publish: true
 difficulty: intermedio
 tags:
@@ -11,8 +11,8 @@ tags:
   - rust
   - lifetimes
 aliases:
-  - "Annotazioni lifetime"
-  - "Lifetime espliciti"
+  - Annotazioni lifetime
+  - Lifetime espliciti
 prerequisites:
   - "[[Programmazione/Rust/Pagine/References e Borrowing]]"
   - "[[Programmazione/Rust/Pagine/Borrow checker]]"
@@ -21,6 +21,7 @@ related:
   - "[[Programmazione/Rust/Pagine/Lifetime elision]]"
   - "[[Programmazione/Rust/Pagine/Lifetimes nelle struct]]"
   - "[[Programmazione/Rust/Pagine/Higher-Ranked Trait Bounds (HRTB)]]"
+title: Lifetime annotations
 ---
 
 # Lifetime annotations
@@ -148,3 +149,8 @@ La funzione restituisce una slice che punta a una delle due stringhe ricevute. I
 - [[Programmazione/Rust/Pagine/Lifetimes nelle struct|Lifetimes nelle struct]]
 - [[Programmazione/Rust/Pagine/Borrow checker|Borrow checker]]
 - [[Programmazione/Rust/Pagine/References e Borrowing|References e Borrowing]]
+
+
+## Navigazione
+
+- [[Programmazione/Rust/Indice Rust|Indice Rust]]

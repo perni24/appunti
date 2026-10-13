@@ -3,13 +3,19 @@ date: 2026-06-04
 area: Programmazione
 topic: React
 type: technical-note
-status: "non revisionato"
+status: non revisionato
 publish: true
-difficulty: intermediate
-tags: [react, accessibility, aria]
-aliases: [WAI-ARIA, ARIA]
+difficulty: intermedio
+tags:
+  - react
+  - accessibility
+  - aria
+aliases:
+  - WAI-ARIA
+  - ARIA
 prerequisites: []
 related: []
+title: WAI-ARIA
 ---
 
 # WAI-ARIA
@@ -100,8 +106,8 @@ Serve anche focus management: ARIA da sola non basta.
 
 ## Collegamenti
 
-- [[Programmazione/React/Indice react|Indice React]]
-- [[Focus Management]]
-- [[Test di accessibilita]]
-- [[Portals]]
-- [[Design system]]
+- [[Programmazione/React/Indice React|Indice React]]
+- [[Programmazione/React/Pagine/Focus Management|Focus Management]]
+- [[Programmazione/React/Pagine/Test di accessibilita|Test di accessibilita]]
+- [[Programmazione/React/Pagine/Portals|Portals]]
+- [[Programmazione/React/Pagine/Design system|Design system]]

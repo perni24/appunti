@@ -3,7 +3,7 @@ date: 2026-05-26
 area: Programmazione
 topic: Rust
 type: technical-note
-status: "non revisionato"
+status: non revisionato
 publish: true
 difficulty: avanzato
 tags:
@@ -11,8 +11,8 @@ tags:
   - rust
   - unsafe-rust-in-profondita
 aliases:
-  - "unsafe trait"
-  - "Unsafe traits Rust"
+  - unsafe trait
+  - Unsafe traits Rust
 prerequisites:
   - "[[Programmazione/Rust/Pagine/Traits]]"
   - "[[Programmazione/Rust/Pagine/Unsafe Rust]]"
@@ -21,6 +21,7 @@ related:
   - "[[Programmazione/Rust/Pagine/Send e Sync Traits]]"
   - "[[Programmazione/Rust/Pagine/Unsafe functions]]"
   - "[[Programmazione/Rust/Pagine/Unsafe abstractions sicure]]"
+title: Unsafe traits
 ---
 
 # Unsafe traits
@@ -129,3 +130,8 @@ Un'implementazione manuale di `Send` e corretta solo se il tipo garantisce che i
 - [[Programmazione/Rust/Pagine/Send e Sync Traits|Send e Sync Traits]]
 - [[Programmazione/Rust/Pagine/Invariants|Invariants]]
 - [[Programmazione/Rust/Pagine/Unsafe abstractions sicure|Unsafe abstractions sicure]]
+
+
+## Navigazione
+
+- [[Programmazione/Rust/Indice Rust|Indice Rust]]

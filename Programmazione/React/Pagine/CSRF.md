@@ -3,13 +3,19 @@ date: 2026-06-04
 area: Programmazione
 topic: React
 type: technical-note
-status: "non revisionato"
+status: non revisionato
 publish: true
-difficulty: intermediate
-tags: [react, security, csrf]
-aliases: [CSRF, Cross-Site Request Forgery]
+difficulty: intermedio
+tags:
+  - react
+  - security
+  - csrf
+aliases:
+  - CSRF
+  - Cross-Site Request Forgery
 prerequisites: []
 related: []
+title: CSRF
 ---
 
 # CSRF
@@ -83,8 +89,8 @@ Il frontend legge un token fornito dal server e lo invia nelle richieste mutativ
 
 ## Collegamenti
 
-- [[Programmazione/React/Indice react|Indice React]]
-- [[Gestione Autenticazione]]
-- [[Protezione XSS]]
+- [[Programmazione/React/Indice React|Indice React]]
+- [[Programmazione/React/Pagine/Gestione Autenticazione|Gestione Autenticazione]]
+- [[Programmazione/React/Pagine/Protezione XSS|Protezione XSS]]
 - [[Programmazione/React/Pagine/Content Security Policy|Content Security Policy]]
-- [[API layer]]
+- [[Programmazione/React/Pagine/API layer|API layer]]

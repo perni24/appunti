@@ -1,22 +1,28 @@
-﻿---
+---
 date: 2026-05-20
 area: Programmazione
 topic: Rust
 type: technical-note
-status: "non revisionato"
+status: non revisionato
 publish: true
 difficulty: base
-tags: [programmazione, rust, ownership, copy, clone]
+tags:
+  - programmazione
+  - rust
+  - ownership
+  - copy
+  - clone
 aliases:
-  - "Trait Copy"
-  - "Trait Clone"
-  - "Copy vs Clone"
+  - Trait Copy
+  - Trait Clone
+  - Copy vs Clone
 prerequisites:
   - "[[Programmazione/Rust/Pagine/Ownership]]"
   - "[[Programmazione/Rust/Pagine/Move semantics]]"
 related:
   - "[[Programmazione/Rust/Pagine/Derive traits]]"
   - "[[Programmazione/Rust/Pagine/Traits]]"
+title: Copy e Clone
 ---
 
 # Copy e Clone
@@ -144,3 +150,8 @@ fn main() {
 - [[Programmazione/Rust/Pagine/Traits|Traits]]
 - [[Programmazione/Rust/Pagine/Derive traits|Derive traits]]
 
+
+
+## Navigazione
+
+- [[Programmazione/Rust/Indice Rust|Indice Rust]]

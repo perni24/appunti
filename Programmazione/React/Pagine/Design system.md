@@ -3,13 +3,19 @@ date: 2026-06-04
 area: Programmazione
 topic: React
 type: theory-note
-status: "non revisionato"
+status: non revisionato
 publish: true
-difficulty: intermediate
-tags: [react, design-system, ui]
-aliases: [Design system, Component library]
+difficulty: intermedio
+tags:
+  - react
+  - design-system
+  - ui
+aliases:
+  - Design system
+  - Component library
 prerequisites: []
 related: []
+title: Design system
 ---
 
 # Design system
@@ -99,9 +105,9 @@ Un input del design system deve includere:
 
 ## Collegamenti
 
-- [[Programmazione/React/Indice react|Indice React]]
-- [[Storybook]]
-- [[Visual regression testing]]
-- [[WAI-ARIA]]
-- [[CSS Modules]]
-- [[Compound Components Pattern]]
+- [[Programmazione/React/Indice React|Indice React]]
+- [[Programmazione/React/Pagine/Storybook|Storybook]]
+- [[Programmazione/React/Pagine/Visual regression testing|Visual regression testing]]
+- [[Programmazione/React/Pagine/WAI-ARIA|WAI-ARIA]]
+- [[Programmazione/React/Pagine/CSS Modules|CSS Modules]]
+- [[Programmazione/React/Pagine/Compound Components Pattern|Compound Components Pattern]]

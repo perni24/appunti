@@ -3,13 +3,19 @@ date: 2026-06-04
 area: Programmazione
 topic: React
 type: operational-note
-status: "non revisionato"
+status: non revisionato
 publish: true
-difficulty: intermediate
-tags: [react, testing, visual-regression]
-aliases: [Visual regression testing, Test visuali]
+difficulty: intermedio
+tags:
+  - react
+  - testing
+  - visual-regression
+aliases:
+  - Visual regression testing
+  - Test visuali
 prerequisites: []
 related: []
+title: Visual regression testing
 ---
 
 # Visual regression testing
@@ -80,8 +86,8 @@ Procedura:
 
 ## Collegamenti
 
-- [[Programmazione/React/Indice react|Indice React]]
-- [[Storybook]]
-- [[Testing Cypress e Playwright]]
-- [[Design system]]
-- [[Animazioni e Micro-interazioni]]
+- [[Programmazione/React/Indice React|Indice React]]
+- [[Programmazione/React/Pagine/Storybook|Storybook]]
+- [[Programmazione/React/Pagine/Testing Cypress e Playwright|Testing Cypress e Playwright]]
+- [[Programmazione/React/Pagine/Design system|Design system]]
+- [[Programmazione/React/Pagine/Animazioni e Micro-interazioni|Animazioni e Micro-interazioni]]

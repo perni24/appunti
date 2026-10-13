@@ -3,7 +3,7 @@ date: 2026-05-26
 area: Programmazione
 topic: Rust
 type: technical-note
-status: "non revisionato"
+status: non revisionato
 publish: true
 difficulty: avanzato
 tags:
@@ -11,8 +11,8 @@ tags:
   - rust
   - unsafe-rust-in-profondita
 aliases:
-  - "Invarianti"
-  - "Safety invariants"
+  - Invarianti
+  - Safety invariants
 prerequisites:
   - "[[Programmazione/Rust/Pagine/Unsafe Rust]]"
   - "[[Programmazione/Rust/Pagine/Ownership]]"
@@ -21,6 +21,7 @@ related:
   - "[[Programmazione/Rust/Pagine/Unsafe abstractions sicure]]"
   - "[[Programmazione/Rust/Pagine/Undefined behavior]]"
   - "[[Programmazione/Rust/Pagine/Miri]]"
+title: Invariants
 ---
 
 # Invariants
@@ -139,3 +140,8 @@ L'invariante `0..=100` permette alle altre funzioni di fidarsi del valore senza 
 - [[Programmazione/Rust/Pagine/Undefined behavior|Undefined behavior]]
 - [[Programmazione/Rust/Pagine/Unsafe abstractions sicure|Unsafe abstractions sicure]]
 - [[Programmazione/Rust/Pagine/Miri|Miri]]
+
+
+## Navigazione
+
+- [[Programmazione/Rust/Indice Rust|Indice Rust]]

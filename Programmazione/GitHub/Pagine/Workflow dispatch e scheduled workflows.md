@@ -3,13 +3,25 @@ date: 2026-07-07
 area: Programmazione
 topic: GitHub
 type: technical-note
-status: "non revisionato"
+status: non revisionato
 publish: true
 difficulty: intermedio
-tags: [github, github-actions, workflow-dispatch, schedule]
-aliases: [Workflow dispatch e scheduled workflows, Workflow manuali e schedulati GitHub Actions]
-prerequisites: [GitHub Actions, Eventi e trigger GitHub Actions]
-related: [Workflow GitHub Actions, Deploy con GitHub Actions, Debug GitHub Actions]
+tags:
+  - github
+  - github-actions
+  - workflow-dispatch
+  - schedule
+aliases:
+  - Workflow dispatch e scheduled workflows
+  - Workflow manuali e schedulati GitHub Actions
+prerequisites:
+  - "[[Programmazione/GitHub/Pagine/GitHub Actions]]"
+  - "[[Programmazione/GitHub/Pagine/Eventi e trigger GitHub Actions]]"
+related:
+  - "[[Programmazione/GitHub/Pagine/Workflow GitHub Actions]]"
+  - "[[Programmazione/GitHub/Pagine/Deploy con GitHub Actions]]"
+  - "[[Programmazione/GitHub/Pagine/Debug GitHub Actions]]"
+title: Workflow dispatch e scheduled workflows
 ---
 
 # Workflow dispatch e scheduled workflows
@@ -137,11 +149,11 @@ jobs:
 
 ## Collegamenti
 
-- [[Programmazione/GitHub/Indice GitHub]]
-- [[GitHub Actions]]
-- [[Eventi e trigger GitHub Actions]]
-- [[Deploy con GitHub Actions]]
-- [[Environments GitHub Actions]]
+- [[Programmazione/GitHub/Indice GitHub|Indice GitHub]]
+- [[Programmazione/GitHub/Pagine/GitHub Actions|GitHub Actions]]
+- [[Programmazione/GitHub/Pagine/Eventi e trigger GitHub Actions|Eventi e trigger GitHub Actions]]
+- [[Programmazione/GitHub/Pagine/Deploy con GitHub Actions|Deploy con GitHub Actions]]
+- [[Programmazione/GitHub/Pagine/Environments GitHub Actions|Environments GitHub Actions]]
 
 ## Fonti
 

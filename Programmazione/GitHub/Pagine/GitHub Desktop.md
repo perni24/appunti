@@ -3,13 +3,23 @@ date: 2026-07-06
 area: Programmazione
 topic: GitHub
 type: technical-note
-status: "non revisionato"
+status: non revisionato
 publish: true
 difficulty: base
-tags: [github, desktop, git, gui]
-aliases: [GitHub Desktop]
-prerequisites: [GitHub, Git e GitHub]
-related: [Branch su GitHub, Pull request]
+tags:
+  - github
+  - desktop
+  - git
+  - gui
+aliases:
+  - GitHub Desktop
+prerequisites:
+  - "[[Programmazione/GitHub/Pagine/GitHub]]"
+  - "[[Programmazione/GitHub/Pagine/Git e GitHub]]"
+related:
+  - "[[Programmazione/GitHub/Pagine/Branch su GitHub]]"
+  - "[[Programmazione/GitHub/Pagine/Pull request]]"
+title: GitHub Desktop
 ---
 
 # GitHub Desktop
@@ -98,11 +108,11 @@ Flusso tipico:
 
 ## Collegamenti
 
-- [[Programmazione/GitHub/Indice GitHub]]
-- [[GitHub]]
-- [[Git e GitHub]]
-- [[Branch su GitHub]]
-- [[Pull request]]
+- [[Programmazione/GitHub/Indice GitHub|Indice GitHub]]
+- [[Programmazione/GitHub/Pagine/GitHub|GitHub]]
+- [[Programmazione/GitHub/Pagine/Git e GitHub|Git e GitHub]]
+- [[Programmazione/GitHub/Pagine/Branch su GitHub|Branch su GitHub]]
+- [[Programmazione/GitHub/Pagine/Pull request|Pull request]]
 
 ## Fonti
 

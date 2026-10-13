@@ -3,13 +3,24 @@ date: 2026-06-22
 area: Programmazione
 topic: TypeScript
 type: technical-note
-status: "non revisionato"
+status: non revisionato
 publish: true
 difficulty: base
-tags: [typescript, funzioni, overload, function-types]
-aliases: [Function signatures, Overload TypeScript]
-prerequisites: [Funzioni tipizzate, Union e Intersection Types]
-related: [Generics, Generics avanzati]
+tags:
+  - typescript
+  - funzioni
+  - overload
+  - function-types
+aliases:
+  - Function signatures
+  - Overload TypeScript
+prerequisites:
+  - "[[Programmazione/TypeScript/Pagine/Funzioni tipizzate]]"
+  - "[[Programmazione/TypeScript/Pagine/Union e Intersection Types]]"
+related:
+  - "[[Programmazione/TypeScript/Pagine/Generics]]"
+  - "[[Programmazione/TypeScript/Pagine/Generics avanzati]]"
+title: Firme di funzione e overload
 ---
 
 # Firme di funzione e overload
@@ -87,6 +98,11 @@ const host = getValue("host");
 
 ## Collegamenti
 
-- [[Funzioni tipizzate]]
-- [[Union e Intersection Types]]
+- [[Programmazione/TypeScript/Pagine/Funzioni tipizzate|Funzioni tipizzate]]
+- [[Programmazione/TypeScript/Pagine/Union e Intersection Types|Union e Intersection Types]]
 - [[Programmazione/TypeScript/Pagine/Generics|Generics]]
+
+
+## Navigazione
+
+- [[Programmazione/TypeScript/Indice TypeScript|Indice TypeScript]]

@@ -3,13 +3,24 @@ date: 2026-07-09
 area: Programmazione
 topic: Clean Code
 type: technical-note
-status: "non revisionato"
+status: non revisionato
 publish: true
 difficulty: avanzato
-tags: [clean-code, cache, performance]
-aliases: [Cache e invalidazione, Cache invalidation]
-prerequisites: [Gestione dello stato, Performance e leggibilita]
-related: [Configurazione applicativa, Invarianti interne, Side effects controllati]
+tags:
+  - clean-code
+  - cache
+  - performance
+aliases:
+  - Cache e invalidazione
+  - Cache invalidation
+prerequisites:
+  - "[[Programmazione/Clean Code/Pagine/Gestione dello stato]]"
+  - "[[Programmazione/Clean Code/Pagine/Performance e leggibilita]]"
+related:
+  - "[[Programmazione/Clean Code/Pagine/Configurazione applicativa]]"
+  - "[[Programmazione/Clean Code/Pagine/Invarianti interne]]"
+  - "[[Programmazione/Clean Code/Pagine/Side effects controllati]]"
+title: Cache e invalidazione
 ---
 
 # Cache e invalidazione
@@ -92,11 +103,11 @@ La cache e esplicita e il TTL limita la durata del dato.
 
 ## Collegamenti
 
-- [[Programmazione/Clean Code/Indice Clean Code]]
-- [[Gestione dello stato]]
+- [[Programmazione/Clean Code/Indice Clean Code|Indice Clean Code]]
+- [[Programmazione/Clean Code/Pagine/Gestione dello stato|Gestione dello stato]]
 - [[Programmazione/Clean Code/Pagine/Configurazione applicativa|Configurazione applicativa]]
-- [[Side effects controllati]]
-- [[Invarianti interne]]
+- [[Programmazione/Clean Code/Pagine/Side effects controllati|Side effects controllati]]
+- [[Programmazione/Clean Code/Pagine/Invarianti interne|Invarianti interne]]
 
 ## Fonti
 

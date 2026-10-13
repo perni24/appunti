@@ -3,13 +3,23 @@ date: 2026-06-22
 area: Programmazione
 topic: TypeScript
 type: technical-note
-status: "non revisionato"
+status: non revisionato
 publish: true
 difficulty: avanzato
-tags: [typescript, domain-modeling, architecture, types]
-aliases: [Modellazione dominio TypeScript]
-prerequisites: [DTO e modelli di dominio, Brand Types]
-related: [Clean architecture, Error Handling]
+tags:
+  - typescript
+  - domain-modeling
+  - architecture
+  - types
+aliases:
+  - Modellazione dominio TypeScript
+prerequisites:
+  - "[[Programmazione/TypeScript/Pagine/DTO e modelli di dominio]]"
+  - "[[Programmazione/TypeScript/Pagine/Brand Types]]"
+related:
+  - "[[Programmazione/TypeScript/Pagine/Clean architecture]]"
+  - "[[Programmazione/TypeScript/Pagine/Error Handling]]"
+title: Domain modeling
 ---
 
 # Domain modeling
@@ -88,6 +98,11 @@ Il dominio non accetta una stringa qualunque come email.
 ## Collegamenti
 
 - [[Programmazione/TypeScript/Pagine/DTO e modelli di dominio|DTO e modelli di dominio]]
-- [[Brand Types]]
-- [[Discriminated Unions]]
-- [[Clean architecture]]
+- [[Programmazione/TypeScript/Pagine/Brand Types|Brand Types]]
+- [[Programmazione/TypeScript/Pagine/Discriminated Unions|Discriminated Unions]]
+- [[Programmazione/TypeScript/Pagine/Clean architecture|Clean architecture]]
+
+
+## Navigazione
+
+- [[Programmazione/TypeScript/Indice TypeScript|Indice TypeScript]]

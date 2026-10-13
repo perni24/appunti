@@ -3,13 +3,24 @@ date: 2026-07-07
 area: Programmazione
 topic: GitHub
 type: technical-note
-status: "non revisionato"
+status: non revisionato
 publish: true
 difficulty: avanzato
-tags: [github, api, graphql, automazione]
-aliases: [GitHub GraphQL API, GraphQL API GitHub]
-prerequisites: [GitHub REST API]
-related: [GitHub REST API, GitHub Apps, Personal access token GitHub]
+tags:
+  - github
+  - api
+  - graphql
+  - automazione
+aliases:
+  - GitHub GraphQL API
+  - GraphQL API GitHub
+prerequisites:
+  - "[[Programmazione/GitHub/Pagine/GitHub REST API]]"
+related:
+  - "[[Programmazione/GitHub/Pagine/GitHub REST API]]"
+  - "[[Programmazione/GitHub/Pagine/GitHub Apps]]"
+  - "[[Programmazione/GitHub/Pagine/Personal access token GitHub]]"
+title: GitHub GraphQL API
 ---
 
 # GitHub GraphQL API
@@ -119,11 +130,11 @@ Con REST spesso richiederesti piu endpoint e piu paginazione.
 
 ## Collegamenti
 
-- [[Programmazione/GitHub/Indice GitHub]]
-- [[GitHub REST API]]
-- [[GitHub Apps]]
-- [[Personal access token GitHub]]
-- [[Fine-grained token GitHub]]
+- [[Programmazione/GitHub/Indice GitHub|Indice GitHub]]
+- [[Programmazione/GitHub/Pagine/GitHub REST API|GitHub REST API]]
+- [[Programmazione/GitHub/Pagine/GitHub Apps|GitHub Apps]]
+- [[Programmazione/GitHub/Pagine/Personal access token GitHub|Personal access token GitHub]]
+- [[Programmazione/GitHub/Pagine/Fine-grained token GitHub|Fine-grained token GitHub]]
 
 ## Fonti
 

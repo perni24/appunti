@@ -3,13 +3,19 @@ date: 2026-06-04
 area: Programmazione
 topic: React
 type: technical-note
-status: "non revisionato"
+status: non revisionato
 publish: true
-difficulty: intermediate
-tags: [react, performance, lists]
-aliases: [Virtualizzazione liste, List virtualization]
+difficulty: intermedio
+tags:
+  - react
+  - performance
+  - lists
+aliases:
+  - Virtualizzazione liste
+  - List virtualization
 prerequisites: []
 related: []
+title: Virtualizzazione delle liste
 ---
 
 # Virtualizzazione delle liste
@@ -89,8 +95,8 @@ Il componente mostra solo le righe necessarie per l'altezza visibile.
 
 ## Collegamenti
 
-- [[Programmazione/React/Indice react|Indice React]]
-- [[Rendering Condizionale e Liste]]
-- [[Profiler e Debugging]]
-- [[useMemo e useCallback]]
-- [[WAI-ARIA]]
+- [[Programmazione/React/Indice React|Indice React]]
+- [[Programmazione/React/Pagine/Rendering Condizionale e Liste|Rendering Condizionale e Liste]]
+- [[Programmazione/React/Pagine/Profiler e Debugging|Profiler e Debugging]]
+- [[Programmazione/React/Pagine/useMemo e useCallback|useMemo e useCallback]]
+- [[Programmazione/React/Pagine/WAI-ARIA|WAI-ARIA]]

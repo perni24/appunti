@@ -3,13 +3,23 @@ date: 2026-06-03
 area: Programmazione
 topic: Python
 type: technical-note
-status: "non revisionato"
+status: non revisionato
 publish: true
-difficulty: intermediate
-tags: [python, subprocess, standard-library, cli]
-aliases: [subprocess Python]
-prerequisites: [Error Handling, Gestione File]
-related: [CLI con argparse, Standard Library]
+difficulty: intermedio
+tags:
+  - python
+  - subprocess
+  - standard-library
+  - cli
+aliases:
+  - subprocess Python
+prerequisites:
+  - "[[Programmazione/Python/Pagine/Error Handling]]"
+  - "[[Programmazione/Python/Pagine/Gestione File]]"
+related:
+  - "[[Programmazione/Python/Pagine/CLI con argparse]]"
+  - "[[Programmazione/Python/Pagine/Standard Library]]"
+title: Subprocess
 ---
 
 # Subprocess
@@ -130,8 +140,8 @@ print(current_branch())
 
 ## Collegamenti
 
-- [[Programmazione/Python/Indice python|Indice Python]]
+- [[Programmazione/Python/Indice Python|Indice Python]]
 - [[Programmazione/Python/Pagine/Error Handling|Error Handling]]
-- [[CLI con argparse]]
-- [[Standard Library]]
-- [[Automazione file e script]]
+- [[Programmazione/Python/Pagine/CLI con argparse|CLI con argparse]]
+- [[Programmazione/Python/Pagine/Standard Library|Standard Library]]
+- [[Programmazione/Python/Pagine/Automazione file e script|Automazione file e script]]

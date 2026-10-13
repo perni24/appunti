@@ -3,13 +3,23 @@ date: 2026-07-09
 area: Programmazione
 topic: Clean Code
 type: theory-note
-status: "non revisionato"
+status: non revisionato
 publish: true
 difficulty: intermedio
-tags: [clean-code, immutabilita, stato]
-aliases: [Immutabilita, Immutability]
-prerequisites: [Stato mutabile e immutabile]
-related: [Funzioni pure e impure, Value objects, Side effects controllati]
+tags:
+  - clean-code
+  - immutabilita
+  - stato
+aliases:
+  - Immutabilita
+  - Immutability
+prerequisites:
+  - "[[Programmazione/Clean Code/Pagine/Stato mutabile e immutabile]]"
+related:
+  - "[[Programmazione/Clean Code/Pagine/Funzioni pure e impure]]"
+  - "[[Programmazione/Clean Code/Pagine/Value objects]]"
+  - "[[Programmazione/Clean Code/Pagine/Side effects controllati]]"
+title: Immutabilita
 ---
 
 # Immutabilita
@@ -87,12 +97,12 @@ La seconda versione evita di modificare l'oggetto ricevuto.
 
 ## Collegamenti
 
-- [[Programmazione/Clean Code/Indice Clean Code]]
-- [[Stato mutabile e immutabile]]
-- [[Value objects]]
-- [[Invarianti del dominio]]
-- [[Funzioni pure e impure]]
-- [[Side effects controllati]]
+- [[Programmazione/Clean Code/Indice Clean Code|Indice Clean Code]]
+- [[Programmazione/Clean Code/Pagine/Stato mutabile e immutabile|Stato mutabile e immutabile]]
+- [[Programmazione/Clean Code/Pagine/Value objects|Value objects]]
+- [[Programmazione/Clean Code/Pagine/Invarianti del dominio|Invarianti del dominio]]
+- [[Programmazione/Clean Code/Pagine/Funzioni pure e impure|Funzioni pure e impure]]
+- [[Programmazione/Clean Code/Pagine/Side effects controllati|Side effects controllati]]
 
 ## Fonti
 

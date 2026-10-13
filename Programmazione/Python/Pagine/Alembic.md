@@ -3,13 +3,20 @@ date: 2026-06-03
 area: Programmazione
 topic: Python
 type: operational-note
-status: "non revisionato"
+status: non revisionato
 publish: true
-difficulty: intermediate
-tags: [programmazione, python, database, migrazioni]
-aliases: [Alembic, Migrazioni Alembic]
+difficulty: intermedio
+tags:
+  - programmazione
+  - python
+  - database
+  - migrazioni
+aliases:
+  - Alembic
+  - Migrazioni Alembic
 prerequisites: []
 related: []
+title: Alembic
 ---
 
 # Alembic
@@ -135,8 +142,8 @@ Poi:
 
 ## Collegamenti
 
-- [[Programmazione/Python/Indice python|Indice Python]]
-- [[SQLAlchemy]]
-- [[SQLite con sqlite3]]
-- [[Programmazione/Postgres/Pagine/Migrazioni schema|Migrazioni schema]]
-- [[Programmazione/Postgres/Pagine/Versionamento database|Versionamento database]]
+- [[Programmazione/Python/Indice Python|Indice Python]]
+- [[Programmazione/Python/Pagine/SQLAlchemy|SQLAlchemy]]
+- [[Programmazione/Python/Pagine/SQLite con sqlite3|SQLite con sqlite3]]
+- [[Programmazione/PostgreSQL/Pagine/Migrazioni schema|Migrazioni schema]]
+- [[Programmazione/PostgreSQL/Pagine/Versionamento database|Versionamento database]]

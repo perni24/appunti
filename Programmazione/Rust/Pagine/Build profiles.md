@@ -3,7 +3,7 @@ date: 2026-05-22
 area: Programmazione
 topic: Rust
 type: technical-note
-status: "non revisionato"
+status: non revisionato
 publish: true
 difficulty: intermedio
 tags:
@@ -11,8 +11,8 @@ tags:
   - rust
   - cargo-editions-e-compatibilita
 aliases:
-  - "Cargo profiles"
-  - "Profili Cargo"
+  - Cargo profiles
+  - Profili Cargo
 prerequisites:
   - "[[Programmazione/Rust/Pagine/Cargo]]"
   - "[[Programmazione/Rust/Pagine/Cargo.toml]]"
@@ -20,6 +20,7 @@ related:
   - "[[Programmazione/Rust/Pagine/Performance e profiling]]"
   - "[[Programmazione/Rust/Pagine/Build scripts]]"
   - "[[Programmazione/Rust/Pagine/Cross-compilation]]"
+title: Build profiles
 ---
 
 # Build profiles
@@ -133,3 +134,8 @@ Questa configurazione punta a ridurre la dimensione, non necessariamente a massi
 - [[Programmazione/Rust/Pagine/Performance e profiling|Performance e profiling]]
 - [[Programmazione/Rust/Pagine/Build scripts|Build scripts]]
 - [[Programmazione/Rust/Pagine/Cross-compilation|Cross-compilation]]
+
+
+## Navigazione
+
+- [[Programmazione/Rust/Indice Rust|Indice Rust]]

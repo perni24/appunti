@@ -3,13 +3,25 @@ date: 2026-06-22
 area: Programmazione
 topic: TypeScript
 type: technical-note
-status: "non revisionato"
+status: non revisionato
 publish: true
 difficulty: intermedio
-tags: [typescript, api, dto, contract, backend]
-aliases: [API TypeScript tipizzate]
-prerequisites: [API contract, Validazione runtime e tipi statici]
-related: [Generazione di tipi da API, DTO e modelli di dominio, TypeScript con Node.js]
+tags:
+  - typescript
+  - api
+  - dto
+  - contract
+  - backend
+aliases:
+  - API TypeScript tipizzate
+prerequisites:
+  - "[[Programmazione/TypeScript/Pagine/API contract]]"
+  - "[[Programmazione/TypeScript/Pagine/Validazione runtime e tipi statici]]"
+related:
+  - "[[Programmazione/TypeScript/Pagine/Generazione di tipi da API]]"
+  - "[[Programmazione/TypeScript/Pagine/DTO e modelli di dominio]]"
+  - "[[Programmazione/TypeScript/Pagine/TypeScript con Node.js]]"
+title: API tipizzate
 ---
 
 # API tipizzate
@@ -91,7 +103,12 @@ Il tipo del risultato obbliga il chiamante a gestire successo ed errore.
 
 ## Collegamenti
 
-- [[API contract]]
-- [[Generazione di tipi da API]]
+- [[Programmazione/TypeScript/Pagine/API contract|API contract]]
+- [[Programmazione/TypeScript/Pagine/Generazione di tipi da API|Generazione di tipi da API]]
 - [[Programmazione/TypeScript/Pagine/DTO e modelli di dominio|DTO e modelli di dominio]]
-- [[Validazione runtime e tipi statici]]
+- [[Programmazione/TypeScript/Pagine/Validazione runtime e tipi statici|Validazione runtime e tipi statici]]
+
+
+## Navigazione
+
+- [[Programmazione/TypeScript/Indice TypeScript|Indice TypeScript]]

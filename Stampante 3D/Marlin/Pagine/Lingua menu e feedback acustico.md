@@ -3,17 +3,26 @@ date: 2026-07-26
 area: Stampante 3D
 topic: Marlin
 type: technical-note
-
 publish: true
 difficulty: intermedio
-tags: [marlin, lcd-language, menu, buzzer, user-interface]
-aliases: [Lingua LCD Marlin, Menu Marlin, Feedback acustico Marlin]
+tags:
+  - marlin
+  - lcd-language
+  - menu
+  - buzzer
+  - user-interface
+aliases:
+  - Lingua LCD Marlin
+  - Menu Marlin
+  - Feedback acustico Marlin
 prerequisites:
   - "[[Stampante 3D/Marlin/Pagine/Display controller encoder e touchscreen]]"
 related:
   - "[[Stampante 3D/Marlin/Pagine/Metodo di configurazione compilazione e caricamento]]"
   - "[[Stampante 3D/Marlin/Pagine/Probe Z offset e BLTouch]]"
-marlin-version: "2.1.2.8"
+marlin-version: 2.1.2.8
+title: Lingua, menu e feedback acustico
+status: non revisionato
 ---
 
 # Lingua, menu e feedback acustico
@@ -28,7 +37,7 @@ Il feedback acustico dipende dall'hardware:
 - uno speaker o trasduttore passivo puo riprodurre frequenze diverse;
 - alcuni display smart gestiscono parte dei suoni con il proprio controller.
 
-Lingua, menu e suono devono quindi essere regolati dopo aver identificato il pannello in [[Stampante 3D/Marlin/Pagine/Display controller encoder e touchscreen]].
+Lingua, menu e suono devono quindi essere regolati dopo aver identificato il pannello in [[Stampante 3D/Marlin/Pagine/Display controller encoder e touchscreen|Display controller encoder e touchscreen]].
 
 ## Quando usarlo
 
@@ -269,7 +278,7 @@ La procedura guidata aiuta a impostare lo Z offset, ma non sostituisce:
 - la misura della ripetibilita;
 - il salvataggio e la verifica dell'EEPROM.
 
-La configurazione completa e in [[Stampante 3D/Marlin/Pagine/Probe Z offset e BLTouch]].
+La configurazione completa e in [[Stampante 3D/Marlin/Pagine/Probe Z offset e BLTouch|Probe Z offset e BLTouch]].
 
 Per mostrare deploy e stow nel menu Motion:
 
@@ -500,6 +509,11 @@ M300 S440 P200
 
 ## Collegamenti
 
-- [[Stampante 3D/Marlin/Pagine/Display controller encoder e touchscreen]]
-- [[Stampante 3D/Marlin/Pagine/Metodo di configurazione compilazione e caricamento]]
-- [[Stampante 3D/Marlin/Pagine/Probe Z offset e BLTouch]]
+- [[Stampante 3D/Marlin/Pagine/Display controller encoder e touchscreen|Display controller encoder e touchscreen]]
+- [[Stampante 3D/Marlin/Pagine/Metodo di configurazione compilazione e caricamento|Metodo di configurazione compilazione e caricamento]]
+- [[Stampante 3D/Marlin/Pagine/Probe Z offset e BLTouch|Probe Z offset e BLTouch]]
+
+
+## Navigazione
+
+- [[Stampante 3D/Marlin/Indice Marlin|Indice Marlin]]

@@ -1,9 +1,11 @@
 ---
-date: {{date}}
+date: "{{date}}"
+title: "{{title}}"
 area:
 topic:
 type: technical-note
 status: "non revisionato"
+publish: false
 difficulty:
 tags: []
 aliases: []
@@ -11,7 +13,7 @@ prerequisites: []
 related: []
 ---
 
-# Titolo
+# {{title}}
 
 ## Sintesi
 
@@ -60,3 +62,7 @@ Esempio realistico.
 ## Collegamenti
 
 - [[Nota correlata]]
+
+## Fonti
+
+- Documentazione ufficiale e versione di riferimento.

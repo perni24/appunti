@@ -1,9 +1,9 @@
-﻿---
+---
 date: 2026-05-20
 area: Programmazione
 topic: Rust
 type: technical-note
-status: "non revisionato"
+status: non revisionato
 publish: true
 difficulty: base
 tags:
@@ -13,6 +13,7 @@ tags:
 aliases: []
 prerequisites: []
 related: []
+title: Funzioni
 ---
 
 # Funzioni
@@ -83,3 +84,8 @@ fn main() {
 - [[Programmazione/Rust/Pagine/References e Borrowing|References e Borrowing]]
 - [[Programmazione/Rust/Pagine/Structs|Structs]]
 
+
+
+## Navigazione
+
+- [[Programmazione/Rust/Indice Rust|Indice Rust]]

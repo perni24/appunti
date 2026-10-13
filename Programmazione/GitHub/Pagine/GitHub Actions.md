@@ -3,13 +3,22 @@ date: 2026-07-07
 area: Programmazione
 topic: GitHub
 type: technical-note
-status: "non revisionato"
+status: non revisionato
 publish: true
 difficulty: intermedio
-tags: [github, github-actions, ci-cd, automazione]
-aliases: [GitHub Actions]
-prerequisites: [Repository GitHub]
-related: [Workflow GitHub Actions, Eventi e trigger GitHub Actions]
+tags:
+  - github
+  - github-actions
+  - ci-cd
+  - automazione
+aliases:
+  - GitHub Actions
+prerequisites:
+  - "[[Programmazione/GitHub/Pagine/Repository GitHub]]"
+related:
+  - "[[Programmazione/GitHub/Pagine/Workflow GitHub Actions]]"
+  - "[[Programmazione/GitHub/Pagine/Eventi e trigger GitHub Actions]]"
+title: GitHub Actions
 ---
 
 # GitHub Actions
@@ -119,11 +128,11 @@ jobs:
 
 ## Collegamenti
 
-- [[Programmazione/GitHub/Indice GitHub]]
-- [[Workflow GitHub Actions]]
-- [[Eventi e trigger GitHub Actions]]
-- [[Jobs steps e runners]]
-- [[Variabili e secrets GitHub Actions]]
+- [[Programmazione/GitHub/Indice GitHub|Indice GitHub]]
+- [[Programmazione/GitHub/Pagine/Workflow GitHub Actions|Workflow GitHub Actions]]
+- [[Programmazione/GitHub/Pagine/Eventi e trigger GitHub Actions|Eventi e trigger GitHub Actions]]
+- [[Programmazione/GitHub/Pagine/Jobs steps e runners|Jobs steps e runners]]
+- [[Programmazione/GitHub/Pagine/Variabili e secrets GitHub Actions|Variabili e secrets GitHub Actions]]
 
 ## Fonti
 

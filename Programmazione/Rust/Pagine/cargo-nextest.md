@@ -3,7 +3,7 @@ date: 2026-05-28
 area: Programmazione
 topic: Rust
 type: technical-note
-status: "non revisionato"
+status: non revisionato
 publish: true
 difficulty: intermedio
 tags:
@@ -11,8 +11,8 @@ tags:
   - rust
   - testing-qualita-e-sicurezza
 aliases:
-  - "cargo-nextest"
-  - "nextest"
+  - cargo-nextest
+  - nextest
 prerequisites:
   - "[[Programmazione/Rust/Pagine/Unit test]]"
   - "[[Programmazione/Rust/Pagine/Integration test]]"
@@ -21,6 +21,7 @@ related:
   - "[[Programmazione/Rust/Pagine/Benchmarking con Criterion]]"
   - "[[Programmazione/Rust/Pagine/Clippy]]"
   - "[[Programmazione/Rust/Pagine/cargo deny]]"
+title: cargo-nextest
 ---
 
 # cargo-nextest
@@ -125,10 +126,10 @@ Separare `cargo test --doc` e utile perche i doc test hanno un comportamento div
 
 ## Collegamenti
 
-- [[Programmazione/Rust/Indice rust|Indice Rust]]
-- [[Programmazione/Rust/Pagine/Unit test]]
-- [[Programmazione/Rust/Pagine/Integration test]]
-- [[Programmazione/Rust/Pagine/Doc test]]
-- [[Programmazione/Rust/Pagine/Benchmarking con Criterion]]
-- [[Programmazione/Rust/Pagine/Clippy]]
-- [[Programmazione/Rust/Pagine/Cargo]]
+- [[Programmazione/Rust/Indice Rust|Indice Rust]]
+- [[Programmazione/Rust/Pagine/Unit test|Unit test]]
+- [[Programmazione/Rust/Pagine/Integration test|Integration test]]
+- [[Programmazione/Rust/Pagine/Doc test|Doc test]]
+- [[Programmazione/Rust/Pagine/Benchmarking con Criterion|Benchmarking con Criterion]]
+- [[Programmazione/Rust/Pagine/Clippy|Clippy]]
+- [[Programmazione/Rust/Pagine/Cargo|Cargo]]

@@ -3,7 +3,7 @@ date: 2026-05-26
 area: Programmazione
 topic: Rust
 type: technical-note
-status: "non revisionato"
+status: non revisionato
 publish: true
 difficulty: intermedio
 tags:
@@ -11,8 +11,8 @@ tags:
   - rust
   - compile-time-e-type-level-programming
 aliases:
-  - "ZST"
-  - "Zero-sized types"
+  - ZST
+  - Zero-sized types
 prerequisites:
   - "[[Programmazione/Rust/Pagine/Structs]]"
   - "[[Programmazione/Rust/Pagine/Enums]]"
@@ -20,6 +20,7 @@ related:
   - "[[Programmazione/Rust/Pagine/PhantomData]]"
   - "[[Programmazione/Rust/Pagine/Marker types]]"
   - "[[Programmazione/Rust/Pagine/Typestate pattern]]"
+title: Zero-sized types
 ---
 
 # Zero-sized types
@@ -131,3 +132,8 @@ impl Format for Toml {
 - [[Programmazione/Rust/Pagine/Typestate pattern|Typestate pattern]]
 - [[Programmazione/Rust/Pagine/Structs|Structs]]
 - [[Programmazione/Rust/Pagine/Enums|Enums]]
+
+
+## Navigazione
+
+- [[Programmazione/Rust/Indice Rust|Indice Rust]]

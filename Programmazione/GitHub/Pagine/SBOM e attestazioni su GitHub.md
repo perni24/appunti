@@ -3,13 +3,25 @@ date: 2026-07-06
 area: Programmazione
 topic: GitHub
 type: technical-note
-status: "non revisionato"
+status: non revisionato
 publish: true
 difficulty: avanzato
-tags: [github, sbom, attestations, provenance, supply-chain]
-aliases: [SBOM e attestazioni su GitHub, GitHub artifact attestations, SBOM GitHub]
-prerequisites: [Dependency graph]
-related: [Dependency graph, Dependabot]
+tags:
+  - github
+  - sbom
+  - attestations
+  - provenance
+  - supply-chain
+aliases:
+  - SBOM e attestazioni su GitHub
+  - GitHub artifact attestations
+  - SBOM GitHub
+prerequisites:
+  - "[[Programmazione/GitHub/Pagine/Dependency graph]]"
+related:
+  - "[[Programmazione/GitHub/Pagine/Dependency graph]]"
+  - "[[Programmazione/GitHub/Pagine/Dependabot]]"
+title: SBOM e attestazioni su GitHub
 ---
 
 # SBOM e attestazioni su GitHub
@@ -108,11 +120,11 @@ Per una release:
 
 ## Collegamenti
 
-- [[Programmazione/GitHub/Indice GitHub]]
-- [[Dependency graph]]
-- [[Protected tags]]
-- [[Repository rulesets]]
-- [[Dependabot]]
+- [[Programmazione/GitHub/Indice GitHub|Indice GitHub]]
+- [[Programmazione/GitHub/Pagine/Dependency graph|Dependency graph]]
+- [[Programmazione/GitHub/Pagine/Protected tags|Protected tags]]
+- [[Programmazione/GitHub/Pagine/Repository rulesets|Repository rulesets]]
+- [[Programmazione/GitHub/Pagine/Dependabot|Dependabot]]
 
 ## Fonti
 

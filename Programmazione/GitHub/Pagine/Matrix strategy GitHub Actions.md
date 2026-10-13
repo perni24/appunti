@@ -3,13 +3,24 @@ date: 2026-07-07
 area: Programmazione
 topic: GitHub
 type: technical-note
-status: "non revisionato"
+status: non revisionato
 publish: true
 difficulty: intermedio
-tags: [github, github-actions, matrix, ci]
-aliases: [Matrix strategy GitHub Actions, Matrix GitHub Actions]
-prerequisites: [Jobs steps e runners, Pipeline CI GitHub Actions]
-related: [Workflow per test, lint e build]
+tags:
+  - github
+  - github-actions
+  - matrix
+  - ci
+aliases:
+  - Matrix strategy GitHub Actions
+  - Matrix GitHub Actions
+prerequisites:
+  - "[[Programmazione/GitHub/Pagine/Jobs steps e runners]]"
+  - "[[Programmazione/GitHub/Pagine/Pipeline CI GitHub Actions]]"
+related:
+  - Workflow per test
+  - lint e build
+title: Matrix strategy GitHub Actions
 ---
 
 # Matrix strategy GitHub Actions
@@ -109,10 +120,10 @@ strategy:
 
 ## Collegamenti
 
-- [[Programmazione/GitHub/Indice GitHub]]
-- [[Jobs steps e runners]]
-- [[Pipeline CI GitHub Actions]]
-- [[Workflow per test, lint e build]]
+- [[Programmazione/GitHub/Indice GitHub|Indice GitHub]]
+- [[Programmazione/GitHub/Pagine/Jobs steps e runners|Jobs steps e runners]]
+- [[Programmazione/GitHub/Pagine/Pipeline CI GitHub Actions|Pipeline CI GitHub Actions]]
+- [[Programmazione/GitHub/Pagine/Workflow per test, lint e build|Workflow per test, lint e build]]
 
 ## Fonti
 

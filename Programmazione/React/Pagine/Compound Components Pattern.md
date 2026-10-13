@@ -3,13 +3,19 @@ date: 2026-06-04
 area: Programmazione
 topic: React
 type: technical-note
-status: "non revisionato"
+status: non revisionato
 publish: true
-difficulty: advanced
-tags: [react, patterns, components]
-aliases: [Compound Components Pattern, Compound Components]
+difficulty: avanzato
+tags:
+  - react
+  - patterns
+  - components
+aliases:
+  - Compound Components Pattern
+  - Compound Components
 prerequisites: []
 related: []
+title: Compound Components Pattern
 ---
 
 # Compound Components Pattern
@@ -103,8 +109,8 @@ Il chiamante compone la struttura, mentre il componente gestisce apertura, ARIA 
 
 ## Collegamenti
 
-- [[Programmazione/React/Indice react|Indice React]]
-- [[Context API]]
-- [[Control Props e State Reducer Pattern]]
-- [[Design system]]
-- [[WAI-ARIA]]
+- [[Programmazione/React/Indice React|Indice React]]
+- [[Programmazione/React/Pagine/Context API|Context API]]
+- [[Programmazione/React/Pagine/Control Props e State Reducer Pattern|Control Props e State Reducer Pattern]]
+- [[Programmazione/React/Pagine/Design system|Design system]]
+- [[Programmazione/React/Pagine/WAI-ARIA|WAI-ARIA]]

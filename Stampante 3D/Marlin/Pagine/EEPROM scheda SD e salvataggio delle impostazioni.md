@@ -3,18 +3,27 @@ date: 2026-07-26
 area: Stampante 3D
 topic: Marlin
 type: technical-note
-
 publish: true
 difficulty: avanzato
-tags: [marlin, eeprom, sd-card, persistent-settings, storage]
-aliases: [EEPROM Marlin, Scheda SD Marlin, Impostazioni persistenti Marlin]
+tags:
+  - marlin
+  - eeprom
+  - sd-card
+  - persistent-settings
+  - storage
+aliases:
+  - EEPROM Marlin
+  - Scheda SD Marlin
+  - Impostazioni persistenti Marlin
 prerequisites:
   - "[[Stampante 3D/Marlin/Pagine/Scheda madre porte seriali e pin]]"
   - "[[Stampante 3D/Marlin/Pagine/Display controller encoder e touchscreen]]"
 related:
   - "[[Stampante 3D/Marlin/Pagine/G-code per configurazione e diagnostica]]"
   - "[[Stampante 3D/Marlin/Pagine/Metodo di configurazione compilazione e caricamento]]"
-marlin-version: "2.1.2.8"
+marlin-version: 2.1.2.8
+title: EEPROM, scheda SD e salvataggio delle impostazioni
+status: non revisionato
 ---
 
 # EEPROM, scheda SD e salvataggio delle impostazioni
@@ -692,7 +701,12 @@ M27
 
 ## Collegamenti
 
-- [[Stampante 3D/Marlin/Pagine/Scheda madre porte seriali e pin]]
-- [[Stampante 3D/Marlin/Pagine/Display controller encoder e touchscreen]]
-- [[Stampante 3D/Marlin/Pagine/G-code per configurazione e diagnostica]]
-- [[Stampante 3D/Marlin/Pagine/Metodo di configurazione compilazione e caricamento]]
+- [[Stampante 3D/Marlin/Pagine/Scheda madre porte seriali e pin|Scheda madre porte seriali e pin]]
+- [[Stampante 3D/Marlin/Pagine/Display controller encoder e touchscreen|Display controller encoder e touchscreen]]
+- [[Stampante 3D/Marlin/Pagine/G-code per configurazione e diagnostica|G-code per configurazione e diagnostica]]
+- [[Stampante 3D/Marlin/Pagine/Metodo di configurazione compilazione e caricamento|Metodo di configurazione compilazione e caricamento]]
+
+
+## Navigazione
+
+- [[Stampante 3D/Marlin/Indice Marlin|Indice Marlin]]

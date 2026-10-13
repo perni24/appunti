@@ -3,13 +3,24 @@ date: 2026-06-03
 area: Programmazione
 topic: Python
 type: technical-note
-status: "non revisionato"
+status: non revisionato
 publish: true
-difficulty: intermediate
-tags: [python, networking, http, sockets, standard-library]
-aliases: [Networking Python]
-prerequisites: [Error Handling, Context Managers]
-related: [Standard Library, Asyncio]
+difficulty: intermedio
+tags:
+  - python
+  - networking
+  - http
+  - sockets
+  - standard-library
+aliases:
+  - Networking Python
+prerequisites:
+  - "[[Programmazione/Python/Pagine/Error Handling]]"
+  - "[[Programmazione/Python/Pagine/Context Managers]]"
+related:
+  - "[[Programmazione/Python/Pagine/Standard Library]]"
+  - "[[Programmazione/Python/Pagine/Asyncio]]"
+title: Networking base
 ---
 
 # Networking base
@@ -133,9 +144,9 @@ Questo tipo di funzione e utile in script diagnostici, non come sostituto di cli
 
 ## Collegamenti
 
-- [[Programmazione/Python/Indice python|Indice Python]]
-- [[Asyncio]]
-- [[HTTPX e requests]]
-- [[Context Managers]]
+- [[Programmazione/Python/Indice Python|Indice Python]]
+- [[Programmazione/Python/Pagine/Asyncio|Asyncio]]
+- [[Programmazione/Python/Pagine/HTTPX e requests|HTTPX e requests]]
+- [[Programmazione/Python/Pagine/Context Managers|Context Managers]]
 - [[Programmazione/Python/Pagine/Error Handling|Error Handling]]
-- [[Standard Library]]
+- [[Programmazione/Python/Pagine/Standard Library|Standard Library]]

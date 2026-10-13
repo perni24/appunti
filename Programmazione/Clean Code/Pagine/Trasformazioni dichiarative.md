@@ -3,13 +3,24 @@ date: 2026-07-09
 area: Programmazione
 topic: Clean Code
 type: theory-note
-status: "non revisionato"
+status: non revisionato
 publish: true
 difficulty: intermedio
-tags: [clean-code, dichiarativo, trasformazioni]
-aliases: [Trasformazioni dichiarative, Codice dichiarativo]
-prerequisites: [Funzioni pure e impure, Composizione di funzioni]
-related: [Pipeline di trasformazione, Codice esplicito vs codice implicito, Leggibilita del codice]
+tags:
+  - clean-code
+  - dichiarativo
+  - trasformazioni
+aliases:
+  - Trasformazioni dichiarative
+  - Codice dichiarativo
+prerequisites:
+  - "[[Programmazione/Clean Code/Pagine/Funzioni pure e impure]]"
+  - "[[Programmazione/Clean Code/Pagine/Composizione di funzioni]]"
+related:
+  - "[[Programmazione/Clean Code/Pagine/Pipeline di trasformazione]]"
+  - "[[Programmazione/Clean Code/Pagine/Codice esplicito vs codice implicito]]"
+  - "[[Programmazione/Clean Code/Pagine/Leggibilita del codice]]"
+title: Trasformazioni dichiarative
 ---
 
 # Trasformazioni dichiarative
@@ -94,12 +105,12 @@ La seconda versione evidenzia filtro e trasformazione.
 
 ## Collegamenti
 
-- [[Programmazione/Clean Code/Indice Clean Code]]
-- [[Codice esplicito vs codice implicito]]
-- [[Leggibilita del codice]]
-- [[Composizione di funzioni]]
-- [[Pipeline di trasformazione]]
-- [[Side effects controllati]]
+- [[Programmazione/Clean Code/Indice Clean Code|Indice Clean Code]]
+- [[Programmazione/Clean Code/Pagine/Codice esplicito vs codice implicito|Codice esplicito vs codice implicito]]
+- [[Programmazione/Clean Code/Pagine/Leggibilita del codice|Leggibilita del codice]]
+- [[Programmazione/Clean Code/Pagine/Composizione di funzioni|Composizione di funzioni]]
+- [[Programmazione/Clean Code/Pagine/Pipeline di trasformazione|Pipeline di trasformazione]]
+- [[Programmazione/Clean Code/Pagine/Side effects controllati|Side effects controllati]]
 
 ## Fonti
 

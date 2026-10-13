@@ -3,13 +3,23 @@ date: 2026-06-22
 area: Programmazione
 topic: TypeScript
 type: technical-note
-status: "non revisionato"
+status: non revisionato
 publish: true
 difficulty: avanzato
-tags: [typescript, recursive-types, type-system]
-aliases: [Tipi ricorsivi, Recursive type]
-prerequisites: [Type Aliases e Interfaces, Conditional Types]
-related: [Infer nei Conditional Types, Mapped Types]
+tags:
+  - typescript
+  - recursive-types
+  - type-system
+aliases:
+  - Tipi ricorsivi
+  - Recursive type
+prerequisites:
+  - "[[Programmazione/TypeScript/Pagine/Type Aliases e Interfaces]]"
+  - "[[Programmazione/TypeScript/Pagine/Conditional Types]]"
+related:
+  - "[[Programmazione/TypeScript/Pagine/Infer nei Conditional Types]]"
+  - "[[Programmazione/TypeScript/Pagine/Mapped Types]]"
+title: Recursive types
 ---
 
 # Recursive types
@@ -86,6 +96,11 @@ const data: JsonValue = {
 
 ## Collegamenti
 
-- [[Conditional Types]]
-- [[Mapped Types]]
-- [[Infer nei Conditional Types]]
+- [[Programmazione/TypeScript/Pagine/Conditional Types|Conditional Types]]
+- [[Programmazione/TypeScript/Pagine/Mapped Types|Mapped Types]]
+- [[Programmazione/TypeScript/Pagine/Infer nei Conditional Types|Infer nei Conditional Types]]
+
+
+## Navigazione
+
+- [[Programmazione/TypeScript/Indice TypeScript|Indice TypeScript]]

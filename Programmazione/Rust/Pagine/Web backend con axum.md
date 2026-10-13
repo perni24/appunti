@@ -3,7 +3,7 @@ date: 2026-05-27
 area: Programmazione
 topic: Rust
 type: technical-note
-status: "non revisionato"
+status: non revisionato
 publish: true
 difficulty: intermedio
 tags:
@@ -11,8 +11,8 @@ tags:
   - rust
   - backend-networking-e-database
 aliases:
-  - "Web backend con axum"
-  - "axum"
+  - Web backend con axum
+  - axum
 prerequisites:
   - "[[Programmazione/Rust/Pagine/Runtime async Tokio e async-std]]"
   - "[[Programmazione/Rust/Pagine/Serde e serializzazione]]"
@@ -21,6 +21,7 @@ related:
   - "[[Programmazione/Rust/Pagine/Connection pooling]]"
   - "[[Programmazione/Rust/Pagine/Tracing con tracing]]"
   - "[[Programmazione/Rust/Pagine/Error reporting]]"
+title: Web backend con axum
 ---
 
 # Web backend con axum
@@ -177,12 +178,12 @@ In codice reale `AppError` dovrebbe implementare `IntoResponse` per convertire g
 
 ## Collegamenti
 
-- [[Programmazione/Rust/Indice rust|Indice Rust]]
-- [[Programmazione/Rust/Pagine/Tower e middleware]]
-- [[Programmazione/Rust/Pagine/Runtime async Tokio e async-std]]
-- [[Programmazione/Rust/Pagine/Serde e serializzazione]]
-- [[Programmazione/Rust/Pagine/Connection pooling]]
-- [[Programmazione/Rust/Pagine/SQLx]]
-- [[Programmazione/Rust/Pagine/Tracing con tracing]]
-- [[Programmazione/Rust/Pagine/Error reporting]]
-- [[Programmazione/Rust/Pagine/Graceful shutdown]]
+- [[Programmazione/Rust/Indice Rust|Indice Rust]]
+- [[Programmazione/Rust/Pagine/Tower e middleware|Tower e middleware]]
+- [[Programmazione/Rust/Pagine/Runtime async Tokio e async-std|Runtime async Tokio e async-std]]
+- [[Programmazione/Rust/Pagine/Serde e serializzazione|Serde e serializzazione]]
+- [[Programmazione/Rust/Pagine/Connection pooling|Connection pooling]]
+- [[Programmazione/Rust/Pagine/SQLx|SQLx]]
+- [[Programmazione/Rust/Pagine/Tracing con tracing|Tracing con tracing]]
+- [[Programmazione/Rust/Pagine/Error reporting|Error reporting]]
+- [[Programmazione/Rust/Pagine/Graceful shutdown|Graceful shutdown]]

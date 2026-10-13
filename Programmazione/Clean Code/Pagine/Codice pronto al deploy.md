@@ -3,13 +3,24 @@ date: 2026-07-09
 area: Programmazione
 topic: Clean Code
 type: technical-note
-status: "non revisionato"
+status: non revisionato
 publish: true
 difficulty: avanzato
-tags: [clean-code, deploy, produzione]
-aliases: [Codice pronto al deploy, Deploy-ready code]
-prerequisites: [Configurazione applicativa, Logging e tracing]
-related: [Messaggi di errore utili, Test di integrazione, Gestione esplicita degli errori]
+tags:
+  - clean-code
+  - deploy
+  - produzione
+aliases:
+  - Codice pronto al deploy
+  - Deploy-ready code
+prerequisites:
+  - "[[Programmazione/Clean Code/Pagine/Configurazione applicativa]]"
+  - "[[Programmazione/Clean Code/Pagine/Logging e tracing]]"
+related:
+  - "[[Programmazione/Clean Code/Pagine/Messaggi di errore utili]]"
+  - "[[Programmazione/Clean Code/Pagine/Test di integrazione]]"
+  - "[[Programmazione/Clean Code/Pagine/Gestione esplicita degli errori]]"
+title: Codice pronto al deploy
 ---
 
 # Codice pronto al deploy
@@ -90,12 +101,12 @@ Il codice non e valutato solo localmente, ma nel suo contesto operativo.
 
 ## Collegamenti
 
-- [[Programmazione/Clean Code/Indice Clean Code]]
+- [[Programmazione/Clean Code/Indice Clean Code|Indice Clean Code]]
 - [[Programmazione/Clean Code/Pagine/Configurazione applicativa|Configurazione applicativa]]
-- [[Logging e tracing]]
-- [[Messaggi di errore utili]]
-- [[Test di integrazione]]
-- [[Idempotenza]]
+- [[Programmazione/Clean Code/Pagine/Logging e tracing|Logging e tracing]]
+- [[Programmazione/Clean Code/Pagine/Messaggi di errore utili|Messaggi di errore utili]]
+- [[Programmazione/Clean Code/Pagine/Test di integrazione|Test di integrazione]]
+- [[Programmazione/Clean Code/Pagine/Idempotenza|Idempotenza]]
 
 ## Fonti
 

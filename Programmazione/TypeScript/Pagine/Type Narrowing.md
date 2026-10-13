@@ -3,13 +3,26 @@ date: 2026-06-22
 area: Programmazione
 topic: TypeScript
 type: technical-note
-status: "non revisionato"
+status: non revisionato
 publish: true
 difficulty: intermedio
-tags: [typescript, narrowing, type-system, control-flow-analysis]
-aliases: [Narrowing TypeScript]
-prerequisites: [Union e Intersection Types, any, unknown e never]
-related: [Type Guards, Type predicates, Discriminated Unions, Exhaustiveness Checking]
+tags:
+  - typescript
+  - narrowing
+  - type-system
+  - control-flow-analysis
+aliases:
+  - Narrowing TypeScript
+prerequisites:
+  - "[[Programmazione/TypeScript/Pagine/Union e Intersection Types]]"
+  - any
+  - unknown e never
+related:
+  - "[[Programmazione/TypeScript/Pagine/Type Guards]]"
+  - "[[Programmazione/TypeScript/Pagine/Type predicates]]"
+  - "[[Programmazione/TypeScript/Pagine/Discriminated Unions]]"
+  - "[[Programmazione/TypeScript/Pagine/Exhaustiveness Checking]]"
+title: Type Narrowing
 ---
 
 # Type Narrowing
@@ -89,7 +102,12 @@ Il controllo su `status` restringe automaticamente il tipo della risposta.
 
 ## Collegamenti
 
-- [[Type Guards]]
-- [[Type predicates]]
-- [[Discriminated Unions]]
-- [[Exhaustiveness Checking]]
+- [[Programmazione/TypeScript/Pagine/Type Guards|Type Guards]]
+- [[Programmazione/TypeScript/Pagine/Type predicates|Type predicates]]
+- [[Programmazione/TypeScript/Pagine/Discriminated Unions|Discriminated Unions]]
+- [[Programmazione/TypeScript/Pagine/Exhaustiveness Checking|Exhaustiveness Checking]]
+
+
+## Navigazione
+
+- [[Programmazione/TypeScript/Indice TypeScript|Indice TypeScript]]

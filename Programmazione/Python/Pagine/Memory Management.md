@@ -3,13 +3,18 @@ date: 2026-06-03
 area: Programmazione
 topic: Python
 type: theory-note
-status: "non revisionato"
+status: non revisionato
 publish: true
-difficulty: intermediate
-tags: [python, programming, memory]
-aliases: [Memory Management]
+difficulty: intermedio
+tags:
+  - python
+  - programming
+  - memory
+aliases:
+  - Memory Management
 prerequisites: []
 related: []
+title: Memory Management in Python
 ---
 
 # Memory Management in Python
@@ -143,9 +148,9 @@ def read_lines(path):
 
 ## Collegamenti
 
-- [[Programmazione/Python/Indice python|Indice Python]]
-- [[Generatori]]
+- [[Programmazione/Python/Indice Python|Indice Python]]
+- [[Programmazione/Python/Pagine/Generatori|Generatori]]
 - [[Programmazione/Python/Pagine/Iteratori|Iteratori]]
-- [[Context Managers]]
-- [[Caching]]
-- [[Profiling]]
+- [[Programmazione/Python/Pagine/Context Managers|Context Managers]]
+- [[Programmazione/Python/Pagine/Caching|Caching]]
+- [[Programmazione/Python/Pagine/Profiling|Profiling]]

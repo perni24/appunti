@@ -3,13 +3,24 @@ date: 2026-06-22
 area: Programmazione
 topic: TypeScript
 type: technical-note
-status: "non revisionato"
+status: non revisionato
 publish: true
 difficulty: base
-tags: [typescript, enum, literal-types, union-types]
-aliases: [Enums, Literal Types]
-prerequisites: [Union e Intersection Types, Tipi primitivi]
-related: [Discriminated Unions, as const]
+tags:
+  - typescript
+  - enum
+  - literal-types
+  - union-types
+aliases:
+  - Enums
+  - Literal Types
+prerequisites:
+  - "[[Programmazione/TypeScript/Pagine/Union e Intersection Types]]"
+  - "[[Programmazione/TypeScript/Pagine/Tipi primitivi]]"
+related:
+  - "[[Programmazione/TypeScript/Pagine/Discriminated Unions]]"
+  - "[[Programmazione/TypeScript/Pagine/as const]]"
+title: Enums e Literal Types
 ---
 
 # Enums e Literal Types
@@ -90,6 +101,11 @@ La union impedisce valori non previsti come `"done"` o `"failed"`.
 
 ## Collegamenti
 
-- [[Union e Intersection Types]]
-- [[Discriminated Unions]]
-- [[as const]]
+- [[Programmazione/TypeScript/Pagine/Union e Intersection Types|Union e Intersection Types]]
+- [[Programmazione/TypeScript/Pagine/Discriminated Unions|Discriminated Unions]]
+- [[Programmazione/TypeScript/Pagine/as const|as const]]
+
+
+## Navigazione
+
+- [[Programmazione/TypeScript/Indice TypeScript|Indice TypeScript]]

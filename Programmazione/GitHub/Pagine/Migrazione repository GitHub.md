@@ -3,13 +3,25 @@ date: 2026-07-07
 area: Programmazione
 topic: GitHub
 type: technical-note
-status: "non revisionato"
+status: non revisionato
 publish: true
 difficulty: avanzato
-tags: [github, repository, migrazione, manutenzione]
-aliases: [Migrazione repository GitHub, Migrare repository GitHub]
-prerequisites: [Repository GitHub, GitHub REST API]
-related: [Archiviazione repository GitHub, Governance repository GitHub, Repository settings]
+tags:
+  - github
+  - repository
+  - migrazione
+  - manutenzione
+aliases:
+  - Migrazione repository GitHub
+  - Migrare repository GitHub
+prerequisites:
+  - "[[Programmazione/GitHub/Pagine/Repository GitHub]]"
+  - "[[Programmazione/GitHub/Pagine/GitHub REST API]]"
+related:
+  - "[[Programmazione/GitHub/Pagine/Archiviazione repository GitHub]]"
+  - "[[Programmazione/GitHub/Pagine/Governance repository GitHub]]"
+  - "[[Programmazione/GitHub/Pagine/Repository settings]]"
+title: Migrazione repository GitHub
 ---
 
 # Migrazione repository GitHub
@@ -102,13 +114,13 @@ Migrazione da account personale a organizzazione:
 
 ## Collegamenti
 
-- [[Programmazione/GitHub/Indice GitHub]]
-- [[Repository GitHub]]
-- [[Remote origin e upstream]]
-- [[Repository settings]]
-- [[Archiviazione repository GitHub]]
-- [[GitHub REST API]]
-- [[GitHub Actions]]
+- [[Programmazione/GitHub/Indice GitHub|Indice GitHub]]
+- [[Programmazione/GitHub/Pagine/Repository GitHub|Repository GitHub]]
+- [[Programmazione/GitHub/Pagine/Remote origin e upstream|Remote origin e upstream]]
+- [[Programmazione/GitHub/Pagine/Repository settings|Repository settings]]
+- [[Programmazione/GitHub/Pagine/Archiviazione repository GitHub|Archiviazione repository GitHub]]
+- [[Programmazione/GitHub/Pagine/GitHub REST API|GitHub REST API]]
+- [[Programmazione/GitHub/Pagine/GitHub Actions|GitHub Actions]]
 
 ## Fonti
 

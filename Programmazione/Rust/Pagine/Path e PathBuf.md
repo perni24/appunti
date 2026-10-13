@@ -3,7 +3,7 @@ date: 2026-05-22
 area: Programmazione
 topic: Rust
 type: technical-note
-status: "non revisionato"
+status: non revisionato
 publish: true
 difficulty: base
 tags:
@@ -11,9 +11,9 @@ tags:
   - rust
   - standard-library
 aliases:
-  - "Path"
-  - "PathBuf"
-  - "Percorsi Rust"
+  - Path
+  - PathBuf
+  - Percorsi Rust
 prerequisites:
   - "[[Programmazione/Rust/Pagine/Stringhe String e &str]]"
   - "[[Programmazione/Rust/Pagine/AsRef AsMut e Borrow]]"
@@ -22,6 +22,7 @@ related:
   - "[[Programmazione/Rust/Pagine/File I O]]"
   - "[[Programmazione/Rust/Pagine/Process e Command]]"
   - "[[Programmazione/Rust/Pagine/Configurazione applicativa]]"
+title: Path e PathBuf
 ---
 
 # Path e PathBuf
@@ -121,3 +122,8 @@ La funzione accetta qualsiasi tipo convertibile a `Path` e restituisce un `PathB
 - [[Programmazione/Rust/Pagine/AsRef AsMut e Borrow|AsRef AsMut e Borrow]]
 - [[Programmazione/Rust/Pagine/Process e Command|Process e Command]]
 - [[Programmazione/Rust/Pagine/Stringhe String e &str|Stringhe String e &str]]
+
+
+## Navigazione
+
+- [[Programmazione/Rust/Indice Rust|Indice Rust]]

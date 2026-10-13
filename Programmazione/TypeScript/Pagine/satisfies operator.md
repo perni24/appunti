@@ -3,13 +3,23 @@ date: 2026-06-22
 area: Programmazione
 topic: TypeScript
 type: technical-note
-status: "non revisionato"
+status: non revisionato
 publish: true
 difficulty: intermedio
-tags: [typescript, satisfies, type-checking, inference]
-aliases: [satisfies]
-prerequisites: [Inferenza dei tipi, Type Aliases e Interfaces]
-related: [as const, Keyof e typeof]
+tags:
+  - typescript
+  - satisfies
+  - type-checking
+  - inference
+aliases:
+  - satisfies
+prerequisites:
+  - "[[Programmazione/TypeScript/Pagine/Inferenza dei tipi]]"
+  - "[[Programmazione/TypeScript/Pagine/Type Aliases e Interfaces]]"
+related:
+  - "[[Programmazione/TypeScript/Pagine/as const]]"
+  - "[[Programmazione/TypeScript/Pagine/Keyof e typeof]]"
+title: satisfies operator
 ---
 
 # satisfies operator
@@ -85,6 +95,11 @@ type FeatureName = keyof typeof features;
 
 ## Collegamenti
 
-- [[Inferenza dei tipi]]
-- [[as const]]
-- [[Keyof e typeof]]
+- [[Programmazione/TypeScript/Pagine/Inferenza dei tipi|Inferenza dei tipi]]
+- [[Programmazione/TypeScript/Pagine/as const|as const]]
+- [[Programmazione/TypeScript/Pagine/Keyof e typeof|Keyof e typeof]]
+
+
+## Navigazione
+
+- [[Programmazione/TypeScript/Indice TypeScript|Indice TypeScript]]

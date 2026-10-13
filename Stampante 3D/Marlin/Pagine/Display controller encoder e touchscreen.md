@@ -3,17 +3,26 @@ date: 2026-07-26
 area: Stampante 3D
 topic: Marlin
 type: technical-note
-
 publish: true
 difficulty: avanzato
-tags: [marlin, display, controller, encoder, touchscreen]
-aliases: [Display Marlin, Controller LCD Marlin, Touchscreen Marlin]
+tags:
+  - marlin
+  - display
+  - controller
+  - encoder
+  - touchscreen
+aliases:
+  - Display Marlin
+  - Controller LCD Marlin
+  - Touchscreen Marlin
 prerequisites:
   - "[[Stampante 3D/Marlin/Pagine/Scheda madre porte seriali e pin]]"
   - "[[Stampante 3D/Marlin/Pagine/Metodo di configurazione compilazione e caricamento]]"
 related:
   - "[[Stampante 3D/Marlin/Pagine/Lingua menu e feedback acustico]]"
-marlin-version: "2.1.2.8"
+marlin-version: 2.1.2.8
+title: Display, controller, encoder e touchscreen
+status: non revisionato
 ---
 
 # Display, controller, encoder e touchscreen
@@ -196,7 +205,7 @@ In questo caso occorre configurare:
 - livelli logici compatibili;
 - il firmware corretto sul touchscreen.
 
-La configurazione delle porte e trattata in [[Stampante 3D/Marlin/Pagine/Scheda madre porte seriali e pin]].
+La configurazione delle porte e trattata in [[Stampante 3D/Marlin/Pagine/Scheda madre porte seriali e pin|Scheda madre porte seriali e pin]].
 
 Un pannello seriale puo offrire anche una modalita di emulazione LCD tramite connettori EXP. Le due modalita hanno cablaggio e firmware differenti e vanno documentate separatamente.
 
@@ -389,7 +398,7 @@ Ordinamento, nomi lunghi e operazioni sulla SD saranno trattati nella nota dedic
 
 ## Procedura di collaudo progressiva
 
-### 1. Build minima
+### Build minima
 
 Abilitare soltanto il controller esatto e le dipendenze indispensabili. Lasciare inizialmente disattivati touch, effetti grafici e opzioni accessorie.
 
@@ -401,7 +410,7 @@ Compilare e controllare:
 - uso di flash e RAM;
 - ambiente PlatformIO corretto.
 
-### 2. Accensione controllata
+### Accensione controllata
 
 Alla prima accensione verificare:
 
@@ -413,7 +422,7 @@ Alla prima accensione verificare:
 
 Spegnere subito se cavi, connettori o regolatori scaldano.
 
-### 3. Input
+### Input
 
 Provare separatamente:
 
@@ -424,7 +433,7 @@ Provare separatamente:
 5. touch ai quattro angoli;
 6. selezione e modifica di un valore non pericoloso.
 
-### 4. Periferiche integrate
+### Periferiche integrate
 
 Provare poi:
 
@@ -487,6 +496,11 @@ Una schermata funzionante non dimostra che encoder, touch, SD e buzzer siano con
 
 ## Collegamenti
 
-- [[Stampante 3D/Marlin/Pagine/Scheda madre porte seriali e pin]]
-- [[Stampante 3D/Marlin/Pagine/Metodo di configurazione compilazione e caricamento]]
-- [[Stampante 3D/Marlin/Pagine/Lingua menu e feedback acustico]]
+- [[Stampante 3D/Marlin/Pagine/Scheda madre porte seriali e pin|Scheda madre porte seriali e pin]]
+- [[Stampante 3D/Marlin/Pagine/Metodo di configurazione compilazione e caricamento|Metodo di configurazione compilazione e caricamento]]
+- [[Stampante 3D/Marlin/Pagine/Lingua menu e feedback acustico|Lingua menu e feedback acustico]]
+
+
+## Navigazione
+
+- [[Stampante 3D/Marlin/Indice Marlin|Indice Marlin]]

@@ -3,7 +3,7 @@ date: 2026-05-26
 area: Programmazione
 topic: Rust
 type: technical-note
-status: "non revisionato"
+status: non revisionato
 publish: true
 difficulty: avanzato
 tags:
@@ -11,8 +11,8 @@ tags:
   - rust
   - compile-time-e-type-level-programming
 aliases:
-  - "Typestate"
-  - "Typestate pattern"
+  - Typestate
+  - Typestate pattern
 prerequisites:
   - "[[Programmazione/Rust/Pagine/Generics]]"
   - "[[Programmazione/Rust/Pagine/Marker types]]"
@@ -21,6 +21,7 @@ related:
   - "[[Programmazione/Rust/Pagine/PhantomData]]"
   - "[[Programmazione/Rust/Pagine/Newtype pattern]]"
   - "[[Programmazione/Rust/Pagine/Builder pattern]]"
+title: Typestate pattern
 ---
 
 # Typestate pattern
@@ -154,3 +155,8 @@ Solo un post pubblicato espone il titolo come contenuto leggibile.
 - [[Programmazione/Rust/Pagine/Newtype pattern|Newtype pattern]]
 - [[Programmazione/Rust/Pagine/Builder pattern|Builder pattern]]
 - [[Programmazione/Rust/Pagine/Move semantics|Move semantics]]
+
+
+## Navigazione
+
+- [[Programmazione/Rust/Indice Rust|Indice Rust]]

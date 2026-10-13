@@ -3,7 +3,7 @@ date: 2026-05-21
 area: Programmazione
 topic: Rust
 type: technical-note
-status: "non revisionato"
+status: non revisionato
 publish: true
 difficulty: intermedio
 tags:
@@ -11,8 +11,8 @@ tags:
   - rust
   - astrazione-e-generici
 aliases:
-  - "Trait object"
-  - "dyn Trait"
+  - Trait object
+  - dyn Trait
 prerequisites:
   - "[[Programmazione/Rust/Pagine/Traits]]"
   - "[[Programmazione/Rust/Pagine/Object safety]]"
@@ -20,6 +20,7 @@ related:
   - "[[Programmazione/Rust/Pagine/Static dispatch vs dynamic dispatch]]"
   - "[[Programmazione/Rust/Pagine/Trait bounds]]"
   - "[[Programmazione/Rust/Pagine/Box T]]"
+title: Trait objects e dyn Trait
 ---
 
 # Trait objects e dyn Trait
@@ -154,3 +155,8 @@ fn run(logger: &dyn Logger) {
 
 - [The Rust Reference - Trait objects](https://doc.rust-lang.org/reference/types/trait-object.html)
 - [Rust Standard Library - Arc thread safety](https://doc.rust-lang.org/std/sync/struct.Arc.html#thread-safety)
+
+
+## Navigazione
+
+- [[Programmazione/Rust/Indice Rust|Indice Rust]]

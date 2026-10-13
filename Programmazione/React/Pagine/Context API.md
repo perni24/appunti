@@ -3,13 +3,19 @@ date: 2026-06-04
 area: Programmazione
 topic: React
 type: technical-note
-status: "non revisionato"
+status: non revisionato
 publish: true
-difficulty: intermediate
-tags: [react, context, state]
-aliases: [Context API, React Context]
+difficulty: intermedio
+tags:
+  - react
+  - context
+  - state
+aliases:
+  - Context API
+  - React Context
 prerequisites: []
 related: []
+title: Context API
 ---
 
 # Context API
@@ -122,8 +128,8 @@ function LocaleProvider({ children }) {
 
 ## Collegamenti
 
-- [[Programmazione/React/Indice react|Indice React]]
-- [[State Management Esterno]]
-- [[useReducer]]
-- [[Gestione Autenticazione]]
-- [[Internazionalizzazione]]
+- [[Programmazione/React/Indice React|Indice React]]
+- [[Programmazione/React/Pagine/State Management Esterno|State Management Esterno]]
+- [[Programmazione/React/Pagine/useReducer|useReducer]]
+- [[Programmazione/React/Pagine/Gestione Autenticazione|Gestione Autenticazione]]
+- [[Programmazione/React/Pagine/Internazionalizzazione|Internazionalizzazione]]

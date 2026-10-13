@@ -1,15 +1,19 @@
-﻿---
+---
 date: 2026-05-20
 area: Programmazione
 topic: Rust
 type: technical-note
-status: "non revisionato"
+status: non revisionato
 publish: true
 difficulty: base
-tags: [programmazione, rust, structs, tipi-dato]
+tags:
+  - programmazione
+  - rust
+  - structs
+  - tipi-dato
 aliases:
-  - "Struct Rust"
-  - "Struct con campi nominati"
+  - Struct Rust
+  - Struct con campi nominati
 prerequisites:
   - "[[Programmazione/Rust/Pagine/Ownership]]"
   - "[[Programmazione/Rust/Pagine/Tipi di dato primitivi]]"
@@ -17,6 +21,7 @@ related:
   - "[[Programmazione/Rust/Pagine/Tuple structs]]"
   - "[[Programmazione/Rust/Pagine/Enums]]"
   - "[[Programmazione/Rust/Pagine/Traits]]"
+title: Structs
 ---
 
 # Structs
@@ -162,3 +167,8 @@ fn main() {
 - [[Programmazione/Rust/Pagine/Lifetimes nelle struct|Lifetimes nelle struct]]
 - [[Programmazione/Rust/Pagine/Public API design|Public API design]]
 
+
+
+## Navigazione
+
+- [[Programmazione/Rust/Indice Rust|Indice Rust]]

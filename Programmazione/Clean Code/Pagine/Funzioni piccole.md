@@ -3,13 +3,22 @@ date: 2026-07-09
 area: Programmazione
 topic: Clean Code
 type: theory-note
-status: "non revisionato"
+status: non revisionato
 publish: true
 difficulty: base
-tags: [clean-code, funzioni, leggibilita]
-aliases: [Funzioni piccole, Small functions]
-prerequisites: [Clean Code]
-related: [Funzioni con responsabilita singola, Leggibilita del codice]
+tags:
+  - clean-code
+  - funzioni
+  - leggibilita
+aliases:
+  - Funzioni piccole
+  - Small functions
+prerequisites:
+  - "[[Programmazione/Clean Code/Pagine/Clean Code]]"
+related:
+  - "[[Programmazione/Clean Code/Pagine/Funzioni con responsabilita singola]]"
+  - "[[Programmazione/Clean Code/Pagine/Leggibilita del codice]]"
+title: Funzioni piccole
 ---
 
 # Funzioni piccole
@@ -86,11 +95,11 @@ Questa funzione e accettabile se resta orchestration ad alto livello. I dettagli
 
 ## Collegamenti
 
-- [[Programmazione/Clean Code/Indice Clean Code]]
-- [[Funzioni con responsabilita singola]]
-- [[Leggibilita del codice]]
-- [[Naming di variabili e funzioni]]
-- [[Semplicita e complessita accidentale]]
+- [[Programmazione/Clean Code/Indice Clean Code|Indice Clean Code]]
+- [[Programmazione/Clean Code/Pagine/Funzioni con responsabilita singola|Funzioni con responsabilita singola]]
+- [[Programmazione/Clean Code/Pagine/Leggibilita del codice|Leggibilita del codice]]
+- [[Programmazione/Clean Code/Pagine/Naming di variabili e funzioni|Naming di variabili e funzioni]]
+- [[Programmazione/Clean Code/Pagine/Semplicita e complessita accidentale|Semplicita e complessita accidentale]]
 
 ## Fonti
 

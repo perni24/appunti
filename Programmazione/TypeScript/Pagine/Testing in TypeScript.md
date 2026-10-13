@@ -3,13 +3,25 @@ date: 2026-06-22
 area: Programmazione
 topic: TypeScript
 type: technical-note
-status: "non revisionato"
+status: non revisionato
 publish: true
 difficulty: intermedio
-tags: [typescript, testing, vitest, jest, quality]
-aliases: [Test in TypeScript]
-prerequisites: [tsconfig, TypeScript con Node.js]
-related: [Type-level testing, Error Handling, Source maps e debugging]
+tags:
+  - typescript
+  - testing
+  - vitest
+  - jest
+  - quality
+aliases:
+  - Test in TypeScript
+prerequisites:
+  - "[[Programmazione/TypeScript/Pagine/tsconfig]]"
+  - "[[Programmazione/TypeScript/Pagine/TypeScript con Node.js]]"
+related:
+  - "[[Programmazione/TypeScript/Pagine/Type-level testing]]"
+  - "[[Programmazione/TypeScript/Pagine/Error Handling]]"
+  - "[[Programmazione/TypeScript/Pagine/Source maps e debugging]]"
+title: Testing in TypeScript
 ---
 
 # Testing in TypeScript
@@ -84,6 +96,11 @@ Il test verifica il comportamento, mentre TypeScript controlla la firma.
 
 ## Collegamenti
 
-- [[Type-level testing]]
+- [[Programmazione/TypeScript/Pagine/Type-level testing|Type-level testing]]
 - [[Programmazione/TypeScript/Pagine/Error Handling|Error Handling]]
 - [[Programmazione/TypeScript/Pagine/Source maps e debugging|Source maps e debugging]]
+
+
+## Navigazione
+
+- [[Programmazione/TypeScript/Indice TypeScript|Indice TypeScript]]

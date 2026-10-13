@@ -3,13 +3,17 @@ date: 2026-06-03
 area: Programmazione
 topic: Python
 type: technical-note
-status: "non revisionato"
+status: non revisionato
 publish: true
-difficulty: intermediate
-tags: [python, programming]
-aliases: [Operatori]
+difficulty: intermedio
+tags:
+  - python
+  - programming
+aliases:
+  - Operatori
 prerequisites: []
 related: []
+title: Operatori in Python
 ---
 
 # Operatori in Python
@@ -88,3 +92,8 @@ if can_buy:
 - [[Programmazione/Python/Pagine/Sintassi e Variabili|Sintassi e Variabili]]
 - [[Programmazione/Python/Pagine/Strutture Condizionali|Strutture Condizionali]]
 - [[Programmazione/Python/Pagine/Set|Set]]
+
+
+## Navigazione
+
+- [[Programmazione/Python/Indice Python|Indice Python]]

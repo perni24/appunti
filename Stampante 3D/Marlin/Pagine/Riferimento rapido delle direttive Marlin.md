@@ -3,17 +3,26 @@ date: 2026-07-26
 area: Stampante 3D
 topic: Marlin
 type: technical-note
-
 publish: true
 difficulty: avanzato
-tags: [marlin, configuration-h, configuration-adv-h, direttive, riferimento]
-aliases: [Cheat sheet Marlin, Direttive Marlin, Riferimento configurazione Marlin]
+tags:
+  - marlin
+  - configuration-h
+  - configuration-adv-h
+  - direttive
+  - riferimento
+aliases:
+  - Cheat sheet Marlin
+  - Direttive Marlin
+  - Riferimento configurazione Marlin
 prerequisites:
   - "[[Stampante 3D/Marlin/Pagine/Struttura dei file di configurazione Marlin]]"
 related:
   - "[[Stampante 3D/Marlin/Pagine/G-code per configurazione e diagnostica]]"
   - "[[Stampante 3D/Marlin/Pagine/Migrazione della configurazione tra versioni]]"
-marlin-version: "2.1.2.8"
+marlin-version: 2.1.2.8
+title: Riferimento rapido delle direttive Marlin
+status: non revisionato
 ---
 
 # Riferimento rapido delle direttive Marlin
@@ -161,7 +170,7 @@ Verificare la build installata:
 M115
 ```
 
-Approfondimento: [[Stampante 3D/Marlin/Pagine/Introduzione a Marlin 2.1.2.8 e compatibilita]].
+Approfondimento: [[Stampante 3D/Marlin/Pagine/Introduzione a Marlin 2.1.2.8 e compatibilita|Introduzione a Marlin 2.1.2.8 e compatibilita]].
 
 ## Scheda e comunicazione
 
@@ -179,7 +188,7 @@ Approfondimento: [[Stampante 3D/Marlin/Pagine/Introduzione a Marlin 2.1.2.8 e co
 
 La motherboard non e una semplice etichetta: determina pin, processore e ambienti PlatformIO.
 
-Approfondimento: [[Stampante 3D/Marlin/Pagine/Scheda madre porte seriali e pin]].
+Approfondimento: [[Stampante 3D/Marlin/Pagine/Scheda madre porte seriali e pin|Scheda madre porte seriali e pin]].
 
 ## Cinematica e geometria
 
@@ -200,8 +209,8 @@ Per Delta e SCARA sono presenti ulteriori parametri geometrici specifici. Non tr
 
 Approfondimenti:
 
-- [[Stampante 3D/Marlin/Pagine/Tipo di stampante e cinematica]]
-- [[Stampante 3D/Marlin/Pagine/Dimensioni del piatto area di lavoro e limiti]]
+- [[Stampante 3D/Marlin/Pagine/Tipo di stampante e cinematica|Tipo di stampante e cinematica]]
+- [[Stampante 3D/Marlin/Pagine/Dimensioni del piatto area di lavoro e limiti|Dimensioni del piatto area di lavoro e limiti]]
 
 ## Motori e driver
 
@@ -236,8 +245,8 @@ G-code principali:
 
 Approfondimenti:
 
-- [[Stampante 3D/Marlin/Pagine/Motori direzione e passi per millimetro]]
-- [[Stampante 3D/Marlin/Pagine/Driver stepper corrente e microstepping]]
+- [[Stampante 3D/Marlin/Pagine/Motori direzione e passi per millimetro|Motori direzione e passi per millimetro]]
+- [[Stampante 3D/Marlin/Pagine/Driver stepper corrente e microstepping|Driver stepper corrente e microstepping]]
 
 ## Endstop e homing
 
@@ -262,7 +271,7 @@ Verificare gli stati:
 M119
 ```
 
-Approfondimento: [[Stampante 3D/Marlin/Pagine/Endstop homing e Sensorless Homing]].
+Approfondimento: [[Stampante 3D/Marlin/Pagine/Endstop homing e Sensorless Homing|Endstop homing e Sensorless Homing]].
 
 ## Pianificazione del movimento
 
@@ -283,8 +292,8 @@ Approfondimento: [[Stampante 3D/Marlin/Pagine/Endstop homing e Sensorless Homing
 
 Approfondimenti:
 
-- [[Stampante 3D/Marlin/Pagine/Velocita accelerazioni Jerk e Junction Deviation]]
-- [[Stampante 3D/Marlin/Pagine/Segmentazione curve e precisione dei movimenti]]
+- [[Stampante 3D/Marlin/Pagine/Velocita accelerazioni Jerk e Junction Deviation|Velocita accelerazioni Jerk e Junction Deviation]]
+- [[Stampante 3D/Marlin/Pagine/Segmentazione curve e precisione dei movimenti|Segmentazione curve e precisione dei movimenti]]
 
 ## Sensori e heater
 
@@ -309,7 +318,7 @@ Leggere temperature e target:
 M105
 ```
 
-Approfondimento: [[Stampante 3D/Marlin/Pagine/Sensori di temperatura e limiti operativi]].
+Approfondimento: [[Stampante 3D/Marlin/Pagine/Sensori di temperatura e limiti operativi|Sensori di temperatura e limiti operativi]].
 
 ## Controllo termico
 
@@ -325,7 +334,7 @@ Approfondimento: [[Stampante 3D/Marlin/Pagine/Sensori di temperatura e limiti op
 
 `PIDTEMP` e `MPCTEMP` non vanno usati insieme per lo stesso hotend.
 
-Approfondimento: [[Stampante 3D/Marlin/Pagine/Controllo PID MPC e protezioni termiche]].
+Approfondimento: [[Stampante 3D/Marlin/Pagine/Controllo PID MPC e protezioni termiche|Controllo PID MPC e protezioni termiche]].
 
 ## Ventole
 
@@ -354,7 +363,7 @@ Spegnimento:
 M107
 ```
 
-Approfondimento: [[Stampante 3D/Marlin/Pagine/Ventole e raffreddamento]].
+Approfondimento: [[Stampante 3D/Marlin/Pagine/Ventole e raffreddamento|Ventole e raffreddamento]].
 
 ## Estrusori e sicurezza di estrusione
 
@@ -385,8 +394,8 @@ G-code:
 
 Approfondimenti:
 
-- [[Stampante 3D/Marlin/Pagine/Hotend estrusori e filamento]]
-- [[Stampante 3D/Marlin/Pagine/Limiti di estrusione retrazione e cambio utensile]]
+- [[Stampante 3D/Marlin/Pagine/Hotend estrusori e filamento|Hotend estrusori e filamento]]
+- [[Stampante 3D/Marlin/Pagine/Limiti di estrusione retrazione e cambio utensile|Limiti di estrusione retrazione e cambio utensile]]
 
 ## Probe
 
@@ -415,7 +424,7 @@ G-code:
 | `M48` | test ripetibilita |
 | `M851` | offset probe |
 
-Approfondimento: [[Stampante 3D/Marlin/Pagine/Probe Z offset e BLTouch]].
+Approfondimento: [[Stampante 3D/Marlin/Pagine/Probe Z offset e BLTouch|Probe Z offset e BLTouch]].
 
 ## Livellamento e asse Z
 
@@ -453,8 +462,8 @@ G-code:
 
 Approfondimenti:
 
-- [[Stampante 3D/Marlin/Pagine/Tipi di bed leveling e configurazione della mesh]]
-- [[Stampante 3D/Marlin/Pagine/Z Safe Homing e allineamento degli assi Z]]
+- [[Stampante 3D/Marlin/Pagine/Tipi di bed leveling e configurazione della mesh|Tipi di bed leveling e configurazione della mesh]]
+- [[Stampante 3D/Marlin/Pagine/Z Safe Homing e allineamento degli assi Z|Z Safe Homing e allineamento degli assi Z]]
 
 ## Compensazioni del movimento
 
@@ -471,8 +480,8 @@ Approfondimenti:
 
 Approfondimenti:
 
-- [[Stampante 3D/Marlin/Pagine/Linear Advance Input Shaping e compensazioni geometriche]]
-- [[Stampante 3D/Marlin/Pagine/Babystepping e regolazioni dinamiche]]
+- [[Stampante 3D/Marlin/Pagine/Linear Advance Input Shaping e compensazioni geometriche|Linear Advance Input Shaping e compensazioni geometriche]]
+- [[Stampante 3D/Marlin/Pagine/Babystepping e regolazioni dinamiche|Babystepping e regolazioni dinamiche]]
 
 ## Display e interfaccia
 
@@ -493,8 +502,8 @@ Una TFT puo usare una UI compilata in Marlin, emulare un display oppure inviare 
 
 Approfondimenti:
 
-- [[Stampante 3D/Marlin/Pagine/Display controller encoder e touchscreen]]
-- [[Stampante 3D/Marlin/Pagine/Lingua menu e feedback acustico]]
+- [[Stampante 3D/Marlin/Pagine/Display controller encoder e touchscreen|Display controller encoder e touchscreen]]
+- [[Stampante 3D/Marlin/Pagine/Lingua menu e feedback acustico|Lingua menu e feedback acustico]]
 
 ## EEPROM, SD ed esportazione
 
@@ -532,7 +541,7 @@ M503
 M504
 ```
 
-Approfondimento: [[Stampante 3D/Marlin/Pagine/EEPROM scheda SD e salvataggio delle impostazioni]].
+Approfondimento: [[Stampante 3D/Marlin/Pagine/EEPROM scheda SD e salvataggio delle impostazioni|EEPROM scheda SD e salvataggio delle impostazioni]].
 
 ## Sensore filamento e pausa
 
@@ -556,7 +565,7 @@ G-code:
 | `M603` | parametri load/unload |
 | `M701`, `M702` | carico e scarico |
 
-Approfondimento: [[Stampante 3D/Marlin/Pagine/Sensore di fine filamento e recupero dopo perdita di alimentazione]].
+Approfondimento: [[Stampante 3D/Marlin/Pagine/Sensore di fine filamento e recupero dopo perdita di alimentazione|Sensore di fine filamento e recupero dopo perdita di alimentazione]].
 
 ## Alimentazione e accessori
 
@@ -583,7 +592,7 @@ G-code:
 | `M280` | servo |
 | `M300` | tono |
 
-Approfondimento: [[Stampante 3D/Marlin/Pagine/Alimentatore rele LED luci buzzer e servo]].
+Approfondimento: [[Stampante 3D/Marlin/Pagine/Alimentatore rele LED luci buzzer e servo|Alimentatore rele LED luci buzzer e servo]].
 
 ## Buffer, memoria e precisione
 
@@ -603,7 +612,7 @@ Approfondimento: [[Stampante 3D/Marlin/Pagine/Alimentatore rele LED luci buzzer 
 
 Aumentare buffer non e sempre un miglioramento: consuma RAM e puo interagire con display, mesh e Input Shaping.
 
-Approfondimento: [[Stampante 3D/Marlin/Pagine/Segmentazione curve e precisione dei movimenti]].
+Approfondimento: [[Stampante 3D/Marlin/Pagine/Segmentazione curve e precisione dei movimenti|Segmentazione curve e precisione dei movimenti]].
 
 ## G-code di ispezione essenziali
 
@@ -623,7 +632,7 @@ Approfondimento: [[Stampante 3D/Marlin/Pagine/Segmentazione curve e precisione d
 
 Inviare un comando alla volta e conservare la risposta completa.
 
-Approfondimento: [[Stampante 3D/Marlin/Pagine/G-code per configurazione e diagnostica]].
+Approfondimento: [[Stampante 3D/Marlin/Pagine/G-code per configurazione e diagnostica|G-code per configurazione e diagnostica]].
 
 ## Errori comuni
 
@@ -661,7 +670,7 @@ Quando si incontra una direttiva:
 
 ## Collegamenti
 
-- [[Stampante 3D/Marlin/Indice Marlin]]
-- [[Stampante 3D/Marlin/Pagine/Struttura dei file di configurazione Marlin]]
-- [[Stampante 3D/Marlin/Pagine/Migrazione della configurazione tra versioni]]
-- [[Stampante 3D/Marlin/Pagine/Procedura completa di taratura e verifica]]
+- [[Stampante 3D/Marlin/Indice Marlin|Indice Marlin]]
+- [[Stampante 3D/Marlin/Pagine/Struttura dei file di configurazione Marlin|Struttura dei file di configurazione Marlin]]
+- [[Stampante 3D/Marlin/Pagine/Migrazione della configurazione tra versioni|Migrazione della configurazione tra versioni]]
+- [[Stampante 3D/Marlin/Pagine/Procedura completa di taratura e verifica|Procedura completa di taratura e verifica]]

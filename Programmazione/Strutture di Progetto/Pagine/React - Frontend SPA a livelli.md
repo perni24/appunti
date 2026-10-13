@@ -3,11 +3,18 @@ date: 2026-07-28
 area: Programmazione
 topic: Strutture di Progetto
 type: technical-note
-status: "non revisionato"
+status: non revisionato
 publish: true
 difficulty: intermedio
-tags: [react, frontend, spa, vite, struttura-progetto]
-aliases: [Struttura frontend React, React SPA structure]
+tags:
+  - react
+  - frontend
+  - spa
+  - vite
+  - struttura-progetto
+aliases:
+  - Struttura frontend React
+  - React SPA structure
 prerequisites:
   - "[[Programmazione/React/Pagine/Componenti Funzionali vs Componenti a Classe]]"
   - "[[Programmazione/Clean Code/Pagine/Separazione delle responsabilita]]"
@@ -20,6 +27,7 @@ related:
   - "[[Programmazione/React/Pagine/Error Boundaries]]"
   - "[[Programmazione/Clean Code/Pagine/Organizzazione dei file]]"
   - "[[Programmazione/Clean Code/Pagine/Dipendenze esplicite]]"
+title: React - Frontend SPA a livelli
 ---
 
 # React - Frontend SPA a livelli
@@ -844,12 +852,17 @@ In questo modello i file specifici di `Entity` rimangono vicini. `components/com
 
 ## Collegamenti
 
-- [[Programmazione/Strutture di Progetto/Pagine/Python - Backend API a livelli]]
-- [[Programmazione/React/Pagine/Context API]]
-- [[Programmazione/React/Pagine/Custom Hooks]]
-- [[Programmazione/React/Pagine/API layer]]
-- [[Programmazione/React/Pagine/Data Fetching e Cache]]
-- [[Programmazione/React/Pagine/Linting e Formattazione]]
-- [[Programmazione/React/Pagine/Error Boundaries]]
-- [[Programmazione/Clean Code/Pagine/Organizzazione dei file]]
-- [[Programmazione/Clean Code/Pagine/Dipendenze esplicite]]
+- [[Programmazione/Strutture di Progetto/Pagine/Python - Backend API a livelli|Python - Backend API a livelli]]
+- [[Programmazione/React/Pagine/Context API|Context API]]
+- [[Programmazione/React/Pagine/Custom Hooks|Custom Hooks]]
+- [[Programmazione/React/Pagine/API layer|API layer]]
+- [[Programmazione/React/Pagine/Data Fetching e Cache|Data Fetching e Cache]]
+- [[Programmazione/React/Pagine/Linting e Formattazione|Linting e Formattazione]]
+- [[Programmazione/React/Pagine/Error Boundaries|Error Boundaries]]
+- [[Programmazione/Clean Code/Pagine/Organizzazione dei file|Organizzazione dei file]]
+- [[Programmazione/Clean Code/Pagine/Dipendenze esplicite|Dipendenze esplicite]]
+
+
+## Navigazione
+
+- [[Programmazione/Strutture di Progetto/Indice Strutture di Progetto|Indice Strutture di Progetto]]

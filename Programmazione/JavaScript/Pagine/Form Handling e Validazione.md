@@ -1,25 +1,42 @@
-﻿---
+---
 date: 2026-06-02
 area: Programmazione
 topic: JavaScript
 type: technical-note
-status: "non revisionato"
+status: non revisionato
 publish: true
-difficulty: intermediate
-tags: [javascript, forms, validation, constraint-validation-api, formdata, browser]
-aliases: [Form Handling JS, Constraint Validation API]
-prerequisites: [Manipolazione del DOM, Gestione Eventi, Fetch API]
-related: [Fetch API, Sicurezza, Regular Expressions]
+difficulty: intermedio
+tags:
+  - javascript
+  - forms
+  - validation
+  - constraint-validation-api
+  - formdata
+  - browser
+aliases:
+  - Form Handling JS
+  - Constraint Validation API
+prerequisites:
+  - "[[Programmazione/JavaScript/Pagine/Manipolazione del DOM]]"
+  - "[[Programmazione/JavaScript/Pagine/Gestione Eventi]]"
+  - "[[Programmazione/JavaScript/Pagine/Fetch API]]"
+related:
+  - "[[Programmazione/JavaScript/Pagine/Fetch API]]"
+  - "[[Programmazione/JavaScript/Pagine/Sicurezza]]"
+  - "[[Programmazione/JavaScript/Pagine/Regular Expressions]]"
+title: Form Handling e Validazione
 ---
 
 # Form Handling e Validazione
 
 ## Sintesi
 
-### Testo introduttivo
+
 La gestione dei form in JavaScript riguarda raccolta dati, validazione, invio, feedback all'utente e integrazione con API HTTP.
 
 La **Constraint Validation API** e l'insieme di funzionalita native del browser per controllare la validita degli input senza dover riscrivere tutto manualmente.
+
+Gli esempi delle singole sezioni sono alternativi, non listener da sommare sullo stesso form. Presuppongono `form` e i controlli gia selezionati; i frammenti con `await` richiedono una funzione `async` o un modulo ES. L'esempio pratico finale usa l'HTML iniziale e include selezione, validazione, invio e gestione degli esiti.
 
 ---
 
@@ -41,29 +58,32 @@ La validazione client migliora UX, ma il server deve sempre validare di nuovo.
 
 ## Come funziona
 
-### 1. Struttura base di un form
+### Struttura base di un form
 Un form HTML raccoglie valori tramite controlli come `input`, `select`, `textarea` e `button`.
 
 ```html
-<form id="signup-form">
+<form id="signup-form" action="/api/signup" method="post">
   <label>
     Email
-    <input type="email" name="email" required>
+    <input type="email" name="email" autocomplete="email" required>
   </label>
 
   <label>
     Password
-    <input type="password" name="password" minlength="8" required>
+    <input type="password" name="password" autocomplete="new-password" minlength="8" required>
   </label>
 
   <button type="submit">Registrati</button>
+  <p id="signup-feedback" role="status" aria-live="polite"></p>
 </form>
 ```
 
 L'attributo `name` e fondamentale: viene usato da `FormData` e dall'invio tradizionale del form.
 
+`method="post"` evita il default GET, che metterebbe anche la password nella query string se JavaScript non intercettasse l'invio. POST non cifra i dati: in produzione usa HTTPS. Il backend deve gestire anche l'invio nativo, se vuoi un fallback senza JavaScript. Il limite di otto caratteri e un esempio del vincolo HTML, non una politica completa per le password.
+
 ---
-### 2. Evento submit
+### Evento submit
 Per intercettare l'invio del form si ascolta l'evento `submit`.
 
 ```js
@@ -80,8 +100,10 @@ form.addEventListener("submit", event => {
 
 Questo serve quando vuoi gestire l'invio via JavaScript, per esempio con `fetch()`.
 
+Il submit riguarda il form, non solo il click del pulsante: copre anche Invio da tastiera. Normalmente la validazione interattiva precede l'evento, quindi un form invalido non emette `submit`. `form.requestSubmit()` segue questo percorso; `form.submit()` lo bypassa, saltando validazione ed evento.
+
 ---
-### 3. Leggere i valori
+### Leggere i valori
 Si possono leggere i campi direttamente.
 
 ```js
@@ -98,42 +120,46 @@ const email = formData.get("email");
 const password = formData.get("password");
 ```
 
-`FormData` raccoglie i controlli del form che hanno un attributo `name`.
+`FormData` include i controlli inviabili con `name`: esclude i controlli disabilitati e checkbox/radio non selezionati. I valori sono stringhe o `File`, non numeri o booleani automaticamente convertiti; `get()` restituisce `null` per un nome assente. Il semplice attributo `readonly` non esclude il valore dall'invio.
+
+Per includere anche nome e valore del pulsante usato, nei browser che supportano il secondo parametro usa `new FormData(form, event.submitter)` nel listener `submit`. Raccogli i dati prima di disabilitare i controlli da inviare.
 
 ---
-### 4. Convertire FormData in oggetto
+### Convertire FormData in oggetto
 Per form semplici, `Object.fromEntries()` permette di trasformare `FormData` in un oggetto.
 
 ```js
 const formData = new FormData(form);
 const data = Object.fromEntries(formData.entries());
 
-console.log(data);
+console.log(Object.keys(data)); // Non registrare password o token nei log
 ```
 
 Esempio risultato:
 
-```js
+```json
 {
-  email: "luca@example.com",
-  password: "password123"
+  "email": "luca@example.com",
+  "password": "valore-di-esempio"
 }
 ```
 
 Attenzione: se ci sono campi multipli con lo stesso nome, come checkbox multiple, `Object.fromEntries()` mantiene solo l'ultimo valore.
 
+Non e una conversione di schema: preserva stringhe e oggetti `File`. Per payload JSON definisci esplicitamente i campi e le conversioni; per file usa multipart.
+
 ---
-### 5. Checkbox, radio e campi multipli
+### Checkbox, radio e campi multipli
 Per leggere tutti i valori associati allo stesso `name`, si usa `getAll()`.
 
 ```html
 <label>
-  <input type="checkbox" name="topics" value="javascript">
+  <input type="checkbox" name="topics" value="javascript" checked>
   JavaScript
 </label>
 
 <label>
-  <input type="checkbox" name="topics" value="css">
+  <input type="checkbox" name="topics" value="css" checked>
   CSS
 </label>
 ```
@@ -145,10 +171,10 @@ const topics = formData.getAll("topics");
 console.log(topics); // ["javascript", "css"]
 ```
 
-Per radio button, di solito viene inviato solo il valore selezionato.
+Inserisci questi controlli dentro il form usato dal codice. Qui entrambe le checkbox sono selezionate; se nessuna lo e, `getAll("topics")` restituisce `[]`. Un gruppo radio invia il solo valore selezionato, oppure nessun valore se non c'e selezione.
 
 ---
-### 6. Inviare dati con fetch
+### Inviare dati con fetch
 Per inviare JSON:
 
 ```js
@@ -158,16 +184,16 @@ form.addEventListener("submit", async event => {
   const formData = new FormData(form);
   const data = Object.fromEntries(formData.entries());
 
-  const response = await fetch("/api/signup", {
-    method: "POST",
-    headers: {
-      "Content-Type": "application/json",
-    },
-    body: JSON.stringify(data),
-  });
+  try {
+    const response = await fetch("/api/signup", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify(data),
+    });
 
-  if (!response.ok) {
-    throw new Error("Invio fallito");
+    if (!response.ok) throw new Error(`HTTP ${response.status}`);
+  } catch {
+    console.error("Invio non riuscito");
   }
 });
 ```
@@ -186,7 +212,7 @@ await fetch("/api/upload", {
 Quando usi `FormData` come body, non impostare manualmente `Content-Type`: il browser aggiunge automaticamente il boundary corretto.
 
 ---
-### 7. Validazione HTML nativa
+### Validazione HTML nativa
 HTML offre diversi attributi di validazione.
 
 ```html
@@ -207,10 +233,10 @@ Attributi comuni:
 - `pattern`: espressione regolare;
 - `type`: tipo semantico come `email`, `url`, `number`, `date`.
 
-Questa validazione viene eseguita dal browser prima dell'invio standard del form.
+Questa validazione viene eseguita dal browser prima dell'invio interattivo del form. I campi opzionali vuoti restano validi per molti vincoli: aggiungi `required` quando serve. `minlength` e `maxlength` non si applicano allo stesso modo a valori assegnati programmaticamente; non affidarti ai controlli client per certificare dati esterni.
 
 ---
-### 9. ValidityState
+### ValidityState
 La proprieta `validity` contiene il motivo per cui un campo non e valido.
 
 ```js
@@ -227,12 +253,14 @@ Proprieta utili:
 - `tooLong`: valore troppo lungo;
 - `rangeUnderflow`: valore sotto il minimo;
 - `rangeOverflow`: valore sopra il massimo;
+- `stepMismatch`: valore non allineato al passo;
+- `badInput`: input che il browser non riesce a convertire nel tipo richiesto;
 - `patternMismatch`: valore non coerente con `pattern`;
 - `customError`: errore impostato con `setCustomValidity()`;
 - `valid`: nessun errore.
 
 ---
-### 10. Messaggi personalizzati
+### Messaggi personalizzati
 `setCustomValidity()` permette di definire un messaggio di errore.
 
 ```js
@@ -256,7 +284,7 @@ password.setCustomValidity("");
 Se dimentichi di pulire il messaggio, il campo resta non valido.
 
 ---
-### 11. Validazione al submit
+### Validazione al submit
 Pattern tipico:
 
 ```js
@@ -271,14 +299,18 @@ form.addEventListener("submit", async event => {
   const formData = new FormData(form);
   const data = Object.fromEntries(formData.entries());
 
-  await submitData(data);
+  try {
+    await submitData(data);
+  } catch {
+    console.error("Invio non riuscito");
+  }
 });
 ```
 
-Questo mantiene la validazione nativa ma permette di controllare l'invio con JavaScript.
+`submitData` e la funzione applicativa da fornire. Con validazione automatica attiva il form invalido viene normalmente bloccato prima di questo listener. Il controllo manuale e utile se usi `novalidate` e gestisci tu il flusso.
 
 ---
-### 12. novalidate
+### novalidate
 L'attributo `novalidate` disattiva la validazione automatica del browser al submit.
 
 ```html
@@ -292,7 +324,7 @@ E utile quando vuoi gestire completamente tu i messaggi e il rendering degli err
 Puoi comunque usare `checkValidity()`, `validity` e `setCustomValidity()` da JavaScript.
 
 ---
-### 13. Feedback accessibile
+### Feedback accessibile
 Gli errori devono essere leggibili anche da tecnologie assistive.
 
 Esempio:
@@ -310,7 +342,7 @@ Esempio:
 ```
 
 ```js
-const email = form.elements.email;
+const email = document.querySelector("#email");
 const error = document.querySelector("#email-error");
 
 email.addEventListener("input", () => {
@@ -327,20 +359,23 @@ email.addEventListener("input", () => {
 Un buon form non deve comunicare l'errore solo con il colore.
 
 ---
-### 14. Stato di invio
+### Stato di invio
 Durante una richiesta asincrona conviene disabilitare il pulsante per evitare invii multipli.
+
+Questo schema mostra il ripristino del pulsante; la protezione completa contro submit ripetuti e nell'esempio finale. `sendForm` e una funzione applicativa da fornire.
 
 ```js
 form.addEventListener("submit", async event => {
   event.preventDefault();
 
   const submitButton = form.querySelector("[type='submit']");
-
+  const formData = new FormData(form, event.submitter);
   submitButton.disabled = true;
 
   try {
-    const formData = new FormData(form);
     await sendForm(formData);
+  } catch {
+    console.error("Invio non riuscito");
   } finally {
     submitButton.disabled = false;
   }
@@ -350,7 +385,7 @@ form.addEventListener("submit", async event => {
 Il blocco `finally` garantisce il ripristino anche in caso di errore.
 
 ---
-### 15. Reset del form
+### Reset del form
 `form.reset()` riporta i campi ai valori iniziali definiti nell'HTML.
 
 ```js
@@ -359,8 +394,10 @@ form.reset();
 
 Non sempre significa "svuotare tutto": se un input aveva un valore iniziale, quel valore viene ripristinato.
 
+Non pulisce automaticamente i messaggi creati da `setCustomValidity()` o la UI di errore: reimpostali esplicitamente quando necessario.
+
 ---
-### 16. File input
+### File input
 I file si leggono dal campo `files`.
 
 ```html
@@ -368,13 +405,17 @@ I file si leggono dal campo `files`.
 ```
 
 ```js
-const fileInput = form.elements.avatar;
+const fileInput = document.querySelector('input[name="avatar"]');
 const file = fileInput.files[0];
 
-console.log(file.name);
-console.log(file.type);
-console.log(file.size);
+if (file) {
+  console.log(file.name);
+  console.log(file.type);
+  console.log(file.size);
+}
 ```
+
+Senza selezione `files[0]` e `undefined`. `accept` e un aiuto al selettore, non una validazione; nome, estensione e MIME dichiarato non certificano il contenuto. Dimensioni e formato vanno controllati anche dal server.
 
 Per upload file, usa `FormData`.
 
@@ -388,7 +429,7 @@ await fetch("/api/avatar", {
 ```
 
 ---
-### 17. Sicurezza
+### Sicurezza
 La validazione lato client migliora l'esperienza utente, ma non e una garanzia di sicurezza.
 
 Qualunque controllo lato client puo essere bypassato.
@@ -409,7 +450,7 @@ La regola pratica e: validazione client per UX, validazione server per sicurezza
 
 ## API / Sintassi
 
-### 8. Constraint Validation API
+### Constraint Validation API
 Ogni controllo validabile espone proprieta e metodi per controllare la validita.
 
 ```js
@@ -426,6 +467,7 @@ Metodi principali:
 - `setCustomValidity(message)`: imposta un errore personalizzato.
 
 ```js
+// Dentro un handler o una funzione, non come script autonomo:
 if (!form.checkValidity()) {
   form.reportValidity();
   return;
@@ -436,37 +478,62 @@ if (!form.checkValidity()) {
 
 ## Esempio pratico
 
-Submit con validazione nativa e invio JSON:
+Usa l'HTML `signup-form` iniziale ed esegui questo script dopo il parsing. Richiede un backend `/api/signup` che accetti JSON; un sito statico da solo non implementa l'endpoint. Non registrare anche i listener parziali delle sezioni precedenti.
 
 ```js
+const form = document.querySelector("#signup-form");
+const feedback = document.querySelector("#signup-feedback");
+if (!form || !feedback) throw new Error("Markup del form incompleto");
+const submitButton = form.querySelector("button[type='submit']");
+if (!submitButton) throw new Error("Pulsante submit mancante");
+let submitting = false;
+
 form.addEventListener("submit", async (event) => {
   event.preventDefault();
+  if (submitting) return;
 
-  if (!form.checkValidity()) {
-    form.reportValidity();
+  if (!form.reportValidity()) return;
+
+  const formData = new FormData(form, event.submitter);
+  const data = {
+    email: formData.get("email"),
+    password: formData.get("password"),
+  };
+  if (typeof data.email !== "string" || typeof data.password !== "string") {
+    feedback.textContent = "Controlla i campi richiesti.";
     return;
   }
 
-  const formData = new FormData(form);
-  const data = Object.fromEntries(formData.entries());
+  submitting = true;
+  submitButton.disabled = true;
+  form.setAttribute("aria-busy", "true");
+  feedback.textContent = "Invio in corso...";
 
-  const response = await fetch("/api/signup", {
-    method: "POST",
-    headers: {
-      "Content-Type": "application/json",
-    },
-    body: JSON.stringify(data),
-  });
-
-  if (!response.ok) {
-    throw new Error(`HTTP ${response.status}`);
+  try {
+    const response = await fetch("/api/signup", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify(data),
+    });
+    if (!response.ok) throw new Error(`HTTP ${response.status}`);
+    feedback.textContent = "Registrazione completata.";
+  } catch {
+    feedback.textContent = "Invio non riuscito. I dati sono stati conservati.";
+  } finally {
+    submitting = false;
+    submitButton.disabled = false;
+    form.removeAttribute("aria-busy");
   }
 });
 ```
 
+Il contratto dell'esempio considera conclusa la registrazione con qualsiasi risposta `2xx` e non richiede JSON in risposta, quindi accetta anche `204`. Per un'API che restituisce errori di campo o `202 Accepted`, adatta la gestione all'esito applicativo invece di trattare tutti i successi HTTP allo stesso modo.
+
+Il flag `submitting` protegge anche invii da tastiera o `requestSubmit()` durante la richiesta. Non sostituisce idempotenza e vincoli lato server. Il form non viene resettato automaticamente: conserva i dati in caso di errore e non cancella modifiche fatte durante l'attesa. Un timeout o annullamento puo essere aggiunto con [[Programmazione/JavaScript/Pagine/AbortController|AbortController]].
+
 ## Varianti
 
-### 20. Mappa mentale
+### Mappa mentale
 ```text
 Form Handling e Validazione
 |
@@ -502,7 +569,7 @@ Form Handling e Validazione
 
 ## Errori comuni
 
-### 19. Errori comuni
+
 - Dimenticare `event.preventDefault()` nel submit gestito via JS.
 - Dimenticare l'attributo `name`.
 - Usare `Object.fromEntries()` con checkbox multiple perdendo valori.
@@ -516,7 +583,7 @@ Form Handling e Validazione
 
 ## Checklist
 
-### 18. Best practice
+### Best practice
 - Usa sempre `name` sui campi da inviare.
 - Usa gli attributi HTML nativi quando bastano.
 - Usa `FormData` per raccogliere dati dal form.
@@ -531,11 +598,26 @@ Form Handling e Validazione
 
 ## Collegamenti
 
-### 21. Collegamenti
-- [[Gestione Eventi]]
-- [[Manipolazione del DOM]]
-- [[Fetch API]]
+
+- [[Programmazione/JavaScript/Pagine/Gestione Eventi|Gestione Eventi]]
+- [[Programmazione/JavaScript/Pagine/Manipolazione del DOM|Manipolazione del DOM]]
+- [[Programmazione/JavaScript/Pagine/Fetch API|Fetch API]]
 - FormData
-- [[CORS]]
-- [[Sicurezza]]
-- [[Web Components]]
+- [[Programmazione/JavaScript/Pagine/CORS|CORS]]
+- [[Programmazione/JavaScript/Pagine/Sicurezza|Sicurezza]]
+- [[Programmazione/JavaScript/Pagine/Web Components|Web Components]]
+
+
+## Fonti
+
+- [MDN: form, action e method](https://developer.mozilla.org/en-US/docs/Web/HTML/Reference/Elements/form).
+- [MDN: evento submit](https://developer.mozilla.org/en-US/docs/Web/API/HTMLFormElement/submit_event).
+- [MDN: requestSubmit](https://developer.mozilla.org/en-US/docs/Web/API/HTMLFormElement/requestSubmit).
+- [MDN: costruttore FormData e submitter](https://developer.mozilla.org/en-US/docs/Web/API/FormData/FormData).
+- [MDN: Constraint Validation API](https://developer.mozilla.org/en-US/docs/Web/HTML/Guides/Constraint_validation).
+- [MDN: input e vincoli HTML](https://developer.mozilla.org/en-US/docs/Web/HTML/Reference/Elements/input).
+- [MDN: Fetch](https://developer.mozilla.org/en-US/docs/Web/API/Fetch_API/Using_Fetch).
+
+## Navigazione
+
+- [[Programmazione/JavaScript/Indice JavaScript|Indice JavaScript]]

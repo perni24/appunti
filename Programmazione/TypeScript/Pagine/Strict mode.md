@@ -3,13 +3,24 @@ date: 2026-06-22
 area: Programmazione
 topic: TypeScript
 type: technical-note
-status: "non revisionato"
+status: non revisionato
 publish: true
 difficulty: intermedio
-tags: [typescript, strict-mode, type-safety, tsconfig]
-aliases: [strict TypeScript]
-prerequisites: [tsconfig, any, unknown e never]
-related: [Best Practices, Error Handling]
+tags:
+  - typescript
+  - strict-mode
+  - type-safety
+  - tsconfig
+aliases:
+  - strict TypeScript
+prerequisites:
+  - "[[Programmazione/TypeScript/Pagine/tsconfig]]"
+  - any
+  - unknown e never
+related:
+  - "[[Programmazione/TypeScript/Pagine/Best Practices]]"
+  - "[[Programmazione/TypeScript/Pagine/Error Handling]]"
+title: Strict mode
 ---
 
 # Strict mode
@@ -83,6 +94,11 @@ Con `strictNullChecks`, TypeScript obbliga a gestire `null` prima di usare metod
 
 ## Collegamenti
 
-- [[tsconfig]]
-- [[any, unknown e never]]
-- [[Best Practices]]
+- [[Programmazione/TypeScript/Pagine/tsconfig|tsconfig]]
+- [[Programmazione/TypeScript/Pagine/any, unknown e never|any, unknown e never]]
+- [[Programmazione/TypeScript/Pagine/Best Practices|Best Practices]]
+
+
+## Navigazione
+
+- [[Programmazione/TypeScript/Indice TypeScript|Indice TypeScript]]

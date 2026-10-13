@@ -3,13 +3,17 @@ date: 2026-06-03
 area: Programmazione
 topic: Python
 type: technical-note
-status: "non revisionato"
+status: non revisionato
 publish: true
-difficulty: intermediate
-tags: [python, programming]
-aliases: [Funzioni]
+difficulty: intermedio
+tags:
+  - python
+  - programming
+aliases:
+  - Funzioni
 prerequisites: []
 related: []
+title: Funzioni in Python
 ---
 
 # Funzioni in Python
@@ -94,3 +98,8 @@ cleaned = [normalize_email(email) for email in emails]
 - [[Programmazione/Python/Pagine/Argomenti Flessibili|Argomenti Flessibili]]
 - [[Programmazione/Python/Pagine/Funzioni Lambda|Funzioni Lambda]]
 - [[Programmazione/Python/Pagine/Decoratori|Decoratori]]
+
+
+## Navigazione
+
+- [[Programmazione/Python/Indice Python|Indice Python]]

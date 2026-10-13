@@ -3,13 +3,23 @@ date: 2026-06-22
 area: Programmazione
 topic: TypeScript
 type: technical-note
-status: "non revisionato"
+status: non revisionato
 publish: true
 difficulty: intermedio
-tags: [typescript, parsing, input-validation, security]
-aliases: [Parsing sicuro]
-prerequisites: [Validazione runtime e tipi statici]
-related: [Schema validation con Zod, API contract, Error Handling]
+tags:
+  - typescript
+  - parsing
+  - input-validation
+  - security
+aliases:
+  - Parsing sicuro
+prerequisites:
+  - "[[Programmazione/TypeScript/Pagine/Validazione runtime e tipi statici]]"
+related:
+  - "[[Programmazione/TypeScript/Pagine/Schema validation con Zod]]"
+  - "[[Programmazione/TypeScript/Pagine/API contract]]"
+  - "[[Programmazione/TypeScript/Pagine/Error Handling]]"
+title: Parsing sicuro di input esterni
 ---
 
 # Parsing sicuro di input esterni
@@ -89,7 +99,12 @@ Il parser non restituisce semplicemente `number`: applica regole di dominio.
 
 ## Collegamenti
 
-- [[Validazione runtime e tipi statici]]
-- [[Schema validation con Zod]]
-- [[API contract]]
+- [[Programmazione/TypeScript/Pagine/Validazione runtime e tipi statici|Validazione runtime e tipi statici]]
+- [[Programmazione/TypeScript/Pagine/Schema validation con Zod|Schema validation con Zod]]
+- [[Programmazione/TypeScript/Pagine/API contract|API contract]]
 - [[Programmazione/TypeScript/Pagine/Error Handling|Error Handling]]
+
+
+## Navigazione
+
+- [[Programmazione/TypeScript/Indice TypeScript|Indice TypeScript]]

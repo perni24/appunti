@@ -3,13 +3,25 @@ date: 2026-07-07
 area: Programmazione
 topic: GitHub
 type: technical-note
-status: "non revisionato"
+status: non revisionato
 publish: true
 difficulty: avanzato
-tags: [github, github-actions, runners, self-hosted]
-aliases: [Self-hosted runners, Runner self-hosted GitHub Actions]
-prerequisites: [GitHub Actions, Jobs steps e runners]
-related: [Permissions GitHub Actions, OIDC GitHub Actions, Costi e limiti GitHub Actions]
+tags:
+  - github
+  - github-actions
+  - runners
+  - self-hosted
+aliases:
+  - Self-hosted runners
+  - Runner self-hosted GitHub Actions
+prerequisites:
+  - "[[Programmazione/GitHub/Pagine/GitHub Actions]]"
+  - "[[Programmazione/GitHub/Pagine/Jobs steps e runners]]"
+related:
+  - "[[Programmazione/GitHub/Pagine/Permissions GitHub Actions]]"
+  - "[[Programmazione/GitHub/Pagine/OIDC GitHub Actions]]"
+  - "[[Programmazione/GitHub/Pagine/Costi e limiti GitHub Actions]]"
+title: Self-hosted runners
 ---
 
 # Self-hosted runners
@@ -111,12 +123,12 @@ Qui il runner self-hosted evita di riconfigurare ogni volta un ambiente molto sp
 
 ## Collegamenti
 
-- [[Programmazione/GitHub/Indice GitHub]]
-- [[GitHub Actions]]
-- [[Jobs steps e runners]]
-- [[Permissions GitHub Actions]]
-- [[OIDC GitHub Actions]]
-- [[Sicurezza dei token GitHub]]
+- [[Programmazione/GitHub/Indice GitHub|Indice GitHub]]
+- [[Programmazione/GitHub/Pagine/GitHub Actions|GitHub Actions]]
+- [[Programmazione/GitHub/Pagine/Jobs steps e runners|Jobs steps e runners]]
+- [[Programmazione/GitHub/Pagine/Permissions GitHub Actions|Permissions GitHub Actions]]
+- [[Programmazione/GitHub/Pagine/OIDC GitHub Actions|OIDC GitHub Actions]]
+- [[Programmazione/GitHub/Pagine/Sicurezza dei token GitHub|Sicurezza dei token GitHub]]
 
 ## Fonti
 

@@ -3,13 +3,24 @@ date: 2026-07-06
 area: Programmazione
 topic: GitHub
 type: technical-note
-status: "non revisionato"
+status: non revisionato
 publish: true
 difficulty: intermedio
-tags: [github, rulesets, repository, governance]
-aliases: [Repository rulesets, Rulesets GitHub]
-prerequisites: [Repository GitHub, Branch protection rules]
-related: [Branch protection rules, Protected tags]
+tags:
+  - github
+  - rulesets
+  - repository
+  - governance
+aliases:
+  - Repository rulesets
+  - Rulesets GitHub
+prerequisites:
+  - "[[Programmazione/GitHub/Pagine/Repository GitHub]]"
+  - "[[Programmazione/GitHub/Pagine/Branch protection rules]]"
+related:
+  - "[[Programmazione/GitHub/Pagine/Branch protection rules]]"
+  - "[[Programmazione/GitHub/Pagine/Protected tags]]"
+title: Repository rulesets
 ---
 
 # Repository rulesets
@@ -107,11 +118,11 @@ Questo rende esplicito quali parti del repository sono critiche.
 
 ## Collegamenti
 
-- [[Programmazione/GitHub/Indice GitHub]]
-- [[Repository GitHub]]
-- [[Branch protection rules]]
-- [[Protected tags]]
-- [[Required status checks]]
+- [[Programmazione/GitHub/Indice GitHub|Indice GitHub]]
+- [[Programmazione/GitHub/Pagine/Repository GitHub|Repository GitHub]]
+- [[Programmazione/GitHub/Pagine/Branch protection rules|Branch protection rules]]
+- [[Programmazione/GitHub/Pagine/Protected tags|Protected tags]]
+- [[Programmazione/GitHub/Pagine/Required status checks|Required status checks]]
 
 ## Fonti
 

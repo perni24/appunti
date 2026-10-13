@@ -3,13 +3,23 @@ date: 2026-06-22
 area: Programmazione
 topic: TypeScript
 type: technical-note
-status: "non revisionato"
+status: non revisionato
 publish: true
 difficulty: avanzato
-tags: [typescript, const-type-parameters, generics, literal-types]
-aliases: [const generics TypeScript]
-prerequisites: [Generics avanzati, as const]
-related: [Inferenza dei tipi, Variadic tuple types]
+tags:
+  - typescript
+  - const-type-parameters
+  - generics
+  - literal-types
+aliases:
+  - const generics TypeScript
+prerequisites:
+  - "[[Programmazione/TypeScript/Pagine/Generics avanzati]]"
+  - "[[Programmazione/TypeScript/Pagine/as const]]"
+related:
+  - "[[Programmazione/TypeScript/Pagine/Inferenza dei tipi]]"
+  - "[[Programmazione/TypeScript/Pagine/Variadic tuple types]]"
+title: const type parameters
 ---
 
 # const type parameters
@@ -80,6 +90,11 @@ type Field = (typeof result)[number];
 
 ## Collegamenti
 
-- [[Generics avanzati]]
-- [[as const]]
-- [[Variadic tuple types]]
+- [[Programmazione/TypeScript/Pagine/Generics avanzati|Generics avanzati]]
+- [[Programmazione/TypeScript/Pagine/as const|as const]]
+- [[Programmazione/TypeScript/Pagine/Variadic tuple types|Variadic tuple types]]
+
+
+## Navigazione
+
+- [[Programmazione/TypeScript/Indice TypeScript|Indice TypeScript]]

@@ -1,14 +1,18 @@
-﻿---
+---
 date: 2026-05-20
 area: Programmazione
 topic: Rust
 type: technical-note
-status: "non revisionato"
+status: non revisionato
 publish: true
 difficulty: base
-tags: [programmazione, rust, control-flow, expressions]
+tags:
+  - programmazione
+  - rust
+  - control-flow
+  - expressions
 aliases:
-  - "Controllo di flusso avanzato Rust"
+  - Controllo di flusso avanzato Rust
 prerequisites:
   - "[[Programmazione/Rust/Pagine/Controllo di flusso]]"
   - "[[Programmazione/Rust/Pagine/Pattern Matching]]"
@@ -16,6 +20,7 @@ related:
   - "[[Programmazione/Rust/Pagine/if let e while let]]"
   - "[[Programmazione/Rust/Pagine/Operatore]]"
   - "[[Programmazione/Rust/Pagine/Error handling idiomatico]]"
+title: Control flow avanzato
 ---
 
 # Control flow avanzato
@@ -148,3 +153,8 @@ fn parse_port(input: Option<&str>) -> Result<u16, String> {
 - [[Programmazione/Rust/Pagine/Operatore|Operatore ?]]
 - [[Programmazione/Rust/Pagine/Error handling idiomatico|Error handling idiomatico]]
 
+
+
+## Navigazione
+
+- [[Programmazione/Rust/Indice Rust|Indice Rust]]

@@ -3,7 +3,7 @@ date: 2026-05-22
 area: Programmazione
 topic: Rust
 type: technical-note
-status: "non revisionato"
+status: non revisionato
 publish: true
 difficulty: intermedio
 tags:
@@ -11,10 +11,10 @@ tags:
   - rust
   - standard-library
 aliases:
-  - "From"
-  - "Into"
-  - "TryFrom"
-  - "TryInto"
+  - From
+  - Into
+  - TryFrom
+  - TryInto
 prerequisites:
   - "[[Programmazione/Rust/Pagine/Traits]]"
   - "[[Programmazione/Rust/Pagine/Result]]"
@@ -23,6 +23,7 @@ related:
   - "[[Programmazione/Rust/Pagine/Error handling idiomatico]]"
   - "[[Programmazione/Rust/Pagine/thiserror e anyhow]]"
   - "[[Programmazione/Rust/Pagine/Blanket implementations]]"
+title: From, Into, TryFrom e TryInto
 ---
 
 # From, Into, TryFrom e TryInto
@@ -153,3 +154,8 @@ fn main() -> Result<(), std::num::ParseIntError> {
 - [[Programmazione/Rust/Pagine/Operatore|Operatore ?]]
 - [[Programmazione/Rust/Pagine/Error handling idiomatico|Error handling idiomatico]]
 - [[Programmazione/Rust/Pagine/Blanket implementations|Blanket implementations]]
+
+
+## Navigazione
+
+- [[Programmazione/Rust/Indice Rust|Indice Rust]]

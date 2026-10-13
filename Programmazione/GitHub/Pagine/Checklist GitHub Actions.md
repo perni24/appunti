@@ -3,13 +3,25 @@ date: 2026-07-07
 area: Programmazione
 topic: GitHub
 type: operational-note
-status: "non revisionato"
+status: non revisionato
 publish: true
 difficulty: intermedio
-tags: [github, github-actions, checklist, ci-cd]
-aliases: [Checklist GitHub Actions, Checklist Actions]
-prerequisites: [GitHub Actions, Workflow GitHub Actions]
-related: [Permissions GitHub Actions, Cache GitHub Actions, Debug GitHub Actions]
+tags:
+  - github
+  - github-actions
+  - checklist
+  - ci-cd
+aliases:
+  - Checklist GitHub Actions
+  - Checklist Actions
+prerequisites:
+  - "[[Programmazione/GitHub/Pagine/GitHub Actions]]"
+  - "[[Programmazione/GitHub/Pagine/Workflow GitHub Actions]]"
+related:
+  - "[[Programmazione/GitHub/Pagine/Permissions GitHub Actions]]"
+  - "[[Programmazione/GitHub/Pagine/Cache GitHub Actions]]"
+  - "[[Programmazione/GitHub/Pagine/Debug GitHub Actions]]"
+title: Checklist GitHub Actions
 ---
 
 # Checklist GitHub Actions
@@ -103,15 +115,15 @@ Checklist sintetica:
 
 ## Collegamenti
 
-- [[Programmazione/GitHub/Indice GitHub]]
-- [[GitHub Actions]]
-- [[Workflow GitHub Actions]]
-- [[Eventi e trigger GitHub Actions]]
-- [[Permissions GitHub Actions]]
-- [[Cache GitHub Actions]]
-- [[Artifacts GitHub Actions]]
-- [[Concurrency e cancel-in-progress]]
-- [[Debug GitHub Actions]]
+- [[Programmazione/GitHub/Indice GitHub|Indice GitHub]]
+- [[Programmazione/GitHub/Pagine/GitHub Actions|GitHub Actions]]
+- [[Programmazione/GitHub/Pagine/Workflow GitHub Actions|Workflow GitHub Actions]]
+- [[Programmazione/GitHub/Pagine/Eventi e trigger GitHub Actions|Eventi e trigger GitHub Actions]]
+- [[Programmazione/GitHub/Pagine/Permissions GitHub Actions|Permissions GitHub Actions]]
+- [[Programmazione/GitHub/Pagine/Cache GitHub Actions|Cache GitHub Actions]]
+- [[Programmazione/GitHub/Pagine/Artifacts GitHub Actions|Artifacts GitHub Actions]]
+- [[Programmazione/GitHub/Pagine/Concurrency e cancel-in-progress|Concurrency e cancel-in-progress]]
+- [[Programmazione/GitHub/Pagine/Debug GitHub Actions|Debug GitHub Actions]]
 
 ## Fonti
 

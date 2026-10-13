@@ -3,7 +3,7 @@ date: 2026-05-27
 area: Programmazione
 topic: Rust
 type: technical-note
-status: "non revisionato"
+status: non revisionato
 publish: true
 difficulty: avanzato
 tags:
@@ -11,8 +11,8 @@ tags:
   - rust
   - embedded
 aliases:
-  - "Embassy"
-  - "Embassy async"
+  - Embassy
+  - Embassy async
 prerequisites:
   - "[[Programmazione/Rust/Pagine/no_std]]"
   - "[[Programmazione/Rust/Pagine/Async Await]]"
@@ -23,6 +23,7 @@ related:
   - "[[Programmazione/Rust/Pagine/RTIC]]"
   - "[[Programmazione/Rust/Pagine/defmt]]"
   - "[[Programmazione/Rust/Pagine/Channel async]]"
+title: Embassy
 ---
 
 # Embassy
@@ -157,12 +158,12 @@ Il task `worker` non blocca tutto il firmware durante l'attesa: restituisce cont
 
 ## Collegamenti
 
-- [[Programmazione/Rust/Indice rust|Indice Rust]]
-- [[Programmazione/Rust/Pagine/no_std]]
-- [[Programmazione/Rust/Pagine/Embedded Rust]]
-- [[Programmazione/Rust/Pagine/embedded-hal]]
-- [[Programmazione/Rust/Pagine/RTIC]]
-- [[Programmazione/Rust/Pagine/defmt]]
-- [[Programmazione/Rust/Pagine/Async Await]]
-- [[Programmazione/Rust/Pagine/Future Trait]]
-- [[Programmazione/Rust/Pagine/Channel async]]
+- [[Programmazione/Rust/Indice Rust|Indice Rust]]
+- [[Programmazione/Rust/Pagine/no_std|no_std]]
+- [[Programmazione/Rust/Pagine/Embedded Rust|Embedded Rust]]
+- [[Programmazione/Rust/Pagine/embedded-hal|embedded-hal]]
+- [[Programmazione/Rust/Pagine/RTIC|RTIC]]
+- [[Programmazione/Rust/Pagine/defmt|defmt]]
+- [[Programmazione/Rust/Pagine/Async Await|Async Await]]
+- [[Programmazione/Rust/Pagine/Future Trait|Future Trait]]
+- [[Programmazione/Rust/Pagine/Channel async|Channel async]]

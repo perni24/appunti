@@ -1,15 +1,19 @@
-﻿---
+---
 date: 2026-05-20
 area: Programmazione
 topic: Rust
 type: technical-note
-status: "non revisionato"
+status: non revisionato
 publish: true
 difficulty: base
-tags: [programmazione, rust, tuple-structs, newtype]
+tags:
+  - programmazione
+  - rust
+  - tuple-structs
+  - newtype
 aliases:
-  - "Tuple struct Rust"
-  - "Newtype semplice"
+  - Tuple struct Rust
+  - Newtype semplice
 prerequisites:
   - "[[Programmazione/Rust/Pagine/Structs]]"
   - "[[Programmazione/Rust/Pagine/Tipi di dato primitivi]]"
@@ -17,6 +21,7 @@ related:
   - "[[Programmazione/Rust/Pagine/Newtype pattern]]"
   - "[[Programmazione/Rust/Pagine/Pattern Matching]]"
   - "[[Programmazione/Rust/Pagine/Derive traits]]"
+title: Tuple structs
 ---
 
 # Tuple structs
@@ -129,3 +134,8 @@ Senza tipi distinti, sarebbe facile passare un valore in Fahrenheit dove la funz
 - [[Programmazione/Rust/Pagine/Derive traits|Derive traits]]
 - [[Programmazione/Rust/Pagine/PhantomData|PhantomData]]
 
+
+
+## Navigazione
+
+- [[Programmazione/Rust/Indice Rust|Indice Rust]]

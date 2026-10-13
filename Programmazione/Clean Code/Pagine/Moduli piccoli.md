@@ -3,13 +3,23 @@ date: 2026-07-09
 area: Programmazione
 topic: Clean Code
 type: theory-note
-status: "non revisionato"
+status: non revisionato
 publish: true
 difficulty: base
-tags: [clean-code, moduli, manutenibilita]
-aliases: [Moduli piccoli, Small modules]
-prerequisites: [Clean Code]
-related: [Organizzazione dei file, Confini tra moduli, Dipendenze esplicite]
+tags:
+  - clean-code
+  - moduli
+  - manutenibilita
+aliases:
+  - Moduli piccoli
+  - Small modules
+prerequisites:
+  - "[[Programmazione/Clean Code/Pagine/Clean Code]]"
+related:
+  - "[[Programmazione/Clean Code/Pagine/Organizzazione dei file]]"
+  - "[[Programmazione/Clean Code/Pagine/Confini tra moduli]]"
+  - "[[Programmazione/Clean Code/Pagine/Dipendenze esplicite]]"
+title: Moduli piccoli
 ---
 
 # Moduli piccoli
@@ -89,11 +99,11 @@ Ogni file ha un motivo piu chiaro per cambiare.
 
 ## Collegamenti
 
-- [[Programmazione/Clean Code/Indice Clean Code]]
-- [[Organizzazione dei file]]
-- [[Confini tra moduli]]
-- [[Dipendenze esplicite]]
-- [[Funzioni con responsabilita singola]]
+- [[Programmazione/Clean Code/Indice Clean Code|Indice Clean Code]]
+- [[Programmazione/Clean Code/Pagine/Organizzazione dei file|Organizzazione dei file]]
+- [[Programmazione/Clean Code/Pagine/Confini tra moduli|Confini tra moduli]]
+- [[Programmazione/Clean Code/Pagine/Dipendenze esplicite|Dipendenze esplicite]]
+- [[Programmazione/Clean Code/Pagine/Funzioni con responsabilita singola|Funzioni con responsabilita singola]]
 
 ## Fonti
 

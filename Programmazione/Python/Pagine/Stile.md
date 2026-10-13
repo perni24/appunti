@@ -3,13 +3,19 @@ date: 2026-06-03
 area: Programmazione
 topic: Python
 type: theory-note
-status: "non revisionato"
+status: non revisionato
 publish: true
-difficulty: beginner
-tags: [python, programming, style]
-aliases: [Stile Python, PEP 8]
+difficulty: base
+tags:
+  - python
+  - programming
+  - style
+aliases:
+  - Stile Python
+  - PEP 8
 prerequisites: []
 related: []
+title: Stile in Python
 ---
 
 # Stile in Python
@@ -140,8 +146,8 @@ Il secondo esempio e piu lungo, ma comunica meglio il dominio.
 
 ## Collegamenti
 
-- [[Programmazione/Python/Indice python|Indice Python]]
-- [[isort]]
-- [[pre-commit]]
-- [[Type Hinting]]
+- [[Programmazione/Python/Indice Python|Indice Python]]
+- [[Programmazione/Python/Pagine/isort|isort]]
+- [[Programmazione/Python/Pagine/pre-commit|pre-commit]]
+- [[Programmazione/Python/Pagine/Type Hinting|Type Hinting]]
 - [[Programmazione/Python/Pagine/Testing|Testing]]

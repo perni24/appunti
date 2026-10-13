@@ -3,13 +3,19 @@ date: 2026-06-03
 area: Programmazione
 topic: Python
 type: operational-note
-status: "non revisionato"
+status: non revisionato
 publish: true
-difficulty: beginner
-tags: [programmazione, python, tooling, git]
-aliases: [pre-commit]
+difficulty: base
+tags:
+  - programmazione
+  - python
+  - tooling
+  - git
+aliases:
+  - pre-commit
 prerequisites: []
 related: []
+title: pre-commit
 ---
 
 # pre-commit
@@ -138,8 +144,8 @@ repos:
 
 ## Collegamenti
 
-- [[Programmazione/Python/Indice python|Indice Python]]
-- [[Stile]]
-- [[isort]]
+- [[Programmazione/Python/Indice Python|Indice Python]]
+- [[Programmazione/Python/Pagine/Stile|Stile]]
+- [[Programmazione/Python/Pagine/isort|isort]]
 - [[Programmazione/Python/Pagine/Testing|Testing]]
-- [[tox e nox]]
+- [[Programmazione/Python/Pagine/tox e nox|tox e nox]]

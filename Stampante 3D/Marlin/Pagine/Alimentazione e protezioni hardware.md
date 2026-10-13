@@ -3,16 +3,23 @@ date: 2026-07-25
 area: Stampante 3D
 topic: Marlin
 type: technical-note
-
 publish: true
 difficulty: avanzato
-tags: [marlin, alimentazione, sicurezza, emergenza]
-aliases: [PSU Control Marlin, Sicurezza hardware Marlin]
+tags:
+  - marlin
+  - alimentazione
+  - sicurezza
+  - emergenza
+aliases:
+  - PSU Control Marlin
+  - Sicurezza hardware Marlin
 prerequisites:
   - "[[Stampante 3D/Marlin/Pagine/Introduzione a Marlin 2.1.2.8 e compatibilita]]"
   - "[[Stampante 3D/Marlin/Pagine/Scheda madre porte seriali e pin]]"
 related: []
-marlin-version: "2.1.2.8"
+marlin-version: 2.1.2.8
+title: Alimentazione e protezioni hardware
+status: non revisionato
 ---
 
 # Alimentazione e protezioni hardware
@@ -406,8 +413,8 @@ Contribuiscono alla sicurezza complessiva, ma non sostituiscono le protezioni el
 
 ## Collegamenti
 
-- [[Stampante 3D/Marlin/Indice Marlin]]
-- [[Stampante 3D/Marlin/Pagine/Introduzione a Marlin 2.1.2.8 e compatibilita]]
-- [[Stampante 3D/Marlin/Pagine/Struttura dei file di configurazione Marlin]]
-- [[Stampante 3D/Marlin/Pagine/Metodo di configurazione compilazione e caricamento]]
-- [[Stampante 3D/Marlin/Pagine/Scheda madre porte seriali e pin]]
+- [[Stampante 3D/Marlin/Indice Marlin|Indice Marlin]]
+- [[Stampante 3D/Marlin/Pagine/Introduzione a Marlin 2.1.2.8 e compatibilita|Introduzione a Marlin 2.1.2.8 e compatibilita]]
+- [[Stampante 3D/Marlin/Pagine/Struttura dei file di configurazione Marlin|Struttura dei file di configurazione Marlin]]
+- [[Stampante 3D/Marlin/Pagine/Metodo di configurazione compilazione e caricamento|Metodo di configurazione compilazione e caricamento]]
+- [[Stampante 3D/Marlin/Pagine/Scheda madre porte seriali e pin|Scheda madre porte seriali e pin]]

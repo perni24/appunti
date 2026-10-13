@@ -3,13 +3,23 @@ date: 2026-06-02
 area: Programmazione
 topic: JavaScript
 type: technical-note
-status: "non revisionato"
+status: non revisionato
 publish: true
-difficulty: beginner
-tags: [javascript, es6, functions, default-parameters]
-aliases: [Parametri default, Parametri predefiniti]
-prerequisites: [Funzioni]
-related: [Funzioni, Destructuring]
+difficulty: base
+tags:
+  - javascript
+  - es6
+  - functions
+  - default-parameters
+aliases:
+  - Parametri default
+  - Parametri predefiniti
+prerequisites:
+  - "[[Programmazione/JavaScript/Pagine/Funzioni]]"
+related:
+  - "[[Programmazione/JavaScript/Pagine/Funzioni]]"
+  - "[[Programmazione/JavaScript/Pagine/Destructuring]]"
+title: Default Parameters
 ---
 
 # Default Parameters
@@ -24,7 +34,6 @@ Il valore di default viene usato quando l'argomento e assente o vale `undefined`
 
 ## Quando usarlo
 
-### Quando usarli
 - Parametri opzionali.
 - Valori di configurazione.
 - Oggetti di opzioni.
@@ -61,7 +70,21 @@ function createUser(id = crypto.randomUUID()) {
 }
 ```
 
-L'espressione viene valutata al momento della chiamata, non alla definizione della funzione.
+L'espressione viene valutata alla chiamata, solo se quel parametro e assente o `undefined`. `crypto.randomUUID()` e un'API del runtime, non la sintassi dei default; nel browser richiede un contesto sicuro e supporto dell'API.
+
+Anche un oggetto di default viene creato di nuovo a ogni chiamata:
+
+```js
+function addItem(item, items = []) {
+  items.push(item);
+  return items;
+}
+
+console.log(addItem("A")); // ["A"]
+console.log(addItem("B")); // ["B"], non ["A", "B"]
+```
+
+Se passi un array esistente, invece, la funzione riceve proprio quel riferimento e `push()` lo modifica.
 
 ---
 ### Parametri precedenti
@@ -89,24 +112,37 @@ function example(first = second, second = 1) {
 example(); // ReferenceError
 ```
 
+I default non possono usare dichiarazioni locali del corpo della funzione:
+
+```js
+function invalidDefault(value = buildValue()) {
+  function buildValue() {
+    return 1;
+  }
+  return value;
+}
+
+// invalidDefault(); // ReferenceError: buildValue non e visibile qui
+```
+
 ---
 ### Default con destructuring
 Molto utile con oggetti di opzioni.
 
 ```js
-function connect({
+function createServiceUrl({
   host = "localhost",
-  port = 5432,
+  port = 8080,
   secure = false,
 } = {}) {
   return `${secure ? "https" : "http"}://${host}:${port}`;
 }
 ```
 
-Il `= {}` finale evita errore quando la funzione viene chiamata senza argomenti.
+Il `= {}` finale gestisce l'argomento assente o `undefined`, non `null`. I default dei singoli campi intervengono solo per campi assenti o `undefined`. Questa funzione costruisce una stringa URL: non apre connessioni e presume host e porta gia validati.
 
 ```js
-connect();
+console.log(createServiceUrl()); // "http://localhost:8080"
 ```
 
 ---
@@ -144,13 +180,17 @@ Funzione con opzioni:
 function createRequest(url, {
   method = "GET",
   headers = {},
-  timeout = 5000,
+  timeoutMs = 5000,
 } = {}) {
+  if (!Number.isFinite(timeoutMs) || timeoutMs < 0) {
+    throw new RangeError("timeoutMs deve essere un numero finito non negativo");
+  }
+
   return {
     url,
     method,
     headers,
-    timeout,
+    timeoutMs,
   };
 }
 
@@ -159,6 +199,8 @@ createRequest("/api/users", { method: "POST" });
 ```
 
 Il default rende esplicito il comportamento normale e permette di specificare solo le opzioni che cambiano.
+
+L'esempio restituisce soltanto una configurazione: non esegue richieste e non applica un timeout. `fetch()` non interpreta un'opzione `timeoutMs`; una funzione chiamante deve tradurla in una politica di annullamento, per esempio con [[Programmazione/JavaScript/Pagine/AbortController|AbortController]], definendo anche il significato di `0`. I default non sostituiscono la validazione: URL, metodo e header hanno ancora bisogno dei controlli richiesti dall'applicazione.
 
 ## Varianti
 
@@ -192,8 +234,14 @@ Il default rende esplicito il comportamento normale e permette di specificare so
 - [[Programmazione/JavaScript/Pagine/Funzioni|Funzioni]]
 - [[Programmazione/JavaScript/Pagine/Destructuring|Destructuring]]
 - [[Programmazione/JavaScript/Pagine/Operatori|Operatori]]
-- [[Tipi di Dati]]
+- [[Programmazione/JavaScript/Pagine/Tipi di Dati|Tipi di Dati]]
 
 ## Fonti
 
 - [MDN - Default parameters](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Functions/Default_parameters)
+- [MDN - Crypto.randomUUID](https://developer.mozilla.org/en-US/docs/Web/API/Crypto/randomUUID)
+
+
+## Navigazione
+
+- [[Programmazione/JavaScript/Indice JavaScript|Indice JavaScript]]

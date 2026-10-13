@@ -3,13 +3,19 @@ date: 2026-06-03
 area: Programmazione
 topic: Python
 type: operational-note
-status: "non revisionato"
+status: non revisionato
 publish: true
-difficulty: intermediate
-tags: [programmazione, python, packaging, distribuzione]
-aliases: [PyInstaller]
+difficulty: intermedio
+tags:
+  - programmazione
+  - python
+  - packaging
+  - distribuzione
+aliases:
+  - PyInstaller
 prerequisites: []
 related: []
+title: PyInstaller
 ---
 
 # PyInstaller
@@ -126,8 +132,8 @@ pyinstaller --onefile --name mytool app.py
 
 ## Collegamenti
 
-- [[Programmazione/Python/Indice python|Indice Python]]
-- [[Creazione di Package]]
-- [[CLI con argparse]]
-- [[Gestione File]]
-- [[Ambienti Virtuali]]
+- [[Programmazione/Python/Indice Python|Indice Python]]
+- [[Programmazione/Python/Pagine/Creazione di Package|Creazione di Package]]
+- [[Programmazione/Python/Pagine/CLI con argparse|CLI con argparse]]
+- [[Programmazione/Python/Pagine/Gestione File|Gestione File]]
+- [[Programmazione/Python/Pagine/Ambienti Virtuali|Ambienti Virtuali]]

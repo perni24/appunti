@@ -3,11 +3,18 @@ date: 2026-07-26
 area: Stampante 3D
 topic: Marlin
 type: technical-note
-
 publish: true
 difficulty: avanzato
-tags: [marlin, z-safe-homing, g34, z-stepper, gantry-alignment]
-aliases: [Z Safe Homing Marlin, G34 Marlin, Allineamento Z Marlin]
+tags:
+  - marlin
+  - z-safe-homing
+  - g34
+  - z-stepper
+  - gantry-alignment
+aliases:
+  - Z Safe Homing Marlin
+  - G34 Marlin
+  - Allineamento Z Marlin
 prerequisites:
   - "[[Stampante 3D/Marlin/Pagine/Probe Z offset e BLTouch]]"
   - "[[Stampante 3D/Marlin/Pagine/Endstop homing e Sensorless Homing]]"
@@ -15,7 +22,9 @@ prerequisites:
 related:
   - "[[Stampante 3D/Marlin/Pagine/Tipi di bed leveling e configurazione della mesh]]"
   - "[[Stampante 3D/Marlin/Pagine/Dimensioni del piatto area di lavoro e limiti]]"
-marlin-version: "2.1.2.8"
+marlin-version: 2.1.2.8
+title: Z Safe Homing e allineamento degli assi Z
+status: non revisionato
 ---
 
 # Z Safe Homing e allineamento degli assi Z
@@ -487,8 +496,13 @@ La filettatura deve essere corretta, altrimenti le indicazioni orarie e antiorar
 
 ## Collegamenti
 
-- [[Stampante 3D/Marlin/Pagine/Probe Z offset e BLTouch]]
-- [[Stampante 3D/Marlin/Pagine/Tipi di bed leveling e configurazione della mesh]]
-- [[Stampante 3D/Marlin/Pagine/Endstop homing e Sensorless Homing]]
-- [[Stampante 3D/Marlin/Pagine/Driver stepper corrente e microstepping]]
-- [[Stampante 3D/Marlin/Pagine/Dimensioni del piatto area di lavoro e limiti]]
+- [[Stampante 3D/Marlin/Pagine/Probe Z offset e BLTouch|Probe Z offset e BLTouch]]
+- [[Stampante 3D/Marlin/Pagine/Tipi di bed leveling e configurazione della mesh|Tipi di bed leveling e configurazione della mesh]]
+- [[Stampante 3D/Marlin/Pagine/Endstop homing e Sensorless Homing|Endstop homing e Sensorless Homing]]
+- [[Stampante 3D/Marlin/Pagine/Driver stepper corrente e microstepping|Driver stepper corrente e microstepping]]
+- [[Stampante 3D/Marlin/Pagine/Dimensioni del piatto area di lavoro e limiti|Dimensioni del piatto area di lavoro e limiti]]
+
+
+## Navigazione
+
+- [[Stampante 3D/Marlin/Indice Marlin|Indice Marlin]]

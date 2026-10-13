@@ -3,18 +3,27 @@ date: 2026-07-26
 area: Stampante 3D
 topic: Marlin
 type: operational-note
-
 publish: true
 difficulty: avanzato
-tags: [marlin, calibration, commissioning, verification, checklist]
-aliases: [Taratura completa Marlin, Collaudo Marlin, Commissioning stampante 3D]
+tags:
+  - marlin
+  - calibration
+  - commissioning
+  - verification
+  - checklist
+aliases:
+  - Taratura completa Marlin
+  - Collaudo Marlin
+  - Commissioning stampante 3D
 prerequisites:
   - "[[Stampante 3D/Marlin/Pagine/Metodo di configurazione compilazione e caricamento]]"
   - "[[Stampante 3D/Marlin/Pagine/G-code per configurazione e diagnostica]]"
 related:
   - "[[Stampante 3D/Marlin/Pagine/EEPROM scheda SD e salvataggio delle impostazioni]]"
   - "[[Stampante 3D/Marlin/Pagine/Alimentazione e protezioni hardware]]"
-marlin-version: "2.1.2.8"
+marlin-version: 2.1.2.8
+title: Procedura completa di taratura e verifica
+status: non revisionato
 ---
 
 # Procedura completa di taratura e verifica
@@ -135,7 +144,7 @@ valore iniziale -> valore provato -> test eseguito -> risultato -> valore accett
 
 ## Procedura
 
-### 1. Identificare la build e salvare la base
+### Identificare la build e salvare la base
 
 Collegare l'host senza comandare movimenti o heater.
 
@@ -167,9 +176,9 @@ Criterio di accettazione:
 - non compaiono errori di EEPROM;
 - esiste una copia dei valori iniziali e dei sorgenti.
 
-Approfondimento: [[Stampante 3D/Marlin/Pagine/EEPROM scheda SD e salvataggio delle impostazioni]].
+Approfondimento: [[Stampante 3D/Marlin/Pagine/EEPROM scheda SD e salvataggio delle impostazioni|EEPROM scheda SD e salvataggio delle impostazioni]].
 
-### 2. Controllare alimentazione e cablaggio a macchina spenta
+### Controllare alimentazione e cablaggio a macchina spenta
 
 Verificare:
 
@@ -191,9 +200,9 @@ Criterio di accettazione:
 - ogni carico e compatibile con tensione, uscita e stadio di potenza;
 - il cablaggio puo seguire i movimenti senza essere tirato.
 
-Approfondimento: [[Stampante 3D/Marlin/Pagine/Alimentazione e protezioni hardware]].
+Approfondimento: [[Stampante 3D/Marlin/Pagine/Alimentazione e protezioni hardware|Alimentazione e protezioni hardware]].
 
-### 3. Verificare sensori e ingressi senza muovere la macchina
+### Verificare sensori e ingressi senza muovere la macchina
 
 Accendere la macchina senza abilitare heater.
 
@@ -228,11 +237,11 @@ Criterio di accettazione:
 
 Approfondimenti:
 
-- [[Stampante 3D/Marlin/Pagine/Sensori di temperatura e limiti operativi]]
-- [[Stampante 3D/Marlin/Pagine/Endstop homing e Sensorless Homing]]
-- [[Stampante 3D/Marlin/Pagine/Probe Z offset e BLTouch]]
+- [[Stampante 3D/Marlin/Pagine/Sensori di temperatura e limiti operativi|Sensori di temperatura e limiti operativi]]
+- [[Stampante 3D/Marlin/Pagine/Endstop homing e Sensorless Homing|Endstop homing e Sensorless Homing]]
+- [[Stampante 3D/Marlin/Pagine/Probe Z offset e BLTouch|Probe Z offset e BLTouch]]
 
-### 4. Verificare motori e driver a bassa energia
+### Verificare motori e driver a bassa energia
 
 Con assi lontani dai limiti, controllare un asse alla volta con piccoli spostamenti comandati dall'interfaccia. La direzione positiva deve corrispondere al sistema di coordinate definito, non semplicemente al movimento verso destra o verso l'alto osservato da un lato casuale.
 
@@ -262,10 +271,10 @@ Criterio di accettazione:
 
 Approfondimenti:
 
-- [[Stampante 3D/Marlin/Pagine/Motori direzione e passi per millimetro]]
-- [[Stampante 3D/Marlin/Pagine/Driver stepper corrente e microstepping]]
+- [[Stampante 3D/Marlin/Pagine/Motori direzione e passi per millimetro|Motori direzione e passi per millimetro]]
+- [[Stampante 3D/Marlin/Pagine/Driver stepper corrente e microstepping|Driver stepper corrente e microstepping]]
 
-### 5. Eseguire homing e verificare i limiti
+### Eseguire homing e verificare i limiti
 
 Eseguire l'homing di un solo asse dopo averne verificato direzione ed endstop:
 
@@ -308,11 +317,11 @@ Criterio di accettazione:
 
 Approfondimenti:
 
-- [[Stampante 3D/Marlin/Pagine/Endstop homing e Sensorless Homing]]
-- [[Stampante 3D/Marlin/Pagine/Dimensioni del piatto area di lavoro e limiti]]
-- [[Stampante 3D/Marlin/Pagine/Z Safe Homing e allineamento degli assi Z]]
+- [[Stampante 3D/Marlin/Pagine/Endstop homing e Sensorless Homing|Endstop homing e Sensorless Homing]]
+- [[Stampante 3D/Marlin/Pagine/Dimensioni del piatto area di lavoro e limiti|Dimensioni del piatto area di lavoro e limiti]]
+- [[Stampante 3D/Marlin/Pagine/Z Safe Homing e allineamento degli assi Z|Z Safe Homing e allineamento degli assi Z]]
 
-### 6. Correggere prima la meccanica
+### Correggere prima la meccanica
 
 Prima di misurare steps, mesh o compensazioni controllare:
 
@@ -336,7 +345,7 @@ Criterio di accettazione:
 - tornando sulla stessa posizione non compaiono giochi o scostamenti anomali;
 - la geometria resta stabile dopo piu cicli di movimento.
 
-### 7. Calcolare e verificare gli steps per unita
+### Calcolare e verificare gli steps per unita
 
 Leggere i valori correnti:
 
@@ -413,9 +422,9 @@ Criterio di accettazione:
 - non vi sono differenze anomale tra andata e ritorno;
 - l'estrusore trascina la lunghezza richiesta senza slittare.
 
-Approfondimento: [[Stampante 3D/Marlin/Pagine/Motori direzione e passi per millimetro]].
+Approfondimento: [[Stampante 3D/Marlin/Pagine/Motori direzione e passi per millimetro|Motori direzione e passi per millimetro]].
 
-### 8. Verificare e tarare il sistema termico
+### Verificare e tarare il sistema termico
 
 Prima di riscaldare:
 
@@ -464,10 +473,10 @@ Criterio di accettazione:
 
 Approfondimenti:
 
-- [[Stampante 3D/Marlin/Pagine/Controllo PID MPC e protezioni termiche]]
-- [[Stampante 3D/Marlin/Pagine/Ventole e raffreddamento]]
+- [[Stampante 3D/Marlin/Pagine/Controllo PID MPC e protezioni termiche|Controllo PID MPC e protezioni termiche]]
+- [[Stampante 3D/Marlin/Pagine/Ventole e raffreddamento|Ventole e raffreddamento]]
 
-### 9. Eseguire tramming, allineamento Z, probe e mesh
+### Eseguire tramming, allineamento Z, probe e mesh
 
 L'ordine corretto e:
 
@@ -532,12 +541,12 @@ Criterio di accettazione:
 
 Approfondimenti:
 
-- [[Stampante 3D/Marlin/Pagine/Z Safe Homing e allineamento degli assi Z]]
-- [[Stampante 3D/Marlin/Pagine/Probe Z offset e BLTouch]]
-- [[Stampante 3D/Marlin/Pagine/Tipi di bed leveling e configurazione della mesh]]
-- [[Stampante 3D/Marlin/Pagine/Babystepping e regolazioni dinamiche]]
+- [[Stampante 3D/Marlin/Pagine/Z Safe Homing e allineamento degli assi Z|Z Safe Homing e allineamento degli assi Z]]
+- [[Stampante 3D/Marlin/Pagine/Probe Z offset e BLTouch|Probe Z offset e BLTouch]]
+- [[Stampante 3D/Marlin/Pagine/Tipi di bed leveling e configurazione della mesh|Tipi di bed leveling e configurazione della mesh]]
+- [[Stampante 3D/Marlin/Pagine/Babystepping e regolazioni dinamiche|Babystepping e regolazioni dinamiche]]
 
-### 10. Determinare i limiti di movimento
+### Determinare i limiti di movimento
 
 Partire da valori conservativi e modificare una variabile alla volta.
 
@@ -585,9 +594,9 @@ Criterio di accettazione:
 - temperatura dei componenti compatibile con le specifiche;
 - comportamento ripetibile anche su una sequenza prolungata.
 
-Approfondimento: [[Stampante 3D/Marlin/Pagine/Velocita accelerazioni Jerk e Junction Deviation]].
+Approfondimento: [[Stampante 3D/Marlin/Pagine/Velocita accelerazioni Jerk e Junction Deviation|Velocita accelerazioni Jerk e Junction Deviation]].
 
-### 11. Tarare estrusione e profilo materiale
+### Tarare estrusione e profilo materiale
 
 Procedere nell'ordine:
 
@@ -620,10 +629,10 @@ Criterio di accettazione:
 
 Approfondimenti:
 
-- [[Stampante 3D/Marlin/Pagine/Hotend estrusori e filamento]]
-- [[Stampante 3D/Marlin/Pagine/Limiti di estrusione retrazione e cambio utensile]]
+- [[Stampante 3D/Marlin/Pagine/Hotend estrusori e filamento|Hotend estrusori e filamento]]
+- [[Stampante 3D/Marlin/Pagine/Limiti di estrusione retrazione e cambio utensile|Limiti di estrusione retrazione e cambio utensile]]
 
-### 12. Abilitare le compensazioni avanzate per ultime
+### Abilitare le compensazioni avanzate per ultime
 
 Linear Advance, Input Shaping e correzione geometrica devono migliorare una macchina gia funzionante.
 
@@ -661,9 +670,9 @@ Criterio di accettazione:
 - la compensazione non introduce nuovi difetti;
 - il valore e documentato insieme alle condizioni di prova.
 
-Approfondimento: [[Stampante 3D/Marlin/Pagine/Linear Advance Input Shaping e compensazioni geometriche]].
+Approfondimento: [[Stampante 3D/Marlin/Pagine/Linear Advance Input Shaping e compensazioni geometriche|Linear Advance Input Shaping e compensazioni geometriche]].
 
-### 13. Verificare interfaccia, supporti e accessori
+### Verificare interfaccia, supporti e accessori
 
 Provare nell'uso reale:
 
@@ -680,12 +689,12 @@ Ogni test deve verificare l'intera catena, non solo l'accettazione del comando. 
 
 Approfondimenti:
 
-- [[Stampante 3D/Marlin/Pagine/Display controller encoder e touchscreen]]
-- [[Stampante 3D/Marlin/Pagine/EEPROM scheda SD e salvataggio delle impostazioni]]
-- [[Stampante 3D/Marlin/Pagine/Sensore di fine filamento e recupero dopo perdita di alimentazione]]
-- [[Stampante 3D/Marlin/Pagine/Alimentatore rele LED luci buzzer e servo]]
+- [[Stampante 3D/Marlin/Pagine/Display controller encoder e touchscreen|Display controller encoder e touchscreen]]
+- [[Stampante 3D/Marlin/Pagine/EEPROM scheda SD e salvataggio delle impostazioni|EEPROM scheda SD e salvataggio delle impostazioni]]
+- [[Stampante 3D/Marlin/Pagine/Sensore di fine filamento e recupero dopo perdita di alimentazione|Sensore di fine filamento e recupero dopo perdita di alimentazione]]
+- [[Stampante 3D/Marlin/Pagine/Alimentatore rele LED luci buzzer e servo|Alimentatore rele LED luci buzzer e servo]]
 
-### 14. Salvare e verificare dopo il riavvio
+### Salvare e verificare dopo il riavvio
 
 Salvare soltanto i valori accettati:
 
@@ -719,7 +728,7 @@ Criterio di accettazione:
 - la macchina ripete homing, riscaldamento e primo layer;
 - i sorgenti permettono di ricostruire lo stato operativo.
 
-### 15. Eseguire la stampa di accettazione
+### Eseguire la stampa di accettazione
 
 Usare una progressione:
 
@@ -832,7 +841,7 @@ Conservare nel firmware o nella configurazione macchina i parametri meccanici e 
 
 ## Collegamenti
 
-- [[Stampante 3D/Marlin/Indice Marlin]]
-- [[Stampante 3D/Marlin/Pagine/G-code per configurazione e diagnostica]]
-- [[Stampante 3D/Marlin/Pagine/Metodo di configurazione compilazione e caricamento]]
-- [[Stampante 3D/Marlin/Pagine/EEPROM scheda SD e salvataggio delle impostazioni]]
+- [[Stampante 3D/Marlin/Indice Marlin|Indice Marlin]]
+- [[Stampante 3D/Marlin/Pagine/G-code per configurazione e diagnostica|G-code per configurazione e diagnostica]]
+- [[Stampante 3D/Marlin/Pagine/Metodo di configurazione compilazione e caricamento|Metodo di configurazione compilazione e caricamento]]
+- [[Stampante 3D/Marlin/Pagine/EEPROM scheda SD e salvataggio delle impostazioni|EEPROM scheda SD e salvataggio delle impostazioni]]

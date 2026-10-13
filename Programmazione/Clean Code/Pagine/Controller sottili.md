@@ -3,13 +3,24 @@ date: 2026-07-09
 area: Programmazione
 topic: Clean Code
 type: theory-note
-status: "non revisionato"
+status: non revisionato
 publish: true
 difficulty: intermedio
-tags: [clean-code, web, controller]
-aliases: [Controller sottili, Thin controllers]
-prerequisites: [Separazione delle responsabilita, Validazione ai confini]
-related: [Service layer, Validazione input API, DTO e modelli di dominio]
+tags:
+  - clean-code
+  - web
+  - controller
+aliases:
+  - Controller sottili
+  - Thin controllers
+prerequisites:
+  - "[[Programmazione/Clean Code/Pagine/Separazione delle responsabilita]]"
+  - "[[Programmazione/Clean Code/Pagine/Validazione ai confini]]"
+related:
+  - "[[Programmazione/Clean Code/Pagine/Service layer]]"
+  - "[[Programmazione/Clean Code/Pagine/Validazione input API]]"
+  - "[[Programmazione/Clean Code/Pagine/DTO e modelli di dominio]]"
+title: Controller sottili
 ---
 
 # Controller sottili
@@ -96,11 +107,11 @@ Il controller mostra il flusso senza contenere tutti i dettagli.
 
 ## Collegamenti
 
-- [[Programmazione/Clean Code/Indice Clean Code]]
-- [[Separazione delle responsabilita]]
-- [[Validazione ai confini]]
-- [[Service layer]]
-- [[Validazione input API]]
+- [[Programmazione/Clean Code/Indice Clean Code|Indice Clean Code]]
+- [[Programmazione/Clean Code/Pagine/Separazione delle responsabilita|Separazione delle responsabilita]]
+- [[Programmazione/Clean Code/Pagine/Validazione ai confini|Validazione ai confini]]
+- [[Programmazione/Clean Code/Pagine/Service layer|Service layer]]
+- [[Programmazione/Clean Code/Pagine/Validazione input API|Validazione input API]]
 - [[Programmazione/Clean Code/Pagine/DTO e modelli di dominio|DTO e modelli di dominio]]
 
 ## Fonti

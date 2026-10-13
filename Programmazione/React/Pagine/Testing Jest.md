@@ -3,13 +3,21 @@ date: 2026-06-04
 area: Programmazione
 topic: React
 type: operational-note
-status: "non revisionato"
+status: non revisionato
 publish: true
-difficulty: intermediate
-tags: [react, testing, jest, vitest]
-aliases: [Testing Jest, Testing Library, Unit test React]
+difficulty: intermedio
+tags:
+  - react
+  - testing
+  - jest
+  - vitest
+aliases:
+  - Testing Jest
+  - Testing Library
+  - Unit test React
 prerequisites: []
 related: []
+title: Testing Jest
 ---
 
 # Testing Jest
@@ -100,8 +108,8 @@ test("mostra errore quando email e vuota", async () => {
 
 ## Collegamenti
 
-- [[Programmazione/React/Indice react|Indice React]]
-- [[Testing Cypress e Playwright]]
-- [[Test di accessibilita]]
-- [[Storybook]]
-- [[Custom Hooks]]
+- [[Programmazione/React/Indice React|Indice React]]
+- [[Programmazione/React/Pagine/Testing Cypress e Playwright|Testing Cypress e Playwright]]
+- [[Programmazione/React/Pagine/Test di accessibilita|Test di accessibilita]]
+- [[Programmazione/React/Pagine/Storybook|Storybook]]
+- [[Programmazione/React/Pagine/Custom Hooks|Custom Hooks]]

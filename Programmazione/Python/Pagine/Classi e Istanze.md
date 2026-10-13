@@ -3,13 +3,17 @@ date: 2026-06-03
 area: Programmazione
 topic: Python
 type: technical-note
-status: "non revisionato"
+status: non revisionato
 publish: true
-difficulty: intermediate
-tags: [python, programming]
-aliases: [Classi e Istanze]
+difficulty: intermedio
+tags:
+  - python
+  - programming
+aliases:
+  - Classi e Istanze
 prerequisites: []
 related: []
+title: Classi e Istanze in Python
 ---
 
 # Classi e Istanze in Python
@@ -98,3 +102,8 @@ class BankAccount:
 - [[Programmazione/Python/Pagine/Dataclasses|Dataclasses]]
 - [[Programmazione/Python/Pagine/Ereditarietà|Ereditarietà]]
 - [[Programmazione/Python/Pagine/Metodi Speciali|Metodi Speciali]]
+
+
+## Navigazione
+
+- [[Programmazione/Python/Indice Python|Indice Python]]

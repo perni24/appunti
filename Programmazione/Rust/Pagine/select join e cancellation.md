@@ -3,7 +3,7 @@ date: 2026-05-26
 area: Programmazione
 topic: Rust
 type: technical-note
-status: "non revisionato"
+status: non revisionato
 publish: true
 difficulty: intermedio
 tags:
@@ -11,9 +11,9 @@ tags:
   - rust
   - concorrenza-e-asincronia
 aliases:
-  - "select!"
-  - "join!"
-  - "Cancellation async Rust"
+  - select!
+  - join!
+  - Cancellation async Rust
 prerequisites:
   - "[[Programmazione/Rust/Pagine/Async Await]]"
   - "[[Programmazione/Rust/Pagine/Future Trait]]"
@@ -22,6 +22,7 @@ related:
   - "[[Programmazione/Rust/Pagine/Channel async]]"
   - "[[Programmazione/Rust/Pagine/Graceful shutdown]]"
   - "[[Programmazione/Rust/Pagine/Async streams]]"
+title: select!, join! e cancellation
 ---
 
 # select!, join! e cancellation
@@ -126,3 +127,8 @@ La task reagisce al completamento del lavoro o a un segnale di shutdown.
 - [[Programmazione/Rust/Pagine/Runtime async Tokio e async-std|Runtime async Tokio e async-std]]
 - [[Programmazione/Rust/Pagine/Channel async|Channel async]]
 - [[Programmazione/Rust/Pagine/Graceful shutdown|Graceful shutdown]]
+
+
+## Navigazione
+
+- [[Programmazione/Rust/Indice Rust|Indice Rust]]

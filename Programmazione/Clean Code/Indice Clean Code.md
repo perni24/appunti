@@ -1,3 +1,7 @@
+# Indice Clean Code
+
+- [[Programmazione/Indice Programmazione|Tutti i percorsi di Programmazione]]
+
 ## Percorso Base
 
 ### Fondamenti del Codice Pulito
@@ -154,17 +158,3 @@
 - [[Programmazione/Clean Code/Pagine/Mutation testing|Mutation testing]]
 - [[Programmazione/Clean Code/Pagine/Code quality gates|Code quality gates]]
 - [[Programmazione/Clean Code/Pagine/Pre-commit hooks|Pre-commit hooks]]
-
-## Conoscenza Operativa
-
-### API Native Rapide
-
-### Soluzioni pratiche
-
-### Debugging
-
-### Snippet
-
-### Checklist
-
-### Troubleshooting

@@ -3,13 +3,24 @@ date: 2026-06-22
 area: Programmazione
 topic: TypeScript
 type: technical-note
-status: "non revisionato"
+status: non revisionato
 publish: true
 difficulty: intermedio
-tags: [typescript, type-predicates, type-guards, narrowing]
-aliases: [Type predicate, value is Type]
-prerequisites: [Type Guards, Type Narrowing]
-related: [Assertion functions, Discriminated Unions]
+tags:
+  - typescript
+  - type-predicates
+  - type-guards
+  - narrowing
+aliases:
+  - Type predicate
+  - value is Type
+prerequisites:
+  - "[[Programmazione/TypeScript/Pagine/Type Guards]]"
+  - "[[Programmazione/TypeScript/Pagine/Type Narrowing]]"
+related:
+  - "[[Programmazione/TypeScript/Pagine/Assertion functions]]"
+  - "[[Programmazione/TypeScript/Pagine/Discriminated Unions]]"
+title: Type predicates
 ---
 
 # Type predicates
@@ -93,6 +104,11 @@ Nel ramo `if`, `user` viene ristretto ad `Admin`.
 
 ## Collegamenti
 
-- [[Type Guards]]
-- [[Assertion functions]]
-- [[Discriminated Unions]]
+- [[Programmazione/TypeScript/Pagine/Type Guards|Type Guards]]
+- [[Programmazione/TypeScript/Pagine/Assertion functions|Assertion functions]]
+- [[Programmazione/TypeScript/Pagine/Discriminated Unions|Discriminated Unions]]
+
+
+## Navigazione
+
+- [[Programmazione/TypeScript/Indice TypeScript|Indice TypeScript]]

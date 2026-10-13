@@ -2,21 +2,35 @@
 date: 2026-06-02
 area: Programmazione
 topic: JavaScript
-tags: [javascript, es-modules, dynamic-import, async, performance, code-splitting]
+tags:
+  - javascript
+  - es-modules
+  - dynamic-import
+  - async
+  - performance
+  - code-splitting
 type: technical-note
-status: "non revisionato"
+status: non revisionato
 publish: true
-difficulty: intermediate
-aliases: [Import dinamico, import()]
-prerequisites: [Moduli, Promises]
-related: [Moduli, Promise avanzate, Circular Dependencies]
+difficulty: intermedio
+aliases:
+  - Import dinamico
+  - import()
+prerequisites:
+  - "[[Programmazione/JavaScript/Pagine/Moduli]]"
+  - "[[Programmazione/JavaScript/Pagine/Promises]]"
+related:
+  - "[[Programmazione/JavaScript/Pagine/Moduli]]"
+  - "[[Programmazione/JavaScript/Pagine/Promise avanzate]]"
+  - "[[Programmazione/JavaScript/Pagine/Circular Dependencies]]"
+title: Dynamic Import
 ---
 
 # Dynamic Import
 
 ## Sintesi
 
-### Testo introduttivo
+
 Il **Dynamic Import** permette di caricare un modulo JavaScript in modo asincrono, solo quando serve, usando la sintassi:
 
 ```javascript
@@ -43,10 +57,12 @@ Casi comuni:
 
 Per dipendenze sempre necessarie, preferisci import statico.
 
+Gli esempi della spiegazione sono schemi: `button`, helper UI e moduli come `modal.js` devono esistere nell'applicazione. La sezione **Esempio pratico** include invece un caso completo in tre file.
+
 ## Come funziona
 
-### 1. Import Statico vs Import Dinamico
-### Import statico
+### Import Statico vs Import Dinamico
+#### Import statico
 
 ```javascript
 import { formatDate } from "./date-utils.js";
@@ -59,7 +75,7 @@ Caratteristiche:
 - aiuta bundler e browser a costruire il grafo delle dipendenze;
 - carica il modulo prima che il codice dipendente venga eseguito.
 
-### Import dinamico
+#### Import dinamico
 
 ```javascript
 async function loadFormatter() {
@@ -74,7 +90,7 @@ Caratteristiche:
 - carica codice solo quando necessario;
 - restituisce una `Promise`;
 - abilita code splitting e lazy loading.
-### 2. Perche Usarlo
+### Perche Usarlo
 Dynamic import e utile quando una parte del codice:
 
 - e pesante;
@@ -89,13 +105,17 @@ Esempio:
 
 ```javascript
 button.addEventListener("click", async () => {
-  const { openModal } = await import("./modal.js");
-  openModal();
+  try {
+    const { openModal } = await import("./modal.js");
+    await openModal();
+  } catch (error) {
+    console.error("Apertura della modale non riuscita", error);
+  }
 });
 ```
 
-Il codice della modale viene caricato solo quando l'utente clicca.
-### 3. Namespace Object
+La chiamata a `import()` avviene al click; cache, preload o altre parti dell'applicazione possono aver gia scaricato il modulo.
+### Namespace Object
 Il valore restituito da `import()` e un oggetto che contiene gli export del modulo.
 
 ```javascript
@@ -120,23 +140,25 @@ const { default: log } = await import("./logger.js");
 
 log("Messaggio di log");
 ```
-### 4. Con Named Export
+### Con Named Export
 ```javascript
 // validators.js
-export function isEmail(value) {
-  return value.includes("@");
+export function hasEmailShape(value) {
+  return typeof value === "string" && /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(value);
 }
 ```
 
 ```javascript
 async function validate(value) {
-  const { isEmail } = await import("./validators.js");
-  return isEmail(value);
+  const { hasEmailShape } = await import("./validators.js");
+  return hasEmailShape(value);
 }
 ```
 
-Il destructuring rende piu chiaro quali export vengono usati.
-### 5. Con Default Export
+Il destructuring rende piu chiaro quali export vengono usati. Questo e soltanto un controllo di forma, con gli stessi limiti dell'esempio in [[Programmazione/JavaScript/Pagine/Moduli|Moduli]], non una validazione completa dell'email.
+
+Le proprieta del namespace riflettono gli export correnti; il destructuring legge invece il valore in quell'istante. Con un contatore numerico esportato, `const { count } = await import(...)` conserva quel numero e non segue gli incrementi successivi.
+### Con Default Export
 ```javascript
 // Chart.js
 export default class Chart {
@@ -155,7 +177,7 @@ async function loadChart() {
 ```
 
 La sintassi `default: Chart` rinomina l'export default in una variabile locale.
-### 7. Code Splitting
+### Code Splitting
 Nei progetti frontend, dynamic import e spesso usato per il **code splitting**.
 
 Invece di generare un unico bundle grande:
@@ -179,15 +201,15 @@ Quando il codice esegue:
 await import("./admin-panel.js");
 ```
 
-il browser scarica il chunk solo in quel momento.
+il browser puo richiedere il chunk in quel momento. La separazione effettiva dipende dal bundler e dalla configurazione; preload, cache e dipendenze condivise possono anticipare o evitare parte dei download. Senza bundler, il browser carica il modulo e le sue dipendenze come risorse separate.
 
-Questo migliora:
+Se la suddivisione e adatta al carico reale, puo migliorare:
 
 - tempo di caricamento iniziale;
 - dimensione del bundle principale;
 - performance percepita;
 - separazione tra feature critiche e feature opzionali.
-### 8. Lazy Loading per Route o Feature
+### Lazy Loading per Route o Feature
 Esempio concettuale:
 
 ```javascript
@@ -201,13 +223,15 @@ async function renderPage(route) {
     const { renderSettings } = await import("./pages/settings.js");
     return renderSettings();
   }
+
+  throw new RangeError("Route non supportata");
 }
 ```
 
 Ogni pagina viene caricata solo quando serve.
 
 Questo pattern e alla base del lazy loading in molti framework.
-### 9. Import Condizionale
+### Import Condizionale
 Dynamic import permette di caricare moduli in base a una condizione.
 
 ```javascript
@@ -228,7 +252,9 @@ Uso tipico:
 - permessi utente;
 - preferenze privacy;
 - supporto progressivo di funzionalita.
-### 10. Path Dinamici
+
+Nascondere o non importare una feature non autorizza l'accesso ai suoi dati: i permessi vanno verificati sul server.
+### Path Dinamici
 `import()` accetta un'espressione, ma i path troppo dinamici possono creare problemi ai bundler.
 
 Esempio gestibile:
@@ -251,8 +277,8 @@ Problemi:
 - aumenta il rischio di bundle troppo grandi;
 - puo creare problemi di sicurezza;
 - rende meno prevedibile il grafo delle dipendenze.
-### 11. Cache dei Moduli
-Un modulo importato viene valutato una sola volta per realm.
+### Cache dei Moduli
+Un modulo valutato correttamente viene riusato per la stessa identita risolta nello stesso realm.
 
 Esempio:
 
@@ -267,8 +293,10 @@ Il modulo non viene rieseguito da zero a ogni `import()`.
 
 Questo comportamento e coerente con gli ES Modules statici.
 
-Collegamento: [[Moduli]]
-### 12. Top-Level Await
+Identita diverse, per esempio URL con query diverse, possono creare istanze distinte. Non aggiungere timestamp per forzare un reload a ogni chiamata: non esiste un'API standard per svuotare la cache ESM e si puo accumulare memoria. Anche un import gia in cache resta asincrono.
+
+Collegamento: [[Programmazione/JavaScript/Pagine/Moduli|Moduli]]
+### Top-Level Await
 In un modulo JavaScript moderno puoi usare `await` al top-level:
 
 ```javascript
@@ -277,10 +305,10 @@ const { config } = await import("./config.js");
 console.log(config);
 ```
 
-Questo funziona solo in contesti module, non negli script classici.
+Il top-level `await` funziona nei moduli, non negli script classici. `import()` invece puo essere usato anche in uno script classico o in CommonJS, per esempio dentro una funzione `async` o con `.then()`.
 
 In molti casi, pero, e meglio isolare il caricamento dentro una funzione per mantenere chiara la sequenza di inizializzazione.
-### 13. Browser e Node.js
+### Browser e Node.js
 Dynamic import funziona sia nel browser moderno sia in Node.js con moduli ES.
 
 Nel browser:
@@ -300,7 +328,7 @@ const { readFile } = await import("node:fs/promises");
 ```
 
 In progetti Node, `import()` e utile anche da codice CommonJS quando devi caricare un modulo ESM.
-### 14. Performance
+### Performance
 Dynamic import migliora il caricamento iniziale solo se usato con criterio.
 
 Vantaggi:
@@ -323,7 +351,7 @@ Regola pratica:
 carica dinamicamente codice grande, raro o separabile
 non caricare dinamicamente codice piccolo e sempre necessario
 ```
-### 15. UX e Loading State
+### UX e Loading State
 Poiche il caricamento e asincrono, l'interfaccia dovrebbe gestire lo stato di attesa.
 
 ```javascript
@@ -332,7 +360,7 @@ async function openEditor() {
 
   try {
     const { createEditor } = await import("./editor.js");
-    createEditor();
+    await createEditor();
   } finally {
     hideLoading();
   }
@@ -340,7 +368,9 @@ async function openEditor() {
 ```
 
 Senza loading state, l'utente puo percepire il click come non funzionante.
-### 16. Sicurezza
+
+Qui `finally` ripristina l'interfaccia ma non cattura l'errore: il chiamante deve gestire il rifiuto di `openEditor()`. Gli helper `showLoading()` e `hideLoading()` sono dipendenze applicative.
+### Sicurezza
 Evita import dinamici basati direttamente su input utente.
 
 Rischioso:
@@ -352,17 +382,21 @@ const module = await import(userInput);
 Preferibile:
 
 ```javascript
-const modules = {
-  chart: () => import("./features/chart.js"),
-  editor: () => import("./features/editor.js"),
-};
+const featureLoaders = new Map([
+  ["chart", () => import("./features/chart.js")],
+  ["editor", () => import("./features/editor.js")],
+]);
 
-await modules[selectedFeature]?.();
+async function loadFeatureByName(name) {
+  const loader = featureLoaders.get(name);
+  if (!loader) throw new RangeError("Feature non supportata");
+  return loader();
+}
 ```
 
-Questo mantiene una whitelist esplicita dei moduli caricabili.
+Questa mappa limita la scelta ai moduli elencati: nomi come `toString`, `constructor` o `__proto__` non trovano proprieta ereditate. I due file devono esistere; il chiamante gestisce sia nomi non ammessi sia errori di import. Non e un meccanismo di autorizzazione server.
 
-Collegamento: [[Sicurezza]]
+Collegamento: [[Programmazione/JavaScript/Pagine/Sicurezza|Sicurezza]]
 
 ## API / Sintassi
 
@@ -400,9 +434,70 @@ async function exportChart(data) {
 
 Il codice di export non finisce necessariamente nel bundle iniziale, se il bundler supporta code splitting.
 
+`chart-export.js` e una dipendenza applicativa, non una libreria fornita da JavaScript.
+
+### Esempio completo nel browser
+
+Tre file nella stessa cartella, serviti via HTTP con MIME JavaScript corretto. Questo piccolo report mostra il flusso; nella pratica il caricamento lazy ha senso per elaborazioni o dipendenze piu consistenti.
+
+```html
+<!-- index.html -->
+<!doctype html>
+<html lang="it">
+<head>
+  <meta charset="utf-8">
+  <title>Report su richiesta</title>
+</head>
+<body>
+  <button type="button" id="load-report">Calcola report</button>
+  <p id="report-status" role="status"></p>
+  <script type="module" src="./report-loader.js"></script>
+</body>
+</html>
+```
+
+```js
+// report.js
+export function formatReport(numbers) {
+  if (!Array.isArray(numbers) || ![...numbers].every(Number.isFinite)) {
+    throw new TypeError("Servono numeri finiti");
+  }
+  const total = numbers.reduce((sum, value) => sum + value, 0);
+  if (!Number.isFinite(total)) throw new RangeError("Totale fuori intervallo");
+  return `${numbers.length} valori, totale ${total}`;
+}
+```
+
+```js
+// report-loader.js
+const button = document.querySelector("#load-report");
+const status = document.querySelector("#report-status");
+let loading = false;
+
+button.addEventListener("click", async () => {
+  if (loading) return;
+  loading = true;
+  button.disabled = true;
+  status.textContent = "Caricamento...";
+
+  try {
+    const { formatReport } = await import("./report.js");
+    status.textContent = formatReport([4, 8, 2]);
+  } catch (error) {
+    status.textContent = "Report non disponibile.";
+    console.error("Report non riuscito", error);
+  } finally {
+    loading = false;
+    button.disabled = false;
+  }
+});
+```
+
+Il risultato atteso e `3 valori, totale 14`. Un errore di caricamento o di elaborazione mostra un messaggio e ripristina il pulsante. Ripetere il click non garantisce una nuova richiesta: il caricatore ESM mantiene la propria cache, inclusi alcuni fallimenti di valutazione.
+
 ## Varianti
 
-### 19. Mappa Mentale
+### Mappa Mentale
 ```txt
 Dynamic Import
   -> import() restituisce Promise
@@ -415,16 +510,16 @@ Dynamic Import
 
 ## Errori comuni
 
-### 6. Gestione Errori
+### Gestione Errori
 Poiche `import()` restituisce una `Promise`, gli errori vanno gestiti con `try/catch` o `.catch()`.
 
 ```javascript
 async function loadFeature() {
   try {
     const feature = await import("./feature.js");
-    feature.run();
+    await feature.run();
   } catch (error) {
-    console.error("Impossibile caricare il modulo", error);
+    console.error("Caricamento o esecuzione della feature non riusciti", error);
   }
 }
 ```
@@ -437,8 +532,10 @@ Errori possibili:
 - eccezione durante l'esecuzione top-level del modulo;
 - path non supportato dal bundler.
 
+`await feature.run()` consente al `catch` di intercettare anche un rifiuto asincrono della funzione esportata. Senza quell'`await`, il `try/catch` intercetterebbe soltanto l'import e gli errori sincroni della chiamata.
+
 Collegamento: [[Programmazione/JavaScript/Pagine/Error Handling|Error Handling]]
-### 17. Errori Comuni
+
 ### Usarlo dove basta un import statico
 
 Se il modulo serve sempre, l'import statico e piu semplice e piu analizzabile.
@@ -471,7 +568,7 @@ Troppi import dinamici possono aumentare overhead di rete e complessita.
 
 ## Checklist
 
-### 18. Best Practices
+### Best Practices
 1. Usa import statici per dipendenze sempre necessarie.
 2. Usa dynamic import per codice pesante o opzionale.
 3. Gestisci sempre loading ed errori.
@@ -483,4 +580,18 @@ Troppi import dinamici possono aumentare overhead di rete e complessita.
 
 ## Collegamenti
 
-- [[Programmazione/JavaScript/Indice javascript|Indice JavaScript]]
+- [[Programmazione/JavaScript/Pagine/Moduli|Moduli]]
+- [[Programmazione/JavaScript/Pagine/Promises|Promises]]
+- [[Programmazione/JavaScript/Pagine/Error Handling|Error Handling]]
+- [[Programmazione/JavaScript/Pagine/Sicurezza|Sicurezza]]
+
+## Fonti
+
+- [MDN - import()](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Operators/import)
+- [MDN - Map, chiavi e proprieta accidentali](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Map)
+- [Node.js - ESM e identita degli URL](https://nodejs.org/api/esm.html)
+- [Vite - Dynamic import e ottimizzazioni di caricamento](https://vite.dev/guide/features.html#dynamic-import)
+
+## Navigazione
+
+- [[Programmazione/JavaScript/Indice JavaScript|Indice JavaScript]]

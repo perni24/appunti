@@ -1,15 +1,20 @@
-﻿---
+---
 date: 2026-05-20
 area: Programmazione
 topic: Rust
 type: technical-note
-status: "non revisionato"
+status: non revisionato
 publish: true
 difficulty: base
-tags: [programmazione, rust, ownership, borrowing, references]
+tags:
+  - programmazione
+  - rust
+  - ownership
+  - borrowing
+  - references
 aliases:
-  - "Riferimenti Rust"
-  - "Borrowing in Rust"
+  - Riferimenti Rust
+  - Borrowing in Rust
 prerequisites:
   - "[[Programmazione/Rust/Pagine/Ownership]]"
   - "[[Programmazione/Rust/Pagine/Mutabilita]]"
@@ -17,6 +22,7 @@ related:
   - "[[Programmazione/Rust/Pagine/Borrow checker]]"
   - "[[Programmazione/Rust/Pagine/Lifetime impliciti]]"
   - "[[Programmazione/Rust/Pagine/Slices]]"
+title: References e Borrowing
 ---
 
 # References e Borrowing
@@ -128,3 +134,8 @@ fn main() {
 - [[Programmazione/Rust/Pagine/Slices|Slices]]
 - [[Programmazione/Rust/Pagine/Stringhe String e &str|Stringhe String e &str]]
 
+
+
+## Navigazione
+
+- [[Programmazione/Rust/Indice Rust|Indice Rust]]

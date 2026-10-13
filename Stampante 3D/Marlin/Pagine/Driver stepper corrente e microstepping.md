@@ -3,16 +3,24 @@ date: 2026-07-25
 area: Stampante 3D
 topic: Marlin
 type: technical-note
-
 publish: true
 difficulty: avanzato
-tags: [marlin, driver-stepper, tmc, corrente, microstepping]
-aliases: [Driver stepper Marlin, Corrente TMC Marlin]
+tags:
+  - marlin
+  - driver-stepper
+  - tmc
+  - corrente
+  - microstepping
+aliases:
+  - Driver stepper Marlin
+  - Corrente TMC Marlin
 prerequisites:
   - "[[Stampante 3D/Marlin/Pagine/Scheda madre porte seriali e pin]]"
   - "[[Stampante 3D/Marlin/Pagine/Motori direzione e passi per millimetro]]"
 related: []
-marlin-version: "2.1.2.8"
+marlin-version: 2.1.2.8
+title: Driver stepper, corrente e microstepping
+status: non revisionato
 ---
 
 # Driver stepper, corrente e microstepping
@@ -338,7 +346,7 @@ Il reporting continuo di `M122` e uno strumento temporaneo: genera traffico seri
 
 ## Collegamenti
 
-- [[Stampante 3D/Marlin/Indice Marlin]]
-- [[Stampante 3D/Marlin/Pagine/Scheda madre porte seriali e pin]]
-- [[Stampante 3D/Marlin/Pagine/Motori direzione e passi per millimetro]]
-- [[Stampante 3D/Marlin/Pagine/Endstop homing e Sensorless Homing]]
+- [[Stampante 3D/Marlin/Indice Marlin|Indice Marlin]]
+- [[Stampante 3D/Marlin/Pagine/Scheda madre porte seriali e pin|Scheda madre porte seriali e pin]]
+- [[Stampante 3D/Marlin/Pagine/Motori direzione e passi per millimetro|Motori direzione e passi per millimetro]]
+- [[Stampante 3D/Marlin/Pagine/Endstop homing e Sensorless Homing|Endstop homing e Sensorless Homing]]

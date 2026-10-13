@@ -1,15 +1,19 @@
-﻿---
+---
 date: 2026-05-20
 area: Programmazione
 topic: Rust
 type: technical-note
-status: "non revisionato"
+status: non revisionato
 publish: true
 difficulty: base
-tags: [programmazione, rust, panic, error-handling]
+tags:
+  - programmazione
+  - rust
+  - panic
+  - error-handling
 aliases:
-  - "panic!"
-  - "Panic Rust"
+  - panic!
+  - Panic Rust
 prerequisites:
   - "[[Programmazione/Rust/Pagine/Result]]"
   - "[[Programmazione/Rust/Pagine/Error handling idiomatico]]"
@@ -17,6 +21,7 @@ related:
   - "[[Programmazione/Rust/Pagine/Operatore]]"
   - "[[Programmazione/Rust/Pagine/Unit test]]"
   - "[[Programmazione/Rust/Pagine/Undefined behavior]]"
+title: panic!
 ---
 
 # panic!
@@ -124,3 +129,8 @@ Qui `assert!` produce panic se l'invariante viene violata. In una API pubblica f
 - [[Programmazione/Rust/Pagine/Undefined behavior|Undefined behavior]]
 - [[Programmazione/Rust/Pagine/Unit test|Unit test]]
 
+
+
+## Navigazione
+
+- [[Programmazione/Rust/Indice Rust|Indice Rust]]

@@ -43,7 +43,11 @@ jobs:
         working-directory: site
         run: npm run install-plugins
 
-      - name: Build website
+      - name: Validate vault
+        working-directory: site
+        run: npm run content:check && npm run content:test
+
+      - name: Build Quartz website
         working-directory: site
         run: npm run site:build
 

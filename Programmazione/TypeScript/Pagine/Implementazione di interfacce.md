@@ -3,13 +3,24 @@ date: 2026-06-22
 area: Programmazione
 topic: TypeScript
 type: technical-note
-status: "non revisionato"
+status: non revisionato
 publish: true
 difficulty: base
-tags: [typescript, interfaces, implements, oop]
-aliases: [implements TypeScript]
-prerequisites: [Type Aliases e Interfaces, Classi]
-related: [Classi, Classi astratte, Generics]
+tags:
+  - typescript
+  - interfaces
+  - implements
+  - oop
+aliases:
+  - implements TypeScript
+prerequisites:
+  - "[[Programmazione/TypeScript/Pagine/Type Aliases e Interfaces]]"
+  - "[[Programmazione/TypeScript/Pagine/Classi]]"
+related:
+  - "[[Programmazione/TypeScript/Pagine/Classi]]"
+  - "[[Programmazione/TypeScript/Pagine/Classi astratte]]"
+  - "[[Programmazione/TypeScript/Pagine/Generics]]"
+title: Implementazione di interfacce
 ---
 
 # Implementazione di interfacce
@@ -97,7 +108,12 @@ async function notify(sender: EmailSender): Promise<void> {
 
 ## Collegamenti
 
-- [[Type Aliases e Interfaces]]
+- [[Programmazione/TypeScript/Pagine/Type Aliases e Interfaces|Type Aliases e Interfaces]]
 - [[Programmazione/TypeScript/Pagine/Classi|Classi]]
-- [[Classi astratte]]
+- [[Programmazione/TypeScript/Pagine/Classi astratte|Classi astratte]]
 - [[Programmazione/TypeScript/Pagine/Generics|Generics]]
+
+
+## Navigazione
+
+- [[Programmazione/TypeScript/Indice TypeScript|Indice TypeScript]]

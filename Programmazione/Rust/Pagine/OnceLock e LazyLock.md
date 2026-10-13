@@ -3,7 +3,7 @@ date: 2026-05-22
 area: Programmazione
 topic: Rust
 type: technical-note
-status: "non revisionato"
+status: non revisionato
 publish: true
 difficulty: intermedio
 tags:
@@ -11,9 +11,9 @@ tags:
   - rust
   - smart-pointers-e-interior-mutability
 aliases:
-  - "OnceLock"
-  - "LazyLock"
-  - "Lazy initialization Rust"
+  - OnceLock
+  - LazyLock
+  - Lazy initialization Rust
 prerequisites:
   - "[[Programmazione/Rust/Pagine/Interior mutability]]"
   - "[[Programmazione/Rust/Pagine/Mutex T e RwLock T]]"
@@ -22,6 +22,7 @@ related:
   - "[[Programmazione/Rust/Pagine/Cell T]]"
   - "[[Programmazione/Rust/Pagine/Configurazione applicativa]]"
   - "[[Programmazione/Rust/Pagine/Shared state]]"
+title: OnceLock e LazyLock
 ---
 
 # OnceLock e LazyLock
@@ -133,3 +134,8 @@ Il valore viene costruito al primo accesso e poi riusato come riferimento static
 - [[Programmazione/Rust/Pagine/const e static|const e static]]
 - [[Programmazione/Rust/Pagine/Configurazione applicativa|Configurazione applicativa]]
 - [[Programmazione/Rust/Pagine/Shared state|Shared state]]
+
+
+## Navigazione
+
+- [[Programmazione/Rust/Indice Rust|Indice Rust]]

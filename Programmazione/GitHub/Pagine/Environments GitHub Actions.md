@@ -3,13 +3,23 @@ date: 2026-07-07
 area: Programmazione
 topic: GitHub
 type: technical-note
-status: "non revisionato"
+status: non revisionato
 publish: true
 difficulty: intermedio
-tags: [github, github-actions, environments, deploy]
-aliases: [Environments GitHub Actions, GitHub Actions environments]
-prerequisites: [Deploy con GitHub Actions]
-related: [Deployment approvals GitHub Actions, Variabili e secrets GitHub Actions]
+tags:
+  - github
+  - github-actions
+  - environments
+  - deploy
+aliases:
+  - Environments GitHub Actions
+  - GitHub Actions environments
+prerequisites:
+  - "[[Programmazione/GitHub/Pagine/Deploy con GitHub Actions]]"
+related:
+  - "[[Programmazione/GitHub/Pagine/Deployment approvals GitHub Actions]]"
+  - "[[Programmazione/GitHub/Pagine/Variabili e secrets GitHub Actions]]"
+title: Environments GitHub Actions
 ---
 
 # Environments GitHub Actions
@@ -117,11 +127,11 @@ Questo impedisce di usare credenziali di produzione in workflow di staging.
 
 ## Collegamenti
 
-- [[Programmazione/GitHub/Indice GitHub]]
-- [[Deploy con GitHub Actions]]
-- [[Deployment approvals GitHub Actions]]
-- [[Variabili e secrets GitHub Actions]]
-- [[OIDC GitHub Actions]]
+- [[Programmazione/GitHub/Indice GitHub|Indice GitHub]]
+- [[Programmazione/GitHub/Pagine/Deploy con GitHub Actions|Deploy con GitHub Actions]]
+- [[Programmazione/GitHub/Pagine/Deployment approvals GitHub Actions|Deployment approvals GitHub Actions]]
+- [[Programmazione/GitHub/Pagine/Variabili e secrets GitHub Actions|Variabili e secrets GitHub Actions]]
+- [[Programmazione/GitHub/Pagine/OIDC GitHub Actions|OIDC GitHub Actions]]
 
 ## Fonti
 

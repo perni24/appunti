@@ -3,13 +3,22 @@ date: 2026-07-07
 area: Programmazione
 topic: GitHub
 type: technical-note
-status: "non revisionato"
+status: non revisionato
 publish: true
 difficulty: intermedio
-tags: [github, github-actions, artifacts, ci]
-aliases: [Artifacts GitHub Actions, Workflow artifacts]
-prerequisites: [Pipeline CI GitHub Actions]
-related: [Cache GitHub Actions]
+tags:
+  - github
+  - github-actions
+  - artifacts
+  - ci
+aliases:
+  - Artifacts GitHub Actions
+  - Workflow artifacts
+prerequisites:
+  - "[[Programmazione/GitHub/Pagine/Pipeline CI GitHub Actions]]"
+related:
+  - "[[Programmazione/GitHub/Pagine/Cache GitHub Actions]]"
+title: Artifacts GitHub Actions
 ---
 
 # Artifacts GitHub Actions
@@ -99,10 +108,10 @@ Questo permette di ispezionare il report anche se non viene pubblicato altrove.
 
 ## Collegamenti
 
-- [[Programmazione/GitHub/Indice GitHub]]
-- [[Pipeline CI GitHub Actions]]
-- [[Cache GitHub Actions]]
-- [[Workflow per test, lint e build]]
+- [[Programmazione/GitHub/Indice GitHub|Indice GitHub]]
+- [[Programmazione/GitHub/Pagine/Pipeline CI GitHub Actions|Pipeline CI GitHub Actions]]
+- [[Programmazione/GitHub/Pagine/Cache GitHub Actions|Cache GitHub Actions]]
+- [[Programmazione/GitHub/Pagine/Workflow per test, lint e build|Workflow per test, lint e build]]
 
 ## Fonti
 

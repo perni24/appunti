@@ -3,17 +3,24 @@ date: 2026-07-25
 area: Stampante 3D
 topic: Marlin
 type: technical-note
-
 publish: true
 difficulty: intermedio
-tags: [marlin, scheda-madre, seriale, pin-mapping]
-aliases: [Motherboard e pin Marlin, Porte seriali Marlin]
+tags:
+  - marlin
+  - scheda-madre
+  - seriale
+  - pin-mapping
+aliases:
+  - Motherboard e pin Marlin
+  - Porte seriali Marlin
 prerequisites:
   - "[[Stampante 3D/Marlin/Pagine/Introduzione a Marlin 2.1.2.8 e compatibilita]]"
   - "[[Stampante 3D/Marlin/Pagine/Struttura dei file di configurazione Marlin]]"
 related:
   - "[[Stampante 3D/Marlin/Pagine/Alimentazione e protezioni hardware]]"
-marlin-version: "2.1.2.8"
+marlin-version: 2.1.2.8
+title: Scheda madre, porte seriali e pin
+status: non revisionato
 ---
 
 # Scheda madre, porte seriali e pin
@@ -320,8 +327,8 @@ Non dichiara automaticamente:
 
 ## Collegamenti
 
-- [[Stampante 3D/Marlin/Indice Marlin]]
-- [[Stampante 3D/Marlin/Pagine/Introduzione a Marlin 2.1.2.8 e compatibilita]]
-- [[Stampante 3D/Marlin/Pagine/Struttura dei file di configurazione Marlin]]
-- [[Stampante 3D/Marlin/Pagine/Metodo di configurazione compilazione e caricamento]]
-- [[Stampante 3D/Marlin/Pagine/Alimentazione e protezioni hardware]]
+- [[Stampante 3D/Marlin/Indice Marlin|Indice Marlin]]
+- [[Stampante 3D/Marlin/Pagine/Introduzione a Marlin 2.1.2.8 e compatibilita|Introduzione a Marlin 2.1.2.8 e compatibilita]]
+- [[Stampante 3D/Marlin/Pagine/Struttura dei file di configurazione Marlin|Struttura dei file di configurazione Marlin]]
+- [[Stampante 3D/Marlin/Pagine/Metodo di configurazione compilazione e caricamento|Metodo di configurazione compilazione e caricamento]]
+- [[Stampante 3D/Marlin/Pagine/Alimentazione e protezioni hardware|Alimentazione e protezioni hardware]]

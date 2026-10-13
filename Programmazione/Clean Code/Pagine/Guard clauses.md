@@ -3,13 +3,24 @@ date: 2026-07-09
 area: Programmazione
 topic: Clean Code
 type: theory-note
-status: "non revisionato"
+status: non revisionato
 publish: true
 difficulty: base
-tags: [clean-code, leggibilita, controllo-flusso]
-aliases: [Guard clauses, Clausole di guardia]
-prerequisites: [Leggibilita del codice, Funzioni piccole]
-related: [Codice esplicito vs codice implicito, Funzioni con responsabilita singola, Complessita cognitiva]
+tags:
+  - clean-code
+  - leggibilita
+  - controllo-flusso
+aliases:
+  - Guard clauses
+  - Clausole di guardia
+prerequisites:
+  - "[[Programmazione/Clean Code/Pagine/Leggibilita del codice]]"
+  - "[[Programmazione/Clean Code/Pagine/Funzioni piccole]]"
+related:
+  - "[[Programmazione/Clean Code/Pagine/Codice esplicito vs codice implicito]]"
+  - "[[Programmazione/Clean Code/Pagine/Funzioni con responsabilita singola]]"
+  - "[[Programmazione/Clean Code/Pagine/Complessita cognitiva]]"
+title: Guard clauses
 ---
 
 # Guard clauses
@@ -99,12 +110,12 @@ Il flusso principale e piu visibile.
 
 ## Collegamenti
 
-- [[Programmazione/Clean Code/Indice Clean Code]]
-- [[Leggibilita del codice]]
-- [[Funzioni piccole]]
-- [[Funzioni con responsabilita singola]]
-- [[Codice esplicito vs codice implicito]]
-- [[Principio del minimo stupore]]
+- [[Programmazione/Clean Code/Indice Clean Code|Indice Clean Code]]
+- [[Programmazione/Clean Code/Pagine/Leggibilita del codice|Leggibilita del codice]]
+- [[Programmazione/Clean Code/Pagine/Funzioni piccole|Funzioni piccole]]
+- [[Programmazione/Clean Code/Pagine/Funzioni con responsabilita singola|Funzioni con responsabilita singola]]
+- [[Programmazione/Clean Code/Pagine/Codice esplicito vs codice implicito|Codice esplicito vs codice implicito]]
+- [[Programmazione/Clean Code/Pagine/Principio del minimo stupore|Principio del minimo stupore]]
 
 ## Fonti
 

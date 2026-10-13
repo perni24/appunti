@@ -3,7 +3,7 @@ date: 2026-05-27
 area: Programmazione
 topic: Rust
 type: technical-note
-status: "non revisionato"
+status: non revisionato
 publish: true
 difficulty: intermedio
 tags:
@@ -11,8 +11,8 @@ tags:
   - rust
   - cli-e-tooling
 aliases:
-  - "Error reporting"
-  - "Report degli errori"
+  - Error reporting
+  - Report degli errori
 prerequisites:
   - "[[Programmazione/Rust/Pagine/Error handling idiomatico]]"
   - "[[Programmazione/Rust/Pagine/thiserror e anyhow]]"
@@ -21,6 +21,7 @@ related:
   - "[[Programmazione/Rust/Pagine/Logging con log]]"
   - "[[Programmazione/Rust/Pagine/Tracing con tracing]]"
   - "[[Programmazione/Rust/Pagine/Error types pubblici]]"
+title: Error reporting
 ---
 
 # Error reporting
@@ -155,10 +156,10 @@ fn run() -> Result<()> {
 
 ## Collegamenti
 
-- [[Programmazione/Rust/Indice rust|Indice Rust]]
-- [[Programmazione/Rust/Pagine/Error handling idiomatico]]
-- [[Programmazione/Rust/Pagine/thiserror e anyhow]]
-- [[Programmazione/Rust/Pagine/Error types pubblici]]
-- [[Programmazione/Rust/Pagine/CLI con clap]]
-- [[Programmazione/Rust/Pagine/Logging con log]]
-- [[Programmazione/Rust/Pagine/Tracing con tracing]]
+- [[Programmazione/Rust/Indice Rust|Indice Rust]]
+- [[Programmazione/Rust/Pagine/Error handling idiomatico|Error handling idiomatico]]
+- [[Programmazione/Rust/Pagine/thiserror e anyhow|thiserror e anyhow]]
+- [[Programmazione/Rust/Pagine/Error types pubblici|Error types pubblici]]
+- [[Programmazione/Rust/Pagine/CLI con clap|CLI con clap]]
+- [[Programmazione/Rust/Pagine/Logging con log|Logging con log]]
+- [[Programmazione/Rust/Pagine/Tracing con tracing|Tracing con tracing]]

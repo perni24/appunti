@@ -3,7 +3,7 @@ date: 2026-05-27
 area: Programmazione
 topic: Rust
 type: technical-note
-status: "non revisionato"
+status: non revisionato
 publish: true
 difficulty: avanzato
 tags:
@@ -11,7 +11,7 @@ tags:
   - rust
   - backend-networking-e-database
 aliases:
-  - "Diesel"
+  - Diesel
 prerequisites:
   - "[[Programmazione/Rust/Pagine/Generics]]"
   - "[[Programmazione/Rust/Pagine/Traits]]"
@@ -20,6 +20,7 @@ related:
   - "[[Programmazione/Rust/Pagine/SQLx]]"
   - "[[Programmazione/Rust/Pagine/SeaORM]]"
   - "[[Programmazione/Rust/Pagine/Error types pubblici]]"
+title: Diesel
 ---
 
 # Diesel
@@ -152,10 +153,10 @@ In un backend async, se usi connessioni Diesel sincrone, devi evitare di bloccar
 
 ## Collegamenti
 
-- [[Programmazione/Rust/Indice rust|Indice Rust]]
-- [[Programmazione/Rust/Pagine/Generics]]
-- [[Programmazione/Rust/Pagine/Traits]]
-- [[Programmazione/Rust/Pagine/Connection pooling]]
-- [[Programmazione/Rust/Pagine/SQLx]]
-- [[Programmazione/Rust/Pagine/SeaORM]]
-- [[Programmazione/Rust/Pagine/Error types pubblici]]
+- [[Programmazione/Rust/Indice Rust|Indice Rust]]
+- [[Programmazione/Rust/Pagine/Generics|Generics]]
+- [[Programmazione/Rust/Pagine/Traits|Traits]]
+- [[Programmazione/Rust/Pagine/Connection pooling|Connection pooling]]
+- [[Programmazione/Rust/Pagine/SQLx|SQLx]]
+- [[Programmazione/Rust/Pagine/SeaORM|SeaORM]]
+- [[Programmazione/Rust/Pagine/Error types pubblici|Error types pubblici]]

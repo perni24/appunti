@@ -3,13 +3,27 @@ date: 2026-07-07
 area: Programmazione
 topic: GitHub
 type: technical-note
-status: "non revisionato"
+status: non revisionato
 publish: true
 difficulty: intermedio
-tags: [github, git, tag, versioning, changelog]
-aliases: [Tag versioni e changelog, Tag, versioni e changelog]
-prerequisites: [Git e GitHub, Commit e cronologia su GitHub]
-related: [Gestione release su GitHub, Protected tags, Conventional commits su GitHub]
+tags:
+  - github
+  - git
+  - tag
+  - versioning
+  - changelog
+aliases:
+  - Tag versioni e changelog
+  - Tag
+  - versioni e changelog
+prerequisites:
+  - "[[Programmazione/GitHub/Pagine/Git e GitHub]]"
+  - "[[Programmazione/GitHub/Pagine/Commit e cronologia su GitHub]]"
+related:
+  - "[[Programmazione/GitHub/Pagine/Gestione release su GitHub]]"
+  - "[[Programmazione/GitHub/Pagine/Protected tags]]"
+  - "[[Programmazione/GitHub/Pagine/Conventional commits su GitHub]]"
+title: Tag, versioni e changelog
 ---
 
 # Tag, versioni e changelog
@@ -113,12 +127,12 @@ Changelog minimo:
 
 ## Collegamenti
 
-- [[Programmazione/GitHub/Indice GitHub]]
-- [[Git e GitHub]]
-- [[Commit e cronologia su GitHub]]
-- [[Protected tags]]
-- [[Conventional commits su GitHub]]
-- [[Gestione release su GitHub]]
+- [[Programmazione/GitHub/Indice GitHub|Indice GitHub]]
+- [[Programmazione/GitHub/Pagine/Git e GitHub|Git e GitHub]]
+- [[Programmazione/GitHub/Pagine/Commit e cronologia su GitHub|Commit e cronologia su GitHub]]
+- [[Programmazione/GitHub/Pagine/Protected tags|Protected tags]]
+- [[Programmazione/GitHub/Pagine/Conventional commits su GitHub|Conventional commits su GitHub]]
+- [[Programmazione/GitHub/Pagine/Gestione release su GitHub|Gestione release su GitHub]]
 
 ## Fonti
 

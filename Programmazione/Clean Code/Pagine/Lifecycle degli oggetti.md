@@ -3,13 +3,24 @@ date: 2026-07-09
 area: Programmazione
 topic: Clean Code
 type: theory-note
-status: "non revisionato"
+status: non revisionato
 publish: true
 difficulty: avanzato
-tags: [clean-code, lifecycle, oggetti]
-aliases: [Lifecycle degli oggetti, Object lifecycle]
-prerequisites: [Incapsulamento, Gestione delle risorse]
-related: [Ownership concettuale, Cleanup e rilascio risorse, Invarianti interne]
+tags:
+  - clean-code
+  - lifecycle
+  - oggetti
+aliases:
+  - Lifecycle degli oggetti
+  - Object lifecycle
+prerequisites:
+  - "[[Programmazione/Clean Code/Pagine/Incapsulamento]]"
+  - "[[Programmazione/Clean Code/Pagine/Gestione delle risorse]]"
+related:
+  - "[[Programmazione/Clean Code/Pagine/Ownership concettuale]]"
+  - "[[Programmazione/Clean Code/Pagine/Cleanup e rilascio risorse]]"
+  - "[[Programmazione/Clean Code/Pagine/Invarianti interne]]"
+title: Lifecycle degli oggetti
 ---
 
 # Lifecycle degli oggetti
@@ -85,12 +96,12 @@ Lo stato `closed` protegge il lifecycle della risorsa.
 
 ## Collegamenti
 
-- [[Programmazione/Clean Code/Indice Clean Code]]
+- [[Programmazione/Clean Code/Indice Clean Code|Indice Clean Code]]
 - [[Programmazione/Clean Code/Pagine/Incapsulamento|Incapsulamento]]
-- [[Gestione delle risorse]]
-- [[Ownership concettuale]]
-- [[Cleanup e rilascio risorse]]
-- [[Invarianti interne]]
+- [[Programmazione/Clean Code/Pagine/Gestione delle risorse|Gestione delle risorse]]
+- [[Programmazione/Clean Code/Pagine/Ownership concettuale|Ownership concettuale]]
+- [[Programmazione/Clean Code/Pagine/Cleanup e rilascio risorse|Cleanup e rilascio risorse]]
+- [[Programmazione/Clean Code/Pagine/Invarianti interne|Invarianti interne]]
 
 ## Fonti
 

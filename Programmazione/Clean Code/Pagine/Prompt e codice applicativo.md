@@ -3,13 +3,24 @@ date: 2026-07-09
 area: Programmazione
 topic: Clean Code
 type: theory-note
-status: "non revisionato"
+status: non revisionato
 publish: true
 difficulty: avanzato
-tags: [clean-code, llm, prompt]
-aliases: [Prompt e codice applicativo, Prompt as application code]
-prerequisites: [Contratti impliciti ed espliciti, Output strutturati]
-related: [Validazione dei dati generati, Parsing di input esterni, Test come documentazione]
+tags:
+  - clean-code
+  - llm
+  - prompt
+aliases:
+  - Prompt e codice applicativo
+  - Prompt as application code
+prerequisites:
+  - "[[Programmazione/Clean Code/Pagine/Contratti impliciti ed espliciti]]"
+  - "[[Programmazione/Clean Code/Pagine/Output strutturati]]"
+related:
+  - "[[Programmazione/Clean Code/Pagine/Validazione dei dati generati]]"
+  - "[[Programmazione/Clean Code/Pagine/Parsing di input esterni]]"
+  - "[[Programmazione/Clean Code/Pagine/Test come documentazione]]"
+title: Prompt e codice applicativo
 ---
 
 # Prompt e codice applicativo
@@ -90,12 +101,12 @@ Il secondo prompt definisce un contratto verificabile.
 
 ## Collegamenti
 
-- [[Programmazione/Clean Code/Indice Clean Code]]
-- [[Contratti impliciti ed espliciti]]
-- [[Output strutturati]]
-- [[Validazione dei dati generati]]
-- [[Parsing di input esterni]]
-- [[Test come documentazione]]
+- [[Programmazione/Clean Code/Indice Clean Code|Indice Clean Code]]
+- [[Programmazione/Clean Code/Pagine/Contratti impliciti ed espliciti|Contratti impliciti ed espliciti]]
+- [[Programmazione/Clean Code/Pagine/Output strutturati|Output strutturati]]
+- [[Programmazione/Clean Code/Pagine/Validazione dei dati generati|Validazione dei dati generati]]
+- [[Programmazione/Clean Code/Pagine/Parsing di input esterni|Parsing di input esterni]]
+- [[Programmazione/Clean Code/Pagine/Test come documentazione|Test come documentazione]]
 
 ## Fonti
 

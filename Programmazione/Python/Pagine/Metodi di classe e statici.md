@@ -3,13 +3,17 @@ date: 2026-06-03
 area: Programmazione
 topic: Python
 type: technical-note
-status: "non revisionato"
+status: non revisionato
 publish: true
-difficulty: intermediate
-tags: [python, programming]
-aliases: [Metodi di Classe e Metodi Statici]
+difficulty: intermedio
+tags:
+  - python
+  - programming
+aliases:
+  - Metodi di Classe e Metodi Statici
 prerequisites: []
 related: []
+title: Metodi di Classe e Metodi Statici in Python
 ---
 
 # Metodi di Classe e Metodi Statici in Python
@@ -80,3 +84,8 @@ user = User.from_dict(raw)
 - [[Programmazione/Python/Pagine/Classi e Istanze|Classi e Istanze]]
 - [[Programmazione/Python/Pagine/Ereditarietà|Ereditarietà]]
 - [[Programmazione/Python/Pagine/Descriptor protocol|Descriptor protocol]]
+
+
+## Navigazione
+
+- [[Programmazione/Python/Indice Python|Indice Python]]

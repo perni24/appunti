@@ -3,13 +3,23 @@ date: 2026-07-09
 area: Programmazione
 topic: Clean Code
 type: theory-note
-status: "non revisionato"
+status: non revisionato
 publish: true
 difficulty: intermedio
-tags: [clean-code, moduli, architettura]
-aliases: [Confini tra moduli, Boundary tra moduli]
-prerequisites: [Moduli piccoli]
-related: [Dipendenze esplicite, Organizzazione dei file, Struttura delle cartelle]
+tags:
+  - clean-code
+  - moduli
+  - architettura
+aliases:
+  - Confini tra moduli
+  - Boundary tra moduli
+prerequisites:
+  - "[[Programmazione/Clean Code/Pagine/Moduli piccoli]]"
+related:
+  - "[[Programmazione/Clean Code/Pagine/Dipendenze esplicite]]"
+  - "[[Programmazione/Clean Code/Pagine/Organizzazione dei file]]"
+  - "[[Programmazione/Clean Code/Pagine/Struttura delle cartelle]]"
+title: Confini tra moduli
 ---
 
 # Confini tra moduli
@@ -92,11 +102,11 @@ Il modulo `users` usa solo cio che `orders` decide di esporre.
 
 ## Collegamenti
 
-- [[Programmazione/Clean Code/Indice Clean Code]]
-- [[Moduli piccoli]]
-- [[Dipendenze esplicite]]
-- [[Organizzazione dei file]]
-- [[Struttura delle cartelle]]
+- [[Programmazione/Clean Code/Indice Clean Code|Indice Clean Code]]
+- [[Programmazione/Clean Code/Pagine/Moduli piccoli|Moduli piccoli]]
+- [[Programmazione/Clean Code/Pagine/Dipendenze esplicite|Dipendenze esplicite]]
+- [[Programmazione/Clean Code/Pagine/Organizzazione dei file|Organizzazione dei file]]
+- [[Programmazione/Clean Code/Pagine/Struttura delle cartelle|Struttura delle cartelle]]
 
 ## Fonti
 

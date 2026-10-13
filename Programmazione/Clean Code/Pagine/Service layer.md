@@ -3,13 +3,24 @@ date: 2026-07-09
 area: Programmazione
 topic: Clean Code
 type: theory-note
-status: "non revisionato"
+status: non revisionato
 publish: true
 difficulty: intermedio
-tags: [clean-code, architettura, service-layer]
-aliases: [Service layer, Application service]
-prerequisites: [Separazione delle responsabilita, Controller sottili]
-related: [Repository pattern, DTO e modelli di dominio, Modellazione del dominio]
+tags:
+  - clean-code
+  - architettura
+  - service-layer
+aliases:
+  - Service layer
+  - Application service
+prerequisites:
+  - "[[Programmazione/Clean Code/Pagine/Separazione delle responsabilita]]"
+  - "[[Programmazione/Clean Code/Pagine/Controller sottili]]"
+related:
+  - "[[Programmazione/Clean Code/Pagine/Repository pattern]]"
+  - "[[Programmazione/Clean Code/Pagine/DTO e modelli di dominio]]"
+  - "[[Programmazione/Clean Code/Pagine/Modellazione del dominio]]"
+title: Service layer
 ---
 
 # Service layer
@@ -88,12 +99,12 @@ Il service coordina caricamento, regola di dominio, salvataggio ed evento.
 
 ## Collegamenti
 
-- [[Programmazione/Clean Code/Indice Clean Code]]
-- [[Controller sottili]]
-- [[Repository pattern]]
-- [[Modellazione del dominio]]
-- [[Side effects controllati]]
-- [[Codice testabile]]
+- [[Programmazione/Clean Code/Indice Clean Code|Indice Clean Code]]
+- [[Programmazione/Clean Code/Pagine/Controller sottili|Controller sottili]]
+- [[Programmazione/Clean Code/Pagine/Repository pattern|Repository pattern]]
+- [[Programmazione/Clean Code/Pagine/Modellazione del dominio|Modellazione del dominio]]
+- [[Programmazione/Clean Code/Pagine/Side effects controllati|Side effects controllati]]
+- [[Programmazione/Clean Code/Pagine/Codice testabile|Codice testabile]]
 
 ## Fonti
 

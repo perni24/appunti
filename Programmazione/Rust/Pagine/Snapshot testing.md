@@ -3,7 +3,7 @@ date: 2026-05-28
 area: Programmazione
 topic: Rust
 type: technical-note
-status: "non revisionato"
+status: non revisionato
 publish: true
 difficulty: intermedio
 tags:
@@ -11,8 +11,8 @@ tags:
   - rust
   - testing-qualita-e-sicurezza
 aliases:
-  - "Snapshot testing"
-  - "Insta"
+  - Snapshot testing
+  - Insta
 prerequisites:
   - "[[Programmazione/Rust/Pagine/Unit test]]"
   - "[[Programmazione/Rust/Pagine/Serde e serializzazione]]"
@@ -20,6 +20,7 @@ related:
   - "[[Programmazione/Rust/Pagine/CLI con clap]]"
   - "[[Programmazione/Rust/Pagine/Doc test]]"
   - "[[Programmazione/Rust/Pagine/Integration test]]"
+title: Snapshot testing
 ---
 
 # Snapshot testing
@@ -142,9 +143,9 @@ In un progetto reale l'output puo venire dall'esecuzione della CLI o da una funz
 
 ## Collegamenti
 
-- [[Programmazione/Rust/Indice rust|Indice Rust]]
-- [[Programmazione/Rust/Pagine/Unit test]]
-- [[Programmazione/Rust/Pagine/Integration test]]
-- [[Programmazione/Rust/Pagine/Doc test]]
-- [[Programmazione/Rust/Pagine/Serde e serializzazione]]
-- [[Programmazione/Rust/Pagine/CLI con clap]]
+- [[Programmazione/Rust/Indice Rust|Indice Rust]]
+- [[Programmazione/Rust/Pagine/Unit test|Unit test]]
+- [[Programmazione/Rust/Pagine/Integration test|Integration test]]
+- [[Programmazione/Rust/Pagine/Doc test|Doc test]]
+- [[Programmazione/Rust/Pagine/Serde e serializzazione|Serde e serializzazione]]
+- [[Programmazione/Rust/Pagine/CLI con clap|CLI con clap]]

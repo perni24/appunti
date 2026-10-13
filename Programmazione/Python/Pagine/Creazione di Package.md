@@ -3,13 +3,19 @@ date: 2026-06-03
 area: Programmazione
 topic: Python
 type: technical-note
-status: "non revisionato"
+status: non revisionato
 publish: true
-difficulty: intermediate
-tags: [python, programming, packaging]
-aliases: [Creazione di Package, Package Python]
+difficulty: intermedio
+tags:
+  - python
+  - programming
+  - packaging
+aliases:
+  - Creazione di Package
+  - Package Python
 prerequisites: []
 related: []
+title: Creazione di Package in Python
 ---
 
 # Creazione di Package in Python
@@ -165,8 +171,8 @@ print(add(2, 3))
 
 ## Collegamenti
 
-- [[Programmazione/Python/Indice python|Indice Python]]
-- [[Pip e PyPI]]
-- [[Ambienti Virtuali]]
+- [[Programmazione/Python/Indice Python|Indice Python]]
+- [[Programmazione/Python/Pagine/Pip e PyPI|Pip e PyPI]]
+- [[Programmazione/Python/Pagine/Ambienti Virtuali|Ambienti Virtuali]]
 - [[Programmazione/Python/Pagine/Testing|Testing]]
-- [[uv pipx e poetry]]
+- [[Programmazione/Python/Pagine/uv pipx e poetry|uv pipx e poetry]]

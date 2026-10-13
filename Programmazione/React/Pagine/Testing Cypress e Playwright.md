@@ -3,13 +3,22 @@ date: 2026-06-04
 area: Programmazione
 topic: React
 type: operational-note
-status: "non revisionato"
+status: non revisionato
 publish: true
-difficulty: intermediate
-tags: [react, testing, e2e, cypress, playwright]
-aliases: [Testing Cypress, Testing Playwright, E2E React]
+difficulty: intermedio
+tags:
+  - react
+  - testing
+  - e2e
+  - cypress
+  - playwright
+aliases:
+  - Testing Cypress
+  - Testing Playwright
+  - E2E React
 prerequisites: []
 related: []
+title: Testing Cypress e Playwright
 ---
 
 # Testing Cypress e Playwright
@@ -86,8 +95,8 @@ await expect(page.getByText("Utente creato")).toBeVisible();
 
 ## Collegamenti
 
-- [[Programmazione/React/Indice react|Indice React]]
-- [[Testing Jest]]
-- [[Visual regression testing]]
-- [[Test di accessibilita]]
-- [[React Router]]
+- [[Programmazione/React/Indice React|Indice React]]
+- [[Programmazione/React/Pagine/Testing Jest|Testing Jest]]
+- [[Programmazione/React/Pagine/Visual regression testing|Visual regression testing]]
+- [[Programmazione/React/Pagine/Test di accessibilita|Test di accessibilita]]
+- [[Programmazione/React/Pagine/React Router|React Router]]

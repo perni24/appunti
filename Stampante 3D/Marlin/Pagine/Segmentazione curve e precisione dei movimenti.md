@@ -3,15 +3,24 @@ date: 2026-07-25
 area: Stampante 3D
 topic: Marlin
 type: technical-note
-
 publish: true
 difficulty: avanzato
-tags: [marlin, planner, segmentazione, archi, precisione]
-aliases: [Segmentazione movimenti Marlin, Planner Marlin, Archi Marlin]
+tags:
+  - marlin
+  - planner
+  - segmentazione
+  - archi
+  - precisione
+aliases:
+  - Segmentazione movimenti Marlin
+  - Planner Marlin
+  - Archi Marlin
 prerequisites:
   - "[[Stampante 3D/Marlin/Pagine/Velocita accelerazioni Jerk e Junction Deviation]]"
 related: []
-marlin-version: "2.1.2.8"
+marlin-version: 2.1.2.8
+title: Segmentazione, curve e precisione dei movimenti
+status: non revisionato
 ---
 
 # Segmentazione, curve e precisione dei movimenti
@@ -482,7 +491,7 @@ Procedura:
 
 ## Collegamenti
 
-- [[Stampante 3D/Marlin/Indice Marlin]]
-- [[Stampante 3D/Marlin/Pagine/Velocita accelerazioni Jerk e Junction Deviation]]
-- [[Stampante 3D/Marlin/Pagine/Tipo di stampante e cinematica]]
-- [[Stampante 3D/Marlin/Pagine/Driver stepper corrente e microstepping]]
+- [[Stampante 3D/Marlin/Indice Marlin|Indice Marlin]]
+- [[Stampante 3D/Marlin/Pagine/Velocita accelerazioni Jerk e Junction Deviation|Velocita accelerazioni Jerk e Junction Deviation]]
+- [[Stampante 3D/Marlin/Pagine/Tipo di stampante e cinematica|Tipo di stampante e cinematica]]
+- [[Stampante 3D/Marlin/Pagine/Driver stepper corrente e microstepping|Driver stepper corrente e microstepping]]

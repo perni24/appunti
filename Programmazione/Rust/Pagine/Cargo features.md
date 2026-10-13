@@ -3,7 +3,7 @@ date: 2026-05-22
 area: Programmazione
 topic: Rust
 type: technical-note
-status: "non revisionato"
+status: non revisionato
 publish: true
 difficulty: intermedio
 tags:
@@ -11,8 +11,8 @@ tags:
   - rust
   - cargo-editions-e-compatibilita
 aliases:
-  - "Feature Cargo"
-  - "Cargo feature flags"
+  - Feature Cargo
+  - Cargo feature flags
 prerequisites:
   - "[[Programmazione/Rust/Pagine/Cargo.toml]]"
   - "[[Programmazione/Rust/Pagine/Crates.io]]"
@@ -20,6 +20,7 @@ related:
   - "[[Programmazione/Rust/Pagine/Feature flags ben progettate]]"
   - "[[Programmazione/Rust/Pagine/Build profiles]]"
   - "[[Programmazione/Rust/Pagine/Workspace dependencies]]"
+title: Cargo features
 ---
 
 # Cargo features
@@ -128,3 +129,8 @@ Questa configurazione mantiene il supporto JSON opzionale.
 - [[Programmazione/Rust/Pagine/no_std|no_std]]
 - [[Programmazione/Rust/Pagine/Crates.io|Crates.io]]
 - [[Programmazione/Rust/Pagine/Workspace dependencies|Workspace dependencies]]
+
+
+## Navigazione
+
+- [[Programmazione/Rust/Indice Rust|Indice Rust]]

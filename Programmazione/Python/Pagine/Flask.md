@@ -3,13 +3,19 @@ date: 2026-06-03
 area: Programmazione
 topic: Python
 type: technical-note
-status: "non revisionato"
+status: non revisionato
 publish: true
-difficulty: beginner
-tags: [programmazione, python, web, flask]
-aliases: [Flask]
+difficulty: base
+tags:
+  - programmazione
+  - python
+  - web
+  - flask
+aliases:
+  - Flask
 prerequisites: []
 related: []
+title: Flask
 ---
 
 # Flask
@@ -128,9 +134,9 @@ Questo pattern semplifica test e configurazioni diverse.
 
 ## Collegamenti
 
-- [[Programmazione/Python/Indice python|Indice Python]]
-- [[FastAPI]]
-- [[Django]]
-- [[HTTPX e requests]]
-- [[Configurazione e Variabili d Ambiente]]
-- [[SQLAlchemy]]
+- [[Programmazione/Python/Indice Python|Indice Python]]
+- [[Programmazione/Python/Pagine/FastAPI|FastAPI]]
+- [[Programmazione/Python/Pagine/Django|Django]]
+- [[Programmazione/Python/Pagine/HTTPX e requests|HTTPX e requests]]
+- [[Programmazione/Python/Pagine/Configurazione e Variabili d Ambiente|Configurazione e Variabili d Ambiente]]
+- [[Programmazione/Python/Pagine/SQLAlchemy|SQLAlchemy]]

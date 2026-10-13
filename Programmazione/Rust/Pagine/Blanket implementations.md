@@ -3,7 +3,7 @@ date: 2026-05-21
 area: Programmazione
 topic: Rust
 type: technical-note
-status: "non revisionato"
+status: non revisionato
 publish: true
 difficulty: intermedio
 tags:
@@ -11,8 +11,8 @@ tags:
   - rust
   - astrazione-e-generici
 aliases:
-  - "Blanket impl"
-  - "Blanket implementation"
+  - Blanket impl
+  - Blanket implementation
 prerequisites:
   - "[[Programmazione/Rust/Pagine/Traits]]"
   - "[[Programmazione/Rust/Pagine/Trait bounds]]"
@@ -20,6 +20,7 @@ related:
   - "[[Programmazione/Rust/Pagine/Extension traits]]"
   - "[[Programmazione/Rust/Pagine/From Into TryFrom e TryInto]]"
   - "[[Programmazione/Rust/Pagine/Public API design]]"
+title: Blanket implementations
 ---
 
 # Blanket implementations
@@ -147,3 +148,8 @@ Ogni tipo validabile ottiene una implementazione base di `Save`.
 - [[Programmazione/Rust/Pagine/Extension traits|Extension traits]]
 - [[Programmazione/Rust/Pagine/From Into TryFrom e TryInto|From Into TryFrom e TryInto]]
 - [[Programmazione/Rust/Pagine/Public API design|Public API design]]
+
+
+## Navigazione
+
+- [[Programmazione/Rust/Indice Rust|Indice Rust]]

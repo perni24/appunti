@@ -3,13 +3,23 @@ date: 2026-07-09
 area: Programmazione
 topic: Clean Code
 type: technical-note
-status: "non revisionato"
+status: non revisionato
 publish: true
 difficulty: avanzato
-tags: [clean-code, cleanup, risorse]
-aliases: [Cleanup e rilascio risorse, Resource cleanup]
-prerequisites: [Gestione delle risorse]
-related: [Lifecycle degli oggetti, File system e IO, Gestione esplicita degli errori]
+tags:
+  - clean-code
+  - cleanup
+  - risorse
+aliases:
+  - Cleanup e rilascio risorse
+  - Resource cleanup
+prerequisites:
+  - "[[Programmazione/Clean Code/Pagine/Gestione delle risorse]]"
+related:
+  - "[[Programmazione/Clean Code/Pagine/Lifecycle degli oggetti]]"
+  - "[[Programmazione/Clean Code/Pagine/File system e IO]]"
+  - "[[Programmazione/Clean Code/Pagine/Gestione esplicita degli errori]]"
+title: Cleanup e rilascio risorse
 ---
 
 # Cleanup e rilascio risorse
@@ -90,12 +100,12 @@ Se la scrittura fallisce, il file temporaneo non resta sporco.
 
 ## Collegamenti
 
-- [[Programmazione/Clean Code/Indice Clean Code]]
-- [[Gestione delle risorse]]
-- [[Lifecycle degli oggetti]]
-- [[File system e IO]]
-- [[Gestione esplicita degli errori]]
-- [[Side effects controllati]]
+- [[Programmazione/Clean Code/Indice Clean Code|Indice Clean Code]]
+- [[Programmazione/Clean Code/Pagine/Gestione delle risorse|Gestione delle risorse]]
+- [[Programmazione/Clean Code/Pagine/Lifecycle degli oggetti|Lifecycle degli oggetti]]
+- [[Programmazione/Clean Code/Pagine/File system e IO|File system e IO]]
+- [[Programmazione/Clean Code/Pagine/Gestione esplicita degli errori|Gestione esplicita degli errori]]
+- [[Programmazione/Clean Code/Pagine/Side effects controllati|Side effects controllati]]
 
 ## Fonti
 

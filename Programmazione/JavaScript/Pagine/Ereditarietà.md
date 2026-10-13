@@ -1,15 +1,29 @@
-﻿---
+---
 date: 2026-06-02
 area: Programmazione
 topic: JavaScript
 type: technical-note
-status: "non revisionato"
+status: non revisionato
 publish: true
-difficulty: intermediate
-tags: [javascript, oop, inheritance, classes, prototypes]
-aliases: [Ereditarieta JS, Inheritance JavaScript]
-prerequisites: [Classi, Prototypes]
-related: [Classi, Incapsulamento, Prototypes, Private Fields e Static Blocks]
+difficulty: intermedio
+tags:
+  - javascript
+  - oop
+  - inheritance
+  - classes
+  - prototypes
+aliases:
+  - Ereditarieta JS
+  - Inheritance JavaScript
+prerequisites:
+  - "[[Programmazione/JavaScript/Pagine/Classi]]"
+  - "[[Programmazione/JavaScript/Pagine/Prototypes]]"
+related:
+  - "[[Programmazione/JavaScript/Pagine/Classi]]"
+  - "[[Programmazione/JavaScript/Pagine/Incapsulamento]]"
+  - "[[Programmazione/JavaScript/Pagine/Prototypes]]"
+  - "[[Programmazione/JavaScript/Pagine/Private Fields e Static Blocks]]"
+title: Ereditarieta
 ---
 
 # Ereditarieta
@@ -37,88 +51,117 @@ Evitala se vuoi solo riusare qualche metodo: composizione, funzioni o moduli son
 
 ## Come funziona
 
+Gli esempi con `Report` sono varianti alternative della stessa sottoclasse: eseguili separatamente, mantenendo la classe base `Document` del primo esempio. Non ridefinire la stessa classe nello stesso scope.
+
 ### `extends`
 ```js
-class Animal {
-  constructor(name) {
-    this.name = name;
+class Document {
+  constructor(title) {
+    this.title = title;
   }
 
-  eat() {
-    return `${this.name} sta mangiando`;
-  }
-}
-
-class Dog extends Animal {
-  bark() {
-    return "bau";
+  describe() {
+    return `Documento: ${this.title}`;
   }
 }
 
-const dog = new Dog("Fido");
+class Report extends Document {
+  format() {
+    return "report";
+  }
+}
 
-console.log(dog.eat());
-console.log(dog.bark());
+const report = new Report("Vendite");
+
+console.log(report.describe()); // "Documento: Vendite"
+console.log(report.format()); // "report"
 ```
 
-`Dog` eredita i metodi definiti su `Animal.prototype`.
+`Report.prototype` delega a `Document.prototype`. I metodi non vengono copiati nelle istanze. Se manca il costruttore della sottoclasse, il costruttore predefinito inoltra gli argomenti alla base.
 
 ---
 ### `super` nel costruttore
 Se una sottoclasse definisce `constructor`, deve chiamare `super()` prima di usare `this`.
 
 ```js
-class Dog extends Animal {
-  constructor(name, breed) {
-    super(name);
-    this.breed = breed;
+class Report extends Document {
+  constructor(title, period) {
+    super(title);
+    this.period = period;
   }
 }
 ```
 
-`super(name)` chiama il costruttore della classe base.
+`super(title)` esegue il costruttore della base per inizializzare l'istanza derivata. Puoi eseguire istruzioni che non usano `this` prima di `super`, ma leggere `this` prima produce `ReferenceError`. Il percorso ordinario deve chiamare `super` una sola volta.
+
+Esiste un caso avanzato in cui un costruttore derivato restituisce esplicitamente un altro oggetto senza usare `this`: non e il modello adottato qui. Un ritorno di un primitivo diverso da `undefined` dalla sottoclasse genera `TypeError`.
 
 ---
 ### `super` nei metodi
 `super` puo richiamare metodi della classe base.
 
 ```js
-class Dog extends Animal {
-  eat() {
-    return `${super.eat()} con entusiasmo`;
+class Report extends Document {
+  describe() {
+    return `${super.describe()} (report)`;
   }
 }
 ```
 
-Questo consente di estendere un comportamento invece di riscriverlo completamente.
+Questo consente di estendere un comportamento invece di riscriverlo completamente. `super.describe()` cerca il metodo sulla base ma lo chiama con il `this` corrente, cioe l'istanza derivata: non crea un secondo oggetto "genitore".
+
+`super` non legge i campi di istanza della base come se fossero sul prototipo:
+
+```js
+class BaseView {
+  label = "base";
+  readLabel() { return this.label; }
+}
+
+class DetailView extends BaseView {
+  label = "detail";
+  inspect() {
+    return [super.readLabel(), super.label];
+  }
+}
+
+console.log(new DetailView().inspect()); // ["detail", undefined]
+```
+
+La destinazione di ricerca di `super` dipende da dove il metodo e definito; il receiver resta quello della chiamata. Nei metodi statici `super.method()` cerca invece nella catena dei costruttori.
 
 ---
 ### Override
 Una sottoclasse puo ridefinire un metodo della classe base.
 
 ```js
-class Cat extends Animal {
-  eat() {
-    return `${this.name} mangia con calma`;
+class Memo extends Document {
+  describe() {
+    return `Promemoria: ${this.title}`;
   }
 }
 ```
 
 Quando il metodo viene chiamato sull'istanza, JavaScript usa la versione piu vicina nella prototype chain.
 
+Rispetta il contratto della base: cambiare arbitrariamente tipo del risultato, significato dei parametri o errori puo rompere chi usa la sottoclasse come un `Document`. Evita chiamate a metodi sovrascrivibili dal costruttore base: i campi della derivata non sono ancora inizializzati durante quel costruttore.
+
 ---
 ### Prototype chain
 ```js
-console.log(Object.getPrototypeOf(Dog.prototype) === Animal.prototype); // true
+console.log(Object.getPrototypeOf(Report.prototype) === Document.prototype); // true
+console.log(Object.getPrototypeOf(Report) === Document); // true
 ```
 
 La catena e:
 
 - istanza;
-- `Dog.prototype`;
-- `Animal.prototype`;
+- `Report.prototype`;
+- `Document.prototype`;
 - `Object.prototype`;
 - `null`.
+
+La seconda uguaglianza riguarda invece la catena dei costruttori, che rende raggiungibili i membri statici pubblici della base. Un campo statico oggetto ereditato non viene clonato per sottoclasse; i campi statici privati non sono accessibili tramite il receiver della derivata.
 
 ---
 ### Composizione vs ereditarieta
@@ -134,15 +177,27 @@ function createLogger(target) {
     },
   };
 }
+
+function createJob(name, logger) {
+  return {
+    run() {
+      logger.log(`Esecuzione: ${name}`);
+      return name;
+    },
+  };
+}
+
+const job = createJob("backup", createLogger("jobs"));
+job.run(); // stampa "[jobs] Esecuzione: backup"
 ```
 
-Nel dubbio, composizione tende a essere piu flessibile.
+Il job **ha un** logger, non **e un** logger. Il contratto del collaboratore e un metodo `log(message)`; puoi fornirne uno diverso nei test senza una nuova sottoclasse del job.
 
 ---
 
 ## API / Sintassi
 
-Sintassi base:
+Sintassi base schematica: presuppone una classe `Parent` con costruttore e metodo compatibili.
 
 ```js
 class Child extends Parent {
@@ -172,22 +227,32 @@ Specializzare una classe base:
 
 ```js
 class ApiError extends Error {
-  constructor(message, status) {
-    super(message);
+  constructor(message, status, options = {}) {
+    super(message, options);
+    if (!Number.isInteger(status) || status < 400 || status > 599) {
+      throw new RangeError("Stato HTTP di errore richiesto");
+    }
     this.name = "ApiError";
     this.status = status;
   }
 }
 
 class NotFoundError extends ApiError {
-  constructor(message = "Risorsa non trovata") {
-    super(message, 404);
+  constructor(message = "Risorsa non trovata", options = {}) {
+    super(message, 404, options);
     this.name = "NotFoundError";
   }
 }
+
+const cause = new Error("Record assente");
+const error = new NotFoundError("Utente non trovato", { cause });
+console.log(error instanceof ApiError); // true
+console.log(error instanceof Error); // true
+console.log(error.status); // 404
+console.log(error.cause === cause); // true
 ```
 
-Qui `NotFoundError` e un tipo specifico di `ApiError`, quindi l'ereditarieta ha un significato chiaro.
+Qui `NotFoundError` e un tipo specifico di `ApiError`, quindi l'ereditarieta ha un significato chiaro. Il contratto di `ApiError` accetta stati HTTP 400-599. L'opzione `cause` conserva l'errore originale senza sostituirne la provenienza; `name` rende riconoscibile il tipo nei messaggi, ma non sostituisce un controllo affidabile dei dati ricevuti dall'esterno.
 
 ## Varianti
 
@@ -199,16 +264,23 @@ Inoltre i private fields della classe base non sono accessibili direttamente dal
 ```js
 class Base {
   #value = 1;
+
+  getValue() {
+    return this.#value;
+  }
 }
 
 class Child extends Base {
   read() {
-    // this.#value non e valido
+    // this.#value qui sarebbe SyntaxError: nome privato della base
+    return this.getValue();
   }
 }
+
+console.log(new Child().read()); // 1
 ```
 
-Se serve accesso controllato, esponi metodi pubblici o usa convenzioni esplicite.
+La parte privata della base e installata anche sull'istanza derivata, e i metodi della base possono usarla. La sottoclasse non puo nominare direttamente quel campo; dichiarare un altro `#value` crea un nome privato distinto. I metodi esposti come sopra sono pubblici anche per altri chiamanti: JavaScript non ha `protected` nativo.
 
 ---
 
@@ -239,3 +311,15 @@ Se serve accesso controllato, esponi metodi pubblici o usa convenzioni esplicite
 - [[Programmazione/JavaScript/Pagine/Prototypes|Prototypes]]
 - [[Programmazione/JavaScript/Pagine/Incapsulamento|Incapsulamento]]
 - [[Programmazione/JavaScript/Pagine/Private Fields e Static Blocks|Private Fields e Static Blocks]]
+
+
+## Fonti
+
+- [MDN: extends e costruttori derivati](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Classes/extends).
+- [MDN: super e receiver](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Operators/super).
+- [MDN: Error e opzione cause](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Error/Error).
+- [MDN: elementi privati](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Classes/Private_elements).
+
+## Navigazione
+
+- [[Programmazione/JavaScript/Indice JavaScript|Indice JavaScript]]

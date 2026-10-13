@@ -3,9 +3,9 @@ date: 2026-06-02
 area: Programmazione
 topic: JavaScript
 type: technical-note
-status: "non revisionato"
+status: non revisionato
 publish: true
-difficulty: beginner
+difficulty: base
 tags:
   - javascript
   - basics
@@ -15,9 +15,10 @@ aliases:
   - let const var
 prerequisites: []
 related:
-  - Tipi di Dati
-  - Scope
-  - Hoisting
+  - "[[Programmazione/JavaScript/Pagine/Tipi di Dati]]"
+  - "[[Programmazione/JavaScript/Pagine/Scope]]"
+  - "[[Programmazione/JavaScript/Pagine/Hoisting]]"
+title: Variabili
 ---
 
 # Variabili
@@ -34,9 +35,8 @@ La scelta tra `const`, `let` e `var` influenza scope, riassegnazione e comportam
 
 ## Quando usarlo
 
-### Quando usarle
 - Usa `const` quando il binding non deve essere riassegnato.
-- Usa `let` quando il valore deve cambiare nel tempo.
+- Usa `let` quando devi riassegnare il binding; modificare una proprieta di un oggetto non richiede `let`.
 - Evita `var` nel codice nuovo.
 - Usa nomi descrittivi per rendere chiaro cosa contiene una variabile.
 
@@ -58,6 +58,8 @@ La stessa variabile puo contenere valori di tipo diverso, anche se abusare di qu
 ---
 ### const
 `const` crea un binding non riassegnabile.
+
+Una normale dichiarazione `const` richiede subito un inizializzatore: `const total;` e un errore di sintassi. In `for (const item of items)`, invece, e il ciclo a inizializzare un nuovo binding a ogni iterazione.
 
 ```js
 const name = "Luca";
@@ -97,7 +99,7 @@ E utile per contatori, accumulatori, variabili aggiornate in un algoritmo o stat
 
 ---
 ### var
-`var` ha scope di funzione, non scope di blocco.
+Dentro una funzione, `var` ha scope di funzione, non del normale blocco `if` o `for` che lo contiene.
 
 ```js
 function example() {
@@ -124,6 +126,8 @@ function example() {
 ---
 ### Scope
 Lo scope definisce dove una variabile e visibile.
+
+Al livello superiore di uno script classico del browser, `var` crea normalmente una proprieta dell'oggetto globale; `let` e `const` non creano proprieta di `globalThis`. In un modulo ES le dichiarazioni al livello superiore restano nel modulo. Anche Node.js CommonJS avvolge ogni file in una funzione: non dedurre lo scope globale dal solo fatto che una dichiarazione sia fuori da una funzione scritta da te.
 
 ```js
 const globalValue = "globale";
@@ -161,12 +165,14 @@ console.log(count); // undefined
 var count = 1;
 ```
 
-Con `let` e `const`, la variabile esiste nello scope ma non puo essere usata prima della dichiarazione. Questo intervallo si chiama **Temporal Dead Zone**.
+Con `let` e `const`, il binding esiste nello scope ma non puo essere letto finche la sua inizializzazione non e terminata. Questo intervallo si chiama **Temporal Dead Zone** (TDZ): dipende dall'ordine di esecuzione, non solo dalla posizione delle righe.
 
 ```js
 // console.log(count); // ReferenceError
 let count = 1;
 ```
+
+La TDZ vale anche durante l'inizializzatore: `let count = count + 1` legge il nuovo `count` prima che sia inizializzato, quindi genera `ReferenceError`. Anche `typeof count` genera errore se quel binding e nella TDZ. Gli esempi con nomi ripetuti in questa nota sono indipendenti: non vanno concatenati nello stesso scope.
 
 ---
 ### Tabella comparativa
@@ -174,7 +180,7 @@ let count = 1;
 | --- | --- | --- | --- | --- |
 | `const` | Blocco | No | No | Default nel codice moderno |
 | `let` | Blocco | Si | No | Valori che cambiano |
-| `var` | Funzione | Si | Si | Solo codice legacy |
+| `var` | Funzione; contesto globale/modulo al top level | Si | Si, salvo conflitti con dichiarazioni lessicali | Soprattutto codice legacy |
 
 ---
 
@@ -209,7 +215,11 @@ user.name = "Marco";
 Uso pratico di `const` e `let`:
 
 ```js
-const users = await loadUsers();
+const users = [
+  { name: "Ada", active: true },
+  { name: "Linus", active: false },
+  { name: "Grace", active: true },
+];
 let activeCount = 0;
 
 for (const user of users) {
@@ -217,9 +227,13 @@ for (const user of users) {
     activeCount += 1;
   }
 }
+
+console.log(activeCount); // 2
 ```
 
 `users` non viene riassegnato, quindi e `const`. `activeCount` cambia durante il ciclo, quindi e `let`.
+
+Anche `user` puo essere `const`: ogni iterazione ha un nuovo binding. Lo snippet usa dati locali ed e eseguibile come script, senza API esterne o `await` al livello superiore.
 
 ## Varianti
 
@@ -252,8 +266,18 @@ for (const user of users) {
 
 ## Collegamenti
 
-- [[Tipi di Dati]]
-- [[Scope]]
-- [[Hoisting]]
+- [[Programmazione/JavaScript/Pagine/Tipi di Dati|Tipi di Dati]]
+- [[Programmazione/JavaScript/Pagine/Scope|Scope]]
+- [[Programmazione/JavaScript/Pagine/Hoisting|Hoisting]]
 - [[Programmazione/JavaScript/Pagine/Strict Mode|Strict Mode]]
-- [[Immutabilita e Copia degli Oggetti]]
+- [[Programmazione/JavaScript/Pagine/Immutabilita e Copia degli Oggetti|Immutabilita e Copia degli Oggetti]]
+
+## Fonti
+
+- [MDN - let e Temporal Dead Zone](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Statements/let)
+- [MDN - const](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Statements/const)
+- [MDN - var e scope](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Statements/var)
+
+## Navigazione
+
+- [[Programmazione/JavaScript/Indice JavaScript|Indice JavaScript]]

@@ -3,13 +3,26 @@ date: 2026-07-07
 area: Programmazione
 topic: GitHub
 type: operational-note
-status: "non revisionato"
+status: non revisionato
 publish: true
 difficulty: intermedio
-tags: [github, release, checklist, versioning]
-aliases: [Checklist release GitHub, Checklist rilascio GitHub]
-prerequisites: [Gestione release su GitHub, Tag, versioni e changelog]
-related: [Release automation GitHub Actions, Protected tags, Deploy con GitHub Actions]
+tags:
+  - github
+  - release
+  - checklist
+  - versioning
+aliases:
+  - Checklist release GitHub
+  - Checklist rilascio GitHub
+prerequisites:
+  - "[[Programmazione/GitHub/Pagine/Gestione release su GitHub]]"
+  - "[[Programmazione/GitHub/Pagine/Tag, versioni e changelog]]"
+  - "[[Programmazione/GitHub/Pagine/Tag, versioni e changelog]]"
+related:
+  - "[[Programmazione/GitHub/Pagine/Release automation GitHub Actions]]"
+  - "[[Programmazione/GitHub/Pagine/Protected tags]]"
+  - "[[Programmazione/GitHub/Pagine/Deploy con GitHub Actions]]"
+title: Checklist release GitHub
 ---
 
 # Checklist release GitHub
@@ -94,13 +107,13 @@ gh release create v1.2.0 --title "v1.2.0" --notes-file CHANGELOG.md
 
 ## Collegamenti
 
-- [[Programmazione/GitHub/Indice GitHub]]
-- [[Gestione release su GitHub]]
-- [[Tag, versioni e changelog]]
-- [[Release automation GitHub Actions]]
-- [[Protected tags]]
-- [[Deploy con GitHub Actions]]
-- [[GitHub Packages con Actions]]
+- [[Programmazione/GitHub/Indice GitHub|Indice GitHub]]
+- [[Programmazione/GitHub/Pagine/Gestione release su GitHub|Gestione release su GitHub]]
+- [[Programmazione/GitHub/Pagine/Tag, versioni e changelog|Tag, versioni e changelog]]
+- [[Programmazione/GitHub/Pagine/Release automation GitHub Actions|Release automation GitHub Actions]]
+- [[Programmazione/GitHub/Pagine/Protected tags|Protected tags]]
+- [[Programmazione/GitHub/Pagine/Deploy con GitHub Actions|Deploy con GitHub Actions]]
+- [[Programmazione/GitHub/Pagine/GitHub Packages con Actions|GitHub Packages con Actions]]
 
 ## Fonti
 

@@ -3,13 +3,22 @@ date: 2026-06-22
 area: Programmazione
 topic: TypeScript
 type: technical-note
-status: "non revisionato"
+status: non revisionato
 publish: true
 difficulty: intermedio
-tags: [typescript, type-guards, runtime-validation]
-aliases: [Runtime type guards]
-prerequisites: [Type Guards, Validazione runtime e tipi statici]
-related: [Type predicates, Assertion functions]
+tags:
+  - typescript
+  - type-guards
+  - runtime-validation
+aliases:
+  - Runtime type guards
+prerequisites:
+  - "[[Programmazione/TypeScript/Pagine/Type Guards]]"
+  - "[[Programmazione/TypeScript/Pagine/Validazione runtime e tipi statici]]"
+related:
+  - "[[Programmazione/TypeScript/Pagine/Type predicates]]"
+  - "[[Programmazione/TypeScript/Pagine/Assertion functions]]"
+title: Type guards runtime
 ---
 
 # Type guards runtime
@@ -85,7 +94,12 @@ function isProduct(value: unknown): value is Product {
 
 ## Collegamenti
 
-- [[Type Guards]]
-- [[Type predicates]]
-- [[Assertion functions]]
-- [[Schema validation con Zod]]
+- [[Programmazione/TypeScript/Pagine/Type Guards|Type Guards]]
+- [[Programmazione/TypeScript/Pagine/Type predicates|Type predicates]]
+- [[Programmazione/TypeScript/Pagine/Assertion functions|Assertion functions]]
+- [[Programmazione/TypeScript/Pagine/Schema validation con Zod|Schema validation con Zod]]
+
+
+## Navigazione
+
+- [[Programmazione/TypeScript/Indice TypeScript|Indice TypeScript]]

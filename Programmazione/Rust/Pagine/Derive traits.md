@@ -3,7 +3,7 @@ date: 2026-05-21
 area: Programmazione
 topic: Rust
 type: technical-note
-status: "non revisionato"
+status: non revisionato
 publish: true
 difficulty: intermedio
 tags:
@@ -11,8 +11,8 @@ tags:
   - rust
   - astrazione-e-generici
 aliases:
-  - "Derive Rust"
-  - "Trait derivati"
+  - Derive Rust
+  - Trait derivati
 prerequisites:
   - "[[Programmazione/Rust/Pagine/Traits]]"
   - "[[Programmazione/Rust/Pagine/Structs]]"
@@ -21,6 +21,7 @@ related:
   - "[[Programmazione/Rust/Pagine/Derive macros]]"
   - "[[Programmazione/Rust/Pagine/Copy e Clone]]"
   - "[[Programmazione/Rust/Pagine/Display e Debug]]"
+title: Derive traits
 ---
 
 # Derive traits
@@ -131,3 +132,8 @@ fn main() {
 - [[Programmazione/Rust/Pagine/Copy e Clone|Copy e Clone]]
 - [[Programmazione/Rust/Pagine/Display e Debug|Display e Debug]]
 - [[Programmazione/Rust/Pagine/HashMap e HashSet|HashMap e HashSet]]
+
+
+## Navigazione
+
+- [[Programmazione/Rust/Indice Rust|Indice Rust]]

@@ -3,13 +3,26 @@ date: 2026-06-02
 area: Programmazione
 topic: JavaScript
 type: technical-note
-status: "non revisionato"
+status: non revisionato
 publish: true
-difficulty: beginner
-tags: [javascript, arrays, methods, functional-programming, iteration]
-aliases: [Metodi Array, Array methods JS]
-prerequisites: [Cicli, Funzioni]
-related: [Cicli, Functional Programming, Promise avanzate]
+difficulty: base
+tags:
+  - javascript
+  - arrays
+  - methods
+  - functional-programming
+  - iteration
+aliases:
+  - Metodi Array
+  - Array methods JS
+prerequisites:
+  - "[[Programmazione/JavaScript/Pagine/Cicli]]"
+  - "[[Programmazione/JavaScript/Pagine/Funzioni]]"
+related:
+  - "[[Programmazione/JavaScript/Pagine/Cicli]]"
+  - "[[Programmazione/JavaScript/Pagine/Functional Programming]]"
+  - "[[Programmazione/JavaScript/Pagine/Promise avanzate]]"
+title: Array Methods
 ---
 
 # Array Methods
@@ -24,7 +37,6 @@ Molti metodi restituiscono un nuovo array, altri modificano l'array originale. Q
 
 ## Quando usarlo
 
-### Quando usarli
 - Usa `map()` per trasformare ogni elemento.
 - Usa `filter()` per tenere solo alcuni elementi.
 - Usa `find()` per cercare il primo elemento che soddisfa una condizione.
@@ -46,7 +58,22 @@ const doubled = numbers.map(number => number * 2);
 console.log(doubled); // [2, 4, 6]
 ```
 
-Non modifica l'array originale.
+`map()` non modifica direttamente l'array originale, ma la callback puo farlo. Un nuovo array non significa copia profonda degli oggetti contenuti.
+
+```js
+const source = [{ name: "Ada", active: true }];
+const selected = source.filter(user => user.active);
+selected[0].name = "Grace";
+console.log(source[0].name); // "Grace": stesso oggetto
+```
+
+Le callback ricevono anche indice e array. Passare una funzione con una firma diversa puo cambiare il risultato:
+
+```js
+const values = ["10", "10", "10"];
+console.log(values.map(parseInt)); // [10, NaN, 2]: l'indice diventa la base
+console.log(values.map(value => parseInt(value, 10))); // [10, 10, 10]
+```
 
 ---
 ### filter
@@ -78,6 +105,8 @@ Se non trova nulla, restituisce `undefined`.
 
 `findIndex()` restituisce l'indice oppure `-1`.
 
+Non usare quell'indice in `splice()` senza controllarlo: `splice(-1, 1)` eliminerebbe l'ultimo elemento. Anche `find()` puo trovare un valore `undefined`; per distinguere quel caso dall'assenza usa un indice.
+
 ```js
 const index = users.findIndex(user => user.id === 2);
 ```
@@ -98,6 +127,21 @@ console.log(numbers.some(number => number > 2)); // true
 console.log(numbers.every(number => number > 0)); // true
 ```
 
+Entrambi interrompono la ricerca appena conoscono il risultato. Su `[]`, `some()` restituisce `false` ed `every()` restituisce `true`: se serve almeno un elemento, verifica anche `length > 0`.
+
+### Array sparsi
+
+Un buco non equivale sempre a un elemento con valore `undefined`:
+
+```js
+const sparse = new Array(2);
+console.log(sparse.every(Number.isFinite)); // true: nessun elemento visitato
+console.log([...sparse].every(Number.isFinite)); // false: due undefined
+console.log(sparse.map(() => 1)); // due buchi, non [1, 1]
+```
+
+`map`, `filter`, `forEach`, `some`, `every` e `reduce` saltano gli indici assenti. `find` e `findIndex` li visitano come `undefined`. Evita array sparsi nei dati applicativi; consulta il comportamento del singolo metodo se devi gestirli.
+
 ---
 ### reduce
 `reduce()` accumula un risultato.
@@ -112,6 +156,8 @@ const total = prices.reduce((accumulator, price) => {
 console.log(total); // 60
 ```
 
+Il valore iniziale determina anche il risultato dell'array vuoto. Senza valore iniziale, `[].reduce(...)` genera `TypeError`; non assumere che il risultato sia automaticamente `0`.
+
 Esempio con oggetto accumulatore:
 
 ```js
@@ -121,11 +167,17 @@ const users = [
   { role: "admin" },
 ];
 
-const countByRole = users.reduce((acc, user) => {
-  acc[user.role] = (acc[user.role] ?? 0) + 1;
-  return acc;
-}, {});
+function countUsersByRole(users) {
+  return users.reduce((acc, user) => {
+    acc[user.role] = (acc[user.role] ?? 0) + 1;
+    return acc;
+  }, Object.create(null));
+}
+
+const countByRole = countUsersByRole(users);
 ```
+
+L'accumulatore senza prototipo evita collisioni tra ruoli come `constructor` o `__proto__` e proprieta ereditate. L'esempio presume `role` stringa gia validata; per un dizionario piu generale usa [[Programmazione/JavaScript/Pagine/Map e Set|Map]].
 
 ---
 ### forEach
@@ -157,6 +209,8 @@ console.log(roles.includes("admin")); // true
 
 Per oggetti, `includes()` controlla il riferimento, non il contenuto.
 
+Per i primitivi usa SameValueZero: trova anche `NaN` e considera `0` e `-0` equivalenti.
+
 ```js
 console.log([{ id: 1 }].includes({ id: 1 })); // false
 ```
@@ -173,7 +227,7 @@ numbers.sort((a, b) => a - b);
 console.log(numbers); // [2, 10, 30]
 ```
 
-Senza comparatore, converte i valori in stringhe.
+Senza comparatore, confronta le rappresentazioni testuali secondo le unita UTF-16: non e un ordinamento numerico o linguistico. Non sostituisce con stringhe gli elementi dell'array.
 
 ```js
 const numbers = [10, 2, 30];
@@ -189,6 +243,29 @@ Per evitare mutazione, copia prima.
 const sorted = [...numbers].sort((a, b) => a - b);
 ```
 
+Il comparatore restituisce un numero negativo, zero o positivo; `(a, b) => a > b` non e un comparatore corretto. Deve restare coerente e senza effetti collaterali. Nei runtime che lo supportano, `numbers.toSorted((a, b) => a - b)` restituisce direttamente una nuova copia ordinata. L'ordinamento e stabile per elementi considerati equivalenti.
+
+### slice, splice e fill
+
+```js
+const letters = ["A", "B", "C", "D"];
+const part = letters.slice(1, 3); // ["B", "C"], fine esclusa, originale invariato
+const removed = letters.splice(1, 2, "X"); // rimuove B e C, inserisce X
+console.log(removed, letters); // ["B", "C"], ["A", "X", "D"]
+```
+
+`fill()` assegna lo stesso valore in ogni posizione, anche se e un oggetto:
+
+```js
+const shared = new Array(2).fill({ done: false });
+shared[0].done = true;
+console.log(shared[1].done); // true
+
+const independent = Array.from({ length: 2 }, () => ({ done: false }));
+independent[0].done = true;
+console.log(independent[1].done); // false
+```
+
 ---
 ### Metodi che mutano
 Alcuni metodi modificano l'array originale:
@@ -201,6 +278,7 @@ Alcuni metodi modificano l'array originale:
 - `sort()`;
 - `reverse()`;
 - `fill()`.
+- `copyWithin()`.
 
 Altri restituiscono nuovi array o valori:
 
@@ -212,6 +290,7 @@ Altri restituiscono nuovi array o valori:
 - `toSorted()`;
 - `toReversed()`;
 - `toSpliced()`.
+- `with()`.
 
 ---
 ### Async e map
@@ -231,11 +310,15 @@ const users = await Promise.all(
 );
 ```
 
+Questi frammenti presuppongono `ids` e `fetchUser` definiti e un contesto che consenta `await`. `Promise.all` conserva l'ordine dei risultati, ma non limita la concorrenza e non annulla le altre operazioni quando una fallisce.
+
+Non usare callback `async` con `filter`, `some`, `every` o `find` per decidere in base a un risultato remoto: una Promise e truthy, anche quando risolvera a `false`. Per un filtro asincrono, attendi prima i risultati, poi applica un filtro sincrono.
+
 ---
 
 ## API / Sintassi
 
-Metodi frequenti:
+Metodi frequenti: `array`, callback e valori sono segnaposto, non un programma completo.
 
 ```js
 array.map(callback);
@@ -264,14 +347,23 @@ Alcuni metodi restituiscono nuovi array, altri mutano l'array originale. Control
 Trasformare una lista utenti in nomi ordinati:
 
 ```js
+const users = [
+  { name: " Sara ", active: true },
+  { name: "Ada", active: true },
+  { name: "Marco", active: false },
+  { name: "   ", active: true },
+];
+
 const names = users
   .filter((user) => user.active)
   .map((user) => user.name.trim())
   .filter((name) => name !== "")
-  .sort((a, b) => a.localeCompare(b));
+  .sort((a, b) => a.localeCompare(b, "it"));
+
+console.log(names); // ["Ada", "Sara"]
 ```
 
-La catena e leggibile se ogni passaggio ha uno scopo chiaro. Se la logica cresce, estrai funzioni con nome.
+Qui `active` e booleano e `name` e stringa: dati esterni vanno validati prima. `sort` modifica soltanto l'array intermedio di nomi, non `users`. La catena e leggibile se ogni passaggio ha uno scopo chiaro; se la logica cresce, estrai funzioni con nome.
 
 ## Varianti
 
@@ -308,6 +400,18 @@ La catena e leggibile se ogni passaggio ha uno scopo chiaro. Se la logica cresce
 
 - [[Programmazione/JavaScript/Pagine/Cicli|Cicli]]
 - [[Programmazione/JavaScript/Pagine/Funzioni|Funzioni]]
-- [[Promise avanzate]]
-- [[Functional Programming]]
-- [[Immutabilita e Copia degli Oggetti]]
+- [[Programmazione/JavaScript/Pagine/Promise avanzate|Promise avanzate]]
+- [[Programmazione/JavaScript/Pagine/Functional Programming|Functional Programming]]
+- [[Programmazione/JavaScript/Pagine/Immutabilita e Copia degli Oggetti|Immutabilita e Copia degli Oggetti]]
+
+
+## Fonti
+
+- [MDN - Array, mutazione e indici assenti](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array)
+- [MDN - map e firma della callback](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array/map)
+- [MDN - sort e comparatori](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array/sort)
+- [MDN - Metodi delle collezioni indicizzate](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Guide/Indexed_collections)
+
+## Navigazione
+
+- [[Programmazione/JavaScript/Indice JavaScript|Indice JavaScript]]

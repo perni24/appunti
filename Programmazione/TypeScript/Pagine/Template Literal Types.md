@@ -3,13 +3,22 @@ date: 2026-06-22
 area: Programmazione
 topic: TypeScript
 type: technical-note
-status: "non revisionato"
+status: non revisionato
 publish: true
 difficulty: avanzato
-tags: [typescript, template-literal-types, string-types]
-aliases: [Template literal type]
-prerequisites: [Union e Intersection Types, Literal Types]
-related: [Mapped Types, Keyof e typeof]
+tags:
+  - typescript
+  - template-literal-types
+  - string-types
+aliases:
+  - Template literal type
+prerequisites:
+  - "[[Programmazione/TypeScript/Pagine/Union e Intersection Types]]"
+  - "[[Programmazione/TypeScript/Pagine/Enums e Literal Types]]"
+related:
+  - "[[Programmazione/TypeScript/Pagine/Mapped Types]]"
+  - "[[Programmazione/TypeScript/Pagine/Keyof e typeof]]"
+title: Template Literal Types
 ---
 
 # Template Literal Types
@@ -88,6 +97,11 @@ Il tipo accetta solo eventi derivati dalle chiavi di `User`.
 
 ## Collegamenti
 
-- [[Keyof e typeof]]
-- [[Mapped Types]]
-- [[Union e Intersection Types]]
+- [[Programmazione/TypeScript/Pagine/Keyof e typeof|Keyof e typeof]]
+- [[Programmazione/TypeScript/Pagine/Mapped Types|Mapped Types]]
+- [[Programmazione/TypeScript/Pagine/Union e Intersection Types|Union e Intersection Types]]
+
+
+## Navigazione
+
+- [[Programmazione/TypeScript/Indice TypeScript|Indice TypeScript]]

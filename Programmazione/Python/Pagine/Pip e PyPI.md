@@ -3,13 +3,20 @@ date: 2026-06-03
 area: Programmazione
 topic: Python
 type: technical-note
-status: "non revisionato"
+status: non revisionato
 publish: true
-difficulty: beginner
-tags: [python, programming, packaging]
-aliases: [Pip, PyPI, Package manager Python]
+difficulty: base
+tags:
+  - python
+  - programming
+  - packaging
+aliases:
+  - Pip
+  - PyPI
+  - Package manager Python
 prerequisites: []
 related: []
+title: Pip e PyPI
 ---
 
 # Pip e PyPI
@@ -150,8 +157,8 @@ python -m pip install -r requirements.txt
 
 ## Collegamenti
 
-- [[Programmazione/Python/Indice python|Indice Python]]
-- [[Ambienti Virtuali]]
-- [[Creazione di Package]]
-- [[uv pipx e poetry]]
-- [[Standard Library]]
+- [[Programmazione/Python/Indice Python|Indice Python]]
+- [[Programmazione/Python/Pagine/Ambienti Virtuali|Ambienti Virtuali]]
+- [[Programmazione/Python/Pagine/Creazione di Package|Creazione di Package]]
+- [[Programmazione/Python/Pagine/uv pipx e poetry|uv pipx e poetry]]
+- [[Programmazione/Python/Pagine/Standard Library|Standard Library]]

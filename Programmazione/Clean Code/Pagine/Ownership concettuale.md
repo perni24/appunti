@@ -3,13 +3,24 @@ date: 2026-07-09
 area: Programmazione
 topic: Clean Code
 type: theory-note
-status: "non revisionato"
+status: non revisionato
 publish: true
 difficulty: avanzato
-tags: [clean-code, ownership, responsabilita]
-aliases: [Ownership concettuale, Conceptual ownership]
-prerequisites: [Coesione e accoppiamento, Gestione dello stato]
-related: [Lifecycle degli oggetti, Gestione delle risorse, Confini tra moduli]
+tags:
+  - clean-code
+  - ownership
+  - responsabilita
+aliases:
+  - Ownership concettuale
+  - Conceptual ownership
+prerequisites:
+  - "[[Programmazione/Clean Code/Pagine/Coesione e accoppiamento]]"
+  - "[[Programmazione/Clean Code/Pagine/Gestione dello stato]]"
+related:
+  - "[[Programmazione/Clean Code/Pagine/Lifecycle degli oggetti]]"
+  - "[[Programmazione/Clean Code/Pagine/Gestione delle risorse]]"
+  - "[[Programmazione/Clean Code/Pagine/Confini tra moduli]]"
+title: Ownership concettuale
 ---
 
 # Ownership concettuale
@@ -83,12 +94,12 @@ La regola resta nel posto responsabile.
 
 ## Collegamenti
 
-- [[Programmazione/Clean Code/Indice Clean Code]]
-- [[Coesione e accoppiamento]]
-- [[Confini tra moduli]]
-- [[Gestione dello stato]]
-- [[Lifecycle degli oggetti]]
-- [[Invarianti interne]]
+- [[Programmazione/Clean Code/Indice Clean Code|Indice Clean Code]]
+- [[Programmazione/Clean Code/Pagine/Coesione e accoppiamento|Coesione e accoppiamento]]
+- [[Programmazione/Clean Code/Pagine/Confini tra moduli|Confini tra moduli]]
+- [[Programmazione/Clean Code/Pagine/Gestione dello stato|Gestione dello stato]]
+- [[Programmazione/Clean Code/Pagine/Lifecycle degli oggetti|Lifecycle degli oggetti]]
+- [[Programmazione/Clean Code/Pagine/Invarianti interne|Invarianti interne]]
 
 ## Fonti
 

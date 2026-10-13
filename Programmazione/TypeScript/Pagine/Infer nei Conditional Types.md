@@ -3,13 +3,23 @@ date: 2026-06-22
 area: Programmazione
 topic: TypeScript
 type: technical-note
-status: "non revisionato"
+status: non revisionato
 publish: true
 difficulty: avanzato
-tags: [typescript, infer, conditional-types, type-system]
-aliases: [infer TypeScript]
-prerequisites: [Conditional Types, Generics avanzati]
-related: [Utility Types, Recursive types]
+tags:
+  - typescript
+  - infer
+  - conditional-types
+  - type-system
+aliases:
+  - infer TypeScript
+prerequisites:
+  - "[[Programmazione/TypeScript/Pagine/Conditional Types]]"
+  - "[[Programmazione/TypeScript/Pagine/Generics avanzati]]"
+related:
+  - "[[Programmazione/TypeScript/Pagine/Utility Types]]"
+  - "[[Programmazione/TypeScript/Pagine/Recursive types]]"
+title: Infer nei Conditional Types
 ---
 
 # Infer nei Conditional Types
@@ -82,6 +92,11 @@ type User = Return<typeof createUser>;
 
 ## Collegamenti
 
-- [[Conditional Types]]
-- [[Utility Types]]
-- [[Recursive types]]
+- [[Programmazione/TypeScript/Pagine/Conditional Types|Conditional Types]]
+- [[Programmazione/TypeScript/Pagine/Utility Types|Utility Types]]
+- [[Programmazione/TypeScript/Pagine/Recursive types|Recursive types]]
+
+
+## Navigazione
+
+- [[Programmazione/TypeScript/Indice TypeScript|Indice TypeScript]]

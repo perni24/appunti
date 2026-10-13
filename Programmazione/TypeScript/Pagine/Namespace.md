@@ -3,13 +3,23 @@ date: 2026-06-22
 area: Programmazione
 topic: TypeScript
 type: technical-note
-status: "non revisionato"
+status: non revisionato
 publish: true
 difficulty: avanzato
-tags: [typescript, namespace, modules, legacy]
-aliases: [Namespaces TypeScript]
-prerequisites: [Moduli ES e CommonJS, Declaration Merging]
-related: [Module augmentation, Dichiarazioni e file d.ts]
+tags:
+  - typescript
+  - namespace
+  - modules
+  - legacy
+aliases:
+  - Namespaces TypeScript
+prerequisites:
+  - "[[Programmazione/TypeScript/Pagine/Moduli ES e CommonJS]]"
+  - "[[Programmazione/TypeScript/Pagine/Declaration Merging]]"
+related:
+  - "[[Programmazione/TypeScript/Pagine/Module augmentation]]"
+  - "[[Programmazione/TypeScript/Pagine/Dichiarazioni e file d.ts]]"
+title: Namespace
 ---
 
 # Namespace
@@ -84,6 +94,11 @@ Questo mostra declaration merging tra funzione e namespace.
 
 ## Collegamenti
 
-- [[Moduli ES e CommonJS]]
-- [[Declaration Merging]]
-- [[Dichiarazioni e file d.ts]]
+- [[Programmazione/TypeScript/Pagine/Moduli ES e CommonJS|Moduli ES e CommonJS]]
+- [[Programmazione/TypeScript/Pagine/Declaration Merging|Declaration Merging]]
+- [[Programmazione/TypeScript/Pagine/Dichiarazioni e file d.ts|Dichiarazioni e file d.ts]]
+
+
+## Navigazione
+
+- [[Programmazione/TypeScript/Indice TypeScript|Indice TypeScript]]

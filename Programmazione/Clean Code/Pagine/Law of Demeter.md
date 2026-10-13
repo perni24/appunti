@@ -3,13 +3,23 @@ date: 2026-07-09
 area: Programmazione
 topic: Clean Code
 type: theory-note
-status: "non revisionato"
+status: non revisionato
 publish: true
 difficulty: intermedio
-tags: [clean-code, oop, accoppiamento]
-aliases: [Law of Demeter, Legge di Demetra]
-prerequisites: [Coesione e accoppiamento]
-related: [Tell Don't Ask, Incapsulamento, Confini tra moduli]
+tags:
+  - clean-code
+  - oop
+  - accoppiamento
+aliases:
+  - Law of Demeter
+  - Legge di Demetra
+prerequisites:
+  - "[[Programmazione/Clean Code/Pagine/Coesione e accoppiamento]]"
+related:
+  - "[[Programmazione/Clean Code/Pagine/Tell Don't Ask]]"
+  - "[[Programmazione/Clean Code/Pagine/Incapsulamento]]"
+  - "[[Programmazione/Clean Code/Pagine/Confini tra moduli]]"
+title: Law of Demeter
 ---
 
 # Law of Demeter
@@ -87,11 +97,11 @@ Il chiamante non conosce piu la struttura interna dell'ordine.
 
 ## Collegamenti
 
-- [[Programmazione/Clean Code/Indice Clean Code]]
-- [[Tell Don't Ask]]
+- [[Programmazione/Clean Code/Indice Clean Code|Indice Clean Code]]
+- [[Programmazione/Clean Code/Pagine/Tell Don't Ask|Tell Don't Ask]]
 - [[Programmazione/Clean Code/Pagine/Incapsulamento|Incapsulamento]]
-- [[Coesione e accoppiamento]]
-- [[Confini tra moduli]]
+- [[Programmazione/Clean Code/Pagine/Coesione e accoppiamento|Coesione e accoppiamento]]
+- [[Programmazione/Clean Code/Pagine/Confini tra moduli|Confini tra moduli]]
 
 ## Fonti
 

@@ -3,13 +3,26 @@ date: 2026-07-07
 area: Programmazione
 topic: GitHub
 type: technical-note
-status: "non revisionato"
+status: non revisionato
 publish: true
 difficulty: avanzato
-tags: [github, github-apps, api, automazione]
-aliases: [GitHub Apps, GitHub App]
-prerequisites: [GitHub REST API, Webhooks GitHub]
-related: [Webhooks GitHub, Fine-grained token GitHub, Personal access token GitHub, Automazioni issue e pull request]
+tags:
+  - github
+  - github-apps
+  - api
+  - automazione
+aliases:
+  - GitHub Apps
+  - GitHub App
+prerequisites:
+  - "[[Programmazione/GitHub/Pagine/GitHub REST API]]"
+  - "[[Programmazione/GitHub/Pagine/Webhooks GitHub]]"
+related:
+  - "[[Programmazione/GitHub/Pagine/Webhooks GitHub]]"
+  - "[[Programmazione/GitHub/Pagine/Fine-grained token GitHub]]"
+  - "[[Programmazione/GitHub/Pagine/Personal access token GitHub]]"
+  - "[[Programmazione/GitHub/Pagine/Automazioni issue e pull request]]"
+title: GitHub Apps
 ---
 
 # GitHub Apps
@@ -106,13 +119,13 @@ La GitHub App agisce con permessi dedicati, senza usare il token personale di un
 
 ## Collegamenti
 
-- [[Programmazione/GitHub/Indice GitHub]]
-- [[GitHub REST API]]
-- [[GitHub GraphQL API]]
-- [[Webhooks GitHub]]
-- [[Personal access token GitHub]]
-- [[Fine-grained token GitHub]]
-- [[Automazioni issue e pull request]]
+- [[Programmazione/GitHub/Indice GitHub|Indice GitHub]]
+- [[Programmazione/GitHub/Pagine/GitHub REST API|GitHub REST API]]
+- [[Programmazione/GitHub/Pagine/GitHub GraphQL API|GitHub GraphQL API]]
+- [[Programmazione/GitHub/Pagine/Webhooks GitHub|Webhooks GitHub]]
+- [[Programmazione/GitHub/Pagine/Personal access token GitHub|Personal access token GitHub]]
+- [[Programmazione/GitHub/Pagine/Fine-grained token GitHub|Fine-grained token GitHub]]
+- [[Programmazione/GitHub/Pagine/Automazioni issue e pull request|Automazioni issue e pull request]]
 
 ## Fonti
 

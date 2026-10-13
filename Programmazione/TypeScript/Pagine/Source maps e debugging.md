@@ -3,13 +3,23 @@ date: 2026-06-22
 area: Programmazione
 topic: TypeScript
 type: technical-note
-status: "non revisionato"
+status: non revisionato
 publish: true
 difficulty: intermedio
-tags: [typescript, sourcemap, debugging, build]
-aliases: [Source maps, Debugging TypeScript]
-prerequisites: [tsconfig]
-related: [TypeScript con Node.js, Testing in TypeScript]
+tags:
+  - typescript
+  - sourcemap
+  - debugging
+  - build
+aliases:
+  - Source maps
+  - Debugging TypeScript
+prerequisites:
+  - "[[Programmazione/TypeScript/Pagine/tsconfig]]"
+related:
+  - "[[Programmazione/TypeScript/Pagine/TypeScript con Node.js]]"
+  - "[[Programmazione/TypeScript/Pagine/Testing in TypeScript]]"
+title: Source maps e debugging
 ---
 
 # Source maps e debugging
@@ -86,6 +96,11 @@ Con source map abilitate, lo stack trace puo puntare alla riga TypeScript origin
 
 ## Collegamenti
 
-- [[tsconfig]]
-- [[TypeScript con Node.js]]
-- [[Testing in TypeScript]]
+- [[Programmazione/TypeScript/Pagine/tsconfig|tsconfig]]
+- [[Programmazione/TypeScript/Pagine/TypeScript con Node.js|TypeScript con Node.js]]
+- [[Programmazione/TypeScript/Pagine/Testing in TypeScript|Testing in TypeScript]]
+
+
+## Navigazione
+
+- [[Programmazione/TypeScript/Indice TypeScript|Indice TypeScript]]

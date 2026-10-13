@@ -3,13 +3,23 @@ date: 2026-07-09
 area: Programmazione
 topic: Clean Code
 type: theory-note
-status: "non revisionato"
+status: non revisionato
 publish: true
 difficulty: intermedio
-tags: [clean-code, notebook, dati]
-aliases: [Notebook mantenibili, Maintainable notebooks]
-prerequisites: [Pipeline dati leggibili]
-related: [Script di automazione, Pipeline dati leggibili, Test come documentazione]
+tags:
+  - clean-code
+  - notebook
+  - dati
+aliases:
+  - Notebook mantenibili
+  - Maintainable notebooks
+prerequisites:
+  - "[[Programmazione/Clean Code/Pagine/Pipeline dati leggibili]]"
+related:
+  - "[[Programmazione/Clean Code/Pagine/Script di automazione]]"
+  - "[[Programmazione/Clean Code/Pagine/Pipeline dati leggibili]]"
+  - "[[Programmazione/Clean Code/Pagine/Test come documentazione]]"
+title: Notebook mantenibili
 ---
 
 # Notebook mantenibili
@@ -81,11 +91,11 @@ Questa struttura aiuta sia una persona sia un LLM a capire il contesto.
 
 ## Collegamenti
 
-- [[Programmazione/Clean Code/Indice Clean Code]]
-- [[Pipeline dati leggibili]]
-- [[Script di automazione]]
-- [[Test come documentazione]]
-- [[Parsing di input esterni]]
+- [[Programmazione/Clean Code/Indice Clean Code|Indice Clean Code]]
+- [[Programmazione/Clean Code/Pagine/Pipeline dati leggibili|Pipeline dati leggibili]]
+- [[Programmazione/Clean Code/Pagine/Script di automazione|Script di automazione]]
+- [[Programmazione/Clean Code/Pagine/Test come documentazione|Test come documentazione]]
+- [[Programmazione/Clean Code/Pagine/Parsing di input esterni|Parsing di input esterni]]
 
 ## Fonti
 

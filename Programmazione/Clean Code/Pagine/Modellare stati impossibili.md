@@ -3,13 +3,23 @@ date: 2026-07-09
 area: Programmazione
 topic: Clean Code
 type: theory-note
-status: "non revisionato"
+status: non revisionato
 publish: true
 difficulty: intermedio
-tags: [clean-code, modellazione, stati]
-aliases: [Modellare stati impossibili, Make illegal states unrepresentable]
-prerequisites: [Invarianti del dominio]
-related: [Value objects, Primitive obsession, Codice esplicito vs codice implicito]
+tags:
+  - clean-code
+  - modellazione
+  - stati
+aliases:
+  - Modellare stati impossibili
+  - Make illegal states unrepresentable
+prerequisites:
+  - "[[Programmazione/Clean Code/Pagine/Invarianti del dominio]]"
+related:
+  - "[[Programmazione/Clean Code/Pagine/Value objects]]"
+  - "[[Programmazione/Clean Code/Pagine/Primitive obsession]]"
+  - "[[Programmazione/Clean Code/Pagine/Codice esplicito vs codice implicito]]"
+title: Modellare stati impossibili
 ---
 
 # Modellare stati impossibili
@@ -92,11 +102,11 @@ Nel secondo caso non puo esistere una risposta con `success` e `error` insieme.
 
 ## Collegamenti
 
-- [[Programmazione/Clean Code/Indice Clean Code]]
-- [[Invarianti del dominio]]
-- [[Value objects]]
-- [[Primitive obsession]]
-- [[Codice esplicito vs codice implicito]]
+- [[Programmazione/Clean Code/Indice Clean Code|Indice Clean Code]]
+- [[Programmazione/Clean Code/Pagine/Invarianti del dominio|Invarianti del dominio]]
+- [[Programmazione/Clean Code/Pagine/Value objects|Value objects]]
+- [[Programmazione/Clean Code/Pagine/Primitive obsession|Primitive obsession]]
+- [[Programmazione/Clean Code/Pagine/Codice esplicito vs codice implicito|Codice esplicito vs codice implicito]]
 
 ## Fonti
 

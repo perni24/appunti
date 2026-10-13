@@ -3,13 +3,24 @@ date: 2026-07-09
 area: Programmazione
 topic: Clean Code
 type: technical-note
-status: "non revisionato"
+status: non revisionato
 publish: true
 difficulty: avanzato
-tags: [clean-code, risorse, lifecycle]
-aliases: [Gestione delle risorse, Resource management]
-prerequisites: [File system e IO, Side effects controllati]
-related: [Cleanup e rilascio risorse, Lifecycle degli oggetti, Gestione esplicita degli errori]
+tags:
+  - clean-code
+  - risorse
+  - lifecycle
+aliases:
+  - Gestione delle risorse
+  - Resource management
+prerequisites:
+  - "[[Programmazione/Clean Code/Pagine/File system e IO]]"
+  - "[[Programmazione/Clean Code/Pagine/Side effects controllati]]"
+related:
+  - "[[Programmazione/Clean Code/Pagine/Cleanup e rilascio risorse]]"
+  - "[[Programmazione/Clean Code/Pagine/Lifecycle degli oggetti]]"
+  - "[[Programmazione/Clean Code/Pagine/Gestione esplicita degli errori]]"
+title: Gestione delle risorse
 ---
 
 # Gestione delle risorse
@@ -96,12 +107,12 @@ La gestione della risorsa transazione e centralizzata.
 
 ## Collegamenti
 
-- [[Programmazione/Clean Code/Indice Clean Code]]
-- [[File system e IO]]
-- [[Side effects controllati]]
-- [[Gestione esplicita degli errori]]
-- [[Cleanup e rilascio risorse]]
-- [[Lifecycle degli oggetti]]
+- [[Programmazione/Clean Code/Indice Clean Code|Indice Clean Code]]
+- [[Programmazione/Clean Code/Pagine/File system e IO|File system e IO]]
+- [[Programmazione/Clean Code/Pagine/Side effects controllati|Side effects controllati]]
+- [[Programmazione/Clean Code/Pagine/Gestione esplicita degli errori|Gestione esplicita degli errori]]
+- [[Programmazione/Clean Code/Pagine/Cleanup e rilascio risorse|Cleanup e rilascio risorse]]
+- [[Programmazione/Clean Code/Pagine/Lifecycle degli oggetti|Lifecycle degli oggetti]]
 
 ## Fonti
 

@@ -3,7 +3,7 @@ date: 2026-05-26
 area: Programmazione
 topic: Rust
 type: technical-note
-status: "non revisionato"
+status: non revisionato
 publish: true
 difficulty: intermedio
 tags:
@@ -11,8 +11,8 @@ tags:
   - rust
   - concorrenza-e-asincronia
 aliases:
-  - "Async channels"
-  - "tokio::sync::mpsc"
+  - Async channels
+  - tokio::sync::mpsc
 prerequisites:
   - "[[Programmazione/Rust/Pagine/Async Await]]"
   - "[[Programmazione/Rust/Pagine/Message passing]]"
@@ -21,6 +21,7 @@ related:
   - "[[Programmazione/Rust/Pagine/select join e cancellation]]"
   - "[[Programmazione/Rust/Pagine/Async streams]]"
   - "[[Programmazione/Rust/Pagine/Graceful shutdown]]"
+title: Channel async
 ---
 
 # Channel async
@@ -124,3 +125,8 @@ Il protocollo e esplicito e modellato con un enum.
 - [[Programmazione/Rust/Pagine/select join e cancellation|select join e cancellation]]
 - [[Programmazione/Rust/Pagine/Async streams|Async streams]]
 - [[Programmazione/Rust/Pagine/Graceful shutdown|Graceful shutdown]]
+
+
+## Navigazione
+
+- [[Programmazione/Rust/Indice Rust|Indice Rust]]

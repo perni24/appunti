@@ -1,15 +1,19 @@
-﻿---
+---
 date: 2026-05-20
 area: Programmazione
 topic: Rust
 type: technical-note
-status: "non revisionato"
+status: non revisionato
 publish: true
 difficulty: base
-tags: [programmazione, rust, closure, funzioni]
+tags:
+  - programmazione
+  - rust
+  - closure
+  - funzioni
 aliases:
-  - "Closure Rust"
-  - "Funzioni anonime Rust"
+  - Closure Rust
+  - Funzioni anonime Rust
 prerequisites:
   - "[[Programmazione/Rust/Pagine/Funzioni]]"
   - "[[Programmazione/Rust/Pagine/Ownership]]"
@@ -17,6 +21,7 @@ related:
   - "[[Programmazione/Rust/Pagine/Iteratori]]"
   - "[[Programmazione/Rust/Pagine/Move semantics]]"
   - "[[Programmazione/Rust/Pagine/Traits]]"
+title: Closure
 ---
 
 # Closure
@@ -131,3 +136,8 @@ La closure passata a `filter` cattura `soglia` e decide quali elementi mantenere
 - [[Programmazione/Rust/Pagine/Traits|Traits]]
 - [[Programmazione/Rust/Pagine/Threads|Threads]]
 
+
+
+## Navigazione
+
+- [[Programmazione/Rust/Indice Rust|Indice Rust]]

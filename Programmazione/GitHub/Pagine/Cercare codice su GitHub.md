@@ -3,13 +3,22 @@ date: 2026-07-06
 area: Programmazione
 topic: GitHub
 type: technical-note
-status: "non revisionato"
+status: non revisionato
 publish: true
 difficulty: base
-tags: [github, ricerca, code-search, repository]
-aliases: [Cercare codice su GitHub, GitHub code search]
-prerequisites: [GitHub Web UI]
-related: [Repository GitHub]
+tags:
+  - github
+  - ricerca
+  - code-search
+  - repository
+aliases:
+  - Cercare codice su GitHub
+  - GitHub code search
+prerequisites:
+  - "[[Programmazione/GitHub/Pagine/GitHub Web UI]]"
+related:
+  - "[[Programmazione/GitHub/Pagine/Repository GitHub]]"
+title: Cercare codice su GitHub
 ---
 
 # Cercare codice su GitHub
@@ -109,10 +118,10 @@ Per risultati migliori, limita per repository, organizzazione o path.
 
 ## Collegamenti
 
-- [[Programmazione/GitHub/Indice GitHub]]
-- [[GitHub Web UI]]
-- [[Repository GitHub]]
-- [[GitHub]]
+- [[Programmazione/GitHub/Indice GitHub|Indice GitHub]]
+- [[Programmazione/GitHub/Pagine/GitHub Web UI|GitHub Web UI]]
+- [[Programmazione/GitHub/Pagine/Repository GitHub|Repository GitHub]]
+- [[Programmazione/GitHub/Pagine/GitHub|GitHub]]
 
 ## Fonti
 

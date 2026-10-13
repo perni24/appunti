@@ -3,13 +3,24 @@ date: 2026-07-07
 area: Programmazione
 topic: GitHub
 type: operational-note
-status: "non revisionato"
+status: non revisionato
 publish: true
 difficulty: base
-tags: [github, repository, procedura]
-aliases: [Creare un repository GitHub, Nuovo repository GitHub]
-prerequisites: [GitHub, Repository GitHub]
-related: [README LICENSE e gitignore, Repository settings, Template organizzativi GitHub]
+tags:
+  - github
+  - repository
+  - procedura
+aliases:
+  - Creare un repository GitHub
+  - Nuovo repository GitHub
+prerequisites:
+  - "[[Programmazione/GitHub/Pagine/GitHub]]"
+  - "[[Programmazione/GitHub/Pagine/Repository GitHub]]"
+related:
+  - "[[Programmazione/GitHub/Pagine/README LICENSE e gitignore]]"
+  - "[[Programmazione/GitHub/Pagine/Repository settings]]"
+  - "[[Programmazione/GitHub/Pagine/Template organizzativi GitHub]]"
+title: Creare un repository GitHub
 ---
 
 # Creare un repository GitHub
@@ -98,13 +109,13 @@ git push -u origin main
 
 ## Collegamenti
 
-- [[Programmazione/GitHub/Indice GitHub]]
-- [[Repository GitHub]]
-- [[README LICENSE e gitignore]]
-- [[Clone fork e template repository]]
-- [[GitHub CLI]]
-- [[Repository settings]]
-- [[Template organizzativi GitHub]]
+- [[Programmazione/GitHub/Indice GitHub|Indice GitHub]]
+- [[Programmazione/GitHub/Pagine/Repository GitHub|Repository GitHub]]
+- [[Programmazione/GitHub/Pagine/README LICENSE e gitignore|README LICENSE e gitignore]]
+- [[Programmazione/GitHub/Pagine/Clone fork e template repository|Clone fork e template repository]]
+- [[Programmazione/GitHub/Pagine/GitHub CLI|GitHub CLI]]
+- [[Programmazione/GitHub/Pagine/Repository settings|Repository settings]]
+- [[Programmazione/GitHub/Pagine/Template organizzativi GitHub|Template organizzativi GitHub]]
 
 ## Fonti
 

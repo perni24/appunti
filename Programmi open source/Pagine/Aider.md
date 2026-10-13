@@ -3,12 +3,19 @@ date: 2026-07-14
 area: Programmi open source
 topic: Coding assistant da terminale
 type: technical-note
-status: "non revisionato"
+status: non revisionato
 difficulty: base
-tags: [open-source, ai, coding, cli]
-aliases: [aider, Aider]
+tags:
+  - open-source
+  - ai
+  - coding
+  - cli
+aliases:
+  - Aider
 prerequisites: []
 related: []
+title: Aider
+publish: true
 ---
 
 # Aider
@@ -31,17 +38,20 @@ Serve come assistente di programmazione operativo: legge i file rilevanti, propo
 
 Aider si collega a un modello LLM tramite provider configurato dall'utente e lavora nel contesto di una repository Git. L'utente indica cosa vuole ottenere e quali file sono rilevanti; lo strumento propone e applica modifiche che poi possono essere controllate con `git diff`.
 
-## Esempio d'uso
+## Esempio pratico
 
 ```bash
 # Avvia aider dentro una repository Git
 aider
+```
 
-# Esempio di richiesta
+Scrivere poi nell'interfaccia di Aider, non nella shell:
+
+```text
 Correggi il parsing degli argomenti CLI e aggiungi un test.
 ```
 
-## Punti forti
+## Funzionalita
 
 - **Terminal-first**: si integra bene con workflow da shell.
 - **Git-aware**: le modifiche restano controllabili come diff.
@@ -65,4 +75,4 @@ Correggi il parsing degli argomenti CLI e aggiungi un test.
 
 ## Collegamenti
 
-- [[Programmi open source/Indice Programmi Open Source]]
+- [[Programmi open source/Indice Programmi Open Source|Catalogo open source]]

@@ -3,13 +3,25 @@ date: 2026-07-06
 area: Programmazione
 topic: GitHub
 type: technical-note
-status: "non revisionato"
+status: non revisionato
 publish: true
 difficulty: base
-tags: [github, readme, license, gitignore, repository]
-aliases: [README LICENSE e gitignore, README, LICENSE, gitignore]
-prerequisites: [Repository GitHub]
-related: [Repository GitHub]
+tags:
+  - github
+  - readme
+  - license
+  - gitignore
+  - repository
+aliases:
+  - README LICENSE e gitignore
+  - README
+  - LICENSE
+  - gitignore
+prerequisites:
+  - "[[Programmazione/GitHub/Pagine/Repository GitHub]]"
+related:
+  - "[[Programmazione/GitHub/Pagine/Repository GitHub]]"
+title: README LICENSE e gitignore
 ---
 
 # README LICENSE e gitignore
@@ -127,9 +139,9 @@ Nel `README.md` inserisci almeno:
 
 ## Collegamenti
 
-- [[Programmazione/GitHub/Indice GitHub]]
-- [[Repository GitHub]]
-- [[GitHub]]
+- [[Programmazione/GitHub/Indice GitHub|Indice GitHub]]
+- [[Programmazione/GitHub/Pagine/Repository GitHub|Repository GitHub]]
+- [[Programmazione/GitHub/Pagine/GitHub|GitHub]]
 
 ## Fonti
 

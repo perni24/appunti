@@ -3,13 +3,23 @@ date: 2026-06-03
 area: Programmazione
 topic: Python
 type: technical-note
-status: "non revisionato"
+status: non revisionato
 publish: true
-difficulty: beginner
-tags: [python, configuration, environment-variables, standard-library]
-aliases: [Variabili d Ambiente Python, Configurazione Python]
-prerequisites: [Comandi base]
-related: [Ambienti Virtuali, CLI con argparse]
+difficulty: base
+tags:
+  - python
+  - configuration
+  - environment-variables
+  - standard-library
+aliases:
+  - Variabili d Ambiente Python
+  - Configurazione Python
+prerequisites:
+  - "[[Programmazione/Python/Pagine/Comandi base]]"
+related:
+  - "[[Programmazione/Python/Pagine/Ambienti Virtuali]]"
+  - "[[Programmazione/Python/Pagine/CLI con argparse]]"
+title: Configurazione e Variabili d Ambiente
 ---
 
 # Configurazione e Variabili d Ambiente
@@ -147,8 +157,8 @@ python app.py
 
 ## Collegamenti
 
-- [[Programmazione/Python/Indice python|Indice Python]]
-- [[Ambienti Virtuali]]
-- [[CLI con argparse]]
-- [[Pydantic]]
-- [[Comandi base]]
+- [[Programmazione/Python/Indice Python|Indice Python]]
+- [[Programmazione/Python/Pagine/Ambienti Virtuali|Ambienti Virtuali]]
+- [[Programmazione/Python/Pagine/CLI con argparse|CLI con argparse]]
+- [[Programmazione/Python/Pagine/Pydantic|Pydantic]]
+- [[Programmazione/Python/Pagine/Comandi base|Comandi base]]

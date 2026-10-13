@@ -3,13 +3,24 @@ date: 2026-07-06
 area: Programmazione
 topic: GitHub
 type: technical-note
-status: "non revisionato"
+status: non revisionato
 publish: true
 difficulty: intermedio
-tags: [github, secret-scanning, security, credentials]
-aliases: [Secret scanning, GitHub secret scanning]
-prerequisites: [Repository GitHub, Sicurezza dei token GitHub]
-related: [Sicurezza dei token GitHub, Code scanning]
+tags:
+  - github
+  - secret-scanning
+  - security
+  - credentials
+aliases:
+  - Secret scanning
+  - GitHub secret scanning
+prerequisites:
+  - "[[Programmazione/GitHub/Pagine/Repository GitHub]]"
+  - "[[Programmazione/GitHub/Pagine/Sicurezza dei token GitHub]]"
+related:
+  - "[[Programmazione/GitHub/Pagine/Sicurezza dei token GitHub]]"
+  - "[[Programmazione/GitHub/Pagine/Code scanning]]"
+title: Secret scanning
 ---
 
 # Secret scanning
@@ -105,10 +116,10 @@ Se viene committato un token:
 
 ## Collegamenti
 
-- [[Programmazione/GitHub/Indice GitHub]]
-- [[Sicurezza dei token GitHub]]
-- [[Repository settings]]
-- [[Code scanning]]
+- [[Programmazione/GitHub/Indice GitHub|Indice GitHub]]
+- [[Programmazione/GitHub/Pagine/Sicurezza dei token GitHub|Sicurezza dei token GitHub]]
+- [[Programmazione/GitHub/Pagine/Repository settings|Repository settings]]
+- [[Programmazione/GitHub/Pagine/Code scanning|Code scanning]]
 
 ## Fonti
 

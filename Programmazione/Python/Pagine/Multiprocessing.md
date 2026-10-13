@@ -3,13 +3,19 @@ date: 2026-06-03
 area: Programmazione
 topic: Python
 type: technical-note
-status: "non revisionato"
+status: non revisionato
 publish: true
-difficulty: intermediate
-tags: [python, programming, concurrency]
-aliases: [Multiprocessing, Processi Python]
+difficulty: intermedio
+tags:
+  - python
+  - programming
+  - concurrency
+aliases:
+  - Multiprocessing
+  - Processi Python
 prerequisites: []
 related: []
+title: Multiprocessing in Python
 ---
 
 # Multiprocessing in Python
@@ -148,9 +154,9 @@ Il lavoro e CPU-bound e ogni input puo essere calcolato indipendentemente.
 
 ## Collegamenti
 
-- [[Programmazione/Python/Indice python|Indice Python]]
-- [[Global Interpreter Lock]]
-- [[Concurrent.futures]]
-- [[Threading]]
-- [[Profiling]]
-- [[Memory Management]]
+- [[Programmazione/Python/Indice Python|Indice Python]]
+- [[Programmazione/Python/Pagine/Global Interpreter Lock|Global Interpreter Lock]]
+- [[Programmazione/Python/Pagine/Concurrent.futures|Concurrent.futures]]
+- [[Programmazione/Python/Pagine/Threading|Threading]]
+- [[Programmazione/Python/Pagine/Profiling|Profiling]]
+- [[Programmazione/Python/Pagine/Memory Management|Memory Management]]

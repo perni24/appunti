@@ -1,16 +1,22 @@
-﻿---
+---
 date: 2026-05-20
 area: Programmazione
 topic: Rust
 type: technical-note
-status: "non revisionato"
+status: non revisionato
 publish: true
 difficulty: base
-tags: [programmazione, rust, vecdeque, btreemap, btreeset, collezioni]
+tags:
+  - programmazione
+  - rust
+  - vecdeque
+  - btreemap
+  - btreeset
+  - collezioni
 aliases:
-  - "VecDeque Rust"
-  - "BTreeMap Rust"
-  - "BTreeSet Rust"
+  - VecDeque Rust
+  - BTreeMap Rust
+  - BTreeSet Rust
 prerequisites:
   - "[[Programmazione/Rust/Pagine/Vec]]"
   - "[[Programmazione/Rust/Pagine/HashMap e HashSet]]"
@@ -18,6 +24,7 @@ related:
   - "[[Programmazione/Rust/Pagine/Iteratori]]"
   - "[[Programmazione/Rust/Pagine/Performance e profiling]]"
   - "[[Programmazione/Rust/Pagine/Default]]"
+title: VecDeque BTreeMap e BTreeSet
 ---
 
 # VecDeque BTreeMap e BTreeSet
@@ -138,3 +145,8 @@ fn report_ordinato(conteggi: BTreeMap<String, usize>) {
 - [[Programmazione/Rust/Pagine/Performance e profiling|Performance e profiling]]
 - [[Programmazione/Rust/Pagine/Default|Default]]
 
+
+
+## Navigazione
+
+- [[Programmazione/Rust/Indice Rust|Indice Rust]]

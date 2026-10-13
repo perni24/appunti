@@ -3,7 +3,7 @@ date: 2026-05-26
 area: Programmazione
 topic: Rust
 type: technical-note
-status: "non revisionato"
+status: non revisionato
 publish: true
 difficulty: avanzato
 tags:
@@ -11,8 +11,8 @@ tags:
   - rust
   - rust-di-sistema
 aliases:
-  - "Memory mapping"
-  - "mmap"
+  - Memory mapping
+  - mmap
 prerequisites:
   - "[[Programmazione/Rust/Pagine/File descriptor]]"
   - "[[Programmazione/Rust/Pagine/Memory layout e alignment]]"
@@ -21,6 +21,7 @@ related:
   - "[[Programmazione/Rust/Pagine/File I O]]"
   - "[[Programmazione/Rust/Pagine/libc e nix]]"
   - "[[Programmazione/Rust/Pagine/Performance e profiling]]"
+title: Memory mapping
 ---
 
 # Memory mapping
@@ -147,10 +148,10 @@ L'esempio evita cast diretti a struct Rust perche layout, endianess e alignment 
 
 ## Collegamenti
 
-- [[Programmazione/Rust/Indice rust|Indice Rust]]
-- [[Programmazione/Rust/Pagine/File descriptor]]
-- [[Programmazione/Rust/Pagine/File I O]]
-- [[Programmazione/Rust/Pagine/Memory layout e alignment]]
-- [[Programmazione/Rust/Pagine/Unsafe Rust]]
-- [[Programmazione/Rust/Pagine/libc e nix]]
-- [[Programmazione/Rust/Pagine/Performance e profiling]]
+- [[Programmazione/Rust/Indice Rust|Indice Rust]]
+- [[Programmazione/Rust/Pagine/File descriptor|File descriptor]]
+- [[Programmazione/Rust/Pagine/File I O|File I O]]
+- [[Programmazione/Rust/Pagine/Memory layout e alignment|Memory layout e alignment]]
+- [[Programmazione/Rust/Pagine/Unsafe Rust|Unsafe Rust]]
+- [[Programmazione/Rust/Pagine/libc e nix|libc e nix]]
+- [[Programmazione/Rust/Pagine/Performance e profiling|Performance e profiling]]

@@ -3,13 +3,22 @@ date: 2026-07-09
 area: Programmazione
 topic: Clean Code
 type: theory-note
-status: "non revisionato"
+status: non revisionato
 publish: true
 difficulty: base
-tags: [clean-code, leggibilita, design-api]
-aliases: [Principio del minimo stupore, Principle of least astonishment]
-prerequisites: [Clean Code]
-related: [Leggibilita del codice, Codice esplicito vs codice implicito]
+tags:
+  - clean-code
+  - leggibilita
+  - design-api
+aliases:
+  - Principio del minimo stupore
+  - Principle of least astonishment
+prerequisites:
+  - "[[Programmazione/Clean Code/Pagine/Clean Code]]"
+related:
+  - "[[Programmazione/Clean Code/Pagine/Leggibilita del codice]]"
+  - "[[Programmazione/Clean Code/Pagine/Codice esplicito vs codice implicito]]"
+title: Principio del minimo stupore
 ---
 
 # Principio del minimo stupore
@@ -86,11 +95,11 @@ Il secondo nome rende visibile l'effetto collaterale.
 
 ## Collegamenti
 
-- [[Programmazione/Clean Code/Indice Clean Code]]
-- [[Leggibilita del codice]]
-- [[Codice esplicito vs codice implicito]]
-- [[Naming di variabili e funzioni]]
-- [[Nomi che rivelano intenzione]]
+- [[Programmazione/Clean Code/Indice Clean Code|Indice Clean Code]]
+- [[Programmazione/Clean Code/Pagine/Leggibilita del codice|Leggibilita del codice]]
+- [[Programmazione/Clean Code/Pagine/Codice esplicito vs codice implicito|Codice esplicito vs codice implicito]]
+- [[Programmazione/Clean Code/Pagine/Naming di variabili e funzioni|Naming di variabili e funzioni]]
+- [[Programmazione/Clean Code/Pagine/Nomi che rivelano intenzione|Nomi che rivelano intenzione]]
 
 ## Fonti
 

@@ -3,13 +3,20 @@ date: 2026-07-06
 area: Programmazione
 topic: GitHub
 type: technical-note
-status: "non revisionato"
+status: non revisionato
 publish: true
 difficulty: base
-tags: [github, git, versionamento]
-aliases: [Git e GitHub]
+tags:
+  - github
+  - git
+  - versionamento
+aliases:
+  - Git e GitHub
 prerequisites: []
-related: [GitHub, Remote origin e upstream]
+related:
+  - "[[Programmazione/GitHub/Pagine/GitHub]]"
+  - "[[Programmazione/GitHub/Pagine/Remote origin e upstream]]"
+title: Git e GitHub
 ---
 
 # Git e GitHub
@@ -130,10 +137,10 @@ Qui Git usa GitHub come remoto chiamato `origin`.
 
 ## Collegamenti
 
-- [[Programmazione/GitHub/Indice GitHub]]
-- [[GitHub]]
-- [[Remote origin e upstream]]
-- [[Clone fork e template repository]]
+- [[Programmazione/GitHub/Indice GitHub|Indice GitHub]]
+- [[Programmazione/GitHub/Pagine/GitHub|GitHub]]
+- [[Programmazione/GitHub/Pagine/Remote origin e upstream|Remote origin e upstream]]
+- [[Programmazione/GitHub/Pagine/Clone fork e template repository|Clone fork e template repository]]
 
 ## Fonti
 

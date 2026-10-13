@@ -3,17 +3,26 @@ date: 2026-07-25
 area: Stampante 3D
 topic: Marlin
 type: technical-note
-
 publish: true
 difficulty: avanzato
-tags: [marlin, estrusione, retrazione, toolchange, sicurezza]
-aliases: [Retract Marlin, Cambio utensile Marlin, Limiti estrusione Marlin]
+tags:
+  - marlin
+  - estrusione
+  - retrazione
+  - toolchange
+  - sicurezza
+aliases:
+  - Retract Marlin
+  - Cambio utensile Marlin
+  - Limiti estrusione Marlin
 prerequisites:
   - "[[Stampante 3D/Marlin/Pagine/Hotend estrusori e filamento]]"
   - "[[Stampante 3D/Marlin/Pagine/Dimensioni del piatto area di lavoro e limiti]]"
 related:
   - "[[Stampante 3D/Marlin/Pagine/Linear Advance Input Shaping e compensazioni geometriche]]"
-marlin-version: "2.1.2.8"
+marlin-version: 2.1.2.8
+title: Limiti di estrusione, retrazione e cambio utensile
+status: non revisionato
 ---
 
 # Limiti di estrusione, retrazione e cambio utensile
@@ -572,8 +581,8 @@ M500
 
 ## Collegamenti
 
-- [[Stampante 3D/Marlin/Indice Marlin]]
-- [[Stampante 3D/Marlin/Pagine/Hotend estrusori e filamento]]
-- [[Stampante 3D/Marlin/Pagine/Motori direzione e passi per millimetro]]
-- [[Stampante 3D/Marlin/Pagine/Dimensioni del piatto area di lavoro e limiti]]
-- [[Stampante 3D/Marlin/Pagine/Linear Advance Input Shaping e compensazioni geometriche]]
+- [[Stampante 3D/Marlin/Indice Marlin|Indice Marlin]]
+- [[Stampante 3D/Marlin/Pagine/Hotend estrusori e filamento|Hotend estrusori e filamento]]
+- [[Stampante 3D/Marlin/Pagine/Motori direzione e passi per millimetro|Motori direzione e passi per millimetro]]
+- [[Stampante 3D/Marlin/Pagine/Dimensioni del piatto area di lavoro e limiti|Dimensioni del piatto area di lavoro e limiti]]
+- [[Stampante 3D/Marlin/Pagine/Linear Advance Input Shaping e compensazioni geometriche|Linear Advance Input Shaping e compensazioni geometriche]]

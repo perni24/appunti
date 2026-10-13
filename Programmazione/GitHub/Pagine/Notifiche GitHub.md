@@ -3,13 +3,23 @@ date: 2026-07-06
 area: Programmazione
 topic: GitHub
 type: technical-note
-status: "non revisionato"
+status: non revisionato
 publish: true
 difficulty: base
-tags: [github, notifiche, collaborazione, workflow]
-aliases: [Notifiche GitHub, GitHub notifications]
-prerequisites: [GitHub]
-related: [Issues GitHub, Pull request]
+tags:
+  - github
+  - notifiche
+  - collaborazione
+  - workflow
+aliases:
+  - Notifiche GitHub
+  - GitHub notifications
+prerequisites:
+  - "[[Programmazione/GitHub/Pagine/GitHub]]"
+related:
+  - "[[Programmazione/GitHub/Pagine/Issues GitHub]]"
+  - "[[Programmazione/GitHub/Pagine/Pull request]]"
+title: Notifiche GitHub
 ---
 
 # Notifiche GitHub
@@ -106,11 +116,11 @@ Questa routine mantiene il lavoro collaborativo sotto controllo.
 
 ## Collegamenti
 
-- [[Programmazione/GitHub/Indice GitHub]]
-- [[GitHub]]
-- [[Issues GitHub]]
-- [[Pull request]]
-- [[Review code su GitHub]]
+- [[Programmazione/GitHub/Indice GitHub|Indice GitHub]]
+- [[Programmazione/GitHub/Pagine/GitHub|GitHub]]
+- [[Programmazione/GitHub/Pagine/Issues GitHub|Issues GitHub]]
+- [[Programmazione/GitHub/Pagine/Pull request|Pull request]]
+- [[Programmazione/GitHub/Pagine/Review code su GitHub|Review code su GitHub]]
 
 ## Fonti
 

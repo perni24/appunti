@@ -3,13 +3,19 @@ date: 2026-06-04
 area: Programmazione
 topic: React
 type: theory-note
-status: "non revisionato"
+status: non revisionato
 publish: true
-difficulty: beginner
-tags: [react, state, architecture]
-aliases: [State colocato, Colocation state]
+difficulty: base
+tags:
+  - react
+  - state
+  - architecture
+aliases:
+  - State colocato
+  - Colocation state
 prerequisites: []
 related: []
+title: State colocato
 ---
 
 # State colocato
@@ -97,8 +103,8 @@ Qui lo state sta nel componente comune che coordina lista e pannello.
 
 ## Collegamenti
 
-- [[Programmazione/React/Indice react|Indice React]]
-- [[useState]]
-- [[Props e Flusso di dati unidirezionale]]
-- [[Context API]]
-- [[State Management Esterno]]
+- [[Programmazione/React/Indice React|Indice React]]
+- [[Programmazione/React/Pagine/useState|useState]]
+- [[Programmazione/React/Pagine/Props e Flusso di dati unidirezionale|Props e Flusso di dati unidirezionale]]
+- [[Programmazione/React/Pagine/Context API|Context API]]
+- [[Programmazione/React/Pagine/State Management Esterno|State Management Esterno]]

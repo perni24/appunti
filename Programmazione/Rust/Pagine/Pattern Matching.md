@@ -1,15 +1,19 @@
-﻿---
+---
 date: 2026-05-20
 area: Programmazione
 topic: Rust
 type: technical-note
-status: "non revisionato"
+status: non revisionato
 publish: true
 difficulty: base
-tags: [programmazione, rust, pattern-matching, match]
+tags:
+  - programmazione
+  - rust
+  - pattern-matching
+  - match
 aliases:
-  - "match Rust"
-  - "Pattern matching Rust"
+  - match Rust
+  - Pattern matching Rust
 prerequisites:
   - "[[Programmazione/Rust/Pagine/Enums]]"
   - "[[Programmazione/Rust/Pagine/Pattern base]]"
@@ -17,6 +21,7 @@ related:
   - "[[Programmazione/Rust/Pagine/if let e while let]]"
   - "[[Programmazione/Rust/Pagine/Pattern matching avanzato]]"
   - "[[Programmazione/Rust/Pagine/Destructuring]]"
+title: Pattern Matching
 ---
 
 # Pattern Matching
@@ -141,3 +146,8 @@ Il pattern matching rende esplicita la forma degli eventi e permette di unire ca
 - [[Programmazione/Rust/Pagine/Pattern matching avanzato|Pattern matching avanzato]]
 - [[Programmazione/Rust/Pagine/Option|Option]]
 
+
+
+## Navigazione
+
+- [[Programmazione/Rust/Indice Rust|Indice Rust]]

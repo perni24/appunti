@@ -3,13 +3,20 @@ date: 2026-06-04
 area: Programmazione
 topic: React
 type: theory-note
-status: "non revisionato"
+status: non revisionato
 publish: true
-difficulty: advanced
-tags: [react, actions, forms]
-aliases: [Actions, Form actions, React Actions]
+difficulty: avanzato
+tags:
+  - react
+  - actions
+  - forms
+aliases:
+  - Actions
+  - Form actions
+  - React Actions
 prerequisites: []
 related: []
+title: Actions e form actions
 ---
 
 # Actions e form actions
@@ -90,9 +97,9 @@ La UI puo mostrare pending e risultato usando gli hook dedicati.
 
 ## Collegamenti
 
-- [[Programmazione/React/Indice react|Indice React]]
-- [[useActionState]]
-- [[useOptimistic]]
-- [[useFormStatus]]
-- [[Gestione Moduli]]
-- [[Server Components]]
+- [[Programmazione/React/Indice React|Indice React]]
+- [[Programmazione/React/Pagine/useActionState|useActionState]]
+- [[Programmazione/React/Pagine/useOptimistic|useOptimistic]]
+- [[Programmazione/React/Pagine/useFormStatus|useFormStatus]]
+- [[Programmazione/React/Pagine/Gestione Moduli|Gestione Moduli]]
+- [[Programmazione/React/Pagine/Server Components|Server Components]]

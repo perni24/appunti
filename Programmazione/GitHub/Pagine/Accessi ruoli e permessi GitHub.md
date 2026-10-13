@@ -3,13 +3,24 @@ date: 2026-07-06
 area: Programmazione
 topic: GitHub
 type: technical-note
-status: "non revisionato"
+status: non revisionato
 publish: true
 difficulty: intermedio
-tags: [github, permessi, accessi, ruoli, sicurezza]
-aliases: [Accessi ruoli e permessi GitHub, Permessi GitHub]
-prerequisites: [Repository GitHub]
-related: [Organizzazioni e team GitHub, Repository settings]
+tags:
+  - github
+  - permessi
+  - accessi
+  - ruoli
+  - sicurezza
+aliases:
+  - Accessi ruoli e permessi GitHub
+  - Permessi GitHub
+prerequisites:
+  - "[[Programmazione/GitHub/Pagine/Repository GitHub]]"
+related:
+  - "[[Programmazione/GitHub/Pagine/Organizzazioni e team GitHub]]"
+  - "[[Programmazione/GitHub/Pagine/Repository settings]]"
+title: Accessi ruoli e permessi GitHub
 ---
 
 # Accessi ruoli e permessi GitHub
@@ -103,11 +114,11 @@ Evita di dare admin solo per permettere operazioni quotidiane.
 
 ## Collegamenti
 
-- [[Programmazione/GitHub/Indice GitHub]]
-- [[Repository GitHub]]
-- [[Repository settings]]
-- [[Organizzazioni e team GitHub]]
-- [[Account GitHub e profilo sviluppatore]]
+- [[Programmazione/GitHub/Indice GitHub|Indice GitHub]]
+- [[Programmazione/GitHub/Pagine/Repository GitHub|Repository GitHub]]
+- [[Programmazione/GitHub/Pagine/Repository settings|Repository settings]]
+- [[Programmazione/GitHub/Pagine/Organizzazioni e team GitHub|Organizzazioni e team GitHub]]
+- [[Programmazione/GitHub/Pagine/Account GitHub e profilo sviluppatore|Account GitHub e profilo sviluppatore]]
 
 ## Fonti
 

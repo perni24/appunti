@@ -3,13 +3,17 @@ date: 2026-06-03
 area: Programmazione
 topic: Python
 type: technical-note
-status: "non revisionato"
+status: non revisionato
 publish: true
-difficulty: intermediate
-tags: [python, programming]
-aliases: [Liste]
+difficulty: intermedio
+tags:
+  - python
+  - programming
+aliases:
+  - Liste
 prerequisites: []
 related: []
+title: Liste in Python
 ---
 
 # Liste in Python
@@ -90,3 +94,8 @@ average = sum(valid_scores) / len(valid_scores)
 - [[Programmazione/Python/Pagine/Set|Set]]
 - [[Programmazione/Python/Pagine/Tuple|Tuple]]
 - [[Programmazione/Python/Pagine/Comprehensions|Comprehensions]]
+
+
+## Navigazione
+
+- [[Programmazione/Python/Indice Python|Indice Python]]

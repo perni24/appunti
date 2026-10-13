@@ -3,13 +3,19 @@ date: 2026-06-04
 area: Programmazione
 topic: React
 type: operational-note
-status: "non revisionato"
+status: non revisionato
 publish: true
-difficulty: intermediate
-tags: [react, accessibility, testing]
-aliases: [Test di accessibilita, A11y testing]
+difficulty: intermedio
+tags:
+  - react
+  - accessibility
+  - testing
+aliases:
+  - Test di accessibilita
+  - A11y testing
 prerequisites: []
 related: []
+title: Test di accessibilita
 ---
 
 # Test di accessibilita
@@ -83,8 +89,8 @@ expect(screen.getByRole("button", { name: /chiudi/i })).toHaveFocus();
 
 ## Collegamenti
 
-- [[Programmazione/React/Indice react|Indice React]]
-- [[WAI-ARIA]]
-- [[Focus Management]]
-- [[Testing Jest]]
-- [[Testing Cypress e Playwright]]
+- [[Programmazione/React/Indice React|Indice React]]
+- [[Programmazione/React/Pagine/WAI-ARIA|WAI-ARIA]]
+- [[Programmazione/React/Pagine/Focus Management|Focus Management]]
+- [[Programmazione/React/Pagine/Testing Jest|Testing Jest]]
+- [[Programmazione/React/Pagine/Testing Cypress e Playwright|Testing Cypress e Playwright]]

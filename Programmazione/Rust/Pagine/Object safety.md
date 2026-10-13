@@ -3,7 +3,7 @@ date: 2026-05-21
 area: Programmazione
 topic: Rust
 type: technical-note
-status: "non revisionato"
+status: non revisionato
 publish: true
 difficulty: intermedio
 tags:
@@ -11,8 +11,8 @@ tags:
   - rust
   - astrazione-e-generici
 aliases:
-  - "Object safety Rust"
-  - "dyn compatibility"
+  - Object safety Rust
+  - dyn compatibility
 prerequisites:
   - "[[Programmazione/Rust/Pagine/Traits]]"
   - "[[Programmazione/Rust/Pagine/Trait objects e dyn Trait]]"
@@ -20,6 +20,7 @@ related:
   - "[[Programmazione/Rust/Pagine/Static dispatch vs dynamic dispatch]]"
   - "[[Programmazione/Rust/Pagine/Associated types]]"
   - "[[Programmazione/Rust/Pagine/Public API design]]"
+title: Object safety
 ---
 
 # Object safety
@@ -129,3 +130,8 @@ trait Command {
 - [[Programmazione/Rust/Pagine/Traits|Traits]]
 - [[Programmazione/Rust/Pagine/Public API design|Public API design]]
 - [[Programmazione/Rust/Pagine/Send e Sync Traits|Send e Sync Traits]]
+
+
+## Navigazione
+
+- [[Programmazione/Rust/Indice Rust|Indice Rust]]

@@ -3,13 +3,19 @@ date: 2026-06-03
 area: Programmazione
 topic: Python
 type: technical-note
-status: "non revisionato"
+status: non revisionato
 publish: true
-difficulty: intermediate
-tags: [python, programming, concurrency]
-aliases: [Threading, Thread Python]
+difficulty: intermedio
+tags:
+  - python
+  - programming
+  - concurrency
+aliases:
+  - Threading
+  - Thread Python
 prerequisites: []
 related: []
+title: Threading in Python
 ---
 
 # Threading in Python
@@ -18,7 +24,7 @@ related: []
 
 Il modulo `threading` permette di eseguire piu thread nello stesso processo. I thread condividono memoria e sono utili soprattutto per task **I/O-bound**, cioe operazioni che passano molto tempo in attesa di rete, file, database o input esterno.
 
-Nelle build CPython tradizionali, il [[Global Interpreter Lock]] limita il parallelismo reale dei thread per codice Python CPU-bound. Le build free-threaded disponibili da Python 3.13 possono eseguire thread Python in parallelo, ma compatibilita delle estensioni e prestazioni vanno verificate.
+Nelle build CPython tradizionali, il [[Programmazione/Python/Pagine/Global Interpreter Lock|Global Interpreter Lock]] limita il parallelismo reale dei thread per codice Python CPU-bound. Le build free-threaded disponibili da Python 3.13 possono eseguire thread Python in parallelo, ma compatibilita delle estensioni e prestazioni vanno verificate.
 
 ## Quando usarlo
 
@@ -162,12 +168,12 @@ queue.join()
 
 ## Collegamenti
 
-- [[Programmazione/Python/Indice python|Indice Python]]
-- [[Global Interpreter Lock]]
-- [[Concurrent.futures]]
-- [[Multiprocessing]]
-- [[Asyncio]]
-- [[Networking base]]
+- [[Programmazione/Python/Indice Python|Indice Python]]
+- [[Programmazione/Python/Pagine/Global Interpreter Lock|Global Interpreter Lock]]
+- [[Programmazione/Python/Pagine/Concurrent.futures|Concurrent.futures]]
+- [[Programmazione/Python/Pagine/Multiprocessing|Multiprocessing]]
+- [[Programmazione/Python/Pagine/Asyncio|Asyncio]]
+- [[Programmazione/Python/Pagine/Networking base|Networking base]]
 
 ## Fonti
 

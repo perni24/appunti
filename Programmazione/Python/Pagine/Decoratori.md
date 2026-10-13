@@ -3,13 +3,19 @@ date: 2026-06-03
 area: Programmazione
 topic: Python
 type: technical-note
-status: "non revisionato"
+status: non revisionato
 publish: true
-difficulty: intermediate
-tags: [python, programming, decorators]
-aliases: [Decoratori, Decorator Python]
+difficulty: intermedio
+tags:
+  - python
+  - programming
+  - decorators
+aliases:
+  - Decoratori
+  - Decorator Python
 prerequisites: []
 related: []
+title: Decoratori in Python
 ---
 
 # Decoratori in Python
@@ -175,8 +181,8 @@ function = outer(inner(function))
 
 ## Collegamenti
 
-- [[Programmazione/Python/Indice python|Indice Python]]
-- [[Higher-order Functions]]
-- [[Argomenti Flessibili]]
-- [[Caching]]
-- [[Introspezione]]
+- [[Programmazione/Python/Indice Python|Indice Python]]
+- [[Programmazione/Python/Pagine/Higher-order Functions|Higher-order Functions]]
+- [[Programmazione/Python/Pagine/Argomenti Flessibili|Argomenti Flessibili]]
+- [[Programmazione/Python/Pagine/Caching|Caching]]
+- [[Programmazione/Python/Pagine/Introspezione|Introspezione]]

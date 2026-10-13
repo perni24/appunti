@@ -3,13 +3,22 @@ date: 2026-06-22
 area: Programmazione
 topic: TypeScript
 type: technical-note
-status: "non revisionato"
+status: non revisionato
 publish: true
 difficulty: base
-tags: [typescript, generics, type-system]
-aliases: [Generics TypeScript]
-prerequisites: [Funzioni tipizzate, Type Aliases e Interfaces]
-related: [Generics avanzati, Utility Types]
+tags:
+  - typescript
+  - generics
+  - type-system
+aliases:
+  - Generics TypeScript
+prerequisites:
+  - "[[Programmazione/TypeScript/Pagine/Funzioni tipizzate]]"
+  - "[[Programmazione/TypeScript/Pagine/Type Aliases e Interfaces]]"
+related:
+  - "[[Programmazione/TypeScript/Pagine/Generics avanzati]]"
+  - "[[Programmazione/TypeScript/Pagine/Utility Types]]"
+title: Generics
 ---
 
 # Generics
@@ -95,7 +104,12 @@ const user = unwrap<User>({
 
 ## Collegamenti
 
-- [[Funzioni tipizzate]]
-- [[Type Aliases e Interfaces]]
-- [[Generics avanzati]]
-- [[Utility Types]]
+- [[Programmazione/TypeScript/Pagine/Funzioni tipizzate|Funzioni tipizzate]]
+- [[Programmazione/TypeScript/Pagine/Type Aliases e Interfaces|Type Aliases e Interfaces]]
+- [[Programmazione/TypeScript/Pagine/Generics avanzati|Generics avanzati]]
+- [[Programmazione/TypeScript/Pagine/Utility Types|Utility Types]]
+
+
+## Navigazione
+
+- [[Programmazione/TypeScript/Indice TypeScript|Indice TypeScript]]

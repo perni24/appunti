@@ -3,13 +3,23 @@ date: 2026-06-22
 area: Programmazione
 topic: TypeScript
 type: technical-note
-status: "non revisionato"
+status: non revisionato
 publish: true
 difficulty: avanzato
-tags: [typescript, conditional-types, distributive-types, union-types]
-aliases: [Conditional types distributivi]
-prerequisites: [Conditional Types, Union e Intersection Types]
-related: [Infer nei Conditional Types, Utility Types]
+tags:
+  - typescript
+  - conditional-types
+  - distributive-types
+  - union-types
+aliases:
+  - Conditional types distributivi
+prerequisites:
+  - "[[Programmazione/TypeScript/Pagine/Conditional Types]]"
+  - "[[Programmazione/TypeScript/Pagine/Union e Intersection Types]]"
+related:
+  - "[[Programmazione/TypeScript/Pagine/Infer nei Conditional Types]]"
+  - "[[Programmazione/TypeScript/Pagine/Utility Types]]"
+title: Distributive conditional types
 ---
 
 # Distributive conditional types
@@ -87,6 +97,11 @@ La union viene filtrata mantenendo solo la variante con `type: "user"`.
 
 ## Collegamenti
 
-- [[Conditional Types]]
-- [[Infer nei Conditional Types]]
-- [[Utility Types]]
+- [[Programmazione/TypeScript/Pagine/Conditional Types|Conditional Types]]
+- [[Programmazione/TypeScript/Pagine/Infer nei Conditional Types|Infer nei Conditional Types]]
+- [[Programmazione/TypeScript/Pagine/Utility Types|Utility Types]]
+
+
+## Navigazione
+
+- [[Programmazione/TypeScript/Indice TypeScript|Indice TypeScript]]

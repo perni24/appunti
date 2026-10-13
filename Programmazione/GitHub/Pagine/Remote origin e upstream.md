@@ -3,13 +3,24 @@ date: 2026-07-06
 area: Programmazione
 topic: GitHub
 type: technical-note
-status: "non revisionato"
+status: non revisionato
 publish: true
 difficulty: base
-tags: [github, git, remote, origin, upstream]
-aliases: [origin e upstream, Remote GitHub]
-prerequisites: [Git e GitHub]
-related: [Clone fork e template repository, Repository GitHub]
+tags:
+  - github
+  - git
+  - remote
+  - origin
+  - upstream
+aliases:
+  - origin e upstream
+  - Remote GitHub
+prerequisites:
+  - "[[Programmazione/GitHub/Pagine/Git e GitHub]]"
+related:
+  - "[[Programmazione/GitHub/Pagine/Clone fork e template repository]]"
+  - "[[Programmazione/GitHub/Pagine/Repository GitHub]]"
+title: Remote origin e upstream
 ---
 
 # Remote origin e upstream
@@ -126,10 +137,10 @@ Questo porta nel tuo fork le modifiche del repository originale.
 
 ## Collegamenti
 
-- [[Programmazione/GitHub/Indice GitHub]]
-- [[Git e GitHub]]
-- [[Clone fork e template repository]]
-- [[Repository GitHub]]
+- [[Programmazione/GitHub/Indice GitHub|Indice GitHub]]
+- [[Programmazione/GitHub/Pagine/Git e GitHub|Git e GitHub]]
+- [[Programmazione/GitHub/Pagine/Clone fork e template repository|Clone fork e template repository]]
+- [[Programmazione/GitHub/Pagine/Repository GitHub|Repository GitHub]]
 
 ## Fonti
 

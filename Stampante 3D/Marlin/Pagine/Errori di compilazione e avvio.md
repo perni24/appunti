@@ -3,18 +3,27 @@ date: 2026-07-26
 area: Stampante 3D
 topic: Marlin
 type: operational-note
-
 publish: true
 difficulty: avanzato
-tags: [marlin, platformio, compilazione, avvio, troubleshooting]
-aliases: [Diagnostica compilazione Marlin, Errori avvio Marlin, Marlin non si avvia]
+tags:
+  - marlin
+  - platformio
+  - compilazione
+  - avvio
+  - troubleshooting
+aliases:
+  - Diagnostica compilazione Marlin
+  - Errori avvio Marlin
+  - Marlin non si avvia
 prerequisites:
   - "[[Stampante 3D/Marlin/Pagine/Struttura dei file di configurazione Marlin]]"
   - "[[Stampante 3D/Marlin/Pagine/Metodo di configurazione compilazione e caricamento]]"
 related:
   - "[[Stampante 3D/Marlin/Pagine/EEPROM scheda SD e salvataggio delle impostazioni]]"
   - "[[Stampante 3D/Marlin/Pagine/G-code per configurazione e diagnostica]]"
-marlin-version: "2.1.2.8"
+marlin-version: 2.1.2.8
+title: Errori di compilazione e avvio
+status: non revisionato
 ---
 
 # Errori di compilazione e avvio
@@ -99,7 +108,7 @@ Salvare:
 
 ## Procedura
 
-### 1. Riprodurre con una base controllata
+### Riprodurre con una base controllata
 
 Aprire in VS Code la cartella radice che contiene:
 
@@ -127,7 +136,7 @@ platformio run -e <ambiente>
 
 Se si usa Auto Build Marlin, scegliere **Build** per l'ambiente proposto dalla motherboard. Separare build e upload rende evidente se il problema riguarda il codice o il collegamento con la scheda.
 
-### 2. Cercare il primo errore reale
+### Cercare il primo errore reale
 
 Nel log distinguere:
 
@@ -142,7 +151,7 @@ Nel log distinguere:
 
 Leggere alcune righe prima e dopo il primo `error:`. Le centinaia di errori successivi possono essere conseguenze di una sola parentesi, direttiva o dipendenza errata.
 
-### 3. Classificare un errore `SanityCheck`
+### Classificare un errore `SanityCheck`
 
 Marlin usa controlli di compilazione per rifiutare combinazioni incoerenti. Il messaggio normalmente descrive:
 
@@ -166,7 +175,7 @@ Azioni:
 
 Non commentare il controllo in `SanityCheck.h`. Se il controllo fallisce, la configurazione deve essere corretta; disabilitare il controllo consente di produrre un firmware internamente incoerente.
 
-### 4. Verificare la versione dei file di configurazione
+### Verificare la versione dei file di configurazione
 
 `Configuration.h` e `Configuration_adv.h` devono provenire dalla stessa release dei sorgenti. Copiare integralmente file di una release precedente puo introdurre:
 
@@ -185,7 +194,7 @@ Metodo corretto:
 
 Questo processo verra approfondito nella futura nota `Migrazione della configurazione tra versioni`, gia prevista dall'indice.
 
-### 5. Diagnosticare direttive e sintassi
+### Diagnosticare direttive e sintassi
 
 Errori comuni:
 
@@ -201,7 +210,7 @@ Errori comuni:
 
 Confrontare il blocco modificato con il file originale 2.1.2.8. Non correggere gli errori a valle finche il primo errore sintattico non e scomparso.
 
-### 6. Verificare motherboard e ambiente
+### Verificare motherboard e ambiente
 
 La direttiva:
 
@@ -230,9 +239,9 @@ Sintomi di ambiente errato:
 
 Non scegliere un ambiente soltanto perche la build termina. Deve corrispondere a scheda, processore e bootloader.
 
-Approfondimento: [[Stampante 3D/Marlin/Pagine/Scheda madre porte seriali e pin]].
+Approfondimento: [[Stampante 3D/Marlin/Pagine/Scheda madre porte seriali e pin|Scheda madre porte seriali e pin]].
 
-### 7. Risolvere file o librerie mancanti
+### Risolvere file o librerie mancanti
 
 Un `fatal error: ... No such file or directory` puo indicare:
 
@@ -260,7 +269,7 @@ platformio run --target clean -e <ambiente>
 
 Auto Build Marlin espone anche il comando **Clean**. Eliminare manualmente `.pio` forza una ricostruzione completa, ma prima assicurarsi che il percorso sia davvero la cartella di build del progetto.
 
-### 8. Diagnosticare errori del compilatore
+### Diagnosticare errori del compilatore
 
 Categorie frequenti:
 
@@ -282,7 +291,7 @@ Per isolare:
 3. riapplicare una modifica alla volta;
 4. evitare modifiche dirette in `Marlin/src` finche la configurazione standard non compila.
 
-### 9. Diagnosticare linker e memoria
+### Diagnosticare linker e memoria
 
 #### `undefined reference`
 
@@ -310,7 +319,7 @@ Su MCU con poca SRAM, una build puo compilare ma avere margine operativo insuffi
 
 Non valutare soltanto la dimensione del file firmware. Flash e RAM sono risorse differenti.
 
-### 10. Separare errore di build da errore di upload
+### Separare errore di build da errore di upload
 
 Se il log riporta una build riuscita e l'errore compare durante `upload`, il firmware e stato compilato. Controllare:
 
@@ -333,7 +342,7 @@ platformio run --target upload -e <ambiente>
 
 Chiudere prima programmi che mantengono aperta la porta. Non cambiare configurazione Marlin per risolvere un errore di accesso alla porta.
 
-### 11. Verificare un aggiornamento tramite SD
+### Verificare un aggiornamento tramite SD
 
 Per le schede che aggiornano da SD controllare:
 
@@ -350,7 +359,7 @@ Un file compilato correttamente non prova che il bootloader lo abbia installato.
 M115
 ```
 
-### 12. Diagnosticare assenza di comunicazione dopo il flash
+### Diagnosticare assenza di comunicazione dopo il flash
 
 Procedere dal livello piu basso:
 
@@ -365,7 +374,7 @@ Procedere dal livello piu basso:
 
 Se la porta appare e scompare ciclicamente, cercare reset da watchdog, brownout, corto, periferica bloccante o firmware compilato per target errato.
 
-### 13. Diagnosticare display vuoto o corrotto
+### Diagnosticare display vuoto o corrotto
 
 Prima stabilire se il firmware e vivo tramite seriale:
 
@@ -388,9 +397,9 @@ Controllare:
 
 Artefatti ST7920 possono richiedere ritardi di comunicazione specifici, ma questi vanno introdotti solo dopo aver escluso display, cablaggio e pin errati.
 
-Approfondimento: [[Stampante 3D/Marlin/Pagine/Display controller encoder e touchscreen]].
+Approfondimento: [[Stampante 3D/Marlin/Pagine/Display controller encoder e touchscreen|Display controller encoder e touchscreen]].
 
-### 14. Diagnosticare blocco o riavvio immediato
+### Diagnosticare blocco o riavvio immediato
 
 Raccogliere l'output seriale dal reset. Distinguere:
 
@@ -413,7 +422,7 @@ Un reset quando si attiva un heater o un motore suggerisce prima:
 
 Non attribuire automaticamente il riavvio al firmware.
 
-### 15. Gestire lo stato `STOP`
+### Gestire lo stato `STOP`
 
 Marlin entra in `STOP` quando continuare non e considerato sicuro. Prima:
 
@@ -431,7 +440,7 @@ M999
 
 `M999` non ripara il guasto e non deve essere inviato ripetutamente per ignorare errori termici, probe falliti o problemi elettrici.
 
-### 16. Gestire errori EEPROM
+### Gestire errori EEPROM
 
 Dopo una build diversa possono comparire:
 
@@ -472,7 +481,7 @@ M503
 
 Questa sequenza sostituisce le impostazioni persistenti con i default dei file compilati. Non eseguirla senza aver registrato offset, steps, PID, mesh e altri valori utili.
 
-Approfondimento: [[Stampante 3D/Marlin/Pagine/EEPROM scheda SD e salvataggio delle impostazioni]].
+Approfondimento: [[Stampante 3D/Marlin/Pagine/EEPROM scheda SD e salvataggio delle impostazioni|EEPROM scheda SD e salvataggio delle impostazioni]].
 
 ## Albero decisionale rapido
 
@@ -582,7 +591,7 @@ Mantenere le modifiche a `Marlin/src` in commit separati. Prima verificare che:
 
 ## Collegamenti
 
-- [[Stampante 3D/Marlin/Indice Marlin]]
-- [[Stampante 3D/Marlin/Pagine/Struttura dei file di configurazione Marlin]]
-- [[Stampante 3D/Marlin/Pagine/Metodo di configurazione compilazione e caricamento]]
-- [[Stampante 3D/Marlin/Pagine/G-code per configurazione e diagnostica]]
+- [[Stampante 3D/Marlin/Indice Marlin|Indice Marlin]]
+- [[Stampante 3D/Marlin/Pagine/Struttura dei file di configurazione Marlin|Struttura dei file di configurazione Marlin]]
+- [[Stampante 3D/Marlin/Pagine/Metodo di configurazione compilazione e caricamento|Metodo di configurazione compilazione e caricamento]]
+- [[Stampante 3D/Marlin/Pagine/G-code per configurazione e diagnostica|G-code per configurazione e diagnostica]]

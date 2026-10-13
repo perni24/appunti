@@ -3,7 +3,7 @@ date: 2026-05-27
 area: Programmazione
 topic: Rust
 type: technical-note
-status: "non revisionato"
+status: non revisionato
 publish: true
 difficulty: avanzato
 tags:
@@ -11,8 +11,8 @@ tags:
   - rust
   - embedded
 aliases:
-  - "RTIC"
-  - "Real-Time Interrupt-driven Concurrency"
+  - RTIC
+  - Real-Time Interrupt-driven Concurrency
 prerequisites:
   - "[[Programmazione/Rust/Pagine/no_std]]"
   - "[[Programmazione/Rust/Pagine/cortex-m]]"
@@ -22,6 +22,7 @@ related:
   - "[[Programmazione/Rust/Pagine/Embassy]]"
   - "[[Programmazione/Rust/Pagine/defmt]]"
   - "[[Programmazione/Rust/Pagine/Send e Sync Traits]]"
+title: RTIC
 ---
 
 # RTIC
@@ -152,11 +153,11 @@ L'accesso a `ticks` passa da `lock`, invece di usare `static mut` manuale.
 
 ## Collegamenti
 
-- [[Programmazione/Rust/Indice rust|Indice Rust]]
-- [[Programmazione/Rust/Pagine/no_std]]
-- [[Programmazione/Rust/Pagine/cortex-m]]
-- [[Programmazione/Rust/Pagine/Embedded Rust]]
-- [[Programmazione/Rust/Pagine/Embassy]]
-- [[Programmazione/Rust/Pagine/defmt]]
-- [[Programmazione/Rust/Pagine/Shared state]]
-- [[Programmazione/Rust/Pagine/Send e Sync Traits]]
+- [[Programmazione/Rust/Indice Rust|Indice Rust]]
+- [[Programmazione/Rust/Pagine/no_std|no_std]]
+- [[Programmazione/Rust/Pagine/cortex-m|cortex-m]]
+- [[Programmazione/Rust/Pagine/Embedded Rust|Embedded Rust]]
+- [[Programmazione/Rust/Pagine/Embassy|Embassy]]
+- [[Programmazione/Rust/Pagine/defmt|defmt]]
+- [[Programmazione/Rust/Pagine/Shared state|Shared state]]
+- [[Programmazione/Rust/Pagine/Send e Sync Traits|Send e Sync Traits]]

@@ -3,7 +3,7 @@ date: 2026-05-28
 area: Programmazione
 topic: Rust
 type: technical-note
-status: "non revisionato"
+status: non revisionato
 publish: true
 difficulty: avanzato
 tags:
@@ -11,8 +11,8 @@ tags:
   - rust
   - testing-qualita-e-sicurezza
 aliases:
-  - "Fuzzing"
-  - "cargo-fuzz"
+  - Fuzzing
+  - cargo-fuzz
 prerequisites:
   - "[[Programmazione/Rust/Pagine/Property testing]]"
   - "[[Programmazione/Rust/Pagine/Unsafe Rust]]"
@@ -21,6 +21,7 @@ related:
   - "[[Programmazione/Rust/Pagine/Miri]]"
   - "[[Programmazione/Rust/Pagine/Undefined behavior]]"
   - "[[Programmazione/Rust/Pagine/cargo audit]]"
+title: Fuzzing
 ---
 
 # Fuzzing
@@ -130,9 +131,9 @@ Se il parser va in panic su un input valido UTF-8, il fuzzer salva un caso ripro
 
 ## Collegamenti
 
-- [[Programmazione/Rust/Indice rust|Indice Rust]]
-- [[Programmazione/Rust/Pagine/Property testing]]
-- [[Programmazione/Rust/Pagine/Miri]]
-- [[Programmazione/Rust/Pagine/Unsafe Rust]]
-- [[Programmazione/Rust/Pagine/Undefined behavior]]
-- [[Programmazione/Rust/Pagine/cargo audit]]
+- [[Programmazione/Rust/Indice Rust|Indice Rust]]
+- [[Programmazione/Rust/Pagine/Property testing|Property testing]]
+- [[Programmazione/Rust/Pagine/Miri|Miri]]
+- [[Programmazione/Rust/Pagine/Unsafe Rust|Unsafe Rust]]
+- [[Programmazione/Rust/Pagine/Undefined behavior|Undefined behavior]]
+- [[Programmazione/Rust/Pagine/cargo audit|cargo audit]]

@@ -3,13 +3,21 @@ date: 2026-06-04
 area: Programmazione
 topic: React
 type: technical-note
-status: "non revisionato"
+status: non revisionato
 publish: true
-difficulty: intermediate
-tags: [react, suspense, lazy-loading, performance]
-aliases: [Suspense, Lazy Loading, Bundle splitting]
+difficulty: intermedio
+tags:
+  - react
+  - suspense
+  - lazy-loading
+  - performance
+aliases:
+  - Suspense
+  - Lazy Loading
+  - Bundle splitting
 prerequisites: []
 related: []
+title: Suspense e Lazy Loading
 ---
 
 # Suspense e Lazy Loading
@@ -102,8 +110,8 @@ function ReportsRoute() {
 
 ## Collegamenti
 
-- [[Programmazione/React/Indice react|Indice React]]
-- [[Error Boundaries]]
-- [[SSR e SSG]]
-- [[Server Components]]
-- [[Profiler e Debugging]]
+- [[Programmazione/React/Indice React|Indice React]]
+- [[Programmazione/React/Pagine/Error Boundaries|Error Boundaries]]
+- [[Programmazione/React/Pagine/SSR e SSG|SSR e SSG]]
+- [[Programmazione/React/Pagine/Server Components|Server Components]]
+- [[Programmazione/React/Pagine/Profiler e Debugging|Profiler e Debugging]]

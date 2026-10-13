@@ -3,7 +3,7 @@ date: 2026-05-26
 area: Programmazione
 topic: Rust
 type: technical-note
-status: "non revisionato"
+status: non revisionato
 publish: true
 difficulty: avanzato
 tags:
@@ -11,8 +11,8 @@ tags:
   - rust
   - rust-di-sistema
 aliases:
-  - "Performance e profiling"
-  - "Profiling Rust"
+  - Performance e profiling
+  - Profiling Rust
 prerequisites:
   - "[[Programmazione/Rust/Pagine/Build profiles]]"
   - "[[Programmazione/Rust/Pagine/Iterator API]]"
@@ -22,6 +22,7 @@ related:
   - "[[Programmazione/Rust/Pagine/Rayon e parallel iterators]]"
   - "[[Programmazione/Rust/Pagine/Tracing con tracing]]"
   - "[[Programmazione/Rust/Pagine/Allocator]]"
+title: Performance e profiling
 ---
 
 # Performance e profiling
@@ -172,11 +173,11 @@ L'idea non e che `with_capacity` vada usato sempre, ma che ridurre riallocazioni
 
 ## Collegamenti
 
-- [[Programmazione/Rust/Indice rust|Indice Rust]]
-- [[Programmazione/Rust/Pagine/Build profiles]]
-- [[Programmazione/Rust/Pagine/Benchmarking con Criterion]]
-- [[Programmazione/Rust/Pagine/Zero-cost abstractions]]
-- [[Programmazione/Rust/Pagine/Iterator API]]
-- [[Programmazione/Rust/Pagine/Rayon e parallel iterators]]
-- [[Programmazione/Rust/Pagine/Tracing con tracing]]
-- [[Programmazione/Rust/Pagine/Allocator]]
+- [[Programmazione/Rust/Indice Rust|Indice Rust]]
+- [[Programmazione/Rust/Pagine/Build profiles|Build profiles]]
+- [[Programmazione/Rust/Pagine/Benchmarking con Criterion|Benchmarking con Criterion]]
+- [[Programmazione/Rust/Pagine/Zero-cost abstractions|Zero-cost abstractions]]
+- [[Programmazione/Rust/Pagine/Iterator API|Iterator API]]
+- [[Programmazione/Rust/Pagine/Rayon e parallel iterators|Rayon e parallel iterators]]
+- [[Programmazione/Rust/Pagine/Tracing con tracing|Tracing con tracing]]
+- [[Programmazione/Rust/Pagine/Allocator|Allocator]]

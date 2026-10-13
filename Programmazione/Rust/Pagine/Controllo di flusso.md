@@ -1,9 +1,9 @@
-﻿---
+---
 date: 2026-05-20
 area: Programmazione
 topic: Rust
 type: technical-note
-status: "non revisionato"
+status: non revisionato
 publish: true
 difficulty: base
 tags:
@@ -13,6 +13,7 @@ tags:
 aliases: []
 prerequisites: []
 related: []
+title: Controllo di flusso
 ---
 
 # Controllo di flusso
@@ -93,3 +94,8 @@ fn main() {
 - [[Programmazione/Rust/Pagine/Iteratori|Iteratori]]
 - [[Programmazione/Rust/Pagine/Pattern base|Pattern base]]
 
+
+
+## Navigazione
+
+- [[Programmazione/Rust/Indice Rust|Indice Rust]]

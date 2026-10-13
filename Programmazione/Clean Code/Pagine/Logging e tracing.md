@@ -3,13 +3,25 @@ date: 2026-07-09
 area: Programmazione
 topic: Clean Code
 type: technical-note
-status: "non revisionato"
+status: non revisionato
 publish: true
 difficulty: intermedio
-tags: [clean-code, logging, tracing, osservabilita]
-aliases: [Logging e tracing, Logging and tracing]
-prerequisites: [Logging leggibile, Side effects controllati]
-related: [Configurazione applicativa, Messaggi di errore utili, Errori recuperabili e non recuperabili]
+tags:
+  - clean-code
+  - logging
+  - tracing
+  - osservabilita
+aliases:
+  - Logging e tracing
+  - Logging and tracing
+prerequisites:
+  - "[[Programmazione/Clean Code/Pagine/Logging leggibile]]"
+  - "[[Programmazione/Clean Code/Pagine/Side effects controllati]]"
+related:
+  - "[[Programmazione/Clean Code/Pagine/Configurazione applicativa]]"
+  - "[[Programmazione/Clean Code/Pagine/Messaggi di errore utili]]"
+  - "[[Programmazione/Clean Code/Pagine/Errori recuperabili e non recuperabili]]"
+title: Logging e tracing
 ---
 
 # Logging e tracing
@@ -84,10 +96,10 @@ Il log contiene evento, entita e contesto di correlazione.
 
 ## Collegamenti
 
-- [[Programmazione/Clean Code/Indice Clean Code]]
-- [[Logging leggibile]]
-- [[Messaggi di errore utili]]
-- [[Side effects controllati]]
+- [[Programmazione/Clean Code/Indice Clean Code|Indice Clean Code]]
+- [[Programmazione/Clean Code/Pagine/Logging leggibile|Logging leggibile]]
+- [[Programmazione/Clean Code/Pagine/Messaggi di errore utili|Messaggi di errore utili]]
+- [[Programmazione/Clean Code/Pagine/Side effects controllati|Side effects controllati]]
 - [[Programmazione/Clean Code/Pagine/Configurazione applicativa|Configurazione applicativa]]
 
 ## Fonti

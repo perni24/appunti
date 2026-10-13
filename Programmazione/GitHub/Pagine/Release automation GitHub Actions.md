@@ -3,13 +3,25 @@ date: 2026-07-07
 area: Programmazione
 topic: GitHub
 type: technical-note
-status: "non revisionato"
+status: non revisionato
 publish: true
 difficulty: intermedio
-tags: [github, github-actions, release, automation]
-aliases: [Release automation GitHub Actions, Automazione release GitHub Actions]
-prerequisites: [GitHub Actions, Protected tags]
-related: [Artifacts GitHub Actions, Protected tags, GitHub Packages con Actions]
+tags:
+  - github
+  - github-actions
+  - release
+  - automation
+aliases:
+  - Release automation GitHub Actions
+  - Automazione release GitHub Actions
+prerequisites:
+  - "[[Programmazione/GitHub/Pagine/GitHub Actions]]"
+  - "[[Programmazione/GitHub/Pagine/Protected tags]]"
+related:
+  - "[[Programmazione/GitHub/Pagine/Artifacts GitHub Actions]]"
+  - "[[Programmazione/GitHub/Pagine/Protected tags]]"
+  - "[[Programmazione/GitHub/Pagine/GitHub Packages con Actions]]"
+title: Release automation GitHub Actions
 ---
 
 # Release automation GitHub Actions
@@ -116,12 +128,12 @@ Questo rende riproducibile il rilascio e lascia traccia nel repository.
 
 ## Collegamenti
 
-- [[Programmazione/GitHub/Indice GitHub]]
-- [[GitHub Actions]]
-- [[Artifacts GitHub Actions]]
-- [[Protected tags]]
-- [[GitHub Packages con Actions]]
-- [[SBOM e attestazioni su GitHub]]
+- [[Programmazione/GitHub/Indice GitHub|Indice GitHub]]
+- [[Programmazione/GitHub/Pagine/GitHub Actions|GitHub Actions]]
+- [[Programmazione/GitHub/Pagine/Artifacts GitHub Actions|Artifacts GitHub Actions]]
+- [[Programmazione/GitHub/Pagine/Protected tags|Protected tags]]
+- [[Programmazione/GitHub/Pagine/GitHub Packages con Actions|GitHub Packages con Actions]]
+- [[Programmazione/GitHub/Pagine/SBOM e attestazioni su GitHub|SBOM e attestazioni su GitHub]]
 
 ## Fonti
 

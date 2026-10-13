@@ -3,13 +3,23 @@ date: 2026-07-07
 area: Programmazione
 topic: GitHub
 type: technical-note
-status: "non revisionato"
+status: non revisionato
 publish: true
 difficulty: intermedio
-tags: [github, github-actions, github-pages, deploy]
-aliases: [GitHub Pages con Actions, Pages con Actions]
-prerequisites: [GitHub Actions, Deploy con GitHub Actions]
-related: [Environments GitHub Actions]
+tags:
+  - github
+  - github-actions
+  - github-pages
+  - deploy
+aliases:
+  - GitHub Pages con Actions
+  - Pages con Actions
+prerequisites:
+  - "[[Programmazione/GitHub/Pagine/GitHub Actions]]"
+  - "[[Programmazione/GitHub/Pagine/Deploy con GitHub Actions]]"
+related:
+  - "[[Programmazione/GitHub/Pagine/Environments GitHub Actions]]"
+title: GitHub Pages con Actions
 ---
 
 # GitHub Pages con Actions
@@ -119,11 +129,11 @@ Il workflow consente di pubblicare sempre la versione derivata dall'ultimo commi
 
 ## Collegamenti
 
-- [[Programmazione/GitHub/Indice GitHub]]
-- [[Deploy con GitHub Actions]]
-- [[GitHub Actions]]
-- [[Artifacts GitHub Actions]]
-- [[Environments GitHub Actions]]
+- [[Programmazione/GitHub/Indice GitHub|Indice GitHub]]
+- [[Programmazione/GitHub/Pagine/Deploy con GitHub Actions|Deploy con GitHub Actions]]
+- [[Programmazione/GitHub/Pagine/GitHub Actions|GitHub Actions]]
+- [[Programmazione/GitHub/Pagine/Artifacts GitHub Actions|Artifacts GitHub Actions]]
+- [[Programmazione/GitHub/Pagine/Environments GitHub Actions|Environments GitHub Actions]]
 
 ## Fonti
 

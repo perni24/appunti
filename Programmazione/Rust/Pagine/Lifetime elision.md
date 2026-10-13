@@ -3,7 +3,7 @@ date: 2026-05-22
 area: Programmazione
 topic: Rust
 type: technical-note
-status: "non revisionato"
+status: non revisionato
 publish: true
 difficulty: intermedio
 tags:
@@ -11,8 +11,8 @@ tags:
   - rust
   - lifetimes
 aliases:
-  - "Elision dei lifetime"
-  - "Lifetime elision rules"
+  - Elision dei lifetime
+  - Lifetime elision rules
 prerequisites:
   - "[[Programmazione/Rust/Pagine/Lifetime impliciti]]"
   - "[[Programmazione/Rust/Pagine/Lifetime annotations]]"
@@ -20,6 +20,7 @@ related:
   - "[[Programmazione/Rust/Pagine/Lifetimes nelle struct]]"
   - "[[Programmazione/Rust/Pagine/Lifetimes nei trait]]"
   - "[[Programmazione/Rust/Pagine/Borrow checker]]"
+title: Lifetime elision
 ---
 
 # Lifetime elision
@@ -140,3 +141,8 @@ In entrambi i casi Rust deduce che l'output preso in prestito vive quanto l'inpu
 - [[Programmazione/Rust/Pagine/Lifetimes nelle struct|Lifetimes nelle struct]]
 - [[Programmazione/Rust/Pagine/Lifetimes nei trait|Lifetimes nei trait]]
 - [[Programmazione/Rust/Pagine/Borrow checker|Borrow checker]]
+
+
+## Navigazione
+
+- [[Programmazione/Rust/Indice Rust|Indice Rust]]

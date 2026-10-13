@@ -3,7 +3,7 @@ date: 2026-05-26
 area: Programmazione
 topic: Rust
 type: technical-note
-status: "non revisionato"
+status: non revisionato
 publish: true
 difficulty: avanzato
 tags:
@@ -11,8 +11,8 @@ tags:
   - rust
   - macros
 aliases:
-  - "Function-like macro"
-  - "proc_macro"
+  - Function-like macro
+  - proc_macro
 prerequisites:
   - "[[Programmazione/Rust/Pagine/Procedural macros]]"
   - "[[Programmazione/Rust/Pagine/Macro dichiarative]]"
@@ -20,6 +20,7 @@ related:
   - "[[Programmazione/Rust/Pagine/Attribute macros]]"
   - "[[Programmazione/Rust/Pagine/Derive macros]]"
   - "[[Programmazione/Rust/Pagine/Hygiene]]"
+title: Function-like macros
 ---
 
 # Function-like macros
@@ -133,3 +134,8 @@ Questa macro crea una `HashMap` con sintassi compatta.
 - [[Programmazione/Rust/Pagine/Attribute macros|Attribute macros]]
 - [[Programmazione/Rust/Pagine/Derive macros|Derive macros]]
 - [[Programmazione/Rust/Pagine/Hygiene|Hygiene]]
+
+
+## Navigazione
+
+- [[Programmazione/Rust/Indice Rust|Indice Rust]]

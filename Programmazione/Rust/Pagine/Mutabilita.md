@@ -1,15 +1,19 @@
-﻿---
+---
 date: 2026-05-20
 area: Programmazione
 topic: Rust
 type: technical-note
-status: "non revisionato"
+status: non revisionato
 publish: true
 difficulty: base
-tags: [programmazione, rust, mutabilita, borrowing]
+tags:
+  - programmazione
+  - rust
+  - mutabilita
+  - borrowing
 aliases:
-  - "Mutability Rust"
-  - "mut"
+  - Mutability Rust
+  - mut
 prerequisites:
   - "[[Programmazione/Rust/Pagine/Variabili mutabilita e shadowing]]"
   - "[[Programmazione/Rust/Pagine/References e Borrowing]]"
@@ -17,6 +21,7 @@ related:
   - "[[Programmazione/Rust/Pagine/Interior mutability]]"
   - "[[Programmazione/Rust/Pagine/Cell T]]"
   - "[[Programmazione/Rust/Pagine/RefCell T]]"
+title: Mutabilita
 ---
 
 # Mutabilita
@@ -127,3 +132,8 @@ La funzione non prende ownership della `String`, ma riceve permesso esclusivo di
 - [[Programmazione/Rust/Pagine/Interior mutability|Interior mutability]]
 - [[Programmazione/Rust/Pagine/RefCell T|RefCell T]]
 
+
+
+## Navigazione
+
+- [[Programmazione/Rust/Indice Rust|Indice Rust]]

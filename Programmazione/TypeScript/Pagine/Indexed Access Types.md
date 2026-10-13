@@ -3,13 +3,23 @@ date: 2026-06-22
 area: Programmazione
 topic: TypeScript
 type: technical-note
-status: "non revisionato"
+status: non revisionato
 publish: true
 difficulty: avanzato
-tags: [typescript, indexed-access-types, keyof, type-system]
-aliases: [Indexed access type]
-prerequisites: [Keyof e typeof, Type Aliases e Interfaces]
-related: [Mapped Types, Utility Types]
+tags:
+  - typescript
+  - indexed-access-types
+  - keyof
+  - type-system
+aliases:
+  - Indexed access type
+prerequisites:
+  - "[[Programmazione/TypeScript/Pagine/Keyof e typeof]]"
+  - "[[Programmazione/TypeScript/Pagine/Type Aliases e Interfaces]]"
+related:
+  - "[[Programmazione/TypeScript/Pagine/Mapped Types]]"
+  - "[[Programmazione/TypeScript/Pagine/Utility Types]]"
+title: Indexed Access Types
 ---
 
 # Indexed Access Types
@@ -89,6 +99,11 @@ const theme = getSetting({ theme: "dark", retries: 3 }, "theme");
 
 ## Collegamenti
 
-- [[Keyof e typeof]]
-- [[Mapped Types]]
-- [[Utility Types]]
+- [[Programmazione/TypeScript/Pagine/Keyof e typeof|Keyof e typeof]]
+- [[Programmazione/TypeScript/Pagine/Mapped Types|Mapped Types]]
+- [[Programmazione/TypeScript/Pagine/Utility Types|Utility Types]]
+
+
+## Navigazione
+
+- [[Programmazione/TypeScript/Indice TypeScript|Indice TypeScript]]

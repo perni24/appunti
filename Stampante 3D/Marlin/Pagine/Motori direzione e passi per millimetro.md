@@ -3,16 +3,23 @@ date: 2026-07-25
 area: Stampante 3D
 topic: Marlin
 type: technical-note
-
 publish: true
 difficulty: intermedio
-tags: [marlin, motori-stepper, steps-per-mm, calibrazione]
-aliases: [Passi per millimetro Marlin, Direzione motori Marlin]
+tags:
+  - marlin
+  - motori-stepper
+  - steps-per-mm
+  - calibrazione
+aliases:
+  - Passi per millimetro Marlin
+  - Direzione motori Marlin
 prerequisites:
   - "[[Stampante 3D/Marlin/Pagine/Tipo di stampante e cinematica]]"
   - "[[Stampante 3D/Marlin/Pagine/Dimensioni del piatto area di lavoro e limiti]]"
 related: []
-marlin-version: "2.1.2.8"
+marlin-version: 2.1.2.8
+title: Motori, direzione e passi per millimetro
+status: non revisionato
 ---
 
 # Motori, direzione e passi per millimetro
@@ -369,8 +376,8 @@ Con due motori collegati allo stesso driver non esiste controllo indipendente da
 
 ## Collegamenti
 
-- [[Stampante 3D/Marlin/Indice Marlin]]
-- [[Stampante 3D/Marlin/Pagine/Tipo di stampante e cinematica]]
-- [[Stampante 3D/Marlin/Pagine/Dimensioni del piatto area di lavoro e limiti]]
-- [[Stampante 3D/Marlin/Pagine/Driver stepper corrente e microstepping]]
-- [[Stampante 3D/Marlin/Pagine/Endstop homing e Sensorless Homing]]
+- [[Stampante 3D/Marlin/Indice Marlin|Indice Marlin]]
+- [[Stampante 3D/Marlin/Pagine/Tipo di stampante e cinematica|Tipo di stampante e cinematica]]
+- [[Stampante 3D/Marlin/Pagine/Dimensioni del piatto area di lavoro e limiti|Dimensioni del piatto area di lavoro e limiti]]
+- [[Stampante 3D/Marlin/Pagine/Driver stepper corrente e microstepping|Driver stepper corrente e microstepping]]
+- [[Stampante 3D/Marlin/Pagine/Endstop homing e Sensorless Homing|Endstop homing e Sensorless Homing]]

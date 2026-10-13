@@ -3,13 +3,20 @@ date: 2026-06-03
 area: Programmazione
 topic: Python
 type: technical-note
-status: "non revisionato"
+status: non revisionato
 publish: true
-difficulty: intermediate
-tags: [python, programming, concurrency]
-aliases: [Concurrent.futures, ThreadPoolExecutor, ProcessPoolExecutor]
+difficulty: intermedio
+tags:
+  - python
+  - programming
+  - concurrency
+aliases:
+  - Concurrent.futures
+  - ThreadPoolExecutor
+  - ProcessPoolExecutor
 prerequisites: []
 related: []
+title: Concurrent.futures in Python
 ---
 
 # Concurrent.futures in Python
@@ -153,9 +160,9 @@ with ThreadPoolExecutor(max_workers=3) as executor:
 
 ## Collegamenti
 
-- [[Programmazione/Python/Indice python|Indice Python]]
-- [[Threading]]
-- [[Multiprocessing]]
-- [[Global Interpreter Lock]]
-- [[Asyncio]]
-- [[Subprocess]]
+- [[Programmazione/Python/Indice Python|Indice Python]]
+- [[Programmazione/Python/Pagine/Threading|Threading]]
+- [[Programmazione/Python/Pagine/Multiprocessing|Multiprocessing]]
+- [[Programmazione/Python/Pagine/Global Interpreter Lock|Global Interpreter Lock]]
+- [[Programmazione/Python/Pagine/Asyncio|Asyncio]]
+- [[Programmazione/Python/Pagine/Subprocess|Subprocess]]

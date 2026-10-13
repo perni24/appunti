@@ -3,13 +3,24 @@ date: 2026-06-22
 area: Programmazione
 topic: TypeScript
 type: technical-note
-status: "non revisionato"
+status: non revisionato
 publish: true
 difficulty: base
-tags: [typescript, union-types, intersection-types, type-system]
-aliases: [Union Types, Intersection Types]
-prerequisites: [Tipi primitivi, Type Aliases e Interfaces]
-related: [Discriminated Unions, Type Narrowing]
+tags:
+  - typescript
+  - union-types
+  - intersection-types
+  - type-system
+aliases:
+  - Union Types
+  - Intersection Types
+prerequisites:
+  - "[[Programmazione/TypeScript/Pagine/Tipi primitivi]]"
+  - "[[Programmazione/TypeScript/Pagine/Type Aliases e Interfaces]]"
+related:
+  - "[[Programmazione/TypeScript/Pagine/Discriminated Unions]]"
+  - "[[Programmazione/TypeScript/Pagine/Type Narrowing]]"
+title: Union e Intersection Types
 ---
 
 # Union e Intersection Types
@@ -92,7 +103,12 @@ La proprieta `ok` permette a TypeScript di capire quale ramo della union e attiv
 
 ## Collegamenti
 
-- [[Type Narrowing]]
-- [[Discriminated Unions]]
-- [[Exhaustiveness Checking]]
-- [[Type Aliases e Interfaces]]
+- [[Programmazione/TypeScript/Pagine/Type Narrowing|Type Narrowing]]
+- [[Programmazione/TypeScript/Pagine/Discriminated Unions|Discriminated Unions]]
+- [[Programmazione/TypeScript/Pagine/Exhaustiveness Checking|Exhaustiveness Checking]]
+- [[Programmazione/TypeScript/Pagine/Type Aliases e Interfaces|Type Aliases e Interfaces]]
+
+
+## Navigazione
+
+- [[Programmazione/TypeScript/Indice TypeScript|Indice TypeScript]]

@@ -3,7 +3,7 @@ date: 2026-05-26
 area: Programmazione
 topic: Rust
 type: technical-note
-status: "non revisionato"
+status: non revisionato
 publish: true
 difficulty: avanzato
 tags:
@@ -11,8 +11,8 @@ tags:
   - rust
   - rust-di-sistema
 aliases:
-  - "bindgen"
-  - "cbindgen"
+  - bindgen
+  - cbindgen
 prerequisites:
   - "[[Programmazione/Rust/Pagine/FFI]]"
   - "[[Programmazione/Rust/Pagine/Build scripts]]"
@@ -20,6 +20,7 @@ related:
   - "[[Programmazione/Rust/Pagine/libc e nix]]"
   - "[[Programmazione/Rust/Pagine/Linking]]"
   - "[[Programmazione/Rust/Pagine/Cross-compilation]]"
+title: bindgen e cbindgen
 ---
 
 # bindgen e cbindgen
@@ -130,3 +131,8 @@ Il binding unsafe resta interno; l'API pubblica puo essere safe se il contratto 
 - [[Programmazione/Rust/Pagine/libc e nix|libc e nix]]
 - [[Programmazione/Rust/Pagine/Linking|Linking]]
 - [[Programmazione/Rust/Pagine/Cross-compilation|Cross-compilation]]
+
+
+## Navigazione
+
+- [[Programmazione/Rust/Indice Rust|Indice Rust]]

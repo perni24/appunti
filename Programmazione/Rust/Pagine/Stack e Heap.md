@@ -1,15 +1,20 @@
-﻿---
+---
 date: 2026-05-20
 area: Programmazione
 topic: Rust
 type: technical-note
-status: "non revisionato"
+status: non revisionato
 publish: true
 difficulty: base
-tags: [programmazione, rust, stack, heap, memory]
+tags:
+  - programmazione
+  - rust
+  - stack
+  - heap
+  - memory
 aliases:
-  - "Stack vs Heap in Rust"
-  - "Memoria stack e heap"
+  - Stack vs Heap in Rust
+  - Memoria stack e heap
 prerequisites:
   - "[[Programmazione/Rust/Pagine/Tipi di dato primitivi]]"
   - "[[Programmazione/Rust/Pagine/Ownership]]"
@@ -17,6 +22,7 @@ related:
   - "[[Programmazione/Rust/Pagine/Move semantics]]"
   - "[[Programmazione/Rust/Pagine/Stringhe String e &str]]"
   - "[[Programmazione/Rust/Pagine/Vec]]"
+title: Stack e Heap
 ---
 
 # Stack e Heap
@@ -134,3 +140,8 @@ Il `Vec` possiede un buffer heap. Ogni `String` possiede a sua volta un buffer h
 - [[Programmazione/Rust/Pagine/Vec|Vec]]
 - [[Programmazione/Rust/Pagine/Box T|Box T]]
 
+
+
+## Navigazione
+
+- [[Programmazione/Rust/Indice Rust|Indice Rust]]

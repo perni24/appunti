@@ -3,11 +3,18 @@ date: 2026-07-26
 area: Stampante 3D
 topic: Marlin
 type: operational-note
-
 publish: true
 difficulty: avanzato
-tags: [marlin, g-code, configuration, diagnostics, troubleshooting]
-aliases: [G-code diagnostica Marlin, Comandi configurazione Marlin, Diagnostica seriale Marlin]
+tags:
+  - marlin
+  - g-code
+  - configuration
+  - diagnostics
+  - troubleshooting
+aliases:
+  - G-code diagnostica Marlin
+  - Comandi configurazione Marlin
+  - Diagnostica seriale Marlin
 prerequisites:
   - "[[Stampante 3D/Marlin/Pagine/Metodo di configurazione compilazione e caricamento]]"
   - "[[Stampante 3D/Marlin/Pagine/EEPROM scheda SD e salvataggio delle impostazioni]]"
@@ -15,7 +22,9 @@ related:
   - "[[Stampante 3D/Marlin/Pagine/Scheda madre porte seriali e pin]]"
   - "[[Stampante 3D/Marlin/Pagine/Endstop homing e Sensorless Homing]]"
   - "[[Stampante 3D/Marlin/Pagine/Driver stepper corrente e microstepping]]"
-marlin-version: "2.1.2.8"
+marlin-version: 2.1.2.8
+title: G-code per configurazione e diagnostica
+status: non revisionato
 ---
 
 # G-code per configurazione e diagnostica
@@ -158,7 +167,7 @@ Impostare un valore misurato, per esempio su X:
 M92 X80
 ```
 
-La taratura completa e in [[Stampante 3D/Marlin/Pagine/Motori direzione e passi per millimetro]].
+La taratura completa e in [[Stampante 3D/Marlin/Pagine/Motori direzione e passi per millimetro|Motori direzione e passi per millimetro]].
 
 ### Velocita e accelerazioni
 
@@ -200,7 +209,7 @@ Impostare soltanto il parametro misurato:
 M851 Z-1.20
 ```
 
-Il segno e il valore devono derivare dalla procedura in [[Stampante 3D/Marlin/Pagine/Probe Z offset e BLTouch]].
+Il segno e il valore devono derivare dalla procedura in [[Stampante 3D/Marlin/Pagine/Probe Z offset e BLTouch|Probe Z offset e BLTouch]].
 
 ### PID
 
@@ -232,17 +241,17 @@ La disponibilita dipende da driver, UART o SPI e funzioni compilate. Una corrent
 M420
 ```
 
-Lo stato attivo, la mesh memorizzata e il metodo di leveling sono aspetti separati. Consultare [[Stampante 3D/Marlin/Pagine/Tipi di bed leveling e configurazione della mesh]].
+Lo stato attivo, la mesh memorizzata e il metodo di leveling sono aspetti separati. Consultare [[Stampante 3D/Marlin/Pagine/Tipi di bed leveling e configurazione della mesh|Tipi di bed leveling e configurazione della mesh]].
 
 ## Procedura di modifica persistente
 
-### 1. Salvare lo stato iniziale
+### Salvare lo stato iniziale
 
 ```gcode
 M503
 ```
 
-### 2. Applicare la modifica runtime
+### Applicare la modifica runtime
 
 Esempio:
 
@@ -250,27 +259,27 @@ Esempio:
 M851 Z-1.20
 ```
 
-### 3. Verificare il valore
+### Verificare il valore
 
 ```gcode
 M851
 ```
 
-### 4. Collaudare la funzione
+### Collaudare la funzione
 
 Eseguire la procedura specifica senza salvare. Per un offset Z significa homing, controllo probe e prova sorvegliata, non una stampa completa automatica.
 
-### 5. Salvare
+### Salvare
 
 ```gcode
 M500
 ```
 
-### 6. Riavviare
+### Riavviare
 
 Usare il normale reset della macchina. Non assumere che un riavvio software riproduca ogni condizione elettrica dell'accensione.
 
-### 7. Verificare la persistenza
+### Verificare la persistenza
 
 ```gcode
 M503
@@ -349,7 +358,7 @@ Provare ogni sensore nelle due condizioni fisiche:
 
 Lo stato deve cambiare in modo stabile tra `open` e `TRIGGERED`.
 
-Per BLTouch e Sensorless Homing il segnale puo essere impulsivo e `M119` non rappresenta necessariamente ogni evento dinamico. La procedura completa e in [[Stampante 3D/Marlin/Pagine/Endstop homing e Sensorless Homing]].
+Per BLTouch e Sensorless Homing il segnale puo essere impulsivo e `M119` non rappresenta necessariamente ogni evento dinamico. La procedura completa e in [[Stampante 3D/Marlin/Pagine/Endstop homing e Sensorless Homing|Endstop homing e Sensorless Homing]].
 
 Non eseguire homing finche gli endstop fisici non sono stati verificati.
 
@@ -453,7 +462,7 @@ Disabilitarlo:
 M27 S0
 ```
 
-La diagnosi dettagliata di slot, detect, SPI e filesystem e in [[Stampante 3D/Marlin/Pagine/EEPROM scheda SD e salvataggio delle impostazioni]].
+La diagnosi dettagliata di slot, detect, SPI e filesystem e in [[Stampante 3D/Marlin/Pagine/EEPROM scheda SD e salvataggio delle impostazioni|EEPROM scheda SD e salvataggio delle impostazioni]].
 
 ## Diagnostica dei pin
 
@@ -602,25 +611,25 @@ Non va inviato come prova ordinaria durante una stampa. Dopo uno stato STOP poss
 
 ## Procedura
 
-### 1. Identificare
+### Identificare
 
 ```gcode
 M115
 ```
 
-### 2. Registrare i parametri attivi
+### Registrare i parametri attivi
 
 ```gcode
 M503
 ```
 
-### 3. Verificare la memoria
+### Verificare la memoria
 
 ```gcode
 M504
 ```
 
-### 4. Verificare i sensori a freddo
+### Verificare i sensori a freddo
 
 ```gcode
 M105
@@ -632,7 +641,7 @@ Poi:
 M119
 ```
 
-### 5. Verificare posizione e coda
+### Verificare posizione e coda
 
 ```gcode
 M400
@@ -644,7 +653,7 @@ Poi:
 M114
 ```
 
-### 6. Verificare i sottosistemi presenti
+### Verificare i sottosistemi presenti
 
 Per driver TMC:
 
@@ -658,21 +667,21 @@ Per scheda SD:
 M20
 ```
 
-### 7. Cambiare un solo parametro
+### Cambiare un solo parametro
 
 Inviare il comando specifico e documentare valore precedente e nuovo.
 
-### 8. Collaudare senza salvare
+### Collaudare senza salvare
 
 Eseguire il test funzionale appropriato.
 
-### 9. Salvare e riavviare
+### Salvare e riavviare
 
 ```gcode
 M500
 ```
 
-### 10. Confrontare
+### Confrontare
 
 ```gcode
 M503
@@ -752,9 +761,14 @@ I comandi indicati servono a osservare. Non correggono automaticamente la causa.
 
 ## Collegamenti
 
-- [[Stampante 3D/Marlin/Pagine/Metodo di configurazione compilazione e caricamento]]
-- [[Stampante 3D/Marlin/Pagine/EEPROM scheda SD e salvataggio delle impostazioni]]
-- [[Stampante 3D/Marlin/Pagine/Scheda madre porte seriali e pin]]
-- [[Stampante 3D/Marlin/Pagine/Endstop homing e Sensorless Homing]]
-- [[Stampante 3D/Marlin/Pagine/Driver stepper corrente e microstepping]]
-- [[Stampante 3D/Marlin/Pagine/Tipi di bed leveling e configurazione della mesh]]
+- [[Stampante 3D/Marlin/Pagine/Metodo di configurazione compilazione e caricamento|Metodo di configurazione compilazione e caricamento]]
+- [[Stampante 3D/Marlin/Pagine/EEPROM scheda SD e salvataggio delle impostazioni|EEPROM scheda SD e salvataggio delle impostazioni]]
+- [[Stampante 3D/Marlin/Pagine/Scheda madre porte seriali e pin|Scheda madre porte seriali e pin]]
+- [[Stampante 3D/Marlin/Pagine/Endstop homing e Sensorless Homing|Endstop homing e Sensorless Homing]]
+- [[Stampante 3D/Marlin/Pagine/Driver stepper corrente e microstepping|Driver stepper corrente e microstepping]]
+- [[Stampante 3D/Marlin/Pagine/Tipi di bed leveling e configurazione della mesh|Tipi di bed leveling e configurazione della mesh]]
+
+
+## Navigazione
+
+- [[Stampante 3D/Marlin/Indice Marlin|Indice Marlin]]

@@ -3,7 +3,7 @@ date: 2026-05-21
 area: Programmazione
 topic: Rust
 type: technical-note
-status: "non revisionato"
+status: non revisionato
 publish: true
 difficulty: intermedio
 tags:
@@ -11,9 +11,9 @@ tags:
   - rust
   - astrazione-e-generici
 aliases:
-  - "Static dispatch"
-  - "Dynamic dispatch"
-  - "Dispatch Rust"
+  - Static dispatch
+  - Dynamic dispatch
+  - Dispatch Rust
 prerequisites:
   - "[[Programmazione/Rust/Pagine/Generics]]"
   - "[[Programmazione/Rust/Pagine/Traits]]"
@@ -22,6 +22,7 @@ related:
   - "[[Programmazione/Rust/Pagine/Zero-cost abstractions]]"
   - "[[Programmazione/Rust/Pagine/Object safety]]"
   - "[[Programmazione/Rust/Pagine/Performance e profiling]]"
+title: Static dispatch vs dynamic dispatch
 ---
 
 # Static dispatch vs dynamic dispatch
@@ -136,3 +137,8 @@ fn dynamic_run(handler: &dyn Handler, input: &str) {
 - [[Programmazione/Rust/Pagine/Object safety|Object safety]]
 - [[Programmazione/Rust/Pagine/Zero-cost abstractions|Zero-cost abstractions]]
 - [[Programmazione/Rust/Pagine/Performance e profiling|Performance e profiling]]
+
+
+## Navigazione
+
+- [[Programmazione/Rust/Indice Rust|Indice Rust]]

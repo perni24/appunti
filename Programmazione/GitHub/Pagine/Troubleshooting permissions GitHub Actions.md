@@ -3,13 +3,25 @@ date: 2026-07-07
 area: Programmazione
 topic: GitHub
 type: operational-note
-status: "non revisionato"
+status: non revisionato
 publish: true
 difficulty: avanzato
-tags: [github, github-actions, permissions, troubleshooting]
-aliases: [Troubleshooting permissions GitHub Actions, Troubleshooting permessi Actions]
-prerequisites: [Permissions GitHub Actions, Sicurezza dei token GitHub]
-related: [Troubleshooting GitHub Actions, Troubleshooting secrets GitHub Actions, Personal access token GitHub]
+tags:
+  - github
+  - github-actions
+  - permissions
+  - troubleshooting
+aliases:
+  - Troubleshooting permissions GitHub Actions
+  - Troubleshooting permessi Actions
+prerequisites:
+  - "[[Programmazione/GitHub/Pagine/Permissions GitHub Actions]]"
+  - "[[Programmazione/GitHub/Pagine/Sicurezza dei token GitHub]]"
+related:
+  - "[[Programmazione/GitHub/Pagine/Troubleshooting GitHub Actions]]"
+  - "[[Programmazione/GitHub/Pagine/Troubleshooting secrets GitHub Actions]]"
+  - "[[Programmazione/GitHub/Pagine/Personal access token GitHub]]"
+title: Troubleshooting permissions GitHub Actions
 ---
 
 # Troubleshooting permissions GitHub Actions
@@ -95,15 +107,15 @@ permissions:
 
 ## Collegamenti
 
-- [[Programmazione/GitHub/Indice GitHub]]
-- [[Permissions GitHub Actions]]
-- [[Sicurezza dei token GitHub]]
-- [[Personal access token GitHub]]
-- [[Fine-grained token GitHub]]
-- [[GitHub Apps]]
-- [[OIDC GitHub Actions]]
-- [[Troubleshooting GitHub Actions]]
-- [[Troubleshooting secrets GitHub Actions]]
+- [[Programmazione/GitHub/Indice GitHub|Indice GitHub]]
+- [[Programmazione/GitHub/Pagine/Permissions GitHub Actions|Permissions GitHub Actions]]
+- [[Programmazione/GitHub/Pagine/Sicurezza dei token GitHub|Sicurezza dei token GitHub]]
+- [[Programmazione/GitHub/Pagine/Personal access token GitHub|Personal access token GitHub]]
+- [[Programmazione/GitHub/Pagine/Fine-grained token GitHub|Fine-grained token GitHub]]
+- [[Programmazione/GitHub/Pagine/GitHub Apps|GitHub Apps]]
+- [[Programmazione/GitHub/Pagine/OIDC GitHub Actions|OIDC GitHub Actions]]
+- [[Programmazione/GitHub/Pagine/Troubleshooting GitHub Actions|Troubleshooting GitHub Actions]]
+- [[Programmazione/GitHub/Pagine/Troubleshooting secrets GitHub Actions|Troubleshooting secrets GitHub Actions]]
 
 ## Fonti
 

@@ -3,13 +3,23 @@ date: 2026-06-22
 area: Programmazione
 topic: TypeScript
 type: technical-note
-status: "non revisionato"
+status: non revisionato
 publish: true
 difficulty: avanzato
-tags: [typescript, module-augmentation, declaration-merging, dts]
-aliases: [Augmentazione moduli TypeScript]
-prerequisites: [Declaration Merging, Moduli ES e CommonJS]
-related: [Dichiarazioni e file d.ts, Typing di librerie JavaScript]
+tags:
+  - typescript
+  - module-augmentation
+  - declaration-merging
+  - dts
+aliases:
+  - Augmentazione moduli TypeScript
+prerequisites:
+  - "[[Programmazione/TypeScript/Pagine/Declaration Merging]]"
+  - "[[Programmazione/TypeScript/Pagine/Moduli ES e CommonJS]]"
+related:
+  - "[[Programmazione/TypeScript/Pagine/Dichiarazioni e file d.ts]]"
+  - "[[Programmazione/TypeScript/Pagine/Typing di librerie JavaScript]]"
+title: Module augmentation
 ---
 
 # Module augmentation
@@ -84,6 +94,11 @@ Il tipo `Request` viene esteso per includere `user`, spesso aggiunto da middlewa
 
 ## Collegamenti
 
-- [[Declaration Merging]]
-- [[Dichiarazioni e file d.ts]]
-- [[Typing di librerie JavaScript]]
+- [[Programmazione/TypeScript/Pagine/Declaration Merging|Declaration Merging]]
+- [[Programmazione/TypeScript/Pagine/Dichiarazioni e file d.ts|Dichiarazioni e file d.ts]]
+- [[Programmazione/TypeScript/Pagine/Typing di librerie JavaScript|Typing di librerie JavaScript]]
+
+
+## Navigazione
+
+- [[Programmazione/TypeScript/Indice TypeScript|Indice TypeScript]]

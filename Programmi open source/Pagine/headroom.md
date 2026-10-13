@@ -3,12 +3,22 @@ date: 2026-07-14
 area: Programmi open source
 topic: Compressione del contesto LLM
 type: technical-note
-status: "non revisionato"
+status: non revisionato
 difficulty: intermedio
-tags: [open-source, ai, llm, context, token, rag]
-aliases: [headroom, Headroom]
+tags:
+  - open-source
+  - ai
+  - llm
+  - context
+  - token
+  - rag
+aliases:
+  - Headroom
 prerequisites: []
-related: [Token Tamer]
+related:
+  - "[[Programmi open source/Pagine/Token Tamer]]"
+title: headroom
+publish: true
 ---
 
 # headroom
@@ -31,9 +41,9 @@ L'obiettivo e ridurre consumo di token e rumore contestuale, mantenendo le infor
 
 headroom si colloca prima della chiamata al modello: prende testo lungo, output di strumenti o contenuto recuperato e lo compatta in una forma piu densa.
 
-Il caso d'uso e simile a [[Token Tamer]], ma piu generale: invece di concentrarsi solo su coding agent e codice sorgente, punta anche a log, tool output, file e chunk RAG.
+Il caso d'uso e simile a [[Programmi open source/Pagine/Token Tamer|Token Tamer]], ma piu generale: invece di concentrarsi solo su coding agent e codice sorgente, punta anche a log, tool output, file e chunk RAG.
 
-## Esempio d'uso
+## Esempio pratico
 
 ```text
 Output grezzo del tool
@@ -42,7 +52,7 @@ Output grezzo del tool
   -> invio al modello LLM
 ```
 
-## Punti forti
+## Funzionalita
 
 - **Riduce token**: utile quando il contesto e molto grande.
 - **Adatto a tool output**: lavora su log e risultati verbosi.
@@ -62,10 +72,10 @@ Output grezzo del tool
 - Testare con output lunghi e casi limite.
 - Conservare il testo originale quando serve audit o debug.
 - Evitare compressione aggressiva su errori, stack trace e dati critici.
-- Confrontare con [[Token Tamer]] se il caso d'uso e specificamente coding agent.
+- Confrontare con [[Programmi open source/Pagine/Token Tamer|Token Tamer]] se il caso d'uso e specificamente coding agent.
 
 ## Collegamenti
 
-- [[Token Tamer]]
-- [[Programmi open source/Indice Programmi Open Source]]
+- [[Programmi open source/Pagine/Token Tamer|Token Tamer]]
+- [[Programmi open source/Indice Programmi Open Source|Catalogo open source]]
 - https://github.com/chopratejas/headroom

@@ -3,13 +3,24 @@ date: 2026-07-09
 area: Programmazione
 topic: Clean Code
 type: theory-note
-status: "non revisionato"
+status: non revisionato
 publish: true
 difficulty: intermedio
-tags: [clean-code, side-effects, architettura]
-aliases: [Side effects controllati, Effetti collaterali controllati]
-prerequisites: [Funzioni pure e impure, Funzioni con responsabilita singola]
-related: [Pipeline di trasformazione, Immutabilita, Dipendenze esplicite]
+tags:
+  - clean-code
+  - side-effects
+  - architettura
+aliases:
+  - Side effects controllati
+  - Effetti collaterali controllati
+prerequisites:
+  - "[[Programmazione/Clean Code/Pagine/Funzioni pure e impure]]"
+  - "[[Programmazione/Clean Code/Pagine/Funzioni con responsabilita singola]]"
+related:
+  - "[[Programmazione/Clean Code/Pagine/Pipeline di trasformazione]]"
+  - "[[Programmazione/Clean Code/Pagine/Immutabilita]]"
+  - "[[Programmazione/Clean Code/Pagine/Dipendenze esplicite]]"
+title: Side effects controllati
 ---
 
 # Side effects controllati
@@ -98,12 +109,12 @@ La logica pura resta isolata; l'effetto e esplicito.
 
 ## Collegamenti
 
-- [[Programmazione/Clean Code/Indice Clean Code]]
-- [[Funzioni pure e impure]]
-- [[Immutabilita]]
-- [[Pipeline di trasformazione]]
-- [[Dipendenze esplicite]]
-- [[Funzioni con responsabilita singola]]
+- [[Programmazione/Clean Code/Indice Clean Code|Indice Clean Code]]
+- [[Programmazione/Clean Code/Pagine/Funzioni pure e impure|Funzioni pure e impure]]
+- [[Programmazione/Clean Code/Pagine/Immutabilita|Immutabilita]]
+- [[Programmazione/Clean Code/Pagine/Pipeline di trasformazione|Pipeline di trasformazione]]
+- [[Programmazione/Clean Code/Pagine/Dipendenze esplicite|Dipendenze esplicite]]
+- [[Programmazione/Clean Code/Pagine/Funzioni con responsabilita singola|Funzioni con responsabilita singola]]
 
 ## Fonti
 

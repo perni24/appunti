@@ -3,7 +3,7 @@ date: 2026-05-21
 area: Programmazione
 topic: Rust
 type: technical-note
-status: "non revisionato"
+status: non revisionato
 publish: true
 difficulty: intermedio
 tags:
@@ -11,8 +11,8 @@ tags:
   - rust
   - astrazione-e-generici
 aliases:
-  - "GAT"
-  - "Generic Associated Types"
+  - GAT
+  - Generic Associated Types
 prerequisites:
   - "[[Programmazione/Rust/Pagine/Associated types]]"
   - "[[Programmazione/Rust/Pagine/Lifetime annotations]]"
@@ -21,6 +21,7 @@ related:
   - "[[Programmazione/Rust/Pagine/Lifetimes nei trait]]"
   - "[[Programmazione/Rust/Pagine/Higher-Ranked Trait Bounds (HRTB)]]"
   - "[[Programmazione/Rust/Pagine/Iterator API]]"
+title: Generic Associated Types (GAT)
 ---
 
 # Generic Associated Types (GAT)
@@ -141,3 +142,8 @@ Il tipo restituito e una vista dentro `self`, senza creare una nuova `String`.
 - [[Programmazione/Rust/Pagine/Lifetimes nei trait|Lifetimes nei trait]]
 - [[Programmazione/Rust/Pagine/Higher-Ranked Trait Bounds (HRTB)|Higher-Ranked Trait Bounds (HRTB)]]
 - [[Programmazione/Rust/Pagine/Iterator API|Iterator API]]
+
+
+## Navigazione
+
+- [[Programmazione/Rust/Indice Rust|Indice Rust]]

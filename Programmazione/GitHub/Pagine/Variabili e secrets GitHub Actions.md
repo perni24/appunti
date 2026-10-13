@@ -3,13 +3,25 @@ date: 2026-07-07
 area: Programmazione
 topic: GitHub
 type: technical-note
-status: "non revisionato"
+status: non revisionato
 publish: true
 difficulty: intermedio
-tags: [github, github-actions, variables, secrets, security]
-aliases: [Variabili e secrets GitHub Actions, Secrets GitHub Actions]
-prerequisites: [GitHub Actions, Sicurezza dei token GitHub]
-related: [Secret scanning, Sintassi YAML GitHub Actions]
+tags:
+  - github
+  - github-actions
+  - variables
+  - secrets
+  - security
+aliases:
+  - Variabili e secrets GitHub Actions
+  - Secrets GitHub Actions
+prerequisites:
+  - "[[Programmazione/GitHub/Pagine/GitHub Actions]]"
+  - "[[Programmazione/GitHub/Pagine/Sicurezza dei token GitHub]]"
+related:
+  - "[[Programmazione/GitHub/Pagine/Secret scanning]]"
+  - "[[Programmazione/GitHub/Pagine/Sintassi YAML GitHub Actions]]"
+title: Variabili e secrets GitHub Actions
 ---
 
 # Variabili e secrets GitHub Actions
@@ -115,11 +127,11 @@ Qui `DEPLOY_TOKEN` e segreto. `APP_ENV` e configurazione non sensibile.
 
 ## Collegamenti
 
-- [[Programmazione/GitHub/Indice GitHub]]
-- [[GitHub Actions]]
-- [[Sintassi YAML GitHub Actions]]
-- [[Sicurezza dei token GitHub]]
-- [[Secret scanning]]
+- [[Programmazione/GitHub/Indice GitHub|Indice GitHub]]
+- [[Programmazione/GitHub/Pagine/GitHub Actions|GitHub Actions]]
+- [[Programmazione/GitHub/Pagine/Sintassi YAML GitHub Actions|Sintassi YAML GitHub Actions]]
+- [[Programmazione/GitHub/Pagine/Sicurezza dei token GitHub|Sicurezza dei token GitHub]]
+- [[Programmazione/GitHub/Pagine/Secret scanning|Secret scanning]]
 
 ## Fonti
 

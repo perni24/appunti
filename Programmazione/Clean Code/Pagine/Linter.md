@@ -3,13 +3,23 @@ date: 2026-07-09
 area: Programmazione
 topic: Clean Code
 type: technical-note
-status: "non revisionato"
+status: non revisionato
 publish: true
 difficulty: base
-tags: [clean-code, tooling, linter]
-aliases: [Linter, Code linter]
-prerequisites: [Convenzioni di progetto]
-related: [Formatter, Static analysis, Code quality gates]
+tags:
+  - clean-code
+  - tooling
+  - linter
+aliases:
+  - Linter
+  - Code linter
+prerequisites:
+  - "[[Programmazione/Clean Code/Pagine/Convenzioni di progetto]]"
+related:
+  - "[[Programmazione/Clean Code/Pagine/Formatter]]"
+  - "[[Programmazione/Clean Code/Pagine/Static analysis]]"
+  - "[[Programmazione/Clean Code/Pagine/Code quality gates]]"
+title: Linter
 ---
 
 # Linter
@@ -80,11 +90,11 @@ Formatter e linter hanno ruoli diversi ma complementari.
 
 ## Collegamenti
 
-- [[Programmazione/Clean Code/Indice Clean Code]]
-- [[Formatter]]
-- [[Static analysis]]
-- [[Code quality gates]]
-- [[Pre-commit hooks]]
+- [[Programmazione/Clean Code/Indice Clean Code|Indice Clean Code]]
+- [[Programmazione/Clean Code/Pagine/Formatter|Formatter]]
+- [[Programmazione/Clean Code/Pagine/Static analysis|Static analysis]]
+- [[Programmazione/Clean Code/Pagine/Code quality gates|Code quality gates]]
+- [[Programmazione/Clean Code/Pagine/Pre-commit hooks|Pre-commit hooks]]
 
 ## Fonti
 

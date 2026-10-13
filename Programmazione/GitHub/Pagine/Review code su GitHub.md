@@ -3,13 +3,23 @@ date: 2026-07-06
 area: Programmazione
 topic: GitHub
 type: technical-note
-status: "non revisionato"
+status: non revisionato
 publish: true
 difficulty: base
-tags: [github, code-review, pull-request, collaborazione]
-aliases: [Code review GitHub, Review su GitHub]
-prerequisites: [Pull request]
-related: [Pull request, CODEOWNERS]
+tags:
+  - github
+  - code-review
+  - pull-request
+  - collaborazione
+aliases:
+  - Code review GitHub
+  - Review su GitHub
+prerequisites:
+  - "[[Programmazione/GitHub/Pagine/Pull request]]"
+related:
+  - "[[Programmazione/GitHub/Pagine/Pull request]]"
+  - "[[Programmazione/GitHub/Pagine/CODEOWNERS]]"
+title: Review code su GitHub
 ---
 
 # Review code su GitHub
@@ -113,10 +123,10 @@ Il secondo indica problema, impatto e azione verificabile.
 
 ## Collegamenti
 
-- [[Programmazione/GitHub/Indice GitHub]]
-- [[Pull request]]
-- [[Commit e cronologia su GitHub]]
-- [[Merge squash e rebase su GitHub]]
+- [[Programmazione/GitHub/Indice GitHub|Indice GitHub]]
+- [[Programmazione/GitHub/Pagine/Pull request|Pull request]]
+- [[Programmazione/GitHub/Pagine/Commit e cronologia su GitHub|Commit e cronologia su GitHub]]
+- [[Programmazione/GitHub/Pagine/Merge squash e rebase su GitHub|Merge squash e rebase su GitHub]]
 
 ## Fonti
 
