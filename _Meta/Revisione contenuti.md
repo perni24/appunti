@@ -1288,3 +1288,839 @@ Lette integralmente e corrette tutte le **11 schede** dell'[[Programmazione/Java
 Completata questa passata su **87 note JavaScript e 11 promemoria**, 98 note di contenuto complessive. Rimangono i contenuti degli altri argomenti, incluso il punto gia segnalato su SSR e SSG in React. Non estendere questi risultati automaticamente a tutto il vault.
 
 Le note restano non revisionate fino al controllo dell'utente. Non sono stati richiesti commit, push o deploy remoto.
+
+## 2026-10-14 - Fondamenta React
+
+### Perimetro
+
+Lette integralmente e corrette le cinque note del blocco Fondamenta di React. Inizio di questa passata sull'area: **5 delle 59 note React**, con 54 ancora da esaminare. I risultati non certificano automaticamente le note correlate o le versioni precedenti degli esempi.
+
+Conservati data originale, tipo teorico/tecnico, pubblicabilita e status non revisionato; aggiunti prerequisiti, correlazioni e fonti ufficiali. Nessuna nuova pagina o spostamento: l'indice contiene gia tutte le cinque note.
+
+| Nota | Interventi |
+| --- | --- |
+| [[Programmazione/React/Pagine/Introduzione e Toolchain\|Introduzione e Toolchain]] | Distinti React/React DOM, JSX, framework e build; progetto completo in cinque file, versioni esplicite, root controllata e comandi separati. |
+| [[Programmazione/React/Pagine/JSX\|JSX]] | Corretti contesti impliciti, attributi, valori renderizzabili, Fragment con key, style, callback e limiti dell'escaping testuale. |
+| [[Programmazione/React/Pagine/Componenti Funzionali vs Componenti a Classe\|Funzioni e classi]] | Due contatori realmente equivalenti, import, updater, initialValue, reset via key, limiti dei lifecycle e classi ancora supportate. |
+| [[Programmazione/React/Pagine/Props e Flusso di dati unidirezionale\|Props e flusso dati]] | Proprietario dello stato, callback distinta da bubbling, oggetti non clonati, default e children; demo di filtro/selezione con input controllato. |
+| [[Programmazione/React/Pagine/Rendering Condizionale e Liste\|Rendering e liste]] | Stati UI espliciti, zero con &&, identita e key; demo di bozze locali con riordino ed eliminazione, senza mutare gli array precedenti. |
+
+### Fonti e ambiente
+
+- Documentazione React e Vite consultata il 2026-10-14; versioni npm controllate prima di preparare la fixture. Fonti specifiche nelle singole note.
+- React e React DOM 19.3.0, Vite 8.3.4, plugin React 6.1.2, Node 24.14.0, Chrome 155.0.8059.79. Pacchetti installati con versioni esatte e script di installazione disabilitati, soltanto in appunti-react-tools nella directory temporanea esterna.
+- Nessuna modifica a package.json/lockfile o dipendenze di Quartz. Il demo e client-side; non e un'app SSR, un backend o un prodotto da distribuire.
+
+### Verifica degli esempi
+
+- **33 test superati** in react-fondamenti.test.mjs: 19 Node e 14 Chrome. Cinque gruppi Node controllano la sola sintassi dei blocchi JSX/JS, 13 controllano markup/comportamenti selezionati mediante React DOM server e uno la build del progetto. Non presentare il controllo sintattico come esecuzione completa.
+- Codice estratto dal Markdown tramite AST, senza seconda implementazione dei componenti. Il progetto introduttivo conserva package/config/HTML/main/App della nota; i componenti delle altre note vengono montati in un banco di prova dedicato.
+- Controllati valori predefiniti/null, attributi booleani, Fragment senza wrapper, style, oggetti non renderizzabili, testo escapato, children, stati vuoti/errore e dati congelati.
+- Build tramite API Vite, dev server e preview di produzione reali. Browser con StrictMode, click, reload, contatori equivalenti e indipendenti, cambio di initialValue senza reset e key diversa con reset.
+- Verificati label/input con useId, callback senza aggiornamento del padre, filtro e selezione persistente, reset, identita del nodo dopo reverse e mantenimento delle bozze delle righe superstiti.
+- Variante negativa solo nella fixture: sostituire la key stabile con l'indice sposta la bozza sulla riga errata, come previsto. Non e una modifica all'esempio pubblicato o una mutation suite completa.
+- Risolto un problema della fixture Windows: node_modules deve essere una directory locale per la cache Vite, con junction sulle singole dipendenze. Canonicalizzare soltanto il percorso non bastava. Rimossa inoltre dal demo la richiesta implicita a favicon.ico tramite un'icona data vuota.
+- Server e contesti browser chiusi; junction rimosse senza attraversarle, poi fixture cancellate dopo verifica di percorso risolto, parent e prefisso. Nessuna rete esterna durante i test, credenziale o dato personale.
+
+### Limiti
+
+Non eseguiti il generatore create-vite, una reinstallazione per ogni fixture, Fast Refresh, ESLint/type checking, framework, hydration/RSC, lifecycle/effect o error boundary. Nessuna matrice browser, prova di carico, benchmark o audit completo di accessibilita/sicurezza. Il rendering statico nei test verifica markup, non l'implementazione di un sito SSR. La precedente suite JavaScript non e stata rieseguita in questo blocco.
+
+### Verifica del vault
+
+- content:check con report: **911 documenti raggiungibili, zero errori, 592 avvisi editoriali** (cinque in meno dopo l'aggiunta delle fonti). Non sono 592 errori tecnici accertati.
+- content:test: **9 test superati**, separati dai 33 sugli esempi React.
+- README dei test e rapporto aggiornati; storico recente mantenuto a 10 voci operative.
+
+### Pubblicazione locale
+
+- Build Quartz completata e ripetuta dopo una correzione editoriale alla tabella funzioni/classi: 911 documenti, 3.719 file emessi, 2.003 HTML, 168 redirect e **135.401 riferimenti verificati**, zero errori. Avvisi preesistenti su eval di note-properties e metadati Git della copia temporanea.
+- L'anteprima precedente non era piu attiva: riavviato il server locale sulla porta 8082, senza finestre aggiuntive. Nessuna modifica manuale a site/public o alla configurazione del sito.
+- Controllate tutte le cinque note in 10 viste Chrome: desktop 1440 x 1000 e mobile 390 x 844. Titoli corretti, nessun overflow del documento, errore JavaScript o caricamento HTTP fallito; codice e tabelle scorrono entro i rispettivi contenitori.
+- Ispezionati otto screenshot rappresentativi di testo, codice e due tabelle, inclusa la nuova verifica della cella corretta. Il controllo delle pagine Quartz e distinto dai 33 test React. Browser QA chiusi; anteprima lasciata disponibile su http://localhost:8082/appunti/.
+
+### Prossimo blocco
+
+Stato e Rendering: [[Programmazione/React/Pagine/useState|useState]], [[Programmazione/React/Pagine/useEffect|useEffect]], [[Programmazione/React/Pagine/useRef|useRef]] e [[Programmazione/React/Pagine/Gestione Moduli|Gestione Moduli]], riutilizzata nell'indice per eventi, form e componenti controllati/non controllati.
+
+Restano 54 note React. Il problema gia annotato in SSR e SSG resta aperto fino a quel blocco. Le note modificate restano non revisionate fino all'approvazione dell'utente; nessun nuovo commit o push eseguito.
+
+## 2026-10-15 - React: Stato e Rendering
+
+### Perimetro
+
+Lette integralmente e corrette le quattro note del blocco Stato e Rendering. La passata React copre ora **9 note su 59**, con **50 ancora da esaminare**. Gestione Moduli e la stessa pagina richiamata dall'indice per form, eventi, controlled/uncontrolled e React Hook Form: non conteggiata piu volte.
+
+Conservati date originarie, percorsi, tipo, pubblicabilita e status non revisionato; aggiunti prerequisiti, correlazioni e fonti ufficiali. Nessuna nuova nota, spostamento o necessita di aggiornare gli indici.
+
+| Nota | Correzioni |
+| --- | --- |
+| [[Programmazione/React/Pagine/useState\|useState]] | Snapshot e coda, sostituzioni rispetto a updater, purezza, inizializzazione e identita; esempi completi per oggetti annidati, array e input controllato. |
+| [[Programmazione/React/Pagine/useEffect\|useEffect]] | Commit rispetto a render/paint, dipendenze e Strict Mode; timer con cleanup e fetch con errori HTTP/JSON/schema, abort e protezione dalle risposte obsolete. |
+| [[Programmazione/React/Pagine/useRef\|useRef]] | Ref rispetto a stato, assegnazione DOM, focus e timeout cancellabile; eliminato l'esempio che leggeva la ref nel render, conservando il tema del valore precedente con stato coordinato. |
+| [[Programmazione/React/Pagine/Gestione Moduli\|Gestione Moduli]] | Eventi, semantica e controlli nativi, login con contratto asincrono, errori/reset e simulazione esplicita; FormData, select multipla e esempio funzionante React Hook Form. |
+
+### Fonti e prove
+
+- Fonti React, MDN e sorgenti ufficiali React Hook Form consultate il 2026-10-15, link nelle note. Verificata la versione npm prima di installare React Hook Form 7.90.0 nella sola toolchain temporanea esterna.
+- Eseguiti serialmente i due file di test React: **62 test superati**, 33 dei fondamenti piu 29 nuovi (8 Node, di cui quattro gruppi di sola sintassi, e 21 Chrome). Node 24.14.0, React/React DOM 19.3.0, Vite 8.3.4 per la regressione, Chrome 155.0.8059.79.
+- Il nuovo banco di prova estrae gli snippet Markdown e li compila con esbuild in memoria. Fixture HTTP locale, Strict Mode e orologio Playwright per timer deterministici. Nessuna nuova dipendenza o modifica al lockfile del sito.
+- Verificati updater/reset, copie annidate e array, titolo ripristinato, unico intervallo e cleanup, focus, timeout sostituito/annullato e precedente relativo all'evento.
+- Fetch reale per profili e errori HTTP/JSON/schema. Mock differito dichiarato soltanto nei test delle risposte fuori ordine e dopo unmount: ignora intenzionalmente l'abort per verificare la protezione `active` e l'invalidazione dei signal.
+- Verificati invio da tastiera, validazione HTML, attesa e lock, retry, reset, FormData e selezioni multiple, errori accessibili del campo React Hook Form. Credenziali fittizie; nessuna autenticazione o richiesta a servizi reali.
+- Server e browser di prova chiusi. Il nuovo test non crea directory/junction di fixture; la regressione dei fondamenti conserva il proprio cleanup verificato.
+
+### Limiti e seguito
+
+Non sono stati eseguiti tutti i frammenti schematici, i comportamenti soltanto descritti in prosa, lint/type checking, Controller/resolver, Actions, SSR/hydration, backend o sicurezza dell'autenticazione. I test con mock non dimostrano cancellazione dell'elaborazione server. Non rieseguita la precedente suite JavaScript; risultati e date restano separati.
+
+Prossimo blocco: Toolchain Base, con [[Programmazione/React/Pagine/Profiler e Debugging|Profiler e Debugging]], [[Programmazione/React/Pagine/CSS Modules|CSS Modules]] e [[Programmazione/React/Pagine/Styling base|Styling base]]. Introduzione e Toolchain, gia controllata, non va ricontata. Il punto gia annotato su SSR e SSG rimane aperto fino al relativo blocco.
+
+Le note restano non revisionate fino all'approvazione dell'utente. Nessun commit, push o deploy remoto richiesto o eseguito.
+
+### Verifica del vault e del sito
+
+- content:check con report: **911 documenti raggiungibili, zero errori, 588 avvisi editoriali**, quattro in meno grazie alle fonti aggiunte. Gli avvisi non equivalgono a inesattezze tecniche accertate.
+- content:test: **9 test superati**, separati dai 62 test React. Storico recente mantenuto a 10 voci operative; README e rapporto aggiornati.
+- Build completa Quartz: **3.719 file emessi, 2.003 HTML, 168 redirect, 135.488 riferimenti verificati, zero errori**. Restano gli avvisi preesistenti su eval del plugin note-properties e metadati Git nella copia temporanea.
+- Anteprima precedente non attiva: riavviata in background sulla porta libera 8082. Nessuna modifica manuale agli HTML o alla configurazione del sito.
+- Verificate le quattro note in otto viste Chrome, desktop 1440 x 1000 e mobile 390 x 844. Titoli corretti, nessun overflow del documento, errore JavaScript o risposta HTTP fallita; controllati scorrimento del codice e visibilita dell'ultima colonna delle due tabelle.
+- Ispezionati sei screenshot rappresentativi di testo, codice e tabelle. Questa verifica visiva e distinta dai test degli esempi; browser QA chiuso, anteprima disponibile su http://localhost:8082/appunti/.
+
+## 2026-10-15 - React: Toolchain Base
+
+### Perimetro
+
+Lette integralmente e corrette Profiler e Debugging, CSS Modules e Styling base. Completato il **Percorso Base di React: 12 note uniche su 59**, con **47 ancora da esaminare**. Introduzione e Toolchain era gia revisionata e non viene ricontata per i suoi richiami nell'indice.
+
+Conservati percorsi, data originaria, pubblicabilita e status non revisionato. Profiler e Debugging resta una nota operativa e segue le sezioni del relativo template; le altre due restano note tecniche. Nessuna nuova nota o modifica necessaria agli indici.
+
+| Nota | Correzioni |
+| --- | --- |
+| [[Programmazione/React/Pagine/Profiler e Debugging\|Profiler e Debugging]] | Procedura riproducibile, strumenti distinti, componente Profiler completo, metriche e limiti, sviluppo/produzione e diagnosi senza memoizzazione indiscriminata. |
+| [[Programmazione/React/Pagine/CSS Modules\|CSS Modules]] | Scope per file, nomi esportati, cascata, composes e global; progetto completo con token, pulsante riusabile e scheda selezionabile. |
+| [[Programmazione/React/Pagine/Styling base\|Styling base]] | CSS globale rispetto a inline style, variabili con unita, semantica e stati; demo completo di tema locale, slider, reset, focus e movimento ridotto. |
+
+### Fonti e prove
+
+- Documentazione primaria React, Vite, CSS Modules, MDN e Chrome DevTools consultata il 2026-10-15; riferimenti nelle note.
+- Riutilizzata la toolchain temporanea esterna: React/React DOM 19.3.0, Vite 8.3.4, plugin React 6.1.2, Node 24.14.0, Chrome 155.0.8059.79. Nessun pacchetto nuovo, nessuna modifica a dipendenze o configurazione di Quartz.
+- **90 test React superati** nell'esecuzione finale seriale: 62 precedenti e 28 nuovi. Questi ultimi sono sei Node (tre gruppi di sola sintassi e tre verifiche delle build) e 22 Chrome.
+- Tre progetti ricostruiti dal Markdown, con dev server e preview Vite reali. Testati campi/callback del Profiler in sviluppo e assenza di record nella produzione ordinaria, senza sostenere che il demo sia un benchmark.
+- I primi test hanno rilevato un errore della fixture: Vite build lasciava NODE_ENV=production per il server dev nello stesso processo. Separati esplicitamente gli ambienti e controllata la configurazione; corretto anche react-fondamenti.test.mjs e rieseguita l'intera regressione. I risultati precedenti dei fondamenti non certificavano da soli l'esecuzione in sviluppo.
+- Corretti anche un selettore di test troppo restrittivo per la label del select e un problema reale dell'esempio CSS Modules: il titolo lungo con font ingrandito superava il contenitore. Aggiunti wrapping al contenitore e dimensione esplicita del titolo.
+- CSS Modules verificati su classi generate distinte, composizione, global discendente, ereditarieta dei token e influenza delle regole globali. Non equiparati a Shadow DOM.
+- Styling verificato su tema, variabile dinamica, reset, disabled, focus e hover, movimento ridotto e layout a 320/390/1440 px, anche con font base al 200% e titolo senza spazi.
+- Ispezionati quattro screenshot dei demo, separati dalla QA Quartz. Browser/server chiusi; fixture e junction rimosse dopo controllo del percorso, senza attraversare le directory delle dipendenze.
+
+### Limiti e seguito
+
+Non automatizzati i pannelli dell'estensione React DevTools, Performance tracks o una build speciale di profiling. Nessun benchmark, matrice browser, audit completo di accessibilita/contrasto, lint/type checking o verifica di Sass/utility/CSS-in-JS. I frammenti schematici hanno solo controllo sintattico. Non rieseguita la suite JavaScript.
+
+Prossimo blocco: Percorso Intermedio, Hooks e Stato, iniziando da [[Programmazione/React/Pagine/useMemo e useCallback|useMemo e useCallback]], [[Programmazione/React/Pagine/useReducer|useReducer]] e [[Programmazione/React/Pagine/Custom Hooks|Custom Hooks]]. Il punto gia annotato su SSR e SSG resta aperto fino al relativo blocco.
+
+Le note restano non revisionate fino all'approvazione dell'utente. Nessun commit, push o deploy remoto.
+
+### Verifica del vault e del sito
+
+- content:check con report: **911 documenti raggiungibili, zero errori, 585 avvisi editoriali**, tre in meno grazie alle fonti aggiunte. Gli avvisi non certificano errori tecnici.
+- content:test: **9 test superati**, distinti dai 90 test React. Rapporto e README aggiornati; storico recente mantenuto a 10 voci operative.
+- Build completa Quartz: **3.719 file emessi, 2.003 HTML, 168 redirect, 135.552 riferimenti verificati, zero errori**. Restano gli avvisi preesistenti su eval del plugin note-properties e metadati Git nella copia temporanea.
+- Anteprima precedente non attiva: avviata in background sulla porta libera 8082. Nessuna modifica manuale agli HTML o alla configurazione di Quartz.
+- Controllate tutte e tre le pagine in sei viste Chrome, desktop 1440 x 1000 e mobile 390 x 844: titoli corretti, nessun overflow del documento, errore JavaScript o risposta HTTP fallita. Verificate le tre tabelle del Profiler e la visibilita dell'ultima colonna.
+- Verificato separatamente lo scorrimento dei blocchi code interni a pre: dieci blocchi larghi su mobile, tutti scorribili; nessun blocco largo su desktop. Il solo controllo del contenitore pre non sarebbe sufficiente a verificarli.
+- Ispezionati sei screenshot Quartz: CSS Modules desktop e codice mobile, Styling base mobile e le tre tabelle del Profiler mobile. Questa QA e distinta dalle prove degli esempi. Browser QA chiuso; anteprima disponibile su http://localhost:8082/appunti/.
+
+## 2026-10-15 - React: Hooks e Stato, prima parte
+
+### Perimetro
+
+Lette integralmente e corrette useMemo e useCallback, useReducer e Custom Hooks. La revisione tecnica React copre **15 note uniche su 59**, con **44 ancora da esaminare**. I richiami allo stesso file nell'indice, come Reducer pattern e Memoization strategy, non sono altre note.
+
+Conservati percorsi, data originaria, tipo tecnico, pubblicabilita e status non revisionato. Integrati prerequisiti, collegamenti e fonti. Nessuna nuova pagina o modifica necessaria all'indice.
+
+| Nota | Correzioni |
+| --- | --- |
+| [[Programmazione/React/Pagine/useMemo e useCallback\|useMemo e useCallback]] | Object.is, dipendenze, closure e cache invalidabile; memo non blocca stato/context. Catalogo completo con filtro e sconto, limiti delle misure e del Compiler. |
+| [[Programmazione/React/Pagine/useReducer\|useReducer]] | Snapshot, coda, initializer e reset; reducer puri con copie annidate. Contatore completo e form con invalidita, correzione, conferma locale e reset, distinti dal progetto asincrono. |
+| [[Programmazione/React/Pagine/Custom Hooks\|Custom Hooks]] | Contratto e punti di chiamata, stato indipendente, JSX restituibile e identita dell'API. Pannelli, titolo con ownership esplicita e debounce completo con cleanup e istanze separate. |
+
+### Fonti e prove
+
+- Documentazione primaria React 19.3 e MDN consultata il 2026-10-15, con collegamenti nelle note. Riutilizzati React/React DOM 19.3.0 e toolchain temporanea esterna; nessun nuovo pacchetto o aggiornamento del lockfile.
+- **128 test React superati** nell'esecuzione finale seriale: 90 precedenti e 38 nuovi. Nuovi test: 14 Node (tre gruppi di sintassi, nove prove pure e due render statici) e 24 Chrome, dodici per ciascuno dei due ambienti.
+- Esempi estratti dal Markdown: esbuild crea due bundle in memoria con NODE_ENV esplicito, development e production. Node 24.14.0, Chrome 155.0.8059.79; la regressione riesegue anche le precedenti build Vite 8.3.4.
+- Stato e azioni congelati: filtro, reducer e initializer senza mutazioni; copie annidate, no-op, errori di azione e risultati ripetibili. Nessun algoritmo duplicato nella fixture.
+- Browser: callback aggiornata quando cambia lo sconto, scelta conservata fino al clic; dispatch consecutivi, errori associati all'input, normalizzazione, reset con prop corrente e nuova key.
+- Pannelli con stati/ID indipendenti; titolo aggiornato e ripristinato con un solo proprietario. Debounce con orologio Playwright e handle osservati: cambio rapido di valore, ritardo modificato, cleanup, remount, istanze indipendenti e funzioni conservate senza invocazione.
+- Browser e server chiusi. Il nuovo test non crea directory di fixture o junction; le suite precedenti mantengono il loro cleanup. Nessuna autenticazione, rete esterna o persistenza nei demo.
+
+### Limiti e seguito
+
+Non misurate prestazioni o conteggi garantiti di render; nessun benchmark o React Compiler. Gli schemi hanno solo verifica sintattica e la tabella di invio asincrono e progettazione, non un backend implementato. Non verificati lint/type checking, comparator personalizzati, cache invalidata da Suspense/Fast Refresh, hydration, store esterni, coordinamento di titoli concorrenti, matrice browser o audit completo di accessibilita. I render statici non eseguono gli effect. Suite JavaScript non rieseguita.
+
+Prossimo blocco: completare Hooks e Stato con [[Programmazione/React/Pagine/Context API|Context API]], [[Programmazione/React/Pagine/State Management Esterno|State Management Esterno]] e [[Programmazione/React/Pagine/Derived state|Derived state]]. Resta aperto il punto precedente su SSR e SSG fino al relativo blocco.
+
+Le note restano non revisionate fino all'approvazione dell'utente. Nessun commit, push o deploy remoto.
+
+### Verifica del vault
+
+- content:check con report: **911 documenti raggiungibili, zero errori, 582 avvisi editoriali**, tre in meno grazie alle fonti aggiunte. Gli avvisi non certificano errori tecnici.
+- content:test: **9 test superati**, distinti dai test degli esempi. README e rapporto aggiornati; storico recente mantenuto a 10 voci operative.
+- Build completa Quartz: **3.719 file emessi, 2.003 HTML, 168 redirect, 135.608 riferimenti verificati, zero errori**. Restano gli avvisi preesistenti su eval del plugin note-properties e metadati Git della copia temporanea.
+- Riutilizzata l'anteprima gia attiva sulla porta 8082, senza fermarla o modificarne la configurazione. Nessun intervento manuale sugli HTML generati.
+- Verificate le tre note in sei viste Chrome, desktop 1440 x 1000 e mobile 390 x 844: contenuti aggiornati, titoli corretti, nessun overflow del documento, errore JavaScript o risposta HTTP fallita. Otto blocchi code larghi su mobile, tutti scorribili; nessuno su desktop. Verificata l'ultima colonna della tabella asincrona di useReducer.
+- Ispezionati sei screenshot: useMemo e useCallback desktop/codice mobile, useReducer desktop/tabella mobile, Custom Hooks testo/codice mobile. Browser QA chiuso; anteprima disponibile su http://localhost:8082/appunti/. La QA del sito resta distinta dall'esecuzione degli esempi.
+
+## 2026-10-15 - React: Context, Store e Stato Derivato
+
+### Perimetro
+
+Lette integralmente e corrette Context API, State Management Esterno e Derived state. Completato il blocco Hooks e Stato: la revisione tecnica React copre **18 note uniche su 59**, con **41 ancora da esaminare**. Le voci dell'indice che richiamano una stessa nota non sono conteggiate due volte.
+
+Conservati percorsi, data originaria, tipo, pubblicabilita e status non revisionato. Context segue il template tecnico; le due note teoriche ora seguono le sezioni del relativo template. Aggiunti prerequisiti, collegamenti e fonti, senza creare duplicati o modificare l'indice.
+
+| Nota | Correzioni |
+| --- | --- |
+| [[Programmazione/React/Pagine/Context API\|Context API]] | Distribuzione distinta dalla proprieta dello stato; default solo senza provider, undefined esplicito, annidamento e identita. Esempi completi di fallback e lingue indipendenti, guard e consumatori memo; limiti di memoizzazione e autorizzazione. |
+| [[Programmazione/React/Pagine/State Management Esterno\|State Management Esterno]] | Scelta fra stato locale, URL, Context, client store e cache remota. Due demo alternativi completi Zustand/Redux Toolkit; selector, merge, Immer, reset, sottoscrizioni, durata e isolamento. Recoil segnalato come archiviato. |
+| [[Programmazione/React/Pagine/Derived state\|Derived state]] | Input indipendenti e viste pure, effetto di sincronizzazione evitabile, ordinamento senza mutare. Carrello con quantita, totale e selezione per ID; bozza intenzionale con politica di reset tramite key. |
+
+### Fonti e prove
+
+- Consultate fonti primarie React, Zustand, Redux/React Redux, TanStack Query e Jotai; stato del repository Recoil verificato. Collegamenti nelle note. Verificate anche le implementazioni installate di merge e useSyncExternalStore in Zustand.
+- Installati esclusivamente nella toolchain temporanea esterna Zustand 5.0.15, Redux Toolkit 2.13.0 e React Redux 9.3.0. Nessun aggiornamento di dipendenze o lockfile Quartz.
+- **166 test React superati** nella regressione seriale: 128 precedenti e 38 nuovi. Nuovi test: 16 Node (tre gruppi di sola sintassi, quattro render statici, nove prove pure/store) e 22 Chrome, undici per ambiente.
+- Esempi estratti direttamente dalle note; bundle esbuild in memoria con NODE_ENV development/production esplicito e Strict Mode. React 19.3.0, Node 24.14.0 e Chrome 155.0.8059.79. Le suite precedenti rieseguono anche build Vite reali.
+- Context: default, provider piu vicino, undefined, guard e valori falsy; provider indipendenti e consumatori memo aggiornati. Nuova prop iniziale distinta da reset tramite key.
+- Store: factory isolate, snapshot congelati, transizioni e reset riutilizzabile, subscribe/unsubscribe. Nel browser entrambi i demo mantengono lo stato oltre lo smontaggio dei consumatori ma lo perdono al reload. Reset parziale Zustand conserva le azioni.
+- Dati derivati: filtro e sort non mutano gli input, totale con quantita e zero sul vuoto, selezione aggiornata e conservata anche se nascosta dal filtro, rimozione e reset. Bozza preservata dopo nuove props della stessa identita, scartata dopo cambio di key.
+- Server e browser chiusi; nessuna nuova fixture su disco o junction nel test aggiunto. Aggiornato il README con comando di installazione, regressione e limiti.
+
+### Limiti e seguito
+
+Nessun benchmark o conteggio fisso di render evitati, React Compiler, lint/type checking, hydration/SSR, middleware di persistenza, cache di rete, sincronizzazione fra schede o implementazione Jotai/Recoil. Schemi e anti-pattern hanno solo controllo sintattico; render statici non dimostrano un'app SSR. Nessuna matrice browser, backend reale o audit completo di accessibilita. Suite JavaScript non rieseguita.
+
+Prossimo blocco: [[Programmazione/React/Pagine/React Router|React Router]], [[Programmazione/React/Pagine/Data Fetching e Cache|Data Fetching e Cache]] e [[Programmazione/React/Pagine/Validazione Dati|Validazione Dati]], nella sezione Routing, Data Fetching e Form. Gestione Moduli e gia stata revisionata e conteggiata. Resta aperto il punto su SSR e SSG fino al relativo blocco.
+
+Le note restano non revisionate fino all'approvazione dell'utente. Nessun commit, push o deploy remoto.
+
+### Verifica del vault
+
+- content:check con report: **911 documenti raggiungibili, zero errori, 579 avvisi editoriali**. Gli avvisi non sono una certificazione di errori tecnici; rapporto aggiornato.
+- content:test: **9 test superati**, distinti dall'esecuzione degli esempi React.
+- Build completa Quartz: **3.719 file emessi, 2.003 HTML, 168 redirect e 135.669 riferimenti verificati, zero errori**. Restano gli avvisi preesistenti su eval del plugin note-properties e metadati Git della copia temporanea.
+- Anteprima precedente non attiva: riavviata in background sulla porta libera 8082. Nessuna modifica manuale agli HTML generati o alla configurazione Quartz.
+- Tre pagine verificate in sei viste Chrome, desktop 1440 x 1000 e mobile 390 x 844: HTTP 200, titoli e contenuti aggiornati, nessun overflow del documento, errore JavaScript o risposta HTTP fallita. Otto blocchi code larghi su mobile, tutti scorribili; nessuno su desktop. Tabella degli store leggibile fino all'ultima colonna.
+- Ispezionati sei screenshot: Context desktop/codice mobile, State Management Esterno desktop/tabella mobile, Derived state testo/codice mobile. Usato scorrimento immediato e margine per la testata fissa per fotografare le sezioni corrette. Browser QA chiuso; anteprima disponibile su http://localhost:8082/appunti/. QA distinta dai test degli esempi.
+
+## 2026-10-15 - React: Routing, Cache e Validazione
+
+### Perimetro
+
+Lette integralmente e corrette React Router, Data Fetching e Cache e Validazione Dati. Completato Routing, Data Fetching e Form: Gestione Moduli era gia revisionata. **21 note React uniche su 59, 38 ancora da esaminare**. Conservati percorsi, tipo tecnico, data originaria, publish e status non revisionato; aggiunti prerequisiti, collegamenti e fonti. Nessuna nuova pagina o modifica necessaria all'indice.
+
+| Nota | Correzioni |
+| --- | --- |
+| [[Programmazione/React/Pagine/React Router\|React Router]] | Distinte modalita, major e import; demo completo Data Mode con file JSON statico, layout/Outlet, query URL, loader, error boundary e fallback iniziale. Distinti percorso sconosciuto, record assente e 404 HTTP; segnalati requisiti di hosting e limiti client. |
+| [[Programmazione/React/Pagine/Data Fetching e Cache\|Data Fetching e Cache]] | Sostituiti frammenti con dipendenze implicite e fetch senza gestione degli errori. Chiavi, stati v5, staleTime/gcTime e signal; frontend completo con contratto HTTP esplicito, aggiornamento ottimistico, rollback e riconciliazione. Backend non incluso e concorrenza limitata dichiarati. |
+| [[Programmazione/React/Pagine/Validazione Dati\|Validazione Dati]] | Rimosso il falso criterio email basato solo su @. Zod 4, input/output, coercion e campi sconosciuti; form completo con errori, focus, reset e testo normalizzato. Vincoli fra campi e schema API, distinti da sanitizzazione e autorizzazione. |
+
+### Fonti e prove
+
+- Consultate fonti primarie React Router, TanStack Query, Zod e MDN. Verificati requisiti e versioni npm: Router 8.4.0, Query 5.104.3 e Zod 4.6.7, aggiunti solo alla toolchain temporanea esterna. React 19.3.0, Node 24.14.0 e Chrome 155.0.8059.79. Nessuna modifica alle dipendenze Quartz.
+- **227 test React superati** nella regressione seriale: 166 precedenti e 61 nuovi, di cui 11 Node e 50 Chrome (25 sviluppo, 25 produzione). Esempi estratti dal Markdown, bundle in memoria con NODE_ENV esplicito e Strict Mode; precedenti build Vite rieseguite.
+- Node: sintassi, parser task, copie, schema profilo e limiti, errori Zod, range, object/strict/loose, coercion distinta da validazione; QueryClient su chiavi equivalenti, deduplicazione, freschezza e invalidazione di query inattive.
+- Browser/router: filtri e history, deep link/reload, errori di percorso/record/input/HTTP/JSON/schema, vuoto, navigazione cancellata e parser utenti. Il server locale fornisce il fallback SPA, senza presumere che ogni hosting lo faccia.
+- Browser/query: GET e PATCH reali verso la fixture loopback. Verificati pending/vuoto/errori/retry, refetch con vecchi dati, risposta autorevole, rollback, refetch fallito e salvataggio riuscito prima di un errore. ID codificati, payload e ID di risposta, cancellazione allo smontaggio. Gate di risposta controllati, senza backend esterno.
+- Le prime prove usavano check() come se il cambiamento della checkbox fosse sincrono; aggiornato il test a click e attesa della transizione, coerentemente con l'await di cancelQueries. Nessuna modifica dell'algoritmo per aggirare la prova.
+- Browser/form: messaggi e focus, riferimenti ARIA, Enter, input distinto da output, testo non interpretato come HTML, reset e istanze indipendenti. Browser/server chiusi e cache Node ripulita; README aggiornato.
+
+### Limiti e seguito
+
+Non eseguiti action/fetcher, Framework Mode, SSR/hydration, HashRouter/basename, migrazione di un'app esistente, deploy remoto, lint/type checking o matrice browser. Nessuna verifica completa di offline, GC, polling, persistenza o scritture concorrenti; il backend dei test non certifica sicurezza/autorizzazione/idempotenza di un servizio reale. Resolver RHF, validazione async, conferma email e audit completo di accessibilita non implementati. Suite JavaScript non rieseguita.
+
+Prossimo blocco: Component Patterns, con Compound Components Pattern, Control Props e State Reducer Pattern, Portals ed Error Boundaries. Il punto gia segnalato su SSR e SSG resta aperto fino al relativo blocco. Le note restano non revisionate fino al controllo dell'utente; nessun commit, push o deploy remoto.
+
+### Verifica del vault
+
+- content:check con report: **911 documenti raggiungibili, zero errori, 576 avvisi editoriali**. Gli avvisi non equivalgono automaticamente a errori tecnici.
+- content:test: **9 test superati**, distinti dalle prove degli esempi React.
+- Build Quartz: **3.719 file emessi, 2.003 HTML, 168 redirect, 135.710 riferimenti verificati e zero errori**. Restano gli avvisi preesistenti su eval nel plugin note-properties e metadati Git della copia temporanea.
+- Anteprima sulla porta 8082 non piu attiva: riavviata in background sulla porta libera. Nessun intervento sugli HTML generati o sulla configurazione Quartz.
+- Verificate tre pagine in sei viste Chrome, 1440 x 1000 e 390 x 844: HTTP 200, titoli/contenuti aggiornati, nessun errore JavaScript, risposta HTTP fallita o overflow del documento. Sei blocchi code larghi su mobile e uno su desktop, tutti scorribili; quattro tabelle controllate fino all'ultima colonna.
+- Ispezionati otto screenshot: Router desktop e tabella mobile, due tabelle e codice mobile di Data Fetching, testo/codice/tabella mobile di Validazione. Browser QA chiuso; anteprima disponibile su http://localhost:8082/appunti/. QA Quartz distinta dai test degli esempi.
+
+## 2026-10-15 - React: Component Patterns
+
+### Perimetro
+
+Lette integralmente e corrette Compound Components Pattern, Control Props e State Reducer Pattern, Portals ed Error Boundaries. **25 note React uniche su 59, 34 ancora da esaminare**. Conservati percorsi, data originaria, tipo tecnico, publish e status non revisionato. Indice gia completo per questo blocco; nessun nuovo percorso o redirect.
+
+| Nota | Correzioni |
+| --- | --- |
+| [[Programmazione/React/Pagine/Compound Components Pattern\|Compound Components Pattern]] | Frammenti incompleti sostituiti con accordion completo: Context, guard, ID, pulsanti nativi, pannelli nascosti, contratto delle parti e tastiera. Distinte tabs, composizione, controlled e conservazione dello stato. |
+| [[Programmazione/React/Pagine/Control Props e State Reducer Pattern\|Control Props e State Reducer Pattern]] | Separati possesso dello stato, transizioni e markup. Toggle controlled/uncontrolled con richiesta al parent; reducer realmente collegato a useReducer, limite, reset e render prop completa. Nessun side effect nel reducer. |
+| [[Programmazione/React/Pagine/Portals\|Portals]] | Distinti albero React, DOM, CSS e modalita. Target client con placeholder SSR, demo Context/eventi e dialog nativo con showModal, Escape, focus e cleanup. Eliminata la falsa equivalenza tra attributi ARIA e comportamento modale. |
+| [[Programmazione/React/Pagine/Error Boundaries\|Error Boundaries]] | Matrice dei limiti, effect e Actions di transition, fallback guasto e server. Classe completa con reporting, reset e demo di isolamento; gestione locale degli errori async previsti e distinzione da Suspense/router. |
+
+### Fonti e prove
+
+- Consultate documentazioni primarie React, MDN e WAI-ARIA APG, collegate nelle note. React e React DOM 19.3.0, Node 24.14.0, Chrome 155.0.8059.79. Nessuna dipendenza nuova ne modifica ai package/lockfile Quartz.
+- **281 test React superati**, inclusi **54 nuovi**: 10 Node e 44 Chrome, 22 per ambiente. Quattro gruppi controllano solo la sintassi; quattro prove server/statiche e due reducer verificano i comportamenti selezionati. Bundle in memoria, NODE_ENV development/production esplicito, Strict Mode e regressione dei sei file precedenti con relative build Vite.
+- Accordion: guard, ID/ARIA, tastiera, apertura unica, bozza mantenuta nel pannello nascosto, valore iniziale contro nuova key, gruppi indipendenti e provider annidati.
+- Control Props: false controllato, richiesta accettata/rifiutata, default contro key, callback una volta per click e nessun submit. Reducer puro, limite applicato anche a dispatch diretti, reset e quattro azioni nel medesimo batch.
+- Portal: posizione DOM, Context, bubbling React distinto da un listener DOM nativo, target mancante e cleanup. Render server senza document e hydration reale del placeholder senza mismatch, limitata a questo wrapper.
+- Dialog: nome accessibile, stato nativo modale, focus iniziale, Tab, focus esterno impedito, Escape, annullamento, conferma, ritorno del focus, riapertura e smontaggio anche in Strict Mode.
+- Error Boundary: isolamento e reset con perdita dello stato interno, fallimento ripetuto se la causa persiste, errori di effect e Action async, fallback guasto intercettato dal superiore. Eventi/timer producono gli errori browser esattamente previsti e non un fallback. Classe non efficace nel render server. SaveButton prova pending, rifiuto gestito e retry con Promise controllata, non HTTP reale.
+- Errori attesi confrontati per messaggio; errori inattesi di console, pagina, root, hydration e HTTP fanno fallire i test. Nessuna assunzione sul numero fisso di chiamate a render/report in Strict Mode. Server e browser chiusi; README aggiornato.
+
+### Limiti e seguito
+
+Non eseguiti audit screen reader, matrice browser, scroll locking, positioning di menu/tooltip, target rimosso dinamicamente, controlled combinato con reducer, streaming SSR/RSC, boundary di framework/router, lazy/use con Promise o servizio remoto di osservabilita. Niente lint/type checking o audit di sicurezza. Il test di hydration riguarda soltanto il placeholder di ClientPortal; non risolve il punto aperto sulla nota SSR e SSG. Suite JavaScript non rieseguita.
+
+Prossimo blocco: UX e Accessibilita, con WAI-ARIA, Focus Management, Animazioni e Micro-interazioni e Internazionalizzazione. Le note restano non revisionate fino al controllo dell'utente. Nessun commit, push o deploy remoto.
+
+### Verifica del vault
+
+- content:check con report: **911 documenti raggiungibili, zero errori, 572 avvisi editoriali**. Riduzione di quattro avvisi rispetto al blocco precedente; non e una certificazione tecnica di tutte le note.
+- content:test: **9 test superati**, distinti dai 281 test React.
+- Build Quartz: **3.719 file emessi, 2.003 HTML, 168 redirect, 135.751 riferimenti verificati e zero errori**. Restano gli avvisi preesistenti su eval nel plugin note-properties e metadati Git della copia temporanea.
+- Anteprima gia attiva sulla porta 8082, riutilizzata senza avviare un secondo server. Nessuna modifica manuale agli HTML o alla configurazione Quartz.
+- Verificate quattro pagine in otto viste Chrome, 1440 x 1000 e 390 x 844: HTTP 200, titoli/contenuti aggiornati, nessun errore JavaScript, HTTP fallito o overflow del documento. Sette blocchi di codice larghi su mobile, tutti scorribili; tre tabelle leggibili senza larghezza oltre il viewport.
+- Ispezionati otto screenshot: quattro aperture desktop e tre tabelle piu codice/testo dei portal su mobile. Browser QA chiuso; anteprima disponibile su http://localhost:8082/appunti/. La QA Quartz non esegue gli esempi React, gia verificati dalla suite separata.
+
+## 2026-10-15 - React: UX e Accessibilita
+
+### Perimetro
+
+Lette integralmente e corrette WAI-ARIA, Focus Management, Animazioni e Micro-interazioni e Internazionalizzazione. **29 note React uniche su 59, 30 ancora da esaminare**. Nessuna nuova pagina: mantenuti percorsi, date originarie, publish e status non revisionato; l'indice gia collega tutte le note. Aggiunti prerequisiti, fonti e collegamenti pertinenti senza duplicare il dialog completo gia presente in Portals.
+
+| Nota | Correzioni |
+| --- | --- |
+| [[Programmazione/React/Pagine/WAI-ARIA\|WAI-ARIA]] | Distinti ruolo, comportamento, nome e descrizione. Tabella degli attributi e limiti di aria-hidden/disabled, disclosure e form completi, ID univoci, messaggi di errore e live region. Eliminato il frammento di dialog presentato senza comportamento. |
+| [[Programmazione/React/Pagine/Focus Management\|Focus Management]] | Il precedente input non era un dialog. Ora editor inline con focus dopo commit e ripristino, gestione di Escape, skip link e CSS; distinti tabindex, inert, roving tabindex, aria-activedescendant e focus di navigazione. |
+| [[Programmazione/React/Pagine/Animazioni e Micro-interazioni\|Animazioni e Micro-interazioni]] | CSS completo con preferenza ridotta mirata; Motion con AnimatePresence, key stabile, uscita inerte e annunci separati; React Spring con molla e politica reduced motion. Distinti lifecycle logico/visivo, proprieta e limiti prestazionali. |
+| [[Programmazione/React/Pagine/Internazionalizzazione\|Internazionalizzazione]] | Factory e risorse indipendenti, provider e bootstrap completi, plurali/fallback, gestione cambio lingua, lang/dir. Distinti locale, valuta, fuso, date senza ora, escaping JSX, limiti backend/SSR e variazioni Intl tra runtime. |
+
+### Fonti e prove
+
+- Consultate fonti primarie React, MDN, WAI-ARIA APG, Motion, React Spring e i18next/react-i18next. Verificate versioni e peer dependencies dal registro npm: Motion 14.2.0, Spring Web 10.1.2, i18next 26.4.5, react-i18next 17.0.16 e axe-core 4.14.0 installati solo nella toolchain temporanea esterna. Nessuna modifica alle dipendenze Quartz.
+- **328 test React superati** nella regressione completa: 281 precedenti e **47 nuovi**, di cui 11 Node e 36 Chrome (18 per ambiente). React/React DOM 19.3.0, Node 24.14.0 e Chrome 155.0.8059.79. Quattro gruppi sono controlli di sola sintassi; i test funzionali estraggono il codice dai Markdown.
+- ARIA: attivazione nativa da tastiera, hidden e tabulazione, stato conservato, due istanze senza collisioni; form con label, descrizioni, errore, stato e testo escapato.
+- Focus: mount senza sottrarre focus, apertura, salvataggio con Enter, annullamento/Escape e ritorno al pulsante, bozza scartata, render non invasivo, skip link. IME provato con evento sintetico, non con un metodo di input reale.
+- Animazioni: CSS hover/transition/focus e variante ridotta; Motion con uscita mantenuta nel DOM, inert/aria-hidden, rimozione e riapertura; Spring nei due regimi con valori finali e cleanup. Prove funzionali, non benchmark o misure di fluidita.
+- i18n: factory isolata anche per risorse mutabili, plurali 0/1/2/1000000, fallback/chiavi mancanti, valuta e fuso espliciti, interpolazione sicura come testo. Bootstrap reale e reload senza persistenza, lang/dir e cleanup, orario Rome anche con browser America/Los_Angeles. Pending/errore/retry simulati, senza backend remoto.
+- Corrette due assunzioni del banco di prova: il runtime Node non raggruppava il numero italiano a quattro cifre; il mock di changeLanguage installato dopo il mount non sostituiva il metodo nel wrapper di useTranslation. Mock anticipato, stato disabled atteso e nota aggiornata sulle variazioni di formattazione. Nessuna modifica del codice applicativo per aggirare i test.
+- Dodici scansioni axe su stati selezionati, tag WCAG 2 A/AA e 2.1 A/AA, senza violazioni rilevate. Non sono una certificazione di conformita. Solo l'avviso noto Motion sulla preferenza ridotta e ammesso nei test dedicati; altri errori console/pagina/HTTP falliscono la suite.
+- Server/browser di test chiusi, bundle in memoria; README aggiornato. La regressione include le build Vite precedenti; il nuovo blocco usa esbuild e CSS estratto dalle note.
+
+### Limiti e seguito
+
+Nessun screen reader reale, audit normativo, dispositivo touch o matrice browser. Non coperti integralmente zoom/forced colors, IME reale, focus di route, widget compositi, drag, layout animation, Web Animations/View Transitions o cambi di preferenza durante l'uscita. Niente backend di traduzioni, persistenza, SSR/hydration, UI RTL completa, Trans/ICU o copertura di tutti i locale/plurali/fusi. Il render statico non certifica SSR. Suite JavaScript non rieseguita.
+
+Proseguire con Performance e Internals, saltando le note gia revisionate richiamate anche in quel blocco. Il punto aperto su SSR e SSG resta per il relativo capitolo. Le note rimangono non revisionate fino al controllo dell'utente; nessun commit, push o deploy remoto.
+
+### Verifica del vault
+
+- content:check con report: **911 documenti raggiungibili, zero errori, 569 avvisi editoriali**. Tre avvisi in meno; gli avvisi non corrispondono automaticamente a inesattezze tecniche.
+- content:test: **9 test superati**, distinti dai test React.
+- site:build: **3.719 file generati, 2.003 HTML, 168 redirect e 135.797 riferimenti verificati, zero errori**. Restano gli avvisi preesistenti relativi a `eval` in `note-properties` e ai metadati Git non disponibili nella copia temporanea.
+- Riutilizzata l'anteprima gia attiva su http://localhost:8082/appunti/: quattro note controllate in **otto viste desktop/mobile e dieci screenshot**, senza errori di caricamento o overflow del documento. Verificati 14 blocchi di codice larghi e scorribili su mobile, uno su desktop e quattro tabelle, incluse le ultime colonne dopo lo scorrimento. Browser QA chiuso; anteprima lasciata attiva.
+- La verifica grafica di Quartz e distinta dai test degli esempi React e dalle scansioni axe: non certifica l'accessibilita completa e non sostituisce prove con screen reader reali.
+
+## 2026-10-15 - React: Performance e Internals, Primo Blocco
+
+### Perimetro
+
+Lette integralmente e corrette Virtual DOM, Fiber Architecture e Concurrent Mode, Batching e React Compiler. **33 note React uniche su 59, 26 ancora da esaminare**. Profiler e Debugging e useMemo e useCallback erano gia revisionate: non vengono ricontate. Nessuna nuova nota o modifica di percorsi; YAML, date originarie, publish e status non revisionato conservati. L'indice gia collega tutte le pagine.
+
+| Nota | Correzioni |
+| --- | --- |
+| [[Programmazione/React/Pagine/Virtual DOM\|Virtual DOM]] | Distinti elementi React, Fiber, render, riconciliazione, commit e paint. Demo completo di riordino delle righe con bozze, ID, reset intenzionale e immutabilita; identita locale al parent, key diversa da prop e limiti delle ottimizzazioni. |
+| [[Programmazione/React/Pagine/Fiber Architecture e Concurrent Mode\|Fiber Architecture e Concurrent Mode]] | Terminologia storica e dettagli interni separati dalle API pubbliche. Scheduling cooperativo, commit sincrono, assenza di parallelismo automatico; ricerca completa con input urgente, risultati memoizzati e transition, senza promettere una velocita non misurata. |
+| [[Programmazione/React/Pagine/Batching\|Batching]] | Raggruppamento non equivalente a una sola chiamata al render. Coda, ordine degli updater/sostituzioni, snapshot e confini async; demo osservabile e integrazione flushSync con focus, costi e limiti espliciti. |
+| [[Programmazione/React/Pagine/React Compiler\|React Compiler]] | Config Vite 8/plugin-react 6 realmente provato, annotation/infer/opt-out, runtime per versione. Catalogo completo, verifica dell'output generato e confronto con baseline non compilata; lint, correttezza e vantaggi prestazionali distinti. |
+
+### Fonti e prove
+
+- Documentazioni primarie React e sorgente Fiber al tag 19.3.0; fonti storiche React 18 chiaramente identificate. Versioni npm verificate dopo il fallimento DNS della lettura nel sandbox: Compiler 1.0.0, plugin-babel 0.2.4 e Babel core 7.29.0 installati solo nella toolchain temporanea esterna. Package/lockfile Quartz invariati.
+- **359 test React superati**, inclusi **31 nuovi**: nove Node/toolchain e 22 Chrome (11 development e 11 production). Quattro gruppi sono soltanto controlli di sintassi. React/React DOM 19.3.0, Vite 8.3.4, plugin-react 6.1.2, Node 24.14.0 e Chrome 155.0.8059.79.
+- Test sul codice estratto dai Markdown: identita DOM, bozze e key, rimozione/rimontaggio, filtro locale e transition, coda dello stato e snapshot, ref/focus con flushSync. I probe Promise/timer sono fixture dichiarate e controllano i commit, non un numero imposto di render.
+- Compilazione Babel reale con ispezione AST, annotation/infer e opt-out, confronto del markup originale/compilato con props congelate e testo escapato. Config della nota usato in build Vite e sviluppo; verificata presenza della trasformazione e catalogo funzionante anche nella baseline con opt-out.
+- Prima esecuzione bloccata dalla junction dell'intera node_modules su Windows: sostituita con link ai singoli pacchetti. Nella seconda, 28/31 prove riuscite; corrette assunzioni dei test sugli helper generati dal Compiler e sulla visibilita di un ul vuoto. Nessuna modifica al codice applicativo per aggirare i test. Nuova suite e regressione completa poi riuscite.
+- NODE_ENV esplicito e Strict Mode. Errori console/pagina/HTTP inattesi fanno fallire i test. Server/browser chiusi, fixture temporanea rimossa dopo verifica del percorso e scollegamento delle junction. README aggiornato.
+
+### Limiti e seguito
+
+Nessun benchmark di fluidita o latenza, prova esaustiva dello scheduler/lanes, richieste HTTP nel demo di ricerca o certificazione di accessibilita. Non verificati gating, compiler per librerie pubblicate, React 17/18, SSR/hydration/RSC o nuove regole ESLint. La suite JavaScript non e stata rieseguita; il punto aperto su SSR e SSG resta nel capitolo relativo.
+
+Proseguire con Virtualizzazione delle liste e Suspense e Lazy Loading, prima dei contenuti server-side. Le note restano non revisionate fino al controllo dell'utente. Nessun commit, push o deploy remoto.
+
+### Verifica del vault
+
+- content:check con report: **911 documenti raggiungibili, zero errori, 566 avvisi editoriali**, tre in meno del blocco precedente. Gli avvisi non certificano la correttezza tecnica.
+- content:test: **9 test superati**, distinti dai test React.
+- QA Quartz sulle quattro note in **otto viste**, desktop 1440 x 1000 e mobile 390 x 844: HTTP 200, titoli e testo aggiornati, nessun errore JavaScript/HTTP o overflow del documento. Otto blocchi di codice larghi su mobile e uno su desktop, tutti scorribili; quattro tabelle entro il viewport. **Dieci screenshot ispezionati**, incluse le tabelle e due esempi su mobile.
+- Riutilizzata l'anteprima esistente sulla porta 8082 senza avviare un altro server. Browser QA chiuso; anteprima lasciata attiva. La QA del sito non esegue gli esempi React: questi sono verificati dalla suite separata.
+- Build finale, inclusa l'ultima precisazione sull'opt-out del Compiler: **3.719 file generati, 2.003 HTML, 168 redirect e 135.849 riferimenti verificati, zero errori**. Restano gli avvisi preesistenti su eval nel plugin note-properties e metadati Git della copia temporanea. Nessuna modifica manuale agli HTML generati.
+
+## 2026-10-15 - React: Virtualizzazione e Suspense
+
+### Perimetro
+
+Lette integralmente e corrette Virtualizzazione delle liste e Suspense e Lazy Loading, completando Performance e Internals. **35 note React uniche su 59, 24 ancora da esaminare**. Suspense compare anche nel capitolo successivo, ma viene contata una sola volta. Nessuna nuova nota o modifica dei percorsi; date originarie, publish e status non revisionato conservati. L'indice collega gia entrambe le note.
+
+| Nota | Correzioni |
+| --- | --- |
+| [[Programmazione/React/Pagine/Virtualizzazione delle liste\|Virtualizzazione delle liste]] | Sostituito il frammento incompleto con FixedSizeList v1 con esempi TanStack Virtual versionati e completi: lista fissa e misurata, CSS, ID, overscan e scroll. Distinti windowing, fetch/paginazione e Virtual DOM; chiariti perdita dello stato, focus, DOM parziale e limiti di stampa/ricerca/accessibilita. |
+| [[Programmazione/React/Pagine/Suspense e Lazy Loading\|Suspense e Lazy Loading]] | Separati bundler, import, lazy, fallback ed error boundary. Pannello completo con stato, CSS e controlli esterni; cache del codice diversa dallo stato, import non cancellato dalla chiusura, rifiuto memorizzato e limiti del reset/reload. Chiariti effect, Promise compatibili, transition e limiti server. |
+
+### Fonti e prove
+
+- Consultate le documentazioni primarie React, TanStack Virtual, react-window, Vite e MDN. Verificata la dipendenza TanStack React Virtual 3.14.20 e installata soltanto nella toolchain temporanea esterna, senza cambiare package/lockfile Quartz.
+- **388 test React superati**, 359 precedenti e **29 nuovi**: cinque Node/toolchain, di cui due controlli di sola sintassi, e 24 Chrome, 12 development e 12 production. React/React DOM 19.3.0, Vite 8.3.4, plugin-react 6.1.2, Node 24.14.0 e Chrome 155.0.8059.79. Codice e CSS estratti dai Markdown, NODE_ENV esplicito e Strict Mode.
+- Virtualizzazione: 5.000 record con meno di 50 righe montate, geometria fissa, Inizio/Fine, PageDown e focus, riordino per ID, riduzione del dataset dal fondo, svuotamento e ripristino. Righe misurate con testi diversi, resize a 390 px e assenza di sovrapposizioni fino all'ultimo record.
+- Suspense: probe con Promise controllate per risoluzione/rifiuto, loader invocato una volta anche dopo reset del boundary, bozza persa dopo unmount, boundary annidati e attesa gestita in effect che non sospende. Rafforzata l'attesa del reset e registrato il listener di risposta prima di sbloccare l'import, evitando assunzioni temporali nel banco di prova.
+- Build Vite reale con manifest e chunk separata non precaricata dall'HTML. Import del pannello solo all'apertura, cache al successivo mount, titolo parent conservato e bozza scartata. Ritardo tramite Playwright: fallback, controlli utilizzabili, chiusura senza annullamento e riapertura sullo stesso caricamento.
+- Errore di valutazione del modulo simulato con JavaScript HTTP 200: isolamento nel boundary, riapertura ancora fallita e reload esplicito riuscito solo dopo rimozione del guasto. Reload perde lo stato non persistito. Non e una prova di ogni errore HTTP o di un deploy reale.
+- Quattro nuove scansioni axe e dodici ripetute dal blocco UX senza violazioni rilevate negli stati selezionati; non equivalgono a conformita completa. Errori inattesi di pagina, HTTP o console fanno fallire le prove; ammesso solo il messaggio dell'errore di modulo intenzionale nei due casi dedicati.
+- Server/browser chiusi, fixture rimosse dopo verifica dei percorsi e scollegamento delle junction. README dei test aggiornato; suite JavaScript non rieseguita.
+
+### Limiti e seguito
+
+Nessun benchmark, screen reader reale, matrice browser, widget virtualizzato interattivo, griglia o backend di infinite loading. Non collaudati cambi di altezza da immagini/font, tutte le politiche cache/CDN, deploy obsoleti reali, retry automatici, SSR streaming, hydration o RSC. Le due prove statiche non certificano SSR. La nota distingue esplicitamente il demo da una soluzione completa di accessibilita o distribuzione.
+
+Proseguire con Server Components e SSR e SSG nel blocco React Moderno e Server-Side; conservato il punto aperto su SSR e SSG. Note non revisionate fino al controllo dell'utente, nessun commit, push o deploy remoto.
+
+### Verifica del vault
+
+- content:check con report: **911 documenti raggiungibili, zero errori, 564 avvisi editoriali**, due in meno. Il rapporto non certifica la correttezza tecnica di tutte le note.
+- content:test: **9 test superati**, separati dai test degli esempi React.
+- Build Quartz: **3.719 file generati, 2.003 HTML, 168 redirect e 135.897 riferimenti verificati, zero errori**. Restano gli avvisi preesistenti su eval in note-properties e metadati Git della copia temporanea.
+- Due note controllate in **quattro viste** (1440 x 1000 e 390 x 844), con HTTP 200, titolo/contenuto aggiornato e nessun errore JavaScript/HTTP o overflow del documento. Dieci blocchi di codice larghi su mobile, tutti scorribili; tabella Virtualizzazione entro il viewport e tabella Suspense scorribile fino all'ultima colonna. **Sei screenshot ispezionati**, comprese tabelle e codice su mobile.
+- Riutilizzata l'anteprima su http://localhost:8082/appunti/ e chiuso il browser QA. Anteprima lasciata attiva; nessuna modifica manuale agli HTML generati. La QA Quartz non esegue gli esempi React, verificati nella suite separata.
+
+## 2026-10-15 - React: Server Components, SSR e SSG
+
+### Perimetro
+
+Lette integralmente e corrette Server Components e SSR e SSG, primo blocco di React Moderno e Server-Side. **37 note React uniche su 59, 22 ancora da esaminare**. Chiusa la segnalazione precedente su SSR e SSG: prestazioni/SEO non migliorano automaticamente e hydration non e obbligatoria per ogni pagina renderizzata sul server. Nessuna nuova nota o modifica dei percorsi; date, tipo teorico, publish e status non revisionato conservati. Indice gia completo per queste pagine.
+
+| Nota | Correzioni |
+| --- | --- |
+| [[Programmazione/React/Pagine/Server Components\|Server Components]] | Distinti RSC, SSR e Client Components prerenderizzati; confine degli import diverso dalla composizione JSX, serializzazione non limitata a JSON e output server comunque divulgabile. Progetto Next completo con catalogo pubblico, guard server-only, componenti composti e CSS; Server Functions/Actions e requisiti delle mutazioni separati dal demo di sola lettura. |
+| [[Programmazione/React/Pagine/SSR e SSG\|SSR e SSG]] | Corretti benefici e hydration implicita; contratti delle API React, mismatch, cache/errori/CSP e limiti dell'hosting statico. Route per richiesta con connection, streaming osservabile con ritardo didattico ed export alternativo del catalogo, senza confondere RSC e HTML. |
+
+### Fonti e prove
+
+- Documentazioni ufficiali React e Next consultate per direttive, serializzazione, sicurezza, rendering, streaming ed export. Next 16.4.1 e server-only 0.0.1 verificati/installati solo nella toolchain temporanea esterna; nessuna modifica a package/lockfile Quartz.
+- **410 test React superati**, inclusi **22 nuovi**: sei Node/API, sei build/HTTP e dieci Chrome. Due gruppi sono di sola sintassi. Next 16.4.1, dipendenze React/React DOM 19.3.0, Node 24.14.0 e Chrome 155.0.8059.79; codice estratto dai Markdown.
+- Tre build Next Webpack: catalogo con route live/stream, export statico e variante negativa con import del catalogo in un modulo client. Manifest controllato, server avviato con la CLI next start; export servito da HTTP Node senza runtime Next.
+- Catalogo: proiezione pubblica, copie indipendenti, prezzo e testo escapato. Il test unitario neutralizza il marker server-only; il guard vero viene controllato nella build negativa, leggendo gli errori strutturati di Webpack tramite plugin della sola fixture negativa. HTML e bundle client privi dei marcatori interni del demo, senza estendere il risultato a un audit generale dei segreti.
+- SSR: documenti con ID differenti e policy privata/no-store; lettura degli ID con parse5. Browser con timestamp/ID coerenti dopo hydration, click locale senza nuova navigazione. Streaming HTTP non compresso con shell/fallback prima del dettaglio e successiva sostituzione nel browser: ordine verificato, non latenza o paint garantiti.
+- Export: HTML generato e servito identico da server statico. Catalogo leggibile senza JavaScript; in entrambe le distribuzioni interazione dopo hydration, tastiera, ID ARIA, stato indipendente e reload. Mobile senza overflow e due scansioni axe senza violazioni rilevate negli stati scelti, non equivalenti a conformita completa.
+- Probe React separati dal protocollo Next: renderToString/static markup non aspettano la sospensione; prerenderToNodeStream attende; hydrateRoot conserva il nodo compatibile e segnala/ricrea l'albero con mismatch intenzionale. Gli errori inattesi fanno fallire la suite; il mismatch usa onRecoverableError.
+- Prima esecuzione 19/22: corretti tre controlli del banco di prova che assumevano un valore di attributo e stringhe precise nei log CLI. Diagnostiche di build ora strutturate e output dei figli raccolto fino a close. Seconda esecuzione e regressione completa riuscite, senza cambiamenti applicativi per aggirare i test.
+- Processi/server/browser chiusi, fixture eliminate dopo verifica dei percorsi e scollegamento delle junction. Avvisi Next su cache build assente e lockfile superiore ignorato non trattati come errori applicativi. README aggiornato; suite JavaScript non rieseguita.
+
+### Limiti e seguito
+
+Non provati Next in sviluppo/Turbopack, Server Functions/Actions, mutazioni, database, sessioni/autorizzazioni, ISR, CDN, CSP, disconnessioni/abort delle query, basePath o percorsi dinamici esportati. Il comando Python della nota non viene eseguito: il server statico della fixture e Node. Nessun benchmark, screen reader reale, matrice browser o audit completo di sicurezza/accessibilita.
+
+Proseguire con Actions e form actions e useActionState. Le note restano non revisionate fino al controllo dell'utente; nessun commit, push o deploy remoto.
+
+### Verifica del vault
+
+- content:check con report: **911 documenti raggiungibili, zero errori, 563 avvisi editoriali**, uno in meno. Non e una certificazione della correttezza tecnica dell'intero vault.
+- content:test: **9 test superati**, distinti dai test React.
+- Build Quartz: **3.719 file generati, 2.003 HTML, 168 redirect e 135.941 riferimenti verificati, zero errori**. Restano gli avvisi preesistenti su eval nel plugin note-properties e metadati Git della copia temporanea.
+- Due note controllate in **quattro viste**, desktop 1440 x 1000 e mobile 390 x 844: HTTP 200, titoli/contenuti aggiornati, nessun errore JavaScript/HTTP o overflow del documento. Dieci blocchi di codice larghi su mobile, tutti scorribili; entrambe le tabelle entro il viewport. **Sei screenshot ispezionati**, comprese tabelle e codice mobile.
+- La prima apertura dell'anteprima ha restituito connessione rifiutata: server non piu attivo. Riavviato preview-site.mjs in background senza finestra, PID 7472, porta 8082; QA successiva riuscita. Browser QA chiuso, anteprima lasciata disponibile su http://localhost:8082/appunti/. Nessuna modifica manuale agli HTML generati; verifica Quartz distinta dai test applicativi.
+
+## 2026-10-16 - React: Actions e useActionState
+
+### Perimetro
+
+Lette integralmente e corrette Actions e form actions e useActionState. **39 note React uniche su 59, 20 ancora da esaminare**. Nessuna nuova pagina o modifica dei percorsi; indice gia completo. Conservati data originaria, tipo, publish e status non revisionato; aggiunti prerequisiti, collegamenti e fonti ufficiali.
+
+| Nota | Correzioni |
+| --- | --- |
+| [[Programmazione/React/Pagine/Actions e form actions\|Actions e form actions]] | Distinti evento, URL HTML, Action client e Server Function; corretti firme, pending nei discendenti, reset e limiti dell'hosting statico. Esempio completo con due submitter, trasformazione locale, risultato e reset intenzionale; eliminata la dipendenza da una API non definita. |
+| [[Programmazione/React/Pagine/useActionState\|useActionState]] | Sostituito il falso login riuscito con una demo locale esplicita. Validazione, conferma e bozza separate, input controllato per conservare il testo, pending/readOnly, rifiuto previsto ed eccezione. Aggiunto contatore per la coda sequenziale; precisati reset/key, dispatch fuori Action, error boundary e ambito di permalink. |
+
+### Fonti e prove
+
+- Consultate documentazioni primarie React, React DOM, MDN e Next.js. Nessuna nuova dipendenza: usata la toolchain esterna esistente. I demo sono client-only, non implementazioni di Server Functions o autenticazione.
+- **444 test React superati**, 410 precedenti e **34 nuovi**. La nuova suite comprende 13 Node/toolchain (due gruppi di sola sintassi), 11 Chrome development e 10 production. React/React DOM 19.3.0, Node 24.14.0, Chrome 155.0.8059.80; bundle esbuild con NODE_ENV esplicito e Strict Mode.
+- Codice estratto dai Markdown: validazione di stringhe/File/null, normalizzazione, stato congelato, rifiuto previsto ed eccezione propagata. Eseguiti i servizi locali con i ritardi didattici originali; nessuna API remota.
+- Browser: dati del pulsante submit, pending, disabilitazione dopo raccolta dati, reset al termine e invio successivo. Confermato che un errore restituito normalmente non impedisce il reset uncontrolled. Il form controllato mantiene bozza e ultima conferma; Svuota bozza non resetta il risultato. Provati anche Enter e viewport mobile.
+- Probe dichiarati separatamente: formAction prevale, initialState non resetta dopo il dispatch ma key rimonta, tre azioni sequenziali usano i risultati precedenti; rigetto del primo cancella la coda e raggiunge il boundary. Il caso development fuori Action attende e verifica l'avviso intenzionale senza pending.
+- Sei nuove scansioni axe su stati selezionati senza violazioni rilevate, non equivalenti a conformita completa. Errori inattesi console/pagina/HTTP fanno fallire la suite; i rigetti attesi usano onCaughtError. Prima esecuzione e regressione entrambe riuscite.
+- Fixture e browser/server di test chiusi; eliminazione temporanea con verifica del percorso. Nessuna junction o installazione aggiuntiva. README aggiornato; suite JavaScript non rieseguita.
+
+### Limiti e seguito
+
+Non provati Server Functions/Actions, permalink o funzionamento senza JavaScript, mutazioni HTTP, database, autorizzazioni, concorrenza fra utenti, idempotenza, retry di rete o annullamento server. I callback differiti servono a controllare l'ordine, non sono un backend. Nessun benchmark, screen reader reale o matrice browser. Le prove di reset/coda sono comportamentali, non una certificazione di tutte le API React.
+
+Proseguire con useOptimistic e useFormStatus. Note non revisionate fino all'approvazione dell'utente; nessun commit, push o deploy remoto.
+
+### Verifica del vault
+
+- content:check con report: **911 documenti raggiungibili, zero errori, 562 avvisi editoriali**, uno in meno. Non certifica la correttezza tecnica delle altre note.
+- content:test: **9 test superati**, distinti dai test React.
+- Build Quartz: **3.719 file generati, 2.003 HTML, 168 redirect e 135.993 riferimenti verificati, zero errori**. Restano gli avvisi preesistenti su eval nel plugin note-properties e metadati Git della copia temporanea.
+- QA delle due note su desktop 1440 x 1000 e mobile 390 x 844: HTTP 200, titoli/contenuto aggiornati, nessun errore JavaScript/HTTP o overflow del documento. Quattro blocchi di codice larghi e due tabelle su mobile, tutti scorribili, comprese le ultime colonne.
+- **Nove screenshot finali ispezionati**, con titoli desktop, tabelle mobile a entrambe le estremita e codice. Le prime catture desktop erano gia scorse: ripetute dopo scroll esplicito all'inizio, senza modificare il sito.
+- Anteprima trovata spenta e riavviata in background senza finestra, PID 32996, su http://localhost:8082/appunti/. Browser QA chiusi, anteprima lasciata disponibile. Nessuna modifica manuale agli HTML generati; controlli Quartz distinti dall'esecuzione degli esempi.
+
+## 2026-10-16 - React: useOptimistic e useFormStatus
+
+### Perimetro
+
+Lette integralmente e corrette useOptimistic e useFormStatus. **41 note React uniche su 59, 18 ancora da esaminare**. Nessun cambio di percorsi o nuove pagine; indice gia collegato. Conservati data originaria, tipo tecnico, publish e status non revisionato. Aggiunti prerequisiti, rimandi e fonti primarie.
+
+| Nota | Correzioni |
+| --- | --- |
+| [[Programmazione/React/Pagine/useOptimistic\|useOptimistic]] | Distinti bozza, base e previsione; reducer puro, rebase e conferma effettiva nel parent. Demo completo di commenti con correlazione requestId, deduplicazione, risposta normalizzata, bozza conservata, rifiuto previsto e boundary per errori inattesi. Il ritorno al valore base non viene presentato come rollback del server. |
+| [[Programmazione/React/Pagine/useFormStatus\|useFormStatus]] | Corretti import, ambito antenato, payload distinto dagli input correnti e pending distinto dall'esito. Demo completo con due form, controlli riusabili, validazione e stato del risultato. Precisati onSubmit, pulsanti esterni con form, metadati null a riposo e limiti di method come indicatore HTTP. |
+
+### Fonti e prove
+
+- Consultate documentazioni ufficiali React/React DOM e MDN; letto anche il codice React DOM 19.3.0 installato per i metadati dell'invio. Nessun aggiornamento delle dipendenze: toolchain esterna esistente.
+- **483 test React superati**, 444 precedenti e **39 nuovi**: otto Node/toolchain (due gruppi di sola sintassi), 16 Chrome development e 15 production. React/React DOM 19.3.0, Node 24.14.0, Chrome 155.0.8059.80. Codice estratto dai Markdown, esbuild con NODE_ENV esplicito e Strict Mode.
+- Commenti: reducer/merge con dati congelati, deduplicazione, FormData con null/File, controllo minimo della risposta e correlazione. Servizio didattico realmente eseguito con ritardo, normalizzazione e rifiuto tipizzato. Nel browser attesa visibile, nodo conservato per key, base aggiornata dal parent e bozza preservata; rifiuto e retry esplicito.
+- Conferme esterne e aggiornamenti della lista durante l'attesa non vengono persi. Un record gia confermato non viene duplicato o eliminato per ripristinare una vecchia base. Il probe che ignora onConfirm dimostra la perdita della previsione anche dopo una risposta riuscita: non e il comportamento del demo completo.
+- Form: due istanze con ID e dati distinti, Enter, pending del solo form inviato, input readOnly, risultato precedente preservato su errore di validazione. Gli errori inattesi raggiungono il boundary della fixture, non un falso successo.
+- Probe separati: hook nello stesso componente e all'esterno senza contesto; attributo HTML form non trasferisce il contesto React. onSubmit async da solo non attiva pending. FormData conserva i dati inviati dopo una modifica del campo; action identifica anche formAction del pulsante. A riposo data/method/action null; nel client senza prop method, metadato get durante invio. Non viene dedotta una richiesta GET da questo valore.
+- Setter ottimistico fuori Action provato con avviso atteso in sviluppo. Quattro nuove scansioni axe su stati selezionati senza violazioni rilevate, non una certificazione di accessibilita; nessun overflow dei demo a 390 px. Errori inattesi console/pagina/HTTP fanno fallire la suite.
+- Prima esecuzione e regressione completa riuscite. Fixture rimosse dopo verifica dei percorsi; server e browser di test chiusi. Nessuna installazione o junction aggiuntiva; README aggiornato. Suite JavaScript non rieseguita.
+
+### Limiti e seguito
+
+Nessuna prova di Server Functions, mutazioni HTTP, database, autorizzazione, idempotenza, persistenza, offline, annullamento o concorrenza fra utenti. Servizi e conferme esterne sono locali o fixture controllate. Non sono un benchmark, una matrice browser o prove con screen reader reale. Il reducer opzionale senza secondo argomento e documentato; la sua forma con updater non e esercitata da questa suite.
+
+Proseguire con use hook e Framework Next.js e Remix. Le note rimangono non revisionate fino all'approvazione dell'utente; nessun commit, push o deploy remoto.
+
+### Verifica del vault
+
+- content:check con report: **911 documenti raggiungibili, zero errori, 562 avvisi editoriali**, invariati. I controlli editoriali non certificano la correttezza tecnica delle altre note.
+- content:test: **9 test superati**, distinti dalle prove React.
+- Build Quartz: **3.719 file generati, 2.003 HTML, 168 redirect e 136.032 riferimenti verificati, zero errori**. Restano gli avvisi preesistenti su eval nel plugin note-properties e metadati Git della copia temporanea.
+- QA delle due note su desktop 1440 x 1000 e mobile 390 x 844: HTTP 200, titoli e contenuto aggiornati, nessun errore JavaScript/HTTP o overflow del documento. Quattro blocchi di codice larghi su mobile, tutti scorribili; entrambe le tabelle rientrano nel viewport.
+- **Sei screenshot finali ispezionati**, con titoli desktop, tabelle e codice mobile. Anteprima esistente riutilizzata su http://localhost:8082/appunti/ senza riavviarla; browser QA chiusi. HTML generati non modificati manualmente; verifiche Quartz distinte dai test degli esempi React.
+
+## 2026-10-16 - React: use e framework
+
+### Perimetro
+
+Lette e corrette use hook e Framework Next.js e Remix. **43 note React uniche su 59, 16 ancora da esaminare**. Nessun cambio di percorsi, indici o redirect: le pagine erano gia raggiungibili. Conservati data, tipo, publish e status non revisionato; aggiunti prerequisiti, collegamenti e fonti ufficiali.
+
+| Nota | Correzioni |
+| --- | --- |
+| [[Programmazione/React/Pagine/use hook\|use]] | Distinti lettura, caricamento e cache; regole condizionali, identita della Promise, Suspense e boundary degli errori. Demo completo con evento, Promise stabile, retry e risposta tardiva; Context condizionale con label esplicita e variante browser() per React DOM 19.3. Precisati mancata cancellazione e confine RSC. |
+| [[Programmazione/React/Pagine/Framework Next.js e Remix\|Framework Next.js e Remix]] | Distinti Next App/Pages Router, React Router Data/Framework Mode e Remix v2 dal nuovo stack Remix. Confronto per requisiti, convenzioni URL e contratto loader/action. Progetto SSR completo con ricerca GET, dati pubblici, errori HTTP e progressive enhancement; limiti del deploy statico e rimandi ai demo Next esistenti. |
+
+### Fonti e prove
+
+- Consultate documentazioni ufficiali React/React DOM, Next, Remix e React Router, oltre ai requisiti npm di @react-router/dev 8.4.0. Letto l'entry point server predefinito installato per verificare la dipendenza isbot.
+- **510 test React superati**, 483 precedenti e **27 nuovi** in react-use-framework.test.mjs: sette Node/toolchain, sette Chrome development, sette production e sei di integrazione router. Due test sono di sola sintassi. Node 24.14.0, React/React DOM 19.3.0, React Router 8.4.0, Vite 8.3.4, Chrome 155.0.8059.80. Regressione seriale completa in circa 217 secondi, prima della build Quartz; suite JavaScript non rieseguita.
+- Eseguiti i tre moduli use estratti dalle note: risultato/attesa/rigetto, re-render senza nuova operazione, retry e risultato tardivo. Default/undefined/provider annidati, early return condizionale e aggiornamenti Context; browser() provato in SSR e client, senza sottoscrizione resize implicita.
+- Build e server SSR router reali: GET filtrato, 400 per query duplicate, 404 URL e 405 POST senza action; campo interno assente da HTML e asset client. Ricerca, Enter, reload, Tutti e Indietro anche senza JavaScript. Pending reso osservabile ritardando una richiesta dati; documento conservato dopo hydration.
+- Cinque scansioni axe su stati selezionati senza violazioni, non una certificazione; controllato overflow mobile dei demo Context/catalogo. Errori inattesi console/pagina/HTTP fanno fallire le prove browser.
+- Prima build fallita per preparazione della fixture Windows; seconda per isbot mancante che induceva installazione implicita. Corretti pacchetti dichiarati e collegamenti della fixture, poi risolto il test della label rendendola esplicita. Esecuzione finale del blocco: 27/27.
+- Aggiunti @react-router/dev e @react-router/serve 8.4.0 soltanto nella toolchain temporanea esterna; nessun package/lockfile Quartz modificato. Audit esterno: un low su @babel/core 7.29.0 gia presente (GHSA-4x5r-pxfx-6jf8), senza aggiornamenti forzati. Junction scollegate prima della rimozione verificata delle fixture; ripulita anche quella rimasta dalla prova fallita.
+
+### Limiti e seguito
+
+Non provati migrazione Remix, RSC del router, deploy remoto, mutazioni, autorizzazioni, persistenza, invalidazione distribuita, cache per utente o concorrenza backend. Le Promise del demo sono locali; il catalogo usa un server HTTP reale ma dati fissi. Confronto Next appoggiato alle note e prove server-rendering esistenti. Nessun benchmark, screen reader reale o matrice browser.
+
+Proseguire con useTransition e useDeferredValue e Gestione della memoria e AbortController. Note non revisionate fino al controllo dell'utente; nessun commit, push o deploy remoto.
+
+### Verifica del vault
+
+- content:check con report: **911 documenti raggiungibili, zero errori, 561 avvisi editoriali**, uno in meno. Non certifica la correttezza tecnica delle altre note.
+- content:test: **9 test superati**, separati dai test degli esempi.
+- Build Quartz: **3.719 file generati, 2.003 HTML, 168 redirect e 136.087 riferimenti verificati, zero errori**. Invariati gli avvisi su eval nel plugin note-properties e metadati Git della copia temporanea.
+- QA delle due pagine su desktop 1440 x 1000 e mobile 390 x 844: HTTP 200, titoli/contenuti aggiornati, nessun errore JavaScript/HTTP o overflow del documento. Entrambe le tabelle rientrano nel viewport; dieci blocchi di codice larghi su mobile hanno scorrimento orizzontale verificato nel contenitore code, non soltanto nel pre esterno.
+- **Sei screenshot finali ispezionati**. La prima attesa QA cercava una stringa contigua nell'HTML evidenziato e non riconosceva il codice della pagina framework: ripetuto il controllo sul testo renderizzato, senza modificare gli HTML. Anteprima esistente riutilizzata su http://localhost:8082/appunti/ e lasciata disponibile; browser QA e processi dei demo chiusi.
+
+## 2026-10-18 - React: concorrenza e gestione risorse
+
+### Perimetro
+
+Lette integralmente e corrette useTransition e useDeferredValue e Gestione della memoria e AbortController. **45 note React uniche su 59, 14 ancora da esaminare**. Percorsi, indice e redirect invariati; conservati data originaria, tipo, publish e status non revisionato. Aggiunti prerequisiti, collegamenti e fonti ufficiali.
+
+| Nota | Correzioni |
+| --- | --- |
+| [[Programmazione/React/Pagine/useTransition e useDeferredValue\|useTransition e useDeferredValue]] | Distinti scheduling, thread, debounce e cancellazione. Filtro spostato nel figlio memoizzato con props stabili, input urgente e due demo completi. Precisati callback immediata, initialValue, Actions dopo await, ordine delle risposte, Suspense e limiti di isPending. |
+| [[Programmazione/React/Pagine/Gestione della memoria e AbortController\|Gestione della memoria e AbortController]] | Separati risorse, obsolescenza e leak. Demo completo con loader locale, cancel, timeout e retry; guardia per risposte tardive, controller per tentativo, controllo HTTP/JSON/schema. Aggiunto esempio distinto di listener e timer; chiariti abort del corpo, motivi personalizzati e mancato rollback server. |
+
+### Fonti e prove
+
+- Consultate documentazioni primarie React/React DOM, MDN e Chrome DevTools; letta anche la nota useEffect per evitare una seconda spiegazione base. Nessuna nuova dipendenza, modifica infrastrutturale o installazione.
+- Nuova suite react-concurrency-resources.test.mjs: **24/24 superati**, otto Node/toolchain (due di sola sintassi), otto Chrome development e otto production. React/React DOM 19.3.0, Node 24.14.0, Chrome 155.0.8059.80, esbuild 0.27.3; codice estratto dai Markdown, Strict Mode e NODE_ENV esplicito.
+- Regressione seriale completa: **534 test React superati**, 510 precedenti e 24 nuovi, in circa 196 secondi. Nessun test fallito o saltato; suite JavaScript non rieseguita. Build Quartz avviata soltanto al termine della regressione.
+- Provati filtro e schema, loader locale reale, ID/label SSR, profilo senza effect server, risultato vuoto, reset, errore, cancel e retry. La fixture del loader rende controllabili risposte fuori ordine, timeout e risoluzioni dopo annullamento/smontaggio.
+- Probe API distinti dai demo: callback sincrona, transition pending con contenuto precedente e aggiornamento urgente; useDeferredValue con input nuovo e risultato vecchio finche la Promise corrente non e risolta.
+- fetchProfile eseguito contro HTTP locale: URL codificata, 404/500, JSON/schema errati, annullamento durante lettura del corpo. Listener e timer verificati separatamente, incluso il ciclo extra Strict Mode. Non misurata la garbage collection.
+- Quattro scansioni axe su stati selezionati senza violazioni e controllo overflow mobile, non una certificazione. Errori inattesi console/pagina/HTTP fanno fallire le prove. Server/browser chiusi, bundle in memoria; nessuna junction o fixture su disco aggiuntiva.
+
+### Limiti e seguito
+
+Non provati deadline, prestazioni, heap snapshot, carico, WebSocket, observer, cache condivise, autenticazione, mutazioni HTTP o rollback server. Il backend di test e locale e didattico; le Promise controllate non sono una rete reale. Nessuna matrice browser o prova con screen reader. Le API che ignorano signal non diventano cancellabili automaticamente.
+
+Proseguire con Protezione XSS e Gestione Autenticazione, poi CSRF e Content Security Policy. Note non revisionate fino al controllo dell'utente; nessun commit, push o deploy remoto.
+
+### Verifica del vault
+
+- content:check con report: **911 documenti raggiungibili, zero errori, 559 avvisi editoriali**, due in meno. Non certifica le altre note.
+- content:test: **9 test superati**, distinti dall'esecuzione degli esempi React.
+- Build Quartz: **3.719 file generati, 2.003 HTML, 168 redirect e 136.141 riferimenti verificati, zero errori**. Restano gli avvisi preesistenti su eval nel plugin note-properties e metadati Git della copia temporanea.
+- QA desktop 1440 x 1000 e mobile 390 x 844: HTTP 200, titoli ed esempi aggiornati, nessun errore JavaScript/HTTP o overflow del documento. Entrambe le tabelle rientrano nel viewport; quattro blocchi di codice larghi su mobile e uno su desktop hanno scorrimento effettivo verificato nel contenitore code.
+- **Sei screenshot finali ispezionati**: due aperture desktop, due tabelle mobile e due esempi mobile. Anteprima trovata spenta; il primo riavvio durante la rigenerazione non ha trovato index.html. Riavviata dopo la creazione del file, verificata HTTP 200 e lasciata disponibile su http://localhost:8082/appunti/ (PID 30336). Browser QA chiusi; nessuna modifica manuale agli HTML.
+
+## 2026-10-18 - React: XSS e autenticazione
+
+### Perimetro
+
+Lette integralmente e corrette Protezione XSS e Gestione Autenticazione. **47 note React uniche su 59, 12 ancora da esaminare**. Conservati data, tipo, status non revisionato e publish. Nessun cambio di percorsi, indici o redirect; aggiunti prerequisiti, collegamenti e fonti primarie.
+
+| Nota | Correzioni |
+| --- | --- |
+| [[Programmazione/React/Pagine/Protezione XSS\|Protezione XSS]] | Sostituita sanitizeHtml non definita con un modulo DOMPurify eseguibile. Distinti testo, HTML, props e URL; policy di otto tag senza attributi, allowlist di destinazione e limiti espliciti per SSR/Trusted Types. Rimandi alla teoria JavaScript senza duplicare un sanitizer manuale. |
+| [[Programmazione/React/Pagine/Gestione Autenticazione\|Gestione Autenticazione]] | Sostituiti bootstrap incompleto e API implicite con un contratto same-origin e client completo. Separati loading/anonimo/errore/logout; guardie contro risultati obsoleti, controllo HTTP/JSON/schema, retry e bozza rimossa al cambio identita. Corretti limiti di HttpOnly, token in memoria, route guard, CSRF, refresh e cache. |
+
+### Fonti e prove
+
+- Consultate fonti ufficiali React, DOMPurify, MDN e OWASP. Letta la nota JavaScript Sanitizzazione input e confrontate CSRF/API layer per mantenere confini e rimandi coerenti.
+- Registry e release indicano DOMPurify 3.4.17; aggiunto soltanto alla toolchain temporanea React. Non aggiornata quella JavaScript ne i pacchetti del sito. Audit con il solo low preesistente su @babel/core 7.29.0 (GHSA-4x5r-pxfx-6jf8); nessun aggiornamento forzato.
+- Nuova suite react-xss-auth.test.mjs: dieci prove Node/toolchain, tredici Chrome development e tredici production, di cui due di sola sintassi. Codice estratto dai Markdown, Strict Mode, NODE_ENV esplicito; React/React DOM 19.3.0, Node 24.14.0, DOMPurify 3.4.17 e Chrome 155.0.8059.80.
+- **570 test React superati**, 534 precedenti e 36 nuovi, senza test falliti o saltati. Regressione seriale completa in circa 205 secondi, prima della build Quartz. La prima esecuzione del blocco aveva 34 prove, poi aggiunte due su CSRF rifiutato e nome utente come testo; nessun errore rilevato. Suite JavaScript non rieseguita.
+- Sanitizer reale senza CSP: testo separato da HTML, policy e DOM risultante, payload esclusi/malformati, vuoto/reset, limiti e URL ingannevoli. Nomi utente come testo, non HTML; server-side rich text rifiutato senza integrazione DOM.
+- Sessione con HTTP loopback reale e cookie HttpOnly: bootstrap, 401/403/500, JSON/schema errati, POST/CSRF, cookie scaduto e logout fallito. Fixture controllate per risultati fuori ordine, errore rete, smontaggio, cambio identita e doppio logout. Non verificate credenziali o autorizzazione reale.
+- Sei scansioni axe su stati selezionati e controllo overflow mobile, non una certificazione. Errori inattesi console/pagina/HTTP e richieste esterne fanno fallire i test. Nessuna junction o fixture su disco aggiuntiva.
+
+### Limiti e seguito
+
+La fixture non implementa un sistema di autenticazione: niente password, MFA, OIDC, PKCE, refresh token o autorizzazioni per record. Cookie su HTTP loopback, quindi nessuna prova di HTTPS/Secure/prefisso __Host- o matrice SameSite. CSP, Trusted Types, CSRF cross-site, SSR del rich text e cache condivise richiedono prove dedicate. Gli otto payload non certificano assenza universale di XSS; nessun audit o screen reader reale.
+
+Proseguire con CSRF e Content Security Policy. Le note restano non revisionate fino al controllo dell'utente; nessun commit, push o deploy remoto.
+
+### Verifica del vault
+
+- content:check con report: **911 documenti raggiungibili, zero errori, 557 avvisi editoriali**, due in meno. Non certifica la correttezza delle altre note.
+- content:test: **9 test superati**, separati dai test tecnici degli esempi.
+- Build Quartz: **3.719 file generati, 2.003 HTML, 168 redirect e 136.197 riferimenti verificati, zero errori**. Invariati gli avvisi preesistenti su eval nel plugin note-properties e metadati Git della copia temporanea.
+- QA delle due pagine su desktop 1440 x 1000 e mobile 390 x 844: HTTP 200, titoli ed esempi aggiornati, nessun errore JavaScript/HTTP o overflow del documento. Quattro blocchi di codice larghi su mobile e uno su desktop scorrono nel contenitore code. Tabelle leggibili; verificato anche lo scorrimento del contenitore della tabella di autenticazione su mobile.
+- **Sei screenshot finali ispezionati**, con aperture desktop, tabelle ed esempi mobile. Anteprima esistente riutilizzata su http://localhost:8082/appunti/ senza riavvio; browser QA chiusi e HTML non modificati manualmente. Superati anche diff --check e formattazione della nuova suite.
+
+## 2026-10-18 - React: CSRF e Content Security Policy
+
+### Perimetro
+
+Lette integralmente e corrette CSRF e Content Security Policy. **49 note React uniche su 59, 10 ancora da esaminare**. Date, type e publish conservati; status non revisionato. Nessuna nuova pagina, modifica di indice, spostamento o redirect.
+
+| Nota | Correzioni |
+| --- | --- |
+| [[Programmazione/React/Pagine/CSRF\|CSRF]] | Distinti autenticazione, autorizzazione, cookie, SameSite, CORS e token. Contratto same-origin esplicito e form eseguibile: endpoint fisso, validazione, cookie/token/JSON, status 204, errori, doppio invio e cleanup. Limiti di Origin, Fetch Metadata, double-submit, retry e cancellazione esplicitati. |
+| [[Programmazione/React/Pagine/Content Security Policy\|Content Security Policy]] | Separati SPA statica, nonce dinamico, hash e framework SSR. Baseline e demo React CSR completo con CSS esterno, shell Node e route limitate. Chiariti nonce, strict-dynamic, report-only, Vite, Next, cache, CSS-in-JS e Trusted Types; nessuna modifica alla CSP di Quartz. |
+
+### Fonti e prove
+
+- Consultate fonti ufficiali OWASP, MDN, React, Vite, Next.js, Node ed esbuild. Confrontate la CSP JavaScript e le note React su autenticazione/XSS per evitare esempi e responsabilita incoerenti.
+- Nuova suite react-csrf-csp.test.mjs: **31 test superati**, di cui uno di sola sintassi. React/React DOM 19.3.0, Node 24.14.0, esbuild 0.27.3 e Chrome 155.0.8059.80; codice estratto dai Markdown. Form development/production con Strict Mode, contatore CSP production.
+- HTTP locale reale per cookie HttpOnly, token/origini invalidi, metodo/schema/Content-Type, form cross-origin same-site e preflight. Provati errore rete simulato, doppio submit e scrittura che prosegue dopo abort client. Due scansioni axe su stati selezionati, non un audit.
+- CSP applicata al documento: script senza nonce, nonce errato e script esterno non autorizzato bloccati; contatore e CSS funzionanti. Solo report-only permette il flag e genera una violazione. Baseline self provata separatamente.
+- Server della nota eseguito con porta effimera e readFile virtuale: bundle reali in memoria, route/MIME/404/405/500 verificati. Nessuna installazione npm o scrittura fixture durante questa suite; pacchetti e lockfile del sito invariati.
+- Le prime due esecuzioni hanno rilevato un'interferenza del routing Playwright sul preflight, non un errore dell'esempio. Disabilitato tutto il routing nel contesto CORS; verificato OPTIONS nativo e assenza della mutazione. Errori intenzionali ammessi soltanto nelle prove negative dedicate.
+- Regressione completa: **601 test React superati**, 570 precedenti e 31 nuovi; nessun fallimento o test saltato. Esecuzione seriale in circa 216 secondi, prima della build Quartz. Browser e server di prova chiusi.
+
+### Limiti e seguito
+
+Non implementati backend di autenticazione completo, limiti del body, autorizzazione per record, HMAC double-submit o rotazione token. Le due origini usano porte diverse sullo stesso host: non e una matrice cross-site/SameSite, TLS o cookie di terze parti. Non verificati CSP con Next, streaming SSR, CDN, report remoto, Trusted Types, CSS-in-JS, worker o lazy chunk. Redirect verificato come opzione, non con una catena HTTP. La suite non certifica sicurezza universale o accessibilita completa; JavaScript resta una regressione separata.
+
+Proseguire con Testing Jest e Testing Cypress e Playwright, poi le altre note di Testing e Qualita e Architettura Frontend. Note non revisionate fino al controllo dell'utente. Nessun commit, push o deploy remoto.
+
+### Verifica del vault
+
+- content:check con report: **911 documenti raggiungibili, zero errori e 556 avvisi editoriali**, uno in meno. Non certifica il contenuto di tutte le note.
+- content:test: **9 test superati**, separati dai test React.
+- Build Quartz riuscita: **3.719 file, 2.003 HTML, 168 redirect e 136.256 riferimenti verificati, zero errori**. Avvisi preesistenti su eval nel plugin note-properties e metadati Git della copia temporanea invariati.
+- QA desktop 1440 x 1000 e mobile 390 x 844 delle due note: HTTP 200, titoli/codice aggiornati, nessun errore browser/HTTP o overflow del documento. Tutte le tabelle rientrano nel viewport. Verificato lo scorrimento effettivo di nove blocchi larghi su mobile e uno su desktop.
+- **Sei screenshot ispezionati**, aperture desktop, tabelle ed esempi mobile. Anteprima gia attiva riutilizzata su http://localhost:8082/appunti/ (PID 30336), browser QA chiusi. Nessuna modifica manuale agli HTML. Superati diff --check e Prettier della nuova suite; storico mantenuto a dieci voci.
+
+## 2026-10-18 - React: Jest e test nel browser
+
+### Perimetro
+
+Lette integralmente e corrette Testing Jest e Testing Cypress e Playwright. **51 note React uniche su 59, 8 ancora da esaminare**. Conservati date, type operational-note, publish e status non revisionato. Struttura operativa, prerequisiti, collegamenti e fonti aggiornati; nessuno spostamento o modifica a indici e redirect.
+
+| Nota | Correzioni |
+| --- | --- |
+| [[Programmazione/React/Pagine/Testing Jest\|Testing Jest]] | Configurazione completa Jest/jsdom/Babel, distinta da Vite e da ESM nativo. Query, attese, mock e cleanup chiariti. Form eseguibile con servizio iniettato, validazione, pending, guardia contro doppi invii, bozza e retry; errore di servizio distinto da campo invalido. Sette test effettivi e limiti della coverage. |
+| [[Programmazione/React/Pagine/Testing Cypress e Playwright\|Testing Cypress e Playwright]] | Stesso componente condiviso, adapter HTTP e shell Vite completi. Configurazioni e tre casi per ciascun runner: successo, validazione e retry esplicito. Distinti Promise Playwright e coda Cypress, retry delle assertion e dei test, webServer e anteprima esterna. Nessun backend/persistenza impliciti nei mock. |
+
+### Fonti e prove
+
+- Consultate documentazioni ufficiali Jest, Testing Library, Playwright, Cypress e Vitest. Pin e compatibilita controllati; toolchain separata in appunti-react-testing-tools nella directory temporanea. Non aggiornati i pacchetti del sito o la precedente toolchain React.
+- Nuova suite react-testing-runners.test.mjs: **23 test superati**, di cui uno di sola sintassi. Node 24.14.0, React 19.3.0, Jest 30.5.2, Babel 7.29.7, Vite 8.3.4, Playwright Test 1.62.1, Cypress 16.2.0 e Chrome 155.0.8059.80. Codice e configurazioni estratti dai Markdown.
+- Jest CLI esegue **7 test con coverage** e nessun avviso act ignorato. Prova negativa nella sola copia temporanea: rimossa la validazione del vuoto, due test devono fallire con exit code 1, poi il sorgente viene ripristinato.
+- Build Vite reale; Playwright Test CLI con webServer esegue **3 test** e Cypress Module API con anteprima esterna ne esegue **3**. Analizzati i report JSON e rifiutati fallimenti, skip e flaky. Questi tredici casi sono interni ai gruppi della suite Node, non aggiunti una seconda volta al totale.
+- Controlli separati su normalizzazione/UTF-16, render SSR e adapter con Fetch simulato: input, payload, status, Content-Type, JSON/schema, credenziali omesse ed errore rete. Form in Strict Mode; errori di validazione e servizio producono aria-invalid distinti.
+- Regressione completa: **624 test React superati**, 601 precedenti e 23 nuovi, senza test saltati o falliti; esecuzione seriale in circa 243 secondi, prima della build Quartz. Server e browser chiusi, junction scollegate e fixture eliminate dopo verifica del percorso. Suite JavaScript non rieseguita.
+- Audit della nuova toolchain: 19 segnalazioni moderate propagate dalla dipendenza transitiva sprintf-js ([GHSA-hp3w-g68c-fv3c](https://github.com/advisories/GHSA-hp3w-g68c-fv3c)), nessuna high/critical. Non applicato il downgrade automatico a Jest/babel-jest 25; toolchain precedente invariata.
+
+### Limiti e seguito
+
+Test browser con API simulate, non collaudo end-to-end di un backend, database o sessione reale. Non provati Vitest, MSW, ESM nativo Jest, TypeScript, fake timer, Cypress component testing, login/storageState/cy.session, altri browser o screen reader. Nessuna nuova scansione axe in questo blocco. Coverage e controesempio mirato non certificano correttezza universale; i sette test Jest non coprono specificamente unmount e risposta incoerente del servizio.
+
+Proseguire con Test di accessibilita e Linting e Formattazione, poi Storybook, Visual regression testing e Architettura Frontend. Note non revisionate fino al controllo dell'utente; nessun commit, push o deploy remoto.
+
+### Verifica del vault
+
+- content:check con report: **911 documenti raggiungibili, zero errori e 554 avvisi editoriali**, due in meno. Non certifica la correttezza tecnica di tutte le note.
+- content:test: **9 test superati**, distinti dalle prove React e dei runner.
+- Build Quartz riuscita: **3.719 file, 2.003 HTML, 168 redirect e 136.324 riferimenti verificati, zero errori**. Invariati gli avvisi preesistenti su eval nel plugin note-properties e metadati Git della copia temporanea.
+- QA desktop 1440 x 1000 e mobile 390 x 844: HTTP 200, titoli e nuovi esempi presenti, nessun errore console/pagina/HTTP o overflow del documento. Verificato lo scorrimento effettivo di 22 blocchi di codice e della tabella comparativa larga su mobile; le altre tre tabelle rientrano nel viewport.
+- **Sei screenshot ispezionati**, con aperture desktop, tabelle ed esempi mobile. Anteprima esistente riutilizzata su http://localhost:8082/appunti/ (PID 30336), browser QA chiusi. Nessuna modifica manuale agli HTML; Prettier della nuova suite e diff --check superati.
+
+## 2026-10-18 - React: accessibilita e linting
+
+### Perimetro
+
+Lette integralmente e corrette Test di accessibilita e Linting e Formattazione. **53 note React uniche su 59, 6 ancora da esaminare**. Conservati date, type operational-note, publish e status non revisionato; nessuna modifica a percorsi, indici o redirect. Template operativo, fonti e rimandi alle note correlate.
+
+| Nota | Correzioni |
+| --- | --- |
+| [[Programmazione/React/Pagine/Test di accessibilita\|Test di accessibilita]] | Rimossi i riferimenti a componenti di esempio non definiti, sostituiti da una pagina Vite che riusa i moduli WAI-ARIA/Portals. Quattro test Playwright e cinque scansioni axe con allegati, stati dinamici, tastiera, nome/descrizione e ritorno focus. Separati automatico, inconcludente e verifica manuale; limiti espliciti per screen reader e conformita. |
+| [[Programmazione/React/Pagine/Linting e Formattazione\|Linting e Formattazione]] | Sostituita la config vuota con ESLint 10, preset Hooks, globali per ambiente e ignore. Aggiunti config Prettier, script read-only/fix, componente positivo, controesempio e print-config. Spiegati compatibilita plugin, warning bloccanti, differenza da Compiler e limiti JSX/TypeScript/CI. |
+
+### Fonti e prove
+
+- Consultate fonti ufficiali W3C WAI/APG, Playwright, axe, React, ESLint, Prettier e repository dei plugin. Confrontate le note WAI-ARIA, Focus Management, Portals, Testing e le basi JavaScript ESLint/Prettier.
+- Controllate le peer dependency: React plugin 7.37.5 e jsx-a11y 6.10.2 non dichiarano ESLint 10; non installati ne forzati. La baseline usa ESLint 10.13.0 e Hooks 7.1.1, senza proporre ESLint 9 fuori manutenzione. Nessun aggiornamento delle dipendenze Quartz o delle toolchain precedenti.
+- Nuova suite react-accessibility-lint.test.mjs: **26 test mirati superati** in circa 20 secondi. Node 24.14.0, React 19.3.0, Prettier 3.9.10, axe 4.14.0 e Playwright Test 1.62.1. Una prova di sola sintassi e una di solo render SSR del TitleCounter; configurazioni e moduli estratti dai Markdown.
+- ESLint CLI e API reali: progetto positivo, JSX, scope browser/Node/CommonJS/Jest, regole Hooks, globali errati, warning e soppressioni inutili. Prettier check lascia intatti i file, write modifica soltanto la fixture e non nasconde il bug dell'effect. Ignore verificati con un file generato intenzionalmente non valido.
+- Vite build e quattro test Playwright originali: disclosure con Enter/Space/Tab, campo nascosto escluso, errore descritto, conferma locale, dialog, Escape e ripristino focus. Cinque scansioni axe con report completo, zero violazioni e zero incomplete nei soli stati provati. I quattro casi interni non sono sommati nuovamente ai 26 gruppi Node.
+- Prova negativa: eliminato lang soltanto nella copia temporanea, ricompilato e verificato che la scansione originale fallisca con html-has-lang. Directory validate prima della rimozione, junction scollegate e processi chiusi.
+- Toolchain separata appunti-react-quality-tools nella directory temporanea: **audit npm senza advisory**, nessun aggiornamento forzato. Gli advisory delle toolchain precedenti non vengono modificati o dichiarati risolti.
+- Regressione seriale completa: **650 test React superati**, 624 precedenti e 26 nuovi, senza fallimenti o test saltati, in circa 263 secondi. Build Quartz avviata dopo la conclusione; suite JavaScript non rieseguita.
+
+### Limiti e seguito
+
+Nessuna certificazione WCAG, screen reader o verifica manuale di zoom, contrasto dei temi e reflow. Demo Chrome statico locale, non backend o matrice completa di browser. La prova del TitleCounter e limitata a lint e SSR, non al suo effect nel browser. Non verificati TypeScript, Next, editor, pre-commit, plugin React/JSX aggiuntivi o CI remota.
+
+Proseguire con Storybook e Visual regression testing, poi le quattro note di Architettura Frontend. Stato non revisionato fino al controllo dell'utente; nessun commit, push o deploy remoto.
+
+### Verifica del vault
+
+- content:check con report: **911 documenti raggiungibili, zero errori e 552 avvisi editoriali**, due in meno. Non certifica il contenuto di tutte le note.
+- content:test: **9 test superati**, distinti dall'esecuzione dei test tecnici.
+- Build Quartz riuscita: **3.719 file, 2.003 HTML, 168 redirect e 136.390 riferimenti verificati, zero errori**. Restano gli avvisi preesistenti su eval nel plugin note-properties e metadati Git della copia temporanea.
+- QA delle due note su desktop 1440 x 1000 e mobile 390 x 844: HTTP 200, titoli/esempi aggiornati, nessun errore JavaScript/console/HTTP o overflow del documento. Verificato lo scorrimento effettivo di 14 blocchi di codice larghi e una tabella mobile; le altre tre tabelle rientrano nel viewport.
+- **Sei screenshot ispezionati**, aperture desktop, tabelle e codice mobile. Anteprima esistente riutilizzata su http://localhost:8082/appunti/ (PID 30336); browser QA chiusi e HTML non modificati manualmente. Prettier della nuova suite e diff --check superati; storico mantenuto a dieci voci.
+
+## 2026-10-19 - React: Storybook e visual regression
+
+### Perimetro
+
+Lette integralmente e riscritte Storybook e Visual regression testing. **55 note React uniche su 59, 4 ancora da esaminare**. Conservati date, type operational-note, publish e status non revisionato. Template operativo, fonti e collegamenti completi; nessuno spostamento, nuovo indice o redirect.
+
+| Nota | Correzioni |
+| --- | --- |
+| [[Programmazione/React/Pagine/Storybook\|Storybook]] | Installazione e configurazione React/Vite aggiornate, componente reale con CSS, cinque storie CSF, Controls e due play con assertion. Vitest Browser Mode eseguibile, annotazioni automatiche dell'addon 10.6.2; distinti catalogo, build, interazioni, accessibilita e screenshot. Dati, provider, isolamento e pubblicazione trattati con limiti espliciti. |
+| [[Programmazione/React/Pagine/Visual regression testing\|Visual regression testing]] | Configurazione Playwright e sei confronti su tre storie/due viewport. Ambiente deterministico, baseline versionate, fallimento senza creazione implicita, aggiornamento mirato e artefatti. Chiariti tolleranza colore, numero di pixel, mask, animazioni, piattaforme e differenza tra viewport mobile e dispositivo. |
+
+### Fonti e prove
+
+- Consultate documentazioni ufficiali Storybook, Vitest e Playwright e confrontati i pacchetti installati. Toolchain separata appunti-react-storybook-tools: Storybook 10.6.2, React 19.3.0, Vite 8.3.4, Vitest 5.0.5 e Playwright Test/Playwright 1.62.1. Audit npm senza advisory; dipendenze del sito e altre toolchain invariate.
+- Nuova suite react-storybook-visual.test.mjs: **9 test mirati superati** in circa 45 secondi. Configurazioni e sorgenti estratti dai Markdown; un gruppo controlla soltanto la sintassi.
+- Vitest reale esegue cinque storie; il callback rimosso nella sola fixture fa fallire Activated e lascia verdi gli altri quattro casi. Il wrapper di test permette a Vite di servire le junction esterne, senza alterare gli snippet originali.
+- Storybook compilato realmente; verificati cinque ID, Docs, manager e iframe. Playwright Test prova baseline assente senza creazione, aggiornamento esplicito di sei PNG e confronto successivo senza riscrivere gli hash.
+- Modifica CSS intenzionale nella fixture: build, confronto fallito e diff PNG presente. Baseline intatte; ripristino del CSS, nuova build e confronto verde senza aggiornamento dei riferimenti. Le cinque storie e i sei casi visuali sono interni ai gruppi Node, non contati nuovamente.
+- Regressione seriale completa: **659 test React superati**, 650 precedenti e 9 nuovi, senza fallimenti o test saltati, in circa 355 secondi. Node 24.14.0 e Chrome 155.0.8059.80; browser/processi chiusi e fixture rimosse dopo controllo dei percorsi e scollegamento delle junction. Suite JavaScript non rieseguita; build Quartz avviata soltanto dopo la regressione.
+
+### Limiti e seguito
+
+Solo Windows/Chrome, tema chiaro e due viewport; nessuna matrice browser, dispositivo fisico, servizio remoto, backend o CI remota. Le baseline temporanee verificano il meccanismo, non sono un'approvazione umana dell'aspetto di un prodotto. Non provati MSW, TypeScript, Next, decorators applicativi o addon a11y. Le prove del blocco precedente restano distinte. Nessun commit, push o deploy remoto.
+
+Rimangono Design system, Feature-based architecture, State colocato e API layer. Tutte le note modificate restano non revisionate fino al controllo dell'utente.
+
+### Verifica del vault
+
+- content:check con report: **911 documenti raggiungibili, zero errori e 550 avvisi editoriali**, due in meno; non certifica il contenuto delle altre note.
+- content:test: **9 test superati**, distinti dai test tecnici.
+- Build Quartz riuscita: **3.719 file, 2.003 HTML, 168 redirect e 136.432 riferimenti verificati, zero errori**. Avvisi preesistenti su eval del plugin note-properties e metadati Git della copia temporanea invariati.
+- QA delle due note su desktop 1440 x 1000 e mobile 390 x 844: HTTP 200, titoli e snippet aggiornati, nessun errore pagina/console/HTTP o overflow del documento. Scorrimento effettivo verificato per 16 blocchi larghi tra i viewport e una tabella mobile; le altre tabelle rientrano nello spazio disponibile.
+- **Sei screenshot finali ispezionati**, aperture desktop, tabelle e codice mobile. Disattivato lo scorrimento animato nella sola sessione di acquisizione per inquadrare gli elementi, senza modificare il CSS del sito. Anteprima preesistente riutilizzata su http://localhost:8082/appunti/ (PID 30336); browser QA chiusi, HTML generati non modificati manualmente. Prettier della suite e diff --check superati; storico mantenuto a dieci voci.
+
+## 2026-10-19 - React: design system e architettura per feature
+
+### Perimetro
+
+Lette integralmente e riscritte Design system e Feature-based architecture. **57 note React uniche su 59, 2 ancora da esaminare**. Conservati date, type theory-note, publish e status non revisionato. Accorpate le sezioni duplicate; nessuno spostamento o modifica a indici e redirect.
+
+| Nota | Correzioni |
+| --- | --- |
+| [[Programmazione/React/Pagine/Design system\|Design system]] | Distinti sistema, libreria e catalogo. Token e risoluzione CSS, contratti, governance e compatibilita. TextField React 19 completo, controllato, con label, descrizioni, errore testuale, ref e temi; separata la responsabilita del form dalla primitiva condivisa. |
+| [[Programmazione/React/Pagine/Feature-based architecture\|Feature-based architecture]] | Confini e dipendenze invece del solo albero di cartelle; API pubblica, import, shared, stato e routing. Demo completo con policy pura, due form indipendenti e composizione Vite, riusando TextField. Chiariti limiti di index, lint, FSD, monorepo e persistenza. |
+
+### Fonti e prove
+
+- Consultate fonti ufficiali React, USWDS, GOV.UK Design System, WAI, MDN, SemVer, Redux, Feature-Sliced Design ed ESLint. La convenzione app -> features -> shared e una scelta del demo, non una regola obbligatoria di React o l'adozione completa di FSD.
+- Nuova suite react-design-architecture.test.mjs: **35 test mirati superati**, 17 gruppi Node e 18 casi browser, in circa otto secondi. Due gruppi verificano solo sintassi e due solo render SSR. Node 24.14.0, React 19.3.0, Vite 8.3.4 e Chrome 155.0.8059.80; sorgenti estratti dai Markdown.
+- Verificate policy UTF-16, trim, tipi invalidi, escaping e relazioni ARIA. Build Vite reale e grafo esbuild; deep import e dipendenza shared -> feature introdotti nella sola fixture compilano ma vengono rilevati dal controllo dei confini. Controllo limitato all'esempio, non analizzatore generale di architettura.
+- Development e production: istanze indipendenti, ID stabili, focus/ref, errore e correzione, submit con Enter, cambio tema senza reset, testo non HTML e perdita della conferma al reload. Probe sul componente originale per required nativo, disabled, Tab e FormData; produzione a 320/390/1440px nei due temi senza overflow.
+- Quattro scansioni axe negli stati di errore chiaro/scuro, zero violazioni e zero incomplete. Non sono una certificazione di accessibilita; nessuna verifica con screen reader, zoom o forced colors.
+- Riutilizzate toolchain esistenti senza nuove installazioni o audit npm. Server e browser della suite mirata chiusi, junction scollegate e directory temporanea rimossa dopo controllo del percorso. Dipendenze Quartz invariate.
+- Regressione seriale completa: **694 test React superati**, 659 precedenti e 35 nuovi, senza fallimenti o test saltati, in circa 358 secondi. Processi e fixture dei test chiusi/rimossi; suite JavaScript non rieseguita. Build Quartz avviata solo dopo la conclusione della regressione.
+
+### Limiti e seguito
+
+Esempio locale React 19/Vite, senza autenticazione, backend o persistenza. Non provati React 18, hydration, framework routing, package distribuiti, altri browser o CI remota. Il controllo del grafo non copre genericamente alias, cicli, import dinamici o feature multiple. Le scansioni automatiche e le misure di overflow non approvano l'aspetto di un prodotto.
+
+Rimangono **State colocato e API layer**. Le note restano non revisionate fino all'approvazione dell'utente; nessun commit, push o deploy remoto.
+
+### Verifica del vault
+
+- content:check con report: **911 documenti raggiungibili, zero errori e 548 avvisi editoriali**, due in meno; nessun avviso sulle due note del blocco. Non certifica il contenuto delle altre note.
+- content:test: **9 test superati**, distinti dai test degli esempi React.
+- Build Quartz riuscita: **3.719 file, 2.003 HTML, 168 redirect e 136.485 riferimenti verificati, zero errori**. Restano gli avvisi preesistenti su eval del plugin note-properties e metadati Git della copia temporanea.
+- QA delle due pagine su desktop 1440 x 1000 e mobile 390 x 844: HTTP 200, titoli e snippet aggiornati, nessun errore pagina/console/HTTP o overflow del documento. Scorrimento effettivo di nove blocchi di codice e una tabella su mobile; albero delle cartelle leggibile senza scorrimento orizzontale.
+- **Sei screenshot ispezionati**: aperture desktop, tabella/albero e codice mobile. Scorrimento animato disattivato nella sola sessione QA. Anteprima preesistente riutilizzata su http://localhost:8082/appunti/ (PID 30336); browser chiusi, HTML non modificati manualmente. Suite formattata con Prettier, sezioni principali univoche e storico mantenuto a dieci voci.
+
+## 2026-10-19 - React: stato colocato e API layer
+
+### Perimetro
+
+Lette integralmente e riscritte State colocato e API layer: **59 note React uniche su 59 esaminate**. Conclusa la revisione tecnica delle pagine attualmente presenti, non una certificazione di ogni frammento o una copertura di tutte le API React. Conservati date, type, publish e status non revisionato; nessun nuovo percorso, indice o redirect.
+
+| Nota | Correzioni |
+| --- | --- |
+| [[Programmazione/React/Pagine/State colocato\|State colocato]] | Proprietario, consumatori e durata al posto della regola assoluta sullo stato locale. Distinti Context, custom hook, URL, cache e valori derivati. Catalogo completo con filtro condiviso, dettaglio locale, due istanze, hidden/unmount e reset per key; chiariti inizializzazione e limiti prestazionali. |
+| [[Programmazione/React/Pagine/API layer\|API layer]] | Trasporto, feature, cache e UI separati. Client JSON con contratto limitato, Headers, status, 204, errori distinti e signal. DTO validati e proiettati, operazioni per dominio, effetti delle scritture sul backend espliciti e integrazione con ProfilePanel esistente. Cache alternativa con signal inoltrato; credenziali, SSR e backend non impliciti. |
+
+### Fonti e prove
+
+- Consultate fonti ufficiali React, MDN e TanStack Query. Confrontate le note Derived state, Data Fetching e Cache, Gestione della memoria e AbortController, Introduzione e Toolchain e Feature-based architecture.
+- Nuova suite react-colocation-api.test.mjs: prima esecuzione mirata **59/59**, poi aggiunto un caso di abort prima degli header, per **60 casi**. Configurazioni e moduli estratti dai Markdown, due build Vite reali. Node 24.14.0, React 19.3.0, Vite 8.3.4 e Chrome 155.0.8059.80.
+- 42 gruppi Node, inclusi due di sola sintassi e uno di render SSR; 18 casi browser. Verificati filtro e immutabilita, DTO e ID, Headers, JSON, 200/201/204, errori HTTP/rete/protocollo/body, input invalidi e signal. Server locale per Fetch reale e abort durante la lettura, con controllo di bodyUsed e motivo originale.
+- Development/production: stato condiviso dai fratelli, dettaglio locale, cataloghi indipendenti, hidden, unmount, key, focus e tastiera. Probe su initialQuery; produzione a 320/390/1440px. Due scansioni axe, zero violazioni e zero incomplete nei soli stati provati.
+- UI API con richieste intercettate: successo, cambio ID, errore, retry, testo non HTML e risposta incoerente rifiutata. Opzioni Query controllate eseguendo direttamente queryFn, senza dichiarare una nuova verifica dell'intera cache.
+- Nessuna nuova installazione o audit npm: toolchain temporanee esistenti riusate, dipendenze Quartz invariate. Test senza dati o credenziali reali; nessun commit, push o deploy remoto.
+- Regressione seriale completa: **754 test React superati**, 694 precedenti e 60 nuovi, nessun fallimento o test saltato, in circa 376 secondi. Browser, server e fixture chiusi/rimossi dopo verifica dei percorsi e scollegamento delle junction. Suite JavaScript non rieseguita; build Quartz avviata dopo la conclusione dei test.
+
+### Limiti e seguito
+
+Non verificati backend di produzione, autorizzazioni, CORS cross-origin, idempotenza, retry automatici, upload FormData, stream di download, SSR dell'adapter, client generati o CI remota. Solo Windows/Chrome; nessun benchmark, screen reader o certificazione WCAG. Timeout e obsolescenza del ProfilePanel hanno prove distinte nella suite gia esistente.
+
+La revisione React corrente e conclusa. Tutte le note modificate restano **non revisionate dall'utente**; le altre aree e le versioni future richiedono controlli separati.
+
+### Verifica del vault
+
+- content:check con report: **911 documenti raggiungibili, zero errori e 546 avvisi editoriali**, due in meno. Nessun avviso nell'area React; questo non certifica tutte le API descritte o il contenuto delle altre aree.
+- content:test: **9 test superati**, distinti dalle prove degli esempi React.
+- Build Quartz riuscita: **3.719 file, 2.003 HTML, 168 redirect e 136.554 riferimenti verificati, zero errori**. Invariati gli avvisi preesistenti su eval del plugin note-properties e metadati Git della copia temporanea.
+- QA delle due note a 1440 x 1000 e 390 x 844: HTTP 200, titoli e nuovi esempi presenti, nessun errore pagina/console/HTTP o overflow del documento. Sei blocchi di codice e due tabelle scorrono realmente su mobile; la tabella del contratto HTTP rientra nello spazio disponibile.
+- **Sei screenshot ispezionati**, aperture desktop e tabelle/codice mobile. Disattivato lo scorrimento animato nella sola sessione QA per l'inquadratura; nessuna modifica manuale al CSS o agli HTML. Anteprima preesistente http://localhost:8082/appunti/ (PID 30336) lasciata attiva, browser QA chiusi. Prettier della nuova suite e diff --check superati; sezioni principali univoche e storico a dieci voci.

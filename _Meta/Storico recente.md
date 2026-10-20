@@ -8,6 +8,131 @@ Mantieni solo le ultime 10 voci operative.
 
 ---
 
+## 2026-10-19 - React: revisione delle 59 note conclusa
+
+### Fatto
+
+- Revisionate Storybook, Visual regression testing, Design system, Feature-based architecture, State colocato e API layer: **59 note React su 59** esaminate. Conclusa la revisione tecnica delle pagine attuali, non una certificazione universale di React. Esempi, fonti e collegamenti aggiornati.
+- Nuova suite con **9 test mirati superati**: cinque storie in Vitest Browser Mode, build Storybook, sei confronti Playwright, baseline assente e due controlli negativi per callback/CSS. Le baseline non vengono riscritte nel confronto ordinario.
+- Altri **35 test mirati superati** per design system e architettura: TextField condiviso, due form locali, temi, focus, quattro scansioni axe e controlli del grafo con import volutamente errati nella sola fixture. Distinti contratto UI e policy del prodotto.
+- Altri **60 test** per stato colocato e API layer, superati nella regressione: proprietario/durata, hidden/unmount/key, client HTTP con schema e mapping, 204, errori e abort reale prima degli header/durante il corpo. ProfilePanel riusato, non duplicato; backend di produzione non incluso.
+- Regressione seriale completa aggiornata: **754 test React superati**, nessun fallimento o test saltato, in circa 376 secondi. Node 24.14.0 e Chrome 155.0.8059.80; processi e fixture temporanee chiusi/rimossi.
+- content:check: **911 documenti raggiungibili, zero errori e 546 avvisi editoriali**, nessuno nell'area React; nove test della trasformazione superati. Registro e README aggiornati.
+- Ultima build Quartz riuscita: **3.719 file, 2.003 HTML, 168 redirect e 136.554 riferimenti verificati, zero errori**. Sei screenshot delle ultime due note ispezionati su desktop/mobile; sei blocchi di codice e due tabelle larghe scorrono internamente, senza errori browser o overflow del documento. Anteprima esistente su http://localhost:8082/appunti/ lasciata attiva.
+
+### Decisioni
+
+- Toolchain temporanea isolata per Storybook: Storybook 10.6.2, Vitest 5.0.5 e Playwright 1.62.1; audit senza advisory. Il blocco design/architettura riusa toolchain esistenti senza nuove installazioni o audit. Dipendenze Quartz invariate.
+- Distinti build, interazioni, screenshot, accessibilita e approvazione umana delle immagini. Test limitati a Windows/Chrome e viewport desktop/mobile, non CI remota o dispositivi reali.
+- Convenzione app -> features -> shared esplicita, non obbligo React o adozione completa di FSD. Il controllo del grafo e limitato al demo, non un linter generale; form in memoria senza backend o persistenza.
+- Stato scelto anche per durata, non solo numero di consumatori. Client JSON deliberatamente limitato: trasporto distinto da dominio/cache/UI, credenziali omesse e nessun retry implicito. Le scritture nei test usano solo fixture senza dati reali.
+- Date e percorsi conservati; status non revisionato fino all'approvazione dell'utente. Nessun commit, push o deploy remoto.
+
+### Prossimi passi
+
+- Proseguire la revisione degli altri percorsi di Programmazione. Le 59 note React restano non revisionate dall'utente finche non approvate; nuove API o versioni richiedono verifiche separate.
+
+## 2026-10-18 - React: concorrenza, sicurezza e testing
+
+### Fatto
+
+- Revisionate useTransition e useDeferredValue, Gestione della memoria e AbortController, Protezione XSS, Gestione Autenticazione, CSRF, Content Security Policy, Testing Jest, Testing Cypress e Playwright, Test di accessibilita e Linting e Formattazione: **53 note React su 59**. Distinti scheduling, cancellazione, leak, sicurezza, test e controlli statici.
+- Ricerca con filtro nel figlio memoizzato; profilo completo con cancel, timeout, retry, guardie e controllo HTTP/JSON/schema. Esempio distinto per listener e timer, con cleanup verificabile.
+- Sanitizer DOMPurify con policy minima e URL controllate; client sessione completo con stati distinti, logout confermato solo dal server, retry e rimozione della bozza al cambio identita. Non sono implementati login reale, OIDC o sicurezza backend completa.
+- CSRF: contratto server esplicito, form con endpoint fisso e token, errori senza retry automatico. CSP: baseline statica e demo React CSR con nonce per risposta, CSS esterno e server Node limitato; distinti report-only, enforcement e integrazioni framework.
+- Testing: configurazioni eseguibili, form condiviso, adapter HTTP e casi di validazione/successo/errore. Eseguiti sette test Jest, tre Playwright e tre Cypress; prova negativa mirata verifica che Jest rilevi la validazione rimossa. API browser simulate, non backend completo.
+- Accessibilita: riusati disclosure, form e dialog esistenti, quattro test Playwright e cinque report axe. Linting: configurazione ESLint 10/Hooks/Prettier completa, globali scoped, ignore e controesempi. Tastiera e scansioni automatiche restano distinte dai controlli manuali non eseguiti.
+- Cinque nuove suite con **140 test superati** (24 concorrenza, 36 XSS/autenticazione, 31 CSRF/CSP, 23 runner e 26 accessibilita/lint), inclusi bundle, HTTP locale, cleanup, CSP e controlli statici. Regressione completa: **650 test React superati**; i casi interni dei runner non sono contati due volte. Diciassette scansioni axe positive introdotte su stati selezionati, non un audit completo.
+- content:check: **911 documenti raggiungibili, zero errori, 552 avvisi editoriali**; nove test della trasformazione superati. Registro e README aggiornati; storico mantenuto a dieci voci operative.
+- Ultima build Quartz riuscita: **3.719 file, 2.003 HTML, 168 redirect e 136.390 riferimenti verificati, zero errori**. Ultime due note controllate su desktop/mobile e altri sei screenshot ispezionati: 14 blocchi di codice e una tabella larghi scorrono su mobile, senza overflow del documento o errori browser/HTTP.
+- Anteprima riavviata nel primo blocco dopo la rigenerazione di index.html, poi riutilizzata su http://localhost:8082/appunti/ (PID 30336). Browser e server dei test chiusi; anteprima lasciata disponibile. HTML generati non modificati manualmente.
+
+### Decisioni
+
+- Fonti ufficiali e moduli eseguibili; DOMPurify 3.4.17 nella toolchain temporanea React, con il low Babel preesistente. Nuova toolchain isolata per i runner: 19 segnalazioni moderate transitive sprintf-js, nessuna high/critical; nessun downgrade automatico. Dipendenze Quartz e toolchain JavaScript invariate. Test distinti da benchmark e audit completi.
+- Toolchain qualita separata con audit npm senza advisory. ESLint 10 con plugin Hooks compatibile; nessun force/legacy-peer-deps o downgrade a ESLint 9 fuori manutenzione per aggiungere plugin JSX non compatibili. La baseline non equivale a tutti i controlli React/TypeScript.
+- Data, percorsi e pubblicabilita conservati; note non revisionate fino al controllo dell'utente. Nessun commit, push o deploy remoto.
+
+### Prossimi passi
+
+- Rimangono **6 note React**: proseguire con Storybook e Visual regression testing, poi le quattro note di Architettura Frontend.
+
+## 2026-10-16 - React: Actions, risorse e framework
+
+### Fatto
+
+- Revisionate Actions e form actions, useActionState, useOptimistic, useFormStatus, use hook e Framework Next.js e Remix: React arriva a **43 note su 59**. Esempi completi di trasformazione locale, alias con bozza controllata e contatore in coda; distinti dati, pending, reset, errore e conferma.
+- Corretti firme e contesto Action, differenze client/server e limiti di permalink. Il reset automatico non interpreta un errore applicativo restituito; la bozza va conservata intenzionalmente.
+- Aggiunti commenti ottimistici con rebase e conferma nel parent, correlazione requestId e rifiuto tipizzato; due form con scope e dati indipendenti. Precisati ripristino della base diverso dal rollback server e metadati del form diversi da una misura della rete.
+- use: Promise stabile, Context condizionale, retry/boundary e variante browser(). Framework: distinti Remix v2, nuovo Remix e React Router, con catalogo SSR completo e form GET funzionante senza JavaScript; rimandi agli esempi Next gia verificati.
+- **510 test React superati**, inclusi 100 nuovi nei tre blocchi della giornata (34, 39 e 27). Quindici scansioni axe introdotte su stati selezionati, senza pretesa di audit completo. Ultima suite: build SSR reale, status HTTP, navigazione idratata e proiezione pubblica dei dati.
+- content:check: **911 documenti raggiungibili, zero errori, 561 avvisi editoriali**; superati i nove test della trasformazione. Rapporto, registro e README dei test aggiornati.
+- Nessuna nuova dipendenza del sito. Aggiunti dev/serve React Router nella toolchain esterna; isbot dichiarato nel demo. Audit esterno con un low preesistente su Babel, senza aggiornamenti forzati. Fixture/junction e processi di test ripuliti; suite JavaScript non rieseguita.
+- Build Quartz riuscita: **3.719 file, 2.003 HTML, 168 redirect e 136.087 riferimenti verificati, zero errori**. Ultime due note controllate su desktop/mobile e sei screenshot finali ispezionati; dieci blocchi di codice mobile scorribili e due tabelle entro il viewport, nessun overflow del documento.
+- Anteprima esistente riutilizzata su http://localhost:8082/appunti/. Browser QA chiusi; HTML generati non modificati manualmente. Storico mantenuto a dieci voci operative.
+
+### Decisioni
+
+- Demo client con servizi locali espliciti, non finte registrazioni riuscite; catalogo Framework Mode con server SSR reale di sola lettura. Server Functions, persistenza e sicurezza backend non sono collaudati da questi test.
+- Date e pubblicabilita conservate; note ancora non revisionate fino al controllo dell'utente. Nessun commit, push o deploy remoto.
+
+### Prossimi passi
+
+- Rimangono **16 note React**: proseguire con useTransition e useDeferredValue e Gestione della memoria e AbortController.
+
+## 2026-10-15 - React: stato, UX e rendering
+
+### Fatto
+
+- Revisionate 32 note fra Stato e Rendering, Toolchain Base, Hooks e Stato, Routing/Data Fetching/Form, Component Patterns, UX/Accessibilita, Performance/Internals e primo blocco server-side. Insieme ai cinque fondamenti del 14 ottobre, React arriva a **37 note su 59**. Dettagli e risultati intermedi in Revisione contenuti.
+- Corretti snapshot/updater, cleanup e race condition, form e ref; metriche del Profiler, scope CSS, temi e responsive; memoizzazione, reducer e custom hook. Esempi completi con import, contratti, fonti ufficiali e metadati conservati.
+- Completate Context API, State Management Esterno e Derived state: fallback e provider annidati, store Zustand/Redux con selector e reset, durata distinta dalla persistenza, valori derivati e bozze con politiche esplicite.
+- Completate React Router, Data Fetching e Cache e Validazione Dati: modalita/versioni del router e hosting, cache e rollback con riconciliazione, parsing Zod e form accessibili. Contratti e limiti dei demo espliciti; nessun backend reale incluso.
+- Completate Compound Components Pattern, Control Props e State Reducer Pattern, Portals ed Error Boundaries: accordion completo, contratti controlled/reducer/render prop, dialog nativo, propagazione eventi, limiti e recupero degli errori.
+- Completate WAI-ARIA, Focus Management, Animazioni e Micro-interazioni e Internazionalizzazione: esempi completi, nomi/relazioni, focus dopo commit, reduced motion, plurali/fallback e locale distinto da valuta/fuso.
+- Completate Virtual DOM, Fiber Architecture e Concurrent Mode, Batching e React Compiler: identita/riordino, scheduling, snapshot/coda e flushSync; configurazione Vite 8/plugin-react 6 con Compiler realmente eseguito e baseline non compilata.
+- Completate Virtualizzazione delle liste e Suspense e Lazy Loading: esempi completi TanStack Virtual, misure e stato/focus; code splitting con import reale, fallback, error boundary e distinzione fra cache del codice e stato del pannello.
+- Completate Server Components e SSR e SSG: progetto Next reale, confini degli import/JSX e dati pubblici, rendering per richiesta, streaming, export statico e mismatch. Corretti benefici automatici e hydration implicita, chiudendo la segnalazione precedente.
+- Regressione finale: **410 test React superati**, inclusi 22 nuovi su API React, build/HTTP Next ed export, Chrome e hydration. Due nuove scansioni axe e sedici ripetute dai blocchi precedenti, non equivalenti a un audit completo. Dettagli e limiti nel registro.
+- Dipendenze degli esempi solo nella toolchain temporanea esterna; aggiunti Next 16.4.1 e server-only 0.0.1. Nessuna modifica a package/lockfile Quartz; processi/server/browser degli esempi chiusi e fixture rimosse. Suite JavaScript non rieseguita.
+- content:check: **911 documenti raggiungibili, zero errori, 563 avvisi editoriali**. Superati i nove test della trasformazione; README, rapporto e registro aggiornati.
+- Build finale riuscita: **3.719 file, 2.003 HTML, 168 redirect e 135.941 riferimenti verificati, zero errori**. Nessuna modifica manuale agli HTML generati.
+- Ultime due note controllate in quattro viste desktop/mobile e sei screenshot ispezionati: nessun errore di caricamento o overflow del documento. Dieci blocchi di codice larghi su mobile, tutti scorribili; entrambe le tabelle entro il viewport. Anteprima trovata spenta e riavviata in background senza finestra su http://localhost:8082/appunti/; browser QA chiuso.
+
+### Decisioni
+
+- Testare il codice estratto dalle note; distinguere Fetch reale da mock differiti e autenticazione simulata da un backend reale.
+- Le note restano non revisionate fino al controllo dell'utente. Nessun commit, push o deploy remoto.
+
+### Prossimi passi
+
+- Rimangono **22 note React**: proseguire con Actions e form actions e useActionState nel blocco React Moderno e Server-Side. Suspense e gia revisionata; i richiami alla stessa nota nell'indice non vanno ricontati.
+- Il punto aperto su SSR e SSG e risolto; non estendere le prove del catalogo pubblico a sessioni, mutazioni o deploy di produzione.
+
+## 2026-10-14 - Fondamenta React
+
+### Fatto
+
+- Lette integralmente e corrette le cinque note iniziali: Introduzione e Toolchain, JSX, Componenti Funzionali vs Componenti a Classe, Props e Flusso di dati unidirezionale, Rendering Condizionale e Liste.
+- Aggiunto un progetto Vite completo e riproducibile; distinti React, renderer, JSX e strumenti di controllo. Comandi separati, import espliciti, esempi client senza backend.
+- Corretti parita funzione/classe, inizializzazione e identita dello stato, props condivise, input controllati, children, key e bozze dopo riordino. Fonti ufficiali nelle note, date originarie e stato non revisionato conservati.
+- Superati 33 nuovi test: 19 Node (cinque gruppi di sola sintassi) e 14 Chrome. Verificati build reale, interazioni e variante negativa con key indice. React 19.3.0, Vite 8.3.4, plugin React 6.1.2, Node 24.14.0 e Chrome 155.0.8059.79.
+- Toolchain installata soltanto in una directory temporanea esterna; nessun aggiornamento delle dipendenze di Quartz. Fixture, server e browser di test chiusi. Non rieseguita la suite JavaScript precedente.
+- Superati i nove test della trasformazione e content:check: 911 documenti raggiungibili, zero errori, 592 avvisi editoriali. Aggiornati registro della revisione, rapporto e README dei test.
+- Build Quartz ripetuta dopo il miglioramento della tabella mobile: 2.003 HTML e 135.401 riferimenti verificati, zero errori. Anteprima riavviata sulla porta 8082; nessuna modifica agli HTML generati.
+- Verificate tutte le cinque pagine su desktop/mobile, con codice scorrevole, due tabelle e screenshot ispezionati. Nessun overflow del documento, errore JavaScript o caricamento HTTP fallito.
+
+### Decisioni
+
+- Proseguire React per blocchi dell'indice, senza estendere le prove dei fondamenti a framework, SSR/RSC, effect o sicurezza.
+- Esempi estratti dai Markdown nei test; render statico usato per controllare markup, non presentato come implementazione SSR.
+- Le note restano non revisionate fino all'approvazione dell'utente. Nessun nuovo commit, push o deploy remoto.
+
+### Prossimi passi
+
+- Revisionare Stato e Rendering: useState, useEffect, useRef e Gestione Moduli (form/eventi e controlled/uncontrolled).
+- Rimangono 54 note React per questa passata; conservare il punto gia segnalato su SSR e SSG per il relativo blocco.
+
 ## 2026-10-13 - Revisione contenuti JavaScript
 
 ### Fatto
@@ -148,167 +273,3 @@ Mantieni solo le ultime 10 voci operative.
 ### Prossimi passi
 
 - Aggiungere altre strutture solo quando verranno realmente documentate.
-
-## 2026-07-27 - Pubblicazione area Stampante 3D
-
-### Fatto
-
-- Aggiunta `Stampante 3D` alle aree elaborate dal sito Quartz.
-- Rese pubbliche le note generali e l'intera guida Marlin tramite `publish: true`.
-- Mantenuti gli indici senza frontmatter: lo script di preparazione li pubblica automaticamente.
-- Verificata la build locale: 34 note di contenuto e 2 indici inclusi, con 40 pagine HTML generate considerando gli alias.
-
-### Decisioni
-
-- La pubblicazione resta opt-in e limitata alle aree elencate in `site/publish.config.json`.
-- Le note private delle altre aree non vengono copiate nel contenuto elaborato da Quartz.
-
-### Prossimi passi
-
-- Eseguire commit e push su `main` per avviare il workflow GitHub Pages.
-
-## 2026-07-26 - Avanzamento guida Marlin
-
-### Fatto
-
-- Completata la nota del blocco `Sonda` su probe Z, offset XYZ, BLTouch, margini, clearances, affidabilita e test di ripetibilita.
-- Aggiunta una procedura di collaudo progressiva con `M119`, `M401`, `M402`, `G28 Z`, `G30`, `M851` e `M48`.
-- Collegata la nuova pagina nell'indice Marlin.
-- Completato il blocco `Livellamento` con due note su metodi ABL/MBL/UBL, mesh, stato `M420`, Z Safe Homing, multi-Z, `G34`, `M422` e `G35`.
-- Collegate entrambe le pagine di livellamento nell'indice Marlin.
-- Completato il blocco `Interfaccia` con due note su display, controller, TFT, DWIN, host G-code, encoder, touch, lingua, menu e feedback acustico.
-- Collegate entrambe le pagine dell'interfaccia nell'indice Marlin.
-- Completato il blocco `Memoria e supporti` con due note su EEPROM, scheda SD, persistenza, migrazione, G-code di configurazione e diagnostica.
-- Collegate entrambe le pagine di memoria e supporti nell'indice Marlin.
-- Completato il blocco `Accessori` con due note su runout, motion sensor, Advanced Pause, power-loss recovery, PSU, rele, luci, LED, buzzer e servo.
-- Collegate entrambe le pagine degli accessori nell'indice Marlin.
-- Completato il blocco `Taratura` con una procedura progressiva di collaudo, calibrazione, salvataggio e stampa di accettazione.
-- Collegata la procedura completa di taratura nell'indice Marlin.
-- Completato il blocco `Diagnostica` con due note su build, upload, boot, EEPROM, movimento, termica, estrusione, probe e leveling.
-- Collegate entrambe le pagine di diagnostica nell'indice Marlin.
-- Completato il blocco `Consultazione` con il riferimento rapido delle direttive e la procedura di migrazione tra release.
-- Collegate entrambe le pagine di consultazione nell'indice Marlin.
-
-### Decisioni
-
-- Cablaggio e livelli logici sono descritti in modo indipendente dai colori dei fili e da una specifica motherboard.
-- Le opzioni avanzate del BLTouch restano disabilitate per impostazione prudente finche l'hardware non e stato verificato.
-- Offset e ripetibilita sono trattati separatamente: una misura precisa puo comunque avere un offset assoluto errato.
-- Tramming, allineamento Z, mesh e offset sono documentati come operazioni distinte.
-- Per lo start G-code sono separati il flusso che misura con `G29` e quello che riusa una mesh con `M420 S1`.
-- Display pilotati da Marlin, smart display e touchscreen host G-code sono documentati come architetture differenti.
-- La selezione hardware usa una sola direttiva controller e, per i TFT, una sola combinazione di driver, interfaccia, risoluzione e UI.
-- Default compilati, valori runtime e dati persistenti sono documentati come livelli distinti.
-- Le modifiche G-code vengono provate in RAM prima di `M500`; slot SD, scrittura e comandi post-abort richiedono una verifica esplicita.
-- Runout e power-loss recovery sono trattati come gestioni di eventi differenti, entrambe dipendenti dallo stato reale del job e della macchina.
-- GPIO, segnali PWM e uscite di potenza sono distinti; carichi, rele, LED e servo richiedono uno stadio elettrico adeguato.
-- La taratura segue dipendenze esplicite: sicurezza e sensori, meccanica, homing, steps, termica, livellamento, dinamica, estrusione e compensazioni.
-- I valori vengono provati in RAM, confrontati con una base registrata e salvati soltanto dopo un criterio di accettazione.
-- Gli errori vengono classificati per fase e corretti partendo dalla prima causa osservabile, senza aggirare `SanityCheck` o le protezioni.
-- La diagnostica operativa distingue hardware, meccanica, firmware, EEPROM, G-code, slicer e materiale prima di modificare i parametri.
-- Il riferimento rapido distingue direttive compile-time, default compilati, RAM, EEPROM e G-code del job.
-- La migrazione usa file puliti della release destinazione e trasferisce decisioni per blocchi verificabili, mantenendo un rollback.
-
-### Prossimi passi
-
-- Eseguire un controllo finale di completezza, frontmatter, collegamenti e coerenza dell'intera sezione Marlin.
-
-## 2026-07-25 - Riprogettazione sezione Marlin
-
-### Fatto
-
-- Rimossa dall'indice `Stampante 3D` l'intera sezione dedicata a Marlin.
-- Eliminate le 14 note Marlin presenti in `Stampante 3D/Pagine`.
-- Conservata la nota generale `Introduzione Stamapante 3D.md` con le modifiche locali gia presenti.
-- Verificata l'assenza di collegamenti alle pagine rimosse nelle altre aree del vault.
-- Creato `Stampante 3D/Marlin/Indice Marlin.md` con un nuovo percorso dedicato alla configurazione completa del firmware.
-- Collegato il nuovo indice Marlin dall'indice principale `Stampante 3D`.
-- Impostata la release stabile `Marlin 2.1.2.8` come riferimento tecnico della guida.
-- Completate le tre note del blocco `Orientamento e configurazione`: introduzione e compatibilita, struttura dei file, metodo di configurazione e build.
-- Completate le note del blocco `Elettronica`: scheda madre, porte seriali e pin; alimentazione e protezioni hardware.
-- Completate le note del blocco `Meccanica`: tipo di stampante e cinematica; dimensioni del piatto, area di lavoro e limiti.
-- Completate le note del blocco `Motori, driver e homing`: passi e direzioni, driver e corrente, endstop e Sensorless Homing.
-- Completate le note di `Pianificazione del movimento`: limiti dinamici, Jerk e Junction Deviation; planner, segmentazione e curve.
-- Completate le note di `Compensazioni`: Linear Advance, Input Shaping, Skew, Backlash, Babystepping e regolazioni runtime.
-- Completate le note di `Estrusione`: architetture hotend e multi-materiale, gestione del filamento, limiti di sicurezza, retrazione e cambio utensile.
-- Completate le note di `Temperature`: sensori e limiti, controlli PID/MPC, protezioni termiche, ventole e circuiti di raffreddamento.
-
-### Decisioni
-
-- La documentazione e organizzata per parte della stampante interessata, non secondo l'ordine delle direttive nei file sorgente.
-- Ogni futura nota raccogliera le opzioni correlate di `Configuration.h` e `Configuration_adv.h`.
-- La guida resta generale e non viene personalizzata per uno specifico modello di stampante.
-- Le voci restano testo semplice fino alla creazione delle pagine, evitando wikilink non ancora risolvibili.
-- Ogni nota Marlin indica esplicitamente la release di riferimento nel frontmatter e usa collegamenti a sorgenti fissate al tag.
-
-### Prossimi passi
-
-- Proseguire con `Sonda`, partendo da probe Z, offset e BLTouch.
-
-## 2026-07-15 - Normalizzazione percorsi e integrazione Quartz
-
-### Fatto
-
-- Normalizzate in `Pagine/` le cartelle tracciate come `pagine/` nelle aree AI, RISC-V, Home assistant, Linux e Stampante 3D.
-- Corretti cinque wikilink verso `Programmi open source/Indice Programmi Open Source` con capitalizzazione non coerente.
-- Eseguito un controllo case-sensitive sui percorsi, in preparazione alla futura build Quartz su GitHub Actions.
-- Importato Quartz 5 nella cartella `site/` tramite `git subtree --squash`, mantenendo il vault e il generatore statico nello stesso repository.
-- Installate le dipendenze npm e i 46 plugin del template Quartz per Obsidian.
-- Creata la configurazione locale in `site/quartz.config.yaml` e verificata una prima homepage di prova.
-- Verificata la build statica e l'anteprima locale su desktop e mobile, senza errori nella console del browser.
-- Aggiunti `site/publish.config.json` e gli script portabili per preparare e compilare solo le aree autorizzate.
-- Marcate come pubblicabili tutte le 99 note dell'area Linux e abilitato il filtro `explicit-publish`.
-- Verificata la build Linux completa con 100 input, includendo la homepage generata, senza wikilink rotti nell'output.
-- Impostato il `baseUrl` definitivo `perni24.github.io/appunti` per la pubblicazione nel sottopercorso GitHub Pages.
-- Creato `.github/workflows/deploy-pages.yml` per compilare Quartz e pubblicare `site/public` a ogni push su `main`.
-- Corretto lo script di installazione dei plugin affinche usi il CLI Quartz con `quartz.lock.json`; aggiornate le action del workflow alle versioni basate su Node 24.
-- Sostituita la homepage Linux generata con il contenuto di `Home.md`, copiato come `index.md` durante la build senza ampliare le aree pubblicabili oltre Linux.
-- Abilitata la pubblicazione dell'area `Programmazione`: le note usano `publish: true`, mentre gli indici senza YAML ricevono il flag soltanto nella copia temporanea usata da Quartz.
-
-### Decisioni
-
-- `Pagine/` con `P` maiuscola e il casing canonico per le cartelle di contenuto del vault.
-- I controlli dei wikilink devono confrontare anche maiuscole e minuscole, perche Windows puo nascondere errori che emergono su Linux.
-- Quartz viene mantenuto come subtree aggiornabile dal branch upstream `v5`, non come dipendenza npm o repository Git annidato.
-- La configurazione usa il template Obsidian, l'interfaccia italiana e il percorso GitHub Pages del repository come `baseUrl`.
-- I contenuti pubblicabili vengono copiati in una directory temporanea esterna al repository, per evitare duplicati tracciati e conflitti con `.gitignore`.
-- L'output statico `site/public` resta escluso da Git: GitHub Actions lo genera e lo carica come artifact di Pages durante ogni deploy.
-
-### Prossimi passi
-
-- Abilitare una sola volta `Settings > Pages > Source: GitHub Actions`, quindi eseguire commit e push per verificare il primo deploy online.
-
-## 2026-07-13 - Ristrutturazione area Linux
-
-### Fatto
-
-- Rimossa la sottocartella `Linux/Pagine/ArchLinux` e spostata la guida in `Linux/Pagine/Installazione Arch Linux.md`.
-- Riscritto `Linux/Indice Linux.md` con percorsi Base, Intermedio, Avanzato, Applicazioni, Distribuzioni e Conoscenza Operativa.
-- Normalizzate e completate le quattro note esistenti su installazione Arch Linux, utenti e permessi, pacchetti universali e toolchain user-space.
-- Separati i comandi Linux in blocchi individuali, ciascuno accompagnato dalla relativa spiegazione, per facilitarne copia e consultazione.
-- Create e compilate le 6 note del blocco `Fondamenti del sistema` su architettura, distribuzioni, FHS, terminale, ambiente e documentazione locale.
-- Completato il blocco `File, utenti e permessi` con quattro nuove note su file e link, permessi POSIX, `sudo` e ACL, integrate con la nota esistente sulla gestione utenti.
-- Completato il blocco `Shell` con sette note su Bash, flussi I/O, espansioni, quoting, job control, strumenti testuali ed espressioni regolari.
-- Completato il blocco `Processi e servizi` con sette nuove note su processi, monitoraggio, systemd, unit, timer, cron e journal, riutilizzando la nota condivisa sul job control.
-- Completato il blocco `Gestione software` con quattro nuove note su repository, gestori nativi, librerie condivise e compilazione, integrate con le note esistenti sui pacchetti universali e sulle toolchain utente.
-- Completato il blocco `Storage e filesystem` con nove note su partizioni, mount, `fstab`, filesystem, LVM, RAID, swap, quote e procedure di controllo e riparazione.
-- Completato il blocco `Networking` con nove note su interfacce, routing, DNS, socket, SSH, trasferimento file, NetworkManager, nftables e troubleshooting di rete.
-- Completato il blocco `Boot e kernel` con sette note su sequenza di avvio, firmware, bootloader, initramfs, moduli, sysctl e compilazione del kernel.
-- Completato il blocco `Sicurezza` con otto note su minimo privilegio, hardening, MAC, LUKS, GPG, PAM, audit e aggiornamenti di sicurezza.
-- Completato il blocco `Hardware e desktop` con dieci note su rilevamento, driver, udev, D-Bus, energia, PipeWire, sistemi grafici, ambienti desktop, font e portali XDG.
-- Completato il blocco `Virtualizzazione e isolamento` con sei note su namespace, cgroup, container, Docker e Podman, KVM e QEMU e gestione delle VM con libvirt.
-- Completato il blocco `Server` con sei nuove note su web server, reverse proxy, condivisioni NFS e Samba, database, backup e monitoraggio continuativo, ampliando la nota SSH esistente con l'amministrazione di `sshd`.
-- Completato il blocco `Automazione` con cinque nuove note su scripting Bash, robustezza, gestione degli errori, configurazione e Ansible, riutilizzando e collegando le note esistenti su Bash, cron e timer systemd.
-- Completato il blocco `Installazione` con due nuove guide operative per Debian e Fedora, collegate alla procedura Arch Linux esistente e basate sui flussi UEFI ufficiali.
-- Completato il blocco `Differenze tra distribuzioni` con quattro note su ecosistemi dei package manager, modelli di rilascio, portabilita delle configurazioni e scelta basata sui requisiti.
-- Convertite in wikilink le relative voci di `Linux/Indice Linux.md` dopo la creazione effettiva delle pagine.
-- Rimosso da `Home.md` il collegamento alla vecchia macro area Arch Linux, mantenendo il collegamento all'indice Linux.
-
-### Decisioni
-
-- Le conoscenze generali restano indipendenti dalla distribuzione; Arch Linux è trattata come procedura specifica nella sezione Distribuzioni.
-- Gli argomenti senza pagina restano testo semplice nell'indice e diventeranno wikilink solo dopo la creazione di contenuti reali.
-
-### Prossimi passi
-
-- Continuare con il blocco `Procedure` nella sezione Conoscenza Operativa.

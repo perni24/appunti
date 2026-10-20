@@ -13,8 +13,10 @@ tags:
 aliases:
   - Componenti Funzionali
   - Componenti a Classe
-prerequisites: []
-related: []
+prerequisites:
+  - "[[Programmazione/React/Pagine/JSX|JSX]]"
+related:
+  - "[[Programmazione/React/Indice React|Indice React]]"
 title: Componenti Funzionali vs Componenti a Classe
 ---
 
@@ -22,109 +24,142 @@ title: Componenti Funzionali vs Componenti a Classe
 
 ## Sintesi
 
-I componenti funzionali sono il modo moderno e consigliato per scrivere React. Sono funzioni che ricevono props e restituiscono JSX. I componenti a classe sono il modello storico, ancora presente in codebase legacy, ma raramente usato per nuovo codice.
+Per nuovo codice React raccomanda componenti definiti come funzioni. Le classi restano supportate: non sono automaticamente errate o da riscrivere. In entrambi i casi il componente riceve props e descrive cosa visualizzare.
 
-Gli hook hanno reso i componenti funzionali sufficienti per state, effect, context e logica riusabile.
+Un componente funzione non e necessariamente stateless e non viene creato un nuovo stato a ogni chiamata. React conserva lo stato associandolo alla posizione, al tipo e all'eventuale key nell'albero.
 
-## Quando usarlo
+## Problema che risolve
 
-Scrivi nuovi componenti come funzioni. Studia i componenti a classe se devi mantenere codice esistente, leggere esempi legacy o capire Error Boundaries, che storicamente richiedono classi.
+Serve capire come leggere e mantenere entrambi i modelli senza confondere una migrazione sintattica con una modifica del comportamento. Error boundary implementati direttamente con le API React usano ancora classi nella versione qui verificata; una libreria puo nasconderle dietro un'interfaccia diversa.
 
-## Come funziona
+## Concetto chiave
 
-Componente funzionale:
+| Aspetto | Funzione | Classe |
+| --- | --- | --- |
+| Props | Parametro della funzione | this.props |
+| Stato locale | useState/useReducer | this.state e setState |
+| Aggiornamento | Il setter sostituisce il valore dello stato relativo | setState unisce superficialmente il parziale allo stato |
+| Aggiornamento dal precedente | Setter con funzione updater | setState con funzione updater |
+| Sincronizzazione esterna | Effect con dipendenze e cleanup | Lifecycle con setup, aggiornamento e cleanup |
+| Logica condivisa | Custom hook | Composizione, adapter o altri pattern |
+| Error boundary nativo | Nessun equivalente diretto dei metodi di cattura | getDerivedStateFromError e componentDidCatch |
+
+Un effect non e una traduzione meccanica di un lifecycle: deve descrivere una sincronizzazione e come interromperla. Gli hook ordinari vanno al livello superiore di un componente funzione o custom hook, non nelle classi o nei gestori di eventi.
+
+## Dettagli importanti
+
+- Props e stato sono snapshot da trattare come immutabili. Il render non deve modificare dati esterni, fare richieste o registrare listener.
+- Chiama il componente tramite JSX, non come una normale funzione per ottenere il suo markup.
+- Un setter accoda un aggiornamento: non cambia la variabile dello stato nel render corrente. Per dipendere dal valore precedente usa un updater puro.
+- Una prop initialValue inizializza il contatore quando viene montato. Cambiarla dopo non deve essere interpretato come un reset automatico.
+- Non definire un componente dentro un altro componente: la nuova identita della funzione puo causare smontaggi e perdita di stato.
+- StrictMode in sviluppo puo richiamare render e updater per controllare la purezza. Una singola pressione deve comunque incrementare una volta.
+
+## Esempio
+
+Due implementazioni con lo **stesso comportamento**, ciascuna in un file separato. Contratto: initialValue e un piccolo intero, label una stringa; contatori locali da demo, non contatori senza limite o valori persistenti.
+
+`src/CounterFunction.jsx`:
 
 ```jsx
-function Counter({ initialValue = 0 }) {
+import { useState } from "react";
+
+export default function CounterFunction({ initialValue = 0, label = "Funzione" }) {
   const [count, setCount] = useState(initialValue);
-
-  return <button onClick={() => setCount(count + 1)}>{count}</button>;
+  return (
+    <button type="button" onClick={() => setCount((current) => current + 1)}>
+      {label}: {count}
+    </button>
+  );
 }
 ```
 
-Componente a classe:
+`src/CounterClass.jsx`:
 
 ```jsx
-class Counter extends React.Component {
-  state = { count: 0 };
+import { Component } from "react";
+
+export default class CounterClass extends Component {
+  constructor(props) {
+    super(props);
+    const { initialValue = 0 } = props;
+    this.state = { count: initialValue };
+  }
+
+  increment = () => {
+    this.setState((previous) => ({ count: previous.count + 1 }));
+  };
 
   render() {
-    return <button>{this.state.count}</button>;
+    const { label = "Classe" } = this.props;
+    return (
+      <button type="button" onClick={this.increment}>
+        {label}: {this.state.count}
+      </button>
+    );
   }
 }
 ```
 
-La versione funzionale e piu breve e si integra con custom hooks.
-
-## API / Sintassi
-
-Funzione:
+`src/App.jsx`, nel progetto introduttivo:
 
 ```jsx
-function UserName({ user }) {
-  return <span>{user.name}</span>;
+import CounterFunction from "./CounterFunction.jsx";
+import CounterClass from "./CounterClass.jsx";
+
+export default function App() {
+  return (
+    <main>
+      <h1>Due contatori indipendenti</h1>
+      <CounterFunction initialValue={2} />
+      <CounterClass initialValue={2} />
+    </main>
+  );
 }
 ```
 
-Classe:
+Ogni pulsante parte da 2 e aggiorna soltanto la propria istanza. La arrow di istanza increment mantiene il receiver this quando React invoca l'handler. Non serve aggiungere bind nel costruttore.
+
+Componente di presentazione alternativo, con callback obbligatoria fornita dal padre:
 
 ```jsx
-class UserName extends React.Component {
-  render() {
-    return <span>{this.props.user.name}</span>;
-  }
-}
-```
-
-Hook:
-
-```jsx
-const [value, setValue] = useState("");
-useEffect(() => {
-  document.title = value;
-}, [value]);
-```
-
-## Esempio pratico
-
-Per nuova UI:
-
-```jsx
-function ProductCard({ product, onSelect }) {
+export function ProductCard({ product, onSelect }) {
   return (
     <article>
       <h2>{product.name}</h2>
-      <button onClick={() => onSelect(product.id)}>Seleziona</button>
+      <button type="button" onClick={() => onSelect(product.id)}>
+        Seleziona
+      </button>
     </article>
   );
 }
 ```
 
-La logica di interazione arriva tramite props, mentre lo stato locale resta dove serve.
+Qui non serve uno stato locale: il componente notifica un intento. Anche un componente senza hook puo avere handler.
 
-## Varianti
+## Limiti
 
-- **Function component**: standard moderno.
-- **Class component**: legacy e alcuni casi di error boundary.
-- **PureComponent**: ottimizzazione storica per classi.
-- **Memoized component**: `React.memo` per componenti funzionali.
-- **Custom hooks**: alternativa moderna a molte logiche condivise tra classi.
+- La funzione non garantisce da sola codice piu veloce; le classi non sono di per se piu lente.
+- memo e PureComponent sono strumenti di ottimizzazione basati su confronti superficiali, non meccanismi per correggere mutazioni o logica errata.
+- Un custom hook condivide logica, non automaticamente lo stato fra chi lo usa.
+- Questo confronto riguarda componenti client ordinari. Server Components, effect, error boundary e concorrenza richiedono le rispettive note.
 
 ## Errori comuni
 
-- Scrivere nuovi componenti a classe senza motivo.
-- Convertire classi legacy solo per estetica, senza test.
-- Usare hook dentro condizioni o funzioni annidate.
-- Confondere props e state.
-- Mettere troppa logica in un singolo componente.
+- Confrontare una funzione interattiva con una classe che visualizza soltanto un numero: manca la stessa funzionalita.
+- Omettere gli import di Component o useState perche il JSX automatico non richiede React.
+- Copiare props nello stato aspettandosi sincronizzazione continua.
+- Mutare this.state o aspettarsi che setState restituisca una Promise da attendere.
+- Trasferire richieste dal lifecycle direttamente nel corpo della funzione durante una migrazione.
+- Riscrivere una classe funzionante senza test di interazioni, cleanup e mantenimento dello stato.
 
 ## Checklist
 
-- Il nuovo componente e funzionale?
-- La logica riusabile puo diventare custom hook?
-- Il componente ha responsabilita chiara?
-- Serve davvero mantenere una classe?
-- Esistono test prima di migrare codice legacy?
+- Entrambe le implementazioni ricevono gli stessi dati e rispondono agli stessi eventi?
+- Stato indipendente e aggiornamenti dal precedente verificati?
+- Identita e key conservano lo stato dove previsto?
+- Import espliciti e render puro?
+- Migrazione verificata anche per setup e cleanup, non soltanto per il primo render?
 
 ## Collegamenti
 
@@ -133,3 +168,14 @@ La logica di interazione arriva tramite props, mentre lo stato locale resta dove
 - [[Programmazione/React/Pagine/useEffect|useEffect]]
 - [[Programmazione/React/Pagine/Custom Hooks|Custom Hooks]]
 - [[Programmazione/React/Pagine/Error Boundaries|Error Boundaries]]
+- [[Programmazione/React/Pagine/Rendering Condizionale e Liste|Identita e key]]
+
+## Fonti
+
+- [React: Component e migrazione dalle classi](https://react.dev/reference/react/Component).
+- [React: useState](https://react.dev/reference/react/useState).
+- [React: purezza di componenti e hook](https://react.dev/reference/rules/components-and-hooks-must-be-pure).
+- [React: conservare e reimpostare lo stato](https://react.dev/learn/preserving-and-resetting-state).
+- [React: StrictMode](https://react.dev/reference/react/StrictMode).
+
+Esempi verificati con React 19.3.0; consultazione del 2026-10-14.
