@@ -28,25 +28,41 @@ title: tsconfig
 
 ## Sintesi
 
-`tsconfig.json` e il file di configurazione principale di TypeScript. Definisce quali file fanno parte del progetto e come il compilatore deve controllarli o trasformarli in JavaScript.
+`tsconfig.json` descrive un progetto TypeScript: file iniziali, controlli, risoluzione degli import e output. Non configura da solo Node, un bundler o il browser.
 
-Una buona configurazione TypeScript e importante quanto i tipi nel codice: decide severita del type checking, formato dei moduli, target JavaScript, source map, path alias e integrazione con tool esterni.
+Gli esempi sono riferiti a TypeScript **5.9.3** e, per l'esecuzione, Node **24.14.0**. Sono una base verificabile, non una configurazione universale.
 
 ## Quando usarlo
 
-- In qualsiasi progetto TypeScript non banale.
-- Quando vuoi abilitare `strict`.
-- Quando devi configurare output JavaScript.
-- Quando usi path alias o monorepo.
-- Quando vuoi separare configurazioni per app, test, build o librerie.
+- Riprodurre gli stessi controlli in editor, terminale e CI.
+- Separare configurazioni di applicazione, test e librerie.
+- Decidere se `tsc` deve emettere JavaScript oppure controllare soltanto i tipi.
 
 ## Come funziona
 
-Il file contiene opzioni come `compilerOptions`, `include`, `exclude`, `files` e, nei progetti composti, `references`.
+### File del progetto
 
-`compilerOptions` controlla il comportamento del compilatore. `include` ed `exclude` stabiliscono quali file entrano nel programma TypeScript.
+`files` elenca file iniziali espliciti; `include` li cerca tramite pattern. `exclude` filtra la ricerca di `include`: **non impedisce a un file importato di entrare nel programma**. Lo stesso vale per dipendenze richiamate da dichiarazioni di tipo.
+
+`rootDir` stabilisce la radice dei percorsi nell'output, non seleziona i sorgenti. Con `rootDir: "src"` e `outDir: "dist"`, `src/utils/math.ts` diventa `dist/utils/math.js`. Un sorgente da emettere fuori da `rootDir` causa un errore, non viene ignorato.
+
+### Opzioni con responsabilita diverse
+
+| Opzione | Responsabilita |
+| --- | --- |
+| `target` | Sintassi JavaScript emessa; non installa polyfill |
+| `lib` | Dichiarazioni delle API standard disponibili al controllo statico |
+| `types` | Pacchetti di tipi inclusi automaticamente, per esempio `node` |
+| `module` e `moduleResolution` | Formato dei moduli e regole con cui vengono cercati |
+| `strict` | Famiglia di controlli sui tipi |
+| `noEmit` | Nessuna emissione di JavaScript, dichiarazioni o mappe |
+| `noEmitOnError` | Blocca l'emissione del progetto se ci sono errori |
+
+`types` non e una whitelist degli import: le dichiarazioni di un pacchetto importato possono comunque essere caricate. `lib: ["ES2022"]` evita di aggiungere implicitamente il DOM a un backend, ma non garantisce che ogni API dichiarata sia presente nel runtime.
 
 ## API / Sintassi
+
+Profilo per un'app con bundler: il bundler produce l'output, TypeScript controlla i tipi. File `tsconfig.json`:
 
 ```json
 {
@@ -61,19 +77,35 @@ Il file contiene opzioni come `compilerOptions`, `include`, `exclude`, `files` e
 }
 ```
 
+In questo profilo le librerie predefinite comprendono anche il DOM. Va adattato se l'app non gira in browser.
+
 ## Esempio pratico
+
+Progetto Node compilato. Prerequisiti: `typescript` e `@types/node` installati come dipendenze di sviluppo; scegli i tipi Node in base al runtime supportato e conserva il lockfile. I comandi seguenti si eseguono dalla radice del progetto.
+
+`package.json` minimo, da integrare con le dipendenze del progetto:
+
+```json
+{
+  "private": true,
+  "type": "module"
+}
+```
+
+`tsconfig.json`:
 
 ```json
 {
   "compilerOptions": {
     "target": "ES2022",
+    "lib": ["ES2022"],
+    "types": ["node"],
     "module": "NodeNext",
     "moduleResolution": "NodeNext",
     "strict": true,
-    "esModuleInterop": true,
-    "skipLibCheck": true,
-    "outDir": "dist",
+    "noEmitOnError": true,
     "rootDir": "src",
+    "outDir": "dist",
     "sourceMap": true
   },
   "include": ["src/**/*.ts"],
@@ -81,29 +113,74 @@ Il file contiene opzioni come `compilerOptions`, `include`, `exclude`, `files` e
 }
 ```
 
-Questa configurazione e tipica per un progetto Node.js TypeScript che compila da `src` a `dist`.
+`src/app.ts`:
+
+```ts
+const message: string = "Configurazione pronta";
+console.log(message);
+```
+
+Compila:
+
+```sh
+npm exec -- tsc -p tsconfig.json
+```
+
+Esegui: stampa `Configurazione pronta`.
+
+```sh
+node dist/app.js
+```
+
+Controlla senza produrre una nuova build:
+
+```sh
+npm exec -- tsc -p tsconfig.json --noEmit
+```
+
+Mostra la configurazione effettiva:
+
+```sh
+npm exec -- tsc -p tsconfig.json --showConfig
+```
+
+Per capire perche un file e incluso:
+
+```sh
+npm exec -- tsc -p tsconfig.json --noEmit --explainFiles
+```
+
+Con TypeScript 5.9.3, passare direttamente un sorgente a `tsc` fa ignorare il `tsconfig.json`; `-p` non si combina con una lista di sorgenti. Usa `-p` anche in CI per evitare controlli diversi da quelli dell'editor.
 
 ## Varianti
 
-- **App con bundler**: spesso usa `moduleResolution: "Bundler"` e `noEmit: true`.
-- **Node.js moderno**: spesso usa `module` e `moduleResolution` con `NodeNext`.
-- **Libreria**: richiede attenzione a `declaration`, `outDir`, `exports` e formato modulo.
-- **Monorepo**: usa `references` e configurazioni condivise.
+- **Configurazioni condivise**: `extends` eredita una base. I percorsi relativi restano riferiti al file che li definisce; `files`, `include` ed `exclude` ridefiniti sostituiscono quelli della base, non si concatenano. `references` non viene ereditato.
+- **Librerie**: aggiungi dichiarazioni con `declaration`; verifica anche `package.json` ed export pubblici.
+- **Progetti multipli**: usa project references e `tsc -b`, non soltanto `extends`.
+- **`skipLibCheck`**: salta il controllo interno dei file di dichiarazione. Non disabilita il controllo del tuo codice, non risolve versioni di tipi incompatibili e non verifica il runtime.
 
 ## Errori comuni
 
-- **Disabilitare `strict` senza motivo**: riduce molto il valore di TypeScript.
-- **Confondere `target` e `module`**: il primo riguarda sintassi JS emessa, il secondo il sistema moduli.
-- **Usare path alias senza configurare runtime/bundler**: TypeScript compila, ma Node o il bundler non risolvono.
-- **Mettere tutto in un solo tsconfig**: test, app e build possono avere esigenze diverse.
+- Scambiare `exclude` per un confine architetturale.
+- Aggiungere `lib` o `@types` aspettandosi nuove funzionalita a runtime.
+- Usare `noEmit` e poi eseguire una vecchia cartella `dist`: l'opzione non la cancella.
+- Pensare che `noEmitOnError` rimuova output precedenti: una build fallita puo lasciare artefatti vecchi.
+- Aspettarsi che `tsc` raggruppi i moduli in un bundle o copi automaticamente asset e configurazioni.
 
 ## Checklist
 
-- Abilitare `strict` nei nuovi progetti.
-- Scegliere `module` e `moduleResolution` coerenti con runtime e bundler.
-- Definire chiaramente `include` ed `exclude`.
-- Usare `noEmit` se la build e gestita da un bundler.
-- Separare configurazioni quando app, test e build hanno requisiti diversi.
+- Il comando seleziona esplicitamente il progetto corretto?
+- `target`, tipi ambientali e formato corrispondono all'ambiente reale?
+- I file inclusi sono quelli attesi?
+- Il codice emesso parte davvero nel runtime di destinazione?
+- La CI interrompe la pubblicazione quando il controllo fallisce?
+
+## Fonti
+
+- [TSConfig Reference](https://www.typescriptlang.org/tsconfig/)
+- [rootDir](https://www.typescriptlang.org/tsconfig/rootDir.html)
+- [extends](https://www.typescriptlang.org/tsconfig/extends.html)
+- [What is a tsconfig.json](https://www.typescriptlang.org/docs/handbook/tsconfig-json.html)
 
 ## Collegamenti
 

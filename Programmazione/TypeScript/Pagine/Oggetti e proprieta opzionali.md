@@ -40,9 +40,18 @@ Una proprieta opzionale si indica con `?` e rappresenta un campo che puo non ess
 
 ## Come funziona
 
-Una proprieta normale deve essere presente. Una proprieta opzionale puo mancare. Quando la leggi, TypeScript la considera potenzialmente `undefined`, quindi va controllata prima di usarla in modo non sicuro.
+Esempi indipendenti con TypeScript 5.9.3, `strict: true` e target ES2022. Una proprieta richiesta deve essere presente nel contratto; una opzionale puo mancare. La lettura di un campo opzionale e potenzialmente `undefined`.
 
-Con `exactOptionalPropertyTypes` attivo, TypeScript distingue meglio tra proprieta assente e proprieta presente con valore `undefined`.
+| Dichiarazione | Assenza della chiave | Valori previsti |
+| --- | --- | --- |
+| `name: string` | Non ammessa | Stringa |
+| `name?: string` | Ammessa | Stringa, con lettura potenzialmente undefined |
+| `name: string \| undefined` | Non ammessa | Stringa oppure undefined esplicito |
+| `name: string \| null` | Non ammessa | Stringa oppure null esplicito |
+
+Con `exactOptionalPropertyTypes: true`, scrivere `{ name: undefined }` non soddisfa `name?: string`: occorre includere `undefined` nel tipo se e intenzionale. L'opzione non e inclusa automaticamente in `strict` e non elimina `undefined` dalla lettura di un campo assente.
+
+Queste sono garanzie statiche sugli usi del codice controllato, non una validazione di JSON e non una garanzia che i campi siano proprieta proprie. Un controllo con `in` considera anche il prototipo; per la presenza propria usa `Object.hasOwn`.
 
 ## API / Sintassi
 
@@ -52,27 +61,64 @@ type UserProfile = {
   email: string;
   displayName?: string;
 };
+
+const profile: UserProfile = { id: "u_1", email: "luca@example.com" };
+const label = profile.displayName ?? profile.email;
+console.log(label); // luca@example.com
 ```
 
 ## Esempio pratico
+
+Questa funzione prepara una **anteprima testuale**, non invia email. Richiede dati gia tipizzati; non controlla formato degli indirizzi, consenso, header o consegna.
 
 ```ts
 type MailOptions = {
   to: string;
   subject: string;
-  cc?: string[];
+  cc?: readonly string[];
 };
 
-function sendMail(options: MailOptions): void {
-  if (options.cc?.length) {
-    console.log(`CC: ${options.cc.join(", ")}`);
-  }
-
-  console.log(`To: ${options.to}`);
+function formatMailPreview(options: MailOptions): string {
+  const cc = options.cc ?? [];
+  const ccLine = cc.length > 0 ? `\nCC: ${cc.join(", ")}` : "";
+  return `To: ${options.to}\nSubject: ${options.subject}${ccLine}`;
 }
+
+const preview = formatMailPreview({
+  to: "luca@example.com",
+  subject: "Promemoria",
+});
+console.log(preview);
+// To: luca@example.com
+// Subject: Promemoria
 ```
 
-`cc` puo mancare, quindi viene letto con optional chaining.
+`cc` mancante e array vuoto non producono una riga CC. L'array ricevuto non viene modificato. `options.cc?.length` e una variante per leggere la lunghezza in sicurezza, ma non valida il tipo del valore proveniente da una fonte esterna.
+
+### Assenza, undefined e default
+
+```ts
+const absent = {};
+const present = { name: undefined };
+console.log(Object.hasOwn(absent, "name")); // false
+console.log(Object.hasOwn(present, "name")); // true
+
+type LabelOptions = { label?: string | null };
+function resolveLabel({ label = "Predefinita" }: LabelOptions = {}): string {
+  return label === null ? "Nessuna etichetta" : label;
+}
+console.log(resolveLabel()); // Predefinita
+console.log(resolveLabel({ label: null })); // Nessuna etichetta
+console.log(resolveLabel({ label: "" })); // Stringa vuota, conservata.
+```
+
+Il default della destrutturazione scatta per assenza o `undefined`, non per `null`, `false`, zero o stringa vuota. Nel tipo di questo esempio `null` ha un significato esplicito.
+
+### Aggiornamenti parziali
+
+`Partial<T>` rende opzionali le proprieta al primo livello; non definisce cosa significhino "non modificare", "svuotare" ed "eliminare". Un merge `{ ...current, ...patch }` con un campo `undefined` puo sovrascrivere un valore esistente, non conservarlo.
+
+Per una PATCH definisci una convenzione: per esempio campo omesso = invariato, stringa = nuovo testo, `null` = azzeramento. Il parser e il codice di applicazione devono implementarla; non basta scegliere `Partial<T>`.
 
 ## Varianti
 
@@ -88,6 +134,7 @@ function sendMail(options: MailOptions): void {
 - **Usare proprieta opzionali senza controllo**: puo produrre errori runtime.
 - **Rendere tutto opzionale**: il modello diventa poco affidabile.
 - **Usare oggetti troppo larghi**: tipi come `{ [key: string]: any }` eliminano molta sicurezza.
+- **Pensare che optional chaining validi**: protegge da null/undefined nella posizione controllata, non verifica l'intero schema.
 
 ## Checklist
 
@@ -102,7 +149,14 @@ function sendMail(options: MailOptions): void {
 - [[Programmazione/TypeScript/Pagine/Type Aliases e Interfaces|Type Aliases e Interfaces]]
 - [[Programmazione/TypeScript/Pagine/Index Signatures|Index Signatures]]
 - [[Programmazione/TypeScript/Pagine/Utility Types|Utility Types]]
+- [[Programmazione/TypeScript/Pagine/Validazione runtime e tipi statici|Validazione runtime e tipi statici]]
 
+## Fonti
+
+- [TypeScript: Object Types](https://www.typescriptlang.org/docs/handbook/2/objects.html), proprieta opzionali.
+- [TSConfig: exactOptionalPropertyTypes](https://www.typescriptlang.org/tsconfig/exactOptionalPropertyTypes.html).
+- [TypeScript: Utility Types](https://www.typescriptlang.org/docs/handbook/utility-types.html), Partial.
+- [MDN: Destructuring](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Operators/Destructuring), valori predefiniti.
 
 ## Navigazione
 

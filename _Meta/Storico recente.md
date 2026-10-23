@@ -8,6 +8,78 @@ Mantieni solo le ultime 10 voci operative.
 
 ---
 
+## 2026-10-22 - TypeScript: revisione dei capitoli avanzati
+
+### Fatto
+
+- Completata la revisione tecnica delle **83 note TypeScript uniche su 83**: ultimo blocco Pattern e Architettura, cinque pagine. Declaration Merging e contato una sola volta.
+- Capitoli precedenti: utility, type system, interoperabilita, validazione, framework e qualita. Esempi, fonti e risultati dettagliati conservati in [[_Meta/Revisione contenuti|Revisione dei contenuti]].
+- Repository: corretto find-then-insert come falsa garanzia di unicita; conflitti, copie, I/O e limiti della memoria espliciti. DTO: parser e proiezione runtime distinti dai tipi statici.
+- Dominio: quantita e transizioni verificabili al posto di una debole validazione email. DI: clock, mailer, composition root, errori e durata delle risorse. Clean architecture: progetto ESM completo e controllo della direzione degli import, inclusi type-only.
+- Nuova suite da **38 gruppi**, tutti superati al primo giro. Regressione mirata: **108 test superati**, 38 Architettura + 31 Moduli + 39 Qualita, circa 149 secondi; nessun fallimento o test saltato.
+- Baseline TypeScript 5.9.3 e Node 24.14.0. Nessuna nuova dipendenza in questo blocco; helper condivisi invariati. Fixture temporanee ripulite dopo verifica dei percorsi.
+- content:check: **911 documenti raggiungibili, zero errori e 469 avvisi editoriali**, nessuno nel percorso TypeScript. Nove test della trasformazione superati.
+- Build Quartz riuscita: **3.719 file, 2.003 HTML, 168 redirect e 137.555 riferimenti verificati, zero errori**. Solo avvisi preesistenti del generatore.
+- QA delle cinque pagine desktop/mobile riuscita dopo la correzione del selettore di un titolo tipografico: 20 blocchi scorrevoli su mobile, sei screenshot ispezionati, nessun errore o overflow del documento. Browser QA chiusi; anteprima esistente lasciata attiva.
+
+### Decisioni
+
+- Conservati date, percorsi, type, publish e status non revisionato; riparato un prerequisito YAML. Nessuna nota aggiunta o spostata, nessun indice o redirect modificato.
+- Il completamento riguarda le pagine esistenti, non tutti gli argomenti/versioni TypeScript. Revisione del modello e approvazione dell'utente restano distinte.
+- Test in memoria e progetto dimostrativo, non collaudo di database, SMTP, pagamenti o transazioni distribuite. Non rieseguite le altre suite TypeScript o quelle complete React/JavaScript.
+- Nessun commit o push. Voce odierna consolidata mantenendo dieci voci operative.
+
+### Prossimi passi
+
+- Proseguire con **Python: Fondamenti del Linguaggio**, partendo da Comandi base e toolchain. Nessuna modifica alle note Python in questa sessione.
+
+## 2026-10-21 - TypeScript: tipi avanzati, moduli e configurazione
+
+### Fatto
+
+- Revisionate le nove note di Tipi Avanzati e le sette di Moduli e Configurazione: **41 note TypeScript su 83** in questa passata. Integrati esempi osservabili, limiti e fonti ufficiali; i 34 blocchi del primo capitolo e i progetti del secondo sono verificati sulla baseline 5.9.3.
+- Chiariti distribuzione, never/any/unknown, unwrap singolo rispetto ad Awaited, readonly/optional nei mapped types, chiavi statiche rispetto a Object.keys e accessi a elementi potenzialmente assenti.
+- Approfonditi infer con overload e tuple readonly, ricorsione e limiti del modello JSON, concat e partial application. Il wrapper non registra piu gli argomenti; riparato un prerequisito YAML spezzato.
+- Moduli: configurazioni complete Node/bundler, ESM/CommonJS separati, estensioni runtime, alias non riscritti, export map e package imports. References domain/api coerenti, cache e output vecchi espliciti; chiariti flag strict e source map con stack verificato. Riparato un prerequisito YAML.
+- Suite da 66 test per Tipi Avanzati e da 31 per Moduli entrambe riuscite al primo tentativo. Ultima regressione seriale delle sei suite: **332 test TypeScript superati**, zero fallimenti o test saltati, circa 460 secondi. Baseline TypeScript 5.9.3, Node 24.14.0, esbuild 0.27.3.
+- content:check: **911 documenti raggiungibili, zero errori e 507 avvisi editoriali**; nessuno sulle sette note piu recenti. Nove test della trasformazione superati, metadati e dieci voci dello storico verificati.
+- Build finale del blocco Moduli riuscita: **3.719 file, 2.003 HTML, 168 redirect, 137.013 riferimenti verificati e zero errori**. QA ripetuta delle sette pagine desktop/mobile senza overflow o errori pagina/console/HTTP; 19 blocchi di codice e una tabella scorrevoli su mobile.
+- Sette screenshot ispezionati; convertita la tabella strict in elenco per leggibilita mobile, senza modificare gli esempi. Rigenerazione e QA finale riuscite; risultati precedenti di Tipi Avanzati conservati nel registro dettagliato.
+- Anteprima locale su http://localhost:8082/appunti/ riutilizzata e lasciata attiva; browser QA chiusi, scheda personale dell'utente non modificata.
+
+### Decisioni
+
+- Percorsi, date, pubblicabilita e status non revisionato conservati. Nessuna nota aggiunta o spostata, nessun indice o redirect da modificare.
+- Nessun aggiornamento delle dipendenze e nessun commit o push. Test limitati al percorso TypeScript, senza rieseguire le suite React/JavaScript.
+
+### Prossimi passi
+
+- Proseguire con **Utility e Pattern di Tipo**. Restano 42 note TypeScript; la revisione tecnica non sostituisce l'approvazione dell'utente.
+
+## 2026-10-20 - TypeScript: percorso base e narrowing
+
+### Fatto
+
+- Avviata la revisione TypeScript dopo il push della revisione React: **25 note su 83**, percorso base e capitolo Narrowing e Controllo dei Tipi. Fonti ufficiali aggiunte, esempi e limiti chiariti.
+- Distinti controllo statico, emissione ed esecuzione; corrette ambiguita su strict, primitive, inferenza, optional, any/unknown/never, union/intersection e contratti strutturali.
+- Sostituito l'esempio di creazione utente simulata con un calcolo locale verificabile; aggiunti parser con proiezione e controesempi sui campi non rimossi da un'interfaccia.
+- Corretti il type guard che verificava solo la presenza dei campi e il lookup che poteva restituire proprieta ereditate. Approfonditi void, optional/default, readonly/tuple, enum, asserzioni, overload e index signatures; anteprima email distinta dall'invio.
+- Approfonditi classi, this, ordine dei campi, private/#private, readonly, abstract, implements e generics. Factory Password sostituita con titoli locali; falso SMTP sostituito con test double; repository in memoria e controesempi dei limiti del checker.
+- Approfonditi narrowing, guardie, union, esaustivita, predicate nei due rami e assertion. Corretti quattro collegamenti YAML; assertNever non serializza piu payload arbitrari; espliciti limiti di truthiness, alias, filtri, catch e async.
+- **235 test TypeScript superati**, 173 precedenti e 62 nuovi, in circa 149 secondi: checker reale, errori attesi, runtime, CLI e DOM nel browser. Supporto comune riusato; baseline 5.9.3, Node 24.14.0; nessuna dipendenza nuova.
+- content:check: **911 documenti raggiungibili, zero errori e 522 avvisi editoriali**. Nessun avviso sulle sei note appena revisionate; nove test della trasformazione superati.
+- Build Quartz riuscita: **3.719 file, 2.003 HTML, 168 redirect e 136.859 riferimenti verificati, zero errori**. Invariati gli avvisi preesistenti del generatore.
+- QA delle sei pagine su desktop e mobile riuscita: quattro screenshot ispezionati, 25 blocchi di codice scorrevoli su mobile, nessun errore pagina/console/HTTP o overflow del documento. Anteprima esistente lasciata attiva; risultati delle passate precedenti conservati nel registro.
+
+### Decisioni
+
+- Conservati percorsi, date, pubblicabilita e status non revisionato. Nessun indice o redirect da aggiornare, perche non sono state aggiunte o spostate note.
+- Test mirati al blocco, non riesecuzione delle suite React/JavaScript. Nessun commit o push TypeScript.
+
+### Prossimi passi
+
+- Proseguire con **Tipi Avanzati**. Restano 58 note TypeScript in questa passata; approvazione dell'utente separata dalla revisione tecnica.
+
 ## 2026-10-19 - React: revisione delle 59 note conclusa
 
 ### Fatto
@@ -209,67 +281,3 @@ Mantieni solo le ultime 10 voci operative.
 
 - Integrare progressivamente le fonti mancanti indicate dal rapporto editoriale.
 - Rivedere i contenuti modificati prima di commit e pubblicazione.
-
-## 2026-09-05 - Correzioni contenuti Programmazione
-
-### Fatto
-
-- Corretti gli esempi dei promemoria JavaScript, Python, Rust e PostgreSQL segnalati dalla revisione.
-- Allineate nota e promemoria su RLS, contesto per transazione e connessioni riutilizzate, e su sintassi e permessi dei team CODEOWNERS.
-- Completati caricamento iniziale, retry, selezione e annullamento richieste nell'esempio di struttura frontend React.
-- Approfondite varianza TypeScript, opzioni delle dataclass Python e integrazione delle traduzioni React.
-
-### Decisioni
-
-- I promemoria restano sintetici; spiegazioni e limiti appartengono alle note teoriche collegate.
-- Le note modificate restano con `status: "non revisionato"` in attesa del controllo dell'utente.
-
-### Prossimi passi
-
-- Verificare gli esempi Rust con Cargo e quelli PostgreSQL su un database di prova.
-- Proseguire la revisione tecnica delle note non ancora approfondite.
-
-## 2026-07-30 - Promemoria di Programmazione
-
-### Fatto
-
-- Creata `Programmazione/Promemoria` come area di consultazione rapida separata dagli appunti teorici.
-- Aggiunti l'indice generale, l'indice JavaScript e undici promemoria operativi.
-- Aggiunti l'indice Python e tredici promemoria su linguaggio, collezioni, file, dati, HTTP, ambienti, asincronia ed errori.
-- Aggiunti l'indice Rust e quindici promemoria su ownership, tipi, errori, astrazioni, I/O, Cargo, concorrenza e test.
-- Aggiunti l'indice PostgreSQL e quindici promemoria su query, funzioni, schema, prestazioni, transazioni, privilegi, backup e manutenzione.
-- Aggiunti l'indice GitHub e quindici promemoria su Git, collaborazione, Actions, release, regole e sicurezza.
-- Collegata la nuova area da `Home.md`.
-
-### Decisioni
-
-- Le schede contengono soprattutto sintassi, tabelle e snippet copiabili.
-- Le spiegazioni approfondite rimangono nelle note del linguaggio e vengono richiamate tramite wikilink.
-- Le pagine sono organizzate per categoria operativa, non per singola funzione.
-
-### Prossimi passi
-
-- Estendere il promemoria agli altri linguaggi mantenendo la stessa impostazione.
-
-## 2026-07-28 - Area Strutture di Progetto
-
-### Fatto
-
-- Creata `Programmazione/Strutture di Progetto` con un indice essenziale dedicato alle strutture gia documentate.
-- Collegata la nuova area da `Home.md`.
-- Creata la prima nota su una struttura PHP server-rendered senza framework, con front controller, routing, livelli, test e sicurezza.
-- Collegata la pagina PHP nell'indice e resa pubblicabile con Quartz.
-- Creata la nota sulla struttura di un backend API Python a livelli, con routing, service, repository, validazione, persistenza e strategia di test.
-- Creata la nota sulla struttura di un frontend React con Vite, componenti, Context, API layer, tipi e strategia di test.
-
-### Decisioni
-
-- Gli indici restano senza frontmatter YAML.
-- L'indice contiene soltanto le pagine gia create.
-- I file `.http` sono documentati come richieste manuali e restano distinti dai test automatici.
-- Per il frontend React va scelta una strategia coerente tra JavaScript con JSDoc e TypeScript con componenti `.tsx`.
-- Le strutture propongono solo livelli con responsabilita concreta, evitando repository, service e interfacce puramente formali.
-
-### Prossimi passi
-
-- Aggiungere altre strutture solo quando verranno realmente documentate.

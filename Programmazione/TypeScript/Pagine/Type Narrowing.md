@@ -15,8 +15,7 @@ aliases:
   - Narrowing TypeScript
 prerequisites:
   - "[[Programmazione/TypeScript/Pagine/Union e Intersection Types]]"
-  - any
-  - unknown e never
+  - "[[Programmazione/TypeScript/Pagine/any, unknown e never]]"
 related:
   - "[[Programmazione/TypeScript/Pagine/Type Guards]]"
   - "[[Programmazione/TypeScript/Pagine/Type predicates]]"
@@ -43,9 +42,11 @@ E fondamentale quando lavori con union, valori opzionali, `unknown`, input ester
 
 ## Come funziona
 
-TypeScript analizza il flusso di controllo: `if`, `switch`, `return`, `throw`, controlli con `typeof`, `instanceof`, `in`, confronti letterali e funzioni type guard.
+Esempi indipendenti verificati con TypeScript 5.9.3, `strict: true` e target ES2022. E la baseline delle prove, non l'indicazione dell'ultima release.
 
-Dopo un controllo, nel ramo in cui la condizione e vera TypeScript usa un tipo piu preciso.
+TypeScript segue controlli, assegnazioni e percorsi raggiungibili. Il tipo osservato in un punto puo essere piu stretto del tipo dichiarato della variabile. Una successiva assegnazione deve ancora rispettare il tipo dichiarato, non necessariamente quello ristretto nel ramo precedente.
+
+Il narrowing puo riguardare entrambi i rami di un `if`. Un `return` o `throw` elimina un percorso dal codice successivo. Non avviene nessuna conversione: sono i controlli JavaScript a eseguire la verifica; le informazioni di tipo non restano a runtime.
 
 ## API / Sintassi
 
@@ -57,7 +58,11 @@ function format(value: string | number): string {
 
   return value.toUpperCase();
 }
+
+console.log(format(12), format("ciao")); // 12.00 CIAO
 ```
+
+Il ramo numerico termina con `return`, quindi sotto resta solo `string`. `number` comprende anche `NaN` e infinito: se il dominio li esclude serve un controllo aggiuntivo, non il solo `typeof`.
 
 ## Esempio pratico
 
@@ -73,9 +78,70 @@ function render(response: ApiResponse): string {
 
   return `Errore: ${response.message}`;
 }
+
+console.log(render({ status: "success", data: ["A", "B"] })); // A, B
+console.log(render({ status: "error", message: "Timeout" })); // Errore: Timeout
 ```
 
-Il controllo su `status` restringe automaticamente il tipo della risposta.
+Il discriminante `status` correla il ramo con il payload. La funzione assume un `ApiResponse` gia valido: un oggetto JSON con il solo `status: "success"` non e sufficiente. Il controllo di un discriminante interno non sostituisce la validazione dell'intero input `unknown`.
+
+### Assenza e truthiness non sono equivalenti
+
+```ts
+function normalizeLabel(value: string | null | undefined): string {
+  if (value === null || value === undefined) {
+    return "(assente)";
+  }
+  return value.trim();
+}
+
+console.log(normalizeLabel(""), normalizeLabel(null)); // "" (assente)
+```
+
+`if (value)` scarterebbe anche la stringa vuota; con numeri scarterebbe zero e `NaN`. Usa truthiness solo quando tutti i valori falsy sono davvero da trattare allo stesso modo. `value != null` e una forma intenzionale per escludere sia `null` sia `undefined`; non estendere automaticamente questo uso ad altri confronti non stretti.
+
+### Mutazioni e alias possono invalidare la premessa
+
+```ts
+type Profile = { name?: string };
+
+function normalizedName(
+  profile: Profile,
+  beforeRead: (profile: Profile) => void,
+): string {
+  const name = profile.name;
+  if (name === undefined) {
+    return "(assente)";
+  }
+  beforeRead(profile);
+  return name.toUpperCase();
+}
+
+const profile: Profile = { name: "Luca" };
+console.log(normalizedName(profile, (value) => {
+  delete value.name;
+})); // LUCA
+```
+
+Qui viene conservata una stringa locale, non riletto il campo mutabile. Se controllassi `profile.name` e dopo la callback usassi `profile.name.toUpperCase()`, il codice potrebbe compilare ma fallire: il checker non invalida ogni narrowing quando chiami una funzione che puo mutare un alias.
+
+La copia di un riferimento a un oggetto non rende immutabili i suoi campi. Getter e Proxy possono inoltre restituire valori diversi tra letture: questi esempi assumono record ordinari.
+
+### Valori catturati da una closure
+
+```ts
+function makeLabelReader(value: string | undefined): () => string {
+  if (value === undefined) {
+    return () => "(assente)";
+  }
+  const label = value;
+  return () => label.toUpperCase();
+}
+
+console.log(makeLabelReader("Luca")()); // LUCA
+```
+
+Una copia locale costante rende esplicita la premessa usata dalla callback. TypeScript puo conservare anche alcuni narrowing dopo l'ultima assegnazione di parametri o variabili catturate; non tutti i casi richiedono una copia. Riassegnazioni dentro altre closure possono invece impedire il restringimento. Per valori mutabili o lavoro asincrono, verifica quale dato verra effettivamente letto al momento dell'uso.
 
 ## Varianti
 
@@ -91,6 +157,7 @@ Il controllo su `status` restringe automaticamente il tipo della risposta.
 - **Dimenticare `null`**: `typeof null === "object"`.
 - **Controllare proprieta non discriminanti**: puo non restringere come previsto.
 - **Mutare una variabile dopo il narrowing**: puo invalidare assunzioni logiche.
+- **Considerare un check una garanzia permanente**: alias, callback e mutazioni possono rendere obsoleto un controllo.
 
 ## Checklist
 
@@ -107,6 +174,12 @@ Il controllo su `status` restringe automaticamente il tipo della risposta.
 - [[Programmazione/TypeScript/Pagine/Discriminated Unions|Discriminated Unions]]
 - [[Programmazione/TypeScript/Pagine/Exhaustiveness Checking|Exhaustiveness Checking]]
 
+
+## Fonti
+
+- [TypeScript: Narrowing](https://www.typescriptlang.org/docs/handbook/2/narrowing.html), flusso di controllo e truthiness.
+- [TypeScript 5.4: narrowing nelle closure](https://www.typescriptlang.org/docs/handbook/release-notes/typescript-5-4.html), preservazione dopo l'ultima assegnazione.
+- [TypeScript: Type Compatibility](https://www.typescriptlang.org/docs/handbook/type-compatibility.html), limiti del sistema di tipi.
 
 ## Navigazione
 

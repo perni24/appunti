@@ -16,8 +16,7 @@ aliases:
   - Exhaustive switch
 prerequisites:
   - "[[Programmazione/TypeScript/Pagine/Discriminated Unions]]"
-  - any
-  - unknown e never
+  - "[[Programmazione/TypeScript/Pagine/any, unknown e never]]"
 related:
   - "[[Programmazione/TypeScript/Pagine/Type Narrowing]]"
   - "[[Programmazione/TypeScript/Pagine/Union e Intersection Types]]"
@@ -42,15 +41,23 @@ E utile per rendere sicuri refactor e aggiunte di nuove varianti.
 
 ## Come funziona
 
-Se tutti i casi di una union sono gestiti, nel ramo finale il valore rimasto ha tipo `never`. Se in futuro aggiungi una variante e non aggiorni lo switch, il valore non sara piu `never` e TypeScript segnalera errore.
+Esempi indipendenti con TypeScript 5.9.3, `strict: true` e target ES2022.
+
+Se ogni caso della union termina o viene escluso, il valore residuo ha tipo `never`. Passarlo a un parametro `never` fa controllare al compilatore che non rimangano varianti. Una nuova variante non gestita produce un errore proprio in quel punto.
+
+La verifica copre il modello statico conosciuto, non tutti i dati possibili a runtime. Un payload esterno, un cast errato o un consumer JavaScript possono comunque raggiungere il ramo teoricamente impossibile.
 
 ## API / Sintassi
 
 ```ts
-function assertNever(value: never): never {
-  throw new Error(`Caso non gestito: ${JSON.stringify(value)}`);
+function assertNever(_value: never): never {
+  throw new Error("Caso non gestito");
 }
 ```
+
+Il parametro richiede una prova statica di impossibilita; il ritorno `never` indica che la funzione non prosegue normalmente. Il `throw` e reale: il tipo da solo non genera un'eccezione. A dispetto del nome, questa non e una assertion function con firma `asserts`, ma una funzione che non ritorna.
+
+Il messaggio non serializza il payload: `JSON.stringify` puo esporre dati sensibili, fallire su cicli o BigInt e invocare `toJSON`. L'eventuale diagnostica applicativa deve essere esplicita e limitata ai dati che e opportuno registrare.
 
 ## Esempio pratico
 
@@ -76,12 +83,45 @@ function render(state: State): string {
   }
 }
 
-function assertNever(value: never): never {
-  throw new Error(`Unhandled state: ${JSON.stringify(value)}`);
+function assertNever(_value: never): never {
+  throw new Error("Stato non gestito");
 }
+
+console.log(render({ status: "idle" })); // In attesa
+console.log(render({ status: "success", data: [] })); // ""
 ```
 
-Se viene aggiunto `status: "empty"` senza aggiornare `render`, il compilatore segnala errore nel default.
+Se aggiungi `| { status: "empty" }` alla union senza aggiornare `render`, `state` nel default non e piu `never`. Non correggere il diagnostico scrivendo `state as never`: nasconderesti precisamente il caso che volevi individuare.
+
+Una union aperta come `{ status: string }` non elenca un insieme finito di stati; un generico default puo essere intenzionale in quel modello, ma non e la stessa garanzia.
+
+### Ritorni e copertura dei casi sono controlli diversi
+
+- Un ritorno dichiarato `string`, con `strictNullChecks`, segnala un percorso che termina implicitamente con `undefined`.
+- Senza annotazione, il ritorno puo essere inferito come `string | undefined`, senza errore.
+- `noImplicitReturns` segnala percorsi mancanti nelle funzioni che restituiscono un valore; non e incluso in `strict`.
+- Uno switch con un `default` che restituisce sempre un fallback puo soddisfare i controlli sui ritorni pur nascondendo una variante dimenticata.
+
+`assertNever` verifica il tipo residuo. Funziona anche dopo una catena di `if` con uscite anticipate, non solo dentro uno switch. Un'assegnazione `const missing: never = state` offre il controllo statico ma non lancia da sola: aggiungi una politica runtime esplicita.
+
+### Tabelle complete per mapping semplici
+
+```ts
+type Mode = "read" | "write";
+
+const labels = {
+  read: "Lettura",
+  write: "Scrittura",
+} satisfies Record<Mode, string>;
+
+function label(mode: Mode): string {
+  return labels[mode];
+}
+
+console.log(label("read")); // Lettura
+```
+
+Se aggiungi una modalita a `Mode`, la tabella diventa incompleta e il checker la segnala. Questo e comodo per mapping di soli valori; uno switch resta piu chiaro quando ogni variante ha un payload e un comportamento diversi. `satisfies` non controlla a runtime che una chiave esterna appartenga a `Mode`.
 
 ## Varianti
 
@@ -95,7 +135,7 @@ Se viene aggiunto `status: "empty"` senza aggiornare `render`, il compilatore se
 - **Aggiungere `default` generico**: nasconde casi mancanti.
 - **Non usare discriminated union**: l'esaustivita diventa piu difficile.
 - **Ritornare fallback silenziosi**: puo mascherare bug di dominio.
-- **Usare `any` nella union**: `any` distrugge il controllo.
+- **Usare `any` o cast per far sparire gli errori**: `any` rimuove informazioni utili, ma non e direttamente assegnabile a `never`; un cast esplicito aggira anche quest'ultimo controllo.
 
 ## Checklist
 
@@ -111,6 +151,13 @@ Se viene aggiunto `status: "empty"` senza aggiornare `render`, il compilatore se
 - [[Programmazione/TypeScript/Pagine/any, unknown e never|any, unknown e never]]
 - [[Programmazione/TypeScript/Pagine/Type Narrowing|Type Narrowing]]
 
+
+## Fonti
+
+- [TypeScript: exhaustiveness checking](https://www.typescriptlang.org/docs/handbook/2/narrowing.html#exhaustiveness-checking), controllo con `never`.
+- [TSConfig: noImplicitReturns](https://www.typescriptlang.org/tsconfig/noImplicitReturns.html).
+- [TypeScript 4.9: satisfies](https://www.typescriptlang.org/docs/handbook/release-notes/typescript-4-9.html), verifica dei mapping.
+- [MDN: JSON.stringify](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/JSON/stringify), serializzazione e limiti.
 
 ## Navigazione
 

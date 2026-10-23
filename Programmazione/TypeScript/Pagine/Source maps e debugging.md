@@ -26,39 +26,61 @@ title: Source maps e debugging
 
 ## Sintesi
 
-Le source map collegano il JavaScript generato al sorgente TypeScript originale. Servono per fare debug, leggere stack trace e impostare breakpoint nei file `.ts` invece che nel codice compilato.
+Le source map associano posizioni del JavaScript generato ai sorgenti TypeScript. Aiutano debugger e lettori di stack trace, ma non cambiano la logica del programma ne correggono gli errori.
 
-Sono importanti in sviluppo, test e produzione, ma vanno gestite con attenzione per non esporre sorgenti o dettagli sensibili.
+Esempio riferito a TypeScript **5.9.3** e Node **24.14.0**, con esecuzione del JavaScript compilato.
 
 ## Quando usarlo
 
-- Debug in browser.
-- Debug Node.js con file TypeScript compilati.
-- Stack trace leggibili in sviluppo.
-- Test runner che eseguono codice trasformato.
-- Analisi errori in produzione con strumenti di monitoring.
+- Leggere stack trace riferiti alle righe originali.
+- Impostare breakpoint nei sorgenti con un debugger compatibile.
+- Ricostruire errori di una build minificata, disponendo delle sue mappe esatte.
 
 ## Come funziona
 
-Con `sourceMap: true`, TypeScript genera file `.map` che descrivono la relazione tra output JavaScript e sorgente TypeScript.
+Con `sourceMap: true`, `tsc` produce il JavaScript, il relativo `.js.map` e un commento `sourceMappingURL` nell'output. La mappa contiene percorsi dei sorgenti e associazioni tra posizioni, non necessariamente il contenuto dei sorgenti.
 
-Il debugger o browser usa queste mappe per mostrare il file originale anche se il codice eseguito e JavaScript.
+Il consumatore deve caricarla e applicarla. Per gli stack trace di Node usa `--enable-source-maps`; la sola generazione del file non basta. Un debugger puo avere una gestione propria delle mappe.
 
 ## API / Sintassi
+
+`tsconfig.json` completo per l'esempio:
 
 ```json
 {
   "compilerOptions": {
-    "sourceMap": true,
-    "outDir": "dist"
-  }
+    "target": "ES2022",
+    "lib": ["ES2022"],
+    "types": ["node"],
+    "module": "NodeNext",
+    "moduleResolution": "NodeNext",
+    "strict": true,
+    "noEmitOnError": true,
+    "rootDir": "src",
+    "outDir": "dist",
+    "sourceMap": true
+  },
+  "include": ["src"]
+}
+```
+
+Prerequisiti: `typescript` e `@types/node` locali. `package.json` minimo:
+
+```json
+{
+  "private": true,
+  "type": "module"
 }
 ```
 
 ## Esempio pratico
 
+`src/app.ts` genera intenzionalmente un errore; serve a confrontare gli stack trace, non e un programma che deve terminare con successo.
+
 ```ts
-function divide(a: number, b: number): number {
+type Operand = number;
+
+function divide(a: Operand, b: Operand): number {
   if (b === 0) {
     throw new Error("Divisione per zero");
   }
@@ -69,30 +91,75 @@ function divide(a: number, b: number): number {
 divide(10, 0);
 ```
 
-Con source map abilitate, lo stack trace puo puntare alla riga TypeScript originale invece che al file JavaScript compilato.
+Compila dalla radice del progetto:
+
+```sh
+npm exec -- tsc -p tsconfig.json
+```
+
+Esegui senza supporto mappe: lo stack indica `dist/app.js`.
+
+```sh
+node dist/app.js
+```
+
+Esegui con supporto mappe: lo stack indica `src/app.ts`, alla riga del `throw`.
+
+```sh
+node --enable-source-maps dist/app.js
+```
+
+**Entrambi i comandi terminano con errore**, perche la divisione per zero resta invariata. Percorsi assoluti e formattazione dello stack dipendono dalla piattaforma.
+
+### Breakpoint con Node
+
+Per avviare il processo in pausa e collegare un debugger compatibile con Node Inspector:
+
+```sh
+node --inspect-brk=127.0.0.1:9229 --enable-source-maps dist/app.js
+```
+
+Collega il debugger alla porta locale, apri `src/app.ts`, imposta un breakpoint nel corpo della funzione e riprendi l'esecuzione. Se il breakpoint resta non associato, verifica che il debugger carichi `dist/app.js.map` e che i percorsi dei sorgenti siano raggiungibili.
+
+Il processo resta in attesa finche non viene ripreso o terminato. Usa una porta libera e **non esporre Inspector su interfacce pubbliche**: offre controllo sull'esecuzione del processo.
 
 ## Varianti
 
-- **`sourceMap`**: genera file `.map` separati.
-- **`inlineSourceMap`**: include la mappa nel file generato.
-- **`inlineSources`**: include sorgenti nella source map.
-- **Bundler source maps**: Vite, Webpack, Rollup o esbuild hanno opzioni proprie.
-- **Production source maps**: utili per monitoring, ma da proteggere.
+| Opzione | Effetto |
+| --- | --- |
+| `sourceMap` | Mappa esterna separata dal JavaScript |
+| `inlineSourceMap` | Mappa incorporata nel JavaScript; alternativa a `sourceMap`, non cumulabile |
+| `inlineSources` | Contenuto TypeScript in `sourcesContent`; richiede una delle due opzioni precedenti |
+| `declarationMap` | Mappa delle dichiarazioni `.d.ts` per la navigazione editor, non degli stack runtime |
+
+Con `noEmit: true`, `tsc` non produce mappe JavaScript: vanno configurate nello strumento che produce il codice. Se piu strumenti trasformano l'output, devono preservare e combinare le mappe lungo la catena; una mappa precedente alla minificazione non descrive automaticamente il bundle finale.
+
+In produzione puoi conservare le mappe privatamente e usarle per analisi offline o con un servizio di error tracking. L'upload a un servizio e una scelta della pipeline, non un requisito universale.
 
 ## Errori comuni
 
-- **Abilitare source map in produzione pubblica senza controllo**: puo esporre codice sorgente.
-- **Configurare TypeScript ma non il bundler**: la mappa finale puo essere sbagliata.
-- **Debuggare output vecchio**: se la build non e aggiornata, breakpoint e linee non combaciano.
-- **Ignorare stack trace minificati**: in produzione serve upload delle source map al servizio di error tracking.
+- Analizzare JavaScript e mappe di build diverse.
+- Confondere `inlineSourceMap` con `inlineSources`: incorporano contenuti diversi.
+- Pubblicare `sourcesContent` senza valutare la visibilita del sorgente.
+- Togliere solo `sourceMappingURL` e considerare la mappa protetta: se il server continua a servirla, resta scaricabile.
+- Cercare di nascondere segreti disabilitando le mappe: non devono essere presenti neanche nel JavaScript distribuito.
+- Personalizzare `Error.prepareStackTrace` senza preservare la gestione delle mappe.
 
 ## Checklist
 
-- Abilitare source map in sviluppo.
-- Coordinare TypeScript, bundler e test runner.
-- Proteggere o non pubblicare source map sensibili in produzione.
-- Verificare che breakpoint e stack trace puntino ai file `.ts`.
-- Usare configurazioni diverse per sviluppo e produzione.
+- La build corrente contiene le mappe previste?
+- Lo stack con mappe punta alla riga TypeScript corretta?
+- Il debugger riesce a reperire i sorgenti o il loro contenuto incorporato?
+- Dopo bundling e minificazione la corrispondenza e ancora valida?
+- La politica di pubblicazione delle mappe e esplicita e verificata?
+
+## Fonti
+
+- [TypeScript: sourceMap](https://www.typescriptlang.org/tsconfig/sourceMap.html)
+- [inlineSourceMap](https://www.typescriptlang.org/tsconfig/inlineSourceMap.html)
+- [inlineSources](https://www.typescriptlang.org/tsconfig/inlineSources.html)
+- [Node 24.14.0: enable-source-maps](https://nodejs.org/download/release/v24.14.0/docs/api/cli.html#--enable-source-maps)
+- [Node: sicurezza del debugger](https://nodejs.org/en/learn/getting-started/debugging#security-implications)
 
 ## Collegamenti
 

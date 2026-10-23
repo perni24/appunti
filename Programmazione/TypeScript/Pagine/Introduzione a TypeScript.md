@@ -26,9 +26,9 @@ title: Introduzione a TypeScript
 
 ## Sintesi
 
-TypeScript e un superset di JavaScript che aggiunge un sistema di tipi statico. Il codice TypeScript viene controllato dal compilatore e poi trasformato in JavaScript eseguibile da browser, Node.js o altri runtime JavaScript.
+TypeScript aggiunge a JavaScript un controllo statico dei tipi. Serve a rilevare incompatibilita prima dell'esecuzione e a rendere espliciti i contratti tra parti del programma.
 
-Il punto importante e che TypeScript non cambia il runtime di JavaScript: aiuta a trovare errori prima dell'esecuzione, documenta meglio le forme dei dati e rende piu sicuri refactor e codebase grandi.
+**Controllo dei tipi, generazione del JavaScript ed esecuzione sono operazioni diverse.** Un programma che parte non e necessariamente stato controllato; un programma senza errori di tipo puo ancora avere bug logici, dati esterni invalidi o problemi di sicurezza.
 
 ## Quando usarlo
 
@@ -40,9 +40,15 @@ Il punto importante e che TypeScript non cambia il runtime di JavaScript: aiuta 
 
 ## Come funziona
 
-TypeScript analizza il codice e prova a capire quali valori possono circolare in ogni punto del programma. Se una funzione si aspetta una stringa e riceve un numero, il compilatore segnala un errore prima del runtime.
+Il compilatore usa dichiarazioni, inferenza e flusso di controllo per verificare gli usi dei valori. Non esegue il programma per scoprire il contenuto di una risposta HTTP.
 
-Il risultato finale e comunque JavaScript. Tipi, interfacce e annotazioni servono al compilatore e agli strumenti di sviluppo, ma normalmente non esistono piu nel codice emesso.
+- `tsc --noEmit`: controlla il progetto senza scrivere JavaScript.
+- `tsc`: puo controllare ed emettere JavaScript. Senza `noEmitOnError`, puo emettere anche in presenza di errori.
+- Un transpiler o un runtime con type stripping puo rimuovere i tipi senza controllarli. Il supporto TypeScript di Node, per esempio, non sostituisce `tsc`.
+
+Annotazioni, alias e interfacce vengono eliminati. Non ogni costrutto TypeScript e pero solo un'annotazione: per esempio gli `enum` ordinari possono generare codice JavaScript. La compatibilita dipende anche da target, moduli e runtime, non dall'estensione `.ts`.
+
+`strict` abilita un insieme di controlli, inclusi `noImplicitAny` e `strictNullChecks`; non abilita ogni opzione disponibile. `noUncheckedIndexedAccess` ed `exactOptionalPropertyTypes` si configurano separatamente. I dettagli sono in [[Programmazione/TypeScript/Pagine/Strict mode|Strict mode]].
 
 ## API / Sintassi
 
@@ -52,9 +58,26 @@ function greet(name: string): string {
 }
 
 const message = greet("Luca");
+// greet(42); // Errore statico: number non e assegnabile a string.
 ```
 
 ## Esempio pratico
+
+Esercizio locale in una **cartella di prova vuota**, non nel progetto del sito. Richiede Node.js e npm; compilatore di riferimento **TypeScript 5.9.3**, usato anche per verificare queste note, senza affermare che sia l'ultima release.
+
+Inizializza il progetto:
+
+```sh
+npm init -y
+```
+
+Installa il compilatore locale; il comando scrive manifest, lockfile e `node_modules`:
+
+```sh
+npm install --save-dev --save-exact typescript@5.9.3
+```
+
+File `demo.cts`; `.cts` dichiara esplicitamente un modulo CommonJS e produce `.cjs`:
 
 ```ts
 type User = {
@@ -63,41 +86,64 @@ type User = {
   isAdmin: boolean;
 };
 
-function canAccessAdminPanel(user: User): boolean {
+function shouldShowAdminLink(user: User): boolean {
   return user.isAdmin;
 }
 
-const user = {
+const user: User = {
   id: "u_1",
   email: "luca@example.com",
   isAdmin: false,
 };
 
-canAccessAdminPanel(user);
+console.log(shouldShowAdminLink(user)); // false
 ```
 
-Qui il tipo `User` descrive la forma minima richiesta dalla funzione. Se manca `isAdmin` o il valore non e booleano, TypeScript segnala il problema.
+Controlla senza generare file:
+
+```sh
+npm exec -- tsc --strict --noEmit --target ES2022 --module NodeNext demo.cts
+```
+
+Compila solo se non ci sono errori:
+
+```sh
+npm exec -- tsc --strict --noEmitOnError --target ES2022 --module NodeNext --outDir dist demo.cts
+```
+
+Esegui il risultato **solo dopo la compilazione riuscita**:
+
+```sh
+node dist/demo.cjs
+```
+
+Il risultato e `false`. Cambiare `isAdmin` in `"false"` causa un errore di tipo: la stringa non viene convertita in booleano. `noEmitOnError` non elimina un vecchio `dist/demo.cjs`; eseguirlo dopo una compilazione fallita puo quindi avviare codice non aggiornato.
+
+Questo esempio decide soltanto se mostrare un collegamento, non autorizza un'operazione: accessi e permessi vanno verificati dal server. Il tipo `User` non valida l'indirizzo email e non rende attendibili dati ricevuti dalla rete.
+
+Qui le opzioni sono tutte sulla riga di comando. Passando un file a `tsc`, il `tsconfig.json` non viene caricato: nei progetti reali usa una configurazione e `tsc -p .`. Le dichiarazioni di libreria disponibili al compilatore non installano API nel runtime.
 
 ## Varianti
 
-- **JavaScript puro**: nessun controllo statico, piu flessibile ma meno protetto.
-- **TypeScript strict**: configurazione piu rigorosa, consigliata per nuovi progetti.
-- **JSDoc con type checking**: usa commenti nei file JavaScript senza convertire tutto in `.ts`.
+- **JavaScript senza type checking**: controlli affidati ad altri strumenti e ai test.
+- **TypeScript strict**: baseline esplicita per questo percorso; controlli aggiuntivi in base al progetto.
+- **JavaScript con JSDoc e checkJs**: controllo statico anche senza convertire tutto in `.ts`.
+- **Bundler o framework**: la build puo essere separata dal type check; verifica entrambi in CI.
 
 ## Errori comuni
 
-- **Pensare che TypeScript validi i dati a runtime**: i tipi spariscono dopo la compilazione. Per input esterni serve validazione runtime.
-- **Usare `any` per evitare errori**: disattiva il valore principale del linguaggio.
-- **Tipizzare tutto esplicitamente**: spesso l'inferenza e migliore e riduce rumore.
-- **Ignorare `strict`**: senza configurazione rigorosa molti errori restano possibili.
+- **Build riuscita = tipi verificati**: alcuni tool trasformano soltanto la sintassi.
+- **Usare `as User` su JSON come validazione**: e un'asserzione, non un controllo dei dati.
+- **Credere che i tipi rendano sicuro il client**: autorizzazione e validazione server restano necessarie.
+- **Confondere `strict` con lo strict mode JavaScript**: il primo configura il checker; il secondo riguarda la semantica di esecuzione.
 
 ## Checklist
 
-- Abilitare `strict` nei nuovi progetti.
-- Usare tipi per API, dati di dominio e confini tra moduli.
-- Lasciare al compilatore l'inferenza locale quando e chiara.
-- Validare a runtime input provenienti da rete, file, form o database.
-- Ricordare che TypeScript controlla il codice, non sostituisce i test.
+- Eseguire un type check esplicito, oltre alla build e ai test.
+- Scegliere target e formato dei moduli compatibili con l'ambiente.
+- Annotare i contratti importanti, lasciando inferire i dettagli locali.
+- Validare gli input esterni e distinguere tipi, permessi e regole di dominio.
+- Non eseguire vecchi artefatti dopo una compilazione fallita.
 
 ## Collegamenti
 
@@ -105,7 +151,16 @@ Qui il tipo `User` descrive la forma minima richiesta dalla funzione. Se manca `
 - [[Programmazione/TypeScript/Pagine/Variabili e annotazioni di tipo|Variabili e annotazioni di tipo]]
 - [[Programmazione/TypeScript/Pagine/Inferenza dei tipi|Inferenza dei tipi]]
 - [[Programmazione/TypeScript/Pagine/any, unknown e never|any, unknown e never]]
+- [[Programmazione/TypeScript/Pagine/tsconfig|tsconfig]]
+- [[Programmazione/TypeScript/Pagine/Validazione runtime e tipi statici|Validazione runtime e tipi statici]]
+- [[Programmazione/TypeScript/Pagine/JSDoc e type checking in JavaScript|JSDoc e type checking in JavaScript]]
 
+## Fonti
+
+- [TypeScript Handbook: The Basics](https://www.typescriptlang.org/docs/handbook/2/basic-types.html), controllo statico ed emissione.
+- [TSConfig: noEmitOnError](https://www.typescriptlang.org/tsconfig/noEmitOnError.html) e [strict](https://www.typescriptlang.org/tsconfig/strict.html).
+- [tsc CLI](https://www.typescriptlang.org/docs/handbook/compiler-options.html), file espliciti e configurazione.
+- [Node.js: TypeScript](https://nodejs.org/api/typescript.html), distinzione tra type stripping e type checking; verificare la versione del runtime.
 
 ## Navigazione
 

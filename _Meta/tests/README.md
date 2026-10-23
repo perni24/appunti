@@ -898,7 +898,7 @@ node --test --test-concurrency=1 _Meta/tests/react-xss-auth.test.mjs
 - Errori e concorrenza: logout fallito resta non confermato, dati privati nascosti, retry esplicito; letture obsolete, smontaggio, cambio utente e bozza precedente scartata. Doppio logout e lettura durante revoca non duplicano l'operazione. API controllate separate per ordinare le risposte; nessun falso backend di produzione.
 - Sei scansioni axe su stati selezionati e controllo overflow mobile. Errori inattesi console/pagina/HTTP e richieste esterne fanno fallire le prove; solo gli status intenzionali dichiarati sono ammessi. Server, contesti e browser chiusi al termine; nessuna fixture su disco o junction aggiuntiva.
 
-Limiti: la fixture usa HTTP loopback e un cookie di test, non collauda HTTPS, Secure, prefisso __Host-, isolamento SameSite cross-site o un login reale. Non implementa credenziali, crittografia, OIDC/PKCE, refresh, MFA, autorizzazione per risorsa, cache multiutente o difese CSRF complete. Nessun audit di sicurezza, prova di tutti i bypass XSS, matrice browser o screen reader. SSR del rich text e Trusted Types sono limiti dichiarati, non integrazioni implementate. QA Quartz separata.
+Limiti: la fixture usa HTTP loopback e un cookie di test, non collauda HTTPS, Secure, prefisso \_\_Host-, isolamento SameSite cross-site o un login reale. Non implementa credenziali, crittografia, OIDC/PKCE, refresh, MFA, autorizzazione per risorsa, cache multiutente o difese CSRF complete. Nessun audit di sicurezza, prova di tutti i bypass XSS, matrice browser o screen reader. SSR del rich text e Trusted Types sono limiti dichiarati, non integrazioni implementate. QA Quartz separata.
 
 Audit della toolchain esterna: rimane un low preesistente su @babel/core 7.29.0 (GHSA-4x5r-pxfx-6jf8), nessun avviso aggiuntivo su DOMPurify; nessun aggiornamento forzato dei pin precedenti.
 
@@ -1079,6 +1079,409 @@ Node 24.14.0, React 19.3.0, Vite 8.3.4 e Chrome 155.0.8059.80. Nessun backend di
 Limiti: non e una libreria HTTP universale o un audit di sicurezza. Non verificati autenticazione, CORS tra origini, retry automatici, idempotenza backend, FormData, stream di download, SSR dell'adapter, client generati, altri browser o CI remota. Nessuna prova con screen reader o certificazione WCAG; nessun benchmark dei render. Le prove di timeout e obsolescenza del ProfilePanel restano nella suite precedente. Nessuna modifica alle dipendenze Quartz o nuovo audit npm.
 
 Regressione seriale conclusiva al 2026-10-19: **754 test React superati**, 694 precedenti e 60 nuovi, senza fallimenti o test saltati, in circa 376 secondi. Usato il comando complessivo con tutte le toolchain configurate, prima della build Quartz; processi e fixture chiusi/rimossi. La suite JavaScript non e stata rieseguita. Le prove riguardano i casi descritti, non certificano ogni esempio delle 59 note React.
+
+## TypeScript: fondamenti del linguaggio
+
+`typescript-fondamenti.test.mjs` estrae i blocchi dalle sette note del capitolo Fondamenti del Linguaggio. Usa il parser Markdown del sito e il vero checker/emitter di TypeScript, non una seconda implementazione degli esempi.
+
+Richiede le dipendenze gia installate in `site`: baseline fissata a **TypeScript 5.9.3**, verificata con Node **24.14.0**. Nessuna nuova toolchain o dipendenza aggiunta. Se il compilatore del sito cambia, il test di versione richiede di rivalidare le aspettative invece di considerarle automaticamente equivalenti.
+
+```powershell
+node --test _Meta/tests/typescript-fondamenti.test.mjs
+```
+
+Risultato del 2026-10-20: **52 test superati**, nessun fallimento o test saltato, in circa 68 secondi.
+
+- 23 controlli di compilazione dei blocchi indipendenti in strict; l'unico blocco di continuazione viene verificato insieme al suo esempio.
+- Test statici positivi e negativi: annotazioni, ritorni, inizializzazione, narrowing, literal, array, optional exact, unknown, never, union, intersection, merging e proprieta in eccesso.
+- Esecuzione del JavaScript emesso: prezzi e totali con limiti numerici, proiezione dei dati, input invalidi, errori di parsing, risultato del catch e fallback per un valore lanciato non Error.
+- CLI reale sull'esempio introduttivo: noEmit, emissione `.cts` -> `.cjs`, esecuzione Node e verifica che noEmitOnError lasci invariato un artefatto precedente dopo un errore.
+- I file ordinari di prova restano virtuali; soltanto il caso CLI crea una cartella temporanea sotto il percorso di sistema. Prima della rimozione ricorsiva vengono verificati parent risolto e prefisso. Nessuna modifica al codice delle note o ai file del sito da parte dei test.
+
+Limiti: un compilatore e un runtime, non una matrice di versioni o di bundler. I comandi npm di inizializzazione/installazione non vengono rieseguiti: la CLI usa il compilatore locale gia presente. Non sono collaudati backend, autenticazione, validazione completa di email, sicurezza contro oggetti Proxy/getter ostili o ogni frammento inline. La suite JavaScript/React non viene rieseguita per questo blocco; i controlli del vault e la build Quartz sono separati.
+
+## TypeScript: funzioni, oggetti e collezioni
+
+`typescript-funzioni-collezioni.test.mjs` estrae i blocchi delle sette note omonime dall'indice TypeScript. Il supporto al checker, all'emissione virtuale e all'esecuzione VM e ora in `typescript-examples.mjs`, riusato anche dalla suite Fondamenti.
+
+Richiede TypeScript **5.9.3** nelle dipendenze del sito, Node **24.14.0** e, per il test DOM, Playwright e Chrome. `PLAYWRIGHT_MODULE_PATH` puo indicare un pacchetto Playwright esterno, come per le altre suite browser; `BROWSER_CHANNEL` permette di cambiare canale. La prova fallisce se il browser non e disponibile, non viene silenziosamente saltata.
+
+```powershell
+node --test _Meta/tests/typescript-funzioni-collezioni.test.mjs
+```
+
+**67 nuovi casi**: 29 compilazioni dei blocchi, un controllo della baseline, 36 gruppi Node e una prova browser con piu scenari DOM.
+
+- Parametri, callback, default, rest, void e Promise; assenza/undefined/null, preview email senza invio e merge con Partial.
+- Array readonly, copie e ordinamento numerico, indici assenti, tuple modificabili e riferimenti condivisi.
+- Enum numerici/stringa, reverse mapping, const enum con preserveConstEnums, literal e guard condiviso con la lista runtime.
+- Asserzioni prive di conversione, non-null che fallisce, guard con controlli sui tipi reali e campi propri. Una controprova reintroduce nella sola fixture il guard errato, mostrando che il checker non verifica la verita del predicate.
+- Chrome: input valido anche con valore non email, elemento mancante, textarea/div e input appartenente a un altro realm; nessun servizio esterno.
+- Overload con union, narrowing, ritorno inferito e ultima firma. Una mutazione controllata dell'implementazione dimostra che compilare non garantisce il risultato corretto di ogni overload.
+- Dizionari: chiavi assenti, prototype, chiavi proprie speciali, Record finiti, metadata separati, opzioni di accesso e diagnostici. Controprova sul vecchio lookup che restituiva toString invece di boolean.
+
+Regressione complessiva eseguita il 2026-10-20:
+
+```powershell
+$tests = (Get-ChildItem -LiteralPath '_Meta/tests' -Filter 'typescript-*.test.mjs').FullName
+node --test --test-concurrency=1 $tests
+```
+
+**119 test superati**, 52 precedenti e 67 nuovi, zero fallimenti o test saltati, in circa 73 secondi. Il browser di prova viene chiuso; nessuna nuova dipendenza o modifica al lockfile. La build Quartz e stata avviata dopo la fine dei test.
+
+Limiti: una baseline TypeScript e un runtime Node; il DOM e provato in Chrome, non una matrice di browser. Nessun backend, invio email, validazione completa di indirizzi, sicurezza contro Proxy/getter, CSV completo, bundler alternativi o test di ogni esempio inline. Le modifiche intenzionalmente errate avvengono soltanto in memoria. I 119 test non includono le suite JavaScript/React, non rieseguite in questo blocco.
+
+## TypeScript: programmazione ad oggetti e generics
+
+`typescript-oggetti-generics.test.mjs` estrae i blocchi dalle cinque note del capitolo Programmazione ad Oggetti. Riusa `typescript-examples.mjs`: checker/emitter reale con output virtuale ed esecuzione in VM, senza scrivere file compilati nel vault.
+
+Richiede TypeScript **5.9.3** gia installato in `site` e Node **24.14.0**. La nuova suite non richiede browser; la regressione complessiva include ancora la prova DOM del blocco precedente, che richiede Playwright e Chrome come descritto sopra.
+
+```powershell
+node --test _Meta/tests/typescript-oggetti-generics.test.mjs
+```
+
+**54 nuovi casi**: 23 compilazioni di blocchi indipendenti, un controllo della baseline e 30 gruppi statici/runtime.
+
+- Istanze e costruttori, membri statici, oggetti strutturali e prototipo; timer con clock deterministico, restart e default performance.now.
+- Asserzione di inizializzazione, this esplicito, metodo estratto, bind e arrow per istanza; ordine dei campi, super, override e declare.
+- Controlli di accesso statici, bracket access a private e mutazioni possibili dal JavaScript; #private, receiver errato, enumerazione/serializzazione e nomi stringa distinti.
+- Factory locale con trim e limite UTF-16, costruttore private chiamabile nel JavaScript emesso, parameter properties incompatibili con erasableSyntaxOnly; readonly superficiale.
+- Classi astratte e firme dei costruttori, sottoclasse concreta, repository in memoria, assenza/null, confronto esatto, riferimenti condivisi ed errori dell'adapter.
+- Implementazione strutturale, mancata inferenza dei parametri da implements, proprieta opzionali non create, lato statico/istanza e test double email senza invio.
+- Inferenza literal, unwrap senza conversione o validazione, array vuoto, constraint e sottotipi, slot generico e cancellazione dei parametri di tipo.
+- Controprove intenzionali in memoria: hook nel costruttore prima dei campi derivati, bivarianza dei metodi, first con ritorno troppo stretto e aggiornamento generico che viola un literal. Non si modifica la fonte per provocare i fallimenti.
+
+Regressione seriale al 2026-10-20 con il comando complessivo riportato sopra: **173 test superati**, 119 precedenti e 54 nuovi, zero fallimenti o test saltati, in circa 109 secondi. Nella prima esecuzione mirata era errato un codice diagnostico atteso dal test (2353 anziche 2345 per il literal con campo extra); corretto e aggiunto il caso separato della variabile priva di id. Nessuna dipendenza o lockfile modificato.
+
+Limiti: un compilatore e un runtime, non matrice di versioni, browser o bundler. Non sono implementati SMTP, autenticazione, database, validazione email completa o misure di segretezza; performance.now non e un benchmark o una verifica della sospensione del sistema. La prova di type stripping controlla erasableSyntaxOnly, non avvia tutti i loader Node. Suite JavaScript/React non rieseguite; controlli del vault, build Quartz e QA del sito restano separati.
+
+## TypeScript: narrowing e controllo dei tipi
+
+`typescript-narrowing.test.mjs` estrae i blocchi dalle sei note del capitolo Narrowing e Controllo dei Tipi. Riusa il checker/emitter e la VM di `typescript-examples.mjs`; i sorgenti Markdown sono la fonte degli esempi, non una seconda implementazione.
+
+Richiede TypeScript **5.9.3** gia installato in `site` e Node **24.14.0**. Questa suite usa solo Node; la prova tra realm usa un contesto VM separato. La regressione di tutte le suite richiede ancora Playwright e Chrome per il test DOM del secondo capitolo.
+
+```powershell
+node --test _Meta/tests/typescript-narrowing.test.mjs
+```
+
+**62 nuovi casi**: 26 compilazioni di blocchi indipendenti, un controllo della baseline e 35 gruppi statici/runtime.
+
+- Narrowing dopo return, truthiness/nullish, assegnazioni, closure e snapshot di stringhe prima di una callback che muta l'oggetto originale.
+- Guardia JSON con campi propri e tipi controllati, assenza distinta da undefined, ereditarieta e limiti di Object.hasOwn per il checker.
+- Array densi/vuoti/sparsi, confronto con every che salta i buchi, mutazioni successive e Array.isArray tra realm.
+- Union discriminate: payload obbligatorio, widening, satisfies, destructuring const rispetto a let/rest e nuova variante senza ritorno.
+- Esaustivita: assertNever senza serializzare il payload, cicli/BigInt/toJSON, aggiunta di varianti, cast che aggira il controllo, noImplicitReturns e mapping Record incompleto.
+- Predicate: categoria number, contratto del ramo false, filtri inferiti, Boolean, NonNullable, riferimenti condivisi e firme accettate con implementazione sbagliata.
+- Assertion: config senza validazione URL, condizione/valore definito, zero e altri falsy, arrow annotata, catch, firma async non ammessa e corpo che non verifica la promessa.
+
+Prima esecuzione mirata 61/62: era errata l'aspettativa del test che una condizione riscritta con ternario mantenesse il narrowing. Conservata come controprova negativa e verificati separatamente `value == null` e `!(value != null)`; nessun errore nei 26 blocchi delle note.
+
+Regressione seriale completa al 2026-10-20, con il comando complessivo riportato sopra: **235 test superati**, 173 precedenti e 62 nuovi, zero fallimenti o test saltati, in circa 149 secondi. Nessuna nuova dipendenza o modifica al lockfile; build Quartz avviata soltanto dopo la conclusione dei test.
+
+Limiti: una baseline TypeScript/Node, non una matrice di compilatori o target. Non sono provati tutti i frammenti inline, schemi arbitrari, Proxy/getter/iteratori ostili, autorizzazioni, pagamenti, URL sicuri o dati di produzione. Le controprove volutamente errate restano nelle fixture in memoria; il blocco unsafe nelle note e etichettato come controesempio. Nessun invio di rete applicativo, nessuna riesecuzione delle suite JavaScript/React.
+
+## TypeScript: tipi avanzati
+
+```powershell
+node --test _Meta/tests/typescript-tipi-avanzati.test.mjs
+```
+
+Suite di **66 test** sulle nove note del capitolo, con il supporto condiviso `typescript-examples.mjs` invariato: 34 blocchi Markdown compilati dal checker reale, un controllo della versione 5.9.3 e 31 gruppi statici/runtime. Prima esecuzione completa riuscita: 66/66, zero fallimenti o test saltati, circa 106 secondi.
+
+Copertura:
+
+- Generics: chiave/valore, default e constraint, costruzione illegittima di un sottotipo; repository locale con sostituzione, riferimenti condivisi e chiave non aggiornata dopo una mutazione.
+- Conditional: distribuzione rispetto al confronto globale, any/unknown/never, filtri di union, unwrap singolo rispetto ad Awaited e thenable.
+- Mapped: readonly superficiale, tuple, conservazione di optional/readonly nel form, differenza fra exactOptionalPropertyTypes attivo e disattivo, remapping, collisioni e campi non rimossi a runtime.
+- Template literal: prodotto cartesiano, nome/payload correlati e parser del solo prefisso; test di suffisso vuoto e input che non rispetta il pattern.
+- Indexed access e keyof/typeof: getter specifici, chiavi mancanti, array vuoto, noUncheckedIndexedAccess, optional, symbol/numero, chiavi comuni e Object.keys diverso dalla vista statica.
+- Infer: readonly, tuple vuote/aperte, never[] rispetto a unknown[], ultima firma di overload, ritorno generico e declare privo di implementazione.
+- Ricorsione: albero finito e nodi condivisi, numeri non finiti/cicli in JsonValue, diagnostico di istanziazione non terminante, readonly profondo con alias e classi non supportate.
+- Tuple variadiche: input readonly, risultato mutabile, label, wrapper senza log dei dati, this, throw e Promise identica con rejection gestita, concat superficiale e partial application.
+
+La regressione delle cinque suite usa il comando complessivo TypeScript riportato sopra e il runtime Playwright per la prova DOM gia presente. Al 2026-10-21: **301 test superati**, 235 precedenti e 66 nuovi, zero fallimenti o test saltati, circa 290 secondi su Node 24.14.0. Build Quartz avviata soltanto a regressione conclusa.
+
+Questa nuova suite non richiede un browser o dipendenze aggiuntive. Il confronto degli errori usa diagnostici del compilatore; il JavaScript viene eseguito in VM solo dopo compilazione riuscita. Gli input volutamente errati restano nelle fixture.
+
+Limiti: baseline singola, non tutti i frammenti inline, target o versioni. Non sono collaudati servizi HTTP/email, persistenza, autenticazione, emitter o parser universali. Non vengono percorse strutture cicliche con una ricorsione runtime illimitata; il test TS2589 non promette una soglia di profondita stabile. I tipi non certificano immutabilita runtime o validita applicativa dei dati. Build/QA e test della trasformazione restano separati.
+
+## TypeScript: moduli e configurazione
+
+```powershell
+node --test _Meta/tests/typescript-moduli-configurazione.test.mjs
+```
+
+Suite di **31 test** sulle sette note del capitolo. Configurazioni JSON, comandi ed esempi TypeScript sono estratti dai Markdown. Prima esecuzione mirata: **31/31 riusciti**, zero fallimenti o test saltati, circa 49 secondi.
+
+Baseline: TypeScript **5.9.3**, Node **24.14.0**, esbuild **0.27.3**, tutti gia disponibili localmente. Le fixture risolvono `@types/node` **25.3.0**, presente in `site`, tramite `typeRoots` aggiunto soltanto nei config temporanei: nessuna installazione o modifica al lockfile. Gli esempi usano API eseguite in Node 24; questa differenza di major dei tipi non certifica la compatibilita di tutte le API Node 25 con Node 24.
+
+Copertura:
+
+- JSON, comandi copiabili separatamente e metadati delle sette note.
+- `tsconfig`: output e runtime, `showConfig`, `noEmit`, `noEmitOnError` e artefatti vecchi, import di file esclusi, `rootDir`, `extends` e comportamento degli argomenti sorgente nella baseline.
+- ESM/CommonJS: esempi `.ts` e `.cts`, `.mts`, estensioni mancanti, import solo di tipi ed effetti collaterali, `verbatimModuleSyntax`, `require()` di ESM sincrono e rifiuto del top-level await.
+- Resolution: traccia reale, package locale con export map e sottopercorso privato, dichiarazione senza implementazione.
+- Alias: `paths` senza `baseUrl`, CLI esbuild con bundling, mancata riscrittura di `tsc`, package imports `#` risolti prima della prima build e fallimento senza la mappatura runtime.
+- References: build da zero e incrementale, `dry`, `force`, `clean`, dichiarazioni, cache, stop dei consumatori con errori, artefatti precedenti, dipendenza non costruita da `-p` e requisito `composite`.
+- Strict: null/stringa vuota/array vuoto, accessi indicizzati, optional esatti, `any`, `catch`, iteratori e override delle singole opzioni.
+- Source map: stack JavaScript e TypeScript con riga del throw verificata, mappe esterne e inline, sorgenti incorporati, opzioni incompatibili e `noEmit`.
+
+Le CLI e il runtime lavorano in directory temporanee dedicate, rimosse solo dopo aver verificato il percorso assoluto. I casi volutamente errati non modificano i Markdown. Nessuna chiamata a servizi esterni o uso del browser personale.
+
+Limiti: una baseline e Windows, non tutte le versioni, piattaforme o toolchain. Non vengono collaudati Vite/Jest/ESLint, pubblicazione npm di pacchetti dual-format, ogni condizione di exports, performance delle build o interfacce di debugger. La procedura Inspector e documentata ma non avviata dai test; gli stack sono verificati direttamente in Node. La presenza di una mappa non certifica ogni breakpoint o una pipeline di minificazione. Test della trasformazione, build Quartz e QA delle pagine restano controlli distinti.
+
+Regressione seriale delle sei suite al 2026-10-21: **332 test superati**, 301 precedenti e 31 nuovi, zero fallimenti o test saltati, circa 460 secondi. Inclusa la prova DOM precedente con Playwright/Chrome; suite JavaScript e React non rieseguite. La build Quartz e stata avviata soltanto dopo la conclusione della regressione. Il comando complessivo TypeScript e riportato sopra; dettagli e QA sono registrati in `_Meta/Revisione contenuti.md`.
+
+## TypeScript: utility e pattern di tipo
+
+```powershell
+node --test _Meta/tests/typescript-utility-pattern.test.mjs
+```
+
+Suite di **52 test** sulle sei note del capitolo: 21 blocchi Markdown compilati in strict, un controllo della baseline e 30 gruppi statici/runtime. Prima esecuzione mirata: **52/52 riusciti**, nessun fallimento o test saltato, circa 99 secondi.
+
+Riusa `typescript-examples.mjs`, il compilatore **TypeScript 5.9.3** presente in site e **Node 24.14.0**. Nessuna nuova dipendenza; compilazione in memoria e JavaScript eseguito in VM. La suite non richiede browser; la regressione complessiva mantiene il requisito Playwright/Chrome del test DOM preesistente.
+
+Copertura:
+
+- Utility standard: Omit rispetto alla proiezione/serializzazione, patch esplicita e valori falsy, optional con exact attivo/disattivo, readonly superficiale, Record e noUncheckedIndexedAccess, firme/overload, Awaited e NoInfer.
+- Utility personalizzate: modificatori e nullable superficiale, chiavi obbligatorie, limiti del controllo runtime, null/undefined, Omit distribuito con discriminanti e campi non rimossi dai valori.
+- Brand: parser con unknown, formato completo e newline finali, brand incompatibili, tipo base, concatenazione, assertion elusiva, unique symbol cancellato e JSON da ricontrollare.
+- satisfies: contextual typing di stringhe/booleani, stato annotato mutabile, chiavi finite/aperte, proprieta in eccesso, optional non aggiunti, identita runtime e bypass con any.
+- as const e const generics: tuple readonly o mutabili secondo il contesto in 5.9.3, riferimenti condivisi, copie, limiti sintattici, vincoli, perdita di literal nelle variabili e argomenti di tipo espliciti.
+
+Un controllo preliminare ha smentito l'aspettativa storica di fallback a string[] con const generic e vincolo mutabile: nota e test seguono il comportamento locale e la PR ufficiale 55229. Non vengono eseguite versioni storiche del compilatore.
+
+Regressione seriale delle sette suite al 2026-10-22: **384 test superati**, 332 precedenti e 52 nuovi, nessun fallimento o test saltato, circa 561 secondi. Compresa la prova DOM preesistente; suite JavaScript e React non rieseguite. Build Quartz avviata soltanto a regressione conclusa.
+
+Limiti: una baseline TypeScript/Node, non tutti i frammenti inline, target o combinazioni di utility. Nessun servizio email, database, verifica di autorizzazioni, validatore completo di email/URL o certificazione di immutabilita. Gli ID hanno un formato dimostrativo, non uno standard UUID. Gli input volutamente errati restano nelle fixture; build e QA del sito sono verifiche separate. Il risultato della regressione completa e registrato in `_Meta/Revisione contenuti.md`.
+
+## TypeScript: type system in profondita
+
+```powershell
+node --test _Meta/tests/typescript-type-system.test.mjs
+```
+
+La suite richiede TypeScript **5.9.3**, Node **24.14.0** e Playwright/Chrome tramite `PLAYWRIGHT_MODULE_PATH`, come per le prove browser precedenti. Usa dipendenze gia disponibili; non installa pacchetti e non modifica i sorgenti degli esempi.
+
+Contiene **51 test**: un controllo della baseline, otto controlli editoriali e 42 gruppi statici/runtime. I 35 blocchi TypeScript delle otto note sono estratti dai Markdown; quelli multifile vengono compilati insieme nelle fixture, quello legacy usa il suo flag. Copertura:
+
+- Structural typing: proprieta extra conservate, identita, classi pubbliche/private, logger e weak types.
+- Variance: reader/writer, strictFunctionTypes, metodi bivarianti, store invarianti, array mutabili e annotazioni in/out.
+- Conditional types distributivi: wrapper, union concreta, array misti, filtri di eventi, never/any/unknown e prodotto di union.
+- Inferenza: contextual typing, const, widening, chiavi assenti o duplicate nella Map e default dei generics espliciti.
+- Declaration merging: proprieta, overload, promesse senza implementazione, scope globale/locale e Window nel browser reale. Il JavaScript CommonJS compilato usa uno shim locale di exports nella pagina di fixture, non il loader ESM del browser.
+- Module augmentation: progetto ESM reale con NodeNext, plugin presente/assente, specifier errato, conflitti, noEmitOnError e differenza rispetto a un modulo ambient.
+- Namespace: emissione runtime, membri non esportati, merging, soli tipi cancellati e dichiarazioni ambient senza implementazione.
+- Decorators: this, parametri, ritorni, identita delle Promise, errori propagati, ordine di valutazione/applicazione, inizializzatori di field e modalita legacy. I comandi tsc e Node della nota sono eseguiti con file reali.
+
+Il primo giro ha rilevato un'aspettativa troppo specifica nel test del modulo ambient: con la dichiarazione in un .d.ts, il consumer produce TS2307, non TS2664. Corretto il diagnostico atteso e riuscita la riesecuzione mirata. Il caso .ts con specifier di augmentation errato verifica separatamente TS2664.
+
+Regressione seriale delle otto suite TypeScript del 2026-10-22: **435 test superati**, 384 precedenti e 51 nuovi, zero fallimenti o test saltati, circa 662 secondi. Incluse le prove DOM, senza build Quartz concorrente; suite JavaScript e React non rieseguite.
+
+Limiti: una sola baseline, non ogni forma di merging, varianza, decorator o firma generica. Non sono eseguite integrazioni Express, dependency injection, reflect-metadata o Symbol.metadata, ne una matrice di browser/compilatori. I controesempi runtime sono intenzionali e intercettati dai test; non rappresentano errori della suite. La pulizia delle fixture verifica prima il percorso assoluto sotto la directory temporanea. Nessun servizio esterno, dato reale o browser personale viene usato.
+
+## TypeScript: interoperabilita con JavaScript
+
+La suite `typescript-interoperabilita.test.mjs` legge le sei note del capitolo, senza duplicare le implementazioni. Declaration Merging e gia coperta dalla suite precedente. **33 test**, tutti superati al primo giro in circa 94 secondi: baseline, sei controlli editoriali e 26 gruppi statici/runtime. Verificati i 17 blocchi JS/TS, 11 configurazioni JSON e lo schema OpenAPI del percorso dimostrativo.
+
+Richiede TypeScript **5.9.3** nel progetto site, Node **24.14.0** e strumenti esterni fissati: **openapi-typescript 7.13.0**, **Lodash 4.18.1**, **@types/lodash 4.17.27**. La suite non installa dipendenze. Preparazione una tantum in una directory temporanea separata dal vault:
+
+```powershell
+$env:TYPESCRIPT_INTEROP_TOOLS_DIR = Join-Path $env:TEMP ("appunti-typescript-interop-tools-" + [guid]::NewGuid().ToString("N"))
+```
+
+```powershell
+npm install --prefix "$env:TYPESCRIPT_INTEROP_TOOLS_DIR" --ignore-scripts --no-audit --no-fund --save-exact typescript@5.9.3 openapi-typescript@7.13.0 lodash@4.18.1 @types/lodash@4.17.27
+```
+
+In una sessione successiva, impostare la variabile al percorso gia preparato. Non usare come destinazione la root del vault o site; nessun package.json o lockfile del sito viene modificato.
+
+```powershell
+node --test _Meta/tests/typescript-interoperabilita.test.mjs
+```
+
+Copertura:
+
+- Migrazione: progetto ESM prima/dopo la conversione, stesso output, allowJs/checkJs/ts-check/ts-nocheck, parametro any legacy e noEmitOnError con artefatti vecchi.
+- Typing: modulo CommonJS locale con d.cts, unknown, errore di argomento, contratto deliberatamente falso e implementazione assente; risultati undefined ed eccezioni di JSON.
+- JSDoc: tutti i file JS eseguiti, generic con undefined e readonly, satisfies rispetto a type, import di soli tipi senza file runtime e generazione delle dichiarazioni.
+- Dichiarazioni: confronto tramite AST del contratto emesso, consumer per percorso e nome pubblico, exports types, emitDeclarationOnly, corpo vietato nel d.ts e Window non creato in Node.
+- DefinitelyTyped: pacchetti reali, debounce/flush/cancel, parametri errati, dichiarazioni senza runtime e viceversa, globali automatici rispetto agli import con types vuoto.
+- OpenAPI: CLI reale su schema locale, required/nullable, controllo di output mancante/obsoleto, riferimento invalido e consumer incompatibile dopo rigenerazione. Parser eseguito con dati corretti e sbagliati; Fetch simulato per URL codificata, HTTP 404, 204, JSON malformato, forma inattesa ed errore di rete.
+
+La regressione mirata comprende questa suite e quelle su Moduli e Configurazione e Type System. Richiede anche Playwright/Chrome tramite PLAYWRIGHT_MODULE_PATH, come documentato nelle sezioni precedenti:
+
+```powershell
+node --test --test-concurrency=1 _Meta/tests/typescript-moduli-configurazione.test.mjs _Meta/tests/typescript-type-system.test.mjs _Meta/tests/typescript-interoperabilita.test.mjs
+```
+
+Risultato della regressione mirata del 2026-10-22: **115 test superati**, 33 nuovi, 31 di Moduli e Configurazione e 51 di Type System; zero fallimenti o test saltati, circa 219 secondi. Inclusa la prova DOM precedente. Le altre sei suite TypeScript e quelle JavaScript/React non sono state rieseguite: il risultato completo precedente da 435 test resta una verifica storica distinta. Supporto condiviso invariato.
+
+Anche il comando complessivo `typescript-*.test.mjs` ora richiede TYPESCRIPT_INTEROP_TOOLS_DIR. Non avviare la build Quartz contemporaneamente alle prove tecniche.
+
+Limiti: una baseline e Windows, non ogni versione o toolchain. La coppia Lodash/tipi e verificata per debounce, non per tutte le API. Non sono eseguiti servizi remoti, pubblicazione npm, generatori GraphQL/Prisma/RPC o validazione completa del contratto OpenAPI. Il parser proietta i campi minimi e non valida email, autorizzazioni o nickname. Le fixture usano copie locali dei pacchetti e rimuovono soltanto directory temporanee di cui controllano il percorso assoluto; l'installazione esterna resta disponibile per rieseguire la suite. Controlli del vault e QA Quartz sono separati.
+
+## TypeScript: validazione e confine runtime
+
+La suite `typescript-validazione-runtime.test.mjs` legge le cinque note del capitolo. Contiene **47 test**: baseline, cinque controlli editoriali, nove unita di compilazione strict ricavate dai 13 blocchi TypeScript, 31 gruppi runtime/statici e un progetto CLI ESM reale. I frammenti che compongono lo stesso file vengono uniti nell'ordine della nota.
+
+Richiede **TypeScript 5.9.3** gia presente in site, **Node 24.14.0** e **Zod 4.6.7** in una directory temporanea esterna. La suite non installa pacchetti:
+
+```powershell
+$env:TYPESCRIPT_VALIDATION_TOOLS_DIR = Join-Path $env:TEMP ("appunti-typescript-validation-tools-" + [guid]::NewGuid().ToString("N"))
+```
+
+```powershell
+npm install --prefix "$env:TYPESCRIPT_VALIDATION_TOOLS_DIR" --ignore-scripts --no-audit --no-fund --save-exact zod@4.6.7
+```
+
+In una nuova sessione impostare la variabile al percorso gia preparato. Il package e il lockfile del sito restano invariati.
+
+```powershell
+node --test _Meta/tests/typescript-validazione-runtime.test.mjs
+```
+
+Copertura:
+
+- Confine runtime: assertion senza conversione, unknown, proiezione e identita, campi propri/ereditati, null/array, getter che lanciano e limiti della sola validazione di forma.
+- Zod: parsing, errori, trim/default, input/output, quantita e email, campi extra, optional/nullable/nullish, prefault/catch, coercion, callback che lanciano, metodi async e limiti di JSON Schema.
+- Guardie: stringa vuota, forma del prodotto separata dalla sua vendibilita, NaN/Infinity, ereditarieta, identita e mutazioni, ramo falso e buchi degli array.
+- Parsing: porta fra 1 e 65535, formato decimale canonico, newline e conversioni indesiderate, oggetti con effetti collaterali rifiutati senza coercion; JSON, limite del testo, campi extra e duplicati.
+- Contratto: discriminante, status e payload insieme, risposte 200/404, 204 e altri status inattesi, chiavi extra proiettate e messaggi remoti non esposti.
+- CLI: configurazioni JSON della nota, compilazione NodeNext e quattro entry point ESM con output verificato. Le dipendenze vengono copiate nella fixture e la pulizia verifica prima il percorso assoluto.
+
+Il primo giro ha superato 40 test su 47. Sette fallimenti dipendevano dal runner locale: nomi importati/esportati nelle espressioni di verifica non trasformati dal compilatore e Promise della VM proveniente da un realm diverso da Zod. Corretto il runner, senza modificare il supporto condiviso o indebolire gli esempi; la prova async usa Zod e callback nello stesso realm Node del demo. Riesecuzione Zod mirata: 12 test superati, incluso il controllo editoriale.
+
+Regressione mirata, con entrambe le directory degli strumenti preparate:
+
+```powershell
+node --test --test-concurrency=1 _Meta/tests/typescript-narrowing.test.mjs _Meta/tests/typescript-interoperabilita.test.mjs _Meta/tests/typescript-validazione-runtime.test.mjs
+```
+
+Regressione seriale mirata del 2026-10-22: **142 test superati**, 47 nuovi + 62 Narrowing + 33 Interoperabilita, nessun fallimento o test saltato, circa 227 secondi. Nessuna modifica al supporto condiviso. Le altre suite TypeScript e quelle JavaScript/React non sono rieseguite; il risultato completo precedente da 435 test resta storico.
+
+Anche il comando complessivo `typescript-*.test.mjs` richiede ora TYPESCRIPT_VALIDATION_TOOLS_DIR, oltre ai prerequisiti delle altre suite. Non eseguire Quartz contemporaneamente ai test tecnici. Dettagli della regressione in `_Meta/Revisione contenuti.md`.
+
+Limiti: una baseline su Windows, non tutte le versioni o contesti cross-realm. Non sono eseguiti backend, autenticazione, autorizzazioni, transazioni o verifiche reali di proprieta delle email. Il parser JSON limita una stringa gia disponibile, non i byte scaricati o la memoria dell'intera applicazione; non rileva chiavi JSON duplicate. I parser sono per dati ordinari, non sandbox per getter/Proxy ostili. I test del decoder non provano il provider HTTP. Build e QA del sito restano verifiche separate.
+
+## TypeScript: framework e applicazioni
+
+`typescript-framework.test.mjs` estrae le sei note del capitolo e ricostruisce progetti reali in directory temporanee. **29 gruppi di test**: baseline, sei controlli editoriali e 22 prove di compilazione, runtime, HTTP, browser e workspace. I 21 blocchi TS/TSX, 15 configurazioni JSON, un modulo JavaScript e un HTML sono letti dai Markdown, non copiati come implementazioni parallele.
+
+Baseline: TypeScript **5.9.3**, Node **24.14.0**, npm **11.19.0**, React/React DOM **19.3.0**, tipi React **19.3.0**, Vite **8.3.4**, plugin React **6.1.2**, Next **16.4.1**, Express **5.3.0**, tipi Express **5.0.6**, Fastify **5.12.7**, Zod **4.6.7**, tipi Node **24.19.2**, server-only **0.0.1**. Chrome tramite Playwright, come nella sezione Browser.
+
+Preparare la toolchain esterna una volta, senza modificare package/lockfile di site:
+
+```powershell
+$env:TYPESCRIPT_FRAMEWORK_TOOLS_DIR = Join-Path $env:TEMP ("appunti-typescript-framework-tools-" + [guid]::NewGuid().ToString("N"))
+```
+
+```powershell
+npm install --prefix "$env:TYPESCRIPT_FRAMEWORK_TOOLS_DIR" --ignore-scripts --no-fund --save-exact typescript@5.9.3 react@19.3.0 react-dom@19.3.0 @types/react@19.3.0 @types/react-dom@19.3.0 @types/node@24.19.2 vite@8.3.4 @vitejs/plugin-react@6.1.2 next@16.4.1 server-only@0.0.1 express@5.3.0 @types/express@5.0.6 fastify@5.12.7 zod@4.6.7
+```
+
+Il successivo audit della toolchain del 2026-10-22 non riporta advisory; non e una certificazione futura o del sito. Le versioni sono baseline provate, non una dichiarazione di ultimo rilascio.
+
+```powershell
+node --test _Meta/tests/typescript-framework.test.mjs
+```
+
+Serve `PLAYWRIGHT_MODULE_PATH` se Playwright non e risolvibile da site. `NPM_CLI_PATH` puo indicare npm-cli.js; su Windows il default e quello dell'installazione accanto a node.exe. La prova workspace usa install e ci offline nella sola fixture: richiede la cache popolata dall'installazione iniziale degli strumenti.
+
+Copertura:
+
+- React: checker, build Vite, callback incompatibile e interazioni in Chrome con filtro, selezione e focus tramite ref.
+- Node: compilazione ESM, argomenti, exit code, file errati, parser e proiezione; type stripping che non controlla i tipi, enum non cancellabile e import .js assente nei sorgenti.
+- Client: input/output, normalizzazione, UTF-16, copia della URL, opzioni Fetch, media type, HTTP, JSON, schema e rete; annullamento prima della richiesta e durante un body HTTP reale incompleto.
+- Express/Fastify: endpoint reali su porte loopback assegnate dal sistema, client condiviso, JSON malformato, titolo e extra non validi, 413/415. Test separato della politica Ajv nativa, diversa da quella Zod scelta nel demo.
+- Next: typegen senza artefatti, checker, controprove params/Link, build di produzione Webpack, HTTP 200/404, interazione client e assenza del campo interno nell'HTML e nei bundle client.
+- Monorepo: installazione workspace reale, collegamento del package, build e avvio, export map, firma incompatibile, pulizia degli output e npm ci seguito dalla build della sola app con dipendenze.
+
+Primo giro: 26/29 gruppi superati. Corretti tre problemi del runner: risoluzione della CLI privata Vite, NODE_ENV modificato da preview e cache Vite non scrivibile attraverso una junction Windows. Il caso filesystem e stato riprodotto separatamente; React usa ora una directory node_modules reale per la cache e link ai package. Nessun cambiamento agli esempi richiesto da questi errori. Riesecuzione React/workspace: sette gruppi superati.
+
+Regressione mirata, con anche TYPESCRIPT_VALIDATION_TOOLS_DIR preparata:
+
+```powershell
+node --test --test-concurrency=1 _Meta/tests/typescript-framework.test.mjs _Meta/tests/typescript-moduli-configurazione.test.mjs _Meta/tests/typescript-validazione-runtime.test.mjs
+```
+
+Regressione seriale mirata del 2026-10-22: **107 test superati**, 29 Framework + 31 Moduli + 47 Validazione, nessun fallimento o test saltato, circa 183 secondi. Le altre suite TypeScript e quelle complete React/JavaScript non sono rieseguite.
+
+Il comando globale `typescript-*.test.mjs` richiede ora anche la toolchain framework. Helper condivisi invariati; non avviare Quartz contemporaneamente alle prove tecniche. Dettagli finali in `_Meta/Revisione contenuti.md`.
+
+Limiti: una baseline Windows/Chrome, non ogni versione, plugin o piattaforma. Il demo React e client-side; quello Next e dinamico, non export Pages. I test server usano le factory su porte libere: gli entry point con porte fisse sono compilati, non lanciati. Nessun database, autenticazione, integrazione remota, provider GraphQL/RPC, benchmark o deploy. Il client non limita i byte di risposta e i file Node sono piccoli input locali. La prova non certifica uno shutdown di produzione o l'assenza generale di fughe di dati. Browser/server sono chiusi; i collegamenti vengono verificati e scollegati prima di eliminare le sole fixture temporanee. La toolchain rimane disponibile per successive esecuzioni.
+
+## TypeScript: Qualita del Codice
+
+`typescript-qualita.test.mjs` estrae le sei note del capitolo: **39 gruppi di test**, con 16 blocchi TS, otto configurazioni JSON e una flat config JavaScript. Il demo Vitest contiene inoltre 13 casi runtime; la controprova su expectTypeOf ne aggiunge temporaneamente uno. Questi casi interni non vengono sommati ai 39 gruppi Node.
+
+Baseline: **TypeScript 5.9.3**, **Node 24.14.0**, **Vitest 4.1.12**, **Vite 8.3.4**, **ESLint 10.13.0**, **@eslint/js 10.0.1**, **typescript-eslint 8.72.0**, **Prettier 3.9.10**, **ts-reset 0.6.1**, tipi Node **24.19.2**. Nessuna dipendenza di site viene aggiornata.
+
+Toolchain esterna:
+
+```powershell
+$env:TYPESCRIPT_QUALITY_TOOLS_DIR = Join-Path $env:TEMP ("appunti-typescript-quality-tools-" + [guid]::NewGuid().ToString("N"))
+```
+
+```powershell
+npm install --prefix "$env:TYPESCRIPT_QUALITY_TOOLS_DIR" --ignore-scripts --no-fund --save-exact typescript@5.9.3 @types/node@24.19.2 vitest@4.1.12 vite@8.3.4 eslint@10.13.0 @eslint/js@10.0.1 typescript-eslint@8.72.0 prettier@3.9.10 @total-typescript/ts-reset@0.6.1
+```
+
+```powershell
+node --test --test-concurrency=1 _Meta/tests/typescript-qualita.test.mjs
+```
+
+Copertura:
+
+- Checker e Vitest reali: 13 casi, errori statici non visti dal runner, assertion expectTypeOf che richiedono il checker e mutazioni della logica che devono far fallire i test runtime.
+- ESLint type-aware: Promise ignorata anche con void, any da JSON, file non incluso nel progetto e configurazione effettiva. Prettier check non modifica; write corregge la sola fixture.
+- Parser numerico: formati, limiti, precisione e tipi inattesi, inclusi oggetti con conversioni che lanciano. Result non restringibile senza discriminante e risultato deliberatamente ignorabile.
+- Errori: JSON/forma/intervallo, assenza distinta da I/O, causa originale, Promise cross-realm, messaggi pubblici, catch unknown e controllo esaustivo dei codici.
+- Type tests: inclusione reale dei file, readonly, nullabilita, direttiva obsoleta, regressione any e comportamento runtime della funzione first.
+- ts-reset: regola selettiva/preset completo, setup escluso, build senza import runtime, falsy filtrati, includes senza narrowing, Promise.catch unknown e JSON malformato che continua a lanciare.
+
+Primo giro: **36/37 gruppi superati**. La prova di mutazione readonly ha individuato un caso insufficiente nella nota: il literal as const passato direttamente riceveva contextual typing e non faceva fallire il parametro mutabile. La nota ora dichiara prima una tupla readonly. Aggiunte due controprove; riesecuzione mirata: **3/3 superati**, senza cambiare l'aspettativa sul contratto.
+
+Regressione mirata, preparando anche TYPESCRIPT_VALIDATION_TOOLS_DIR come nella sezione Validazione:
+
+```powershell
+node --test --test-concurrency=1 _Meta/tests/typescript-qualita.test.mjs _Meta/tests/typescript-moduli-configurazione.test.mjs _Meta/tests/typescript-validazione-runtime.test.mjs
+```
+
+Regressione seriale del 2026-10-22: **117 test superati**, 39 Qualita + 31 Moduli + 47 Validazione, nessun fallimento o test saltato, circa 203 secondi. Le altre suite TypeScript e quelle complete React/JavaScript non sono rieseguite. Il comando globale `typescript-*.test.mjs` richiede ora anche questa toolchain. Non eseguire Quartz contemporaneamente alle prove tecniche.
+
+Limiti: baseline singola su Windows, nessuna matrice di versioni, nessuna misura di coverage, test UI, database, servizio remoto o implementazione reale dell'adapter I/O. I file intenzionalmente errati vivono solo nelle fixture; gli esempi type-level non vengono eseguiti come script. Le CLI usano gli stessi file e argomenti degli script delle note, senza reinstallare le dipendenze a ogni prova. I link ai package vengono controllati e rimossi prima della pulizia delle directory temporanee; la toolchain esterna rimane riutilizzabile. Helper condivisi invariati.
+
+## TypeScript: Pattern e Architettura
+
+`typescript-architettura.test.mjs` estrae le cinque note del capitolo: **38 gruppi di test**, con 20 blocchi TS e due configurazioni JSON. Repository, DTO, dominio e DI vengono compilati con il checker reale; il progetto Clean architecture viene ricostruito in una directory temporanea e compilato/eseguito come ESM.
+
+Baseline: **TypeScript 5.9.3**, **Node 24.14.0**, target ES2022 e strict. Usa il compilatore gia presente in site; nessuna nuova dipendenza, installazione o modifica al lockfile.
+
+```powershell
+node --test _Meta/tests/typescript-architettura.test.mjs
+```
+
+Copertura:
+
+- Repository: due richieste concorrenti, conflitti di email/ID, copie in ingresso/uscita, input vuoto e propagazione dei guasti.
+- DTO: parser di input, proprieta extra/ereditate, limiti UTF-16, campi effettivamente serializzati e controesempio Pick senza proiezione runtime.
+- Dominio: quantita, brand, ID, transizioni consentite/vietate, intervallo temporale, immutabilita e controllo esaustivo dopo l'aggiunta di uno stato.
+- DI: clock deterministico, test double, errori del provider, Date invalida, copie e cancellazione delle interfacce.
+- Clean architecture: checker, emissione ESM, quattro risposte del demo, adapter memoria, input invalidi e guasti I/O. Il controllo degli import rileva anche un import type verso l'adapter che tsc accetta.
+
+Primo giro del 2026-10-22: **38/38 superati**, circa 27 secondi. Gli esempi sono estratti dalle note, non mantenuti come implementazioni parallele. Regressione seriale successiva: **108 test superati**, 38 Architettura + 31 Moduli + 39 Qualita, nessun fallimento o test saltato, circa 149 secondi. Le altre suite TypeScript e quelle complete React/JavaScript non sono rieseguite.
+
+Regressione mirata con la toolchain Qualita preparata come nella sezione precedente:
+
+```powershell
+node --test --test-concurrency=1 _Meta/tests/typescript-architettura.test.mjs _Meta/tests/typescript-moduli-configurazione.test.mjs _Meta/tests/typescript-qualita.test.mjs
+```
+
+Limiti: una baseline Windows, non una matrice di versioni. Nessun database, transazione distribuita, SMTP, pagamento, autenticazione o server HTTP reale in questa suite. La concorrenza del repository riguarda una sola istanza JavaScript. I parser assumono dati ordinari e non isolano getter/Proxy ostili; readonly e freeze non diventano garanzie generali. Il controllo architetturale analizza gli import/export statici usati dalla fixture, non e un linter generale. Le CLI invocano direttamente tsc e Node con la configurazione della nota, senza rieseguire npm install. Fixture rimosse solo dopo verifica dei percorsi; helper condivisi invariati. Build Quartz e QA del sito restano verifiche separate.
 
 ## Browser
 

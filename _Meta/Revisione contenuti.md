@@ -12,16 +12,16 @@ Questo controllo e svolto dal modello. Lo stato YAML resta `non revisionato` fin
 
 ### Correzioni
 
-| Nota | Intervento principale |
-| --- | --- |
-| [[Programmazione/JavaScript/Pagine/Variabili\|Variabili]] | Distinti binding e mutazione, TDZ e contesto globale/modulo; esempio pratico con dati locali. |
-| [[Programmazione/JavaScript/Pagine/Tipi di Dati\|Tipi di Dati]] | Precisione Number, BigInt, Symbol e identita degli oggetti; `parseAge` ora rifiuta input vuoti, booleani e numeri non sicuri. |
-| [[Programmazione/JavaScript/Pagine/Operatori\|Operatori]] | Chiariti short-circuit, optional chaining e precedenza; paginazione con default separati dalla validazione. |
-| [[Programmazione/JavaScript/Pagine/Strutture Condizionali\|Strutture Condizionali]] | Distinti truthiness e validazione; scope condiviso dei case e guard clause con contratto esplicito. |
-| [[Programmazione/JavaScript/Pagine/Cicli\|Cicli]] | Proprieta ereditate, limiti di `forEach` asincrono e `Promise.all`; salvataggio sequenziale con dipendenza esplicita. |
-| [[Programmazione/JavaScript/Pagine/Funzioni\|Funzioni]] | Passaggio per valore, default e `return`; sconto espresso come frazione e validazione di valori finiti/intervallo. |
-| [[Programmazione/JavaScript/Pagine/Strict Mode\|Strict Mode]] | Distinti script, moduli e classi; corretto il significato di `this` e documentato il conflitto tra direttiva interna e parametri non semplici. |
-| [[Programmazione/JavaScript/Pagine/Error Handling\|Error Handling]] | Causa degli errori, limiti di `finally` e cattura asincrona; esempio HTTP con id codificato, annullamento e distinzione tra stato HTTP e rifiuto. |
+| Nota                                                                                | Intervento principale                                                                                                                             |
+| ----------------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------- |
+| [[Programmazione/JavaScript/Pagine/Variabili\|Variabili]]                           | Distinti binding e mutazione, TDZ e contesto globale/modulo; esempio pratico con dati locali.                                                     |
+| [[Programmazione/JavaScript/Pagine/Tipi di Dati\|Tipi di Dati]]                     | Precisione Number, BigInt, Symbol e identita degli oggetti; `parseAge` ora rifiuta input vuoti, booleani e numeri non sicuri.                     |
+| [[Programmazione/JavaScript/Pagine/Operatori\|Operatori]]                           | Chiariti short-circuit, optional chaining e precedenza; paginazione con default separati dalla validazione.                                       |
+| [[Programmazione/JavaScript/Pagine/Strutture Condizionali\|Strutture Condizionali]] | Distinti truthiness e validazione; scope condiviso dei case e guard clause con contratto esplicito.                                               |
+| [[Programmazione/JavaScript/Pagine/Cicli\|Cicli]]                                   | Proprieta ereditate, limiti di `forEach` asincrono e `Promise.all`; salvataggio sequenziale con dipendenza esplicita.                             |
+| [[Programmazione/JavaScript/Pagine/Funzioni\|Funzioni]]                             | Passaggio per valore, default e `return`; sconto espresso come frazione e validazione di valori finiti/intervallo.                                |
+| [[Programmazione/JavaScript/Pagine/Strict Mode\|Strict Mode]]                       | Distinti script, moduli e classi; corretto il significato di `this` e documentato il conflitto tra direttiva interna e parametri non semplici.    |
+| [[Programmazione/JavaScript/Pagine/Error Handling\|Error Handling]]                 | Causa degli errori, limiti di `finally` e cattura asincrona; esempio HTTP con id codificato, annullamento e distinzione tra stato HTTP e rifiuto. |
 
 ### Verifica degli esempi
 
@@ -53,13 +53,13 @@ La revisione e proseguita con il blocco DOM e Browser Base, documentato di segui
 
 Lette integralmente e corrette altre cinque note, con fonti MDN nelle pagine. Stato YAML ancora `non revisionato` in attesa dell'utente.
 
-| Nota | Intervento principale |
-| --- | --- |
-| [[Programmazione/JavaScript/Pagine/Manipolazione del DOM\|Manipolazione del DOM]] | Selezioni statiche, elementi assenti, attributi/proprieta, limiti di innerHTML e DocumentFragment; rendering di nomi non fidati come testo e inizializzazione anche dopo DOMContentLoaded. |
-| [[Programmazione/JavaScript/Pagine/Gestione Eventi\|Gestione Eventi]] | Propagazione distinta da azione predefinita, durata di currentTarget, callback asincrone e cleanup; delegazione con righe dinamiche, liste annidate e rimozione solo locale esplicita. |
-| [[Programmazione/JavaScript/Pagine/BOM\|BOM]] | Vincoli di History API, popstate, refresh di route statiche, limiti di navigator.onLine e timer; URL e testo riallineati anche con Indietro/Avanti. |
-| [[Programmazione/JavaScript/Pagine/Browser Storage\|Browser Storage]] | Origine diversa da percorso, persistenza non garantita, quote/blocchi, sessionStorage e opener, cookie e cache; preferenze validate con fallback e risultato di salvataggio esplicito. |
-| [[Programmazione/JavaScript/Pagine/Form Handling e Validazione\|Form Handling e Validazione]] | Aggiunto POST al form con password; corretti campi inviabili e checkbox, validazione e requestSubmit; esempio completo con feedback, doppi submit, errori gestiti e campi conservati. |
+| Nota                                                                                          | Intervento principale                                                                                                                                                                      |
+| --------------------------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
+| [[Programmazione/JavaScript/Pagine/Manipolazione del DOM\|Manipolazione del DOM]]             | Selezioni statiche, elementi assenti, attributi/proprieta, limiti di innerHTML e DocumentFragment; rendering di nomi non fidati come testo e inizializzazione anche dopo DOMContentLoaded. |
+| [[Programmazione/JavaScript/Pagine/Gestione Eventi\|Gestione Eventi]]                         | Propagazione distinta da azione predefinita, durata di currentTarget, callback asincrone e cleanup; delegazione con righe dinamiche, liste annidate e rimozione solo locale esplicita.     |
+| [[Programmazione/JavaScript/Pagine/BOM\|BOM]]                                                 | Vincoli di History API, popstate, refresh di route statiche, limiti di navigator.onLine e timer; URL e testo riallineati anche con Indietro/Avanti.                                        |
+| [[Programmazione/JavaScript/Pagine/Browser Storage\|Browser Storage]]                         | Origine diversa da percorso, persistenza non garantita, quote/blocchi, sessionStorage e opener, cookie e cache; preferenze validate con fallback e risultato di salvataggio esplicito.     |
+| [[Programmazione/JavaScript/Pagine/Form Handling e Validazione\|Form Handling e Validazione]] | Aggiunto POST al form con password; corretti campi inviabili e checkbox, validazione e requestSubmit; esempio completo con feedback, doppi submit, errori gestiti e campi conservati.      |
 
 ### Verifica degli esempi
 
@@ -90,15 +90,15 @@ La revisione e proseguita con JavaScript Moderno, documentato di seguito.
 
 Lette integralmente e corrette le sette note del blocco. Le fonti MDN, Node.js e Vite sono indicate nelle pagine; le note restano `non revisionato` fino all'approvazione dell'utente. Totale di questa passata: 20 note JavaScript.
 
-| Nota | Intervento principale |
-| --- | --- |
-| [[Programmazione/JavaScript/Pagine/Arrow Functions\|Arrow Functions]] | Corretto this al top-level ESM, chiariti arguments lessicale e call; timer con stop e avvio idempotente, callback con dati completi. |
-| [[Programmazione/JavaScript/Pagine/Template Literals\|Template Literals]] | Distinti stringhe e tagged template, interpolazione istantanea, escape/raw e sicurezza; esempio DOM testuale completo. |
-| [[Programmazione/JavaScript/Pagine/Default Parameters\|Default Parameters]] | Default lazy, nuovi oggetti per chiamata, scope/TDZ e null; distinti URL/configurazione da connessione HTTP e timeout effettivamente applicato. |
-| [[Programmazione/JavaScript/Pagine/Destructuring\|Destructuring]] | Iterabili, rinomina e assegnazione, null e livelli annidati; separate dichiarazioni incompatibili nello stesso scope e validata la forma dell'utente nell'esempio. |
+| Nota                                                                                  | Intervento principale                                                                                                                                                    |
+| ------------------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
+| [[Programmazione/JavaScript/Pagine/Arrow Functions\|Arrow Functions]]                 | Corretto this al top-level ESM, chiariti arguments lessicale e call; timer con stop e avvio idempotente, callback con dati completi.                                     |
+| [[Programmazione/JavaScript/Pagine/Template Literals\|Template Literals]]             | Distinti stringhe e tagged template, interpolazione istantanea, escape/raw e sicurezza; esempio DOM testuale completo.                                                   |
+| [[Programmazione/JavaScript/Pagine/Default Parameters\|Default Parameters]]           | Default lazy, nuovi oggetti per chiamata, scope/TDZ e null; distinti URL/configurazione da connessione HTTP e timeout effettivamente applicato.                          |
+| [[Programmazione/JavaScript/Pagine/Destructuring\|Destructuring]]                     | Iterabili, rinomina e assegnazione, null e livelli annidati; separate dichiarazioni incompatibili nello stesso scope e validata la forma dell'utente nell'esempio.       |
 | [[Programmazione/JavaScript/Pagine/Spread & Rest Operators\|Spread & Rest Operators]] | Proprieta proprie enumerabili, limite argomenti, copie superficiali e merge con undefined; sostituita la falsa garanzia di oggetto pubblico con campi ammessi espliciti. |
-| [[Programmazione/JavaScript/Pagine/Moduli\|Moduli]] | Distinti browser e Node, formato ESM e risoluzione, cache e live binding; re-export e esempio multi-file con controllo email dichiaratamente parziale. |
-| [[Programmazione/JavaScript/Pagine/Dynamic Import\|Dynamic Import]] | Corretti async catch, mappa dei moduli consentiti, cache e assunzioni sul download; aggiunto report completo con loading, guardia ai doppi click ed errori. |
+| [[Programmazione/JavaScript/Pagine/Moduli\|Moduli]]                                   | Distinti browser e Node, formato ESM e risoluzione, cache e live binding; re-export e esempio multi-file con controllo email dichiaratamente parziale.                   |
+| [[Programmazione/JavaScript/Pagine/Dynamic Import\|Dynamic Import]]                   | Corretti async catch, mappa dei moduli consentiti, cache e assunzioni sul download; aggiunto report completo con loading, guardia ai doppi click ed errori.              |
 
 ### Verifica degli esempi
 
@@ -131,14 +131,14 @@ La revisione e proseguita con Strutture Dati e Manipolazione, documentato di seg
 
 Lette integralmente e corrette le sei note del blocco. Con questo intervento la passata tecnica comprende le 26 note del Percorso Base JavaScript; non i capitoli Intermedio e Avanzato. Il controllo e del modello: tutte le note modificate restano `non revisionato` fino all'approvazione dell'utente.
 
-| Nota | Intervento principale |
-| --- | --- |
-| [[Programmazione/JavaScript/Pagine/Array Methods\|Array Methods]] | Distinti contenitori nuovi e riferimenti condivisi, callback e mutazioni, buchi e array vuoti; corretto accumulatore per chiavi arbitrarie, chiariti sort, slice/splice/fill e limiti delle callback async. |
-| [[Programmazione/JavaScript/Pagine/Oggetti Avanzati\|Oggetti Avanzati]] | Precisati enumerabilita, simboli, ereditarieta, ordine delle chiavi, target/setter di assign e freeze superficiale; contratto esplicito per removeEmptyFields. |
-| [[Programmazione/JavaScript/Pagine/Map e Set\|Map e Set]] | Identita, SameValueZero, ordine e proprieta size; deduplicazione per id, operazioni tra insiemi, perdite nelle conversioni e riferimenti forti; esempio di raggruppamento con input controllati. |
-| [[Programmazione/JavaScript/Pagine/JSON\|JSON]] | Separati formato, conversione e schema; omissioni/null/errori di stringify, reviver di date, controlli HTTP e selezione dei campi ammessi nell'esempio di preferenze. |
-| [[Programmazione/JavaScript/Pagine/Date & Time\|Date & Time]] | Distinti istante, data civile e durata, secondi/millisecondi e UTC/locale; parsing canonico, date invalide, normalizzazione, ora legale e misurazione monotona. |
-| [[Programmazione/JavaScript/Pagine/Regular Expressions\|Regular Expressions]] | Corretto risultato falso di /js/i su JavaScript; aggiunti escape, sintassi, g/y e lastIndex, matchAll, Unicode, RegExp.escape e limiti di validazione/ReDoS. |
+| Nota                                                                          | Intervento principale                                                                                                                                                                                       |
+| ----------------------------------------------------------------------------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| [[Programmazione/JavaScript/Pagine/Array Methods\|Array Methods]]             | Distinti contenitori nuovi e riferimenti condivisi, callback e mutazioni, buchi e array vuoti; corretto accumulatore per chiavi arbitrarie, chiariti sort, slice/splice/fill e limiti delle callback async. |
+| [[Programmazione/JavaScript/Pagine/Oggetti Avanzati\|Oggetti Avanzati]]       | Precisati enumerabilita, simboli, ereditarieta, ordine delle chiavi, target/setter di assign e freeze superficiale; contratto esplicito per removeEmptyFields.                                              |
+| [[Programmazione/JavaScript/Pagine/Map e Set\|Map e Set]]                     | Identita, SameValueZero, ordine e proprieta size; deduplicazione per id, operazioni tra insiemi, perdite nelle conversioni e riferimenti forti; esempio di raggruppamento con input controllati.            |
+| [[Programmazione/JavaScript/Pagine/JSON\|JSON]]                               | Separati formato, conversione e schema; omissioni/null/errori di stringify, reviver di date, controlli HTTP e selezione dei campi ammessi nell'esempio di preferenze.                                       |
+| [[Programmazione/JavaScript/Pagine/Date & Time\|Date & Time]]                 | Distinti istante, data civile e durata, secondi/millisecondi e UTC/locale; parsing canonico, date invalide, normalizzazione, ora legale e misurazione monotona.                                             |
+| [[Programmazione/JavaScript/Pagine/Regular Expressions\|Regular Expressions]] | Corretto risultato falso di /js/i su JavaScript; aggiunti escape, sintassi, g/y e lastIndex, matchAll, Unicode, RegExp.escape e limiti di validazione/ReDoS.                                                |
 
 ### Verifica degli esempi
 
@@ -171,13 +171,13 @@ La revisione e proseguita con Logica Interna, documentato di seguito.
 
 Lette integralmente e corrette le cinque note del primo blocco intermedio. La passata comprende ora **31 note JavaScript**: le 26 del Percorso Base e queste cinque. Le note restano `non revisionato` fino al controllo dell'utente.
 
-| Nota | Intervento principale |
-| --- | --- |
-| [[Programmazione/JavaScript/Pagine/Scope\|Scope]] | Distinti identificatori e proprieta, scope globale e top-level di modulo, binding e inizializzazione. Corretto il caso window.name; aggiunti chiamante/definizione lessicale, shadowing in TDZ e contatori indipendenti. |
-| [[Programmazione/JavaScript/Pagine/Hoisting\|Hoisting]] | Separati modello concettuale ed esecuzione, dichiarazione e inizializzazione. Precisati typeof in TDZ, chiamata differita, funzioni nei blocchi strict, import statici e limite delle dipendenze circolari. |
-| [[Programmazione/JavaScript/Pagine/Closures\|Closures]] | Distinti binding condivisi, stato per invocazione e valori derivati. Corretti sessione senza token e output Intl; aggiunti logout, controlli di formato, handle del timer e listener con smontaggio. Chiariti i limiti di riservatezza e memoria. |
-| [[Programmazione/JavaScript/Pagine/Context\|Context]] | Distinti execution context e this; specificati script classico, ESM e CommonJS, strictness della funzione, receiver/arrow/bind/new. Corretti metodo estratto, arrow su object literal e listener DOM, con riferimenti riutilizzabili per cleanup. |
-| [[Programmazione/JavaScript/Pagine/Prototypes\|Prototypes]] | Corretta confusione fra prototipo del costruttore e delle istanze; spiegati null, shadowing, array condivisi, campi/metodi/static, limiti di instanceof e sostituzione del prototype. Esempio Counter con contratto e limiti numerici. |
+| Nota                                                        | Intervento principale                                                                                                                                                                                                                             |
+| ----------------------------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| [[Programmazione/JavaScript/Pagine/Scope\|Scope]]           | Distinti identificatori e proprieta, scope globale e top-level di modulo, binding e inizializzazione. Corretto il caso window.name; aggiunti chiamante/definizione lessicale, shadowing in TDZ e contatori indipendenti.                          |
+| [[Programmazione/JavaScript/Pagine/Hoisting\|Hoisting]]     | Separati modello concettuale ed esecuzione, dichiarazione e inizializzazione. Precisati typeof in TDZ, chiamata differita, funzioni nei blocchi strict, import statici e limite delle dipendenze circolari.                                       |
+| [[Programmazione/JavaScript/Pagine/Closures\|Closures]]     | Distinti binding condivisi, stato per invocazione e valori derivati. Corretti sessione senza token e output Intl; aggiunti logout, controlli di formato, handle del timer e listener con smontaggio. Chiariti i limiti di riservatezza e memoria. |
+| [[Programmazione/JavaScript/Pagine/Context\|Context]]       | Distinti execution context e this; specificati script classico, ESM e CommonJS, strictness della funzione, receiver/arrow/bind/new. Corretti metodo estratto, arrow su object literal e listener DOM, con riferimenti riutilizzabili per cleanup. |
+| [[Programmazione/JavaScript/Pagine/Prototypes\|Prototypes]] | Corretta confusione fra prototipo del costruttore e delle istanze; spiegati null, shadowing, array condivisi, campi/metodi/static, limiti di instanceof e sostituzione del prototype. Esempio Counter con contratto e limiti numerici.            |
 
 ### Verifica degli esempi
 
@@ -210,13 +210,13 @@ La revisione e proseguita con Programmazione ad Oggetti, documentato di seguito.
 
 Lette integralmente e corrette le cinque note del blocco. La passata comprende ora **36 note JavaScript**: le 26 del Percorso Base e le 10 dei primi due blocchi intermedi. Le note restano `non revisionato` fino al controllo dell'utente.
 
-| Nota | Intervento principale |
-| --- | --- |
-| [[Programmazione/JavaScript/Pagine/Classi\|Classi]] | Precisati new, TDZ, strictness, campi e metodi sul prototipo. Rettangolo con dimensioni validate e aggiornamenti coerenti; metodo estratto con receiver corretto. Sessione con hasToken, formato controllato e assenza del token distinta dall'autenticazione. |
-| [[Programmazione/JavaScript/Pagine/Ereditarietà\|Ereditarieta]] | Chiariti super, receiver e campi propri, catene di costruttori e istanze, ordine di inizializzazione e metodi sovrascritti. Esempi di composizione e gerarchia Error con cause e status HTTP controllati. |
-| [[Programmazione/JavaScript/Pagine/Incapsulamento\|Incapsulamento]] | Distinte privacy, invarianti e immutabilita. Conto in centesimi interi con limiti numerici; carrello con campi ammessi, copie in ingresso/uscita e totale protetto da overflow. Conservato e segnalato il controesempio incompleto con riferimenti condivisi. |
-| [[Programmazione/JavaScript/Pagine/Private Fields e Static Blocks\|Private Fields e Static Blocks]] | Corretta equivalenza fra campi pubblici e assegnazioni tramite setter. Approfonditi private brand, static privati ereditati, ordine dei campi e blocchi statici. Registry con dati copiati/congelati e limiti espliciti di freeze, Proxy e serializzazione. |
-| [[Programmazione/JavaScript/Pagine/Property Descriptors\|Property Descriptors]] | Corretti default su proprieta nuove/esistenti, attributi non configurabili e accessor. Esplicitati errori strict, simboli, copie superficiali, JSON con replacer e definizioni non atomiche. Aggiunto il target mancante all'esempio che deve produrre TypeError. |
+| Nota                                                                                                | Intervento principale                                                                                                                                                                                                                                             |
+| --------------------------------------------------------------------------------------------------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| [[Programmazione/JavaScript/Pagine/Classi\|Classi]]                                                 | Precisati new, TDZ, strictness, campi e metodi sul prototipo. Rettangolo con dimensioni validate e aggiornamenti coerenti; metodo estratto con receiver corretto. Sessione con hasToken, formato controllato e assenza del token distinta dall'autenticazione.    |
+| [[Programmazione/JavaScript/Pagine/Ereditarietà\|Ereditarieta]]                                     | Chiariti super, receiver e campi propri, catene di costruttori e istanze, ordine di inizializzazione e metodi sovrascritti. Esempi di composizione e gerarchia Error con cause e status HTTP controllati.                                                         |
+| [[Programmazione/JavaScript/Pagine/Incapsulamento\|Incapsulamento]]                                 | Distinte privacy, invarianti e immutabilita. Conto in centesimi interi con limiti numerici; carrello con campi ammessi, copie in ingresso/uscita e totale protetto da overflow. Conservato e segnalato il controesempio incompleto con riferimenti condivisi.     |
+| [[Programmazione/JavaScript/Pagine/Private Fields e Static Blocks\|Private Fields e Static Blocks]] | Corretta equivalenza fra campi pubblici e assegnazioni tramite setter. Approfonditi private brand, static privati ereditati, ordine dei campi e blocchi statici. Registry con dati copiati/congelati e limiti espliciti di freeze, Proxy e serializzazione.       |
+| [[Programmazione/JavaScript/Pagine/Property Descriptors\|Property Descriptors]]                     | Corretti default su proprieta nuove/esistenti, attributi non configurabili e accessor. Esplicitati errori strict, simboli, copie superficiali, JSON con replacer e definizioni non atomiche. Aggiunto il target mancante all'esempio che deve produrre TypeError. |
 
 ### Verifica degli esempi
 
@@ -249,11 +249,11 @@ La revisione e proseguita con le prime tre note di Asincronia e Networking, docu
 
 Lette integralmente e corrette le tre note introduttive del blocco Asincronia e Networking. La passata comprende ora **39 note JavaScript**: le 26 del Percorso Base e 13 del Percorso Intermedio. Non e una revisione dell'intero capitolo asincrono. Le note restano `non revisionato` fino al controllo dell'utente.
 
-| Nota | Intervento principale |
-| --- | --- |
+| Nota                                                        | Intervento principale                                                                                                                                                                                                                                                                          |
+| ----------------------------------------------------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
 | [[Programmazione/JavaScript/Pagine/Event Loop\|Event Loop]] | Distinti task, microtask, servizi del browser e opportunita di rendering; eliminata l'idea di un paint a ogni giro e di una coda FIFO universale. Corretto il busy wait, chiariti limiti dei timer e differenze Node/browser. Aggiunto esempio di elaborazione a blocchi con errori propagati. |
-| [[Programmazione/JavaScript/Pagine/Callback\|Callback]] | Separati ruolo della callback e momento di invocazione, return sincrono e risultato futuro, dispatchEvent e input utente. Completati filtro, listener con cleanup e lettura JSON error-first in Node; documentati errori sincroni/asincroni e rischio di callback richiamate due volte. |
-| [[Programmazione/JavaScript/Pagine/Promises\|Promises]] | Precisati resolved/settled, esecutore sincrono, adozione dell'esito e nuova Promise di then. Chiariti return, catch di recupero, errori del ramo e finally. Completati timer con input validati, adattatore error-first e Fetch con errori HTTP, parsing e schema distinti. |
+| [[Programmazione/JavaScript/Pagine/Callback\|Callback]]     | Separati ruolo della callback e momento di invocazione, return sincrono e risultato futuro, dispatchEvent e input utente. Completati filtro, listener con cleanup e lettura JSON error-first in Node; documentati errori sincroni/asincroni e rischio di callback richiamate due volte.        |
+| [[Programmazione/JavaScript/Pagine/Promises\|Promises]]     | Precisati resolved/settled, esecutore sincrono, adozione dell'esito e nuova Promise di then. Chiariti return, catch di recupero, errori del ramo e finally. Completati timer con input validati, adattatore error-first e Fetch con errori HTTP, parsing e schema distinti.                    |
 
 ### Verifica degli esempi
 
@@ -286,10 +286,10 @@ La revisione e proseguita con Promise avanzate e Async Await, documentate di seg
 
 Lette integralmente e corrette le due note. La passata comprende ora **41 note JavaScript**: le 26 del Percorso Base e 15 del Percorso Intermedio. Le note restano `non revisionato` fino al controllo dell'utente.
 
-| Nota | Intervento principale |
-| --- | --- |
+| Nota                                                                    | Intervento principale                                                                                                                                                                                                                                                                                                                                                                                                                |
+| ----------------------------------------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
 | [[Programmazione/JavaScript/Pagine/Promise avanzate\|Promise avanzate]] | Chiariti combinatori, ordine dei risultati, input vuoti e fallimenti parziali. Separati timeout dell'attesa e abort della richiesta, con cleanup dei timer e controllo HTTP. Corretto il pool che creava rifiuti non gestiti tramite finally: ora limita i lavori attivi, non avvia altri elementi dopo il primo errore e attende quelli gia partiti prima di propagare il rifiuto. Esplicitati input, limiti e assenza di rollback. |
-| [[Programmazione/JavaScript/Pagine/Async Await\|Async Await]] | Precisati esecuzione sincrona iniziale, sospensione e propagazione degli errori. Distinti return e return await dentro try/catch/finally, avvio concorrente e attesa sequenziale, top-level await e moduli dipendenti. Completato loadUser con validazione di input e risposta, abort, timer mantenuto durante la lettura del corpo e cleanup; aggiunto il contesto degli errori senza nascondere la causa. |
+| [[Programmazione/JavaScript/Pagine/Async Await\|Async Await]]           | Precisati esecuzione sincrona iniziale, sospensione e propagazione degli errori. Distinti return e return await dentro try/catch/finally, avvio concorrente e attesa sequenziale, top-level await e moduli dipendenti. Completato loadUser con validazione di input e risposta, abort, timer mantenuto durante la lettura del corpo e cleanup; aggiunto il contesto degli errori senza nascondere la causa.                          |
 
 ### Verifica degli esempi
 
@@ -322,9 +322,9 @@ La revisione e proseguita con Fetch API e AbortController, documentate di seguit
 
 Lette integralmente e corrette le due note. La passata comprende ora **43 note JavaScript**: 26 del Percorso Base e 17 del Percorso Intermedio. Le note restano `non revisionato` fino al controllo dell'utente.
 
-| Nota | Intervento principale |
-| --- | --- |
-| [[Programmazione/JavaScript/Pagine/Fetch API\|Fetch API]] | Distinti disponibilita della Response, lettura del corpo, HTTP, parsing e schema. Corretti wrapper duplicato e fusione degli header; supportati oggetti Headers e coppie, preservando i default. Aggiunti risposte HEAD/204/205, corpo monouso e clone, FormData con boundary automatico e validazione utente. Precisati credenziali, CORS, no-cors, limiti del retry e dell'abort. |
+| Nota                                                                  | Intervento principale                                                                                                                                                                                                                                                                                                                                                                 |
+| --------------------------------------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| [[Programmazione/JavaScript/Pagine/Fetch API\|Fetch API]]             | Distinti disponibilita della Response, lettura del corpo, HTTP, parsing e schema. Corretti wrapper duplicato e fusione degli header; supportati oggetti Headers e coppie, preservando i default. Aggiunti risposte HEAD/204/205, corpo monouso e clone, FormData con boundary automatico e validazione utente. Precisati credenziali, CORS, no-cors, limiti del retry e dell'abort.   |
 | [[Programmazione/JavaScript/Pagine/AbortController\|AbortController]] | Corretti rifiuti non gestiti e listener conservati dopo il successo di wait. Chiariti signal monouso, motivi personalizzati, throwIfAborted, timeout e any. Completati timeout con cleanup, cancellazione manuale e ricerca con identita locale, query vuote, schema dei risultati e protezione dai completamenti obsoleti. Distinti cancellazione cooperativa e rollback del server. |
 
 ### Verifica degli esempi
@@ -358,10 +358,10 @@ La revisione e proseguita con AJAX e WebSockets, insieme alla nota applicativa c
 
 Lette integralmente e corrette AJAX, WebSockets e Real-time con WebSocket. La passata comprende ora **46 note JavaScript**: 26 del Percorso Base, 19 del Percorso Intermedio e una di Applicazioni e Ecosistema. Il blocco di nove note **Asincronia e Networking** e stato interamente rivisto in questa passata; non equivale alla revisione di tutto JavaScript. Le note restano `non revisionato` fino al controllo dell'utente.
 
-| Nota | Intervento principale |
-| --- | --- |
-| [[Programmazione/JavaScript/Pagine/AJAX\|AJAX]] | Distinti tecnica AJAX e API XHR/Fetch. Completati GET XHR con HTTP/parsing/timeout/abort separati e cleanup, schema utenti, montaggio e rimozione della lista senza HTML remoto. Precisati readyState, responseType, progress upload, CORS e polling senza sovrapposizioni. |
-| [[Programmazione/JavaScript/Pagine/WebSockets\|WebSockets]] | Precisati handshake, stati, send senza ACK, limiti di close, messaggi binari e Ping/Pong. Aggiunti parsing con schema e limiti, controllo del buffer e backoff con jitter. Chiariti Origin/autenticazione, SSE e incompatibilita fra protocollo nativo e Socket.IO. |
+| Nota                                                                                  | Intervento principale                                                                                                                                                                                                                                                                                                          |
+| ------------------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
+| [[Programmazione/JavaScript/Pagine/AJAX\|AJAX]]                                       | Distinti tecnica AJAX e API XHR/Fetch. Completati GET XHR con HTTP/parsing/timeout/abort separati e cleanup, schema utenti, montaggio e rimozione della lista senza HTML remoto. Precisati readyState, responseType, progress upload, CORS e polling senza sovrapposizioni.                                                    |
+| [[Programmazione/JavaScript/Pagine/WebSockets\|WebSockets]]                           | Precisati handshake, stati, send senza ACK, limiti di close, messaggi binari e Ping/Pong. Aggiunti parsing con schema e limiti, controllo del buffer e backoff con jitter. Chiariti Origin/autenticazione, SSE e incompatibilita fra protocollo nativo e Socket.IO.                                                            |
 | [[Programmazione/JavaScript/Pagine/Real-time con WebSocket\|Real-time con WebSocket]] | Sostituito reconnect incondizionato con client start/stop, retry solo su close, codici espliciti, budget totale, cleanup e nuova sottoscrizione. Riutilizzati gli helper della nota WebSockets. Dichiarati protocollo, callback e limiti: nessun ACK, autenticazione completa, heartbeat o recupero automatico dei dati persi. |
 
 ### Verifica degli esempi
@@ -395,10 +395,10 @@ La revisione e proseguita con Functional Programming e Design Patterns, document
 
 Lette integralmente e corrette le due note iniziali di **Stile e Paradigmi**. La passata comprende ora **48 note JavaScript**: 26 del Percorso Base, 21 del Percorso Intermedio e una di Applicazioni e Ecosistema. Le note restano `non revisionato` fino al controllo dell'utente. I richiami alle pagine su immutabilita e decorators non equivalgono alla loro revisione completa.
 
-| Nota | Intervento principale |
-| --- | --- |
-| [[Programmazione/JavaScript/Pagine/Functional Programming\|Functional Programming]] | Distinti purezza, determinismo, lettura dell'ambiente e side effect. Precisati copie superficiali, mutazione locale, callback map/filter e Promise. Aggiunti pipeline sincrona con contratto, currying rispetto a partial application, tempo come input e separazione fra trasformazione utenti e shell DOM. Schema, array sparsi, duplicati e ordinamento UTF-16 espliciti. |
-| [[Programmazione/JavaScript/Pagine/Design Patterns\|Design Patterns]] | Distinti simple factory, stato di modulo e singleton universale. Observer con snapshot, cleanup, iscrizioni indipendenti e politica fail-fast. Strategie in Map con nomi e input controllati. Wrapper con this/argomenti/return preservati, logger iniettato e limiti asincroni. Validazioni testuali con configurazione verificata prima dello short-circuit e limiti del controllo email espliciti. |
+| Nota                                                                                | Intervento principale                                                                                                                                                                                                                                                                                                                                                                                 |
+| ----------------------------------------------------------------------------------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| [[Programmazione/JavaScript/Pagine/Functional Programming\|Functional Programming]] | Distinti purezza, determinismo, lettura dell'ambiente e side effect. Precisati copie superficiali, mutazione locale, callback map/filter e Promise. Aggiunti pipeline sincrona con contratto, currying rispetto a partial application, tempo come input e separazione fra trasformazione utenti e shell DOM. Schema, array sparsi, duplicati e ordinamento UTF-16 espliciti.                          |
+| [[Programmazione/JavaScript/Pagine/Design Patterns\|Design Patterns]]               | Distinti simple factory, stato di modulo e singleton universale. Observer con snapshot, cleanup, iscrizioni indipendenti e politica fail-fast. Strategie in Map con nomi e input controllati. Wrapper con this/argomenti/return preservati, logger iniettato e limiti asincroni. Validazioni testuali con configurazione verificata prima dello short-circuit e limiti del controllo email espliciti. |
 
 ### Verifica degli esempi
 
@@ -432,10 +432,10 @@ La revisione e proseguita con Immutabilita e Copia degli Oggetti e Generators e 
 
 Lette integralmente e corrette le ultime due note di **Stile e Paradigmi**. Sono ora **50 note JavaScript**: tutte le 26 del Percorso Base, tutte le 23 del Percorso Intermedio e Real-time con WebSocket. Il completamento riguarda questa passata tecnica: le note restano `non revisionato` fino al controllo dell'utente. Non equivale alla revisione del Percorso Avanzato o dell'intero ecosistema.
 
-| Nota | Intervento principale |
-| --- | --- |
+| Nota                                                                                                        | Intervento principale                                                                                                                                                                                                                                                                                                                                                                    |
+| ----------------------------------------------------------------------------------------------------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
 | [[Programmazione/JavaScript/Pagine/Immutabilita e Copia degli Oggetti\|Immutabilita e Copia degli Oggetti]] | Corretti valore riferimento, copie superficiali, getter e differenze spread/assign. Precisati structuredClone, alias, tipi esclusi, perdita di descrittori, transfer e memoria condivisa. Corrette tabelle freeze/seal/preventExtensions, accessor e stato interno. DeepFreeze iterativo con cicli e dominio esplicito; patch utente con campi ammessi, schema e riferimenti conservati. |
-| [[Programmazione/JavaScript/Pagine/Generators e Iterators\|Generators e Iterators]] | Distinti iterator/iterable e cursori monouso/riavviabili. Aggiunti next con input, return finale, throw, finally e chiusura anticipata. Range con interi sicuri, helper lazy e wait definita. Paginazione con query preservata, HTTP/JSON/schema separati, limite pagine, signal e stop senza prefetch; dichiarati i limiti di memoria e di cancellazione. |
+| [[Programmazione/JavaScript/Pagine/Generators e Iterators\|Generators e Iterators]]                         | Distinti iterator/iterable e cursori monouso/riavviabili. Aggiunti next con input, return finale, throw, finally e chiusura anticipata. Range con interi sicuri, helper lazy e wait definita. Paginazione con query preservata, HTTP/JSON/schema separati, limite pagine, signal e stop senza prefetch; dichiarati i limiti di memoria e di cancellazione.                               |
 
 ### Verifica degli esempi
 
@@ -469,9 +469,9 @@ La revisione e proseguita con Web Workers e Service Workers e PWA, documentate d
 
 Lette integralmente e corrette le prime due note di **Web APIs Avanzate**. Sono ora **52 note JavaScript**: 26 del Percorso Base, 23 del Percorso Intermedio, due del Percorso Avanzato e Real-time con WebSocket. Rimangono `non revisionato` fino al controllo dell'utente. Nessun worker e stato aggiunto al sito Quartz.
 
-| Nota | Intervento principale |
-| --- | --- |
-| [[Programmazione/JavaScript/Pagine/Web Workers\|Web Workers]] | Distinti thread, asincronia, costi di comunicazione e limiti del contesto. Corretti percorsi classic/module, clone/transfer e cancellazione. Aggiunto job con protocollo, limiti numerici, timeout, abort, errori e terminazione su ogni esito. Chiariti SharedWorker, pool e limiti di sicurezza. |
+| Nota                                                                              | Intervento principale                                                                                                                                                                                                                                                                                                                                                                             |
+| --------------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| [[Programmazione/JavaScript/Pagine/Web Workers\|Web Workers]]                     | Distinti thread, asincronia, costi di comunicazione e limiti del contesto. Corretti percorsi classic/module, clone/transfer e cancellazione. Aggiunto job con protocollo, limiti numerici, timeout, abort, errori e terminazione su ogni esito. Chiariti SharedWorker, pool e limiti di sicurezza.                                                                                                |
 | [[Programmazione/JavaScript/Pagine/Service Workers e PWA\|Service Workers e PWA]] | Distinti scope, registrazione, ready, attivazione e controller. Rimossa la cancellazione indiscriminata delle cache e corretti fallback, HTTP e scritture non attese. Strategie per endpoint pubblico con allowlist e waitUntil; precache e navigazione offline completi. Precisati update conservativo, comandi opzionali, manifest nei sottopercorsi, installabilita, push, sync e dismissione. |
 
 ### Verifica degli esempi
@@ -506,10 +506,10 @@ La revisione e proseguita con Web Components e Scheduling Browser, documentate d
 
 Lette integralmente e corrette altre due note di **Web APIs Avanzate**. Sono ora **54 note JavaScript**: 26 del Percorso Base, 23 del Percorso Intermedio, quattro del Percorso Avanzato e Real-time con WebSocket. Status ancora `non revisionato`, in attesa del controllo dell'utente; date e pubblicabilita conservate.
 
-| Nota | Intervento principale |
-| --- | --- |
-| [[Programmazione/JavaScript/Pagine/Web Components\|Web Components]] | Corretti uso di innerHTML con dati degli attributi, role applicativo e registrazioni duplicate. Chiariti constructor, upgrade, attributi/proprieta, booleani e riconnessioni. Esempi completi con template, slot, toggle accessibile, eventi e cleanup dei listener esterni. Precisati isolamento CSS, closed non sicuro, limiti di form-associated elements e integrazione framework. |
-| [[Programmazione/JavaScript/Pagine/Scheduling Browser\|Scheduling Browser]] | Corretti timeout idle scambiato per deadline, polling sovrapposto, animazioni basate su timestamp assoluto e NodeList trattata come array. Aggiunti polling annullabile, animazione con reduced motion, coda idle limitata con fallback, feature detection di Scheduler e somma con budget/abort. Distinti task, microtask, paint, cancellazione cooperativa e parallelismo. |
+| Nota                                                                        | Intervento principale                                                                                                                                                                                                                                                                                                                                                                  |
+| --------------------------------------------------------------------------- | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| [[Programmazione/JavaScript/Pagine/Web Components\|Web Components]]         | Corretti uso di innerHTML con dati degli attributi, role applicativo e registrazioni duplicate. Chiariti constructor, upgrade, attributi/proprieta, booleani e riconnessioni. Esempi completi con template, slot, toggle accessibile, eventi e cleanup dei listener esterni. Precisati isolamento CSS, closed non sicuro, limiti di form-associated elements e integrazione framework. |
+| [[Programmazione/JavaScript/Pagine/Scheduling Browser\|Scheduling Browser]] | Corretti timeout idle scambiato per deadline, polling sovrapposto, animazioni basate su timestamp assoluto e NodeList trattata come array. Aggiunti polling annullabile, animazione con reduced motion, coda idle limitata con fallback, feature detection di Scheduler e somma con budget/abort. Distinti task, microtask, paint, cancellazione cooperativa e parallelismo.           |
 
 ### Verifica degli esempi
 
@@ -577,9 +577,9 @@ Le voci di Web APIs Avanzate sono coperte in questa passata: Browser Storage/Ind
 
 Lette integralmente e corrette le prime due note di **Runtime, Memoria e Performance**. Totale di questa passata: **57 note JavaScript**, 26 del Percorso Base, 23 del Percorso Intermedio, sette del Percorso Avanzato e Real-time con WebSocket. Status `non revisionato`, date originali e pubblicabilita conservati; nessuna nuova nota o modifica agli indici.
 
-| Nota | Intervento principale |
-| --- | --- |
-| [[Programmazione/JavaScript/Pagine/Memory Lifecycle\|Memory Lifecycle]] | Corretta la corrispondenza rigida primitivi/stack e oggetti/heap; precisati binding, alias, passaggio per valore, closure e durata delle Promise. Distinti riferimenti applicativi e risorse host. Aggiunti widget e ticker con contratti, cleanup idempotente e reset dei riferimenti interni, senza mutare i dati del chiamante. |
+| Nota                                                                        | Intervento principale                                                                                                                                                                                                                                                                                                                           |
+| --------------------------------------------------------------------------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| [[Programmazione/JavaScript/Pagine/Memory Lifecycle\|Memory Lifecycle]]     | Corretta la corrispondenza rigida primitivi/stack e oggetti/heap; precisati binding, alias, passaggio per valore, closure e durata delle Promise. Distinti riferimenti applicativi e risorse host. Aggiunti widget e ticker con contratti, cleanup idempotente e reset dei riferimenti interni, senza mutare i dati del chiamante.              |
 | [[Programmazione/JavaScript/Pagine/Garbage Collection\|Garbage Collection]] | Corrette root e raggiungibilita, cicli e reference counting semplice; precisati generazioni, write barrier, pause e differenze incrementale/parallelo/concorrente. Sostituiti helper indefiniti con esempi completi. Aggiunti limiti di WeakRef/FinalizationRegistry, percorso di diagnosi e metriche Node, distinguendo raccolta, riuso e RSS. |
 
 ### Verifica degli esempi
@@ -612,9 +612,9 @@ La revisione e proseguita con Memory Leaks e WeakMap e WeakSet, documentate di s
 
 Lette integralmente e ampliate altre due note di **Runtime, Memoria e Performance**. Totale di questa passata: **59 note JavaScript**, 26 del Percorso Base, 23 del Percorso Intermedio, nove del Percorso Avanzato e Real-time con WebSocket. Conservati date originali, pubblicabilita e status `non revisionato`; nessuna nuova pagina o modifica all'indice.
 
-| Nota | Intervento principale |
-| --- | --- |
-| [[Programmazione/JavaScript/Pagine/Memory Leaks\|Memory Leaks]] | Distinti leak, bloat, allocazioni temporanee e risultati async obsoleti. Corretti listener anonimi considerati irremovibili, uso di once e abort dopo await. Sostituiti helper indefiniti con vista cancellabile, cache LRU limitata e richiesta con HTTP/JSON/schema, abort e guardia dopo lo smontaggio. Precisati DOM distaccato, alias e limiti della diagnosi. |
+| Nota                                                                      | Intervento principale                                                                                                                                                                                                                                                                                                                                                                          |
+| ------------------------------------------------------------------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| [[Programmazione/JavaScript/Pagine/Memory Leaks\|Memory Leaks]]           | Distinti leak, bloat, allocazioni temporanee e risultati async obsoleti. Corretti listener anonimi considerati irremovibili, uso di once e abort dopo await. Sostituiti helper indefiniti con vista cancellabile, cache LRU limitata e richiesta con HTTP/JSON/schema, abort e guardia dopo lo smontaggio. Precisati DOM distaccato, alias e limiti della diagnosi.                            |
 | [[Programmazione/JavaScript/Pagine/WeakMap e WeakSet\|WeakMap e WeakSet]] | Risolta la contraddizione sui simboli non registrati. Chiariti identita, scritture invalide rispetto a interrogazioni, undefined presente, assenza di clear/enumerazione ed ephemeron. Completati metadati DOM, stato privato, visita iterativa di un grafo e inserimento se assente con compatibilita. Distinti visita senza duplicati, rilevamento cicli, invalidazione e politica di cache. |
 
 ### Verifica degli esempi
@@ -647,9 +647,9 @@ La revisione e proseguita con Optimization e Buffer e Typed Arrays, documentate 
 
 Lette integralmente e corrette le ultime due note di **Runtime, Memoria e Performance**. Totale di questa passata: **61 note JavaScript**, 26 del Percorso Base, 23 del Percorso Intermedio, undici del Percorso Avanzato e Real-time con WebSocket. Conservati date, pubblicabilita e status `non revisionato`; nessuna nuova pagina o modifica agli indici.
 
-| Nota | Intervento principale |
-| --- | --- |
-| [[Programmazione/JavaScript/Pagine/Optimization\|Optimization]] | Separati misurazione e ipotesi, CPU/attese e dettagli V8/garanzie del linguaggio. Completati debounce cancellabile, throttle leading-only e filtro con cleanup. Corretti letture DOM, NodeList, border-box e limiti del layout; esplicitati eventi scartati, callback sincrone e assenza di benchmark. |
+| Nota                                                                              | Intervento principale                                                                                                                                                                                                                                                                                                |
+| --------------------------------------------------------------------------------- | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| [[Programmazione/JavaScript/Pagine/Optimization\|Optimization]]                   | Separati misurazione e ipotesi, CPU/attese e dettagli V8/garanzie del linguaggio. Completati debounce cancellabile, throttle leading-only e filtro con cleanup. Corretti letture DOM, NodeList, border-box e limiti del layout; esplicitati eventi scartati, callback sincrone e assenza di benchmark.               |
 | [[Programmazione/JavaScript/Pagine/Buffer e Typed Arrays\|Buffer e Typed Arrays]] | Distinti copie, conversioni, alias, transfer e memoria condivisa. Aggiunti resizable ArrayBuffer, viste tracking/fisse, UTF-8 strict/streaming, DataView con offset e protocollo didattico validato. Corretti Buffer.slice, pool Node, isolamento browser e confusione tra limite del parser e memoria di ricezione. |
 
 ### Verifica degli esempi
@@ -683,9 +683,9 @@ Runtime, Memoria e Performance e coperto in questa passata. La revisione e prose
 
 Lette integralmente e ampliate due note di **Metaprogrammazione e Moduli Avanzati**. Totale di questa passata: **63 note JavaScript**, 26 del Percorso Base, 23 del Percorso Intermedio, tredici del Percorso Avanzato e Real-time con WebSocket. Date originali, pubblicabilita e status `non revisionato` conservati; nessuna nuova nota o modifica agli indici.
 
-| Nota | Intervento principale |
-| --- | --- |
-| [[Programmazione/JavaScript/Pagine/Proxy e Reflect\|Proxy e Reflect]] | Corretti receiver, inoltro Reflect e risultato di set; distinto defineProperty dall'assegnazione. Aggiunti identita/alias, Symbol, invarianti, apply/newTarget, limiti con campi privati/internal slots e revoca. Riscritta la validazione di age con schema esplicito e controllo anche dei descrittori, senza presentarla come barriera di sicurezza. |
+| Nota                                                                              | Intervento principale                                                                                                                                                                                                                                                                                                                                                                           |
+| --------------------------------------------------------------------------------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| [[Programmazione/JavaScript/Pagine/Proxy e Reflect\|Proxy e Reflect]]             | Corretti receiver, inoltro Reflect e risultato di set; distinto defineProperty dall'assegnazione. Aggiunti identita/alias, Symbol, invarianti, apply/newTarget, limiti con campi privati/internal slots e revoca. Riscritta la validazione di age con schema esplicito e controllo anche dei descrittori, senza presentarla come barriera di sicurezza.                                         |
 | [[Programmazione/JavaScript/Pagine/Circular Dependencies\|Circular Dependencies]] | Distinti linking e inizializzazione, funzione hoisted e dati in TDZ. Resi deterministici gli esempi con file/entry point/risultati: ESM riuscito e fallito, classi sensibili all'avvio, CommonJS parziale e module.exports sostituito. Aggiunti composizione senza ciclo, import lazy e controesempio di attesa reciproca con top-level await; precisati barrel, lint e limiti della toolchain. |
 
 ### Verifica degli esempi
@@ -757,10 +757,10 @@ Letta integralmente e riscritta [[Programmazione/JavaScript/Pagine/Decorators|De
 
 Lette integralmente e riscritte due note del capitolo **Sicurezza**. Totale di questa passata: **66 note JavaScript**, 26 del Percorso Base, 23 del Percorso Intermedio, sedici del Percorso Avanzato e Real-time con WebSocket. Preservati date originali, pubblicabilita e status `non revisionato`; nessuna nuova nota o modifica agli indici.
 
-| Nota | Intervento principale |
-| --- | --- |
-| [[Programmazione/JavaScript/Pagine/Sicurezza\|Sicurezza]] | Distinti XSS, CSRF, autenticazione, autorizzazione e validazione. Esplicitati limiti di HttpOnly/SameSite e storage, contesti DOM/URL, dipendenze, CSP e log. Aggiunti rendering testuale con schema, link con protocollo/origine verificati e invio same-origin con contratto CSRF/204, abort e redirect rifiutati. |
-| [[Programmazione/JavaScript/Pagine/CORS\|CORS]] | Corretti origin/site, invio rispetto a lettura, preflight, credentials e cookie, Authorization, wildcard, header esposti e Vary. Sostituiti frammenti incompleti con API Node, moduli client e markup eseguibili in una demo locale. Distinti proxy locale/deploy, errori HTTP/rete e divergenza Chrome/Fetch sulla wildcard Authorization. |
+| Nota                                                      | Intervento principale                                                                                                                                                                                                                                                                                                                       |
+| --------------------------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| [[Programmazione/JavaScript/Pagine/Sicurezza\|Sicurezza]] | Distinti XSS, CSRF, autenticazione, autorizzazione e validazione. Esplicitati limiti di HttpOnly/SameSite e storage, contesti DOM/URL, dipendenze, CSP e log. Aggiunti rendering testuale con schema, link con protocollo/origine verificati e invio same-origin con contratto CSRF/204, abort e redirect rifiutati.                        |
+| [[Programmazione/JavaScript/Pagine/CORS\|CORS]]           | Corretti origin/site, invio rispetto a lettura, preflight, credentials e cookie, Authorization, wildcard, header esposti e Vary. Sostituiti frammenti incompleti con API Node, moduli client e markup eseguibili in una demo locale. Distinti proxy locale/deploy, errori HTTP/rete e divergenza Chrome/Fetch sulla wildcard Authorization. |
 
 ### Verifica degli esempi
 
@@ -794,10 +794,10 @@ La revisione e proseguita con Content Security Policy e Sanitizzazione input, do
 
 Lette integralmente e riscritte due note del capitolo **Sicurezza**. Totale di questa passata: **68 note JavaScript**, 26 del Percorso Base, 23 del Percorso Intermedio, diciotto del Percorso Avanzato e Real-time con WebSocket. Conservati date originali, publish true e status non revisionato. Nessuna nuova pagina o modifica degli indici.
 
-| Nota | Intervento principale |
-| --- | --- |
-| [[Programmazione/JavaScript/Pagine/Content Security Policy\|Content Security Policy]] | Corretti fallback, origini, policy multiple, header e meta. Completati nonce per risposta, hash del testo esatto, strict-dynamic, report-only con endpoint dichiarato, limiti di Trusted Types, cache e build. Aggiunta demo Node con script autorizzato e controesempio bloccato. |
-| [[Programmazione/JavaScript/Pagine/Sanitizzazione input\|Sanitizzazione input]] | Distinti validazione, normalizzazione, encoding e sanitizzazione. Corretta la spiegazione delle template literal e dei sink HTML; aggiunti rendering testuale e query con limiti. Demo HTML completa con DOMPurify 3.4.16, istanza dedicata, otto tag consentiti, nessun attributo e DocumentFragment. Esplicitati limiti dei contesti URL, SQL, shell, Markdown e Trusted Types. |
+| Nota                                                                                  | Intervento principale                                                                                                                                                                                                                                                                                                                                                             |
+| ------------------------------------------------------------------------------------- | --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| [[Programmazione/JavaScript/Pagine/Content Security Policy\|Content Security Policy]] | Corretti fallback, origini, policy multiple, header e meta. Completati nonce per risposta, hash del testo esatto, strict-dynamic, report-only con endpoint dichiarato, limiti di Trusted Types, cache e build. Aggiunta demo Node con script autorizzato e controesempio bloccato.                                                                                                |
+| [[Programmazione/JavaScript/Pagine/Sanitizzazione input\|Sanitizzazione input]]       | Distinti validazione, normalizzazione, encoding e sanitizzazione. Corretta la spiegazione delle template literal e dei sink HTML; aggiunti rendering testuale e query con limiti. Demo HTML completa con DOMPurify 3.4.16, istanza dedicata, otto tag consentiti, nessun attributo e DocumentFragment. Esplicitati limiti dei contesti URL, SQL, shell, Markdown e Trusted Types. |
 
 ### Verifica degli esempi
 
@@ -810,7 +810,7 @@ Lette integralmente e riscritte due note del capitolo **Sicurezza**. Totale di q
 ### Verifica del vault
 
 - content:check con report: 911 documenti raggiungibili, zero errori strutturali, **625 avvisi editoriali**.
-- content:test: 9 test della trasformazione superati. Copertura e prerequisiti documentati in _Meta/tests/README.md; rapporto in [[_Meta/Controllo del vault|Controllo del vault]].
+- content:test: 9 test della trasformazione superati. Copertura e prerequisiti documentati in \_Meta/tests/README.md; rapporto in [[_Meta/Controllo del vault|Controllo del vault]].
 
 ### Pubblicazione locale
 
@@ -844,7 +844,7 @@ Letta integralmente e riscritta [[Programmazione/JavaScript/Pagine/Supply chain 
 ### Verifica del vault
 
 - content:check con report: 911 documenti raggiungibili, zero errori strutturali, **624 avvisi editoriali**.
-- content:test: 9 test della trasformazione superati. Prerequisiti e limiti in _Meta/tests/README.md; rapporto in [[_Meta/Controllo del vault|Controllo del vault]].
+- content:test: 9 test della trasformazione superati. Prerequisiti e limiti in \_Meta/tests/README.md; rapporto in [[_Meta/Controllo del vault|Controllo del vault]].
 
 ### Pubblicazione locale
 
@@ -1297,13 +1297,13 @@ Lette integralmente e corrette le cinque note del blocco Fondamenta di React. In
 
 Conservati data originale, tipo teorico/tecnico, pubblicabilita e status non revisionato; aggiunti prerequisiti, correlazioni e fonti ufficiali. Nessuna nuova pagina o spostamento: l'indice contiene gia tutte le cinque note.
 
-| Nota | Interventi |
-| --- | --- |
-| [[Programmazione/React/Pagine/Introduzione e Toolchain\|Introduzione e Toolchain]] | Distinti React/React DOM, JSX, framework e build; progetto completo in cinque file, versioni esplicite, root controllata e comandi separati. |
-| [[Programmazione/React/Pagine/JSX\|JSX]] | Corretti contesti impliciti, attributi, valori renderizzabili, Fragment con key, style, callback e limiti dell'escaping testuale. |
-| [[Programmazione/React/Pagine/Componenti Funzionali vs Componenti a Classe\|Funzioni e classi]] | Due contatori realmente equivalenti, import, updater, initialValue, reset via key, limiti dei lifecycle e classi ancora supportate. |
-| [[Programmazione/React/Pagine/Props e Flusso di dati unidirezionale\|Props e flusso dati]] | Proprietario dello stato, callback distinta da bubbling, oggetti non clonati, default e children; demo di filtro/selezione con input controllato. |
-| [[Programmazione/React/Pagine/Rendering Condizionale e Liste\|Rendering e liste]] | Stati UI espliciti, zero con &&, identita e key; demo di bozze locali con riordino ed eliminazione, senza mutare gli array precedenti. |
+| Nota                                                                                            | Interventi                                                                                                                                        |
+| ----------------------------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------- |
+| [[Programmazione/React/Pagine/Introduzione e Toolchain\|Introduzione e Toolchain]]              | Distinti React/React DOM, JSX, framework e build; progetto completo in cinque file, versioni esplicite, root controllata e comandi separati.      |
+| [[Programmazione/React/Pagine/JSX\|JSX]]                                                        | Corretti contesti impliciti, attributi, valori renderizzabili, Fragment con key, style, callback e limiti dell'escaping testuale.                 |
+| [[Programmazione/React/Pagine/Componenti Funzionali vs Componenti a Classe\|Funzioni e classi]] | Due contatori realmente equivalenti, import, updater, initialValue, reset via key, limiti dei lifecycle e classi ancora supportate.               |
+| [[Programmazione/React/Pagine/Props e Flusso di dati unidirezionale\|Props e flusso dati]]      | Proprietario dello stato, callback distinta da bubbling, oggetti non clonati, default e children; demo di filtro/selezione con input controllato. |
+| [[Programmazione/React/Pagine/Rendering Condizionale e Liste\|Rendering e liste]]               | Stati UI espliciti, zero con &&, identita e key; demo di bozze locali con riordino ed eliminazione, senza mutare gli array precedenti.            |
 
 ### Fonti e ambiente
 
@@ -1353,12 +1353,12 @@ Lette integralmente e corrette le quattro note del blocco Stato e Rendering. La 
 
 Conservati date originarie, percorsi, tipo, pubblicabilita e status non revisionato; aggiunti prerequisiti, correlazioni e fonti ufficiali. Nessuna nuova nota, spostamento o necessita di aggiornare gli indici.
 
-| Nota | Correzioni |
-| --- | --- |
-| [[Programmazione/React/Pagine/useState\|useState]] | Snapshot e coda, sostituzioni rispetto a updater, purezza, inizializzazione e identita; esempi completi per oggetti annidati, array e input controllato. |
-| [[Programmazione/React/Pagine/useEffect\|useEffect]] | Commit rispetto a render/paint, dipendenze e Strict Mode; timer con cleanup e fetch con errori HTTP/JSON/schema, abort e protezione dalle risposte obsolete. |
-| [[Programmazione/React/Pagine/useRef\|useRef]] | Ref rispetto a stato, assegnazione DOM, focus e timeout cancellabile; eliminato l'esempio che leggeva la ref nel render, conservando il tema del valore precedente con stato coordinato. |
-| [[Programmazione/React/Pagine/Gestione Moduli\|Gestione Moduli]] | Eventi, semantica e controlli nativi, login con contratto asincrono, errori/reset e simulazione esplicita; FormData, select multipla e esempio funzionante React Hook Form. |
+| Nota                                                             | Correzioni                                                                                                                                                                               |
+| ---------------------------------------------------------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| [[Programmazione/React/Pagine/useState\|useState]]               | Snapshot e coda, sostituzioni rispetto a updater, purezza, inizializzazione e identita; esempi completi per oggetti annidati, array e input controllato.                                 |
+| [[Programmazione/React/Pagine/useEffect\|useEffect]]             | Commit rispetto a render/paint, dipendenze e Strict Mode; timer con cleanup e fetch con errori HTTP/JSON/schema, abort e protezione dalle risposte obsolete.                             |
+| [[Programmazione/React/Pagine/useRef\|useRef]]                   | Ref rispetto a stato, assegnazione DOM, focus e timeout cancellabile; eliminato l'esempio che leggeva la ref nel render, conservando il tema del valore precedente con stato coordinato. |
+| [[Programmazione/React/Pagine/Gestione Moduli\|Gestione Moduli]] | Eventi, semantica e controlli nativi, login con contratto asincrono, errori/reset e simulazione esplicita; FormData, select multipla e esempio funzionante React Hook Form.              |
 
 ### Fonti e prove
 
@@ -1395,11 +1395,11 @@ Lette integralmente e corrette Profiler e Debugging, CSS Modules e Styling base.
 
 Conservati percorsi, data originaria, pubblicabilita e status non revisionato. Profiler e Debugging resta una nota operativa e segue le sezioni del relativo template; le altre due restano note tecniche. Nessuna nuova nota o modifica necessaria agli indici.
 
-| Nota | Correzioni |
-| --- | --- |
+| Nota                                                                       | Correzioni                                                                                                                                                       |
+| -------------------------------------------------------------------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------- |
 | [[Programmazione/React/Pagine/Profiler e Debugging\|Profiler e Debugging]] | Procedura riproducibile, strumenti distinti, componente Profiler completo, metriche e limiti, sviluppo/produzione e diagnosi senza memoizzazione indiscriminata. |
-| [[Programmazione/React/Pagine/CSS Modules\|CSS Modules]] | Scope per file, nomi esportati, cascata, composes e global; progetto completo con token, pulsante riusabile e scheda selezionabile. |
-| [[Programmazione/React/Pagine/Styling base\|Styling base]] | CSS globale rispetto a inline style, variabili con unita, semantica e stati; demo completo di tema locale, slider, reset, focus e movimento ridotto. |
+| [[Programmazione/React/Pagine/CSS Modules\|CSS Modules]]                   | Scope per file, nomi esportati, cascata, composes e global; progetto completo con token, pulsante riusabile e scheda selezionabile.                              |
+| [[Programmazione/React/Pagine/Styling base\|Styling base]]                 | CSS globale rispetto a inline style, variabili con unita, semantica e stati; demo completo di tema locale, slider, reset, focus e movimento ridotto.             |
 
 ### Fonti e prove
 
@@ -1439,11 +1439,11 @@ Lette integralmente e corrette useMemo e useCallback, useReducer e Custom Hooks.
 
 Conservati percorsi, data originaria, tipo tecnico, pubblicabilita e status non revisionato. Integrati prerequisiti, collegamenti e fonti. Nessuna nuova pagina o modifica necessaria all'indice.
 
-| Nota | Correzioni |
-| --- | --- |
-| [[Programmazione/React/Pagine/useMemo e useCallback\|useMemo e useCallback]] | Object.is, dipendenze, closure e cache invalidabile; memo non blocca stato/context. Catalogo completo con filtro e sconto, limiti delle misure e del Compiler. |
-| [[Programmazione/React/Pagine/useReducer\|useReducer]] | Snapshot, coda, initializer e reset; reducer puri con copie annidate. Contatore completo e form con invalidita, correzione, conferma locale e reset, distinti dal progetto asincrono. |
-| [[Programmazione/React/Pagine/Custom Hooks\|Custom Hooks]] | Contratto e punti di chiamata, stato indipendente, JSX restituibile e identita dell'API. Pannelli, titolo con ownership esplicita e debounce completo con cleanup e istanze separate. |
+| Nota                                                                         | Correzioni                                                                                                                                                                            |
+| ---------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| [[Programmazione/React/Pagine/useMemo e useCallback\|useMemo e useCallback]] | Object.is, dipendenze, closure e cache invalidabile; memo non blocca stato/context. Catalogo completo con filtro e sconto, limiti delle misure e del Compiler.                        |
+| [[Programmazione/React/Pagine/useReducer\|useReducer]]                       | Snapshot, coda, initializer e reset; reducer puri con copie annidate. Contatore completo e form con invalidita, correzione, conferma locale e reset, distinti dal progetto asincrono. |
+| [[Programmazione/React/Pagine/Custom Hooks\|Custom Hooks]]                   | Contratto e punti di chiamata, stato indipendente, JSX restituibile e identita dell'API. Pannelli, titolo con ownership esplicita e debounce completo con cleanup e istanze separate. |
 
 ### Fonti e prove
 
@@ -1480,11 +1480,11 @@ Lette integralmente e corrette Context API, State Management Esterno e Derived s
 
 Conservati percorsi, data originaria, tipo, pubblicabilita e status non revisionato. Context segue il template tecnico; le due note teoriche ora seguono le sezioni del relativo template. Aggiunti prerequisiti, collegamenti e fonti, senza creare duplicati o modificare l'indice.
 
-| Nota | Correzioni |
-| --- | --- |
-| [[Programmazione/React/Pagine/Context API\|Context API]] | Distribuzione distinta dalla proprieta dello stato; default solo senza provider, undefined esplicito, annidamento e identita. Esempi completi di fallback e lingue indipendenti, guard e consumatori memo; limiti di memoizzazione e autorizzazione. |
-| [[Programmazione/React/Pagine/State Management Esterno\|State Management Esterno]] | Scelta fra stato locale, URL, Context, client store e cache remota. Due demo alternativi completi Zustand/Redux Toolkit; selector, merge, Immer, reset, sottoscrizioni, durata e isolamento. Recoil segnalato come archiviato. |
-| [[Programmazione/React/Pagine/Derived state\|Derived state]] | Input indipendenti e viste pure, effetto di sincronizzazione evitabile, ordinamento senza mutare. Carrello con quantita, totale e selezione per ID; bozza intenzionale con politica di reset tramite key. |
+| Nota                                                                               | Correzioni                                                                                                                                                                                                                                           |
+| ---------------------------------------------------------------------------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| [[Programmazione/React/Pagine/Context API\|Context API]]                           | Distribuzione distinta dalla proprieta dello stato; default solo senza provider, undefined esplicito, annidamento e identita. Esempi completi di fallback e lingue indipendenti, guard e consumatori memo; limiti di memoizzazione e autorizzazione. |
+| [[Programmazione/React/Pagine/State Management Esterno\|State Management Esterno]] | Scelta fra stato locale, URL, Context, client store e cache remota. Due demo alternativi completi Zustand/Redux Toolkit; selector, merge, Immer, reset, sottoscrizioni, durata e isolamento. Recoil segnalato come archiviato.                       |
+| [[Programmazione/React/Pagine/Derived state\|Derived state]]                       | Input indipendenti e viste pure, effetto di sincronizzazione evitabile, ordinamento senza mutare. Carrello con quantita, totale e selezione per ID; bozza intenzionale con politica di reset tramite key.                                            |
 
 ### Fonti e prove
 
@@ -1520,11 +1520,11 @@ Le note restano non revisionate fino all'approvazione dell'utente. Nessun commit
 
 Lette integralmente e corrette React Router, Data Fetching e Cache e Validazione Dati. Completato Routing, Data Fetching e Form: Gestione Moduli era gia revisionata. **21 note React uniche su 59, 38 ancora da esaminare**. Conservati percorsi, tipo tecnico, data originaria, publish e status non revisionato; aggiunti prerequisiti, collegamenti e fonti. Nessuna nuova pagina o modifica necessaria all'indice.
 
-| Nota | Correzioni |
-| --- | --- |
-| [[Programmazione/React/Pagine/React Router\|React Router]] | Distinte modalita, major e import; demo completo Data Mode con file JSON statico, layout/Outlet, query URL, loader, error boundary e fallback iniziale. Distinti percorso sconosciuto, record assente e 404 HTTP; segnalati requisiti di hosting e limiti client. |
+| Nota                                                                         | Correzioni                                                                                                                                                                                                                                                                                    |
+| ---------------------------------------------------------------------------- | --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| [[Programmazione/React/Pagine/React Router\|React Router]]                   | Distinte modalita, major e import; demo completo Data Mode con file JSON statico, layout/Outlet, query URL, loader, error boundary e fallback iniziale. Distinti percorso sconosciuto, record assente e 404 HTTP; segnalati requisiti di hosting e limiti client.                             |
 | [[Programmazione/React/Pagine/Data Fetching e Cache\|Data Fetching e Cache]] | Sostituiti frammenti con dipendenze implicite e fetch senza gestione degli errori. Chiavi, stati v5, staleTime/gcTime e signal; frontend completo con contratto HTTP esplicito, aggiornamento ottimistico, rollback e riconciliazione. Backend non incluso e concorrenza limitata dichiarati. |
-| [[Programmazione/React/Pagine/Validazione Dati\|Validazione Dati]] | Rimosso il falso criterio email basato solo su @. Zod 4, input/output, coercion e campi sconosciuti; form completo con errori, focus, reset e testo normalizzato. Vincoli fra campi e schema API, distinti da sanitizzazione e autorizzazione. |
+| [[Programmazione/React/Pagine/Validazione Dati\|Validazione Dati]]           | Rimosso il falso criterio email basato solo su @. Zod 4, input/output, coercion e campi sconosciuti; form completo con errori, focus, reset e testo normalizzato. Vincoli fra campi e schema API, distinti da sanitizzazione e autorizzazione.                                                |
 
 ### Fonti e prove
 
@@ -1557,12 +1557,12 @@ Prossimo blocco: Component Patterns, con Compound Components Pattern, Control Pr
 
 Lette integralmente e corrette Compound Components Pattern, Control Props e State Reducer Pattern, Portals ed Error Boundaries. **25 note React uniche su 59, 34 ancora da esaminare**. Conservati percorsi, data originaria, tipo tecnico, publish e status non revisionato. Indice gia completo per questo blocco; nessun nuovo percorso o redirect.
 
-| Nota | Correzioni |
-| --- | --- |
-| [[Programmazione/React/Pagine/Compound Components Pattern\|Compound Components Pattern]] | Frammenti incompleti sostituiti con accordion completo: Context, guard, ID, pulsanti nativi, pannelli nascosti, contratto delle parti e tastiera. Distinte tabs, composizione, controlled e conservazione dello stato. |
-| [[Programmazione/React/Pagine/Control Props e State Reducer Pattern\|Control Props e State Reducer Pattern]] | Separati possesso dello stato, transizioni e markup. Toggle controlled/uncontrolled con richiesta al parent; reducer realmente collegato a useReducer, limite, reset e render prop completa. Nessun side effect nel reducer. |
-| [[Programmazione/React/Pagine/Portals\|Portals]] | Distinti albero React, DOM, CSS e modalita. Target client con placeholder SSR, demo Context/eventi e dialog nativo con showModal, Escape, focus e cleanup. Eliminata la falsa equivalenza tra attributi ARIA e comportamento modale. |
-| [[Programmazione/React/Pagine/Error Boundaries\|Error Boundaries]] | Matrice dei limiti, effect e Actions di transition, fallback guasto e server. Classe completa con reporting, reset e demo di isolamento; gestione locale degli errori async previsti e distinzione da Suspense/router. |
+| Nota                                                                                                         | Correzioni                                                                                                                                                                                                                           |
+| ------------------------------------------------------------------------------------------------------------ | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
+| [[Programmazione/React/Pagine/Compound Components Pattern\|Compound Components Pattern]]                     | Frammenti incompleti sostituiti con accordion completo: Context, guard, ID, pulsanti nativi, pannelli nascosti, contratto delle parti e tastiera. Distinte tabs, composizione, controlled e conservazione dello stato.               |
+| [[Programmazione/React/Pagine/Control Props e State Reducer Pattern\|Control Props e State Reducer Pattern]] | Separati possesso dello stato, transizioni e markup. Toggle controlled/uncontrolled con richiesta al parent; reducer realmente collegato a useReducer, limite, reset e render prop completa. Nessun side effect nel reducer.         |
+| [[Programmazione/React/Pagine/Portals\|Portals]]                                                             | Distinti albero React, DOM, CSS e modalita. Target client con placeholder SSR, demo Context/eventi e dialog nativo con showModal, Escape, focus e cleanup. Eliminata la falsa equivalenza tra attributi ARIA e comportamento modale. |
+| [[Programmazione/React/Pagine/Error Boundaries\|Error Boundaries]]                                           | Matrice dei limiti, effect e Actions di transition, fallback guasto e server. Classe completa con reporting, reset e demo di isolamento; gestione locale degli errori async previsti e distinzione da Suspense/router.               |
 
 ### Fonti e prove
 
@@ -1596,12 +1596,12 @@ Prossimo blocco: UX e Accessibilita, con WAI-ARIA, Focus Management, Animazioni 
 
 Lette integralmente e corrette WAI-ARIA, Focus Management, Animazioni e Micro-interazioni e Internazionalizzazione. **29 note React uniche su 59, 30 ancora da esaminare**. Nessuna nuova pagina: mantenuti percorsi, date originarie, publish e status non revisionato; l'indice gia collega tutte le note. Aggiunti prerequisiti, fonti e collegamenti pertinenti senza duplicare il dialog completo gia presente in Portals.
 
-| Nota | Correzioni |
-| --- | --- |
-| [[Programmazione/React/Pagine/WAI-ARIA\|WAI-ARIA]] | Distinti ruolo, comportamento, nome e descrizione. Tabella degli attributi e limiti di aria-hidden/disabled, disclosure e form completi, ID univoci, messaggi di errore e live region. Eliminato il frammento di dialog presentato senza comportamento. |
-| [[Programmazione/React/Pagine/Focus Management\|Focus Management]] | Il precedente input non era un dialog. Ora editor inline con focus dopo commit e ripristino, gestione di Escape, skip link e CSS; distinti tabindex, inert, roving tabindex, aria-activedescendant e focus di navigazione. |
-| [[Programmazione/React/Pagine/Animazioni e Micro-interazioni\|Animazioni e Micro-interazioni]] | CSS completo con preferenza ridotta mirata; Motion con AnimatePresence, key stabile, uscita inerte e annunci separati; React Spring con molla e politica reduced motion. Distinti lifecycle logico/visivo, proprieta e limiti prestazionali. |
-| [[Programmazione/React/Pagine/Internazionalizzazione\|Internazionalizzazione]] | Factory e risorse indipendenti, provider e bootstrap completi, plurali/fallback, gestione cambio lingua, lang/dir. Distinti locale, valuta, fuso, date senza ora, escaping JSX, limiti backend/SSR e variazioni Intl tra runtime. |
+| Nota                                                                                           | Correzioni                                                                                                                                                                                                                                              |
+| ---------------------------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| [[Programmazione/React/Pagine/WAI-ARIA\|WAI-ARIA]]                                             | Distinti ruolo, comportamento, nome e descrizione. Tabella degli attributi e limiti di aria-hidden/disabled, disclosure e form completi, ID univoci, messaggi di errore e live region. Eliminato il frammento di dialog presentato senza comportamento. |
+| [[Programmazione/React/Pagine/Focus Management\|Focus Management]]                             | Il precedente input non era un dialog. Ora editor inline con focus dopo commit e ripristino, gestione di Escape, skip link e CSS; distinti tabindex, inert, roving tabindex, aria-activedescendant e focus di navigazione.                              |
+| [[Programmazione/React/Pagine/Animazioni e Micro-interazioni\|Animazioni e Micro-interazioni]] | CSS completo con preferenza ridotta mirata; Motion con AnimatePresence, key stabile, uscita inerte e annunci separati; React Spring con molla e politica reduced motion. Distinti lifecycle logico/visivo, proprieta e limiti prestazionali.            |
+| [[Programmazione/React/Pagine/Internazionalizzazione\|Internazionalizzazione]]                 | Factory e risorse indipendenti, provider e bootstrap completi, plurali/fallback, gestione cambio lingua, lang/dir. Distinti locale, valuta, fuso, date senza ora, escaping JSX, limiti backend/SSR e variazioni Intl tra runtime.                       |
 
 ### Fonti e prove
 
@@ -1635,12 +1635,12 @@ Proseguire con Performance e Internals, saltando le note gia revisionate richiam
 
 Lette integralmente e corrette Virtual DOM, Fiber Architecture e Concurrent Mode, Batching e React Compiler. **33 note React uniche su 59, 26 ancora da esaminare**. Profiler e Debugging e useMemo e useCallback erano gia revisionate: non vengono ricontate. Nessuna nuova nota o modifica di percorsi; YAML, date originarie, publish e status non revisionato conservati. L'indice gia collega tutte le pagine.
 
-| Nota | Correzioni |
-| --- | --- |
-| [[Programmazione/React/Pagine/Virtual DOM\|Virtual DOM]] | Distinti elementi React, Fiber, render, riconciliazione, commit e paint. Demo completo di riordino delle righe con bozze, ID, reset intenzionale e immutabilita; identita locale al parent, key diversa da prop e limiti delle ottimizzazioni. |
+| Nota                                                                                                       | Correzioni                                                                                                                                                                                                                                                            |
+| ---------------------------------------------------------------------------------------------------------- | --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| [[Programmazione/React/Pagine/Virtual DOM\|Virtual DOM]]                                                   | Distinti elementi React, Fiber, render, riconciliazione, commit e paint. Demo completo di riordino delle righe con bozze, ID, reset intenzionale e immutabilita; identita locale al parent, key diversa da prop e limiti delle ottimizzazioni.                        |
 | [[Programmazione/React/Pagine/Fiber Architecture e Concurrent Mode\|Fiber Architecture e Concurrent Mode]] | Terminologia storica e dettagli interni separati dalle API pubbliche. Scheduling cooperativo, commit sincrono, assenza di parallelismo automatico; ricerca completa con input urgente, risultati memoizzati e transition, senza promettere una velocita non misurata. |
-| [[Programmazione/React/Pagine/Batching\|Batching]] | Raggruppamento non equivalente a una sola chiamata al render. Coda, ordine degli updater/sostituzioni, snapshot e confini async; demo osservabile e integrazione flushSync con focus, costi e limiti espliciti. |
-| [[Programmazione/React/Pagine/React Compiler\|React Compiler]] | Config Vite 8/plugin-react 6 realmente provato, annotation/infer/opt-out, runtime per versione. Catalogo completo, verifica dell'output generato e confronto con baseline non compilata; lint, correttezza e vantaggi prestazionali distinti. |
+| [[Programmazione/React/Pagine/Batching\|Batching]]                                                         | Raggruppamento non equivalente a una sola chiamata al render. Coda, ordine degli updater/sostituzioni, snapshot e confini async; demo osservabile e integrazione flushSync con focus, costi e limiti espliciti.                                                       |
+| [[Programmazione/React/Pagine/React Compiler\|React Compiler]]                                             | Config Vite 8/plugin-react 6 realmente provato, annotation/infer/opt-out, runtime per versione. Catalogo completo, verifica dell'output generato e confronto con baseline non compilata; lint, correttezza e vantaggi prestazionali distinti.                         |
 
 ### Fonti e prove
 
@@ -1671,10 +1671,10 @@ Proseguire con Virtualizzazione delle liste e Suspense e Lazy Loading, prima dei
 
 Lette integralmente e corrette Virtualizzazione delle liste e Suspense e Lazy Loading, completando Performance e Internals. **35 note React uniche su 59, 24 ancora da esaminare**. Suspense compare anche nel capitolo successivo, ma viene contata una sola volta. Nessuna nuova nota o modifica dei percorsi; date originarie, publish e status non revisionato conservati. L'indice collega gia entrambe le note.
 
-| Nota | Correzioni |
-| --- | --- |
+| Nota                                                                                       | Correzioni                                                                                                                                                                                                                                                                                                      |
+| ------------------------------------------------------------------------------------------ | --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
 | [[Programmazione/React/Pagine/Virtualizzazione delle liste\|Virtualizzazione delle liste]] | Sostituito il frammento incompleto con FixedSizeList v1 con esempi TanStack Virtual versionati e completi: lista fissa e misurata, CSS, ID, overscan e scroll. Distinti windowing, fetch/paginazione e Virtual DOM; chiariti perdita dello stato, focus, DOM parziale e limiti di stampa/ricerca/accessibilita. |
-| [[Programmazione/React/Pagine/Suspense e Lazy Loading\|Suspense e Lazy Loading]] | Separati bundler, import, lazy, fallback ed error boundary. Pannello completo con stato, CSS e controlli esterni; cache del codice diversa dallo stato, import non cancellato dalla chiusura, rifiuto memorizzato e limiti del reset/reload. Chiariti effect, Promise compatibili, transition e limiti server. |
+| [[Programmazione/React/Pagine/Suspense e Lazy Loading\|Suspense e Lazy Loading]]           | Separati bundler, import, lazy, fallback ed error boundary. Pannello completo con stato, CSS e controlli esterni; cache del codice diversa dallo stato, import non cancellato dalla chiusura, rifiuto memorizzato e limiti del reset/reload. Chiariti effect, Promise compatibili, transition e limiti server.  |
 
 ### Fonti e prove
 
@@ -1707,10 +1707,10 @@ Proseguire con Server Components e SSR e SSG nel blocco React Moderno e Server-S
 
 Lette integralmente e corrette Server Components e SSR e SSG, primo blocco di React Moderno e Server-Side. **37 note React uniche su 59, 22 ancora da esaminare**. Chiusa la segnalazione precedente su SSR e SSG: prestazioni/SEO non migliorano automaticamente e hydration non e obbligatoria per ogni pagina renderizzata sul server. Nessuna nuova nota o modifica dei percorsi; date, tipo teorico, publish e status non revisionato conservati. Indice gia completo per queste pagine.
 
-| Nota | Correzioni |
-| --- | --- |
+| Nota                                                                 | Correzioni                                                                                                                                                                                                                                                                                                                                                                |
+| -------------------------------------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
 | [[Programmazione/React/Pagine/Server Components\|Server Components]] | Distinti RSC, SSR e Client Components prerenderizzati; confine degli import diverso dalla composizione JSX, serializzazione non limitata a JSON e output server comunque divulgabile. Progetto Next completo con catalogo pubblico, guard server-only, componenti composti e CSS; Server Functions/Actions e requisiti delle mutazioni separati dal demo di sola lettura. |
-| [[Programmazione/React/Pagine/SSR e SSG\|SSR e SSG]] | Corretti benefici e hydration implicita; contratti delle API React, mismatch, cache/errori/CSP e limiti dell'hosting statico. Route per richiesta con connection, streaming osservabile con ritardo didattico ed export alternativo del catalogo, senza confondere RSC e HTML. |
+| [[Programmazione/React/Pagine/SSR e SSG\|SSR e SSG]]                 | Corretti benefici e hydration implicita; contratti delle API React, mismatch, cache/errori/CSP e limiti dell'hosting statico. Route per richiesta con connection, streaming osservabile con ritardo didattico ed export alternativo del catalogo, senza confondere RSC e HTML.                                                                                            |
 
 ### Fonti e prove
 
@@ -1744,10 +1744,10 @@ Proseguire con Actions e form actions e useActionState. Le note restano non revi
 
 Lette integralmente e corrette Actions e form actions e useActionState. **39 note React uniche su 59, 20 ancora da esaminare**. Nessuna nuova pagina o modifica dei percorsi; indice gia completo. Conservati data originaria, tipo, publish e status non revisionato; aggiunti prerequisiti, collegamenti e fonti ufficiali.
 
-| Nota | Correzioni |
-| --- | --- |
-| [[Programmazione/React/Pagine/Actions e form actions\|Actions e form actions]] | Distinti evento, URL HTML, Action client e Server Function; corretti firme, pending nei discendenti, reset e limiti dell'hosting statico. Esempio completo con due submitter, trasformazione locale, risultato e reset intenzionale; eliminata la dipendenza da una API non definita. |
-| [[Programmazione/React/Pagine/useActionState\|useActionState]] | Sostituito il falso login riuscito con una demo locale esplicita. Validazione, conferma e bozza separate, input controllato per conservare il testo, pending/readOnly, rifiuto previsto ed eccezione. Aggiunto contatore per la coda sequenziale; precisati reset/key, dispatch fuori Action, error boundary e ambito di permalink. |
+| Nota                                                                           | Correzioni                                                                                                                                                                                                                                                                                                                          |
+| ------------------------------------------------------------------------------ | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| [[Programmazione/React/Pagine/Actions e form actions\|Actions e form actions]] | Distinti evento, URL HTML, Action client e Server Function; corretti firme, pending nei discendenti, reset e limiti dell'hosting statico. Esempio completo con due submitter, trasformazione locale, risultato e reset intenzionale; eliminata la dipendenza da una API non definita.                                               |
+| [[Programmazione/React/Pagine/useActionState\|useActionState]]                 | Sostituito il falso login riuscito con una demo locale esplicita. Validazione, conferma e bozza separate, input controllato per conservare il testo, pending/readOnly, rifiuto previsto ed eccezione. Aggiunto contatore per la coda sequenziale; precisati reset/key, dispatch fuori Action, error boundary e ambito di permalink. |
 
 ### Fonti e prove
 
@@ -1780,10 +1780,10 @@ Proseguire con useOptimistic e useFormStatus. Note non revisionate fino all'appr
 
 Lette integralmente e corrette useOptimistic e useFormStatus. **41 note React uniche su 59, 18 ancora da esaminare**. Nessun cambio di percorsi o nuove pagine; indice gia collegato. Conservati data originaria, tipo tecnico, publish e status non revisionato. Aggiunti prerequisiti, rimandi e fonti primarie.
 
-| Nota | Correzioni |
-| --- | --- |
+| Nota                                                         | Correzioni                                                                                                                                                                                                                                                                                                                        |
+| ------------------------------------------------------------ | --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
 | [[Programmazione/React/Pagine/useOptimistic\|useOptimistic]] | Distinti bozza, base e previsione; reducer puro, rebase e conferma effettiva nel parent. Demo completo di commenti con correlazione requestId, deduplicazione, risposta normalizzata, bozza conservata, rifiuto previsto e boundary per errori inattesi. Il ritorno al valore base non viene presentato come rollback del server. |
-| [[Programmazione/React/Pagine/useFormStatus\|useFormStatus]] | Corretti import, ambito antenato, payload distinto dagli input correnti e pending distinto dall'esito. Demo completo con due form, controlli riusabili, validazione e stato del risultato. Precisati onSubmit, pulsanti esterni con form, metadati null a riposo e limiti di method come indicatore HTTP. |
+| [[Programmazione/React/Pagine/useFormStatus\|useFormStatus]] | Corretti import, ambito antenato, payload distinto dagli input correnti e pending distinto dall'esito. Demo completo con due form, controlli riusabili, validazione e stato del risultato. Precisati onSubmit, pulsanti esterni con form, metadati null a riposo e limiti di method come indicatore HTTP.                         |
 
 ### Fonti e prove
 
@@ -1816,9 +1816,9 @@ Proseguire con use hook e Framework Next.js e Remix. Le note rimangono non revis
 
 Lette e corrette use hook e Framework Next.js e Remix. **43 note React uniche su 59, 16 ancora da esaminare**. Nessun cambio di percorsi, indici o redirect: le pagine erano gia raggiungibili. Conservati data, tipo, publish e status non revisionato; aggiunti prerequisiti, collegamenti e fonti ufficiali.
 
-| Nota | Correzioni |
-| --- | --- |
-| [[Programmazione/React/Pagine/use hook\|use]] | Distinti lettura, caricamento e cache; regole condizionali, identita della Promise, Suspense e boundary degli errori. Demo completo con evento, Promise stabile, retry e risposta tardiva; Context condizionale con label esplicita e variante browser() per React DOM 19.3. Precisati mancata cancellazione e confine RSC. |
+| Nota                                                                                 | Correzioni                                                                                                                                                                                                                                                                                                                      |
+| ------------------------------------------------------------------------------------ | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| [[Programmazione/React/Pagine/use hook\|use]]                                        | Distinti lettura, caricamento e cache; regole condizionali, identita della Promise, Suspense e boundary degli errori. Demo completo con evento, Promise stabile, retry e risposta tardiva; Context condizionale con label esplicita e variante browser() per React DOM 19.3. Precisati mancata cancellazione e confine RSC.     |
 | [[Programmazione/React/Pagine/Framework Next.js e Remix\|Framework Next.js e Remix]] | Distinti Next App/Pages Router, React Router Data/Framework Mode e Remix v2 dal nuovo stack Remix. Confronto per requisiti, convenzioni URL e contratto loader/action. Progetto SSR completo con ricerca GET, dati pubblici, errori HTTP e progressive enhancement; limiti del deploy statico e rimandi ai demo Next esistenti. |
 
 ### Fonti e prove
@@ -1851,9 +1851,9 @@ Proseguire con useTransition e useDeferredValue e Gestione della memoria e Abort
 
 Lette integralmente e corrette useTransition e useDeferredValue e Gestione della memoria e AbortController. **45 note React uniche su 59, 14 ancora da esaminare**. Percorsi, indice e redirect invariati; conservati data originaria, tipo, publish e status non revisionato. Aggiunti prerequisiti, collegamenti e fonti ufficiali.
 
-| Nota | Correzioni |
-| --- | --- |
-| [[Programmazione/React/Pagine/useTransition e useDeferredValue\|useTransition e useDeferredValue]] | Distinti scheduling, thread, debounce e cancellazione. Filtro spostato nel figlio memoizzato con props stabili, input urgente e due demo completi. Precisati callback immediata, initialValue, Actions dopo await, ordine delle risposte, Suspense e limiti di isPending. |
+| Nota                                                                                                               | Correzioni                                                                                                                                                                                                                                                                                                     |
+| ------------------------------------------------------------------------------------------------------------------ | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| [[Programmazione/React/Pagine/useTransition e useDeferredValue\|useTransition e useDeferredValue]]                 | Distinti scheduling, thread, debounce e cancellazione. Filtro spostato nel figlio memoizzato con props stabili, input urgente e due demo completi. Precisati callback immediata, initialValue, Actions dopo await, ordine delle risposte, Suspense e limiti di isPending.                                      |
 | [[Programmazione/React/Pagine/Gestione della memoria e AbortController\|Gestione della memoria e AbortController]] | Separati risorse, obsolescenza e leak. Demo completo con loader locale, cancel, timeout e retry; guardia per risposte tardive, controller per tentativo, controllo HTTP/JSON/schema. Aggiunto esempio distinto di listener e timer; chiariti abort del corpo, motivi personalizzati e mancato rollback server. |
 
 ### Fonti e prove
@@ -1886,9 +1886,9 @@ Proseguire con Protezione XSS e Gestione Autenticazione, poi CSRF e Content Secu
 
 Lette integralmente e corrette Protezione XSS e Gestione Autenticazione. **47 note React uniche su 59, 12 ancora da esaminare**. Conservati data, tipo, status non revisionato e publish. Nessun cambio di percorsi, indici o redirect; aggiunti prerequisiti, collegamenti e fonti primarie.
 
-| Nota | Correzioni |
-| --- | --- |
-| [[Programmazione/React/Pagine/Protezione XSS\|Protezione XSS]] | Sostituita sanitizeHtml non definita con un modulo DOMPurify eseguibile. Distinti testo, HTML, props e URL; policy di otto tag senza attributi, allowlist di destinazione e limiti espliciti per SSR/Trusted Types. Rimandi alla teoria JavaScript senza duplicare un sanitizer manuale. |
+| Nota                                                                             | Correzioni                                                                                                                                                                                                                                                                                                                          |
+| -------------------------------------------------------------------------------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| [[Programmazione/React/Pagine/Protezione XSS\|Protezione XSS]]                   | Sostituita sanitizeHtml non definita con un modulo DOMPurify eseguibile. Distinti testo, HTML, props e URL; policy di otto tag senza attributi, allowlist di destinazione e limiti espliciti per SSR/Trusted Types. Rimandi alla teoria JavaScript senza duplicare un sanitizer manuale.                                            |
 | [[Programmazione/React/Pagine/Gestione Autenticazione\|Gestione Autenticazione]] | Sostituiti bootstrap incompleto e API implicite con un contratto same-origin e client completo. Separati loading/anonimo/errore/logout; guardie contro risultati obsoleti, controllo HTTP/JSON/schema, retry e bozza rimossa al cambio identita. Corretti limiti di HttpOnly, token in memoria, route guard, CSRF, refresh e cache. |
 
 ### Fonti e prove
@@ -1903,7 +1903,7 @@ Lette integralmente e corrette Protezione XSS e Gestione Autenticazione. **47 no
 
 ### Limiti e seguito
 
-La fixture non implementa un sistema di autenticazione: niente password, MFA, OIDC, PKCE, refresh token o autorizzazioni per record. Cookie su HTTP loopback, quindi nessuna prova di HTTPS/Secure/prefisso __Host- o matrice SameSite. CSP, Trusted Types, CSRF cross-site, SSR del rich text e cache condivise richiedono prove dedicate. Gli otto payload non certificano assenza universale di XSS; nessun audit o screen reader reale.
+La fixture non implementa un sistema di autenticazione: niente password, MFA, OIDC, PKCE, refresh token o autorizzazioni per record. Cookie su HTTP loopback, quindi nessuna prova di HTTPS/Secure/prefisso \_\_Host- o matrice SameSite. CSP, Trusted Types, CSRF cross-site, SSR del rich text e cache condivise richiedono prove dedicate. Gli otto payload non certificano assenza universale di XSS; nessun audit o screen reader reale.
 
 Proseguire con CSRF e Content Security Policy. Le note restano non revisionate fino al controllo dell'utente; nessun commit, push o deploy remoto.
 
@@ -1921,10 +1921,10 @@ Proseguire con CSRF e Content Security Policy. Le note restano non revisionate f
 
 Lette integralmente e corrette CSRF e Content Security Policy. **49 note React uniche su 59, 10 ancora da esaminare**. Date, type e publish conservati; status non revisionato. Nessuna nuova pagina, modifica di indice, spostamento o redirect.
 
-| Nota | Correzioni |
-| --- | --- |
-| [[Programmazione/React/Pagine/CSRF\|CSRF]] | Distinti autenticazione, autorizzazione, cookie, SameSite, CORS e token. Contratto same-origin esplicito e form eseguibile: endpoint fisso, validazione, cookie/token/JSON, status 204, errori, doppio invio e cleanup. Limiti di Origin, Fetch Metadata, double-submit, retry e cancellazione esplicitati. |
-| [[Programmazione/React/Pagine/Content Security Policy\|Content Security Policy]] | Separati SPA statica, nonce dinamico, hash e framework SSR. Baseline e demo React CSR completo con CSS esterno, shell Node e route limitate. Chiariti nonce, strict-dynamic, report-only, Vite, Next, cache, CSS-in-JS e Trusted Types; nessuna modifica alla CSP di Quartz. |
+| Nota                                                                             | Correzioni                                                                                                                                                                                                                                                                                                  |
+| -------------------------------------------------------------------------------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| [[Programmazione/React/Pagine/CSRF\|CSRF]]                                       | Distinti autenticazione, autorizzazione, cookie, SameSite, CORS e token. Contratto same-origin esplicito e form eseguibile: endpoint fisso, validazione, cookie/token/JSON, status 204, errori, doppio invio e cleanup. Limiti di Origin, Fetch Metadata, double-submit, retry e cancellazione esplicitati. |
+| [[Programmazione/React/Pagine/Content Security Policy\|Content Security Policy]] | Separati SPA statica, nonce dinamico, hash e framework SSR. Baseline e demo React CSR completo con CSS esterno, shell Node e route limitate. Chiariti nonce, strict-dynamic, report-only, Vite, Next, cache, CSS-in-JS e Trusted Types; nessuna modifica alla CSP di Quartz.                                |
 
 ### Fonti e prove
 
@@ -1956,10 +1956,10 @@ Proseguire con Testing Jest e Testing Cypress e Playwright, poi le altre note di
 
 Lette integralmente e corrette Testing Jest e Testing Cypress e Playwright. **51 note React uniche su 59, 8 ancora da esaminare**. Conservati date, type operational-note, publish e status non revisionato. Struttura operativa, prerequisiti, collegamenti e fonti aggiornati; nessuno spostamento o modifica a indici e redirect.
 
-| Nota | Correzioni |
-| --- | --- |
-| [[Programmazione/React/Pagine/Testing Jest\|Testing Jest]] | Configurazione completa Jest/jsdom/Babel, distinta da Vite e da ESM nativo. Query, attese, mock e cleanup chiariti. Form eseguibile con servizio iniettato, validazione, pending, guardia contro doppi invii, bozza e retry; errore di servizio distinto da campo invalido. Sette test effettivi e limiti della coverage. |
-| [[Programmazione/React/Pagine/Testing Cypress e Playwright\|Testing Cypress e Playwright]] | Stesso componente condiviso, adapter HTTP e shell Vite completi. Configurazioni e tre casi per ciascun runner: successo, validazione e retry esplicito. Distinti Promise Playwright e coda Cypress, retry delle assertion e dei test, webServer e anteprima esterna. Nessun backend/persistenza impliciti nei mock. |
+| Nota                                                                                       | Correzioni                                                                                                                                                                                                                                                                                                                |
+| ------------------------------------------------------------------------------------------ | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| [[Programmazione/React/Pagine/Testing Jest\|Testing Jest]]                                 | Configurazione completa Jest/jsdom/Babel, distinta da Vite e da ESM nativo. Query, attese, mock e cleanup chiariti. Form eseguibile con servizio iniettato, validazione, pending, guardia contro doppi invii, bozza e retry; errore di servizio distinto da campo invalido. Sette test effettivi e limiti della coverage. |
+| [[Programmazione/React/Pagine/Testing Cypress e Playwright\|Testing Cypress e Playwright]] | Stesso componente condiviso, adapter HTTP e shell Vite completi. Configurazioni e tre casi per ciascun runner: successo, validazione e retry esplicito. Distinti Promise Playwright e coda Cypress, retry delle assertion e dei test, webServer e anteprima esterna. Nessun backend/persistenza impliciti nei mock.       |
 
 ### Fonti e prove
 
@@ -1991,10 +1991,10 @@ Proseguire con Test di accessibilita e Linting e Formattazione, poi Storybook, V
 
 Lette integralmente e corrette Test di accessibilita e Linting e Formattazione. **53 note React uniche su 59, 6 ancora da esaminare**. Conservati date, type operational-note, publish e status non revisionato; nessuna modifica a percorsi, indici o redirect. Template operativo, fonti e rimandi alle note correlate.
 
-| Nota | Correzioni |
-| --- | --- |
-| [[Programmazione/React/Pagine/Test di accessibilita\|Test di accessibilita]] | Rimossi i riferimenti a componenti di esempio non definiti, sostituiti da una pagina Vite che riusa i moduli WAI-ARIA/Portals. Quattro test Playwright e cinque scansioni axe con allegati, stati dinamici, tastiera, nome/descrizione e ritorno focus. Separati automatico, inconcludente e verifica manuale; limiti espliciti per screen reader e conformita. |
-| [[Programmazione/React/Pagine/Linting e Formattazione\|Linting e Formattazione]] | Sostituita la config vuota con ESLint 10, preset Hooks, globali per ambiente e ignore. Aggiunti config Prettier, script read-only/fix, componente positivo, controesempio e print-config. Spiegati compatibilita plugin, warning bloccanti, differenza da Compiler e limiti JSX/TypeScript/CI. |
+| Nota                                                                             | Correzioni                                                                                                                                                                                                                                                                                                                                                      |
+| -------------------------------------------------------------------------------- | --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| [[Programmazione/React/Pagine/Test di accessibilita\|Test di accessibilita]]     | Rimossi i riferimenti a componenti di esempio non definiti, sostituiti da una pagina Vite che riusa i moduli WAI-ARIA/Portals. Quattro test Playwright e cinque scansioni axe con allegati, stati dinamici, tastiera, nome/descrizione e ritorno focus. Separati automatico, inconcludente e verifica manuale; limiti espliciti per screen reader e conformita. |
+| [[Programmazione/React/Pagine/Linting e Formattazione\|Linting e Formattazione]] | Sostituita la config vuota con ESLint 10, preset Hooks, globali per ambiente e ignore. Aggiunti config Prettier, script read-only/fix, componente positivo, controesempio e print-config. Spiegati compatibilita plugin, warning bloccanti, differenza da Compiler e limiti JSX/TypeScript/CI.                                                                  |
 
 ### Fonti e prove
 
@@ -2027,10 +2027,10 @@ Proseguire con Storybook e Visual regression testing, poi le quattro note di Arc
 
 Lette integralmente e riscritte Storybook e Visual regression testing. **55 note React uniche su 59, 4 ancora da esaminare**. Conservati date, type operational-note, publish e status non revisionato. Template operativo, fonti e collegamenti completi; nessuno spostamento, nuovo indice o redirect.
 
-| Nota | Correzioni |
-| --- | --- |
-| [[Programmazione/React/Pagine/Storybook\|Storybook]] | Installazione e configurazione React/Vite aggiornate, componente reale con CSS, cinque storie CSF, Controls e due play con assertion. Vitest Browser Mode eseguibile, annotazioni automatiche dell'addon 10.6.2; distinti catalogo, build, interazioni, accessibilita e screenshot. Dati, provider, isolamento e pubblicazione trattati con limiti espliciti. |
-| [[Programmazione/React/Pagine/Visual regression testing\|Visual regression testing]] | Configurazione Playwright e sei confronti su tre storie/due viewport. Ambiente deterministico, baseline versionate, fallimento senza creazione implicita, aggiornamento mirato e artefatti. Chiariti tolleranza colore, numero di pixel, mask, animazioni, piattaforme e differenza tra viewport mobile e dispositivo. |
+| Nota                                                                                 | Correzioni                                                                                                                                                                                                                                                                                                                                                    |
+| ------------------------------------------------------------------------------------ | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| [[Programmazione/React/Pagine/Storybook\|Storybook]]                                 | Installazione e configurazione React/Vite aggiornate, componente reale con CSS, cinque storie CSF, Controls e due play con assertion. Vitest Browser Mode eseguibile, annotazioni automatiche dell'addon 10.6.2; distinti catalogo, build, interazioni, accessibilita e screenshot. Dati, provider, isolamento e pubblicazione trattati con limiti espliciti. |
+| [[Programmazione/React/Pagine/Visual regression testing\|Visual regression testing]] | Configurazione Playwright e sei confronti su tre storie/due viewport. Ambiente deterministico, baseline versionate, fallimento senza creazione implicita, aggiornamento mirato e artefatti. Chiariti tolleranza colore, numero di pixel, mask, animazioni, piattaforme e differenza tra viewport mobile e dispositivo.                                        |
 
 ### Fonti e prove
 
@@ -2061,10 +2061,10 @@ Rimangono Design system, Feature-based architecture, State colocato e API layer.
 
 Lette integralmente e riscritte Design system e Feature-based architecture. **57 note React uniche su 59, 2 ancora da esaminare**. Conservati date, type theory-note, publish e status non revisionato. Accorpate le sezioni duplicate; nessuno spostamento o modifica a indici e redirect.
 
-| Nota | Correzioni |
-| --- | --- |
-| [[Programmazione/React/Pagine/Design system\|Design system]] | Distinti sistema, libreria e catalogo. Token e risoluzione CSS, contratti, governance e compatibilita. TextField React 19 completo, controllato, con label, descrizioni, errore testuale, ref e temi; separata la responsabilita del form dalla primitiva condivisa. |
-| [[Programmazione/React/Pagine/Feature-based architecture\|Feature-based architecture]] | Confini e dipendenze invece del solo albero di cartelle; API pubblica, import, shared, stato e routing. Demo completo con policy pura, due form indipendenti e composizione Vite, riusando TextField. Chiariti limiti di index, lint, FSD, monorepo e persistenza. |
+| Nota                                                                                   | Correzioni                                                                                                                                                                                                                                                           |
+| -------------------------------------------------------------------------------------- | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| [[Programmazione/React/Pagine/Design system\|Design system]]                           | Distinti sistema, libreria e catalogo. Token e risoluzione CSS, contratti, governance e compatibilita. TextField React 19 completo, controllato, con label, descrizioni, errore testuale, ref e temi; separata la responsabilita del form dalla primitiva condivisa. |
+| [[Programmazione/React/Pagine/Feature-based architecture\|Feature-based architecture]] | Confini e dipendenze invece del solo albero di cartelle; API pubblica, import, shared, stato e routing. Demo completo con policy pura, due form indipendenti e composizione Vite, riusando TextField. Chiariti limiti di index, lint, FSD, monorepo e persistenza.   |
 
 ### Fonti e prove
 
@@ -2096,10 +2096,10 @@ Rimangono **State colocato e API layer**. Le note restano non revisionate fino a
 
 Lette integralmente e riscritte State colocato e API layer: **59 note React uniche su 59 esaminate**. Conclusa la revisione tecnica delle pagine attualmente presenti, non una certificazione di ogni frammento o una copertura di tutte le API React. Conservati date, type, publish e status non revisionato; nessun nuovo percorso, indice o redirect.
 
-| Nota | Correzioni |
-| --- | --- |
-| [[Programmazione/React/Pagine/State colocato\|State colocato]] | Proprietario, consumatori e durata al posto della regola assoluta sullo stato locale. Distinti Context, custom hook, URL, cache e valori derivati. Catalogo completo con filtro condiviso, dettaglio locale, due istanze, hidden/unmount e reset per key; chiariti inizializzazione e limiti prestazionali. |
-| [[Programmazione/React/Pagine/API layer\|API layer]] | Trasporto, feature, cache e UI separati. Client JSON con contratto limitato, Headers, status, 204, errori distinti e signal. DTO validati e proiettati, operazioni per dominio, effetti delle scritture sul backend espliciti e integrazione con ProfilePanel esistente. Cache alternativa con signal inoltrato; credenziali, SSR e backend non impliciti. |
+| Nota                                                           | Correzioni                                                                                                                                                                                                                                                                                                                                                 |
+| -------------------------------------------------------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| [[Programmazione/React/Pagine/State colocato\|State colocato]] | Proprietario, consumatori e durata al posto della regola assoluta sullo stato locale. Distinti Context, custom hook, URL, cache e valori derivati. Catalogo completo con filtro condiviso, dettaglio locale, due istanze, hidden/unmount e reset per key; chiariti inizializzazione e limiti prestazionali.                                                |
+| [[Programmazione/React/Pagine/API layer\|API layer]]           | Trasporto, feature, cache e UI separati. Client JSON con contratto limitato, Headers, status, 204, errori distinti e signal. DTO validati e proiettati, operazioni per dominio, effetti delle scritture sul backend espliciti e integrazione con ProfilePanel esistente. Cache alternativa con signal inoltrato; credenziali, SSR e backend non impliciti. |
 
 ### Fonti e prove
 
@@ -2124,3 +2124,487 @@ La revisione React corrente e conclusa. Tutte le note modificate restano **non r
 - Build Quartz riuscita: **3.719 file, 2.003 HTML, 168 redirect e 136.554 riferimenti verificati, zero errori**. Invariati gli avvisi preesistenti su eval del plugin note-properties e metadati Git della copia temporanea.
 - QA delle due note a 1440 x 1000 e 390 x 844: HTTP 200, titoli e nuovi esempi presenti, nessun errore pagina/console/HTTP o overflow del documento. Sei blocchi di codice e due tabelle scorrono realmente su mobile; la tabella del contratto HTTP rientra nello spazio disponibile.
 - **Sei screenshot ispezionati**, aperture desktop e tabelle/codice mobile. Disattivato lo scorrimento animato nella sola sessione QA per l'inquadratura; nessuna modifica manuale al CSS o agli HTML. Anteprima preesistente http://localhost:8082/appunti/ (PID 30336) lasciata attiva, browser QA chiusi. Prettier della nuova suite e diff --check superati; sezioni principali univoche e storico a dieci voci.
+
+## 2026-10-20 - TypeScript: fondamenti del linguaggio
+
+### Perimetro
+
+Dopo la conclusione e il push della revisione React, avviato il percorso TypeScript: **7 note su 83**, l'intero capitolo Fondamenti del Linguaggio. Letti indice, template e tutte le note del blocco. Date, percorsi, type e publish conservati; status ancora non revisionato fino al controllo dell'utente. Nessuna pagina nuova o spostata.
+
+| Nota                                                                                                  | Correzioni                                                                                                                                                                     |
+| ----------------------------------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
+| [[Programmazione/TypeScript/Pagine/Introduzione a TypeScript\|Introduzione a TypeScript]]             | Separati checker, emissione e runtime; strict e opzioni aggiuntive, CLI locale riproducibile, artefatti precedenti dopo errore, UI distinta dall'autorizzazione server.        |
+| [[Programmazione/TypeScript/Pagine/Tipi primitivi\|Tipi primitivi]]                                   | Limiti di number, BigInt, wrapper e null; prezzo in centesimi con controlli runtime; assenza distinta da undefined con exactOptionalPropertyTypes.                             |
+| [[Programmazione/TypeScript/Pagine/Variabili e annotazioni di tipo\|Variabili e annotazioni di tipo]] | Contratto distinto da conversione e narrowing; callback contestuali, inizializzazione e calcolo reale di un totale al posto della falsa creazione utente.                      |
+| [[Programmazione/TypeScript/Pagine/Inferenza dei tipi\|Inferenza dei tipi]]                           | Literal/widening, readonly non runtime, array e stato iniziale; ritorni inferiti, indice potenzialmente assente. Corretto related YAML spezzato in due stringhe non collegate. |
+| [[Programmazione/TypeScript/Pagine/any, unknown e never\|any, unknown e never]]                       | Scope di any, unknown utilizzabile con controlli, never distinto da void; parser JSON con proiezione, campi propri e limiti espliciti; catch e switch esaustivo.               |
+| [[Programmazione/TypeScript/Pagine/Union e Intersection Types\|Union e Intersection Types]]           | Union non esclusiva, discriminante, proprieta impossibili e conflitti; intersection distinta dallo spread runtime.                                                             |
+| [[Programmazione/TypeScript/Pagine/Type Aliases e Interfaces\|Type Aliases e Interfaces]]             | Tipizzazione strutturale, merging e extends; interfaccia non come filtro dei campi o valore runtime. Proiezione esplicita e contratti DTO/dominio.                             |
+
+### Fonti e prove
+
+- Fonti ufficiali TypeScript, Node.js e MDN riportate nelle note. Baseline TypeScript **5.9.3** gia disponibile nel sito; non dichiarata come ultima versione. Dipendenze e lockfile invariati.
+- Nuova suite `_Meta/tests/typescript-fondamenti.test.mjs`: **52 test superati** su Node **24.14.0**, zero fallimenti o test saltati, circa 68 secondi.
+- Compilati con il vero checker i 23 blocchi indipendenti, oltre alla continuazione ricomposta. Verificati diagnostici negativi e tipi inferiti, senza asserire che codice trasformato equivalga a codice controllato.
+- Eseguiti i risultati JavaScript per output, limiti numerici, parser e proiezione dei campi. CLI reale su fixture isolata: noEmit, `.cjs`, noEmitOnError e vecchio output conservato. Directory temporanea rimossa dopo verifica del percorso.
+- Limiti: non ogni frammento inline, matrice di compilatori/runtime, bundler, API remote o sicurezza di produzione. Non rieseguite le suite JavaScript e React, non modificati i loro esempi.
+
+### Verifica del vault
+
+- content:check con report: **911 documenti raggiungibili, zero errori e 539 avvisi editoriali**, sette in meno.
+- content:test: **9 test superati**, separati dalle prove TypeScript.
+- Build Quartz riuscita: **3.719 file, 2.003 HTML, 168 redirect e 136.638 riferimenti verificati, zero errori**. Restano soltanto gli avvisi preesistenti su eval del plugin note-properties e metadati Git della copia temporanea.
+- QA delle sette pagine su desktop 1440 x 1000 e mobile 390 x 844 con Chrome 155.0.8059.85: HTTP 200, testi aggiornati, nessun errore pagina/console/HTTP o overflow del documento. Verificato lo scorrimento effettivo di 27 blocchi di codice e una tabella su mobile.
+- Quattro screenshot ispezionati delle sezioni di Introduzione a TypeScript e Type Aliases e Interfaces. Anteprima esistente riutilizzata su http://localhost:8082/appunti/; browser di prova chiusi, HTML e CSS non modificati manualmente. Storico mantenuto a dieci voci.
+
+### Prossimo blocco
+
+La revisione e proseguita con Funzioni, Oggetti e Collezioni, documentato di seguito. Nessun commit o push della revisione TypeScript eseguito.
+
+## 2026-10-20 - TypeScript: funzioni, oggetti e collezioni
+
+### Perimetro e correzioni
+
+Lette e corrette le sette note del secondo capitolo base: **14 note TypeScript su 83** in questa passata. Percorsi, date, type, publish e status non revisionato conservati; nessuna pagina creata o spostata, nessun indice o redirect da aggiornare.
+
+| Nota                                                                                              | Correzioni                                                                                                                                                                                |
+| ------------------------------------------------------------------------------------------------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| [[Programmazione/TypeScript/Pagine/Funzioni tipizzate\|Funzioni tipizzate]]                       | Parametri opzionali/default/rest, callback contestuali, void esplicito e contestuale, Promise; selezione locale distinta da invio o validazione email.                                    |
+| [[Programmazione/TypeScript/Pagine/Oggetti e proprieta opzionali\|Oggetti e proprieta opzionali]] | Assenza, undefined e null, opzione exact, default e Partial; anteprima email che dichiara di non inviare messaggi.                                                                        |
+| [[Programmazione/TypeScript/Pagine/Array, Tuple e Readonly\|Array, Tuple e Readonly]]             | Indici fuori limite, tuple modificabili, readonly superficiale e riferimenti condivisi; ordinamento su copia e confronto numerico.                                                        |
+| [[Programmazione/TypeScript/Pagine/Enums e Literal Types\|Enums e Literal Types]]                 | Reverse mapping, lista runtime con guard, compatibilita numerica, const enum e limiti di type stripping; nessuna preferenza assoluta fra union ed enum.                                   |
+| [[Programmazione/TypeScript/Pagine/Assertion e casting dei tipi\|Assertion e casting dei tipi]]   | Corretto predicate che controllava solo la presenza dei campi; verifica dei tipi reali e proprieta proprie, non conversione di as/!, DOM e limiti tra realm. Prerequisites YAML riparato. |
+| [[Programmazione/TypeScript/Pagine/Firme di funzione e overload\|Firme di funzione e overload]]   | Firma interna non pubblica, input union, runtime unico, assenza di prova sui singoli rami; split/join distinto da CSV, firme chiamabili e ReturnType.                                     |
+| [[Programmazione/TypeScript/Pagine/Index Signatures\|Index Signatures]]                           | Lookup corretto per non restituire proprieta ereditate; chiavi assenti, opzioni separate, Record finito/aperto, pattern e metadata. Related Record collegato alla nota Utility Types.     |
+
+### Fonti e prove
+
+- Consultate fonti ufficiali TypeScript, Node.js e MDN, riportate nelle note. Baseline TypeScript **5.9.3**, senza aggiornamenti delle dipendenze.
+- Estratto supporto comune `_Meta/tests/typescript-examples.mjs` per evitare duplicazione del checker. Nuova suite di **67 test**: 29 blocchi compilati, un controllo di versione, 36 gruppi Node e un caso browser con piu input.
+- Regressione seriale delle due suite: **119 test superati**, zero fallimenti o test saltati, circa 73 secondi. Confermati anche i 52 test precedenti dopo l'estrazione del supporto comune.
+- Verificati output, diagnostici attesi, readonly/tuple, optional/exact, enum, guard, overload e dizionari. Controprove con guard, lookup e implementazione di overload volutamente errati soltanto nelle fixture in memoria.
+- DOM in browser isolato: input valido, valore non conforme a una email comunque letto, campo mancante, elemento errato e altro realm. Browser chiuso dopo la prova; nessuna richiesta a un servizio reale.
+- Limiti: non ogni frammento inline, matrice di toolchain/browser, parser CSV, validazione email completa, backend o sicurezza contro getter/Proxy ostili. Suite React e JavaScript non rieseguite.
+
+### Verifica del vault
+
+- content:check con report: **911 documenti raggiungibili, zero errori e 532 avvisi editoriali**, sette in meno.
+- content:test: **9 test superati**, separati dalle prove TypeScript.
+- Build Quartz riuscita: **3.719 file, 2.003 HTML, 168 redirect e 136.723 riferimenti verificati, zero errori**. Invariati gli avvisi preesistenti su eval del plugin note-properties e metadati Git della copia temporanea.
+- QA delle sette pagine a 1440 x 1000 e 390 x 844, Chrome 155.0.8059.85: HTTP 200, contenuti aggiornati, nessun errore pagina/console/HTTP o overflow del documento. Scorrimento effettivo di 28 blocchi di codice e una tabella verificato su mobile.
+- Quattro screenshot ispezionati di Oggetti e proprieta opzionali e Index Signatures. Anteprima esistente riutilizzata e lasciata attiva su http://localhost:8082/appunti/; browser QA chiusi, HTML e CSS non modificati manualmente. Prettier e diff --check superati; storico a dieci voci.
+
+### Prossimo blocco
+
+La revisione e proseguita con Programmazione ad Oggetti, documentato di seguito. Modifiche non ancora inviate con commit o push.
+
+## 2026-10-20 - TypeScript: programmazione ad oggetti e generics
+
+### Perimetro e correzioni
+
+Lette e corrette le cinque note del terzo capitolo base: **19 note TypeScript su 83** in questa passata. Consultati indice, template e note correlate. Date, percorsi, publish, type e status non revisionato conservati; nessuna pagina nuova o spostata, nessun indice o redirect da aggiornare.
+
+| Nota                                                                                                            | Correzioni                                                                                                                                                                                                                                                           |
+| --------------------------------------------------------------------------------------------------------------- | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| [[Programmazione/TypeScript/Pagine/Classi\|Classi]]                                                             | Istanze/costruttori/statici, controllo di inizializzazione e limiti di !; timer monotono con clock iniettabile, this/bind/arrow, ordine dei campi, override e declare.                                                                                               |
+| [[Programmazione/TypeScript/Pagine/Visibilita e modificatori di accesso\|Visibilita e modificatori di accesso]] | readonly distinto dalla visibilita; private/protected statici e #private runtime, compatibilita e riferimenti annidati. Sostituito l'esempio Password in chiaro con una factory per titoli; limiti runtime del costruttore privato e parameter properties espliciti. |
+| [[Programmazione/TypeScript/Pagine/Classi astratte\|Classi astratte]]                                           | Divieto di new statico, metodi astratti eliminati e costruttore emesso; repository concreto in memoria con assenza/errori, firme new/abstract new e rischi degli hook nel costruttore.                                                                               |
+| [[Programmazione/TypeScript/Pagine/Implementazione di interfacce\|Implementazione di interfacce]]               | implements come controllo del lato istanza, non inferenza o ereditarieta; proprieta opzionali non create, firma del costruttore e bivarianza. Sostituito il falso client SMTP con un test double dichiaratamente locale e verificato l'await di notify.              |
+| [[Programmazione/TypeScript/Pagine/Generics\|Generics]]                                                         | Relazioni tra tipi e cancellazione runtime, literal, array vuoto, constraint e sottotipi. Controesempio esplicito di aggiornamento scorretto, preservazione dell'identita, slot generico e dati esterni distinti da contenitori tipizzati.                           |
+
+### Fonti e prove
+
+- Fonti ufficiali TypeScript, Node.js e MDN consultate e riportate nelle note. Baseline **TypeScript 5.9.3**, **Node 24.14.0**, nessuna nuova dipendenza.
+- Nuova suite `_Meta/tests/typescript-oggetti-generics.test.mjs`: **54 casi**, 23 compilazioni dei blocchi, un controllo versione e 30 gruppi statici/runtime. Supporto condiviso riusato senza modifiche.
+- Regressione seriale completa delle tre suite: **173 test superati**, 119 precedenti e 54 nuovi, zero fallimenti o test saltati, circa 109 secondi. Inclusa la prova DOM del blocco precedente; nessuna riesecuzione delle suite JavaScript/React.
+- Prima esecuzione mirata 53/54 per un codice diagnostico atteso errato nel test, non per un esempio invalido. Corretto l'atteso per il literal con proprieta extra e aggiunta la verifica separata della variabile senza id.
+- Verificati casi riusciti, assenza, rejection e controlli statici negativi. Controprove del codice che compila ma fallisce o viola il contratto: campi non pronti, metodi bivarianti, first senza undefined e sottotipo literal cambiato da uno spread.
+- Limiti: non ogni frammento inline o versione di compilatore, loader, browser o target. Nessun SMTP, database, autenticazione, validazione email completa o sicurezza delle credenziali. Timer non usato come benchmark; esempi in memoria, non servizi esterni.
+
+### Verifica del vault
+
+- content:check con report: **911 documenti raggiungibili, zero errori e 527 avvisi editoriali**, cinque in meno.
+- content:test: **9 test superati**, distinti dalle prove TypeScript.
+- Build Quartz riuscita, ripetuta dopo la rifinitura della tabella: **3.719 file, 2.003 HTML, 168 redirect e 136.786 riferimenti verificati, zero errori**. Invariati gli avvisi preesistenti su eval del plugin note-properties e metadati Git della copia temporanea.
+- QA finale delle cinque pagine a 1440 x 1000 e 390 x 844, Chrome 155.0.8059.85: HTTP 200, nuovi contenuti presenti, nessun errore pagina/console/HTTP o overflow del documento. Scorrimento effettivo di **22 blocchi di codice e una tabella** su mobile.
+- Sei screenshot ispezionati: quattro nella prima passata e due della tabella dei modificatori dopo averne accorciato le celle e spostato i dettagli nel testo. La rifinitura non ha modificato gli snippet gia collaudati. Nessuna modifica manuale a CSS/HTML.
+- Anteprima esistente su http://localhost:8082/appunti/ riutilizzata e lasciata attiva; browser QA chiusi. Prettier, diff --check, metadati e titoli controllati; storico mantenuto a dieci voci.
+
+### Prossimo blocco
+
+La revisione e proseguita con Narrowing e Controllo dei Tipi, documentato di seguito. Nessun commit o push della revisione TypeScript.
+
+## 2026-10-20 - TypeScript: narrowing e controllo dei tipi
+
+### Perimetro e correzioni
+
+Revisionate le sei note del primo capitolo intermedio: **25 note TypeScript su 83** in questa passata. Letti indice, template e note correlate su validazione/guardie runtime. Conservati date, percorsi, type, publish e status non revisionato; nessuna nota creata o spostata, nessuna modifica a indice o redirect.
+
+| Nota                                                                                  | Correzioni                                                                                                                                                                                                      |
+| ------------------------------------------------------------------------------------- | --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| [[Programmazione/TypeScript/Pagine/Type Narrowing\|Type Narrowing]]                   | Tipo dichiarato e tipo nel flusso, uscite anticipate, truthiness/nullish, snapshot e alias, closure. Riparato prerequisites YAML spezzato per any/unknown/never.                                                |
+| [[Programmazione/TypeScript/Pagine/Type Guards\|Type Guards]]                         | Differenze fra typeof, in, hasOwn, instanceof e Array.isArray; policy JSON con campi propri e limiti, array sparsi e mutazioni successive. Prerequisites YAML riparato.                                         |
+| [[Programmazione/TypeScript/Pagine/Discriminated Unions\|Discriminated Unions]]       | Relazione tag/payload, successo vuoto, widening e satisfies, destructuring const rispetto a let/rest. Formatter distinto da pagamento/validazione e stato distinto da transizione.                              |
+| [[Programmazione/TypeScript/Pagine/Exhaustiveness Checking\|Exhaustiveness Checking]] | never statico e throw runtime, nuova variante e cast elusivo, ritorni rispetto a copertura, mapping Record. Rimossa serializzazione automatica del payload dagli errori; prerequisites YAML riparato.           |
+| [[Programmazione/TypeScript/Pagine/Type predicates\|Type predicates]]                 | Contratto anche del ramo false, categoria number, modello interno distinto da validazione/autorizzazione, filtri inferiti da TS 5.5, Boolean e NonNullable. Controesempio esplicito di classificatore parziale. |
+| [[Programmazione/TypeScript/Pagine/Assertion functions\|Assertion functions]]         | Ritorno normale, fiducia del checker e throw non generato, config solo strutturale, asserts condition, NonNullable, arrow annotata, catch e async. Related YAML riparato.                                       |
+
+### Fonti e prove
+
+- Consultate e citate fonti ufficiali TypeScript e MDN. Baseline **TypeScript 5.9.3**, **Node 24.14.0**; dipendenze invariate. I riferimenti a funzionalita introdotte in versioni precedenti non significano che quelle versioni siano state tutte eseguite.
+- Nuova suite `_Meta/tests/typescript-narrowing.test.mjs`: **62 test**, 26 compilazioni dei blocchi, un controllo versione e 35 gruppi statici/runtime. Verifiche tra realm con VM Node, non una nuova matrice browser.
+- Regressione seriale delle quattro suite: **235 test superati**, 173 precedenti e 62 nuovi, zero fallimenti o test saltati, circa 149 secondi. Inclusa la prova DOM precedente; suite JavaScript e React non rieseguite.
+- Prima esecuzione 61/62 per un'aspettativa errata del test su una riscrittura con ternario, che non conserva il narrowing. Confermati i controlli nullish diretti e trasformato il ternario in controprova negativa. Tutti i 26 blocchi delle note compilavano gia.
+- Provati input validi/invalidi, nullish/falsy, payload mancanti, array sparsi, proprieta ereditate, alias mutati, ritorni e diagnostici. Controprove di predicate/assertion ingannevoli e di cast a never soltanto nelle fixture; blocco unsafe in nota chiaramente etichettato.
+- Limiti: non tutti i frammenti inline, compilatori, browser o schemi; nessuna protezione universale contro Proxy/getter/iteratori ostili, autorizzazione, pagamento o validazione URL. Nessuna richiesta applicativa a servizi esterni.
+
+### Verifica del vault
+
+- content:check con report: **911 documenti raggiungibili, zero errori e 522 avvisi editoriali**; nessuno relativo alle sei note del blocco.
+- content:test: **9 test superati**, separati dalle prove TypeScript.
+- Build Quartz riuscita: **3.719 file, 2.003 HTML, 168 redirect e 136.859 riferimenti verificati, zero errori**. Invariati gli avvisi preesistenti su eval del plugin note-properties e metadati Git della copia temporanea.
+- QA delle sei pagine a 1440 x 1000 e 390 x 844, Chrome 155.0.8059.85: HTTP 200, contenuti aggiornati presenti, nessun errore pagina/console/HTTP o overflow del documento. Scorrimento effettivo di **25 blocchi di codice** verificato su mobile.
+- Quattro screenshot ispezionati di Type predicates e Assertion functions, desktop e mobile. Anteprima esistente riutilizzata e lasciata attiva su http://localhost:8082/appunti/; browser QA chiusi. Nessuna modifica manuale a CSS/HTML.
+- Prettier e diff --check superati; metadati conservati e storico mantenuto a dieci voci. Nessuna dipendenza o configurazione di pubblicazione modificata.
+
+### Prossimo blocco
+
+La revisione e proseguita con Tipi Avanzati, documentato di seguito. Nessun commit o push; lo status resta non revisionato fino al controllo dell'utente.
+
+## 2026-10-21 - TypeScript: tipi avanzati
+
+### Perimetro e correzioni
+
+Revisionate le nove note del capitolo Tipi Avanzati: **34 note TypeScript su 83**. Letti indice, template e note correlate per tenere separati gli approfondimenti successivi. Conservati date, percorsi, type, publish e status; nessuna nota creata o spostata, nessuna modifica a indici o redirect.
+
+| Nota                                                                                          | Correzioni                                                                                                                                                                          |
+| --------------------------------------------------------------------------------------------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| [[Programmazione/TypeScript/Pagine/Generics avanzati\|Generics avanzati]]                     | Vincoli rispetto al sottotipo, chiave/valore, default, readonly e limiti del repository in memoria: sostituzione, identita e chiave non aggiornata.                                 |
+| [[Programmazione/TypeScript/Pagine/Conditional Types\|Conditional Types]]                     | Assegnabilita, distribuzione del parametro e non della union concreta, never/any/unknown, tuple wrapper, unwrap singolo rispetto ad Awaited e filtro statico.                       |
+| [[Programmazione/TypeScript/Pagine/Mapped Types\|Mapped Types]]                               | Stato del form costruito realmente, propagazione modificatori, exactOptionalPropertyTypes, readonly superficiale, remapping/filtro/collisioni e mancata rimozione dei dati runtime. |
+| [[Programmazione/TypeScript/Pagine/Template Literal Types\|Template Literal Types]]           | Prodotto cartesiano, nome/payload correlati, funzione di log non emitter, parser del solo prefisso con suffisso vuoto, limiti di pattern e casing.                                  |
+| [[Programmazione/TypeScript/Pagine/Indexed Access Types\|Indexed Access Types]]               | Tipo del campo rispetto al literal, indici di tuple/array, noUncheckedIndexedAccess, letture opzionali e NonNullable non validante.                                                 |
+| [[Programmazione/TypeScript/Pagine/Keyof e typeof\|Keyof e typeof]]                           | Getter generico preciso, typeof statico/runtime, chiavi numeriche/symbol e comuni alle union, Object.keys non equivalente alla vista strutturale.                                   |
+| [[Programmazione/TypeScript/Pagine/Infer nei Conditional Types\|Infer nei Conditional Types]] | Ritorno statico, never[] rispetto a unknown[], readonly e tuple vuote/aperte, constraint su infer, ultima firma di overload e declare senza implementazione.                        |
+| [[Programmazione/TypeScript/Pagine/Recursive types\|Recursive types]]                         | Tipi ricorsivi rispetto a visite, limiti del modello JSON, cicli e numeri non finiti, caso base, readonly profondo limitato a dati semplici e alias mutabili.                       |
+| [[Programmazione/TypeScript/Pagine/Variadic tuple types\|Variadic tuple types]]               | Riparato prerequisites YAML, tuple/array e label, input readonly rispetto al risultato, wrapper senza log degli argomenti, this/Promise/errori, concat e partial application.       |
+
+### Fonti e prove
+
+- Consultate fonti ufficiali TypeScript e MDN, citate nelle note. Baseline **TypeScript 5.9.3**, **Node 24.14.0** e dipendenze esistenti; nessun aggiornamento del compilatore. I riferimenti alle release di introduzione non sono una matrice di esecuzione su quelle release.
+- Prima compilazione dei **34 blocchi TypeScript**: zero diagnostici. Aggiunta `_Meta/tests/typescript-tipi-avanzati.test.mjs`, con supporto condiviso invariato, per verificare risultati type-level e contratti runtime.
+- Nuova suite riuscita al primo tentativo: **66/66 test**, 34 compilazioni, un controllo versione e 31 gruppi statici/runtime, zero fallimenti o test saltati, circa 106 secondi.
+- Regressione seriale delle cinque suite: **301 test superati**, 235 precedenti e 66 nuovi, zero fallimenti o test saltati, circa 290 secondi. Inclusa la prova DOM preesistente; suite JavaScript/React non rieseguite. Build avviata solo dopo la conclusione della regressione.
+- Limiti: non ogni frammento inline, versione o configurazione; nessun database, servizio email, sistema di eventi, validatore JSON universale, autenticazione o benchmark. Le strutture cicliche non sono attraversate senza limiti; il test di istanziazione ricorsiva verifica il diagnostico del checker, non una profondita universale.
+
+### Verifica del vault
+
+- content:check con report: **911 documenti raggiungibili, zero errori e 514 avvisi editoriali**, otto in meno; nessuno relativo alle nove note del capitolo.
+- content:test: **9 test superati**, distinti dalle prove TypeScript. Metadati, H1 e limite di dieci voci nello storico verificati con il parser del vault.
+- Build Quartz riuscita: **3.719 file, 2.003 HTML, 168 redirect e 136.945 riferimenti verificati, zero errori**. Invariati gli avvisi preesistenti su eval nel plugin note-properties e metadati Git della copia temporanea.
+- QA delle nove pagine a 1440 x 1000 e 390 x 844, Chrome 155.0.8059.85: HTTP 200, nuovi contenuti presenti, nessun errore pagina/console/HTTP o overflow del documento. Scorrimento effettivo di **32 blocchi di codice** su mobile.
+- Quattro screenshot ispezionati di Mapped Types e Variadic tuple types, desktop e mobile. Prima verifica interrotta da un marcatore testuale che usava apostrofi ASCII, mentre Quartz li rende tipografici; verificato il testo renderizzato e ripetuto l'intero controllo con marcatori indipendenti dalla punteggiatura, senza modificare le note.
+- L'anteprima precedente non era attiva: verificata libera la porta 8082, riavviato il server in background senza finestra e lasciato disponibile su http://localhost:8082/appunti/. Browser QA chiusi; nessuna modifica manuale a HTML/CSS.
+- Prettier e diff --check superati. Nessuna dipendenza, lockfile o configurazione di pubblicazione modificata; storico mantenuto a dieci voci.
+
+### Prossimo blocco
+
+La revisione e proseguita con Moduli e Configurazione, documentato di seguito. Nessun commit o push della revisione TypeScript.
+
+## 2026-10-21 - TypeScript: moduli e configurazione
+
+### Perimetro e correzioni
+
+Revisionate le sette note del capitolo: **41 note TypeScript su 83** in questa passata. Conservati date, percorsi, type, publish e status non revisionato; nessuna pagina nuova o spostata, nessun indice o redirect da modificare.
+
+| Nota                                                                                  | Correzioni                                                                                                                                                                                                                         |
+| ------------------------------------------------------------------------------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| [[Programmazione/TypeScript/Pagine/tsconfig\|tsconfig]]                               | Distinti selezione dei file, import, rootDir, target/lib/types, controllo ed emissione. Config Node completa, comandi diagnostici, ereditarieta e limiti di skipLibCheck; output precedenti non eliminati da noEmit/noEmitOnError. |
+| [[Programmazione/TypeScript/Pagine/Moduli ES e CommonJS\|Moduli ES e CommonJS]]       | Separati esempi ESM e CommonJS, package type ed estensioni runtime. NodeNext per file, import type, verbatimModuleSyntax, interop e limiti di require(ESM) in Node 24.                                                             |
+| [[Programmazione/TypeScript/Pagine/Module resolution\|Module resolution]]             | Distinti tipi e implementazioni, NodeNext/Bundler, export map e sottopercorsi pubblici. Esempio completo mediante config condivisa, traceResolution e diagnosi dell'output.                                                        |
+| [[Programmazione/TypeScript/Pagine/Path aliases\|Path aliases]]                       | baseUrl non obbligatorio e nessuna riscrittura da paths. Due progetti verificabili: bundle esbuild e package imports # nativi Node, con prerequisiti e metadati da distribuire.                                                    |
+| [[Programmazione/TypeScript/Pagine/Project references\|Project references]]           | Risolta incoerenza app/api. Grafo domain/api completo, build da zero, dichiarazioni e cache, -p rispetto a -b, stopBuildOnErrors, output vecchi e pulizia limitata agli artefatti riconosciuti.                                    |
+| [[Programmazione/TypeScript/Pagine/Strict mode\|Strict mode]]                         | Famiglia di flag esplicita nella baseline 5.9.3, opzioni aggiuntive, null, indici e optional esatti. Distinti any, validazione runtime e strict JavaScript; riparato prerequisites YAML spezzato.                                  |
+| [[Programmazione/TypeScript/Pagine/Source maps e debugging\|Source maps e debugging]] | Progetto compilato e errore intenzionale, confronto degli stack con flag Node, mappe esterne/inline e contenuto sorgente. Procedura Inspector locale, catena delle trasformazioni e pubblicazione privata delle mappe.             |
+
+### Fonti e prove
+
+- Fonti ufficiali TypeScript, Node.js ed esbuild consultate e riportate nelle note. Baseline **TypeScript 5.9.3**, **Node 24.14.0**, **esbuild 0.27.3**. Nessuna dipendenza o lockfile modificato.
+- Nuova suite `_Meta/tests/typescript-moduli-configurazione.test.mjs`: **31 test superati al primo tentativo**, circa 49 secondi. Configurazioni e snippet estratti dai Markdown, CLI del compilatore ed esbuild reali, output eseguito in Node.
+- Regressione seriale completa delle sei suite: **332 test superati**, 301 precedenti e 31 nuovi, zero fallimenti o test saltati, circa 460 secondi. Inclusa la prova DOM precedente; suite JavaScript/React non rieseguite. Build Quartz avviata soltanto a regressione conclusa.
+- Provati anche gli errori attesi: import ESM senza estensione, export privato, dichiarazione senza JavaScript, alias non riscritto, package imports mancanti, dipendenza non compilata, progetto senza composite, opzioni source map incompatibili e controlli strict aggiuntivi.
+- Le fixture usano `@types/node` 25.3.0 gia presente in site, tramite typeRoots temporaneo; gli esempi vengono eseguiti in Node 24. Non e una certificazione generale di compatibilita tra quelle due major. La suite richiede le versioni fissate e non installa pacchetti.
+- Directory temporanee rimosse dopo verifica del percorso assoluto. Nessun servizio remoto, dato reale, pubblicazione di pacchetti o modifica al browser personale. Non sono testati tutti i target, toolchain, flag, breakpoint o prestazioni; la procedura Inspector e documentata ma non avviata. La riga TypeScript nello stack e invece verificata automaticamente.
+
+### Verifica del vault
+
+- content:check con report: **911 documenti raggiungibili, zero errori e 507 avvisi editoriali**, sette in meno; nessuno nelle sette note. Metadati, H1 e prerequisiti verificati.
+- content:test: **9 test della trasformazione superati**, distinti dalle prove TypeScript.
+- Prima build Quartz riuscita: **3.719 file, 2.003 HTML, 168 redirect e 137.013 riferimenti verificati, zero errori**. Soltanto gli avvisi preesistenti su eval del plugin note-properties e metadati Git nella copia temporanea.
+- Prima QA delle sette pagine a 1440 x 1000 e 390 x 844, Chrome 155.0.8059.85: HTTP 200, contenuti aggiornati, nessun errore pagina/console/HTTP o overflow del documento. Verificato lo scorrimento di 19 blocchi di codice e due tabelle su mobile.
+- Cinque screenshot iniziali ispezionati. La tabella dei flag strict era scorrevole ma poco leggibile su mobile: convertita in elenco senza cambiare informazioni, configurazioni o snippet gia testati. Nessuna modifica manuale a HTML/CSS.
+- Build finale dopo la rifinitura riuscita con gli stessi conteggi: **3.719 file, 2.003 HTML, 168 redirect, 137.013 riferimenti e zero errori**. Ripetuta la QA delle sette pagine sui due viewport: nessun errore pagina/console/HTTP o overflow, scorrimento effettivo di 19 blocchi di codice e una tabella su mobile.
+- Altri due screenshot di Strict mode ispezionati, desktop e mobile: elenco leggibile senza scorrimento orizzontale. Sette screenshot complessivi; snippet e configurazioni invariati rispetto ai 332 test superati.
+- Anteprima esistente su http://localhost:8082/appunti/ riutilizzata e lasciata attiva; browser QA chiusi. Prettier e diff --check superati, storico mantenuto a dieci voci. Nessun HTML/CSS, dipendenza o configurazione di pubblicazione modificati manualmente.
+
+### Prossimo blocco
+
+La revisione e proseguita con Utility e Pattern di Tipo, documentato di seguito. Nessun commit o push della revisione TypeScript.
+
+## 2026-10-22 - TypeScript: utility e pattern di tipo
+
+### Perimetro e correzioni
+
+Revisionate le sei note del capitolo: **47 note TypeScript su 83**. Conservati date, percorsi, type, publish e status non revisionato. Nessuna pagina nuova o spostata, nessun indice o redirect da aggiornare.
+
+| Nota                                                                                            | Correzioni                                                                                                                                                                                                                                                 |
+| ----------------------------------------------------------------------------------------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| [[Programmazione/TypeScript/Pagine/Utility Types\|Utility Types]]                               | Omit distinto dalla proiezione runtime e dalla serializzazione; allowlist dei campi aggiornabili, patch esplicita con undefined/falsy, utility standard, Record, overload, Awaited e NoInfer. Collegamenti related YAML resi riferimenti a note esistenti. |
+| [[Programmazione/TypeScript/Pagine/Utility Types personalizzati\|Utility Types personalizzati]] | Nullable superficiale con modificatori conservati, RequireKeys composto e funzione con garanzie limitate; null/undefined ed exact, Omit distributivo con discriminanti. Rimando alla ricorsione invece di duplicare una falsa utility universale.          |
+| [[Programmazione/TypeScript/Pagine/Brand Types\|Brand Types]]                                   | Sostituito il controllo email includes-at con due parser di ID dal formato dimostrativo esplicito; unknown, lunghezza e newline, unique symbol, brand cancellato, assertion, serializzazione e autorizzazione separata.                                    |
+| [[Programmazione/TypeScript/Pagine/satisfies operator\|satisfies operator]]                     | Controllo statico distinto da conversione e validazione; inferenza contestuale di stringhe/booleani, stato mutabile annotato, chiavi finite/aperte, excess property checks, campi extra e optional non materializzati.                                     |
+| [[Programmazione/TypeScript/Pagine/as const\|as const]]                                         | Binding rispetto a contenuto, tuple, riferimenti condivisi, copie e funzioni readonly, limiti sintattici e contesto mutabile. Nessuna promessa di freeze profondo.                                                                                         |
+| [[Programmazione/TypeScript/Pagine/const type parameters\|const type parameters]]               | Inferenza dei literal in chiamata, perdita nelle variabili, identita runtime e vincoli. Tupla mutabile precisa nella baseline, non fallback automatico a string[]; compatibilita delle dichiarazioni distinta dal runtime.                                 |
+
+### Fonti e prove
+
+- Consultate fonti ufficiali TypeScript, interventi dei manutentori e MDN; riferimenti nelle note. Baseline **TypeScript 5.9.3**, **Node 24.14.0**. Nessun aggiornamento di dipendenze o lockfile.
+- Un controllo preliminare sul checker ha smentito l'aspettativa di fallback a string[] derivata dalle vecchie release note 5.0. Verificata la modifica ufficiale nella PR 55229 e aggiornati sia const type parameters sia as const. Non eseguita una matrice di compilatori storici.
+- Nuova suite `_Meta/tests/typescript-utility-pattern.test.mjs`: **52/52 test superati al primo tentativo**, circa 99 secondi. Ventuno blocchi estratti dai Markdown e compilati in strict, un controllo della versione e 30 gruppi statici/runtime; supporto condiviso invariato.
+- Regressione seriale delle sette suite: **384 test superati**, 332 precedenti e 52 nuovi, nessun fallimento o test saltato, circa 561 secondi. Compresa la prova DOM preesistente con Playwright/Chrome; suite JavaScript e React non rieseguite. Build avviata soltanto a regressione conclusa.
+- Testati risultati e diagnostici attesi, serializzazione senza campo riservato dopo proiezione, patch con zero/undefined, optional con exact attivo/disattivo, union e modificatori, parser con prefissi errati/newline, brand incompatibili, JSON, alias e mutazioni. Controprove con any/assertion soltanto nelle fixture.
+- Limiti: una baseline, non ogni frammento inline, utility, piattaforma o versione. Nessun backend, database, invio email, standard UUID, validazione completa di email/URL, autorizzazione o prova universale di immutabilita. Gli esempi di patch e draft dichiarano esplicitamente le verifiche che non eseguono.
+
+### Verifica del vault
+
+- content:check con report: **911 documenti raggiungibili, zero errori e 501 avvisi editoriali**, sei in meno; nessuno relativo alle sei note. Metadati, data, H1 e fonti controllati con il parser del vault.
+- content:test: **9 test della trasformazione superati**, distinti dalle prove TypeScript.
+- Build Quartz riuscita: **3.719 file, 2.003 HTML, 168 redirect e 137.082 riferimenti verificati, zero errori**. Invariati gli avvisi su eval nel plugin note-properties e metadati Git della copia temporanea.
+- QA delle sei pagine a 1440 x 1000 e 390 x 844, Chrome 155.0.8059.85: HTTP 200, nuovi contenuti presenti, nessun errore pagina/console/HTTP o overflow del documento. Scorrimento effettivo verificato per **19 blocchi di codice** su mobile.
+- Quattro screenshot ispezionati di as const e const type parameters, desktop/mobile. Testo e gerarchia leggibili, blocchi lunghi contenuti nel proprio scroller. Nessuna modifica manuale a HTML/CSS.
+- Anteprima esistente su http://localhost:8082/appunti/ riutilizzata e lasciata attiva; browser QA chiuso e scheda personale non modificata. Prettier e diff --check superati; storico mantenuto a dieci voci, eliminata la voce operativa piu vecchia secondo la convenzione del vault.
+
+### Prossimo blocco
+
+La revisione e proseguita con Type System in Profondita, documentato di seguito. Nessun commit o push.
+
+## 2026-10-22 - TypeScript: type system in profondita
+
+### Perimetro e correzioni
+
+Revisionate tutte le otto note del capitolo: **55 note uniche TypeScript su 83**. Conservati date, percorsi, type, publish e status non revisionato. Nessuna nuova pagina, spostamento, modifica a indici o redirect.
+
+- [[Programmazione/TypeScript/Pagine/Structural typing|Structural typing]]: compatibilita direzionale, proprieta in eccesso, campi non rimossi, identita runtime, classi private, weak types e contratti minimi.
+- [[Programmazione/TypeScript/Pagine/Variance|Variance]]: reader/writer, invarianza, proprieta funzione rispetto a metodi, array mutabili, viste readonly e limiti delle annotazioni in/out.
+- [[Programmazione/TypeScript/Pagine/Distributive conditional types|Distributive conditional types]]: parametro nudo, wrapper, union concreta, filtri, array misti, never/any/unknown e distribuzione annidata.
+- [[Programmazione/TypeScript/Pagine/Type inference avanzata|Type inference avanzata]]: contextual typing, const, widening e default dei generics. La Map sostituisce il cast a Record totale, che prometteva chiavi non necessariamente presenti.
+- [[Programmazione/TypeScript/Pagine/Declaration Merging|Declaration Merging]]: ambiti, conflitti, overload, Window tramite export e declare global; controesempio di interfaccia che non inizializza i campi della classe.
+- [[Programmazione/TypeScript/Pagine/Module augmentation|Module augmentation]]: progetto ESM completo, differenza dai moduli ambient, specifier, implementazione e import del plugin; limiti di alias/default export e integrazioni opzionali.
+- [[Programmazione/TypeScript/Pagine/Namespace|Namespace]]: valori emessi rispetto a soli tipi, merging, visibilita dei membri, namespace ambient, ambito globale/modulo e vincoli della pipeline.
+- [[Programmazione/TypeScript/Pagine/Decorators|Decorators]]: modalita moderna/legacy, this/argomenti/ritorno, ordine di applicazione, inizializzazione dei field, comandi reali e metadati distinti.
+
+### Fonti e prove
+
+- Consultate fonti ufficiali TypeScript e aggiunte nelle note. Baseline **TypeScript 5.9.3**, **Node 24.14.0**. Nessuna dipendenza, lockfile o configurazione del sito modificati.
+- Nuova suite `_Meta/tests/typescript-type-system.test.mjs`: **51 test**, con 35 blocchi TypeScript e due configurazioni JSON estratti dalle note, controllo statico, esecuzione Node e una prova DOM reale in Chrome. Progetti multifile e comandi CLI usano il compilatore installato.
+- Primo giro: **50/51 superati**, circa 77 secondi. La sola mancata corrispondenza riguardava il diagnostico atteso nella fixture di dichiarazione ambient: il consumer riporta TS2307, non TS2664. Corretta l'aspettativa e superata la prova mirata; il caso .ts con augmentation verso modulo inesistente verifica distintamente TS2664.
+- Le prove includono errori statici previsti e fallimenti runtime intenzionali intercettati: metodo bivariante, array mutato, campo mai inizializzato, plugin non caricato, namespace ambient e metodo estratto senza ricevitore.
+- Limiti: una baseline, non una matrice di compilatori/runtime. Nessun test di framework Express, dependency injection, reflect-metadata o Symbol.metadata. La prova Window esegue l'emit CommonJS con uno shim exports in un DOM reale; non certifica un'applicazione browser ESM completa.
+- Directory temporanee rimosse solo dopo verifica dei percorsi; nessun servizio remoto, pacchetto installato, credenziale o browser personale. Supporto condiviso dei test invariato.
+- Regressione seriale completa delle otto suite: **435 test superati**, 384 precedenti e 51 nuovi, nessun fallimento o test saltato, circa 662 secondi. Incluse le prove DOM; suite JavaScript/React non rieseguite. Build Quartz avviata soltanto a regressione conclusa.
+
+### Verifica del vault
+
+- content:check con report: **911 documenti raggiungibili, zero errori e 495 avvisi editoriali**, sei in meno. Nessuno relativo alle otto note.
+- content:test: **9 test della trasformazione superati**. Metadati, H1 e conteggi dell'indice controllati separatamente.
+- Build Quartz riuscita: **3.719 file, 2.003 HTML, 168 redirect e 137.198 riferimenti verificati, zero errori**. Circa cinque minuti; solo gli avvisi preesistenti su eval del plugin note-properties e metadati Git nella copia temporanea.
+- QA delle otto pagine a **1440 x 1000** e **390 x 844**, Chrome **155.0.8059.85**: HTTP 200, contenuti aggiornati, nessun errore pagina/console/HTTP o overflow del documento. Scorrimento effettivo verificato per **34 blocchi su mobile** e due comandi lunghi su desktop.
+- Ispezionati sei screenshot di Variance, Module augmentation e Decorators, desktop/mobile. Gerarchia e testo leggibili; codice lungo confinato negli scroller. Nessuna modifica manuale a HTML/CSS.
+- Anteprima esistente su http://localhost:8082/appunti/ riutilizzata e lasciata attiva; browser QA chiuso. Prettier, diff --check e dieci voci dello storico verificati. I conteggi sono su note uniche: Declaration Merging compare in due capitoli dell'indice ma conta una sola volta.
+
+### Prossimo blocco
+
+La revisione e proseguita con Interoperabilita con JavaScript, documentata di seguito. Declaration Merging resta conteggiata una sola volta.
+
+## 2026-10-22 - TypeScript: interoperabilita con JavaScript
+
+### Perimetro e correzioni
+
+Revisionate le sei note non ancora coperte del capitolo: **61 note TypeScript uniche su 83**. Declaration Merging era gia revisionata e non viene ricontata. Conservati date, percorsi, type, publish e status non revisionato. Nessuna nota nuova o spostata; nessun indice o redirect da modificare.
+
+| Nota                                                                                                              | Correzioni                                                                                                                                                                                                                     |
+| ----------------------------------------------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
+| [[Programmazione/TypeScript/Pagine/Migrazione da JavaScript a TypeScript\|Migrazione da JavaScript a TypeScript]] | Separati inclusione, controllo ed emissione; progetto ESM completo prima/dopo, JS non controllato e any, import runtime coerenti e output obsoleti. Riparato il riferimento YAML alla nota any/unknown/never.                  |
+| [[Programmazione/TypeScript/Pagine/Typing di librerie JavaScript\|Typing di librerie JavaScript]]                 | Modulo CommonJS locale reale con d.cts, unknown e controlli espliciti; stringify puo restituire undefined o fallire. Distinti dichiarazione, implementazione distribuita, modulo ambient, augmentation e wrapper.              |
+| [[Programmazione/TypeScript/Pagine/JSDoc e type checking in JavaScript\|JSDoc e type checking in JavaScript]]     | checkJs e direttive per file, generics e array vuoti, type/satisfies, import solo di tipi e generazione dichiarazioni. Corretta l'idea che JSDoc serva solo a tipi semplici o debba essere necessariamente abbandonato.        |
+| [[Programmazione/TypeScript/Pagine/Dichiarazioni e file d.ts\|Dichiarazioni e file d.ts]]                         | Progetto ESM con sorgente, output e consumer, tipi pubblici ed exports. Scope dei file, suffissi, emitDeclarationOnly, global augmentation e dipendenze delle dichiarazioni distinti dal runtime.                              |
+| [[Programmazione/TypeScript/Pagine/DefinitelyTyped\|DefinitelyTyped]]                                             | Versioni e dipendenze dei tipi, pacchetti scoped, types/typeRoots e import espliciti. Debounce reale con flush/cancel; compatibilita limitata all'API verificata, non a tutta la libreria.                                     |
+| [[Programmazione/TypeScript/Pagine/Generazione di tipi da API\|Generazione di tipi da API]]                       | Schema OpenAPI locale completo, generatore fissato e consumer compilabile. Presenza/nullabilita, check dell'output, errori HTTP/JSON e parser esplicito; nessun client o validatore attribuito alla sola generazione dei tipi. |
+
+### Fonti e prove
+
+- Fonti ufficiali TypeScript, DefinitelyTyped, Lodash, OpenAPI e openapi-typescript, piu MDN per JSON; riferimenti nelle note. Baseline **TypeScript 5.9.3**, **Node 24.14.0**, **openapi-typescript 7.13.0**, **Lodash 4.18.1**, **@types/lodash 4.17.27**.
+- Strumenti aggiuntivi installati in una cartella temporanea esterna con script di installazione disabilitati. Nessuna dipendenza o lockfile del vault/site modificati. Versioni e procedura riproducibile in `_Meta/tests/README.md`.
+- Nuova suite `_Meta/tests/typescript-interoperabilita.test.mjs`: **33/33 test riusciti al primo giro**, circa 94 secondi. Un controllo baseline, sei editoriali e 26 gruppi statici/runtime; 17 blocchi JS/TS, 11 configurazioni JSON e uno schema OpenAPI estratti dai Markdown.
+- Regressione mirata seriale: **115 test superati**, 33 nuovi + 31 Moduli e Configurazione + 51 Type System, zero fallimenti o test saltati, circa 219 secondi. Inclusa la prova DOM precedente. Build avviata solo dopo la conclusione dei test.
+- Le altre sei suite TypeScript e le suite JavaScript/React non sono state rieseguite; il precedente risultato completo da 435 test rimane distinto. Nessuna modifica al supporto condiviso dei test.
+- Provati noEmit/noEmitOnError e artefatti vecchi, checkJs/direttive, dichiarazioni false o senza runtime, firme JSDoc, emissione d.ts, exports, globali non inizializzati, pacchetti @types reali e debounce.
+- La CLI OpenAPI reale verifica schema valido/invalido, required/nullable, file mancante/obsoleto e consumer incompatibile dopo rigenerazione. Fetch e simulato: URL codificata, HTTP 404, JSON malformato, 204, dati inattesi ed errore di rete. Nessuna richiesta a servizi remoti.
+- Limiti: una baseline e Windows, non tutte le versioni o API Lodash. Nessuna pubblicazione npm, integrazione GraphQL/Prisma/RPC o validazione completa del contratto API. Il parser proietta id/email e non verifica formato email, nickname o autorizzazione. Fixture ripulite dopo controllo dei percorsi assoluti; browser di test chiuso, browser personale non modificato.
+
+### Verifica del vault
+
+- content:check con report: **911 documenti raggiungibili, zero errori e 490 avvisi editoriali**, cinque in meno; nessuno nelle sei note. Metadati, H1, fonti e comandi separati verificati.
+- content:test: **9 test della trasformazione superati**, distinti dalle prove TypeScript.
+- Build Quartz riuscita: **3.719 file, 2.003 HTML, 168 redirect e 137.286 riferimenti verificati, zero errori**. Restano soltanto gli avvisi preesistenti su eval del plugin note-properties e metadati Git nella copia temporanea.
+- QA delle sei pagine a **1440 x 1000** e **390 x 844**, Chrome **155.0.8059.85**: HTTP 200, contenuti aggiornati, nessun errore pagina/console/HTTP o overflow del documento. Verificato lo scorrimento effettivo di **22 blocchi di codice su mobile**; nessuno richiede scorrimento su desktop.
+- Ispezionati sei screenshot di Migrazione, JSDoc e Generazione di tipi da API, desktop/mobile. Titoli e testo leggibili, codice lungo confinato nei propri scroller. Nessuna modifica manuale a HTML o CSS.
+- Anteprima esistente su http://localhost:8082/appunti/ riutilizzata e lasciata attiva; browser QA chiuso. Conteggio verificato dall'indice e dal registro: 83 note uniche, 61 revisionate tecnicamente, 22 rimanenti. Storico mantenuto a dieci voci.
+
+### Prossimo blocco
+
+La revisione e proseguita con Validazione e Confine Runtime, documentata di seguito. Nessun commit o push.
+
+## 2026-10-22 - TypeScript: validazione e confine runtime
+
+### Perimetro e correzioni
+
+Revisionate tutte le cinque note del capitolo: **66 note TypeScript uniche su 83**. Conservati date, percorsi, type, publish e status non revisionato. Nessuna pagina aggiunta o spostata, nessun indice o redirect da aggiornare.
+
+- [[Programmazione/TypeScript/Pagine/Validazione runtime e tipi statici|Validazione runtime e tipi statici]]: distinti decodifica, forma, proiezione e regole applicative; assertion che non converte, parser con campi propri e risultato pubblico, limiti di unknown, getter, mutazioni e autorizzazione. Riparato il prerequisito YAML any/unknown/never.
+- [[Programmazione/TypeScript/Pagine/Schema validation con Zod|Schema validation con Zod]]: progetto ESM completo e versioni fissate, schema applicato ai dati, input/output e uso del risultato. Chiariti chiavi extra, coercion, assenza/null, default/prefault, errori propagati, metodi async e limiti della conversione JSON Schema.
+- [[Programmazione/TypeScript/Pagine/Type guards runtime|Type guards runtime]]: promessa nei due rami, forma distinta da criteri di dominio, NaN/Infinity, proprieta ereditate, identita e mutazioni, array sparsi e falsa guardia basata su output trasformato.
+- [[Programmazione/TypeScript/Pagine/Parsing sicuro di input esterni|Parsing sicuro di input esterni]]: parser di porta con sintassi e intervallo espliciti, rifiuto di booleani/array/oggetti senza coercion, errori discriminati. Documento JSON con limite del testo, forma e valore distinti; limiti di trasporto, duplicati e alias numerico dichiarati.
+- [[Programmazione/TypeScript/Pagine/API contract|API contract]]: protocollo oltre i tipi statici, decoder locale per status e payload, proiezione dei campi e messaggi remoti non esposti. Distinti adapter HTTP, DTO, schema/generazione, compatibilita direzionale e test del provider.
+
+### Fonti e prove
+
+- Consultate fonti ufficiali TypeScript, Zod, MDN, OpenAPI e Node; riferimenti nelle note. Baseline **TypeScript 5.9.3**, **Node 24.14.0**, **Zod 4.6.7**.
+- Zod installato soltanto in una directory temporanea esterna, con script di installazione disabilitati. Nessuna dipendenza o lockfile del sito modificati; istruzioni riproducibili nel README dei test.
+- Nuova suite `_Meta/tests/typescript-validazione-runtime.test.mjs`: **47 test**, 13 blocchi TypeScript estratti dai Markdown in nove unita compilate, due configurazioni JSON e un progetto CLI NodeNext con quattro entry point ESM.
+- Primo giro: **40/47 superati**, circa 78 secondi. Sette problemi del runner locale corretti: riferimenti importati/esportati nelle espressioni di verifica e Promise cross-realm della VM. Nessuna modifica ai supporti condivisi o indebolimento degli esempi; riesecuzione mirata Zod con 12 test riusciti, incluso il controllo editoriale.
+- Provati payload validi/invalidi, null/array/ereditarieta, getter che lanciano, copie e mutazioni, vincoli Zod e inferenza, default e coercion, guardie e rami falsi, parser di porta con newline/estremi/tipi inattesi, JSON duplicato o troppo lungo, status e risposte errate.
+- Regressione seriale mirata: **142 test superati**, 47 nuovi + 62 Narrowing + 33 Interoperabilita, nessun fallimento o test saltato, circa 227 secondi. Build Quartz avviata soltanto a test conclusi. Le altre suite TypeScript e quelle JavaScript/React non sono rieseguite; il precedente risultato completo da 435 test resta una verifica storica distinta.
+- Limiti: una baseline su Windows, non tutte le versioni o i contesti cross-realm. Nessun servizio HTTP remoto, autenticazione, autorizzazione, transazione o verifica reale delle email. Il limite del testo non controlla download/memoria complessiva; i parser non isolano codice ostile e il decoder locale non collauda il provider. Fixture rimosse solo dopo verifica del percorso assoluto.
+
+### Verifica del vault
+
+- content:check con report: **911 documenti raggiungibili, zero errori e 486 avvisi editoriali**, quattro in meno; nessuno nelle cinque note. Metadati, H1, fonti e comandi separati verificati.
+- content:test: **9 test della trasformazione superati**, distinti dalle prove TypeScript.
+- Build Quartz riuscita: **3.719 file, 2.003 HTML, 168 redirect e 137.351 riferimenti verificati, zero errori**. Soltanto gli avvisi preesistenti su eval del plugin note-properties e metadati Git nella copia temporanea.
+- QA delle cinque pagine a **1440 x 1000** e **390 x 844**, Chrome **155.0.8059.85**: HTTP 200, nuovi contenuti presenti, nessun errore pagina/console/HTTP o overflow del documento. Scorrimento effettivo verificato per **14 blocchi di codice su mobile**, nessuno necessario su desktop.
+- Ispezionati sei screenshot di Zod, Parsing e API contract, desktop/mobile. Testo e gerarchia leggibili; codice lungo confinato nei propri scroller. Nessuna modifica manuale agli HTML/CSS.
+- Anteprima esistente su http://localhost:8082/appunti/ riutilizzata e lasciata attiva; browser QA chiuso, browser personale non modificato. Prettier e diff --check superati. Conteggio verificato dall'indice: 83 note uniche, 66 revisionate tecnicamente e 17 rimanenti; storico mantenuto a dieci voci.
+
+### Prossimo blocco
+
+La revisione e proseguita con Framework e Applicazioni, documentato di seguito. Nessun commit o push.
+
+## 2026-10-22 - TypeScript: framework e applicazioni
+
+### Perimetro e correzioni
+
+Revisionate tutte le sei note del capitolo: **72 note TypeScript uniche su 83**. Conservati date, percorsi, type, publish e status non revisionato. Nessuna pagina aggiunta o spostata; indici e redirect invariati.
+
+- [[Programmazione/TypeScript/Pagine/TypeScript con React|TypeScript con React]]: progetto TSX/Vite completo, checker distinto dalla trasformazione, props/callback, stato nullable, eventi e ref con prova nel browser. Chiariti readonly, chiavi, children e limiti del typing.
+- [[Programmazione/TypeScript/Pagine/TypeScript con Node.js|TypeScript con Node.js]]: CLI ESM reale, JSON e porta validati, argomenti e codici di uscita, percorsi da cwd e limiti di readFile. Distinti compilazione, loader e type stripping nativo senza checker.
+- [[Programmazione/TypeScript/Pagine/API tipizzate|API tipizzate]]: eliminata la falsa creazione utente; client di anteprima con schema condiviso, input/output, status/content type, errori distinti e abort anche durante il body. Espliciti limiti di risposta, credenziali e risultato discriminato.
+- [[Programmazione/TypeScript/Pagine/TypeScript con Express-Fastify|TypeScript con Express/Fastify]]: implementati entrambi i server con lo stesso protocollo, Zod, limiti e messaggi pubblici. Distinti parsing/schema, generic e validazione, error handler Express 5, lifecycle e validator/serializer Fastify.
+- [[Programmazione/TypeScript/Pagine/TypeScript con Next.js|TypeScript con Next.js]]: params asincroni e PageProps generato, typedRoutes, typegen, build reale e confini server/client. Catalogo dichiarato come fixture, DTO proiettato, not-found e interazione locale; niente finto backend.
+- [[Programmazione/TypeScript/Pagine/TypeScript monorepo|TypeScript monorepo]]: workspace npm completi, dipendenze, exports e references coerenti. Installazione/build/start reali, npm ci da output puliti e distinzione tra grafo npm, checker e runtime.
+
+### Fonti e prove
+
+- Fonti ufficiali React, Node, TypeScript, Vite, Express, Fastify, Next, npm, Zod e MDN; riferimenti nelle note.
+- Baseline: **TypeScript 5.9.3**, **Node 24.14.0**, **npm 11.19.0**, **React 19.3.0**, **Vite 8.3.4**, plugin React **6.1.2**, **Next 16.4.1**, **Express 5.3.0**, **Fastify 5.12.7**, **Zod 4.6.7**. Tipi Node 24.19.2, React/DOM 19.3.0, Express 5.0.6.
+- Toolchain installata in una directory temporanea esterna con script disabilitati; audit senza advisory. Nessuna modifica alle dipendenze o al lockfile Quartz. Procedura e limiti in `_Meta/tests/README.md`.
+- Nuova suite `_Meta/tests/typescript-framework.test.mjs`: **29 gruppi**, con 21 blocchi TS/TSX, 15 JSON, un modulo JS e un HTML estratti dalle note.
+- Primo giro **26/29 superati**, circa 44 secondi. Corretti problemi del runner: percorso CLI Vite non esportato, NODE_ENV lasciato da preview e cache non scrivibile attraverso junction Windows. Riprodotto separatamente l'errore filesystem; la cache React ora vive nella fixture reale, con link ai package. Riesecuzione React/workspace: **7/7 superati**. Nessuna modifica agli esempi richiesta dai fallimenti.
+- Checker e runtime provano i progetti effettivi: build Vite e interazioni, CLI e stripping Node, errori del client e abort reale durante il body, HTTP Express/Fastify, typegen/build/HTTP/UI Next, npm install/ci e build workspace.
+- Regressione seriale mirata: **107 test superati**, 29 Framework + 31 Moduli + 47 Validazione, nessun fallimento o test saltato, circa 183 secondi. Build Quartz avviata solo a test conclusi. Helper condivisi invariati; le altre suite TypeScript e le suite complete React/JavaScript non rieseguite.
+- Limiti: una baseline Windows/Chrome, non ogni versione o piattaforma. Nessun database, autenticazione, integrazione remota, benchmark o deploy. Le factory dei server sono provate su porte libere; gli entry point con porte fisse sono compilati, non avviati. Next e dinamico, non export Pages. I controlli del campo interno riguardano il demo, non ogni possibile fuga di dati. Fixture e collegamenti ripuliti dopo verifica dei percorsi; browser e server di test chiusi.
+
+### Verifica del vault
+
+- content:check con report: **911 documenti raggiungibili, zero errori e 480 avvisi editoriali**, sei in meno; nessuno nelle sei note.
+- content:test: **9 test della trasformazione superati**, distinti dalle prove tecniche.
+- Build Quartz riuscita: **3.719 file, 2.003 HTML, 168 redirect e 137.422 riferimenti verificati, zero errori**. Restano soltanto gli avvisi preesistenti su eval del plugin note-properties e metadati Git nella copia temporanea.
+- QA delle sei pagine a **1440 x 1000** e **390 x 844**, Chrome **155.0.8059.85**: HTTP 200, nuovi contenuti presenti, nessun errore pagina/console/HTTP o overflow del documento. Verificato lo scorrimento effettivo di **36 blocchi su mobile e uno su desktop**.
+- Ispezionati sei screenshot di React, API tipizzate e Next, desktop/mobile: testo e gerarchia leggibili, codice lungo confinato nei propri scroller. Nessuna modifica manuale agli HTML/CSS.
+- Anteprima esistente su http://localhost:8082/appunti/ riutilizzata e lasciata attiva; browser QA chiuso, browser personale non modificato. Prettier e diff --check superati. Conteggio verificato dall'indice e dalle note modificate: 83 note uniche, 72 revisionate tecnicamente e 11 rimanenti; storico mantenuto a dieci voci.
+
+### Prossimo blocco
+
+La revisione e proseguita con Qualita del Codice, documentata di seguito. Nessun commit o push.
+
+## 2026-10-22 - TypeScript: qualita del codice
+
+### Perimetro e correzioni
+
+Revisionate tutte le sei note del capitolo: **78 note TypeScript uniche su 83**. Conservati date, percorsi, type, publish e status non revisionato. Nessuna pagina aggiunta o spostata; indici e redirect invariati. Riparati tre riferimenti YAML any/unknown/never spezzati.
+
+- [[Programmazione/TypeScript/Pagine/Testing in TypeScript|Testing in TypeScript]]: progetto Vitest completo con checker separato, parser e dipendenza async, 13 casi runtime, limiti dei mock e differenza tra unit/integration/E2E/contract/type tests.
+- [[Programmazione/TypeScript/Pagine/Linting e formattazione|Linting e formattazione]]: flat config ESLint con project service, perimetro esplicito e formatter separato. Corretto il ruolo di void: non gestisce rifiuti; policy ignoreVoid false verificata.
+- [[Programmazione/TypeScript/Pagine/Best Practices|Best Practices]]: parser con politica prima della conversione, tipi ammessi e precisione espliciti. Chiariti Result ignorabile, readonly, assertion e confini runtime.
+- [[Programmazione/TypeScript/Pagine/Error Handling|Error Handling]]: distinti assenza, input errato e I/O; catch ristretto, cause preservate, risultati e rifiuti possibili, messaggi pubblici separati. Demo senza file o backend fittizi.
+- [[Programmazione/TypeScript/Pagine/Type-level testing|Type-level testing]]: progetto autonomo, test positivi/negativi, direttive inutilizzate, inferenza/any, limiti di Equal e verifica del reale perimetro. Rafforzato il caso readonly dopo una mutazione non rilevata.
+- [[Programmazione/TypeScript/Pagine/ts-reset|ts-reset]]: setup .d.ts incluso, regola selettiva e preset distinto, effetti globali senza import runtime. Chiariti filter(Boolean), includes non guardia, JSON ancora lanciabile e limiti per librerie pubbliche.
+
+### Fonti e prove
+
+- Consultate fonti ufficiali TypeScript, Vitest, ESLint, typescript-eslint, Prettier, ts-reset e MDN; riferimenti nelle note. Verificati anche gli exports e le dichiarazioni del pacchetto ts-reset installato.
+- Baseline: **TypeScript 5.9.3**, **Node 24.14.0**, **Vitest 4.1.12**, **Vite 8.3.4**, **ESLint 10.13.0**, **@eslint/js 10.0.1**, **typescript-eslint 8.72.0**, **Prettier 3.9.10**, **ts-reset 0.6.1**, tipi Node **24.19.2**.
+- Toolchain temporanea esterna con script di installazione disabilitati. Il ramo ESLint 9 inizialmente controllato era deprecato: usato il ramo 10 compatibile con i peer della baseline. Audit finale senza advisory; nessuna modifica a package o lockfile Quartz.
+- Nuova suite `_Meta/tests/typescript-qualita.test.mjs`: **39 gruppi**, 16 blocchi TS, otto JSON e una configurazione JS estratti dalle note. Progetti effettivi compilati ed eseguiti con Vitest, ESLint e Prettier.
+- Primo giro **36/37 superati**, circa 78 secondi. La controprova readonly ha mostrato che un literal as const passato direttamente non rilevava il parametro mutabile. Corretto l'esempio, con tupla dichiarata separatamente; aggiunte controprove expectTypeOf e Promise.catch del preset ts-reset. Rerun mirato **3/3 superati**.
+- Regressione seriale mirata: **117 test superati**, 39 Qualita + 31 Moduli + 47 Validazione, nessun fallimento o test saltato, circa 203 secondi. Build Quartz avviata soltanto a test conclusi. Helper condivisi invariati; non rieseguite le altre suite TypeScript e quelle complete React/JavaScript.
+- Limiti: una baseline Windows, non tutte le versioni o i contesti cross-realm. Nessuna UI, integrazione remota, database, coverage o adapter I/O reale. I test distinguono comportamento, tipi e configurazione; non certificano l'assenza generale di bug. Fixture rimosse dopo controllo dei percorsi e scollegamento delle dipendenze.
+
+### Verifica del vault
+
+- content:check con report: **911 documenti raggiungibili, zero errori e 474 avvisi editoriali**, sei in meno; nessuno nelle sei note del blocco.
+- content:test: **9 test della trasformazione superati**, distinti dalle prove tecniche.
+- Build Quartz riuscita: **3.719 file, 2.003 HTML, 168 redirect e 137.486 riferimenti verificati, zero errori**. Restano soltanto gli avvisi preesistenti su eval del plugin note-properties e metadati Git nella copia temporanea.
+- QA delle sei pagine a **1440 x 1000** e **390 x 844**, Chrome **155.0.8059.85**: HTTP 200, nuovi contenuti presenti, nessun errore pagina/console/HTTP o overflow del documento. Verificato lo scorrimento effettivo di **17 blocchi su mobile**, nessuno necessario su desktop.
+- Ispezionati sei screenshot di Linting, Type-level testing e ts-reset, desktop/mobile: testo e gerarchia leggibili, codice lungo confinato nei propri scroller. Nessuna modifica manuale a HTML/CSS.
+- Anteprima esistente su http://localhost:8082/appunti/ riutilizzata e lasciata attiva; browser QA chiuso, browser personale non modificato. Prettier e diff --check superati. Conteggio verificato dall'indice e dalle note modificate: 83 note uniche, 78 revisionate tecnicamente e cinque rimanenti; storico mantenuto a dieci voci.
+
+### Prossimo blocco
+
+La revisione e proseguita con Pattern e Architettura, documentato di seguito. Nessun commit o push.
+
+## 2026-10-22 - TypeScript: pattern e architettura
+
+### Perimetro e correzioni
+
+Revisionate le ultime cinque note del percorso: **83 note TypeScript uniche su 83**. Conclusa la revisione tecnica delle pagine esistenti, non una certificazione di copertura di ogni argomento o versione TypeScript. Conservati date, percorsi, type, publish e status non revisionato; approvazione dell'utente ancora separata. Nessuna pagina aggiunta o spostata, indici e redirect invariati. Riparato il prerequisito YAML Interfaces nella nota Repository.
+
+- [[Programmazione/TypeScript/Pagine/Pattern Repository e Service|Pattern Repository e Service]]: corretto il controllo find-then-insert che non garantiva unicita. Contratto con conflitti distinti, repository in memoria con scrittura senza await intermedi, copie e service con ID iniettato. Espliciti limiti di concorrenza locale, transazioni, ORM e outbox.
+- [[Programmazione/TypeScript/Pagine/DTO e modelli di dominio|DTO e modelli di dominio]]: parser unknown con politica per extra e lunghezza, output proiettato e JSON verificabile. Pick non elimina campi runtime; Date, readonly, autorizzazione e mass assignment distinti.
+- [[Programmazione/TypeScript/Pagine/Domain modeling|Domain modeling]]: sostituita la debole validazione email con una quantita dal contratto preciso. Entita, value object, aggregati e invarianti; transizioni draft/paid/cancelled, tempo iniettato, freeze e controllo esaustivo. Stato paid distinto da un addebito reale.
+- [[Programmazione/TypeScript/Pagine/Clean architecture|Clean architecture]]: progetto ESM completo a cinque file, dominio, caso d'uso, porte, adapter e composition root. Dipendenze del sorgente distinte dal flusso runtime, inclusi import type; risposte dimostrative distinte da un server HTTP.
+- [[Programmazione/TypeScript/Pagine/Dependency injection|Dependency injection]]: DI distinta da DIP, container e service locator. Clock e mailer iniettati, test double con copie, errori propagati e composizione deterministica. Spiegati token runtime, durate e responsabilita di chiusura delle risorse.
+
+### Fonti e prove
+
+- Consultate fonti primarie TypeScript, Martin Fowler, Robert C. Martin, Alistair Cockburn, PostgreSQL e MDN; riferimenti nelle note.
+- Baseline **TypeScript 5.9.3**, **Node 24.14.0**, strict e target ES2022. Nessuna nuova dipendenza o modifica al lockfile; compilatore locale gia disponibile.
+- Nuova suite `_Meta/tests/typescript-architettura.test.mjs`: **38 gruppi**, 20 blocchi TS e due JSON estratti dalle note. Primo giro **38/38 superati**, circa 27 secondi.
+- Verificati conflitti e copie, validazione e JSON pubblico, transizioni e stati vietati, errori I/O e mailer, brand ed esaustivita. Ricostruito e compilato il progetto ESM reale; esecuzione delle quattro risposte e controlli degli adapter.
+- Controprova architetturale: un import type dal caso d'uso all'adapter compila, ma viene rifiutato dal controllo degli import della fixture. Distinti checker e regola di dipendenza.
+- Regressione seriale mirata: **108 test superati**, 38 Architettura + 31 Moduli + 39 Qualita, nessun fallimento o test saltato, circa 149 secondi. Non rieseguite le altre suite TypeScript ne quelle complete React/JavaScript. Helper condivisi invariati.
+- Limiti: baseline Windows, dati ordinari, repository/test double in memoria. Nessun database reale, transazione distribuita, SMTP, pagamento, autenticazione o server HTTP. Il controllo degli import copre le forme statiche del demo, non e un linter generale. CLI tsc/Node eseguite con i file estratti, senza reinstallazione npm. Fixture rimosse dopo verifica dei percorsi.
+
+### Verifica del vault
+
+- content:check con report: **911 documenti raggiungibili, zero errori e 469 avvisi editoriali**, cinque in meno; nessuno nelle cinque note del blocco.
+- content:test: **9 test della trasformazione superati**, distinti dalle prove tecniche.
+- Build Quartz riuscita: **3.719 file, 2.003 HTML, 168 redirect e 137.555 riferimenti verificati, zero errori**. Restano gli avvisi preesistenti su eval del plugin note-properties e metadati Git della copia temporanea.
+- Prima prova visiva interrotta dal selettore del titolo Clean architecture: Quartz rende l'apostrofo tipografico. Ispezionato il DOM e adeguato il selettore; corretta anche una URL ESM Windows nel comando diagnostico. Nessuna modifica agli esempi o al sito necessaria.
+- QA completa ripetuta sulle cinque pagine a **1440 x 1000** e **390 x 844**, Chrome **155.0.8059.85**: HTTP 200, contenuti aggiornati, nessun errore pagina/console/HTTP o overflow del documento. Verificato lo scorrimento di **20 blocchi su mobile**, nessuno necessario su desktop.
+- Ispezionati sei screenshot di Repository, DTO e Clean architecture, desktop/mobile: testo e gerarchia leggibili, blocchi lunghi confinati nei propri scroller. Nessuna modifica manuale a HTML/CSS.
+- Anteprima su http://localhost:8082/appunti/ lasciata attiva; browser QA chiusi e browser personale non modificato. Conteggio confermato dall'indice: 83 note uniche esistenti, tutte incluse nella revisione. Storico mantenuto a dieci voci.
+
+### Prossimo blocco
+
+Proseguire con **Python: Fondamenti del Linguaggio**, partendo da Comandi base e toolchain. Nessuna nota Python modificata in questa sessione. Nessun commit o push; pubblicazione remota non aggiornata da queste operazioni.

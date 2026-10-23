@@ -28,36 +28,155 @@ title: Dichiarazioni e file d.ts
 
 ## Sintesi
 
-I file `.d.ts` contengono dichiarazioni di tipo senza implementazione runtime. Servono a descrivere codice JavaScript esistente, API globali, moduli npm, plugin e librerie compilate.
+Un file `.d.ts` descrive tipi e valori che devono essere forniti da un'implementazione. Non contiene codice eseguito e non installa funzioni, variabili globali o pacchetti.
 
-Sono una parte centrale dell'interoperabilita tra TypeScript e JavaScript.
+Baseline: **TypeScript 5.9.3**, **Node.js 24.14.0**. Il progetto principale mostra una piccola libreria ESM che emette insieme JavaScript e dichiarazioni.
 
 ## Quando usarlo
 
-- Librerie JavaScript senza tipi.
-- Pacchetti TypeScript compilati che devono esportare tipi.
-- API globali disponibili a runtime.
-- Plugin che estendono oggetti o moduli.
-- Wrapper su codice legacy.
+- Distribuire una libreria TypeScript a consumer TypeScript e JavaScript.
+- Descrivere un modulo JavaScript esistente.
+- Dichiarare un'integrazione globale realmente installata.
+- Distinguere problemi di risoluzione dei tipi da problemi del runtime.
 
 ## Come funziona
 
-Un file `.d.ts` dichiara forme, funzioni, classi e moduli. TypeScript lo usa per type checking, ma non genera codice JavaScript da quel file.
+Una dichiarazione come `export declare function label(value: string): string` promette che il modulo runtime esponga quella funzione. Il checker si fida: se il JavaScript manca o restituisce un dato diverso, il `.d.ts` non lo corregge.
 
-Le dichiarazioni devono corrispondere al runtime reale: se dichiarano un metodo che non esiste, TypeScript non puo accorgersene.
+Esistono contesti distinti:
+
+- file con import/export al livello superiore: dichiarazioni di un modulo;
+- file script senza import/export: dichiarazioni nell'ambito globale;
+- `declare module "nome"` in un file script: modulo ambient;
+- `declare global` dentro un modulo: estensione dell'ambito globale;
+- augmentation di un modulo gia esistente: caso separato approfondito nella relativa nota.
+
+Con NodeNext, `.d.mts` indica ESM, `.d.cts` CommonJS; `.d.ts` segue il contesto del package. Non scegliere l'estensione indipendentemente dal JavaScript che descrive.
 
 ## API / Sintassi
 
-```ts
-declare module "legacy-lib" {
-  export function parse(input: string): unknown;
+Progetto dimostrativo `note-labels`, con `src/index.ts`. `package.json`:
+
+```json
+{
+  "name": "note-labels",
+  "version": "0.0.0",
+  "private": true,
+  "type": "module",
+  "types": "./dist/index.d.ts",
+  "exports": {
+    ".": {
+      "types": "./dist/index.d.ts",
+      "import": "./dist/index.js"
+    }
+  },
+  "files": ["dist"],
+  "devDependencies": { "typescript": "5.9.3" }
 }
+```
+
+`private: true` impedisce una pubblicazione npm accidentale: il demo serve a verificare il layout, non a pubblicare un pacchetto. La condizione `types` precede quella runtime; i percorsi devono puntare a file effettivamente presenti nel pacchetto distribuito.
+
+`tsconfig.json`:
+
+```json
+{
+  "compilerOptions": {
+    "target": "ES2022",
+    "module": "NodeNext",
+    "strict": true,
+    "declaration": true,
+    "noEmitOnError": true,
+    "rootDir": "src",
+    "outDir": "dist",
+    "types": []
+  },
+  "include": ["src/**/*.ts"]
+}
+```
+
+Dopo l'installazione delle dipendenze, compilare:
+
+```sh
+npm exec -- tsc -p tsconfig.json
 ```
 
 ## Esempio pratico
 
+### Sorgente della libreria
+
+`src/index.ts`:
+
 ```ts
-// globals.d.ts
+export interface LabelOptions {
+  prefix?: string;
+}
+
+export function label(value: string, options: LabelOptions = {}): string {
+  return (options.prefix ?? "item:") + value;
+}
+```
+
+La compilazione genera `dist/index.js` e `dist/index.d.ts`. Il contratto emesso e equivalente a:
+
+```ts
+export interface LabelOptions {
+  prefix?: string;
+}
+export declare function label(value: string, options?: LabelOptions): string;
+```
+
+Il parametro con default diventa opzionale nella firma pubblica. Il corpo della funzione si trova nel JavaScript, non nella dichiarazione.
+
+### Consumer runtime
+
+`consumer.mjs`, nella root del demo:
+
+```js
+import { label } from "./dist/index.js";
+console.log(label("book")); // item:book
+```
+
+Eseguire:
+
+```sh
+node consumer.mjs
+```
+
+Per un consumer del pacchetto, l'import pubblico sara `"note-labels"`; il campo `exports` indirizza runtime e checker ai rispettivi file. Il test del pacchetto deve verificare entrambi, non soltanto l'esistenza del `.d.ts`.
+
+## Varianti
+
+### Emettere solo dichiarazioni
+
+Per una pipeline che produce gia JavaScript, `tsconfig.types.json`:
+
+```json
+{
+  "extends": "./tsconfig.json",
+  "compilerOptions": {
+    "noEmit": false,
+    "emitDeclarationOnly": true,
+    "outDir": "types"
+  }
+}
+```
+
+```sh
+npm exec -- tsc -p tsconfig.types.json
+```
+
+Produce dichiarazioni in `types`, non implementazioni JS. Non rimuove vecchi artefatti. Se erediti da una configurazione con `noEmit: true`, devi disattivarlo esplicitamente. Per sorgenti JS aggiungi `allowJs: true`, includi i file JS e usa JSDoc per ottenere firme utili.
+
+Le dichiarazioni generate non vanno corrette a mano: correggi sorgenti o annotazioni e rigenera. I `.d.ts` scritti manualmente per una libreria esterna sono invece sorgenti da mantenere e testare.
+
+### Global augmentation nel browser
+
+File separato `src/globals.d.ts`, per un progetto con tipi DOM:
+
+```ts
+export {};
+
 declare global {
   interface Window {
     appConfig?: {
@@ -65,34 +184,31 @@ declare global {
     };
   }
 }
-
-export {};
 ```
 
-Questo file estende il tipo globale `Window` in modo controllato.
+Non crea `window.appConfig`, non valida `apiUrl` come URL e non rende `window` disponibile in Node. L'opzionalita rappresenta l'eventuale assenza dell'inizializzazione. Qui `export {}` rende il file un modulo, necessario per usare `declare global` in questa forma.
 
-## Varianti
+### Dichiarazioni pubbliche e dipendenze
 
-- **Module declaration**: `declare module "pkg"`.
-- **Global declaration**: `declare global`.
-- **Ambient variable/function**: `declare const`, `declare function`.
-- **Generated declarations**: generate da `declaration: true`.
-- **DefinitelyTyped declarations**: pacchetti `@types`.
+Se il `.d.ts` pubblico importa tipi da un altro pacchetto, anche il consumer deve poterli risolvere. Non lasciare tutte quelle dipendenze soltanto nelle devDependencies per abitudine: distingui strumenti di build da dipendenze del contratto distribuito. Per pacchetti ESM/CJS duali, verifica entrambe le entry e dichiarazioni; il demo non implementa un pacchetto duale.
 
 ## Errori comuni
 
-- **Scrivere tipi non coerenti col runtime**: il compilatore si fida.
-- **Dimenticare `export {}` nei file global augmentation**.
-- **Mettere implementazione in `.d.ts`**: non e il suo ruolo.
-- **Non includere il file nel progetto**: TypeScript non lo vede.
+- Aggiungere un corpo di funzione al `.d.ts` invece che al JavaScript.
+- Eseguire o importare una dichiarazione come file runtime.
+- Pubblicare solo i tipi quando il consumer deve chiamare funzioni.
+- Dimenticare `exports`, estensioni o file inclusi nella distribuzione.
+- Dichiarare globali obbligatori che non sono sempre inizializzati.
+- Usare `skipLibCheck` come validazione della coerenza tra tipi e codice.
 
 ## Checklist
 
-- Verificare che le dichiarazioni riflettano il comportamento runtime.
-- Tenere file `.d.ts` piccoli e focalizzati.
-- Usare `unknown` nei punti incerti.
-- Includere cartelle di tipi nel `tsconfig`.
-- Generare declaration files per librerie pubblicate.
+- Il file descrive un modulo, un globale o un'augmentation?
+- L'implementazione dichiarata esiste e viene distribuita?
+- Checker e runtime risolvono l'entry prevista?
+- Le dipendenze delle dichiarazioni sono disponibili ai consumer?
+- Ho provato un consumer tipizzato e un'esecuzione reale?
+- I tipi generati possono essere riprodotti dai sorgenti?
 
 ## Collegamenti
 
@@ -101,6 +217,11 @@ Questo file estende il tipo globale `Window` in modo controllato.
 - [[Programmazione/TypeScript/Pagine/Declaration Merging|Declaration Merging]]
 - [[Programmazione/TypeScript/Pagine/Module augmentation|Module augmentation]]
 
+## Fonti
+
+- [TypeScript - Declaration Files](https://www.typescriptlang.org/docs/handbook/declaration-files/introduction.html)
+- [TypeScript - Publishing](https://www.typescriptlang.org/docs/handbook/declaration-files/publishing.html)
+- [TypeScript - Creating .d.ts Files from .js Files](https://www.typescriptlang.org/docs/handbook/declaration-files/dts-from-js.html)
 
 ## Navigazione
 

@@ -41,7 +41,11 @@ Questo campo permette a TypeScript di capire quale variante e attiva e rende il 
 
 ## Come funziona
 
-Ogni membro della union ha un valore diverso per il campo discriminante. Quando controlli quel campo con `if` o `switch`, TypeScript restringe il tipo alla variante corrispondente.
+Esempi indipendenti con TypeScript 5.9.3, `strict: true` e target ES2022.
+
+Per selezionare una singola variante, usa una proprieta richiesta comune e valori literal distinti. Se piu membri condividono lo stesso valore, il controllo puo lasciare una union di piu varianti: non e sempre una selezione uno a uno.
+
+Il tipo lega il discriminante al relativo payload. Un oggetto con `status: "success" | "error"`, `data?: string[]` e `message?: string` non esprime la stessa relazione: ammette successo senza dati ed errore senza messaggio.
 
 ## API / Sintassi
 
@@ -51,7 +55,12 @@ type LoadingState =
   | { status: "loading" }
   | { status: "success"; data: string[] }
   | { status: "error"; message: string };
+
+const ready: LoadingState = { status: "success", data: [] };
+// const broken: LoadingState = { status: "success" }; // Errore: manca data.
 ```
+
+`data: []` e un successo senza elementi, diverso da "non caricato". Se il dominio richiede uno stato "empty" separato, aggiungilo esplicitamente e gestiscilo negli utilizzatori.
 
 ## Esempio pratico
 
@@ -71,9 +80,58 @@ function describe(payment: Payment): string {
       return `PayPal ${payment.email}`;
   }
 }
+
+console.log(describe({ kind: "card", last4: "1234" })); // Carta **** 1234
 ```
 
-Ogni ramo accede solo ai campi presenti nella variante corretta.
+Ogni ramo legge il suo payload. Questo e un formatter locale, non un pagamento: non verifica numero di carta, IBAN o email e non deve essere usato per registrare indiscriminatamente dati personali nei log.
+
+Con ritorno esplicito `string` e `strictNullChecks`, una nuova variante non gestita qui rende possibile arrivare alla fine senza ritorno e produce un errore. Per una verifica esplicita sul valore residuo usa [[Programmazione/TypeScript/Pagine/Exhaustiveness Checking|Exhaustiveness Checking]].
+
+### Creazione dei valori e widening
+
+```ts
+type Result =
+  | { kind: "ok"; value: number }
+  | { kind: "error"; message: string };
+
+function describeResult(result: Result): string {
+  return result.kind === "ok" ? String(result.value) : result.message;
+}
+
+const widened = { kind: "ok", value: 0 };
+// describeResult(widened); // Errore: kind inferito come string.
+const result = { kind: "ok", value: 0 } satisfies Result;
+console.log(describeResult(result)); // 0
+```
+
+Una variabile `const` non rende costanti i campi dell'oggetto. Un'annotazione `: Result`, `satisfies Result` o, quando opportuno, `as const` puo preservare la forma desiderata. `satisfies` controlla staticamente il valore, non lo valida a runtime; `as const` non congela l'oggetto.
+
+### Conservare la relazione tra discriminante e payload
+
+```ts
+type Action =
+  | { kind: "set"; payload: number }
+  | { kind: "label"; payload: string };
+
+function summarize(action: Action): string {
+  const { kind, payload } = action;
+  if (kind === "set") {
+    return payload.toFixed(0);
+  }
+  return payload.toUpperCase();
+}
+
+console.log(summarize({ kind: "set", payload: 3 })); // 3
+```
+
+La destructuring `const` mantiene questa correlazione nella baseline. Non e equivalente separare `kind` da un oggetto `...rest`, oppure rendere indipendentemente riassegnabili le variabili: il checker puo perdere il collegamento. Se succede, controlla `action.kind` e usa `action.payload` nello stesso ramo.
+
+### Stato valido non significa transizione valida
+
+Una union elenca le forme ammesse, non stabilisce quali passaggi siano consentiti, chi possa avviarli o quale risposta asincrona sia ancora attuale. Queste regole richiedono logica nel reducer o nella macchina a stati. Preferisci sostituire l'intero oggetto stato invece di mutare separatamente discriminante e payload; `readonly` e solo un vincolo statico.
+
+Input di rete o JSON richiedono un parser prima di essere trattati come union. La presenza di `kind` o `status` non prova che il payload sia completo e corretto.
 
 ## Varianti
 
@@ -104,6 +162,12 @@ Ogni ramo accede solo ai campi presenti nella variante corretta.
 - [[Programmazione/TypeScript/Pagine/Exhaustiveness Checking|Exhaustiveness Checking]]
 - [[Programmazione/TypeScript/Pagine/Enums e Literal Types|Enums e Literal Types]]
 
+
+## Fonti
+
+- [TypeScript: discriminated unions](https://www.typescriptlang.org/docs/handbook/2/narrowing.html#discriminated-unions).
+- [TypeScript 4.6: destructuring e controllo del flusso](https://www.typescriptlang.org/docs/handbook/release-notes/typescript-4-6.html).
+- [TypeScript 4.9: satisfies](https://www.typescriptlang.org/docs/handbook/release-notes/typescript-4-9.html).
 
 ## Navigazione
 

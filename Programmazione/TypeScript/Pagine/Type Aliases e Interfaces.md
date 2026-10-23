@@ -40,9 +40,19 @@ In molti casi possono descrivere gli stessi oggetti, ma hanno differenze pratich
 
 ## Come funziona
 
-Un `type alias` puo dare un nome a qualsiasi tipo: primitive, union, tuple, function type, object type.
+Gli esempi sono indipendenti, verificati con TypeScript 5.9.3 e `strict: true`. Non incollare tutte le definizioni `User` in un unico scope: i blocchi illustrano contratti diversi.
 
-Una `interface` descrive principalmente la forma di un oggetto ed e estendibile tramite `extends` e declaration merging.
+| Esigenza | `type` | `interface` |
+| --- | --- | --- |
+| Oggetto o firma chiamabile | Si | Si |
+| Primitive, union, tuple | Si | Non come alias diretto |
+| Composizione | Per esempio intersection | `extends` per tipi oggetto compatibili |
+| Stesso nome dichiarato piu volte | Normalmente errore per alias duplicato | Puo avvenire declaration merging |
+| Esistenza a runtime | No | No |
+
+I nomi non creano automaticamente tipi nominali: `type UserId = string` e `type OrderId = string` restano compatibili. Il confronto tra oggetti e generalmente strutturale: contano i membri richiesti, non l'uso di `implements` o il nome del tipo.
+
+Il merging riguarda dichiarazioni dello stesso simbolo/scope, non interfacce omonime arbitrarie in moduli indipendenti. I membri ripetuti devono essere compatibili.
 
 ## API / Sintassi
 
@@ -79,7 +89,64 @@ function formatUser(result: ApiResult<User>): string {
 }
 ```
 
-`type` e comodo per union generiche, mentre `interface` descrive bene la forma dell'entita `User`.
+`ApiResult<T>` usa un parametro di tipo per riutilizzare la stessa union; `ApiResult<User>` sostituisce `T` con `User`. Qui `type` rappresenta l'alternativa e `interface` l'oggetto.
+
+La funzione formatta dati gia disponibili, senza richiesta HTTP:
+
+```ts
+// Da aggiungere al blocco dell'esempio pratico.
+console.log(formatUser({
+  ok: true,
+  data: { id: "u_1", email: "luca@example.com" },
+})); // luca@example.com
+console.log(formatUser({ ok: false, error: "Non disponibile" }));
+```
+
+### Contratti strutturali, non filtri
+
+Blocco indipendente:
+
+```ts
+interface PublicUser {
+  id: string;
+}
+
+const internalUser = { id: "u_1", internalNote: "solo per uso interno" };
+const publicUser: PublicUser = internalUser;
+console.log(Object.keys(publicUser)); // ["id", "internalNote"]
+
+// const direct: PublicUser = { id: "u_1", internalNote: "extra" };
+// Errore: controllo delle proprieta in eccesso sul literal diretto.
+
+const projected: PublicUser = { id: internalUser.id };
+console.log(Object.keys(projected)); // ["id"]
+```
+
+L'annotazione restringe cio che il codice puo usare staticamente, **non rimuove campi dall'oggetto**. Per inviare dati pubblici crea una proiezione esplicita; il controllo delle proprieta in eccesso non e un sistema di tipi "esatti" ne una misura di riservatezza.
+
+### Estensione e merging
+
+```ts
+interface User {
+  id: string;
+}
+
+interface Admin extends User {
+  role: "admin";
+}
+
+interface Settings {
+  theme: string;
+}
+interface Settings {
+  locale: string;
+}
+
+const settings: Settings = { theme: "dark", locale: "it" };
+const admin: Admin = { id: "u_1", role: "admin" };
+```
+
+`Settings` richiede entrambi i campi. Una seconda dichiarazione incompatibile di `theme` non sovrascrive la prima: produce un errore. Analogamente, `extends` segnala un membro incompatibile; un'intersection puo invece produrre una proprieta `never`.
 
 ## Varianti
 
@@ -87,6 +154,7 @@ function formatUser(result: ApiResult<User>): string {
 - **Type alias per function type**: `type Handler = (event: Event) => void`.
 - **Interface per object shape**: `interface User { ... }`.
 - **Interface estesa**: `interface Admin extends User { ... }`.
+- **DTO e dominio**: stessa forma oggi non significa stessi vincoli o stessa evoluzione; separali quando hanno contratti diversi, senza duplicarli meccanicamente.
 
 ## Errori comuni
 
@@ -94,13 +162,15 @@ function formatUser(result: ApiResult<User>): string {
 - **Usare interface per union**: le union richiedono `type`.
 - **Dimenticare declaration merging**: due interface con lo stesso nome possono fondersi.
 - **Creare tipi troppo generici**: nomi come `Data`, `Payload`, `Item` senza contesto aiutano poco.
+- **Usare `instanceof User` con un'interfaccia**: non esiste un costruttore `User` a runtime.
+- **Pensare che assegnare a un tipo pubblico elimini dati privati**: l'oggetto originale resta lo stesso.
 
 ## Checklist
 
 - Usare `type` per union, tuple, primitive alias e utility avanzate.
 - Usare `interface` per contratti oggetto estendibili.
 - Dare nomi legati al dominio, non alla struttura generica.
-- Evitare duplicati tra DTO e dominio se rappresentano lo stesso concetto.
+- Decidere se DTO e dominio hanno davvero lo stesso contratto.
 - Controllare se declaration merging e desiderato o accidentale.
 
 ## Collegamenti
@@ -108,7 +178,15 @@ function formatUser(result: ApiResult<User>): string {
 - [[Programmazione/TypeScript/Pagine/Union e Intersection Types|Union e Intersection Types]]
 - [[Programmazione/TypeScript/Pagine/Implementazione di interfacce|Implementazione di interfacce]]
 - [[Programmazione/TypeScript/Pagine/Generics|Generics]]
+- [[Programmazione/TypeScript/Pagine/Structural typing|Structural typing]]
+- [[Programmazione/TypeScript/Pagine/Declaration Merging|Declaration Merging]]
+- [[Programmazione/TypeScript/Pagine/DTO e modelli di dominio|DTO e modelli di dominio]]
 
+## Fonti
+
+- [TypeScript: Type Compatibility](https://www.typescriptlang.org/docs/handbook/type-compatibility.html), confronto strutturale.
+- [TypeScript: Declaration Merging](https://www.typescriptlang.org/docs/handbook/declaration-merging.html), interfacce omonime.
+- [TypeScript: Object Types](https://www.typescriptlang.org/docs/handbook/2/objects.html), excess property checks, extends e intersection.
 
 ## Navigazione
 
