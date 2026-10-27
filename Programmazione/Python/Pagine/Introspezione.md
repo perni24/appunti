@@ -21,24 +21,21 @@ title: Introspezione in Python
 
 ## Sintesi
 
-L'introspezione e la capacita di un programma di esaminare oggetti, tipi, attributi, firme, classi e moduli a runtime. In Python e molto usata per debugging, framework, decorator, test runner, serializzatori e strumenti di sviluppo.
+L'introspezione esamina tipi, attributi, firme e gerarchie a runtime. E utile per debugging e tooling, ma osservare un oggetto non e sempre un'operazione passiva: leggere una proprieta puo eseguire codice.
 
-E potente, ma va usata con misura: se il codice deve indovinare continuamente struttura e tipo degli oggetti, probabilmente l'interfaccia puo essere resa piu esplicita.
+Riferimento Python 3.12; esempi indipendenti verificati con **CPython 3.12.10 su Windows**, non indicazione dell'ultima patch disponibile.
 
 ## Quando usarlo
 
-Usa l'introspezione quando devi:
+- Diagnosticare tipo, attributi e binding di un oggetto.
+- Costruire wrapper che comprendono la firma di una funzione.
+- Implementare strumenti di documentazione, test runner o plugin con contratti espliciti.
 
-- capire tipo e attributi di un oggetto durante debug;
-- costruire wrapper o decorator;
-- leggere firme di funzioni;
-- implementare sistemi plugin o dispatch dinamico;
-- creare serializer, validator o strumenti di test;
-- analizzare classi e gerarchie a runtime.
+Se il codice applicativo deve continuamente indovinare cosa contiene un oggetto, valuta prima un'interfaccia piu chiara.
 
 ## Come funziona
 
-In Python quasi tutto e un oggetto: funzioni, classi, moduli, metodi ed eccezioni. Questo permette di ispezionare struttura e metadati in modo uniforme.
+### Tipo, nomi e stato non coincidono
 
 ```python
 class User:
@@ -48,120 +45,144 @@ class User:
     def greet(self):
         return f"Ciao {self.name}"
 
+class Admin(User):
+    pass
 
-user = User("Luca")
-
-print(type(user))
-print(dir(user))
-print(hasattr(user, "greet"))
-print(getattr(user, "name"))
+user = Admin("Luca")
+print(type(user) is User)  # False: tipo esatto
+print(isinstance(user, User))  # True: sottoclasse ammessa
+print(vars(user))  # {'name': 'Luca'}
+print("greet" in dir(user))  # True
+print(getattr(user, "name"))  # Luca
+print(Admin.__bases__ == (User,))  # True
+print(Admin.__mro__)  # Admin, User, object
 ```
 
-Molti oggetti espongono un dizionario interno con gli attributi d'istanza.
+`vars(user)` espone il dizionario dell'istanza quando esiste, non tutti gli attributi accessibili. Un oggetto con soli `__slots__` puo non averlo. Il dizionario di una classe esposto da `vars(cls)` e invece una vista in sola lettura.
+
+`dir` e un aiuto esplorativo, personalizzabile con `__dir__`, non uno schema completo o un contratto. `id` identifica un oggetto durante la sua vita, non e un ID persistente e puo essere riutilizzato dopo la distruzione.
+
+### Accesso dinamico e ispezione statica
 
 ```python
-print(user.__dict__)  # {"name": "Luca"}
+import inspect
+
+class Report:
+    def __init__(self):
+        self.reads = 0
+
+    @property
+    def summary(self):
+        self.reads += 1
+        return "ready"
+
+report = Report()
+raw = inspect.getattr_static(report, "summary")
+print(isinstance(raw, property), report.reads)  # True 0
+print(hasattr(report, "summary"), report.reads)  # True 1
+print(getattr(report, "summary"), report.reads)  # ready 2
 ```
+
+`hasattr` prova un accesso e restituisce `False` se questo solleva `AttributeError`, anche se l'errore nasce dentro un getter. Altre eccezioni si propagano. Il default di `getattr` non intercetta qualunque guasto.
+
+`getattr_static` evita il normale lookup dinamico, ma puo restituire il descriptor invece del valore e non vede tutti gli attributi sintetizzati. Non trasformarlo in una garanzia di sicurezza per oggetti ostili.
 
 ## API / Sintassi
 
-Built-in comuni:
+- `type` / `isinstance`: tipo esatto rispetto ad appartenenza a una gerarchia.
+- `getattr` / `setattr` / `delattr`: accesso dinamico, con eventuali hook e descriptor.
+- `callable`: capacita di chiamata, non compatibilita con una firma specifica o garanzia di successo.
+- `inspect.signature`: parametri e firma disponibile; puo fallire su alcuni callable.
+- `inspect.getmembers`: recupera membri, anche eseguendo lookup dinamico.
+- `inspect.getmembers_static`: variante senza il normale lookup dinamico, disponibile da 3.11.
+- `inspect.getsource`: tenta di recuperare sorgente, non sempre disponibile per built-in, REPL o codice generato.
 
-- `type(obj)`: restituisce il tipo esatto;
-- `isinstance(obj, cls)`: controlla se un oggetto e istanza di una classe o sottoclasse;
-- `id(obj)`: restituisce l'identita dell'oggetto;
-- `dir(obj)`: elenca nomi accessibili sull'oggetto;
-- `hasattr(obj, name)`: verifica la presenza di un attributo;
-- `getattr(obj, name, default)`: recupera un attributo dinamicamente;
-- `setattr(obj, name, value)`: imposta un attributo dinamicamente;
-- `callable(obj)`: verifica se un oggetto puo essere chiamato.
-
-Modulo `inspect`:
+### Binding degli argomenti, non validazione dei tipi
 
 ```python
 import inspect
 
-
-def create_user(name, age=18):
+def create_user(name: str, /, *, age: int = 18):
     return {"name": name, "age": age}
 
-
 signature = inspect.signature(create_user)
-print(signature)
-print(signature.parameters["age"].default)
+bound = signature.bind("Luca")
+print(dict(bound.arguments))  # {'name': 'Luca'}
+bound.apply_defaults()
+print(dict(bound.arguments))  # {'name': 'Luca', 'age': 18}
+created = create_user(*bound.args, **bound.kwargs)
+print(created)
 ```
 
-Gerarchie di classi:
+`bind` controlla la forma della chiamata senza invocarla: parametri mancanti, duplicati, positional-only e keyword-only. `bind_partial` permette omissioni e non sostituisce una validazione completa.
 
-```python
-class Animal:
-    pass
-
-
-class Dog(Animal):
-    pass
-
-
-print(Dog.__bases__)
-print(Dog.__mro__)
-```
+I default assenti compaiono in `bound.arguments` solo dopo `apply_defaults`. Nessuna di queste operazioni convalida automaticamente i type hint o il dominio di `age`.
 
 ## Esempio pratico
 
-Un decorator puo usare `inspect.signature()` per validare input o mantenere informazioni sull'interfaccia della funzione decorata.
+### Correggere un wrapper che promette un argomento keyword
+
+Controllare solo `name in bound.arguments` non distingue un argomento posizionale da uno nominato. Questo decorator richiede invece che uno specifico parametro sia **fornito esplicitamente per keyword**.
 
 ```python
-import inspect
 from functools import wraps
-
+import inspect
 
 def require_keyword(name):
-    def decorator(function):
+    def decorate(function):
         signature = inspect.signature(function)
+        parameter = signature.parameters.get(name)
+        allowed = {
+            inspect.Parameter.POSITIONAL_OR_KEYWORD,
+            inspect.Parameter.KEYWORD_ONLY,
+        }
+        if parameter is None or parameter.kind not in allowed:
+            raise ValueError("Il parametro deve accettare una keyword esplicita")
 
         @wraps(function)
         def wrapper(*args, **kwargs):
-            bound = signature.bind(*args, **kwargs)
-            if name not in bound.arguments:
-                raise TypeError(f"Missing required argument: {name}")
+            signature.bind(*args, **kwargs)
+            if name not in kwargs:
+                raise TypeError(f"{name} deve essere fornito per keyword")
             return function(*args, **kwargs)
 
         return wrapper
-
-    return decorator
-
+    return decorate
 
 @require_keyword("user_id")
 def load_user(user_id):
     return {"id": user_id}
+
+print(load_user(user_id=7))  # {'id': 7}
 ```
 
-Questo tipo di introspezione e comune in framework, dependency injection e librerie di validazione.
+`load_user(7)` viene rifiutato; non si tratta di un validatore dell'ID o di una query a database. `wraps` conserva metadati e `__wrapped__`, non riscrive la firma per rappresentare la nuova restrizione. `inspect.signature` segue normalmente `__wrapped__`: la firma ispezionata puo quindi descrivere la funzione originaria, non ogni vincolo del wrapper.
+
+Per una **nuova API** basta `def load_user(*, user_id): ...`: e piu chiaro del decorator. Il wrapper e un esercizio per capire binding e adattamento di funzioni esistenti.
 
 ## Varianti
 
-- **Introspezione leggera**: `type`, `isinstance`, `dir`, `getattr`.
-- **Introspezione avanzata**: `inspect.signature`, `inspect.getmembers`, `inspect.isfunction`.
-- **Reflection**: osservare e modificare struttura o comportamento a runtime.
-- **Metaprogrammazione**: usare introspezione insieme a decorator, descriptor o metaclassi.
-- **Introspezione del modulo**: analizzare nomi, funzioni e classi definiti in un modulo.
+- `inspect.signature(function, follow_wrapped=False)` osserva la firma del wrapper.
+- `inspect.unwrap` segue la catena `__wrapped__`.
+- `inspect.isfunction` e `inspect.ismethod` distinguono funzione e metodo associato.
+- Le annotazioni sono metadati: risolverle con `typing.get_type_hints` puo valutare riferimenti/espressioni. Non eseguire annotazioni non fidate come se fossero semplici stringhe.
+- Frame e traceback possono trattenere grandi grafi di oggetti: evita cache indefinite dei risultati dell'introspezione.
 
 ## Errori comuni
 
-- Usare `type(obj) == SomeClass` invece di `isinstance(obj, SomeClass)` quando le sottoclassi sono valide.
-- Affidarsi ad attributi privati o dettagli interni instabili.
-- Usare `dir()` come se descrivesse il contratto semantico dell'oggetto.
-- Modificare `__dict__`, `__class__` o attributi speciali senza una ragione forte.
-- Rendere il codice troppo dinamico e difficile da leggere.
-- Usare introspezione per compensare API poco chiare.
+- Usare `hasattr` aspettandosi assenza di effetti collaterali.
+- Scambiare `dir` o `vars` per uno schema di serializzazione.
+- Confondere binding degli argomenti e verifica dei valori.
+- Credere che `callable` garantisca una chiamata riuscita.
+- Modificare attributi speciali per compensare un'interfaccia poco chiara.
 
 ## Checklist
 
-- L'introspezione serve davvero o basterebbe un'interfaccia esplicita?
-- Sto leggendo attributi pubblici o dettagli interni?
-- Il codice resta comprensibile senza conoscere troppe convenzioni implicite?
-- `getattr()` ha un default sensato quando l'attributo puo mancare?
-- Se uso un decorator, preservo metadata con `functools.wraps`?
+- Serve introspezione o basta un contratto esplicito?
+- L'accesso agli attributi puo eseguire codice?
+- La firma disponibile rappresenta davvero il wrapper?
+- Errori di lookup distinti da attributi assenti?
+- Tipi e valori validati separatamente, senza valutare dati non fidati?
 
 ## Collegamenti
 
@@ -171,3 +192,11 @@ Questo tipo di introspezione e comune in framework, dependency injection e libre
 - [[Programmazione/Python/Pagine/Metaclassi|Metaclassi]]
 - [[Programmazione/Python/Pagine/Decoratori|Decoratori]]
 - [[Programmazione/Python/Pagine/Type Hinting|Type Hinting]]
+- [[Programmazione/Python/Pagine/Memory Management|Memory Management]]
+
+## Fonti
+
+- [Python 3.12: inspect, firme e introspezione passiva](https://docs.python.org/3.12/library/inspect.html).
+- [Python 3.12: built-in per tipi e attributi](https://docs.python.org/3.12/library/functions.html).
+- [Python 3.12: wraps e **wrapped**](https://docs.python.org/3.12/library/functools.html#functools.wraps).
+- [Python 3.12: typing e get_type_hints](https://docs.python.org/3.12/library/typing.html#typing.get_type_hints).

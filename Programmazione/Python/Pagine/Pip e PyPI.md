@@ -23,137 +23,155 @@ title: Pip e PyPI
 
 ## Sintesi
 
-`pip` e il package manager piu usato per installare librerie Python. PyPI, Python Package Index, e il registry pubblico principale da cui `pip` scarica i pacchetti.
+**PyPI** e un indice pubblico di distribuzioni Python; **pip** e uno strumento che risolve e installa distribuzioni. Pip puo usare anche indici privati, directory locali, wheel e sorgenti: non significa sempre "scaricare da PyPI".
 
-La distinzione e importante:
+`python -m pip` usa il pip dell'interprete indicato da `python`. Non garantisce da solo che sia il virtualenv giusto: verifica il percorso dell'interprete.
 
-- **PyPI** e il catalogo remoto;
-- **pip** e il client che installa pacchetti nell'ambiente Python attivo.
+Riferimento degli esempi: CPython 3.12.10, pip 26.2.2 per la toolchain di verifica. Il pip incluso da `ensurepip` puo avere una versione diversa.
 
 ## Quando usarlo
 
-Usa `pip` quando devi:
-
-- installare una libreria esterna;
-- aggiornare o rimuovere pacchetti;
-- installare dipendenze da `requirements.txt`;
-- installare un package locale in editable mode;
-- verificare versione, metadati e posizione di un pacchetto.
-
-Usalo preferibilmente dentro un ambiente virtuale.
+- Installare dipendenze in un ambiente dedicato.
+- Installare e provare un package locale o una wheel.
+- Esaminare versioni e metadati delle distribuzioni.
+- Riprodurre un'installazione descritta da file di requirements.
 
 ## Come funziona
 
-Quando esegui:
+Pip legge i requisiti, individua candidati compatibili con Python e piattaforma, risolve le dipendenze e installa gli artefatti. Una wheel e gia costruita; da sorgenti puo servire una build, anche con compilatori e librerie di sistema.
 
-```bash
-python -m pip install httpx
-```
+**Distribuzione e import non coincidono necessariamente**: `beautifulsoup4` espone `bs4`. Nel demo collegato, la distribuzione `appunti-calc-demo` espone `appunti_calc` e il comando `appunti-calc`.
 
-`pip` risolve le dipendenze, scarica i pacchetti dal registry configurato e li installa nell'ambiente corrente.
-
-Il nome installato e il nome importato non coincidono sempre.
-
-```bash
-python -m pip install beautifulsoup4
-```
-
-```python
-from bs4 import BeautifulSoup
-```
-
-`beautifulsoup4` e il nome della distribuzione su PyPI; `bs4` e il package importabile.
+Una installazione da sorgenti puo eseguire il backend di build. Il virtualenv evita molti conflitti di dipendenze, ma non limita i permessi del codice.
 
 ## API / Sintassi
 
-Comandi comuni:
+I comandi seguenti presuppongono un virtualenv attivato oppure la sostituzione di `python` con il suo percorso esplicito.
 
-```bash
-python -m pip install requests
-python -m pip uninstall requests
+```text
+python -m pip --version
+```
+
+```text
 python -m pip list
-python -m pip show requests
 ```
 
-Installare una versione precisa:
+Per un pacchetto gia installato:
 
-```bash
-python -m pip install requests==2.32.0
+```text
+python -m pip show appunti-calc-demo
 ```
 
-Installare con vincoli:
+Un requisito come `package-name>=1.4,<2` esprime un intervallo; `package-name==1.4.2` un pin. Sono esempi di **sintassi**, non nomi o versioni da installare. Metti tra virgolette i vincoli nei comandi, perche la shell puo interpretare `<` e `>`.
 
-```bash
-python -m pip install "django>=5.0,<6.0"
-```
+### Requirements e constraints
 
-Installare da file:
+`requirements.txt` contiene requisiti da installare; puo includere anche opzioni e riferimenti a sorgenti. Leggilo prima di eseguirlo.
 
-```bash
+```text
 python -m pip install -r requirements.txt
 ```
 
-Aggiornare `pip`:
+Un constraints file restringe le versioni ammissibili ma **non richiede da solo l'installazione** dei pacchetti elencati.
 
-```bash
+```text
+python -m pip install -r requirements.txt -c constraints.txt
+```
+
+Un conflitto tra requisito e constraint va risolto: pip non deve essere forzato a ignorare le dipendenze per far scomparire l'errore.
+
+### Aggiornamento e rimozione
+
+Un normale `pip install` non e un aggiornamento completo di tutte le dipendenze. `--upgrade` richiede l'aggiornamento dei pacchetti indicati secondo i vincoli e la politica di risoluzione.
+
+Aggiornare pip cambia il tool nell'ambiente selezionato; non e un passaggio obbligatorio prima di ogni installazione:
+
+```text
 python -m pip install --upgrade pip
 ```
 
+Rimozione interattiva del solo demo, se precedentemente installato:
+
+```text
+python -m pip uninstall appunti-calc-demo
+```
+
+Pip non effettua automaticamente una pulizia generale di tutte le dipendenze rimaste inutilizzate.
+
 ## Esempio pratico
 
-Setup minimo di dipendenze per uno script HTTP:
+Prerequisito: aver costruito la wheel della nota Creazione di Package. Il nome e un demo locale, **non un invito a cercarlo su PyPI**. Dalla radice di quel progetto, in un virtualenv di prova:
+
+```text
+python -m pip install --no-index dist/appunti_calc_demo-0.1.0-py3-none-any.whl
+```
+
+`--no-index` esclude gli indici; il demo non ha dipendenze runtime esterne. Con altri package devi fornire anche tutte le dipendenze, per esempio tramite una wheelhouse controllata.
+
+Verifica import e metadati senza effettuare richieste HTTP:
+
+```text
+python -c "from appunti_calc import add; from importlib.metadata import version; print(add(2, 3)); print(version('appunti-calc-demo'))"
+```
+
+Output: `5` e `0.1.0`.
+
+```text
+python -m pip check
+```
+
+`pip check` verifica requisiti dichiarati mancanti o incompatibili; non esegue test, non rileva tutte le incompatibilita runtime e non cerca vulnerabilita.
+
+### Snapshot e riproducibilita
+
+`pip freeze` descrive cio che e installato nel suo formato di requirements. Non risolve un ambiente nuovo, non distingue automaticamente dipendenze dirette e transitive e non registra tutti i requisiti di sistema. Per una wheel locale puo includere un riferimento `file://` specifico della macchina.
+
+Visualizza lo snapshot prima di salvarlo:
+
+```text
+python -m pip freeze
+```
+
+Solo se vuoi **creare o sovrascrivere** `requirements.snapshot.txt`, in PowerShell:
+
+```powershell
+python -m pip freeze | Set-Content -LiteralPath requirements.snapshot.txt -Encoding utf8
+```
+
+Alternativa Bash:
 
 ```bash
-python -m venv .venv
-.venv\Scripts\activate
-python -m pip install httpx
-python -m pip freeze > requirements.txt
+python -m pip freeze > requirements.snapshot.txt
 ```
 
-Uso nel codice:
-
-```python
-import httpx
-
-
-response = httpx.get("https://example.com")
-print(response.status_code)
-```
-
-Ripristino su un'altra macchina:
-
-```bash
-python -m venv .venv
-.venv\Scripts\activate
-python -m pip install -r requirements.txt
-```
+Non sostituire automaticamente il file delle dipendenze dichiarate con lo snapshot di un ambiente usato per piu attivita. Versioni esatte, hash degli artefatti, versione Python e piattaforma sono aspetti distinti della riproducibilita.
 
 ## Varianti
 
-- **`requirements.txt`**: snapshot o lista di dipendenze installabili.
-- **Editable install**: `python -m pip install -e .` per sviluppare un package locale.
-- **Constraints file**: vincoli di versione separati dalle dipendenze dirette.
-- **Index privato**: registry aziendale o mirror interno.
-- **Tool moderni**: `uv`, `poetry`, `pip-tools` o `pipx` per workflow piu strutturati.
+- **Editable**: `python -m pip install -e .` installa il progetto per lo sviluppo; non dimostra che la wheel contenga tutto.
+- **Wheelhouse**: artefatti locali selezionati per piattaforma/interprete, installabili senza indice.
+- **Lockfile**: risultato di un workflow di risoluzione controllato. `pip freeze` non equivale a `uv.lock` o `poetry.lock`.
+- **Indici privati**: configura una provenienza controllata. Aggiungere PyPI come fonte concorrente per nomi interni puo causare dependency confusion; `--extra-index-url` non significa "usa questa fonte solo come fallback sicuro".
+- **Hash**: aiutano a verificare gli artefatti previsti, ma non rendono affidabile un pacchetto malevolo approvato per errore.
 
 ## Errori comuni
 
-- Usare `pip` collegato all'interprete sbagliato.
-- Installare pacchetti fuori dall'ambiente virtuale.
-- Non fissare versioni quando serve riproducibilita.
-- Confondere nome PyPI e nome importabile.
-- Usare `pip freeze` come unica strategia senza distinguere dipendenze dirette e transitive.
-- Installare pacchetti sconosciuti senza controllare manutenzione e affidabilita.
-- Creare file locali con nomi come `requests.py`, `json.py` o `logging.py`, rompendo gli import.
+- Installare con un pip diverso da quello dell'interprete che esegue il programma.
+- Usare `sudo pip` o aggirare la protezione degli ambienti di sistema come soluzione predefinita.
+- Interpretare "Successfully installed" come prova del funzionamento dell'applicazione.
+- Copiare pin obsoleti da un esempio senza verificarne compatibilita e manutenzione.
+- Usare `--no-deps` per nascondere un conflitto.
+- Inserire token degli indici in file versionati o output di diagnostica condivisi.
+- Confondere una lista di dipendenze con una garanzia di sicurezza o riproducibilita universale.
 
 ## Checklist
 
-- Sto usando `python -m pip`?
-- L'ambiente virtuale e attivo?
-- Il pacchetto e affidabile e mantenuto?
-- Ho capito il nome da installare e quello da importare?
-- Le versioni sono vincolate quanto basta?
-- Le dipendenze sono documentate in un file o lockfile?
+- Interprete e ambiente sono quelli attesi?
+- La distribuzione proviene da una fonte verificata?
+- Le dipendenze dirette sono dichiarate e i transitori risolti in modo controllato?
+- Sono noti eventuali build tool e requisiti nativi?
+- L'ambiente si ricrea da zero e supera i test?
+- Snapshot e lockfile non contengono segreti o percorsi privati?
 
 ## Collegamenti
 
@@ -162,3 +180,11 @@ python -m pip install -r requirements.txt
 - [[Programmazione/Python/Pagine/Creazione di Package|Creazione di Package]]
 - [[Programmazione/Python/Pagine/uv pipx e poetry|uv pipx e poetry]]
 - [[Programmazione/Python/Pagine/Standard Library|Standard Library]]
+
+## Fonti
+
+- [pip install: risoluzione, build e indici](https://pip.pypa.io/en/stable/cli/pip_install/).
+- [pip freeze](https://pip.pypa.io/en/stable/cli/pip_freeze/) e [pip check](https://pip.pypa.io/en/stable/cli/pip_check/).
+- [pip: constraints](https://pip.pypa.io/en/stable/user_guide/#constraints-files).
+- [pip: installazioni ripetibili](https://pip.pypa.io/en/stable/topics/repeatable-installs/) e [installazioni con hash](https://pip.pypa.io/en/stable/topics/secure-installs/).
+- [PyPA: distribuzione rispetto a import package](https://packaging.python.org/en/latest/discussions/distribution-package-vs-import-package/).

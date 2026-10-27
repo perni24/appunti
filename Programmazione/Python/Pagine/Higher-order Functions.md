@@ -22,125 +22,184 @@ title: Higher-order Functions in Python
 
 ## Sintesi
 
-Una higher-order function e una funzione che accetta altre funzioni come argomenti o restituisce una funzione. In Python e naturale, perche le funzioni sono oggetti di prima classe.
+Una higher-order function riceve un'altra funzione come argomento oppure restituisce una funzione. In Python le funzioni sono oggetti: puoi passarle, conservarle e costruire comportamenti configurati senza introdurre una classe per ogni operazione.
 
-Questo modello e alla base di callback, decoratori, funzioni di trasformazione, factory function e molte API della standard library.
+Riferimento: Python 3.12; esempi verificati con CPython 3.12.10.
 
-## Quando usarlo
+## Problema che risolve
 
-Usa higher-order functions quando:
+Separa una procedura stabile dal comportamento che varia: attraversare gli elementi e applicare una trasformazione, ordinare per una chiave, costruire un validatore configurato o aggiungere un wrapper.
 
-- vuoi separare iterazione e trasformazione;
-- devi passare una callback;
-- vuoi creare funzioni configurate;
-- stai scrivendo decoratori;
-- vuoi comporre comportamenti riutilizzabili.
+Non equivale a rendere tutto funzionale. Le callback possono avere stato, mutare dati o fallire; l'API deve chiarire quando vengono chiamate e cosa si aspetta da loro.
 
-Evita astrazioni eccessive: Python privilegia leggibilita e chiarezza.
+## Concetto chiave
 
-## Come funziona
+### Passare comportamento
 
-Funzione passata come argomento:
+`transform` e la funzione da chiamare, non il risultato di una chiamata anticipata. L'esempio e sincrono, conserva l'ordine e costruisce una lista.
 
 ```python
-def apply_to_all(items, function):
-    return [function(item) for item in items]
+from collections.abc import Callable, Iterable
+from typing import TypeVar
+
+T = TypeVar("T")
+R = TypeVar("R")
+
+
+def apply_to_all(items: Iterable[T], transform: Callable[[T], R]) -> list[R]:
+    return [transform(item) for item in items]
 
 
 numbers = [1, 2, 3]
 result = apply_to_all(numbers, lambda number: number * 2)
+print(result)   # [2, 4, 6]
+print(numbers)  # [1, 2, 3]
 ```
 
-Funzione restituita da una funzione:
+Le annotazioni descrivono il contratto, non verificano automaticamente firma o comportamento della callback. Una funzione che modifica gli elementi ricevuti puo modificare gli oggetti originali: il ciclo non ne crea copie.
+
+Se la callback fallisce, l'eccezione si propaga. Gli elementi gia letti da un iteratore restano consumati e gli effetti gia prodotti non vengono annullati.
+
+### Restituire comportamento
+
+Una closure conserva l'accesso allo scope esterno necessario. Chiamate diverse alla factory creano contesti distinti.
 
 ```python
-def multiplier(factor):
-    def multiply(value):
+def multiplier(factor: int):
+    def multiply(value: int) -> int:
         return value * factor
-
     return multiply
 
 
 double = multiplier(2)
-print(double(10))
+triple = multiplier(3)
+print(double(10), triple(10))  # 20 30
 ```
 
-La funzione interna ricorda `factor`: questo e un esempio di closure.
+Questo esempio assume numeri interi secondo le annotazioni, senza validazione runtime. La closure non e uno snapshot universale: un oggetto mutabile catturato rimane condiviso se non viene copiato deliberatamente.
 
-## API / Sintassi
+## Dettagli importanti
 
-Funzioni comuni:
+### Valutazione immediata e lazy
+
+`sorted` e una comprehension di lista consumano l'input per costruire il risultato. `map` e `filter` costruiscono iteratori: la callback viene eseguita durante il consumo. Un risultato lazy non e una cache e non riparte dall'inizio.
 
 ```python
-names = ["anna", "luca", "marco"]
-upper_names = list(map(str.upper, names))
+events = []
+
+
+def upper(name: str) -> str:
+    events.append(name)
+    return name.upper()
+
+
+mapped = map(upper, ["anna", "luca"])
+print(events)         # []
+first = next(mapped)
+print(first, events)  # ANNA ['anna']
+rest = list(mapped)
+print(rest, events)   # ['LUCA'] ['anna', 'luca']
+print(list(mapped))   # []
+
+odd = list(filter(lambda number: number % 2 != 0, [1, 2, 3, 4, 5]))
+print(odd)  # [1, 3, 5]
 ```
 
-```python
-numbers = [1, 2, 3, 4, 5]
-odd = list(filter(lambda number: number % 2 != 0, numbers))
-```
+Con piu iterabili, `map` nella baseline 3.12 si ferma al piu corto. Non segnala automaticamente lunghezze diverse. `filter(None, values)` scarta tutti i valori falsy, non soltanto `None`.
 
-Con `functools.reduce`:
+Una callback `async def` restituisce una coroutine: questi strumenti sincroni non la attendono. Per esempio un `filter` con predicato async non esegue la verifica desiderata. L'asincronia richiede un flusso esplicito.
+
+### Riduzione e valore iniziale
+
+`reduce` combina l'accumulatore con ogni elemento da sinistra a destra. Con un inizializzatore esplicito e definito anche il caso vuoto.
 
 ```python
 from functools import reduce
+from operator import add, mul
 
 numbers = [1, 2, 3, 4]
-total = reduce(lambda left, right: left + right, numbers)
+total = reduce(add, numbers, 0)
+product = reduce(mul, numbers, 1)
+empty_total = reduce(add, [], 0)
+
+print(total, product, empty_total)  # 10 24 0
+print(sum(numbers))                # 10
 ```
 
-In Python, spesso le comprehension sono piu leggibili di `map` e `filter`:
+Senza inizializzatore, il primo elemento diventa l'accumulatore e un iterabile vuoto causa `TypeError`. Per somma, prodotto o condizioni aggregate preferisci spesso `sum`, `math.prod`, `any` e `all`: comunicano lo scopo senza una riduzione generica. `any` e `all` possono fermarsi prima di consumare tutto.
+
+## Esempio
+
+### Una regola configurabile
+
+Il validatore controlla la lunghezza minima di un testo. Non e un controllo di robustezza di una password e non normalizza gli spazi.
 
 ```python
-upper_names = [name.upper() for name in names]
-odd = [number for number in numbers if number % 2 != 0]
-```
+from collections.abc import Callable
 
-## Esempio pratico
 
-Validatore configurabile:
+def min_length(length: int) -> Callable[[str], bool]:
+    if type(length) is not int:
+        raise TypeError("length must be an integer")
+    if length < 0:
+        raise ValueError("length cannot be negative")
 
-```python
-def min_length(length):
-    def validate(value):
+    def validate(value: str) -> bool:
+        if not isinstance(value, str):
+            raise TypeError("value must be a string")
         return len(value) >= length
 
     return validate
 
 
-is_valid_password = min_length(8)
-
-print(is_valid_password("secret"))
-print(is_valid_password("long-secret"))
+long_enough = min_length(4)
+print(long_enough("cat"), long_enough("notes"))  # False True
+print(min_length(0)(""))                       # True
 ```
 
-La funzione esterna crea una regola; quella interna la applica.
+La configurazione viene controllata alla creazione della regola; il testo a ogni chiamata. `len(str)` conta code point, non byte o necessariamente caratteri percepiti dall'utente. I booleani non sono ammessi come lunghezza, anche se sono sottoclassi di `int`.
 
-## Varianti
+### Configurare argomenti con partial
 
-- **Callback**: funzione passata per essere chiamata piu tardi.
-- **Factory function**: funzione che crea e restituisce un'altra funzione.
-- **Closure**: funzione che ricorda variabili dello scope esterno.
-- **Decoratore**: higher-order function applicata con sintassi `@`.
-- **`functools.partial`**: crea una funzione fissando alcuni argomenti.
-- **`functools.lru_cache`**: decoratore che aggiunge memoization.
+```python
+from functools import partial
+
+
+def format_message(level: str, message: str, *, prefix: str = "app") -> str:
+    return f"{prefix} [{level}] {message}"
+
+
+info = partial(format_message, "INFO", prefix="worker")
+print(info("ready"))                 # worker [INFO] ready
+print(info("ready", prefix="api"))   # api [INFO] ready
+```
+
+I nuovi argomenti posizionali si aggiungono a quelli fissati; i keyword possono sostituire quelli preconfigurati. `partial` non e un vincolo di sicurezza e non copia profondamente gli oggetti passati. Per il binding di metodi nella definizione di una classe esiste `partialmethod`.
+
+## Limiti
+
+- Higher-order non significa puro, parallelo, asincrono o privo di allocazioni.
+- Una pipeline lazy conserva riferimenti e puo rimandare gli errori al consumo.
+- Una callback con una firma incompatibile fallisce alla chiamata, anche se `callable` restituisce vero.
+- Le closure possono trattenere oggetti grandi o stato modificabile.
+- La memoization con `lru_cache` richiede una politica su argomenti, effetti e invalidazione; vedi Caching.
 
 ## Errori comuni
 
-- Usare `map` e `filter` quando una comprehension e piu leggibile.
-- Creare catene funzionali difficili da debuggare.
-- Nascondere side effect dentro funzioni passate come callback.
-- Non dare nomi alle funzioni quando la logica e importante.
-- Dimenticare che le closure catturano variabili, non copie isolate per magia.
+- Passare `transform()` quando l'API richiede `transform`.
+- Usare callback con effetti nascosti in un ordinamento o in un filtro.
+- Cercare una lista completa dopo aver consumato parte di un iteratore.
+- Usare una catena di lambda al posto di passaggi con nomi significativi.
+- Presumere che un errore ripristini dati, input consumato o stato esterno.
+- Presentare un controllo di sola lunghezza come validazione completa.
 
 ## Checklist
 
-- La higher-order function rende il codice piu chiaro?
-- La funzione passata ha un nome utile se la logica non e banale?
-- Una comprehension sarebbe piu semplice?
-- La closure cattura solo cio che serve?
-- Il comportamento resta facile da testare?
+- La callback e sincrona o deve essere attesa?
+- Sono chiari argomenti, risultato e momento di esecuzione?
+- Input e risultati sono condivisi, copiati o consumabili?
+- Il caso vuoto e definito?
+- Una funzione dedicata della standard library sarebbe piu leggibile?
 
 ## Collegamenti
 
@@ -148,4 +207,12 @@ La funzione esterna crea una regola; quella interna la applica.
 - [[Programmazione/Python/Pagine/Funzioni|Funzioni]]
 - [[Programmazione/Python/Pagine/Funzioni Lambda|Funzioni Lambda]]
 - [[Programmazione/Python/Pagine/Decoratori|Decoratori]]
+- [[Programmazione/Python/Pagine/Iteratori|Iteratori]]
 - [[Programmazione/Python/Pagine/Caching|Caching]]
+
+## Fonti
+
+- [Python 3.12: functools](https://docs.python.org/3.12/library/functools.html).
+- [Built-in: map, filter, any e all](https://docs.python.org/3.12/library/functions.html).
+- [FAQ: higher-order functions](https://docs.python.org/3.12/faq/programming.html#how-do-you-make-a-higher-order-function-in-python).
+- [Python: funzioni e scope](https://docs.python.org/3.12/tutorial/controlflow.html#defining-functions).

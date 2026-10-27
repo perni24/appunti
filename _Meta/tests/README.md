@@ -1080,6 +1080,871 @@ Limiti: non e una libreria HTTP universale o un audit di sicurezza. Non verifica
 
 Regressione seriale conclusiva al 2026-10-19: **754 test React superati**, 694 precedenti e 60 nuovi, senza fallimenti o test saltati, in circa 376 secondi. Usato il comando complessivo con tutte le toolchain configurate, prima della build Quartz; processi e fixture chiusi/rimossi. La suite JavaScript non e stata rieseguita. Le prove riguardano i casi descritti, non certificano ogni esempio delle 59 note React.
 
+## Python: fondamenti del linguaggio
+
+```powershell
+node --test _Meta/tests/python-fondamenti.test.mjs
+```
+
+La suite richiede CPython 3.12 con venv/ensurepip disponibili. Usa `python` dal PATH; per un interprete diverso puoi impostare `PYTHON_TEST_EXECUTABLE` al percorso dell'eseguibile, senza argomenti. Baseline verificata: **CPython 3.12.10 su Windows**, Node 24.14.0. La patch indica il runtime provato, non una raccomandazione a installare una versione meno aggiornata.
+
+Copertura: Comandi base, Sintassi e Variabili, Operatori, Strutture Condizionali, Cicli, Funzioni, Argomenti Flessibili ed Error Handling. **37 blocchi Python** estratti dal Markdown, compilati ed eseguiti con namespace controllato; i controesempi intenzionali hanno verifiche dedicate. I controlli di struttura e presenza delle fonti sono distinti da quelli comportamentali.
+
+- Nomi, alias, riassegnazione, copie superficiali, scope, annotazioni senza validazione runtime.
+- Divisione, resto, precedenza, truthiness, identita e appartenenza; valori zero e input bool distinti.
+- Match, cattura dei nomi, chiavi extra; iteratori consumabili, zip strict e clausola else dei cicli.
+- Default mutabili, closure, mutazione dei parametri, binding positional/keyword, unpacking e wrapper sincroni con wraps.
+- Errori attesi, causa, else/finally, propagazione, file opzionali e limiti di assert con `-O`.
+- CLI reale: esecuzione come script e modulo, argomenti, exit code, import senza effetti, py_compile e virtualenv temporaneo con pip list/freeze/check. Nessun download: pip proviene da ensurepip.
+
+Esecuzione del 23 ottobre 2026: **58 test superati**, nessun fallimento o test saltato, circa 20 secondi. Le fixture sono create nella directory temporanea e rimosse dopo verifica dei percorsi. Non vengono modificati interprete globale, dipendenze o lockfile di Quartz.
+
+Limiti: solo CPython 3.12 su Windows, non ogni interprete/piattaforma. I comandi di attivazione PowerShell/cmd/Bash sono controllati come testo, non eseguiti; nessuna modifica alle execution policy. L'installazione opzionale di requests non viene effettuata. Gli errori PermissionError e parte del cleanup sono simulati per verificare la gestione, non provano gli ACL reali. Nessun type checker, linter, servizio remoto, benchmark o audit di sicurezza. Le altre suite JavaScript/React/TypeScript non sono rieseguite da questo comando; build e QA Quartz restano verifiche separate.
+
+## Python: strutture dati
+
+```powershell
+node --test _Meta/tests/python-strutture-dati.test.mjs
+```
+
+Stessi prerequisiti del blocco Fondamenti: dipendenze del parser Markdown gia installate, Node 24.14.0 e CPython 3.12; interprete selezionabile con `PYTHON_TEST_EXECUTABLE`. Baseline verificata: **CPython 3.12.10 su Windows**. Non vengono installati pacchetti o modificate le dipendenze del sito.
+
+La suite estrae **27 blocchi Python** da Liste, Tuple, Set, Dizionari e Comprehensions. Ogni blocco e compilato ed eseguito in un processo isolato con dati propri e risultati verificati, senza dipendere dai blocchi precedenti della nota. I test editoriali su metadati, sezioni e fonti sono separati da quelli sul comportamento.
+
+- Liste: accessi e errori, slicing, step, alias, sort stabile e key, copie, ripetizione delle righe e media senza risultati.
+- Tuple: unpacking, contenuti mutabili, effetto parziale di +=, hashability, bounds e namedtuple senza validazione runtime.
+- Set: add/update, operazioni, frozenset, chiavi numeriche equivalenti e deduplicazione con ordine.
+- Dizionari: sentinel, get/setdefault non lazy, viste, ordine, merge superficiale, factory/proxy, proiezione dei record e duplicati rifiutati.
+- Comprehensions: ordine di valutazione, filtri, scope, late binding, generatori consumabili, suffissi POSIX nella baseline e assenza di rollback degli effetti.
+
+Regressione completa dei due blocchi Python:
+
+```powershell
+node --test --test-concurrency=1 _Meta/tests/python-fondamenti.test.mjs _Meta/tests/python-strutture-dati.test.mjs
+```
+
+Esecuzione del 23 ottobre 2026: **118 test superati**, 60 Strutture Dati + 58 Fondamenti, nessun fallimento o test saltato, circa 27 secondi. La nuova suite usa soltanto dati in memoria e processi Python brevi; le fixture temporanee del virtualenv appartengono alla suite Fondamenti e vengono ripulite da essa.
+
+Limiti: non e un benchmark di complessita o memoria, ne una prova su interpreti/versioni alternative. Non si controllano valori esatti di hash o ordine dei set. Nessun file reale viene analizzato tramite le estensioni, nessun database/autorizzazione/email viene validato, nessun thread o servizio remoto coinvolto. Non viene rieseguita la suite completa JavaScript/React/TypeScript. Build e QA del sito sono controlli separati.
+
+## Python: file, moduli e ambiente
+
+Due suite estraggono gli esempi dalle sei note del capitolo. `python-file-standard.test.mjs` esegue 12 blocchi Python e 14 controprove oltre ai due controlli di struttura: **28 test**. `python-packaging.test.mjs` ricostruisce il package dai sette file Markdown (cinque Python, un TOML e un README) ed esegue anche il TOML/Python dell'applicazione Poetry: **16 gruppi di test**.
+
+La toolchain e separata dal progetto site. Preparazione PowerShell dalla radice del vault, con CPython 3.12 disponibile; la prima installazione scarica i tool ufficiali e le loro dipendenze da PyPI. La directory deve essere nuova. Ogni comando va eseguito separatamente e interrotto se fallisce.
+
+```powershell
+$env:PYTHON_PACKAGING_TOOLS = Join-Path $env:TEMP ('appunti-python-packaging-tools-' + [guid]::NewGuid().ToString('N'))
+```
+
+```powershell
+python -m venv $env:PYTHON_PACKAGING_TOOLS
+```
+
+```powershell
+$env:PYTHON_TEST_EXECUTABLE = Join-Path $env:PYTHON_PACKAGING_TOOLS 'Scripts/python.exe'
+```
+
+```powershell
+& $env:PYTHON_TEST_EXECUTABLE -m pip install --only-binary=:all: 'pip==26.2.2' 'build==1.6.1' 'setuptools==84.2.1' 'wheel==0.48.0' 'uv==0.13.5' 'pipx==1.18.4' 'poetry==2.5.1' 'tzdata==2026.5'
+```
+
+```powershell
+& $env:PYTHON_TEST_EXECUTABLE -m pip download --only-binary=:all: --no-deps --dest (Join-Path $env:PYTHON_PACKAGING_TOOLS 'wheelhouse') 'setuptools==84.2.1'
+```
+
+```powershell
+node --test --test-concurrency=1 _Meta/tests/python-file-standard.test.mjs _Meta/tests/python-packaging.test.mjs
+```
+
+La preparazione blocca le versioni dei tool principali, non tutte le loro dipendenze transitive. La suite richiede le baseline dichiarate e non installa pacchetti globali. I singoli virtualenv creati durante i test ricevono pip dal bundle ensurepip di Python: nella prova CPython 3.12.10 e pip 25.0.1, distinto dal pip 26.2.2 del frontend di build.
+
+Copertura: file temporanei reali, apertura esclusiva, troncamento, encoding invalido, output parziale, copia multiblocco, schema JSON, CSV quotato, TOML, DST Europe/Rome e Queue con thread reale. Packaging: build isolata sdist/wheel, editable, installazione della wheel in un altro virtualenv, import e CLI fuori dai sorgenti, unittest del demo, constraints e freeze, pip uninstall. uv: init non impacchettato, lock/sync/run, add della wheel locale, locked rispetto a frozen e rimozione di dipendenze estranee. pipx: installazione CLI con backend uv, esecuzione e uninstall. Poetry: modalita applicativa, lock/install/run, add della wheel locale e sync.
+
+Le fixture usano cache e directory di configurazione proprie; pip non accede agli indici e uv e offline durante le prove. Poetry usa una wheel locale senza dipendenze esterne: non e una prova di risoluzione su PyPI. Nessuna pubblicazione di package, modifica del PATH persistente, esecuzione di ensurepath o modifica della execution policy. Le directory dei test vengono cancellate solo dopo verifica del percorso. La toolchain preparata rimane separata e riutilizzabile.
+
+Limiti: Windows e CPython 3.12, nessuna matrice Linux/macOS, compilazione C, race di filesystem, crash recovery o test di carico delle code. Le attivazioni delle shell e i comandi di snapshot sono controllati nel testo, non eseguiti in tutte le shell. Non sono testati registry privati, upload, aggiornamenti remoti, audit o compatibilita futura. Il parser dei titoli conserva i nomi speciali tramite inline code. Build Quartz e QA visiva restano verifiche separate.
+
+Risultato del 2026-10-23: **162/162 test superati**, nessun fallimento o test saltato, circa 98 secondi nella regressione seriale dei tre capitoli revisionati (58 + 60 + 28 + 16). Le correzioni durante le prove hanno riguardato escape delle fixture, percorsi Windows 8.3, nomi speciali nei titoli e comportamento effettivo di uv init/locked/frozen.
+
+Regressione dei tre capitoli revisionati:
+
+```powershell
+node --test --test-concurrency=1 _Meta/tests/python-fondamenti.test.mjs _Meta/tests/python-strutture-dati.test.mjs _Meta/tests/python-file-standard.test.mjs _Meta/tests/python-packaging.test.mjs
+```
+
+## Python: programmazione ad oggetti
+
+```powershell
+node --test _Meta/tests/python-oggetti.test.mjs
+```
+
+La suite estrae **27 blocchi Python autonomi** dalle otto note del capitolo: Classi e Istanze, Dataclasses, Enum, Metodi Speciali, Ereditarieta, Incapsulamento, Proprieta e Metodi di classe e statici. **69 gruppi di test**, inclusi controlli editoriali e 33 controprove. I frammenti vengono eseguiti separatamente; il namespace e un modulo registrato in sys.modules, per consentire l'introspezione usata dalle dataclass.
+
+Prerequisiti: dipendenze del parser Markdown gia installate, Node e CPython 3.12. Il percorso dell'interprete puo essere impostato tramite `PYTHON_TEST_EXECUTABLE`. Baseline verificata: **CPython 3.12.10**, **Node 24.14.0**, Windows. La nuova suite usa soltanto la standard library, non scarica pacchetti e non scrive fixture su disco.
+
+- Classi: binding, inizializzazione, attributi condivisi, alias e conto con input errati senza modifiche al saldo.
+- Dataclass: factory e valori condivisi, hash, tipo concreto, replace/asdict, campi esclusi dal repr, frozen superficiale, post-init, InitVar e limiti di super/slots.
+- Enum: conversione rigorosa, errori e cause, alias, unique, JSON, interop con primitivi e flag.
+- Metodi speciali: NotImplemented, operazioni riflesse, hash, ricerca sul tipo, iterazione riutilizzabile e copie.
+- Ereditarieta: ABC, firme non validate, MRO, ordine delle basi, catena interrotta e composizione.
+- Incapsulamento e proprieta: name mangling, alias, snapshot, read-only, validazione prima della mutazione e cached_property con invalidazione/assegnazione.
+- Factory: cls/Self, dizionario invariato, sottoclassi con costruttore incompatibile e contatori di classe.
+
+Regressione dei quattro capitoli, con la toolchain packaging e le variabili d'ambiente preparate come nella sezione precedente:
+
+```powershell
+node --test --test-concurrency=1 _Meta/tests/python-fondamenti.test.mjs _Meta/tests/python-strutture-dati.test.mjs _Meta/tests/python-file-standard.test.mjs _Meta/tests/python-packaging.test.mjs _Meta/tests/python-oggetti.test.mjs
+```
+
+Risultato del 2026-10-23: **231 test superati**, 58 + 60 + 28 + 16 + 69, nessun fallimento o test saltato, circa 136 secondi. Il primo giro della sola nuova suite ha superato tutti i 69 test in circa 11 secondi.
+
+Limiti: una baseline Windows/CPython, nessuna matrice di versioni, controllo statico di Self/Protocol, verifica concorrente delle cache o delle classi, audit, benchmark, servizio di notifica o sistema bancario reale. I test provano i contratti didattici dichiarati, non la correttezza di qualsiasi sottoclasse o oggetto ostile. Le suite degli altri linguaggi non sono rieseguite; build e QA Quartz restano verifiche separate.
+
+## Python: concetti funzionali e iterazione
+
+```powershell
+node --test _Meta/tests/python-funzionale-iterazione.test.mjs
+```
+
+La suite estrae **33 blocchi Python autonomi** dalle sei note: Funzioni Lambda, Higher-order Functions, Decoratori, Generatori, Iteratori e Context Managers. **73 gruppi di test**: 33 esempi, 33 controprove, sei controlli editoriali e uno sulla baseline. La nota Higher-order Functions conserva il template teorico; le altre usano quello tecnico.
+
+Prerequisiti: dipendenze del parser Markdown, Node e CPython 3.12. `PYTHON_TEST_EXECUTABLE` puo indicare l'interprete. Baseline provata: **CPython 3.12.10 su Windows**, **Node 24.14.0**; non e una raccomandazione di installare questa specifica patch. Nessuna dipendenza Python esterna per la nuova suite.
+
+- Lambda e funzioni di ordine superiore: binding, ordinamento stabile, riferimenti condivisi, callback eager/lazy, errori parziali, reduce, closure, validazione e partial.
+- Decoratori: metadati e firma, binding dei metodi, configurazione, ordine delle factory e wrapper, errori propagati e differenze tra funzioni sincrone, coroutine e generatori.
+- Generatori: validazione differita, esaurimento, primo iterabile immediato, yield from, send/return, StopIteration e chiusura prima o dopo l'avvio.
+- Iteratori: passate indipendenti, esaurimento stabile, backoff numerico senza attese, sentinelle, islice/batched nella baseline, groupby e tee.
+- Context manager: ingresso fallito, assegnazione as fallita, return, soppressione e cleanup che fallisce. File temporanei reali, ExitStack e chiusura dopo errori di apertura/decoding.
+- Async: coroutine reali su event loop locale, cancellazione sincronizzata con Event senza attese temporali arbitrarie e chiusura esplicita dei generatori asincroni. Clock sostituito nelle controprove che verificano una durata esatta.
+
+Le fixture di I/O sono create e rimosse da TemporaryDirectory. I test non richiedono rete, servizi esterni o accesso ai file personali. Tutti gli esempi vengono eseguiti in un processo Python isolato.
+
+Risultato mirato del 2026-10-23: **73/73 test superati**, circa 13 secondi. Nel primo giro mancavano gli import io/contextlib in tre controprove; corretti i test, nessuna modifica necessaria ai 33 esempi delle note.
+
+Regressione dei cinque capitoli, con toolchain packaging e variabili d'ambiente configurate nella sezione precedente:
+
+```powershell
+node --test --test-concurrency=1 _Meta/tests/python-fondamenti.test.mjs _Meta/tests/python-strutture-dati.test.mjs _Meta/tests/python-file-standard.test.mjs _Meta/tests/python-packaging.test.mjs _Meta/tests/python-oggetti.test.mjs _Meta/tests/python-funzionale-iterazione.test.mjs
+```
+
+Regressione seriale del 2026-10-23: **304/304 test superati**, 58 + 60 + 28 + 16 + 69 + 73, nessun fallimento o test saltato, circa 148 secondi. Riutilizzata la toolchain isolata del capitolo packaging, senza nuove installazioni.
+
+Limiti: una baseline Windows/CPython, niente matrice di versioni, type checker, benchmark, test di carico, database o servizi di rete. Il cleanup viene provato sui percorsi dichiarati, non garantito contro arresti forzati o cancellazioni ripetute. Le suite degli altri linguaggi e le verifiche Quartz sono separate.
+
+## Python: type hints e qualita
+
+La suite `python-qualita.test.mjs` estrae **23 blocchi Python**, due configurazioni TOML e una JSON dalle quattro note Type Hinting, Stile, Testing e Logging. Diciotto frammenti sono autonomi; cinque file formano il progetto pytest/unittest. La nota Stile conserva il template teorico.
+
+Richiede una toolchain temporanea dedicata, separata da quella packaging. Esempio PowerShell, con una directory nuova o riservata esclusivamente ai test:
+
+```powershell
+$env:PYTHON_QUALITY_TOOLS = Join-Path $env:TEMP 'appunti-python-quality-tools'
+```
+
+```powershell
+python -m venv $env:PYTHON_QUALITY_TOOLS
+```
+
+```powershell
+& (Join-Path $env:PYTHON_QUALITY_TOOLS 'Scripts/python.exe') -m pip install mypy==2.4.0 ruff==0.17.2 black==26.10.1 pytest==9.1.1 coverage==7.17.0
+```
+
+La CLI ufficiale Pyright e installata tramite npm nella sottocartella node, non globalmente:
+
+```powershell
+npm install --prefix (Join-Path $env:PYTHON_QUALITY_TOOLS 'node') --ignore-scripts --no-audit --no-fund --package-lock=false pyright@1.1.414
+```
+
+```powershell
+node --test _Meta/tests/python-qualita.test.mjs
+```
+
+Baseline: CPython 3.12.10 e Node 24.14.0 su Windows. La suite richiede le versioni dei tool sopra elencate; indica cio che e stato provato, non impone di usarle in qualsiasi progetto futuro. L'installazione iniziale richiede i registry; le verifiche successive lavorano su fixture locali senza installazioni o servizi applicativi remoti.
+
+**65 gruppi**:
+
+- Otto esempi typing eseguiti e controllati con entrambi i checker in strict; sette gruppi negativi per checker, oltre a object/Any e varianza delle liste. Protocol runtime, cast, NewType e Literal verificati anche nei loro limiti.
+- Ruff check/format, fix sicuri e ordinamento import I001; Black check/diff e formattazione. Verificato che le modalita check non cambino i sorgenti, che i comandi ritornino codici adeguati e che le correzioni agiscano solo nelle fixture.
+- Progetto completo: 26 casi pytest, due test unittest, selezione e raccolta. Una mutazione intenzionale del limite della porta fa fallire i test. Zero test raccolti produce exit code 5.
+- Coverage con branch, soglia e HTML; soglia fallita su un percorso incompleto. Una fixture separata raggiunge il 100% senza asserzioni: dimostra che la misura non certifica la verifica dei risultati.
+- Mock con autospec/spec_set: firme e attributi limitati, tipi degli argomenti non convalidati. File e variabili d'ambiente isolati, senza notifiche reali.
+- Logging: stderr distinto da output CLI, basicConfig/force, soglie e propagazione, doppia emissione, formattazione differita, eccezioni, JSON con newline e campi extra mancanti, rotazione su file temporanei.
+
+Risultato mirato del 2026-10-23: **65/65 test superati**, circa 50 secondi. Il primo giro aveva rilevato due diagnostici Pyright sugli esempi didattici: isinstance ridondante e confronto di identita tra tipi staticamente incompatibili. Corrette le note senza disabilitare regole; mypy e Pyright ora accettano gli otto blocchi.
+
+La suite crea soltanto fixture sotto una directory temporanea con prefisso verificato prima della rimozione. Le cache dei checker e gli artefatti coverage restano li; nessuna modifica a site, lockfile del vault o Python globale. Le prove logging usano processi separati per non condividere configurazione globale.
+
+Regressione con entrambe le toolchain preparate e `PYTHON_TEST_EXECUTABLE` impostato come nella sezione packaging:
+
+```powershell
+node --test --test-concurrency=1 _Meta/tests/python-fondamenti.test.mjs _Meta/tests/python-strutture-dati.test.mjs _Meta/tests/python-file-standard.test.mjs _Meta/tests/python-packaging.test.mjs _Meta/tests/python-oggetti.test.mjs _Meta/tests/python-funzionale-iterazione.test.mjs _Meta/tests/python-qualita.test.mjs
+```
+
+Regressione finale del 2026-10-23: **369/369 test superati**, 304 precedenti + 65 Qualita, nessun fallimento o test saltato, circa 182 secondi. Verificato anche l'output stderr dello script Logging, distinto dallo stdout.
+
+Limiti: una versione per tool e una piattaforma, non verifica di tutti i frammenti inline, ambienti IDE, librerie di terze parti o protocolli arbitrari. Niente invio di log remoti, database, rete applicativa, benchmark, audit o concorrenza multiprocesso. Le controprove volutamente errate restano nelle fixture; le suite degli altri linguaggi, la build e la QA Quartz sono separate.
+
+## Python: Standard Library Pratica
+
+La suite `python-standard-pratica.test.mjs` estrae **17 blocchi Python** dalle cinque note Subprocess, CLI con argparse, SQLite con sqlite3, Networking base e Configurazione e Variabili d Ambiente. Usa soltanto standard library e Git disponibile nel PATH; nessuna dipendenza nuova. Baseline verificata: **CPython 3.12.10, SQLite 3.49.1, Node 24.14.0 su Windows**.
+
+```powershell
+node --test _Meta/tests/python-standard-pratica.test.mjs
+```
+
+`PYTHON_TEST_EXECUTABLE` puo indicare un interprete alternativo della stessa baseline. Eseguire senza ottimizzazione: le asserzioni delle fixture devono restare attive.
+
+- Processi reali: argomenti letterali, stdin, cwd, ambiente, errori e timeout con cleanup. Git viene provato su un repository temporaneo, senza remoti, con commit locale di fixture e HEAD detached.
+- Argparse: parsing/help/exit code, sottocomandi, entry point reali, file UTF-8, creazione esclusiva, overwrite esplicito, stesso percorso/hard link e input errati.
+- SQLite: commit/rollback/close, vincoli e parametri, persistenza su file temporanei, foreign key per connessione, errore soppresso, autocommit, backup e accesso read-only.
+- HTTP/TCP: server temporanei su 127.0.0.1, porta assegnata dal sistema; JSON, encoding, dimensioni, status e timeout. Frammentazione testata sia con stream reale sia con un test double che restituisce un byte per lettura. Thread e socket vengono chiusi.
+- Configurazione: valori assenti/vuoti, parsing booleani, limiti ASCII delle porte, precedenza della CLI anche con False, rappresentazione senza URL e assenza di caricamento automatico di .env.
+
+Risultato mirato del 2026-10-24: **57/57 test superati**, circa 12 secondi. Corrette inizialmente l'escaping e le variabili condivise delle fixture; precisato nelle note il comportamento di exit_on_error rispetto all'uscita per help, verificandolo sulla baseline reale.
+
+Limiti: nessuna matrice di piattaforme, prova TLS/CA, DNS esterno, proxy/redirect, SSRF, carico, crash recovery, WAL concorrente o albero di processi. I test non eseguono i comandi PowerShell delle note ne installano python-dotenv/Pydantic Settings. Gli esempi HTTP non sono un client per URL non fidati; quelli SQLite non certificano compatibilita PostgreSQL. Build e controlli Quartz restano separati.
+
+Regressione completa con le toolchain packaging e qualita predisposte come nelle sezioni precedenti:
+
+```powershell
+node --test --test-concurrency=1 _Meta/tests/python-fondamenti.test.mjs _Meta/tests/python-strutture-dati.test.mjs _Meta/tests/python-file-standard.test.mjs _Meta/tests/python-packaging.test.mjs _Meta/tests/python-oggetti.test.mjs _Meta/tests/python-funzionale-iterazione.test.mjs _Meta/tests/python-qualita.test.mjs _Meta/tests/python-standard-pratica.test.mjs
+```
+
+Regressione seriale del 2026-10-24: **426/426 test superati**, 369 precedenti + 57 Standard Library Pratica, nessun fallimento o test saltato, circa 194 secondi. Non eseguire contemporaneamente la build Quartz.
+
+## Python: Internals e Gestione Risorse
+
+La suite `python-internals.test.mjs` estrae **26 blocchi Python** dalle sei note Memory Management, Global Interpreter Lock, Introspezione, Data model, Descriptor protocol e Metaclassi. Baseline: **CPython 3.12.10 con GIL, Windows, Node 24.14.0**. La nuova suite usa soltanto la standard library; `PYTHON_TEST_EXECUTABLE` puo selezionare un interprete compatibile.
+
+```powershell
+node --test _Meta/tests/python-internals.test.mjs
+```
+
+- Memoria: alias e binding, weak reference e cicli, collector disabilitato/ripristinato, chiusura del generatore, LRU e riferimenti trattenuti, snapshot tracemalloc. Non vengono asseriti conteggi globali di oggetti o byte esatti.
+- GIL: risultati con thread, lost update forzato da Barrier e correzione con Lock. Script ProcessPool reale con spawn, guardia di import e file temporaneo. Nessun confronto di velocita o deduzione di scaling.
+- Introspezione: lookup statico/dinamico, effetti delle property, limiti di hasattr/dir/callable/vars, binding senza validazione dei tipi. Wrapper keyword con errori, default, metadati e firma originaria.
+- Data model: lookup dei metodi speciali sul tipo, hash/uguaglianza, truthiness, fallback legacy di iterazione e contenitore Bag con snapshot, slice, errori e cursori indipendenti.
+- Descriptor: precedenza e MRO, binding dei metodi, stato isolato e validazione prima della scrittura. Casi bool/NaN/infinito, cancellazione, assenza, storage aggirabile, slots, ereditarieta e set_name tardivo.
+- Metaclassi: ordine effettivo degli hook, init_subclass, collisioni di registro, namespace e classcell conservata, conflitti, decorator che sostituisce la classe ed effetti non annullati da errori.
+
+Risultato mirato del 2026-10-24: **73/73 test superati al primo giro**, circa 11 secondi. Esempi e controprove eseguiti in processi isolati; output catturato, timeout esterni e file temporanei. Il blocco ProcessPool viene anche salvato come script ed eseguito con il suo entry point, non solo importato.
+
+Limiti: nessuna prova di build free-threaded, altri interpreti, RSS restituita al sistema, collector di versioni diverse, benchmark, estensioni native che rilasciano il GIL, memoria nativa o framework ORM/plugin reali. La sezione free-threaded delle note e documentale e riferita esplicitamente a 3.13/3.14. I test del vault e la QA Quartz restano separati.
+
+Regressione con le toolchain packaging/qualita predisposte come sopra, senza build concorrente:
+
+```powershell
+node --test --test-concurrency=1 _Meta/tests/python-fondamenti.test.mjs _Meta/tests/python-strutture-dati.test.mjs _Meta/tests/python-file-standard.test.mjs _Meta/tests/python-packaging.test.mjs _Meta/tests/python-oggetti.test.mjs _Meta/tests/python-funzionale-iterazione.test.mjs _Meta/tests/python-qualita.test.mjs _Meta/tests/python-standard-pratica.test.mjs _Meta/tests/python-internals.test.mjs
+```
+
+Regressione seriale del 2026-10-24: **499/499 test superati**, 426 precedenti + 73 Internals, nessun fallimento o test saltato, circa 197 secondi. Toolchain precedenti riutilizzate, nessuna dipendenza nuova.
+
+## Python: Concorrenza e Parallelismo
+
+La suite `python-concorrenza.test.mjs` estrae **19 blocchi Python** dalle quattro note Threading, Multiprocessing, Asyncio e Concurrent.futures. Baseline: **CPython 3.12.10 con GIL, Windows, Node 24.14.0**. Usa solo la standard library Python e il parser Markdown gia presente. `PYTHON_TEST_EXECUTABLE` puo selezionare l'interprete compatibile.
+
+```powershell
+node --test _Meta/tests/python-concorrenza.test.mjs
+```
+
+- Thread: Event di avvio/arresto, join con timeout, lock e contatore, coda limitata con sentinelle, errori e input invalidi. Controprova della mancata propagazione degli errori da join.
+- Processi: quattro script eseguiti realmente con spawn, memoria separata, Pool, Queue e Value con lock. Raccolta di errori, risultati ed exit code; import senza avviare figli.
+- Asyncio: creazione/attesa delle coroutine, TaskGroup rispetto a gather, cancellazione prima e dopo l'avvio, cleanup, timeout/wait_for e shield. Pipeline a worker fissi con errori del consumer/producer e cancellazione esterna, senza task orfani.
+- Future: ordine di map, associazione input/esito, errori raccolti o non osservati, cancellazione pending rispetto a running, shutdown e timeout. Finestra di submit, consumo interrotto, input falliti, ProcessPool e import protetto.
+- Test deterministici tramite Event e attese esplicite; nessuna asserzione sul tempo di accelerazione. La controprova di to_thread dimostra che la funzione gia avviata continua dopo la cancellazione della coroutine chiamante.
+
+Risultato mirato del 2026-10-24: **63/63 test superati al primo giro**, circa 17 secondi: quattro controlli strutturali, 19 esempi, 35 controprove e cinque import senza effetti. Gli script multiprocessing sono creati in TemporaryDirectory e avviati come file .py; il contenuto applicativo arriva dal Markdown, non da una sua copia nei test. Processi isolati, output catturato e timeout esterni; nessuna rete applicativa.
+
+Limiti: non e una prova di tutte le interleaving, deadlock possibili o resistenza ai crash. Nessun benchmark, build free-threaded, metodo fork/forkserver, altra piattaforma, shared_memory/Manager, processo congelato o libreria I/O esterna. Le differenze 3.14 su avvio e buffersize sono solo documentali. Il ramo di terminate di emergenza non viene provocato nei test. Thread e processi manuali non sono presentati come supervisori generici.
+
+Regressione seriale del 2026-10-24: **562/562 test superati**, 499 precedenti + 63 Concorrenza, nessun fallimento o test saltato, circa 246 secondi. Toolchain gia presenti riutilizzate, nessuna nuova dipendenza. La build Quartz era in esecuzione separatamente: la durata non e un confronto prestazionale con le passate precedenti.
+
+Regressione con le toolchain packaging/qualita predisposte nelle sezioni precedenti:
+
+```powershell
+node --test --test-concurrency=1 _Meta/tests/python-fondamenti.test.mjs _Meta/tests/python-strutture-dati.test.mjs _Meta/tests/python-file-standard.test.mjs _Meta/tests/python-packaging.test.mjs _Meta/tests/python-oggetti.test.mjs _Meta/tests/python-funzionale-iterazione.test.mjs _Meta/tests/python-qualita.test.mjs _Meta/tests/python-standard-pratica.test.mjs _Meta/tests/python-internals.test.mjs _Meta/tests/python-concorrenza.test.mjs
+```
+
+## Python: Performance e Distribuzione
+
+La suite `python-performance.test.mjs` legge le cinque note Profiling, Caching, C extensions, Cython e PyInstaller. Baseline vincolata a **CPython 3.12.10, Windows, Node 24.14.0**. Le versioni degli strumenti sono controllate dal test, non dichiarate come ultime release.
+
+Predisporre un ambiente separato, senza modificare Python globale o le dipendenze Quartz. Il percorso seguente deve essere nuovo o un virtualenv dedicato a questi test:
+
+```powershell
+python -m venv "$env:TEMP/appunti-python-performance-tools"
+```
+
+```powershell
+& "$env:TEMP/appunti-python-performance-tools/Scripts/python.exe" -m pip install "Cython==3.3.0" "PyInstaller==6.22.3" "py-spy==0.4.2" "cachetools==7.2.4" "setuptools==84.2.1" "build==1.6.1" "wheel==0.48.0" "pyinstaller-hooks-contrib==2026.9"
+```
+
+```powershell
+$env:PYTHON_PERFORMANCE_TOOLS = Join-Path $env:TEMP 'appunti-python-performance-tools'
+```
+
+```powershell
+node --test _Meta/tests/python-performance.test.mjs
+```
+
+45 casi: metadati, dieci blocchi Python di profiling/cache, controprove, CLI e progetti completi estratti dai Markdown. Esito del 2026-10-24: **43 superati, 2 saltati per MSVC assente e nessun fallimento** dopo la correzione del comando py-spy.
+
+- Profiling: input del carico, import senza effetti, correttezza dei due algoritmi, cProfile/pstats, timeit, orologi e tracemalloc. py-spy genera un SVG dal solo programma dimostrativo: `--subprocesses` segue anche il figlio del launcher del virtualenv Windows. Nessuna misura usata come promessa di prestazioni.
+- Caching: eviction LRU, conteggi hit/miss, validazione prima della cache, normalizzazione delle chiavi e risultati immutabili. Orologio TTL controllato; Barrier/Event provano miss duplicati e clear durante un calcolo in corso senza dipendere da sleep arbitrari.
+- Estensioni: parsing TOML e sintassi degli script, traduzione Cython reale in C e annotazione HTML. Due test tentano wheel native con build senza isolamento, poi installazione locale ed esecuzione dei verificatori. Se manca MSVC vengono **saltati esplicitamente**, non considerati riusciti; altri errori di build fanno fallire il test.
+- PyInstaller: app sorgente, help e argomenti errati; build reali onedir/onefile con risorsa, ricostruzione dallo spec, avvio di copie fuori dalla directory di lavoro e con sorgenti temporaneamente non disponibili. Una risorsa rimossa nella copia del bundle deve produrre errore.
+- I processi hanno timeout esterni e output catturato. Fixture, cache e output sono in una nuova directory temporanea verificata prima della rimozione. Nessuna installazione di compilatori, pubblicazione di package, ispezione di processi estranei o modifica alle policy del sistema.
+
+Limiti: C e Cython non sono collaudati a runtime senza compilatore. La traduzione Cython non prova la correttezza del binario e i test Python non sostituiscono quelli della C API. PyInstaller e verificato sulla macchina di build, non su un sistema pulito privo di Python; non copre altri sistemi operativi, firme, antivirus, GUI, multiprocessing congelato o hook di pacchetti esterni. Nessun benchmark, profiler native, cache distribuita o matrice di interpreti.
+
+Regressione seriale delle undici suite: **607 casi, 605 superati, zero fallimenti e 2 saltati**, circa 287 secondi. I 562 test precedenti restano superati; la nuova suite aggiunge 43 successi e due verifiche native non eseguibili. La build Quartz era in esecuzione separatamente: non e un confronto prestazionale.
+
+Per la regressione impostare anche le toolchain Packaging e Qualita descritte sopra:
+
+```powershell
+node --test --test-concurrency=1 _Meta/tests/python-fondamenti.test.mjs _Meta/tests/python-strutture-dati.test.mjs _Meta/tests/python-file-standard.test.mjs _Meta/tests/python-packaging.test.mjs _Meta/tests/python-oggetti.test.mjs _Meta/tests/python-funzionale-iterazione.test.mjs _Meta/tests/python-qualita.test.mjs _Meta/tests/python-standard-pratica.test.mjs _Meta/tests/python-internals.test.mjs _Meta/tests/python-concorrenza.test.mjs _Meta/tests/python-performance.test.mjs
+```
+
+## Python: Web, API e Database - Framework
+
+La suite `python-web-frameworks.test.mjs` legge **Flask, Starlette, FastAPI e Django**: 14 blocchi Python e un template HTML. I tre verificatori e il progetto Django vengono ricostruiti dai Markdown, senza duplicare il codice applicativo nelle fixture.
+
+Baseline: **CPython 3.12.10, Windows, Node 24.14.0**. Predisporre un nuovo virtualenv dedicato, senza modificare Python globale o il sito:
+
+```powershell
+python -m venv "$env:TEMP/appunti-python-web-tools"
+```
+
+```powershell
+& "$env:TEMP/appunti-python-web-tools/Scripts/python.exe" -m pip install "Flask==3.1.3" "Werkzeug==3.1.9" "starlette==1.10.0" "fastapi==0.162.0" "pydantic==2.14.1" "Django==5.2.18" "httpx==0.28.1" "httpx2==2.16.0" "uvicorn==0.54.0" "websockets==17.3"
+```
+
+```powershell
+$env:PYTHON_WEB_TOOLS = Join-Path $env:TEMP 'appunti-python-web-tools'
+```
+
+```powershell
+node --test _Meta/tests/python-web-frameworks.test.mjs
+```
+
+Le versioni dirette sono controllate dal test; questi pin non sono un lock completo delle dipendenze transitive. httpx2 serve al TestClient corrente di Starlette, httpx al client del lifespan: non sono lo stesso pacchetto.
+
+**Esito mirato del 2026-10-24: 53/53 test**, nessun fallimento o test saltato, circa 54 secondi. Un caso Node esegue anche i **sette test Django presenti nella nota**; questi non vanno sommati come sette ulteriori casi Node. Il primo giro aveva un errore nel test che presumeva tutte le route dell'app FastAPI piatte: corretto il controllo sul router originale, gli esempi applicativi erano gia eseguibili.
+
+- Flask: schema, limiti, Content-Type/JSON, HEAD/OPTIONS/405 e Allow, factory isolate, contesti, errori inattesi e escaping. CLI scopre la factory; una richiesta HTTP reale passa attraverso un server Werkzeug su loopback.
+- Starlette: lifespan ripetuto, client condiviso/chiuso, assenza di startup senza with, routing, CORS/preflight ed errori 500. WebSocket in-process: testo, byte UTF-8, binario, origine e chiusura; background task fallita e successive non eseguite; endpoint sync fuori dal thread del loop.
+- FastAPI: tipi strict e limiti, schema OpenAPI, input/output separati, filtro campi, override isolati ed errori del servizio. Output invalido produce errore server; Response esplicita bypassa il modello. Gli eventi ASGI verificano il cleanup di yield prima/dopo l'invio secondo scope, anche in errore.
+- Starlette/FastAPI: richieste HTTP reali tramite Uvicorn su porte effimere di loopback, seguite da shutdown e join.
+- Django: startproject/startapp reali, file della nota, migrazione generata/applicata e controllo di assenza di altre modifiche. Form, validazione distinta da save, vincoli DB e rollback, query lazy, JSON/HTML, escaping, admin protetto, CSRF esplicitamente attivo e host rifiutati. check --deploy segnala correttamente settings di sviluppo.
+
+Le fixture, il database e i file generati stanno in una nuova directory temporanea, verificata prima della rimozione. I processi hanno timeout; server/thread vengono chiusi. Nessuna creazione di account reali, migrazione su database utente o esposizione in rete esterna.
+
+Limiti: client HTTP in-process non provano enforcement CORS del browser; WebSocket non collaudati attraverso socket/TLS/proxy. Nessun audit completo di autenticazione/permessi, configurazione di produzione, carico, job durabili, multiworker, crash recovery, transazioni PostgreSQL o matrice di versioni. Il client HTTP del lifespan non chiama servizi esterni; /docs non viene collaudata come UI offline. Questi test non completano le quattro note rimanenti del capitolo.
+
+Regressione seriale delle dodici suite: **660 casi, 658 superati, zero fallimenti e 2 saltati**, circa 328 secondi. I due skip restano le build native C/Cython per MSVC assente. La durata include lavoro concorrente della build Quartz e non e un benchmark.
+
+Regressione con anche le toolchain Packaging, Qualita e Performance predisposte nelle sezioni precedenti:
+
+```powershell
+node --test --test-concurrency=1 _Meta/tests/python-fondamenti.test.mjs _Meta/tests/python-strutture-dati.test.mjs _Meta/tests/python-file-standard.test.mjs _Meta/tests/python-packaging.test.mjs _Meta/tests/python-oggetti.test.mjs _Meta/tests/python-funzionale-iterazione.test.mjs _Meta/tests/python-qualita.test.mjs _Meta/tests/python-standard-pratica.test.mjs _Meta/tests/python-internals.test.mjs _Meta/tests/python-concorrenza.test.mjs _Meta/tests/python-performance.test.mjs _Meta/tests/python-web-frameworks.test.mjs
+```
+
+## Python: Web, API e Database - Persistenza e Client HTTP
+
+La suite `python-database-http.test.mjs` estrae **16 blocchi Python e un INI** dalle note SQLAlchemy, Alembic, Pydantic e HTTPX e requests. Sono inclusi il frammento da inserire nella classe User, i verificatori e i sorgenti delle migrazioni: il codice applicativo non e duplicato nelle fixture.
+
+Baseline: **CPython 3.12.10, Windows, Node 24.14.0**. Creare un nuovo ambiente dedicato; il percorso seguente e un esempio e non deve coincidere con un ambiente gia usato per altro.
+
+```powershell
+py -3.12 -m venv "$env:TEMP/appunti-python-database-tools"
+```
+
+```powershell
+& "$env:TEMP/appunti-python-database-tools/Scripts/python.exe" -m pip install "SQLAlchemy[asyncio]==2.0.55" "alembic==1.20.1" "pydantic[email]==2.14.1" "email-validator==2.3.0" "aiosqlite==0.22.1" "httpx==0.28.1" "requests==2.34.2"
+```
+
+```powershell
+$env:PYTHON_DATABASE_TOOLS = Join-Path $env:TEMP 'appunti-python-database-tools'
+```
+
+```powershell
+node --test --test-concurrency=1 _Meta/tests/python-database-http.test.mjs
+```
+
+Versioni dirette controllate dal test; non e un lock completo delle dipendenze transitive. Nessuna modifica al Python globale o alle dipendenze di Quartz.
+
+**Esito mirato del 2026-10-26: 68/68 test**, nessun fallimento o skip, circa 61 secondi. Il conteggio Node include dieci sotto-test Alembic e il relativo contenitore, non 68 programmi distinti.
+
+- SQLAlchemy: script sync/async, flush distinto da commit, chiusura senza conferma, autobegin/autoflush, identity map, attributi scaduti, rollback dopo errore e atomicita. Controprove su create_all, String(254) in SQLite, NOT NULL e query parametrizzate.
+- Alembic: init/revision CLI, INI/env reali, SQL offline senza creazione del database, upgrade/check/seed, rilevazione di drift, autogenerate e dati conservati. Downgrade su copia temporanea, perdita dei valori della colonna, stamp che non cambia lo schema e cancellazione finale della tabella.
+- Pydantic: script originali, input negativi, strict Python/JSON, limiti, errori annidati, extra, default, liste indipendenti e mutazioni non intercettate. Controprove su construct/copy, istanze gia validate, nullable rispetto a omissibile, output pubblico e schema.
+- HTTP: tre client su socket loopback, successo, redirect non seguito, 503/204, Content-Type/JSON, dimensione esatta e superamento del limite. Parser, POST JSON con status 201, read timeout HTTPX e deadline async reali; chiusura dello stream sync verificata separatamente con MockTransport.
+
+Fixture e database in directory temporanee dedicate, con percorsi verificati prima della rimozione. Server limitati a 127.0.0.1 e porte effimere, chiusi con shutdown/join; sottoprocessi con timeout. Nessuna richiesta a servizi esterni durante i test.
+
+Limiti: SQLite non prova concorrenza, isolamento, driver o migrazioni PostgreSQL. Non sono testati N+1 con relazioni reali, migrazioni di grandi tabelle, merge di branch, lock di produzione, autenticazione, TLS/proxy, HTTP/2, retry con idempotenza, carico o difesa completa da payload ostili. Le prove di validazione non verificano identita o consegna delle email. Nessuna matrice OS/versioni.
+
+Con le altre toolchain predisposte e le variabili PYTHON_TEST_EXECUTABLE, PYTHON_PACKAGING_TOOLS, PYTHON_QUALITY_TOOLS, PYTHON_PERFORMANCE_TOOLS e PYTHON_WEB_TOOLS configurate come nelle sezioni precedenti:
+
+```powershell
+node --test --test-concurrency=1 _Meta/tests/python-fondamenti.test.mjs _Meta/tests/python-strutture-dati.test.mjs _Meta/tests/python-file-standard.test.mjs _Meta/tests/python-packaging.test.mjs _Meta/tests/python-oggetti.test.mjs _Meta/tests/python-funzionale-iterazione.test.mjs _Meta/tests/python-qualita.test.mjs _Meta/tests/python-standard-pratica.test.mjs _Meta/tests/python-internals.test.mjs _Meta/tests/python-concorrenza.test.mjs _Meta/tests/python-performance.test.mjs _Meta/tests/python-web-frameworks.test.mjs _Meta/tests/python-database-http.test.mjs
+```
+
+Regressione seriale delle tredici suite: **728 casi, 726 superati, zero fallimenti e 2 saltati**, circa 437 secondi. I due skip restano le build native C/Cython per MSVC assente; la compilazione nativa non e dichiarata verificata. La durata include la build Quartz concorrente e non e un benchmark.
+
+## Python: Data, Automazione e LLM - Dati e Notebook
+
+La suite `python-data-notebooks.test.mjs` legge pandas, NumPy e Jupyter: **11 blocchi Python e tre magic IPython** estratti dai Markdown. Ricostruisce il notebook con nbformat, riutilizzando il modulo sales_report della nota pandas, senza mantenere una seconda implementazione delle trasformazioni.
+
+Baseline: **CPython 3.12.10, Windows, Node 24.14.0**. Predisporre un nuovo virtualenv dedicato; i comandi seguenti non devono puntare a un ambiente gia usato per altro.
+
+```powershell
+py -3.12 -m venv "$env:TEMP/appunti-python-data-tools"
+```
+
+```powershell
+& "$env:TEMP/appunti-python-data-tools/Scripts/python.exe" -m pip install "pandas==3.1.0" "numpy==2.5.4" "jupyterlab==4.6.4" "notebook==7.6.3" "ipykernel==7.4.0" "nbconvert==7.17.2" "nbformat==5.11.1"
+```
+
+```powershell
+$env:PYTHON_DATA_TOOLS = Join-Path $env:TEMP 'appunti-python-data-tools'
+```
+
+```powershell
+node --test --test-concurrency=1 _Meta/tests/python-data-notebooks.test.mjs
+```
+
+I pin diretti sono controllati dalla suite, ma non costituiscono un lock di tutte le transitive. Il test isola directory di configurazione, dati, runtime e IPython; registra il kernelspec con `--prefix` nella fixture temporanea, invece di modificare il prefisso del virtualenv con `--sys-prefix` come nella procedura interattiva della nota.
+
+Nuova suite **49/49 test superati** durante la regressione, con 11 blocchi Python e tre magic estratti dai Markdown. Il conteggio Node include gli undici sotto-test Jupyter e il loro contenitore, non 49 programmi distinti. Corretta la fixture del timeout; nessun test del nuovo blocco saltato.
+
+- pandas: esecuzione dei tre script, schema e tipi, NA distinto da zero, importi mancanti, regioni assenti, totali parziali e riconciliazione delle righe. CSV errati, ID duplicati, codici NA/zeri iniziali, allineamento, Copy-on-Write/alias, copie object non ricorsive, cardinalita e chiavi dei merge.
+- NumPy: cinque script, shape e broadcasting, vista/copia, assi, input non mutato, costanti, vuoti, tipi errati, NaN/inf e overflow. Controprove su dtype inferito, ddof, allclose con broadcasting, solve singolare e np.vectorize.
+- Jupyter: kernelspec con interprete verificato, help CLI delle due interfacce, notebook valido e due esecuzioni pulite tramite kernel reale. Tabella HTML, export e rimozione degli output su copie, input non sovrascritto, fallimento per ordine errato delle celle e per errori marcati, timeout reale, tre magic originali.
+- Il primo giro aveva un errore nella fixture di timeout: passava sia 60 sia 1 alla stessa opzione, rifiutata da traitlets. Corretta la composizione degli argomenti; il codice delle note e gli altri casi erano gia funzionanti.
+
+I file restano in directory temporanee verificate prima della rimozione; non vengono caricati dati utente. nbconvert avvia e arresta kernel locali, senza esporre server Jupyter o modificare kernelspec globali. Nessun notebook aggiunto al vault.
+
+Limiti: non sono un benchmark o una verifica statistica generale. Non provati Excel/Parquet e relativi engine, dataset grandi, elaborazione distribuita, ogni dtype/BLAS, addestramento ML, kernel remoti, UI interattiva Jupyter, grafici/widget o deployment pubblico. I controlli di sicurezza descritti non equivalgono a un audit.
+
+Regressione con le sei toolchain temporanee (Packaging, Qualita, Performance, Web, Database e Data) e le relative variabili d'ambiente predisposte come nelle sezioni precedenti:
+
+```powershell
+node --test --test-concurrency=1 _Meta/tests/python-fondamenti.test.mjs _Meta/tests/python-strutture-dati.test.mjs _Meta/tests/python-file-standard.test.mjs _Meta/tests/python-packaging.test.mjs _Meta/tests/python-oggetti.test.mjs _Meta/tests/python-funzionale-iterazione.test.mjs _Meta/tests/python-qualita.test.mjs _Meta/tests/python-standard-pratica.test.mjs _Meta/tests/python-internals.test.mjs _Meta/tests/python-concorrenza.test.mjs _Meta/tests/python-performance.test.mjs _Meta/tests/python-web-frameworks.test.mjs _Meta/tests/python-database-http.test.mjs _Meta/tests/python-data-notebooks.test.mjs
+```
+
+Regressione seriale delle quattordici suite: **777 casi, 775 superati, zero fallimenti e 2 saltati**, circa 519 secondi. I due skip restano le build native C/Cython per MSVC assente. La durata comprende lavoro concorrente della build Quartz e non e un benchmark.
+
+## Python: Data, Automazione e LLM - Scraping e Automazione
+
+La suite `python-scraping-automation.test.mjs` estrae **quattro blocchi Python completi** da Scraping con BeautifulSoup e Automazione file e script. Non mantiene una seconda implementazione del parser o della rinomina.
+
+Baseline: **CPython 3.12.10 su Windows, Node 24.14.0**, beautifulsoup4 4.15.0, SoupSieve 3.0.4, Requests 2.34.2. In questa sessione sono state riutilizzate queste dipendenze gia presenti nella toolchain temporanea Data, senza nuove installazioni. Per riprodurre la suite e sufficiente un nuovo ambiente dedicato piu piccolo:
+
+```powershell
+py -3.12 -m venv "$env:TEMP/appunti-python-automation-tools"
+```
+
+```powershell
+& "$env:TEMP/appunti-python-automation-tools/Scripts/python.exe" -m pip install "beautifulsoup4==4.15.0" "soupsieve==3.0.4" "requests==2.34.2"
+```
+
+```powershell
+$env:PYTHON_AUTOMATION_TOOLS = Join-Path $env:TEMP 'appunti-python-automation-tools'
+```
+
+```powershell
+node --test _Meta/tests/python-scraping-automation.test.mjs
+```
+
+**48/48 test mirati superati**, zero skip, circa 20 secondi. Non sono 48 programmi differenti; includono controprove sulle funzioni estratte.
+
+- Parser: titolo assente/vuoto, testo annidato ed entita, attributi mancanti, selettori, URL relativi/esterni, primo base, frammenti, query e duplicati, schemi/credenziali/porte, charset e JavaScript non eseguito.
+- HTTP reale soltanto su loopback: successo, 503/204/302, nessun follow dei redirect, Content-Type errato/assente, charset HTTP/meta, dimensione esatta e oltre limite, limite sui byte decompressi gzip.
+- Mock espliciti: configurazione timeout, propagazione di Timeout e chiusura della risposta dopo errore. Non e una nuova prova di timeout Requests su socket lento.
+- Filesystem temporaneo: dry-run, contenuto binario invariato, apply, seconda esecuzione, selezione non ricorsiva, suffissi, collisioni prima delle modifiche, prefissi non validi e directory non ammesse.
+- Controprove: destinazione comparsa dopo il piano, sorgente rimossa, errore simulato sulla seconda rinomina e prima operazione gia completata. Verificati messaggi DONE e codici CLI.
+- Junction Windows reale rifiutata come directory; file symlink e link rotto verificati mediante simulazione di lstat. Non dichiarata una prova reale dei file symlink su tutte le piattaforme.
+- Inventario dei log vuoti senza rimozioni. Pulizia limitata alle directory temporanee, con verifica del percorso prima della rimozione ricorsiva.
+
+Il primo giro ha rilevato errori nelle fixture: escape Python interpretati da JavaScript e confronto tra percorso temporaneo breve Windows e percorso risolto. Corrette le stringhe raw e la normalizzazione nella suite; nessuna modifica al codice delle note per aggirare questi controlli.
+
+Limiti: niente crawling di siti pubblici, robots automatico, browser automation, parser XML/lxml/html5lib, audit SSRF, corpus HTML ostile o grandi download. Nessuna prova Unix, race reale tra processi, filesystem remoto, crash/recovery o backup completo. Il controllo prima di rename non garantisce assenza di overwrite in presenza di altri scrittori.
+
+Regressione mirata alle dipendenze concettuali del blocco, con le variabili Packaging e Database predisposte come nelle sezioni precedenti:
+
+```powershell
+node --test --test-concurrency=1 _Meta/tests/python-file-standard.test.mjs _Meta/tests/python-standard-pratica.test.mjs _Meta/tests/python-database-http.test.mjs _Meta/tests/python-scraping-automation.test.mjs _Meta/tests/quartz-preview.test.mjs
+```
+
+Regressione mirata: **208/208 test superati**, zero skip/fallimenti, circa 103 secondi; quattro suite Python piu i **7/7 test dell'anteprima**. La regressione completa delle altre suite Python e degli altri linguaggi non e stata rieseguita in questa sessione.
+
+## Python: Data, Automazione e LLM - Inferenza Locale e OpenAI API
+
+La suite `python-llm.test.mjs` estrae **cinque blocchi Python** dai Markdown: local_chat, local_completion, openai_text, classify_ticket e stream_text. Non mantiene una seconda implementazione delle funzioni delle note.
+
+Baseline: **CPython 3.12.10 su Windows x64, Node 24.14.0**, llama-cpp-python 0.3.36 (wheel CPU), openai 3.38.0, HTTPX2 2.16.0 e Pydantic 2.14.1. Nel virtualenv sono presenti anche NumPy 2.5.4, diskcache 5.6.3 e Jinja2 3.1.6 come dipendenze del binding. Nessuna modifica a Python globale, dipendenze Quartz o lockfile.
+
+In un nuovo ambiente temporaneo dedicato:
+
+```powershell
+py -3.12 -m venv "$env:TEMP/appunti-python-llm-tools"
+```
+
+```powershell
+& "$env:TEMP/appunti-python-llm-tools/Scripts/python.exe" -m pip install "openai==3.38.0" "httpx2==2.16.0" "pydantic==2.14.1"
+```
+
+```powershell
+& "$env:TEMP/appunti-python-llm-tools/Scripts/python.exe" -m pip install "llama-cpp-python==0.3.36" --only-binary=llama-cpp-python --extra-index-url https://abetlen.github.io/llama-cpp-python/whl/cpu
+```
+
+```powershell
+$env:PYTHON_LLM_TOOLS = Join-Path $env:TEMP 'appunti-python-llm-tools'
+```
+
+```powershell
+node --test _Meta/tests/python-llm.test.mjs
+```
+
+Non viene compilato il binding: se la wheel non e disponibile, occorre predisporre una toolchain alternativa e verificarla separatamente. I pin diretti non bloccano tutte le dipendenze transitive.
+
+**42/42 test mirati superati**, zero skip/fallimenti, circa 45 secondi.
+
+- Import reali e firme API del binding; verifica di close e assenza del protocollo context manager su Llama nella baseline.
+- Nessun caricamento o creazione client all'importazione dei moduli; help CLI e errore di configurazione senza richieste.
+- Inferenza locale simulata: parametri, formato dei messaggi, assenza di stop universale, input vuoti, budget, token passati alla completion, output troncato/vuoto e tool call.
+- Costruttore Llama simulato su un file temporaneo di sola fixture: controllo percorso/estensione e argomenti. Non e un modello GGUF valido e non viene passato al costruttore nativo reale.
+- Punti d'ingresso provati con istanza simulata: caricamento singolo e close anche dopo errore.
+- SDK OpenAI reale con HTTPX2 MockTransport: serializzazione di endpoint, header e body, output composto, stati non completati, rifiuti, input e risposta vuota.
+- Structured Outputs: schema inviato, quattro categorie, JSON/categorie/campi extra non validi e risultato parsato assente. Controprova esplicita: una categoria formalmente valida puo essere semanticamente sbagliata.
+- Errori HTTP simulati 400/401/403/404/429/500/503 con request ID, nessun retry, timeout e connessione simulati.
+- Eventi SSE serializzati attraversano il parser streaming reale dello SDK: testo incrementale/finale, errore/incomplete/EOF, callback fallito e stream chiuso.
+
+Le variabili OPENAI/Azure/LLAMA/Hugging Face vengono rimosse dall'ambiente dei processi di test. I client delle prove di richiesta usano una chiave fittizia e il dominio `api.openai.invalid` con trasporto in memoria, senza socket. La sola prova di configurazione crea e chiude un client per l'endpoint pubblico senza eseguire richieste.
+
+**Limiti:** nessun modello GGUF scaricato o caricato, generazione reale, benchmark, GPU, chat template su pesi reali, server llama o embeddings. Nessuna chiamata OpenAI, disponibilita di un modello/account, fatturazione, TLS/rete reale, qualita o robustezza a prompt injection verificate. I test non equivalgono a un audit di sicurezza.
+
+Regressione mirata, predisponendo anche PYTHON_DATABASE_TOOLS come nella sezione Database:
+
+```powershell
+node --test --test-concurrency=1 _Meta/tests/python-llm.test.mjs _Meta/tests/python-database-http.test.mjs _Meta/tests/quartz-preview.test.mjs
+```
+
+Regressione mirata: **117/117 test superati**, zero skip/fallimenti, circa 112 secondi, inclusi **7/7 test dell'anteprima**. Non rieseguita tutta la suite Python o degli altri linguaggi.
+
+## Python: Tooling e Qualita - isort, pre-commit, tox e nox
+
+La suite `python-tooling.test.mjs` estrae configurazioni ed esempi dalle tre note operative, e riusa i sette file del package dimostrativo di Creazione di Package. Non mantiene una copia alternativa dell'applicazione.
+
+Baseline: **CPython 3.12.10 su Windows x64 e Node 24.14.0**, isort 9.0.2, pre-commit 4.7.0, tox 4.67.1, nox 2026.10.20, Black 26.10.1, pytest 9.1.1 e Ruff 0.17.3. Toolchain in un nuovo virtualenv temporaneo; nessuna modifica al Python globale, al sito o ai lockfile. Per gli ambienti: virtualenv 21.15.0 e python-discovery 1.6.5; setuptools 84.2.1, wheel 0.48.0 e pip 26.2.2 nella wheelhouse.
+
+Preparazione in un percorso temporaneo nuovo:
+
+```powershell
+py -3.12 -m venv "$env:TEMP/appunti-python-tooling-tools"
+```
+
+```powershell
+& "$env:TEMP/appunti-python-tooling-tools/Scripts/python.exe" -m pip install "isort==9.0.2" "pre-commit==4.7.0" "tox==4.67.1" "nox==2026.10.20" "black==26.10.1" "pytest==9.1.1" "ruff==0.17.3" "virtualenv==21.15.0" "python-discovery==1.6.5"
+```
+
+```powershell
+& "$env:TEMP/appunti-python-tooling-tools/Scripts/python.exe" -m pip download --dest "$env:TEMP/appunti-python-tooling-tools/wheelhouse" "pytest==9.1.1" "ruff==0.17.3" "setuptools==84.2.1" "wheel==0.48.0" "pip==26.2.2" "black==26.10.1" "isort==9.0.2"
+```
+
+```powershell
+$env:PYTHON_TOOLING_TOOLS = Join-Path $env:TEMP 'appunti-python-tooling-tools'
+```
+
+```powershell
+node --test --test-concurrency=1 _Meta/tests/python-tooling.test.mjs
+```
+
+I pin non costituiscono un lock completo delle dipendenze transitive. Git deve essere disponibile. La prima esecuzione pre-commit puo usare la rete per scaricare **pre-commit-hooks v6.0.0** e **isort 9.0.2** dai rispettivi repository ufficiali e prepararne le dipendenze. La cache resta sotto il virtualenv temporaneo, in `pre-commit-cache`. Le prove tox/nox usano invece `PIP_NO_INDEX` e le wheel predisposte; l'esecuzione dei test non richiede servizi applicativi esterni.
+
+**37/37 test nuovi superati nella regressione finale**. Prima passata 36/37: la fixture isort non era tracciata, quindi le sue modifiche non comparivano nel diff Git usato dal runner; aggiunto il file all'indice per provare il normale caso di commit. Superata la ripetizione mirata e poi tutta la regressione, senza modificare la configurazione delle note.
+
+Copertura:
+
+- Metadati, template operativo e gerarchia dei titoli.
+- isort: check/diff senza scrittura, gruppi, idempotenza, compatibilita Black, import inutilizzati, esclusioni su file espliciti e direttive di ordine.
+- pre-commit reale: YAML, revisioni/stage, file non tracciati, correzioni e indice Git invariato, staging esplicito, Markdown, hook isort e hook locale manuale con ambiente fornito.
+- Installazione/disinstallazione hook esclusivamente nel repository temporaneo. Non si installano hook, creano commit o effettuano push nel vault.
+- tox/nox reali: discovery, wheel/installazione, import da site-packages fuori dai sorgenti, due test originali, selezione posargs, lint senza package, ricreazione/riuso e propagazione di fallimenti deliberati.
+- Interprete inesistente 3.99 come controprova, non come piattaforma supportata o richiesta di download.
+- Fixture rimosse dopo controllo del percorso assoluto; solo la toolchain/cache temporanea rimane riutilizzabile.
+
+Limiti: solo Windows/Python 3.12.10, non matrice OS/interpreti, servizi di CI remoti o audit della supply chain. L'installazione dell'hook e verificata ma non si crea un vero commit per provarne l'invocazione automatica; non sono riprodotti conflitti di stash con commit parziali. Non vengono eseguiti autoupdate, pubblicazione di package o tutti i frammenti di variante. I due test interni del demo non vanno sommati nuovamente al conteggio della suite Node.
+
+Regressione mirata, con PYTHON_PACKAGING_TOOLS e PYTHON_QUALITY_TOOLS predisposti nelle sezioni precedenti:
+
+```powershell
+node --test --test-concurrency=1 _Meta/tests/python-packaging.test.mjs _Meta/tests/python-qualita.test.mjs _Meta/tests/python-tooling.test.mjs _Meta/tests/quartz-preview.test.mjs
+```
+
+Risultato: **125/125 test**, zero fallimenti/skip, circa **277 secondi**, inclusi **37/37 nuovi test** e **7/7 test dell'anteprima**. Non rieseguita l'intera suite Python o degli altri linguaggi. La verifica editoriale/build e separata: 911 documenti raggiungibili, zero errori, 403 avvisi; nove test della trasformazione superati; build e QA delle tre pagine su desktop/mobile riuscite.
+
+## Python: Promemoria - Sintassi Essenziale e Funzioni
+
+`python-promemoria-linguaggio.test.mjs` estrae **24 blocchi Python autonomi**: 14 da Sintassi essenziale e 10 da Funzioni. Esegue ciascun blocco in un processo separato, quindi non maschera nomi mancanti con variabili definite da snippet precedenti.
+
+Baseline: **CPython 3.12.10 su Windows x64 e Node 24.14.0**. Solo standard library, nessuna nuova installazione. Il comando `python` deve indicare quell'interprete; in alternativa imposta `PYTHON_TEST_EXECUTABLE` al percorso assoluto del Python da verificare.
+
+```powershell
+node --test _Meta/tests/python-promemoria-linguaggio.test.mjs
+```
+
+**53/53 test mirati superati al primo giro**, zero skip/fallimenti, circa 7 secondi.
+
+- Struttura operativa, singolo H1, gerarchia dei titoli e metadati.
+- Ogni snippet eseguito autonomamente, con asserzioni su output o variabili risultanti.
+- Condizioni ai confini, short-circuit, default solo per None, conversioni e copie superficiali.
+- Range, while senza iterazioni, continue/break/else, risultato zero valido, unpacking e walrus senza corrispondenza.
+- Firme positional-only/keyword-only, default mutabili e valutazione alla definizione, keyword duplicate o non stringa.
+- Annotazioni non imposte dal runtime, consumo di iteratori, sort in-place e sorted.
+- Bounds su sequenza, input vuoto e controprova del generatore fuori contratto; risultato ed eccezioni delle callback.
+- Le varianti modificano tramite AST soltanto un input dimostrativo top-level, non l'algoritmo. Nessuna modifica ai file delle note durante i test.
+
+Non sono provate tutte le versioni Python, i type checker, oggetti con protocolli personalizzati o ogni frammento inline. La funzione bounds richiede una sequenza di numeri finiti: non e un validatore di input arbitrario. Nessun socket, servizio esterno, file applicativo o package installato da questa nuova suite.
+
+Regressione mirata **dopo** che `site:build` e terminata, perche i test dell'anteprima richiedono gli HTML completi:
+
+```powershell
+node --test --test-concurrency=1 _Meta/tests/python-fondamenti.test.mjs _Meta/tests/python-funzionale-iterazione.test.mjs _Meta/tests/python-promemoria-linguaggio.test.mjs _Meta/tests/quartz-preview.test.mjs
+```
+
+Risultato finale: **191/191 test superati**, zero skip/fallimenti, circa **37 secondi**, inclusi **53 nuovi test** e **7/7 test dell'anteprima**. La prima esecuzione era stata avviata durante la build: 184 test Python passati e sette test HTTP fermati dal prerequisito HTML assente. Ripetuta l'intera selezione dopo la build, senza modificare il codice dell'anteprima. Non rieseguite tutte le altre suite Python o degli altri linguaggi.
+
+Controlli separati: 911 documenti raggiungibili, zero errori, 401 avvisi editoriali; **9/9 test della trasformazione**. Build Quartz riuscita e due pagine controllate su desktop/mobile, con quattro screenshot ispezionati. Questi controlli non equivalgono a test su tutte le versioni Python.
+
+## Python: Promemoria - Collezioni e Dizionari
+
+`python-promemoria-collezioni.test.mjs` estrae **24 blocchi Python autonomi**: 12 da Liste, tuple e set e 12 da Dizionari. Ogni blocco viene eseguito in un processo separato: nessuna variabile viene ereditata dagli altri snippet.
+
+Baseline: **CPython 3.12.10 su Windows x64 e Node 24.14.0**. Solo standard library, nessuna nuova installazione. `python` deve indicare quell'interprete, oppure imposta `PYTHON_TEST_EXECUTABLE` al percorso assoluto.
+
+```powershell
+node --test _Meta/tests/python-promemoria-collezioni.test.mjs
+```
+
+Risultato: **55/55 test mirati**, zero skip/fallimenti, circa 8 secondi. Il primo giro era 54/55: la variante del raggruppamento non includeva il gruppo admin che il demo stampa. Corretta la fixture mantenendo admin e aggiungendo reader; nessun cambiamento all'algoritmo della nota per aggirare il test.
+
+- Frontmatter, gerarchia dei titoli, struttura operativa e numero dei blocchi.
+- Output o risultati di tutti gli snippet estratti.
+- Indici/slice, metodi mutanti, append/extend, elementi assenti e liste vuote.
+- Ordinamento stabile, chiavi, iteratori consumati, sort in place e sorted.
+- Copie esterne, alias, mutazioni annidate, deepcopy su liste e ripetizione di riferimenti.
+- Tuple singole, unpacking, posizioni non assegnabili e hashability.
+- Operazioni sui set, pop senza ordine imposto, elementi non hashable e deduplicazione con input vuoto/valori numerici uguali.
+- Dict: assenza rispetto a None/falsy, sentinella, update/merge superficiale, ordine e chiavi uguali.
+- Pop/popitem, cambio di dimensione durante iterazione, viste vive e snapshot superficiali.
+- Setdefault con gruppi distinti, None preesistente e valutazione del default; conteggi e filtri.
+- Fromkeys con valore condiviso rispetto a comprehension con valori indipendenti.
+
+Le varianti sostituiscono tramite AST solo gli input dimostrativi top-level, non il codice della procedura. Le note non vengono modificate durante i test. Nessun socket, file applicativo o package installato dalla suite.
+
+Limiti: una versione Python e un OS; non una matrice di runtime, test di concorrenza, benchmark, checker statico, oggetti con hash/uguaglianza personalizzati o ogni frammento inline. Le prove di copie profonde riguardano le liste del demo, non risorse o oggetti arbitrari.
+
+Regressione Python mirata:
+
+```powershell
+node --test --test-concurrency=1 _Meta/tests/python-strutture-dati.test.mjs _Meta/tests/python-promemoria-linguaggio.test.mjs _Meta/tests/python-promemoria-collezioni.test.mjs
+```
+
+Risultato: **168/168 test**, zero skip/fallimenti, circa **26 secondi**. Dopo la fine di `site:build`, verificata separatamente l'anteprima:
+
+```powershell
+node --test _Meta/tests/quartz-preview.test.mjs
+```
+
+**7/7 test HTTP** superati; totale delle due esecuzioni **175 test**. Non rieseguite tutte le altre suite Python o degli altri linguaggi. Controlli separati: 911 documenti raggiungibili, zero errori, 399 avvisi editoriali; **9/9 test della trasformazione**, build e QA desktop/mobile delle due note riuscite, quattro screenshot ispezionati.
+
+## Python: Promemoria - Stringhe, Numeri e Date
+
+`python-promemoria-testo-date.test.mjs` estrae **27 blocchi Python autonomi**: 13 da Stringhe e regex e 14 da Numeri e date. Esegue ogni blocco in un processo isolato e controlla risultati, output e casi limite.
+
+Baseline: **CPython 3.12.10 su Windows x64, Node 24.14.0 e tzdata 2026.5**. In questa passata riutilizzato il virtualenv temporaneo Packaging gia configurato; nessuna nuova installazione e nessuna modifica a Python globale o alle dipendenze del sito.
+
+`PYTHON_TEST_EXECUTABLE` deve puntare all'interprete del virtualenv con tzdata. Per prepararlo da zero, vedi la sezione File, moduli e ambiente. Il test fallisce se la dipendenza manca, non salta silenziosamente i casi zoneinfo.
+
+```powershell
+node --test _Meta/tests/python-promemoria-testo-date.test.mjs
+```
+
+**74/74 test mirati**, zero skip/fallimenti, circa 15 secondi:
+
+- Struttura operativa, metadati e 27 blocchi effettivamente eseguiti.
+- Immutabilita, code point/byte, casefold distinto da normalizzazione Unicode.
+- Strip rispetto a prefissi/suffissi, find zero/-1, split/join/splitlines, formattazione e predicati Unicode.
+- Regex ASCII rispetto a IGNORECASE Unicode, fullmatch, search, match, gruppi e forma di findall.
+- Nessun match, pattern errati, date formalmente corrette ma impossibili e sostituzione letterale.
+- Conversioni, aggregazioni vuote, round, floor/ceil, isclose, NaN e infinito.
+- Decimal da stringa, quantize, arrotondamento esplicito e ripristino di un contesto esterno personalizzato.
+- Random isolato con seed, scelta su sequenza vuota, shuffle in place e token da 32 byte.
+- Date aware/naive, ISO senza offset rifiutato, date impossibili, parsing/formattazione e durate negative.
+- ZoneInfo con dati reali, offset estivo/invernale, fold e differenza UTC rispetto all'aritmetica locale.
+- Simulazione controllata di dati IANA mancanti, timestamp in secondi e contatore monotono.
+
+Prima esecuzione **72/73**: la simulazione di tzdata mancante lasciava accessibili sottopacchetti gia importati. Corretta la fixture bloccando tutti i moduli tzdata caricati, azzerando TZPATH e svuotando la cache ZoneInfo nel solo processo del test. Aggiunta poi la prova del contesto Decimal personalizzato. Le procedure nelle note non sono state cambiate per aggirare il test.
+
+Gli input di variante sono sostituiti via AST solo nelle assegnazioni dimostrative top-level. Il test del contesto prepara Decimal prima di eseguire lo snippet originale; i casi ISO negativi verificano l'eccezione del blocco estratto. Nessuna modifica alle note da parte dei test.
+
+Limiti: una baseline/OS; nessun benchmark, test statistico o certificazione crittografica, audit ReDoS, copertura di ogni locale/fuso/versione IANA, parser ISO universale, ogni frammento inline o validazione di dati arbitrari. La mancanza del database e simulata in memoria; il database presente e usato realmente. Nessuna chiamata remota o nuova installazione durante le prove.
+
+Regressione Python mirata con lo stesso interprete configurato:
+
+```powershell
+node --test --test-concurrency=1 _Meta/tests/python-fondamenti.test.mjs _Meta/tests/python-file-standard.test.mjs _Meta/tests/python-promemoria-testo-date.test.mjs
+```
+
+Dopo il completamento di `site:build`, verificare separatamente l'anteprima:
+
+```powershell
+node --test _Meta/tests/quartz-preview.test.mjs
+```
+
+Risultato della regressione: **160/160 test Python**, zero skip/fallimenti, circa **43 secondi**, poi **7/7 test HTTP** dopo la build; **167 test complessivi** in due esecuzioni. Non rieseguite le altre suite Python o degli altri linguaggi.
+
+Controlli separati: **911 documenti raggiungibili, zero errori e 397 avvisi editoriali**, nessuno sui due promemoria; **9/9 test della trasformazione**, build Quartz e QA desktop/mobile delle due note riuscite. Quattro screenshot ispezionati; le verifiche del sito non certificano ogni combinazione di input o piattaforma Python.
+
+## Python: Promemoria - File, JSON e CSV
+
+`python-promemoria-file-dati.test.mjs` estrae **23 blocchi Python autonomi**: 13 da File e percorsi e 10 da JSON e CSV. Ogni blocco viene eseguito in un processo isolato; il sorgente viene materializzato in un file temporaneo e compilato con il corrispondente `__file__`. La directory corrente e distinta dalla cartella dello script.
+
+Baseline: **CPython 3.12.10 su Windows x64 e Node 24.14.0**. La suite nuova usa solo standard library, senza nuove installazioni. `PYTHON_TEST_EXECUTABLE` puo indicare un interprete esplicito; il default e `python`.
+
+```powershell
+node --test _Meta/tests/python-promemoria-file-dati.test.mjs
+```
+
+**75/75 test mirati**, zero skip/fallimenti, circa **16 secondi**:
+
+- Struttura operativa, metadati e risultati/output di tutti gli snippet.
+- Percorsi da script rispetto a cwd, componenti assolute, osservazioni non atomiche del filesystem.
+- Encoding invalido, genitori assenti, lettura integrale o per righe, newline universali e byte.
+- Creazione esclusiva, troncamento, append, chiusura su eccezione e scritture parziali.
+- Directory, glob/rglob, filtri sui file e ricerca vuota.
+- Rinomina e vecchio Path invariato, collisioni Windows, unlink, rmdir e copia/spostamento reali.
+- Cleanup anche su eccezione; prova del fallback opzionale con PermissionError simulato.
+- JSON: tipi, Unicode, file, BOM, output parziale, documenti concatenati, NaN/infinito e chiavi duplicate.
+- Schema JSON minimo con booleano esatto, radici inattese e campi mancanti/extra.
+- CSV: virgolette, virgole, newline interni, delimitatori, BOM, valori None e conversioni esplicite.
+- Colonne mancanti/extra/duplicate/invertite, ID invalidi e nome vuoto; documentati e provati ID duplicati ammessi, segno/spazi e file con sola intestazione.
+
+Le varianti cambiano tramite AST solo assegnazioni dimostrative top-level. I dati dei test e le directory create dagli esempi rimangono sotto una radice temporanea dedicata. Prima di ogni rimozione ricorsiva del test harness vengono verificati percorso risolto, directory genitore e prefisso. Verificato anche che gli esempi non lascino file nella cwd o nelle directory temporanee predisposte. Nessun file applicativo o appunto dell'utente viene spostato/cancellato.
+
+Primo giro **72/75**: due confronti lessicali non risolvevano gli alias Windows 8.3; la prova di copia sullo stesso file attendeva SameFileError, mentre il ramo nativo CopyFile2 di CPython 3.12.10 ha generato PermissionError/WinError 32. Verificata l'implementazione locale: le prove confrontano ora percorsi risolti e controllano un errore OSError con sorgente invariata, senza cambiare gli snippet per aggirare le verifiche.
+
+Limiti: Windows e una versione Python; non test reali POSIX, copie tra filesystem, tutti i metadati/ACL, symlink/junction, crash/durabilita, accessi concorrenti o filesystem non fidato. I permessi del fallback sono simulati; le altre operazioni descritte sono reali su fixture. Non e un audit di CSV injection o un validatore universale di JSON/CSV; non ogni frammento inline e eseguito.
+
+Regressione con l'interprete temporaneo Packaging gia disponibile e tzdata 2026.5, richiesto dalla suite Standard Library; nessuna nuova installazione:
+
+```powershell
+node --test --test-concurrency=1 _Meta/tests/python-file-standard.test.mjs _Meta/tests/python-funzionale-iterazione.test.mjs _Meta/tests/python-promemoria-file-dati.test.mjs
+```
+
+Dopo il completamento della build, eseguire separatamente i test HTTP:
+
+```powershell
+node --test _Meta/tests/quartz-preview.test.mjs
+```
+
+Risultati del 2026-10-27: **176/176 test Python**, zero skip/fallimenti, circa **36 secondi**. A build conclusa, **7/7 test dell'anteprima** superati separatamente: **183 complessivi**, non un'unica esecuzione. Non rieseguita l'intera suite Python o degli altri linguaggi.
+
+Controlli separati: **911 documenti raggiungibili, zero errori e 395 avvisi editoriali**, nessuno sulle due note; **9/9 test della trasformazione** e build Quartz riusciti. QA desktop/mobile su Chrome 156.0.8078.48: HTTP 200, nessun errore console/JavaScript o overflow del documento; 23 elementi di codice scorrevoli su mobile, nessuno su desktop, quattro screenshot ispezionati. I controlli del sito non certificano gli esempi su altre piattaforme.
+
+## Python: Promemoria - HTTP e Ambienti
+
+`python-promemoria-http-ambienti.test.mjs` estrae **13 blocchi Python**: otto funzioni HTTP autonome e cinque blocchi su import/diagnostica, di cui tre costituiscono un esempio multifile. Estrae anche i comandi usati per il package, venv, pip e PowerShell.
+
+Baseline: **CPython 3.12.10, Requests 2.34.2, HTTPX 0.28.1 e Node 24.14.0 su Windows x64**. Riutilizzati gli ambienti temporanei Database e Packaging. Pip **26.2.2** nella toolchain Packaging, **25.0.1** fornito da ensurepip nel nuovo venv di prova. Nessuna modifica al Python globale o alle dipendenze di site.
+
+Imposta `PYTHON_DATABASE_TOOLS` e `PYTHON_PACKAGING_TOOLS` sui due virtualenv gia predisposti, come nelle rispettive sezioni. Nel secondo deve essere presente `wheelhouse/setuptools-84.2.1-py3-none-any.whl`; nessun download durante le prove.
+
+```powershell
+node --test _Meta/tests/python-promemoria-http-ambienti.test.mjs
+```
+
+**56/56 test mirati**, zero skip/fallimenti, circa **44 secondi**:
+
+- HTTP reale su server loopback con porta effimera, senza servizi remoti. Verificati GET, query, POST JSON, status, redirect, cookie e header Bearer con token fittizio e netrc temporaneo.
+- Risposte JSON invalide o fuori schema, errori HTTP e assenza di retry impliciti. Timeout e connessione fallita Requests simulati; la nota distingue questi casi dagli errori di parsing/contratto.
+- Client sync e async reali, chiamata nel loop del chiamante, cancellazione simulata con chiusura verificata e deadline abbreviata su attesa simulata. Non misurate latenze di rete reali.
+- Download reale, limite esatto/superato, file parziale, destinazione esistente invariata, genitore assente, risposta vuota e trasferimento troncato. Tutto in fixture temporanee.
+- Import standard/alias, package multifile originale via -m, import senza avvio di main, cache del modulo, fallimento previsto dell'avvio diretto e shadowing locale.
+- Creazione reale del venv con ensurepip, diagnostica senza attivazione, pip check/freeze e installazione da requirements usando esclusivamente la wheel locale fidata di setuptools.
+- Requirements vuoto non elimina la dipendenza gia installata; non e una sincronizzazione esatta. Pip 26.2.2 verificato separatamente sulla toolchain esistente.
+- Comandi PowerShell originali per interprete esplicito, attivazione, salvataggio UTF-8 dello snapshot e disattivazione. Controllati interprete selezionato, contenuto del file e ripristino del PATH.
+
+Primo giro **52/56**: il filtro di rete della fixture ammetteva soltanto la porta del server, bloccando anche il socketpair loopback usato internamente da asyncio su Windows. Corretto per consentire loopback, senza modificare gli snippet della nota. Tutti gli URL della prova puntano al server temporaneo; nessuna chiamata HTTP esterna.
+
+Le funzioni vengono eseguite come scritte, non reinterpretate. Il package viene materializzato dai tre blocchi e dai due `__init__.py` vuoti dichiarati. Prima della rimozione ricorsiva del test harness si verificano percorso risolto, parent e prefisso; nessun file del progetto viene cancellato. Browser e anteprima sono controlli separati.
+
+Limiti: una versione/OS, niente TLS/proxy/CA reali, servizi autenticati, SSRF audit, HTTP/2, carico o garanzie di atomicita/durabilita dei download. Le varianti Bash/POSIX sono controllate nel testo, non eseguite. Non eseguiti l'installazione online di Requests/HTTPX o l'aggiornamento di pip; verificati import/versioni gia disponibili e installazione offline da requirements. Nessuna modifica alla execution policy. I test dei comandi non certificano ogni shell o distribuzione Linux.
+
+Regressione mirata con gli stessi due ambienti:
+
+```powershell
+node --test --test-concurrency=1 _Meta/tests/python-database-http.test.mjs _Meta/tests/python-packaging.test.mjs _Meta/tests/python-promemoria-http-ambienti.test.mjs
+```
+
+Dopo la fine di site:build, separatamente:
+
+```powershell
+node --test _Meta/tests/quartz-preview.test.mjs
+```
+
+Risultati del 2026-10-27: **140/140 test Python**, zero skip/fallimenti, circa **174 secondi**. Dopo la fine della build, **7/7 test dell'anteprima** superati separatamente: **147 complessivi**, non un'unica esecuzione. Non rieseguita l'intera suite Python o degli altri linguaggi.
+
+Controlli separati: **911 documenti raggiungibili, zero errori e 394 avvisi editoriali**, nessuno sulle due note; **9/9 test della trasformazione** e build Quartz riusciti. QA Chrome 156.0.8078.48 desktop/mobile: HTTP 200, nessun errore console/JavaScript o overflow del documento; 14 elementi di codice scorrevoli su mobile, nessuno su desktop, quattro screenshot ispezionati. Le verifiche del sito non certificano i comandi su altre piattaforme.
+
+## Python: Promemoria - Iterazione, Asyncio e Debug
+
+`python-promemoria-iterazione-async-debug.test.mjs` estrae **33 blocchi Python**: 14 da Comprehension/iteratori/generatori, otto da Asyncio/concorrenza e undici da Eccezioni/log/debug. Usa solo standard library con **CPython 3.12.10 su Windows x64 e Node 24.14.0**; nessuna nuova installazione.
+
+```powershell
+node --test _Meta/tests/python-promemoria-iterazione-async-debug.test.mjs
+```
+
+**91/91 test mirati**, zero skip/fallimenti, circa **22 secondi**. Ogni esempio in un processo isolato, con output o risultati verificati:
+
+- Comprehension, alias, input vuoti, duplicati, hashability, scope, appiattimento di un livello, enumerate e zip strict con errore differito.
+- Sentinella distinta da None, consumo monouso, conversione differita, errori del generatore, variabili libere, chain/islice, groupby adiacente e gruppi condivisi, close prima/dopo l'avvio.
+- Coroutine create/attese/riusate, ordine di gather diverso dal completamento e fratello non cancellato automaticamente. Il test libera e raccoglie comunque il lavoro rimasto.
+- TaskGroup con errore e cleanup del fratello, timeout cooperativo e assenza di task residui. Errori delle coroutine iniettati mediante sostituzione della funzione dimostrativa chiamata, non delle primitive asyncio.
+- to_thread eseguito realmente fuori dal thread del loop; Event coordina la prova che cancellare l'attesa non interrompe il thread, rilasciato e atteso alla fine.
+- Coda limitata: input vuoto, contabilita comprensiva della sentinella e guasto del worker che propaga senza bloccare il producer.
+- Eccezioni/fallback, chiusura su ritorni ed errori dell'else, file assenti/vuoti/invalidi, cause esplicite, errore personalizzato e soppressione limitata. PermissionError del file opzionale simulato; altre fixture filesystem reali.
+- Logging: stderr/livelli, configurazione gia presente, import senza configurazione root, argomenti calcolati anche con DEBUG disattivo e traceback dell'eccezione corrente.
+- Debugger reale con stdin controllato: breakpoint, ispezione e continuazione, piu avvio tramite python -m pdb. Nell'altro test unitario il breakpointhook viene sostituito per evitare interazione.
+- repr, type, vars e assert: esecuzione reale anche con python -O per dimostrare la rimozione del controllo, non soltanto ispezione del sorgente.
+
+Le varianti AST cambiano soltanto dati dimostrativi top-level; nessuna seconda implementazione degli algoritmi. File di prova sotto una radice temporanea; percorso risolto, parent e prefisso verificati prima del cleanup ricorsivo. Thread, loop e task vengono chiusi; nessun file personale modificato.
+
+Il primo giro ha superato tutti i 91 casi; prima della regressione e stata resa esplicita anche l'asserzione sul root logger nel caso di import, oltre alla verifica che lo snippet non generi errori.
+
+Limiti: una versione/OS, task factory standard con GIL, nessun carico o benchmark, eager task factory, free-threading, matrice di scheduler/versioni/IDE o audit dei log. Pdb provato in subprocess con comandi su stdin, non in un terminale grafico personale. Il cleanup non e una garanzia contro crash/arresto forzato. Non eseguito ogni frammento inline.
+
+Regressione dei **13 promemoria** (sei suite), piu Funzionale/Iterazione, Concorrenza e Qualita. Imposta `PYTHON_TEST_EXECUTABLE` sull'interprete Packaging con tzdata gia disponibile e le variabili `PYTHON_DATABASE_TOOLS`, `PYTHON_PACKAGING_TOOLS`, `PYTHON_QUALITY_TOOLS` sui rispettivi ambienti descritti nelle sezioni precedenti:
+
+```powershell
+node --test --test-concurrency=1 _Meta/tests/python-promemoria-linguaggio.test.mjs _Meta/tests/python-promemoria-collezioni.test.mjs _Meta/tests/python-promemoria-testo-date.test.mjs _Meta/tests/python-promemoria-file-dati.test.mjs _Meta/tests/python-promemoria-http-ambienti.test.mjs _Meta/tests/python-promemoria-iterazione-async-debug.test.mjs _Meta/tests/python-funzionale-iterazione.test.mjs _Meta/tests/python-concorrenza.test.mjs _Meta/tests/python-qualita.test.mjs
+```
+
+Dopo il completamento della build, separatamente:
+
+```powershell
+node --test _Meta/tests/quartz-preview.test.mjs
+```
+
+Risultati del 2026-10-27: **605/605 test**, zero skip/fallimenti, circa **217 secondi**, inclusi **404 test dei promemoria**. Dopo la fine della build, **7/7 test dell'anteprima** superati separatamente: **612 complessivi**, non un'unica esecuzione. Non rieseguite tutte le altre suite delle note principali Python o degli altri linguaggi.
+
+Controlli separati: **911 documenti raggiungibili, zero errori e 391 avvisi editoriali**, nessuno sulle tre note; **9/9 test della trasformazione** e build Quartz riusciti. QA Chrome 156.0.8078.48 desktop/mobile: HTTP 200, nessun errore console/JavaScript o overflow del documento; 25 elementi di codice scorrevoli su mobile, nessuno su desktop, sei screenshot ispezionati. La verifica del sito non e una certificazione degli esempi su altre piattaforme.
+
+La passata Python comprende ora **75 note principali e 13 promemoria**. I **144 blocchi Python dei promemoria** sono coperti dalle sei suite dedicate, con i limiti descritti in ciascuna sezione; non confondere questo conteggio con tutti gli esempi inline o shell.
+
 ## TypeScript: fondamenti del linguaggio
 
 `typescript-fondamenti.test.mjs` estrae i blocchi dalle sette note del capitolo Fondamenti del Linguaggio. Usa il parser Markdown del sito e il vero checker/emitter di TypeScript, non una seconda implementazione degli esempi.
@@ -1482,6 +2347,18 @@ node --test --test-concurrency=1 _Meta/tests/typescript-architettura.test.mjs _M
 ```
 
 Limiti: una baseline Windows, non una matrice di versioni. Nessun database, transazione distribuita, SMTP, pagamento, autenticazione o server HTTP reale in questa suite. La concorrenza del repository riguarda una sola istanza JavaScript. I parser assumono dati ordinari e non isolano getter/Proxy ostili; readonly e freeze non diventano garanzie generali. Il controllo architetturale analizza gli import/export statici usati dalla fixture, non e un linter generale. Le CLI invocano direttamente tsc e Node con la configurazione della nota, senza rieseguire npm install. Fixture rimosse solo dopo verifica dei percorsi; helper condivisi invariati. Build Quartz e QA del sito restano verifiche separate.
+
+## Quartz: anteprima locale
+
+```powershell
+node --test _Meta/tests/quartz-preview.test.mjs
+```
+
+Richiede una build aggiornata in site/public, con le pagine Python Dataclasses, Ereditarieta e Proprieta. La suite avvia il vero script preview-site su una porta loopback libera, legge baseUrl dalla configurazione e chiude il processo di prova alla fine. Non modifica o avvia il server usato dall'utente e non scrive negli HTML.
+
+**7 test HTTP**: pagina ASCII, URL Unicode dalla radice e dal sottopercorso Pages, header Content-Disposition, redirect con query preservata, HEAD, URL malformato, traversal codificato e 404. Verificati con Node 24.14.0 su Windows, senza browser o rete esterna.
+
+Il 2026-10-23 quattro casi Unicode riproducevano HTTP 500 con ERR_INVALID_CHAR nell'header generato da serve-handler; dopo l'override locale a Content-Disposition inline senza filename, **7/7 superati**. L'override non cambia i nomi delle note, le URL pubbliche o il contenuto degli HTML. Le verifiche visive desktop/mobile sono documentate separatamente nel registro di revisione.
 
 ## Browser
 

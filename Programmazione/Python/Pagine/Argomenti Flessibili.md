@@ -23,93 +23,105 @@ title: Argomenti Flessibili in Python
 
 ## Sintesi
 
-`*args` e `**kwargs` permettono a una funzione di accettare un numero variabile di argomenti. `*args` raccoglie argomenti posizionali extra in una tupla; `**kwargs` raccoglie keyword arguments extra in un dizionario.
+Nella definizione, `*args` raccoglie argomenti posizionali extra in una tupla e `**kwargs` quelli nominati in un dizionario. Nella chiamata, `*` e `**` espandono rispettivamente un iterabile e un mapping.
 
-Sono utili per wrapper, decoratori, API flessibili e funzioni che inoltrano parametri ad altre funzioni.
+I nomi args e kwargs sono convenzioni; il significato viene dagli asterischi.
+
+Baseline: **CPython 3.12.10**.
 
 ## Quando usarlo
 
-Usali quando:
-
-- non conosci in anticipo il numero di argomenti;
-- stai scrivendo un decoratore;
-- devi inoltrare parametri a un'altra funzione;
-- vuoi supportare opzioni aggiuntive senza cambiare subito la firma;
-- stai costruendo una API compatibile con piu chiamanti.
-
-Evitali quando la firma puo essere esplicita: parametri chiari rendono il codice piu leggibile.
+Per wrapper e decoratori che inoltrano argomenti, oppure per un numero realmente variabile di valori. Una firma esplicita resta preferibile se le opzioni sono note: `**kwargs` non deve servire a ignorare errori di battitura.
 
 ## Come funziona
-
-`*args` raccoglie argomenti posizionali:
 
 ```python
 def sum_all(*numbers):
     return sum(numbers)
 
 
-print(sum_all(10, 20, 30))
-```
-
-`**kwargs` raccoglie argomenti nominati:
-
-```python
 def create_profile(name, **extra):
-    profile = {"name": name}
-    profile.update(extra)
-    return profile
+    return {"name": name, "metadata": extra}
 
 
-user = create_profile("Luca", role="admin", active=True)
+print(sum_all(10, 20, 30))  # 60
+print(create_profile("Ada", language="it"))
+# {'name': 'Ada', 'metadata': {'language': 'it'}}
 ```
+
+La firma raccoglie i valori ma non ne verifica significato o tipo. Metadata e un contenitore dimostrativo, non una sorgente di permessi. I riferimenti agli oggetti annidati rimangono condivisi: non sono copie profonde.
 
 ## API / Sintassi
 
-Ordine tipico dei parametri:
+### Ordine e ruolo dei parametri
 
 ```python
-def function(positional, *args, keyword_only=None, **kwargs):
-    ...
+def describe(prefix, /, name, *labels, uppercase=False, **metadata):
+    text = f"{prefix} {name}"
+    return {
+        "text": text.upper() if uppercase else text,
+        "labels": labels,
+        "metadata": metadata,
+    }
+
+
+description = describe(
+    "Ciao", "Ada", "python", "appunti",
+    uppercase=True, language="it",
+)
+print(description["text"])  # CIAO ADA
 ```
 
-Unpacking in chiamata:
+- prefix precede /: deve essere passato per posizione.
+- name puo essere posizionale o nominato.
+- labels raccoglie i posizionali rimanenti.
+- uppercase segue \*labels: e keyword-only.
+- metadata raccoglie le altre keyword.
 
-```python
-numbers = [2, 3, 4]
-
-
-def multiply(a, b, c):
-    return a * b * c
-
-
-print(multiply(*numbers))
-```
-
-Unpacking di dizionario:
-
-```python
-options = {"host": "localhost", "port": 8000}
-
-
-def connect(host, port):
-    return f"{host}:{port}"
-
-
-print(connect(**options))
-```
-
-Keyword-only arguments:
+Per imporre keyword-only senza accettare posizionali extra usa \* da solo:
 
 ```python
 def create_user(name, *, active=True):
     return {"name": name, "active": active}
+
+
+print(create_user("Ada", active=False))
 ```
 
-`active` deve essere passato per nome.
+E una costruzione di dati in memoria: non crea account, non salva nulla e non valida automaticamente il booleano.
+
+### Unpacking in chiamata
+
+```python
+def multiply(a, b, c):
+    return a * b * c
+
+
+numbers = [2, 3, 4]
+print(multiply(*numbers))  # 24
+
+
+def format_address(host, port):
+    return f"{host}:{port}"
+
+
+options = {"host": "localhost", "port": 8000}
+print(format_address(**options))  # localhost:8000
+```
+
+`format_address` costruisce testo, non apre una connessione. `*` accetta anche un generatore, consumandolo; `**` richiede un mapping con chiavi stringa. Il numero degli argomenti e i nomi devono rispettare la firma di destinazione.
+
+Fornire due volte lo stesso argomento causa TypeError. Esempio intenzionalmente errato, da non unire al demo:
+
+```text
+format_address("localhost", host="other", port=8000)
+```
+
+Una fusione di dizionari e diversa: in `{**defaults, **overrides}` vince l'ultima chiave. In `f(**first, **second)`, una keyword duplicata genera errore, non un override.
 
 ## Esempio pratico
 
-Decoratore che funziona con qualunque firma:
+Wrapper per **normali funzioni sincrone**. Inoltra gli argomenti e conserva il risultato; non registra valori potenzialmente sensibili.
 
 ```python
 from functools import wraps
@@ -126,40 +138,57 @@ def log_call(function):
 
 @log_call
 def add(a, b):
+    """Somma i due valori ricevuti."""
     return a + b
+
+
+print(add(2, b=3))
+# Calling add
+# 5
 ```
 
-Senza `*args` e `**kwargs`, il decoratore funzionerebbe solo con una firma specifica.
+`wraps` conserva metadati utili e aggiunge `__wrapped__`; non trasforma il wrapper in una funzione con controlli di tipo o validazione aggiuntivi. Gli errori della chiamata interna si propagano.
+
+La frase "funziona con qualunque firma" non significa "qualunque comportamento": un wrapper sincrono non attende una coroutine e, con un generatore, osserva la creazione dell'iteratore, non l'esecuzione dei suoi elementi. Decoratori async o per generatori richiedono una progettazione dedicata.
 
 ## Varianti
 
-- **`*args` nella definizione**: raccoglie argomenti posizionali extra.
-- **`**kwargs` nella definizione**: raccoglie keyword arguments extra.
-- **`*iterable` nella chiamata**: espande una sequenza.
-- **`**mapping` nella chiamata**: espande un dizionario.
-- **`*` da solo nella firma**: forza parametri keyword-only.
-- **`/` nella firma**: indica parametri positional-only.
+- Positional-only per parametri il cui nome non deve essere parte della chiamata pubblica.
+- Keyword-only per opzioni leggibili e difficili da invertire.
+- Un parametro positional-only puo avere lo stesso nome di una chiave raccolta in kwargs: sono canali diversi.
+- Per wrapper tipizzati, ParamSpec puo preservare il rapporto tra parametri e risultato per il checker; non aggiunge controlli runtime.
 
 ## Errori comuni
 
-- Usare `*args` e `**kwargs` per nascondere firme poco progettate.
-- Non documentare quali keyword sono accettate.
-- Inoltrare `kwargs` senza filtrare opzioni non valide.
-- Confondere packing nella definizione e unpacking nella chiamata.
-- Perdere type hint e chiarezza dell'API.
+- Nascondere opzioni sconosciute dentro kwargs senza segnalarle.
+- Credere che `**` converta chiavi numeriche in stringhe.
+- Duplicare argomenti tra posizione, keyword e mapping.
+- Espandere un iteratore senza considerare che viene consumato.
+- Perdere return, errori o semantica async nel wrapper.
+- Confondere raccolta degli argomenti con validazione dei dati.
 
 ## Checklist
 
-- La flessibilita e davvero necessaria?
-- I parametri accettati sono documentati?
-- Gli argomenti extra vengono validati?
-- Una firma esplicita sarebbe piu chiara?
-- Se sto scrivendo un wrapper, preservo il risultato e gli errori originali?
+- Firma esplicita dove possibile.
+- Positional-only e keyword-only intenzionali.
+- Extra accettati, rifiutati o inoltrati secondo un contratto chiaro.
+- Nessuna keyword duplicata.
+- Risultato, errori e natura sync/async preservati.
 
 ## Collegamenti
 
-- [[Programmazione/Python/Indice Python|Indice Python]]
 - [[Programmazione/Python/Pagine/Funzioni|Funzioni]]
 - [[Programmazione/Python/Pagine/Decoratori|Decoratori]]
 - [[Programmazione/Python/Pagine/Higher-order Functions|Higher-order Functions]]
 - [[Programmazione/Python/Pagine/Type Hinting|Type Hinting]]
+- [[Programmazione/Python/Pagine/Generatori|Generatori]]
+
+## Fonti
+
+- [Python 3.12: parametri speciali e unpacking](https://docs.python.org/3.12/tutorial/controlflow.html#more-on-defining-functions).
+- [Python 3.12: regole delle chiamate](https://docs.python.org/3.12/reference/expressions.html#calls).
+- [Python 3.12: functools.wraps](https://docs.python.org/3.12/library/functools.html#functools.wraps).
+
+## Navigazione
+
+- [[Programmazione/Python/Indice Python|Indice Python]]

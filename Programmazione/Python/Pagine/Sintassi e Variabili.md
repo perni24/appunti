@@ -20,93 +20,150 @@ title: Sintassi e Variabili in Python
 
 ## Sintesi
 
-Python usa indentazione significativa, nomi leggibili e assegnazione dinamica. Le variabili sono riferimenti a oggetti, non contenitori tipizzati staticamente.
+Un nome Python viene associato a un oggetto: **assegnare un nome non significa copiare l'oggetto**. Il tipo appartiene all'oggetto; lo stesso nome puo essere riassegnato a un valore di altro tipo.
+
+Baseline degli esempi: **CPython 3.12.10**.
 
 ## Quando usarlo
 
-Serve per leggere e scrivere qualsiasi codice Python: definire valori, capire scope, evitare errori di indentazione e distinguere nome, oggetto e tipo.
+Per capire indentazione, assegnazioni, alias, mutabilita e visibilita dei nomi prima di lavorare con funzioni o collezioni complesse.
 
 ## Come funziona
 
-In Python tutto e un oggetto. Una variabile e un nome collegato a un oggetto. Il tipo appartiene all'oggetto, non al nome.
+L'indentazione delimita i blocchi di if, cicli, funzioni e classi. Usa quattro spazi per livello come convenzione di stile; evita di mescolare tab e spazi. Le parentesi tonde permettono di continuare un'espressione su piu righe senza backslash.
 
-Python e dinamicamente tipizzato, perche un nome puo puntare a oggetti di tipo diverso nel tempo. E anche fortemente tipizzato, perche non converte automaticamente tipi incompatibili in modo arbitrario.
+La tipizzazione dinamica non significa che ogni conversione sia automatica: sommare una stringa e un intero causa TypeError, mentre int e float possono partecipare alla stessa somma numerica.
 
-L'indentazione definisce i blocchi: `if`, `for`, `while`, funzioni e classi non usano parentesi graffe.
+Numeri e stringhe sono immutabili; liste e dizionari sono mutabili. Una tupla puo contenere una lista mutabile: immutabilita del contenitore non equivale a immutabilita di tutto il grafo.
 
 ## API / Sintassi
 
+### Nomi, valori e unpacking
+
 ```python
-name = "Luca"
+name = "Ada"
 age = 30
 height = 1.75
 is_active = True
 missing_value = None
-```
 
-Assegnazione multipla:
-
-```python
 x, y = 10, 20
-a = b = c = 0
+x, y = y, x
+print(x, y)  # 20 10
 ```
 
-Commenti e docstring:
+L'assegnazione multipla richiede un numero compatibile di elementi, salvo un target con asterisco. A = B = valore collega entrambi i nomi al medesimo risultato.
+
+### Commenti e docstring
 
 ```python
-# Commento a riga singola
-
 def greet(name):
-    """Restituisce un saluto per name."""
+    """Restituisce un saluto senza modificare dati esterni."""
     return f"Ciao {name}"
+
+
+print(greet("Ada"))  # Ciao Ada
 ```
+
+Un commento inizia con #. Una docstring e una stringa nella prima istruzione del modulo, della classe o della funzione; non ogni stringa tra triple virgolette e un commento. Le f-string valutano le espressioni quando vengono eseguite, non restano collegate ai nomi.
 
 ## Esempio pratico
 
+### Alias e riassegnazione
+
 ```python
-user_name = "Ada"
-login_count = 3
+original = ["uno"]
+alias = original
+alias.append("due")
+print(original)  # ['uno', 'due']
 
-if login_count > 0:
-    message = f"{user_name} ha gia effettuato il login"
-else:
-    message = f"{user_name} non ha ancora effettuato il login"
-
-print(message)
+alias = ["altro"]
+print(original)  # ['uno', 'due']
+print(alias is original)  # False
 ```
 
-L'esempio mostra nomi in `snake_case`, indentazione a 4 spazi e string interpolation con f-string.
+Append modifica l'oggetto condiviso. L'ultima assegnazione cambia solo il binding di alias. Anche una copia superficiale conserva riferimenti agli oggetti annidati:
+
+```python
+rows = [["iniziale"]]
+copied = rows.copy()
+copied[0].append("aggiunto")
+print(rows)  # [['iniziale', 'aggiunto']]
+print(copied is rows)  # False
+```
+
+### Scope e nomi locali
+
+Per funzioni ordinarie, il modello LEGB aiuta a ricordare la ricerca dei nomi: Local, Enclosing, Global del modulo, Built-in. Classi e comprehensions hanno regole aggiuntive; non applicare il modello come formula universale.
+
+If e for non creano un nuovo scope locale. Una funzione, invece, considera locale un nome assegnato nel suo corpo, salvo global/nonlocal.
+
+```python
+count = 10
+
+
+def increment_bad():
+    count += 1
+    return count
+
+
+def increment(value):
+    return value + 1
+
+
+print(increment(count))  # 11
+print(count)  # 10
+```
+
+Il demo non chiama increment_bad: chiamarla produce **UnboundLocalError**, perche legge il count locale prima che sia associato a un valore. Una variabile definita solo dentro un ramo if puo allo stesso modo non esistere quando quel ramo non viene eseguito.
+
+### Valori e annotazioni non sono la stessa cosa
+
+```python
+declared_age: int = "30"
+print(type(declared_age).__name__)  # str
+```
+
+Questo e un controesempio intenzionale per un type checker: l'interprete non impone int e non converte la stringa. Per convertire un input usa una funzione come int(), gestendo gli errori e definendo quali formati accettare.
 
 ## Varianti
 
-- Assegnazione semplice: `x = 1`.
-- Assegnazione multipla: `x, y = y, x`.
-- Annotazioni di tipo: `age: int = 30`.
-- Costanti convenzionali: `MAX_RETRIES = 3`.
-- Valore assente: `None`.
-- Casting esplicito: `int("10")`, `str(10)`, `float("3.5")`.
+- Nomi snake_case; MAIUSCOLE per costanti convenzionali, non protette dall'interprete.
+- None rappresenta assenza quando il contratto lo prevede; non sostituisce automaticamente zero o stringa vuota.
+- global riassegna un nome del modulo; nonlocal uno di una funzione esterna. Preferisci parametri e ritorni quando bastano.
+- del rimuove un binding o un elemento, non garantisce la distruzione immediata dell'oggetto.
 
 ## Errori comuni
 
-- Mischiare tab e spazi.
-- Usare nomi poco descrittivi.
-- Confondere `None`, stringa vuota e zero.
-- Sovrascrivere nomi built-in come `list`, `dict`, `str`.
-- Pensare che `y = x` copi sempre l'oggetto.
+- Creare liste condivise con left = right = [] credendo di averne due.
+- Sovrascrivere nomi built-in come list, str o dict.
+- Usare un nome dopo un ramo che potrebbe non averlo definito.
+- Confondere type hint, conversione e validazione.
+- Aspettarsi una copia profonda da assegnazione o list.copy().
 
 ## Checklist
 
-- L'indentazione usa 4 spazi?
-- I nomi seguono `snake_case`?
-- I valori assenti sono rappresentati con `None`?
-- Hai evitato nomi di built-in?
-- Le conversioni di tipo sono esplicite?
+- Indentazione e nomi coerenti.
+- Binding e mutazione distinti.
+- Copia superficiale sufficiente per i dati usati?
+- Tutti i percorsi assegnano i nomi che verranno letti?
+- Input convertiti e controllati, non soltanto annotati?
 
 ## Collegamenti
 
 - [[Programmazione/Python/Pagine/Operatori|Operatori]]
 - [[Programmazione/Python/Pagine/Funzioni|Funzioni]]
+- [[Programmazione/Python/Pagine/Liste|Liste]]
+- [[Programmazione/Python/Pagine/Type Hinting|Type Hinting]]
+- [[Programmazione/Python/Pagine/Data model|Data model]]
 
+## Fonti
+
+- [Python 3.12: nomi e scope](https://docs.python.org/3.12/reference/executionmodel.html).
+- [Python 3.12: oggetti, identita e mutabilita](https://docs.python.org/3.12/reference/datamodel.html).
+- [Python 3.12: indentazione e righe logiche](https://docs.python.org/3.12/reference/lexical_analysis.html).
+- [Python 3.12: assegnazioni e annotazioni](https://docs.python.org/3.12/reference/simple_stmts.html).
+- [Python 3.12: type hint non imposti dal runtime](https://docs.python.org/3.12/library/typing.html).
 
 ## Navigazione
 

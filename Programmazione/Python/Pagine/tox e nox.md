@@ -21,153 +21,255 @@ title: tox e nox
 
 # tox e nox
 
-## Sintesi
+## Obiettivo
 
-`tox` e `nox` automatizzano test e comandi in ambienti Python isolati. Sono utili per riprodurre la CI localmente, testare piu versioni Python e separare lint, test, type checking e build.
+Automatizzare installazione e controlli in ambienti Python separati, con gli stessi comandi in locale e CI.
 
-La differenza principale:
+- **tox** descrive ambienti, dipendenze e comandi in configurazione dichiarativa.
+- **nox** definisce sessioni in un file Python, utile quando serve logica esplicita.
 
-- **tox** usa configurazione dichiarativa;
-- **nox** usa sessioni Python programmatiche.
+Nessuno dei due e un test runner: qui il runner e pytest e il linter e Ruff. Un virtualenv non e una sandbox di sicurezza, un container o una copia dell'ambiente di produzione.
+
+Baseline: CPython 3.12.10, tox 4.67.1, nox 2026.10.20, pytest 9.1.1 e Ruff 0.17.3 su Windows. Le prove riguardano Python 3.12, non tutte le versioni dichiarabili.
 
 ## Quando usarlo
 
-Usali quando:
+- Una libreria deve essere installata e testata su piu interpreti.
+- Lint, test, typing o documentazione richiedono dipendenze diverse.
+- Il comando locale deve corrispondere a quello della pipeline.
 
-- devi testare piu versioni di Python;
-- vuoi ambienti puliti per ogni tipo di controllo;
-- vuoi riprodurre la CI localmente;
-- una libreria deve garantire compatibilita ampia;
-- vuoi separare `tests`, `lint`, `typing`, `docs` e `build`.
+Per un piccolo script puo bastare un virtualenv e pytest. Scegli normalmente uno dei due orchestratori: mantenere due configurazioni equivalenti aumenta la manutenzione.
 
-Per progetti piccoli puo bastare `python -m pytest`.
+## Procedura
 
-## Come funziona
+### 1. Partire da un progetto completo
 
-Esempio `tox.ini`:
+Riusa tutti i file di [[Programmazione/Python/Pagine/Creazione di Package|Creazione di Package]]: `appunti-calc-demo`, package `appunti_calc` in `src/` e `tests/test_core.py`. Non copiare soltanto il file di configurazione in una directory vuota.
 
-```ini
-[tox]
-envlist = py311, py312
+Il demo ha gia due test `unittest`, che pytest puo raccogliere. Installa l'orchestratore scelto in un ambiente di strumenti, non nelle dipendenze runtime del package:
 
-[testenv]
-deps = pytest
-commands = pytest
+```text
+python -m pip install "tox==4.67.1"
 ```
 
-Esecuzione:
+Alternativa nox:
 
-```bash
-tox
+```text
+python -m pip install "nox==2026.10.20"
 ```
 
-Esempio `noxfile.py`:
+Devono essere disponibili anche gli interpreti richiesti. Il Python che avvia tox/nox e quello che esegue una sessione possono essere diversi.
+
+### 2. Configurare tox
+
+Aggiungi le tabelle seguenti al `pyproject.toml` del package senza sostituire quelle gia presenti.
+
+#### Configurazione tox in pyproject.toml
+
+```toml
+[tool.tox]
+env_list = ["py312", "lint"]
+skip_missing_interpreters = false
+
+[tool.tox.env_run_base]
+package = "wheel"
+deps = ["pytest==9.1.1"]
+commands = [
+  ["python", "-I", "-m", "pytest", "-q",
+   { replace = "posargs", default = ["tests"], extend = true }]
+]
+
+[tool.tox.env.lint]
+base_python = ["python3.12"]
+package = "skip"
+deps = ["ruff==0.17.3"]
+commands = [["python", "-m", "ruff", "check", "src", "tests"]]
+```
+
+`py312` seleziona Python 3.12. L'ambiente di test costruisce e installa una wheel; `lint` non installa il package, perche analizza sorgenti. Il flag Python `-I` evita che la directory corrente e `PYTHONPATH` facciano riuscire per caso l'import del package non installato.
+
+Qui Ruff usa le regole predefinite, non una verifica statica completa. Puoi aggiungere una policy nella configurazione condivisa; non confondere questa sessione con test o type checking.
+
+La configurazione usa TOML nativo. La documentazione tox corrente indica INI come deprecato ma ancora funzionante: i vecchi `tox.ini` non diventano automaticamente invalidi. Se ne esiste uno, verifica la precedenza prima di aggiungere TOML, altrimenti potresti continuare a eseguire la configurazione precedente.
+
+### 3. Eseguire tox
+
+Dalla radice del package, elenca gli ambienti:
+
+```text
+python -m tox list
+```
+
+Esegui gli ambienti predefiniti:
+
+```text
+python -m tox run
+```
+
+Solo Python 3.12:
+
+```text
+python -m tox run -e py312
+```
+
+Passa argomenti al runner:
+
+```text
+python -m tox run -e py312 -- tests/test_core.py -k test_sum
+```
+
+La sostituzione `posargs` rimpiazza il valore predefinito `tests`: con `-k` soltanto, pytest usera la propria discovery. Il risultato atteso e un test selezionato e uno escluso, non l'intera suite.
+
+### 4. Configurare nox come alternativa
+
+#### noxfile.py
 
 ```python
 import nox
 
+nox.options.error_on_missing_interpreters = True
+nox.options.error_on_external_run = True
 
-@nox.session
+
+@nox.session(python="3.12", download_python="never")
 def tests(session):
-    session.install("pytest")
-    session.run("pytest")
-```
-
-Esecuzione:
-
-```bash
-nox
-```
-
-## API / Sintassi
-
-Eseguire un ambiente tox specifico:
-
-```bash
-tox -e py312
-```
-
-Definire piu ambienti:
-
-```ini
-[tox]
-envlist = lint, tests
-
-[testenv:lint]
-deps = ruff
-commands = ruff check .
-
-[testenv:tests]
-deps = pytest
-commands = pytest
-```
-
-Sessione nox con versione Python:
-
-```python
-@nox.session(python=["3.11", "3.12"])
-def tests(session):
-    session.install("pytest")
-    session.run("pytest")
-```
-
-## Esempio pratico
-
-Workflow con nox:
-
-```python
-import nox
+    session.install("pytest==9.1.1")
+    session.install(".")
+    session.run(
+        "python", "-I", "-m", "pytest", "-q", *(session.posargs or ["tests"])
+    )
 
 
-@nox.session
+@nox.session(python="3.12", download_python="never")
 def lint(session):
-    session.install("ruff")
-    session.run("ruff", "check", ".")
-
-
-@nox.session
-def tests(session):
-    session.install("pytest")
-    session.run("pytest")
+    session.install("ruff==0.17.3")
+    session.run("python", "-m", "ruff", "check", "src", "tests")
 ```
 
-Comandi:
+nox non installa il progetto automaticamente: `session.install(".")` e intenzionale. Esegue un'installazione normale, non editable. I comandi Python sono quelli dell'ambiente della sessione; un eseguibile esterno e rifiutato dalla policy scelta.
 
-```bash
-nox -s lint
-nox -s tests
+Il download di interpreti e disabilitato in questo esempio; i nox recenti possono supportarlo con backend/extra appropriati. Un interprete mancante deve produrre un errore, non un apparente successo perche la sessione e stata saltata.
+
+Elenca le sessioni:
+
+```text
+python -m nox --list
 ```
 
-## Varianti
+Esegui test e lint:
 
-- **tox per librerie**: comodo per matrix di versioni Python.
-- **nox per automazioni flessibili**: utile quando la logica e piu complessa.
-- **Ambienti separati**: lint, tests, typing, build, docs.
-- **CI mirror**: lo stesso comando usato localmente viene eseguito in pipeline.
-- **Pre-commit leggero + tox/nox pesante**: hook veloci prima del commit, suite completa in CI.
+```text
+python -m nox
+```
 
-## Errori comuni
+Solo test:
 
-- Usare tox/nox per progetti troppo piccoli senza reale beneficio.
-- Duplicare logica diversa tra CI e comandi locali.
-- Non fissare dipendenze critiche dei test.
-- Creare ambienti lentissimi eseguiti troppo spesso.
-- Confondere isolamento tox/nox con ambiente di produzione.
-- Non documentare quali sessioni usare nel workflow quotidiano.
+```text
+python -m nox -s tests
+```
 
-## Checklist
+Solo un test selezionato:
 
-- Serve davvero una matrice di ambienti?
-- I comandi locali e CI sono allineati?
-- Le sessioni sono nominate chiaramente?
-- Lint, test e typing sono separati quando utile?
-- Gli ambienti restano veloci abbastanza?
-- Il progetto documenta il comando principale?
+```text
+python -m nox -s tests -- tests/test_core.py -k test_sum
+```
+
+Solo lint:
+
+```text
+python -m nox -s lint
+```
+
+### 5. Integrare e interpretare l'esito
+
+In CI esegui il comando dell'orchestratore dopo checkout, installazione degli interpreti e degli strumenti. Un test fallito deve rendere non riuscita la sessione e il job.
+
+Gli ambienti e gli artefatti locali non appartengono al versionamento. Integra nel `.gitignore`:
+
+```gitignore
+.tox/
+.nox/
+.pytest_cache/
+.ruff_cache/
+__pycache__/
+*.egg-info/
+build/
+dist/
+```
+
+Non usare i test come backup: tox e nox possono ricreare le proprie directory di ambiente.
+
+## Snippet
+
+### Ricreare un ambiente tox
+
+Rimuove e ricrea l'ambiente selezionato; non conservarvi dati o lavoro manuale:
+
+```text
+python -m tox run -r -e py312
+```
+
+### Riutilizzare un ambiente nox
+
+```text
+python -m nox -r -s tests
+```
+
+`-r` riusa il virtualenv ma non elimina gli `install` della sessione. `-R` salta anche le reinstallazioni quando riusa l'ambiente: e piu veloce, ma puo lasciare codice e dipendenze vecchi dopo modifiche al progetto. Non usarlo come verifica pulita del rilascio.
+
+### Matrice di versioni
+
+Per estendere il progetto, modifica `env_list` tox, per esempio con `py312`, `py313` e `py314`; in nox sostituisci il decoratore dei test con:
+
+```python
+@nox.session(python=["3.12", "3.13", "3.14"], download_python="never")
+```
+
+E solo la riga da sostituire sopra la stessa funzione, non un file Python autonomo. Verifica i nomi generati con `--list`: le sessioni parametrizzate avranno suffissi come `tests-3.12`.
+
+Installa gli interpreti richiesti e verifica compatibilita di runtime, backend di build e dipendenze. Elencare tre versioni non dimostra di averne testate tre; non abilitare gli skip per far passare una matrice obbligatoria.
+
+## Adattamenti comuni
+
+- **Applicazione non distribuibile**: in tox puoi usare `package = "skip"` e in nox omettere l'installazione del progetto, ma devi definire esplicitamente come i test importano/eseguono il codice. Non aggiungere `PYTHONPATH=src` per nascondere un packaging rotto di una libreria.
+- **Dipendenze**: fissare pytest/Ruff non blocca transitivi, dipendenze applicative e backend. Per riproducibilita piu forte serve una policy di lock/constraints coerente con interpreti e piattaforme.
+- **Variabili d'ambiente**: tox filtra quelle ereditate tramite `pass_env`; nox normalmente le eredita, salvo configurazione. Passa solo cio che serve e usa servizi di test, non credenziali o database di produzione.
+- **Comandi esterni**: in tox usa una `allowlist_externals` mirata; in nox `external=True` solo per un comando fidato. Non autorizzare tutto per risolvere un errore di PATH.
+- **Editable**: utile durante sviluppo, ma non sostituisce la prova dell'artefatto distribuibile. In nox `session.install(".")` non controlla da solo che una sdist contenga tutti i file necessari.
+- **Altre sessioni**: typing, build e docs seguono lo stesso schema, con dipendenze proprie. Evita di eseguirle tutte a ogni commit: [[Programmazione/Python/Pagine/pre-commit|pre-commit]] puo mantenere controlli veloci.
+
+## Debug rapido
+
+- **Interprete mancante**: installalo oppure seleziona esplicitamente una sessione disponibile; documenta la matrice non eseguita.
+- **ModuleNotFoundError**: controlla installazione del package, layout e nome importabile. La dipendenza nell'ambiente da cui avvii tox/nox non e automaticamente in quello dei test.
+- **Errore prima dei test**: distingue setup/build/installazione dall'esecuzione del runner.
+- **Risultato inatteso dopo una modifica**: elimina il riuso improprio o ricrea l'ambiente selezionato; controlla quale configurazione e stata caricata.
+- **Command not allowed/external**: installa il tool nelle dipendenze della sessione, se possibile.
+- **Lint passato, test falliti**: non sono controlli equivalenti. Verifica il riepilogo completo e l'exit code.
+- **Locale verde, CI rossa**: confronta interprete, sistema operativo, file tracciati, variabili e risoluzione delle dipendenze.
+
+## Checklist finale
+
+- Il package e installato davvero nell'ambiente dei test?
+- Il laboratorio usa i file completi della nota Packaging?
+- Gli interpreti obbligatori mancanti provocano un errore?
+- Argomenti aggiuntivi e sessioni selezionate hanno l'effetto atteso?
+- Almeno una controprova rileva un test deliberatamente rotto?
+- CI e locale condividono comandi, versioni e criteri di esito?
+- Ambienti isolati, cache e segreti sono distinti dalla produzione?
 
 ## Collegamenti
 
 - [[Programmazione/Python/Indice Python|Indice Python]]
 - [[Programmazione/Python/Pagine/Testing|Testing]]
 - [[Programmazione/Python/Pagine/Ambienti Virtuali|Ambienti Virtuali]]
+- [[Programmazione/Python/Pagine/Creazione di Package|Creazione di Package]]
 - [[Programmazione/Python/Pagine/pre-commit|pre-commit]]
 - [[Programmazione/Python/Pagine/uv pipx e poetry|uv pipx e poetry]]
+
+## Fonti
+
+- [tox: configurazione e formati](https://tox.wiki/en/stable/reference/config.html).
+- [tox: ambienti, packaging e variabili](https://tox.wiki/en/stable/explanation.html).
+- [nox: configurazione, install e run](https://nox.thea.codes/en/stable/config.html).
+- [nox: CLI, riuso e interpreti](https://nox.thea.codes/en/stable/usage.html).

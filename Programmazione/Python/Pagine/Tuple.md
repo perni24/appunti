@@ -20,77 +20,146 @@ title: Tuple in Python
 
 ## Sintesi
 
-Le tuple sono collezioni ordinate e immutabili. Sono adatte a dati che non devono cambiare e a ritorni multipli da funzioni.
+Una tupla e una sequenza ordinata di riferimenti che **non permette di sostituire, aggiungere o eliminare le proprie posizioni**. Non rende immutabili gli oggetti che contiene.
+
+Baseline delle prove: **CPython 3.12.10**, non un'indicazione dell'ultima patch disponibile.
 
 ## Quando usarlo
 
-Usa tuple per coordinate, coppie, record brevi, valori multipli restituiti e chiavi composte di dizionari.
+Per coppie, coordinate, piccoli record posizionali e risultati composti di una funzione. Una tupla puo essere una chiave composta soltanto se tutti i suoi elementi sono hashable. Quando i campi diventano poco comprensibili per posizione, usa nomi tramite namedtuple o dataclass.
 
 ## Come funziona
 
-Una tupla non permette aggiunte, rimozioni o sostituzioni di elementi. Se contiene oggetti mutabili, quegli oggetti possono comunque essere modificati.
+E normalmente la virgola a costruire una tupla, non le sole parentesi. `(5)` e un int; `(5,)` una tupla di un elemento; `()` e il caso vuoto.
 
-Le tuple sono hashable solo se tutti gli elementi sono hashable.
+Immutabilita e hashability non sono sinonimi: una tupla con una lista non e hashable. Hashable significa avere un hash stabile durante la vita dell'oggetto e confronti coerenti: oggetti uguali devono avere lo stesso hash. Non usare il valore di hash come identificatore persistente.
 
 ## API / Sintassi
+
+### Creazione, accesso e metodi
 
 ```python
 point = (10, 20)
 single = (5,)
 coordinates = 45.0, 9.0
+empty = ()
+from_iterable = tuple([1, 2, 3])
 
 x, y = point
+print(x, y, point[-1])  # 10 20 20
+print(point[:1])  # (10,)
+
+values = (1, 2, 2, 3)
+print(values.count(2), values.index(3))  # 2 3
 ```
 
-Metodi:
+Supporta indice, slicing, len, in, concatenazione e ripetizione. `index` fallisce con ValueError se il valore non c'e; un indice fuori intervallo genera IndexError. Non ha append o sort: `sorted(tuple_value)` restituisce una lista.
+
+### Unpacking
 
 ```python
-values = (1, 2, 2, 3)
-values.count(2)
-values.index(3)
+first, *middle, last = (10, 20, 30, 40)
+print(first, middle, last)  # 10 [20, 30] 40
+
+head, *tail = (7,)
+print(head, tail)  # 7 []
+
+left, right = "LR"
+print(left, right)  # L R
 ```
+
+L'unpacking funziona con iterabili, non solo tuple. Senza stella, il numero di valori deve corrispondere alle destinazioni. Una destinazione starred raccoglie una **lista**, anche vuota; deve comunque restare abbastanza input per le altre. Troppi o pochi valori generano ValueError; una sorgente non iterabile genera TypeError.
+
+### Elementi mutabili e chiavi composte
+
+```python
+record = ("draft", ["python"])
+record[1].append("notes")
+print(record)  # ('draft', ['python', 'notes'])
+
+stock = {("warehouse-a", "sku-1"): 4}
+print(stock[("warehouse-a", "sku-1")])  # 4
+```
+
+`record[1] = []` fallirebbe, mentre append modifica l'oggetto gia contenuto. Non dedurre che un'operazione fallita sia senza effetti: `record[1] += ["extra"]` prima estende la lista e poi fallisce nel tentativo di riassegnare quella posizione della tupla. E un controesempio da capire, non una tecnica consigliata.
+
+Una chiave come `("warehouse-a", ["sku-1"])` non e valida. Una tupla di stringhe lo e, ma resta necessario scegliere una politica per uguaglianza e normalizzazione degli identificatori.
 
 ## Esempio pratico
 
-```python
-def split_full_name(full_name):
-    first, last = full_name.split(" ", 1)
-    return first, last
+### Restituire due risultati con un contratto chiaro
 
-first_name, last_name = split_full_name("Ada Lovelace")
+Contratto: iterabile finito e non vuoto di int built-in. La funzione restituisce minimo e massimo; esclude bool e non impone un intervallo di dominio.
+
+```python
+def bounds(values):
+    items = tuple(values)
+    if not items:
+        raise ValueError("At least one value is required")
+    if any(type(value) is not int for value in items):
+        raise TypeError("Values must be integers")
+    return min(items), max(items)
+
+
+low, high = bounds([9, 3, 12])
+print(low, high)  # 3 12
 ```
+
+La funzione restituisce un solo oggetto tupla, poi il chiamante lo scompone. La conversione iniziale consuma e memorizza l'input: il demo non e ottimizzato per flussi enormi o infiniti.
+
+Dividere un testo con `split(" ", 1)` puo illustrare la scomposizione, ma non identifica in generale nome e cognome: spazi, nomi composti e stringhe senza separatore richiedono un contratto diverso.
+
+### Campi nominati
+
+```python
+from collections import namedtuple
+
+Point = namedtuple("Point", ["x", "y"])
+origin = Point(0, 0)
+shifted = origin._replace(x=10)
+print(origin.x, shifted.x)  # 0 10
+```
+
+`_replace` crea un nuovo record e non modifica origin. Namedtuple non aggiunge controlli runtime sui tipi e puo contenere oggetti mutabili. Una dataclass rende piu espliciti modelli con comportamento e molti campi; `frozen=True` non equivale a immutabilita profonda.
 
 ## Varianti
 
-- Tupla letterale.
-- Tuple unpacking.
-- Extended unpacking: `first, *middle, last`.
-- Named tuple.
-- Dataclass per record piu complessi.
-- Tupla come chiave di dizionario.
+- `tuple(iterable)` per materializzare una sequenza non modificabile nelle posizioni.
+- `typing.NamedTuple` per campi nominati con annotazioni, che da sole non validano.
+- Tupla come chiave di dict o elemento di set quando e hashable.
+- `(expression for item in source)` e una generator expression, **non una tuple comprehension**; per ottenere una tupla serve `tuple(...)`.
 
 ## Errori comuni
 
-- Dimenticare la virgola nella tupla a un elemento.
-- Pensare che una tupla renda immutabili gli oggetti contenuti.
-- Usare tuple lunghe e poco leggibili.
-- Confondere tuple con liste solo per abitudine.
-- Scompattare un numero di valori diverso dagli elementi.
+- Omettere la virgola della tupla singola.
+- Confondere impossibilita di riassegnare le posizioni con assenza di mutazioni annidate.
+- Usare tuple lunghe senza documentare il significato dei campi.
+- Supporre che ogni tupla sia hashable.
+- Aspettarsi una tupla nella destinazione starred dell'unpacking.
+- Usare `is` invece di `==` per confrontare il contenuto.
 
 ## Checklist
 
-- I dati devono essere immutabili?
-- La tupla e abbastanza corta da restare leggibile?
-- Serve una dataclass o namedtuple?
-- Gli elementi sono hashable se la usi come chiave?
-- Lo unpacking ha il numero corretto di variabili?
+- Significato e ordine dei campi sono chiari?
+- Serve un record con nomi invece delle posizioni?
+- Gli oggetti contenuti possono cambiare attraverso altri riferimenti?
+- Tutti gli elementi sono hashable se la tupla diventa una chiave?
+- Input vuoto e numero di valori nell'unpacking sono gestiti?
 
 ## Collegamenti
 
 - [[Programmazione/Python/Pagine/Liste|Liste]]
+- [[Programmazione/Python/Pagine/Dizionari|Dizionari]]
 - [[Programmazione/Python/Pagine/Dataclasses|Dataclasses]]
 - [[Programmazione/Python/Pagine/Funzioni|Funzioni]]
+- [[Programmazione/Python/Pagine/Generatori|Generatori]]
 
+## Fonti
+
+- [Python 3.12: tuple e sequenze](https://docs.python.org/3.12/tutorial/datastructures.html#tuples-and-sequences).
+- [Python 3.12: definizione di hashable](https://docs.python.org/3.12/glossary.html#term-hashable).
+- [Python 3.12: namedtuple](https://docs.python.org/3.12/library/collections.html#collections.namedtuple).
+- [Python 3.12: virgola, parentesi e generator expressions](https://docs.python.org/3.12/reference/expressions.html#parenthesized-forms).
 
 ## Navigazione
 

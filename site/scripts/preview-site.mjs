@@ -57,7 +57,13 @@ const server = http.createServer(async (request, response) => {
   }
   request.url = localPath + url.search
   try {
-    await handler(request, response, { public: output, cleanUrls: true, directoryListing: false })
+    await handler(request, response, {
+      public: output,
+      cleanUrls: true,
+      directoryListing: false,
+      // Preview pages inline without a filename that can produce invalid Unicode headers.
+      headers: [{ source: "**", headers: [{ key: "Content-Disposition", value: "inline" }] }],
+    })
   } catch (error) {
     console.error(error)
     response.writeHead(500)

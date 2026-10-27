@@ -2607,4 +2607,761 @@ Revisionate le ultime cinque note del percorso: **83 note TypeScript uniche su 8
 
 ### Prossimo blocco
 
-Proseguire con **Python: Fondamenti del Linguaggio**, partendo da Comandi base e toolchain. Nessuna nota Python modificata in questa sessione. Nessun commit o push; pubblicazione remota non aggiornata da queste operazioni.
+La revisione e proseguita con Python: Fondamenti del Linguaggio, documentato di seguito. La revisione TypeScript e stata successivamente pubblicata su origin/main con il commit `9adc990`; esito del deploy remoto non verificato in questa sessione.
+
+## 2026-10-23 - Python: fondamenti del linguaggio
+
+### Perimetro e correzioni
+
+Revisionate tutte le otto note del primo capitolo: **8 note Python uniche su 75** in questa passata. Restano 67 note nel percorso Pagine e, separatamente, 13 promemoria. Conteggio deduplicato dall'indice: le voci che rimandano alla stessa nota non vengono contate due volte. Conservati date, percorsi, type, publish e status non revisionato; approvazione dell'utente separata. Nessuna pagina aggiunta o spostata, indici e redirect invariati.
+
+- [[Programmazione/Python/Pagine/Comandi base|Comandi Base e Toolchain Python]]: interpreter, script/modulo/REPL, directory corrente e pip associato all'interprete. Virtualenv con attivazione facoltativa, comandi separati per shell, CLI completa ed exit code. Freeze distinto da lockfile; sovrascritture ed effetti espliciti.
+- [[Programmazione/Python/Pagine/Sintassi e Variabili|Sintassi e Variabili]]: nomi riferiti a oggetti, mutazione rispetto a riassegnazione, copie superficiali, scope e UnboundLocalError. Annotazioni distinte dai controlli runtime; tuple con contenuti mutabili e docstring chiariti.
+- [[Programmazione/Python/Pagine/Operatori|Operatori]]: divisione floor e resto con negativi, precedenza, operandi restituiti da and/or, fallback per None rispetto a zero. Identita distinta da uguaglianza, appartenenza a dizionari e consumo di iteratori; esempio di conteggio pagine con contratto verificabile.
+- [[Programmazione/Python/Pagine/Strutture Condizionali|Strutture Condizionali]]: truthiness, ternaria e guardie. Match con cattura dei nomi, extra nei mapping e bool distinto da int; filtro locale distinto dall'autorizzazione di un backend.
+- [[Programmazione/Python/Pagine/Cicli|Cicli]]: range, enumerate, iteratori esauribili e zip strict lazy. Clausola else saltata anche da return/eccezioni; ricerca che conserva zero e raccolta di titoli con politica di scarto esplicita.
+- [[Programmazione/Python/Pagine/Funzioni|Funzioni]]: return rispetto a print, default valutati alla definizione, mutazione e riassegnazione dei parametri, closure/nonlocal. Normalizzazione di etichette con contratto ristretto, senza presentarla come validazione email o sanitizzazione HTML.
+- [[Programmazione/Python/Pagine/Argomenti Flessibili|Argomenti Flessibili]]: binding positional-only/keyword-only, tuple/dizionari, duplicati e unpacking. Wrapper sincrono con wraps che non registra payload; limiti async/generatori espliciti.
+- [[Programmazione/Python/Pagine/Error Handling|Error Handling]]: gerarchia e propagazione, catch ristretto, else/finally, chaining e from None. Parsing di configurazione con politica ASCII, file assente distinto dagli altri errori I/O, cleanup ed effetti non annullati; assert non usato per validare input.
+
+### Fonti e prove
+
+- Consultate fonti ufficiali Python 3.12 e pip; riferimenti nelle otto note. Baseline **CPython 3.12.10 su Windows**, **Node 24.14.0**. La patch documenta l'interprete disponibile, non identifica l'ultima versione o una patch raccomandata per nuove installazioni.
+- Nuova suite `_Meta/tests/python-fondamenti.test.mjs`: **58 test superati**, nessun fallimento o test saltato, circa 20 secondi. Estratti e provati **37 blocchi Python** dai Markdown originali, con controlli positivi, errori attesi e verifiche di struttura separate.
+- Controllo finale: riparati i nomi speciali `__pycache__`, `__main__`, `__wrapped__` e `__cause__` interpretati come enfasi Markdown, ora inline code; corretta anche la notazione variadica nella nota Funzioni. Aggiunti controlli AST nei gruppi editoriali e ripetuta l'intera suite: **58/58 superati**, circa 19 secondi. Nessuna modifica ai blocchi eseguibili. Un controllo ad hoc troppo restrittivo sulle virgolette YAML e stato sostituito con il parser: date e valori sono conservati.
+- Eseguite CLI script/modulo, import guard, py_compile, assert con ottimizzazione e virtualenv reale. Pip proviene dal bundle ensurepip: list/freeze/check eseguiti senza installare pacchetti esterni o usare servizi remoti.
+- Verificati alias/copie, scope, operatori, match, loop else, iteratori, default, binding, wrapper e cause degli errori. I/O su file temporanei; PermissionError e parte del cleanup simulati, non prove degli ACL di sistema.
+- Limiti: una baseline Windows/CPython, nessuna matrice Linux/macOS o interpreti alternativi. Attivazioni shell controllate nel testo ma non eseguite; nessuna modifica alle execution policy, nessuna installazione requests. Nessun type checker, linter, audit o benchmark. Fixture ripulite dopo verifica dei percorsi; dipendenze del sito e helper condivisi invariati. Non rieseguite le suite precedenti JavaScript/React/TypeScript.
+
+### Verifica del vault
+
+- content:check con report: **911 documenti raggiungibili, zero errori e 461 avvisi editoriali**, otto in meno.
+- content:test: **9 test della trasformazione superati**, distinti dalle prove Python.
+- Build Quartz riuscita: **3.719 file, 2.003 HTML, 168 redirect e 137.700 riferimenti verificati, zero errori**. Solo gli avvisi preesistenti su eval del plugin note-properties e metadati Git della copia temporanea.
+- QA delle otto pagine a **1440 x 1000** e **390 x 844**, Chrome **155.0.8059.85**: HTTP 200, contenuti aggiornati, nessun errore pagina/console/HTTP o overflow del documento. Il controllo iniziale cercava lo scroller sul pre; corretto il selettore al code effettivo di Quartz, verificato lo scorrimento di **27 blocchi su mobile**, nessuno necessario su desktop. Nessuna modifica al sito richiesta.
+- Ispezionati sei screenshot di Comandi base, Funzioni ed Error Handling, desktop/mobile: gerarchia e testo leggibili, codice lungo confinato nei propri scroller.
+- Dopo la correzione dei nomi speciali, ripetute build completa e QA su tutte le otto pagine: stessi conteggi, zero errori e nomi preservati nel codice inline degli HTML. Ricontrollati due screenshot mobile; Prettier e diff --check superati, dieci voci nello storico confermate.
+- Anteprima assente all'inizio della QA, riavviata in background su http://localhost:8082/appunti/ e lasciata disponibile. Browser QA chiusi; browser personale non modificato. Nessuna modifica manuale agli HTML generati.
+
+### Prossimo blocco
+
+La revisione e proseguita con Python: Strutture Dati, documentato di seguito. Nessun commit o push.
+
+## 2026-10-23 - Python: strutture dati
+
+### Perimetro e correzioni
+
+Revisionate le cinque note uniche del capitolo: **13 note Python su 75** in questa passata. Le voci Slicing e Ordinamento rimandano a Liste, senza aggiungere pagine al conteggio. Restano 62 note principali e, separatamente, 13 promemoria. Conservati date, percorsi, type, publish e status non revisionato; approvazione dell'utente ancora separata. Nessuna nuova pagina, nessun indice o redirect modificato.
+
+- [[Programmazione/Python/Pagine/Liste|Liste]]: completati API, slicing in lettura/assegnazione, step e limiti; sort/sorted stabili, inversione, key e riferimenti condivisi. Media dei voti con input dichiarato e caso senza sufficienti gestito; copie superficiali, righe ripetute e limiti di deepcopy.
+- [[Programmazione/Python/Pagine/Tuple|Tuple]]: virgola, unpacking, hashability distinta dall'immutabilita e contenuti mutabili. Esplicitato l'effetto parziale di += prima del TypeError; risultati composti con bounds e campi nominati. La separazione del testo di un nome non viene presentata come modello universale di nome/cognome.
+- [[Programmazione/Python/Pagine/Set|Set]]: assenza di ordine garantito, uguaglianza numerica, add/update, remove/discard/pop, operatori rispetto a metodi e sottoinsiemi. Frozenset e deduplicazione che conserva il primo ordine; confronto di etichette distinto da autorizzazione reale.
+- [[Programmazione/Python/Pagine/Dizionari|Dizionari]]: ordine e uguaglianza, None/assenza/sentinel, viste dinamiche, default eager, merge superficiale e fromkeys condiviso. Indice per ID con duplicati rifiutati e proiezione indipendente, senza presentare email testuali come indirizzi validati o l'indice come vincolo database.
+- [[Programmazione/Python/Pagine/Comprehensions|Comprehensions]]: definiti tutti gli input dei blocchi, filtri distinti da espressioni condizionali, ordine dei cicli, scope e inlining 3.12. Etichette al posto della normalizzazione indiscriminata delle email, suffissi con PurePosixPath, generatori e timing, closure/late binding e limiti degli effetti.
+
+### Fonti e prove
+
+- Fonti ufficiali Python 3.12 e PEP 584/709, citate nelle note. Baseline **CPython 3.12.10 su Windows**, **Node 24.14.0**; la patch identifica l'interprete provato, non l'ultima versione disponibile.
+- Nuova suite `_Meta/tests/python-strutture-dati.test.mjs`: **60 test**, con **27 blocchi autonomi** estratti dal Markdown, ciascuno eseguito separatamente con risultati controllati. Test editoriali distinti dai casi comportamentali.
+- Regressione seriale: **118/118 test superati**, 60 Strutture Dati + 58 Fondamenti, zero fallimenti o test saltati, circa 27 secondi. Nessuna modifica richiesta dagli esiti; helper precedenti e dipendenze del sito invariati.
+- Verificati vuoti, errori di tipo/valore/indice, alias e copie, collisioni per uguaglianza, duplice consumo, scarti e mutazioni parziali. Non si assume ordine dei set o un valore specifico dell'hash.
+- Limiti: una baseline Windows/CPython, nessun benchmark, consumo memoria misurato, interprete alternativo, database, autorizzazione, validazione email, file analizzato o integrazione remota. La nuova suite lavora in memoria; quella Fondamenti usa le proprie fixture temporanee ripulite. Le suite JavaScript/React/TypeScript non sono rieseguite.
+
+### Verifica del vault
+
+- content:check con report: **911 documenti raggiungibili, zero errori e 456 avvisi editoriali**, cinque in meno.
+- content:test: **9 test della trasformazione superati**, distinti dalle prove Python.
+- Build Quartz riuscita: **3.719 file, 2.003 HTML, 168 redirect e 137.812 riferimenti verificati, zero errori**. Restano soltanto gli avvisi preesistenti su eval del plugin note-properties e metadati Git della copia temporanea.
+- QA delle cinque pagine a **1440 x 1000** e **390 x 844**, Chrome **155.0.8059.85**: HTTP 200, contenuti aggiornati, nessun errore pagina/console/HTTP o overflow del documento. Verificato lo scorrimento effettivo di **23 blocchi su mobile**, nessuno necessario su desktop.
+- Ispezionati sei screenshot di Liste, Dizionari e Comprehensions, desktop/mobile: testo e gerarchia leggibili, codice confinato nei propri scroller. Nessuna modifica manuale agli HTML o ai CSS.
+- Anteprima esistente su http://localhost:8082/appunti/ riutilizzata e lasciata attiva; browser QA chiusi, browser personale non modificato. Prettier e diff --check superati; conteggio e metadati verificati tramite parser. Storico consolidato nella voce giornaliera, mantenendo dieci voci.
+
+### Prossimo blocco
+
+La revisione e proseguita con Python: File, Moduli e Ambiente, documentato di seguito. Nessun commit o push.
+
+## 2026-10-23 - Python: file, moduli e ambiente
+
+### Perimetro e correzioni
+
+Revisionate le sei note uniche del capitolo: **19 note Python su 75** in questa passata. La voce pyproject.toml rimanda a Creazione di Package. Restano 56 note principali e, separatamente, 13 promemoria. Conservati date, percorsi, type, publish e status non revisionato; approvazione dell'utente separata. Nessuna nuova nota di conoscenza, modifica agli indici o ai redirect.
+
+- [[Programmazione/Python/Pagine/Gestione File|Gestione File]]: modalita di apertura e troncamento immediato, testo/binario, encoding e newline, cwd e percorsi non fidati. Esempi autonomi, output esclusivo, copia a blocchi e distinzione tra chiusura, atomicita e durabilita.
+- [[Programmazione/Python/Pagine/Standard Library|Standard Library]]: completati i rimandi dell'indice a pathlib, JSON/CSV/TOML, datetime/zoneinfo e Queue. Parsing distinto da validazione, quoting CSV, tipi TOML, DST/fold e durate UTC; task_done distinto dal successo del lavoro.
+- [[Programmazione/Python/Pagine/Pip e PyPI|Pip e PyPI]]: interprete effettivo, distribuzione/import, sorgenti e wheel, requirements/constraints, freeze non equivalente a lock, limiti di pip check e provenienza dei pacchetti. Rimossi pin remoti obsoleti dagli esempi e richiesta HTTP estranea al tema.
+- [[Programmazione/Python/Pagine/Ambienti Virtuali|Ambienti Virtuali]]: attivazione facoltativa e distinta per shell, uso diretto dell'interprete, prefix/base_prefix, isolamento non equivalente a sandbox, ricreazione invece di copia e setuptools non incluso nel venv di base Python 3.12.
+- [[Programmazione/Python/Pagine/Creazione di Package|Creazione di Package]]: unico progetto completo con pyproject, README, API, CLI, modulo eseguibile e unittest. Distinti src/flat, API pubblica e controllo di accesso, editable/sdist/wheel; richiesta una prova fuori dai sorgenti. Nessuna pubblicazione su PyPI.
+- [[Programmazione/Python/Pagine/uv pipx e poetry|uv, pipx e Poetry]]: workflow separati, tool CLI rispetto a dipendenze dev, pip interface rispetto a progetto uv, install/sync/update e lock. Provando uv 0.13.5 e stato necessario esplicitare --no-package per il layout con main.py; documentato anche il rifiuto di --frozen dopo una rinomina incompatibile del progetto.
+
+### Fonti e prove
+
+- Fonti ufficiali Python 3.12, PyPA/pip, setuptools/build, Astral, pipx e Poetry collegate nelle note. Baseline Windows, Node 24.14.0 e CPython 3.12.10; non e una raccomandazione di installare una patch Python precedente a quella corrente.
+- Toolchain preparata in un virtualenv temporaneo separato: pip 26.2.2, build 1.6.1, setuptools 84.2.1, wheel 0.48.0, uv 0.13.5, pipx 1.18.4, Poetry 2.5.1 e tzdata 2026.5. Nessuna modifica al Python globale, alle dipendenze site o ai lockfile del vault. I venv di test usano il pip 25.0.1 di ensurepip.
+- Nuove suite python-file-standard e python-packaging: 28 e 16 gruppi, 18 blocchi Python complessivi, due TOML e un README estratti dalle note. Build sdist/wheel isolata con backend fornito da wheelhouse locale, installazione in venv separati, CLI/import/unittest fuori dai sorgenti; workflow uv, pipx e Poetry reali.
+- Primi giri: corretti escape nelle fixture, preservati **init**.py e **main**.py nei titoli Markdown, codificato il percorso della wheelhouse come URL e normalizzati i percorsi temporanei Windows 8.3. Questi ultimi causavano confronti di percorso errati e problemi nei tool; con percorsi canonici editable, pipx uninstall e Poetry add sono riusciti.
+- Regressione finale dei quattro file Python: **162 test superati** (58 + 60 + 28 + 16), nessun fallimento o test saltato, circa 98 secondi. Eseguiti sia il caso frozen con dipendenza non aggiornata sia il rifiuto dopo rinomina del progetto. Fixture rimosse dopo la verifica dei percorsi; toolchain temporanea riutilizzabile.
+- Limiti: niente matrice Linux/macOS, estensioni native, servizi remoti, pubblicazioni, audit o benchmark. Attivazioni shell e salvataggi snapshot non eseguiti in tutte le shell. Test offline per pip/uv, Poetry con wheel locale senza dipendenze remote; l'installazione iniziale della toolchain richiede PyPI. Directory e cache di prova isolate, nessun ensurepath o modifica persistente della execution policy.
+
+### Verifica del vault
+
+- content:check con report: **911 documenti raggiungibili, zero errori e 451 avvisi editoriali**, cinque in meno; nessuno nelle sei note del blocco.
+- content:test: **9 test della trasformazione superati**, separati dai test tecnici Python.
+- Build Quartz riuscita: **3.719 file, 2.003 HTML, 168 redirect e 137.936 riferimenti verificati, zero errori**. Restano gli avvisi preesistenti su eval del plugin note-properties e metadati Git della copia temporanea.
+- QA delle sei pagine a **1440 x 1000** e **390 x 844**, Chrome **155.0.8059.85**: HTTP 200, contenuti aggiornati, nessun errore pagina/console/HTTP o overflow del documento. Verificato lo scorrimento effettivo di **24 blocchi su mobile e uno su desktop**.
+- Ispezionati sei screenshot di Gestione File, Standard Library e Creazione di Package, desktop/mobile: testo leggibile, tabella adattata, codice lungo confinato negli scroller; nomi speciali preservati nei titoli. Nessuna modifica agli HTML/CSS.
+- Anteprima esistente su http://localhost:8082/appunti/ riutilizzata e lasciata attiva; browser QA chiusi, browser personale non modificato. Conteggio deduplicato e metadati controllati con parser, storico mantenuto a dieci voci. Nessun commit o push.
+
+### Prossimo blocco
+
+La revisione e proseguita con Python: Programmazione ad Oggetti, documentato di seguito. Nessun commit o push.
+
+## 2026-10-23 - Python: programmazione ad oggetti
+
+### Perimetro e correzioni
+
+Revisionate le otto note specifiche del capitolo: **27 note Python su 75** in questa passata. Restano 48 note principali e, separatamente, 13 promemoria. La voce Protocols rimanda a Type Hinting: la distinzione con ABC e duck typing e stata chiarita in Ereditarieta, ma la revisione completa di Type Hinting resta nel capitolo Type Hints e Qualita e non viene contata tra le note completate.
+
+Conservati date, titoli, percorsi, type, publish e status non revisionato; approvazione dell'utente separata dalla revisione tecnica. Nessuna nuova nota di conoscenza, modifica agli indici o ai redirect. Navigazione accorpata ai Collegamenti nelle otto note.
+
+- [[Programmazione/Python/Pagine/Classi e Istanze|Classi e istanze]]: creazione rispetto a inizializzazione, binding, attributi condivisi, shadowing e alias. Conto didattico in centesimi interi con controlli sui tipi e sul segno prima di mutare il saldo; prelievi negativi e booleani rifiutati.
+- [[Programmazione/Python/Pagine/Dataclasses|Dataclasses]]: default_factory, ClassVar/InitVar, uguaglianza/hash, ordinamento e tipo concreto. Riga d'ordine validata, replace distinto da copia profonda, asdict distinto da proiezione pubblica. Limiti di frozen, post-init e slots/super nella baseline.
+- [[Programmazione/Python/Pagine/Enum|Enum]]: ricerca per nome/valore, alias e unique, JSON e codici persistiti. Differenze di StrEnum/IntEnum/Flag, auto e comportamento di appartenenza in Python 3.12; stati distinti da autorizzazione.
+- [[Programmazione/Python/Pagine/Metodi Speciali|Metodi speciali]]: contratti dei protocolli, NotImplemented e fallback riflesso, hash e mutabilita. Carrello con copie, indici/slice e iteratori indipendenti; ricerca dei metodi sul tipo rispetto all'istanza.
+- [[Programmazione/Python/Pagine/Ereditarietà|Ereditarieta]]: super segue la MRO, non sempre il padre diretto. Diamante cooperativo, ABC e limiti delle verifiche astratte, inizializzazione esplicita e composizione con collaboratore registrabile.
+- [[Programmazione/Python/Pagine/Incapsulamento|Incapsulamento]]: convenzioni rispetto a sicurezza, collisioni e name mangling, proprieta read-only che espongono liste mutabili. Raccolta con snapshot di stringhe, input separato e validazione prima della mutazione.
+- [[Programmazione/Python/Pagine/Proprietà|Proprieta]]: controlli comuni a costruzione e assegnazione, esclusione intenzionale di bool, area calcolata su dimensioni intere. Cache obsoleta, invalidazione, assegnazione e requisiti di cached_property; differenza di sincronizzazione dalla 3.12.
+- [[Programmazione/Python/Pagine/Metodi di classe e statici|Metodi di classe e statici]]: binding esplicito, factory con cls/Self e input non modificato, costruttori di sottoclassi compatibili. Contatori oscurati nelle sottoclassi rispetto a contenitori ereditati condivisi; sostituito l'esempio di lower indiscriminato dell'email.
+
+### Fonti e prove
+
+- Fonti ufficiali Python 3.12 e PEP 557 collegate nelle note. Baseline **CPython 3.12.10 su Windows**, **Node 24.14.0**: la patch identifica il runtime effettivamente provato, non l'ultima versione disponibile.
+- Nuova suite `_Meta/tests/python-oggetti.test.mjs`: **69 test superati**, con **27 blocchi Python autonomi** estratti dai Markdown e 33 gruppi di controprove. Controlli editoriali separati da quelli comportamentali. Ogni esecuzione usa un processo Python isolato e un modulo registrato per l'introspezione delle dataclass.
+- Regressione seriale dei cinque file Python: **231/231 test superati**, 58 Fondamenti + 60 Strutture Dati + 28 File/Standard Library + 16 Packaging + 69 Oggetti; nessun fallimento o test saltato, circa 136 secondi.
+- La nuova suite usa soltanto la standard library e dati in memoria. Riutilizzata la toolchain temporanea gia presente per la regressione packaging; nessuna nuova installazione, modifica al Python globale, dipendenze site o lockfile.
+- Limiti: una baseline Windows/CPython, nessun type checker, benchmark, test di concorrenza del nuovo blocco, database o servizio remoto. Gli esempi di conto, permessi e notifiche non sono sistemi finanziari o di autorizzazione pronti per produzione. I controlli runtime non certificano i contratti statici di Self o Protocol. Le suite JavaScript/React/TypeScript non sono rieseguite.
+
+### Verifica del vault
+
+- content:check con report: **911 documenti raggiungibili, zero errori e 444 avvisi editoriali**, sette in meno.
+- content:test: **9 test della trasformazione superati**, separati dalle prove Python.
+- Dopo la conversione meccanica degli snippet di test in stringhe multilinea leggibili, rieseguiti i **69/69 test Oggetti**, circa 11 secondi. Nessuna modifica alla logica degli esempi.
+- Build Quartz riuscita: **3.719 file, 2.003 HTML, 168 redirect e 138.034 riferimenti verificati, zero errori**. Restano gli avvisi preesistenti su eval del plugin note-properties e metadati Git della copia temporanea.
+- Il primo controllo browser ha rilevato HTTP 500 sulle pagine con accenti: il server locale riceveva ERR_INVALID_CHAR per Content-Disposition. Riproduzione con `_Meta/tests/quartz-preview.test.mjs`: tre casi passati e quattro falliti. Corretto soltanto `site/scripts/preview-site.mjs` con un header inline senza filename; nessuna modifica ai nomi, agli HTML o alle dipendenze. **7/7 test HTTP superati** dopo la correzione, inclusi Unicode, redirect/query/prefisso, HEAD, URL malformati, traversal e 404.
+- QA finale delle otto pagine a **1440 x 1000** e **390 x 844**, Chrome **155.0.8059.85**: HTTP 200, contenuti aggiornati, nessun errore pagina/console/HTTP o overflow del documento. Verificato lo scorrimento effettivo di **26 blocchi/tabelle su mobile**, nessuno necessario su desktop.
+- Ispezionati sei screenshot di Dataclasses, Ereditarieta e Proprieta, desktop/mobile: testo leggibile, gerarchia coerente e codice confinato nei propri scroller. Nessuna modifica ai CSS.
+- Riavviato soltanto il processo verificato dell'anteprima locale su http://localhost:8082/appunti/ per caricare la correzione; server di test e browser QA chiusi. Il browser personale non e stato modificato. Conteggi e metadati confermati con parser, storico mantenuto a dieci voci. Nessun commit o push.
+
+### Prossimo blocco
+
+La revisione e proseguita con **Python: Concetti Funzionali e Iterazione**, documentato di seguito. Nessun commit o push.
+
+## 2026-10-23 - Python: concetti funzionali e iterazione
+
+### Perimetro e correzioni
+
+Revisionate le sei note del capitolo: **33 note Python uniche su 75** in questa passata. Restano 42 note principali e, separatamente, 13 promemoria. Context Managers compare anche nei capitoli avanzati: conta una sola volta. Conservati date, titoli, percorsi, type, publish e status non revisionato; approvazione dell'utente separata dalla revisione tecnica. Nessun indice o redirect modificato.
+
+- [[Programmazione/Python/Pagine/Funzioni Lambda|Funzioni Lambda]]: espressione rispetto a riga fisica, parametri e default, key rispetto a comparatore, sort stabile e input vuoto. Closure con late binding e cattura tramite default, senza promettere copie profonde o isolamento.
+- [[Programmazione/Python/Pagine/Higher-order Functions|Higher-order Functions]]: mantenuto il template teorico. Callback sincrone/eager/lazy, consumo ed effetti parziali, closure, reduce e caso vuoto. Regola di lunghezza con contratto ristretto, partial e limiti di callback asincrone.
+- [[Programmazione/Python/Pagine/Decoratori|Decoratori]]: momento della definizione distinto dalle chiamate, wraps e introspezione, factory parametrica e ordine dei wrapper. Timer sincrono distinto da quello async, risultato ed errori conservati, retry e autorizzazione non presentati come garanzie implicite.
+- [[Programmazione/Python/Pagine/Generatori|Generatori]]: avvio e validazione differiti, primo iterabile delle generator expression valutato subito, yield from e risultato finale. File temporanei autonomi, break distinto da close, chiusura prima dell'avvio, send/return e PEP 479.
+- [[Programmazione/Python/Pagine/Iteratori|Iteratori]]: esaurimento stabile, cursori condivisi e contenitori riutilizzabili. Ritardi numerici con cap e validazione, sentinelle, itertools/batched nella baseline 3.12, groupby per adiacenze e buffer/riferimenti di tee.
+- [[Programmazione/Python/Pagine/Context Managers|Context Managers]]: `__enter__` fallito rispetto a errore nel corpo o nell'assegnazione as, soppressione e cleanup fallito. Context manager monouso, file con output esclusivo, ExitStack e rilascio inverso, async with/aclosing e limiti della cancellazione.
+
+### Fonti e prove
+
+- Consultate fonti ufficiali Python 3.12 e PEP 380/479, collegate nelle note. Baseline **CPython 3.12.10 su Windows**, **Node 24.14.0**: versione effettivamente provata, non indicazione dell'ultima patch disponibile.
+- Nuova suite `_Meta/tests/python-funzionale-iterazione.test.mjs`: **73/73 test superati**, **33 blocchi Python autonomi** estratti dai Markdown, 33 gruppi di controprove e sette controlli editoriali/baseline. Primo giro: import io/contextlib mancanti in tre controprove; corrette le fixture, nessun errore nei blocchi delle note. Ripetizione completa dopo formattazione: circa 13 secondi.
+- Regressione seriale di sei suite Python: **304/304 test superati**, 58 Fondamenti + 60 Strutture Dati + 28 File/Standard Library + 16 Packaging + 69 Oggetti + 73 Funzionale/Iterazione. Nessun fallimento o test saltato, circa 148 secondi.
+- Provati binding, riferimenti, lazy evaluation, errori parziali, ordine dei decoratori, introspezione, generatori esauriti/chiusi e file chiusi anche su errori. Coroutine e cancellazione reali su event loop locale, sincronizzate con Event; nessuna attesa temporale arbitraria. Clock controllato per le durate esatte.
+- I/O limitato a TemporaryDirectory; nuova suite con sola standard library. Riutilizzata la toolchain packaging isolata per la regressione, senza installare dipendenze o cambiare lockfile, Python globale e configurazioni utente.
+- Limiti: una baseline Windows/CPython, nessun type checker, benchmark, matrice di piattaforme, database, rete applicativa o test di carico. I test non garantiscono cleanup sotto arresti forzati o cancellazioni ripetute; gli esempi non sono politiche complete di retry o autorizzazione. Suite JavaScript/React/TypeScript non rieseguite.
+
+### Verifica del vault
+
+- content:check con report: **911 documenti raggiungibili, zero errori e 438 avvisi editoriali**, sei in meno.
+- content:test: **9 test della trasformazione superati**, distinti dalle prove tecniche Python.
+- Build Quartz riuscita: **3.719 file, 2.003 HTML, 168 redirect e 138.136 riferimenti verificati, zero errori**. Restano gli avvisi preesistenti su eval del plugin note-properties e metadati Git della copia temporanea.
+- Regressione dell'anteprima: **7/7 test HTTP superati**, inclusi URL Unicode, redirect, query/prefisso, HEAD, URL malformati, traversal e 404. Nessun cambiamento aggiuntivo al server locale.
+- QA delle sei pagine a **1440 x 1000** e **390 x 844**, Chrome **155.0.8059.85**: HTTP 200, contenuti aggiornati, nessun errore pagina/console/HTTP o overflow del documento. Verificato lo scorrimento effettivo di **31 blocchi/tabelle su mobile**, nessuno necessario su desktop.
+- Ispezionati sei screenshot di Decoratori, Generatori e Context Managers, desktop/mobile: gerarchia e testo leggibili, codice confinato negli scroller. Nessuna modifica manuale agli HTML o ai CSS.
+- Riutilizzata e lasciata attiva l'anteprima su http://localhost:8082/appunti/. Browser QA e server di test chiusi; browser personale non modificato. Prettier e diff --check superati; conteggi e metadati confermati tramite parser, storico consolidato mantenendo dieci voci. Nessun commit o push.
+
+### Prossimo blocco
+
+La revisione e proseguita con **Python: Type Hints e Qualita**, documentato di seguito. Nessun commit o push.
+
+## 2026-10-23 - Python: type hints e qualita
+
+### Perimetro e correzioni
+
+Revisionate le quattro note uniche del capitolo: **37 note Python su 75** in questa passata. Restano 38 note principali e, separatamente, 13 promemoria. I rimandi typing, pytest/unittest/coverage e Ruff/Black dell'indice sono coperti dalle note corrispondenti senza duplicare il conteggio. Date, titoli, percorsi, type, publish e status non revisionato conservati; approvazione dell'utente separata. Nessun indice o redirect modificato.
+
+- [[Programmazione/Python/Pagine/Type Hinting|Type Hinting]]: completati i temi promessi nell'indice. Annotazioni/statico/runtime, None e default, generici 3.12 e alias, TypedDict/NotRequired con parser reale, Protocol e limiti runtime, Literal/NewType, object/Any/cast, overload e ParamSpec. Comandi e configurazione strict di mypy/Pyright.
+- [[Programmazione/Python/Pagine/Stile|Stile]]: ripristinato il template teorico coerente con type. Separati formatter, linter, checker e test; PEP 8 rispetto alla scelta di 88 colonne. Rimossa la promessa di normalizzazione email generale, sostituita con un contratto ristretto sulle etichette. Esempi autonomi, Ruff e Black con check distinti dalle modifiche in-place.
+- [[Programmazione/Python/Pagine/Testing|Testing]]: unico progetto completo a cinque file Python, senza funzioni applicative ridefinite nei test del parser. Porta limitata a 1-65535 e politica ASCII esplicita, pytest parametrizzato, unittest, fixture/tmp_path/monkeypatch, autospec e patch. Raccolta ed exit code, coverage dei rami, soglia e limiti della misura.
+- [[Programmazione/Python/Pagine/Logging|Logging]]: logger/handler/filter/formatter, livelli effettivi e propagazione, basicConfig gia configurato e force invasivo. Valutazione immediata degli argomenti distinta dalla formattazione differita, traceback e gestione degli errori, JSON via serializzatore, rotazione e limiti per librerie/thread/processi. Tutti gli esempi indipendenti o esplicitamente script completi.
+
+### Fonti e prove
+
+- Fonti primarie Python 3.12, PEP 8/257, typing, mypy, Microsoft Pyright, Astral Ruff, Black, pytest e Coverage.py collegate nelle note.
+- Toolchain temporanea separata: **mypy 2.4.0, Pyright 1.1.414, Ruff 0.17.2, Black 26.10.1, pytest 9.1.1, Coverage.py 7.17.0**. Baseline **CPython 3.12.10**, **Node 24.14.0**, Windows. Nessuna modifica a Python globale, dipendenze site o lockfile del vault; istruzioni riproducibili in `_Meta/tests/README.md`.
+- Nuova suite `_Meta/tests/python-qualita.test.mjs`: **65/65 test superati**, circa 50 secondi; 23 blocchi Python, due TOML e un JSON estratti dai Markdown. Diciotto esempi autonomi, cinque file del progetto Testing, otto blocchi typing controllati da entrambi i checker.
+- Primo giro: due diagnostici Pyright su isinstance ridondante e confronto incompatibile nel controesempio cast. Spostato il controllo Protocol su un parametro object e mostrato il tipo effettivo dopo cast, senza disabilitare regole. Checker positivi e gruppi negativi superati.
+- Provati realmente Ruff/Black, mypy/Pyright strict, 26 casi pytest, due test unittest, raccolta e selezione, exit code 5 senza test, coverage branch/soglia/HTML. Una mutazione intenzionale del limite del parser viene rilevata; una suite senza asserzioni puo invece raggiungere il 100% di coverage.
+- Logging in processi isolati: configurazione, stderr, argomenti eager, propagazione e duplicati, traceback, JSON e rotazione. File e cache confinati a fixture temporanee, rimosse dopo verifica dei percorsi; nessuna notifica o richiesta applicativa esterna.
+- Limiti: una baseline Windows per ogni tool, nessuna matrice IDE/piattaforme, verifica di tutti gli stub esterni, benchmark, audit, servizi di rete o rotazione multiprocesso. Le suite JavaScript/React/TypeScript non sono rieseguite.
+
+### Verifica del vault
+
+- content:check con report: **911 documenti raggiungibili, zero errori e 434 avvisi editoriali**, quattro in meno.
+- Regressione seriale finale delle sette suite Python: **369/369 test superati**, 304 precedenti + 65 Qualita, nessun fallimento o test saltato, circa 182 secondi. Inclusa la verifica esplicita dell'output stderr dello script Logging. Toolchain packaging gia presente riutilizzata; toolchain Qualita distinta.
+- content:test: **9 test della trasformazione superati**, separati dai controlli tecnici.
+- Build Quartz riuscita: **3.719 file, 2.003 HTML, 168 redirect e 138.234 riferimenti verificati, zero errori**. Restano gli avvisi preesistenti su eval del plugin note-properties e metadati Git della copia temporanea.
+- Regressione dell'anteprima: **7/7 test HTTP superati**, inclusi Unicode, redirect, query/prefisso, HEAD, URL malformati, traversal e 404. Nessuna modifica aggiuntiva al server.
+- QA delle quattro pagine a **1440 x 1000** e **390 x 844**, Chrome **155.0.8059.85**: HTTP 200, contenuti aggiornati, nessun errore pagina/console/HTTP o overflow del documento. Verificato lo scorrimento effettivo di **30 blocchi/tabelle su mobile**, nessuno necessario su desktop.
+- Ispezionati sei screenshot di Type Hinting, Testing e Logging, desktop/mobile: testo e gerarchia leggibili, codice confinato nei propri scroller. Nessun cambiamento a HTML o CSS.
+- Anteprima esistente riutilizzata e lasciata attiva su http://localhost:8082/appunti/. Browser QA e server di test chiusi; browser personale non modificato. Conteggi e metadati confermati con parser; Prettier e diff --check superati, storico mantenuto a dieci voci. Nessun commit o push.
+
+### Prossimo blocco
+
+La revisione e proseguita con **Python: Standard Library Pratica**, documentata di seguito. I rimandi a pathlib, datetime/zoneinfo e formati dati erano gia coperti dalla nota Standard Library, senza duplicare il conteggio.
+
+## 2026-10-24 - Python: Standard Library Pratica
+
+### Perimetro e correzioni
+
+Revisionate le cinque note uniche del capitolo: **42 note Python su 75** in questa passata. Restano **33 note principali e 13 promemoria**. Conservati date, titoli, percorsi, type, publish e status non revisionato; l'approvazione dell'utente resta separata. Nessuna nota aggiunta o spostata, nessun indice o redirect modificato.
+
+- [[Programmazione/Python/Pagine/Subprocess|Subprocess]]: argomenti letterali, interprete corrente, encoding, stdin/cwd/env, errori di avvio e di esecuzione. Chiariti timeout, run rispetto a Popen, pipe e memoria, batch Windows e limiti della lista di argomenti. Git distingue repository assente e HEAD detached.
+- [[Programmazione/Python/Pagine/CLI con argparse|CLI con argparse]]: parser indipendenti, conversioni/scelte/booleani, sottocomandi e dispatch, help ed exit code. Convertitore completo con creazione esclusiva, overwrite esplicito e rifiuto dello stesso file; limiti su memoria, atomicita e directory non fidate.
+- [[Programmazione/Python/Pagine/SQLite con sqlite3|SQLite con sqlite3]]: distinti transazione e chiusura, autocommit 3.12 e legacy. Repository completo con parametri, vincoli, foreign key abilitate prima della transazione e rollback osservabile. Backup/read-only, WAL, concorrenza, migrazioni e differenze da PostgreSQL.
+- [[Programmazione/Python/Pagine/Networking base|Networking base]]: distinti DNS/TCP/TLS/HTTP/applicazione e timeout rispetto a deadline. Client JSON con limite, MIME/encoding/errori; protocollo TCP esplicito con framing, EOF e UTF-8 ricomposti. Diagnostica della porta distinta dalla salute del servizio; URL non fidati, retry e TLS non presentati come risolti dal demo.
+- [[Programmazione/Python/Pagine/Configurazione e Variabili d Ambiente|Configurazione e Variabili d Ambiente]]: assente/vuoto/falso, parsing booleani e porta ASCII, precedenza CLI/ambiente/default anche con False. Configurazione iniettata e rappresentazione senza URL, script che valida senza fingere di avviare un server. Comandi separati, .env non automatico e limiti di gitignore/segreti.
+
+### Fonti e prove
+
+- Fonti ufficiali Python 3.12, PEP 249/324, SQLite, Git, python-dotenv e Pydantic Settings collegate nelle note. Baseline effettiva **CPython 3.12.10, SQLite 3.49.1, Node 24.14.0 su Windows**, non dichiarazione delle ultime release.
+- Nuova suite `_Meta/tests/python-standard-pratica.test.mjs`: **57/57 test superati**, circa 12 secondi. **17 blocchi Python** estratti dai Markdown; nessuna implementazione applicativa duplicata nelle fixture.
+- Primo giro: corretti escaping e nomi delle variabili nelle controprove. Una verifica su exit_on_error ha mostrato che l'aspettativa sugli argomenti sconosciuti non corrispondeva alla baseline; corretta la precisazione nella nota e verificata la distinzione rispetto all'uscita per help.
+- Processi e CLI reali, repository Git temporaneo senza remoti, file/hard link temporanei, SQLite in memoria e su file. HTTP/TCP su loopback con thread e socket chiusi; frammentazione deterministica aggiunta tramite test double. Nessuna richiesta applicativa a servizi esterni o scansione di rete.
+- Regressione seriale delle otto suite: **426/426 test superati**, 369 precedenti + 57 nuovi, nessun fallimento o test saltato, circa 194 secondi. Toolchain packaging/qualita gia presenti riutilizzate; nessuna nuova dipendenza o modifica a Python globale, site o lockfile.
+- Limiti: una baseline Windows, nessuna matrice di piattaforme, TLS/CA, DNS esterno, proxy/redirect, SSRF, carico, crash recovery, WAL concorrente, migrazione PostgreSQL o terminazione di alberi di processi. Comandi PowerShell e pacchetti opzionali dotenv/Settings non eseguiti. Suite JavaScript/React/TypeScript non rieseguite.
+
+### Verifica del vault
+
+- content:check con report: **911 documenti raggiungibili, zero errori e 430 avvisi editoriali**; nessun avviso sulle cinque note.
+- content:test: **9/9 test della trasformazione superati**, separati dagli esempi Python.
+- Build Quartz riuscita: **3.719 file, 2.003 HTML, 168 redirect, 138.316 riferimenti verificati e zero errori**. Restano gli avvisi preesistenti su eval del plugin note-properties e metadati Git della copia temporanea.
+- Regressione dell'anteprima: **7/7 test HTTP superati**, inclusi URL Unicode, redirect, HEAD, percorsi malformati e 404.
+- QA di tutte le cinque pagine a **1440 x 1000** e **390 x 844**, Chrome **155.0.8059.85**: HTTP 200, contenuti aggiornati, nessun errore pagina/console/HTTP o overflow del documento. Verificato lo scorrimento effettivo di **21 blocchi su mobile**, nessuno necessario su desktop.
+- Ispezionati sei screenshot di SQLite, Networking e Configurazione, desktop/mobile: gerarchia e testo leggibili, codice confinato negli scroller. Il controllo DOM e stato esteso ai contenitori code interni, oltre a pre e tabelle.
+- Anteprima riavviata sulla porta libera 8082 e lasciata attiva su http://localhost:8082/appunti/. Browser QA e server delle fixture chiusi; nessuna modifica al browser personale, agli HTML o ai CSS sorgente.
+- Metadati delle cinque note confrontati con Git tramite parser YAML: invariati; un solo H1 per nota. Prettier e diff --check superati. Storico mantenuto a dieci voci; nessun commit o push.
+
+### Prossimo blocco
+
+La revisione e proseguita con **Python: Internals e Gestione Risorse**, documentata di seguito. Context Managers era gia revisionata; Garbage collector rimanda a Memory Management senza aggiungere una nota al conteggio.
+
+## 2026-10-24 - Python: Internals e Gestione Risorse
+
+### Perimetro e correzioni
+
+Revisionate le sei note uniche del capitolo: **48 note Python su 75** in questa passata. Restano **27 note principali e 13 promemoria**. Frontmatter confrontato con Git tramite parser YAML: invariato, inclusi date, title, type, publish e status non revisionato. L'approvazione dell'utente resta separata. Nessuna nota aggiunta o spostata, nessun indice o redirect modificato.
+
+- [[Programmazione/Python/Pagine/Memory Management|Memory Management]]: distinti binding, raggiungibilita, reference counting, cicli, memoria del processo e risorse esterne. Controesempi con alias e weakref, dimensioni superficiali e oggetti condivisi, chiusura del generatore consumato parzialmente, cache con politica di espulsione e osservazione con tracemalloc.
+- [[Programmazione/Python/Pagine/Global Interpreter Lock|Global Interpreter Lock]]: il GIL non rende atomiche le operazioni applicative. Race deterministica con Barrier e correzione tramite Lock; process pool con spawn e main protetto. Distinti build free-threaded, stato corrente del GIL e compatibilita delle estensioni; nessuna promessa di prestazioni dai demo.
+- [[Programmazione/Python/Pagine/Introspezione|Introspezione]]: accesso dinamico rispetto a ispezione statica, effetti delle property, attributi/MRO e limiti di vars/dir/callable. Signature.bind verifica la forma della chiamata, non i tipi. Decoratore che impone davvero il passaggio per keyword, con limiti della firma esposta da wraps.
+- [[Programmazione/Python/Pagine/Data model|Data model]]: identita/valore/mutabilita, ricerca implicita dei metodi speciali sul tipo e protocollo legacy di iterazione. Bag completa con snapshot, validazione, slicing e iteratori indipendenti; ABC e Protocol non certificano la semantica.
+- [[Programmazione/Python/Pagine/Descriptor protocol|Descriptor protocol]]: precedenza data/non-data, binding delle funzioni e stato del descriptor rispetto a quello delle istanze. Validazione riutilizzabile prima della mutazione, rifiuto di bool/NaN/infinito, lettura/cancellazione assenti e assegnazione tardiva con set_name esplicito; documentati bypass e limiti dello storage.
+- [[Programmazione/Python/Pagine/Metaclassi|Metaclassi]]: distinzione istanza/classe/metaclasse e ordine osservabile degli hook. Alternativa con init_subclass, namespace e classcell conservati, conflitti e cooperazione. Registro con chiave esplicita e duplicati rifiutati, senza promettere discovery automatica o rollback degli effetti degli import.
+
+### Fonti e prove
+
+- Fonti ufficiali Python 3.12, descriptor HOWTO, C API e PEP 487/3115/703/779 collegate nelle note. Free-threading 3.13/3.14 verificato documentalmente, **non eseguito su questa macchina**. Baseline effettiva **CPython 3.12.10, Node 24.14.0, Windows**.
+- Nuova suite `_Meta/tests/python-internals.test.mjs`: **73/73 test superati al primo giro**, circa 11 secondi. Sei controlli strutturali, **26 blocchi Python** estratti dai Markdown e 41 controprove; nessuna implementazione applicativa duplicata nelle fixture.
+- Esempi in processi isolati con asserzioni attive; script ProcessPool eseguito realmente come main con spawn. Alias/cicli/weakref, cache LRU, tracemalloc, chiusura delle risorse, race deterministica, firme e descriptor, protocolli e ordine degli hook verificati. File confinati a directory temporanee; nessuna rete applicativa esterna.
+- Regressione seriale delle nove suite: **499/499 test superati**, 426 precedenti + 73 nuovi, nessun fallimento o test saltato, circa 197 secondi. Toolchain packaging/qualita gia presenti riutilizzate; nessuna nuova dipendenza o modifica a Python globale, site o lockfile.
+- Limiti: una baseline Windows/CPython 3.12; niente matrice di interpreti, free-threading, estensioni native o sistemi operativi. Nessun benchmark, promessa di RSS/numero esatto di riferimenti, audit di thread safety o misura del GC in produzione. Suite JavaScript/React/TypeScript non rieseguite.
+
+### Verifica del vault
+
+- content:check con report: **911 documenti raggiungibili, zero errori e 425 avvisi editoriali**, cinque in meno; nessun avviso sulle sei note.
+- content:test: **9/9 test della trasformazione superati**, separati dagli esempi Python.
+- Build Quartz riuscita: **3.719 file, 2.003 HTML, 168 redirect, 138.418 riferimenti verificati e zero errori**. Restano gli avvisi preesistenti su eval del plugin note-properties e metadati Git della copia temporanea.
+- Regressione dell'anteprima: **7/7 test HTTP superati**, inclusi URL Unicode, redirect, HEAD, percorsi malformati e 404.
+- QA di tutte le sei pagine a **1440 x 1000** e **390 x 844**, Chrome **155.0.8059.85**: HTTP 200, contenuti aggiornati, nessun errore pagina/console/HTTP o overflow del documento. Verificato lo scorrimento effettivo di **24 blocchi su mobile**, nessuno necessario su desktop.
+- Ispezionati sei screenshot di Memory Management, Descriptor protocol e Metaclassi, desktop/mobile: gerarchia e testo leggibili, codice confinato negli scroller. Nessuna modifica a HTML o CSS.
+- Anteprima esistente riutilizzata e lasciata attiva su http://localhost:8082/appunti/. Browser QA e server di test chiusi; browser personale non modificato. Prettier e diff --check superati; storico mantenuto a dieci voci. Nessun commit o push.
+
+### Prossimo blocco
+
+La revisione e proseguita con **Python: Concorrenza e Parallelismo**, documentata di seguito. Queue e async context managers erano gia coperti dalle note collegate, senza duplicare il conteggio.
+
+## 2026-10-24 - Python: Concorrenza e Parallelismo
+
+### Perimetro e correzioni
+
+Revisionate le quattro note uniche del capitolo: **52 note Python su 75** in questa passata. Restano **23 note principali e 13 promemoria**. Frontmatter confrontato con Git tramite il parser YAML del sito: invariato, inclusi date, title, type, publish e status non revisionato. L'approvazione dell'utente resta separata. Nessuna nota aggiunta o spostata, nessun indice o redirect modificato.
+
+- [[Programmazione/Python/Pagine/Threading|Threading]]: blocchi autonomi, start/run/join e arresto cooperativo con Event. Lock sull'intera invariante, raccolta esplicita di esiti/errori e sentinelle per consumer. Distinti Queue.join, Thread.join e task_done; limiti di code, daemon, excepthook e funzioni bloccanti.
+- [[Programmazione/Python/Pagine/Multiprocessing|Multiprocessing]]: script reali con spawn esplicito, guardia main e contesti compatibili. Memoria separata, risultati/exit code, Pool rispetto a executor, Queue drenata prima del join e Value con lock sulla lettura-modifica-scrittura. Pickle fidato, limiti di terminate, avvii parziali e isolamento non equivalente a sandbox.
+- [[Programmazione/Python/Pagine/Asyncio|Asyncio]]: coroutine/task e await non necessariamente sospensivo, TaskGroup rispetto a gather, eccezioni aggregate e cancellazione attesa. Timeout di attesa rispetto a deadline e rollback, shield, pipeline con worker fissi e coda limitata, integrazione con to_thread e process pool. Chiarito che cancellare il chiamante non ferma il thread gia avviato.
+- [[Programmazione/Python/Pagine/Concurrent.futures|Concurrent.futures]]: ordine map/completamento, errori osservati tramite Future, with distinto da propagazione degli errori. Cancellazione pending/running, shutdown e timeout. Generatore con finestra di submit e closing; consumo interrotto, fallimenti degli input, ProcessPool e compatibilita di buffersize.
+
+### Fonti e prove
+
+- Fonti ufficiali Python 3.12 e PEP 3148 collegate nelle note. Differenze Python 3.14 sui metodi di avvio e buffersize verificate documentalmente, non eseguite sulla baseline.
+- Baseline effettiva: **CPython 3.12.10 con GIL, Windows, Node 24.14.0**. Nessuna nuova dipendenza; toolchain packaging/qualita gia presenti riutilizzate. Nessuna modifica al Python globale, alle dipendenze site o ai lockfile.
+- Nuova suite `_Meta/tests/python-concorrenza.test.mjs`: **63/63 test superati al primo giro**, circa 17 secondi. Quattro controlli strutturali, **19 blocchi Python** estratti dai Markdown, 35 controprove e cinque import senza avviare processi.
+- Processi spawn eseguiti come file .py in TemporaryDirectory, non soltanto importati. Event e attese esplicite coordinano i test, senza basarsi su sleep arbitrari o rapporti di velocita. Verificati errori, cleanup, limiti dei worker, producer falliti, cancellazione esterna, assenza di consumer async orfani, consumo anticipato limitato e chiusura dei generatori.
+- Regressione seriale delle dieci suite: **562/562 test superati**, 499 precedenti + 63 nuovi, nessun fallimento o test saltato, circa 246 secondi. Build Quartz in esecuzione separatamente: durata non confrontabile come benchmark con le passate precedenti.
+- Limiti: non vengono esplorate tutte le interleaving, i possibili deadlock o guasti del sistema. Nessun benchmark, free-threading, fork/forkserver, altra piattaforma, shared_memory/Manager, programma congelato o libreria I/O esterna. Il ripiego terminate non e stato provocato; i demo manuali non sono supervisori generici. Suite JavaScript/React/TypeScript non rieseguite.
+
+### Verifica del vault
+
+- content:check con report: **911 documenti raggiungibili, zero errori e 422 avvisi editoriali**, tre in meno; nessun avviso sulle quattro note.
+- content:test: **9/9 test della trasformazione superati**, separati dagli esempi Python.
+- Build Quartz riuscita: **3.719 file, 2.003 HTML, 168 redirect, 138.493 riferimenti verificati e zero errori**. Restano gli avvisi preesistenti su eval del plugin note-properties e metadati Git della copia temporanea.
+- Regressione dell'anteprima: **7/7 test HTTP superati**, inclusi Unicode, redirect, HEAD, percorsi malformati e 404.
+- QA di tutte le quattro pagine a **1440 x 1000** e **390 x 844**, Chrome **155.0.8059.85**: HTTP 200, contenuti aggiornati, nessun errore pagina/console/HTTP o overflow del documento. Verificato lo scorrimento effettivo di **18 blocchi su mobile**, nessuno necessario su desktop.
+- Ispezionati sei screenshot di Threading, Asyncio e Concurrent.futures, desktop/mobile: testo leggibile, gerarchia coerente e codice confinato negli scroller. Nessuna modifica a HTML o CSS.
+- Anteprima esistente riutilizzata e lasciata attiva su http://localhost:8082/appunti/. Browser QA e server di test chiusi; browser personale non modificato. Metadati e conteggi confermati, Prettier e diff --check superati. Storico mantenuto a dieci voci; nessun commit o push.
+
+### Prossimo blocco
+
+La revisione e proseguita con **Python: Performance e Distribuzione**, documentata di seguito. I rimandi a Profiling e Creazione di Package non aggiungono note al conteggio.
+
+## 2026-10-24 - Python: Performance e Distribuzione
+
+### Intervento
+
+Revisionate le cinque note uniche del capitolo: **57 note Python su 75** in questa passata. Restano **18 note principali e 13 promemoria**. cProfile/py-spy rimandano a Profiling; Packaging e wheel era gia coperto da Creazione di Package. Frontmatter confrontato con Git tramite parser YAML: invariato, inclusi date, title, type, publish e status non revisionato. L'approvazione dell'utente resta separata. Nessuna nota aggiunta o spostata, nessun indice o redirect modificato.
+
+- [[Programmazione/Python/Pagine/Profiling|Profiling]]: distinti profiling, benchmark, CPU, wall time e memoria. Carico autonomo, CLI cProfile e pstats, confronto di algoritmi solo dopo la verifica dei risultati, tracemalloc e sampling. Corretto un problema osservato su Windows: py-spy deve seguire anche il figlio del launcher del virtualenv tramite --subprocesses.
+- [[Programmazione/Python/Pagine/Caching|Caching]]: LRU e contatori osservabili, validazione prima del lookup e canonicalizzazione delle chiavi. Risultati immutabili, riferimenti trattenuti, errori non memorizzati, TTL con orologio controllato. Distinti coerenza interna della cache, esecuzione unica del calcolo e invalidazione dei lavori gia in corso.
+- [[Programmazione/Python/Pagine/C extensions|C extensions]]: progetto C completo con inizializzazione multifase, tipi e intervalli espliciti, somma allargata e controllo degli errori. Riferimenti nuovi/presi in prestito, ABI, GIL e buffer; wheel e verificatore separati. Compilazione nativa non dichiarata verificata.
+- [[Programmazione/Python/Pagine/Cython|Cython]]: progetto completo con memoryview const contigua, accumulatori double, Py_ssize_t e controlli conservati. Distinti def/cdef/cpdef, generazione C e compilazione, nogil e parallelismo; input e limiti numerici espliciti. Traduzione e annotazione verificate, binario no.
+- [[Programmazione/Python/Pagine/PyInstaller|PyInstaller]]: mantenuto il template operativo. App minima reale con risorsa ed errori, ambiente dedicato, onedir/onefile, spec e avvio fuori dai sorgenti. Corretta la sintassi SOURCE:DEST per add-data nella versione indicata anche su Windows; distinti **file**, eseguibile, cwd e risorse temporanee.
+
+### Verifica tecnica
+
+- Fonti ufficiali Python 3.12, CPython C API, setuptools, Cython, cachetools, PyInstaller e py-spy collegate nelle note.
+- Baseline effettiva: **CPython 3.12.10 con GIL, Windows x64, Node 24.14.0**. Nuovo virtualenv temporaneo con Cython 3.3.0, PyInstaller 6.22.3, py-spy 0.4.2, cachetools 7.2.4, setuptools 84.2.1, build 1.6.1, wheel 0.48.0 e pyinstaller-hooks-contrib 2026.9. Nessuna modifica al Python globale, alle dipendenze site o ai lockfile.
+- Nuova suite `_Meta/tests/python-performance.test.mjs`: **45 casi, 43 superati e 2 saltati**. Dieci blocchi Python di profiling/cache e sorgenti dei progetti estratti dai Markdown, non duplicati nelle fixture. L'errore iniziale di py-spy e stato corretto e il test ripetuto con successo.
+- Eseguiti realmente cProfile/pstats, SVG py-spy, scadenza TTL senza sleep, controprove di miss duplicati e clear durante un calcolo, traduzione Cython in C con HTML annotato. Nessun numero di performance presentato come benchmark.
+- Eseguite realmente build PyInstaller onedir e onefile, avvio di copie da altra directory con sorgenti temporaneamente non disponibili, risorsa mancante, help/argomenti errati e ricostruzione dello spec.
+- **Due build native tentate e fermate dalla mancanza di MSVC**: i test C/Cython sono esplicitamente saltati, non conteggiati come successi. Nessuna esecuzione dei verificatori sul binario, prova di ABI o sicurezza nativa dichiarata.
+- Regressione seriale delle undici suite: **607 casi, 605 superati, zero fallimenti e 2 saltati**, circa 287 secondi. I 562 test precedenti restano superati; la nuova suite aggiunge 43 successi e due verifiche native non eseguibili. La build Quartz era in esecuzione separatamente: non e un confronto prestazionale.
+- Limiti: una sola baseline; nessun sistema pulito privo di Python, matrice OS/interpreti, profiler native, cache distribuita, firma, antivirus, GUI, multiprocessing congelato o hook esterni. I test del sorgente Python e la traduzione Cython non provano il codice nativo. Suite JavaScript/React/TypeScript non rieseguite.
+
+### Verifica editoriale e Quartz
+
+- content:check con rapporto rigenerato: **911 documenti, tutti raggiungibili, zero errori e 417 avvisi editoriali**.
+- content:test: **9/9 test della trasformazione**. Anteprima: **7/7 test**, compresi URL Unicode e sottopercorso Pages.
+- Build riuscita: **3.719 file, 2.003 HTML, 168 redirect, 138.600 riferimenti verificati e zero errori**. Rimangono gli avvisi gia noti su eval del plugin note-properties e sulla directory temporanea senza Git.
+- QA Playwright con Chrome 155.0.8059.85 sulle cinque pagine, desktop 1440x1000 e mobile 390x844: HTTP 200, nessun errore console/rete e nessun overflow della pagina. Verificati 28 blocchi scorrevoli su mobile e due su desktop; sei screenshot ispezionati.
+- Anteprima esistente lasciata attiva su http://localhost:8082/appunti/. Browser e server temporanei di test chiusi; browser personale non modificato.
+- Nessun commit o push. Conservate le modifiche Python dei blocchi precedenti e la correzione Unicode dell'anteprima.
+
+### Prossimo blocco
+
+La revisione e proseguita con i quattro framework di **Python: Web, API e Database**, documentati di seguito. Le quattro note su persistenza, validazione e client HTTP restano il prossimo blocco.
+
+## 2026-10-24 - Python: Web, API e Database - Framework
+
+### Intervento
+
+Revisionate le prime quattro note del capitolo: **61 note Python su 75** in questa passata. Restano **14 note principali e 13 promemoria**; SQLAlchemy, Alembic, Pydantic e HTTPX e requests non sono conteggiate come revisionate per il solo fatto di essere collegate dagli esempi. Frontmatter confrontato con Git tramite parser YAML e invariato, inclusi date, type, publish e status non revisionato. Nessuna nuova nota, spostamento, modifica agli indici o ai redirect.
+
+- [[Programmazione/Python/Pagine/Flask|Flask]]: factory e blueprint realmente registrato, contesti, schema distinto dal parsing JSON, 400/415/413 e header Allow preservato. Trasformazione senza falsa creazione di utenti, errori inattesi osservabili, configurazioni isolate e limiti WSGI/async.
+- [[Programmazione/Python/Pagine/Starlette|Starlette]]: corretta l'idea che gli endpoint siano solo async; thread pool, lifespan e state con client realmente chiuso. Routing, CORS esterno e limiti della policy, WebSocket con origine, frame e byte UTF-8, disconnessione. Distinti background task in-process e coda durabile.
+- [[Programmazione/Python/Pagine/FastAPI|FastAPI]]: eliminati frammenti con route duplicate e dependency presentata come utente autenticato ma costante. Progetto di preventivo senza persistenza, tipi strict, extra vietati, output separato/filtrato, errori 422/404/500, OpenAPI e override ripristinati. Scope del cleanup yield distinto da commit e streaming.
+- [[Programmazione/Python/Pagine/Django|Django]]: progetto completo generato con app, settings, URL, model, ModelForm, admin, HTML/JSON e test. Distinti save/full_clean, validazione/vincoli, query lazy e rollback. Migrazioni separate e spiegate, CSRF dei test chiarito, differenza tra admin e autorizzazione delle altre view. Nessun login o CRUD completo dichiarato implementato.
+
+### Verifica tecnica
+
+- Fonti ufficiali Flask, Starlette, FastAPI, Pydantic, Uvicorn e Django 5.2 collegate. Baseline **CPython 3.12.10, Windows, Node 24.14.0**.
+- Nuovo virtualenv temporaneo: Flask 3.1.3, Werkzeug 3.1.9, Starlette 1.10.0, FastAPI 0.162.0, Pydantic 2.14.1, Django 5.2.18, HTTPX 0.28.1, httpx2 2.16.0, Uvicorn 0.54.0 e websockets 17.3. httpx2 serve al TestClient corrente; non confuso con httpx. Nessuna modifica al Python globale, a site o ai lockfile.
+- Nuova suite `_Meta/tests/python-web-frameworks.test.mjs`: **53/53 test mirati superati**, circa 54 secondi, senza skip. **14 blocchi Python e un template HTML** estratti dai Markdown. Un caso Node esegue i sette test Django della nota; non sono sette casi Node ulteriori.
+- Il primo giro aveva un errore nel test di introspezione delle route FastAPI: la versione installata mantiene anche router inclusi, non solo route piatte con path. Corretto il controllo sul router dichiarato; gli esempi applicativi erano gia eseguibili.
+- Flask: validazione, Content-Type/JSON, dimensioni, contesti, routing, header, errori inattesi ed escaping. Starlette: lifespan e chiusura, CORS/preflight/500, WS in-process, sequenza dei background task e dispatch sync nel thread pool.
+- FastAPI: strict e limiti, schema, filtro output, override/isolamento, errore dell'output, bypass con Response e ordine ASGI del cleanup yield rispetto all'invio. Django: scaffolding e migrazioni reali, form, vincoli e rollback, query, HTML, admin, CSRF e host. check --deploy rileva i settings non adatti alla produzione.
+- Eseguite richieste HTTP reali tramite Werkzeug/Uvicorn su loopback e porte effimere, con shutdown e join. Database e progetti solo in fixture temporanee; nessun account reale creato e nessun database utente modificato.
+- Regressione seriale delle dodici suite: **660 casi, 658 superati, zero fallimenti e 2 saltati**, circa 328 secondi. I due skip restano le build native C/Cython per MSVC assente. La durata include lavoro concorrente della build Quartz e non e un benchmark.
+- Limiti: nessun audit completo, deployment pubblico, matrice di versioni/OS/database, carico, multiworker, TLS/proxy, WebSocket su socket reale o CORS imposto dal browser. Non provati job durabili, crash recovery o transazioni PostgreSQL. Il client del lifespan non chiama servizi esterni e /docs non e collaudata come UI offline. Suite degli altri linguaggi non rieseguite.
+
+### Verifica editoriale e Quartz
+
+- Rapporto rigenerato: **911 documenti, tutti raggiungibili, zero errori e 413 avvisi editoriali**.
+- **9/9 test della trasformazione** e **7/7 test dell'anteprima** superati, compresi URL Unicode e sottopercorso Pages.
+- Build finale riuscita: **3.719 file, 2.003 HTML, 168 redirect, 138.693 riferimenti verificati e zero errori**. Output rigenerato anche dopo la precisazione CSRF; restano gli avvisi gia noti su eval del plugin note-properties e directory temporanea senza Git.
+- QA Playwright con Chrome 155.0.8059.85 sulle quattro pagine, desktop 1440x1000 e mobile 390x844: HTTP 200, nessun errore console/rete e nessun overflow della pagina. Verificati 21 blocchi/tabelle scorrevoli su mobile, due su desktop e sei screenshot ispezionati.
+- Anteprima esistente lasciata attiva su http://localhost:8082/appunti/. Server di test e browser QA chiusi; browser personale non modificato.
+- Nessun commit o push; mantenute le modifiche dei blocchi precedenti. Storico recente mantenuto a dieci voci operative.
+
+### Prossimo blocco
+
+La revisione delle quattro note rimanenti e stata completata nel blocco seguente.
+
+## 2026-10-26 - Python: Web, API e Database - Persistenza e Client HTTP
+
+### Intervento
+
+Revisionate SQLAlchemy, Alembic, Pydantic e HTTPX e requests: **65 note Python su 75** in questa passata. Il capitolo Web, API e Database e ora completo; restano **10 note principali e 13 promemoria**. Conteggio verificato sui collegamenti unici dell'indice. Frontmatter confrontato con Git tramite parser YAML e invariato in tutte e quattro le note. Nessuna nuova nota, spostamento, modifica agli indici o ai redirect.
+
+- [[Programmazione/Python/Pagine/SQLAlchemy|SQLAlchemy]]: esempi completi sync/Core/async; sessione distinta da engine e transazione, flush/commit, rollback dopo errore, autoflush, identity map e oggetti scaduti. Repository senza commit nascosto e DTO prima della chiusura; create_all distinto dalle migrazioni, limiti SQLite e N+1 spiegati.
+- [[Programmazione/Python/Pagine/Alembic|Alembic]]: adottato il template operativo coerente con type. Laboratorio con modelli, INI, env, revisione identificata, seed, autogenerate e verificatore. Downgrade distruttivi dichiarati, dati conservati nel percorso forward, perdita della colonna non recuperata da un successivo upgrade. Distinti stamp, merge, backfill, default e limiti del DDL.
+- [[Programmazione/Python/Pagine/Pydantic|Pydantic]]: API v2, extra email installato, conversioni/strict e differenze Python/JSON, default, campi annidati, input/output distinti. Errori senza input sensibile, validator e limiti di mutazione/copy/construct. Settings BaseModel non presentato come lettore automatico dell'ambiente.
+- [[Programmazione/Python/Pagine/HTTPX e requests|HTTPX e requests]]: corretto async with non valido al livello principale dello script. Client riutilizzati, stream chiusi, timeout per fase distinti dalla deadline, status/JSON/schema/dimensioni separati. Demo locale a tre client, POST con contratto distinto, redirect, retry/idempotenza, TLS e SSRF senza garanzie improprie.
+
+### Verifica tecnica
+
+- Consultate fonti ufficiali SQLAlchemy 2.0, Alembic, Pydantic v2, Requests e HTTPX, collegate nelle note. Baseline **CPython 3.12.10 su Windows, Node 24.14.0**.
+- Nuovo virtualenv temporaneo separato: SQLAlchemy 2.0.55, Alembic 1.20.1, Pydantic 2.14.1, email-validator 2.3.0, aiosqlite 0.22.1, HTTPX 0.28.1 e Requests 2.34.2. Pin diretti, non lock completo delle transitive. Nessuna modifica al Python globale o alle dipendenze Quartz.
+- Suite `_Meta/tests/python-database-http.test.mjs`: **68/68 test mirati**, zero skip/fallimenti, circa 61 secondi. **16 blocchi Python e un INI** estratti dai Markdown. Il conteggio Node comprende dieci sotto-test Alembic e il loro contenitore; non equivale a 68 programmi distinti.
+- Provati gli script SQLAlchemy sync/async e il rollback, sessioni fallite/scadute, vincoli e comportamento create_all. Procedura Alembic su database temporaneo: upgrade, check, seed, drift, autogenerate, conservazione dati, downgrade, stamp e perdita dei valori cancellati.
+- Provati i verificatori Pydantic, tipi/limiti, errori annidati, default e mutazioni, JSON Schema e output pubblico. HTTP reale su 127.0.0.1: successo, 503/204/302, JSON/Content-Type errati, limite body, POST 201, read timeout HTTPX e deadline async. Chiusura stream sync verificata anche con MockTransport.
+- Regressione seriale delle tredici suite: **728 casi, 726 superati, zero fallimenti e 2 saltati**, circa 437 secondi. I due skip restano le build native C/Cython per MSVC assente; la compilazione nativa non e dichiarata verificata. La durata include la build Quartz concorrente e non e un benchmark.
+- Limiti: una sola baseline; SQLite non certifica isolamento/concorrenza o migrazioni PostgreSQL. Nessuna prova di N+1 con relazioni reali, grandi backfill, merge Alembic, lock in produzione, TLS/proxy, HTTP/2, retry distribuiti, sicurezza completa contro payload ostili, carico o matrice OS/versioni. Suite degli altri linguaggi non rieseguite.
+
+### Verifica editoriale e Quartz
+
+- Rapporto rigenerato: **911 documenti, tutti raggiungibili, zero errori e 410 avvisi editoriali**. Nessun avviso residuo attribuito alle quattro note nel rapporto.
+- **9/9 test della trasformazione** e **7/7 test dell'anteprima** superati.
+- Build riuscita: **3.719 file, 2.003 HTML, 168 redirect, 138.791 riferimenti verificati e zero errori**. Rimangono gli avvisi noti su eval del plugin note-properties e directory temporanea senza Git.
+- QA Playwright con Chrome 155.0.8059.85 sulle quattro pagine, desktop 1440x1000 e mobile 390x844: HTTP 200, nessun errore console/JavaScript o overflow del documento. Verificati 24 elementi di codice/tabelle scorrevoli su mobile e sei screenshot ispezionati. Anteprima esistente lasciata attiva su http://localhost:8082/appunti/; browser QA e server di test chiusi.
+- Nessun commit o push; conservate le modifiche precedenti. Storico recente mantenuto a dieci voci operative.
+
+### Prossimo blocco
+
+Le prime tre note del capitolo sono state revisionate nel blocco seguente.
+
+## 2026-10-26 - Python: Data, Automazione e LLM - Dati e Notebook
+
+### Intervento
+
+Revisionate **pandas, NumPy e Jupyter**: **68 note Python su 75**. Restano **7 note principali e 13 promemoria**. Conteggio sui collegamenti unici dell'indice; frontmatter confrontato con Git e invariato, inclusi date, type, publish e status non revisionato. Un solo H1 e gerarchia dei titoli controllati tramite AST Markdown. Nessuna nuova nota, modifica a indici/redirect o spostamento.
+
+- [[Programmazione/Python/Pagine/pandas|pandas]]: distinti etichette/posizioni e allineamento; aggiornata la semantica Copy-on-Write per pandas 3.x. Report completo con schema, dtype nullable, ID univoci, importi noti/mancanti, gruppo senza regione e riconciliazione dei totali. Sostituita l'imputazione automatica a zero; spiegati merge, cardinalita, null, memoria e limiti dei formati.
+- [[Programmazione/Python/Pagine/NumPy|NumPy]]: shape, assi, dtype, broadcasting e memoria; viste/copie e assegnazione avanzata. Standardizzazione con policy per costanti, input vuoti/invalidi, NaN/inf, overflow e precisione. Distinti ddof, @ e \*, solve, RNG, tolleranze e vectorize; nessuna promessa automatica di performance.
+- [[Programmazione/Python/Pagine/Jupyter|Jupyter]]: file, interfaccia, server, kernel e kernelspec distinti; Notebook 7 non presentato come la vecchia interfaccia classica. Ambiente coerente, stato nascosto, restart/run all, magic separate e notebook a tre celle che riusa il modulo pandas. Esecuzione batch, timeout, errori, export/clear su copie e limiti di trust/pubblicazione.
+
+### Verifica tecnica
+
+- Consultate fonti ufficiali pandas, NumPy, JupyterLab, Notebook, IPython, nbformat, nbconvert e Jupyter Server, collegate nelle note.
+- Nuovo ambiente temporaneo isolato, **CPython 3.12.10, Windows, Node 24.14.0**: pandas 3.1.0, NumPy 2.5.4, JupyterLab 4.6.4, Notebook 7.6.3, ipykernel 7.4.0, nbconvert 7.17.2 e nbformat 5.11.1. Nessuna modifica al Python globale, a dipendenze Quartz o lockfile.
+- Nuova suite **49/49 test superati** durante la regressione, con 11 blocchi Python e tre magic estratti dai Markdown. Il conteggio Node include gli undici sotto-test Jupyter e il loro contenitore, non 49 programmi distinti. Corretta la fixture del timeout; nessun test del nuovo blocco saltato.
+- **11 blocchi Python e tre magic IPython** estratti dalle note. Script pandas/NumPy eseguiti; casi negativi su schema, mancanti, join, forme, tipi e numerica. Notebook ricostruito e validato, eseguito due volte in kernel nuovi, esportato in HTML e ripulito su copia.
+- Verificate controprove con celle fuori ordine, errori marcati raises-exception e timeout. Il primo giro falliva nella sola controprova timeout per due valori della stessa opzione CLI; corretta la fixture, non il codice applicativo. Il conteggio iniziale riportava anche il contenitore Jupyter come fallito.
+- Kernelspec registrato sotto --prefix nella fixture temporanea, configurazioni/runtime separati; nessun kernel globale modificato. Help CLI JupyterLab/Notebook verificato, UI e server interattivi non avviati.
+- Regressione seriale delle quattordici suite: **777 casi, 775 superati, zero fallimenti e 2 saltati**, circa 519 secondi. I due skip restano le build native C/Cython per MSVC assente. La durata comprende lavoro concorrente della build Quartz e non e un benchmark.
+- Limiti: una sola baseline, nessun benchmark, matrice OS/BLAS/versioni, grandi dataset, Excel/Parquet, calcolo distribuito, training ML, kernel remoto, grafici/widget o audit di sicurezza. Suite degli altri linguaggi non rieseguite.
+
+### Verifica editoriale e Quartz
+
+- Rapporto rigenerato: **911 documenti, tutti raggiungibili, zero errori e 407 avvisi editoriali**.
+- **9/9 test della trasformazione** e **7/7 test dell'anteprima** superati.
+- Build riuscita: **3.719 file, 2.003 HTML, 168 redirect, 138.865 riferimenti verificati e zero errori**. Restano gli avvisi noti su eval del plugin note-properties e directory temporanea senza Git.
+- QA Playwright con Chrome 155.0.8059.85 sulle tre pagine, desktop 1440x1000 e mobile 390x844: HTTP 200, nessun errore console/JavaScript o overflow della pagina. Verificati 18 elementi scorrevoli su mobile e tre su desktop; sei screenshot ispezionati. Anteprima esistente lasciata attiva su http://localhost:8082/appunti/; browser QA chiuso.
+- Nessun commit o push. Conservate tutte le modifiche precedenti; storico recente aggiornato nella voce del 26 ottobre e mantenuto a dieci voci.
+
+### Prossimo blocco
+
+Le due note operative sono state revisionate nel blocco seguente.
+
+## 2026-10-26 - Python: Data, Automazione e LLM - Scraping e Automazione
+
+### Intervento
+
+Revisionate **Scraping con BeautifulSoup** e **Automazione file e script**: **70 note Python su 75**. Restano **5 note principali e 13 promemoria**. Conteggio sui collegamenti unici dell'indice, frontmatter confrontato con Git e invariato. Entrambe mantengono type operational-note, publish true e status non revisionato. Nessuna nuova nota, modifica a indici/redirect o spostamento.
+
+- [[Programmazione/Python/Pagine/Scraping con BeautifulSoup|Scraping con BeautifulSoup]]: download e parser separati, elementi mancanti, testo annidato, charset, URL relativi/base, duplicati e schemi. GET con status/tipo/dimensione controllati, redirect non seguiti e risorse chiuse. Distinti parser, browser e crawler; limiti su timeout, robots, SSRF e accessi ripetuti.
+- [[Programmazione/Python/Pagine/Automazione file e script|Automazione file e script]]: piano completo, dry-run predefinito, apply esplicito e CLI con log. Collisioni, prefisso gia presente, file regolari, junction, operazioni parziali e differenze rename/replace. Laboratorio in directory temporanea e inventario log senza cancellazioni; chiariti concorrenza, backup, copia e report.
+
+### Verifica tecnica
+
+- Fonti ufficiali BeautifulSoup, Requests, Python 3.12 e RFC 9309 collegate nelle note. Baseline CPython 3.12.10 su Windows e Node 24.14.0.
+- Riutilizzate dipendenze gia presenti nel virtualenv Data: beautifulsoup4 4.15.0, SoupSieve 3.0.4 e Requests 2.34.2. Nessuna nuova installazione o modifica a Python globale, dipendenze Quartz e lockfile.
+- Nuova suite `_Meta/tests/python-scraping-automation.test.mjs`: **48/48 test mirati**, zero skip/fallimenti, circa 20 secondi. Quattro blocchi Python estratti dai Markdown e non duplicati nel test.
+- Parser e CLI offline; HTTP reale su 127.0.0.1 per status, redirect, media type, charset e limiti anche su gzip. Timeout/chiusura testati con mock, non con socket lento in questa suite.
+- Rinomine e controprove soltanto in fixture temporanee. Verificati dry-run, collisioni preflight, contenuti invariati, idempotenza, errore parziale, log e CLI. Junction Windows reale; file symlink/link rotto simulati tramite lstat.
+- Primo giro: cinque errori delle fixture, dovuti agli escape tra JS/Python e ai percorsi Windows breve/risolto. Corrette le fixture; secondo giro interamente superato.
+- Regressione mirata: **208/208 casi superati**, zero skip/fallimenti, circa 103 secondi. Quattro suite Python (file e standard library, HTTP/database, nuovo blocco) e suite anteprima, inclusi **7/7 test dell'anteprima**. Non rieseguita la regressione completa delle altre suite Python o degli altri linguaggi.
+- Limiti: nessun sito pubblico interrogato dagli esempi/test, browser scraping, parser alternativi/XML, audit SSRF, grande corpus o carico. Nessuna prova Unix, concorrenza reale del filesystem, crash/recovery o backup completo.
+
+### Verifica editoriale e Quartz
+
+- Rapporto rigenerato: **911 documenti raggiungibili, zero errori e 406 avvisi editoriali**.
+- **9/9 test della trasformazione** superati.
+- Build riuscita: **3.719 file, 2.003 HTML, 168 redirect, 138.903 riferimenti verificati e zero errori**. Restano gli avvisi noti su eval del plugin note-properties e directory temporanea senza Git.
+- QA Playwright con Chrome 155.0.8059.85 su entrambe le pagine, desktop 1440x1000 e mobile 390x844: HTTP 200, nessun errore console/JavaScript o overflow della pagina. Verificati sette elementi scorrevoli su mobile e quattro screenshot ispezionati. Browser QA e server dei test chiusi; anteprima esistente lasciata su http://localhost:8082/appunti/.
+- Nessun avviso del rapporto attribuito alle due note. Formattazione, gerarchia dei titoli, YAML invariato e git diff --check verificati.
+- Nessun commit o push. Conservate tutte le modifiche precedenti; storico recente mantenuto a dieci voci.
+
+### Prossimo blocco
+
+Le due note LLM sono state revisionate nel blocco seguente.
+
+## 2026-10-26 - Python: Data, Automazione e LLM - Inferenza Locale e OpenAI API
+
+### Intervento
+
+Revisionate **llama-cpp-python** e **OpenAI API**: **72 note Python su 75**. Il capitolo Data, Automazione e LLM e completo in questa passata; restano **isort, pre-commit, tox e nox** e **13 promemoria**. Conteggio verificato sui collegamenti unici dell'indice. Frontmatter confrontato con Git e invariato, inclusi date, type technical-note, publish true e status non revisionato. Nessuna nuova nota, modifica agli indici/redirect o spostamento.
+
+- [[Programmazione/Python/Pagine/llama-cpp-python|llama-cpp-python]]: distinte libreria, pesi, backend e memoria; installazione wheel CPU e requisiti della compilazione/GPU. Esempi chat/completion senza caricamento globale, chiusura esplicita, template, tokenizzazione, budget e output troncato. Tolto lo stop universale; chiariti server compatibile, embeddings, RAG, concorrenza e limiti delle prove simulate.
+- [[Programmazione/Python/Pagine/OpenAI API|OpenAI API]]: configurazione esplicita senza MODEL_NAME inviabile, client iniettato e chiuso, Responses/status/refusal. Classificazione Pydantic senza fallback silenzioso a other, streaming con esito finale, errori e retry espliciti. Distinti stato della conversazione, async, tools, dati, schema e correttezza semantica.
+
+### Verifica tecnica
+
+- Consultati OpenAI Docs e fonti ufficiali del progetto llama-cpp-python; verificate anche firme e comportamento dello SDK installato.
+- Nuovo virtualenv temporaneo isolato: **CPython 3.12.10 su Windows x64, Node 24.14.0**, llama-cpp-python 0.3.36 wheel CPU, openai 3.38.0, HTTPX2 2.16.0, Pydantic 2.14.1. Nessuna modifica al Python globale, dipendenze Quartz o lockfile.
+- Nuova suite `_Meta/tests/python-llm.test.mjs`: **42/42 test**, zero skip/fallimenti, circa 45 secondi. Cinque blocchi Python estratti dai Markdown.
+- Llama: import/firme reali, inferenza/costruttore simulati, token e parametri, percorso, limiti, output e close dopo successo/errore. Non e stata eseguita inferenza nativa su un modello.
+- OpenAI: SDK reale e HTTPX2 MockTransport, request body e schema, stati/rifiuti/validazione, errori HTTP/request ID, retry disabilitati e timeout simulato. Eventi SSE attraverso il parser SDK, inclusi EOF, failure/incomplete e callback fallito con chiusura.
+- Nessuna chiamata al servizio OpenAI o consumo API. Variabili sensibili rimosse dai processi di test; chiave fittizia e trasporto in memoria. Nessun peso scaricato, nessuna GPU o server llama provati.
+- Regressione mirata HTTP/database, LLM e anteprima: **117/117 test superati**, zero skip/fallimenti, circa 112 secondi. Sono inclusi **7/7 test dell'anteprima**. Non rieseguita tutta la regressione Python o degli altri linguaggi.
+- Limiti: non verificati accesso a modelli/account, accuratezza, latenza reale, costi, prompt injection, grandi contesti, template su pesi reali o una matrice OS/backend. Non e un audit di sicurezza.
+
+### Verifica editoriale e Quartz
+
+- Rapporto rigenerato: **911 documenti raggiungibili, zero errori e 405 avvisi editoriali**.
+- **9/9 test della trasformazione** superati.
+- Build riuscita: **3.719 file, 2.003 HTML, 168 redirect, 138.969 riferimenti verificati e zero errori**. Restano gli avvisi noti su eval del plugin note-properties e directory temporanea senza Git.
+- QA Playwright con Chrome 155.0.8059.85 sulle due pagine, desktop 1440x1000 e mobile 390x844: HTTP 200, nessun errore console/JavaScript o overflow della pagina. Verificati nove elementi scorrevoli su mobile e uno su desktop; quattro screenshot ispezionati. Browser QA chiuso, anteprima esistente mantenuta su http://localhost:8082/appunti/.
+- Nessun avviso editoriale specifico sulle due note. Formattazione, gerarchia dei titoli, YAML invariato, git diff --check e limite di dieci voci dello storico verificati.
+- Nessun commit o push; conservate tutte le modifiche precedenti.
+
+### Prossimo blocco
+
+Le tre note di tooling sono state revisionate nel blocco seguente.
+
+## 2026-10-27 - Python: Tooling e Qualita - isort, pre-commit, tox e nox
+
+### Intervento
+
+Completata la revisione delle **75 note principali Python su 75**. Restano **13 promemoria**, separati dal conteggio e ancora da revisionare. I rimandi duplicati nell'indice non sono ricontati. Frontmatter confrontato con Git e invariato: date, type operational-note, publish true e status non revisionato. Nessun cambio a percorsi, indici o redirect.
+
+- [[Programmazione/Python/Pagine/isort|isort]]: configurazione condivisa, gruppi e package locale, check/diff/modifica, compatibilita Black, alternativa Ruff, esclusioni anche su file espliciti ed effetti collaterali dell'ordine.
+- [[Programmazione/Python/Pagine/pre-commit|pre-commit]]: configurazione e hook installato distinti, revisioni fissate, file tracciati/staged, fix e staging intenzionale, limiti di check-yaml, hook locale manuale e controllo CI.
+- [[Programmazione/Python/Pagine/tox e nox|tox e nox]]: esempi completi collegati al package gia presente. Installazione wheel/package negli ambienti, lint separato, posargs, interpreti obbligatori, riuso/ricreazione, variabili e comandi esterni. TOML nativo e stato della compatibilita INI distinti.
+
+### Verifica tecnica
+
+- Consultate fonti ufficiali isort, pre-commit, tox, nox e Ruff; controllate CLI e comportamento degli strumenti installati.
+- Toolchain nuova e temporanea: **CPython 3.12.10 su Windows x64, Node 24.14.0**, isort 9.0.2, pre-commit 4.7.0, tox 4.67.1, nox 2026.10.20, Black 26.10.1, pytest 9.1.1 e Ruff 0.17.3. virtualenv 21.15.0, python-discovery 1.6.5; wheelhouse con setuptools 84.2.1, wheel 0.48.0 e pip 26.2.2.
+- Nuova suite `_Meta/tests/python-tooling.test.mjs`: configurazioni/snippet estratti dai tre Markdown e sette file del progetto estratti dalla nota Creazione di Package, senza duplicare l'applicazione.
+- isort reale: controlli senza scrittura, risultato documentato, secondo passaggio, Black, import inutilizzati, gitignore/generated e direttive.
+- Hook reali pre-commit-hooks v6.0.0 e isort 9.0.2: prima preparazione con rete e cache temporanea; poi esecuzione locale. Correzioni, indice Git invariato, staging, errori YAML, limiti Markdown, isort e hook manuale con ambiente fornito.
+- tox/nox: ambienti reali con dipendenze da wheelhouse senza indice remoto, installazione del package e import da site-packages fuori dai sorgenti; eseguiti i due test originali. Provati posargs, lint isolato, fallimenti intenzionali, ricreazione/riuso e interprete inesistente.
+- Prima passata **36/37**: il test dell'hook isort usava un file non tracciato e attendeva che una modifica fosse rilevata dal diff Git. Corretta la fixture aggiungendo esplicitamente il file all'indice; il caso isolato e passato. Nessuna modifica alle configurazioni delle note per aggirare il test.
+- Regressione finale mirata a packaging, qualita, tooling e anteprima: **125/125 test superati**, zero fallimenti/skip, circa **277 secondi**. Include tutti i **37/37 nuovi test** e **7/7 test dell'anteprima**. Non rieseguita tutta la suite Python o degli altri linguaggi; i casi pytest/unittest interni al demo non sono contati nuovamente.
+- Nessun hook installato o commit creato nel vault. Fixture Git esclusivamente temporanee; nessun commit neppure nei repository di prova. Cache/toolchain temporanea riutilizzabile, cleanup delle fixture con controllo del percorso assoluto.
+- Limiti: una sola versione Python/OS; non matrice remota CI, audit supply chain, autoupdate reale, conflitti di stash/commit parziali o invocazione automatica attraverso un vero git commit. Nessuna pubblicazione di package. Non tutti i frammenti di variante sono eseguiti.
+
+### Verifica editoriale e Quartz
+
+- **911 documenti raggiungibili, zero errori e 403 avvisi editoriali**, nessuno specifico sulle tre note; rapporto rigenerato.
+- **9/9 test della trasformazione** superati.
+- Build: **3.719 file, 2.003 HTML, 168 redirect, 139.039 riferimenti verificati e zero errori**. Avvisi preesistenti su eval del plugin note-properties e directory temporanea senza Git.
+- QA con Chrome **156.0.8078.48**, desktop 1440x1000 e mobile 390x844: HTTP 200 su tutte le pagine, nessun errore console/JavaScript o overflow del documento. Quattordici elementi scorrevoli su mobile; sei screenshot ispezionati. Browser QA chiuso e anteprima esistente mantenuta su http://localhost:8082/appunti/.
+- Formattazione, gerarchia dei titoli e YAML invariato verificati. Nessuna modifica a dipendenze del sito o lockfile; nessun commit/push. Storico recente mantenuto a dieci voci.
+
+### Prossimo blocco
+
+I primi due promemoria sono stati revisionati nel blocco seguente. Le 75 note principali sono complete in questa passata; i limiti dei test restano quelli registrati per ciascun blocco.
+
+## 2026-10-27 - Python: Promemoria - Sintassi Essenziale e Funzioni
+
+### Intervento
+
+Revisionati i primi **2 promemoria Python su 13**; restano **11**. Le **75 note principali su 75** sono gia state esaminate. Frontmatter dei due promemoria confrontato con Git e invariato, inclusi date, title, type operational-note, publish true e status non revisionato. Nessuna modifica a indici, percorsi o redirect.
+
+- [[Programmazione/Python/Promemoria/Pagine/Python - Sintassi essenziale|Sintassi essenziale]]: sostituiti nomi indefiniti con dati di esempio in ogni blocco. Precisati bool/int, alias, conversioni, default None/falsy, range, avanzamento while, break/else, unpacking, merge, walrus e capture pattern.
+- [[Programmazione/Python/Promemoria/Pagine/Python - Funzioni|Funzioni]]: default valutati alla definizione, mutazione esplicita, args/kwargs, firme, chiamate autonome e duplicate, lambda/sort, return e callback. connect con pass sostituito da costruzione di opzioni in memoria. bounds dichiara una sequenza non vuota, non un iteratore monouso, e gestisce l'input vuoto.
+- Struttura operativa con avvertenze brevi e rimandi alla teoria, senza trasformare i promemoria in nuove spiegazioni estese. Tutti i blocchi Python sono autonomi.
+
+### Verifica tecnica
+
+- Fonti ufficiali Python 3.12 e note principali gia revisionate. Baseline **CPython 3.12.10 su Windows x64 e Node 24.14.0**.
+- Nuova suite `_Meta/tests/python-promemoria-linguaggio.test.mjs`: **24 blocchi estratti**, 14 Sintassi e 10 Funzioni; **53/53 test mirati** superati al primo giro, zero skip/fallimenti, circa 7 secondi.
+- Ogni snippet in un processo Python isolato, senza import impliciti da frammenti precedenti. Verificati output o risultati, confini, input vuoti, mutazioni, alias, default, argomenti non validi, iteratori consumati e propagazione di eccezioni.
+- Varianti dei dati attraverso AST, modificando soltanto assegnazioni top-level dimostrative. Controprova esplicita del generatore fuori contratto di bounds e delle annotazioni non vincolanti a runtime.
+- Primo avvio della regressione: **184 test Python superati**; i **7 test dell'anteprima** non hanno trovato gli HTML perche avviati durante site:build. Errore di ordine delle verifiche, non una regressione applicativa; nessun codice modificato per aggirarlo.
+- Ripetizione finale dopo build: **191/191 test superati**, zero fallimenti/skip, circa **37 secondi**. Tre suite Python (Fondamenti, Funzionale/Iterazione e Promemoria) piu anteprima; inclusi **53 nuovi test** e **7/7 test HTTP dell'anteprima**. Non rieseguita l'intera suite Python o degli altri linguaggi.
+- Nessuna dipendenza nuova o modifica al Python globale/site. La suite nuova usa solo standard library e memoria; le suite preesistenti creano le proprie fixture temporanee.
+- Limiti: nessuna matrice Python/OS, checker statico, tutti i frammenti inline o oggetti con protocolli personalizzati. Nessuna prova di numeri arbitrari/NaN in bounds: il contratto ammette numeri finiti e non e un validatore.
+
+### Verifica editoriale
+
+- Rapporto rigenerato: **911 documenti raggiungibili, zero errori e 401 avvisi editoriali**, nessuno specifico sui due promemoria.
+- **9/9 test della trasformazione** superati. YAML invariato e gerarchia dei titoli verificati.
+- Build completata: **3.719 file, 2.003 HTML, 168 redirect, 139.108 riferimenti e zero errori**. Avvisi noti su eval e directory temporanea senza Git invariati.
+- QA Chrome **156.0.8078.48**, desktop 1440x1000 e mobile 390x844: entrambi i promemoria rispondono HTTP 200, senza errori console/JavaScript o overflow del documento. Dieci elementi scorrevoli su mobile, quattro screenshot ispezionati; browser QA chiuso. Anteprima esistente lasciata attiva su http://localhost:8082/appunti/.
+- Nessun commit/push; conservate tutte le modifiche precedenti. Storico aggiornato nella voce del 27 ottobre e mantenuto a dieci voci.
+
+### Prossimo blocco
+
+Liste, tuple e set e Dizionari sono stati revisionati nel blocco seguente.
+
+## 2026-10-27 - Python: Promemoria - Collezioni e Dizionari
+
+### Intervento
+
+Revisionati altri **2 promemoria Python**: avanzamento **4 su 13**, ne restano **9**. Le **75 note principali** sono gia state esaminate. YAML confrontato con Git e invariato; mantenuti status non revisionato, publish true, date, title e type operational-note. Nessuna nuova nota o modifica a indici, percorsi e redirect.
+
+- [[Programmazione/Python/Promemoria/Pagine/Python - Liste tuple e set|Liste, tuple e set]]: snippet autonomi, accesso/slice, append/extend, ricerca/rimozione, clear e alias, sort/sorted, stabilita, copie annidate, tuple/hashability, set e deduplicazione ordinata.
+- [[Programmazione/Python/Promemoria/Pagine/Python - Dizionari|Dizionari]]: assenza distinta da None/falsy, sentinella, update/merge superficiale, ordine, rimozione, viste/snapshot, setdefault, conteggi, comprehension, copie e default mutabili.
+- Adottata la struttura operativa con avvertenze brevi e rimandi alle note teoriche, senza duplicarne le spiegazioni estese. Nessun argomento precedente eliminato.
+
+### Verifica tecnica
+
+- Consultate le note teoriche gia revisionate e la documentazione ufficiale Python 3.12. Baseline **CPython 3.12.10 su Windows x64, Node 24.14.0**; nessuna nuova dipendenza.
+- Nuova suite `_Meta/tests/python-promemoria-collezioni.test.mjs`: **24 blocchi estratti, 12 per nota; 55/55 test mirati** superati, zero skip/fallimenti, circa 8 secondi. Ogni snippet eseguito in un processo isolato, con risultati/output verificati.
+- Provati anche input vuoti, eccezioni, alias, mutazioni, hashability, stabilita, sentinella, merge non ricorsivo, ordine di inserimento, viste vive, snapshot e default condivisi. Varianti tramite AST solo sugli input dimostrativi top-level.
+- Prima esecuzione **54/55**: la variante dei gruppi non includeva admin, stampato dal demo. Corretta la fixture aggiungendo reader senza rimuovere admin; nessun cambiamento alla procedura delle note per aggirare la prova.
+- Regressione Python mirata (Strutture dati e le due suite dei Promemoria): **168/168 test**, zero skip/fallimenti, circa **26 secondi**. Dopo la fine della build, **7/7 test dell'anteprima** superati separatamente: **175 test complessivi**, non una singola esecuzione. Non rieseguita tutta la suite Python o degli altri linguaggi.
+- La nuova suite usa solo standard library e memoria. Limiti: una versione/OS, nessun benchmark, checker statico, concorrenza, hash/uguaglianza custom o ogni frammento inline. Le copie profonde sono provate su liste, non su risorse arbitrarie.
+
+### Verifica editoriale e Quartz
+
+- Rapporto rigenerato: **911 documenti raggiungibili, zero errori e 399 avvisi editoriali**, nessuno specifico sulle due note. **9/9 test della trasformazione** superati.
+- Build: **3.719 file, 2.003 HTML, 168 redirect, 139.162 riferimenti e zero errori**. Avvisi noti su eval del plugin note-properties e directory temporanea senza Git invariati.
+- QA Chrome **156.0.8078.48**, desktop 1440x1000 e mobile 390x844: entrambe le note HTTP 200, nessun errore console/JavaScript o overflow del documento. Sedici elementi di codice scorrevoli su mobile, nessuno su desktop; quattro screenshot ispezionati. Browser QA chiuso, anteprima esistente mantenuta su http://localhost:8082/appunti/.
+- Formattazione, YAML invariato e gerarchia dei titoli verificati. Conservate tutte le modifiche precedenti, nessuna modifica a dipendenze del sito o lockfile; nessun commit/push. Storico aggiornato nella voce del 27 ottobre, mantenuto a dieci voci.
+
+### Prossimo blocco
+
+Stringhe e regex e Numeri e date sono stati revisionati nel blocco seguente.
+
+## 2026-10-27 - Python: Promemoria - Stringhe, Numeri e Date
+
+### Intervento
+
+Revisionati altri **2 promemoria Python**: avanzamento **6 su 13**, ne restano **7**. Completata la sezione Linguaggio dei promemoria; le **75 note principali** sono gia state esaminate. YAML confrontato con Git e invariato: date, title, type operational-note, publish true e status non revisionato. Nessuna nuova nota o modifica a indici, percorsi e redirect.
+
+- [[Programmazione/Python/Promemoria/Pagine/Python - Stringhe e regex|Stringhe e regex]]: immutabilita/code point, metodi autonomi, casefold, strip e prefissi, find/split/join, formattazione e predicati Unicode. Regex ASCII esplicita, fullmatch/search, gruppi, assenza di risultati e sostituzioni letterali. Distinta la forma di una data dalla validita del calendario.
+- [[Programmazione/Python/Promemoria/Pagine/Python - Numeri e date|Numeri e date]]: conversioni e input vuoti, round/floor/ceil, tolleranze e valori finiti, Decimal con quantize e contesto locale. Random distinto da secrets; datetime aware, parsing con offset obbligatorio, formattazione, durate, zoneinfo, timestamp in secondi e perf_counter.
+- Struttura operativa, 27 snippet autonomi e avvertenze brevi con rimandi alla teoria. Conservati tutti gli argomenti precedenti; esplicitato il prerequisito IANA/tzdata senza trasformare i promemoria in spiegazioni estese.
+
+### Verifica tecnica
+
+- Consultate fonti ufficiali Python 3.12 e note teoriche gia revisionate. Baseline **CPython 3.12.10 su Windows x64, Node 24.14.0, tzdata 2026.5**.
+- Riutilizzato il virtualenv temporaneo Packaging: Python globale privo di tzdata, nessuna nuova installazione o modifica alle dipendenze del sito.
+- Nuova suite `_Meta/tests/python-promemoria-testo-date.test.mjs`: **27 blocchi estratti, 13 Stringhe e 14 Numeri/date; 74/74 test mirati**, zero skip/fallimenti, circa **15 secondi**. Ogni blocco in un processo isolato; varianti tramite AST sugli input dimostrativi, errori di parsing verificati sullo snippet originale.
+- Provati Unicode, input vuoti, regex ASCII rispetto a IGNORECASE, gruppi/sostituzioni, date formalmente corrette ma impossibili, float/Decimal, ripristino del contesto esterno, random e token, naive/aware, offset, DST/fold, durate negative, epoch e contatore monotono.
+- Primo giro **72/73**: la fixture per dati IANA mancanti lasciava importati sottopacchetti tzdata. Corretta bloccando tutti i moduli caricati del pacchetto, svuotando la cache ZoneInfo e impostando TZPATH vuoto nel solo processo della prova. Aggiunto poi il caso del contesto Decimal personalizzato. Nessuna procedura della nota alterata per aggirare il test.
+- Regressione mirata (Fondamenti, File/Standard Library e nuova suite): **160/160 test Python**, zero skip/fallimenti, circa **43 secondi**. A build conclusa, **7/7 test dell'anteprima** superati separatamente: **167 test complessivi**, non un'unica esecuzione. Non rieseguita l'intera suite Python o degli altri linguaggi.
+- Nessun benchmark, audit ReDoS, test statistico/certificazione crittografica, matrice di OS/locale/fusi/versioni, parser ISO universale o verifica di ogni frammento inline. Il database presente e usato realmente; l'assenza e simulata in memoria. Nessun token reale pubblicato, chiamata remota o installazione durante i test.
+
+### Verifica editoriale e Quartz
+
+- **911 documenti raggiungibili, zero errori e 397 avvisi editoriali**; nessuno specifico sui due promemoria. Rapporto rigenerato, **9/9 test della trasformazione** superati.
+- Build: **3.719 file, 2.003 HTML, 168 redirect, 139.223 riferimenti e zero errori**. Avvisi noti su eval del plugin note-properties e directory temporanea senza Git invariati.
+- QA Chrome **156.0.8078.48**, desktop 1440x1000 e mobile 390x844: HTTP 200 per entrambe le note, nessun errore console/JavaScript o overflow del documento. Ventitre elementi di codice scorrevoli su mobile, nessuno su desktop; quattro screenshot ispezionati. Browser QA chiuso; anteprima esistente mantenuta su http://localhost:8082/appunti/.
+- Formattazione, gerarchia dei titoli e YAML invariato verificati. Conservate le modifiche precedenti, nessun commit/push. Storico recente aggiornato nella voce del 27 ottobre e mantenuto a dieci voci.
+
+### Prossimo blocco
+
+File e percorsi e JSON e CSV sono stati revisionati nel blocco seguente.
+
+## 2026-10-27 - Python: Promemoria - File, JSON e CSV
+
+### Intervento
+
+Revisionati altri **2 promemoria Python**: avanzamento **8 su 13**, ne restano **5**. Le **75 note principali** sono gia state esaminate; la sezione File e dati dei promemoria richiede ancora Richieste HTTP. YAML confrontato con Git e invariato: date, title, type operational-note, publish true e status non revisionato. Nessuna nuova nota o modifica a indici, percorsi e redirect.
+
+- [[Programmazione/Python/Promemoria/Pagine/Python - File e percorsi|File e percorsi]]: cwd distinta dalla cartella dello script, componenti dei percorsi, encoding e newline, modi x/a/w, lettura per righe e byte, directory e glob. Corretto l'uso del vecchio Path dopo rename; esplicitati sovrascrittura, cancellazione, copia/move, cleanup e fallback limitato a FileNotFoundError.
+- [[Programmazione/Python/Promemoria/Pagine/Python - JSON e CSV|JSON e CSV]]: load/dump e loads/dumps, Unicode, file e scritture parziali, JSON invalido distinto da schema invalido. CSV con quoting e newline, separatori/BOM, valori mancanti/extra e conversioni esplicite. Validazione dimostrativa con contratto dichiarato, senza promettere unicita degli ID o protezione dalla CSV injection.
+- Struttura operativa, **23 snippet autonomi** e avvertenze brevi con rimandi alla teoria. Tutti gli esempi che modificano file usano nuove directory temporanee e cleanup; conservati gli argomenti precedenti.
+
+### Verifica tecnica
+
+- Consultate fonti ufficiali Python 3.12 per pathlib, open, tempfile, shutil, json e csv, insieme alle note principali gia revisionate. Baseline **CPython 3.12.10 su Windows x64 e Node 24.14.0**.
+- Nuova suite `_Meta/tests/python-promemoria-file-dati.test.mjs`: **23 blocchi estratti**, 13 File/percorsi e 10 JSON/CSV; **75/75 test mirati**, zero skip/fallimenti, circa **16 secondi**. Ogni esempio materializzato in un file e avviato in un processo isolato, con cwd diversa dalla cartella dello script.
+- Provati risultati/output, path, encoding e newline, creazione esclusiva, troncamento/append, chiusura su errore, rename e rimozione, copia/move e cleanup. JSON con BOM, valori non standard, chiavi duplicate, documenti concatenati e scritture parziali; CSV con campi multilinea, header e righe incomplete/extra, ID invalidi/duplicati e nomi vuoti.
+- Varianti tramite AST solo sugli input top-level; operazioni filesystem reali su fixture temporanee, PermissionError del fallback simulato. Radice risolta, parent e prefisso verificati prima del cleanup ricorsivo del test harness; nessun appunto o file applicativo dell'utente spostato/cancellato.
+- Primo giro **72/75**: due aspettative non normalizzavano gli alias Windows 8.3; la copia sullo stesso file attendeva SameFileError invece del PermissionError/WinError 32 generato dal ramo CopyFile2 locale. Verificata l'implementazione di CPython: corretti i confronti dei percorsi e verificato OSError con sorgente invariata. Nessuna modifica agli snippet per aggirare le prove.
+- Regressione mirata (File/Standard Library, Funzionale/Iterazione e nuova suite): **176/176 test Python**, zero skip/fallimenti, circa **36 secondi**. Dopo la build, **7/7 test HTTP dell'anteprima** superati separatamente: **183 test complessivi**, non un'unica esecuzione. Non rieseguita l'intera suite Python o degli altri linguaggi.
+- Nessuna nuova installazione. La suite nuova usa solo standard library; la regressione riusa l'interprete temporaneo Packaging con tzdata 2026.5 per la suite Standard Library.
+- Limiti: una versione Python/OS, nessuna prova reale POSIX, copie tra filesystem, tutti i metadati/ACL, symlink/junction, concorrenza, crash/durabilita o filesystem non fidato. Non e un audit CSV injection o un validatore universale JSON/CSV; non ogni frammento inline e eseguito.
+
+### Verifica editoriale e Quartz
+
+- **911 documenti raggiungibili, zero errori e 395 avvisi editoriali**; nessuno specifico sui due promemoria. Rapporto rigenerato, **9/9 test della trasformazione** superati.
+- Build: **3.719 file, 2.003 HTML, 168 redirect, 139.270 riferimenti e zero errori**. Avvisi noti del generatore invariati.
+- QA Chrome **156.0.8078.48**, desktop 1440x1000 e mobile 390x844: HTTP 200 per entrambe le note, nessun errore console/JavaScript o overflow del documento. Ventitre elementi di codice scorrevoli su mobile, nessuno su desktop; quattro screenshot ispezionati. Browser QA chiuso; anteprima esistente mantenuta su http://localhost:8082/appunti/.
+- Metadati invariati; conservate le modifiche precedenti, nessun commit/push. Storico recente aggiornato nella voce del 27 ottobre e mantenuto a dieci voci.
+
+### Prossimo blocco
+
+Richieste HTTP e Moduli, ambienti e dipendenze sono stati revisionati nel blocco seguente.
+
+## 2026-10-27 - Python: Promemoria - HTTP e Ambienti
+
+### Intervento
+
+Revisionati altri **2 promemoria Python**: avanzamento **10 su 13**, ne restano **3**. Completata la sezione File e dati; le **75 note principali** sono gia state esaminate. YAML confrontato con Git e invariato: date, title, type operational-note, publish true e status non revisionato. Nessuna nuova nota o modifica a indici, percorsi e redirect.
+
+- [[Programmazione/Python/Promemoria/Pagine/Python - Richieste HTTP|Richieste HTTP]]: otto funzioni con import e parametri espliciti, senza chiamate remote automatiche. GET/POST, query, Bearer e netrc, sessione/cookie, errori, client sync/async e download. Chiariti status atteso, parsing rispetto a schema, timeout/deadline, redirect, effetti dei POST e file parziali.
+- [[Programmazione/Python/Promemoria/Pagine/Python - Moduli ambienti e dipendenze|Moduli, ambienti e dipendenze]]: import reali e piccolo package multifile con percorso -m corretto, guardia main e shadowing. Venv con/senza attivazione, interprete effettivo, pip, requirements e snapshot separato dal file curato. Comandi separati per shell, effetti delle installazioni/sovrascritture e limiti di freeze/check.
+- Conservati gli argomenti precedenti e adottata la struttura operativa, con avvertenze brevi e rimandi alla teoria. Tredici blocchi Python totali, di cui tre da usare insieme nel package, oltre ai comandi operativi.
+
+### Verifica tecnica
+
+- Fonti ufficiali Requests, HTTPX, Python 3.12 e PyPA. Baseline **CPython 3.12.10, Requests 2.34.2, HTTPX 0.28.1, Node 24.14.0 su Windows x64**. Riutilizzate toolchain Database e Packaging; pip **26.2.2** nella seconda e **25.0.1** da ensurepip nel nuovo venv di prova.
+- Nuova suite `_Meta/tests/python-promemoria-http-ambienti.test.mjs`: **56/56 test mirati**, zero skip/fallimenti, circa **44 secondi**. Estrazione degli otto blocchi HTTP, cinque blocchi moduli/diagnostica e dei comandi verificati; risultati e contenuti controllati, non solo compilazione.
+- HTTP reale sul solo loopback con porta effimera: query, JSON, POST, status, redirect, cookie, credenziali fittizie, chiusura e streaming. Timeout/errore di connessione Requests simulati; cancellazione e deadline asyncio provate con attesa simulata. Download reale con limiti, file esistente invariato, parziale dichiarato e trasferimento troncato.
+- Package originale eseguito con -m, import senza avvio di main, cache, errore previsto per avvio diretto e shadowing locale. Creazione reale del venv, diagnostica, pip check/freeze, requirements offline con wheel setuptools gia disponibile e prova che requirements vuoto non rimuove pacchetti extra.
+- Eseguiti i comandi PowerShell originali per interprete esplicito, attivazione, snapshot UTF-8 e disattivazione; verificato il ripristino del PATH. Nessuna modifica alla execution policy o al Python globale. Fixture rimosse solo dopo verifica del percorso risolto, parent e prefisso.
+- Primo giro **52/56**: il filtro di rete della fixture bloccava il socketpair loopback interno di asyncio su Windows, non le richieste delle note. Corretto il filtro per consentire loopback; nessuno snippet modificato per aggirare le prove.
+- Regressione HTTP/database, Packaging e nuova suite: **140/140 test Python**, zero skip/fallimenti, circa **174 secondi**. Non rieseguita l'intera suite Python o degli altri linguaggi.
+- Limiti: una versione/OS, niente TLS/proxy/CA reali, servizi autenticati, audit SSRF, HTTP/2, carico o durabilita/atomicita. Bash/POSIX non eseguito; installazioni online Requests/HTTPX e aggiornamento pip non effettuati. Installazioni solo offline in fixture; nessun segreto reale o chiamata HTTP esterna.
+
+### Verifica editoriale e Quartz
+
+- **911 documenti raggiungibili, zero errori e 394 avvisi editoriali**; nessuno specifico sui due promemoria. Rapporto rigenerato, **9/9 test della trasformazione** superati.
+- Build riuscita: **3.719 file, 2.003 HTML, 168 redirect, 139.335 riferimenti e zero errori**. Avvisi noti su eval del plugin e directory temporanea senza Git invariati.
+- A build conclusa, **7/7 test HTTP dell'anteprima** superati separatamente: con la regressione Python, **147 test complessivi**, non un'unica esecuzione.
+- QA Chrome **156.0.8078.48**, desktop 1440x1000 e mobile 390x844: HTTP 200 per entrambe le pagine, nessun errore console/JavaScript o overflow del documento. Quattordici elementi di codice scorrevoli su mobile, nessuno su desktop; quattro screenshot ispezionati. Browser QA chiuso e anteprima esistente mantenuta su http://localhost:8082/appunti/.
+- Formattazione e diff verificati; conservate le modifiche precedenti. Nessun commit/push, dipendenza site o lockfile modificato. Storico recente aggiornato nella voce del 27 ottobre e mantenuto a dieci voci.
+
+### Prossimo blocco
+
+I tre promemoria restanti sono stati revisionati nel blocco seguente.
+
+## 2026-10-27 - Python: Promemoria - Iterazione, Asyncio e Debug
+
+### Intervento
+
+Revisionati gli ultimi **3 promemoria Python**: **13 su 13**, insieme alle **75 note principali** gia esaminate. Conteggio confermato dalle destinazioni uniche degli indici; i promemoria contengono **144 blocchi Python**. Questa passata e completa, non una certificazione di assenza di errori. YAML confrontato con Git e invariato: lo stato resta non revisionato fino all'approvazione dell'utente. Nessuna modifica a indici, percorsi o redirect.
+
+- [[Programmazione/Python/Promemoria/Pagine/Python - Comprehension iteratori e generatori|Comprehension, iteratori e generatori]]: dati autonomi, filtro/trasformazione, duplicati e alias, zip con controllo differito, sentinella, consumo monouso, errori lazy, delega, chain/islice, groupby adiacente e cleanup dopo consumo parziale.
+- [[Programmazione/Python/Promemoria/Pagine/Python - Asyncio e concorrenza|Asyncio e concorrenza]]: blocchi eseguibili, coroutine rispetto a task, gather rispetto a TaskGroup, timeout, to_thread e cancellazione, coda limitata con sentinella e task_done. Dichiarati limiti di cooperazione, memoria e assenza di rollback.
+- [[Programmazione/Python/Promemoria/Pagine/Python - Eccezioni log e debug|Eccezioni, log e debug]]: errori specifici e fallback, try/else/finally, cause, eccezione personalizzata, file opzionali, suppress, configurazione logging e traceback, debugger esplicitamente interattivo, introspezione e assert rimossi con -O.
+- Conservati gli argomenti precedenti. Struttura operativa, spiegazioni brevi e rimandi alla teoria; **33 blocchi Python** nel nuovo lotto: 14, otto e undici rispettivamente.
+
+### Verifica tecnica
+
+- Consultate fonti ufficiali Python 3.12 e note principali gia revisionate. Baseline **CPython 3.12.10 con GIL, task factory standard, Node 24.14.0 su Windows x64**.
+- Nuova suite `_Meta/tests/python-promemoria-iterazione-async-debug.test.mjs`: **91/91 test mirati**, zero skip/fallimenti, circa **22 secondi**. Primo giro tutto superato; resa poi esplicita anche l'asserzione sul root logger nel test di import prima della regressione.
+- Blocchi estratti dalle note, processi isolati, risultati/output controllati. Varianti AST solo sui dati dimostrativi; guasti async tramite sostituzione della funzione chiamata, non delle primitive del loop.
+- Provati consumo e input vuoti, duplicati/alias, zip, generatori e cleanup; ordine gather, fratelli non cancellati automaticamente ma raccolti dalla prova, TaskGroup con errore/cleanup e assenza di task residui.
+- Thread reale con Event per provare che la cancellazione dell'attesa non arresta la funzione; thread sempre rilasciato e atteso. Coda verificata anche con errore del worker e input vuoto, inclusa contabilita della sentinella.
+- File reali temporanei, decoding/assenza, cause, chiusura e fallback. PermissionError del file opzionale simulato. Logging con livelli/handler gia presenti, import senza configurazione, argomenti eager e traceback.
+- Pdb reale: breakpoint, ispezione/continuazione e CLI -m pdb tramite stdin controllato; nessun debugger lasciato in attesa. Verificato anche il vero interprete con -O, oltre al caso ordinario delle asserzioni.
+- Regressione delle **sei suite dei 13 promemoria**, piu Funzionale/Iterazione, Concorrenza e Qualita: **605/605 test**, zero skip/fallimenti, circa **217 secondi**. Include **404 test dei promemoria**, non l'intera suite delle 75 note principali o degli altri linguaggi.
+- Riutilizzate le toolchain Packaging, Database e Qualita gia disponibili. La nuova suite usa solo standard library; nessuna modifica al Python globale, ai lockfile o alle dipendenze site. Fixture rimosse dopo controllo del percorso risolto, parent e prefisso.
+- Limiti: una versione/OS, nessun benchmark, carico, free-threading, eager task factory, matrice di scheduler/IDE o audit dei log. Pdb provato in subprocess, non su un terminale grafico personale; non ogni frammento inline e eseguito. Le verifiche non garantiscono cleanup dopo crash o arresto forzato.
+
+### Verifica editoriale e Quartz
+
+- **911 documenti raggiungibili, zero errori e 391 avvisi editoriali**, nessuno specifico sui tre promemoria. Rapporto rigenerato e **9/9 test della trasformazione** superati.
+- Build riuscita: **3.719 file, 2.003 HTML, 168 redirect, 139.416 riferimenti e zero errori**. Avvisi noti su eval del plugin e directory temporanea senza Git invariati.
+- A build conclusa, **7/7 test HTTP dell'anteprima** superati separatamente: con la regressione precedente, **612 test complessivi**, non un'unica esecuzione.
+- QA Chrome **156.0.8078.48**, desktop 1440x1000 e mobile 390x844: HTTP 200 per tutte e tre le pagine, nessun errore console/JavaScript o overflow del documento. Venticinque elementi di codice scorrevoli su mobile, nessuno su desktop; sei screenshot ispezionati. Browser QA chiuso e anteprima esistente mantenuta su http://localhost:8082/appunti/.
+- Formattazione, gerarchia dei titoli, YAML invariato e diff verificati. Conservate le modifiche precedenti; nessun commit/push. Storico recente aggiornato nella voce del 27 ottobre e mantenuto a dieci voci.
+
+### Prossimo blocco
+
+Python concluso in questa passata: **75 note principali e 13 promemoria**. Proseguire con **Rust: Fondamenti del Linguaggio**, seguendo l'indice; iniziare da Sintassi di base, Tipi di dato primitivi e Variabili, mutabilita e shadowing.

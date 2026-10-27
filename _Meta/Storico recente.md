@@ -8,6 +8,123 @@ Mantieni solo le ultime 10 voci operative.
 
 ---
 
+## 2026-10-27 - Python: note principali e promemoria completati
+
+### Fatto
+
+- Revisione Python completata in questa passata: **75 note principali su 75 e 13 promemoria su 13**, conteggiati dalle destinazioni uniche degli indici. I promemoria contengono **144 blocchi Python**. Lo stato delle note resta non revisionato fino all'approvazione dell'utente.
+- Promemoria Sintassi essenziale e Funzioni: snippet autonomi, None/falsy, tipi e alias, cicli, firme/default, mutazioni e consumo degli iteratori. Bounds con contratto di sequenza esplicito; sostituito il connect vuoto con costruzione di opzioni senza I/O.
+- Nuova suite `python-promemoria-linguaggio.test.mjs`: **24 snippet e 53/53 test mirati** superati. Solo standard library, nessuna nuova installazione. Prosa breve e rimandi alla teoria; nessuna nuova nota o duplicazione delle spiegazioni estese.
+- Revisionati anche Liste, tuple e set e Dizionari: accesso, mutazioni, copie e alias, ordine/hashability, assenza e None, merge, viste, raggruppamenti e default mutabili. Nuova suite `python-promemoria-collezioni.test.mjs`: **24 snippet e 55/55 test mirati** superati; dettagli nel registro.
+- Revisionati Stringhe e regex e Numeri e date: Unicode/ASCII, ricerca e sostituzione, parsing, precisione/arrotondamento, random/secrets, date aware, DST, timestamp e durate. Suite `python-promemoria-testo-date.test.mjs`: **27 snippet e 74/74 test mirati**, circa 15 secondi. Riutilizzata tzdata 2026.5 nell'ambiente temporaneo Packaging, senza nuove installazioni.
+- Revisionati File e percorsi e JSON e CSV: cwd/script, encoding, modi di apertura, operazioni distruttive e cleanup, parsing distinto da validazione, schema minimo e righe CSV incomplete. Suite `python-promemoria-file-dati.test.mjs`: **23 snippet e 75/75 test mirati**, circa 16 secondi; filesystem temporaneo, nessun file dell'utente modificato dalle prove.
+- Revisionati Richieste HTTP e Moduli, ambienti e dipendenze: contratti/status, risorse sync/async, token, download limitato con parziali dichiarati; package multifile, -m, venv, interprete, pip e snapshot. Suite `python-promemoria-http-ambienti.test.mjs`: **13 blocchi Python e 56/56 test mirati**, circa 44 secondi, con comandi PowerShell e installazione offline in fixture. Dettagli e limiti nel registro.
+- Ultimo lotto: Comprehension/iteratori/generatori, Asyncio/concorrenza ed Eccezioni/log/debug. Consumo lazy e cleanup, task/errori/cancellazione, logging e debug interattivo. Suite `python-promemoria-iterazione-async-debug.test.mjs`: **33 blocchi e 91/91 test mirati**, circa 22 secondi; provati anche pdb e interprete con -O reali.
+- Note convertite alla struttura operativa del rispettivo type: prerequisiti, procedure, comandi separati, debug, checklist e fonti ufficiali.
+- isort: classificazione, esclusioni, check rispetto a modifica, Black/Ruff e ordine intenzionale. pre-commit: file tracciati/staged, correzioni, hook locali/manuali e CI.
+- tox/nox: riusato il package gia documentato, installazione reale, ambienti separati, posargs, errori, interpreti mancanti e riuso. TOML nativo per tox, senza dichiarare non funzionanti le vecchie configurazioni INI.
+- Nuova suite tecnica in `_Meta/tests/python-tooling.test.mjs`; dettagli e limiti nel [[_Meta/Revisione contenuti|registro di revisione]] e nel README dei test.
+- Regressione del blocco Tooling: **125/125 test superati**, zero skip/fallimenti, circa 277 secondi. Include **37/37 nuovi test** e **7/7 test dell'anteprima**; dettagli nel registro, distinta dalla nuova regressione dei promemoria.
+- Regressioni dei precedenti blocchi dei promemoria: **191/191**, **175/175**, **167/167**, **183/183** e **147/147 test**, dettagli nel registro. Ultimo blocco: **605/605 test** (tutti i 13 promemoria piu Funzionale/Iterazione, Concorrenza e Qualita) in circa 217 secondi, poi **7/7 test anteprima** a build conclusa; **612 complessivi** in due esecuzioni. Inclusi **404 test dei promemoria**; non rieseguite tutte le altre suite delle note principali o degli altri linguaggi.
+- content:check: **911 documenti raggiungibili, zero errori e 391 avvisi editoriali**; nessuno specifico sui tre ultimi promemoria. **9/9 test della trasformazione** superati.
+- Ultima build Quartz: **3.719 file, 2.003 HTML, 168 redirect, 139.416 riferimenti e zero errori**. Avvisi noti invariati.
+- QA Chrome **156.0.8078.48**, ultimi tre promemoria su desktop/mobile: HTTP 200, nessun errore console/JavaScript o overflow del documento. Venticinque elementi di codice scorrevoli su mobile, nessuno su desktop, sei screenshot ispezionati; browser QA chiuso. QA dei blocchi precedenti nel registro.
+
+### Decisioni
+
+- CPython 3.12.10 e Node 24.14.0 su Windows. Toolchain temporanea del blocco Tooling: isort 9.0.2, pre-commit 4.7.0, tox 4.67.1, nox 2026.10.20, Black 26.10.1, pytest 9.1.1 e Ruff 0.17.3. Per HTTP riusati Requests 2.34.2 e HTTPX 0.28.1; prove pip solo in fixture con artefatti locali. Nessuna nuova dipendenza del progetto o modifica al Python globale.
+- Nessun hook installato nel vault, nessun commit/push. YAML confrontato con Git e invariato; status non revisionato finche l'utente approva. Nessun cambio a indici, percorsi, redirect o dipendenze Quartz.
+- Conservate le modifiche precedenti; storico limitato a dieci voci, con dettagli delle precedenti nel registro. Anteprima esistente su http://localhost:8082/appunti/.
+
+### Prossimi passi
+
+- Python concluso in questa passata: **75 note principali e 13 promemoria**, non una certificazione di assenza di errori. Proseguire con **Rust: Fondamenti del Linguaggio**, a partire da Sintassi di base, Tipi di dato primitivi e Variabili, mutabilita e shadowing.
+
+## 2026-10-26 - Python: database, dati, automazione e LLM
+
+### Fatto
+
+- Revisionate SQLAlchemy, Alembic, Pydantic e HTTPX e requests, completando Web, API e Database; completato anche Data, Automazione e LLM con pandas, NumPy, Jupyter, scraping, automazione, llama-cpp-python e OpenAI API. Avanzamento **72 note Python su 75**, con **13 promemoria** separati.
+- Database/HTTP: sessioni e transazioni, migrazioni, contratti e client sync/async. Suite dedicata **68/68**; toolchain isolata SQLAlchemy 2.0.55, Alembic 1.20.1, Pydantic 2.14.1, email-validator 2.3.0, aiosqlite 0.22.1, HTTPX 0.28.1, Requests 2.34.2.
+- Dati/notebook: report e mancanti, Copy-on-Write, shape/viste/broadcasting, kernel e stato riproducibile. Suite **49/49**; toolchain isolata pandas 3.1.0, NumPy 2.5.4, JupyterLab 4.6.4, Notebook 7.6.3, ipykernel 7.4.0, nbconvert 7.17.2, nbformat 5.11.1. Nessun kernelspec globale modificato.
+- Ultima regressione completa, eseguita nel blocco Dati: **777 casi, 775 superati e 2 saltati** per MSVC assente. Non e il conteggio della nuova regressione mirata.
+- Scraping: parser separato dal download, campi mancanti e URL, charset, status e dimensioni; distinti crawler, robots e sicurezza SSRF.
+- Automazione: CLI con piano e dry-run predefinito, collisioni/idempotenza, log, errori parziali e limiti di concorrenza. Nessun file dell'utente rinominato dai test.
+- Nuova suite **48/48**, quattro blocchi estratti. HTTP solo locale e filesystem temporaneo. Junction reale; symlink file e timeout tramite mock. Riutilizzata la toolchain Data con beautifulsoup4 4.15.0, SoupSieve 3.0.4 e Requests 2.34.2, senza installazioni.
+- Regressione del blocco Scraping: **208/208 test superati**, inclusi **7/7 test dell'anteprima**. Dettagli nel registro; non e il conteggio della nuova regressione LLM.
+- LLM: esempi locali senza caricamento globale, budget e close; OpenAI con client iniettato, stato/refusal, classificazione Pydantic e streaming. **42/42 nuovi test**, cinque blocchi estratti, nessuna inferenza reale o chiamata a pagamento.
+- Toolchain LLM isolata: llama-cpp-python 0.3.36 wheel CPU, openai 3.38.0, HTTPX2 2.16.0 e Pydantic 2.14.1. Import/firme reali, modello simulato e trasporto HTTP in memoria; nessun peso scaricato.
+- content:check: **911 documenti raggiungibili, zero errori e 405 avvisi editoriali**. **9/9 test della trasformazione** superati.
+- Regressione mirata LLM/HTTP/database e anteprima: **117/117 test superati**, zero skip/fallimenti, circa 112 secondi, inclusi **7/7 test dell'anteprima**. Non rieseguita tutta la suite Python o degli altri linguaggi.
+- Build riuscita: **3.719 file, 2.003 HTML, 168 redirect, 138.969 riferimenti e zero errori**; avvisi noti invariati.
+- QA delle due note LLM con Chrome 155.0.8059.85 su desktop/mobile: HTTP 200, nessun errore console/JavaScript o overflow della pagina. Nove elementi scorrevoli su mobile e uno su desktop; quattro screenshot ispezionati e browser QA chiuso.
+
+### Decisioni
+
+- Baseline CPython 3.12.10, Windows, Node 24.14.0. Metadati confrontati con Git e invariati; status non revisionato finche l'utente non approva. Nessun cambio a percorsi, indici o redirect.
+- Nessuna modifica a Python globale, dipendenze del sito o lockfile. Nessun benchmark, audit completo o matrice OS/versioni; dettagli e limiti nel [[_Meta/Revisione contenuti|registro]] e nel README dei test.
+- Nessun commit o push. Conservate le modifiche precedenti; storico a dieci voci. Anteprima esistente su http://localhost:8082/appunti/.
+
+### Prossimi passi
+
+- Completare **isort**, **pre-commit**, **tox e nox**. Restano **3 note principali e 13 promemoria**.
+
+## 2026-10-24 - Python: dalla standard library ai framework web
+
+### Fatto
+
+- Revisionate cinque note di Standard Library Pratica, sei di Internals, quattro di Concorrenza, cinque di Performance e quattro sui framework web: **61 note Python su 75**, con 13 promemoria separati. Rimandi alla stessa nota conteggiati una sola volta.
+- Standard Library: Subprocess, CLI con argparse, SQLite con sqlite3, Networking base e Configurazione e Variabili d Ambiente. Risorse, transazioni, framing, timeout e parsing rigoroso; 17 blocchi e 57 test dedicati, dettagli nel [[_Meta/Revisione contenuti|registro di revisione]].
+- Internals: Memory Management, Global Interpreter Lock, Introspezione, Data model, Descriptor protocol e Metaclassi. Raggiungibilita/RSS/risorse, GIL/lock, lookup e protocolli impliciti; 26 blocchi e 73 test dedicati.
+- Concorrenza: Threading, Multiprocessing, Asyncio e Concurrent.futures. Arresto cooperativo, esiti/errori espliciti, spawn e import protetto, Queue/Value, TaskGroup/gather, cancellazione/timeout e finestra di submit. Limiti dei demo e differenze rispetto ai supervisori di produzione dichiarati.
+- Performance: Profiling, Caching, C extensions, Cython e PyInstaller. Carico misurabile, cache e invalidazione, confine nativo con tipi/ownership espliciti, memoryview e progetto di distribuzione completo. Corretto py-spy su Windows con --subprocesses per seguire il launcher del virtualenv.
+- Nuova suite Performance: **45 casi, 43 superati e due test nativi saltati per MSVC assente**. Cython tradotto realmente in C; build PyInstaller onedir/onefile, copie fuori dai sorgenti e spec eseguiti. La compilazione e il runtime C/Cython restano da verificare.
+- Framework: Flask, Starlette, FastAPI e Django. Progetti realmente eseguibili, input/HTTP/errori, lifespan, WS, modelli/override e migrazioni. Chiariti validazione rispetto a vincoli DB, CSRF nei test e limiti di autenticazione/CORS; nessun demo presentato come backend completo.
+- Nuova suite Web: **53/53 test**, con 14 blocchi Python e un template HTML estratti dalle note. Eseguiti anche i sette test Django originali, HTTP su loopback e check/migrazioni nel solo database temporaneo.
+- Regressione seriale delle dodici suite: **660 casi, 658 superati, zero fallimenti e 2 saltati**, circa 328 secondi. CPython 3.12.10 con GIL e Node 24.14.0 su Windows; dettagli nel registro e nel README dei test.
+- Toolchain Performance installata in un nuovo virtualenv temporaneo: Cython 3.3.0, PyInstaller 6.22.3, py-spy 0.4.2 e cachetools 7.2.4. Nessuna modifica al Python globale o alle dipendenze site. Fonti ufficiali e limiti di piattaforma dichiarati; nessun benchmark.
+- Toolchain Web separata: Flask 3.1.3, Starlette 1.10.0, FastAPI 0.162.0, Pydantic 2.14.1 e Django 5.2.18; versioni di client e server registrate nel README dei test. Nessuna modifica alle dipendenze globali o del sito.
+- content:check: **911 documenti raggiungibili, zero errori e 413 avvisi editoriali**. **9/9 test della trasformazione** e **7/7 test dell'anteprima** superati.
+- Ultima build riuscita: **3.719 file, 2.003 HTML, 168 redirect, 138.693 riferimenti e zero errori**. QA delle quattro pagine Web desktop/mobile senza errori o overflow; 21 blocchi/tabelle scorrevoli su mobile, due su desktop e sei screenshot ispezionati.
+- Anteprima lasciata attiva su http://localhost:8082/appunti/. Browser QA e server di prova chiusi; browser personale non modificato.
+
+### Decisioni
+
+- Conservati date, percorsi, type, publish e status non revisionato; l'approvazione dell'utente e separata. Nessuna nuova nota, nessun indice o redirect modificato.
+- Test limitati alla baseline Windows. Nessun audit completo, carico, matrice di versioni/OS/database, multiworker, TLS/proxy o deployment pubblico. Limiti specifici di ogni blocco nel registro e nel README; le build native C/Cython restano non verificate senza MSVC.
+- Nessun commit o push. Storico mantenuto a dieci voci; le revisioni precedenti restano nel registro dettagliato.
+
+### Prossimi passi
+
+- Completare **Python: Web, API e Database** con SQLAlchemy, Alembic, Pydantic e HTTPX e requests. Restano **14 note principali e 13 promemoria**.
+
+## 2026-10-23 - Python: percorso base e qualita
+
+### Fatto
+
+- Avviata la revisione Python dopo il push TypeScript su origin/main, commit `9adc990`. Controllate otto note di Fondamenti, cinque di Strutture Dati, sei di File, Moduli e Ambiente, otto di Oggetti, sei di Funzioni/Iterazione e quattro di Type Hints e Qualita: **37 su 75**, con 13 promemoria separati. Rimandi multipli alla stessa nota contati una sola volta.
+- Fondamenti: toolchain, binding, operatori, match, iteratori, default e gestione errori. Strutture Dati: slicing/ordinamento, copie, hashability, merge e comprehensions. Dettagli e prove nel [[_Meta/Revisione contenuti|registro di revisione]].
+- File e ambiente: completati I/O e formati strutturati, fusi orari e code, pip/venv e packaging. Unico package dimostrativo completo; chiariti editable rispetto a wheel, lockfile e sincronizzazioni. Corretto il layout uv esplicitando --no-package.
+- Oggetti: validazione prima delle mutazioni, dataclass e hash, enum, protocolli speciali, MRO/super, incapsulamento, proprieta/cache e factory con cls/Self.
+- Funzioni e iterazione: closure, callback eager/lazy, ordine dei decoratori, wrapper async, generatori e validazione differita, break/close, iteratori riutilizzabili e gestione delle risorse sync/async. Nuova suite con 33 esempi autonomi e 73 test; mantenuto il template teorico per Higher-order Functions.
+- Qualita: completati generici/Protocol/TypedDict/Literal/NewType e checker strict; distinti formatter/linter/test. Progetto con parser di porte completo, 26 casi pytest e coverage; logging con propagazione, configurazione, JSON e rotazione. Controprove su cast, Protocol, mutazione del parser e 100% di coverage senza asserzioni.
+- Sette suite Python: **369 test superati**, 58 Fondamenti + 60 Strutture Dati + 28 File/Standard Library + 16 Packaging + 69 Oggetti + 73 Funzionale/Iterazione + 65 Qualita; nessun fallimento o test saltato, circa 182 secondi. Baseline CPython 3.12.10 e Node 24.14.0 su Windows.
+- Tool di packaging e tzdata installati solo in un virtualenv temporaneo separato. Provati build sdist/wheel, installazioni pulite, CLI, uv/pipx/Poetry e casi di errore; nessuna modifica al Python globale o alle dipendenze site.
+- Toolchain Qualita separata: mypy 2.4.0, Pyright 1.1.414, Ruff 0.17.2, Black 26.10.1, pytest 9.1.1 e Coverage.py 7.17.0. Esempi estratti dai Markdown, CLI reali e fixture temporanee; nessuna modifica a site o lockfile.
+- content:check: **911 documenti raggiungibili, zero errori e 434 avvisi editoriali**. Nove test della trasformazione superati.
+- Ultima build riuscita: **3.719 file, 2.003 HTML, 168 redirect, 138.234 riferimenti e zero errori**. QA delle quattro pagine Qualita desktop/mobile senza errori o overflow; 30 blocchi/tabelle scorrevoli su mobile e sei screenshot ispezionati.
+- Nel blocco Oggetti corretto un HTTP 500 dell'anteprima locale sugli URL accentati, causato da Content-Disposition: header inline senza filename, dipendenze e nomi invariati. Quattro casi Unicode falliti prima della correzione, **7/7 test HTTP superati** dopo e di nuovo nell'ultima regressione. Anteprima lasciata attiva su http://localhost:8082/appunti/, browser e server di prova chiusi.
+
+### Decisioni
+
+- Conservati date, percorsi, type, publish e status non revisionato; approvazione dell'utente separata dalla revisione tecnica. Nessuna nuova pagina di conoscenza, nessun indice o redirect modificato.
+- Test limitati a Windows/CPython 3.12; nessuna matrice di sistemi, audit, benchmark, pubblicazione di package o configurazione persistente del PATH. Gli altri linguaggi non sono stati rieseguiti.
+- Nessun commit o push Python in questa sessione. Storico mantenuto a dieci voci operative.
+
+### Prossimi passi
+
+- Proseguire con **Python: Standard Library Pratica**: Subprocess, CLI con argparse, SQLite con sqlite3, Networking base, Configurazione e Variabili d Ambiente. Restano 38 note principali e 13 promemoria; i rimandi alla nota Standard Library sono gia coperti.
+
 ## 2026-10-22 - TypeScript: revisione dei capitoli avanzati
 
 ### Fatto
@@ -151,133 +268,3 @@ Mantieni solo le ultime 10 voci operative.
 ### Prossimi passi
 
 - Rimangono **16 note React**: proseguire con useTransition e useDeferredValue e Gestione della memoria e AbortController.
-
-## 2026-10-15 - React: stato, UX e rendering
-
-### Fatto
-
-- Revisionate 32 note fra Stato e Rendering, Toolchain Base, Hooks e Stato, Routing/Data Fetching/Form, Component Patterns, UX/Accessibilita, Performance/Internals e primo blocco server-side. Insieme ai cinque fondamenti del 14 ottobre, React arriva a **37 note su 59**. Dettagli e risultati intermedi in Revisione contenuti.
-- Corretti snapshot/updater, cleanup e race condition, form e ref; metriche del Profiler, scope CSS, temi e responsive; memoizzazione, reducer e custom hook. Esempi completi con import, contratti, fonti ufficiali e metadati conservati.
-- Completate Context API, State Management Esterno e Derived state: fallback e provider annidati, store Zustand/Redux con selector e reset, durata distinta dalla persistenza, valori derivati e bozze con politiche esplicite.
-- Completate React Router, Data Fetching e Cache e Validazione Dati: modalita/versioni del router e hosting, cache e rollback con riconciliazione, parsing Zod e form accessibili. Contratti e limiti dei demo espliciti; nessun backend reale incluso.
-- Completate Compound Components Pattern, Control Props e State Reducer Pattern, Portals ed Error Boundaries: accordion completo, contratti controlled/reducer/render prop, dialog nativo, propagazione eventi, limiti e recupero degli errori.
-- Completate WAI-ARIA, Focus Management, Animazioni e Micro-interazioni e Internazionalizzazione: esempi completi, nomi/relazioni, focus dopo commit, reduced motion, plurali/fallback e locale distinto da valuta/fuso.
-- Completate Virtual DOM, Fiber Architecture e Concurrent Mode, Batching e React Compiler: identita/riordino, scheduling, snapshot/coda e flushSync; configurazione Vite 8/plugin-react 6 con Compiler realmente eseguito e baseline non compilata.
-- Completate Virtualizzazione delle liste e Suspense e Lazy Loading: esempi completi TanStack Virtual, misure e stato/focus; code splitting con import reale, fallback, error boundary e distinzione fra cache del codice e stato del pannello.
-- Completate Server Components e SSR e SSG: progetto Next reale, confini degli import/JSX e dati pubblici, rendering per richiesta, streaming, export statico e mismatch. Corretti benefici automatici e hydration implicita, chiudendo la segnalazione precedente.
-- Regressione finale: **410 test React superati**, inclusi 22 nuovi su API React, build/HTTP Next ed export, Chrome e hydration. Due nuove scansioni axe e sedici ripetute dai blocchi precedenti, non equivalenti a un audit completo. Dettagli e limiti nel registro.
-- Dipendenze degli esempi solo nella toolchain temporanea esterna; aggiunti Next 16.4.1 e server-only 0.0.1. Nessuna modifica a package/lockfile Quartz; processi/server/browser degli esempi chiusi e fixture rimosse. Suite JavaScript non rieseguita.
-- content:check: **911 documenti raggiungibili, zero errori, 563 avvisi editoriali**. Superati i nove test della trasformazione; README, rapporto e registro aggiornati.
-- Build finale riuscita: **3.719 file, 2.003 HTML, 168 redirect e 135.941 riferimenti verificati, zero errori**. Nessuna modifica manuale agli HTML generati.
-- Ultime due note controllate in quattro viste desktop/mobile e sei screenshot ispezionati: nessun errore di caricamento o overflow del documento. Dieci blocchi di codice larghi su mobile, tutti scorribili; entrambe le tabelle entro il viewport. Anteprima trovata spenta e riavviata in background senza finestra su http://localhost:8082/appunti/; browser QA chiuso.
-
-### Decisioni
-
-- Testare il codice estratto dalle note; distinguere Fetch reale da mock differiti e autenticazione simulata da un backend reale.
-- Le note restano non revisionate fino al controllo dell'utente. Nessun commit, push o deploy remoto.
-
-### Prossimi passi
-
-- Rimangono **22 note React**: proseguire con Actions e form actions e useActionState nel blocco React Moderno e Server-Side. Suspense e gia revisionata; i richiami alla stessa nota nell'indice non vanno ricontati.
-- Il punto aperto su SSR e SSG e risolto; non estendere le prove del catalogo pubblico a sessioni, mutazioni o deploy di produzione.
-
-## 2026-10-14 - Fondamenta React
-
-### Fatto
-
-- Lette integralmente e corrette le cinque note iniziali: Introduzione e Toolchain, JSX, Componenti Funzionali vs Componenti a Classe, Props e Flusso di dati unidirezionale, Rendering Condizionale e Liste.
-- Aggiunto un progetto Vite completo e riproducibile; distinti React, renderer, JSX e strumenti di controllo. Comandi separati, import espliciti, esempi client senza backend.
-- Corretti parita funzione/classe, inizializzazione e identita dello stato, props condivise, input controllati, children, key e bozze dopo riordino. Fonti ufficiali nelle note, date originarie e stato non revisionato conservati.
-- Superati 33 nuovi test: 19 Node (cinque gruppi di sola sintassi) e 14 Chrome. Verificati build reale, interazioni e variante negativa con key indice. React 19.3.0, Vite 8.3.4, plugin React 6.1.2, Node 24.14.0 e Chrome 155.0.8059.79.
-- Toolchain installata soltanto in una directory temporanea esterna; nessun aggiornamento delle dipendenze di Quartz. Fixture, server e browser di test chiusi. Non rieseguita la suite JavaScript precedente.
-- Superati i nove test della trasformazione e content:check: 911 documenti raggiungibili, zero errori, 592 avvisi editoriali. Aggiornati registro della revisione, rapporto e README dei test.
-- Build Quartz ripetuta dopo il miglioramento della tabella mobile: 2.003 HTML e 135.401 riferimenti verificati, zero errori. Anteprima riavviata sulla porta 8082; nessuna modifica agli HTML generati.
-- Verificate tutte le cinque pagine su desktop/mobile, con codice scorrevole, due tabelle e screenshot ispezionati. Nessun overflow del documento, errore JavaScript o caricamento HTTP fallito.
-
-### Decisioni
-
-- Proseguire React per blocchi dell'indice, senza estendere le prove dei fondamenti a framework, SSR/RSC, effect o sicurezza.
-- Esempi estratti dai Markdown nei test; render statico usato per controllare markup, non presentato come implementazione SSR.
-- Le note restano non revisionate fino all'approvazione dell'utente. Nessun nuovo commit, push o deploy remoto.
-
-### Prossimi passi
-
-- Revisionare Stato e Rendering: useState, useEffect, useRef e Gestione Moduli (form/eventi e controlled/uncontrolled).
-- Rimangono 54 note React per questa passata; conservare il punto gia segnalato su SSR e SSG per il relativo blocco.
-
-## 2026-10-13 - Revisione contenuti JavaScript
-
-### Fatto
-
-- Dal 14 settembre al 13 ottobre lette e corrette tutte le 87 note JavaScript: tutte le 26 del Percorso Base, tutte le 23 del Percorso Intermedio, Web Workers, Service Workers e PWA, Web Components, Scheduling Browser, WebAssembly interop, Memory Lifecycle, Garbage Collection, Memory Leaks, WeakMap e WeakSet, Optimization, Buffer e Typed Arrays, Proxy e Reflect, Circular Dependencies, Decorators, Sicurezza, CORS, Content Security Policy, Sanitizzazione input, Supply chain security npm e Real-time con WebSocket; completato Node.js Runtime con Node.js Basics, File System fs, Path e Process, Events Node.js, Streams Node.js, Buffer Node.js, HTTP server, Child process e Worker threads; completato Tooling e Qualita con Testing, ESLint, Prettier, Vite, Bundling e tree shaking e Source maps e debugging. Completata Applicazioni Frontend e Backend anche con SPA e routing lato client, API REST e Server-side rendering. Fonti primarie e contratti espliciti degli esempi.
-- Risolti controlli di input troppo permissivi, esempi con dipendenze implicite e spiegazioni incomplete su scope, asincronia e gestione degli errori.
-- Corretti il fallback GET del form con password, i rifiuti asincroni non gestiti, le assunzioni sullo storage e gli esempi di rendering/delegazione/navigazione.
-- Corretti this/arguments delle arrow, default e destructuring, copie superficiali e selezione dei campi pubblici; approfonditi moduli browser/Node, live binding e import su richiesta con attesa/errori.
-- Corretti copie/riferimenti condivisi, chiavi proprie ed ereditate, array sparsi, Map/Set, parsing distinto da schema JSON, date/fusi/durate e regex; controllati gli esempi di calendario in piu timezone.
-- Corretti scope globale/modulo, TDZ e import, cattura dei binding, receiver/this e prototype delle funzioni/istanze. Migliorati esempi di sessione e formattazione, rimozione dei listener e contatori con input controllati.
-- Corretti campi di classe/setter, super e inizializzazione, privacy e riferimenti condivisi, static privati ereditati, default e vincoli dei descrittori. Esempi con invarianti controllate, errori intenzionali distinti e limiti di freeze/JSON espliciti.
-- Corretti task/microtask e opportunita di rendering, callback sincrone/asincrone, canali di errore e return, stati e composizione delle Promise. Aggiunti esempi completi di lavoro a blocchi, lettura error-first, cleanup dei listener e Fetch con schema dichiarato.
-- Corretti combinatori e input vuoti, timeout e abort con cleanup fino alla lettura del corpo, return await e top-level await. Riscritto il pool per evitare rifiuti non gestiti, fermare nuovi avvii dopo un errore e attendere i lavori gia attivi.
-- Corretti wrapper Fetch e header, risposte vuote, FormData, consumo del corpo e schema dei dati. Approfonditi signal monouso, motivi di abort, any/timeout, cleanup dei listener e ricerca protetta da risultati obsoleti.
-- Corretti XHR e ciclo della UI AJAX; completati parsing, invio limitato e backoff WebSocket. Allineata Real-time con WebSocket con start/stop, cleanup e retry limitati, senza ripartenza dopo stop volontario.
-- Chiariti purezza, mutazione locale, currying e composizione; separati core e shell DOM. Corretti Observer, selezione delle strategie e wrapper che perdeva this; precisati scope dei moduli e limiti dei pattern.
-- Corretti clonazione, transfer, tabelle freeze/seal e deepFreeze con cicli/accessor. Completati protocolli iterator, next/return/throw e paginazione lazy con schema, limite richieste e abort.
-- Corretti protocollo, clone/transfer, errori e cancellazione dei worker. Riscritti lifecycle, scope, cache e fallback dei Service Worker; separati installabilita PWA, offline e API opzionali. Nessun worker installato in Quartz.
-- Corretti lifecycle, upgrade, attributi/proprieta, eventi e testo non fidato nei Web Components; aggiunti toggle con tastiera/stato e cleanup esterno. Corretti timeout idle, polling, rAF e lavoro a blocchi con fallback, budget e abort.
-- Completata WebAssembly interop con sorgente WAT compilabile, loader HTTP/streaming/fallback, ABI numerica, UTF-8, crescita e ownership della memoria, errori e limiti CSP/toolchain. WABT 1.0.39 isolato in una cartella temporanea esterna, senza modifiche alle dipendenze del sito.
-- Corretti stack/heap intesi come collocazione obbligatoria, alias e root del GC. Aggiunti cleanup idempotenti per widget e timer, esempi completi di cicli/Map, WeakRef e FinalizationRegistry; distinti raccolta, riuso, RSS e metriche Node. I test non promettono rilascio fisico o tempi del collector.
-- Corretti listener anonimi, abort tardivo, diagnosi dei leak e limiti delle cache; aggiunti vista cancellabile, LRU e richiesta protetta dopo lo smontaggio. Chiariti simboli, identita, ephemeron, valori undefined e API recenti di WeakMap, stato privato e visita iterativa senza duplicare nodi.
-- Completati misurazione e limiti delle ottimizzazioni, debounce/throttle e filtro con cleanup, letture DOM e border-box. Corretti copie/viste/conversioni/transfer, ArrayBuffer ridimensionabili, DataView con offset, UTF-8 strict e Buffer Node; aggiunto parser didattico con limiti dichiarati e controlli sui dati.
-- Corretti receiver, invarianti, defineProperty e limiti dei Proxy; completati validazione, revoca, chiamate e costruzione. Resi eseguibili e deterministici i casi ESM/CommonJS con entry point espliciti, export parziali/sostituiti, composizione e import lazy; aggiunto il caso di attesa reciproca con top-level await.
-- Distinti decorator moderni e legacy, stato TC39 datato e supporto del compilatore. Corretti timing async, validazione dei campi e auto-accessor; completati composizione, addInitializer, binding e metadata. Esempi trasformati con esbuild 0.27.3, non presentati come prova di sintassi nativa.
-- Distinti XSS, CSRF, autorizzazione, cookie e storage; aggiunti rendering testuale, URL con protocollo/origine verificati e invio con token CSRF dal contratto esplicito. Riscritta CORS con demo locale completa, credenziali, preflight, cache e header esposti; documentata la divergenza osservata fra Chrome e Fetch per Authorization con wildcard.
-- Completate CSP e Sanitizzazione input: nonce per risposta, hash esatti, fallback, strict-dynamic e report-only; distinti validazione, encoding e HTML sanitizzato. Aggiunti moduli eseguibili e allowlist DOMPurify 3.4.16, installato solo in una directory temporanea esterna. Nessuna modifica alla CSP o alle dipendenze di Quartz.
-- Aggiunti 1209 test Node.js e 274 test Chrome, tutti superati (1483 totali) con file eseguiti serialmente e senza build concorrente; superati anche i 9 test della trasformazione e i controlli strutturali (911 documenti, zero errori, 597 avvisi editoriali). Il totale include 11 gruppi di controllo sintattico dei promemoria, distinti dall'esecuzione dei frammenti. Fixture loopback e directory temporanee richiedono esecuzione autorizzata fuori dal sandbox che ne blocca l'accesso.
-- Completata Supply chain security npm con limiti di lockfile/audit/firme, policy degli script, registry, CI e OIDC. Aggiunta demo npm 11.19.0 e 12 test CLI offline su fixture temporanee, senza aggiornamenti delle dipendenze del sito. Distinti i cambiamenti documentati di npm 12 dai comportamenti provati con npm 11.
-- Creato il registro `_Meta/Revisione contenuti.md` con copertura, limiti e prossimo blocco.
-- Completata Node.js Basics con formati ESM/CommonJS espliciti, working directory, argomenti, ambiente e gestione degli errori. Aggiunta CLI completa senza dipendenze e 38 test reali di Node/npm su fixture isolate; dichiarati limiti di memoria/Unicode e separazione fra runtime e package manager.
-- Completate File System fs e Path e Process: scritture esclusive, JSON validato senza sovrascrivere il sorgente, stream con errori, handle e metadati; distinti cwd/modulo/URL, semantica Windows/POSIX e autorizzazione dei percorsi. Aggiunti parsing CLI e ambiente con precedenza dichiarata e 77 test su fixture temporanee, inclusa una junction/link interna alla fixture.
-- Completate Events Node.js e Streams Node.js: dispatch sincrono, errori/rejection, cleanup e attese preventive, job con worker esplicito; chunk/framing/UTF-8, backpressure, fine/chiusura, scrittura e gzip esclusivi, JSON Lines e cancellazione senza rollback. Aggiunti 58 test su snippet reali, filesystem temporaneo e stream controllati.
-- Completate Buffer Node.js e HTTP server: copie/viste/encoding, hex rigoroso, interi e lettura Base64 limitata; server locale con routing, body limitato, JSON/schema, HEAD, errori async, timeout e shutdown. Aggiunti 79 test Node su file temporanei e servizi loopback, con limiti delle prove espliciti.
-- Completate Child process e Worker threads: programmi Node portabili, argv/ambiente/output, exit/close e limiti dei segnali; calcolo completo e protocollo one-shot con attesa della chiusura, errori tardivi, abort/timeout, clone e transfer. Aggiunti 90 test su processi e thread reali, senza rete esterna o modifiche alle dipendenze.
-- Completate Testing ed ESLint: runner/assertion/ambiente, esempi Node completi e asincroni, contratti e limiti di mock/coverage; flat config ESLint 10 con globali distinti, regole reali, ignore, fix ed exit code. Aggiunti 74 test, incluse due alterazioni controllate nelle fixture e la correzione di print-config. Tool ESLint installati solo in una directory temporanea esterna.
-- Completate Prettier e Vite: formatter distinto dai controlli logici, configurazione/ignore/CI e output esatto; progetto frontend completo con base, asset, env pubblici, dev/build/preview e limiti HMR/tipi. Aggiunti 32 test Node/browser con Prettier 3.9.10 e Vite 8.3.4 installati soltanto in una directory temporanea esterna.
-- Completate Bundling e tree shaking e Source maps e debugging: distinti effetti al caricamento e nel corpo delle funzioni, namespace statici, sideEffects/PURE, splitting e DCE; mappe esatte di build, hidden non privato e diagnosi di un errore intenzionale. Aggiunti 24 test, inclusi quattro Chrome, senza nuove dipendenze del sito.
-- Completate SPA e routing lato client e API REST: corrette intercettazione dei link, cronologia e fallback; distinti vincoli REST, semantica HTTP e contratto del client. Aggiunti router didattico completo, client validato e 44 test Node/Chrome, con demo offline e fixture HTTP locali.
-- Completata Server-side rendering: distinti SSR, SSG, hydration e progressive enhancement; corretti escaping, cache privata e limiti dell'hosting. Aggiunto demo Node completo con ricerca server e ordinamento opzionale, verificato con 33 test, di cui otto Chrome. Nessuna nuova dipendenza; React hydration, RSC e streaming restano spiegazioni, non funzionalita provate dal demo.
-- Completati anche tutti gli 11 promemoria JavaScript: corretti contesti degli snippet, export ESM, copie e campi pubblici, raggruppamenti, regex/date, cleanup Promise, timeout Fetch fino alla lettura del corpo, storage e DOM. Mantenuti sintetici con rinvii alla teoria; aggiunti 64 test Node/Chrome, senza nuove dipendenze.
-- Verificata l'ultima build Quartz: 2.003 HTML e 135.332 riferimenti interni senza errori. Controllati tutti gli 11 promemoria con Chrome 155.0.8059.40 su desktop/mobile, inclusi codice e scorrimento delle cinque tabelle; ispezionati 11 screenshot rappresentativi delle schede. Nessun overflow del documento, errore JavaScript o caricamento HTTP fallito. Anteprima esistente mantenuta sulla porta 8082; nessun commit, push o deploy remoto.
-
-### Decisioni
-
-- La revisione tecnica procede per blocchi coerenti; i risultati non si estendono automaticamente alle altre note.
-- Le note rimangono `non revisionato` fino al controllo dell'utente.
-- I test degli esempi sono separati dai controlli di pubblicazione. Le risposte HTTP sono simulate o servite da una fixture temporanea su loopback; nessuna dipendenza da backend o servizi esterni.
-
-### Prossimi passi
-
-- Completata questa passata su tutte le 87 note JavaScript in Pagine e sugli 11 promemoria, 98 note complessive. Restano i contenuti degli altri argomenti, incluso il punto segnalato su SSR e SSG in React; Symbols e Iteration protocols rimandano a note gia controllate. Non confondere questa copertura con l'approvazione dell'utente.
-
-## 2026-09-13 - Vault focalizzato e navigazione unificata
-
-### Fatto
-
-- Conservate solo le aree Programmazione, Stampante 3D e Programmi open source; rimosse le altre aree tematiche dalla versione corrente.
-- Riorganizzati Home, indici principali e promemoria locali dei linguaggi; normalizzati PostgreSQL, nomi, YAML e wikilink completi.
-- Corrette gerarchie dei titoli, comandi copiabili e schede software troppo sintetiche; riscritta l'introduzione ai componenti FDM.
-- Adattata la pubblicazione Quartz: indici come pagine iniziali di cartella, reindirizzamenti per i percorsi spostati e controlli automatici prima del deploy.
-- Aggiunti README, test della trasformazione e rapporto strutturale riproducibile.
-- Verificati 911 documenti raggiungibili, 9 test automatici e 2003 HTML senza link o ancore mancanti; controllate navigazione, ricerca e resa desktop/mobile.
-
-### Decisioni
-
-- Markdown e fonte unica; gli indici non usano YAML e gli HTML restano generati.
-- Nel sito gli indici curati non ripetono l'elenco automatico di cartella; i font hanno fallback locali e gli URL spostati dispongono di redirect.
-- Le tre aree mantenute sono pubblicabili. Raw, template, metadati e infrastruttura restano esclusi dal sito.
-- La guida Marlin resta fissata alla release 2.1.2.8. I promemoria rimandano alla teoria, senza duplicarla.
-- Le note modificate restano non revisionate. La normalizzazione non equivale a certificare ogni esempio tecnico.
-
-### Prossimi passi
-
-- Integrare progressivamente le fonti mancanti indicate dal rapporto editoriale.
-- Rivedere i contenuti modificati prima di commit e pubblicazione.
