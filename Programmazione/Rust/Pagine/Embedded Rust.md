@@ -30,168 +30,221 @@ title: Embedded Rust
 
 ## Sintesi
 
-**Embedded Rust** e l'uso di Rust su microcontrollori, firmware bare metal e sistemi con risorse limitate. In questo contesto spesso non sono disponibili sistema operativo, heap, filesystem o standard library completa, quindi il codice usa `#![no_std]`, accesso diretto ai registri hardware e crate specializzate per startup, periferiche, interrupt e debug.
+Un firmware bare-metal non parte come un programma desktop. Prima che venga eseguita la logica Rust, il processore deve trovare il vettore di reset e uno stack valido, e il runtime deve preparare la memoria. Il target del compilatore descrive l'architettura e l'ABI: **non** dice quale pin pilota il LED né quanta RAM c'è sulla scheda.
 
-Il valore principale di Rust embedded e portare ownership, type system e astrazioni sicure in un dominio dove errori di memoria, race su registri e gestione errata degli interrupt possono causare blocchi difficili da diagnosticare.
+Questa nota segue un lampeggio dall'API portabile fino a un eseguibile ARM. La scheda di riferimento è la **NUCLEO-F401RE** con STM32F401RE e LED utente LD2 attivo alto su PA5, nella configurazione standard. Non usare automaticamente pin, indirizzi o dimensioni di questo esempio su un'altra scheda.
 
 ## Quando usarlo
 
-Usa Rust embedded quando devi scrivere firmware per microcontrollori, driver hardware, runtime su bare metal o software vicino al dispositivo.
-
-E utile soprattutto quando:
-
-- vuoi evitare classi comuni di bug C/C++ come use-after-free e data race;
-- lavori con periferiche memory-mapped;
-- devi modellare lo stato dell'hardware con tipi espliciti;
-- vuoi condividere codice portabile tra HAL diverse tramite trait comuni;
-- devi mantenere controllo su memoria, timing e dimensione del binario.
-
-Non e una scelta automatica per ogni dispositivo: servono supporto del target, toolchain, linker script, crate mature per la famiglia hardware e una strategia chiara per debug e flashing.
+Usa questo modello per un firmware su microcontrollore, un driver riutilizzabile o un'applicazione con vincoli di memoria e temporizzazione. Prima di partire controlla la disponibilità di un target, una HAL per il chip e strumenti di debug. Se il dispositivo esegue Linux, spesso puoi usare `std`, file e processi: *embedded* non significa necessariamente *bare-metal*.
 
 ## Come funziona
 
-Un progetto embedded Rust tipico combina piu livelli:
+| Livello | Domanda a cui risponde | Nell'esempio |
+| --- | --- | --- |
+| Target | Quali istruzioni e quale ABI deve usare il compilatore? | `thumbv7em-none-eabi` per Cortex-M4, ABI a virgola mobile software. |
+| Linker e runtime | Dove vanno codice e dati? Chi esegue il reset? | `memory.x` descrive Flash e RAM; `cortex-m-rt` fornisce `link.x`, vettori e startup. |
+| PAC | Come si accede ai registri di questa MCU? | `pac::Peripherals::take()` consegna i token delle periferiche del dispositivo una sola volta tramite l'API safe. |
+| HAL e BSP | Come configuro una periferica? Come è cablata sulla scheda? | La HAL STM32 configura GPIO e clock. Il collegamento LD2→PA5 viene dal manuale della scheda; qui non serve una crate BSP. |
+| Applicazione | Quando deve cambiare lo stato dell'uscita? | Una piccola libreria dipende solo dal trait `OutputPin` di `embedded-hal` 1.0. |
 
-- **target**: descrive architettura, ABI e vincoli di compilazione;
-- **startup/runtime**: inizializza stack, memoria e vettore degli interrupt;
-- **PAC**: Peripheral Access Crate generata dai descrittori hardware, espone registri a basso livello;
-- **HAL**: Hardware Abstraction Layer che incapsula registri e periferiche in API piu sicure;
-- **BSP**: Board Support Package, cioe configurazione specifica della scheda;
-- **applicazione**: logica firmware.
-
-Spesso il crate principale contiene:
-
-```rust
-#![no_std]
-#![no_main]
-```
-
-`no_std` rimuove la dipendenza dalla standard library completa. `no_main` indica che l'entry point non e il `main` standard di un programma hosted, ma una funzione gestita dal runtime embedded.
-
-Molte API embedded usano il type system per rappresentare lo stato dell'hardware. Per esempio, un pin puo essere trasformato da input a output consumando il valore precedente e restituendo un nuovo tipo:
-
-```rust
-let pin = pins.pa5.into_push_pull_output();
-```
-
-Questo evita di usare una periferica in modalita sbagliata dopo la configurazione.
+Su questo Cortex-M, al reset il processore legge dalla tabella dei vettori lo stack pointer iniziale e l'indirizzo del gestore di reset. Il runtime prepara, tra l'altro, `.data` e `.bss`, poi chiama la funzione marcata `#[entry]`. `#![no_std]` non fornisce questi passaggi; `#![no_main]` non inventa un punto di ingresso. Un firmware completo richiede anche un gestore di panic, fornito qui da `panic-halt`.
 
 ## API / Sintassi
 
-Elementi ricorrenti:
+### Separare la sequenza delle scritture dal GPIO
 
-- `#![no_std]`: disabilita `std`;
-- `#![no_main]`: usa un entry point non standard;
-- `panic_handler`: funzione richiesta quando non c'e runtime standard;
-- `#[entry]`: attributo fornito da runtime come `cortex-m-rt` per dichiarare l'ingresso del firmware;
-- `#[interrupt]`: attributo per definire handler di interrupt;
-- `embedded-hal`: insieme di trait portabili per periferiche come GPIO, SPI, I2C e delay;
-- `critical-section`: crate e pattern per sezioni critiche senza sistema operativo;
-- `defmt`: logging compatto pensato per dispositivi embedded.
+In una crate Cargo indipendente, questo è `Cargo.toml`. Le dipendenze di scheda sono selezionate solo per il target ARM indicato; i test nativi usano il vero trait della versione dichiarata, ma nessun registro hardware. Conserva `Cargo.lock` per riprodurre anche le versioni transitive del firmware.
 
-Esempio schematico:
+```toml
+[package]
+name = "led_notes"
+version = "0.1.0"
+edition = "2024"
+
+[dependencies]
+embedded-hal = "=1.0.0"
+
+[target.thumbv7em-none-eabi.dependencies]
+cortex-m = "=0.7.7"
+cortex-m-rt = "=0.7.5"
+panic-halt = "=1.0.0"
+stm32f4xx-hal = { version = "=0.22.1", features = ["stm32f401"] }
+```
+
+In `src/lib.rs`, `start` imposta un livello iniziale noto. Ogni `tick` richiede il livello successivo. Con `OutputPin` bastano `set_high` e `set_low`; per usare il metodo `toggle()` di `embedded-hal` 1.0 servirebbe il trait `StatefulOutputPin`. Lo stato qui registra **il prossimo comando**, non una misura del livello elettrico.
 
 ```rust
 #![no_std]
-#![no_main]
 
-use cortex_m_rt::entry;
-use panic_halt as _;
+use embedded_hal::digital::OutputPin;
 
-#[entry]
-fn main() -> ! {
-    loop {
-        // Logica firmware.
+pub struct Blink<P> {
+    pin: P,
+    next_high: bool,
+}
+
+impl<P: OutputPin> Blink<P> {
+    pub fn start(mut pin: P) -> Result<Self, P::Error> {
+        pin.set_low()?;
+        Ok(Self { pin, next_high: true })
+    }
+
+    pub fn tick(&mut self) -> Result<(), P::Error> {
+        if self.next_high {
+            self.pin.set_high()?;
+        } else {
+            self.pin.set_low()?;
+        }
+        self.next_high = !self.next_high;
+        Ok(())
     }
 }
 ```
 
-Il codice reale dipende dalla MCU, dalla HAL e dal probe usato.
+Un errore di scrittura viene restituito al chiamante **prima** di avanzare la sequenza. Se il chiamante riprova, chiede lo stesso livello. Non è una garanzia che l'hardware sia rimasto invariato dopo l'errore.
+
+### Provare la logica senza scheda
+
+In `tests/blink.rs` il pin registra i comandi e rifiuta una volta il livello alto. Il test deve osservare basso all'avvio, alto rifiutato, alto ritentato e infine basso:
+
+```rust
+use embedded_hal::digital::{ErrorKind, ErrorType, OutputPin};
+use led_notes::Blink;
+
+#[derive(Default)]
+struct TestPin {
+    writes: Vec<bool>,
+    fail_high: bool,
+}
+
+impl ErrorType for TestPin {
+    type Error = ErrorKind;
+}
+
+impl OutputPin for TestPin {
+    fn set_low(&mut self) -> Result<(), Self::Error> {
+        self.writes.push(false);
+        Ok(())
+    }
+
+    fn set_high(&mut self) -> Result<(), Self::Error> {
+        self.writes.push(true);
+        if std::mem::take(&mut self.fail_high) { Err(ErrorKind::Other) } else { Ok(()) }
+    }
+}
+
+#[test]
+fn retries_same_level() {
+    let mut pin = TestPin { fail_high: true, ..Default::default() };
+    let mut blink = Blink::start(&mut pin).unwrap();
+    assert_eq!(blink.tick(), Err(ErrorKind::Other));
+    blink.tick().unwrap();
+    blink.tick().unwrap();
+    assert_eq!(pin.writes, [false, true, true, false]);
+}
+```
+
+Dalla radice della crate, avvia il solo test nativo:
+
+```sh
+cargo test --test blink
+```
 
 ## Esempio pratico
 
-Un pattern comune e separare inizializzazione hardware e loop applicativo:
+### Collegare il firmware per NUCLEO-F401RE
+
+Metti `memory.x` accanto al manifest. Questa mappa assume applicazione all'inizio della Flash, senza bootloader residente che ne occupi una parte. È specifica del modello **STM32F401RE**:
+
+```ld
+MEMORY
+{
+  FLASH : ORIGIN = 0x08000000, LENGTH = 512K
+  RAM   : ORIGIN = 0x20000000, LENGTH = 96K
+}
+```
+
+In `build.rs` rendi disponibile il percorso della mappa al linker e dichiara l'input a Cargo:
+
+```rust
+fn main() {
+    println!("cargo::rerun-if-changed=memory.x");
+    println!("cargo::rustc-link-search={}", env!("CARGO_MANIFEST_DIR"));
+}
+```
+
+In `.cargo/config.toml`, applica lo script di linking del runtime **solo** al target ARM. Non impostare un target di default: lo stesso progetto deve ancora poter eseguire i test sul computer.
+
+```toml
+[target.thumbv7em-none-eabi]
+rustflags = ["-C", "link-arg=-Tlink.x"]
+```
+
+In `examples/blink.rs`, la HAL trasforma PA5 in un'uscita push-pull consumando il precedente valore del pin. SysTick fornisce il ritardo usando i clock configurati. Il LED è comandato alto e basso per circa mezzo secondo ciascuno; non si presume che il tempo di un ciclo vuoto sia stabile.
 
 ```rust
 #![no_std]
 #![no_main]
 
 use cortex_m_rt::entry;
+use led_notes::Blink;
 use panic_halt as _;
-
-struct App<L> {
-    led: L,
-}
-
-impl<L> App<L>
-where
-    L: embedded_hal::digital::OutputPin,
-{
-    fn tick(&mut self) {
-        let _ = self.led.toggle();
-    }
-}
+use stm32f4xx_hal::{pac, prelude::*};
 
 #[entry]
 fn main() -> ! {
-    let peripherals = take_peripherals();
-    let led = configure_led(peripherals);
-    let mut app = App { led };
-
+    let device = pac::Peripherals::take().unwrap();
+    let core = cortex_m::Peripherals::take().unwrap();
+    let clocks = device.RCC.constrain().cfgr.sysclk(48.MHz()).freeze();
+    let pin = device.GPIOA.split().pa5.into_push_pull_output();
+    let mut delay = core.SYST.delay(&clocks);
+    let mut blink = Blink::start(pin).expect("GPIO init");
     loop {
-        app.tick();
+        blink.tick().expect("GPIO write");
+        delay.delay_ms(500_u32);
     }
 }
-
-# fn take_peripherals() -> () { () }
-# fn configure_led(_: ()) -> FakeLed { FakeLed }
-# struct FakeLed;
-# impl embedded_hal::digital::ErrorType for FakeLed {
-#     type Error = core::convert::Infallible;
-# }
-# impl embedded_hal::digital::OutputPin for FakeLed {
-#     fn set_low(&mut self) -> Result<(), Self::Error> { Ok(()) }
-#     fn set_high(&mut self) -> Result<(), Self::Error> { Ok(()) }
-# }
-# impl embedded_hal::digital::StatefulOutputPin for FakeLed {
-#     fn is_set_high(&mut self) -> Result<bool, Self::Error> { Ok(false) }
-#     fn is_set_low(&mut self) -> Result<bool, Self::Error> { Ok(true) }
-# }
 ```
 
-L'esempio mostra l'idea: la logica dell'applicazione dipende da un trait (`OutputPin`) invece che dalla periferica concreta. Questo rende piu facile testare e cambiare HAL.
+La libreria propaga gli errori; questo binario dimostrativo sceglie di fermarsi in caso di panic. `panic-halt` non stampa automaticamente il testo di `expect`. Non serve un allocatore: il `Vec` che registra le scritture appartiene soltanto al test sul computer.
 
-## Varianti
+Se manca il target, questo comando ne installa le librerie nella toolchain rustup selezionata:
 
-- **Bare metal sincrono**: loop principale e interrupt, senza executor async.
-- **RTIC**: framework per concorrenza real-time basata su task e priorita.
-- **Embassy**: runtime async embedded con executor e driver async.
-- **Firmware con allocatore**: alcuni target usano un heap limitato, ma va dimensionato e controllato.
-- **Linux embedded**: non e bare metal; spesso usa `std`, syscall, file descriptor e crate normali.
+```sh
+rustup target add thumbv7em-none-eabi
+```
+
+Per compilare **e collegare** l'eseguibile:
+
+```sh
+cargo build --release --example blink --target thumbv7em-none-eabi
+```
+
+L'artefatto atteso è l'ELF `target/thumbv7em-none-eabi/release/examples/blink`. Un ELF con tabella dei vettori all'inizio della Flash è una prova più forte di `cargo check`, ma **non** dimostra che il LED lampeggi. Per provarlo servono la scheda corretta, un probe compatibile e la verifica sul dispositivo. La build non programma la Flash; farlo in seguito può sovrascrivere il firmware presente.
+
+## Varianti e limiti
+
+- **Loop sincrono:** sufficiente per il LED. Il ritardo blocca il flusso principale; se il firmware deve svolgere altri compiti, valuta timer e una macchina a stati.
+- **Interrupt e concorrenza:** tieni brevi i gestori e usa atomiche o sezioni critiche adatte al target per lo stato condiviso. Il possesso di un token GPIO non garantisce da solo correttezza temporale o sicurezza di ogni accesso concorrente.
+- **RTIC ed Embassy:** il primo organizza task e priorità, il secondo permette flussi async con executor e driver compatibili. Non sono prerequisiti per eseguire il primo firmware.
+- **Memoria e diagnostica:** l'heap è opzionale e va dimensionato quando serve. Per osservare un firmware scegli un trasporto di log compatibile con la scheda e il debugger; `defmt` e `probe-rs` svolgono ruoli diversi.
 
 ## Errori comuni
 
-- Confondere `no_std` con "niente crate": molte crate supportano `core` o `alloc`.
-- Usare `unsafe` direttamente nell'applicazione invece di incapsularlo in HAL o driver.
-- Ignorare il linker script: su embedded la disposizione di flash, RAM, stack e heap e parte del programma.
-- Allocare dinamicamente senza sapere quanta memoria e disponibile.
-- Fare lavoro lungo dentro un interrupt.
-- Usare logging o panic handler troppo pesanti per il dispositivo.
-- Non distinguere tra PAC, HAL e BSP.
+- **Il test passa, ma il LED resta spento:** il test non conosce il cablaggio. Verifica revisione della scheda, pin, polarità, configurazione GPIO e clock.
+- **Il linker non trova `memory.x`:** controlla il percorso di ricerca e che la build usi lo script del runtime. Cambiare il driver del pin non risolve un errore di linking.
+- **Prendere un risultato `Ok` come prova di un tempo o livello misurato:** i trait descrivono il contratto software. Verifica periodo, consumo e livelli fisici sul dispositivo.
 
 ## Checklist
 
-- Il target Rust e installato?
-- Esiste una HAL mantenuta per la MCU?
-- Il progetto ha linker script, memory layout e runner configurati?
-- Gli interrupt condividono stato tramite sezioni critiche o primitive adatte?
-- Il panic handler e coerente con il metodo di debug?
-- Il firmware e compilato in release per misurare dimensione e timing reali?
-- Le astrazioni hardware espongono API sicure e confinano l'`unsafe`?
+- Target, feature della MCU e mappa di memoria corrispondono al chip montato?
+- È chiaro chi fornisce reset, gestore di panic, clock e inizializzazione del pin?
+- I test coprono ordine delle scritture ed errori, non solo la compilazione?
+- Ho distinto i tre esiti: test sul computer, firmware collegato e comportamento osservato sulla scheda?
 
 ## Collegamenti
 
-- [[Programmazione/Rust/Indice Rust|Indice Rust]]
 - [[Programmazione/Rust/Pagine/no_std|no_std]]
 - [[Programmazione/Rust/Pagine/cortex-m|cortex-m]]
 - [[Programmazione/Rust/Pagine/embedded-hal|embedded-hal]]
@@ -200,3 +253,13 @@ L'esempio mostra l'idea: la logica dell'applicazione dipende da un trait (`Outpu
 - [[Programmazione/Rust/Pagine/RTIC|RTIC]]
 - [[Programmazione/Rust/Pagine/Embassy|Embassy]]
 - [[Programmazione/Rust/Pagine/Allocator|Allocator]]
+
+## Fonti
+
+- STMicroelectronics: [manuale Nucleo-64 UM1724, LED LD2 e connettori](https://www.st.com/resource/en/user_manual/dm00105823-nucleo-f401re-user-manual-stmicroelectronics.pdf) e [datasheet STM32F401xD/xE, mappa di memoria](https://www.st.com/resource/en/datasheet/stm32f401re.pdf).
+- [embedded-hal 1.0.0: OutputPin](https://docs.rs/embedded-hal/1.0.0/embedded_hal/digital/trait.OutputPin.html) e [StatefulOutputPin](https://docs.rs/embedded-hal/1.0.0/embedded_hal/digital/trait.StatefulOutputPin.html).
+- [stm32f4xx-hal 0.22.1](https://docs.rs/stm32f4xx-hal/0.22.1/stm32f4xx_hal/) e [cortex-m-rt 0.7.5: startup e linker](https://docs.rs/cortex-m-rt/0.7.5/cortex_m_rt/).
+
+## Navigazione
+
+- [[Programmazione/Rust/Indice Rust|Indice Rust]]

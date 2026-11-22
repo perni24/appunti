@@ -14,14 +14,14 @@ aliases:
   - Performance e profiling
   - Profiling Rust
 prerequisites:
-  - "[[Programmazione/Rust/Pagine/Build profiles]]"
-  - "[[Programmazione/Rust/Pagine/Iterator API]]"
-  - "[[Programmazione/Rust/Pagine/Zero-cost abstractions]]"
+  - "[[Programmazione/Rust/Pagine/Build profiles|Build profiles]]"
+  - "[[Programmazione/Rust/Pagine/Iterator API|Iterator API]]"
+  - "[[Programmazione/Rust/Pagine/Zero-cost abstractions|Zero-cost abstractions]]"
 related:
-  - "[[Programmazione/Rust/Pagine/Benchmarking con Criterion]]"
-  - "[[Programmazione/Rust/Pagine/Rayon e parallel iterators]]"
-  - "[[Programmazione/Rust/Pagine/Tracing con tracing]]"
-  - "[[Programmazione/Rust/Pagine/Allocator]]"
+  - "[[Programmazione/Rust/Pagine/Benchmarking con Criterion|Benchmarking con Criterion]]"
+  - "[[Programmazione/Rust/Pagine/Rayon e parallel iterators|Rayon e parallel iterators]]"
+  - "[[Programmazione/Rust/Pagine/Tracing con tracing|Tracing con tracing]]"
+  - "[[Programmazione/Rust/Pagine/Allocator|Allocator]]"
 title: Performance e profiling
 ---
 
@@ -29,147 +29,179 @@ title: Performance e profiling
 
 ## Sintesi
 
-In Rust la performance deriva da controllo esplicito su memoria, assenza di garbage collector, ottimizzazioni aggressive del compilatore e astrazioni spesso risolte a compile time. Il **profiling** serve a misurare dove il programma spende tempo, memoria o I/O prima di ottimizzare.
+Un **benchmark** risponde a «quanto costa questa operazione, con questo input?». Un **profilo** risponde a «dove viene spesa la risorsa che mi interessa?». Se una richiesta dura 200 ms, il cronometro misura anche il tempo in attesa; i campioni di un profiler CPU descrivono invece dove il programma era in esecuzione. Le due misure possono essere corrette e raccontare cose diverse.
 
-La regola pratica e: prima misura, poi cambia il codice. Rust rende possibile scrivere codice molto veloce, ma non impedisce automaticamente allocazioni inutili, lock contesi, parsing inefficiente o I/O mal progettato.
+## Scegliere cosa misurare
 
-## Quando usarlo
+| Domanda | Prima misura utile | Limite da ricordare |
+| --- | --- | --- |
+| L'utente aspetta troppo? | Latenza da richiesta a risposta, anche p95 o p99, a carico fissato. | La media può nascondere la coda. Il p95 richiede osservazioni di richieste individuali, non medie di lotti. |
+| Quanti dati elabora il servizio? | Throughput in richieste/s o byte/s, annotando concorrenza ed errori. | Più throughput non implica minore latenza; una coda può allungarsi. |
+| La CPU è il limite? | Utilizzo CPU e profilo a campionamento con stack sul carico reale. | Un thread in attesa di disco, rete o lock non accumula CPU come uno che sta calcolando. |
+| La memoria cresce? | Profilo heap: numero di allocazioni, byte allocati nel tempo e byte ancora vivi. | La memoria residente del processo comprende anche stack e pagine mappate; non equivale ai byte vivi sull'heap. |
 
-Approfondisci performance e profiling quando:
+Per la dimensione del binario confronta gli artefatti per lo stesso target e con la stessa gestione dei simboli. Per il costo di una richiesta async osserva anche attese, code e contesa tramite [[Programmazione/Rust/Pagine/Tracing con tracing|tracing]]; non dedurre cache miss o troppi risvegli da un semplice tempo totale.
 
-- il programma e lento in produzione o su input reali;
-- devi ridurre latenza, memoria o dimensione del binario;
-- stai scegliendo tra allocazione, borrowing e streaming;
-- vuoi confrontare implementazioni alternative;
-- devi capire il costo di async, lock, iteratori, trait object o serializzazione;
-- stai ottimizzando codice di sistema, CLI, backend o embedded.
+## Rendere confrontabili due misure
 
-Non ottimizzare sulla base di sensazioni: il compilatore puo rendere irrilevanti alcune differenze e amplificarne altre.
+1. Definisci operazione, unità e confini: il tempo include generazione dell'input, allocazione, distruzione del risultato, I/O o avvio del processo? Sceglili in funzione della domanda.
+2. Conserva una **baseline**: versione del codice e del compilatore, target, profilo Cargo, feature, dimensione e distribuzione degli input, macchina e numero di thread. Cambia una sola cosa per confronto.
+3. Separa avvio a freddo e regime caldo. Ripeti le prove, alterna l'ordine A/B e B/A. Confronta centro e dispersione, non soltanto il tempo migliore. Quando una differenza si confonde con il rumore, la conclusione utile è «non distinguibile con questa prova».
+4. Controlla l'output prima di cronometrare. Poi verifica l'effetto sul programma completo: dimezzare una funzione che assorbe il 10% del tempo iniziale riduce il tempo totale di circa il 5%, se il resto non cambia.
 
-## Come funziona
+Per indagare una build ottimizzata conviene partire dal profilo di produzione e **aggiungere simboli**, non cambiare contemporaneamente LTO, `codegen-units`, controlli e strategia di panic. Le informazioni di debug non trasformano una build ottimizzata in una build `dev`; conserva eseguibile e simboli della stessa build.
 
-La performance Rust va osservata su piu livelli:
+## Laboratorio: riservare memoria conviene?
 
-- **build profile**: debug e release hanno caratteristiche molto diverse;
-- **CPU time**: funzioni calde, branch, cache miss;
-- **allocazioni**: numero, dimensione e durata;
-- **I/O**: syscalls, buffering, rete, disco;
-- **concorrenza**: lock contention, scheduling, wakeup;
-- **code size**: monomorphization, inlining e LTO;
-- **panic e error path**: gestione errori e unwinding/abort.
+Vogliamo concatenare parole UTF-8 con **uno spazio dopo ciascuna**, anche dopo l'ultima e dopo una parola vuota. Una strategia lascia crescere la `String`; l'altra conta prima i **byte** necessari e riserva spazio. La seconda evita la crescita durante gli inserimenti, ma aggiunge un passaggio sui dati. Quale sia più veloce non fa parte del contratto di `String`.
 
-Profiling e benchmarking sono diversi:
+### Preparazione
 
-- il **benchmark** confronta prestazioni in scenari controllati;
-- il **profiling** mostra dove il programma reale consuma risorse.
+Servono Rust/Cargo 1.85 o successivi e il linker dell'host; nessuna crate esterna. Crea un progetto di prova fuori dal vault:
 
-Entrambi sono utili: il benchmark protegge da regressioni, il profiler evita ottimizzazioni nel punto sbagliato.
-
-## API / Sintassi
-
-Comandi e impostazioni comuni:
-
-```powershell
-cargo build --release
-cargo test --release
-cargo bench
+```sh
+cargo new --bin --vcs none profilo-demo
 ```
 
-Profilo release in `Cargo.toml`:
+```sh
+cd profilo-demo
+```
+
+Aggiungi questo profilo in `Cargo.toml`:
 
 ```toml
-[profile.release]
-lto = "thin"
-codegen-units = 1
+[profile.profiling]
+inherits = "release"
 debug = true
 ```
 
-`debug = true` nel profilo release conserva informazioni utili per profiler e simboli senza trasformare la build in debug.
-
-Per microbenchmark, una scelta comune e Criterion:
+Crea `src/lib.rs`. Le due funzioni differiscono solo nella preparazione del buffer. Il test fissa il comportamento atteso indipendentemente dalla velocità:
 
 ```rust
-use criterion::{black_box, criterion_group, criterion_main, Criterion};
-
-fn bench_sum(c: &mut Criterion) {
-    c.bench_function("sum", |b| {
-        b.iter(|| {
-            let values = black_box([1_u64, 2, 3, 4]);
-            values.iter().sum::<u64>()
-        })
-    });
+fn append_words(out: &mut String, words: &[&str]) {
+    for &word in words {
+        out.push_str(word);
+        out.push(' ');
+    }
 }
 
-criterion_group!(benches, bench_sum);
-criterion_main!(benches);
-```
-
-`black_box` aiuta a evitare che l'ottimizzatore elimini lavoro utile al benchmark.
-
-## Esempio pratico
-
-Prima versione:
-
-```rust
-fn join_words(words: &[String]) -> String {
+pub fn grow(words: &[&str]) -> String {
     let mut out = String::new();
-
-    for word in words {
-        out.push_str(word);
-        out.push(' ');
-    }
-
+    append_words(&mut out, words);
     out
+}
+
+pub fn reserve(words: &[&str]) -> String {
+    let bytes = words.iter().map(|word| word.len() + 1).sum();
+    let mut out = String::with_capacity(bytes);
+    append_words(&mut out, words);
+    out
+}
+
+#[cfg(test)]
+mod tests {
+    use super::*;
+
+    #[test]
+    fn stessa_uscita_in_byte() {
+        for (words, expected) in [
+            (&[][..], ""),
+            (&[""][..], " "),
+            (&["caffè", "", "blu"][..], "caffè  blu "),
+        ] {
+            assert_eq!(grow(words), expected);
+            assert_eq!(reserve(words), expected);
+        }
+    }
 }
 ```
 
-Possibile miglioramento se conosci approssimativamente la dimensione finale:
+Sostituisci `src/main.rs`. La CLI scalda la funzione scelta, poi cronometra cinque lotti identici. Preparazione dell'input e stampa sono fuori dal tratto misurato; costruzione **e distruzione** di ogni stringa risultante sono dentro. `black_box` rende più difficile eliminare il lavoro inutilizzato: è un aiuto al benchmark, non una garanzia sul codice macchina.
 
 ```rust
-fn join_words(words: &[String]) -> String {
-    let capacity = words.iter().map(|word| word.len() + 1).sum();
-    let mut out = String::with_capacity(capacity);
+use profilo_demo::{grow, reserve};
+use std::{env, hint::black_box, num::NonZeroU32, time::Instant};
 
-    for word in words {
-        out.push_str(word);
-        out.push(' ');
+fn main() {
+    let mut args = env::args().skip(1);
+    let mode = args.next().expect("indicare grow oppure reserve");
+    let join: fn(&[&str]) -> String = match mode.as_str() {
+        "grow" => grow,
+        "reserve" => reserve,
+        _ => panic!("modalità ammessa: grow oppure reserve"),
+    };
+    let rounds: NonZeroU32 = args.next().unwrap_or_else(|| "500".into())
+        .parse().expect("il numero di iterazioni deve essere positivo");
+    let words = ["uno", "caffè", "", "blu"].repeat(512);
+    let once = || drop(black_box(join(black_box(&words))));
+    for _ in 0..20 { once(); }
+
+    for sample in 1..=5 {
+        let start = Instant::now();
+        for _ in 0..rounds.get() { once(); }
+        let elapsed = start.elapsed();
+        let ns = elapsed.as_nanos() / u128::from(rounds.get());
+        println!("{mode} lotto={sample} ns_per_join={ns}");
     }
-
-    out
 }
 ```
 
-L'idea non e che `with_capacity` vada usato sempre, ma che ridurre riallocazioni puo contare nei percorsi caldi.
+### Misura e interpretazione
 
-## Varianti
+Prima controlla che le due versioni siano equivalenti sui casi della nota:
 
-- **Microbenchmark**: misura funzioni isolate.
-- **Macrobenchmark**: misura scenari completi e input realistici.
-- **CPU profiling**: individua funzioni piu costose.
-- **Heap profiling**: misura allocazioni e memoria residente.
-- **Tracing**: osserva latenza e flussi applicativi.
-- **Static analysis**: ispeziona dimensione binario, monomorfizzazioni e dipendenze.
-- **Load test**: misura comportamento sotto concorrenza o traffico.
+```sh
+cargo test --release
+```
+
+```sh
+cargo run --profile profiling -- grow 500
+```
+
+```sh
+cargo run --profile profiling -- reserve 500
+```
+
+Ogni riga contiene la **media dei nanosecondi per concatenazione in un lotto**, non la latenza di una singola parola o un percentile. Entrambe le modalità lavorano su 2048 parole e producono 8192 byte per chiamata. Ripeti invertendo l'ordine; prova poi, separatamente, poche parole lunghe o molte parole vuote. Non trasferire i risultati di questo input caldo a un servizio sotto carico.
+
+`with_capacity(n)` garantisce spazio per **almeno** `n` byte: se aggiungi esattamente quei byte non serve crescere. Non garantisce che la capacità sia esattamente `n`, un certo numero di chiamate al sistema o un tempo minore. Per controllare la crescita, osserva `capacity()` dopo gli inserimenti in una prova separata: una transizione di capacità non dimostra che il puntatore sia cambiato. Per confronti statistici ripetuti usa [[Programmazione/Rust/Pagine/Benchmarking con Criterion|Criterion]]; `cargo bench` esegue i benchmark configurati, `cargo test --release` verifica la correttezza.
+
+## Dal cronometro al profiler
+
+Usa un profiler quando vuoi sapere **quale parte** del programma merita un esperimento. Costruisci una volta, poi profila l'eseguibile, non `cargo run`: altrimenti puoi campionare Cargo o la compilazione. Aumenta le iterazioni se il processo termina prima che si raccolgano stack utili.
+
+```sh
+cargo build --profile profiling
+```
+
+**Linux**, con `perf` disponibile e permesso di profilare il proprio processo: dalla directory del progetto registra la CLI. Il comando crea `perf.data` nella directory corrente; usa una cartella di prova se devi conservare una registrazione precedente.
+
+```sh
+perf record --call-graph dwarf -- ./target/profiling/profilo-demo grow 20000
+```
+
+```sh
+perf report --stdio
+```
+
+**Windows**, con Visual Studio e gli strumenti di profilazione: apri *Performance Profiler*, scegli come destinazione l'eseguibile `target\profiling\profilo-demo.exe`, passa `grow 20000`, seleziona *CPU Usage* e raccogli gli stack. Con MSVC conserva anche il PDB corrispondente.
+
+Nel call tree distingui il costo **inclusivo** (funzione più discendenti) dal costo **proprio** (campioni attribuiti direttamente alla funzione). Un genitore in cima alla classifica può semplicemente chiamare una funzione costosa: non sommare le percentuali inclusive di genitore e figlio. Con l'inlining una funzione Rust può non apparire come frame separato. Se emerge l'allocatore, ripeti con `reserve` mantenendo lo stesso input; verifica poi i tempi **senza profiler**, perché la raccolta ha un costo. Se la CPU resta poco occupata rispetto al tempo trascorso, passa a una traccia di attese o I/O prima di riscrivere il ciclo.
 
 ## Errori comuni
 
-- Misurare solo build debug.
-- Ottimizzare codice non caldo.
-- Confondere benchmark sintetico e comportamento reale.
-- Dimenticare che I/O e allocazioni possono dominare sul costo CPU.
-- Usare `clone()` per risolvere problemi di ownership senza verificare il costo.
-- Aggiungere parallelismo senza misurare overhead e contention.
-- Cambiare profili release senza documentare l'effetto su debug, simboli e dimensione.
+- Scambiare la ricompilazione, il logging per iterazione o la creazione dei dati per costo della funzione misurata.
+- Interpretare `clone()`, iteratori o trait object come colli di bottiglia senza un percorso caldo osservato. Il risultato dipende da tipi, input e ottimizzazioni.
+- Aggiungere thread perché il microbenchmark è lento senza misurare accodamento, lavoro per thread e contesa.
+- Pubblicare un solo numero senza unità, input e configurazione, oppure usare una soglia di tempo assoluta come test di correttezza in CI condivisa.
 
-## Checklist
+## Fonti ufficiali
 
-- Stai misurando una build release?
-- L'input del benchmark rappresenta casi reali?
-- Hai identificato il percorso caldo?
-- Hai contato allocazioni e copie?
-- Hai verificato I/O e buffering?
-- L'ottimizzazione peggiora leggibilita o API pubblica?
-- Hai aggiunto benchmark o test per evitare regressioni?
+- [Cargo: profili, informazioni di debug e profili personalizzati](https://doc.rust-lang.org/cargo/reference/profiles.html)
+- [Rust: limiti di black_box](https://doc.rust-lang.org/std/hint/fn.black_box.html)
+- [Rust: String::with_capacity](https://doc.rust-lang.org/std/string/struct.String.html#method.with_capacity)
+- [Rust Performance Book: profiling](https://nnethercote.github.io/perf-book/profiling.html)
+- [Microsoft: interpretare un profilo CPU in Visual Studio](https://learn.microsoft.com/en-us/visualstudio/profiling/cpu-usage)
 
 ## Collegamenti
 

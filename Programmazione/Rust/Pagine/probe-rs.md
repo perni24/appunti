@@ -13,14 +13,14 @@ tags:
 aliases:
   - probe-rs
 prerequisites:
-  - "[[Programmazione/Rust/Pagine/Cross-compilation]]"
-  - "[[Programmazione/Rust/Pagine/cortex-m]]"
-  - "[[Programmazione/Rust/Pagine/defmt]]"
+  - "[[Programmazione/Rust/Pagine/Cross-compilation|Cross-compilation]]"
+  - "[[Programmazione/Rust/Pagine/cortex-m|cortex-m]]"
 related:
-  - "[[Programmazione/Rust/Pagine/Embedded Rust]]"
-  - "[[Programmazione/Rust/Pagine/no_std]]"
-  - "[[Programmazione/Rust/Pagine/RTIC]]"
-  - "[[Programmazione/Rust/Pagine/Embassy]]"
+  - "[[Programmazione/Rust/Pagine/defmt|defmt]]"
+  - "[[Programmazione/Rust/Pagine/Embedded Rust|Embedded Rust]]"
+  - "[[Programmazione/Rust/Pagine/no_std|no_std]]"
+  - "[[Programmazione/Rust/Pagine/RTIC|RTIC]]"
+  - "[[Programmazione/Rust/Pagine/Embassy|Embassy]]"
 title: probe-rs
 ---
 
@@ -28,108 +28,108 @@ title: probe-rs
 
 ## Sintesi
 
-`probe-rs` e un toolkit per flashing, debug e interazione con target embedded. Permette di programmare microcontrollori tramite probe hardware, avviare firmware, leggere log via RTT/defmt, fare debug e integrare il flusso con Cargo.
+`probe-rs` è il programma **sul computer** che usa una sonda di debug per interagire con un microcontrollore. Cargo compila il firmware; la sonda (per esempio uno ST-LINK integrato nella scheda) lo trasferisce al chip tramite SWD o JTAG. Per compilare basta il toolchain Rust; per programmare servono anche una sonda, un dispositivo compatibile e l'immagine corretta.
 
-Nel workflow Rust embedded, `probe-rs` riduce il salto tra `cargo build` e "il firmware gira sulla scheda".
+Questa nota usa **probe-rs 0.32.0**, la **NUCLEO-F401RE** e l'esempio `blink` di [[Programmazione/Rust/Pagine/Embedded Rust|Embedded Rust]]. Con un'altra scheda non basta cambiare `--chip`: vanno controllati anche target Rust, mappa di memoria e pin dell'esempio.
 
-## Quando usarlo
+## Quale operazione scegliere
 
-Usa `probe-rs` quando:
+| Voglio… | Comando | Effetto |
+| --- | --- | --- |
+| Sapere se la CLI conosce il modello | `probe-rs chip info` | Legge il catalogo sul PC. Funziona anche senza scheda; **non identifica** il chip collegato. |
+| Sapere se il PC vede la sonda | `probe-rs list` | Elenca le sonde rilevate, non i microcontrollori collegati a ciascuna. Non programma la Flash. |
+| Preparare il firmware | `cargo build` | Produce un ELF sul PC. Non usa il runner, neppure se è configurato. |
+| Sostituire il firmware e avviarlo | `probe-rs run` | Programma la Flash e avvia l'immagine. Il firmware precedente nelle regioni interessate non viene conservato. |
+| Leggere i log del firmware già in esecuzione | `probe-rs attach` | Con le opzioni di base non riprogramma la Flash né richiede un reset all'aggancio. Non aggiunge un canale di log a un firmware che non lo ha. |
 
-- devi flashare firmware su microcontrollore;
-- vuoi usare `cargo run` per compilare e caricare il binario;
-- vuoi leggere log `defmt` o RTT dalla console;
-- devi fare debug con un probe supportato;
-- vuoi evitare tool vendor-specific quando possibile;
-- lavori con Cortex-M o altri target supportati dal toolkit.
+Per fermarsi su una riga, ispezionare variabili o avanzare passo passo serve invece una **sessione di debug**, per esempio con il [debugger ufficiale tramite DAP](https://probe.rs/docs/tools/debugger/). Un breakpoint arresta il core: non equivale a osservare passivamente i log, soprattutto se il firmware controlla periferiche con vincoli temporali.
 
-Non sostituisce la conoscenza della scheda: chip, target, memoria e probe devono essere configurati correttamente.
+## Esempio: dal file ELF alla NUCLEO-F401RE
 
-## Come funziona
+### 1. Verificare CLI, modello e sonda
 
-`probe-rs` comunica con un probe hardware collegato al target. Il probe parla con il microcontrollore tramite interfacce come SWD o JTAG.
+Installare gli strumenti sul **PC**, seguendo la [guida ufficiale per il proprio sistema](https://probe.rs/docs/getting-started/installation/). Il pacchetto che fornisce l'eseguibile si chiama `probe-rs-tools`: non occorre aggiungerlo alle dipendenze del firmware. Verificare la versione:
 
-Flusso tipico:
-
-1. compili firmware per il target corretto;
-2. colleghi la scheda al probe;
-3. indichi il chip;
-4. `probe-rs` flasha il binario;
-5. opzionalmente avvia il firmware e legge log;
-6. debug e diagnostica passano dallo stesso ecosistema.
-
-Con `.cargo/config.toml` puoi configurare il runner per usare `cargo run`.
-
-## API / Sintassi
-
-Runner Cargo:
-
-```toml
-[target.thumbv7em-none-eabihf]
-runner = "probe-rs run --chip STM32F407VGTx"
+```sh
+probe-rs --version
 ```
 
-Comandi tipici:
+Verificare il nome esatto che la CLI accetta per il microcontrollore:
 
-```powershell
-cargo run --release
+```sh
+probe-rs chip info STM32F401RETx
+```
+
+Il catalogo 0.32.0 riporta un core `Armv7em`, la Flash principale a `0x08000000..0x08080000` (512 KiB) e la RAM a `0x20000000..0x20018000` (96 KiB). Gli estremi superiori sono esclusi. Sono i valori con cui confrontare `memory.x` per l'esempio senza bootloader, non una lettura dalla scheda.
+
+Collegare la porta USB dello ST-LINK con un cavo dati. Questo comando controlla **la sonda**, non il risultato della build:
+
+```sh
 probe-rs list
-probe-rs run --chip STM32F407VGTx target/thumbv7em-none-eabihf/release/app
 ```
 
-Il nome del chip deve corrispondere al target reale o a un alias riconosciuto.
+Gli esempi successivi assumono una sola sonda. Se ne sono elencate diverse, identificare fisicamente la scheda e usare il selettore `--probe` indicato dall'help di `run`, oppure scollegare le altre prima di scrivere. Non scegliere solo in base all'ordine dell'elenco.
 
-## Esempio pratico
+### 2. Compilare senza scrivere sulla scheda
 
-Configurazione minima per progetto embedded:
+Dalla radice del progetto `led_notes` descritto in [[Programmazione/Rust/Pagine/Embedded Rust|Embedded Rust]], con il target `thumbv7em-none-eabi` installato e i file di linking già presenti:
+
+```sh
+cargo build --release --example blink --target thumbv7em-none-eabi
+```
+
+Con la directory di build predefinita, l'ELF è `target/thumbv7em-none-eabi/release/examples/blink`. I tre nomi hanno ruoli diversi: `thumbv7em-none-eabi` seleziona architettura e ABI del compilatore; `STM32F401RETx` seleziona la descrizione del chip per la sonda; `blink` seleziona l'esempio Cargo. Nessuno dei tre si deduce con certezza dagli altri.
+
+### 3. Programmare: scegliere **una** delle due vie
+
+**Effetto di entrambe:** viene scritto e avviato il nuovo firmware. Prima di procedere, confermare il modello sulla scheda, la sonda, l'immagine e l'eventuale presenza di un bootloader o dati da preservare. Una build riuscita non fa queste verifiche.
+
+**Via diretta**, usando l'ELF già compilato:
+
+```sh
+probe-rs run --chip STM32F401RETx target/thumbv7em-none-eabi/release/examples/blink
+```
+
+**In alternativa, tramite Cargo.** In `.cargo/config.toml`, aggiungere `runner` alla tabella del target già presente, conservando `rustflags`. La tabella risultante è questa (non duplicarne l'intestazione):
 
 ```toml
-[build]
-target = "thumbv7em-none-eabihf"
-
-[target.thumbv7em-none-eabihf]
-runner = "probe-rs run --chip STM32F407VGTx"
-rustflags = [
-  "-C", "link-arg=-Tlink.x",
-]
+[target.thumbv7em-none-eabi]
+rustflags = ["-C", "link-arg=-Tlink.x"]
+runner = ["probe-rs", "run", "--chip", "STM32F401RETx"]
 ```
 
-Con questa configurazione:
+Cargo compila e passa al runner il percorso dell'eseguibile come ultimo argomento. Non impostiamo un target globale: i test della libreria possono ancora girare sul PC. Selezionare esplicitamente esempio e target:
 
-```powershell
-cargo run --release
+```sh
+cargo run --release --example blink --target thumbv7em-none-eabi
 ```
 
-compila, flasha e avvia il firmware usando il runner configurato.
+Il segnale atteso è il **lampeggio del LED utente su PA5**. L'esempio non inizializza RTT e non emette messaggi `defmt`: un terminale senza log applicativi è normale.
 
-## Varianti
+## Leggere i log senza rifare il flash
 
-- **probe-rs run**: flash e run del firmware.
-- **probe-rs list**: rileva probe collegati.
-- **RTT logging**: stream di log dal target.
-- **defmt integration**: decoding di log compatti.
-- **Debugging**: integrazione con strumenti di debug.
-- **cargo runner**: flusso integrato con Cargo.
+Per un firmware **già dotato di logging RTT**, conservare sul PC l'ELF della build effettivamente programmata. RTT è il trasporto tramite buffer in RAM; [[Programmazione/Rust/Pagine/defmt|defmt]] è un formato compatto decodificato usando i metadati del relativo ELF. Un canale RTT può anche trasportare semplice testo, senza `defmt`.
 
-## Errori comuni
+Se il file di quella build è stato conservato come `firmware-con-log.elf` nella directory corrente, collegarsi così:
 
-- Specificare chip sbagliato.
-- Usare target triple incompatibile con la CPU.
-- Dimenticare linker script.
-- Confondere probe hardware e scheda target.
-- Non avere permessi di accesso USB al probe.
-- Aspettarsi log senza configurare RTT/defmt.
-- Flashare build debug troppo grandi per la memoria disponibile.
+```sh
+probe-rs attach --chip STM32F401RETx firmware-con-log.elf
+```
 
-## Checklist
+Il percorso è un esempio, **non** un secondo file prodotto da `blink`. Una ricompilazione dello stesso sorgente non garantisce un ELF identico. Se i log mancano, verificare prima che il firmware raggiunga l'inizializzazione del logger, che usi RTT e che l'ELF corrisponda. Ripetere il flash non è il primo passo per diagnosticare un canale silenzioso.
 
-- Il probe viene rilevato?
-- Il chip configurato e quello reale?
-- Il target Rust corrisponde alla CPU?
-- Il linker script e corretto?
-- Il runner Cargo e configurato?
-- I log sono configurati con RTT o defmt?
-- Il firmware release entra in flash e RAM?
+## Diagnosi rapida
+
+- **Nessuna sonda nell'elenco:** verificare porta USB, cavo dati, driver o permessi del sistema operativo. Cambiare il nome del chip non rende visibile un dispositivo USB.
+- **Sonda visibile, ma nessuna connessione al chip:** controllare alimentazione del target e interfaccia corretta; con una sonda esterna verificare anche massa comune e cablaggio. Chiudere altre sessioni che stanno usando la stessa sonda.
+- **Cargo cerca di eseguire il programma sul computer:** verificare che `--target` coincida esattamente con la tabella `[target.…]` e che Cargo sia stato lanciato dalla radice del progetto.
+- **ELF non trovato o fuori dalla memoria prevista:** controllare esempio, profilo, percorso di output e `memory.x`. Se il chip è protetto o la memoria non coincide, fermarsi: una cancellazione completa non è una verifica diagnostica.
+
+## Fonti
+
+- [probe-rs 0.32.0: release verificata](https://github.com/probe-rs/probe-rs/releases/tag/v0.32.0) e [documentazione di run e attach](https://probe.rs/docs/tools/probe-rs/).
+- [Cargo Book: configurazione del runner per target](https://doc.rust-lang.org/cargo/reference/config.html#targettriplerunner).
+- [STMicroelectronics: NUCLEO-F401RE e ST-LINK integrato](https://www.st.com/en/evaluation-tools/nucleo-f401re.html).
 
 ## Collegamenti
 

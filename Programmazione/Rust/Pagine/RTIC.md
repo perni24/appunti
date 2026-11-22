@@ -14,14 +14,14 @@ aliases:
   - RTIC
   - Real-Time Interrupt-driven Concurrency
 prerequisites:
-  - "[[Programmazione/Rust/Pagine/no_std]]"
-  - "[[Programmazione/Rust/Pagine/cortex-m]]"
-  - "[[Programmazione/Rust/Pagine/Shared state]]"
+  - "[[Programmazione/Rust/Pagine/no_std|no_std]]"
+  - "[[Programmazione/Rust/Pagine/cortex-m|cortex-m]]"
+  - "[[Programmazione/Rust/Pagine/Shared state|Shared state]]"
 related:
-  - "[[Programmazione/Rust/Pagine/Embedded Rust]]"
-  - "[[Programmazione/Rust/Pagine/Embassy]]"
-  - "[[Programmazione/Rust/Pagine/defmt]]"
-  - "[[Programmazione/Rust/Pagine/Send e Sync Traits]]"
+  - "[[Programmazione/Rust/Pagine/Embedded Rust|Embedded Rust]]"
+  - "[[Programmazione/Rust/Pagine/Embassy|Embassy]]"
+  - "[[Programmazione/Rust/Pagine/defmt|defmt]]"
+  - "[[Programmazione/Rust/Pagine/Send e Sync Traits|Send e Sync Traits]]"
 title: RTIC
 ---
 
@@ -29,127 +29,130 @@ title: RTIC
 
 ## Sintesi
 
-RTIC, **Real-Time Interrupt-driven Concurrency**, e un framework Rust embedded per scrivere firmware concorrente basato su interrupt, task, priorita e risorse condivise gestite in modo sicuro.
+RTIC (*Real-Time Interrupt-driven Concurrency*) organizza il firmware intorno a due domande: **quale evento avvia questo lavoro?** e **quale altro lavoro può interromperlo?** In RTIC 2 un task hardware è una funzione sincrona associata a un vettore; un task software è una funzione `async` resa pronta da `spawn`. Nessuno dei due è un thread del sistema operativo.
 
-Il suo obiettivo e rendere piu disciplinato il modello classico embedded "main loop + interrupt", riducendo l'uso manuale di `static mut`, sezioni critiche sparse e sincronizzazione fragile.
+Su un singolo core non si eseguono due task nello stesso istante. Una priorità RTIC più alta può interrompere il lavoro a priorità più bassa (*preemption*). Tra task software della stessa priorità, invece, un lungo calcolo senza un effettivo punto di sospensione ritarda gli altri. Dichiarare una funzione `async` non rende il calcolo interrompibile dai suoi pari.
 
-## Quando usarlo
+## Chi avvia cosa
 
-Usa RTIC quando:
+| Contesto | Come parte | Cosa metterci |
+| --- | --- | --- |
+| `#[init]` | Una volta all'avvio, prima che i task applicativi possano intervenire | Configurazione delle periferiche e valori iniziali di `Shared` e `Local`. La macro genera l'entry point: non aggiungere `#[entry]`. |
+| `#[task(binds = …)]` | Il vettore collegato diventa pendente | Gestire la sorgente e restituire il controllo rapidamente. Con una periferica reale occorre anche configurare la sorgente e trattarne i flag. |
+| `#[task(priority = …)] async fn` | Qualcuno chiama `nome::spawn(argomenti)` | Elaborare un evento o attendere una future. Su Cortex-M i task software a una stessa priorità positiva condividono un interrupt libero detto *dispatcher*. |
+| `#[idle]` (opzionale) | Quando non c'è lavoro più prioritario pronto | Lavoro di fondo. Non è un posto adatto per attendere attivamente un evento urgente. |
 
-- lavori su microcontrollori senza sistema operativo;
-- il firmware e guidato da interrupt;
-- devi gestire priorita e latenza real-time;
-- hai risorse condivise tra task;
-- vuoi concorrenza statica e prevedibile;
-- Embassy/async non e necessario o non e il modello migliore.
+## Esempio: due eventi, un solo posto
 
-RTIC e adatto a firmware dove il flusso e fortemente legato a eventi hardware e priorita. Per applicazioni con molte operazioni asincrone di I/O embedded, Embassy puo essere piu naturale.
+Sul progetto **NUCLEO-F401RE** di [[Programmazione/Rust/Pagine/defmt|defmt]] aggiungiamo un secondo binario. Per provare le priorità senza cablare un pulsante, `init` rende pendente `EXTI0` **via software**. Questa è una richiesta al controller degli interrupt, non la simulazione elettrica di un pin. L'handler, a priorità 2, genera due identificatori. Un task a priorità 1 prova a registrarli tramite RTT.
 
-## Come funziona
+### Configurare il progetto
 
-RTIC organizza il firmware in un'app dichiarata con una macro. I concetti principali sono:
+Nella copia del progetto `reading-log`, aggiornare la tabella `[dependencies]` di `Cargo.toml` come sotto. Oltre alle due nuove crate, cambia il vincolo su `cortex-m`: RTIC 2.4.0 richiede almeno 0.7.9 della serie 0.7 e il pin originale `=0.7.7` impedirebbe a Cargo di risolvere le dipendenze. Conservare il resto del manifest, `DEFMT_LOG=info`, `memory.x`, `build.rs` e gli script del linker della nota precedente.
 
-- **init**: inizializzazione del sistema;
-- **idle**: lavoro a bassa priorita;
-- **task hardware**: task associati a interrupt;
-- **task software**: task schedulabili dal codice;
-- **shared resources**: stato condiviso protetto dal framework;
-- **local resources**: stato locale a un task;
-- **priority**: ordine e preemption tra task.
+```toml
+[dependencies]
+cortex-m = { version = "=0.7.9", features = ["critical-section-single-core"] }
+cortex-m-rt = "=0.7.5"
+defmt = "=1.2.0"
+defmt-rtt = "=1.3.1"
+panic-probe = { version = "=1.0.0", features = ["print-defmt"] }
+rtic = { version = "=2.4.0", features = ["thumbv7-backend"] }
+stm32f4 = { version = "=0.16.0", features = ["stm32f401", "rt"] }
+```
 
-Il framework usa informazioni statiche per calcolare protezioni e priorita. Questo riduce overhead runtime e rende piu visibile chi accede a quale risorsa.
+Il backend corrisponde al Cortex-M4; la PAC fornisce i nomi dei vettori dello specifico microcontrollore. Qui riserviamo `USART2` come dispatcher di priorità 1. **Non usiamo la UART** per i log: scegliere questo vettore significa che non può essere contemporaneamente l'handler della periferica seriale.
 
-## API / Sintassi
-
-Esempio schematico:
+Per continuare a compilare anche il primo binario, aggiungere questo import in `src/main.rs` di **questa copia** di `reading-log`. La feature `rt` della PAC fa sì che il runtime si aspetti la tabella dei vettori del chip; il primo binario, a differenza di quello RTIC, altrimenti non collegherebbe la PAC.
 
 ```rust
-#[rtic::app(device = pac, peripherals = true)]
+use stm32f4 as _;
+```
+
+### Collegare i due task
+
+Creare `src/bin/rtic-burst.rs`. È un binario separato: il `main` dell'esempio `reading-log` resta nel suo file.
+
+```rust
+#![no_std]
+#![no_main]
+
+use defmt_rtt as _;
+use panic_probe as _;
+
+#[rtic::app(device = stm32f4::stm32f401, dispatchers = [USART2])]
 mod app {
+    use stm32f4::stm32f401::Interrupt;
+
     #[shared]
-    struct Shared {
-        counter: u32,
-    }
+    struct Shared { dropped: u32 }
 
     #[local]
-    struct Local {}
+    struct Local { sequence: u32 }
 
     #[init]
-    fn init(_ctx: init::Context) -> (Shared, Local) {
-        (Shared { counter: 0 }, Local {})
+    fn init(_: init::Context) -> (Shared, Local) {
+        rtic::pend(Interrupt::EXTI0);
+        (Shared { dropped: 0 }, Local { sequence: 0 })
     }
 
-    #[idle]
-    fn idle(_ctx: idle::Context) -> ! {
-        loop {
-            cortex_m::asm::wfi();
+    #[task(binds = EXTI0, priority = 2, local = [sequence], shared = [dropped])]
+    fn burst(mut cx: burst::Context) {
+        for _ in 0..2 {
+            *cx.local.sequence = cx.local.sequence.wrapping_add(1);
+            if report::spawn(*cx.local.sequence).is_err() {
+                cx.shared.dropped.lock(|n| *n = n.saturating_add(1));
+            }
         }
     }
-}
-```
 
-`pac` e un nome schematico: nel codice reale punti alla PAC del microcontrollore.
-
-## Esempio pratico
-
-Task che aggiorna una risorsa condivisa:
-
-```rust
-#[rtic::app(device = pac, peripherals = true)]
-mod app {
-    #[shared]
-    struct Shared {
-        ticks: u32,
-    }
-
-    #[local]
-    struct Local {}
-
-    #[init]
-    fn init(_ctx: init::Context) -> (Shared, Local) {
-        (Shared { ticks: 0 }, Local {})
-    }
-
-    #[task(shared = [ticks])]
-    fn tick(mut ctx: tick::Context) {
-        ctx.shared.ticks.lock(|ticks| {
-            *ticks += 1;
-        });
+    #[task(priority = 1, shared = [dropped])]
+    async fn report(mut cx: report::Context, id: u32) {
+        let dropped = cx.shared.dropped.lock(|n| *n);
+        defmt::info!("id={=u32} dropped={=u32}", id, dropped);
     }
 }
 ```
 
-L'accesso a `ticks` passa da `lock`, invece di usare `static mut` manuale.
+### Prevedere il risultato
 
-## Varianti
+1. `init` termina e RTIC consegna l'interrupt pendente a `burst`. Il primo `spawn(1)` rende pronto `report`, ma il dispatcher di priorità 1 non può interrompere `burst` a priorità 2.
+2. `spawn(2)` trova la precedente istanza di `report` ancora occupata e restituisce `Err`. Il codice **sceglie** di scartare l'evento e incrementa `dropped`. `spawn` non è una coda illimitata; usare `unwrap()` qui manderebbe il firmware in panic.
+3. Al ritorno da `burst`, il dispatcher fa avanzare `report`. Il task legge il contatore sotto lock e stampa **fuori dal lock**. La riga applicativa attesa è `INFO id=1 dropped=1`. Non è previsto un secondo messaggio: la sorgente è stata attivata una volta sola.
 
-- **Task hardware**: legati a interrupt della periferica.
-- **Task software**: schedulati dall'applicazione.
-- **Risorse shared**: protette dal framework.
-- **Risorse local**: possedute da un solo task.
-- **Monotonic timer**: base temporale per scheduling.
-- **Embassy**: alternativa async embedded, con modello diverso.
+Se nessun evento può andare perso, usare un canale o una coda a capacità definita e decidere cosa fare quando è piena. Attendere che il consumatore di priorità 1 liberi spazio **dentro** l'handler di priorità 2 gli impedirebbe proprio di farlo.
 
-## Errori comuni
+### Compilare e osservare
 
-- Usare RTIC senza capire priorita e preemption.
-- Mettere lavoro lungo in task ad alta priorita.
-- Condividere stato fuori dal modello `shared`.
-- Usare `static mut` per aggirare il framework.
-- Confondere task RTIC con thread OS.
-- Non misurare latenza degli interrupt.
-- Scegliere RTIC quando un semplice loop o Embassy sarebbe piu chiaro.
+Dalla radice di `reading-log`, con il target Rust installato, compilare **senza accedere alla scheda**:
 
-## Checklist
+```sh
+cargo build --release --bin rtic-burst --target thumbv7em-none-eabi
+```
 
-- Le priorita dei task sono documentate?
-- Le risorse condivise sono dichiarate in `shared`?
-- Gli handler ad alta priorita sono brevi?
-- La latenza massima e accettabile?
-- Lo scheduling temporale e basato su un monotonic adatto?
-- Il firmware evita `static mut` non necessario?
-- RTIC e il modello giusto rispetto a Embassy?
+Solo per provare sulla scheda corretta: il comando seguente **scrive la Flash e avvia il nuovo firmware**. Verificare prima modello, sonda e immagine come in [[Programmazione/Rust/Pagine/probe-rs|probe-rs]]. Il messaggio parte all'avvio: collegarsi in seguito con `attach` non ripete l'evento.
+
+```sh
+probe-rs run --chip STM32F401RETx target/thumbv7em-none-eabi/release/rtic-burst
+```
+
+## Risorse e latenza
+
+- **`sequence` è locale a `burst`**: sopravvive fra invocazioni, ma nessun altro task la può dichiarare come propria. Non serve un lock.
+- **`dropped` è condivisa**: il produttore la modifica, il consumatore la legge. Il *tetto di priorità* è la massima priorità dei task che possono accedervi, qui 2. Mentre `report` è nella closure di `lock`, `burst` non può interromperla. Sul backend usato questo non equivale a disabilitare tutti gli interrupt: un task a priorità superiore al tetto può ancora intervenire, se non ci sono altre maschere attive.
+- **Un lock breve limita il ritardo che imponi agli altri task**. Copiare un contatore nel lock e fare I/O dopo, come sopra, è diverso dal trattenere la risorsa mentre il backend RTT aspetta spazio. Il modello protegge l'accesso ai dati dichiarati; non garantisce che una scadenza temporale venga rispettata. Quella richiede limiti sul lavoro per evento e misure sul target.
+
+## Quando scegliere RTIC
+
+RTIC è utile se il requisito nomina priorità precise: per esempio «l'acquisizione deve poter interrompere l'elaborazione, salvo durante l'aggiornamento del contatore». Se serve solo un evento periodico e un ciclo principale, [[Programmazione/Rust/Pagine/cortex-m|cortex-m]] può bastare. Per attività soprattutto in attesa di I/O, confrontare anche [[Programmazione/Rust/Pagine/Embassy|Embassy]]: la differenza non è «sincrono contro asincrono», perché anche RTIC 2 usa task software asincroni.
+
+Un dispatcher non è un timer: `spawn` rende pronto un task, non lo programma fra 10 ms. Per ritardi o istanti futuri occorre una sorgente di tempo, per esempio un *monotonic* adatto alla scheda; non usare lo stesso timer indipendentemente in due componenti.
+
+## Fonti
+
+- [RTIC Book 2: applicazione e priorità](https://rtic.rs/2/book/en/by-example/app.html), [task hardware](https://rtic.rs/2/book/en/by-example/hardware_tasks.html) e [task software, spawn e dispatcher](https://rtic.rs/2/book/en/by-example/software_tasks.html).
+- [RTIC Book 2: risorse locali, lock e tetto di priorità](https://rtic.rs/2/book/en/by-example/resources.html).
+- [RTIC 2.4.0: API della crate](https://docs.rs/rtic/2.4.0/rtic/) e [PAC STM32F401 0.16.0](https://docs.rs/stm32f4/0.16.0/stm32f4/stm32f401/).
 
 ## Collegamenti
 

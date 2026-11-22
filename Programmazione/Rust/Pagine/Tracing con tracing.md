@@ -14,12 +14,12 @@ aliases:
   - Tracing con tracing
   - tracing crate
 prerequisites:
-  - "[[Programmazione/Rust/Pagine/Logging con log]]"
-  - "[[Programmazione/Rust/Pagine/Runtime async Tokio e async-std]]"
+  - "[[Programmazione/Rust/Pagine/Logging con log|Logging con log]]"
+  - "[[Programmazione/Rust/Pagine/Runtime async Tokio e async-std|Runtime async Tokio e async-std]]"
 related:
-  - "[[Programmazione/Rust/Pagine/Performance e profiling]]"
-  - "[[Programmazione/Rust/Pagine/Error reporting]]"
-  - "[[Programmazione/Rust/Pagine/Web backend con axum]]"
+  - "[[Programmazione/Rust/Pagine/Performance e profiling|Performance e profiling]]"
+  - "[[Programmazione/Rust/Pagine/Error reporting|Error reporting]]"
+  - "[[Programmazione/Rust/Pagine/Web backend con axum|Web backend con axum]]"
 title: Tracing con tracing
 ---
 
@@ -27,137 +27,166 @@ title: Tracing con tracing
 
 ## Sintesi
 
-`tracing` e una crate per osservabilita strutturata in Rust. A differenza del logging tradizionale, non registra solo messaggi testuali: permette di creare eventi, campi strutturati e span che descrivono operazioni nel tempo.
+Due richieste possono scrivere entrambe «conteggio completato» sullo stesso thread. L'ordine delle righe non basta per capire quale richiesta sia terminata. Con `tracing` assegni un **campo** identificativo allo **span** della richiesta e produci un **evento** nel punto in cui il lavoro termina. Un subscriber può mostrare l'evento insieme alla sua catena di span, senza dover ripetere a mano l'identificativo in ogni messaggio.
 
-E particolarmente utile in applicazioni async, server, worker e tool complessi, dove un singolo flusso logico puo attraversare task, thread e funzioni diverse.
+## Evento, span e subscriber
 
-## Quando usarlo
+| Concetto | Domanda a cui risponde | Esempio |
+| --- | --- | --- |
+| Evento | Che cosa è successo in questo punto? | «Conteggio completato», con il numero di parole come campo numerico. |
+| Span | Di quale operazione fa parte questo lavoro? | Lo span `documento` con `doc_id=17`, padre dello span `worker`. |
+| Subscriber e layer | Quali dati raccogliere e come renderli visibili? | Un filtro accetta gli eventi da `INFO` in su; un layer di formato scrive JSON su stderr. |
 
-Usa `tracing` quando:
+La libreria che esegue il lavoro emette eventi e span; **il binario** configura il subscriber. Creare uno span non significa entrarci, e non obbliga il formatter a stampare righe di apertura e chiusura. I campi di un evento sono distinti dai campi dei suoi span: `parole` descrive il risultato, `doc_id` identifica l'operazione. Se basta un avviso isolato, [[Programmazione/Rust/Pagine/Logging con log|log]] può essere sufficiente.
 
-- vuoi correlare eventi dentro una stessa operazione;
-- hai codice async o concorrente;
-- devi aggiungere campi strutturati come `request_id`, `user_id`, `path`;
-- vuoi esportare log in formato JSON;
-- devi osservare latenza, errori e flussi applicativi;
-- un semplice logger testuale non basta piu.
+## Il confine asincrono
 
-Per librerie piccole o CLI semplici, `log` puo essere sufficiente. Per servizi e tool mantenuti nel tempo, `tracing` offre un modello piu ricco.
+- **Blocco sincrono:** `span.in_scope(|| lavoro())` entra nello span solo per la durata della closure. Anche la guardia di `span.enter()` va bene se viene rilasciata prima di ogni `await`.
+- **Future:** non conservare una guardia di `enter()` attraverso un `await`. Mentre la future è sospesa, un altro task può usare quel thread ed emettere eventi sotto lo span sbagliato. `#[instrument]` su una funzione async, o `future.instrument(span)`, entra nello span quando la future viene interrogata (*poll*) e ne esce quando quel poll termina.
+- **Nuovo task:** `tokio::spawn(future)` non trasferisce automaticamente lo span corrente. Se il nuovo task fa parte della stessa operazione, usa `future.in_current_span()`; se deve avere un nome proprio, crea lo span figlio **nel contesto del chiamante** e applicalo con `.instrument(...)` prima dello spawn. Crearlo soltanto dentro un task già scollegato non ricostruisce il padre.
 
-## Come funziona
+## Laboratorio: due documenti, un solo thread
 
-I concetti principali sono:
+Servono Rust/Cargo stabile con edition 2024 e un linker per l'host. Il programma non usa file o servizi esterni. Da una directory di prova:
 
-- **event**: un evento puntuale, simile a una riga di log;
-- **span**: un intervallo di lavoro con inizio, fine e contesto;
-- **field**: dato strutturato associato a event o span;
-- **subscriber**: componente che riceve e formatta eventi e span;
-- **layer**: componente componibile per filtrare, formattare o esportare dati.
-
-Uno span permette di dire "tutti questi eventi appartengono alla stessa operazione". Questo e utile quando i log di piu task sono interleavati.
-
-`tracing` non stampa niente finche non installi un subscriber, di solito all'avvio dell'applicazione.
-
-## API / Sintassi
-
-Eventi:
-
-```rust
-use tracing::{debug, error, info, warn};
-
-fn run() {
-    info!(version = env!("CARGO_PKG_VERSION"), "starting");
-    debug!("loading configuration");
-    warn!("using default cache directory");
-    error!("operation failed");
-}
+```sh
+cargo new --bin --vcs none trace-demo
 ```
 
-Span manuale:
-
-```rust
-use tracing::{info, span, Level};
-
-fn process_file(path: &str) {
-    let span = span!(Level::INFO, "process_file", path);
-    let _guard = span.enter();
-
-    info!("reading file");
-    info!("processing file");
-}
+```sh
+cd trace-demo
 ```
 
-Strumentazione di funzione:
+Sotto `[dependencies]` in `Cargo.toml` inserisci:
 
-```rust
-use tracing::instrument;
-
-#[instrument(skip(password))]
-fn login(user: &str, password: &str) -> Result<(), String> {
-    if password.is_empty() {
-        return Err("empty password".to_string());
-    }
-
-    Ok(())
-}
+```toml
+tokio = { version = "=1.54.1", features = ["rt", "macros"] }
+tracing = { version = "=0.1.44", features = ["attributes"] }
+tracing-subscriber = { version = "=0.3.22", features = ["env-filter", "json"] }
 ```
 
-`skip` evita di registrare argomenti sensibili o troppo grandi.
-
-## Esempio pratico
-
-Inizializzazione per una CLI o servizio:
+Il primo build deve poter reperire le dipendenze. Per riprodurre le versioni transitive conserva anche `Cargo.lock`. Sostituisci `src/main.rs`:
 
 ```rust
+use std::{env, io, process::ExitCode};
+use tokio::task::{self, JoinError};
+use tracing::{debug, info, info_span, instrument, Instrument};
 use tracing_subscriber::EnvFilter;
 
-fn init_tracing() {
-    let filter = EnvFilter::try_from_default_env()
-        .unwrap_or_else(|_| EnvFilter::new("info"));
-
+fn init_tracing() -> Result<(), &'static str> {
+    let filter = match env::var("RUST_LOG") {
+        Ok(raw) => EnvFilter::try_new(raw).map_err(|_| "RUST_LOG: direttiva non valida")?,
+        Err(env::VarError::NotPresent) => EnvFilter::new("info"),
+        Err(env::VarError::NotUnicode(_)) => return Err("RUST_LOG: testo non Unicode"),
+    };
     tracing_subscriber::fmt()
         .with_env_filter(filter)
+        .json()
+        .without_time()
         .with_target(false)
-        .init();
+        .with_current_span(false)
+        .with_span_list(true)
+        .with_writer(io::stderr)
+        .try_init()
+        .map_err(|_| "impossibile inizializzare il subscriber")
 }
 
-fn main() {
-    init_tracing();
+#[instrument(name = "documento", skip_all, fields(doc_id = id))]
+async fn elabora(id: u64, testo: &'static str) -> Result<usize, JoinError> {
+    debug!("preparazione");
+    let lavoro = async move {
+        task::yield_now().await;
+        let parole = testo.split_whitespace().count();
+        info!(parole, "conteggio completato");
+        parole
+    };
+    let n = task::spawn(lavoro.instrument(info_span!("worker"))).await?;
+    info!("documento pronto");
+    Ok(n)
+}
 
-    tracing::info!(command = "import", "starting command");
+#[tokio::main(flavor = "current_thread")]
+async fn main() -> ExitCode {
+    if let Err(err) = init_tracing() {
+        eprintln!("{err}");
+        return ExitCode::FAILURE;
+    }
+    match tokio::join!(elabora(17, "prima bozza locale"), elabora(42, "seconda bozza")) {
+        (Ok(a), Ok(b)) => {
+            println!("{}", a + b);
+            ExitCode::SUCCESS
+        }
+        (Err(err), _) | (_, Err(err)) => {
+            eprintln!("task non completato: {err}");
+            ExitCode::FAILURE
+        }
+    }
 }
 ```
 
-Con `EnvFilter` puoi cambiare livello senza ricompilare, per esempio impostando regole diverse per moduli diversi.
+`join!` fa avanzare entrambe le elaborazioni sul runtime a un thread: c'è concorrenza, non parallelismo fra core. L'attributo `#[instrument]` crea uno span per **ogni chiamata**; `skip_all` evita la registrazione automatica degli argomenti e `fields(doc_id = id)` espone solo l'ID. Ogni `worker` nasce mentre il suo `documento` è corrente. Dopo lo spawn la macro `info!` nel task scrive quindi sotto `documento → worker`; l'evento successivo all'`await` nel chiamante torna sotto il solo `documento`.
 
-## Varianti
+### Leggere l'output
 
-- **Tracing testuale**: adatto a CLI e sviluppo locale.
-- **Tracing JSON**: utile per log centralizzati.
-- **Span asincroni**: collegano eventi attraverso `Future`.
-- **Instrumentation con attributi**: `#[instrument]` riduce boilerplate.
-- **Layer multipli**: formattazione, filtro, esportazione e integrazioni.
-- **Interop con log**: molte applicazioni catturano anche eventi dalla crate `log`.
+```sh
+cargo run --quiet
+```
 
-## Errori comuni
+Senza `RUST_LOG`, stdout contiene **`5`**. Su stderr trovi quattro eventi `INFO` in formato JSON, uno per riga. Ecco come leggere l'evento del primo worker (ordine delle chiavi non significativo):
 
-- Usare `tracing` come semplice `println!` strutturato.
-- Dimenticare il subscriber.
-- Registrare dati sensibili nei field.
-- Creare span troppo granulari e rumorosi.
-- Usare `#[instrument]` su funzioni con argomenti grandi senza `skip`.
-- Non propagare il contesto negli spawn async.
-- Confondere tracing applicativo con profiling CPU: sono strumenti complementari.
+```json
+{
+  "level": "INFO",
+  "fields": { "message": "conteggio completato", "parole": 3 },
+  "spans": [
+    { "name": "documento", "doc_id": 17 },
+    { "name": "worker" }
+  ]
+}
+```
 
-## Checklist
+Per l'altro worker trovi `doc_id=42` e `parole=2`. Non dedurre la parentela dall'ordine degli eventi: cerca l'ID nella lista `spans`. Questa lista è una scelta del formatter; non significa che ogni evento dichiari di nuovo il campo `doc_id`. JSON e stderr sono anch'essi scelte esplicite, non proprietà intrinseche di `tracing`.
 
-- Esiste un subscriber inizializzato all'avvio?
-- I field importanti sono strutturati, non nascosti nel testo?
-- I dati sensibili sono esclusi?
-- Gli span rappresentano operazioni reali?
-- Il filtro e configurabile?
-- I log sono leggibili localmente e utili in produzione?
-- Per performance serve anche profiling separato?
+### Cambiare il filtro e isolare la propagazione
+
+In una **PowerShell di prova** imposta il filtro per il target Rust del package (con underscore):
+
+```powershell
+$env:RUST_LOG = 'warn,trace_demo=debug'
+```
+
+```powershell
+cargo run --quiet
+```
+
+Ai quattro eventi si aggiungono due `DEBUG preparazione`, uno per documento. In una shell POSIX l'equivalente per una sola invocazione è:
+
+```sh
+RUST_LOG=warn,trace_demo=debug cargo run --quiet
+```
+
+| Prova | Cosa deve cambiare | Cosa non deve cambiare |
+| --- | --- | --- |
+| `RUST_LOG=off` | Nessun evento del programma su stderr. | Il lavoro viene eseguito: stdout è `5`, codice 0. |
+| Direttiva non valida, per esempio `trace_demo=inesistente` | La CLI segnala l'errore su stderr e termina prima di elaborare i documenti. | Il default `info` è per la variabile assente, non per riparare un refuso. |
+| Sostituisci solo `lavoro.instrument(info_span!("worker"))` con `lavoro` nel progetto di prova e usa il filtro `info` | Gli eventi «conteggio completato» non hanno più la catena del documento; quelli «documento pronto» la conservano. | Conteggi e stdout sono identici. La strumentazione cambia la correlazione, non il calcolo. |
+
+Chiudi la PowerShell di prova per non mantenere la variabile. Per misurare i canali del solo eseguibile avvialo direttamente dopo la compilazione: Cargo può aggiungere su stderr i propri avvisi, per esempio sugli import inutilizzati dopo la controprova.
+
+## Limiti pratici
+
+- **Dati sensibili:** `skip(argomento)` o `skip_all` controllano solo i campi automatici dell'attributo. Un evento esplicito come `debug!(?testo)` registrerebbe di nuovo il contenuto. Usa identificatori appropriati, non token, payload o credenziali.
+- **Tempi:** lo span rappresenta un'operazione che può restare sospesa. La durata fino alla chiusura comprende anche attese e non misura il tempo CPU. Il laboratorio non registra durate; per localizzare lavoro costoso vedi [[Programmazione/Rust/Pagine/Performance e profiling|Performance e profiling]].
+- **Composizione:** un layer può formattare in testo o JSON, un altro può esportare. Installa il subscriber globale nel binario una sola volta. L'integrazione con `log` dipende dal bridge configurato: non inizializzare due logger globali concorrenti.
+- **Confine di processo:** strumentare una future propaga il contesto locale, non lo invia a un altro servizio. Il tracing distribuito richiede anche estrazione e iniezione del contesto nel protocollo e un esportatore appropriato.
+
+## Fonti ufficiali
+
+- [tracing 0.1.44: ciclo di vita degli span e avvertenza su enter in async](https://docs.rs/tracing/0.1.44/tracing/struct.Span.html#in-asynchronous-code)
+- [tracing 0.1.44: Instrument e in_current_span](https://docs.rs/tracing/0.1.44/tracing/trait.Instrument.html)
+- [tracing 0.1.44: attributo instrument, skip e fields](https://docs.rs/tracing/0.1.44/tracing/attr.instrument.html)
+- [tracing-subscriber 0.3.22: formato JSON e contesto](https://docs.rs/tracing-subscriber/0.3.22/tracing_subscriber/fmt/format/struct.Json.html)
+- [tracing-subscriber 0.3.22: EnvFilter](https://docs.rs/tracing-subscriber/0.3.22/tracing_subscriber/filter/struct.EnvFilter.html)
 
 ## Collegamenti
 

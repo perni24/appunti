@@ -3365,3 +3365,4182 @@ Revisionati gli ultimi **3 promemoria Python**: **13 su 13**, insieme alle **75 
 ### Prossimo blocco
 
 Python concluso in questa passata: **75 note principali e 13 promemoria**. Proseguire con **Rust: Fondamenti del Linguaggio**, seguendo l'indice; iniziare da Sintassi di base, Tipi di dato primitivi e Variabili, mutabilita e shadowing.
+
+## 2026-10-30 - Rust: Sintassi, Tipi e Binding
+
+### Intervento
+
+Revisionate le prime **3 note su 183** destinazioni principali uniche dell'indice Rust: tre delle dieci di Fondamenti del Linguaggio. Nessuna nota creata o spostata; indici e redirect invariati. YAML confrontato con Git e conservato, inclusi data e status non revisionato: l'approvazione dell'utente resta separata.
+
+- [[Programmazione/Rust/Pagine/Sintassi di base|Sintassi di base]]: distinti item, statement ed espressioni; `()` non e assenza di dato. Chiariti punto e virgola interno/esterno, scope, tipi di ritorno e rami if; esempi completi e due controesempi dichiarati.
+- [[Programmazione/Rust/Pagine/Tipi di dato primitivi|Tipi di dato primitivi]]: inferenza, dimensioni del target, interi e divisione, array/slice, get rispetto a indexing, politiche di overflow, conversioni fallibili e cast con perdita, precisione float e Unicode. Conservati gli argomenti originali, con limiti espliciti.
+- [[Programmazione/Rust/Pagine/Variabili mutabilita e shadowing|Variabili, mutabilita e shadowing]]: trasformazioni con errori propagati, scope, inizializzazione differita, mutabilita del binding rispetto al riferimento, const e durata delle risorse nascoste. Lo shadowing non e una chiamata implicita a drop.
+- Template tecnico mantenuto, gerarchia coerente, fonti ufficiali Rust Book/Reference/standard library/Cargo; link alla teoria correlata senza duplicare interi capitoli di ownership o error handling.
+
+### Verifica tecnica
+
+- Baseline **Rust 1.99.1 (58cf8f9c3), edition 2024, x86_64-pc-windows-gnu**, Node **24.14.0**, Windows x64. Rust inizialmente assente dal PATH e dalle directory standard; scaricato rustup ufficiale con verifica SHA-256 e installata toolchain minimal isolata, con `--no-modify-path`.
+- Root della toolchain riusabile: `C:/Users/SE-Luca Bellini/AppData/Local/Temp/appunti-rust-tools-ae6b471bd6a24ac9bd8d7ba43a48b5f6`. Compilatore in `rustup/toolchains/1.99.1-x86_64-pc-windows-gnu/bin/rustc.exe`; nessuna installazione Visual Studio o crate esterna.
+- Suite `_Meta/tests/rust-fondamenti.test.mjs`: **51/51 test**, zero fallimenti/skip, circa **29 secondi**. Tutti i **21 blocchi Rust** estratti dai Markdown: **17 validi** compilati ed eseguiti con asserzioni/output controllati e **4 non compilabili** verificati con diagnostica strutturata.
+- Varianti mirate per `;`, condizione non booleana, scope, parsing invalido, inizializzazione, mutabilita e char. Nessun cambiamento agli esempi per aggirare errori: prima dell'esecuzione corretta una parentesi mancante nella suite JavaScript, rilevata da node --check.
+- Sonde aggiuntive sulla prosa: unit e inferenza, tupla singola, slice vuota e puntatori alla stessa memoria, Drop osservato allo scope, drop esplicito, Cell e inizializzatore const invalido.
+- Flag rustc `opt-level=3` e `overflow-checks=yes/no`: verificati metodi espliciti, overflow runtime, divisione intera per zero e MIN/-1, panic per indice fuori limite. Le sonde disabilitano solo i controlli aritmetici, non quelli degli indici.
+- Processi reali con timeout e fixture temporanee rimosse solo dopo verifica di percorso risolto, parent e prefisso. Nessun sorgente utente usato come fixture; toolchain mantenuta per i prossimi blocchi.
+- Limiti: singola versione/target, nessun MSVC, cross-compilazione, Miri, benchmark o matrice di profili Cargo. Non eseguito ogni frammento inline. Le altre note Rust e le suite degli altri linguaggi non sono state revisionate/rieseguite in questo lotto.
+
+### Verifica editoriale e Quartz
+
+- **911 documenti raggiungibili, zero errori e 388 avvisi editoriali**; nessuno nelle tre note Rust. Rapporto rigenerato, **9/9 test della trasformazione** superati.
+- Build Quartz riuscita: **3.719 file, 2.003 HTML, 168 redirect e 139.512 riferimenti verificati**, zero errori. Solo gli avvisi gia noti sul plugin con eval e sulla directory temporanea senza Git. Nessuna modifica manuale agli HTML generati.
+- **7/7 test HTTP dell'anteprima** superati dopo la build, separatamente dai 51 test Rust e dai nove test della trasformazione.
+- QA Chrome **156.0.8078.79** a **1440x1000** e **390x844**: HTTP 200 per tutte le note, nessun errore pagina/console o overflow orizzontale del documento. Sei screenshot ispezionati; un controllo aggiuntivo su `pre code` conferma lo scorrimento effettivo dei nove blocchi larghi su mobile (uno, sette e uno per nota).
+- Screenshot in `C:/Users/SE-Luca Bellini/AppData/Local/Temp/appunti-rust-fondamenti-qa-GNQg0c`. Browser QA e server dei test chiusi. Anteprima precedente non disponibile: riavviata e lasciata attiva su http://localhost:8082/appunti/ (PID 25648).
+- Formattazione e diff controllati, metadati invariati e storico mantenuto a dieci voci. Nessuna modifica a lockfile o infrastruttura del sito; nessun commit/push in questo lotto.
+
+### Prossimo blocco
+
+Continuare **Fondamenti del Linguaggio** con **Funzioni**, **Commenti e documentazione** e **Controllo di flusso**. Restano sette note del capitolo, 180 note principali Rust e i promemoria in questa passata.
+
+## 2026-10-30 - Rust: Funzioni, Documentazione e Flusso
+
+### Intervento
+
+Revisionate altre **3 note**, portando Rust a **6 note principali su 183**, sei delle dieci di Fondamenti del Linguaggio. Conservati YAML originale, data, percorsi, type, publish e status non revisionato; nessuna nota nuova, indice o redirect modificato.
+
+- [[Programmazione/Rust/Pagine/Funzioni|Funzioni]]: firme e chiamate, copia/move/prestiti, parametro mut rispetto a riferimento mutabile, risultato unit, uscita anticipata con Option, callback e funzioni annidate. Esempi autonomi, input vuoti/limite e controesempio di uso dopo move.
+- [[Programmazione/Rust/Pagine/Commenti e documentazione|Commenti e documentazione]]: doc comment come attributi e relativa posizione, contratto pubblico, link intra-doc distinti dai wikilink. Sostituito il riferimento fittizio my_crate con una libreria note-rust riproducibile. Generazione HTML distinta dai tre doctest; limiti degli attributi e del controllo diagnostico stable espliciti.
+- [[Programmazione/Rust/Pagine/Controllo di flusso|Controllo di flusso]]: eliminati i frammenti con input non definiti, aggiunti esempi di range, lettura/modifica, segni, while/continue, loop con risultato, match e label. Distinti consumo del vettore, esaurimento, break/return, esaustivita e limiti degli indici.
+- Consultate fonti ufficiali Rust Book/Reference, rustdoc, Cargo e standard library. Approfondimenti avanzati rimandati alle note esistenti, non conteggiati come revisionati.
+
+### Verifica tecnica
+
+- Riutilizzata la toolchain isolata del primo lotto: **Rust, rustdoc e Cargo 1.99.1**, edition **2024**, **x86_64-pc-windows-gnu**, Node **24.14.0**. Nessuna nuova installazione, dipendenza site o modifica globale del PATH.
+- Suite `_Meta/tests/rust-funzioni-documentazione-flusso.test.mjs`: **49/49 test mirati**, zero fallimenti/skip, circa **46 secondi**. Estratti **17 blocchi Rust**: 14 programmi validi, due controesempi rifiutati con diagnostica attesa e un sorgente di libreria. Tre doctest interni alla prova Cargo, non sommati ai 49 test.
+- Casi aggiuntivi su input vuoti, interi estremi e Unicode, prestiti senza clone, callback/cattura/arita, scope, range, while mai eseguito, label, match incompleto e modifiche illegali al vettore durante il prestito.
+- Cargo eseguito realmente e offline in fixture: new senza Git, doc, test --doc e document-private-items. Controllati HTML, collegamenti ai simboli e import nascosto. I test dimostrano che doc puo riuscire con un'asserzione errata, che compile_fail rifiuta codice diventato valido ma puo passare per un errore diverso, e che documentare item privati non li rende accessibili.
+- Provati anche import errato, link intra-doc rotto con lint deny, no_run che non esegue ma controlla i tipi, ignore/text e should_panic. L'ignore intenzionale e una fixture per verificare il comportamento, non uno skip della suite Node.
+- Durante la verifica delle fonti rimossa l'annotazione E0308 dal doctest: il controllo dei codici e unstable, non una garanzia della baseline stable. La suite verifica invece codici specifici per i controesempi tramite output JSON di rustc.
+- Fixture e CARGO_HOME temporanei con rete Cargo disabilitata; processi con timeout, cleanup dopo controllo del percorso risolto, parent e prefisso. `cd` realizzato tramite cwd del processo; `--open` non eseguito per non aprire il browser personale. Nessun publishing o chiamata a docs.rs.
+- Regressione seriale delle due suite sulle sei note: **100/100 test Rust**, zero fallimenti/skip, circa **77 secondi**. Gli esiti precedenti restano validi; nessuna modifica necessaria agli esempi dopo la prima esecuzione mirata.
+- Limiti: un target e una versione, non benchmark, Miri o matrice di piattaforme. Non eseguito ogni frammento inline, non rieseguite le suite degli altri linguaggi. Test tecnici distinti da controlli editoriali e approvazione dell'utente.
+
+### Verifica editoriale e Quartz
+
+- **911 documenti raggiungibili, zero errori e 385 avvisi editoriali**; nessuno specifico sulle tre note. Rapporto rigenerato e **9/9 test della trasformazione** superati.
+- Build Quartz riuscita: **3.719 file, 2.003 HTML, 168 redirect e 139.601 riferimenti verificati**, zero errori. Avvisi noti su eval del plugin e directory temporanea senza Git invariati.
+- A build conclusa, **7/7 test HTTP dell'anteprima** superati separatamente. Non confusi con i 100 test Rust o i nove test della trasformazione.
+- QA Chrome **156.0.8078.79**, viewport **1440x1000** e **390x844**: HTTP 200 per tutte le note, nessun errore console/pagina o overflow orizzontale del documento. Verificato lo scorrimento effettivo dei blocchi larghi; sei screenshot ispezionati.
+- Screenshot in `C:/Users/SE-Luca Bellini/AppData/Local/Temp/appunti-rust-funzioni-doc-flusso-qa-rdUSMl`. Browser QA e server dei test chiusi; anteprima gia attiva su http://localhost:8082/appunti/ mantenuta. Nessuna modifica manuale agli HTML generati.
+- Formattazione e diff verificati, YAML invariato e storico consolidato nella voce odierna, sempre dieci voci. Conservate le modifiche locali del primo lotto. Nessun commit/push o deploy remoto.
+
+### Prossimo blocco
+
+Restano **quattro note** di Fondamenti: **Pattern base**, **Moduli, crate e package**, **Workspace**, **Visibilita: pub, use e mod**. Totale restante: 177 note principali Rust, oltre ai promemoria.
+
+## 2026-10-30 - Rust: Pattern, Moduli e Workspace
+
+### Intervento
+
+Revisionate le ultime **quattro note di Fondamenti del Linguaggio**: capitolo **10/10**, totale **10/183 note principali Rust**. YAML confrontato con Git e invariato per tutte le dieci note, inclusi data, pubblicabilita e status non revisionato. Nessuna nuova nota, spostamento, modifica a indici o redirect.
+
+- [[Programmazione/Rust/Pagine/Pattern base|Pattern base]]: refutabilita relativa al tipo, tuple/array, alternative/range, ordine dei rami, binding rispetto a confronto, guardie, wildcard rispetto a nome con underscore, move/prestito ed edition 2024. Sei esempi autonomi validi e un errore intenzionale spiegato.
+- [[Programmazione/Rust/Pagine/Moduli crate e package|Moduli, crate e package]]: package, target, crate e moduli distinti; libreria e binario sono crate separate. Progetto completo di sette file, repository in memoria con ID mancanti gestiti, integration test e comandi separati. Spiegati layout dei moduli, import e percorsi.
+- [[Programmazione/Rust/Pagine/Workspace|Workspace]]: workspace virtuale con cinque file, resolver 3 esplicito per la baseline edition 2024, senza dichiarare deprecato resolver 2. Ereditarieta opt-in, dipendenze fra membri, path, lockfile/target condivisi, default-members e differenza tra test predefiniti e test --workspace.
+- [[Programmazione/Rust/Pagine/Visibilita pub use e mod|Visibilita: pub, use e mod]]: visibilita relativa alla crate e al percorso, pub(in) limitato a un antenato, re-export senza ampliare item privati, campi e metodi distinti. Progetto completo di quattro file con User, getter e alias; privacy non confusa con segretezza o validazione del dominio.
+- Fonti ufficiali Rust Book, Reference, Edition Guide e Cargo Book collegate nelle note. Le note avanzate correlate non sono conteggiate come revisionate.
+
+### Verifica tecnica
+
+- Riutilizzata la toolchain isolata **Rust/rustdoc/Cargo 1.99.1**, edition **2024**, **x86_64-pc-windows-gnu**, Node **24.14.0**. Nessuna nuova installazione, crate esterna, dipendenza site o modifica del PATH globale.
+- Nuova suite `_Meta/tests/rust-pattern-moduli-workspace.test.mjs`: **48 test**, tutti superati nella regressione completa. Estratti **23 blocchi Rust/TOML**: sette programmi sui pattern e tre progetti multifile di sette, cinque e quattro file. Totale **18 blocchi Rust e cinque TOML**; i test interni Cargo non si sommano ai gruppi Node.
+- Verificati i programmi originali, output/assert, un controesempio E0005, casi aggiuntivi su refutabilita, range, shadowing, move e wildcard, let-else e match ergonomics 2024. Errori di compilazione controllati tramite diagnostica JSON quando disponibile.
+- Cargo reale e offline: check, test, run e metadata; moduli mancanti/duplicati, layout alternativo, import dalla crate sbagliata, privacy fra libreria e binario, metadati ereditati, path e selezione dei membri. Un test volutamente errato nella libreria dimostra che i test predefiniti del CLI non coprono gli unit test della dipendenza.
+- Verificati campi/metodi/moduli privati, re-export non consentito, alias dello stesso tipo, scope pub(in), accesso dei discendenti, import/glob e varianti enum. Sonde della prosa separate dagli esempi originali.
+- Prima esecuzione mirata: 46/48; corretti due controlli della suite sul testo della diagnostica ref e sul codice per il tipo non importato, senza modificare il comportamento degli esempi. Regressione seriale finale delle tre suite: **148/148 test**, zero fallimenti/skip, circa **141 secondi**.
+- Fixture e CARGO_HOME temporanei, rete Cargo disabilitata, timeout dei processi e cleanup dopo verifica di percorso risolto, parent e prefisso. Limiti: una versione/target, niente Miri, benchmark, publishing, risoluzione di dipendenze remote o prova completa della politica MSRV. Non eseguito ogni frammento inline o le suite degli altri linguaggi.
+
+### Verifica editoriale e Quartz
+
+- **911 documenti raggiungibili, zero errori e 381 avvisi editoriali**, nessuno sulle quattro note. Rapporto rigenerato e **9/9 test della trasformazione** superati.
+- Build riuscita: **3.719 file, 2.003 HTML, 168 redirect e 139.697 riferimenti verificati**, zero errori. Avvisi preesistenti del plugin con eval e della directory temporanea senza Git invariati.
+- **7/7 test HTTP dell'anteprima** superati dopo la build, separatamente dai 148 test Rust e dai nove test della trasformazione.
+- QA Chrome **156.0.8078.79**, desktop **1440x1000** e mobile **390x844**: HTTP 200, H1 corretti, nessun errore console/pagina o overflow del documento. Otto screenshot ispezionati; verificato lo scorrimento effettivo dei blocchi larghi su mobile.
+- Screenshot in `C:/Users/SE-Luca Bellini/AppData/Local/Temp/appunti-rust-pattern-moduli-qa-jPpkp2`. Browser QA e server dei test chiusi; anteprima esistente mantenuta su http://localhost:8082/appunti/. Nessuna modifica manuale agli HTML generati.
+- Formattazione, YAML e diff controllati. Storico consolidato nella voce del 30 ottobre, mantenendo dieci voci; modifiche dei lotti precedenti conservate. Nessun commit, push o deploy remoto.
+
+### Prossimo blocco
+
+**Ownership e Memory Safety**: iniziare da **Ownership**, **Move semantics** e **Copy e Clone**. Restano **173 note principali Rust**, oltre ai promemoria, in questa passata.
+
+## 2026-10-30 - Rust: Ownership, Move, Copy e Clone
+
+### Intervento
+
+Revisionate le prime **3/10 note di Ownership e Memory Safety**: totale **13/183 note principali Rust**. YAML confrontato con Git e invariato per tutte le tredici note locali, inclusi data, percorsi, type, publish e status non revisionato. Nessuna nota creata o spostata, nessuna modifica a indici o redirect.
+
+- [[Programmazione/Rust/Pagine/Ownership|Ownership]]: responsabilita del proprietario distinta da sola variabile con nome e da allocazione sullo heap. Contratti consumante, condiviso e mutabile, restituzione del valore, shadowing, byte UTF-8; Drop osservabile, riassegnamento e limiti del cleanup. Rimossi assoluti su assenza di lavoro runtime e distruzione sempre garantita; errore di riferimento locale mostrato come programma non compilabile.
+- [[Programmazione/Rust/Pagine/Move semantics|Move semantics]]: semantica del trasferimento distinta da copie fisiche e clone; proprieta di campi/collezioni, uso dopo move, reinizializzazione e move parziale. Chiariti limiti con Drop e riferimenti, replace/take e cattura move delle closure. Il demo push/pop e esplicitamente LIFO, con rimando a VecDeque per FIFO.
+- [[Programmazione/Rust/Pagine/Copy e Clone|Copy e Clone]]: Copy non garantisce costo trascurabile e Clone non garantisce dati indipendenti. Requisiti dei trait e derive, incompatibilita con Drop, stringhe clonate, riferimenti, Rc, clone_from e to_owned; controesempio Copy su String. Esempi autonomi e API inglesi, senza cambiare i titoli canonici.
+- Consultate e collegate fonti ufficiali Rust Book, Reference, Rust By Example e standard library. Pagine avanzate correlate non conteggiate come revisionate.
+
+### Verifica tecnica
+
+- Riutilizzata la toolchain isolata **Rust 1.99.1**, edition **2024**, **x86_64-pc-windows-gnu**, Node **24.14.0**. Nessuna installazione aggiuntiva, dipendenza site o modifica al PATH globale.
+- Suite `_Meta/tests/rust-ownership-move-copy.test.mjs`: **56/56 test mirati**, zero fallimenti/skip, circa **34 secondi**. Estratti tutti i **22 blocchi Rust**, con **19 programmi validi** compilati ed eseguiti e **tre controesempi** verificati tramite diagnostica JSON (E0515, E0382, E0204).
+- Sonde aggiuntive su vuoto, Unicode/NUL, modifica e prefissi ripetuti, restituzione posseduta, drop anticipato/del riferimento, return, forget e riassegnamento; buffer String, struct senza Copy, reinizializzazione, job multipli in ordine LIFO, move parziale con/senza Drop e tramite riferimento.
+- Verificati replace/take, closure ripetibile o consumante, lifetime del riferimento catturato, requisiti Copy/Clone, array grande, riferimenti condivisi e reborrow mutabile, stringhe indipendenti, clone Rc senza bound Clone sul contenuto, derive con stato condiviso, clone_from e to_owned.
+- Regressione seriale delle quattro suite: **204/204 test Rust**, zero fallimenti/skip, circa **174 secondi**. Nessuna modifica agli esempi necessaria per superare i test.
+- Fixture temporanee con processi a timeout e cleanup dopo verifica di percorso risolto, parent e prefisso. Nessuna crate esterna o rete nei nuovi test, nessun unsafe eseguito; il demo Resource stampa soltanto e non apre risorse del sistema.
+- Limiti: una versione/target; nessun benchmark, Miri, conteggio delle allocazioni o test di terminazione forzata. Dimensione dell'array e identita del buffer non sono misure di costo o garanzie sulle istruzioni macchina. Non rieseguite le suite degli altri linguaggi o ogni frammento inline.
+
+### Verifica editoriale e Quartz
+
+- **911 documenti raggiungibili, zero errori e 378 avvisi editoriali**, nessuno sulle tre note. Rapporto rigenerato e **9/9 test della trasformazione** superati.
+- Build riuscita: **3.719 file, 2.003 HTML, 168 redirect e 139.782 riferimenti verificati**, zero errori. Avvisi preesistenti su eval del plugin e directory temporanea senza Git invariati.
+- **7/7 test HTTP dell'anteprima** superati dopo la build, separatamente dai 204 test Rust e dai nove test della trasformazione.
+- QA Chrome **156.0.8078.79**, desktop **1440x1000** e mobile **390x844**: HTTP 200, H1 corretti, nessun errore console/pagina o overflow del documento. Sei screenshot ispezionati; verificato lo scorrimento effettivo dei blocchi larghi.
+- Screenshot in `C:/Users/SE-Luca Bellini/AppData/Local/Temp/appunti-rust-ownership-move-copy-qa-wdG0gg`. Browser QA e server dei test chiusi; anteprima precedente mantenuta su http://localhost:8082/appunti/. Nessuna modifica manuale agli HTML generati.
+- Formattazione e diff controllati; storico consolidato nella voce del 30 ottobre, sempre dieci voci. Modifiche precedenti conservate; nessun commit, push o deploy remoto.
+
+### Prossimo blocco
+
+Continuare Ownership e Memory Safety con **References e Borrowing**, **Borrow checker** e **Slices**. Restano **sette note del capitolo e 170 note principali Rust**, oltre ai promemoria, in questa passata.
+
+## 2026-10-30 - Rust: Borrowing, Borrow Checker e Slices
+
+### Intervento
+
+Revisionate altre tre note di Ownership e Memory Safety: capitolo **6/10**, totale **16/183 note principali Rust**. YAML delle tre note confrontato con Git e invariato, inclusi data, type, publish e status non revisionato. Nessuna nuova nota, modifica a indici, spostamento o redirect.
+
+- [[Programmazione/Rust/Pagine/References e Borrowing|References e Borrowing]]: proprieta del riferimento distinta da quella del dato, accesso condiviso/esclusivo, NLL, mutabilita del binding e del contenuto, reborrow e riferimento restituito. Esempi autonomi con contratti espliciti; la preparazione del nome non promette assenza di allocazioni, normalizzazione NFC o sicurezza degli identificativi.
+- [[Programmazione/Rust/Pagine/Borrow checker|Borrow checker]]: controlli statici distinti dai controlli runtime di RefCell e dalla correttezza generale del programma. Spiegati conservativita dell'analisi, firme consumanti o in prestito, ricerca prima della modifica, conflitto fra riferimento a elemento e push, campi disgiunti e rilascio delle guardie. Reserve non risolve il conflitto di prestiti; lifetime e Rc/Arc non aggirano le regole.
+- [[Programmazione/Rust/Pagine/Slices|Slices]]: tipo non dimensionato distinto dai riferimenti e da Box<[T]>, viste senza copia e lunghezza senza capacita. Intervalli vuoti e limiti, get/get_mut, mutazioni, UTF-8 in byte rispetto a valori scalari/grafemi e porzioni disgiunte con split_at_mut. Esplicitati i limiti della media con NaN, infinito, overflow e precisione finita.
+- Consultate e collegate fonti ufficiali Rust Book, Reference, standard library, indice degli errori e annuncio NLL. Le note avanzate correlate non sono conteggiate come revisionate.
+
+### Verifica tecnica
+
+- Riutilizzata la toolchain isolata **Rust 1.99.1**, edition **2024**, **x86_64-pc-windows-gnu**, Node **24.14.0**. Nessuna nuova installazione, crate esterna, modifica al PATH globale o dipendenza site.
+- Nuova suite `_Meta/tests/rust-borrowing-slices.test.mjs`: **58/58 test mirati**, zero fallimenti/skip, circa **35 secondi**. Estratti tutti i **21 blocchi Rust**: **19 programmi validi** compilati ed eseguiti e **due controesempi** rifiutati con E0502 tramite diagnostica JSON.
+- Sonde aggiuntive su input vuoti, byte UTF-8, mutabilita, NLL e usi successivi, reborrow, riferimenti restituiti e lifetime del dato. Preparazione del nome provata con spazi Unicode/interni, lowercase con espansione e testo decomposto, senza attribuirle garanzie ulteriori.
+- Verificati ricerca/inserimento case-sensitive e duplicati preesistenti, reserve, snapshot clonato, campi disgiunti e conflitti. Per RefCell distinti ultimo uso della guardia, drop esplicito, try_borrow_mut e panic runtime.
+- Slice: identita degli elementi, intervalli validi/vuoti/inversi/fuori limite, get_mut, sort, confini UTF-8 e byte invalidi, split ai limiti e indicizzazione mutabile in conflitto. Provati NaN/infinito/overflow nella media, to_vec, Box<[T]> e modifica ASCII di &mut str. I panic sono verificati dopo compilazione riuscita, con codice di uscita 101 e messaggio previsto.
+- Regressione seriale delle cinque suite: **262/262 test Rust**, zero fallimenti/skip, circa **185 secondi**. Esempi estratti distinti dalle sonde della prosa e dalle variazioni intenzionali.
+- Processi con timeout e fixture temporanee eliminate solo dopo verifica di percorso risolto, parent e prefisso. Nessun unsafe o rete nei nuovi test, nessun file dell'utente modificato dalle prove.
+- Limiti: una versione/target, nessun benchmark, Miri, matrice di piattaforme o controllo completo della segmentazione Unicode. Le prove documentano i limiti numerici della media, non la certificano per ogni input. Non rieseguite le suite degli altri linguaggi o ogni frammento inline.
+
+### Verifica editoriale e Quartz
+
+- **911 documenti raggiungibili, zero errori e 375 avvisi editoriali**, nessuno sulle tre note. Rapporto rigenerato e **9/9 test della trasformazione** superati.
+- Build riuscita: **3.719 file, 2.003 HTML, 168 redirect e 139.854 riferimenti verificati**, zero errori. Avvisi preesistenti del generatore invariati.
+- **7/7 test HTTP dell'anteprima** superati dopo la build, separatamente dai 262 test Rust e dai nove test della trasformazione.
+- QA Chrome **156.0.8078.79**, desktop **1440x1000** e mobile **390x844**: HTTP 200, H1 corretti, nessun errore console/pagina o overflow del documento. Sei screenshot ispezionati; verificato lo scorrimento effettivo dei blocchi larghi.
+- Screenshot in `C:/Users/SE-Luca Bellini/AppData/Local/Temp/appunti-rust-borrowing-slices-qa-fGhx9W`. Browser QA e server dei test chiusi; anteprima precedente mantenuta su http://localhost:8082/appunti/. Nessuna modifica manuale agli HTML generati.
+- Formattazione, YAML e diff controllati; storico consolidato nella voce del 30 ottobre, sempre dieci voci. Modifiche precedenti conservate; nessun commit, push o deploy remoto.
+
+### Prossimo blocco
+
+Restano quattro note di Ownership e Memory Safety: **Stringhe String e &str**, **Stack e Heap**, **Mutabilita** e **Lifetime impliciti**. Totale restante: **167 note principali Rust**, oltre ai promemoria, in questa passata.
+
+## 2026-10-30 - Rust: Stringhe, Memoria, Mutabilita e Lifetime Impliciti
+
+### Intervento
+
+Revisionate le ultime quattro note di Ownership e Memory Safety: capitolo **10/10**, totale **20/183 note principali Rust**. YAML delle quattro note confrontato con Git e invariato, inclusi data, type, publish e status non revisionato. Nessuna nota creata o spostata, nessuna modifica a indici o redirect.
+
+- [[Programmazione/Rust/Pagine/Stringhe String e &str|Stringhe String e &str]]: proprieta e prestito, firme flessibili, concatenazione consumante e formattazione, byte/scalari/grafemi, validazione fallibile rispetto a conversione lossy. Chiariti limiti dello slug, allocazioni, Cow, Box<str> e possibilita di conservare un riferimento con lifetime adeguato.
+- [[Programmazione/Rust/Pagine/Stack e Heap|Stack e Heap]]: rimossa la corrispondenza assoluta fra tipo e posizione fisica. Distinti valore diretto, metadati e buffer annidati; ottimizzazioni, dimensione zero, capacita rispetto a lunghezza, clear e Drop. Il demo con Resource osserva il distruttore, non una chiamata all'allocatore; nessuna promessa di assenza di temporanei stack o costo fisso.
+- [[Programmazione/Rust/Pagine/Mutabilita|Mutabilita]]: binding rispetto a destinatario del riferimento, mutazione locale Copy o tramite prestito, campi/metodi, nuovo proprietario mutabile. Esplicitati sostituzione e costo della trasformazione del tag, stato condiviso osservabile e differenze fra Cell, RefCell e sincronizzazione.
+- [[Programmazione/Rust/Pagine/Lifetime impliciti|Lifetime impliciti]]: inferenza nei corpi distinta da elision delle firme, regola del receiver e contratti con input multipli. Sostituito il primo byte non controllato con una vista sul primo scalare che gestisce vuoto e UTF-8. Controesempi reali per firma ambigua e riferimento locale; NLL, fallback static vincolato dall'input, output posseduto e bound static.
+- Fonti ufficiali Rust Book, Reference, Rust By Example e standard library consultate e collegate. Note avanzate correlate non conteggiate come revisionate.
+
+### Verifica tecnica
+
+- Riutilizzata la toolchain isolata **Rust 1.99.1**, edition **2024**, **x86_64-pc-windows-gnu**, Node **24.14.0**. Nessuna nuova installazione, crate esterna, modifica del PATH globale o dipendenza site.
+- Suite `_Meta/tests/rust-stringhe-memoria-lifetime.test.mjs`: **67/67 test mirati**, zero fallimenti/skip, circa **36 secondi**. Estratti **26 blocchi Rust**: **24 programmi validi** compilati ed eseguiti e **due controesempi** rifiutati con E0106 ed E0515.
+- Prima esecuzione: 66/67, per un ancoraggio testuale duplicato nella variazione sulla concatenazione. Corretto l'ancoraggio del test, non il programma della nota; seconda esecuzione interamente superata.
+- Regressione seriale delle sei suite sulle venti note: **329/329 test Rust**, zero fallimenti/skip, circa **216 secondi**. Test degli altri linguaggi non rieseguiti.
+- Sonde su byte invalidi, lossy borrowed/owned, clone e viste, lowercase con espansione e mancata normalizzazione, spazi e punteggiatura nello slug. Verificati metadati rispetto ai dati, contenitori zero-sized, clear e distruttori, move di Box, zero/uno/molti messaggi e overflow di capacita tramite try_reserve senza tentare allocazioni enormi.
+- Verificati parametri mutabili o consumanti, errori su accessi condivisi e metodi, overflow numerico del demo, interior mutability osservabile e assenza di Sync per Cell. Per lifetime: proprietario fuori scope, contratto del receiver, input inutilmente vincolato, uso dopo push, fallback vuoto e bound static.
+- Due sonde riproducono il panic del vecchio slicing ..1 su input vuoto e multibyte. Panic verificati dopo compilazione riuscita con codice 101 e messaggio previsto; errori statici tramite diagnostica JSON, oppure testo del messaggio lifetime senza codice numerico.
+- Fixture temporanee e processi con timeout; cleanup dopo verifica di percorso risolto, parent e prefisso. Nessun unsafe, rete o modifica ai file dell'utente nei nuovi programmi di prova.
+- Limiti: un target e una versione, niente benchmark, conteggio delle allocazioni, Miri, OOM reale o stack overflow. Puntatori e size_of non certificano posizione fisica o costo. Non rieseguite le suite degli altri linguaggi o ogni espressione inline.
+
+### Verifica editoriale e Quartz
+
+- **911 documenti raggiungibili, zero errori e 371 avvisi editoriali**, nessuno sulle quattro note. Rapporto rigenerato e **9/9 test della trasformazione** superati.
+- Build riuscita: **3.719 file, 2.003 HTML, 168 redirect e 139.945 riferimenti verificati**, zero errori. Avvisi preesistenti del generatore invariati.
+- **7/7 test HTTP dell'anteprima** superati dopo la build, separatamente dai test Rust e della trasformazione.
+- QA Chrome **156.0.8078.79**, desktop **1440x1000** e mobile **390x844**: HTTP 200, H1 corretti, nessun errore console/pagina o overflow del documento. Otto screenshot ispezionati; verificato lo scorrimento effettivo dei blocchi larghi.
+- Screenshot in `C:/Users/SE-Luca Bellini/AppData/Local/Temp/appunti-rust-stringhe-memoria-qa-5NeAnb`. Browser QA e server dei test chiusi; anteprima precedente mantenuta su http://localhost:8082/appunti/. Nessuna modifica manuale agli HTML generati.
+- Formattazione, YAML e diff controllati. Storico consolidato nella voce del 30 ottobre, sempre dieci voci; modifiche precedenti conservate. Nessun commit, push o deploy remoto.
+
+### Prossimo blocco
+
+Iniziare **Tipi di Dato Personalizzati** con **Structs**, **Tuple structs** ed **Enums**. Restano **163 note principali Rust**, oltre ai promemoria, in questa passata.
+
+## 2026-10-30 - Rust: Structs, Tuple Structs ed Enums
+
+### Intervento
+
+Revisionate le prime **3/8 note di Tipi di Dato Personalizzati**: totale **23/183 note principali Rust**. Nessuna nuova nota, spostamento o modifica a indici e redirect. YAML confrontato con Git: invariato per Structs e Tuple structs; in Enums corretto soltanto il prerequisito Pattern Matching in Pattern base, eliminando il ciclo fra le due note. Data e pubblicabilita conservate, status sempre non revisionato.
+
+- [[Programmazione/Rust/Pagine/Structs|Structs]]: tipi nominali, costruzione e shorthand, receiver, ownership dei campi e struct update con move parziale o soli campi Copy. Config in un modulo con campi privati e validazione limitata esplicita, endpoint come coppia senza ambiguita da concatenazione, distinzione fra funzione new e garanzie effettive. Marker, generici, viste e limiti di derive; controesempio con campo mancante.
+- [[Programmazione/Rust/Pagine/Tuple structs|Tuple structs]]: tipo distinto rispetto ad alias, costruttore e campi privati, getter Copy o consumante, destructuring in prestito e per valore. Conversione fra unita che gestisce non finiti e overflow ma non valida il dominio fisico; limiti di f64/Eq. Display esplicito, nessun inoltro automatico di metodi/operatori e distinzione fra wrapper, layout e validazione.
+- [[Programmazione/Rust/Pagine/Enums|Enums]]: forme delle varianti, visibilita, match su prestiti, modifica e consumo del payload, esaustivita rispetto a correttezza applicativa. Il demo comandi dichiara di produrre soltanto un riepilogo; enum non valida titoli, ID o transizioni. Option/Result, ricorsione con indirezione, discriminanti, compatibilita e non_exhaustive distinti dalla serializzazione.
+- Fonti ufficiali Rust Book, Reference e standard library consultate e collegate. Note avanzate correlate non conteggiate come revisionate.
+
+### Verifica tecnica
+
+- Toolchain isolata riutilizzata: **Rust 1.99.1**, edition **2024**, **x86_64-pc-windows-gnu**, Node **24.14.0**. Nessuna nuova installazione, dipendenza di terze parti, modifica al PATH globale o dipendenza site.
+- Suite `_Meta/tests/rust-structs-enums.test.mjs`: **69/69 test mirati**, zero fallimenti/skip, circa **32 secondi**. Estratti **19 programmi Rust**: **16 validi** compilati ed eseguiti e **tre controesempi** verificati con E0063, E0308 ed E0004. Nessuna correzione necessaria dopo la prima esecuzione.
+- Regressione seriale delle sette suite sulle 23 note: **398/398 test Rust**, zero fallimenti/skip, circa **264 secondi**. Non rieseguite le suite degli altri linguaggi.
+- Sonde su shorthand e move, mutabilita, receiver consumanti, update con campi Copy, move parziale, Drop e privacy anche dei campi omessi. Config provata con input vuoti/Unicode, limiti di validazione, testo posseduto oltre il prestito, clone/setter e Debug non segreto; vista con lifetime insufficiente rifiutata.
+- Tuple struct: alias, costruttore/campo privato, Hash/Eq, getter senza Copy, destructuring e mancato inoltro dei metodi. Temperature ordinarie, negative, non finite, estreme; Eq su f64 rifiutato. Display e repr(transparent) provati nei soli contratti dichiarati.
+- Enum: varianti complete, payload vuoti, modifica ripetuta, consumo e identita del buffer, variante aggiunta senza aggiornare match, ricorsione, Copy, discriminanti duplicati e cast inverso vietato. Parsing con assenza, zero, massimo u32, vuoto e input non valido.
+- non_exhaustive verificato sia nella crate che definisce il tipo sia fra **due crate reali**: libreria rlib temporanea e consumer compilato con --extern. Il match esterno senza wildcard fallisce, quello con wildcard compila ed esegue. Nessun package remoto o rete necessari.
+- Programmi estratti distinti da sonde della prosa e variazioni intenzionali, diagnostica rustc JSON, timeout dei processi. Fixture rimosse soltanto dopo verifica di percorso risolto, parent e prefisso; nessun unsafe o file dell'utente modificato dai demo.
+- Limiti: una versione/target; niente benchmark, Miri, FFI reale, serializzazione, rete o database. La prova del layout non certifica l'ABI con altri linguaggi; identita del buffer non misura copie macchina. Nessuna prova di stack overflow o catene enormi. Non rieseguite suite degli altri linguaggi o ogni frammento inline.
+
+### Verifica editoriale e Quartz
+
+- **911 documenti raggiungibili, zero errori e 368 avvisi editoriali**, nessuno sulle tre note. Rapporto rigenerato e **9/9 test della trasformazione** superati.
+- Build riuscita: **3.719 file, 2.003 HTML, 168 redirect e 140.021 riferimenti verificati**, zero errori. Solo avvisi preesistenti del generatore.
+- **7/7 test HTTP dell'anteprima** superati dopo la build, separatamente dai test Rust e della trasformazione.
+- QA Chrome **156.0.8078.79**, desktop **1440x1000** e mobile **390x844**: HTTP 200, H1 corretti, nessun errore console/pagina o overflow del documento. Sei screenshot ispezionati; verificato lo scorrimento effettivo dei blocchi larghi.
+- Screenshot in `C:/Users/SE-Luca Bellini/AppData/Local/Temp/appunti-rust-structs-enums-qa-4U2NVp`. Browser QA e server dei test chiusi; anteprima precedente mantenuta su http://localhost:8082/appunti/. Nessuna modifica manuale agli HTML generati.
+- Formattazione, YAML e diff controllati. Storico consolidato nella voce del 30 ottobre, sempre dieci voci; modifiche precedenti conservate. Nessun commit, push o deploy remoto.
+
+### Prossimo blocco
+
+Continuare con **Pattern Matching**, **if let e while let** e **Destructuring**. Restano **cinque note di Tipi di Dato Personalizzati e 160 note principali Rust**, oltre ai promemoria, in questa passata.
+
+## 2026-10-30 - Rust: Pattern Matching, if let e Destructuring
+
+### Intervento
+
+Revisionate altre tre note: totale **26/183 note principali Rust**, **6/8 di Tipi di Dato Personalizzati**. Nessuna nuova nota, modifica a indici, percorsi o redirect. Frontmatter confrontato con Git e invariato per tutte e tre; date e pubblicabilita conservate, status sempre non revisionato.
+
+- [[Programmazione/Rust/Pagine/Pattern Matching|Pattern Matching]]: ordine dei bracci con guardie, scope e shadowing, tipo comune e coercizioni, prestiti rispetto a move, struct e alternative. Demo eventi autonomo con azioni restituite, senza GUI; matches! come predicato. Controesempi espliciti per guardie non esaustive e tipi incompatibili.
+- [[Programmazione/Rust/Pagine/if let e while let|if let e while let]]: scope, fallback e temporanei dipendenti dall'edition; estrazione LIFO e coda FIFO con residui dopo Exit. Result mantenuto in prestito, let else divergente, let chain con versione/edition dichiarate. Chiarito che while let termina al primo pattern fallito e puo avere gia consumato l'errore, non filtra l'intera sequenza.
+- [[Programmazione/Rust/Pagine/Destructuring|Destructuring]]: rinomina, move parziale, privacy e Drop, prestiti e match ergonomics 2024, array rispetto a slice, wildcard rispetto a binding nominato. Corretto l'overflow della distanza Manhattan usando unsigned_abs e conversione a u64 prima della somma. Demo richiesta con assenza distinta da body vuoto, byte UTF-8 e limiti espliciti; slice in prestito e refutabilita.
+- Fonti ufficiali Rust Book, Reference, Edition Guide, standard library e annuncio Rust 1.88 consultate e collegate. Note avanzate correlate non conteggiate come revisionate.
+
+### Verifica tecnica
+
+- Toolchain isolata riutilizzata: **Rust 1.99.1**, **x86_64-pc-windows-gnu**, Node **24.14.0**. Nessuna installazione, crate esterna, modifica al PATH globale o dipendenza site.
+- Suite `_Meta/tests/rust-pattern-control-destructuring.test.mjs`: **75/75 test mirati**, zero fallimenti/skip, circa **47 secondi**. **24 programmi Rust** estratti: **20 validi** eseguiti e **quattro controesempi** verificati con E0004, E0308 ed E0005.
+- Regressione seriale delle otto suite sulle 26 note: **473/473 test Rust**, zero fallimenti/skip, circa **303 secondi**. Suite degli altri linguaggi non rieseguite.
+- Prima esecuzione 74/75: una sonda aggiuntiva chiamava checked_add su un intero ambiguo. Aggiunto il suffisso i32 nel test e rieseguita l'intera suite con successo; nessun esempio della nota richiedeva correzioni dopo la prima esecuzione.
+- Sonde su ordine e guardie, scrutinee, shadowing, scope, prestiti, move, alternative, nuove varianti e coercizioni. Coda vuota, Exit immediato, nessun Exit e stato residuo; while let con pattern piu stretto, alternativa for/match che gestisce gli errori, short-circuit e confini del parsing.
+- Ordine di Drop realmente osservato nei fallback di if let e match, compilando sonde in edition **2021 e 2024** con lo stesso rustc. Let chain rifiutata in edition 2021; nessun lock/deadlock provocato. La soglia Rust 1.88 viene dalle fonti ufficiali, non da una matrice di compilatori installati.
+- Move parziale e Drop, privacy, riferimenti incompatibili e ref ridondante in edition 2024; distanza Manhattan su 25 combinazioni di estremi. Riprodotti i due overflow della vecchia formula con panic atteso e flag overflow-checks=yes. Richiesta consumata, assenza/vuoto/UTF-8, viste senza copia e lifetime, wildcard e distruzione di temporanei, for refutabile rifiutato.
+- Fixture temporanee e processi con timeout, diagnostica rustc JSON, cleanup dopo verifica del percorso risolto. Nessun unsafe, rete, database o file dell'utente modificato dai programmi.
+- Limiti: una versione/target, niente benchmark, Miri, GUI, server HTTP o verifica di ogni frammento inline. Le prove fra edition non certificano una MSRV; suite degli altri linguaggi non rieseguite.
+
+### Verifica editoriale e Quartz
+
+- **911 documenti raggiungibili, zero errori e 365 avvisi editoriali**, nessuno sulle tre note. Rapporto rigenerato e **9/9 test della trasformazione** superati.
+- Build riuscita: **3.719 file, 2.003 HTML, 168 redirect e 140.104 riferimenti verificati**, zero errori. Solo avvisi preesistenti del generatore.
+- **7/7 test HTTP dell'anteprima** superati dopo la build, separatamente dalle suite Rust e della trasformazione.
+- QA Chrome **156.0.8078.79**, desktop **1440x1000** e mobile **390x844**: HTTP 200, H1 corretti, nessun errore console/pagina o overflow del documento. Sei screenshot ispezionati; verificato lo scorrimento effettivo dei blocchi di codice larghi.
+- Screenshot in `C:/Users/SE-Luca Bellini/AppData/Local/Temp/appunti-rust-pattern-destructuring-qa-1GQjA9`. Browser QA e server dei test chiusi; anteprima precedente su http://localhost:8082/appunti/ mantenuta attiva. Nessuna modifica manuale agli HTML generati.
+- Formattazione, frontmatter e diff verificati. Storico consolidato nella voce del 30 ottobre, sempre dieci voci. Modifiche precedenti preservate; nessun commit, push o deploy remoto.
+
+### Prossimo blocco
+
+Completare **Tipi di Dato Personalizzati** con **Control flow avanzato** e **Pattern matching avanzato**. Restano **due note nel capitolo e 157 note principali Rust**, oltre ai promemoria, in questa passata.
+
+## 2026-10-30 - Rust: controllo di flusso e pattern avanzati
+
+### Intervento
+
+Completata la revisione di **Tipi di Dato Personalizzati: 8/8 note**. Totale **28/183 note principali Rust**. Nessuna nuova nota, modifica a indici, percorsi o redirect; frontmatter delle due note confrontato con Git e invariato, status non revisionato fino al controllo dell'utente.
+
+- [[Programmazione/Rust/Pagine/Control flow avanzato|Control flow avanzato]]: destinazione di break, continue, return e ?, risultati dei loop e blocchi etichettati, let else e cleanup distinto da rollback. Lettura file esplicita e in sola lettura, errori di porta tipizzati conservando ParseIntError. Callback con ControlFlow e differenza rispetto a for_each; controesempi per break con valore nel for e Option propagata in Result senza conversione.
+- [[Programmazione/Rust/Pagine/Pattern matching avanzato|Pattern matching avanzato]]: alternative/range con limiti ASCII, binding @ e parentesi, guardia applicata a tutte le alternative e possibile rivalutazione. Ref/ref mut, reference pattern e regole edition 2024 senza assoluti errati. Slice annidate in prestito, token gia costruiti con lessico dichiaratamente parziale, @ sull'intero e sui campi senza duplicare ownership; controesempi per binding incoerenti e doppio move.
+- Esempi autonomi, fonti ufficiali Rust Book, Reference, Edition Guide e standard library. Nessun claim di lexer, protocollo o validazione di rete completi; note correlate non conteggiate come revisionate.
+
+### Verifica tecnica
+
+- Toolchain isolata riutilizzata: **Rust 1.99.1**, edition **2024**, **x86_64-pc-windows-gnu**, Node **24.14.0**. Nessuna installazione, crate esterna, modifica al PATH globale o dipendenza site.
+- Suite `_Meta/tests/rust-advanced-control-patterns.test.mjs`: **62/62 test mirati**, zero fallimenti/skip, circa **31 secondi**; prima esecuzione interamente superata. Estratti **18 programmi Rust**, con **14 validi** eseguiti e **quattro controesempi** rifiutati con E0571, E0277, E0408 ed E0382.
+- Regressione seriale delle nove suite sulle 28 note: **535/535 test Rust**, zero fallimenti/skip, circa **326 secondi**. Suite degli altri linguaggi non rieseguite.
+- Loop/label/blocchi: differenze fra uscite semplici ed etichettate, continue vietato su blocco, codice successivo al break, input vuoti e righe irregolari. Tipi dei risultati, let else, limiti e sintassi del parsing, conservazione dell'errore originale, conversione From e ok_or.
+- ? dentro loop e closure, distruzione osservabile degli scope senza annullare gli effetti precedenti, interruzione con ControlFlow rispetto a return nella callback di for_each. Nessun ciclo infinito eseguito.
+- I/O reale soltanto nelle fixture temporanee: UTF-8, vuoto, file mancante, byte invalidi e CLI con percorso contenente spazi. Nessun file dell'utente letto o modificato dai demo. Accesso negato, dimensioni enormi e comando Cargo tramite shell non provati; CLI eseguita come binario compilato direttamente con rustc.
+- Pattern: tutti i 256 valori u8 del demo @, casi ASCII/Unicode, binding alternativi di tipo/modo diverso, guardie rivalutate e divieto di consumo nella guardia. Prestiti e reference pattern, forma esplicita valida in edition 2024, slice corte e senza copia, lifetime, limiti del classificatore, varianti aggiunte, @ condiviso rispetto a move o prestiti esclusivi sovrapposti, doppio rest rifiutato.
+- Diagnostica rustc JSON, processi con timeout, fixture e cleanup dopo verifica del percorso risolto. Un compilatore/target, non una matrice/MSRV; niente unsafe, rete, database, benchmark o Miri. Non rieseguiti tutti i frammenti inline o le suite degli altri linguaggi.
+
+### Verifica editoriale e Quartz
+
+- **911 documenti raggiungibili, zero errori e 363 avvisi editoriali**, nessuno sulle due note. Rapporto rigenerato e **9/9 test della trasformazione** superati.
+- Build riuscita: **3.719 file, 2.003 HTML, 168 redirect e 140.166 riferimenti verificati**, zero errori. Solo avvisi preesistenti del generatore.
+- **7/7 test HTTP dell'anteprima** superati dopo la build, separatamente dalle suite Rust e della trasformazione.
+- QA Chrome **156.0.8078.79**, desktop **1440x1000** e mobile **390x844**: HTTP 200, H1 corretti, nessun errore console/pagina o overflow del documento. Quattro screenshot ispezionati; verificato lo scorrimento effettivo dei blocchi di codice larghi.
+- Screenshot in `C:/Users/SE-Luca Bellini/AppData/Local/Temp/appunti-rust-advanced-control-patterns-qa-JsNAwG`. Browser QA e server dei test chiusi; anteprima precedente su http://localhost:8082/appunti/ mantenuta attiva. Nessuna modifica manuale agli HTML generati.
+- Formattazione, frontmatter e diff verificati. Storico consolidato nella voce del 30 ottobre, sempre dieci voci. Modifiche precedenti preservate; nessun commit, push o deploy remoto.
+
+### Prossimo blocco
+
+Iniziare **Errori e Collezioni** con **Option**, **Result** e **Operatore ?**. Restano **155 note principali Rust**, oltre ai promemoria, in questa passata.
+
+## 2026-10-31 - Rust: Option, Result e propagazione con ?
+
+### Intervento
+
+Revisionate **Option**, **Result** e **Operatore ?**: **31/183 note principali Rust**, **3/11 di Errori e Collezioni**. Nessuna nuova nota, spostamento o modifica a indici/redirect. Frontmatter conservato, con status non revisionato fino all'approvazione dell'utente.
+
+- [[Programmazione/Rust/Pagine/Option|Option]]: assenza distinta da valore vuoto, limiti del paragone con null, prestiti rispetto a consumo, map/and_then e overflow controllato. Default immediati/differiti, take/replace e inizializzazione, flatten/transpose; ricerca reale su slice con risultato in prestito, dichiaratamente non validazione email.
+- [[Programmazione/Rust/Pagine/Result|Result]]: corretto il panic nascosto di i32::MIN / -1, conservati gli errori di parsing invece di eliminarne la causa. Contratto della porta esplicito, Copy dipendente da entrambi i tipi, combinatori, Result unit, collect e dati parziali. must_use distinto da obbligo assoluto; Error non richiesto dal solo contenitore.
+- [[Programmazione/Rust/Pagine/Operatore|Operatore ?]]: equivalenza con match, From e map_err, valore di successo non automaticamente reincapsulato. Confini di funzione/closure/async, main Result, conversioni Option/Result, cleanup rispetto a rollback; CLI reale in sola lettura con limiti di dimensione, parsing e contesto espliciti. Distinti supporto stable di ControlFlow e trait Try nightly.
+- Fonti ufficiali Rust Book, Reference e standard library consultate e collegate. Esempi autonomi, casi di errore intenzionali segnalati; note correlate non conteggiate come revisionate.
+
+### Verifica tecnica
+
+- Toolchain isolata riutilizzata: **Rust 1.99.1**, edition **2024**, target **x86_64-pc-windows-gnu**, Node **24.14.0**. Nessuna installazione, crate esterna, modifica del PATH globale o dipendenza site.
+- Suite `_Meta/tests/rust-option-result-question.test.mjs`: prima esecuzione **85/85 test mirati**, zero fallimenti/skip, **49,6 secondi**. **25 programmi Rust** estratti: **20 validi** eseguiti e **cinque controesempi** rifiutati con E0382, E0277 o unused_must_use reso errore.
+- Aggiunto dopo il primo giro il controllo byte per byte delle fixture CLI, per verificare l'assenza di scritture; rinominato il test del Result ignorato per descrivere precisamente la compilazione senza deny. Regressione seriale finale delle dieci suite: **620/620 test Rust**, zero fallimenti/skip, **374,2 secondi**.
+- Provati tutti gli u8 della moltiplicazione e del parsing, tutte le porte positive u16, 81 coppie per la divisione con estremi/segni; riprodotto l'overflow della vecchia divisione anche senza overflow checks.
+- Presenza/assenza, vuoto e Unicode, prestiti e consumo, trait Copy/Clone, fallback con effetti osservabili, metodi saltati nelle varianti appropriate, transpose/flatten, ID duplicati e limiti dell'estrazione del dominio. Errori originali conservati, default e conversioni che li scartano, raccolta al primo errore e dati residui.
+- Propagazione e conversioni, Drop osservabile senza rollback, validazione prima della modifica, confine closure e blocco ordinario, for_each/try_for_each, ControlFlow. Future immediato pollato con API sicure, senza runtime esterno; trait Try rifiutato su stable.
+- I/O reale solo nelle fixture temporanee: CLI con percorso contenente spazi, file assente/vuoto/non UTF-8, whitespace, porta massima, zero e overflow. main Result termina con codice 1 nei casi provati, distinto dal panic; verificato il downcast dell'errore boxed.
+- Diagnostica JSON, timeout e cleanup dopo controllo di percorso risolto, parent e prefisso. Un compilatore/target, non matrice o certificazione MSRV; niente unsafe, rete, DNS, database, ACL, file enormi, benchmark o Miri. Non eseguito il comando Cargo tramite shell e non rieseguite le suite degli altri linguaggi.
+
+### Verifica editoriale e Quartz
+
+- **911 documenti raggiungibili, zero errori e 360 avvisi editoriali**. Rapporto rigenerato e **9/9 test della trasformazione** superati.
+- Build completa riuscita: **3.719 file, 2.003 HTML, 168 redirect e 140.241 riferimenti verificati**, zero errori. Solo avvisi preesistenti del generatore.
+- **7/7 test HTTP dell'anteprima** superati. Chrome **156.0.8078.79**, desktop **1440x1000** e mobile **390x844**: tre pagine HTTP 200, H1 corretti, nessun errore console/pagina o overflow del documento; scorrimento reale verificato per **23 blocchi di codice** su mobile.
+- Sei screenshot finali ispezionati, con controllo DOM e catture dedicate dei titoli dopo lo scorrimento. Controverifica nel blocco successivo: i titoli nelle sei catture complete sono identici pixel per pixel alle catture dedicate. L'apparente omissione H2 nella visualizzazione non era presente nei PNG; nessun difetto di rendering accertato e nessuna modifica al CSS o al generatore.
+- Screenshot finali in `C:/Users/SE-Luca Bellini/AppData/Local/Temp/appunti-rust-option-result-question-qa-ID8hLQ`; catture precedenti conservate nella directory QA EcobLZ. Browser QA e server dei test chiusi; anteprima esistente su http://localhost:8082/appunti/ mantenuta attiva.
+- Formattazione e diff verificati; frontmatter delle tre note confrontato con HEAD e invariato. Nessun avviso editoriale sulle tre note del blocco.
+- Nessuna modifica manuale agli HTML generati. Storico aggiornato al 31 ottobre, mantenendo dieci voci; rimossa dal riepilogo la voce del 18 ottobre, gia documentata nel registro dettagliato. Nessun commit, push o deploy remoto.
+
+### Prossimo blocco
+
+Continuare **Errori e Collezioni** con **panic!**, **Error handling idiomatico** e **thiserror e anyhow**. Restano **otto note nel capitolo e 152 note principali Rust**, oltre ai promemoria, in questa passata.
+
+## 2026-10-31 - Rust: panic, errori idiomatici, thiserror e anyhow
+
+### Intervento
+
+Revisionate altre tre note: **34/183 note principali Rust**, **6/11 di Errori e Collezioni**. Nessuna nuova nota, modifica a indici, percorsi o redirect. In panic il rimando a Error handling idiomatico passa da prerequisites a related, coerentemente con l'ordine di studio; gli altri metadati restano invariati, status non revisionato.
+
+- [[Programmazione/Rust/Pagine/panic|panic!]]: distinti thread/processo, unwind/abort, hook/cleanup/rollback e panic/UB. Expect motivato da un literal invece di HOME, assert rispetto a debug_assert, contratto Percentage con alternativa fallibile, should_panic mirato, catch_unwind e join. Profilo release distinto dal test harness; limiti FFI e Drop espliciti.
+- [[Programmazione/Rust/Pagine/Error handling idiomatico|Error handling idiomatico]]: eliminati scheletri incompleti, distinti rappresentazione/propagazione/reporting. File opzionale con ErrorKind, validazione del nome in scalari anziche byte e limiti Unicode dichiarati. Errore manuale completo con Display, Error, source e From; I/O con percorso tramite map_err, causa non duplicata e contenuto grezzo non riportato.
+- [[Programmazione/Rust/Pagine/thiserror e anyhow|thiserror e anyhow]]: manifest completo con baseline thiserror 2.0.21 e anyhow 1.0.104; esempi autonomi e CLI realmente eseguibile. From/source/transparent, contesto immediato o differito, formati, catene/downcast, Send/Sync e bail/ensure; criteri libreria/applicazione non assoluti.
+- Fonti ufficiali versionate delle crate e documentazione Rust consultate. Nessuna nuova dipendenza nel generatore Quartz, nessuna modifica delle altre note correlate.
+
+### Verifica tecnica
+
+- Rust **1.99.1**, edition **2024**, target **x86_64-pc-windows-gnu**, Node **24.14.0**. Toolchain gia presente riutilizzata; nessuna modifica del PATH globale.
+- Suite `_Meta/tests/rust-panic-error-crates.test.mjs`: **70 controlli** su **13 programmi Rust**, un manifest Cargo e un frammento di profilo. Compilati anche i derive reali delle crate, eseguiti due unit test del demo Percentage e una sonda del test harness Cargo.
+- Prima esecuzione **69/70**, circa **71 secondi**: errore di sintassi solo in una sonda aggiuntiva (separatore di un braccio match), corretto. Esempi delle note tutti compilati correttamente. Riesecuzione completa offline: **70/70 test**, zero fallimenti/skip, **66,2 secondi**. Regressione seriale finale delle undici suite sulle 34 note: **690/690 test Rust**, zero fallimenti/skip, **432,2 secondi**.
+- Cache Cargo isolata: `C:/Users/SE-Luca Bellini/AppData/Local/Temp/appunti-rust-error-crates-cache-bdba0268db5448c9a2651b8d0ad6ccd2`. Scaricate sette crate: anyhow 1.0.104, thiserror/thiserror-impl 2.0.21, proc-macro2 1.0.107, quote 1.0.47, syn 3.0.9, unicode-ident 1.0.27. Lock temporaneo riusato con --locked --offline; cache mantenuta, fixture rimosse dopo controllo del percorso.
+- Panic e controprove: invarianti su tutti gli u8, panic attesi, should_panic che rileva controllo rimosso o causa estranea, debug_assert attivo/disattivo e type checked. Ordine hook/Drop/catch, payload e stato non annullato, UnwindSafe e backtrace locale. Binario innocuo verifica cfg panic=abort; demo che abortirebbe soltanto compilato, nessun processo deliberatamente mandato in abort.
+- Verificato con Cargo reale che il profilo release del binario usi abort e il normale test harness release usi unwind. Hook modificato soltanto nel processo figlio dedicato, poi ripristinato. Nessun doppio panic o FFI provocato.
+- Errori: ErrorKind classificato senza confrontare messaggi del sistema, tutti i valori positivi u16, parsing/causa/path/Unicode, nome in prestito e limiti del conteggio scalare. PermissionDenied simulato come errore standard, non verificato tramite ACL.
+- I/O reale solo nelle fixture: percorso con spazi, dati validi, vuoti, assenti e non UTF-8; confronto byte per byte dei file dopo la CLI. Diagnostica priva del contenuto grezzo della fixture e senza ripetere la causa.
+- Thiserror: from con campi aggiuntivi rifiutato, source senza conversione, nome source implicito, transparent senza nuovo livello. Anyhow: contesto su Result/Option, valutazione differita, downcast all'errore originale rispetto alle sue cause, perdita del tipo tramite stringa, Rc rifiutato da Send/Sync.
+- Limiti: una versione/target, non matrice o MSRV; nessun audit dipendenze, no_std, Miri, benchmark, rete applicativa, file enormi, backtrace nightly nel derive o verifica di ogni frammento inline. Suite degli altri linguaggi non rieseguite.
+
+### Verifica editoriale e Quartz
+
+- **911 documenti raggiungibili, zero errori e 357 avvisi editoriali**; **9/9 test della trasformazione** superati.
+- Build completa riuscita: **3.719 file, 2.003 HTML, 168 redirect e 140.303 riferimenti verificati**, zero errori. Solo avvisi preesistenti del generatore.
+- **7/7 test HTTP** superati. QA Chrome **156.0.8078.79**, desktop **1440x1000** e mobile **390x844**: HTTP 200, H1 corretti, nessun errore console/pagina o overflow del documento. Verificato lo scorrimento effettivo di **12 blocchi di codice** su mobile.
+- Sei screenshot e due catture dei titoli ispezionati in `C:/Users/SE-Luca Bellini/AppData/Local/Temp/appunti-rust-panic-error-crates-qa-JeVoFz`. Confronto PNG in sola lettura: tutti i titoli nelle sei catture complete sono identici pixel per pixel alle catture dedicate; stessa verifica positiva sulle sei catture del lotto precedente, correggendo l'annotazione di una presunta omissione H2. Nessun difetto di rendering accertato e nessuna modifica a CSS/generatore. Browser QA e server dei test chiusi; anteprima esistente mantenuta su http://localhost:8082/appunti/.
+- Metadati confrontati con HEAD: solo il cambio di rimando previsto in panic. Storico consolidato nella voce del 31 ottobre e mantenuto a dieci voci. Nessun commit, push o deploy remoto.
+
+### Prossimo blocco
+
+Continuare con **Vec**, **HashMap e HashSet**, **VecDeque BTreeMap e BTreeSet**. Restano **cinque note nel capitolo e 149 note principali Rust**, oltre ai promemoria, in questa passata.
+
+## 2026-10-31 - Rust: Vec, mappe, insiemi e code
+
+### Intervento
+
+Revisionate tre note: **37/183 note principali Rust**, **9/11 di Errori e Collezioni**. Percorsi, metadati, indici e redirect invariati; nessuna nuova nota di contenuto. Status non revisionato, in attesa del controllo dell'utente.
+
+- [[Programmazione/Rust/Pagine/Vec|Vec]]: corretti gli assoluti su stack/heap e allocazione; distinti lunghezza/capacita, prestiti e riallocazioni, costi ammortizzati. Esempi completi su creazione, accesso, iterazione borrowed/owned, rimozione e deduplicazione. Filtro conservato e reso verificabile; reserve fallibile e limiti di memoria espliciti. with_capacity non piu lasciato senza tipo deducibile.
+- [[Programmazione/Rust/Pagine/HashMap e HashSet|HashMap e HashSet]]: identita Eq/Hash, collisioni, lookup borrowed, ordine e costo atteso. Entry immediato/differito, duplicati e rappresentanti, algebra degli insiemi, chiave personalizzata. Conteggio dei token con report ordinato, limiti dichiarati per whitespace, Unicode, punteggiatura e input esterno.
+- [[Programmazione/Rust/Pagine/VecDeque BTreeMap e BTreeSet|VecDeque, BTreeMap e BTreeSet]]: FIFO distinta dall'ordine per chiave, buffer circolare e slice, capacita non bounded. Ord, range effettivamente consumati, inclusione dei limiti e panic, estremi e set ordinati. Riepilogo completo con ownership esplicita; il demo non viene presentato come scheduler concorrente.
+- Documentazione ufficiale Rust stable 1.99.1 consultata. Le altre note correlate sono solo contesto, non conteggiate come revisionate. Nessun aggiornamento del generatore o delle dipendenze.
+
+### Verifica tecnica
+
+- Nuova suite `_Meta/tests/rust-collections.test.mjs`: **56 test** su **16 programmi estratti** (15 eseguiti con successo e un controesempio E0502), oltre a sonde positive/negative.
+- Prima esecuzione **53/56**, **32,9 secondi**: tre fallimenti nel solo controllo Markdown dei segnaposto, sostituiti erroneamente nel test con backtick. Tutti i programmi Rust corretti. Seconda esecuzione dopo il fix del test: **56/56**, zero fallimenti/skip, **36,5 secondi**.
+- Toolchain riutilizzata: Rust **1.99.1**, edition **2024**, Windows GNU, Node **24.14.0**. Nessuna nuova installazione, download di crate o modifica del PATH globale.
+- Vec: tutti gli i16 del filtro, estremi i32, rimozioni in ogni posizione per lunghezze 1-31, reserve rispetto a len, overflow di capacita senza grande allocazione, Rc condiviso. Errori di move, inferenza e prestito verificati con diagnostica JSON; panic attesi nei processi figli.
+- Hash: collisioni deliberate con hash costante, identita della chiave e sostituzione del solo valore, proprieta rispetto a prestiti, Entry e default. Set provati su 256 coppie di sottoinsiemi; conteggio Unicode e punteggiatura con report deterministico.
+- Deque: 1.000 inserimenti con pop intercalati; 528 combinazioni lunghezza/rotazione con verifica dell'ordine e make_contiguous, senza assumere il punto di separazione.
+- B-tree: limiti non presenti, intervalli vuoti/invertiti/esclusi, stringhe lessicografiche, f64 rifiutato, split_off e consumo/lettura del riepilogo.
+- Regressione seriale finale delle dodici suite sulle 37 note: **746/746 test Rust**, zero fallimenti/skip, **471,3 secondi**. Cache Cargo precedente riusata offline per i test delle crate.
+- Limiti: non benchmark, matrice di piattaforme/MSRV, allocator custom, OOM reale, Miri, concorrenza o copertura di ogni API. I costi asintotici sono verificati sulla documentazione, non misurati dai test. Suite degli altri linguaggi non rieseguite.
+
+### Verifica editoriale e Quartz
+
+- **911 documenti raggiungibili, zero errori e 354 avvisi editoriali**; **9/9 test della trasformazione** superati.
+- Build completa riuscita: **3.719 file, 2.003 HTML, 168 redirect e 140.374 riferimenti verificati**, zero errori. Solo gli avvisi preesistenti del generatore.
+- **7/7 test HTTP** superati. QA Chrome **156.0.8078.79**, desktop **1440x1000** e mobile **390x844**: HTTP 200, H1 corretti, nessun errore console/pagina o overflow del documento. Verificato lo scorrimento effettivo di tutti i **16 blocchi Rust** su mobile.
+- Sei screenshot ispezionati in `C:/Users/SE-Luca Bellini/AppData/Local/Temp/appunti-rust-collections-qa-H5rNOk`: testo e titoli leggibili, codice contenuto nei blocchi scorrevoli. Browser QA e server HTTP temporaneo chiusi; anteprima esistente mantenuta su http://localhost:8082/appunti/.
+- Frontmatter delle tre note confrontato con HEAD e invariato. Storico mantenuto a dieci voci; nessun avviso editoriale nelle tre note, nessun errore whitespace nel diff. Nessun commit, push o deploy remoto.
+
+### Prossimo blocco
+
+Continuare con **Iteratori** e **Closure**: restano **due note nel capitolo e 146 note principali Rust**, oltre ai promemoria, in questa passata.
+
+## 2026-10-31 - Rust: Iteratori e Closure
+
+### Intervento
+
+Revisionate le ultime due note di Errori e Collezioni: **39/183 note principali Rust**, **11/11 del capitolo**, **39/39 del Percorso Base**. Restano **144 note principali**, oltre ai promemoria.
+
+- [[Programmazione/Rust/Pagine/Iteratori|Iteratori]]: distinti Iterator/IntoIterator, tipo Item, sorgente rispetto allo stato della visita, prestito/modifica/consumo. Corretti gli assoluti su laziness, consumo di into_iter e permanenza di None. Esempi su by_ref, riferimenti nei predicati, aggregazioni e arresto anticipato, tag con limiti dichiarati, parsing fallibile e fuse.
+- [[Programmazione/Rust/Pagine/Closure|Closure]]: corretto FnOnce inteso come obbligo di chiamata; distinti cattura e uso delle catture, move e trait cumulativi. Esempi su inferenza, prestiti, callback generiche, factory impl Fn, soglia, interior mutability e coercizione a fn. Fn non implica purezza; move non implica static o Send.
+- Tutti gli esempi ora autonomi, tranne i due controesempi esplicitamente dichiarati non compilabili. Fonti ufficiali Rust consultate; nessuna API nightly negli esempi.
+- In Iteratori il rimando a Closure passa da prerequisites a related, coerentemente con l'ordine del percorso. Gli altri metadati restano invariati, status non revisionato. Nessuna nuova nota, modifica a indici, percorsi o redirect.
+- Iterator API letta come contesto per delimitare i fondamenti; resta da revisionare nel capitolo Standard Library e non viene conteggiata come completata.
+
+### Verifica tecnica
+
+- Suite `_Meta/tests/rust-iterators-closures.test.mjs`: **66/66 test al primo giro**, zero fallimenti/skip, **31,2 secondi**. **18 programmi estratti**, 16 eseguiti e due rifiutati con E0382, piu sonde positive/negative.
+- Rust **1.99.1**, edition **2024**, **x86_64-pc-windows-gnu**, Node **24.14.0**. Toolchain esistente riutilizzata, senza installazioni, crate esterne o cambiamenti al PATH. Eccezione array.into_iter provata anche in edition 2018 con lo stesso compilatore.
+- Iterator: callback lazy con effetti immediati di costruzione/cattura e Drop; prestiti e ownership, cloned/copied, filtro con &&T, consumo e by_ref. Short circuit e stato residuo, input vuoto, 64 coppie di lunghezze zip, enumerate prima/dopo filtro e take con scansione limitata.
+- Tag: spazi Unicode, espansione lowercase, combinazioni Unicode non normalizzate, punteggiatura, NUL e duplicati; output indipendente dall'input. Parser verificato su tutti gli u16, zero/+ e assenza di trim; Result interrompe al primo errore, filter_map lo scarta.
+- Closure: matrice di bound positivi e negativi, FnOnce non invocato, due chiamate non ammesse con solo FnOnce, move ancora Fn, catture Copy, prestiti e factory. Rc rifiutato da Send e riferimento locale rifiutato da static, senza lanciare thread.
+- Confronto della soglia su tutti i 65.536 i16 e sugli estremi i32; double promosso a i64 per coprire gli estremi. Fn con Cell produce risultati diversi senza richiedere un ricevente mutabile.
+- Regressione mirata seriale di cinque suite: **312/312 test**, zero fallimenti/skip, **196,0 secondi**. Comprende il nuovo blocco, collections, funzioni/documentazione/flusso, ownership/move/copy e option/result/question. Le altre otto suite Rust e gli altri linguaggi non sono rieseguiti: il precedente 746/746 resta riferito al lotto precedente.
+- Limiti: non benchmark, MSRV, matrice di runtime, Miri, async closure, test di concorrenza, tutti i dettagli di capture precision o ogni API Iterator. Nessuna pipeline infinita senza limite eseguita, nessun I/O personale o rete applicativa.
+
+### Verifica editoriale e Quartz
+
+- **911 documenti raggiungibili, zero errori e 352 avvisi editoriali**; **9/9 test della trasformazione** superati.
+- Build Quartz riuscita: **3719 file**, **2003 HTML**, **168 redirect**, **140442 riferimenti verificati**, zero errori. Nessun avviso editoriale nelle due note modificate.
+- **7/7 test HTTP dell'anteprima** superati. Chrome **156.0.8078.79**, viewport desktop **1440 x 1000** e mobile **390 x 844**: entrambe le note rispondono HTTP 200, H1 corretti, nessun errore JavaScript o overflow orizzontale della pagina. Verificato lo scorrimento dei **14 blocchi Rust** piu larghi del viewport mobile; gli altri quattro rientrano nella larghezza disponibile.
+- Ispezionate quattro schermate desktop/mobile, conservate nella directory temporanea `C:/Users/SE-Luca Bellini/AppData/Local/Temp/appunti-rust-iterators-closures-qa-q1M5wl`. Browser QA e server dei test chiusi; anteprima preesistente mantenuta su http://localhost:8082/appunti/.
+- Frontmatter confrontato con Git: solo lo spostamento previsto del rimando a Closure, da prerequisites a related. Formattazione e diff verificati; storico limitato a dieci voci. Nessun commit o push.
+
+### Prossimo blocco
+
+Iniziare **Astrazione e Generici** con **Generics**, **Traits** e **Trait bounds**. Il Percorso Base e tecnicamente revisionato; l'approvazione dell'utente e i promemoria restano separati.
+
+## 2026-11-02 - Rust: Generics, Traits e Trait bounds
+
+### Intervento
+
+Revisionate tre note di **Astrazione e Generici**: **42/183 note principali Rust**, **3/10 del capitolo**. Restano **141 note principali**, oltre ai promemoria; il Percorso Base resta a 39/39.
+
+- [[Programmazione/Rust/Pagine/Generics|Generics]]: inferenza e turbofish distinti da conversioni, parametri condivisi/indipendenti, ownership e metodi generici. Esempi completi su Wrapper, Maybe e CacheEntry; vista con lifetime, dimensione const e controesempio sul confronto senza bound. Monomorfizzazione distinta da promesse di performance o assenza di allocazioni.
+- [[Programmazione/Rust/Pagine/Traits|Traits]]: contratto nominale, import e sintassi qualificata, default e forwarding completo di Box, receiver e tipi esterni. Il controllo email basato su contains('@') resta segnalato come controesempio: la demo usa una policy dichiarata sui nomi, senza fingere persistenza. Chiarite coherence, orphan rules e loro limiti, supertrait e dyn compatibility.
+- [[Programmazione/Rust/Pagine/Trait bounds|Trait bounds]]: corrette le false equivalenze tra funzioni con comportamento differente. Bound inline/where realmente equivalenti, impl Trait anonimo distinto dal parametro nominato, requisiti sui singoli metodi e sui tipi associati, Sized/?Sized. Join con costi e limiti espliciti; tipo opaco restituito distinto da tipi variabili a runtime.
+- Frontmatter confrontato con HEAD mediante parser YAML e interamente conservato: date, status non revisionato, pubblicabilita e collegamenti invariati. Nessuna nota aggiunta o spostata, nessun indice o redirect da modificare.
+- Blanket implementations letta per delimitare gli approfondimenti: resta da revisionare e non viene conteggiata come completata.
+
+### Verifica tecnica
+
+- Fonti ufficiali Rust Book, Reference e standard library consultate e collegate nelle note. Baseline **Rust 1.99.1**, edition **2024**, **x86_64-pc-windows-gnu**, Node **24.14.0**. Toolchain temporanea esistente riutilizzata, senza installazioni o modifiche a PATH e dipendenze Quartz.
+- Suite `_Meta/tests/rust-generics-traits.test.mjs`: **66/66 test al primo giro**, zero fallimenti/skip, **31,4 secondi**. Estratti **21 programmi** dai Markdown: 18 eseguiti e tre controesempi rifiutati con errori attesi E0369, E0117 ed E0277.
+- Sonde positive/negative su inferenza, ownership, fine prestiti, Drop, metodi condizionali e tipi const; tutte le **65.536 coppie u8** del confronto e casi NaN.
+- Contratti del trait verificati con implementazioni incomplete, metodi omonimi, import mancante, forwarding omesso, impl sovrapposte e regole su tipi locali/parametri non coperti. Nessuna feature nightly.
+- Validazione: lunghezze 0..82 con tre tipi di carattere, intervalli di controllo ASCII/C1, whitespace Unicode, caratteri combinati e priorita degli errori. Assenza di normalizzazione, escaping e modifica del dato verificata, non solo dichiarata.
+- Join: lunghezze 0..64 e sei separatori, valori non Clone e output non escapato. Controprove su ?Sized, tipo associato, impl Trait in output e bound static.
+- Regressione seriale mirata delle suite generics/traits, iterators/closures, structs/enums e ownership/move/copy: **257/257 test**, zero fallimenti/skip, **144,1 secondi**. Le altre dieci suite Rust e gli altri linguaggi non sono rieseguiti; i risultati precedenti non sono presentati come regressione corrente completa.
+- Limiti: non benchmark, MSRV, Miri, matrice di compilatori/piattaforme, verifica completa delle orphan rules o validatore email. Nessun I/O applicativo su dati personali o rete. Fixture di compilazione/esecuzione isolate e rimosse dopo controllo del percorso.
+
+### Verifica editoriale e Quartz
+
+- **911 documenti raggiungibili, zero errori e 349 avvisi editoriali**; nessun avviso nelle tre note modificate. **9/9 test della trasformazione** superati.
+- Build riuscita: **3719 file**, **2003 HTML**, **168 redirect**, **140517 riferimenti verificati**, zero errori. Rimangono gli avvisi preesistenti del generatore su eval e repository Git nella copia temporanea.
+- **7/7 test HTTP dell'anteprima** superati. Tre pagine provate in Chrome **156.0.8078.79**, desktop **1440 x 1000** e mobile **390 x 844**: HTTP 200, H1 corretti, nessun errore JavaScript o overflow orizzontale del documento.
+- Scorrimento effettivo verificato portando prima ogni blocco nel viewport: **17 blocchi Rust** piu larghi del mobile (5 Generics, 5 Traits, 7 Trait bounds); quattro rientrano nella larghezza. Il controllo iniziale fuori viewport non osservava le dimensioni effettive dei contenuti con layout differito ed e stato ripetuto sui contenitori code visibili.
+- Sei schermate desktop/mobile ispezionate in `C:/Users/SE-Luca Bellini/AppData/Local/Temp/appunti-rust-generics-traits-qa-ImE3KO`. Browser QA e server HTTP temporaneo chiusi; anteprima preesistente su http://localhost:8082/appunti/ mantenuta.
+- Formattazione, metadati e diff verificati. Storico mantenuto a dieci voci; nessun commit, push o deploy remoto.
+
+### Prossimo blocco
+
+Continuare con **Derive traits** e **Associated types**, poi **Generic Associated Types (GAT)**. Restano sette note di Astrazione e Generici; approvazione dell'utente e promemoria rimangono separati.
+
+## 2026-11-02 - Rust: Derive traits e Associated types
+
+### Intervento
+
+Revisionate altre due note di **Astrazione e Generici**: **44/183 note principali Rust**, **5/10 del capitolo**. Restano **139 note principali**, oltre ai promemoria.
+
+- [[Programmazione/Rust/Pagine/Derive traits|Derive traits]]: spiegati contratti generati e impl condizionali, requisiti dei nove derive standard, ordinamento lessicografico e discriminanti, Default degli enum e limiti di Debug. Esempio HashSet verificabile, coerenza Eq/Hash, clone condiviso e impl manuale senza bound superfluo su Rc. Controesempi per f64/Eq e derive Clone sui generici.
+- [[Programmazione/Rust/Pagine/Associated types|Associated types]]: corretto il contatore senza fine soggetto a overflow; intervallo inclusivo, vuoto ed estremo u32 espliciti. Chiarite proiezioni, bound sul tipo associato, uguaglianza Item=String e scelta dell'output per implementazione completa di un trait generico.
+- Il repository che ignorava l'ID e sostituito da una lookup reale in BTreeMap, distinguendo trovato, assente ed errore per ID zero. Risultato owned clonato, errore dell'implementatore preservato, nessuna persistenza o autorizzazione implicita.
+- Chiariti Sized/?Sized e restituzione di un riferimento senza GAT. I default dei tipi associati e gli alias negli impl inerenti sono esplicitamente non stabili nella baseline, con verifica tramite compilatore.
+- GAT e Derive macros letti come contesto e non conteggiati come revisionati. Frontmatter confrontato con HEAD mediante parser YAML e invariato. Nessuna nota creata o spostata, nessun indice o redirect modificato; status non revisionato conservato.
+
+### Verifica tecnica
+
+- Fonti ufficiali Rust Reference, Book e standard library consultate e collegate. Baseline **Rust 1.99.1**, edition **2024**, **x86_64-pc-windows-gnu**, Node **24.14.0**. Toolchain esistente riutilizzata, senza installazioni, crate esterne o modifiche al PATH.
+- Nuova suite `_Meta/tests/rust-derive-associated.test.mjs`: **60/60 test al primo giro**, zero fallimenti/skip, **31,7 secondi**. **17 programmi estratti**, 13 eseguiti e quattro rifiutati con diagnostica attesa E0277, E0046 o E0658.
+- Derive: bound condizionali, campi incompatibili, prerequisiti dei trait, impl in conflitto, copia condivisa e Drop. Confronto su 81 punti inclusi estremi i32, tutte le 65.536 coppie u8 per i payload enum; Default distinto da new e da requisiti sui payload non selezionati.
+- HashSet su 65.536 ID, duplicati e massimo u64; nessun ordine del set o valore hash fisso assunto. Debug su campo privato dimostrativo, senza dati sensibili reali; NaN con PartialEq.
+- Counter su tutte le **676 coppie start/end 0..25**, sequenze vuote, None ripetuto ed estremi u32. Producer distinto dal trait standard Iterator.
+- Tipi associati: bound errato sul contenitore, String rispetto a riferimenti, conversioni esplicite, proiezioni qualificate e impl generiche con output diversi. Repository su ID distinti, zero, assenza e massimo u64; copia indipendente anche dopo drop e errore alternativo preservato.
+- Controprove su lifetime del risultato, tipo unsized, Item nei trait object e funzionalita instabili. Il test del puntatore della vista dimostra il riferimento al buffer originale, non misura tutte le allocazioni.
+- Regressione seriale mirata delle suite derive/associated, generics/traits, collections e ownership/move/copy: **238/238 test**, zero fallimenti/skip, **139,9 secondi**. Altre undici suite Rust e altri linguaggi non rieseguiti.
+- Titolo del test della vista reso piu preciso, logica invariata. Verifica aggiuntiva inizialmente invocata senza RUSTC_TEST_EXECUTABLE: ENOENT per rustc assente dal PATH. Ripetuta con toolchain esplicita: **1/1 superato**. Nessun difetto negli esempi Rust.
+- Limiti: una baseline e un target, non benchmark, MSRV, misura dell'allocator, Miri, derive di crate esterne, database o verifica completa dei trait avanzati. Fixture temporanee isolate e rimosse dopo controllo del percorso, nessun I/O personale o rete applicativa.
+
+### Verifica editoriale e Quartz
+
+- **911 documenti raggiungibili, zero errori e 347 avvisi editoriali**, nessuno nelle due note. **9/9 test della trasformazione** superati.
+- Build riuscita: **3719 file**, **2003 HTML**, **168 redirect**, **140577 riferimenti verificati**, zero errori. Restano gli avvisi preesistenti del generatore su eval e repository Git nella copia temporanea.
+- **7/7 test HTTP dell'anteprima** superati. Due pagine provate in Chrome **156.0.8078.79**, desktop **1440 x 1000** e mobile **390 x 844**: HTTP 200, H1 corretti, nessun errore JavaScript o overflow orizzontale del documento.
+- Scorrimento verificato dopo aver portato ogni blocco nel viewport: **12 blocchi Rust** piu larghi del mobile, sette in Derive traits e cinque in Associated types. Gli altri cinque rientrano nella larghezza.
+- Quattro schermate ispezionate in `C:/Users/SE-Luca Bellini/AppData/Local/Temp/appunti-rust-derive-associated-qa-TOb8yw`. Browser QA e server HTTP temporaneo chiusi; anteprima preesistente su http://localhost:8082/appunti/ lasciata attiva.
+- Formattazione e diff verificati, storico mantenuto a dieci voci. Nessun commit, push o deploy remoto.
+
+### Prossimo blocco
+
+Proseguire con **Generic Associated Types (GAT)**, poi **Trait objects e dyn Trait**. Restano cinque note nel capitolo; revisione tecnica, approvazione dell'utente e promemoria sono conteggi separati.
+
+## 2026-11-02 - Rust: Generic Associated Types (GAT)
+
+### Intervento
+
+Revisionata [[Programmazione/Rust/Pagine/Generic Associated Types (GAT)|Generic Associated Types (GAT)]]: **45/183 note principali Rust**, **6/10 di Astrazione e Generici**. Restano **138 note principali**, promemoria separati.
+
+- Chiarita la famiglia di tipi parametrizzata rispetto a un singolo tipo associato, distinguendo lifetime della sorgente e del prestito del receiver.
+- Spiegati Self: 'a, bound richiesti e differenza tra prestiti condivisi ed esclusivi. Non ogni riferimento restituito richiede GAT; il caso semplice resta collegato alla nota Associated types.
+- Conservati gli esempi Container/Text e RowSource/CsvRow, resi autonomi e verificabili. La riga CSV e esplicitamente grezza, non un parser; aggiunto risultato owned con clonazione intenzionale, assenza distinta da vuoto e lunghezza in byte.
+- Esempio concreto WindowsMut: finestre mutabili sovrapposte consumate una alla volta, safe Rust, larghezza zero rifiutata, fine ripetibile e overflow controllato. Nessuna implementazione automatica di Iterator o raccolta simultanea di viste sovrapposte.
+- Famiglia di array inline/Box parametrizzata da tipo e costante; controesempi per bound mancante e prestiti esclusivi incompatibili.
+- Distinti limiti storici e sonda attuale HRTB/'static; incompatibilita con dyn riferita ai trait dimostrati. Aggiunte fonti ufficiali.
+- Frontmatter confrontato con HEAD mediante parser YAML e invariato; status non revisionato fino all'approvazione dell'utente. Nessuna nota creata/spostata, nessuna modifica a indici o redirect. Lifetime annotations e HRTB letti soltanto come contesto, non conteggiati come revisionati.
+
+### Verifica tecnica
+
+- Baseline **Rust 1.99.1**, edition **2024**, **x86_64-pc-windows-gnu**, Node **24.14.0**. Toolchain esistente riutilizzata, nessuna installazione, dipendenza esterna o modifica al PATH.
+- Nuova suite `_Meta/tests/rust-gat.test.mjs`: **34/34 test al primo giro**, **15,7 secondi**, zero fallimenti/skip. Sei programmi estratti: quattro eseguiti e due controesempi con diagnostica attesa.
+- Prestiti condivisi/esclusivi, ultimo uso, distruzione/move della sorgente, rifiuto di riferimenti locali e bound sul tipo restituito. Snapshot indipendenti da modifica e drop, byte UTF-8, assenza/vuoto e identita dei buffer.
+- WindowsMut: **195 coppie lunghezza/larghezza**, fine ripetuta, puntatore alla posizione corretta, **45 combinazioni di mutazione** con conteggio atteso indipendente, elementi non Copy/Clone e usize::MAX.
+- Ramo di overflow checked_add provato anche con uno stato interno artificialmente costruito, non raggiungibile attraverso il costruttore e next. Controprove su viste simultanee, IntoIterator assente, copia esplicita degli snapshot e dyn compatibility.
+- HRTB: E0597 con richiesta implicita 'static riprodotto sulla baseline e diagnosi controllata nella regressione. Debug sul GAT elimina quel caso nella controprova, restringendo il contratto del trait. Nessuna generalizzazione a tutti i compiler o agli adattatori lending.
+- Parametri di tipo/const: array vuoti, valori senza Copy/Clone, ownership trasferita e riferimenti locali.
+- Regressione seriale mirata GAT, derive/associated, borrowing/slices e iterators/closures: **218/218 test**, **105,3 secondi**, zero fallimenti/skip. Altre dodici suite Rust e altri linguaggi non rieseguiti.
+- Limiti: una baseline/target, non MSRV, Miri, benchmark, misura dell'allocator o collaudo completo dei trait avanzati. Nessuna rete o I/O su dati personali; fixture temporanee rimosse dopo verifica dei percorsi.
+
+### Verifica editoriale e Quartz
+
+- **911 documenti raggiungibili, zero errori e 346 avvisi editoriali**; nessuno nella nota GAT. **9/9 test della trasformazione** superati.
+- Build riuscita: **3719 file**, **2003 HTML**, **168 redirect**, **140612 riferimenti verificati**, zero errori. Restano gli avvisi preesistenti del generatore su eval e repository Git nella copia temporanea.
+- **7/7 test HTTP dell'anteprima** superati. Nota provata in Chrome **156.0.8078.79**, desktop **1440 x 1000** e mobile **390 x 844**: HTTP 200, titolo corretto, nessun errore JavaScript o overflow orizzontale del documento.
+- Tutti i **sei blocchi Rust** sono scorrevoli su mobile, con spostamento effettivo verificato dopo averli portati nel viewport. Sul desktop rientrano nella larghezza disponibile.
+- Quattro schermate ispezionate in `C:/Users/SE-Luca Bellini/AppData/Local/Temp/appunti-rust-gat-qa-cknTQx`. Il controllo aggiuntivo del titolo desktop era prematuro durante lo scorrimento CSS smooth; ripetuto con scroll istantaneo, titolo visibile e scrollY zero. Nessuna modifica al CSS o al generatore.
+- Frontmatter invariato, formattazione e diff verificati; storico consolidato a dieci voci. Browser QA e server di test chiusi, anteprima precedente su http://localhost:8082/appunti/ lasciata attiva. Nessun commit, push o deploy remoto.
+
+### Prossimo blocco
+
+Proseguire con **Trait objects e dyn Trait**, poi **Static dispatch vs dynamic dispatch**, **Object safety** e **Blanket implementations**. Restano quattro note di Astrazione e Generici; approvazione dell'utente e promemoria rimangono separati.
+
+## 2026-11-03 - Rust: Trait objects e dyn Trait
+
+### Intervento
+
+Revisionata [[Programmazione/Rust/Pagine/Trait objects e dyn Trait|Trait objects e dyn Trait]]: **46/183 note principali Rust**, **7/10 di Astrazione e Generici**. Restano **137 note principali**, promemoria separati.
+
+- Corretto il modello che identificava il valore dyn con il fat pointer: distinti tipo unsized, puntatore e vtable, senza promesse di layout portabile o ABI per plugin.
+- Chiariti type erasure, interfaccia esposta, ownership e costi del contenitore separati dal dispatch. Tolte le affermazioni assolute su generics necessariamente piu veloci.
+- Conservati Draw/Button/Text e Logger, resi programmi autonomi con risultati verificabili. Il rendering e solo testuale; la factory sceglie due tipi concreti e la collezione possiede i box.
+- Box borrowed con lifetime esplicita distinto da default 'static nella firma; possedere il wrapper non prolunga i dati. Iterator con Item fissato e forwarding di Box distinto dall'implementazione automatica di trait personalizzati.
+- Logger mutabile/fallibile con stdout e memoria, propagazione errori e assenza di rollback; limiti didattici espliciti. Arc con Send/Sync, thread reale e join, clone condiviso distinto dalla copia del testo.
+- Esempio non dyn-compatible e correzione con metodo escluso, piu indicazioni su enum, generics e supertrait.
+- Rimosso il ciclo diretto dei prerequisiti: Object safety diventa related, mantenendo Traits come prerequisito. Confronto YAML con HEAD tramite parser: nessun'altra variazione; status non revisionato, data e pubblicabilita conservati.
+- Object safety e Static dispatch vs dynamic dispatch letti come contesto, non conteggiati come revisionati. Nessuna nota creata/spostata, nessun indice o redirect modificato.
+
+### Verifica tecnica
+
+- Fonti ufficiali Rust Book, Reference e standard library consultate e collegate. Baseline **Rust 1.99.1**, edition **2024**, **x86_64-pc-windows-gnu**, Node **24.14.0**. Toolchain esistente riutilizzata, nessuna installazione o modifica alle dipendenze.
+- Nuova suite `_Meta/tests/rust-trait-objects.test.mjs`: **45/45 test al primo giro**, zero fallimenti/skip, **21,9 secondi**. Sette programmi estratti dal Markdown: sei eseguiti e un controesempio E0038.
+- Sonde su type erasure, metodi/campi nascosti, Sized/?Sized, trait object diretto per valore e Vec, move e durata del proprietario. Identita dei byte e size_of_val del valore, non layout fisico della vtable.
+- Factory, ordine della collezione, Drop corretto una volta, mancato forwarding automatico di trait personalizzati da Box e output impl Trait incompatibili.
+- Lifetime implicita/esplicita, stringhe vuote e Unicode, prestiti non-static e snapshot owned, conflitti di mutazione e uscita dal blocco. Diagnostica sul requisito static verificata anche senza codice errore dedicato.
+- Logger: output stdout reale catturato, memoria senza normalizzazioni, ordine e duplicati. Errori simulati alla prima/seconda chiamata: tipo/messaggio propagati, chiamate successive interrotte, effetti precedenti conservati. Non viene provocato un guasto reale a stdout o flush.
+- Iterator: Item richiesto e coerente, consumo parziale e fine ripetuta. Arc: Send/Sync controllati, Rc incompatibile rifiutato, thread reale, istanza condivisa e Drop dopo l'ultimo proprietario.
+- Controprove su Self: Sized e metodo non invocabile da dyn; due trait ordinari rifiutati, trait aggregatore su Cursor in memoria valido.
+- Regressione seriale mirata trait objects, GAT, derive/associated e generics/traits: **205/205 test**, zero fallimenti/skip, **98,5 secondi**. Altre tredici suite Rust e altri linguaggi non rieseguiti.
+- Limiti: una baseline/target, non MSRV, Miri, benchmark, misura dell'allocator, ABI o collaudo generale della concorrenza/logging. Fixture temporanee rimosse dopo verifica dei percorsi; thread attesi con join, nessuna rete o I/O su dati personali.
+
+### Verifica editoriale e Quartz
+
+- **911 documenti raggiungibili, zero errori e 346 avvisi editoriali**, nessuno nella nota modificata. **9/9 test della trasformazione** superati.
+- Build riuscita: **3719 file**, **2003 HTML**, **168 redirect**, **140655 riferimenti verificati**, zero errori. Restano gli avvisi preesistenti su eval e repository Git nella copia temporanea.
+- **7/7 test HTTP dell'anteprima** superati. Il primo tentativo browser sulla vecchia porta 8082 ha restituito connection refused: il server precedente non era attivo. Nessun difetto della pagina; rieseguito il controllo con preview-site.mjs su una porta loopback libera.
+- Chrome **156.0.8078.80**, desktop **1440 x 1000** e mobile **390 x 844**: HTTP 200, H1 visibile e corretto, nessun errore JavaScript o overflow del documento. Sei dei sette blocchi Rust richiedono scorrimento orizzontale su mobile, verificato effettivamente; il settimo rientra nella larghezza.
+- Quattro screenshot ispezionati in `C:/Users/SE-Luca Bellini/AppData/Local/Temp/appunti-rust-dyn-qa-GaYfzx`. Browser e server QA chiusi; nessuna anteprima persistente riavviata e nessuna modifica al browser personale.
+- Formattazione, frontmatter e diff verificati. Storico a dieci voci, rimossa quella TypeScript del 2026-10-20 gia dettagliata nel registro completo. Nessun commit, push o deploy remoto.
+
+### Prossimo blocco
+
+Proseguire con **Static dispatch vs dynamic dispatch**, poi **Object safety** e **Blanket implementations**. Restano tre note nel capitolo; revisione tecnica, approvazione dell'utente e promemoria rimangono conteggi separati.
+
+## 2026-11-03 - Rust: Static dispatch vs dynamic dispatch
+
+### Intervento
+
+Revisionata [[Programmazione/Rust/Pagine/Static dispatch vs dynamic dispatch|Static dispatch vs dynamic dispatch]]: **47/183 note principali Rust**, **8/10 di Astrazione e Generici**. Restano **136 note principali**, promemoria separati.
+
+- Distinti scelta dell'implementazione, esecuzione dei dati a runtime e monomorfizzazione per tipo. Nessuna promessa sul numero di simboli nel binario, inlining o velocita universale.
+- Conservati stampa, Task e Handler, resi programmi autonomi. Le varianti statiche e dinamiche ora condividono lo stesso contratto di prestito e applicano lo stesso algoritmo agli stessi input.
+- Chiariti parametri nominati, impl Trait in input/ritorno, scelta del tipo nascosto per istanza generica e bound esposti. Una firma generica non garantisce l'assenza di chiamate indirette: inclusi ?Sized con dyn, wrapper e puntatori a funzione.
+- Handler selezionabile runtime, batch vuoto/ordinato e costi comuni espliciti. Conteggio byte distinto da valori scalari Unicode e grafemi; il demo non e un endpoint o un sistema di plugin.
+- Aggiunto enum con ritorno opaco come alternativa chiusa, separata dall'estensibilita di un trait object. Controesempio E0308 e rimedi con tipo comune o Box dinamico.
+- Chiariti i limiti delle misure: formattazione/I/O, input costanti, allocazioni, algoritmi diversi, black_box best-effort e configurazione di build. Nessuna misura di prestazione dedotta dalle sole firme.
+- Frontmatter confrontato con HEAD mediante parser YAML: invariato. Data, publish e status non revisionato conservati; approvazione dell'utente separata. Nessuna nota aggiunta/spostata o modifica a indici/redirect. Zero-cost abstractions e Performance e profiling letti soltanto come contesto, non conteggiati come revisionati.
+
+### Verifica tecnica
+
+- Fonti ufficiali Rust Book, Reference, standard library e Cargo Book consultate e collegate. Baseline **Rust 1.99.1**, edition **2024**, **x86_64-pc-windows-gnu**, Node **24.14.0**. Toolchain esistente riutilizzata, nessuna nuova dipendenza o modifica al PATH.
+- Nuova suite `_Meta/tests/rust-dispatch.test.mjs`: **46 test** su sette programmi, sei validi e un controesempio E0308. I sei validi compilati/eseguiti con opt-level 0 e 3: stessi risultati attesi, non benchmark o confronto completo dei profili Cargo.
+- Primo giro **45/46**, **25,8 secondi**: il caso CRLF aggiuntivo passava attraverso un template JavaScript interpretato prima della compilazione Rust. Corretto con String.raw, senza cambiare aspettativa, algoritmo o programmi della nota, gia corretti.
+- Regressione seriale successiva di dispatch, trait objects, generics/traits e iterators/closures: **223/223**, zero fallimenti/skip, **101,3 secondi**. Comprende tutti i 46 nuovi test; altre quattordici suite Rust e altri linguaggi non rieseguiti.
+- Verificati prestiti di valori non Copy, stdout reale, turbofish, parametri indipendenti/condivisi, Sized implicito e forwarding interno a dyn. Range su tutti i 256 limiti u8, Once non Clone, fine ripetuta, move, lifetime e bound nascosti.
+- Handler su vuoto, ASCII, Unicode composto, CRLF e NUL, batch ordinato con duplicati, terza implementazione e conteggio chiamate; rifiuto senza ?Sized e durata dei candidati. Il test del puntatore verifica la conservazione del buffer originale, non l'assenza di ogni copia temporanea.
+- Enum comune, esaustivita del match, function item distinti e coercizione esplicita, function pointer selezionato a runtime, closure con/senza catture. Due correzioni del ritorno opaco compilate ed entrambe le sequenze del Box verificate.
+- Limiti: una baseline/target, non MSRV, Miri, benchmark, analisi assembly, misura dell'allocator, ABI, inlining o devirtualizzazione. Fixture temporanee isolate e rimosse dopo controllo dei percorsi, nessun servizio remoto o dato personale.
+
+### Verifica editoriale e Quartz
+
+- **911 documenti raggiungibili, zero errori e 345 avvisi editoriali**, nessuno nella nota. **9/9 test della trasformazione** superati.
+- Build riuscita: **3719 file**, **2003 HTML**, **168 redirect**, **140703 riferimenti verificati**, zero errori. Restano gli avvisi preesistenti su eval e repository Git nella copia temporanea.
+- **7/7 test HTTP** superati. Nota provata in Chrome **156.0.8078.80**, desktop **1440 x 1000** e mobile **390 x 844**: HTTP 200, H1 visibile, nessun errore JavaScript o overflow del documento.
+- Sei dei sette blocchi Rust richiedono scorrimento orizzontale su mobile, verificato effettivamente; tutti rientrano nella larghezza desktop. Quattro screenshot ispezionati in `C:/Users/SE-Luca Bellini/AppData/Local/Temp/appunti-rust-dispatch-qa-VUEF7i`.
+- Anteprima QA su porta loopback libera, chiusa insieme al browser. Nessun server persistente o browser personale modificato, nessun commit, push o deploy remoto. Storico consolidato nella voce odierna, senza aggiungere un'undicesima voce.
+
+### Prossimo blocco
+
+Proseguire con **Object safety**, poi **Blanket implementations**. Restano due note di Astrazione e Generici; revisione tecnica, approvazione dell'utente e promemoria rimangono conteggi separati.
+
+## 2026-11-03 - Rust: Object safety
+
+### Intervento
+
+Revisionata [[Programmazione/Rust/Pagine/Object safety|Object safety]]: **48/183 note principali Rust**, **9/10 di Astrazione e Generici**. Restano **135 note principali**, promemoria separati.
+
+- Collegata la terminologia storica alla dyn compatibility; distinta da memory safety, thread safety e correttezza logica. Un trait valido puo non consentire trait object.
+- Aggiunta tabella su supertrait, receiver, type/const generics, lifetime, Self, tipi associati, GAT, costanti, async fn e impl Trait. Distinti trait compatibile, metodo escluso e metodo invocabile; Self: Sized locale non equivale al vincolo sull'intero trait.
+- Conservati CloneLike, Parser e Command, resi autonomi e verificabili. Parser riconosce cifre ASCII senza conversione o limite numerico; Command produce testo, non esegue processi o plugin.
+- Chiariti Item fissato, parametro del trait rispetto a quello del metodo, lifetime del risultato e limiti della tokenizzazione. Box receiver consuma il proprietario; helper boxed static distinto da durata infinita e forwarding automatico.
+- Async nativo confrontato con Future erased e lifetime esplicita; Send non implicito. Singolo poll del future immediato dichiarato come verifica del demo, non executor. Aggiunte fonti ufficiali e distinzione Pin::new/Unpin emersa nella prova aggiuntiva.
+- Frontmatter confrontato con HEAD tramite parser e invariato; data, publish e status non revisionato conservati. Nessuna nota creata/spostata, nessun indice o redirect modificato; approvazione dell'utente separata.
+
+### Verifica tecnica
+
+- Fonti ufficiali Rust Reference, diagnostica E0038, standard library e Rust Blog consultate e collegate. Baseline **Rust 1.99.1**, edition **2024**, **x86_64-pc-windows-gnu**, Node **24.14.0**. Toolchain esistente, nessuna nuova dipendenza o modifica al PATH.
+- Nuova suite `_Meta/tests/rust-object-safety.test.mjs`: **55 test**, sette programmi estratti, cinque validi e due controesempi E0038.
+- Primo giro **53/54**, **19,1 secondi**: la prova aggiuntiva sui receiver richiedeva erroneamente Pin::new dopo aver cancellato Unpin. Corretta costruendo prima Pin sul concreto; aggiunto test negativo E0277 e variante dyn + Unpin. I programmi della nota erano gia corretti.
+- Regressione seriale mirata object safety, trait objects, dispatch e GAT: **180/180**, zero fallimenti/skip, **79,7 secondi**, inclusi i 55 nuovi test. Altre quindici suite Rust e altri linguaggi non rieseguiti.
+- Parser su tutti gli ASCII, Unicode, vuoto, segni/spazi e 10.000 cifre. Item omesso/errato, mutabilita, ordine/duplicati; tipo del trait fissato e durata del risultato rispetto a input e servizio.
+- Command con testo arbitrario, move rifiutati dopo consumo, Drop una sola volta e lifetime static dell'helper. Future con assenza/vuoto distinti, Unicode e chiave esatta, output preso in prestito, durata della chiave/servizio e mancato Send.
+- Matrice di 13 regole incompatibili verificata tramite diagnostica E0038; controprove per GAT escluso, metodo async escluso, metodo al posto della costante e receiver Rc/Arc/Pin. Trait con receiver Self costruibile come dyn, chiamata per valore rifiutata con E0161.
+- Limiti: singola baseline/target, non MSRV, Miri, benchmark, ABI, misura dell'allocator o collaudo generale async/pinning. Poll eseguito una sola volta sui future immediati, nessun executor implementato. Fixture temporanee rimosse dopo controllo dei percorsi, nessun servizio remoto o dato personale.
+
+### Verifica editoriale e Quartz
+
+- **911 documenti raggiungibili, zero errori e 344 avvisi editoriali**. **9/9 test della trasformazione** superati.
+- Nessun avviso editoriale nella nota modificata. Build riuscita: **3719 file**, **2003 HTML**, **168 redirect**, **140748 riferimenti verificati**, zero errori; rimangono gli avvisi preesistenti del generatore su eval e Git nella copia temporanea.
+- **7/7 test HTTP** superati. Chrome **156.0.8078.80**, desktop **1440 x 1000** e mobile **390 x 844**: HTTP 200, H1 visibile, nessun errore JavaScript o overflow del documento.
+- Tabella delle regole contenuta nella larghezza di entrambi i viewport. Tutti i sette blocchi Rust richiedono e consentono scorrimento orizzontale su mobile; nessuno su desktop.
+- Sei screenshot ispezionati in `C:/Users/SE-Luca Bellini/AppData/Local/Temp/appunti-rust-object-safety-qa-fRKtzt`. Server QA su porta loopback libera e browser chiusi; nessuna anteprima persistente avviata, nessuna modifica al browser personale.
+- Storico consolidato nella voce odierna, mantenuto a dieci voci. Nessun commit, push o deploy remoto.
+
+### Prossimo blocco
+
+Proseguire con **Blanket implementations**, ultima nota di Astrazione e Generici; successivamente iniziare il capitolo **Lifetimes**. Revisione tecnica, approvazione dell'utente e promemoria rimangono conteggi separati.
+
+## 2026-11-03 - Rust: Blanket implementations
+
+### Intervento
+
+Revisionata [[Programmazione/Rust/Pagine/Blanket implementations|Blanket implementations]]: **49/183 note principali Rust**, **10/10 di Astrazione e Generici**. Restano **134 note principali**, promemoria separati.
+
+- Chiarita l'implementazione condizionale, distinta da ereditarieta, supertrait, metodo default e generico non blanket. Aggiunti Sized/?Sized, import del trait e differenza fra autoderef e soddisfacimento del bound.
+- Conservati Summary/Loggable e StringExt, resi autonomi con risultati verificabili. Logging limitato a stdout, trim distinto da normalizzazione e validazione; nessuna riflessivita universale di AsRef promessa.
+- Corretto il finto Save che validava senza scrivere: ora richiede Validate e Record e usa una destinazione Write esplicita. Buffer in memoria, errori di validazione prima della scrittura, causa I/O preservata, effetti parziali senza rollback o durabilita implicita.
+- Spiegati From che fornisce Into, ownership del Vec e conflitto dell'Into duplicato. Newtype utile solo se non ricade nella stessa blanket impl.
+- Distinte coherence e orphan rules, parametri coperti/non coperti e implementazioni specifiche non usabili come override. Controesempi E0119/E0210, parametro non determinato E0207 e limiti stable della specializzazione.
+- Frontmatter confrontato con HEAD tramite parser YAML e invariato. Data, pubblicabilita e status non revisionato conservati; nessuna nota aggiunta/spostata, nessun indice o redirect modificato.
+- Extension traits letta solo come contesto, non conteggiata come revisionata. Nel suo futuro lotto di API Design va verificato/corretto il bound di count_where: filter passa un riferimento all'Item, mentre la nota attuale dichiara FnMut(Self::Item).
+
+### Verifica tecnica
+
+- Fonti ufficiali Rust Reference, standard library, diagnostica, RFC 2451 e Unstable Book consultate e collegate. Baseline **Rust 1.99.1**, edition **2024**, **x86_64-pc-windows-gnu**, Node **24.14.0**. Toolchain esistente, nessuna installazione o modifica alle dipendenze.
+- Nuova suite `_Meta/tests/rust-blanket.test.mjs`: **47 test** su sette programmi estratti, cinque validi e due controesempi con diagnostica attesa.
+- Primo giro **45/46**, **22,6 secondi**: il test di move usava let \_ senza leggere effettivamente il campo. Sostituito con accesso alla lunghezza dopo il move, mantenendo E0382 atteso; aggiunta prova Save su str unsized. Gli esempi della nota avevano gia dato i risultati corretti.
+- Summary con stdout reale e dyn, direzione dei bound, default e supertrait senza impl automatica. StringExt su tutti i 128 ASCII, whitespace Unicode, invisibili non whitespace, import, AsRef/Deref e conservazione del buffer.
+- Save con UTF-8 e append, invalido senza chiamare Record/Write, scritture brevi, WriteZero, Interrupted, causa BrokenPipe e prefisso gia scritto, assenza di flush. Writer dyn, prestiti non-static e str unsized; bound mancanti e dyn Save rifiutati.
+- From/Into con elementi non Clone, ordine e buffer conservato; move, conversione inversa non implicita e conflitti. Newtype coperto/non coperto, bound diversi sovrapposti, moduli, possibili impl upstream, alias/Vec rispetto a Box locale, E0207 e specialization instabile.
+- Due crate compilate realmente: consumer valido con impl personalizzata prima dell'aggiunta upstream, rifiutato con E0119 dopo l'aggiunta della blanket impl. Nessuna pubblicazione o dipendenza remota.
+- Limiti: una baseline/target, non MSRV, Miri, benchmark, analisi dell'allocator, logger o persistenza di produzione. Guasti Write simulati in memoria, non guasti reali al filesystem; fixture temporanee rimosse dopo verifica del percorso.
+- Regressione seriale di tutte le sette suite delle dieci note di **Astrazione e Generici**: **353/353 test**, zero fallimenti/skip, **169,6 secondi**, inclusi i 47 nuovi test. Altre tredici suite Rust e altri linguaggi non rieseguiti.
+
+### Verifica editoriale e Quartz
+
+- **911 documenti raggiungibili, zero errori e 343 avvisi editoriali**. **9/9 test della trasformazione** superati.
+- Nessun avviso editoriale nella nota modificata. Build riuscita: **3719 file**, **2003 HTML**, **168 redirect**, **140803 riferimenti verificati**, zero errori. Restano gli avvisi preesistenti del generatore su eval e repository Git nella copia temporanea.
+- **7/7 test HTTP** superati. Chrome **156.0.8078.80**, desktop **1440 x 1000** e mobile **390 x 844**: HTTP 200, H1 visibile, nessun errore JavaScript o overflow del documento.
+- Tutti i sette blocchi Rust scorrono orizzontalmente su mobile; nessuno supera la larghezza disponibile su desktop. Quattro screenshot ispezionati in `C:/Users/SE-Luca Bellini/AppData/Local/Temp/appunti-rust-blanket-qa-ZZrnZm`.
+- Browser e server QA temporaneo chiusi. Nessuna anteprima persistente avviata o modifica al browser personale. Storico consolidato a dieci voci; nessun commit, push o deploy remoto.
+
+### Prossimo blocco
+
+Iniziare il capitolo **Lifetimes** da **Lifetime annotations**, poi **Lifetime elision**. Astrazione e Generici e revisionato tecnicamente in tutte le dieci note; approvazione dell'utente e promemoria restano separati.
+
+## 2026-11-03 - Rust: Lifetime annotations
+
+### Intervento
+
+Revisionata [[Programmazione/Rust/Pagine/Lifetime annotations|Lifetime annotations]]: **50/183 note principali Rust**, **1/6 del capitolo Lifetimes**. Restano **133 note principali**, promemoria separati.
+
+- Corretta la scorciatoia sulla durata del riferimento piu corto: regione comune dei prestiti distinta dalla durata dei proprietari e dal tempo di esecuzione. Il contratto non dipende dal ramo selezionato.
+- Completati longest, funzione con input indipendente, View e impl, debug_ref e selezione del primo testo non vuoto. Nomi tecnici inglesi, programmi autonomi con risultati verificabili.
+- Distinto lifetime dei dati da quello del receiver: View::text con output esplicito puo sopravvivere alla vista, non al proprietario. Controprova con output eliso.
+- Chiariti verso di outlives, T: 'a implicato da &'a T, Debug non implicito, ?Sized per str, ordine dei parametri generici e placeholder.
+- Distinti riferimento static, bound static e valore posseduto; anche un contenitore posseduto puo contenere prestiti locali. Riferimento a String locale rifiutato, alternativa tramite move o copia esplicita.
+- Byte UTF-8, parita, whitespace e costo della copia dichiarati. Controesempi non compilabili visibili, non codice commentato.
+- Frontmatter confrontato testualmente con HEAD, normalizzando solo CRLF/LF: invariato. Data, pubblicabilita e status non revisionato conservati; revisione tecnica distinta dall'approvazione dell'utente. Nessuna nota aggiunta/spostata, nessuna modifica a indice o redirect.
+
+### Verifica tecnica
+
+- Fonti ufficiali Rust Book, Reference, Rust By Example, standard library e diagnostica consultate e collegate nella nota.
+- Baseline **Rust 1.99.1**, edition **2024**, target **x86_64-pc-windows-gnu**, Node **24.14.0**. Toolchain esistente tramite RUSTC_TEST_EXECUTABLE, nessuna installazione o modifica al PATH.
+- Nuova suite `_Meta/tests/rust-lifetime-annotations.test.mjs`: **40/40 test** al primo giro, **16,9 secondi**, otto programmi estratti dal Markdown (sei validi, due negativi).
+- Casi vuoti, parita e multibyte; identita delle viste, prestiti terminati prima dello scope e conflitti di mutazione/move. Firma ambigua, lifetime della label superfluo e ritorno incompatibile con il contratto.
+- Receiver esplicito/eliso, proprietario ancora vivo/scaduto, rimozione di implied bound e rifiuto senza Debug/?Sized. Outlives omesso o invertito rifiutato.
+- Fallback con whitespace Unicode, ramo primario che non libera il prestito del fallback, copia prima della distruzione e variante senza copia rifiutata.
+- String/Vec<String> con bound static accettati, &String e Vec<&str> locali rifiutati; static non ripara il riferimento locale. Ritorno di parametro posseduto per riferimento rifiutato, trasferimento di ownership accettato.
+- Regressione seriale borrowing/slices, stringhe/memoria/lifetime, GAT e nuova suite: **199/199**, zero fallimenti/skip, **98,0 secondi**. Altre diciassette suite Rust e altri linguaggi non rieseguiti.
+- Limiti: una baseline/target, non MSRV, Miri o misura delle allocazioni. Fixture temporanee rimosse dopo verifica del percorso; nessuna rete o dato personale nei programmi di test.
+
+### Verifica editoriale e Quartz
+
+- **911 documenti raggiungibili, zero errori e 342 avvisi editoriali**; nessuno nella nota modificata. **9/9 test della trasformazione** superati.
+- Build riuscita: **3719 file**, **2003 HTML**, **168 redirect**, **140840 riferimenti verificati**, zero errori. Restano soltanto gli avvisi gia noti del generatore su eval e Git nella copia temporanea.
+- **7/7 test HTTP** superati. Chrome **156.0.8078.80**, desktop **1440 x 1000** e mobile **390 x 844**: HTTP 200, titolo visibile, nessun errore JavaScript o overflow del documento.
+- Otto blocchi Rust: nessuno eccede la larghezza su desktop; sei scorrono correttamente su mobile e due entrano nel viewport. Quattro screenshot ispezionati in `C:/Users/SE-Luca Bellini/AppData/Local/Temp/appunti-rust-lifetime-annotations-qa-gtndZ8`.
+- Server QA temporaneo e browser chiusi. Nessuna anteprima persistente avviata, nessuna modifica al browser personale, nessun commit/push/deploy remoto. Storico mantenuto a dieci voci; la voce TypeScript del 2026-10-21 rimossa e gia conservata nel registro completo.
+
+### Prossimo blocco
+
+Proseguire con **Lifetime elision**, seconda delle sei note del capitolo. Approvazione dell'utente e promemoria rimangono separati dalla revisione tecnica.
+
+## 2026-11-03 - Rust: Lifetime elision
+
+### Intervento
+
+Revisionata [[Programmazione/Rust/Pagine/Lifetime elision|Lifetime elision]]: **51/183 note principali Rust**, **2/6 del capitolo Lifetimes**. Restano **132 note principali**, promemoria separati.
+
+- Distinte regole delle firme e inferenza nel corpo, posizioni lifetime rispetto al numero dei parametri, receiver, placeholder e output posseduti.
+- Completati first_word implicito/esplicito, Buffer mutabile, View e callable; nove programmi autonomi, sei validi e tre controesempi espliciti.
+- Corretta extension: la vecchia rsplit_once sull'intero testo scambiava punti delle directory e dotfile per estensioni. Ora usa Path::extension e OsStr, senza I/O; limiti della piattaforma e conversione Unicode dichiarati.
+- User::domain rinominato domain_fragment per rendere evidente il semplice split. Non convalida indirizzi o domini, non normalizza e non esegue DNS; casi malformati e vuoti resi osservabili.
+- Separati default dei trait object, Box che possiede un riferimento e firma con bound esplicito; const/static, function pointer e bound Fn non confusi con closure isolate.
+- Frontmatter confrontato con HEAD, invariato salvo normalizzazione CRLF/LF nel confronto. Data, publish e status non revisionato conservati. Nessuna nuova nota o modifica a indici/redirect.
+
+### Verifica tecnica
+
+- Consultati e collegati Rust Reference, Book, Rustonomicon, Rust By Example, standard library, diagnostica E0106 e issue Rust #86921.
+- Baseline **Rust 1.99.1**, edition **2024**, **x86_64-pc-windows-gnu**, Node **24.14.0**. Toolchain esistente tramite RUSTC_TEST_EXECUTABLE; nessuna nuova dipendenza o modifica al PATH.
+- Nuova suite `_Meta/tests/rust-lifetime-elision.test.mjs`: **51 test**. Primo giro **46/47**, **21,5 secondi**: l'aspettativa di elision su due input nominati entrambi 'a era errata. La diagnostica reale E0106 ha portato a correggere la spiegazione della bozza e aggiungere l'output esplicito valido.
+- Aggiunte anche controprova con un solo input nominato e coppia closure isolata/fn atteso. I nove programmi Markdown avevano gia dato gli esiti previsti al primo giro; l'errore riguardava la spiegazione e la sonda aggiuntiva.
+- Regole verificate con tupla e riferimento annidato, parametro numerico, piu output, nome condiviso esplicito e output posseduto indipendente.
+- First_word con Unicode, vuoto, fallback e identita della vista. Buffer con copia e output legato al receiver; secondo prestito incompatibile e ritorno errato rifiutati. View con placeholder, owner scaduto e campo senza lifetime.
+- Matrice Path su nomi e suffissi; confronto col comportamento errato precedente, PathBuf scaduto e copia OsString. Caso Windows con surrogate isolato distingue estensione presente/non Unicode da assenza; ramo Unix presente ma non eseguito su questa piattaforma.
+- User::domain_fragment verificato su testo assente, vuoto, at multipli e spazi senza attribuirgli validazione. Trait object con/senza bound, default locale inferito, risultato non indipendente dal proprietario.
+- Callable con tipo HRTB equivalente e implementazione static-only rifiutata; Fn mantiene il prestito. Closure isolata annotata rifiutata, closure senza catture con contesto fn accettata. Output static esplicito e default const/static verificati.
+- Regressione seriale di quattro suite: **203/203**, zero fallimenti/skip, **94,2 secondi**, inclusi tutti i 51 nuovi test. Altre diciotto suite Rust e altri linguaggi non rieseguiti.
+- Limiti: una baseline/target, non MSRV, Miri o misura delle allocazioni; niente I/O nei test Path, validazione email o DNS. Fixture temporanee rimosse dopo verifica del percorso.
+
+### Verifica editoriale e Quartz
+
+- **911 documenti raggiungibili, zero errori e 341 avvisi editoriali**; nessuno nella nota modificata. **9/9 test della trasformazione** superati.
+- Build riuscita: **3719 file**, **2003 HTML**, **168 redirect**, **140881 riferimenti verificati**, zero errori. Rimangono gli avvisi gia noti del generatore su eval e Git nella copia temporanea.
+- **7/7 test HTTP** superati. Chrome **156.0.8078.80**, desktop **1440 x 1000** e mobile **390 x 844**: HTTP 200, titolo visibile, nessun errore JavaScript o overflow del documento.
+- Nove blocchi Rust: nessuno eccede la larghezza desktop; sei scorrono su mobile e tre entrano nel viewport. Quattro screenshot ispezionati in `C:/Users/SE-Luca Bellini/AppData/Local/Temp/appunti-rust-lifetime-elision-qa-tT5LAX`.
+- Browser e server QA temporaneo chiusi. Nessuna anteprima persistente avviata, nessuna modifica al browser personale. Storico consolidato a dieci voci, suite documentata; nessun commit, push o deploy remoto.
+
+### Prossimo blocco
+
+Proseguire con **Lifetimes nelle struct**, terza delle sei note del capitolo. Revisione tecnica, approvazione dell'utente e promemoria restano conteggi separati.
+
+## 2026-11-03 - Rust: Lifetimes nelle struct
+
+### Intervento
+
+Revisionata [[Programmazione/Rust/Pagine/Lifetimes nelle struct|Lifetimes nelle struct]]: **52/183 note principali Rust**, **3/6 del capitolo Lifetimes**. Restano **131 note principali**, promemoria separati.
+
+- Distinti proprietario, riferimento contenuto e ultimo uso della vista; scope del binding non confuso con durata del prestito. Spiegato il ruolo del distruttore.
+- Conservati e completati Excerpt, PairView e MixedView: risultato legato ai dati rispetto al receiver, lifetime comune rispetto a indipendenti, intera vista rispetto a un campo restituito.
+- Aggiunta BytesMut con reborrow breve e trasferimento tramite into_inner. Riferimento esclusivo non duplicabile; receiver &'a mut self distinto dal prestito temporaneo.
+- Completato Token sul buffer, con caso vuoto e whitespace Unicode, kind static distinto dal testo locale e conversione OwnedToken esplicita. Il demo separa sequenze whitespace, non implementa un lexer.
+- Cow borrowed/owned, to_mut e conversione in Page static distinti; trasferimento della String gia posseduta, maiuscolo solo ASCII e distruzione normale del valore chiariti.
+- Alternativa Document con buffer posseduto e viste create dai metodi. Ritorno locale e costruttore autoreferenziale resi controesempi espliciti; Pin non presentato come correzione automatica.
+- Frontmatter confrontato con HEAD e invariato, normalizzando solo CRLF/LF. Data, pubblicabilita e status non revisionato conservati; nessuna nuova nota, modifica a indici o redirect. Lifetimes avanzati letta soltanto come contesto, non conteggiata come revisionata.
+
+### Verifica tecnica
+
+- Consultati e collegati Rust Book, Reference, Rustonomicon e standard library per reference, str, Cow e Pin.
+- Baseline **Rust 1.99.1**, edition **2024**, target **x86_64-pc-windows-gnu**, Node **24.14.0**. Toolchain esistente tramite RUSTC_TEST_EXECUTABLE; nessuna nuova dipendenza o modifica al PATH.
+- Nuova suite `_Meta/tests/rust-struct-lifetimes.test.mjs`: **45/45 test** al primo giro, **18,7 secondi**, otto programmi estratti dal Markdown, sei validi e due negativi.
+- Excerpt con Unicode, identita della vista, Clone/Copy e output eliso; Drop con lettura, Drop vuoto conservativo e distruzione esplicita della vista prima del proprietario.
+- PairView con proprietari di durata diversa; MixedView con risultato indipendente, unificazione restrittiva, ritorno dal campo sbagliato e intera vista non conservabile.
+- BytesMut con dati vuoti, riuso successivo, trasferimento e consumo; due reborrow attivi, receiver troppo lungo, accesso al proprietario e derive Copy rifiutati.
+- Token con vuoto, whitespace multibyte, punteggiatura, identita della slice e copia indipendente; move della sola vista e annotazione static non riparano la dipendenza dalla sorgente.
+- Cow nei due rami, buffer owned conservato, conversione esplicita necessaria dopo to_mut e maiuscolo ASCII. Document con move/mutazione vietati mentre la vista e usata; alternative valide ai ritorni locali.
+- Regressione seriale Structs/Enums, Lifetime annotations, Lifetime elision e nuova suite: **205/205 test**, zero fallimenti/skip, **92,1 secondi**. Altre diciannove suite Rust e altri linguaggi non rieseguiti.
+- Limiti: una baseline/target, non MSRV, Miri, misura dell'allocator o implementazione unsafe/autoreferenziale. Confronti di puntatori limitati all'identita delle viste e ai buffer dei demo. Fixture temporanee rimosse dopo verifica dei percorsi.
+
+### Verifica editoriale e Quartz
+
+- **911 documenti raggiungibili, zero errori e 340 avvisi editoriali**; nessuno nella nota modificata. **9/9 test della trasformazione** superati.
+- Build riuscita: **3719 file**, **2003 HTML**, **168 redirect**, **140921 riferimenti verificati**, zero errori. Rimangono gli avvisi gia noti del generatore su eval e Git nella copia temporanea.
+- **7/7 test HTTP** superati. Chrome **156.0.8078.80**, desktop **1440 x 1000** e mobile **390 x 844**: HTTP 200, titolo visibile, nessun errore JavaScript o overflow del documento.
+- Otto blocchi Rust: nessuno eccede la larghezza desktop; sette scorrono su mobile e uno entra nel viewport. Quattro screenshot ispezionati in `C:/Users/SE-Luca Bellini/AppData/Local/Temp/appunti-rust-lifetimes-nelle-struct-qa-AqKicU`.
+- Browser e server QA temporaneo chiusi; nessuna anteprima persistente avviata o modifica al browser personale. Storico mantenuto a dieci voci, suite documentata; nessun commit, push o deploy remoto.
+
+### Prossimo blocco
+
+Proseguire con **Lifetimes nei trait**, quarta delle sei note del capitolo. Revisione tecnica, approvazione dell'utente e promemoria restano conteggi separati.
+
+## 2026-11-03 - Rust: Lifetimes nei trait
+
+### Intervento
+
+Revisionata [[Programmazione/Rust/Pagine/Lifetimes nei trait|Lifetimes nei trait]]: **53/183 note principali Rust**, **4/6 del capitolo Lifetimes**. Restano **130 note principali**, promemoria separati.
+
+- Distinti lifetime sul metodo, parametro del trait, GAT, bound outlives e HRTB; aggiunta una tabella di scelta. Implementatore borrowed non obbliga a parametrizzare il trait, e Parser<'input> non implica da solo Self: 'input.
+- Completati View e Named con receiver esplicito/eliso, implementazione borrowed e uso tramite dyn. Il corpo che restituisce un literal non rafforza il contratto disponibile al chiamante generico.
+- Completato Parser con Trim, associated type ordinario dipendente dall'input e parse_with compatibile con ?Sized. Trim rimuove whitespace Unicode, non valida una grammatica; risultato indipendente dal prestito del parser.
+- FieldReader/FirstField resi autonomi e affiancati a Column. Distinti campo vuoto e colonna assente; split letterale senza gestione CSV di virgolette, escape o record multilinea.
+- Source con GAT e implementazione Rows posseduta: ultimo uso della vista, esaurimento e bound richiesto. Non Iterator automatico, non dyn-compatible; chiarita l'alternativa con ritorno fisso senza GAT.
+- HRTB con buffer locale e copia owned prima della distruzione; bound universale distinto da static e da un parametro lifetime esterno. Trait object con bound del tipo nascosto distinto dal prestito del contenitore e dal risultato del metodo.
+- Due controesempi espliciti: elision sul receiver invece che sulla riga e implementazione limitata a input static.
+- Frontmatter confrontato con HEAD e invariato, normalizzando soltanto CRLF/LF. Data, publish e status non revisionato conservati; nessuna nuova nota o modifica a indice/redirect. Nota HRTB letta solo come contesto, non conteggiata come revisionata.
+
+### Verifica tecnica
+
+- Consultate e collegate fonti ufficiali Rust Reference, Rustonomicon e standard library per trait, associated items, lifetime bounds, elision, trait object e str.
+- Baseline **Rust 1.99.1**, edition **2024**, target **x86_64-pc-windows-gnu**, Node **24.14.0**. Toolchain esistente tramite RUSTC_TEST_EXECUTABLE; nessuna nuova dipendenza, installazione o modifica al PATH.
+- Nuova suite `_Meta/tests/rust-trait-lifetimes.test.mjs`: **51 test**, otto programmi estratti dal Markdown, sei validi e due negativi.
+- Primo giro **50/51**, **21,5 secondi**: confronto diagnostico del bound GAT privo dei backtick che Rust usa intorno a Item. Corretto soltanto il messaggio atteso; tutti gli esempi della nota avevano gia prodotto gli esiti previsti.
+- View/Named con Unicode, identita delle viste, durata del receiver e proprietario, forma elisa equivalente e contratto generico non static.
+- Parser con output borrowed/owned e dyn; Configured contiene un prefisso locale ma produce una vista sull'input piu lungo. Controprove Self: 'input, rimozione di ?Sized, Output static e sorgente scaduta.
+- FieldReader su vuoto, delimitatori iniziali/finali, spazi, Unicode, indice usize::MAX, virgolette e newline. Viste sullo stesso buffer, mutazione vietata e risultato da self incompatibile con il lifetime della riga.
+- Source con vuoto, ordine, indice oltre fine ed esaurimento ripetuto; due prestiti attivi e distruzione del proprietario rifiutati. Bound GAT obbligatorio, impossibilita di dyn e Iterator non implicito; versione a output fisso compilata.
+- HRTB con static-only rifiutato, parametro lifetime esterno insufficiente, prestito locale non restituibile e uguaglianza Output verificata. Closure con cattura locale ammessa quando rispetta la relazione input/output.
+- Trait object con bound esplicito/default/inferito, proprietario necessario, risultato non indipendente dal box, output non legato al bound dell'oggetto e implementazione owned distrutta normalmente.
+- Regressione seriale struct-lifetimes, GAT, object-safety e nuova suite: **185/185 test**, zero fallimenti/skip, **76,3 secondi**. Altre venti suite Rust e altri linguaggi non rieseguiti.
+- Limiti: una baseline/target, non MSRV, Miri, misure dell'allocator o conformita CSV. Identita dei puntatori limitata alle viste dei demo; fixture temporanee rimosse dopo verifica dei percorsi.
+
+### Verifica editoriale e Quartz
+
+- **911 documenti raggiungibili, zero errori e 339 avvisi editoriali**; nessuno nella nota modificata. **9/9 test della trasformazione** superati.
+- Build riuscita: **3719 file**, **2003 HTML**, **168 redirect**, **140956 riferimenti verificati**, zero errori. Restano gli avvisi preesistenti del generatore su eval e Git nella copia temporanea.
+- **7/7 test HTTP** superati. Chrome **156.0.8078.80**, desktop **1440 x 1000** e mobile **390 x 844**: HTTP 200, titolo visibile, nessun errore JavaScript o overflow del documento.
+- Otto blocchi Rust, tutti scorrevoli su mobile e contenuti nella larghezza desktop. Tabella adattata al viewport senza overflow. Sei screenshot ispezionati in `C:/Users/SE-Luca Bellini/AppData/Local/Temp/appunti-rust-lifetimes-nei-trait-qa-TL8dOx`.
+- Browser e server QA temporaneo chiusi; nessuna anteprima persistente avviata o modifica al browser personale. Storico mantenuto a dieci voci, suite documentata; nessun commit, push o deploy remoto.
+
+### Prossimo blocco
+
+Proseguire con **Lifetimes avanzati**, quinta delle sei note del capitolo. Revisione tecnica, approvazione dell'utente e promemoria restano conteggi separati.
+
+## 2026-11-03 - Rust: Lifetimes avanzati
+
+### Intervento
+
+Revisionata [[Programmazione/Rust/Pagine/Lifetimes avanzati|Lifetimes avanzati]]: **54/183 note principali Rust**, **5/6 del capitolo Lifetimes**. Restano **129 note principali**, promemoria separati.
+
+- Chiariti outlives e relativo verso, bound T: 'a implicito nella firma con &'a T e trait non impliciti. Riferimento static distinto da tipo static e da prestito esterno breve.
+- Completati require_outlives, push_one, Split, boxed e BorrowedDisplay con programmi autonomi. Reborrow distinto dal move di &mut T; collect su Vec<&str> non elimina il prestito della sorgente.
+- Resi espliciti costo e ownership di Vec<String>/render, comportamento non CSV dello split, formato Display non necessariamente reversibile o escaped e panic su implementazione Display scorretta.
+- Aggiunte tabella ed esempi di varianza: prestito mutabile esterno rispetto al contenuto, Vec/Box, Cell/RefCell, contravarianza degli input di function pointer e covarianza del risultato. Distinta la coercizione dalla ricostruzione esplicita del contenitore.
+- PhantomData illustrato con Position e ricerca di un char: marker zero-sized, vincolo collegato al costruttore, offset UTF-8 in byte, perdita del legame estraendo usize. Nessuna identita del buffer o sicurezza unsafe promessa dal marker.
+- Dieci programmi completi: otto validi, due controesempi su slot mutabile static e Cell invariante. Nessun blocco unsafe, dereferenziazione di raw pointer o estensione artificiale di lifetime.
+- Frontmatter confrontato con HEAD e invariato, normalizzando soltanto CRLF/LF. Data, publish e status non revisionato conservati; nessuna nuova nota o modifica a indice/redirect. PhantomData letta solo come contesto, non conteggiata come revisionata.
+
+### Verifica tecnica
+
+- Consultate e collegate fonti ufficiali Rust Reference, Rustonomicon, Rust By Example e standard library per bounds, varianza, borrow, static, elision, str, Display, format e PhantomData.
+- Baseline **Rust 1.99.1**, edition **2024**, target **x86_64-pc-windows-gnu**, Node **24.14.0**. Toolchain esistente tramite RUSTC_TEST_EXECUTABLE, nessuna nuova dipendenza, installazione o modifica al PATH.
+- Nuova suite `_Meta/tests/rust-advanced-lifetimes.test.mjs`: **62/62 test** al primo giro, **29,9 secondi**; esempi estratti direttamente dal Markdown.
+- Outlives su dati sized/unsized e contenitori borrowed; bound ridondante rimosso con esito valido, verso omesso/invertito rifiutato, Display non implicito e ritorno locale vietato.
+- Static su String e Vec<String>, riferimenti locali e Vec<&str> rifiutati; distruttore osservabile di un valore static eseguito normalmente.
+- Reborrow con input vuoti/preesistenti e chiamate ripetute, forma esplicita equivalente, move senza annotazione e conflitti con viste ancora utilizzate.
+- Split con Unicode, vuoti, delimitatori e virgolette letterali; identita delle slice, firma espansa, bound static errato e collect borrowed non indipendente. BorrowedDisplay con str/dyn, copie indipendenti, formattatore borrowed e panic previsto.
+- Varianza con buffer Vec trasferito, riferimento mutabile esterno accorciato, contenuto invariante, function pointer nei due versi, Box/RefCell e combinazione di campi co/contravarianti.
+- Trait object borrowed rispetto al default static della firma e alternativa owned. PhantomData con offset byte/multibyte, dimensione/allineamento del marker, mutazione e distruzione del proprietario vietate, usize estratto indipendente, covarianza e requisito Send influenzato da &Cell.
+- Controesempi corretti con assegnazione static, String posseduta, regione comune non static e Cell ricostruito da into_inner.
+- Regressione seriale delle cinque note gia revisionate del capitolo: **249/249 test**, zero fallimenti/skip, **111,9 secondi**. Altre venti suite Rust e altri linguaggi non rieseguiti.
+- Limiti: una baseline/target, non MSRV, Miri, benchmark o conteggio delle allocazioni. I puntatori verificano identita/trasferimento dei demo; Send e controllato a compile time senza eseguire thread. Fixture temporanee rimosse dopo verifica dei percorsi.
+
+### Verifica editoriale e Quartz
+
+- **911 documenti raggiungibili, zero errori e 338 avvisi editoriali**; nessuno nella nota modificata. **9/9 test della trasformazione** superati.
+- Build riuscita: **3719 file**, **2003 HTML**, **168 redirect**, **140999 riferimenti verificati**, zero errori. Rimangono gli avvisi gia noti del generatore su eval e Git nella copia temporanea.
+- **7/7 test HTTP** superati. Chrome **156.0.8078.80**, desktop **1440 x 1000** e mobile **390 x 844**: HTTP 200, titolo visibile, nessun errore JavaScript o overflow del documento.
+- Dieci blocchi Rust contenuti nella larghezza desktop; otto scorrevoli su mobile e due gia contenuti nel viewport. Tabella leggibile senza overflow. Sei screenshot ispezionati in `C:/Users/SE-Luca Bellini/AppData/Local/Temp/appunti-rust-lifetimes-avanzati-qa-jcEql7`.
+- Browser e server QA temporaneo chiusi; nessuna anteprima persistente avviata o modifica al browser personale. Storico mantenuto a dieci voci e riepilogo corrente consolidato; dettagli dei blocchi precedenti conservati in questo registro. Nessun commit, push o deploy remoto.
+
+### Prossimo blocco
+
+Proseguire con **Higher-Ranked Trait Bounds (HRTB)**, sesta e ultima nota del capitolo Lifetimes. Revisione tecnica, approvazione dell'utente e promemoria restano conteggi separati.
+
+## 2026-11-03 - Rust: Higher-Ranked Trait Bounds (HRTB)
+
+### Intervento
+
+Revisionata [[Programmazione/Rust/Pagine/Higher-Ranked Trait Bounds (HRTB)|Higher-Ranked Trait Bounds (HRTB)]]: **55/183 note principali Rust**, **6/6 del capitolo Lifetimes**, ora completato. Restano **128 note principali**, promemoria separati.
+
+- Distinto lifetime della firma esterna dal bound universale. Separati durata degli input, catture, risultato e modalita Fn/FnMut/FnOnce; HRTB non implica static, assenza di catture, purezza o Send/Sync.
+- Completati apply e forma elisa equivalente. Visit ora confrontato con visit_borrowed: copie possedute per il callback universale, viste trattenute quando il contratto nomina il lifetime della collezione.
+- Trait Visit con implementazione configurata tramite riferimento locale; run usa sia buffer locale sia literal, non soltanto input statici.
+- with_temp conserva FnOnce e chiarisce R indipendente dal lifetime interno: puo restituire un risultato posseduto oppure un riferimento esterno, ma non una vista del buffer temporaneo.
+- Aggiunto transform con relazione universale input/output, cattura piu breve dell'input e function pointer come contesto di inferenza.
+- Due lifetime indipendenti illustrati con ritorno legato soltanto al primo input. Trait object con bound della configurazione separato da quello degli argomenti; alternativa owned verificata nei test.
+- Chiariti posizione del binder e confine con i GAT, collegando la nota dedicata e il limite gia verificato sulla baseline.
+- Dieci programmi completi: sette validi e tre controesempi su callback static-only, fuga del prestito temporaneo e inferenza della closure isolata. Nessun blocco unsafe.
+- Frontmatter confrontato con HEAD e invariato, normalizzando soltanto CRLF/LF. Data, publish e status non revisionato conservati; nessuna nuova nota o modifica a indice/redirect.
+
+### Verifica tecnica
+
+- Consultate e collegate fonti ufficiali Rust Reference, Rustonomicon, standard library e issue rust-lang/rust per bounds, elision, closure, function pointer, trait object e inferenza.
+- Baseline **Rust 1.99.1**, edition **2024**, target **x86_64-pc-windows-gnu**, Node **24.14.0**. Toolchain esistente tramite RUSTC_TEST_EXECUTABLE; nessuna nuova dipendenza, installazione o modifica al PATH.
+- Nuova suite `_Meta/tests/rust-hrtb.test.mjs`: **58 test**. Primo giro **57/58**, **27,2 secondi**, per il diagnostico atteso dal test con due lifetime unificati: il compilatore rifiuta correttamente la firma con messaggio di implementazione non abbastanza generale, non E0308. Corretta solo l'asserzione; gli esempi della nota avevano gia tutti l'esito atteso.
+- apply: binder nelle due posizioni, firma elisa, lifetime esterno insufficiente, Fn con interior mutability, mutazione diretta vietata, catture Rc e move senza consumo.
+- Visitatori: vuoto, ordine, Unicode, copia indipendente e prestito trattenuto; HRTB che impedisce l'accumulo in Vec esterno, proprietario scaduto e modifica della collezione rifiutati.
+- Visit: configurazione non statica, input di scope diversi, prefisso vuoto/case-sensitive; static-only e static superfluo rifiutati.
+- with_temp: FnMut utilizzabile, invocazione unica, cattura consumata, riferimenti esterni/statici e tuple miste. Due chiamate sotto FnOnce, fuga di temp anche con move/static e uso dopo distruzione del proprietario esterno rifiutati.
+- transform: trim Unicode con identita della vista, forma elisa equivalente, funzione nominata e contesto fn, literal statico abbreviato. Input static-only, ritorno della cattura locale, proprietario scaduto e coercizione di una closure con catture rifiutati.
+- select_left: risultato indipendente dal secondo argomento; firma con lifetime comune, ritorno del secondo e uso dopo la fine del primo proprietario rifiutati.
+- Trait object: input locali successivi, configurazione Unicode, default static se si omette env, proprietario necessario e immutabile durante l'uso, alternativa String posseduta e mutazione dopo drop del checker.
+- Regressione seriale dell'intero capitolo e GAT: **341/341 test**, zero fallimenti/skip, **159,0 secondi**. Comprende **307 test delle sei note Lifetimes** e **34 GAT**; nuova suite **58/58**. Altre diciannove suite Rust e altri linguaggi non rieseguiti.
+- Limiti: una baseline/target, non MSRV, Miri, benchmark, conteggio delle allocazioni o callback asincroni. I puntatori verificano le viste dei demo, non ogni proprieta del programma. Fixture temporanee rimosse dopo verifica dei percorsi.
+
+### Verifica editoriale e Quartz
+
+- **911 documenti raggiungibili, zero errori e 337 avvisi editoriali**; nessuno nella nota modificata. **9/9 test della trasformazione** superati.
+- Build riuscita: **3719 file**, **2003 HTML**, **168 redirect**, **141043 riferimenti verificati**, zero errori. Restano gli avvisi gia noti del generatore su eval e Git nella copia temporanea.
+- **7/7 test HTTP** superati. Chrome **156.0.8078.80**, desktop **1440 x 1000** e mobile **390 x 844**: HTTP 200, titolo visibile, nessun errore JavaScript o overflow del documento.
+- Dieci blocchi Rust contenuti nella larghezza desktop; otto scorrevoli su mobile e due gia contenuti nel viewport. Tabella leggibile senza overflow. Sei screenshot ispezionati in `C:/Users/SE-Luca Bellini/AppData/Local/Temp/appunti-rust-hrtb-qa-s6qQKl`.
+- Storico consolidato a dieci voci e suite documentata. Browser e server QA temporaneo chiusi; nessuna anteprima persistente avviata o modifica al browser personale. Nessun commit, push o deploy remoto.
+
+### Prossimo blocco
+
+Iniziare **Smart Pointers e Interior Mutability** da [[Programmazione/Rust/Pagine/Box T|Box<T>]]. Revisione tecnica, approvazione dell'utente e promemoria restano conteggi separati.
+
+## 2026-11-03 - Rust: Box<T>
+
+### Intervento
+
+Revisionata [[Programmazione/Rust/Pagine/Box T|Box<T>]]: **56/183 note principali Rust**, **1/10 del capitolo Smart Pointers e Interior Mutability**. Restano **127 note principali**, promemoria separati; Lifetimes resta completato in tutte le sei note.
+
+- Chiariti proprietario rispetto al contenuto, prestiti e deref coercion, trasferimento del box ed estrazione del valore. Rappresentazione sized distinta dai metadati DST; niente promessa che ogni box stia fisicamente sullo stack o produca sempre un'allocazione osservabile.
+- Aggiunti clone, distruzione osservabile e ZST; clone di T non equivale a copia profonda di ogni risorsa, e Box<Rc<_>> puo continuare a condividere il dato.
+- Spiegati Box<[T]> e Box<str>, crescita rispetto a Vec/String, capacita e possibili riallocazioni, coercizione array-slice e distinzione da Box<&str>.
+- Sostituito todo! della factory Draw con Label/Counter completi. Output testuale esplicito, non GUI o escaping; dispatch distinto da ownership e default static della firma distinto dalla durata del valore.
+- Completata List con prepend, first e len iterativa. Mantenuta la finalita didattica e segnalati costi dei nodi e distruzione ancora ricorsiva.
+- Completato Expr con eval che restituisce Option<i64> e checked_add: overflow intermedi espliciti, nessuna dipendenza dal profilo debug/release per il risultato. Non parser, profondita da limitare anche durante la distruzione.
+- Corretta la sintesi di Pin<Box<T>>: contenuto Unpin rispetto a non Unpin, Box ordinario ancora estraibile/sostituibile, wrapper pinned trasferibile. Heap non equivale a pinning o immutabilita.
+- Chiariti bound Send/Sync, costi di Box<String>/Box<Vec<_>>, costruzione di valori grandi, errori di allocazione, leak e responsabilita dei raw pointer. Nessun esempio unsafe.
+- Dieci programmi completi: otto validi, due controesempi su uso dopo move e durata di Box<&str>. Nella regressione il literal didattico di String pinned e rinominato ordinary per non suggerire che Unpin significhi impossibilita di creare Pin.
+- Unica modifica YAML: Deref Trait spostato da prerequisites a related, eliminando il ciclo diretto con la nota successiva. Altri campi confrontati con HEAD e invariati; date, publish e status non revisionato conservati. Nessuna nota nuova/spostata o modifica a indice/redirect.
+- Deref Trait letta solo come contesto, non conteggiata come revisionata.
+
+### Verifica tecnica
+
+- Consultate e collegate fonti ufficiali standard library, Rust Reference e Rust Book per Box, layout, distruttori, conversioni, Pin, trait object e allocatore.
+- Baseline **Rust 1.99.1**, edition **2024**, target **x86_64-pc-windows-gnu**, Node **24.14.0**. Toolchain esistente tramite RUSTC_TEST_EXECUTABLE; nessuna nuova dipendenza, installazione o modifica al PATH.
+- Nuova suite `_Meta/tests/rust-box.test.mjs`: **63/63 test** al primo giro, **32,9 secondi**, con programmi estratti dal Markdown.
+- Move/Copy/clone: indirizzo del contenuto conservato nel move, prestiti attivi e mutazione immutabile rifiutati, estrazione di String, ZST, clone di Rc condiviso e tipo non Clone rifiutato.
+- Drop: una sola distruzione, proprietario restituito, contenuto estratto, ZST con contatore, distruttore concreto dietro dyn e drop del solo riferimento.
+- Sequenze: vuoto, valori non Clone, capacita, round trip in Vec, indirizzo della coercizione array-slice, UTF-8 e maiuscolo ASCII. Metodi di crescita non disponibili e Box<&str> distinto da Box<str>.
+- Factory: due concreti, estremi u32, String indipendente senza escaping, impl Trait non unificante, lifetime del tipo nascosto esplicito/default. Bound Send/Sync verificati positivamente e negativamente.
+- List: ordine, vuoto, letture ripetute e lunghezze 0..31, senza provocare stack overflow. Expr: estremi i64, somma negativa, overflow/underflow e overflow intermedio propagato; programma rieseguito con opt-level 3 e overflow-checks off.
+- Pin: replace/estrazione da Box<Entry> consentiti; into_inner/estrazione da Pin<Box<Entry>> rifiutati, move del wrapper con indirizzo conservato, String Unpin liberamente estraibile.
+- Lifetime: clone e leak non riparano prestiti locali; alternative possedute compilate. Box::into_inner e Box::try_new richiedono feature gate sulla baseline, from_raw richiede unsafe.
+- Regressione seriale Box, ownership/move/copy, stringhe/memoria/lifetime, trait object e lifetimes avanzati: **293/293 test**, zero fallimenti/skip, **157,1 secondi**. Altre ventidue suite Rust e altri linguaggi non rieseguiti.
+- Limiti: una baseline/target, non MSRV, Miri, benchmark, conteggio delle allocazioni o test distruttivi di esaurimento memoria/stack. I puntatori verificano i demo; nessuna dereferenziazione o ricostruzione raw a runtime. Nuovi test Send/Sync solo compile-time, regressione trait object con il suo thread Arc reale. Fixture temporanee rimosse dopo verifica dei percorsi.
+
+### Verifica editoriale e Quartz
+
+- **911 documenti raggiungibili, zero errori e 337 avvisi editoriali**; nessuno nella nota Box. **9/9 test della trasformazione** superati.
+- Build riuscita: **3719 file**, **2003 HTML**, **168 redirect**, **141087 riferimenti verificati**, zero errori. Restano gli avvisi preesistenti del generatore su eval e Git nella copia temporanea.
+- **7/7 test HTTP** superati. Chrome **156.0.8078.80**, desktop **1440 x 1000** e mobile **390 x 844**: HTTP 200, titolo visibile, nessun errore JavaScript o overflow del documento.
+- Dieci blocchi Rust contenuti nella larghezza desktop; nove scorrevoli su mobile e uno gia contenuto nel viewport. Tabella leggibile senza overflow. Sei screenshot ispezionati in `C:/Users/SE-Luca Bellini/AppData/Local/Temp/appunti-rust-box-qa-PpQ5eL`.
+- Browser e server QA temporaneo chiusi; nessuna anteprima persistente avviata o modifica al browser personale.
+- Storico mantenuto a dieci voci: aggiunto il nuovo capitolo e rimossa la voce TypeScript del 2026-10-22, gia conservata nelle sezioni dettagliate del registro. Nuova suite documentata.
+- Nessun commit, push o deploy remoto.
+
+### Prossimo blocco
+
+Proseguire con [[Programmazione/Rust/Pagine/Deref Trait|Deref Trait]], seconda nota di Smart Pointers e Interior Mutability. Revisione tecnica, approvazione dell'utente e promemoria restano conteggi separati.
+
+## 2026-11-03 - Rust: Deref Trait
+
+### Intervento
+
+Revisionata [[Programmazione/Rust/Pagine/Deref Trait|Deref Trait]]: **57/183 note principali Rust**, **2/10 del capitolo Smart Pointers e Interior Mutability**. Restano **126 note principali**, promemoria separati.
+
+- Distinti dereferenziazione sovraccaricata, coercizioni nei punti con tipo atteso e risoluzione dei metodi. Target puo essere unsized; il prestito resta legato a self e non trasferisce ownership.
+- MyBox completo con new e into_inner: contenuto inline, nessuna allocazione propria, Copy rispetto a estrazione esplicita. Separato il comportamento speciale di Box dai wrapper custom.
+- Catene String/Box/String slice, let annotato rispetto a inferito, parametri, array e ritorni. Autoref del receiver distinto dal prestito iniziale richiesto dagli argomenti delle funzioni libere.
+- Tabella delle quattro conversioni shared/mutable, supertrait di DerefMut e stesso Target. Il riferimento condiviso puo comunque esporre interior mutability.
+- Buffer con vista mutabile [u8], non Vec: modifiche degli elementi, reverse/fill e limiti della crescita.
+- NonEmptyString in modulo con campo privato, costruttore validato, try_replace che preserva lo stato e restituisce l'input errato, into_inner consuming. Invariante limitata ai byte non vuoti, non validazione di testo visibile.
+- Esplicita la differenza fra API di lettura scelta con str, eventuale &mut str che non cambia lunghezza tramite API safe, e &mut String che permette clear/mem::take e puo rompere la validazione.
+- AsRef implementato esplicitamente, consumo determinato dal tipo dell'argomento, Borrow con coerenza Eq/Ord/Hash. Nessuna ereditabilita automatica dei trait o degli operatori.
+- Collisioni dei metodi con chiamate qualificate, ordine dei receiver e implicazioni di compatibilita. Deref raccomandato economico/prevedibile, senza garanzia di assenza di panic nel tipo.
+- Dieci programmi completi: sette compilabili, incluso un controesempio logico di wrapper invalido, e tre errori di compilazione attesi. Nessun placeholder o codice unsafe.
+- Frontmatter confrontato con HEAD e invariato. Data, publish e status non revisionato conservati; nessuna nuova nota o modifica a indice/redirect.
+
+### Verifica tecnica
+
+- Consultate e collegate fonti ufficiali standard library, Rust Reference e Rust Book per Deref/DerefMut, operatori, coercizioni, metodi, Box, AsRef e Borrow.
+- Baseline **Rust 1.99.1**, edition **2024**, target **x86_64-pc-windows-gnu**, Node **24.14.0**. Toolchain esistente tramite RUSTC_TEST_EXECUTABLE; nessuna nuova dipendenza, installazione o modifica al PATH.
+- Nuova suite `_Meta/tests/rust-deref.test.mjs`: **66/66 test** al primo giro, **34,0 secondi**, con programmi estratti dal Markdown.
+- Verificati prestiti e Copy/move, dimensione del wrapper inline, trasferimento di tipi non Clone e impossibilita di restituire temporanei. Cell mutabile senza DerefMut; richiesti accesso mutabile, supertrait e reborrow corretti.
+- Coercizioni in campi/array/ritorni, buffer condiviso, let inferito e lunghezze UTF-8. Prestiti scaduti, mutazione incompatibile e promozione arbitraria a static rifiutati.
+- Buffer: vuoto, ordinamento, fill, crescita non esposta, binding mutabile e durata dei prestiti. Nessun aggiramento del borrow checker.
+- NonEmptyString: whitespace/NUL/Unicode, errore con buffer conservato, sostituzioni ripetute e trasferimento owned. Privacy del costruttore/campo, clear e vista mutabile non esposti, consumo e copie indipendenti.
+- Controprova con DerefMut<Target = str> e maiuscolo ASCII che conserva la sola invariante non-vuoto. Wrapper errato con target String svuotato tramite clear, mem::take e assegnazione, pur mantenendo il controllo nel costruttore.
+- AsRef non implicito: il metodo trovato via autoderef non dimostra il bound sul wrapper; il contratto puo essere soddisfatto senza Deref. Argomento per valore consumato.
+- Risoluzione: metodo wrapper/target, trait con &self prima di inherent con &mut self, clone del target rispetto a derive Clone sul wrapper. Metodi consuming e operatori non automaticamente inoltrati.
+- Verificato panic intenzionale di Deref; i tre programmi negativi sono rifiutati e le correzioni compilano: prestito/clone/vero Box, vista esplicita/turbofish/Display esplicito, aggiunta del primo &.
+- Regressione seriale Deref, Box, borrowing/slices e trait object: **232/232 test**, zero fallimenti/skip, **118,8 secondi**. Altre ventiquattro suite Rust e altri linguaggi non rieseguiti.
+- Limiti: una baseline/target, non MSRV, Miri, benchmark o conteggio delle allocazioni. Confronti di puntatori limitati ai demo, nessuna dereferenziazione raw a runtime. Fixture temporanee rimosse dopo verifica dei percorsi.
+
+### Verifica editoriale e Quartz
+
+- **911 documenti raggiungibili, zero errori e 336 avvisi editoriali**; nessuno nella nota Deref. **9/9 test della trasformazione** superati.
+- Build riuscita: **3719 file**, **2003 HTML**, **168 redirect**, **141133 riferimenti verificati**, zero errori. Restano gli avvisi preesistenti del generatore su eval e Git nella copia temporanea.
+- **7/7 test HTTP** superati. Chrome **156.0.8078.80**, desktop **1440 x 1000** e mobile **390 x 844**: HTTP 200, titolo visibile, nessun errore JavaScript o overflow del documento.
+- Dieci blocchi Rust contenuti nella larghezza desktop; nove scorrevoli su mobile e uno gia contenuto nel viewport. Tabella leggibile senza overflow. Sei screenshot ispezionati in `C:/Users/SE-Luca Bellini/AppData/Local/Temp/appunti-rust-deref-qa-JBOlCL`.
+- Browser e server QA temporaneo chiusi; nessuna anteprima persistente avviata o modifica al browser personale.
+- Storico consolidato a dieci voci senza ulteriori rimozioni. Nuova suite documentata; nessun commit, push o deploy remoto.
+
+### Prossimo blocco
+
+Proseguire con [[Programmazione/Rust/Pagine/Drop Trait|Drop Trait]], terza nota di Smart Pointers e Interior Mutability. Revisione tecnica, approvazione dell'utente e promemoria restano conteggi separati.
+
+## 2026-11-03 - Rust: Drop Trait
+
+### Intervento
+
+Revisionata [[Programmazione/Rust/Pagine/Drop Trait|Drop Trait]]: **58/183 note principali Rust**, **3/10 del capitolo Smart Pointers e Interior Mutability**. Restano **125 note principali**, promemoria separati.
+
+- Distinti Drop del tipo e drop glue dei campi. Esempio con ordine osservabile: corpo del distruttore, campi nell'ordine di dichiarazione e locali in ordine inverso. Log RefCell/Vec esplicitamente didattico e potenzialmente fallibile.
+- Separati move, riassegnamento, ultimo utilizzo, fine del prestito e distruzione. drop prende ownership; drop di riferimenti o copie non distrugge il referente o l'originale.
+- Distinti binding _guard, wildcard su nuovo temporaneo e wildcard su binding esistente. MutexGuard con try_lock dimostra lo sblocco senza introdurre deadlock; chiarito il lint let_underscore_lock.
+- Sostituita la Transaction che stampava soltanto commit/rollback con AppendTransaction: campo privato, prestito esclusivo, aggiunte e truncate verificabili, commit consuming e rollback su errore. Non transazione database, persistenza o ripristino della capacita.
+- Cleanup fallibile con BufWriter e flush esplicito. Distinti errore propagato, byte gia scritti, possibile retry durante Drop e sincronizzazione durevole del file.
+- Estrazione di String tramite mem::take, con sostituto valido osservato dal distruttore. Spiegate alternative Option::take e mem::replace, senza pretendere Clone o aggirare invarianti.
+- Forget e ManuallyDrop con contatori senza risorse esterne. Corretto il primo demo per il lint undropped_manually_drops; spiegati recupero con into_inner e confine con API unsafe e MaybeUninit.
+- Unwinding osservabile con catch_unwind e contatore; distinti hook, abort, exit, leak, cicli forti e static. Nessuna promessa di cleanup universale.
+- Undici programmi completi: otto compilabili (uno con panic intenzionale intercettato) e tre controesempi su chiamata diretta, Copy+Drop e move del campo. Aggiunti drop check e differenze edition dei temporanei, verificati nelle sonde.
+- Frontmatter confrontato con HEAD e invariato; data, publish e status non revisionato conservati. Nessuna nuova nota o modifica a indice/redirect.
+
+### Verifica tecnica
+
+- Consultate e collegate fonti ufficiali standard library, Rust Reference, Book, Edition Guide, error index e rustc lints.
+- Baseline **Rust 1.99.1**, edition **2024**, target **x86_64-pc-windows-gnu**, Node **24.14.0**. Stessa toolchain temporanea; nessuna nuova installazione, dipendenza del sito o modifica al PATH.
+- Nuova suite `_Meta/tests/rust-drop.test.mjs`: **72 test**. Primo giro **67/70**, **39,6 secondi**: demo ManuallyDrop fermato dal lint predefinito, aspettativa UTF-8 errata nel test (caffe con e accentata: sei byte), sonda if let 2021 confusa con una tail expression. Corretto il demo con scope, corretti i due test e aggiunte due controprove del lint.
+- Ordine: campi senza impl del wrapper, dichiarazioni rispetto agli initializer, scope, tuple, array, enum e move parziale. Il wrapper con cleanup dei campi non soddisfa automaticamente T: Drop.
+- Ownership: uso dopo drop e prestito ancora attivo rifiutati; wildcard, riferimenti, Copy e ritorno del proprietario. Mutex reale osservato con try_lock, senza thread aggiuntivi; verificato anche il lint predefinito e il suo significato con una sonda che lo ammette esplicitamente.
+- Batch: vuoto, duplicati, zero, estremi, errori in ogni posizione, ripetizioni, ritorno tramite ?, panic con unwind, consumo di commit, prestito esclusivo e privacy. Forget lascia le modifiche; rollback non riduce necessariamente la capacita. Le mutazioni intenzionalmente errate di commit e truncate sono rilevate dalle asserzioni.
+- Writer: errore di flush, scrittura parziale seguita da errore e retry del Drop, WriteZero, errori del distruttore ignorati e scritture da un byte. Sink simulati implementano Write; nessuna promessa di durabilita del filesystem.
+- Estrazione: vuoto/UTF-8, identita del buffer, stato sostitutivo, Drop ordinario, replace e Option con tipo non Clone/non Default.
+- Forget/ManuallyDrop: ownership consumata, contenuto come campo, lint negato/ammesso e API manuali unsafe rifiutate dal compilatore. Nessun unsafe eseguito e nessun handle reale intenzionalmente perso.
+- Unwinding con una e due guardie. process::exit e static provati in processi fixture separati; nessuna terminazione del processo dell'utente. Controesempi corretti con drop funzione, Clone senza Copy, take/clone del campo e copie di campi Copy.
+- Drop check: distruttore che usa un prestito, rilascio esplicito prima della mutazione e assenza del vincolo senza impl Drop.
+- Edition 2021 e 2024 confrontate sullo stesso compilatore: durata del prestito temporaneo in if let, tail expression e binding intermedio.
+- Regressione di cinque suite: **257/257** per Drop, Box, Deref e ownership, inclusi i **72/72** della nuova suite. Primo giro complessivo **301/327**, **176,0 secondi**, con 26 errori ambientali della suite panic/errori per cache Cargo non selezionata. Ripristinata RUST_ERROR_TEST_CARGO_HOME al percorso gia documentato; nessun fetch. Rieseguita integralmente quella suite: **70/70**, **65,3 secondi**, zero fallimenti/skip. Tutti i **327 casi** risultano verificati, in due esecuzioni; altre ventiquattro suite Rust e altri linguaggi non rieseguiti.
+- Limiti: una toolchain/target, non MSRV, Miri, benchmark o conteggio allocazioni. Nessuna esecuzione di crash o abort/doppio panic, nessun test di esaurimento memoria o durabilita su disco. Gli esempi I/O usano sink controllati; la regressione conserva i propri limiti. Fixture temporanee rimosse dopo verifica dei percorsi.
+
+### Verifica editoriale e Quartz
+
+- **911 documenti raggiungibili, zero errori e 335 avvisi editoriali**; nessuno nella nota Drop. **9/9 test della trasformazione** superati.
+- Build riuscita: **3719 file**, **2003 HTML**, **168 redirect**, **141193 riferimenti verificati**, zero errori. Restano gli avvisi preesistenti del generatore su eval e Git nella copia temporanea.
+- **7/7 test HTTP** superati. Chrome **156.0.8078.80**, desktop **1440 x 1000** e mobile **390 x 844**: HTTP 200, titolo visibile, nessun errore JavaScript o overflow del documento.
+- Undici blocchi Rust contenuti nella larghezza desktop; otto scorrevoli su mobile e tre gia contenuti. Tabella leggibile senza overflow. Sei screenshot ispezionati in `C:/Users/SE-Luca Bellini/AppData/Local/Temp/appunti-rust-drop-qa-fI5TxW`.
+- Browser e server QA temporaneo chiusi; nessuna anteprima persistente avviata o modifica al browser personale.
+- Storico consolidato a dieci voci senza ulteriori rimozioni; suite documentata con prerequisiti della regressione Cargo. Nessun commit, push o deploy remoto.
+
+### Prossimo blocco
+
+Proseguire con [[Programmazione/Rust/Pagine/Rc T e Arc T|Rc<T> e Arc<T>]], quarta nota di Smart Pointers e Interior Mutability. Revisione tecnica, approvazione dell'utente e promemoria restano conteggi separati.
+
+## 2026-11-03 - Rust: Rc<T> e Arc<T>
+
+### Intervento
+
+Revisionata [[Programmazione/Rust/Pagine/Rc T e Arc T|Rc<T> e Arc<T>]]: **59/183 note principali Rust**, **4/10 del capitolo Smart Pointers e Interior Mutability**. Restano **124 note principali**, promemoria separati.
+
+- Distinti clone dell'handle, clone del contenuto, move e prestito. Il primo programma osserva il numero dei proprietari e un solo Drop, senza richiedere Clone al nodo.
+- Weak spiegato come collegamento non proprietario: promozione fallibile, proprietario temporaneo, valore distrutto prima dell'allocazione e debole vuoto. Distinti rc::Weak e sync::Weak.
+- Corretta l'idea che ogni modifica richieda RefCell o lock: get_mut consente accesso esclusivo senza altri forti/deboli; make_mut separa il valore quando necessario. Distinti copia alla modifica e aggiornamento condiviso, incluso il caso dei deboli dissociati senza Clone del contenuto.
+- Rc<RefCell<T>> mostra il conflitto dei prestiti e il rilascio delle guardie. Arc non rende Sync il contenuto e non rende statici i riferimenti che contiene.
+- Sostituito il worker senza attesa con lettura verificabile tramite join; aggiunto contatore Arc<Mutex<T>> con tutti i worker attesi, limiti di poisoning e gestione errori esplicitati.
+- Relazione padre-figlio con riferimento debole e distruzione osservabile. Nessuna promessa di albero generale, reparenting validato o impossibilita di creare altri cicli forti.
+- Estrazione con try_unwrap, into_inner e unwrap_or_clone. Chiarita la garanzia concorrente di Arc::into_inner quando tutti i forti lo invocano, diversa da try_unwrap().ok().
+- new_cyclic con upgrade fallito durante la costruzione e riuscito dopo. Cenni distinti a tipi unsized, trait object, costi e supporto atomico del target.
+- Tredici programmi: dieci compilabili e tre controesempi su DerefMut, trasferimento di Rc e Arc<RefCell<T>>.
+- Frontmatter confrontato con HEAD e invariato; data, publish e status non revisionato conservati. Nessuna nuova nota o modifica a indice/redirect.
+
+### Verifica tecnica
+
+- Consultate fonti ufficiali standard library e Rust Book, collegate nella nota.
+- Baseline **Rust 1.99.1**, edition **2024**, target **x86_64-pc-windows-gnu**, Node **24.14.0**. Stessa toolchain temporanea, nessuna installazione o nuova dipendenza.
+- Nuova suite `_Meta/tests/rust-rc-arc.test.mjs`: **70/70** al primo giro, **40,5 secondi**. Programmi letti tramite AST dal Markdown, controlli della struttura e controprove del compilatore.
+- Clone e Drop osservati con contatori; get_mut e make_mut provati con Rc e Arc. Verificati i tre casi unico/condiviso/con deboli, contenuto non Clone e campi che restano condivisi dopo un clone esterno.
+- Thread reali e join, bound Send/Sync, riferimento non static, letture vuote/negative e Mutex con zero/uno/otto worker. Conteggi concorrenti verificati tramite protocollo a canali, senza sleep.
+- Ciclo forte recuperato e interrotto prima della fine della fixture; Weak promosso conserva il destinatario fino all'ultimo forte. Nessuna risorsa intenzionalmente persa.
+- into_inner verificato con uno/due/otto proprietari e barriera. Due try_unwrap falliti trattenuti fino a una barriera dimostrano deterministicamente che scartare gli Err puo distruggere il valore senza recuperarlo.
+- Estrazione con Weak e senza Clone, distruttore rinviato fino al rilascio del valore estratto, new_cyclic, unwrap_or_clone, unsized e trait object.
+- Regressione Box/Deref/Drop/Rc-Arc: **271/271**, **141,8 secondi**, zero fallimenti/skip, inclusi i **70/70** nuovi casi. Altre ventisei suite Rust e altri linguaggi non rieseguiti.
+- Limiti: una toolchain e una piattaforma; non MSRV, Miri, Loom, benchmark, conteggio allocazioni o esplorazione di tutti gli interleaving. Nessun unsafe, target embedded o crash test. Fixture isolate con timeout e rimozione dopo verifica dei percorsi.
+
+### Verifica editoriale e Quartz
+
+- **911 documenti raggiungibili, zero errori e 335 avvisi editoriali**; nessuno nella nota corrente. **9/9 test della trasformazione** superati.
+- Build riuscita: **3719 file**, **2003 HTML**, **168 redirect**, **141243 riferimenti verificati**, zero errori. Restano gli avvisi preesistenti del generatore su eval e Git nella copia temporanea.
+- **7/7 test HTTP** superati. Chrome **156.0.8078.80**, desktop **1440 x 1000** e mobile **390 x 844**: HTTP 200, titolo visibile, nessun errore JavaScript o overflow del documento.
+- Tredici blocchi Rust contenuti nella larghezza desktop; dodici scorrevoli su mobile e uno gia contenuto. Tabella leggibile nella larghezza disponibile. Sei screenshot ispezionati in `C:/Users/SE-Luca Bellini/AppData/Local/Temp/appunti-rust-rc-arc-qa-ZxUf3U`.
+- Browser e server QA temporaneo chiusi; nessuna anteprima persistente avviata o modifica al browser personale.
+- Storico consolidato a dieci voci senza ulteriori rimozioni; suite documentata. Nessun commit, push o deploy remoto.
+
+### Prossimo blocco
+
+Proseguire con [[Programmazione/Rust/Pagine/RefCell T|RefCell<T>]], quinta nota di Smart Pointers e Interior Mutability. Revisione tecnica, approvazione dell'utente e promemoria restano conteggi separati.
+
+## 2026-11-04 - Rust: RefCell<T>
+
+### Intervento
+
+Revisionata [[Programmazione/Rust/Pagine/RefCell T|RefCell<T>]]: **60/183 note principali Rust**, **5/10 del capitolo Smart Pointers e Interior Mutability**. Restano **123 note principali**, promemoria separati.
+
+- Corretta la sintesi: RefCell non disattiva i controlli statici e non ogni conflitto implica un panic; distinti borrow/borrow_mut e le varianti try_ con Result.
+- Chiariti Ref, RefMut, Deref/DerefMut, durata delle guardie, ultimo uso rispetto alla distruzione e Ref::clone rispetto al clone del contenuto.
+- Esempio fallibile completo con append e BorrowMutError: il conflitto viene propagato prima delle modifiche, senza retry a vuoto o operazioni ignorate.
+- Accesso esclusivo ed estrazione con get_mut, replace, take e into_inner; chiariti Default, assenza di Clone obbligatorio e vincoli dei prestiti ancora attivi. Documentati replace_with e swap.
+- Completato il Logger esistente con log, count, snapshot e visit. Callback rientrante eseguito dopo il rilascio della guardia: snapshot finito, risultati osservabili e nessuna promessa di persistenza o rollback.
+- Aggiunti Ref::map/filter_map e restituzione della guardia originale in Err; RefMut::map_split divide zone disgiunte senza autorizzare due borrow_mut indipendenti.
+- Corretta l'affermazione sui thread: RefCell<T> puo essere Send se T lo e, ma non Sync. Move e join validi distinti dalla condivisione scoped di un riferimento; Arc non aggiunge sincronizzazione al contenuto.
+- Temporaneo nel ramo positivo di if let e correzione tramite blocco esplicito; precisata la modifica dell'edition 2024 nel solo passaggio al ramo else.
+- Distinti sicurezza della memoria, coerenza dei dati, unwind senza rollback/poisoning, guardie dimenticate e confine unsafe della dereferenziazione di as_ptr.
+- Dodici programmi completi: otto validi, due panic intenzionali e due errori di compilazione. Frontmatter confrontato con HEAD e invariato, incluse data, publish e status non revisionato. Nessuna nuova nota, modifica a indice o redirect.
+
+### Verifica tecnica
+
+- Consultate fonti ufficiali standard library, Book, Reference ed Edition Guide, aggiunte alla nota.
+- **Rust 1.99.1**, edition **2024**, target **x86_64-pc-windows-gnu**, Node **24.14.0**. Stessa toolchain temporanea; nessuna nuova dipendenza, installazione o cache Cargo.
+- Nuova suite `_Meta/tests/rust-refcell.test.mjs`: **78 test**. Primo giro **76/78**, **44,9 secondi**; tutti i programmi della nota corretti. Sistemate due sonde: codice diagnostico E0594 invece di E0596 e iterazione tramite iter sul Ref per raggiungere il conflitto runtime del logger modificato.
+- Verificati guardie, prestiti derivati, wildcard, clone, API di estrazione/sostituzione, errori senza mutazioni e stringhe vuote/UTF-8/multilinea.
+- Logger controllato su ordine, duplicati, snapshot indipendente, rientranza, crescita finita della visita, panic e aggiornamenti parziali. La variante che mantiene la guardia durante il callback fallisce come previsto.
+- Proiezioni Some/None, guardie conservate negli Err, map_split ai confini zero/uno/tre/quattro e rifiuto di riferimenti mutabili sovrapposti.
+- Bound Send/Sync, move del contenitore, guardie non Send, Arc<RefCell<_>> e prestito esclusivo scoped. If let confrontato nelle edition 2021 e 2024; match conserva il temporaneo nell'arm.
+- Unwind rilascia le guardie senza ripristinare i valori; replace_with puo lasciare modifiche parziali. Verificati UnwindSafe e obbligo di unsafe per dereferenziare il puntatore, senza eseguire unsafe.
+- Regressione RefCell/Rc-Arc/Drop/borrowing: **278/278**, **157,6 secondi**, zero fallimenti/skip, inclusi i **78/78** nuovi casi. Altre ventisette suite Rust e altri linguaggi non rieseguiti.
+- Limiti: una toolchain/piattaforma, non MSRV, Miri, benchmark o tutti gli scheduling. AssertUnwindSafe e usato nelle sole fixture con stato noto, non proposto come recupero universale. Forget riguarda una guardia su un intero senza risorse allocate perse; la cella viene consumata. Fixture isolate con timeout, eliminate dopo verifica dei percorsi.
+
+### Verifica editoriale e Quartz
+
+- **911 documenti raggiungibili, zero errori e 334 avvisi editoriali**; nessuno nella nota corrente. **9/9 test della trasformazione** superati.
+- Build riuscita: **3719 file**, **2003 HTML**, **168 redirect**, **141296 riferimenti verificati**, zero errori. Restano gli avvisi preesistenti del generatore su eval e Git nella copia temporanea.
+- **7/7 test HTTP** superati. Chrome **156.0.8078.80**, desktop **1440 x 1000** e mobile **390 x 844**: HTTP 200, titolo visibile, nessun errore JavaScript o overflow del documento.
+- Dodici blocchi Rust contenuti nella larghezza desktop; nove scorrevoli su mobile e tre gia contenuti. Tabella leggibile nella larghezza disponibile. Sei screenshot ispezionati in `C:/Users/SE-Luca Bellini/AppData/Local/Temp/appunti-rust-refcell-qa-2czZ8a`.
+- Browser e server QA temporaneo chiusi; nessuna anteprima persistente avviata o modifica al browser personale.
+- Storico consolidato a dieci voci senza ulteriori rimozioni; suite documentata. Nessun commit, push o deploy remoto.
+
+### Prossimo blocco
+
+Proseguire con [[Programmazione/Rust/Pagine/Cell T|Cell<T>]], sesta nota di Smart Pointers e Interior Mutability. Revisione tecnica, approvazione dell'utente e promemoria restano conteggi separati.
+
+## 2026-11-04 - Rust: Cell<T>
+
+### Intervento
+
+Revisionata [[Programmazione/Rust/Pagine/Cell T|Cell<T>]]: **61/183 note principali Rust**, **6/10 del capitolo Smart Pointers e Interior Mutability**. Restano **122 note principali**, promemoria separati.
+
+- Corretta l'idea che Cell richieda sempre Copy: get e Clone del contenitore hanno quel bound, sostituzione ed estrazione possono invece muovere tipi non Copy/non Clone.
+- Distinti snapshot, clone indipendente della cella, move del contenitore e ownership condivisa con Rc.
+- Precisata l'assenza di riferimenti nell'accesso condiviso ordinario: get_mut restituisce &mut T quando e gia disponibile &mut Cell<T>. From_mut e viste per elemento non creano riferimenti ordinari al contenuto sostituibile.
+- Separati set, replace, take e into_inner: distruzione del vecchio valore rispetto al trasferimento al chiamante e default lasciato nella cella.
+- Completato Metrics con checked_add, risultato Option e stato invariato a u64::MAX; politica di overflow esplicita, senza promettere un contatore concorrente.
+- Slot Cell<Option<Job>> con Job non Clone/non Default: estrazione e reinserimento completi, limiti di errore/panic, rientranza e assenza di rollback.
+- Viste per elemento di slice e array con modifiche osservabili; documentate versioni stable di update/as_array_of_cells e stato nightly di get_cloned sulla baseline.
+- Corretti i limiti di thread: Cell<T> puo essere Send ma resta !Sync. Worker con move e join distinto dalla condivisione di riferimenti e da Arc<Cell<_>>.
+- Update spiegato come lettura/callback/scrittura, non transazione: aggiornamento intermedio sovrascritto, risultato unit, nessun lock o rollback.
+- Chiariti panic di callback/Default/Drop e swap con se stessa rispetto a sovrapposizioni parziali unsafe. Otto programmi validi e tre controesempi di compilazione.
+- Frontmatter confrontato con HEAD e invariato, incluse data, publish e status non revisionato. Nessuna nuova nota o modifica a indice/redirect.
+
+### Verifica tecnica
+
+- Consultate fonti ufficiali standard library e implementazione core, collegate nella nota.
+- **Rust 1.99.1**, edition **2024**, target **x86_64-pc-windows-gnu**, Node **24.14.0**. Stessa toolchain temporanea, nessuna installazione, nuova dipendenza o cache Cargo richiesta.
+- Nuova suite `_Meta/tests/rust-cell.test.mjs`: **76/76** al primo giro, **39,6 secondi**. Esempi estratti tramite AST, frontmatter/struttura/fonti e controprove di compilazione.
+- Copy, Clone e move, valori non Copy/non Default, stringhe vuote/UTF-8/multilinea, get_mut e into_inner. Drop contato per distinguere set, replace ed estrazione.
+- Metrics a zero e ai limiti di u64, con compilazione ottimizzata e overflow checks disabilitati. Asserzioni rilevano le varianti errate con wrapping o scrittura rimossa.
+- Slot vuoto/occupato, estrazione ripetuta, move, errori/panic dopo take e aggiornamenti rientranti sovrascritti.
+- Slice vuote e valori estremi, identita del buffer senza dereferenziazione raw, array di String non Copy, lunghezza nel tipo e lifetime.
+- Bound Send/Sync, worker reale e scoped con prestito esclusivo, Rc/Arc/Mutex distinti. Update con FnOnce, unit, callback singola/annidata e panic con effetti parziali.
+- Swap identico, Default fallibile, Drop del vecchio valore fallibile e nuovo valore gia installato. get_cloned rifiutato da stable; dereferenziazione raw rifiutata senza unsafe.
+- Regressione Cell/RefCell/Rc-Arc/Drop: **296/296** superati in **168,4 secondi**, inclusi **76/76** nuovi casi; zero fallimenti/skip. Altre ventotto suite Rust e altri linguaggi non rieseguiti.
+- Limiti: una toolchain/piattaforma, non MSRV, Miri, benchmark o tutti gli scheduling. Le date di stabilizzazione sono documentali, non prove su compilatori storici. Nessun unsafe eseguito, sovrapposizione parziale artificiale o doppio panic. Fixture controllate con timeout, eliminate dopo verifica dei percorsi.
+
+### Verifica editoriale e Quartz
+
+- **911 documenti raggiungibili, zero errori e 333 avvisi editoriali**; nessuno nella nota corrente. **9/9 test della trasformazione** superati.
+- Build completa riuscita: **3719 file**, **2003 HTML**, **168 redirect**, **141344 riferimenti verificati**, zero errori. Restano gli avvisi noti di Quartz su eval e repository Git temporaneo.
+- **7/7 test HTTP** superati. Chrome **156.0.8078.80**, desktop **1440x1000** e mobile **390x844**: HTTP 200, undici blocchi Rust e una tabella, zero errori JavaScript o overflow della pagina. Su mobile sette blocchi scorrono orizzontalmente; tabella contenuta.
+- Ispezionati sei screenshot (inizio, tabella ed esempio pratico per ogni viewport), salvati nella directory temporanea `appunti-rust-cell-qa-wChLXO`. Browser e server QA chiusi; nessuna anteprima persistente.
+- Storico consolidato a dieci voci senza ulteriori rimozioni; suite documentata. Nessun commit, push o deploy remoto.
+
+### Prossimo blocco
+
+Proseguire con [[Programmazione/Rust/Pagine/Mutex T e RwLock T|Mutex<T> e RwLock<T>]], settima nota di Smart Pointers e Interior Mutability. Nelle future revisioni di Interior mutability e Send e Sync Traits va qualificato anche il divieto generico di usare RefCell in codice multi-thread: trasferimento e condivisione sono contratti distinti. Revisione tecnica, approvazione dell'utente e promemoria restano conteggi separati.
+
+## 2026-11-04 - Rust: Mutex<T> e RwLock<T>
+
+### Intervento
+
+Revisionata [[Programmazione/Rust/Pagine/Mutex T e RwLock T|Mutex<T> e RwLock<T>]]: **62/183 note principali Rust**, **7/10 del capitolo Smart Pointers e Interior Mutability**. Restano **121 note principali**, promemoria separati.
+
+- Distinta la sincronizzazione dall'ownership condivisa: Arc non e obbligatorio per thread scoped.
+- Guardie legate a Drop, non all'ultima lettura; esempio con tentativo non bloccante da un altro thread. Riferimenti interni vincolati alla guardia.
+- RwLock con lettore in un worker e lettore principale, poi scrittore esclusivo; non acquisizioni ricorsive presentate come portabili. Politica di attesa dipendente dalla piattaforma e nessuna promessa di prestazioni.
+- Contatore completo con quattro worker, attesa esplicita e checked_add; eliminato il precedente avvio senza join.
+- SharedLog completo con push, len, snapshot, clone condiviso, errori indipendenti dal lock e lavoro successivo fuori dalla sezione critica.
+- Distinti WouldBlock, Poisoned e guardia contenuta nel PoisonError. Conservare l'errore puo mantenere occupato il lock.
+- Recupero dimostrativo con invariante violata, join del worker, ripristino noto e clear_poison sotto accesso esclusivo. Distinti panic di lettura/scrittura, Err ordinario, rollback e flag consultivo.
+- get_mut e into_inner spiegati anche con poisoning; bound Send/Sync di Mutex/RwLock e guardie !Send.
+- Passaggio read/write con rilascio e ricontrollo, senza promettere upgrade atomico o costruzione unica del candidato.
+- Chiariti deadlock, ordine dei lock, callback e join, sospensione async e limiti delle API nightly. Tokio confrontato documentalmente con la documentazione 1.54.1, senza esecuzione.
+- Sette programmi eseguibili, di cui uno con panic intenzionale del worker, e due errori di compilazione. Frontmatter invariato rispetto a HEAD; nessuna nuova nota, spostamento, modifica a indice o redirect.
+
+### Verifica tecnica
+
+- Consultate e collegate le fonti ufficiali Rust per lock, guardie, PoisonError, TryLockError, join e scope; documentazione ufficiale Tokio su docs.rs.
+- **Rust 1.99.1**, edition **2024**, target **x86_64-pc-windows-gnu**, Node **24.14.0**. Riutilizzata la toolchain temporanea, nessuna nuova dipendenza/installazione o cache Cargo.
+- Nuova suite `_Meta/tests/rust-locks.test.mjs`: **52/52** al primo giro in **29,6 secondi**, zero fallimenti/skip.
+- Esempi estratti tramite AST, metadati/struttura/fonti; prove di compilazione per riferimenti, read guard, dodici bound Send/Sync, Future Send e feature nightly.
+- Contatori con zero/uno/piu worker e overflow ottimizzato. Log vuoto, UTF-8, multilinea, snapshot indipendente, inserimenti concorrenti senza dipendere dall'ordine.
+- Guardie negli errori, rilascio di map_err, flag distinto dalla riparazione, get_mut/into_inner avvelenati, panic con read/write e normale Err.
+- Ricontrollo dopo modifica interposta in modo deterministico, confronto con assegnazione errata, inizializzazione con worker reali e candidato vuoto. Varianti errate rilevate dalle asserzioni.
+- Regressione lock/Cell/Rc-Arc/Drop: **270/270** superati in **154,5 secondi**, inclusi **52/52** nuovi casi, zero fallimenti/skip. Altre ventinove suite Rust e altri linguaggi non rieseguiti.
+- Limiti: una toolchain/piattaforma, non MSRV, Miri, Loom, benchmark, fairness/starvation o tutti gli scheduling. Nessuna esecuzione di Tokio, unsafe, deadlock intenzionale o panic=abort. I Future vengono verificati per compilazione, non eseguiti. Fixture con timeout e directory temporanee eliminate dopo verifica dei percorsi.
+
+### Verifica editoriale e Quartz
+
+- **911 documenti raggiungibili, zero errori e 332 avvisi editoriali**; nessuno nella nota corrente. **9/9 test della trasformazione** superati.
+- Build completa riuscita: **3719 file**, **2003 HTML**, **168 redirect**, **141397 riferimenti verificati**, zero errori. Restano gli avvisi noti di Quartz su eval e repository Git temporaneo.
+- **7/7 test HTTP** superati. Chrome **156.0.8078.80**, desktop **1440x1000** e mobile **390x844**: HTTP 200, nove blocchi Rust e due tabelle, zero errori JavaScript o overflow della pagina. Otto blocchi scorrono su mobile; la tabella API scorre nel contenitore Quartz, quella dei bound resta contenuta.
+- Primo controllo automatico delle tabelle affinato: misurava la tabella, non il contenitore scorrevole. Geometria verificata e QA ripetuto sul contenitore reale, incluso screenshot al bordo destro: nessun intervento CSS necessario.
+- Ispezionati nove screenshot: otto viste iniziali in `appunti-rust-locks-qa-bNraby` e vista mobile della tabella spostata a destra in `appunti-rust-locks-qa-OchcBA`, directory temporanee. Browser e server QA chiusi; nessuna anteprima persistente.
+- Storico consolidato a dieci voci e suite documentata; nessun commit, push o deploy remoto.
+
+### Prossimo blocco
+
+Proseguire con [[Programmazione/Rust/Pagine/OnceLock e LazyLock|OnceLock e LazyLock]], ottava nota di Smart Pointers e Interior Mutability. Nelle future revisioni di Shared state e Mutex, RwLock e Atomics riallineare gli esempi senza join e le indicazioni troppo generali su letture e prestazioni; restano fuori da questo intervento. Revisione tecnica, approvazione dell'utente e promemoria restano conteggi separati.
+
+## 2026-11-04 - Rust: OnceLock e LazyLock
+
+### Intervento
+
+Revisionata [[Programmazione/Rust/Pagine/OnceLock e LazyLock|OnceLock e LazyLock]]: **63/183 note principali Rust**, **8/10 del capitolo Smart Pointers e Interior Mutability**. Restano **120 note principali**, promemoria separati.
+
+- Distinti valore installato dal chiamante e closure conservata nel contenitore, inizializzazione condivisa e ownership, riferimenti locali e statici.
+- Risultato di set gestito esplicitamente: Err restituisce il candidato rifiutato. Distinti lavoro eager, corpo lazy e distruzione delle catture inutilizzate.
+- Tabella globale LazyLock completa, con ispezione non inizializzante distinta dal metodo get della mappa raggiunto tramite Deref.
+- Esempi concorrenti con thread scoped attesi e contatore di inizializzazioni. Canali rendono deterministico lo stato intermedio senza sleep; get distinto da wait.
+- Configurazione installata dopo parsing/validazione, senza default deciso dal primo consumer; conflitto di installazione esplicito, test e dipendenze globali discussi.
+- OnceLock<Result<...>> conserva anche Err: nessun retry implicito. Validazione prima di set distinta da un protocollo generale di tentativi serializzati.
+- Panic: OnceLock resta inizializzabile, LazyLock avvelenato non riesegue la closure. Effetti precedenti non annullati; catch_unwind limitato a una dimostrazione controllata.
+- get_mut/take/into_inner e force_mut con ownership esclusiva, senza promettere reset concorrente di static. Parametro F e catture locali chiariti.
+- Precisati bound Send/Sync, varianti OnceCell/LazyCell, clone rispetto ad Arc, combinazione con mutex, Drop locale rispetto a static, const e dipendenze circolari.
+- Versioni delle API e feature nightly documentate; otto programmi eseguibili e due controesempi di compilazione.
+- Frontmatter invariato rispetto a HEAD, incluse data, pubblicabilita e status non revisionato. Nessuna nuova nota o modifica a indici/redirect.
+
+### Verifica tecnica
+
+- Consultate fonti ufficiali standard library, implementazione LazyLock e Rust Reference su static/const, collegate nella nota.
+- **Rust 1.99.1**, edition **2024**, target **x86_64-pc-windows-gnu**, Node **24.14.0**. Toolchain temporanea riutilizzata, nessuna dipendenza/installazione o cache Cargo aggiunta.
+- Nuova suite `_Meta/tests/rust-once-lazy.test.mjs`: **62/62** al primo giro in **36,2 secondi**, zero fallimenti/skip.
+- Esempi estratti tramite AST; metadati, struttura e fonti. Tipi non Clone, candidati rifiutati, catture consumate/distrutte e identita dei riferimenti.
+- OnceLock/LazyLock concorrenti, zero/uno/piu consumer, un vincitore con set e ispezione durante inizializzazione controllata da canali.
+- Input vuoti/negativi/fuori range/zero, estremi validi e conflitti; Err memorizzato senza poisoning, retry dopo panic e permanenza degli effetti precedenti.
+- Lazy poisoned non richiama la closure; panic dopo inizializzazione non avvelena il dato. Accesso esclusivo, clone indipendente e vincoli dei prestiti.
+- Dieci prove di bound Send/Sync, catture Rc e Cell, correzioni dei controesempi e quattro API nightly rifiutate da stable.
+- Const rispetto a static, Drop locale e cattura mai forzata, mancato Drop di uno static nel processo fixture.
+- Regressione OnceLock/LazyLock, lock e Cell: **190/190** superati in **110,9 secondi**, inclusi **62/62** nuovi casi, zero fallimenti/skip. Altre trentuno suite Rust e altri linguaggi non rieseguiti.
+- Limiti: una toolchain/piattaforma, non MSRV, Miri, Loom, benchmark, tutti gli scheduling o runtime async. Versioni di stabilizzazione documentali, non compilatori storici. Nessun unsafe, deadlock intenzionale, panic=abort o accesso a configurazioni reali. I canali verificano stati/risultati, non tempi minimi di blocco. Timeout e rimozione delle fixture dopo verifica dei percorsi.
+
+### Verifica editoriale e Quartz
+
+- **911 documenti raggiungibili, zero errori e 331 avvisi editoriali**; nessuno nella nota corrente. **9/9 test della trasformazione** superati.
+- Build completa riuscita: **3719 file**, **2003 HTML**, **168 redirect**, **141449 riferimenti verificati**, zero errori. Restano gli avvisi noti di Quartz su eval e repository Git temporaneo.
+- **7/7 test HTTP** superati. Chrome **156.0.8078.80**, desktop **1440x1000** e mobile **390x844**: HTTP 200, dieci blocchi Rust e una tabella, zero errori JavaScript o overflow della pagina. Tutti i dieci blocchi scorrono su mobile; la tabella resta contenuta nel suo contenitore Quartz.
+- Ispezionati sei screenshot (inizio, tabella ed esempio pratico per entrambi i viewport), nella directory temporanea `appunti-rust-once-lazy-qa-EHcxhg`. Browser e server QA chiusi, nessuna anteprima persistente.
+- Storico consolidato a dieci voci; suite documentata. Nessun commit, push o deploy remoto.
+
+### Prossimo blocco
+
+Proseguire con [[Programmazione/Rust/Pagine/Interior mutability|Interior mutability]], nona nota di Smart Pointers e Interior Mutability, riallineando anche le generalizzazioni su trasferimento fra thread e condivisione gia segnalate. Revisione tecnica, approvazione dell'utente e promemoria restano conteggi separati.
+
+## 2026-11-05 - Rust: Interior mutability
+
+### Intervento
+
+Revisionata [[Programmazione/Rust/Pagine/Interior mutability|Interior mutability]]: **64/183 note principali Rust**, **9/10 del capitolo Smart Pointers e Interior Mutability**. Restano **119 note principali**, promemoria separati.
+
+- Sostituita la generalizzazione "tutti i controlli passano a runtime" con i diversi contratti di Cell, RefCell, lock, atomici e inizializzazione singola.
+- Spiegato UnsafeCell come primitiva, non come sincronizzazione o autorizzazione a ignorare aliasing e lifetime. Nessun esempio unsafe da copiare.
+- Distinti ownership, accesso e condivisione fra thread; corretta la proibizione generica di RefCell nei programmi multithread.
+- Tabella di scelta e rimandi alle note gia revisionate, mantenendo questa pagina come quadro d'insieme.
+- Metrica con checked_add ed errore che non modifica lo stato; cache derivata con OnceCell e invalidazione attraverso accesso esclusivo.
+- Rc condiviso, move reale a thread, Mutex<RefCell<_>> valido ma ridondante per il Vec del demo. Worker attesi; ordine degli inserimenti non presunto.
+- Controesempi per riferimento senza guardia e Arc<RefCell<_>>, con spiegazione delle correzioni.
+- Rientranza, deadlock, effetti parziali, poisoning, chiavi mutabili e cache obsolete separati dalla memory safety.
+- Sei programmi validi e due errori di compilazione. Frontmatter invariato rispetto a HEAD, incluse data, pubblicabilita e status non revisionato. Nessuna nuova nota o modifica a indici/redirect.
+
+### Verifica tecnica
+
+- Fonti ufficiali Rust Reference e standard library consultate e collegate.
+- **Rust 1.99.1**, edition **2024**, target **x86_64-pc-windows-gnu**, Node **24.14.0**. Toolchain esistente, nessuna nuova dipendenza o installazione.
+- Nuova suite `_Meta/tests/rust-interior-mutability.test.mjs`: **45/45** al primo giro in **22,5 secondi**, zero fallimenti/skip.
+- Estrazione AST, metadati/struttura/fonti, guardie e conflitti, Cell non Copy, overflow anche ottimizzato e istanze indipendenti.
+- Cache con testo vuoto/whitespace/Unicode/punteggiatura, accessi ripetuti e invalidazione prima/dopo il primo calcolo. Variante errata senza invalidazione rilevata.
+- Borrow checker attivo su reset e guardie; clone del proprietario distinto da copia del contenuto. Move e rifiuto dei riferimenti non Sync.
+- Dodici prove Send/Sync e correzioni dei due controesempi; semplificazione del mutex annidato verificata.
+- Regressione Interior mutability/RefCell/OnceLock-LazyLock: **185/185** superati in **98,5 secondi**, inclusi i **45/45** nuovi casi, zero fallimenti/skip. Altre trentadue suite Rust e altri linguaggi non rieseguiti.
+- Limiti: una toolchain/piattaforma, non MSRV, Miri, Loom, benchmark o tutti gli scheduling. Nessun unsafe eseguito, runtime async o deadlock intenzionale. Cache didattica, non tokenizer linguistico; fixture temporanee con timeout e verifica dei percorsi prima della pulizia.
+
+### Verifica editoriale e Quartz
+
+- **911 documenti raggiungibili, zero errori e 330 avvisi editoriali**, nessuno nella nota corrente. **9/9 test della trasformazione** superati.
+- Build completa riuscita: **3719 file**, **2003 HTML**, **168 redirect**, **141508 riferimenti verificati**, zero errori. Restano gli avvisi noti di Quartz su eval e repository Git temporaneo.
+- **7/7 test HTTP** superati. Chrome **156.0.8078.80**, desktop **1440x1000** e mobile **390x844**: HTTP 200, otto blocchi Rust e una tabella, zero errori JavaScript o overflow del documento. Su mobile tutti gli otto blocchi e il contenitore della tabella scorrono correttamente.
+- Ispezionati sette screenshot (inizio, tabella, esempio pratico e bordo destro della tabella mobile), nella directory temporanea `appunti-rust-interior-mutability-qa-rDuRhY`. Browser e server QA chiusi; nessuna anteprima persistente.
+- Suite documentata e storico consolidato a dieci voci. Nessun commit, push o deploy remoto.
+
+### Prossimo blocco
+
+Proseguire con [[Programmazione/Rust/Pagine/Pin e Unpin|Pin e Unpin]], ultima nota di Smart Pointers e Interior Mutability. Le generalizzazioni presenti in Send e Sync Traits e nelle note sullo stato condiviso restano da riallineare nel capitolo Concorrenza. Revisione tecnica, approvazione dell'utente e promemoria restano conteggi separati.
+
+## 2026-11-05 - Rust: Pin e Unpin
+
+### Intervento
+
+Revisionata [[Programmazione/Rust/Pagine/Pin e Unpin|Pin e Unpin]]: **65/183 note principali Rust**, completate **10/10 note di Smart Pointers e Interior Mutability**. Restano **118 note principali**, promemoria separati.
+
+- Distinti puntatore e contenuto, Unpin e pinning effettivo, PhantomPinned e inizializzazione. Il marker non rende immobile un valore non ancora pinnato.
+- Contratto mantenuto fino alla distruzione, non solo durante il singolo poll; accesso mutabile, lifetime, Send/Sync e interior mutability separati.
+- API principali con requisiti sul destinatario; Box::into_pin, pinning locale e reborrow. Versioni pin! e Waker::noop verificate nella documentazione.
+- Wrapper Stored<F> con Pin<Box<F>>, future async con riferimento conservato attraverso una sospensione, notifica di wake e move del solo proprietario tra due poll.
+- Polling guidato dal demo distinto da executor reale; nessun lavoro I/O o busy loop presentato come runtime.
+- Pin::set con ordine di Drop osservabile, distinto da estrazione tramite mem::replace.
+- Collezione Vec<Pin<Box<T>>> con proprietari spostabili e destinatari stabili; nessuna ipotesi che reserve sposti effettivamente il buffer.
+- Proiezioni, coerenza con Drop/Unpin e limiti di packed; pin-project 1.1.13 consultato senza aggiungere dipendenze.
+- Sei programmi validi e due errori di compilazione. Frontmatter invariato rispetto a HEAD, incluse data, pubblicabilita e status non revisionato; nessun indice o redirect modificato.
+
+### Verifica tecnica
+
+- Fonti ufficiali standard library e documentazione della crate consultate e collegate.
+- **Rust 1.99.1**, edition **2024**, target **x86_64-pc-windows-gnu**, Node **24.14.0**. Toolchain esistente, nessuna nuova dipendenza/installazione.
+- Nuova suite `_Meta/tests/rust-pin-unpin.test.mjs`: **53 test**, estrazione AST, metadati/struttura/fonti, sei eseguibili e due controesempi.
+- Primo controllo ristretto **9/10**: l'esempio iniziale assumeva Vec<T> sempre Unpin. Corretto sulla base della compilazione e dei bound ufficiali; aggiunta controprova e sostituito con proprietari pinnati separati.
+- Primo giro ampliato **51/52**: diagnostico sul future non Send senza codice E0277. Corretto il controllo sul messaggio specifico e aggiunta controprova con Arc.
+- Dodici prove Unpin/Send/Sync, accesso al contenuto negato, move e swap dei proprietari, marker manuale, reborrow e lifetime locali.
+- Pin::set ripetuto, Drop allo stesso indirizzo e collezioni con crescita/riordino. Raw pointer soltanto confrontati, non dereferenziati.
+- Future non Unpin, wrapper Unpin, campo F diretto rifiutato, output non Copy/borrowed e trait object. Varianti senza wake o con Ready anticipato rilevate.
+- Drop prima/dopo il primo poll: esecuzione lazy, cleanup dei locali e nessun rollback degli effetti. Tre programmi verificati anche con opt-level 3.
+- Regressione Pin/Box/Drop/Object safety: **243/243** superati in **120,9 secondi**, inclusi i **53/53** nuovi casi, zero fallimenti/skip. Altre trentadue suite Rust e altri linguaggi non rieseguiti.
+- Dopo il QA, formattata la sintassi generica nella tabella e aggiunto il controllo nel test strutturale. Prima prova extra 52/53 per l'aspettativa errata di nodi GFM: parseNote usa CommonMark. Verifica adeguata senza dipendenze aggiuntive; suite dedicata finale **53/53** in **27,2 secondi**, zero fallimenti/skip. Esempi Rust invariati rispetto alla regressione.
+- Limiti: una toolchain/piattaforma, non MSRV, Miri, benchmark o prova esaustiva delle invarianti unsafe. Nessun blocco unsafe eseguito o runtime async reale; pin-project verificato soltanto documentalmente. Fixture con timeout e pulizia dopo verifica dei percorsi.
+
+### Verifica editoriale e Quartz
+
+- **911 documenti raggiungibili, zero errori e 329 avvisi editoriali**, nessuno nella nota corrente. **9/9 test della trasformazione** superati.
+- Build completa riuscita: **3719 file**, **2003 HTML**, **168 redirect**, **141569 riferimenti verificati**, zero errori. Restano gli avvisi noti di Quartz su eval e repository Git temporaneo.
+- **7/7 test HTTP** superati. Chrome **156.0.8078.80**, desktop **1440x1000** e mobile **390x844**: HTTP 200, otto blocchi Rust e una tabella, zero errori JavaScript o overflow del documento. Su mobile sette blocchi richiedono e consentono scorrimento orizzontale; tabella contenuta nella pagina e tipi generici verificati nel DOM.
+- Il primo controllo visivo ha rilevato generici interpretati come HTML nella tabella: corretti con codice inline e verificati nella build finale. Ispezionati sei screenshot finali (inizio, tabella ed esempio pratico per ciascun viewport), nella directory temporanea `appunti-rust-pin-unpin-qa-GhZXDd`. Browser e server QA chiusi; nessuna anteprima persistente.
+- Suite documentata e storico consolidato a dieci voci. Nessun commit, push o deploy remoto.
+
+### Prossimo blocco
+
+Iniziare **Standard Library** da [[Programmazione/Rust/Pagine/Iterator API|Iterator API]], confrontandola con [[Programmazione/Rust/Pagine/Iteratori|Iteratori]] gia revisionata. Nelle successive note async correggere anche l'equivalenza tra raggiungere .await e cedere sempre il controllo; le verifiche su Future Trait, Send/Sync e stato condiviso restano nel capitolo Concorrenza. Revisione tecnica, approvazione dell'utente e promemoria restano conteggi separati.
+
+## 2026-11-05 - Rust: Iterator API
+
+### Intervento
+
+Revisionata [[Programmazione/Rust/Pagine/Iterator API|Iterator API]]: **66/183 note principali Rust**, **1/10 di Standard Library**. Restano **117 note principali**, promemoria separati.
+
+- Distinta la nota di approfondimento da Iteratori gia revisionata; conservati i concetti preesistenti e l'esempio delle parole, ora completo e con nomi standard in inglese.
+- Corretta l'idea che serva sempre un consumatore finale per avanzare una pipeline; distinti ricevente, Item e argomento della callback. Eliminata la falsa promessa generale di prestazioni prevedibili.
+- Chiariti nth e stato residuo, lettura dalle due estremita, size_hint, ExactSizeIterator e DoubleEndedIterator.
+- Catalogo selettivo, non esaustivo: composizione, ricerca, aggregazione, raccolta, separazione ed effetti osservabili.
+- Peekable con cache e avanzamento effettivo della sorgente; next_if distinto da take_while.
+- Flatten su Result e perdita di errori; try_fold con overflow esplicito, consumo dell'item problematico, accumulatore non restituito e ripresa senza rollback.
+- Policy delle parole: sort prima di dedup, punteggiatura interna, lowercase, segni combinanti e limiti di normalizzazione/collazione Unicode.
+- API generica con bound su IntoIter e output opaco; sorgente Countdown con contratti ExactSizeIterator/FusedIterator verificabili.
+- MapWhile/fuse, Scan, capacita perse dopo filter/chain, limiti di lavoro e distinzione dal parallelismo Rayon.
+- Sette programmi validi e un controesempio di compilazione. Frontmatter invariato rispetto a HEAD, inclusi data, pubblicabilita e status non revisionato; nessun indice o redirect modificato.
+
+### Verifica tecnica
+
+- Fonti ufficiali standard library consultate e collegate; baseline eseguibile **Rust 1.99.1**, edition **2024**, Windows GNU e Node **24.14.0**.
+- Nuova suite `_Meta/tests/rust-iterator-api.test.mjs`: **35/35** al primo giro in **20,3 secondi**, zero fallimenti/skip.
+- Estrazione AST degli otto programmi, metadati originali, gerarchia e sintassi inline. Nessun blocco HTML spurio.
+- Tutti i 256 stati u8 di Countdown, hint/len, fine permanente e IntoIterator generico. Somma e Countdown anche con opt-level 3.
+- Input vuoto, confini u16, overflow singolo/aggregato, errori primo/ultimo e ripresa con accumulatore nuovo.
+- Prove Unicode e punteggiatura; mutazioni senza sort o con wrapping rilevate dagli assert degli esempi.
+- Bound mancanti, len nascosto da impl Trait, filter/chain, stato di nth/position, Peekable, consumo condizionale, enumerate e limite finito al lavoro.
+- MapWhile con fuse, Scan, effetti parziali di try_for_each/ControlFlow, collect Result, flatten a un livello, partition/unzip/String/extend e callback con riferimenti.
+- Regressione Iterator API/Iteratori/Closure: **101/101** in **58,8 secondi**, zero fallimenti/skip. Altre trentacinque suite Rust e altri linguaggi non rieseguiti.
+- Toolchain esistente, nessuna nuova dipendenza/installazione; fixture con timeout e pulizia dopo verifica dei percorsi.
+- Limiti: una toolchain/piattaforma, non MSRV, benchmark, Miri, audit Unicode o copertura di tutti gli adattatori. Nessun unsafe, Rayon, I/O esterno o sequenza infinita non terminante eseguita.
+
+### Verifica editoriale e Quartz
+
+- **911 documenti raggiungibili, zero errori e 328 avvisi editoriali**, nessuno nella nota corrente. **9/9 test della trasformazione** superati.
+- Build completa riuscita: **3719 file**, **2003 HTML**, **168 redirect**, **141619 riferimenti verificati**, zero errori. Restano gli avvisi noti di Quartz su eval e repository Git temporaneo.
+- **7/7 test HTTP** superati. Chrome **156.0.8078.80**, desktop **1440x1000** e mobile **390x844**: HTTP 200, otto blocchi Rust e una tabella, zero errori JavaScript o overflow del documento. Su mobile tutti gli otto blocchi e il contenitore della tabella scorrono correttamente; nomi delle API verificati nel DOM.
+- Ispezionati sette screenshot (inizio, tabella, esempio pratico e bordo destro della tabella mobile), nella directory temporanea `appunti-rust-iterator-api-qa-AFkB3G`. Browser e server QA chiusi; nessuna anteprima persistente.
+- Suite documentata; storico mantenuto a dieci voci, rimuovendo la voce Python del 2026-10-23 gia conservata nel registro dettagliato. Nessun commit, push o deploy remoto.
+
+### Prossimo blocco
+
+Proseguire con [[Programmazione/Rust/Pagine/From Into TryFrom e TryInto|From, Into, TryFrom e TryInto]], seconda nota di Standard Library. Le correzioni gia individuate nelle note async, Send/Sync, stato condiviso, prestazioni ed Extension traits restano per i rispettivi capitoli. Revisione tecnica, approvazione dell'utente e promemoria restano conteggi separati.
+
+## 2026-11-05 - Rust: From, Into, TryFrom e TryInto
+
+### Intervento
+
+Revisionata [[Programmazione/Rust/Pagine/From Into TryFrom e TryInto|From, Into, TryFrom e TryInto]]: **67/183 note principali Rust**, **2/10 di Standard Library**. Restano **116 note principali**, promemoria separati.
+
+- Distinti conversioni esplicite, coercizioni e cast; From infallibile non significa gratuito o senza allocazioni.
+- UserId conserva ogni u64, incluso zero; la sorgente i64 rifiuta negativi e conserva TryFromIntError.
+- Blanket From/Into e TryFrom/TryInto, Infallible e conflitto sulla stessa coppia; nessuna direzione inversa o catena automatica.
+- Costruttore Into<String> con input posseduti/prestati, limiti della validazione e ambiguita delle conversioni anticipate.
+- Bound TryInto con errore associato, cast numerici e conversioni non disponibili.
+- Port ora ha una policy esplicita di destinazione nonzero; separati parsing u16 e validazione. Porta locale zero distinta, senza aprire socket.
+- Conversione reale ParseIntError -> PortError tramite ?, causa mantenuta con Error::source e Display senza duplicazione del messaggio sottostante.
+- FromStr e TryFrom<&str> esplicitamente collegati, non generati a vicenda. Output borrowed con lifetime e limiti precisi di FromStr.
+- Recupero del Vec dall'errore durante la conversione in array; nessuna promessa generale di recupero o Clone.
+- Precisati privacy del modulo e suoi discendenti, tipo pubblico e visibilita dell'errore associato.
+- Sei programmi validi e due controesempi. Frontmatter invariato rispetto a HEAD, incluse data, pubblicabilita e status non revisionato; nessun indice o redirect modificato.
+
+### Verifica tecnica
+
+- Fonti ufficiali standard library, Reference ed Edition Guide consultate e collegate.
+- Baseline **Rust 1.99.1**, edition **2024**, Windows GNU e Node **24.14.0**; due prove aggiuntive su prelude/import in edition 2018.
+- Suite `_Meta/tests/rust-conversions.test.mjs`: primo giro **38/38** in **17,6 secondi** e prima regressione **170/170** in **99,7 secondi**, zero fallimenti/skip.
+- Aggiunto un controllo dell'API pubblica: Port pubblico e PortError privato rifiutati con E0446, correzione pubblicando anche il tipo di errore realmente compilata.
+- Regressione finale con Blanket implementations e Option/Result/operatore ?: **171/171** in **101,1 secondi**, inclusi **39/39** nuovi test, zero fallimenti/skip. Altre trentacinque suite Rust e altri linguaggi non rieseguiti.
+- AST, metadati originali, struttura, fonti, generici inline; sei programmi eseguiti e due rifiutati con diagnostici attesi.
+- Tutti gli u16 verso u8; porte 1..65535 verificate fra percorso numerico, FromStr e TryInto. Zero, segni, whitespace, Unicode, limiti e cause controllati.
+- UserId ai limiti u64/i64, bound TryInto manuale, assenza di conversioni inverse, Into duplicato, inferenza e sintassi del metodo.
+- From mancante e correzione map_err; ? non converte il valore di successo. Mutazione che accetta zero rilevata dagli assert.
+- Vista borrowed e lifetime locale, FromStr parametrizzato da lifetime non collegato all'input, elementi non Clone e recupero del Vec.
+- Numeri e Port eseguiti anche con opt-level 3. Correzioni dei due controesempi e import 2018 realmente compilati.
+- Toolchain esistente, nessuna dipendenza/installazione. Fixture con timeout e pulizia dopo verifica dei percorsi; la regressione riusa anche le fixture filesystem isolate della suite sull'operatore ?.
+- Limiti: non MSRV, benchmark, audit di tutte le conversioni o collaudo di rete. Nessun socket, unsafe o I/O applicativo nella nuova suite; nessuna modifica a file personali da parte degli esempi.
+
+### Verifica editoriale e Quartz
+
+- **911 documenti raggiungibili, zero errori e 327 avvisi editoriali**, nessuno nella nota corrente. **9/9 test della trasformazione** superati.
+- Build finale riuscita: **3719 file**, **2003 HTML**, **168 redirect**, **141671 riferimenti verificati**, zero errori. Rieseguita dopo le precisazioni sulla visibilita; restano gli avvisi noti di Quartz su eval e repository Git temporaneo.
+- **7/7 test HTTP** superati. Chrome **156.0.8078.80**, desktop **1440x1000** e mobile **390x844**: HTTP 200, otto blocchi Rust e una tabella, zero errori JavaScript o overflow del documento. Su mobile tutti gli otto blocchi e il contenitore della tabella scorrono correttamente; tipi generici nella tabella verificati nel DOM.
+- Ispezionati sette screenshot (inizio, tabella, esempio pratico e bordo destro della tabella mobile), nella directory temporanea `appunti-rust-conversions-qa-xMSMrm`. Browser e server QA chiusi; nessuna anteprima persistente.
+- Suite documentata e voce Standard Library consolidata nello storico, mantenuto a dieci voci. Nessun commit, push o deploy remoto.
+
+### Prossimo blocco
+
+Proseguire con [[Programmazione/Rust/Pagine/AsRef AsMut e Borrow|AsRef, AsMut e Borrow]], terza nota di Standard Library. Le correzioni gia individuate in async, Send/Sync, stato condiviso, prestazioni ed Extension traits restano per i rispettivi capitoli. Revisione tecnica, approvazione dell'utente e promemoria restano conteggi separati.
+
+## 2026-11-05 - Rust: AsRef, AsMut e Borrow
+
+### Intervento
+
+Revisionata [[Programmazione/Rust/Pagine/AsRef AsMut e Borrow|AsRef, AsMut e Borrow]]: **68/183 note principali Rust**, **3/10 di Standard Library**. Restano **115 note principali**, promemoria separati.
+
+- Distinti vista e passaggio per valore: AsRef non impedisce il move, e il riferimento restituito resta legato al proprietario.
+- AsMut con wrapper, array e slice parziale; azzeramento distinto da svuotamento e cancellazione sicura. Invarianti del wrapper e costo dell'elaborazione esplicitati.
+- Borrow con chiave UserName e lookup HashMap/BTreeMap; Eq/Ord/Hash coerenti, senza imporli come supertrait.
+- Proiezione Account sul solo nome: AsRef valido, Borrow non appropriato per l'identita scelta.
+- Tabella delle firme, BorrowMut, riflessivita, inoltro, inferenza e differenza rispetto a Deref/Into e ai metodi omonimi.
+- Controllo delle estensioni con OsStr, casi limite e limiti del controllo lessicale; lettura esplicita via args_os, errori e contenuto UTF-8.
+- Sei programmi validi e due controesempi. Frontmatter invariato rispetto a HEAD; data, pubblicabilita e status non revisionato conservati. Nessuna modifica a indici, percorsi o redirect.
+
+### Verifica tecnica
+
+- Fonti ufficiali della standard library consultate e collegate; baseline **Rust 1.99.1**, edition **2024**, Windows GNU e Node **24.14.0**.
+- Nuova suite `_Meta/tests/rust-asref-borrow.test.mjs`: primo giro **34/35** in **20,6 secondi**. Il lookup inferito produce E0308, non E0277; corretto il test e aggiunta la query esplicita che dimostra il bound Borrow mancante. Nessun errore negli otto programmi della nota rispetto agli esiti dichiarati.
+- Regressione finale AsRef/Deref/Collezioni: **157/157** in **93,3 secondi**, inclusi **35/35** nuovi casi, zero fallimenti/skip. Altre trentasei suite Rust e altri linguaggi non rieseguiti.
+- AST, YAML, gerarchia, fonti e generici inline; programmi validi eseguiti e controesempi verificati dal compilatore.
+- Move, lifetime, ?Sized/dyn, byte Unicode, slice mutabili, reborrow, AsMut senza AsRef, riflessivita e bound non transitivi.
+- Eq/Ord/Hash confrontati su chiavi finite; lookup con Unicode, sostituzione, chiavi assenti e proiezione non equivalente.
+- Percorsi Windows non Unicode costruiti con surrogate isolato; estensioni senza conversione a str. Nessuna creazione di file con nome non Unicode.
+- CLI eseguita su fixture temporanee: testo UTF-8, percorso con spazi, byte invalidi, file mancante e uscita con errore. File di input invariato.
+- Toolchain esistente, nessuna installazione. Timeout e pulizia limitata ai percorsi temporanei verificati.
+- Limiti: una piattaforma/toolchain, non MSRV, benchmark, prova di cancellazione sicura o dimostrazione generale delle leggi di Hash. Nessun unsafe o traffico di rete negli esempi.
+
+### Verifica editoriale e Quartz
+
+- **911 documenti raggiungibili, zero errori e 326 avvisi editoriali**, nessuno nella nota corrente. **9/9 test della trasformazione** superati.
+- Build riuscita: **3719 file**, **2003 HTML**, **168 redirect** e **141702 riferimenti verificati**, zero errori. Restano gli avvisi noti di Quartz su eval e repository Git temporaneo.
+- **7/7 test HTTP** superati. Chrome **156.0.8078.80**, desktop **1440x1000** e mobile **390x844**: HTTP 200, nessun errore JavaScript o overflow del documento.
+- Otto blocchi Rust e una tabella; tutti scorrevoli orizzontalmente quando necessario su mobile. Generici nella tabella verificati nel DOM.
+- Ispezionati sette screenshot, nella directory temporanea `appunti-rust-asref-borrow-qa-NE3Rim`. Browser e server QA temporaneo chiusi; nessuna anteprima persistente avviata.
+- Suite documentata; voce Standard Library consolidata nello storico, sempre a dieci voci. Nessun commit, push o deploy remoto.
+
+### Prossimo blocco
+
+Proseguire con [[Programmazione/Rust/Pagine/Default|Default]], quarta nota di Standard Library. Le correzioni gia individuate in async, Send/Sync, stato condiviso, prestazioni ed Extension traits restano per i rispettivi capitoli. Revisione tecnica, approvazione dell'utente e promemoria restano conteggi separati.
+
+## 2026-11-05 - Rust: Default
+
+### Intervento
+
+Revisionata [[Programmazione/Rust/Pagine/Default|Default]]: **69/183 note principali Rust**, **4/10 di Standard Library**. Restano **114 note principali**, promemoria separati.
+
+- Default distinto da new, inizializzazione implicita, azzeramento della memoria e validazione del dominio.
+- Derive e implementazione manuale presentati come alternative; firme, inferenza e Sized/dyn esplicitati.
+- Enum con unica variante unitaria di default, altre varianti senza Default e limiti non_exhaustive.
+- Queue generica con implementazione manuale senza bound T: Default, contrapposta al derive piu restrittivo.
+- Struct update con tipo base, privacy, move parziale e valutazione reale della base anche per campi poi sostituiti.
+- ServerConfig ora dichiarata dimostrativa: loopback, porta, worker e retry non certificano avvio, risorse disponibili o configurazione di produzione.
+- Option, Result ed Entry: assenza distinta da errore, fallback lazy/eager e valore della mappa conservato.
+- mem::take rispetto a clear, mem::replace e Option::take; trasferimento della proprieta e rispetto degli invarianti.
+- Sei programmi validi e due controesempi. Frontmatter invariato rispetto a HEAD; data, pubblicabilita e status non revisionato conservati. Nessun indice, percorso o redirect modificato.
+
+### Verifica tecnica
+
+- Fonti ufficiali standard library, Reference e RFC 3107 consultate e collegate.
+- Baseline **Rust 1.99.1**, edition **2024**, Windows GNU e Node **24.14.0**; nessuna installazione o dipendenza aggiunta.
+- Nuova suite `_Meta/tests/rust-default.test.mjs`: primo giro **37/39** in **18,4 secondi**. Corretti due controlli della suite: token inline completo e testo del diagnostico non_exhaustive. Gli otto programmi della nota avevano gia l'esito previsto.
+- Regressione Default/Derive/Associated types/Structs/Tuple structs/Enums: **168/168** in **89,6 secondi**, inclusi **39/39** nuovi casi, zero fallimenti/skip. Altre trentasette suite Rust e altri linguaggi non rieseguiti.
+- AST, YAML originale, struttura, fonti e generici inline; controesempi verificati anche nelle correzioni.
+- Bound, inferenza, implementazioni in conflitto, enum, privacy fra moduli, move e default non collegato a new.
+- Contatori reali per valutazione della base, Drop, fallback lazy e or_default; trasferimento del buffer, elementi non Clone e default vuoto nella destinazione.
+- Result con Err scartato e assenza di Default sul contenitore; Default non dyn compatible e panic dimostrativo. Mutazione del valore retries rilevata dagli assert.
+- Fixture temporanee con timeout e pulizia dopo verifica dei percorsi. La regressione include il caso non_exhaustive tra due crate.
+- Limiti: una toolchain/piattaforma, non MSRV, benchmark, misura generale delle allocazioni o validazione di configurazioni reali. Nessun socket, worker applicativo, I/O applicativo o unsafe negli esempi.
+
+### Verifica editoriale e Quartz
+
+- **911 documenti raggiungibili, zero errori e 325 avvisi editoriali**, nessuno nella nota corrente. **9/9 test della trasformazione** superati.
+- Build riuscita: **3719 file**, **2003 HTML**, **168 redirect** e **141736 riferimenti verificati**, zero errori. Avvisi noti Quartz su eval e repository Git temporaneo invariati.
+- **7/7 test HTTP** superati. Chrome **156.0.8078.80**, desktop **1440x1000** e mobile **390x844**: HTTP 200, nessun errore JavaScript o overflow del documento.
+- Otto blocchi Rust e una tabella; su mobile sette blocchi richiedono e consentono scorrimento orizzontale, come la tabella. Sintassi della tabella verificata nel DOM.
+- Ispezionati sette screenshot nella directory temporanea `appunti-rust-default-qa-1bephU`. Browser e server QA chiusi; nessuna anteprima persistente avviata o modifica al browser personale.
+- Suite documentata e voce Standard Library consolidata nello storico, mantenuto a dieci voci. Nessun commit, push o deploy remoto.
+
+### Prossimo blocco
+
+Proseguire con [[Programmazione/Rust/Pagine/Display e Debug|Display e Debug]], quinta nota di Standard Library. Revisione tecnica, approvazione dell'utente e promemoria restano conteggi separati.
+
+Letta come contesto, non revisionata: [[Programmazione/Rust/Pagine/Builder pattern|Builder pattern]]. Nel suo esempio d'uso gli helper in sintassi rustdoc ridefiniscono build senza la validazione dell'esempio principale: riallineare i programmi quando si raggiunge API Design Idiomatico. Restano inoltre i rilievi gia registrati su async, Send/Sync, stato condiviso, prestazioni ed Extension traits.
+
+## 2026-11-05 - Rust: Display e Debug
+
+### Intervento
+
+Revisionata [[Programmazione/Rust/Pagine/Display e Debug|Display e Debug]]: **70/183 note principali Rust**, **5/10 di Standard Library**. Restano **113 note principali**, promemoria separati.
+
+- Display e Debug distinti per contratto e destinatario; stabilita, parsing, localizzazione e riservatezza non garantiti automaticamente.
+- ToString fornito da Display, formatter borrowed e helper con ?Sized; derive Debug include anche campi privati.
+- Wrapper numerico che inoltra lo stesso formatter e conserva width, fill e flag; limite del write annidato esplicitato.
+- Debug manuale con token fittizio oscurato, senza promettere protezione di memoria, altri log o serializzazioni.
+- fmt::Write e io::Write su String e Vec<u8>; import distinti, errori propagati, newline e scritture parziali senza rollback.
+- fmt::Error distinto dalla validazione applicativa e da io::Error; origine degli errori di scrittura e rischio di panic da formatter scorretto.
+- Error con supertrait obbligatori Debug/Display, messaggio del wrapper e causa ParseIntError accessibile tramite source.
+- Adapter borrowed per rappresentazioni alternative, senza presentare il demo con due interi come serializzatore CSV generale.
+- dbg anche in release, assert_eq con bound Debug, formato noto a compilazione e limiti degli argomenti borrowed.
+- Sei programmi validi e due controesempi. Frontmatter invariato rispetto a HEAD; data, pubblicabilita e status non revisionato conservati. Nessun indice, percorso o redirect modificato.
+
+### Verifica tecnica
+
+- Fonti ufficiali della standard library consultate e collegate. Baseline **Rust 1.99.1**, edition **2024**, Windows GNU e Node **24.14.0**; nessuna nuova dipendenza/installazione.
+- Nuova suite `_Meta/tests/rust-display-debug.test.mjs`: **40/40** al primo giro, **22,1 secondi**, zero fallimenti/skip.
+- Regressione con Derive/Associated types e Option/Result/operatore ?: **185/185** in **112,0 secondi**, inclusi **40/40** nuovi casi. Altre trentotto suite Rust e altri linguaggi non rieseguiti.
+- AST, YAML originale, gerarchia, fonti e tipi inline; sei programmi eseguiti, due controesempi rifiutati e rispettive correzioni compilate.
+- Tutti i 65.536 valori u16 confrontati nel wrapper Port, con zero-padding; ulteriori controlli su segno, fill e allineamento. Mutazione che perde i flag rilevata.
+- Helper borrowed con str/dyn, move per valore, ToString duplicato, LowerHex mancante e delega esplicita.
+- Unicode, stringa vuota e testo HTML non escapato; Debug derivato dei campi privati, token fittizi diversi, forma compatta/estesa e nesting. Mutazione che espone il token rilevata.
+- Destinazione fmt limitata ai diversi confini in byte: prefisso UTF-8 valido conservato, errori propagati anche da Display e debug_struct. Destinazione io fallibile conserva BrokenPipe e messaggio.
+- fmt::Error inventato con panic atteso di to_string; supertrait Error obbligatori, causa tipizzata, confini u32, zero, segno e whitespace.
+- Adapter sui 25 abbinamenti di estremi i32 selezionati, lifetime e conflitto fra implementazioni; assert_eq richiede Debug anche se i valori sono uguali.
+- dbg controllato su ownership e stderr, anche con opt-level 3; format_args non puo sopravvivere ai valori presi in prestito.
+- Dopo la correzione visiva dei segnaposto e l'estensione del controllo inline, suite dedicata rieseguita: **40/40** in **20,7 secondi**, programmi Rust invariati.
+- Fixture temporanee con timeout e pulizia limitata ai percorsi verificati. La regressione include le fixture filesystem isolate della suite sull'operatore ?.
+- Limiti: una toolchain/piattaforma, non MSRV, benchmark o audit completo di logging e riservatezza. Nessun socket, dato segreto reale, unsafe o I/O applicativo nei nuovi esempi; scritture fallibili in memoria. Ricorsione infinita non eseguita.
+
+### Verifica editoriale e Quartz
+
+- **911 documenti raggiungibili, zero errori e 324 avvisi editoriali**, nessuno nella nota corrente. **9/9 test della trasformazione** superati.
+- La prima ispezione visiva ha rilevato tre segnaposto isolati interpretati come annotazioni di linguaggio dal renderer: sostituiti nella prosa con invocazioni complete di format, senza modificare il generatore.
+- Build finale riuscita: **3719 file**, **2003 HTML**, **168 redirect** e **141771 riferimenti verificati**, zero errori. Avvisi noti Quartz su eval e repository Git temporaneo invariati.
+- **7/7 test HTTP** superati. Chrome **156.0.8078.80**, desktop **1440x1000** e mobile **390x844**: HTTP 200, nessun errore JavaScript o overflow del documento.
+- Otto blocchi Rust e una tabella; su mobile sette blocchi e la tabella richiedono e consentono scorrimento orizzontale. Token della tabella e tre segnaposto corretti verificati nel DOM.
+- Nove screenshot finali ispezionati nella directory temporanea `appunti-rust-display-debug-qa-Wq7J88`, dopo i sette del primo giro. Browser e server QA temporaneo chiusi; nessuna anteprima persistente avviata o modifica al browser personale.
+- Suite documentata e voce Standard Library consolidata nello storico, mantenuto a dieci voci. Nessun commit, push o deploy remoto.
+
+### Prossimo blocco
+
+Proseguire con [[Programmazione/Rust/Pagine/Path e PathBuf|Path e PathBuf]], sesta nota di Standard Library. Revisione tecnica, approvazione dell'utente e promemoria restano conteggi separati.
+
+Resta il rilievo sugli helper rustdoc di Builder pattern, letta come contesto e non revisionata: riallinearli alla validazione del programma principale nel capitolo API Design Idiomatico. Restano anche i rilievi gia registrati su .await, Send/Sync, Shared state, RwLock/Atomics, prestazioni ed Extension traits, incluso count_where.
+
+## 2026-11-05 - Rust: Path e PathBuf
+
+### Intervento
+
+Revisionata [[Programmazione/Rust/Pagine/Path e PathBuf|Path e PathBuf]]: **71/183 note principali Rust**, **6/10 di Standard Library**. Restano **112 note principali**, promemoria separati.
+
+- Vista borrowed, buffer posseduto e riferimento ai dati OS; costruzione del percorso distinta da apertura, esistenza e autorizzazione.
+- join, push, pop, durata del prestito e directory corrente; nessuna creazione/rimozione di file implicita.
+- Percorsi Windows assoluti, rooted e drive-relative, UNC e verbatim; rami Unix espliciti e separatori dipendenti dalla piattaforma.
+- Nome, stem, estensione e parent; backup per sostituzione distinto dal suffisso aggiunto, nomi assenti e possibili collisioni con l'origine.
+- Componenti e confronti lessicali distinti dalla risoluzione filesystem; prefisso rispettato anche in presenza di parent traversal.
+- Limiti di starts_with, is_absolute e canonicalize come controlli di sicurezza; link e race fra verifica e uso esplicitati.
+- Nomi non Unicode conservati tramite OsStr/OsString; conversioni lossy riservate alla visualizzazione, non al recupero del percorso operativo.
+- absolute distinta da canonicalize, programma CLI con args_os e lettura esplicita; UTF-8 del contenuto separato da Unicode del nome.
+- exists/is_file/is_dir e perdita degli errori, try_exists e limiti TOCTOU; espansioni shell non automatiche.
+- Sei programmi completi e due controesempi. Frontmatter invariato rispetto a HEAD; data, pubblicabilita e status non revisionato conservati. Nessun indice, percorso o redirect modificato.
+
+### Verifica tecnica
+
+- Fonti ufficiali standard library consultate e collegate. Baseline **Rust 1.99.1**, edition **2024**, Windows GNU e Node **24.14.0**; nessuna nuova dipendenza/installazione.
+- Nuova suite `_Meta/tests/rust-path.test.mjs`: primo avvio fermato da due parentesi di chiusura JavaScript mancanti, corrette prima dell'esecuzione. Prima esecuzione completa **36/36** in **21,5 secondi**, zero fallimenti/skip; programmi della nota invariati.
+- Regressione con AsRef/AsMut/Borrow e Display/Debug: **111/111** in **71,5 secondi**, inclusi **36/36** nuovi casi. Altre trentanove suite Rust e altri linguaggi non rieseguiti.
+- AST, YAML, template, gerarchia, fonti e tipi inline; sei programmi eseguiti, controesempi verificati con E0515/E0502 e correzioni compilate.
+- Vista sullo stesso buffer e copia indipendente, move nel parametro generico; modifica dopo copia del solo nome.
+- Backup su estensioni multiple, nomi senza estensione, dotfile, estensione vuota, Unicode, radice e nome assente. Collisione con config.bak e directory solo lessicale verificate.
+- Prefissi Windows/UNC/verbatim senza rete, regole della lettera di unita e del case, pop senza risoluzione di parent.
+- Componenti interi e dot iniziale; mutazione con prefisso di caratteri rilevata. Variabili e tilde conservate come testo.
+- Nomi non Unicode in memoria, backup senza perdita, due nomi Windows distinti con la stessa visualizzazione lossy, unwrap non valido con panic atteso.
+- CLI su fixture con nome contenente spazi e contenuto Unicode, file vuoto, mancante, directory e byte non UTF-8. Verificato input invariato.
+- absolute su destinazione assente e input vuoto; canonicalize/try_exists su assenza e NUL, exists che nasconde l'errore.
+- Cambio della directory corrente nel solo processo figlio: PathBuf relativo non cattura la base.
+- Junction reale Windows fra due directory nella stessa fixture: starts_with soddisfatto, risoluzione fuori dalla base logica. Il bersaglio resta nella radice temporanea verificata.
+- Processi con timeout; pulizia limitata a percorsi temporanei con parent/prefisso verificati. Nessun unsafe, accesso di rete o modifica a file personali.
+- Limiti: una toolchain/piattaforma; rami Unix verificati documentalmente, non compilati/eseguiti. Nessun benchmark, MSRV, matrice di filesystem/ACL, prova di tutte le race o garanzia generale di confinamento.
+
+### Verifica editoriale e Quartz
+
+- **911 documenti raggiungibili, zero errori e 323 avvisi editoriali**, nessuno nella nota corrente. **9/9 test della trasformazione** superati.
+- Build riuscita: **3719 file**, **2003 HTML**, **168 redirect** e **141804 riferimenti verificati**, zero errori. Avvisi noti Quartz su eval e repository Git temporaneo invariati.
+- **7/7 test HTTP** superati. Chrome **156.0.8078.80**, desktop **1440x1000** e mobile **390x844**: HTTP 200, nessun errore JavaScript o overflow del documento.
+- Otto blocchi Rust e una tabella, tutti scorrevoli quando necessario su mobile; tipi generici della tabella e inline verificati nel DOM, nessun codice inline vuoto.
+- Sette screenshot ispezionati nella directory temporanea `appunti-rust-path-qa-GqquAs`. Browser e server QA temporaneo chiusi; nessuna anteprima persistente avviata o modifica al browser personale.
+- Suite documentata e voce Standard Library consolidata nello storico, mantenuto a dieci voci. Nessun commit, push o deploy remoto.
+
+### Prossimo blocco
+
+Proseguire con [[Programmazione/Rust/Pagine/OsStr e OsString|OsStr e OsString]], settima nota di Standard Library. Revisione tecnica, approvazione dell'utente e promemoria restano conteggi separati.
+
+Letta come contesto, non revisionata: [[Programmazione/Rust/Pagine/File I O|File I/O]]. Esplicitare la troncatura dei file con File::create/std::fs::write e distinguere copy_text, limitato al contenuto UTF-8, da una copia generica di byte. Restano il rilievo sugli helper rustdoc di Builder pattern e quelli gia registrati su .await, Send/Sync, Shared state, RwLock/Atomics, prestazioni ed Extension traits, incluso count_where.
+
+## 2026-11-05 - Rust: OsStr e OsString
+
+### Intervento
+
+Revisionata [[Programmazione/Rust/Pagine/OsStr e OsString|OsStr e OsString]]: **72/183 note principali Rust**, **7/10 di Standard Library**. Restano **111 note principali**, promemoria separati.
+
+- Vista borrowed, copia e ownership; push come concatenazione, non come composizione di percorsi. Unita di len/capacity distinte da caratteri e code unit UTF-16.
+- Corretta l'equivalenza fra rappresentazione interna e buffer nativo: su Windows OsStr non e un puntatore a u16 pronto per una API.
+- Conversioni to_str, into_string e to_string_lossy: errori, proprieta, Cow e perdita di informazione. Visualizzazione distinta da validazione, escaping e conservazione del valore originale.
+- Confronto delle estensioni senza conversione Unicode; case ASCII distinto dalle regole Unicode.
+- args_os e var_os, precedenza argomento/ambiente/default, valori vuoti e nomi non Unicode; argv[0] non e una fonte affidabile del percorso eseguibile.
+- split_paths/join_paths per liste di percorsi, senza separatori scritti a mano o modifiche al PATH reale.
+- Estensioni Windows/Unix, surrogati isolati, byte non UTF-8, NUL e terminatori; CString non impone UTF-8, mentre non accetta NUL interni.
+- as_encoded_bytes non e un formato portabile di serializzazione; buffer OS, output di processi e buffer FFI mantenuti distinti.
+- Sei programmi completi e due controesempi. Frontmatter invariato rispetto a HEAD; data, pubblicabilita e status non revisionato conservati. Nessun indice, percorso o redirect modificato.
+
+### Verifica tecnica
+
+- Fonti ufficiali della standard library e della Edition Guide consultate e collegate. Baseline **Rust 1.99.1**, edition **2024**, Windows GNU e Node **24.14.0**; nessuna nuova dipendenza/installazione.
+- Nuova suite `_Meta/tests/rust-os-string.test.mjs`: **39/39** alla prima esecuzione in **29,4 secondi**, zero fallimenti/skip; nessuna correzione agli esempi necessaria.
+- Regressione con Path/PathBuf e Display/Debug: **115/115** in **93,4 secondi**. Le suite Rust sono ora **43**; le altre quaranta e gli altri linguaggi non sono stati rieseguiti.
+- AST, YAML, template, gerarchia, fonti e tipi inline; sei programmi eseguiti, controesempi E0515/E0382 verificati e correzioni compilate.
+- Buffer condiviso da una vista, copia indipendente, move, prestito attivo e capacita sufficiente; controlli sul caso concreto, non benchmark di allocazione.
+- Unicode, stringhe vuote, NUL, Cow e recupero del valore originale dopo una conversione fallita; valori distinti con identica visualizzazione lossy e panic atteso da unwrap.
+- Roundtrip e classificazione Unicode di tutte le **65.536 singole code unit u16** su Windows, piu una coppia di surrogati valida. Non e una prova esaustiva di tutte le sequenze UTF-16.
+- CLI e ambiente su processi figli reali: spazi, Unicode, argomento non Unicode, fallback, vuoto e VarError::NotUnicode. Verificato anche il panic di args su argomento non Unicode.
+- Ambiente del processo principale invariato; variabili di prova impostate solo nei figli. Le sonde su set_var/remove_var verificano E0133 a compilazione, senza eseguire modifiche unsafe all'ambiente.
+- Liste di percorsi Windows con separatore, virgolette e valori non Unicode; terminatore wide, NUL interni, CString e mutazioni intenzionali rilevate.
+- Nessuna API nativa esterna invocata. I programmi della nuova nota non leggono/scrivono file; la regressione Path usa fixture e junction temporanee con percorsi verificati.
+- Limiti: una toolchain/piattaforma; rami Unix documentati ma non compilati/eseguiti. Nessun MSRV, benchmark o garanzia generale di compatibilita con ogni API FFI.
+
+### Verifica editoriale e Quartz
+
+- **911 documenti raggiungibili, zero errori e 322 avvisi editoriali**, nessuno nella nota corrente. **9/9 test della trasformazione** superati.
+- Build riuscita: **3719 file**, **2003 HTML**, **168 redirect** e **141844 riferimenti verificati**, zero errori. Avvisi noti Quartz su eval e repository Git temporaneo invariati.
+- **7/7 test HTTP** superati. Chrome **156.0.8078.80**, desktop **1440x1000** e mobile **390x844**: HTTP 200, nessun errore JavaScript o overflow del documento.
+- Otto blocchi Rust e una tabella; su mobile sei blocchi e la tabella richiedono e consentono scorrimento orizzontale. Tipi generici conservati nel DOM, nessun codice inline vuoto.
+- Sette screenshot ispezionati nella directory temporanea `appunti-rust-os-string-qa-3ZdWu8`. Browser e server QA temporaneo chiusi; nessuna anteprima persistente avviata o modifica al browser personale.
+- Suite documentata e voce Standard Library consolidata nello storico, mantenuto a dieci voci. Nessun commit, push o deploy remoto.
+
+### Prossimo blocco
+
+Proseguire con [[Programmazione/Rust/Pagine/File I O|File I/O]], ottava nota di Standard Library. Revisione tecnica, approvazione dell'utente e promemoria restano conteggi separati.
+
+La nota File I/O e stata letta come contesto, non revisionata: esplicitare la troncatura con File::create/std::fs::write e il vincolo UTF-8 di copy_text. Restano il rilievo sugli helper rustdoc di Builder pattern e quelli gia registrati su .await, Send/Sync, Shared state, RwLock/Atomics, prestazioni ed Extension traits, incluso count_where.
+
+## 2026-11-05 - Rust: File I/O
+
+### Intervento
+
+Revisionata [[Programmazione/Rust/Pagine/File I O|File I/O]]: **73/183 note principali Rust**, **8/10 di Standard Library**. Restano **110 note principali**, promemoria separati.
+
+- Corretti i due rilievi della lettura preliminare: troncatura gia all'apertura con File::create e sostituzione con fs::write; copy_text limitata a contenuto UTF-8, non copia binaria.
+- Percorso distinto da risorsa aperta, posizione, Seek, try_clone e chiusura; byte e Unicode del contenuto distinti da quelli del nome.
+- Letture/scritture parziali, read_exact, write_all e assenza di rollback.
+- OpenOptions: write/create distinti da truncate, creazione esclusiva con create_new, limiti dell'atomicita e append.
+- BufReader, read_line, lines e collect: terminatori, riuso del buffer, righe molto lunghe e propagazione degli errori.
+- BufWriter: flush prima della sincronizzazione del File; Drop, sync_all/sync_data e limiti delle garanzie di durabilita.
+- Sei programmi completi: configurazione facoltativa, report nuovo, lettura a righe, copia testo con sostituzione, copia byte verso file nuovo e directory ordinata non ricorsiva.
+- Metadata, link, directory, cancellazione, rename e contesto degli errori; avvisi espliciti sugli effetti distruttivi.
+- Frontmatter invariato rispetto a HEAD: data, pubblicabilita e status non revisionato conservati. Nessuna nota creata/spostata, indice o redirect modificato.
+
+### Verifica tecnica
+
+- Documentazione ufficiale std::fs/std::io consultata e collegata. Baseline **Rust 1.99.1**, edition **2024**, Windows GNU e Node **24.14.0**; nessuna nuova installazione/dipendenza.
+- Nuova suite `_Meta/tests/rust-file-io.test.mjs`: **31/31** alla prima esecuzione in **21,3 secondi**, zero fallimenti/skip. Nessuna correzione agli esempi necessaria.
+- Regressione File I/O, Path/PathBuf e OsStr/OsString: **106/106** in **74,8 secondi**, zero fallimenti/skip. Totale **44 suite Rust**; le altre quarantuno e gli altri linguaggi non rieseguiti.
+- YAML, AST, template, gerarchia, fonti e tipi inline; tutti i sei programmi compilati ed eseguiti con verifica di output e file prodotti.
+- Configurazione: assente, vuota, Unicode, UTF-8 invalido e directory. Report: LF, rifiuto del file esistente senza modificarlo, parent mancante e creazione ripetuta.
+- Righe: CRLF/LF/CR isolato, spazi, Unicode, riga senza newline, riga da 100.000 byte e errore dopo una riga valida; read_line accumula mentre read_until accetta byte arbitrari.
+- Copia testo: contenuto e terminatori conservati, destinazione sostituita, errore di lettura prima di qualsiasi scrittura. Copia binaria da 1 MiB con tutti i valori byte, origine invariata, vuoto, assenza e parent mancante.
+- create_new rifiuta anche stesso percorso e hard link verso l'origine; tutti i link e i file di prova restano nella stessa fixture.
+- Directory ordinate e non ricorsive, nomi Unicode, vuoto, assenza e percorso non directory.
+- Sonde su troncatura all'apertura, create senza truncate, scrittura non consentita sul File aperto in lettura, append dopo rewind, read/read_exact/EOF e posizione condivisa da try_clone.
+- Writer simulati: Interrupted, scritture brevi, WriteZero e prefisso gia scritto prima dell'errore. Reader simulato: io::copy lascia un file parziale.
+- sync_all prima di flush non scarica il buffer Rust; flush segnala l'errore che Drop non propaga. BufReader::into_inner e rewind provati su Cursor.
+- Variante senza import Write rifiutata con E0599; mutazione create_new in create rilevata dall'asserzione. Le varianti negative non sono gli esempi pubblicati.
+- Processi con timeout e pulizia limitata alla radice temporanea dopo verifica di percorso risolto, parent e prefisso. Nessun file personale o di rete coinvolto.
+- Limiti: una piattaforma/toolchain, nessuna esecuzione Unix, matrice filesystem/ACL, prova di crash, disco pieno reale o errore indotto durante read_dir gia iniziato. I fault simulati dei trait non certificano ogni comportamento del kernel; sync_all riuscito non prova la resistenza a interruzioni di alimentazione.
+
+### Verifica editoriale e Quartz
+
+- **911 documenti raggiungibili, zero errori e 321 avvisi editoriali**, nessuno nella nota corrente. **9/9 test della trasformazione** superati.
+- Build riuscita: **3719 file**, **2003 HTML**, **168 redirect** e **141889 riferimenti verificati**, zero errori. Avvisi noti Quartz su eval e repository Git temporaneo invariati.
+- **7/7 test HTTP** superati. Chrome **156.0.8078.80**, desktop **1440x1000** e mobile **390x844**: HTTP 200, nessun errore JavaScript o overflow del documento.
+- Sei blocchi Rust e una tabella; su mobile tutti richiedono e consentono scorrimento orizzontale. Tipi generici della tabella e inline conservati, nessun codice inline vuoto.
+- Sette screenshot ispezionati nella directory temporanea `appunti-rust-file-io-qa-NwQPhL`. Browser e server QA temporaneo chiusi; nessuna anteprima persistente avviata o modifica al browser personale.
+- Suite documentata, rapporto editoriale rigenerato e voce Standard Library consolidata nello storico, mantenuto a dieci voci. Nessun commit, push o deploy remoto.
+
+### Prossimo blocco
+
+Proseguire con [[Programmazione/Rust/Pagine/Process e Command|Process e Command]], nona nota di Standard Library. Revisione tecnica, approvazione dell'utente e promemoria restano conteggi separati.
+
+Process e Command e File descriptor sono state lette come contesto, non revisionate. Per Process e Command verificare esempi completi, avvio rispetto a exit status, output binario/UTF-8, gestione del figlio e limiti della cattura in memoria. Restano il rilievo sugli helper rustdoc di Builder pattern e quelli gia registrati su .await, Send/Sync, Shared state, RwLock/Atomics, prestazioni ed Extension traits, incluso count_where.
+
+## 2026-11-05 - Rust: Process e Command
+
+### Intervento
+
+Revisionata [[Programmazione/Rust/Pagine/Process e Command|Process e Command]]: **74/183 note principali Rust**, **9/10 di Standard Library**. Restano **109 note principali**, promemoria separati.
+
+- Builder distinto dall'esecuzione; argomenti separati, letterali e cumulativi, senza virgolette shell aggiunte.
+- Errori I/O, exit status e formato dell'output mantenuti distinti. code restituisce Option, non un numero garantito; stato non zero interpretato secondo il contratto del comando.
+- Differenze fra status/output/spawn e fra stdin/stdout/stderr ereditati, null, piped o rediretti su file.
+- Output come byte, UTF-8 controllato per dati e lossy soltanto per diagnostica; cattura in memoria e limiti di dimensione/durata.
+- Ambiente, directory e risoluzione dell'eseguibile; env_clear non e isolamento e non elimina portabilmente ogni ricerca nel PATH del padre.
+- Git: sostituito il generico Ok(None) su fallimento con un errore esplicito. HEAD verificato come commit, UTF-8 controllato, rimozione dei soli CRLF finali e nessuna lunghezza SHA-1 imposta.
+- Child: ownership delle pipe, EOF distinto da flush, attesa/raccolta, try_wait, kill e limiti della gestione dei discendenti.
+- Deadlock, output grande, timeout e parsing particolare di shell/batch Windows spiegati senza promettere sicurezza universale di args.
+- Sei programmi completi con prerequisiti e limiti. Frontmatter invariato rispetto a HEAD; data, pubblicabilita e status non revisionato conservati. Nessuna nota creata/spostata, indice o redirect modificato.
+
+### Verifica tecnica
+
+- Fonti ufficiali Rust e Git consultate e collegate. Baseline **Rust 1.99.1**, edition **2024**, Windows GNU, Node **24.14.0**, Git **2.55.0.windows.5**. Nessuna nuova dipendenza/installazione.
+- Nuova suite `_Meta/tests/rust-process.test.mjs`: prima esecuzione **29/30** in **27,4 secondi**. Il test assumeva NotFound per current_dir assente; Windows restituisce NotADirectory. Corretto il controllo con downcast a io::Error, senza dipendere dal testo localizzato o dalla classificazione OS.
+- Gli esempi della nota erano gia eseguibili: nessuna loro modifica per superare il test. Suite finale **30/30** nella regressione.
+- Regressione Process e Command, File I/O e OsStr/OsString: **100/100** in **87,5 secondi**, zero fallimenti/skip. Totale **45 suite Rust**; le altre quarantadue e gli altri linguaggi non rieseguiti.
+- YAML, AST, template, gerarchia, fonti e tipi inline; sei programmi compilati ed eseguiti con output verificato.
+- Git reale: repository temporanei SHA-1/SHA-256, commit vuoti locali, hash verificati, percorso con spazi e Unicode, override GIT_DIR/GIT_WORK_TREE, repository senza commit e directory non valida.
+- Fixture Git senza configurazione globale/sistema, template/hook vuoti e firma disabilitata solo per quei comandi. Nessun commit nel vault, remoto o modifica alla configurazione Git personale.
+- Processi controllati simulano status non zero, stderr, output UTF-8 invalido e identificatori inattesi; errore di avvio distinto da exit code 7.
+- Argomenti vuoti, quote, backslash, Unicode e token simili a opzioni; builder riusato con accumulo degli argomenti, current_dir e ambiente del padre invariati.
+- EOF con output, wait che chiude stdin posseduto e try_wait che lo lascia aperto; handle preso con take e chiuso prima dell'attesa, risultati ripetibili di wait/try_wait.
+- Cattura di 1 MiB per ciascuno dei due flussi, byte non UTF-8/NUL, redirezione su file nuovo e stdout estratto non raccolto da wait_with_output.
+- Terminazione e raccolta del solo figlio creato dal demo; nessun PID esterno. Variante di riuso del Child consumato rifiutata con E0382 e virgolette aggiunte all'argomento rilevate dalla prova.
+- Processi con timeout, cleanup solo della radice temporanea dopo verifica del percorso risolto, parent e prefisso. Nessuna shell, rete o modifica a file personali.
+- Limiti: un target Windows, nessuna esecuzione Unix o prova reale di segnali/zombie, Job Objects, alberi di processi, race o timeout rigorosi. Nessun deadlock provocato; il volume finito di prova non certifica output illimitato o ogni comando esterno.
+
+### Verifica editoriale e Quartz
+
+- **911 documenti raggiungibili, zero errori e 320 avvisi editoriali**, nessuno nella nota corrente. **9/9 test della trasformazione** superati.
+- Build riuscita: **3719 file**, **2003 HTML**, **168 redirect** e **141926 riferimenti verificati**, zero errori. Avvisi noti Quartz su eval e repository Git temporaneo invariati.
+- **7/7 test HTTP** superati. Chrome **156.0.8078.80**, desktop **1440x1000** e mobile **390x844**: HTTP 200, nessun errore JavaScript o overflow del documento.
+- Sei blocchi Rust e una tabella; tutti scorrevoli quando necessario su mobile. Tipi generici verificati nel DOM, nessun codice inline vuoto.
+- Sette screenshot ispezionati nella directory temporanea `appunti-rust-process-qa-hSzfeL`. Browser e server QA temporaneo chiusi; nessuna anteprima persistente avviata o modifica al browser personale.
+- Suite documentata, rapporto editoriale rigenerato e voce Standard Library consolidata nello storico, mantenuto a dieci voci. Nessun commit/push del vault o deploy remoto.
+
+### Prossimo blocco
+
+Proseguire con [[Programmazione/Rust/Pagine/Time Duration e Instant|Time, Duration e Instant]], decima e ultima nota di Standard Library. Revisione tecnica, approvazione dell'utente e promemoria restano conteggi separati.
+
+Time, Duration e Instant e stata letta come contesto, non revisionata: completare gli esempi, chiarire monotonicita rispetto a incremento stretto, limiti di precisione/sleep e operazioni fallibili o con overflow sulle durate. Restano il rilievo sugli helper rustdoc di Builder pattern e quelli gia registrati su .await, Send/Sync, Shared state, RwLock/Atomics, prestazioni ed Extension traits, incluso count_where.
+
+## 2026-11-06 - Rust: Time, Duration e Instant
+
+### Intervento
+
+Revisionata [[Programmazione/Rust/Pagine/Time Duration e Instant|Time, Duration e Instant]]: **75/183 note principali Rust**, **10/10 di Standard Library**, capitolo completato. Restano **108 note principali**, promemoria separati.
+
+- Durata, istante monotono e orologio civile distinti; Instant non e un timestamp persistente e non implica incremento stretto o precisione real-time.
+- Duration: unita totali rispetto a frazioni, normalizzazione, round trip, conversioni numeriche fallibili e formato esplicito.
+- checked rispetto a saturating e operatori che possono causare panic; input float invalido o arrotondato, zero valido distinto da errore.
+- measure conserva il risultato e il contratto FnOnce; tempo trascorso distinto da CPU, benchmark e semplice creazione di una future.
+- Scadenza con istanti costruiti, ordine degli operandi, None rispetto a zero, range dipendente dalla piattaforma e saturazione attuale documentata.
+- Timestamp Unix con secondi e frazione espliciti; date precedenti all'epoch rifiutate con SystemTimeError, la cui durata non e un timestamp con segno.
+- Sleep bloccante e limite minimo, ritardi dello scheduler, timeout non automatico, timer async, cadenza periodica e calendario.
+- Sei programmi indipendenti; fonti ufficiali e collegamenti interni. Frontmatter invariato rispetto a HEAD: data, pubblicabilita e status non revisionato conservati.
+- Nessuna nota nuova/spostata, nessun indice o redirect modificato. Approvazione dell'utente distinta dalla revisione tecnica.
+
+### Verifica tecnica
+
+- Fonti ufficiali std::time, thread::sleep e hint::black_box consultate e collegate. Baseline **Rust 1.99.1**, edition **2024**, Windows GNU, Node **24.14.0**; Git **2.55.0.windows.5** nella regressione Process. Nessuna nuova installazione/dipendenza.
+- Nuova suite `_Meta/tests/rust-time.test.mjs`: **28/28** alla prima esecuzione in **19,3 secondi**, zero fallimenti/skip. Nessuna correzione agli esempi necessaria.
+- Regressione Time/Process/File I/O: **89/89** in **74,9 secondi**, inclusi i 28 nuovi casi, zero fallimenti/skip. Totale **46 suite Rust**; le altre quarantatre e gli altri linguaggi non rieseguiti.
+- YAML, AST, template, gerarchia, fonti e tipi inline; tutti i sei programmi compilati ed eseguiti con verifica dell'output.
+- Durate zero/minime/massime, normalizzazione e round trip; totale rispetto a frazione, perdita di precisione, TryFrom per valori fuori range e rifiuto di Display con E0277.
+- checked_add/sub/mul/div: overflow, underflow, divisione nulla e zero valido. Saturazione con cap nullo o inferiore all'input.
+- Float negativi/non finiti/fuori range, -0.0, arrotondamento sub-nanosecondo. Panic indotti soltanto nelle sonde; overflow di Duration provato anche con opt-level 3 e overflow-checks=no.
+- FnOnce: una sola chiamata, prestito nel risultato, cattura consumata, Err conservato e panic propagato.
+- Istanti prima/uguale/dopo costruiti senza attese, checked contro saturating, sottrazione ed elapsed attuali; limiti tramite operazioni fallibili senza imporre un range uniforme.
+- Epoch esatta, tempi precedenti/successivi e frazioni rappresentabili; SystemTimeError conserva la distanza positiva opposta.
+- Sleep reale nominale di 10 ms: output verificato senza uguaglianza o soglia massima del tempo misurato. Nessuna modifica dell'orologio del sistema.
+- Fixture temporanee e processi con timeout; cleanup solo dopo verifica del percorso risolto, parent e prefisso. Regressione Process con soli figli/repository locali di prova, nessun processo o file personale.
+- Limiti: una toolchain e un target, nessuna esecuzione Unix, benchmark, prova di precisione o sospensione, salto dell'orologio, timeout rigoroso, runtime async, calendario/timezone o matrice MSRV.
+
+### Verifica editoriale e Quartz
+
+- **911 documenti raggiungibili, zero errori e 319 avvisi editoriali**, nessuno nella nota corrente. **9/9 test della trasformazione** superati.
+- Build riuscita: **3719 file**, **2003 HTML**, **168 redirect** e **141969 riferimenti verificati**, zero errori. Avvisi noti Quartz su eval e repository Git temporaneo invariati.
+- **7/7 test HTTP** superati. Chrome **156.0.8078.81**, desktop **1440x1000** e mobile **390x844**: HTTP 200, nessun errore JavaScript o overflow del documento.
+- Sei blocchi Rust e una tabella; tutti scorrevoli quando necessario su mobile. Tipi generici verificati nel DOM, nessun codice inline vuoto.
+- Sette screenshot ispezionati nella directory temporanea `appunti-rust-time-qa-FPghoN`. Browser e server QA temporaneo chiusi; nessuna anteprima persistente avviata o modifica al browser personale.
+- Suite documentata, rapporto editoriale rigenerato e voce Standard Library consolidata nello storico, mantenuto a dieci voci. Nessun commit/push del vault o deploy remoto.
+
+### Prossimo blocco
+
+Iniziare **Cargo, Editions e Compatibilita** da [[Programmazione/Rust/Pagine/Cargo|Cargo]], prima di dodici note. Revisione tecnica, approvazione dell'utente e promemoria restano conteggi separati.
+
+Cargo e stata letta come contesto, non revisionata: separare i comandi copiabili e chiarire directory di lavoro, effetti, prerequisiti di fmt/clippy e portata di check/test/build. Performance e profiling e stata riletta solo come contesto. Restano il rilievo sugli helper rustdoc di Builder pattern e quelli gia registrati su .await, Send/Sync, Shared state, RwLock/Atomics, prestazioni ed Extension traits, incluso count_where.
+
+## 2026-11-06 - Rust: Cargo
+
+### Intervento
+
+Revisionata [[Programmazione/Rust/Pagine/Cargo|Cargo]]: **76/183 note principali Rust**, **1/12 di Cargo, Editions e Compatibilita**. Restano **107 note principali**, promemoria separati.
+
+- Cargo distinto da compilatore e rustup; manifest, lockfile, crate, package, target e workspace separati.
+- Tutti i comandi in blocchi indipendenti, con directory di lavoro, prerequisiti ed effetti indicati.
+- check rispetto a generazione del codice/linking, build rispetto a test, target rispetto a piattaforme e feature, selezione dei membri del workspace.
+- Progetto completo senza dipendenze esterne: Cargo.toml, src/lib.rs, src/main.rs e tests/greeting.rs. CLI didattica con limiti Unicode/argomenti espliciti; unit test, integration test e doctest reali.
+- Formattazione mutante rispetto a check, lint rispetto a prove della logica, warning rispetto a errori e nuova policy build.warnings in .cargo/config.toml.
+- Cargo.lock anche per sviluppo di librerie senza imporlo ai consumer; locked, offline e frozen distinti.
+- Dipendenza locale, esempi registry facoltativi, add rispetto a install. Nessuna dipendenza superflua richiesta dal progetto di saluto.
+- Avvisi sui build script eseguiti durante check, assenza di isolamento, pulizia distruttiva degli output e pubblicazione remota.
+- Fonti ufficiali e rimandi alle note specifiche. Nessuna nota nuova/spostata, indice o redirect modificato.
+- YAML: rimosso il ciclo di prerequisiti Cargo/Cargo.toml. Cargo.toml ed editions diventano correlati, Moduli, crate e package il prerequisito. Altri campi, data, publish e status non revisionato conservati.
+
+### Verifica tecnica
+
+- Baseline **Rust/Cargo 1.99.1**, edition **2024**, target **x86_64-pc-windows-gnu**, Node **24.14.0**.
+- Installati tramite rustup ufficiale **rustfmt 1.10.0-stable** e **Clippy 0.1.99** nella toolchain temporanea gia usata. Nessun PATH globale o dipendenza del sito modificati.
+- Nuova suite `_Meta/tests/rust-cargo.test.mjs`: prima prova **27/28** in **66,0 secondi**. Il caso build.warnings passava --config prima del sottocomando esterno clippy, che non riceveva l'opzione.
+- Corretto il test passando --config dopo clippy, mantenendo l'aspettativa di fallimento sui warning. Aggiunta controprova tramite .cargo/config.toml; verifica mirata **1/1** riuscita. Gli esempi Rust non sono stati modificati per aggirare l'errore.
+- Precisata nella nota la distinzione fra configurazione .cargo/config.toml e manifest Cargo.toml.
+- Regressione Cargo, Pattern/Moduli/Workspace e Funzioni/Documentazione/Flusso: **125/125**, zero fallimenti/skip, in **175,4 secondi**; comprende i **28/28** casi Cargo finali.
+- Totale **47 suite Rust**; le altre quarantaquattro e gli altri linguaggi non rieseguiti.
+- Inventario: **31 blocchi di comandi** e **quattro file completi**. cd realizzato tramite cwd; rustup eseguito separatamente sulla toolchain di prova. I due cargo add verso registry non vengono eseguiti: fonti e sintassi verificate documentalmente.
+- Flusso reale: new bin/lib senza VCS, check, all-targets, build, run, fmt/check, Clippy ordinario/deny, test, no-run, doctest, integration test, release, doc e metadata JSON.
+- Il progetto esegue un unit test, un integration test e un doctest: questi risultati interni non si sommano ai 28 gruppi Node.
+- Casi negativi: errore cfg(test) ignorato da check ordinario, asserzioni false che passano check/build/no-run, doctest errato compatibile con cargo doc riuscito e selezione che esclude test falliti.
+- CLI con argomenti vuoti, spazi, Unicode e token simili a opzioni; nome crate distinto dal binario, nome target assente e manifest-path che non cambia cwd del programma.
+- fmt --check conserva i file; fmt modifica la fixture. Clippy: warning normali, policy deny, warning cached, warning rustc e codice cfg(test).
+- Lockfile assente/da aggiornare rifiutato da locked/frozen, generato offline e conservato da fetch --locked. Dipendenza locale realmente aggiunta e compilata; registry non disponibile rifiutato offline.
+- Workspace con default-members: comando normale passa, --workspace rileva il test fallito nell'altro membro.
+- Build script locale controllato: check lo esegue offline, scrivendo solo in OUT_DIR. cargo clean eseguito dopo verifica di percorso risolto, parent e confinamento del target; sorgenti conservati.
+- CARGO_HOME isolato, rete Cargo disabilitata, variabili ereditate ripulite e assenza di configurazioni Cargo nei parent verificata. Processi con timeout, cleanup della sola radice temporanea verificata.
+- Limiti: una toolchain/piattaforma, nessun benchmark, cross-compilazione, matrice MSRV, upload, registry reale, installazione di binari applicativi o prova di rete da build script. L'installazione dei componenti rustup e separata dalle prove Cargo offline.
+
+### Verifica editoriale e Quartz
+
+- **911 documenti raggiungibili, zero errori e 318 avvisi editoriali**, nessuno nella nota corrente. **9/9 test della trasformazione** superati.
+- Build finale riuscita: **3719 file**, **2003 HTML**, **168 redirect** e **142053 riferimenti verificati**, zero errori. Avvisi noti Quartz su eval e repository Git temporaneo invariati.
+- **7/7 test HTTP** superati sulla build finale. Chrome **156.0.8078.81**, desktop **1440x1000** e mobile **390x844**: HTTP 200, nessun errore JavaScript o overflow del documento.
+- **35 blocchi di codice** e una tabella; sei blocchi richiedono e consentono scorrimento su mobile. Comandi della tabella e inline conservati, nessun codice inline vuoto.
+- Nove screenshot finali ispezionati in `appunti-rust-cargo-qa-i4BfYZ`. La prima verifica browser era riuscita prima della precisazione sul file di configurazione; ripetuta sulla build finale.
+- Browser e server QA temporanei chiusi; nessuna anteprima persistente avviata o modifica al browser personale.
+- Suite documentata e rapporto editoriale rigenerato. Nuova voce di capitolo nello storico, mantenuto a dieci voci: eliminata quella Python del 2026-10-24, gia dettagliata nelle cinque voci di quella data nel registro completo.
+- Nessun commit, push o deploy remoto.
+
+### Prossimo blocco
+
+Proseguire con [[Programmazione/Rust/Pagine/Cargo.toml|Cargo.toml]], seconda nota di Cargo, Editions e Compatibilita. Nota letta come contesto, non revisionata: rendere completi gli esempi di manifest e chiarire target, dipendenze normali/dev/build e distinzione dalla configurazione Cargo.
+
+Restano il rilievo sugli helper rustdoc di Builder pattern e quelli gia registrati su .await, Send/Sync, Shared state, RwLock/Atomics, prestazioni ed Extension traits, incluso count_where. Revisione tecnica, approvazione dell'utente e promemoria restano conteggi separati.
+
+## 2026-11-06 - Rust: Cargo.toml
+
+### Intervento
+
+Revisionata [[Programmazione/Rust/Pagine/Cargo.toml|Cargo.toml]]: **77/183 note principali Rust**, **2/12 di Cargo, Editions e Compatibilita**. Restano **106 note principali**, promemoria separati.
+
+- Manifest distinto da lockfile, configurazione Cargo e selezione della toolchain rustup.
+- Nome/versione/edition/MSRV distinti, default documentati e scope delle tabelle TOML esplicito.
+- Dipendenze normali, di sviluppo e del build script: disponibilita, host e consumer separati.
+- Conservate le librerie gia citate in un manifest alternativo dichiarativo: non presentato come applicazione implementata.
+- Nuovo progetto eseguibile di quattro file, senza crate esterne: package cli-notes, libreria notes_core, binario notes e integration test.
+- Feature uppercase collegata al codice, default-run, autodiscovery dei binari e lint unsafe_code con limiti espliciti.
+- Requisiti di versione rispetto a versioni risolte, path, rinomina, target piattaforma e workspace.
+- Metadati/licenza/pubblicazione distinti da protezione dei sorgenti, testi della licenza e gestione dei segreti.
+- Sette comandi in blocchi copiabili separati, prerequisiti ed effetti dichiarati, fonti ufficiali e rimandi alle note specifiche.
+- Frontmatter invariato rispetto a HEAD, incluso status non revisionato. Nessuna nota nuova/spostata, indice o redirect modificato.
+
+### Verifica tecnica
+
+- Baseline **Rust/Cargo 1.99.1**, edition **2024**, Windows GNU, Node **24.14.0**. Toolchain temporanea riutilizzata, nessuna nuova installazione o modifica alle dipendenze del sito.
+- Nuova suite `_Meta/tests/rust-manifest.test.mjs`: prima esecuzione **27/28** in **56,8 secondi**. Il fallimento riguardava soltanto il testo atteso per la diagnostica rust-version/edition incompatibili.
+- Corretto il matcher sul messaggio effettivo, mantenendo codice di uscita negativo e versioni attese; nessun esempio alterato per aggirare un errore.
+- Regressione Cargo.toml, Cargo e Pattern/Moduli/Workspace: **104/104**, zero fallimenti/skip, in **179,6 secondi**, inclusi **28/28** nuovi casi.
+- Totale **48 suite Rust**; le altre quarantacinque e gli altri linguaggi non rieseguiti.
+- Estratti **12 blocchi**: sette comandi, quattro file eseguibili e un manifest registry. Quest'ultimo controllato solo tramite metadata, senza risolvere/scaricare o compilare crate esterne.
+- Progetto eseguito senza e con uppercase, integration test reale nelle due configurazioni. I test Rust interni non si sommano ai 28 gruppi Node.
+- Prove di metadata riuscito con sorgenti errati e check riuscito con assert false: manifest, compilazione e comportamento non sono equivalenti.
+- Default edition 2015 e version 0.0.0, manifest senza target, tabelle duplicate, bin non array, version numerica, path/import sbagliati e default-run assente.
+- Chiavi ignorate e campi in scope diverso: edition della libreria non modifica l'edition del package; build.jobs nel manifest segnala una chiave inutilizzata.
+- rust-version futura rifiutata senza installazione; MSRV incompatibile con edition 2024 rifiutata.
+- Binari automatici oltre a quelli espliciti, autobins=false, feature predefinite/no-default, feature inesistente e all-targets distinto da all-features.
+- Dipendenze locali sintetiche: normal/dev/build, build script eseguito con asserzione, dev-dependency non compilata dal consumer, rinomina/path e caret/exact.
+- Dipendenze condizionate alla piattaforma reale e adesione esplicita dei membri a workspace.dependencies.
+- Lint unsafe_code del package non applicato globalmente alle dipendenze. Dichiarazioni unsafe soltanto compilate, mai invocate.
+- CARGO_HOME e output isolati in fixture temporanee, rete Cargo disabilitata, variabili ereditate ripulite, configurazioni dei parent controllate e timeout per processo.
+- Cleanup limitato alla radice temporanea dopo verifica di percorso risolto, parent e prefisso.
+- Limiti: una toolchain/piattaforma, nessuna matrice MSRV, cross-compilazione, pubblicazione, compilazione di C con cc o verifica delle API registry.
+
+### Verifica editoriale e Quartz
+
+- **911 documenti raggiungibili, zero errori e 317 avvisi editoriali**. **9/9 test della trasformazione** superati.
+- Build riuscita: **3719 file**, **2003 HTML**, **168 redirect**, **142116 riferimenti verificati** e zero errori; avvisi noti Quartz su eval e repository Git temporaneo invariati.
+- **7/7 test HTTP** superati sulla build conclusa. Chrome **156.0.8078.81**, desktop **1440x1000** e mobile **390x844**: HTTP 200, nessun errore JavaScript o overflow del documento.
+- **12 blocchi di codice**, quattro scorrevoli su mobile; due tabelle con testo a capo, contenute nella pagina. Sintassi inline e comandi preservati.
+- Dieci screenshot ispezionati in `appunti-rust-manifest-qa-5vQ00C`. Browser e server QA chiusi; nessuna anteprima persistente o modifica al browser personale.
+- Suite documentata, rapporto editoriale rigenerato e voce Cargo consolidata nello storico, mantenuto a dieci voci senza eliminare altre revisioni.
+- Nessun commit, push o deploy remoto.
+
+### Prossimo blocco
+
+Proseguire con [[Programmazione/Rust/Pagine/Cargo.lock|Cargo.lock]], terza nota del capitolo. Letta come contesto, non revisionata: separare i comandi e precisare portata della riproducibilita, aggiornamenti mirati, commit del lockfile e opzioni locked/offline/frozen.
+
+Restano il rilievo sugli helper rustdoc di Builder pattern e quelli gia registrati su .await, Send/Sync, Shared state, RwLock/Atomics, prestazioni ed Extension traits, incluso count_where. Revisione tecnica, approvazione dell'utente e promemoria restano conteggi separati.
+
+## 2026-11-06 - Rust: Cargo.lock
+
+### Intervento
+
+Revisionata [[Programmazione/Rust/Pagine/Cargo.lock|Cargo.lock]]: **78/183 note principali Rust**, **3/12 di Cargo, Editions e Compatibilita**. Restano **105 note principali**, promemoria separati.
+
+- Risoluzione fissata distinta da riproducibilita completa: toolchain, piattaforma, feature, input esterni e contenuti path non vengono congelati dal lockfile.
+- Formato e campi, dipendenze transitive, sorgenti e checksum spiegati senza invitare a modificare il file a mano.
+- Policy Git per applicazioni, librerie e workspace; risoluzione autonoma dei consumer e controlli con dipendenze aggiornate.
+- locked/offline/frozen distinti, lockfile mancante o incoerente, fetch prima di lavorare offline e limiti rispetto a build script e prerequisiti di sistema.
+- update generale/mirato/ricorsivo/precise, effetti su transitive, dry-run, tree e diff Git. generate-lockfile non presentato come controllo non mutante.
+- Cinque file completi per un eseguibile con libreria locale e integration test. Lockfile mostrato come output generato, con confronto automatico esatto.
+- Cambio della versione locale rispetto a cambio dei soli sorgenti: esempio e controesempi concreti.
+- Checksum e yank distinti da audit di sicurezza; conflitti Git e rigenerazione trattati con limiti espliciti.
+- Sedici comandi in blocchi separati, prerequisiti ed effetti dichiarati, fonti ufficiali.
+- Frontmatter invariato rispetto a HEAD, incluso status non revisionato. Nessuna nota nuova/spostata, indice o redirect modificato.
+
+### Verifica tecnica
+
+- Baseline **Rust/Cargo 1.99.1**, edition **2024**, Windows GNU e Node **24.14.0**. Toolchain temporanea riutilizzata, nessuna installazione o dipendenza del sito aggiunta.
+- Nuova suite `_Meta/tests/rust-lockfile.test.mjs`: prima esecuzione **28/30** in **66,5 secondi**.
+- La directory source usata dal test non riproduceva la scelta precisa della versione; il controllo sull'assenza della directory registry era troppo restrittivo, perche Cargo puo creare metadati di cache anche offline.
+- Corretta la fixture precise usando un **local registry** con indice JSON, archivi .crate e checksum SHA-256; archiviatore **bsdtar 3.8.9** gia presente in Windows. Ammessi soltanto archivi sintetici nella cache isolata.
+- Controllo mirato **2/2** in **4,0 secondi**, senza cambiare gli esempi per far passare i test.
+- Regressione Cargo, Cargo.toml e Cargo.lock: **86/86**, inclusi **30/30** nuovi casi, zero fallimenti/skip, in **187,4 secondi**.
+- Totale **49 suite Rust**; le altre quarantasei e gli altri linguaggi non rieseguiti.
+- **22 blocchi** estratti: sedici comandi, cinque file e lockfile generato. Un integration test reale; i risultati Rust interni non si sommano ai gruppi Node.
+- Progetto compilato/eseguito; lockfile assente, da aggiornare, corrotto e di formato troppo nuovo; offline crea/aggiorna, locked/frozen rifiutano modifiche necessarie.
+- Codice path cambiato con lockfile identico, output diverso e test fallito; feature diverse con stesso lock; build script controllato eseguito frozen.
+- fetch non compila e update non prova la correttezza dei sorgenti; tree/inverse tree; lockfile unico di workspace anche lavorando dal membro.
+- Catalogo sintetico locale con resolver Cargo reale: versioni conservate, dry-run, aggiornamenti generali/mirati/ricorsivi, transitive aggiornate solo quando richiesto, rigenerazione e consumer indipendente.
+- Registry locale per precise e downgrade compatibile; rifiuto di una major incompatibile. Prova separata sui checksum dei file della directory source.
+- Dipendenza di altra piattaforma presente nel grafo ma non compilata sulla piattaforma corrente.
+- CARGO_HOME e output isolati, rete Cargo disabilitata, configurazioni e variabili ereditate controllate, processi con timeout. Cleanup dopo verifica di percorso risolto, parent e prefisso.
+- Le sorgenti sintetiche non sono copie di crate pubbliche o una ricetta per registry privati. Nessun checkout Git, commit della fixture o configurazione personale modificata.
+- Limiti: una toolchain/piattaforma, nessuna matrice MSRV, cross-compilazione, benchmark, publishing, registry remoto, API di Serde/Tokio, yank remoto o rete da build script. Procedure Serde/Tokio e git diff non eseguite sui progetti dell'utente.
+- Dopo la regressione, precisato il riferimento dei percorsi path al manifest e accorciata l'intestazione della tabella mobile. Esempi tecnici invariati; verifica dedicata finale **30/30** in **75,0 secondi**, zero fallimenti/skip.
+
+### Verifica editoriale e Quartz
+
+- **911 documenti raggiungibili, zero errori e 316 avvisi editoriali**, nessuno nella nota corrente; **9/9 test della trasformazione** superati.
+- Prima build: **3719 file**, **2003 HTML**, **168 redirect**, **142179 riferimenti** e zero errori; **7/7 test HTTP** superati.
+- Primo QA Chrome **156.0.8078.81**, desktop **1440x1000** e mobile **390x844**: HTTP 200, nessun errore JavaScript o overflow, 22 blocchi e due tabelle.
+- Quattro blocchi scorrevoli su mobile, tabelle con testo a capo. Dieci screenshot ispezionati in `appunti-rust-lockfile-qa-O3Y4aS`; browser e server temporanei chiusi.
+- Rigenerazione finale riuscita dopo le precisazioni: **3719 file, 2003 HTML, 168 redirect, 142179 riferimenti**, zero errori; avvisi noti Quartz invariati. **7/7 test HTTP** superati anche sulla build finale.
+- QA finale desktop/mobile ripetuto con controllo esplicito del testo aggiornato nel DOM: HTTP 200, nessun errore JavaScript o overflow, tutti i 22 blocchi presenti e quattro scorrevoli su mobile.
+- Dieci screenshot finali ispezionati in `appunti-rust-lockfile-qa-vYjDvj`; tabelle contenute, comandi e codice leggibili. Browser e server temporanei chiusi.
+- Suite documentata, rapporto editoriale rigenerato e storico consolidato a dieci voci senza rimuoverne altre. Nessun commit, push, deploy remoto o anteprima persistente.
+
+### Prossimo blocco
+
+Proseguire con [[Programmazione/Rust/Pagine/Crates.io|Crates.io]], quarta nota del capitolo. Letta come contesto, non revisionata: separare i comandi, distinguere preparazione locale e pubblicazione remota, rendere completi i manifest e precisare effetti, prerequisiti e limiti di publish/package/yank.
+
+Restano i rilievi sugli helper rustdoc di Builder pattern, .await, Send/Sync, Shared state, RwLock/Atomics, prestazioni ed Extension traits, incluso count_where. Revisione tecnica, approvazione dell'utente e promemoria restano conteggi separati.
+
+
+## 2026-11-06 - Rust: Crates.io
+
+### Intervento
+
+Revisionata [[Programmazione/Rust/Pagine/Crates.io|Crates.io]]: **79/183 note principali Rust**, **4/12 di Cargo, Editions e Compatibilita**. Restano **104 note principali**, promemoria separati.
+
+- Distinti registry, Cargo, repository Git e docs.rs; ricerca, informazioni e aggiunta delle dipendenze separati dalla pubblicazione.
+- Preparazione locale, dry-run e upload distinti, con quindici comandi singoli e operazioni remote esplicitamente identificate.
+- Metadati reali, scope include/exclude, manifest normalizzato/originale, Cargo.lock incluso e controllo del contenuto effettivo dell'archivio.
+- Progetto completo di quattro file senza dipendenze esterne e con publish=false; nessuna licenza o URL inventato per eliminare warning.
+- Package verifica la compilazione della copia estratta ma non esegue tutti i test; limiti di no-verify, allow-dirty e all-features.
+- Policy publish, token/provider, permessi, timeout dopo upload e distinzione tra release riuscita e build docs.rs riuscita.
+- Yank distinto da cancellazione e revoca di segreti. Corretta l'affermazione assoluta sull'impossibilita di cancellazione: esistono condizioni specifiche del servizio, da verificare senza fissare soglie datate.
+- Path/Git e fallback alla versione del registry; dev-dependencies senza versione escluse dal manifest distribuito e conseguenze sui test.
+- Trusted Publishing descritto senza un workflow fittizio o credenziali statiche negli esempi.
+- Fonti ufficiali aggiunte. Semantic Versioning spostato da prerequisites a related per eliminare il ciclo tra le due note; altri campi YAML invariati, incluso status non revisionato.
+- Nessuna nuova nota, spostamento, modifica dell'indice o redirect.
+
+### Verifica tecnica
+
+- Baseline **Rust/Cargo 1.99.1**, edition **2024**, Windows GNU, Node **24.14.0**, rustfmt/Clippy e **bsdtar 3.8.9**. Toolchain gia disponibile, nessuna installazione o dipendenza del sito aggiunta.
+- Nuova suite `_Meta/tests/rust-crates-io.test.mjs`: prima esecuzione **19/26** in **33,8 secondi**. Cinque confronti assumevano separatori Unix, uno presumeva disponibile la configurazione registry offline, uno cercava l'output di build nella directory sbagliata.
+- Corrette le attese sulla base dell'output effettivo; nota precisata sul dry-run offline e sulle dev-dependencies. Nessun esempio alterato per nascondere un errore.
+- Regressione Cargo, Cargo.toml e Crates.io: **82/82**, inclusi **26/26** nuovi casi, zero fallimenti/skip, **170,3 secondi**.
+- Totale **50 suite Rust**; le altre quarantasette e gli altri linguaggi non rieseguiti.
+- **20 blocchi** estratti: quindici comandi, quattro file e frammento exclude. Fmt, Clippy, due integration test, un doctest e generazione HTML rustdoc verificati.
+- Archivio .crate reale ispezionato con tar: file previsti, Cargo.toml.orig identico, manifest normalizzato letto tramite metadata e test rieseguiti dalla copia estratta.
+- Include/exclude e contesto TOML, falsi file privati esclusi, file di compilazione mancante nell'archivio e correzione.
+- Codice invalido accettato solo saltando la verifica; test di integrazione e doctest falliti non rilevati da package; feature difettosa rilevata abilitandola.
+- Path senza versione rifiutato dal packaging, dev-dependency locale senza versione rimossa e test della copia estratta non piu compilabile.
+- Build script controllato effettivamente eseguito, con file generato solo in OUT_DIR. Input aggiuntivi verificano CRLF e whitespace Unicode nella funzione dimostrativa.
+- Publish invocato soltanto con --dry-run: publish=false e registry non autorizzato rifiutati; cache vuota offline insufficiente anche senza dipendenze. Nessun dry-run positivo completato contro crates.io.
+- Helper della suite blocca upload, login, yank, owner, install e comandi di ricerca/download. Nessun uso di credenziali personali.
+- Fixture temporanee, CARGO_HOME isolato, variabili/configurazioni esterne controllate, rete Cargo disabilitata e timeout; cleanup dopo verifica del percorso risolto, parent e prefisso.
+- Limiti: una toolchain/piattaforma, nessuna matrice MSRV, cross-compilazione, accettazione server, disponibilita nomi, policy account, yank/cancellazione, OIDC, docs.rs remoto o commit Git della fixture. I test Rust interni non si sommano ai gruppi Node.
+
+### Verifica editoriale e Quartz
+
+- **911 documenti raggiungibili, zero errori e 316 avvisi editoriali**, nessuno nella nota corrente.
+- **9/9 test della trasformazione** superati.
+- Build completa riuscita: **3719 file**, **2003 HTML**, **168 redirect**, **142243 riferimenti verificati**, zero errori; avvisi noti Quartz su eval e repository Git temporaneo invariati.
+- **7/7 test HTTP** sulla build finale. Chrome **156.0.8078.81**, desktop **1440x1000** e mobile **390x844**: HTTP 200, nessun errore JavaScript o overflow del documento.
+- **20 blocchi di codice**, nove scorrevoli su mobile, una tabella leggibile con testo a capo. Controllato nel DOM anche il testo finale su dry-run offline e dev-dependencies.
+- Otto screenshot ispezionati in `appunti-rust-crates-io-qa-k9K0qC`. Browser e server QA chiusi; nessuna anteprima persistente o modifica al browser personale.
+- Suite documentata, rapporto editoriale rigenerato e voce Cargo consolidata nello storico, mantenuto a dieci voci senza rimuoverne altre.
+- Il controllo YAML della suite e stato reso idempotente rispetto ai commit futuri: controllo mirato finale **1/1**, zero fallimenti/skip. Esempi della nota invariati dopo la regressione.
+- Nessun commit, push o deploy remoto.
+
+### Prossimo blocco
+
+Proseguire con [[Programmazione/Rust/Pagine/Semantic Versioning|Semantic Versioning]], quinta nota del capitolo. Letta come contesto, non revisionata: precisare compatibilita Cargo prima di 1.0, prerelease, requisiti e significato delle modifiche API; sostituire le firme dimostrative incomplete con esempi verificabili.
+
+Restano i rilievi sugli helper rustdoc di Builder pattern, .await, Send/Sync, Shared state, RwLock/Atomics, prestazioni ed Extension traits, incluso count_where. Revisione tecnica, approvazione dell'utente e promemoria restano conteggi separati.
+
+
+## 2026-11-06 - Rust: Semantic Versioning
+
+### Intervento
+
+Revisionata [[Programmazione/Rust/Pagine/Semantic Versioning|Semantic Versioning]]: **80/183 note principali Rust**, **5/12 di Cargo, Editions e Compatibilita**. Restano **103 note principali**, promemoria separati.
+
+- Distinti contratto SemVer, versione del package, requirement del consumer e risoluzione nel lockfile.
+- Chiariti incrementi/reset, deprecazione, release immutabili e differenza fra specifica SemVer per 0.x e convenzioni Cargo.
+- Tabella di tredici requisiti con intervalli dichiarati per le sole release stabili: caret, tilde, wildcard, exact, AND e granularita prima della 1.0.
+- Prerelease: opt-in della stessa base, passaggio a release stabili compatibili, exact e precedenza numerica degli identificatori. Build metadata distinti dal pinning di una build.
+- Cinque file completi per libreria e consumer locali, senza dipendenze esterne e con publish=false.
+- Variante minor che conserva consumer/test, alternativa major che richiede migrazione e controesempio comportamentale con stessa firma.
+- Precisata la necessita di alzare il minimo del manifest quando il consumer usa una nuova API.
+- Esempi Serde/Tokio e nomi segnaposto identificati come frammento illustrativo; comandi update reali separati dall'esercizio locale.
+- Sintesi dei rischi di API, glob, enum/trait, deprecazioni e policy MSRV con rimandi alle note specifiche, senza duplicarne la trattazione.
+- Fonti ufficiali aggiunte, YAML invariato rispetto a HEAD e status non revisionato conservato. Nessuna nuova nota, indice, spostamento o redirect.
+
+### Verifica tecnica
+
+- Baseline **Rust/Cargo 1.99.1**, edition **2024**, Windows GNU, Node **24.14.0** e rustfmt gia disponibili; nessuna installazione o dipendenza del sito aggiunta.
+- Nuova suite `_Meta/tests/rust-semver.test.mjs`. Primo avvio interrotto in estrazione: il parser del vault rappresenta le tabelle come paragrafi. Corretto l'estrattore sui nodi inline, senza un nuovo parser o modifiche agli esempi per nascondere errori.
+- Esecuzione dedicata **35/35**, zero fallimenti/skip, **90,1 secondi**.
+- Regressione Cargo.toml, Cargo.lock e Semantic Versioning: **93/93**, inclusi **35/35** nuovi casi, zero fallimenti/skip, **238,9 secondi**.
+- Totale **51 suite Rust**; le altre quarantotto e gli altri linguaggi non rieseguiti.
+- **17 blocchi** estratti: sette comandi, cinque file, tre sorgenti alternativi, un manifest illustrativo e una sequenza testuale. Anche le tredici righe della tabella vengono controllate.
+- Fmt, check, run e integration test del workspace eseguiti. Consumer e test originali restano validi nella minor; funzione strict provata separatamente.
+- Major rifiutata dal vecchio requisito; requirement aggiornato ma chiamante vecchio produce E0061; migrazione di programma e test eseguita con successo.
+- Breaking change etichettato erroneamente minor accettato dal resolver e rifiutato da rustc. API nuova con minimo troppo basso produce E0425 sulla versione ancora ammessa.
+- Stessa firma e risoluzione valida, ma comportamento diverso: check passa, run e test falliscono. Input aggiuntivi su limiti u32, overflow, Unicode whitespace e testo non numerico.
+- Requirement verificati da Cargo reale, non da un'implementazione SemVer JavaScript: limiti inclusi/esclusi, intervalli equivalenti, AND impossibile, OR rifiutato, prerelease e metadata.
+- Catalogo sintetico in directory source con checksum: precedenza delle prerelease, release stabile, lock conservato, update dry-run non mutante, update minor e transitiva aggiornabile anche con dipendenza diretta exact.
+- Manifest Serde/Tokio/segna-posto controllato solo con metadata --no-deps. Nessuna API di quelle librerie compilata; update eseguito solo sul catalogo sintetico locale.
+- CARGO_HOME isolato, variabili/configurazioni esterne controllate, rete Cargo disabilitata, processi con timeout e cleanup dopo verifica di percorso risolto, parent e prefisso.
+- Limiti: una piattaforma/toolchain, nessuna matrice MSRV, cross-compilazione, registry remoto o certificazione automatica di tutti i cambiamenti API. I casi scelti non dimostrano ogni combinazione possibile di versioni.
+
+### Verifica editoriale e Quartz
+
+- **911 documenti raggiungibili, zero errori e 315 avvisi editoriali**, nessuno nella nota corrente; **9/9 test della trasformazione** superati.
+- Build completa riuscita: **3719 file**, **2003 HTML**, **168 redirect**, **142302 riferimenti verificati**, zero errori; avvisi noti Quartz su eval e repository Git temporaneo invariati.
+- **7/7 test HTTP** sulla build finale. Chrome **156.0.8078.81**, desktop **1440x1000** e mobile **390x844**: HTTP 200, nessun errore JavaScript o overflow del documento.
+- **17 blocchi di codice**, otto scorrevoli su mobile; una tabella di tredici righe con requisiti e operatori preservati. Controllato nel DOM anche il testo sul comportamento e sul requisito minimo.
+- Dieci screenshot ispezionati in `appunti-rust-semver-qa-ZhnFte`; tabella e codice leggibili. Browser e server QA chiusi, nessuna anteprima persistente o modifica al browser personale.
+- Suite documentata, rapporto editoriale rigenerato e voce Cargo consolidata nello storico, mantenuto a dieci voci senza rimuoverne altre.
+- Nessun commit, push o deploy remoto.
+
+### Prossimo blocco
+
+Proseguire con [[Programmazione/Rust/Pagine/MSRV Minimum Supported Rust Version|MSRV: Minimum Supported Rust Version]], sesta nota del capitolo. Letta come contesto, non revisionata: completare i manifest, separare i comandi e distinguere dichiarazione, selezione della toolchain, resolver ed effettiva verifica della versione minima.
+
+Restano i rilievi sugli helper rustdoc di Builder pattern, .await, Send/Sync, Shared state, RwLock/Atomics, prestazioni ed Extension traits, incluso count_where. Revisione tecnica, approvazione dell'utente e promemoria restano conteggi separati.
+
+
+## 2026-11-06 - Rust: MSRV e verifica della versione minima
+
+### Intervento
+
+Revisionata [[Programmazione/Rust/Pagine/MSRV Minimum Supported Rust Version|MSRV: Minimum Supported Rust Version]]: **81/183 note principali Rust**, **6/12 di Cargo, Editions e Compatibilita**. Restano **102 note principali**, promemoria separati.
+
+- Distinti minimo dichiarato, edition, selezione rustup e risoluzione nel lockfile.
+- Manifest completo, libreria con feature labels, due integration test e un doctest. Comandi indipendenti con prerequisiti ed effetti.
+- Due toolchain reali: minimo 1.85.0 e confronto fissato 1.99.1, senza confonderlo con stable aggiornata.
+- Controesempio is_multiple_of: API recente accettata dal compilatore di sviluppo ma rifiutata dal minimo, anche ignorando il vincolo dichiarato.
+- Precisati check rispetto a test, target rispetto a doctest e all-features rispetto alle combinazioni di feature.
+- Resolver 3, fallback rispetto ad allow, priorita del lockfile e dipendenze con dichiarazioni inesatte.
+- Ereditarieta esplicita nel workspace, risoluzione autonoma dei consumer, formato del lockfile, politica di aumento MSRV e CI.
+- Fonti ufficiali accanto ai comportamenti. Frontmatter invariato rispetto a HEAD, incluso status non revisionato.
+- Nessuna nuova nota, modifica a indici, spostamento o redirect.
+
+### Verifica tecnica
+
+- Baseline **Rust/Cargo/rustdoc 1.85.0 e 1.99.1**, edition **2024**, target **x86_64-pc-windows-gnu**, Node **24.14.0** e rustfmt corrente.
+- Installata la toolchain ufficiale 1.85.0 con profilo minimal nel deposito temporaneo gia usato dai test. Non cambiate toolchain predefinita, PATH globale o configurazioni personali; nessuna dipendenza del sito aggiunta.
+- Nuova suite `_Meta/tests/rust-msrv.test.mjs`: prima esecuzione **26/27**, **65,3 secondi**. Unico fallimento per il formato dell'if richiesto da rustfmt; corretto nella nota senza alterare il comportamento.
+- Regressione Cargo.toml, Cargo.lock e MSRV: **85/85**, inclusi **27/27** nuovi casi, zero fallimenti/skip, **198,0 secondi**.
+- Totale **52 suite Rust**; le altre quarantanove e gli altri linguaggi non rieseguiti.
+- **18 blocchi estratti**: dodici comandi, tre file del progetto, due configurazioni opzionali e un frammento README.
+- Comandi +versione eseguiti tramite i veri proxy rustup; rustc, Cargo e rustdoc abbinati. Verificata la precedenza sulla selezione rust-toolchain.toml.
+- Sul minimo: default/all-features con due integration test e un doctest; senza default un integration test e un doctest. Confronto sulla toolchain recente e lockfile preservato.
+- Minimo futuro o 1.87 dichiarato rifiutato dal vecchio Cargo; ignore-rust-version consente solo di saltare il vincolo. API piu recente rifiutata da rustc con E0658.
+- API incompatibili nascoste in feature, test e doctest; asserzione errata non rilevata da check.
+- Valori invalidi e minimo incompatibile con edition 2024 rifiutati; manifest edition 2021/MSRV 1.74 controllato con toolchain recente, non eseguito su 1.74.
+- Dipendenze sintetiche in directory source con checksum: preferenza della MSRV dichiarata anche con toolchain recente, allow, fallback senza candidati compatibili, lockfile gia risolto e minimo dichiarato inesatto.
+- Workspace con un membro aderente e uno senza ereditarieta; formato lockfile 4 leggibile dal minimo e formato futuro sintetico rifiutato.
+- CARGO_HOME temporaneo, Cargo offline, variabili/configurazioni esterne controllate e RUSTUP_AUTO_INSTALL=0. I comandi di installazione e stable sono esclusi dall'helper. Nessun registry remoto o credenziale usata.
+- Cleanup limitato a directory temporanee dopo verifica del percorso risolto, parent e prefisso.
+- Limiti: due versioni su una piattaforma, nessuna copertura di tutte le release intermedie, cross-compilazione, librerie native o esecuzione GitHub Actions. Test Rust interni non sommati ai gruppi Node.
+
+### Verifica editoriale e Quartz
+
+- Primo controllo: un collegamento non risolto a Workspaces, corretto verso la nota canonica Workspace.
+- Controllo finale: **911 documenti raggiungibili, zero errori e 314 avvisi editoriali**, nessuno nella nota corrente.
+- **9/9 test della trasformazione** superati; build completa riuscita: **3719 file**, **2003 HTML**, **168 redirect**, **142360 riferimenti verificati**, zero errori.
+- Avvisi noti Quartz su eval e repository Git temporaneo invariati; **7/7 test HTTP** sulla build finale.
+- Chrome **156.0.8078.81**, desktop **1440x1000** e mobile **390x844**: HTTP 200, nessun errore JavaScript o overflow del documento.
+- **18 blocchi di codice**, nove scorrevoli su mobile; tabella di quattro righe contenuta nella pagina, identificatori preservati.
+- Dieci screenshot ispezionati in `appunti-rust-msrv-qa-jLV40l`. Browser e server QA chiusi; nessuna anteprima persistente o modifica al browser personale.
+- Suite documentata, rapporto editoriale rigenerato e voce Cargo consolidata nello storico, mantenuto a dieci voci senza rimuoverne altre.
+- Nessun commit, push o deploy remoto.
+
+### Prossimo blocco
+
+Proseguire con [[Programmazione/Rust/Pagine/Rust 2018 2021 e 2024|Rust 2018, 2021 e 2024]], settima nota del capitolo. Letta come contesto, non revisionata: sostituire i manifest parziali con un progetto mixed-edition completo, chiarire cambiamenti concreti e versioni minime, separare i comandi e descrivere la migrazione nell'ordine corretto.
+
+Restano i rilievi sugli helper rustdoc di Builder pattern, .await, Send/Sync, Shared state, RwLock/Atomics, prestazioni ed Extension traits, incluso count_where. Revisione tecnica, approvazione dell'utente e promemoria restano conteggi separati.
+
+
+## 2026-11-06 - Rust: edition 2018, 2021 e 2024
+
+### Intervento
+
+Revisionata [[Programmazione/Rust/Pagine/Rust 2018 2021 e 2024|Rust 2018, 2021 e 2024]]: **82/183 note principali Rust**, **7/12 di Cargo, Editions e Compatibilita**. Restano **101 note principali**, promemoria separati.
+
+- Distinti edition, versione del compilatore, MSRV, resolver e style edition; tabella delle versioni di introduzione e default del manifest.
+- Corretta l'associazione generica fra edition 2018 e async: introduzione dell'edition in 1.31.0, stabilizzazione async/await in 1.39.0.
+- Cambiamenti principali: path, prelude, catture delle closure, array, keyword, unsafe, scope temporanei, RPIT, pattern e macro, con fonti ufficiali specifiche.
+- Workspace completo di sette file: binario 2024, libreria intermedia 2021 e libreria 2018, senza dipendenze esterne; due unit test e due doctest.
+- Tre programmi autonomi: tipo restituito da array.into_iter, identificatore gen e ordine di Drop fra if let ed else.
+- Chiariti gli effetti dei comandi, compreso il rischio di eseguire un vecchio binario dopo una compilazione fallita.
+- Migrazione in due tappe, fix prima del cambio manifest, limiti su doctest/configurazioni attive e diff stilistico separato; procedura estesa rimandata alla nota specifica.
+- YAML invariato rispetto a HEAD, incluso status non revisionato. Nessuna nuova nota, modifica dell'indice, spostamento o redirect.
+
+### Verifica tecnica
+
+- Baseline **Rust/Cargo/rustdoc 1.85.0 e 1.99.1**, target **x86_64-pc-windows-gnu**, Node **24.14.0**, rustfmt corrente e Git. Toolchain gia disponibili, nessuna installazione o dipendenza del sito aggiunta.
+- Nuova suite `_Meta/tests/rust-editions.test.mjs`: prima esecuzione **33/35** in **106,8 secondi**. Corretti due presupposti della suite: atteso errore sulla risoluzione del nome di una dipendenza con edition omessa e diagnostico del binding ref troppo specifico.
+- Per edition omessa, mantenuta la verifica metadata=2015 e aggiunta una sonda async rifiutata con E0670; diagnostico pattern compatibile con entrambe le versioni. Sorgenti pubblicati invariati.
+- Regressione edition/Cargo.toml/MSRV: **90/90**, inclusi **35/35** nuovi casi, zero fallimenti/skip, **242,4 secondi**. Totale **53 suite Rust**; le altre cinquanta e gli altri linguaggi non rieseguiti.
+- Precisato il prerequisito Git pulito dopo la regressione; controllo mirato YAML/struttura **1/1**, esempi tecnici invariati.
+- **22 blocchi estratti**: dodici comandi, sette file del workspace e tre programmi autonomi.
+- Check/run/test del workspace su entrambe le versioni: due unit test e due doctest; output Nota: Rust, metadata per le tre edition e lockfile comune preservato.
+- Fmt corrente eseguito con check e con scrittura nella fixture, senza cambiamenti ai sorgenti estratti. Consumer aggiuntivo con spazio Unicode, testo interno e input vuoto.
+- Sonde su default 2015, resolver virtuale, edition invalida, async, prelude TryInto/Future/IntoFuture e cattura disgiunta.
+- Array originale con warning in 2018 e errore di tipo nelle edition successive; variante iter e consumo qualificato verificati, move seguito da riuso rifiutato.
+- Compilazione fallita lascia il vecchio eseguibile intatto: checksum confrontato, binario obsoleto non eseguito.
+- Gen rispetto a raw identifier; Drop nel ramo else, nel ramo Some e in match esplicito; RPIT con cattura implicita e use<>.
+- Pattern ref, macro expr/expr_2021 e macro esportata in un'altra edition verificati.
+- Extern/attributi unsafe e unsafe_op_in_unsafe_fn verificati soltanto con compilazione metadata: nessuna operazione unsafe o chiamata FFI eseguita.
+- Cargo fix reale in due tappe, manifest invariato dal comando e test ripetuti dopo gli aggiornamenti manuali.
+- Verificati rifiuto senza VCS o con modifiche non committate, doctest non migrato automaticamente e dipendenza ciclica rifiutata.
+- Repository Git soltanto nelle fixture temporanee, con commit di snapshot locali, identita fittizia, hook e firma disabilitati, configurazioni personali escluse. Nessun commit/push del vault.
+- Cargo offline, CARGO_HOME isolato, variabili/configurazioni esterne controllate e processi con timeout. Cleanup dopo verifica del percorso risolto, parent e prefisso.
+- Limiti: due toolchain su una piattaforma, non eseguite 1.31.0/1.39.0/1.56.0. Nessuna copertura universale delle edition, cross-compilazione, executor async, lock reale, FFI, prova di soundness o CI remota. Test Rust interni non sommati ai gruppi Node.
+
+### Verifica editoriale e Quartz
+
+- **911 documenti raggiungibili, zero errori e 313 avvisi editoriali**, nessuno nella nota corrente.
+- **9/9 test della trasformazione** superati. Build rigenerata dopo la precisazione sui prerequisiti Git.
+- Ultima build riuscita: **3719 file**, **2003 HTML**, **168 redirect**, **142429 riferimenti verificati**, zero errori. Avvisi noti Quartz su eval e repository Git temporaneo invariati.
+- **7/7 test HTTP** sulla build definitiva.
+- Chrome **156.0.8078.81**, desktop **1440x1000** e mobile **390x844**: HTTP 200, nessun errore JavaScript o overflow del documento.
+- **22 blocchi di codice**, cinque scorrevoli su mobile; tabella di tre righe contenuta nella pagina, versioni e identificatori conservati.
+- Dieci screenshot ispezionati in `appunti-rust-editions-qa-4IadSi`. Verificata nel DOM anche la precisazione sul repository Git pulito.
+- Browser e server QA chiusi; nessuna anteprima persistente o modifica al browser personale.
+- Suite documentata, rapporto editoriale rigenerato e voce Cargo consolidata nello storico, mantenuto a dieci voci senza rimuoverne altre.
+- Nessun commit, push o deploy remoto del vault.
+
+### Prossimo blocco
+
+Proseguire con [[Programmazione/Rust/Pagine/Edition migration|Edition migration]], ottava nota del capitolo. Letta come contesto, non revisionata: correggere l'ordine fix/cambio manifest/verifiche, separare i comandi, chiarire VCS e rischi di allow-dirty, aggiungere un esempio reale con limiti su feature, target, doctest e formattazione.
+
+Restano i rilievi sugli helper rustdoc di Builder pattern, .await, Send/Sync, Shared state, RwLock/Atomics, prestazioni ed Extension traits, incluso count_where. Revisione tecnica, approvazione dell'utente e promemoria restano conteggi separati.
+
+
+## 2026-11-06 - Rust: Edition migration
+
+### Intervento
+
+Revisionata [[Programmazione/Rust/Pagine/Edition migration|Edition migration]]: **83/183 note principali Rust**, **8/12 di Cargo, Editions e Compatibilita**. Restano **100 note principali**, promemoria separati.
+
+- Corretto l'ordine della migrazione: baseline verificata, fix nella vecchia edition, revisione diff, aggiornamento manuale del manifest, controlli nella nuova edition.
+- Progetto completo di cinque file, da 2021 a 2024, senza dipendenze esterne. Feature opzionale in un file separato, test di integrazione e doctest.
+- Venti comandi separati, con prerequisiti ed effetti espliciti; laboratorio fuori dal vault, repository Git pulito e commit locali prima dei fix.
+- Esempio concreto di gen -> r#gen: sorgenti aggiornati automaticamente, due chiamate nei doctest corrette a mano dopo il fallimento atteso.
+- Chiariti check/test/doctest, target Cargo rispetto a piattaforme, all-features rispetto alle combinazioni, MSRV e lockfile.
+- Protezioni VCS e rischi delle deroghe, limiti di macro/codice generato, workspace graduale e resolver.
+- Formattazione separata dai fix, Clippy con warning come errori, revisione del diff senza comandi di ripristino distruttivi.
+- Fonti ufficiali vicine ai comportamenti. Frontmatter invariato rispetto a HEAD, incluso status non revisionato.
+- Nessuna nuova nota, modifica a indici, spostamento o redirect.
+
+### Verifica tecnica
+
+- Riutilizzate **Rust/Cargo/rustdoc 1.85.0 e 1.99.1**, target **x86_64-pc-windows-gnu**, Git e Node **24.14.0**. Rustfmt e Clippy sulla toolchain 1.99.1; nessuna nuova installazione o dipendenza del sito.
+- Nuova suite `_Meta/tests/rust-edition-migration.test.mjs`: **26/26** al primo giro, zero fallimenti/skip, **85,1 secondi**.
+- Dopo la formattazione della suite, regressione migrazione/edition/MSRV: **88/88**, inclusi **26/26** nuovi casi, zero fallimenti/skip, **277,0 secondi**.
+- Totale **54 suite Rust**; le altre cinquantuno e gli altri linguaggi non rieseguiti.
+- **25 blocchi estratti**: cinque file del laboratorio e venti comandi singoli. I test Rust interni non si sommano ai gruppi Node.
+- Procedura completa con Git reale su entrambe le versioni, branch dedicata e stato pulito. Fix modifica sorgenti ma non manifest/lockfile.
+- Dopo il cambio edition, check riesce e due doctest falliscono; dopo la riparazione manuale passano. Configurazione completa: due integration test e due doctest; senza default: uno e uno.
+- Fmt in scrittura e in check, Clippy senza riscrittura, test dopo formattazione; versione del package, MSRV e lockfile invariati.
+- Consumer edition 2021 chiama gen nel provider migrato: raw identifier non rinomina l'API. Casi limite numerici senza overflow.
+- Controprove: manifest modificato prematuramente, feature opzionale non analizzata, fix limitato alla libreria, check con asserzione errata, all-targets senza doctest e combinazione senza feature non coperta da all-features.
+- Verificati rifiuto senza VCS, modifiche locali/staged, deroghe allow-no-vcs/allow-staged/allow-dirty, file per altro sistema operativo non visitato, lockfile mancante con locked, lint Clippy e spaziatura nel diff.
+- Repository Git e commit solo nelle fixture temporanee, identita fittizia e configurazioni personali/hook/firma esclusi. Nessun commit/push del vault.
+- Cargo offline, CARGO_HOME isolato, toolchain abbinate e processi con timeout. Cleanup dopo verifica del percorso risolto, parent e prefisso.
+- Limiti: due toolchain su una piattaforma. Nessuna cross-compilazione, verifica universale delle combinazioni, prova di soundness o CI remota. Broken-code, edition-idioms, macro/codice generato e variante workspace non esercitati dalla nuova suite.
+
+### Verifica editoriale e Quartz
+
+- **911 documenti raggiungibili, zero errori e 312 avvisi editoriali**, nessuno nella nota corrente.
+- **9/9 test della trasformazione** superati.
+- Build completa riuscita: **3719 file**, **2003 HTML**, **168 redirect**, **142481 riferimenti verificati**, zero errori. Avvisi noti Quartz su eval e repository Git temporaneo invariati.
+- **7/7 test HTTP** sulla build definitiva; diff --check senza errori.
+- Chrome **156.0.8078.81**, desktop **1440x1000** e mobile **390x844**: HTTP 200, nessun errore JavaScript o overflow del documento.
+- **25 blocchi di codice**, otto scorrevoli su mobile; tabella di cinque righe contenuta nella pagina, opzioni e identificatori conservati.
+- Dieci screenshot ispezionati in `appunti-rust-edition-migration-qa-IEYzGs`.
+- Browser e server QA chiusi; nessuna anteprima persistente o modifica al browser personale.
+- Suite documentata, rapporto editoriale rigenerato e voce Cargo consolidata nello storico, mantenuto a dieci voci senza rimuoverne altre.
+- Nessun commit, push o deploy remoto del vault.
+
+### Prossimo blocco
+
+Proseguire con [[Programmazione/Rust/Pagine/Cargo features|Cargo features]], nona nota del capitolo. Letta come contesto, non revisionata: progetto completo al posto dei frammenti parziali, unificazione e resolver, dipendenze opzionali e dep:, forwarding normale/debole, feature std rispetto a no_std, configurazioni predefinite e compatibilita pubblica.
+
+Restano i rilievi sugli helper rustdoc di Builder pattern, .await, Send/Sync, Shared state, RwLock/Atomics, prestazioni ed Extension traits, incluso count_where. Revisione tecnica, approvazione dell'utente e promemoria restano conteggi separati.
+
+
+## 2026-11-09 - Rust: Cargo features
+
+### Intervento
+
+Revisionata [[Programmazione/Rust/Pagine/Cargo features|Cargo features]]: **84/183 note principali Rust**, **9/12 di Cargo, Editions e Compatibilita**. Restano **99 note principali**, promemoria separati.
+
+- Distinte feature compile-time, configurazioni runtime e attributi nightly.
+- Chiariti unificazione, default senza veto globale e separazione dei contesti con resolver 2/3.
+- Dipendenze opzionali, feature implicite, dep:, inoltro normale/debole e alias locali.
+- Progetto completo di cinque file: libreria principale, dipendenza locale e integration test. Sei configurazioni con risultati attesi; doctest associati alle API disponibili.
+- Quattordici comandi separati per test, tree, check, fmt e Clippy; esplicitati selezione dei membri, effetti sui file e differenza tra lockfile e compilazione effettiva.
+- no_std attivato dall'attributo, non dal solo nome della feature; limiti dei test su host con std.
+- Controesempio cfg! con dipendenza assente; riferimenti a Serde/Tokio mantenuti come applicazioni documentali, non inclusi nel laboratorio eseguito.
+- Fonti ufficiali accanto ai comportamenti, checklist ed errori comuni. Frontmatter invariato rispetto a HEAD, incluso status non revisionato.
+- Nessuna nuova nota, modifica a indici, spostamento o redirect.
+
+### Verifica tecnica
+
+- **Rust/Cargo/rustdoc 1.85.0 e 1.99.1**, target **x86_64-pc-windows-gnu**, Node **24.14.0**. Rustfmt e Clippy sulla toolchain 1.99.1. Nessuna nuova installazione o dipendenza del sito.
+- Nuova suite `_Meta/tests/rust-features.test.mjs`. Primo avvio interrotto prima dei casi per una regex che non accettava la D maiuscola del flag Clippy.
+- Primo giro completo **29/30**, **95,5 secondi**: un helper trattava anche il messaggio finale JSON di Cargo come compiler-artifact. Corretto il filtro sul tipo di messaggio, senza alterare gli esempi.
+- Aggiunto un caso sulle dipendenze rinominate; controlli mirati resolver/alias **2/2** in **7,7 secondi**.
+- Regressione finale features/Cargo.toml/Edition migration **85/85**, inclusi **31/31** nuovi casi, zero fallimenti/skip, **253,2 secondi**.
+- Totale **55 suite Rust**; le altre cinquantadue e gli altri linguaggi non rieseguiti.
+- **20 blocchi estratti**: cinque file, quattordici comandi e un controesempio. I test Rust interni non si sommano ai gruppi Node.
+- Sei configurazioni su entrambe le versioni: 4, 2, 2, 4, 6 e 8 test nel package principale; workspace completo con 10 test. Artefatti JSON confrontati per le feature effettive.
+- Tree diretto/inverso, metadata, formatter senza riscritture, Clippy, selezione dei membri e doctest separati da all-targets.
+- Sonde su feature implicite/dep:, inoltro debole/forte, alias, scope delle feature, cfg!, attributo no_std, import non protetti e feature inesistenti.
+- Consumer reali per default riattivati, unificazione su due percorsi normali e rottura dell'API dopo la rimozione di std dai default.
+- Lockfile con dipendenza non compilata; test dei 256 risultati della somma modulo 256, input vuoto, combinazione artificiale esclusiva e check che non esegue asserzioni errate.
+- Resolver 2/3 confrontati con 1 per le dev-dependencies; resolver 3 con 1 per build-dependencies e dipendenze di un altro sistema operativo. Workspace complessivo rispetto alla libreria isolata.
+- Cargo offline, CARGO_HOME temporaneo, toolchain abbinate e processi con timeout. Cleanup dopo verifica del percorso risolto, parent e prefisso; originali controllati tramite hash.
+- La regressione Edition migration crea repository e snapshot soltanto nelle proprie fixture isolate; nessun commit/push del vault.
+- Limiti: due versioni su un host, non tutte le configurazioni o release intermedie. Nessuna cross-compilazione, esecuzione embedded, allocatore personalizzato o proc-macro; Serde/Tokio non compilati qui. Nessuna certificazione no_std dell'intero grafo esterno o prova di CI remota.
+
+### Verifica editoriale e Quartz
+
+- **911 documenti raggiungibili, zero errori e 311 avvisi editoriali**, nessuno nella nota corrente.
+- **9/9 test della trasformazione** superati; build riuscita: **3719 file**, **2003 HTML**, **168 redirect**, **142539 riferimenti verificati**, zero errori.
+- Avvisi noti Quartz su eval e repository Git temporaneo invariati; **7/7 test HTTP** superati.
+- Chrome **156.0.8078.81**, desktop **1440x1000** e mobile **390x844**: HTTP 200, nessun errore JavaScript o overflow del documento.
+- **20 blocchi di codice**, dodici scorrevoli su mobile; due tabelle di cinque e sei righe contenute nella pagina, identificatori preservati.
+- Dieci screenshot ispezionati in `appunti-rust-features-qa-JFL1yi`. Browser e server QA chiusi; nessuna anteprima persistente o modifica al browser personale.
+- Suite documentata, rapporto editoriale rigenerato e voce Cargo consolidata nello storico, mantenuto a dieci voci senza rimuoverne altre.
+- Nessun commit, push o deploy remoto del vault.
+
+### Prossimo blocco
+
+Proseguire con [[Programmazione/Rust/Pagine/Build scripts|Build scripts]], decima nota del capitolo. Letta come contesto, non revisionata: progetto completo, esecuzione host rispetto al target, direttive cargo:/cargo:: e MSRV, invalidazione rerun-if-*, OUT_DIR, custom cfg/check-cfg, variabili compilate rispetto a runtime e limiti di linking/cross-compilazione.
+
+Restano i rilievi sugli helper rustdoc di Builder pattern, .await, Send/Sync, Shared state, RwLock/Atomics, prestazioni ed Extension traits, incluso count_where. Revisione tecnica, approvazione dell'utente e promemoria restano conteggi separati.
+
+
+## 2026-11-09 - Rust: Build scripts
+
+### Intervento
+
+Revisionata [[Programmazione/Rust/Pagine/Build scripts|Build scripts]]: **85/183 note principali Rust**, **10/12 di Cargo, Editions e Compatibilita**. Restano **98 note principali**, promemoria separati.
+
+- Ciclo di vita di build.rs, esecuzione anche durante check/test, dipendenze di build separate e differenza host/target.
+- Variabili Cargo, direttive cargo:: rispetto a cargo:, versioni minime, custom cfg atteso rispetto ad attivo.
+- Progetto completo di sei file: input numerico, generatore, libreria, binario e integration test. Codice generato in OUT_DIR e identificativo incorporato separato dall'input d'ambiente.
+- Validazione di intervallo, parser, identificativo ASCII e newline prima di scrivere sorgenti o direttive.
+- Input dichiarati, cambiamento/ripristino dei valori, persistenza degli output e differenza tra nuova esecuzione e riuso.
+- Sette comandi Cargo e tre PowerShell separati; prerequisiti, effetti, ripristino dell'ambiente e risultati attesi.
+- Chiariti env! rispetto a lettura runtime, vecchio eseguibile dopo errore e limiti delle indicazioni su linking nativo/cross-compilazione.
+- Fonti ufficiali, errori comuni, checklist e collegamenti. Frontmatter invariato rispetto a HEAD, incluso status non revisionato.
+- Nessuna nuova nota, modifica a indici, spostamento o redirect.
+
+### Verifica tecnica
+
+- **Rust/Cargo/rustdoc 1.85.0 e 1.99.1**, target **x86_64-pc-windows-gnu**, Node **24.14.0** e Windows PowerShell. Rustfmt e Clippy sulla toolchain 1.99.1.
+- Toolchain gia presenti; nessuna installazione, crate esterna o dipendenza del sito aggiunta.
+- Nuova suite `_Meta/tests/rust-build-scripts.test.mjs`: primo giro **31/32**, **159,1 secondi**. Unico fallimento dovuto all'aspettativa sul testo localizzato dell'errore di file mancante.
+- Sostituito il confronto sul messaggio con il tipo NotFound; controllo mirato file mancante/non UTF-8 **1/1** in **3,3 secondi**. Nessuna modifica agli esempi per questa correzione.
+- Dopo formattazione della suite, regressione Build scripts/Cargo.toml **60/60**, inclusi **32/32** nuovi casi, zero fallimenti/skip, **211,4 secondi**.
+- Totale **56 suite Rust**; le altre cinquantaquattro e gli altri linguaggi non rieseguiti.
+- **16 blocchi estratti**: sei file, sette comandi Cargo e tre PowerShell. Progetto eseguito sulle due toolchain: output, metadata, tre integration test e un doctest. Test Rust interni non sommati ai gruppi Node.
+- Verificati fmt senza riscritture, Clippy, check che esegue lo script e diagnostica verbose.
+- Contatore aggiunto soltanto nelle fixture per distinguere esecuzioni reali da eventi JSON di output riutilizzato. Build invariata, file 32 -> 128 -> 32 e rimozione del cfg, cambiamenti/rimozione della variabile e modifica del solo sorgente Rust.
+- Controprove con input file o variabile non dichiarati: risultati obsoleti; OUT_DIR conserva un file residuo senza cancellazioni generiche.
+- PowerShell eseguito davvero con valore precedente presente/assente e ripristino; nessuna modifica all'ambiente globale. Binario avviato con ambiente runtime diverso conserva il valore incorporato.
+- Input numerici limite, spazi/CRLF, overflow, valori invalidi, file mancante/non UTF-8, identificativi validi/invalidi, lunghezza e tentativi di inserire nuove direttive.
+- Dopo cargo run fallito, nessun output del programma e hash del vecchio binario invariato; il binario obsoleto non viene eseguito.
+- Autodiscovery, build=false, percorso script personalizzato e manifest-path da un'altra directory. env! OUT_DIR nello script rifiutato; custom cfg non dichiarato rilevato anche quando falso; check-cfg da solo non attiva la condizione.
+- Sintassi legacy verificata sulle toolchain disponibili; HOST/TARGET/CARGO_CFG_TARGET_OS/CARGO_MANIFEST_DIR letti durante una build nativa.
+- Cargo offline, CARGO_HOME temporaneo, variabili esterne controllate e processi con timeout. Le prove mtime attendono 1,1 secondi prima dei cambiamenti; nessun timestamp futuro.
+- Cleanup dopo verifica del percorso risolto, parent e prefisso; sorgenti e nota controllati per assenza di modifiche dei test.
+- Limiti: due versioni su un host, non eseguite 1.77/1.80. Nessuna compilazione C/C++ aggiuntiva, integrazione di librerie native esterne, cross-compilazione, proc-macro o CI remota. La coincidenza HOST/TARGET non certifica un target diverso.
+
+### Verifica editoriale e Quartz
+
+- **911 documenti raggiungibili, zero errori e 310 avvisi editoriali**, nessuno nella nota corrente.
+- **9/9 test della trasformazione** superati; build riuscita: **3719 file**, **2003 HTML**, **168 redirect**, **142596 riferimenti verificati**, zero errori.
+- Avvisi noti Quartz su eval e repository Git temporaneo invariati; **7/7 test HTTP**.
+- Due assert della prima verifica browser adattati alla resa reale: apostrofo tipografico e identificativo presente nei blocchi Rust, non come codice inline. Nessuna modifica a nota, HTML o CSS per queste aspettative.
+- Verifica finale Chrome **156.0.8078.81**, desktop **1440x1000** e mobile **390x844**: HTTP 200, nessun errore JavaScript o overflow del documento.
+- **16 blocchi di codice**, quattro scorrevoli su mobile; due tabelle di cinque e sette righe, identificatori e generici preservati.
+- Quattordici screenshot ispezionati in `appunti-rust-build-scripts-qa-jVxPox`. Browser e server QA chiusi; nessuna anteprima persistente o modifica al browser personale.
+- Suite documentata, rapporto editoriale rigenerato e voce Cargo consolidata nello storico, mantenuto a dieci voci senza rimuoverne altre.
+- Nessun commit, push o deploy remoto del vault.
+
+### Prossimo blocco
+
+Proseguire con [[Programmazione/Rust/Pagine/Build profiles|Build profiles]], undicesima nota del capitolo. Letta come contesto, non revisionata: progetto completo, profili dev/release/test/bench e custom, debug info rispetto ad assertions, overflow/panic e test harness, LTO/codegen-units, override e workspace, misurazioni invece di configurazioni presentate come ottimali in generale.
+
+Restano i rilievi sugli helper rustdoc di Builder pattern, .await, Send/Sync, Shared state, RwLock/Atomics, prestazioni ed Extension traits, incluso count_where. Revisione tecnica, approvazione dell'utente e promemoria restano conteggi separati.
+
+## 2026-11-09 - Rust: Build profiles
+
+### Intervento
+
+Revisionata [[Programmazione/Rust/Pagine/Build profiles|Build profiles]]: **86/183 note principali Rust**, **11/12 di Cargo, Editions e Compatibilita**. Restano **97 note principali**, promemoria separati.
+
+- Sostituita l'elencazione sintetica con scelta dei profili, ereditarieta, directory degli artefatti e differenza fra profilo e scopo del comando.
+- Separati debug info, debug assertions, overflow, panic e rimozione dei simboli. Chiarito il limite del test harness rispetto a un eseguibile abort.
+- Laboratorio completo di tre file senza dipendenze, dodici comandi separati e due frammenti opzionali. Profili dev, release, profiling, checked-release e small.
+- Confronto riproducibile di cfg e calcoli espliciti checked/wrapping. Input CLI errati gestiti come Result, non panic.
+- Documentati override per package e strumenti di build, radice del workspace, configurazione esterna, cache/incremental e limiti delle misure.
+- Nessuna ricetta dichiarata ottimale in generale; fat LTO mantenuta come alternativa da confrontare. Fonti ufficiali nelle sezioni.
+- Frontmatter invariato, incluso status non revisionato; nessuno spostamento, modifica all'indice o redirect necessario.
+
+### Verifica tecnica
+
+- Nuova suite `_Meta/tests/rust-build-profiles.test.mjs`, **20 casi**, estrazione dei **17 blocchi** della nota.
+- Rust/Cargo/rustdoc **1.85.0 e 1.99.1**, Windows GNU, Node **24.14.0**. Rustfmt e Clippy su 1.99.1; toolchain esistenti, nessuna installazione.
+- Entrambe le toolchain: eseguiti i cinque profili, i comandi Cargo non-lint, tre unit test e un doctest; controllati artefatti, default dev/release/test/bench e debug info separati dai controlli.
+- Verificato cfg(panic) nel binario small e cfg(panic = "unwind") nel test harness. Il programma abort non viene fatto andare intenzionalmente in panic.
+- Sonde per input errati e limiti u8, overflow ordinario a runtime, effetti di debug_assert disabilitati, assert ordinario attivo in release, config/ambiente/CLI, override nominativo e wildcard, profilo del membro ignorato, build-override e precedenza.
+- Validazioni negative per inherits mancante, profilo sconosciuto e opzioni proibite negli override. LTO off/thin/fat e debug info testuali compilati; nessuna affermazione di miglioramento basata su questi test.
+- Verificata cache Cargo anche con incremental disattivato. Generato un report timings in una directory separata, senza interpretarlo come misura del programma.
+- Primo tentativo nel sandbox: **2/20**, con diciotto errori di accesso alle directory target; nessun errore dei sorgenti dedotto da questo risultato.
+- Esecuzione fuori dal sandbox: **19/20**, **116,6 secondi**; unica aspettativa errata su un warning nascosto da --quiet. Corretta soltanto la prova diagnostica, non la nota.
+- Regressione finale Build profiles/Build scripts: **52/52**, zero fallimenti/skip, **281,8 secondi**.
+- **57 suite Rust** totali; altre cinquantacinque e altri linguaggi non rieseguiti.
+- Fixture temporanee offline, CARGO_HOME isolato, timeout e cleanup limitato al percorso risolto; hash della nota e sorgenti del laboratorio invariati.
+- Nessun benchmark di dimensioni/prestazioni, debugger/profiler reale, cross-compilazione, CI remota, proc macro aggiuntiva o verifica di crash/cleanup del binario abort.
+
+### Verifica editoriale e Quartz
+
+- **911 documenti raggiungibili, zero errori e 309 avvisi editoriali**, nessuno nella nota corrente; rapporto rigenerato. Avvisi ridotti di uno.
+- **9/9 test della trasformazione** e **7/7 test HTTP** dell'anteprima.
+- Build completa riuscita: **3719 file**, **2003 HTML**, **168 redirect**, **142644 riferimenti verificati**, zero errori. Avvisi preesistenti Quartz su eval e repository Git temporaneo invariati.
+- Chrome **156.0.8078.81**, desktop **1440x1000** e mobile **390x844**: HTTP 200, **17 blocchi**, due tabelle da quattro/nove righe, nessun errore JavaScript o overflow del documento.
+- Sei blocchi scorrevoli orizzontalmente su mobile; generici Rust e codice inline preservati. Dieci screenshot ispezionati dei quattordici generati in `appunti-rust-build-profiles-qa-hIr63E`.
+- Browser e server QA chiusi; nessuna modifica a tema, HTML sorgente del generatore o browser personale. HTML pubblici rigenerati, non editati manualmente.
+- README dei test e registro aggiornati, storico Cargo consolidato mantenendo dieci voci. Nessun commit, push o deploy remoto.
+
+### Prossimo blocco
+
+Proseguire con [[Programmazione/Rust/Pagine/Workspace dependencies|Workspace dependencies]], ultima nota del capitolo. Letta come contesto, non revisionata: progetto multi-package completo, ereditarieta esplicita, feature additive e default-features, dipendenze opzionali, resolver e differenza fra centralizzare requisiti e fissare una versione nel lockfile.
+
+Restano i rilievi sugli helper rustdoc di Builder pattern, .await, Send/Sync, Shared state, RwLock/Atomics, prestazioni ed Extension traits, incluso count_where. Revisione tecnica, approvazione dell'utente e promemoria restano conteggi separati.
+
+## 2026-11-10 - Rust: Workspace dependencies e completamento Cargo
+
+### Intervento
+
+Revisionata [[Programmazione/Rust/Pagine/Workspace dependencies|Workspace dependencies]]: **87/183 note principali Rust**, **12/12 di Cargo, Editions e Compatibilita**. Capitolo completato; restano **96 note principali**, promemoria separati.
+
+- Distinte appartenenza al workspace, dichiarazioni centrali, dipendenze del membro, feature e risoluzione nel lockfile.
+- Laboratorio completo di tre package locali, sette file e diciassette comandi separati. Libreria, CLI e consumatore con dipendenza opzionale; metadati e lint condivisi con adesione esplicita.
+- Esempi osservabili di feature additive, unificazione congiunta, selezione del package e configurazioni minime. Chiarito che selezionare tutto il workspace puo abilitare i default della libreria stessa.
+- Separati ruoli di dipendenze normali, build/dev e target-specific, rinomina e base dei percorsi.
+- Esplicitata la differenza di default-features fra edition precedenti alla 2024, comportamento originario 2024 e override disponibile con Rust 1.99.
+- Cargo Book aggiornato ed Edition Guide aggiornata confrontati con la pagina storica della migrazione; matrice verificata sulle toolchain reali invece di applicare indistintamente il vecchio divieto.
+- Conservati i casi d'uso registry/Git e i riferimenti alle librerie precedenti come varianti dichiarate, senza presentarli come parte del laboratorio eseguito.
+- Frontmatter invariato, incluso status non revisionato. Nessuno spostamento, nuova nota, indice o redirect da modificare.
+
+### Verifica tecnica
+
+- Nuova suite `_Meta/tests/rust-workspace-dependencies.test.mjs`: **27 casi**, estrazione dei **24 blocchi** pubblicati.
+- Rust/Cargo/rustdoc **1.85.0 e 1.99.1**, target **x86_64-pc-windows-gnu**, Node **24.14.0**. Rustfmt e Clippy su 1.99.1; nessuna installazione o dipendenza aggiunta.
+- Matrice mirata default-features **4/4**, **4,4 secondi**: in edition 2024 il caso rifiutato da 1.85 funziona su 1.99.1; in edition 2021 l'override false viene ignorato con avviso su entrambe.
+- Tutti i comandi del laboratorio verificati su entrambe, tranne i due strumenti fmt/Clippy eseguiti sulla corrente. Tre configurazioni di esecuzione, metadati, grafo e test della libreria con feature minime e complete.
+- Verificati artefatti Cargo reali e output dei programmi: nessuna compilazione della dipendenza opzionale inattiva, unione congiunta, ripristino della configurazione isolata e default della libreria selezionata come membro.
+- Sonde per adesione mancante, chiave assente, dichiarazione centrale inutilizzata, optional in radice, feature vuote, percorsi, metadati/lint opt-in, dep:, namespace dei cfg, alias, build/dev e target inattivo.
+- Lockfile protetto da --locked; requisito di versione su path controllato da Cargo. Nessuna modifica a lockfile o progetti reali.
+- Primo giro delle tre suite **104/106** in **208,2 secondi**: **79/79** precedenti e **25/27** nuovi. Corretti soltanto due difetti del harness: messaggio diagnostico del lockfile assente e sostituzione che intercettava anche rust-version.
+- Prove mirate corrette **2/2**, **5,5 secondi**. Nuova suite rieseguita integralmente: **27/27**, zero fallimenti/skip, **73,2 secondi**.
+- Complessivamente **106 casi verificati in esecuzioni distinte**: 27 nuovi, 31 Cargo features e 48 Pattern/moduli/workspace. Non dichiarato un secondo giro unico.
+- **58 suite Rust** totali; altre cinquantacinque e altri linguaggi non rieseguiti.
+- Fixture temporanee offline, CARGO_HOME isolato, processi con timeout, cleanup con parent/prefisso verificati e sorgenti/hash della nota invariati.
+- Nessun registry remoto, API delle librerie citate nelle varianti, cross-compilazione, pubblicazione o CI remota. Soglie 1.64/1.74 e intervallo 1.86-1.98 documentali; target_os = "none" verificato solo come condizione inattiva.
+
+### Verifica editoriale e Quartz
+
+- **911 documenti raggiungibili, zero errori e 308 avvisi editoriali**, nessuno nella nota corrente; **9/9 test della trasformazione**.
+- Dopo la verifica visiva, reso piu preciso il titolo "Elementi da distinguere"; codice e comandi invariati. Ricontrollo strutturale **1/1**, rapporto rigenerato e build completa ripetuta.
+- Build finale: **3719 file**, **2003 HTML**, **168 redirect**, **142707 riferimenti verificati**, zero errori. Restano gli avvisi noti su eval e repository Git temporaneo.
+- **7/7 test HTTP** dell'anteprima superati anche sulla build finale.
+- Chrome **157.0.8103.39**, desktop **1440x1000** e mobile **390x844**: HTTP 200, **24 blocchi** di codice e tabelle da cinque/tre righe. Quindici blocchi scorrevoli su mobile, nessun errore JavaScript o overflow del documento.
+- Dieci screenshot ispezionati in `appunti-rust-workspace-deps-qa-0O5FN7`, piu due screenshot iniziali della build finale in `appunti-rust-workspace-deps-qa-fV91J7`. Testo, codice e tabelle leggibili.
+- Rilievo separato: in un contesto desktop nuovo, l'apertura della nota porta lo scroll verticale a **766 px**; mobile **0 px**. La sonda registra una chiamata scrollIntoView sulla voce Explorer attiva. Il plugin usa quella chiamata in `site/.quartz/plugins/explorer/src/components/scripts/explorer.inline.ts:297`.
+- Per ispezionare il titolo desktop, la QA torna esplicitamente in cima dopo aver misurato lo spostamento. Questo non corregge il comportamento del sito: nessun plugin, CSS o JavaScript di produzione e stato modificato. Registrata la necessita di limitare lo scroll al contenitore del menu.
+- Browser e server QA chiusi; nessun cambio al browser personale o anteprima persistente. HTML rigenerati, mai editati manualmente.
+- README dei test, registro e storico aggiornati; storico mantenuto a dieci voci. Nessun commit, push o deploy remoto.
+
+### Prossimo blocco
+
+Iniziare **Concorrenza e Asincronia** da [[Programmazione/Rust/Pagine/Threads|Threads]]. Letta come contesto, non revisionata: esempi completi, distinzione concorrenza/parallelismo, spawn/join e panic, move, Send/'static, thread scoped e risorse. Il rilievo sullo scroll Explorer resta un intervento di infrastruttura separato.
+
+Restano i rilievi sugli helper rustdoc di Builder pattern, .await, Send/Sync, Shared state, RwLock/Atomics, prestazioni ed Extension traits, incluso count_where. Revisione tecnica, approvazione dell'utente e promemoria restano conteggi separati.
+
+## 2026-11-10 - Rust: Threads
+
+### Intervento
+
+Revisionata [[Programmazione/Rust/Pagine/Threads|Threads]], prima di **13 note di Concorrenza e Asincronia**. Avanzamento **88/183 note principali Rust**, **95 restanti**; promemoria separati.
+
+- Distinti concorrenza e parallelismo, scheduling e limiti della memory safety.
+- Chiariti FnOnce, Send del lavoro e del risultato, bound static, move e trasferimento dei riferimenti senza estensione della durata.
+- Esplicitati consumo di JoinHandle, sincronizzazione, detach senza cancellazione e termine del processo quando termina main.
+- Separati errori OS, errori applicativi e panic; esempio di Result annidato e panic osservabile con hook attivo.
+- Builder completo con nome, stack richiesto e io::Result, senza confondere il nome nullo con un errore OS.
+- Somma di blocchi con ownership separata, limite di quattro worker, overflow controllato e attesa esplicita di tutti i risultati prima di propagare errori. Conservato il caso d'uso precedente, senza thread illimitati o sum con overflow implicito.
+- Esempio scoped con prestiti mutabili disgiunti; documentata la distinzione 1.99.1 fra attesa automatica delle funzioni e join esplicito, anche per i distruttori thread-local.
+- Sei programmi autonomi e due controesempi espliciti; collegamenti alle note di comunicazione, pool, shutdown e stato condiviso, senza duplicarne la trattazione.
+- YAML invariato, incluso status non revisionato. Nessuna nuova nota, spostamento, modifica a indici o redirect.
+
+### Verifica tecnica
+
+- Nuova suite `_Meta/tests/rust-threads.test.mjs`: **30 casi**, tutti gli **otto blocchi** Rust estratti dal Markdown originale.
+- Rust **1.99.1**, edition **2024**, **x86_64-pc-windows-gnu**, Node **24.14.0**; toolchain esistente, nessuna installazione o dipendenza aggiunta.
+- Prima esecuzione **30/30**, **22,0 secondi**. Regressione con Mutex/RwLock e Rc/Arc: **152/152**, zero fallimenti/skip, **109,2 secondi**; comprende 30 nuovi casi e 122 precedenti.
+- Verificati output e asserzioni dei sei programmi, diagnostiche E0597/E0277 dei controesempi, correzioni, doppio join, dati mossi, Send del ritorno e prestiti sovrapposti.
+- Somma controllata su input vuoti, limite, segni, overflow parziale/finale, compensazione tardiva e panic; overflow verificato anche con ottimizzazione e overflow-checks disabilitati.
+- Sonde deterministiche per scope automatico/manuale, detach, processo che termina con worker attivo, is_finished e parallelismo stimato. Nessun ordinamento temporale affidato a sleep.
+- **59 suite Rust** totali: altre 56 e altri linguaggi non rieseguiti. Nessun registry, pool, runtime async, CI remota o benchmark.
+- Non testati esaurimento risorse OS, stack overflow, deadlock, panic=abort, distruttori thread-local o dimensione effettiva dello stack. Le relative spiegazioni derivano dalle fonti ufficiali, non da prove sperimentali qui eseguite.
+- Fixture temporanee e processi con timeout; cleanup vincolato a parent/prefisso e byte della nota confrontati dopo i test.
+
+### Verifica editoriale
+
+- Rapporto rigenerato: **911 documenti, tutti raggiungibili, zero errori e 307 avvisi editoriali**, nessuno nella nota corrente. Un avviso in meno rispetto al blocco precedente.
+- **9/9 test della trasformazione** superati; verifica tecnica degli esempi distinta da questi controlli.
+
+### Verifica Quartz
+
+- Build completa riuscita: **3719 file**, **2003 HTML**, **168 redirect**, **142773 riferimenti verificati**, zero errori; circa cinque minuti in sandbox. Restano gli avvisi noti su eval e repository Git temporaneo.
+- Primo tentativo HTTP bloccato dalla sandbox con EACCES su loopback, senza modificare i test. Riesecuzione autorizzata fuori sandbox: **7/7**, zero fallimenti/skip.
+- Anche Chrome inizialmente bloccato da ERR_NETWORK_ACCESS_DENIED; browser e server chiusi nel cleanup. Verifica rieseguita fuori sandbox, solo anteprima locale temporanea.
+- Chrome **157.0.8103.39**, desktop **1440x1000** e mobile **390x844**: HTTP 200, otto blocchi Rust, nessun errore console/JavaScript o overflow orizzontale del documento.
+- Verificato sul contenitore effettivo del codice: otto blocchi scorrevoli su mobile, nessuno su desktop; scrollLeft cambia realmente nei blocchi mobile. La prima misura sul pre esterno non rilevava il contenitore interno e non e stata usata come risultato finale.
+- Quattro screenshot finali ispezionati in `appunti-rust-threads-qa-iynOoM`, dopo quattro immagini preliminari in `appunti-rust-threads-qa-03XDZ5`: titolo, testo e codice leggibili, senza sovrapposizioni.
+- Resta lo spostamento iniziale del documento associato all'Explorer: **236 px su desktop**, **0 px su mobile** per questa nota. La QA torna esplicitamente in cima per ispezionare il titolo; non e una correzione al sito.
+- Tutti i browser e server temporanei chiusi. Nessuna modifica a plugin/CSS, browser personale o anteprima persistente. HTML generati, non modificati manualmente.
+- README, registro e storico aggiornati; storico a dieci voci e git diff --check senza errori. Nessun commit, push o deploy remoto.
+
+### Prossimo blocco
+
+Proseguire con [[Programmazione/Rust/Pagine/Message passing|Message passing]]: capacita e backpressure, chiusura dei canali, errori di invio/ricezione, ownership e protocollo di arresto. Letta come contesto, non revisionata.
+
+Restano il problema separato di scroll Explorer Quartz e i rilievi sugli helper rustdoc di Builder pattern, .await, Send/Sync, Shared state, RwLock/Atomics, prestazioni ed Extension traits, incluso count_where. Nessun commit o push.
+
+## 2026-11-10 - Rust: Message passing
+
+### Intervento
+
+Revisionata [[Programmazione/Rust/Pagine/Message passing|Message passing]], seconda di **13 note di Concorrenza e Asincronia**. Avanzamento **89/183 note principali Rust**, **94 restanti**; promemoria separati.
+
+- Distinti endpoint MPSC, clonazione dei sender, receiver unico, ownership dei messaggi e ordine FIFO rispetto all'interleaving concorrente.
+- Chiariti unbounded, bounded e rendezvous; capacita in messaggi anziche byte e differenza fra invio disaccoppiato e API async.
+- Spiegati rilascio di tutti i sender, svuotamento del buffer, ricevitore abbandonato e differenza fra Empty, Timeout e Disconnected.
+- Separati invio riuscito, ricezione e completamento del lavoro; risposta applicativa esplicita e timeout che non cancella il produttore.
+- Programmi completi per trasferimento, stati del canale, backpressure con recupero del valore, rendezvous, produttori multipli, worker Work/Stop e richiesta/risposta.
+- Due controesempi espliciti su valore mosso e Receiver non clonabile. Distinti Send dei messaggi e utilizzo di un canale nello stesso thread.
+- Conservato e completato il protocollo Work/Stop precedente, con coda limitata e join; chiariti chiusura senza Stop e comandi successivi a Stop.
+- Frontmatter invariato, incluso status non revisionato; nessuna nuova nota, modifica a indici, percorsi o redirect.
+
+### Verifica tecnica
+
+- Nuova suite `_Meta/tests/rust-message-passing.test.mjs`: **37 casi**, nove blocchi estratti, sette programmi validi e due controesempi E0382/E0599.
+- Rust **1.99.1**, edition **2024**, **x86_64-pc-windows-gnu**, Node **24.14.0**; toolchain esistente, nessuna installazione o crate esterna.
+- Prima esecuzione **36/37** in **26,9 secondi**: unico fallimento nel test editoriale che assumeva nodi table GFM nel parser comune. Corretta l'assunzione, non il contenuto Rust. La tabella e verificata nell'HTML generato.
+- Regressione con Threads **67/67**, zero fallimenti/skip, **52,5 secondi**: 37 nuovi casi e 30 della nota precedente.
+- Verificati output/assert dei programmi, SendError su entrambi i canali, sender clonati, try_iter, distruzione dei messaggi mai letti, coda piena e disconnessione, rendezvous senza completamento del lavoro e timeout senza cancellazione.
+- Worker provato con chiusura senza Stop, comando Stop anticipato, canale vuoto e capacita zero/uno. Richiesta con testo Unicode e receiver di risposta abbandonato prima dell'invio.
+- Controllati clone del sender senza Clone del messaggio, Receiver Send ma non Sync, sender Send/Sync con String e non Send con Rc, canale Rc nello stesso thread e panic del produttore distinto dalla disconnessione.
+- Sonde senza sleep; timeout protettivi sui processi e protocolli. Il caso Timeout non dipende dalla velocita dello scheduler. Nessuna pretesa di osservare lo stato interno di blocco OS.
+- **60 suite Rust** totali; altre 58 e altri linguaggi non rieseguiti. Nessun benchmark, esaurimento risorse, deadlock provocato, pool, async, persistenza, crash recovery o CI remota.
+- Fixture temporanee con cleanup vincolato a parent/prefisso; byte della nota invariati durante i test.
+
+### Verifica editoriale
+
+- Rapporto rigenerato: **911 documenti raggiungibili, zero errori e 306 avvisi editoriali**, nessuno nella nota corrente.
+- **9/9 test della trasformazione** superati. Un avviso editoriale in meno rispetto al blocco precedente.
+
+### Verifica Quartz
+
+- Build completa riuscita: **3719 file**, **2003 HTML**, **168 redirect**, **142830 riferimenti verificati**, zero errori; circa cinque minuti in sandbox. Restano gli avvisi noti su eval e repository Git temporaneo.
+- **7/7 test HTTP** dell'anteprima superati. Connessioni loopback e browser eseguiti con autorizzazione fuori sandbox per la restrizione gia osservata nel blocco precedente.
+- Chrome **157.0.8103.39**, desktop **1440x1000** e mobile **390x844**: HTTP 200, nove blocchi Rust e tabella con tre righe dati. Nessun errore console/JavaScript o overflow del documento.
+- Otto blocchi di codice scorrevoli su mobile, nessuno su desktop; scrollLeft verificato sui contenitori reali del codice.
+- Sei screenshot ispezionati in `appunti-rust-message-qa-k45rh0`: titolo, tabella e worker su entrambi i viewport. La tabella mobile usa il contenitore orizzontale del tema, senza allargare il documento.
+- Controllo aggiuntivo in `appunti-rust-message-qa-BB6b6h`: tabella mobile larga 397 px nel contenitore da 358 px, scroll effettivo di 71 px; screenshot `mobile-table-right.png` ispezionato per verificare la terza colonna. Nessun CSS o plugin modificato.
+- Resta lo scroll iniziale Explorer: **237 px desktop**, **0 px mobile** per questa nota. La QA torna esplicitamente in cima per leggere il titolo; non modifica il comportamento del sito.
+- Browser e server QA chiusi, nessun cambio al browser personale o anteprima persistente. HTML generati, non editati manualmente.
+- README, registro e storico aggiornati; storico mantenuto a dieci voci. Nessun commit, push o deploy remoto.
+
+### Prossimo blocco
+
+Proseguire con [[Programmazione/Rust/Pagine/Shared state|Shared state]]: ownership condivisa, scelta delle primitive, scope dei lock, errori e poisoning, risultati e attesa dei worker. Letta come contesto, non revisionata.
+
+Restano il problema separato di scroll Explorer Quartz e i rilievi sugli helper rustdoc di Builder pattern, .await, Send/Sync, Shared state, RwLock/Atomics, prestazioni ed Extension traits, incluso count_where. Nessun commit o push.
+
+## 2026-11-10 - Rust: Shared state
+
+### Intervento
+
+Revisionata [[Programmazione/Rust/Pagine/Shared state|Shared state]], terza di **13 note di Concorrenza e Asincronia**. Avanzamento **90/183 note principali Rust**, **93 restanti**; promemoria separati.
+
+- Corretta l'affermazione secondo cui condividere dati richiederebbe sempre Arc e sincronizzazione esplicita: esempio di lettura tramite prestiti scoped.
+- Distinte ownership, permessi Send/Sync e invarianti applicative; Arc non rende thread-safe il contenuto.
+- Completato update con parametro Mutex minimo, worker atteso, gestione fallibile e snapshot posseduto prima dell'I/O.
+- Contatore con incremento indivisibile, overflow controllato, attesa di tutti gli handle prima degli errori e binding finale indipendente dalla differenza dei temporanei fra edition.
+- Inventario con disponibilita e prenotazioni sotto un unico lock: controllo prima delle modifiche, errori di dominio e snapshot coerente.
+- RwLock spiegato tramite configurazione sostituibile e snapshot obsoleto; nessuna promessa di prestazioni o priorita dei writer.
+- Contatore atomico indipendente con Relaxed, attesa dei worker, wrapping e limite del ragionamento quando un flag pubblica altri dati.
+- Controesempio check-then-act compilabile: accessi tutti protetti ma risultato logicamente errato. Barriera soltanto per rendere deterministico l'interleaving.
+- Chiariti poisoning come segnale consultivo, assenza di rollback automatico, recupero della guard distinto dalla riparazione, OnceLock/LazyLock e scelta del mutex in async.
+- Frontmatter invariato, incluso status non revisionato; nessuna nuova nota, modifica a indici, percorsi o redirect.
+- Fonti ufficiali std/Book/Edition Guide e documentazione Tokio 1.54.1 consultate. La nota resta centrata sul progetto dello stato; dettagli delle primitive collegati alle pagine dedicate.
+
+### Verifica tecnica
+
+- Nuova suite `_Meta/tests/rust-shared-state.test.mjs`: **31 casi**, sette blocchi estratti integralmente. Sei esempi validi e un controesempio logico intenzionale, non un compile-fail.
+- Rust **1.99.1**, edition **2024**, **x86_64-pc-windows-gnu**, Node **24.14.0**; contatore eseguito anche in edition **2021** con lo stesso compilatore.
+- Prima esecuzione **31/31**, **23,7 secondi**. Regressione con Mutex/RwLock e Threads: **113/113**, zero fallimenti/skip, **76,6 secondi**; comprende 31 nuovi casi e 82 precedenti.
+- Verificati prestiti senza Arc, update locale, stringhe vuote/Unicode, snapshot indipendenti, rilascio delle guard, rifiuto del poisoning e propagazione del panic del worker.
+- Contatore provato con zero, limiti, diverse combinazioni worker/incrementi e overflow in release con overflow-checks disabilitati.
+- Inventario provato con prenotazione esatta, rifiuto invariato, quantita zero, limite u32, ultimo elemento conteso e poisoning. Overflow difensivo verificato su stato sintetico non raggiungibile tramite i soli new/reserve.
+- Sonda separata dimostra che Result Err non ripristina lo stato e non causa automaticamente poisoning.
+- RwLock verificato con snapshot e try_write durante read guard; nessun deadlock provocato.
+- Atomici: valore precedente di fetch_add, wrapping e aggiornamento perso con load/store separati. Controesempio check-then-act ripetuto venti volte e confrontato con la correzione.
+- Nessun test usa sleep per stabilire l'interleaving. Fixture temporanee con timeout, cleanup vincolato a parent/prefisso e confronto dei byte della nota.
+- **61 suite Rust** totali; altre 58 e altri linguaggi non rieseguiti. Nessuna installazione, crate esterna, rete nei test Rust, CI remota o modifica globale.
+- Non verificati tutti gli interleaving, altri target/compilatori, benchmark, esaurimento OS, panic=abort, persistenza o transazioni con database. Nessun runtime async: la regressione precedente controlla soltanto i bound dei future con/senza guard.
+
+### Verifica editoriale
+
+- Rapporto rigenerato: **911 documenti raggiungibili, zero errori e 305 avvisi editoriali**, nessuno nella nota corrente.
+- **9/9 test della trasformazione** superati. Un avviso in meno rispetto al blocco precedente.
+
+### Verifica Quartz
+
+- Build completa riuscita: **3719 file**, **2003 HTML**, **168 redirect**, **142892 riferimenti verificati**, zero errori; circa cinque minuti. Restano gli avvisi noti su eval e repository Git temporaneo.
+- **7/7 test HTTP** dell'anteprima superati. Loopback e browser eseguiti con autorizzazione fuori sandbox per la restrizione gia osservata nei blocchi precedenti.
+- Chrome **157.0.8103.39**, desktop **1440x1000** e mobile **390x844**: HTTP 200, sette blocchi Rust, nessun errore console/JavaScript e nessun overflow orizzontale del documento.
+- Tutti i sette blocchi hanno scorrimento orizzontale funzionante su mobile, nessuno lo richiede su desktop; scrollLeft verificato sui contenitori reali del codice.
+- Quattro screenshot ispezionati in `appunti-rust-shared-state-qa-MEkEgN`: titolo e inventario su entrambi i viewport, senza sovrapposizioni. La pagina gia generata e stata controllata mentre Quartz terminava gli altri output; la successiva validazione completa della build e passata.
+- Resta lo scroll iniziale Explorer: **237 px desktop**, **0 px mobile**. La QA torna esplicitamente in cima per leggere il titolo; non corregge il comportamento del sito.
+- Browser e server temporanei chiusi, nessuna modifica a CSS/plugin, browser personale o anteprima persistente. HTML generati, non editati manualmente.
+- README, registro e storico aggiornati; storico mantenuto a dieci voci. Nessun commit, push o deploy remoto.
+
+### Prossimo blocco
+
+Proseguire con [[Programmazione/Rust/Pagine/Send e Sync Traits|Send e Sync Traits]]: bound, auto traits, catture dei thread, future Send e contratti delle implementazioni unsafe. Letta come contesto, non revisionata.
+
+Restano il problema separato di scroll Explorer Quartz e i rilievi sugli helper rustdoc di Builder pattern, .await, Send/Sync, RwLock/Atomics, prestazioni ed Extension traits, incluso count_where. Shared state ora contiene programmi completi testati; le vecchie voci del registro restano storiche. Nessun commit o push.
+
+## 2026-11-10 - Rust: Send e Sync Traits
+
+### Intervento
+
+Revisionata [[Programmazione/Rust/Pagine/Send e Sync Traits|Send e Sync Traits]], quarta di **13 note di Concorrenza e Asincronia**. Avanzamento **91/183 note principali Rust**, **92 restanti**; promemoria separati.
+
+- Distinti Send, Sync, mutazione, durata dei prestiti e correttezza del protocollo; esplicitati i bound di riferimenti condivisi e mutabili.
+- Spiegati auto trait dei campi e conseguenze sui wrapper generici, senza derive inesistenti. Tabella dei tipi comuni e condizioni sul contenuto.
+- Corretto il divieto generico di usare RefCell nei thread: trasferimento consentito con contenuto Send, condivisione dei riferimenti rifiutata.
+- Completato spawn_work con closure eseguita, handle restituito, join e bound separati sul risultato.
+- Rimosso il falso esempio con let underscore che non forza la cattura; controesempio Rc usa realmente drop(data).
+- Esplicitati i bound necessari nella conversione in trait object, senza imporre Sync quando basta Send.
+- Helper requires_send restituisce il future senza eseguirlo; scopo dichiarato come controllo di tipo. Distinti future Send, output Send, catture iniziali e valori conservati attraverso await.
+- Chiariti contratto di tokio::spawn anche su runtime a thread singolo e uso di un contesto locale appropriato; nessun runtime richiesto dagli esempi.
+- Negative impl identificate come instabili nella baseline; esempio stable di marker PhantomData e limiti rispetto a risorse native.
+- Unsafe impl trattati come contratti da dimostrare, non come workaround; nessun wrapper raw pointer presentato come automaticamente sicuro.
+- Frontmatter invariato, incluso status non revisionato. Nessuna nuova nota, modifica a indice, percorso o redirect.
+- Fonti ufficiali std, Reference, Rustonomicon, Unstable Book e documentazione Tokio 1.54.1 consultate.
+
+### Verifica tecnica
+
+- Nuova suite `_Meta/tests/rust-send-sync.test.mjs`: **64 casi**, tutti i dieci blocchi Rust estratti dal Markdown. Sette programmi validi e tre controesempi, due con E0277 e uno con diagnostica specifica del future non Send.
+- Rust **1.99.1**, edition **2024**, **x86_64-pc-windows-gnu**, Node **24.14.0**; toolchain esistente, nessuna installazione o dipendenza aggiunta.
+- Prima esecuzione **64/64**, **26,1 secondi**. Regressione con Mutex/RwLock e Threads **146/146**, zero fallimenti/skip, **84,0 secondi**; comprende 64 nuovi casi e 82 precedenti.
+- Matrice di 32 sonde: Cell/RefCell, Rc/Arc, Mutex/RwLock, puntatori raw, MutexGuard, riferimenti condivisi/mutabili, Vec e Box.
+- Verificati auto trait dei wrapper, risultato del thread non Send, prestito non static, effettiva esecuzione del lavoro su un thread diverso, perdita del bound nel trait object e cattura Rc rifiutata.
+- Confermato che let underscore non forza la cattura della variabile Rc in una closure move; il mittente puo ancora usarla. RefCell realmente trasferita non puo invece essere riutilizzata.
+- Prestito mutabile scoped di Cell accettato senza Sync; prestito condiviso di RefCell rifiutato nonostante la durata corretta.
+- Future: controllo del tipo senza esecuzione del corpo, poll esplicito che produce 5, Rc attraverso await, cattura esterna senza await e parametro Rc prima del primo poll.
+- Verificato un future Send che produce Rc, poi rifiutato aggiungendo il bound Send sull'output. Provata anche una RefCell posseduta dal future.
+- Marker LocalToken controllato per entrambi gli auto trait; dimensione/allineamento PhantomData, E0658 per negative impl su stable e derive Send inesistente.
+- Nessun test usa sleep per stabilire interleaving. Fixture temporanee con timeout, cleanup vincolato a parent/prefisso e confronto dei byte della nota.
+- **62 suite Rust** totali; altre 59 e altri linguaggi non rieseguiti. Nessuna rete o crate esterna nei test Rust, nessuna CI remota.
+- Limiti: un solo compilatore/target, nessuna esecuzione Tokio/LocalSet, migrazione di task, FFI, benchmark, esaurimento OS o deadlock provocato. Il polling delle sonde riguarda future immediatamente pronti, non un executor general-purpose.
+- Nessuna soundness di unsafe impl certificata da test o compilazione. La nota distingue esplicitamente questa responsabilita dai controlli degli auto trait.
+
+### Verifica editoriale
+
+- Rapporto rigenerato: **911 documenti raggiungibili, zero errori e 304 avvisi editoriali**, nessuno nella nota corrente.
+- **9/9 test della trasformazione** superati; un avviso in meno rispetto al blocco precedente.
+
+### Verifica Quartz
+
+- Build completa riuscita: **3719 file**, **2003 HTML**, **168 redirect**, **142966 riferimenti verificati**, zero errori; circa cinque minuti. Restano gli avvisi noti su eval e repository Git temporaneo.
+- **7/7 test HTTP** dell'anteprima superati. Connessioni loopback e browser eseguiti con autorizzazione fuori sandbox per la restrizione gia osservata.
+- Chrome **157.0.8103.39**, desktop **1440x1000** e mobile **390x844**: HTTP 200, dieci blocchi Rust e tabella di nove righe, nessun errore console/JavaScript o overflow orizzontale del documento.
+- Dieci blocchi scorrevoli su mobile, nessuno su desktop; scrollLeft verificato sui contenitori reali. La tabella mobile avvolge il testo e il contenitore consente i restanti 5 px di scorrimento.
+- Sette screenshot ispezionati in `appunti-rust-send-sync-qa-YJHQ7t`: titolo, tabella e future su entrambi i viewport, piu tabella mobile spostata a destra. Nessuna sovrapposizione nelle viste controllate.
+- Pagina gia generata verificata mentre Quartz terminava gli altri output; successiva validazione completa della build passata.
+- Resta lo scroll iniziale Explorer: **236 px desktop**, **0 px mobile**. La QA torna in cima per leggere il titolo, senza correggere il plugin.
+- Browser e server temporanei chiusi. Nessun cambio a CSS/plugin, browser personale o anteprima persistente. HTML generati, non editati manualmente.
+- README, registro e storico aggiornati; storico mantenuto a dieci voci. Nessun commit, push o deploy remoto.
+
+### Prossimo blocco
+
+Proseguire con [[Programmazione/Rust/Pagine/Mutex RwLock e Atomics|Mutex, RwLock e Atomics]]: confronto fra primitive, ordering, flag, operazioni composte e prestazioni. Letta come contesto, non revisionata; evitare di duplicare la nota gia rivista su Mutex T e RwLock T.
+
+Restano il problema separato di scroll Explorer Quartz e i rilievi sugli helper rustdoc di Builder pattern, .await, RwLock/Atomics, prestazioni ed Extension traits, incluso count_where. Gli helper di Send/Sync ora hanno scopi espliciti e test dedicati; le vecchie voci del registro restano storiche. Nessun commit o push.
+
+## 2026-11-10 - Rust: Mutex, RwLock e Atomics
+
+### Intervento
+
+Revisionata [[Programmazione/Rust/Pagine/Mutex RwLock e Atomics|Mutex, RwLock e Atomics]], quinta di **13 note di Concorrenza e Asincronia**. Avanzamento **92/183 note principali Rust**, **91 restanti**; promemoria separati.
+
+- Confronto fra primitive basato sull'invariante da proteggere, senza promettere accelerazioni automatiche con RwLock o atomici. Collegamento alla nota sui lock per non duplicarne il catalogo.
+- Completato l'esempio Mutex/RwLock: worker, join, snapshot e separazione fra guard di lettura e scrittura.
+- Chiariti risultati di load, store, fetch_add, swap e CAS; tabella dei cinque ordering, combinazioni ammesse e significato distinto di successo/fallimento.
+- StopFlag completo: Relaxed sufficiente per il solo segnale cooperativo; non pubblica payload, non risveglia un thread bloccato e non conferma la terminazione.
+- Pubblicazione a produttore unico: risultato atomico, flag Release/Acquire, lettura prima del join e nessun reset. Attesa limitata con yield_now, senza presentarla come soluzione generale; il timeout non cancella il writer.
+- Quota con compare_exchange_weak, gestione dello zero e retry sul valore osservato; variante try_update con callback ripetibile.
+- Baseline Rust 1.99.1: try_update stabile da 1.95, fetch_update deprecato da 1.99 ma disponibile per compatibilita. Non retrodatata la nuova API agli esempi destinati a MSRV precedenti.
+- Distinti lock-free e wait-free, atomicita del puntatore e durata del pointee, ABA e ordinamento. Fence e algoritmi unsafe richiedono un protocollo dimostrato.
+- Controesempio deterministico: due load/store SeqCst perdono un incremento. Separato il compile-fail per load Release da un algoritmo compilabile ma scorretto.
+- Frontmatter invariato, incluso status non revisionato. Nessuna nuova nota, modifica a indice, percorso o redirect.
+- Fonti ufficiali std e Rustonomicon consultate; riferimenti vicini alle affermazioni dipendenti da API/versione.
+
+### Verifica tecnica
+
+- Nuova suite `_Meta/tests/rust-atomics.test.mjs`: **45 casi**, tutti gli otto blocchi Rust estratti dal Markdown. Sei esempi corretti, un controesempio logico intenzionale e un compile-fail.
+- Rust **1.99.1**, edition **2024**, **x86_64-pc-windows-gnu**, Node **24.14.0**; toolchain esistente, nessuna installazione o dipendenza aggiunta.
+- Prima esecuzione **45/45**, **29,7 secondi**. Regressione con Mutex/RwLock e Shared state **128/128**, zero fallimenti/skip, **95,6 secondi**.
+- Verificati ordering validi per load/store/RMW e le 15 coppie CAS ammesse dalla baseline; ordering invalidi controllati sia dal lint sia a runtime con black_box.
+- Provati wrapping con overflow checks attivi, valore precedente delle operazioni e sequenza ABA sul solo valore, senza simulare la sicurezza della memoria di un puntatore.
+- StopFlag provato prima del lavoro, senza stop, con stop ripetuto e attraverso Arc; pubblicazione con valori limite e trenta istanze nuove in build ottimizzata.
+- CAS e try_update provati con quota zero, usize massimo e contesa fra otto worker con quote diverse.
+- Callback try_update: Some/None, retry forzato con scrittura concorrente logica nel callback e panic senza poisoning. Non dichiarati osservati fallimenti spurii hardware.
+- Deprecazione di fetch_update verificata con -D deprecated e compatibilita con -A deprecated.
+- Incremento perso SeqCst riprodotto venti volte con Barrier e confrontato con fetch_add; nessun sleep usato per stabilire interleaving.
+- Fixture temporanee con timeout, cleanup vincolato a parent/prefisso e confronto dei byte della nota.
+- **63 suite Rust** totali; altre 60 e altri linguaggi non rieseguiti. Nessuna rete o crate esterna nei test Rust, nessuna CI remota.
+- Limiti: un solo compilatore/target; nessun benchmark, model checker, esecuzione su architetture weakly ordered, Tokio o cross-compilazione. Il minimo 1.95 di try_update e documentato, non testato con quella toolchain.
+- I test non dimostrano tutti gli interleaving, la soundness di algoritmi unsafe o le garanzie di progresso; gli esempi non introducono memoria non atomica condivisa.
+
+### Verifica editoriale
+
+- Rapporto rigenerato: **911 documenti raggiungibili, zero errori e 303 avvisi editoriali**.
+- **9/9 test della trasformazione** superati; un avviso in meno rispetto al blocco precedente.
+
+### Verifica Quartz
+
+- Build completa riuscita: **3719 file**, **2003 HTML**, **168 redirect**, **143033 riferimenti verificati**, zero errori. Restano gli avvisi noti su eval e repository Git temporaneo.
+- **7/7 test HTTP** dell'anteprima superati. Connessioni loopback e browser eseguiti con autorizzazione fuori sandbox per la restrizione gia osservata.
+- Chrome **157.0.8103.39**, desktop **1440x1000** e mobile **390x844**: HTTP 200, otto blocchi Rust e tabella di cinque righe, nessun errore console/JavaScript o overflow orizzontale del documento.
+- Tutti gli otto blocchi scorrevoli su mobile, nessuno su desktop; scrollLeft verificato sui contenitori reali. La tabella mobile avvolge il testo e resta nei 358 px disponibili.
+- Sei screenshot ispezionati in `appunti-rust-atomics-qa-8rT6NF`: titolo, tabella e pubblicazione su entrambi i viewport. Nessuna sovrapposizione nelle viste controllate.
+- Resta lo scroll iniziale Explorer: **237 px desktop**, **0 px mobile**. La QA torna in cima per leggere il titolo, senza correggere il plugin.
+- Browser e server temporanei chiusi. Nessun cambio a CSS/plugin, browser personale o anteprima persistente. HTML generati, non editati manualmente.
+- README, registro e storico aggiornati; storico mantenuto a dieci voci. Nessun commit, push o deploy remoto.
+
+### Prossimo blocco
+
+Proseguire con [[Programmazione/Rust/Pagine/Rayon e parallel iterators|Rayon e parallel iterators]]: parallelismo dati, ordine dei risultati, riduzioni, configurazione del pool e costi. Letta come contesto, non revisionata.
+
+Restano il problema separato di scroll Explorer Quartz e i rilievi sugli helper rustdoc di Builder pattern, .await, prestazioni ed Extension traits, incluso count_where. Gli esempi di RwLock/Atomics ora sono completi e hanno test dedicati; le vecchie voci del registro restano storiche. Nessun commit o push.
+
+## 2026-11-10 - Rust: Rayon e parallel iterators
+
+### Intervento
+
+Revisionata [[Programmazione/Rust/Pagine/Rayon e parallel iterators|Rayon e parallel iterators]], sesta di **13 note di Concorrenza e Asincronia**. Avanzamento **93/183 note principali Rust**, **90 restanti**; promemoria separati.
+
+- Sostituiti frammenti e API dimostrative incomplete con un manifest e programmi autonomi; preservati tutti i temi della nota precedente.
+- Baseline esplicita Rayon 1.12.0 e Rust 1.99.1, edition 2024; distinta dipendenza diretta esatta da lock delle transitive.
+- Spiegati work stealing, job distinti dai thread, pipeline lazy, consumatori sincroni e prestiti non necessariamente static.
+- Tabella di par_iter, par_iter_mut e into_par_iter per slice/Vec; chiariti bound degli elementi e Fn + Send + Sync delle closure.
+- Distinti ordine logico della raccolta ed effetti delle closure. Filter perde indexed ma non l'ordine relativo; enumerate prima del filtro conserva gli indici originali.
+- Completata normalize_all con risultato, duplicati e input invariato; precisati limiti Unicode senza duplicare la teoria degli iteratori.
+- Esempio fold/reduce con conteggi locali, identita neutra e associativita; distinta la semantica dal fold sequenziale.
+- Parsing fallibile e try_for_each: errore non necessariamente primo in ordine, assenza di vettore parziale e rollback, alternativa del report completo.
+- Pool dedicato e join con prestiti, propagazione del panic e nessuna garanzia di thread distinti; riuso del pool e inizializzazione globale unica.
+- Aggiunti granularita, chunk, sort, bridge, costi delle attese bloccanti e rischio di deadlock fra job.
+- Due controesempi completi dichiarati non compilabili: cattura mutabile e enumerate dopo filter.
+- Fonti ufficiali Rayon versionate e FAQ del tag consultate. Frontmatter invariato, incluso status non revisionato; nessun cambio a indice, percorso o redirect.
+
+### Verifica tecnica
+
+- Nuova suite `_Meta/tests/rust-rayon.test.mjs`: **37 casi**, manifest e tutti gli otto programmi estratti dal Markdown. Sei validi e due compile-fail, E0596 ed E0599.
+- Rust **1.99.1**, edition **2024**, **x86_64-pc-windows-gnu**, Node **24.14.0**; toolchain esistente.
+- Dipendenze risolte: Rayon **1.12.0**, rayon-core **1.13.0**, crossbeam-deque **0.8.8**, crossbeam-epoch **0.9.21**, crossbeam-utils **0.8.23**, either **1.19.0**.
+- Cache dedicata `C:/Users/SE-Luca Bellini/AppData/Local/Temp/appunti-rayon-cache-20261110`. Nessuna dipendenza npm o configurazione Cargo personale modificata.
+- Il fetch in sandbox e fallito per DNS; un secondo tentativo offline e fallito per accesso negato alla directory target. Download e test ripetuti con autorizzazione fuori sandbox, senza cambiare gli esempi per aggirare gli errori.
+- Primo giro completo nell'ambiente autorizzato: **37/37**, zero fallimenti/skip, **39,9 secondi**. Regressione con Iterator API (35) e Send/Sync (64): **136/136**, **91,3 secondi**.
+- Dopo il fetch, build delle dipendenze con --locked --offline e programmi compilati con rustc contro le stesse librerie. Lock nella fixture, non permanente nel repository; versioni effettive registrate anche nel README.
+- Programmi con variabile RAYON_NUM_THREADS impostata a 1 e 4; il pool esplicito del relativo esempio resta a due worker. Sonde aggiuntive con pool da 1, 2 e 4 worker.
+- Verificati prestiti, consumo del Vec, Cell con mutazione disgiunta, rifiuto di Cell condivisa/Rc, valutazione lazy e completamento.
+- Normalizzazione con vuoti, Unicode, duplicati, ordine, input invariato e confronto sequenziale su 5000 stringhe.
+- Fold/reduce con input vuoto, valori limite, conteggio sequenziale e build ottimizzata; non associativita floating point senza dipendere da uno specifico raggruppamento dello scheduler.
+- Parsing su limiti numerici e piu errori, report completo ordinato e effetto mantenuto dopo Err; nessuna assunzione sul primo errore in posizione.
+- Enumerate prima del filtro, rinumerazione dopo raccolta, find_first/find_any, pool corrente, join con un worker e panic propagato dopo esecuzione dell'altro ramo.
+- Inizializzazione globale unica per processo, chunk disgiunti e dimensione zero, with_min_len, bridge confrontato per contenuti e sort stabile.
+- Fixture temporanee con timeout, ambiente Cargo isolato, configurazioni dei parent controllate e cleanup vincolato al percorso verificato; byte della nota invariati dai test.
+- **64 suite Rust** totali; altre 61 e altri linguaggi non rieseguiti. Nessuna CI remota.
+- Limiti: un solo compilatore/target, nessun benchmark o prova di speedup, matrice MSRV, target senza thread, integrazione async reale o verifica di tutti gli interleaving.
+
+### Verifica editoriale
+
+- Rapporto rigenerato: **911 documenti raggiungibili, zero errori e 302 avvisi editoriali**, nessuno nella nota corrente.
+- **9/9 test della trasformazione** superati; un avviso in meno rispetto al blocco precedente.
+
+### Verifica Quartz
+
+- Build completa riuscita: **3719 file**, **2003 HTML**, **168 redirect**, **143095 riferimenti verificati**, zero errori; circa cinque minuti. Restano gli avvisi noti su eval e repository Git temporaneo.
+- **7/7 test HTTP** dell'anteprima superati. Browser e loopback eseguiti con autorizzazione fuori sandbox.
+- Chrome **157.0.8103.39**, desktop **1440x1000** e mobile **390x844**: HTTP 200, nove blocchi incluso il manifest, tabella di tre righe, nessun errore console/JavaScript o overflow orizzontale del documento.
+- Sei blocchi richiedono e consentono scorrimento su mobile, nessuno su desktop; scrollLeft verificato. Tabella con wrapping e contenitore mobile scorrevole per i 16 px residui.
+- Sette screenshot ispezionati in `appunti-rust-rayon-qa-x4ZSFa`: titolo, tabella e fold su entrambi i viewport, piu tabella mobile spostata a destra; nessuna sovrapposizione nelle viste controllate.
+- Pagina gia generata verificata mentre Quartz terminava gli altri output; successiva validazione completa della build passata.
+- Resta lo scroll iniziale Explorer: **236 px desktop**, **0 px mobile**. La QA torna in cima per leggere il titolo, senza correggere il plugin.
+- Browser e server temporanei chiusi; nessun cambio a CSS/plugin, browser personale o anteprima persistente. HTML generati, non editati manualmente.
+- README, registro e storico aggiornati; storico mantenuto a dieci voci. Nessun commit, push o deploy remoto.
+
+### Prossimo blocco
+
+Proseguire con [[Programmazione/Rust/Pagine/Async Await|Async/Await]]: lazy future, poll, sospensione effettiva con Pending, catture e rapporto fra task e runtime. Letta come contesto, non revisionata.
+
+Restano il problema separato di scroll Explorer Quartz e i rilievi sugli helper rustdoc di Builder pattern, .await, prestazioni ed Extension traits, incluso count_where. Nessun commit o push.
+
+## 2026-11-10 - Rust: Async/Await
+
+### Intervento
+
+Revisionata [[Programmazione/Rust/Pagine/Async Await|Async/Await]], settima di **13 note di Concorrenza e Asincronia**. Avanzamento **94/183 note principali Rust**, **89 restanti**; promemoria separati.
+
+- Corretto il rilievo gia registrato: raggiungere await non significa cedere sempre il controllo. Distinti Ready immediato, Pending e risveglio.
+- Distinti costruzione della future, valutazione degli argomenti, primo polling, task separata e thread.
+- Manifest con versioni e feature esplicite; sei programmi eseguibili e due controesempi completi al posto dei frammenti incompleti.
+- Catture inferite e move, prestiti ancora non static, propagazione di ? dal blocco async e ownership prima del polling.
+- Esempio oneshot realmente asincrono, senza rete/database impliciti: risultato applicativo, canale chiuso e panic della task gestiti separatamente.
+- Join con rami nella task corrente, confronto con attese sequenziali e assenza di parallelismo CPU implicito.
+- Bound di spawn anche sul current-thread, Result annidati del JoinHandle, drop che distacca la task e abort distinto dalla conclusione.
+- Spawn_blocking come confine sincrono, limiti della cancellazione e della concorrenza; mantenuti rimandi a runtime, canali, pinning e cancellazione.
+- Fonti ufficiali Rust Reference/std e Tokio 1.54.1 consultate. Frontmatter invariato, incluso status non revisionato; nessun cambio a indici, percorsi o redirect.
+
+### Verifica tecnica
+
+- Nuova suite `_Meta/tests/rust-async-await.test.mjs`: **36 casi**, manifest e tutti gli otto programmi estratti. Sei validi e due compile-fail, E0728 ed E0597.
+- Rust **1.99.1**, edition **2024**, **x86_64-pc-windows-gnu**, Node **24.14.0**; toolchain esistente.
+- Dipendenze risolte: Tokio **1.54.1**, tokio-macros **2.7.2**, pin-project-lite **0.2.17**, proc-macro2 **1.0.107**, quote **1.0.47**, syn **3.0.10**, unicode-ident **1.0.27**.
+- Cache dedicata `C:/Users/SE-Luca Bellini/AppData/Local/Temp/appunti-tokio-cache-20261110`. Fetch iniziale autorizzato fuori sandbox; build delle dipendenze con --locked --offline, poi rustc contro le stesse librerie.
+- Lockfile nella fixture, non permanente nel repository; versioni effettive registrate nel README. Nessuna modifica alle dipendenze del sito o alla configurazione Cargo personale.
+- Primo giro completo **36/36**, zero fallimenti/skip, **43,8 secondi**. Regressione con Send/Sync (64) e Pin/Unpin (53): **153/153**, **96,3 secondi**.
+- Verificati argomenti immediati, corpo differito, drop di catture, cento await Ready senza yield e Pending con wake effettivamente gestito da Tokio.
+- Catture, prestiti, doppio await per valore, Result del blocco async, Unicode/vuoti, chiusura dei canali e panic del produttore.
+- Join con Rc e prestiti nella task corrente, tutti i rami completati anche con Err; rifiuto di future/output Rc nello spawn current-thread.
+- LocalSet realmente eseguito, task distaccata osservata tramite oneshot, abort con distruzione della guard e nessun rollback degli effetti della future posseduta.
+- Job blocking su thread distinto, abort dopo avvio che non lo ferma e future restituita ma non eseguita da una closure async passata a spawn_blocking.
+- Timer e timeout esercitati senza soglie prestazionali; nessun sleep per imporre interleaving. Il blocking job usa recv_timeout di protezione e un canale di rilascio.
+- Fixture con timeout, ambiente Cargo isolato, controllo delle configurazioni nei parent, cleanup limitato al percorso verificato e confronto dei byte della nota.
+- **65 suite Rust** totali; altre 62 e altri linguaggi non rieseguiti. Nessuna CI remota.
+- Limiti: un solo compilatore/target; nessun Tokio multi-thread, networking/database, benchmark, matrice MSRV o prova di tutti gli interleaving. La regressione Pin/Unpin mantiene le proprie sonde standard con polling manuale.
+
+### Verifica editoriale
+
+- Rapporto rigenerato: **911 documenti raggiungibili, zero errori e 301 avvisi editoriali**, nessuno nella nota corrente.
+- **9/9 test della trasformazione** superati; un avviso in meno rispetto al blocco precedente.
+
+### Verifica Quartz
+
+- Build completa: **3719 file**, **2003 HTML**, **168 redirect**, **143156 riferimenti verificati**, zero errori. Restano gli avvisi noti su eval e repository Git temporaneo.
+- **7/7 test HTTP** dell'anteprima superati; browser e loopback autorizzati fuori sandbox.
+- Chrome **157.0.8103.39**, desktop **1440x1000** e mobile **390x844**: HTTP 200, nove blocchi incluso TOML, tabella di sei righe, nessun errore console/JavaScript o overflow orizzontale del documento.
+- Tutti i nove blocchi richiedono e consentono scorrimento su mobile, nessuno su desktop; scrollLeft verificato. Tabella mobile con wrapping nei 358 px disponibili.
+- Sei screenshot ispezionati in `appunti-rust-async-qa-0wdI31`: titolo, tabella ed errori su entrambi i viewport, senza sovrapposizioni nelle viste controllate.
+- Pagina gia generata verificata durante l'emissione degli altri output; successiva validazione completa della build passata.
+- Resta lo scroll iniziale Explorer: **236 px desktop**, **0 px mobile**. La QA torna in cima senza correggere il plugin.
+- Browser e server temporanei chiusi; nessun cambio a CSS/plugin, browser personale o anteprima persistente. HTML generati, non modificati manualmente.
+- README, registro e storico aggiornati; storico mantenuto a dieci voci. Nessun commit, push o deploy remoto.
+
+### Prossimo blocco
+
+Proseguire con [[Programmazione/Rust/Pagine/Future Trait|Future Trait]]: contratto di poll, Pending/Ready, Waker, pinning e helper con comportamento esplicito. Letta come contesto, non revisionata.
+
+Risolto in Async/Await il rilievo sull'equivalenza errata fra await e yield; verificare coerenza nelle successive note async. Restano il problema separato di scroll Explorer Quartz e i rilievi sugli helper rustdoc di Builder pattern, prestazioni ed Extension traits, incluso count_where. Nessun commit o push.
+
+## 2026-11-16 - Rust: Future Trait
+
+### Intervento
+
+Revisionata [[Programmazione/Rust/Pagine/Future Trait|Future Trait]], ottava di **13 note di Concorrenza e Asincronia**. Avanzamento **95/183 note principali Rust**, **88 restanti**; promemoria separati.
+
+- Precisato il contratto di poll: niente busy polling, Ready conclude anche con errore applicativo, nessuna garanzia di completamento o di riutilizzo.
+- Chiariti Context, risveglio della task, ultimo Waker e rischio di notifiche perse. La primitiva concorrente e delegata a Tokio, non ricostruita da zero.
+- Distinti pinning, ownership, lifetime e Send, incluso il bound separato sull'Output per spawn.
+- Sostituiti frammenti incompleti e helper inerte con manifest e programmi completi: trasformazione generica, wrapper oneshot, collezione boxed con prestiti, Rc locale e poll_fn.
+- Due controesempi espliciti: Box dyn Future senza Unpin e boxing che non rende Send un Rc.
+- Mantenuti confronti fra async fn, impl Future e trait object; chiariti rami con tipi async distinti, drop, task esterna e JoinHandle.
+- Fonti ufficiali Rust std/Reference/Async Book e Tokio consultate. Documentazione std corrente mostra 1.100.0; la verifica eseguibile resta esplicitamente sulla toolchain 1.99.1 gia disponibile.
+- Frontmatter invariato, status non revisionato; indici, percorsi e redirect invariati.
+
+### Verifica tecnica
+
+- Nuova suite `_Meta/tests/rust-future.test.mjs`: **34 casi**, tutti i sette programmi estratti, cinque validi e due compile-fail, piu sonde sui contratti.
+- Rust **1.99.1**, edition **2024**, **x86_64-pc-windows-gnu**, Node **24.14.0**, Tokio **1.54.1**.
+- Cache `C:/Users/SE-Luca Bellini/AppData/Local/Temp/appunti-tokio-cache-20261110` riusata; nessun download in questa sessione. Fetch dalla cache, build --locked --offline e rustc contro le librerie prodotte.
+- Dipendenze risolte: tokio-macros 2.7.2, pin-project-lite 0.2.17, proc-macro2 1.0.107, quote 1.0.47, syn 3.0.10 e unicode-ident 1.0.27, oltre a Tokio 1.54.1.
+- Lockfile nella fixture temporanea, non permanente nel repository; nessuna modifica alla configurazione Cargo personale o alle dipendenze del sito.
+- Corretto prima dell'esecuzione un errore di parentesi nell'harness JavaScript. Primo giro completo **34/34**, **33,8 secondi**.
+- Regressione con Async/Await (36) e Pin/Unpin (53): **123/123**, zero fallimenti/skip, **96,3 secondi**.
+- Dopo il ritocco editoriale finale, nuova esecuzione della suite Future **34/34**, zero fallimenti/skip, **29,1 secondi**. Blocchi Rust invariati.
+- Verificati lazy helper, drop delle catture, FnOnce, Result, sospensione reale e chiusura del canale.
+- Waker controllati: passaggio al piu recente e risveglio anche quando il produttore viene eliminato; completamento affidato a Tokio, non a un executor artigianale.
+- Receiver eliminato, Poll::map su Pending, Unicode/vuoti, move del proprietario pinnato, lifetime e Send separati, LocalSet realmente eseguito.
+- poll_fn mantiene stato e risveglio; errori attesi E0277, E0505, E0597, E0308 e diagnostica future non Send.
+- Fixture con timeout, configurazioni Cargo controllate, byte della nota preservati e cleanup limitato al percorso verificato.
+- **66 suite Rust** totali; altre 63 e altri linguaggi non rieseguiti. Nessuna CI remota.
+- Limiti: un compilatore/target, nessun networking/database, multi-thread Tokio, benchmark, matrice MSRV o verifica esaustiva delle race.
+
+### Verifica editoriale
+
+- Rapporto rigenerato: **911 documenti raggiungibili, zero errori, 300 avvisi editoriali**, nessuno nella nota corrente; un avviso in meno.
+- **9/9 test della trasformazione** superati. La verifica dei link non sostituisce l'esecuzione degli esempi.
+
+### Verifica Quartz
+
+- Prima build: **3719 file**, **2003 HTML**, **168 redirect**, **143225 riferimenti**, zero errori. Restano gli avvisi noti su eval e repository Git temporaneo.
+- Prima QA Chrome **157.0.8103.78**, desktop **1440x1000** e mobile **390x844**: HTTP 200, otto blocchi incluso TOML, una tabella di cinque righe, nessun errore console/JavaScript o overflow orizzontale.
+- Codice mobile scorrevole in tutti gli otto blocchi; tabella di 326 px con wrapping. Screenshot in `appunti-rust-future-qa-Zrxy7W` e ulteriore controllo mobile in `appunti-rust-future-qa-n0ywYh`.
+- Rilevata label Async/Await ridotta ad Await da Quartz, con destinazione corretta. Corretto il sorgente con label Async e await; nessun cambio al plugin globale.
+- Scroll iniziale Explorer **236 px desktop**, **0 px mobile**: la QA torna in cima senza modificare il plugin. Per le sezioni mobile la posizione di cattura tiene conto della testata fissa.
+- Build finale completa dopo il ritocco: **3719 file**, **2003 HTML**, **168 redirect**, **143225 riferimenti**, zero errori; **7/7 test HTTP** passati.
+- QA finale su entrambi i viewport: label Async e await presente nei due collegamenti, destinazioni invariate, HTTP 200, nessun errore JavaScript o overflow del documento. Otto blocchi, tutti scorrevoli su mobile, tabella di cinque righe.
+- Sei screenshot finali ispezionati in `appunti-rust-future-qa-ax1HXz`: titolo, tabella e implementazione manuale su desktop/mobile. Tabella con wrapping, codice lungo accessibile tramite scorrimento locale.
+- QA della pagina eseguita durante l'emissione degli altri output; successivo controllo completo della build passato. Browser e server temporanei chiusi.
+- README, registro e storico aggiornati, storico a dieci voci. Prettier e git diff --check superati. Nessun commit, push o deploy remoto; gli HTML sono generati, non modificati manualmente.
+
+### Prossimo blocco
+
+Proseguire con [[Programmazione/Rust/Pagine/Runtime async Tokio e async-std|Runtime async: Tokio e async-std]]: API, feature, driver e scheduling, requisiti Send/local e stato di manutenzione attuale. Letta come contesto, non revisionata.
+
+Restano il problema separato di scroll Explorer Quartz e i rilievi sugli helper rustdoc di Builder pattern, prestazioni ed Extension traits, incluso count_where. Nessun commit o push.
+
+## 2026-11-16 - Rust: Runtime async Tokio e async-std
+
+### Intervento
+
+Revisionata [[Programmazione/Rust/Pagine/Runtime async Tokio e async-std|Runtime async: Tokio e async-std]], nona di **13 note di Concorrenza e Asincronia**. Avanzamento **96/183 note principali Rust**, **87 restanti**; promemoria separati.
+
+- Separati sintassi async, trait Future, scheduler, driver e pool blocking.
+- Corretto il confronto attuale: async-std e dismesso; i manutentori indicano smol. Conservato un progetto legacy distinto, senza presentarlo come raccomandazione per nuovi progetti.
+- Chiariti current-thread, multi-thread, numero dei worker rispetto ai thread del processo, Handle, enter e limiti di Handle::block_on.
+- Feature Cargo distinte dai driver: enable_all non compila API escluse dal manifest.
+- Due manifest completi e sette programmi: quattro eseguibili validi e tre panic intenzionali, non errori di compilazione.
+- LocalSet e spawn_local: Send rimosso ma static ancora richiesto; run_until non attende implicitamente ogni task.
+- Output dei JoinHandle Tokio/async-std, task distaccate, lavoro blocking, shutdown e interoperabilita senza sostituzione automatica.
+- Fonti ufficiali Tokio, Rust e repository/docs async-std verificate il 2026-11-16; baseline versionata degli esempi distinta da ultima versione e MSRV.
+- Frontmatter invariato, status non revisionato; indici, percorsi e redirect invariati.
+
+### Verifica tecnica
+
+- Nuova suite `_Meta/tests/rust-runtime.test.mjs`: **30 casi**, tutti i nove blocchi estratti, inclusi i due manifest.
+- Rust **1.99.1**, edition **2024**, **x86_64-pc-windows-gnu**, Node **24.14.0**, Tokio **1.54.1**, async-std **1.13.2**.
+- Progetti e target separati per Tokio, legacy e Tokio senza time. Fetch iniziale autorizzato nella cache dedicata; compilazioni --locked --offline, poi rustc contro le librerie prodotte.
+- Versioni transitive effettive registrate nel README; lockfile nelle fixture temporanee, non permanenti nel repository.
+- Primi tentativi **24/30** per dlltool mancante, poi **24/30** per assembler mancante. Tentativo con percorso rustc 8.3 **1/30** per CRT non trovati; ripristinato il percorso lungo.
+- Risolto il prerequisito con binutils MSYS2 **2.47-4** e dipendenze in una directory temporanea. Hash SHA256 verificati contro il catalogo ufficiale; percorsi degli archivi controllati, licenze conservate. PATH modificato soltanto nei processi dell'harness.
+- Nessuna modifica alla toolchain esistente, al PATH globale, alla configurazione Cargo personale o alle dipendenze del sito; nessun ritocco agli esempi per aggirare gli errori dell'ambiente.
+- Suite completa **30/30**, zero fallimenti/skip, **47,8 secondi**. Regressione con Future (34) e Async/Await (36): **100/100**, zero fallimenti/skip, **107,6 secondi**.
+- Verificati due worker reali e avanzamento di una task multi-thread senza block_on, current-thread/enter, Rc nella future radice, Send/static di spawn e task locali.
+- Verificati scope di LocalSet, thread blocking distinto, Handle non proprietario, distruzione delle catture allo shutdown, Result applicativo e JoinError.
+- Programmi legacy con macro e block_on eseguiti; output diretto dell'handle, rifiuto di Rc non Send e future standard indipendente dal runtime.
+- Tre panic e relative correzioni; feature time mancante controllata separatamente dall'attivazione dei driver. Errori di compilazione con diagnostica JSON, panic solo dopo compilazione riuscita.
+- Timeout dei processi, ambiente Cargo isolato, byte della nota preservati e cleanup dopo controllo di realpath, parent e prefisso.
+- Precisazione finale di sola prosa dopo la regressione: un timer gia scaduto puo essere pronto al polling, senza sospensione garantita. Programmi invariati.
+- Suite eseguita nuovamente sulla nota finale: **30/30**, zero fallimenti/skip, **54,7 secondi**.
+- **67 suite Rust** totali; altre 64 e altri linguaggi non rieseguiti. Nessuna CI remota.
+- Limiti: un compilatore/target, niente networking/database reale, benchmark, matrice MSRV, migrazione smol, stress test di shutdown o verifica di tutti gli interleaving.
+
+### Verifica editoriale e Quartz
+
+- Rapporto rigenerato: **911 documenti raggiungibili, zero errori, 299 avvisi editoriali**; un avviso in meno. **9/9 test della trasformazione** superati.
+- Prima build completa: **3719 file, 2003 HTML, 168 redirect, 143308 riferimenti**, zero errori. Restano gli avvisi noti su eval e repository Git temporaneo.
+- **7/7 test HTTP** dell'anteprima passati.
+- Chrome **157.0.8103.78**, desktop **1440x1000** e mobile **390x844**: HTTP 200, nove blocchi incluso TOML, una tabella di sette righe, nessun errore JavaScript o overflow orizzontale del documento.
+- Tutti i nove blocchi scorrevoli su mobile, nessuno su desktop; tabella con wrapping, larghezza 558,875 px desktop e 326 px mobile.
+- Sei screenshot ispezionati in `appunti-rust-runtime-qa-a1EDOX`: titolo, tabella ed esempio su entrambi i viewport. Le catture delle sezioni mobile mostrano il contenuto con la testata fissa, ma non l'intera tabella in una sola schermata.
+- Dopo la precisazione sui timer, build finale completa: **3719 file, 2003 HTML, 168 redirect, 143308 riferimenti**, zero errori; circa quattro minuti. Nuova verifica HTTP **7/7**.
+- QA finale desktop/mobile in `appunti-rust-runtime-qa-wPuiUw`: testo aggiornato presente, stessi conteggi, nessun errore JavaScript o overflow. Ispezionati i due nuovi screenshot mobile di tabella ed esempio: tutte e sette le righe nella prima cattura, titolo dell'esempio non coperto dalla testata nella seconda.
+- La pagina finale era gia emessa durante la QA; successiva validazione dell'intera build superata. Prettier e git diff --check superati.
+- Label Async e await presente nei due collegamenti. Resta lo scroll iniziale Explorer: **237 px desktop**, **0 px mobile**; QA riportata in cima, plugin non modificato.
+- Browser e server temporanei chiusi; nessun cambio al browser personale o all'anteprima persistente. HTML generati, non modificati manualmente.
+- README, registro e storico aggiornati, storico a dieci voci. Nessun commit, push o deploy remoto.
+
+### Prossimo blocco
+
+Proseguire con [[Programmazione/Rust/Pagine/select join e cancellation|select!, join! e cancellazione]]: programmi completi, future possedute rispetto a prestiti/JoinHandle, cancellation safety, timeout e fairness. Letta come contesto, non revisionata.
+
+Restano lo scroll iniziale Explorer Quartz e i rilievi sugli helper rustdoc di Builder pattern, prestazioni ed Extension traits, incluso count_where. Nessun commit o push.
+
+## 2026-11-16 - Rust: select, join e cancellation
+
+### Intervento
+
+Revisionata [[Programmazione/Rust/Pagine/select join e cancellation|select!, join! e cancellation]], decima di **13 note di Concorrenza e Asincronia**. Avanzamento **97/183 note principali Rust**, **86 restanti**; promemoria separati.
+
+- Distinte le macro Tokio da sintassi Rust, concorrenza nella task corrente e task spawnate.
+- Chiariti pattern, guardie, costruzione dei rami disabilitati, else e fairness. Un Err non corrispondente a Ok non viene propagato.
+- Corretto l'equivalente ambiguo fra eliminazione di future, prestito e handle: selezione e timeout non interrompono automaticamente task indipendenti.
+- Esempi completi su join/try_join, chiusura di due canali, future pinnata conservata, scadenza complessiva e abort dopo timeout.
+- Dimostrata la perdita del primo messaggio quando una funzione con due recv viene cancellata a meta; spiegato come conservare il progresso.
+- Precisati send/reserve, I/O parziale e perdita del posto nella coda di un mutex, senza confondere cancellation safety e atomicita applicativa.
+- Conservato il tema shutdown, con prerequisiti e limiti di ctrl_c e CancellationToken, senza richiedere segnali OS nei programmi.
+- Fonti ufficiali Tokio 1.54.1 e tokio-util 0.7.20 consultate; link versionati. Frontmatter e status non revisionato invariati, nessun cambio a indici, percorsi o redirect.
+
+### Verifica tecnica
+
+- Nuova suite `_Meta/tests/rust-select-cancellation.test.mjs`: **36 casi**, tutti i nove blocchi estratti, inclusi manifest e otto programmi.
+- Rust **1.99.1**, edition **2024**, **x86_64-pc-windows-gnu**, Node **24.14.0**, Tokio **1.54.1**.
+- Sette programmi validi e un panic intenzionale; sonde della prosa con E0308, E0499 ed E0277 e altri panic attesi.
+- Primo giro **36/36**, zero fallimenti/skip, **35,0 secondi**. Test Unpin ristretto per escludere un ulteriore errore di binding immutabile; sorgenti della nota invariati.
+- Regressione con Future (34) e Runtime (30): **100/100**, zero fallimenti/skip, **132,8 secondi**.
+- Verificati else che non scatta su Pending, costruzione anche con guardia false, tipi degli handler e prestiti concorrenti, ordine di join e fail-fast di try_join.
+- Verificati drop delle catture e assenza di rollback, Result annidati, task distaccata ancora attiva, risultato conservato con un prestito dell'handle.
+- Provata la perdita del messaggio e la correzione tramite future pinnata conservata, chiusura del produttore, send cancellato e reserve con dato conservato.
+- Timeout zero con future pronta, poll sincrono non interrotto dal timeout, bias esplicito, abort dopo completamento e handler che non continua a monitorare shutdown.
+- Timer reali senza asserzioni prestazionali; canali e biased per ordinare gli eventi critici. Niente test che usino uno sleep per presumere che un'altra task sia gia partita.
+- Cache dedicata riusata offline; dipendenze effettive nel README, Cargo.lock nella fixture temporanea. Binutils gia esistenti riusati per la regressione legacy; nessun download o modifica globale.
+- Processi con timeout, ambiente Cargo isolato, byte della nota preservati e cleanup limitato al percorso risolto verificato.
+- **68 suite Rust** totali; altre 65 e altri linguaggi non rieseguiti, nessuna CI remota.
+- Limiti: un compilatore/target, niente rete/database, segnali OS o CancellationToken eseguiti, I/O parziale reale, benchmark, fairness statistica o prova esaustiva delle race. La regressione Runtime include i propri casi multi-thread, la nuova nota usa current-thread.
+
+### Verifica editoriale e Quartz
+
+- Rapporto rigenerato: **911 documenti raggiungibili, zero errori, 298 avvisi editoriali**; un avviso in meno. **9/9 test della trasformazione**.
+- Chrome **157.0.8103.78**, desktop **1440x1000** e mobile **390x844**: HTTP 200, nove blocchi incluso TOML, due tabelle di quattro e tre righe, nessun errore JavaScript o overflow del documento.
+- Otto blocchi richiedono e consentono scorrimento su mobile, nessuno su desktop. Tabelle larghe 326 px su mobile con wrapping.
+- Sei screenshot ispezionati in `appunti-rust-select-qa-bKI67g`: titolo, tabella dei rischi ed esempio di perdita dati su desktop/mobile. Generici Rust e label Async e await conservati nel sito.
+- Build completa riuscita: **3719 file, 2003 HTML, 168 redirect, 143376 riferimenti**, zero errori; circa cinque minuti. Restano gli avvisi noti su eval e repository Git temporaneo.
+- La pagina era gia emessa durante la QA; controllo completo degli output successivamente superato. **7/7 test HTTP** passati dopo la build.
+- Formattato con Prettier il ritocco del test Unpin, senza modifiche semantiche; controllo finale Prettier e git diff --check superati.
+- Resta lo scroll iniziale Explorer: **236 px desktop**, **0 px mobile**; QA riportata in cima senza cambiare il plugin.
+- Browser e server temporanei chiusi; nessun cambio al browser personale o all'anteprima persistente, HTML soltanto generati.
+- README, registro e storico aggiornati; storico mantenuto a dieci voci. Nessun commit, push o deploy remoto.
+
+### Prossimo blocco
+
+Proseguire con [[Programmazione/Rust/Pagine/Async streams|Async streams]]: contratto poll_next, Pending e terminazione, StreamExt, adattatori, pinning, errori e backpressure. Letta come contesto, non revisionata.
+
+Restano lo scroll iniziale Explorer Quartz e i rilievi sugli helper rustdoc di Builder pattern, prestazioni ed Extension traits, incluso count_where. Nessun commit o push.
+
+## 2026-11-16 - Rust: Async streams
+
+### Intervento
+
+Revisionata [[Programmazione/Rust/Pagine/Async streams|Async streams]], undicesima di **13 note di Concorrenza e Asincronia**. Avanzamento **98/183 note principali Rust**, **85 restanti**; promemoria separati.
+
+- Sostituita la firma incompleta di poll_next con il contratto effettivo, distinguendo Pending, elemento pronto e fine stream.
+- Distinti Stream e Future, next e polling, runtime della sorgente, pinning e bound Unpin.
+- Chiariti i due StreamExt: stessi stream di base, ma predicati filter diversi e possibile ambiguita dei metodi.
+- Nove programmi completi con manifest: helper generico, filtri, ReceiverStream, errori per elemento/fail-fast, buffering, fuse e boxing; due compile-fail dichiarati.
+- Backpressure distinta dai limiti complessivi di memoria e task; chiusura e drenaggio con sender clonati e permit.
+- Spiegati map async rispetto a then, ordine buffered/unordered, lifetime e Send del boxing, cancellazione del consumer rispetto al produttore.
+- Fonti ufficiali consultate; alias boxed controllati anche nel sorgente futures-core 0.3.34 scaricato da Cargo. Frontmatter invariato, status non revisionato; nessun cambio a indice, percorso o redirect.
+
+### Verifica tecnica
+
+- Nuova suite `_Meta/tests/rust-streams.test.mjs`, **39 casi**: tutti i dieci blocchi estratti, nove Rust e un TOML.
+- Rust **1.99.1**, edition **2024**, target **x86_64-pc-windows-gnu**, Node **24.14.0**, Tokio **1.54.1**, futures-util **0.3.34**, tokio-stream **0.1.19**.
+- Primo giro **38/39**, **33,4 secondi**: mancava il tipo di ritorno nella sonda take(0), non in un esempio della nota. Fixture corretta con Poll<Option<u32>>.
+- Regressione con Future (34) e select/cancellazione (36): **109/109**, zero fallimenti/skip, **101,8 secondi**.
+- Dopo il solo ritocco delle tabelle, nuova esecuzione sulla nota finale **39/39**, zero fallimenti/skip, **34,9 secondi**; programmi invariati.
+- Sonde su errori E0277, E0034, E0597, E0308 ed E0599, pinning corretto, prestiti/Rc, metodi qualificati e Stream non direttamente attendibile.
+- Verificati lazy map, limiti delle future attive, ordine tramite oneshot controllati, Pending e notifica del Waker, backpressure, chiusura e permit, produttore sopravvissuto e receiver eliminato.
+- try_next e try_collect, fuse senza polling dopo None, take(0), Unicode e vuoto, select con receiver conservato, drop delle future del buffer senza rollback.
+- Cache dedicata popolata con fetch iniziale autorizzato; compilazioni successive --locked --offline, librerie e lockfile nella fixture. Versioni transitive registrate nel README.
+- Nessun cambio a dipendenze del sito, configurazione Cargo personale, PATH globale o toolchain.
+- Timeout dei processi, ambiente isolato, byte della nota preservati e cleanup dopo verifica del percorso risolto.
+- **69 suite Rust** totali; altre 66 e altri linguaggi non rieseguiti, nessuna CI remota.
+- Limiti: una piattaforma/toolchain, current-thread, niente rete/database, misure di memoria o prestazioni, MSRV, stress test o verifica di tutti gli interleaving.
+
+### Verifica editoriale e Quartz
+
+- **911 documenti raggiungibili, zero errori, 297 avvisi editoriali**; un avviso in meno. **9/9 test della trasformazione** passati.
+- Prima build completa: **3719 file, 2003 HTML, 168 redirect, 143435 riferimenti**, zero errori; circa cinque minuti. Avvisi noti su eval e repository Git temporaneo.
+- Prima QA Chrome 157 desktop/mobile: HTTP 200, dieci blocchi, due tabelle, nessun errore JavaScript o overflow del documento.
+- La larghezza minima delle tabelle richiedeva comunque scorrimento locale mobile. Accorciate etichette Poll e descrizioni degli adattatori nel Markdown, senza cambiare codice, CSS o plugin.
+- Prima cattura in `appunti-rust-streams-qa-F6nt5Z`; ispezionati tabella comparativa ed esempio mobile. Un tentativo di QA durante la rigenerazione ha trovato index.html ancora assente: server terminato, verifica rinviata all'output disponibile.
+- Build finale completa dopo il ritocco delle tabelle: **3719 file, 2003 HTML, 168 redirect, 143435 riferimenti**, zero errori. **7/7 test HTTP** passati sull'output finale.
+- QA finale dopo la build, Chrome **157.0.8103.78**, desktop **1440x1000** e mobile **390x844**: HTTP 200, H1 e label Async e await corretti, dieci blocchi e due tabelle di tre/quattro righe, nessun errore JavaScript o overflow del documento.
+- Le due tabelle mobile misurano **326 px** e rientrano nel contenitore; tutti i dieci blocchi permettono scorrimento locale mobile, nessuno lo richiede su desktop.
+- Sette screenshot finali ispezionati in `appunti-rust-streams-qa-PmKqfv`: titolo, confronto degli adattatori ed esempio su desktop/mobile, piu contratto poll_next su mobile.
+- Rimane lo scroll iniziale Explorer di **237 px desktop**, **0 px mobile**; QA riportata in cima senza modificare il plugin. Browser e server temporanei chiusi, nessun cambio al browser personale o all'anteprima persistente.
+- Ricontrollo finale della trasformazione **9/9**, Prettier e git diff --check superati; dieci voci nello storico, 69 suite Rust e nessun avviso editoriale nella nota corrente.
+- README, registro e storico aggiornati; storico a dieci voci. Nessun commit, push o deploy remoto.
+
+### Prossimo blocco
+
+Proseguire con [[Programmazione/Rust/Pagine/Channel async|Channel async]]: mpsc/oneshot/broadcast/watch, backpressure, lag, messaggi e ownership, chiusura/permit, cancellazione e richiesta/risposta. Letta come contesto, non revisionata.
+
+Restano lo scroll iniziale Explorer Quartz e i rilievi sugli helper rustdoc di Builder pattern, prestazioni ed Extension traits, incluso count_where. Nessun commit o push.
+
+## 2026-11-17 - Rust: Channel async
+
+### Intervento
+
+Revisionata [[Programmazione/Rust/Pagine/Channel async|Channel async]], dodicesima di **13 note di Concorrenza e Asincronia**. Avanzamento **99/183 note principali Rust**, **84 restanti**; promemoria separati.
+
+- Distinti coda mpsc, risposta oneshot, eventi broadcast e stato watch; corretta la generalizzazione sugli invii sempre async e sulla consegna broadcast garantita.
+- Chiariti ownership, limiti di capacita rispetto a memoria/task, bound Send, accodamento rispetto a elaborazione, chiusura e drenaggio.
+- Nove programmi completi: sette validi e due compile-fail dichiarati, piu manifest minimo.
+- mpsc: Full/Closed, recupero payload, sender clonati, permit dopo close, unbounded e ponte sync.
+- Richiesta/risposta con errore applicativo distinto dall'abbandono del canale; comando Shutdown che chiude l'ingresso e drena, senza scartare implicitamente i job successivi gia ammessi.
+- broadcast: lag, cursori, subscribe senza replay, chiusura e numero di receiver non equivalente a conferma.
+- watch: valore iniziale, coalescenza, seen/unseen, changed/has_changed, scope dei Ref, invii senza receiver e send_replace.
+- Cancellazione con reserve, restituzione del valore e limite della garanzia quando viene eliminata l'intera future helper.
+- Fonti ufficiali Tokio 1.54.1 verificate tramite documentazione latest indicizzata con la stessa versione; link versionati nella nota.
+- Frontmatter preservato, incluso status non revisionato; nessuna modifica a indice, percorso o redirect.
+
+### Verifica tecnica
+
+- Nuova suite `_Meta/tests/rust-channels.test.mjs`, **41 casi**, tutti i dieci blocchi estratti dal Markdown.
+- Rust **1.99.1**, edition **2024**, target **x86_64-pc-windows-gnu**, Node **24.14.0**, Tokio **1.54.1**.
+- Primo giro **36/41**, **34,4 secondi**: cinque sonde watch contenevano confronti Result con un RecvError senza PartialEq. Corrette undici asserzioni nell'harness; gli esempi della nota erano gia corretti.
+- Regressione con Async streams (39) e select/cancellazione (36): **116/116**, zero fallimenti/skip, **111,4 secondi**.
+- Dopo il ritocco alle sole intestazioni della tabella: nuova suite **41/41**, zero fallimenti/skip, **38,2 secondi**.
+- Sonde su send Pending, rilascio capacita, clone sender, permit pendente dopo close, distruzione dei payload, receiver disconnesso, unbounded.
+- Verificati panic attesi per capacita zero e blocking_send dentro async, ponte con thread OS, oneshot fuori runtime, invio unico e receiver mpsc non clonabile.
+- Worker: drenaggio dopo Shutdown, risposta abbandonata senza annullare lavoro, Unicode, errori annidati.
+- Broadcast/watch: lag e ripresa, subscribe senza storico, bound Clone, riapertura, ultima versione non vista dopo chiusura, letture che marcano visto, send_replace, notifiche di valore uguale, guard non Send attraverso await.
+- Reserve: ramo stop pronto o abbandonato, canale chiuso, priorita biased, valore restituito. Drop di send e recv perdente; Rc consentito localmente ma non in spawn Send.
+- Cache esistente riusata offline, nessun download. Cargo.lock temporaneo e versioni transitive nel README; build --locked --offline, ambiente isolato, timeout e cleanup con percorso risolto verificato.
+- **70 suite Rust** totali; altre 67 e altri linguaggi non rieseguiti, nessuna CI remota.
+- Limiti: una piattaforma/toolchain, runtime current-thread e ponte con thread dedicato; niente rete/database, MSRV, benchmark, memoria misurata, stress o prova esaustiva di fairness/interleaving.
+
+### Verifica editoriale e Quartz
+
+- Rapporto rigenerato: **911 documenti raggiungibili, zero errori, 296 avvisi editoriali**, uno in meno. **9/9 test della trasformazione**.
+- Prima build completa: **3719 file, 2003 HTML, 168 redirect, 143497 riferimenti**, zero errori; circa cinque minuti. Avvisi noti su eval e repository Git temporaneo.
+- Prima QA Chrome **157.0.8103.79**: desktop **1440x1000**, mobile **390x844**, HTTP 200, dieci blocchi, una tabella di quattro righe, nessun errore JavaScript o overflow del documento.
+- La tabella mobile misurava circa 364 px e richiedeva scorrimento nel contenitore. Accorciate le intestazioni nel Markdown, senza cambiare codice, CSS o plugin.
+- Prima cattura in `appunti-rust-channels-qa-yyL9k7`: ispezionati tabella ed esempio mobile. La misurazione dei blocchi inizialmente fuori viewport non rilevava tutta la larghezza del codice; QA finale predisposta per misurarli dopo averli portati a schermo.
+- README aggiornato con comandi, risultati, dipendenze e limiti. Prettier e git diff --check superati prima dell'aggiornamento finale dei metadati.
+- QA finale Chrome **157.0.8103.79**: tabella mobile a **326 px**, contenitore senza overflow, nove blocchi su dieci con codice scorrevole localmente su mobile, nessuno su desktop. Misurato anche il nodo code, non soltanto pre.
+- Otto screenshot finali ispezionati in `appunti-rust-channels-qa-Iie34N`: titolo, tabella, esempio bounded e watch su desktop/mobile. H1, generici Rust e label Async e await conservati; nessun errore JavaScript.
+- Rimane lo scroll iniziale Explorer di **236 px desktop**, **0 px mobile**. QA riportata in cima senza cambiare il plugin; browser e server temporanei chiusi.
+- La pagina era gia emessa durante la QA; build globale finale completata successivamente: **3719 file, 2003 HTML, 168 redirect, 143497 riferimenti**, zero errori.
+- Dopo la build, **7/7 test HTTP**; ricontrollo trasformazione **9/9**. Prettier e git diff --check superati; dieci voci nello storico, 70 suite Rust, nessun avviso editoriale nella nota corrente.
+- Nessun cambio al browser personale o all'anteprima persistente; HTML soltanto generati. Nessun commit, push o deploy remoto.
+
+### Prossimo blocco
+
+Proseguire con [[Programmazione/Rust/Pagine/Graceful shutdown|Graceful shutdown]]: segnale cooperativo, chiusura dei canali senza busy loop, drenaggio, task da attendere, deadline e abort finale. Letta come contesto, non revisionata.
+
+Restano lo scroll iniziale Explorer Quartz e i rilievi sugli helper rustdoc di Builder pattern, prestazioni ed Extension traits, incluso count_where. Nessun commit o push.
+
+## 2026-11-17 - Rust: Graceful shutdown
+
+### Intervento
+
+Revisionata [[Programmazione/Rust/Pagine/Graceful shutdown|Graceful shutdown]], ultima delle **13 note di Concorrenza e Asincronia**. Capitolo completato: **100/183 note principali Rust**, **83 restanti**; promemoria separati.
+
+- Corretto il loop watch che ignorava Err e poteva girare continuamente sul canale chiuso. Gestiti valore true iniziale, nuovi subscriber e distinzione fra richiesta e scomparsa dei sender.
+- Distinte le fasi di stop dell'ammissione, notifica, completamento/scarto, cleanup, join ed escalation; chiariti persistenza e rollback non garantiti.
+- Sostituiti i frammenti incompleti con sei programmi validi, un compile-fail esplicito e manifest Tokio/tokio-util.
+- Worker con priorita al segnale, job corrente completato e drenaggio della coda; chiariti permit e necessita di una barriera applicativa per l'ammissione.
+- CancellationToken: clone rispetto a child_token, cancellazione persistente, drop non equivalente a cancel.
+- TaskTracker: close permette wait ma non impedisce spawn; handle conservati per controllare gli esiti.
+- JoinSet: scadenza condivisa, report di successi/errori/panic/cancellazioni, abort seguito da join. Distinto shutdown del set dalla fase cooperativa.
+- Trigger interno o Ctrl+C con errore preservato dopo cleanup; limiti di SIGINT, SIGTERM, blocking, Drop e shutdown del runtime.
+- Fonti ufficiali Tokio 1.54.1 e tokio-util 0.7.20 consultate. La pagina standard process::exit indicizza Rust 1.100.0; nessuna pretesa che sia la toolchain del laboratorio.
+- Frontmatter e status non revisionato invariati; nessun cambio a indice, percorsi o redirect.
+
+### Verifica tecnica
+
+- Nuova suite `_Meta/tests/rust-shutdown.test.mjs`: **41 casi**, tutti gli otto blocchi del Markdown estratti.
+- Rust **1.99.1**, edition **2024**, **x86_64-pc-windows-gnu**, Node **24.14.0**, Tokio **1.54.1**, tokio-util **0.7.20**.
+- Primo tentativo **1/41** in **5,5 secondi**: struttura passata, quaranta fallimenti dipendenti dal setup per dlltool mancante nel PATH. Non erano quaranta difetti degli esempi.
+- Aggiunto supporto a RUST_SHUTDOWN_TEST_TOOLS_BIN, riusando dlltool e assembler MSYS2 gia preparati per Runtime. Nessuna modifica a PATH globale, toolchain o dipendenze del sito.
+- Nuovo giro **41/41**, zero fallimenti/skip, **48,8 secondi**. Regressione con Channel async (41) e select/cancellazione (36): **118/118**, zero fallimenti/skip, **120,0 secondi**.
+- Watch: Pending, true anticipato/non visto, nuovo subscriber, chiusura, true sovrascritto da false e Err immediato ripetuto, dimostrato con ciclo finito.
+- Worker: coda vuota/finita, permit preesistente dopo close, cancellazione durante process senza perdita del job o del buffer.
+- Token/tracker: clone/figli, drop, cancellazione anticipata/ripetuta, waiter perso, wait aperto vuoto, spawn dopo close, reopen e drop senza abort.
+- JoinSet: risultati misti, panic catturato, cancellazione gia richiesta, risultato pronto alla deadline, escalation e svuotamento; Drop osservato, cleanup dopo await non eseguito con abort.
+- Conservazione dell'handle col prestito, task distaccata e drop del set; spawn_blocking gia avviato non cancellabile, con gate rilasciato e job atteso.
+- Trigger OS compilato ma eseguito senza --listen, quindi senza poll del listener. Test del trigger con future iniettate, compresi errore e cleanup; nessun segnale reale al processo o terminale.
+- Fetch iniziale autorizzato, build e regressioni --locked --offline; versioni transitive nel README, incluse dipendenze risolte per target non provati. Lockfile temporaneo.
+- Timeout, ambiente Cargo isolato, byte della nota preservati e cleanup limitato al realpath verificato.
+- **71 suite Rust** totali; altre 68 e altri linguaggi non rieseguiti. Niente CI remota.
+- Limiti: un compilatore/target, current-thread e job blocking controllato; nessun server reale, rete/database, flush/persistenza, handler Unix, MSRV, benchmark o verifica esaustiva di fairness e interleaving. Nessun tentativo di abortire lavoro che blocca il thread indefinitamente.
+
+### Verifica editoriale e Quartz
+
+- **911 documenti raggiungibili, zero errori, 295 avvisi editoriali**, uno in meno; **9/9 test della trasformazione**.
+- Chrome **157.0.8103.79**, desktop **1440x1000** e mobile **390x844**: HTTP 200, H1 e label Async e await corretti, generici Rust conservati, otto blocchi e una tabella di quattro righe.
+- Tabella mobile a **326 px**, documento senza overflow; otto blocchi con codice scorrevole su mobile, nessuno su desktop. Misurati i nodi code oltre ai pre.
+- Otto screenshot ispezionati in `appunti-rust-shutdown-qa-O7JA66`: titolo, tabella, watch e deadline su desktop/mobile. Nessun errore JavaScript.
+- La nota era gia emessa durante la QA; build globale completata dopo: **3719 file, 2003 HTML, 168 redirect, 143557 riferimenti**, zero errori, circa cinque minuti.
+- **7/7 test HTTP** dopo la build. Restano gli avvisi noti su eval e repository Git temporaneo.
+- Scroll iniziale Explorer **236 px desktop**, **0 px mobile**; QA riportata in cima senza modificare il plugin.
+- Browser e server temporanei chiusi, nessun cambio al browser personale o all'anteprima persistente; HTML soltanto generati.
+- Prettier e git diff --check superati. README, registro e storico aggiornati, storico mantenuto a dieci voci. Nessun commit, push o deploy remoto.
+
+### Prossimo blocco
+
+Aprire Compile-Time e Type-Level Programming con [[Programmazione/Rust/Pagine/const e static|const e static]]: valutazione costante, identita, promozione, durata e stato condiviso. Letta come contesto, non revisionata.
+
+Restano lo scroll iniziale Explorer Quartz e i rilievi sugli helper rustdoc di Builder pattern, prestazioni ed Extension traits, incluso count_where. Nessun commit o push.
+
+## 2026-11-17 - Rust: const e static
+
+### Ambito e correzioni
+
+- Prima nota di **Compile-Time e Type-Level Programming (1/8)**; **101/183 note principali Rust**, **82 restanti**, promemoria separati.
+- Revisionata [[Programmazione/Rust/Pagine/const e static|const e static]]: valore rispetto ad allocazione, scope rispetto a durata, valutazione costante distinta dalle ottimizzazioni.
+- Chiariti indirizzi, riferimenti alla cella rispetto al contenuto, promozione, tipi non Copy, Drop locale e mancato Drop degli static.
+- Esempi completi per costanti associate/default/array, LazyLock, mutex con thread, costanti Cell indipendenti e static unico anche nel codice generico.
+- Quattro controesempi di compilazione; spiegate le correzioni, il requisito Sync e il lint static_mut_refs in edition 2024.
+- Fonti ufficiali Rust Reference, standard library ed Edition Guide. Le pagine online possono avanzare rispetto alla baseline locale.
+- Frontmatter invariato, incluso status non revisionato e publish true. Nessuna nota creata/spostata, nessun indice o redirect modificato.
+
+### Verifica tecnica
+
+- Nuova suite `_Meta/tests/rust-const-static.test.mjs`: tutti gli undici programmi estratti dalla nota, sette validi e quattro compile-fail con diagnostiche E0015, E0277, E0507 ed E0515.
+- **25/25 test**, zero fallimenti/skip, **11,9 secondi** al primo giro.
+- Rust **1.99.1**, edition **2024**, **x86_64-pc-windows-gnu**, Node **24.14.0**, sola standard library, nessuna installazione o modifica alle dipendenze.
+- Sonde sulle correzioni con const fn/let/clone/ritorno per valore, promozione scalare, Drop, allocazioni statiche distinte non nulle, durata oltre la chiamata e bound T: 'static.
+- Il controesempio static mut viene soltanto compilato e rifiutato; nessun accesso unsafe eseguito.
+- Regressione con OnceLock/LazyLock (62 casi): **87/87**, zero fallimenti/skip, **42,5 secondi**. Dopo una semplificazione equivalente della stringa di una sonda, ricontrollo mirato **1/1**.
+- **72 suite Rust** totali; altre 70 e altri linguaggi non rieseguiti. Niente CI remota.
+- Fixture temporanee, timeout, frontmatter confrontato con Git, byte della nota preservati e cleanup limitato al percorso verificato.
+- Limiti: un compilatore/target, nessuna matrice MSRV/edition, Miri, FFI, embedded, assembly, benchmark, stress o prova esaustiva delle race. Nessuna assunzione sull'uguaglianza degli indirizzi delle const.
+
+### Verifica editoriale e Quartz
+
+- **911 documenti raggiungibili, zero errori, 294 avvisi editoriali**, uno in meno; nessuno nella nota corrente. **9/9 test della trasformazione**.
+- Chrome **157.0.8103.79**, desktop **1440x1000** e mobile **390x844**: HTTP 200, H1, label e generici preservati; undici blocchi, una tabella di sette righe.
+- Tabella mobile a **326 px**, sette blocchi con scorrimento locale mobile, nessuno su desktop; documento senza overflow, nessun errore JavaScript.
+- Otto screenshot ispezionati in `appunti-rust-const-static-qa-vtxAGJ`: titolo, tabella, celle indipendenti e controesempio lifetime, su entrambi i viewport.
+- Resta lo scroll iniziale Explorer di **236 px desktop**, **0 px mobile**. QA riportata in cima senza modificare il plugin.
+- Browser e server temporanei chiusi; nessun cambio al browser personale o all'anteprima persistente. HTML soltanto generati.
+- Build finale: **3719 file, 2003 HTML, 168 redirect, 143624 riferimenti**, zero errori, circa cinque minuti. **7/7 test HTTP** dopo la build.
+- Restano gli avvisi noti di build su eval e repository Git della copia temporanea.
+- Prettier e git diff --check superati; README, registro e storico aggiornati. Storico mantenuto a dieci voci, dettagli precedenti nel registro completo.
+
+### Prossimo blocco
+
+Proseguire con [[Programmazione/Rust/Pagine/const fn|const fn]], letta soltanto come contesto in questo turno. Distinguere contesto costante, chiamata runtime, operazioni ammesse e impegni di compatibilita della API.
+
+Restano lo scroll iniziale Explorer e i rilievi sugli helper rustdoc di Builder pattern, prestazioni ed Extension traits, incluso count_where. Nessun commit, push o deploy remoto.
+
+## 2026-11-17 - Rust: const fn
+
+### Ambito e correzioni
+
+- Seconda nota di **Compile-Time e Type-Level Programming (2/8)**; **102/183 note principali Rust**, **81 restanti**, promemoria separati.
+- Revisionata [[Programmazione/Rust/Pagine/const fn|const fn]]: contesto costante distinto da chiamata ordinaria e ottimizzazione; controllo del corpo, operazioni ammesse e dipendenza dalla toolchain/target.
+- Sei programmi completi: funzione nei due contesti con argomenti CLI reali, wrapper Port fallibile, tabella con while, Limits con invariante e Default, dimensione con checked_mul e blocco const generico.
+- Quattro controesempi: helper non const, parametro runtime catturato, assert fallito in costante e Default derivato non const.
+- Chiariti errore di compilazione rispetto a panic runtime, Option None valido, campi privati, compatibilita di pub const fn, costi di compilazione e limiti di Drop.
+- Fonti ufficiali Reference, standard library, error index, release Rust 1.83 e RFC dei cicli; documentata separatamente l'osservazione locale sull'overflow.
+- Frontmatter invariato, status non revisionato e publish true mantenuti. Nessuna nuova nota, spostamento, modifica a indice o redirect.
+
+### Verifica tecnica
+
+- Nuova suite `_Meta/tests/rust-const-fn.test.mjs`, tutti i dieci programmi estratti dal Markdown.
+- Rust **1.99.1**, edition **2024**, **x86_64-pc-windows-gnu**, Node **24.14.0**; sola standard library, nessuna installazione o nuova dipendenza.
+- Primo giro **38/39**, **18,2 secondi**: passati tutti gli esempi della nota, fallita un'aspettativa della sonda che presumeva overflow sempre rifiutato dentro const fn.
+- Approfondimento **7/7**, **3,4 secondi**: overflow-checks=yes rifiuta la moltiplicazione nel corpo const fn, no produce wrap; operazione diretta nell'inizializzatore ancora rifiutata con no; checked_mul restituisce None in entrambi i casi.
+- Osservazione descritta come comportamento della baseline, non come contratto portabile; corretto il test e ampliata la copertura.
+- Prima regressione con const/static **68/68**, **29,7 secondi**. Corretto poi un disallineamento nella tabella: capacity restituisce Option, usata invece la chiamata double con conversione a usize.
+- Aggiunto test della forma mostrata in tabella: suite finale **44/44**, regressione completa **69/69**, zero fallimenti/skip, **33,8 secondi**.
+- Provati argomenti CLI validi/rifiutati, limiti numerici, campi privati, rimozione di const, correzioni dei controesempi, istanze generiche valide/non valide, mutazione via riferimento e Drop non consentito.
+- Assert verificato con opt-level=3 e debug-assertions=no; panic runtime in processi figli distinti dagli errori del compilatore.
+- Timeout, ambiente dei figli ripulito, confronto YAML con HEAD, preservazione dei byte delle note e cleanup delle sole fixture con realpath/parent/prefisso verificati.
+- **73 suite Rust** totali, altre 71 e altri linguaggi non rieseguiti. Un compilatore/target, nessuna matrice MSRV/edition, cross-compilazione, Miri, assembly, benchmark o CI remota. Flag rustc non equivalenti a collaudo completo dei profili Cargo.
+
+### Verifica editoriale e Quartz
+
+- **911 documenti raggiungibili, zero errori, 293 avvisi editoriali**, uno in meno, nessuno nella nota corrente; **9/9 test della trasformazione**.
+- Build eseguita nuovamente dopo la correzione della tabella: risultato finale **3719 file, 2003 HTML, 168 redirect, 143689 riferimenti**, zero errori, circa cinque minuti. **7/7 test HTTP** dopo la build definitiva.
+- QA ripetuta sulla pagina aggiornata, con controllo esplicito della formula nella tabella. Chrome **157.0.8103.79**, desktop **1440x1000** e mobile **390x844**: HTTP 200, H1, generici e label preservati.
+- Dieci blocchi, una tabella di cinque righe a **326 px** su mobile; otto blocchi con scorrimento locale mobile, nessuno su desktop; nessun overflow del documento o errore JavaScript.
+- Otto screenshot finali ispezionati in `appunti-rust-const-fn-qa-bID1kX`: titolo, tabella, configurazione e blocco generico su entrambi i viewport. Il primo giro QA precedeva la correzione della tabella e non e usato come verifica finale.
+- Resta lo scroll iniziale Explorer di **237 px desktop**, **0 px mobile**; QA riportata in cima senza cambiare il plugin. Avvisi di build su eval e copia temporanea senza Git invariati.
+- Browser/server temporanei chiusi, nessuna modifica al browser personale o all'anteprima persistente. HTML soltanto generati.
+- Prettier e git diff --check superati; README, registro e storico aggiornati. Prima voce del capitolo consolidata, storico a dieci voci.
+
+### Prossimo blocco
+
+Proseguire con [[Programmazione/Rust/Pagine/Const generics|Const generics]], letta solo come contesto in questo turno: parametri ammessi, identita dei tipi, operazioni sulle dimensioni e limiti di stable.
+
+Restano lo scroll iniziale Explorer e i rilievi sugli helper rustdoc di Builder pattern, prestazioni ed Extension traits, incluso count_where. Nessun commit, push o deploy remoto.
+
+## 2026-11-17 - Rust: Const generics
+
+### Ambito e correzioni
+
+- Terza nota di **Compile-Time e Type-Level Programming (3/8)**; **103/183 note principali Rust**, **80 restanti**, promemoria separati.
+- Revisionata [[Programmazione/Rust/Pagine/Const generics|Const generics]]: parametro rispetto ad argomento, identita dei tipi, lunghezza esatta rispetto a capacita e dimensioni statiche rispetto a dati runtime.
+- Esempi completi per Buffer con default, first con prestito e inferenza, Matrix senza bound Copy, array::from_fn, FixedStr con validazione UTF-8, conversione slice-array in prestito e modalita bool.
+- Chiariti N = 0, quattordici tipi const ammessi, byte rispetto a caratteri, campi privati, lifetime e limiti della monomorfizzazione.
+- Distinti calcoli concreti e generici: N + 1 nel tipo resta rifiutato nella baseline, anche con graffe, inline const o const fn. Alternative esplicite, nessuna feature nightly abilitata.
+- Precisate le ripetizioni di array: Copy non richiesto con lunghezze concrete 0/1, valutazione unica dell'espressione ordinaria anche a zero, diversamente da const e from_fn.
+- Fonti ufficiali Reference, standard library, Rust Book, Unstable Book e release storiche; date di stabilizzazione distinte dalla toolchain effettivamente provata.
+- Frontmatter invariato, status non revisionato e publish true mantenuti. Nessuna nuova nota, spostamento, modifica a indice o redirect.
+
+### Verifica tecnica
+
+- Nuova suite `_Meta/tests/rust-const-generics.test.mjs`: tutti gli undici programmi estratti dal Markdown, sette validi e quattro compile-fail.
+- Rust **1.99.1**, edition **2024**, **x86_64-pc-windows-gnu**, Node **24.14.0**; sola standard library, nessuna installazione o nuova dipendenza.
+- Prima regressione con const fn **91/91**, **20,6 secondi**. Aggiunte due sonde per i casi limite delle ripetizioni.
+- Suite definitiva **49/49**, inclusa nella regressione con const fn (44 casi): **93/93**, zero fallimenti/skip, **22,3 secondi**.
+- Provati default/inferenza, valori equivalenti, matrici vuote/non Copy, ordine delle chiamate from_fn, String ripetute, UTF-8 valido/invalido e campi privati.
+- Verificati prestito senza copia, conversioni di lunghezza errata, impossibilita di restituire riferimenti a dati locali, tutti i tipi const ammessi e tipi rifiutati.
+- Prove di correzione dei controesempi, rifiuto di N + 1 nelle varianti, item annidati e Default per array di 32/33 elementi. Nessuna promessa di performance dedotta dalle prove.
+- Timeout, ambiente dei figli ripulito, confronto YAML con HEAD, byte della nota preservati e cleanup delle sole fixture con realpath/parent/prefisso verificati.
+- **74 suite Rust** totali, altre 72 e altri linguaggi non rieseguiti. Un compilatore/target, nessuna matrice MSRV/edition, nightly, cross-compilazione, Miri, assembly, benchmark o CI remota.
+
+### Verifica editoriale e Quartz
+
+- **911 documenti raggiungibili, zero errori, 292 avvisi editoriali**, uno in meno, nessuno nella nota corrente; **9/9 test della trasformazione**.
+- Chrome **157.0.8103.79**, desktop **1440x1000** e mobile **390x844**: HTTP 200, H1, generici e label preservati.
+- Undici blocchi, tabella di cinque righe a **326 px** mobile; otto blocchi con scorrimento locale mobile, nessuno su desktop; nessun overflow del documento o errore JavaScript.
+- Otto screenshot ispezionati in `appunti-rust-const-generics-qa-ZnFbeW`: titolo, tabella, FixedStr e controesempio N + 1 su entrambi i viewport.
+- Resta lo scroll iniziale Explorer di **236 px desktop**, **0 px mobile**; QA riportata in cima senza cambiare il plugin.
+- Build completa: **3719 file, 2003 HTML, 168 redirect, 143756 riferimenti**, zero errori, circa cinque minuti. **7/7 test HTTP** dopo la build.
+- Avvisi noti di build su eval e repository Git della copia temporanea invariati.
+- Browser/server temporanei chiusi, nessuna modifica al browser personale o all'anteprima persistente. HTML soltanto generati.
+- Prettier e git diff --check superati; README, registro e storico aggiornati. Prima voce del capitolo consolidata, storico mantenuto a dieci voci.
+
+### Prossimo blocco
+
+Proseguire con [[Programmazione/Rust/Pagine/PhantomData|PhantomData]], letta solo come contesto: marker, relazione con lifetime/ownership, variance, auto trait e drop checking senza attribuire garanzie automatiche al solo campo.
+
+Restano lo scroll iniziale Explorer e i rilievi sugli helper rustdoc di Builder pattern, prestazioni ed Extension traits, incluso count_where. Nessun commit, push o deploy remoto.
+
+## 2026-11-17 - Rust: PhantomData
+
+### Ambito e correzioni
+
+- Quarta nota di **Compile-Time e Type-Level Programming (4/8)**; **104/183 note principali Rust**, **79 restanti**, promemoria separati.
+- Revisionata [[Programmazione/Rust/Pagine/PhantomData|PhantomData]]: etichetta, prestito e ownership logica distinti da valori e risorse effettivi.
+- Cinque programmi validi: layout/Copy, ID senza bound superflui, descrittore di slice con campi privati, auto trait e direzioni della varianza.
+- Sei compile-fail: parametro inutilizzato, domini mescolati, prestito locale restituito, Rc non Send, derive Copy e distruzione implicita.
+- Tabella di otto forme; distinti contributo del marker e altri campi, lifetime esterno e tipo contenuto, Copy/Clone e Unpin.
+- Il descrittore espone solo puntatore e lunghezza, senza dereferenziazione o promessa di implementare una slice completa. Costruttore e invarianti restano essenziali.
+- Ownership logica distinta da deallocazione; corretto l'assoluto storico sul marker richiesto dal drop checker con impl Drop. Nessun may_dangle o codice unsafe eseguito.
+- Frontmatter invariato, incluso status non revisionato e publish true; nessuna nota creata/spostata, indice o redirect modificato.
+
+### Verifica tecnica
+
+- Nuova suite `_Meta/tests/rust-phantom-data.test.mjs`, undici programmi estratti dal Markdown.
+- Rust **1.99.1**, edition **2024**, **x86_64-pc-windows-gnu**, Node **24.14.0**; sola standard library, nessuna installazione o nuova dipendenza.
+- Primo giro **41/51**, **19,5 secondi**: tutti gli esempi originali passavano. Nove fallimenti del controllo tabella per l'AST CommonMark, corretto usando il paragrafo e i suoi nodi inlineCode.
+- Un fallimento ha rilevato un errore nella nuova prosa e nella sonda: PhantomData<PhantomPinned> non e Unpin sulla baseline. Corretto e verificato anche il contrasto con PhantomData<fn() -> PhantomPinned>; documentazione degli auto trait conferma il bound.
+- Suite finale **51/51**, inclusa nella regressione con Lifetimes avanzati (62 casi): **113/113**, zero fallimenti/skip, **38,6 secondi**.
+- Dopo la modifica della tabella, controllo strutturale **1/1**; programmi Rust invariati.
+- Otto gruppi Send/Sync verificano 48 combinazioni con String/Rc/Cell; otto gruppi di varianza verificano 16 firme nei due versi. Le prove interne non si sommano ai 51 gruppi Node.
+- Sonde su layout, Copy/Clone/Default, assenza di Drop del tipo etichetta, limiti numerici degli ID, campi privati, slice vuote/non Copy/ZST e mutazioni incompatibili.
+- Provati uscita del puntatore raw senza dereferenziazione, perdita della relazione di prestito nel tipo estratto, campi reali non Send, Unpin e drop check con/senza Drop, incluse le correzioni dei controesempi.
+- Timeout, ambiente dei figli ripulito, YAML confrontato con HEAD, byte delle note preservati e cleanup con realpath/parent/prefisso verificati.
+- **75 suite Rust** totali; altre 73 e altri linguaggi non rieseguiti. Un compilatore/target, niente matrice MSRV/edition, nightly, FFI, Miri, assembly, benchmark o thread reali; non una prova di sicurezza di astrazioni unsafe.
+
+### Verifica editoriale e Quartz
+
+- **911 documenti raggiungibili, zero errori, 291 avvisi editoriali**, uno in meno; **9/9 test della trasformazione**.
+- Primo QA: tabella a tre colonne larga circa 395 px nel contenitore mobile da 358 px; richiedeva scorrimento orizzontale. Ridotta a due colonne senza perdere informazioni e rigenerata la pagina.
+- QA finale: Chrome **157.0.8103.79**, desktop **1440x1000** e mobile **390x844**; HTTP 200, H1, generici e label preservati, undici blocchi, tabella di otto righe e due colonne.
+- Tabella finale a **326 px** mobile, otto blocchi con scorrimento locale mobile, nessuno su desktop; nessun overflow del documento o errore JavaScript.
+- Otto screenshot finali ispezionati in `appunti-rust-phantom-data-qa-dGPRUd`: titolo, tabella, descrittore e drop check su entrambi i viewport.
+- Resta lo scroll iniziale Explorer di **236 px desktop**, **0 px mobile**; QA riportata in cima senza modificare il plugin.
+- Build ripetuta dopo la modifica della tabella: risultato finale **3719 file, 2003 HTML, 168 redirect, 143821 riferimenti**, zero errori, circa cinque minuti. **7/7 test HTTP** dopo la build definitiva.
+- Avvisi noti di build su eval e repository Git della copia temporanea invariati.
+- Browser/server temporanei chiusi; nessuna modifica al browser personale o all'anteprima persistente. HTML soltanto generati.
+- README e registro aggiornati, storico del capitolo consolidato a dieci voci; Prettier e git diff --check superati.
+
+### Prossimo blocco
+
+Proseguire con [[Programmazione/Rust/Pagine/Marker types|Marker types]], letta soltanto come contesto: ruoli, stati, unita di misura e differenza fra marker type e trait. Sostituire o delimitare esplicitamente il controllo contains('@'), che non costituisce una validazione email completa, e impedire costruzioni che saltano gli invarianti.
+
+Restano lo scroll iniziale Explorer e i rilievi sugli helper rustdoc di Builder pattern, prestazioni ed Extension traits, incluso count_where. Nessun commit, push o deploy remoto.
+
+## 2026-11-17 - Rust: Marker types
+
+### Ambito e correzioni
+
+- Quinta nota di **Compile-Time e Type-Level Programming (5/8)**; **105/183 note principali Rust**, **78 restanti**, promemoria separati.
+- Revisionata [[Programmazione/Rust/Pagine/Marker types|Marker types]]: tipi marker, PhantomData, trait marker ordinari, auto trait e stato runtime distinti.
+- Chiariti identita dei tipi rispetto agli alias, marker abitabili/non abitabili, costi del contenitore e assenza di una garanzia automatica di layout o prestazioni.
+- Quattro programmi completi: marker senza valore del parametro, quantita con unita, validazione con transizione e buffer con trait sealed.
+- Quantita con policy finita non negativa, conversione effettiva del valore e overflow rifiutato; espliciti arrotondamenti, limiti dell'etichettatura e assenza di algebra dimensionale.
+- Sostituito il falso esempio di email validata con username ASCII di 3..=32 byte; conserva l'input in caso di errore, non normalizza Unicode e non verifica identita/unicita.
+- Costruttori specifici, campi privati, consumo delle transizioni e nessun getter mutabile; into_inner restituisce dati senza prova type-level.
+- Trait ordinario sealed e restrizioni dell'API distinti da autenticazione e permessi OS. Transizioni di rete descritte come dipendenti da operazioni reali.
+- Tre compile-fail isolano unita incompatibili, metodo nello stato errato e mancata propagazione dei trait ordinari. Fonti ufficiali Rust Book, Reference, API Guidelines e standard library.
+- Frontmatter invariato, incluso status non revisionato e publish true. Nessuna nota creata/spostata, modifica a indice o redirect.
+
+### Verifica tecnica
+
+- Nuova suite `_Meta/tests/rust-marker-types.test.mjs`: tutti i sette programmi estratti dal Markdown, quattro validi e tre rifiutati con E0308/E0599/E0277.
+- Rust **1.99.1**, edition **2024**, **x86_64-pc-windows-gnu**, Node **24.14.0**; sola standard library, nessuna installazione o nuova dipendenza.
+- Primo giro **42/42**, zero fallimenti/skip, **17,5 secondi**. Regressione seriale con PhantomData (51 casi): **93/93**, zero fallimenti/skip, **62,4 secondi**.
+- Sonde numeriche su zero negativo, subnormali, estremi, NaN/infinita, conversioni e overflow; API reale rifiuta le unita incompatibili e impedisce di saltare il costruttore.
+- Validazione: limiti inclusivi, lunghezze in byte, tutti i 128 byte ASCII, Unicode/spazi, priorita degli errori, recupero dell'input, contenuto e identita del buffer preservati.
+- Campi/costruttori privati, metodi legati allo stato, impossibilita di mutare as_str, consumo del vecchio stato e perdita della prova con into_inner.
+- Buffer vuoto/Unicode, append/freeze, implementazioni sealed esterne al modulo rifiutate, scelta runtime fra stati e alternativa con enum. Correzioni dei tre controesempi eseguite.
+- Timeout, ambiente dei figli ripulito, YAML confrontato con HEAD, byte delle note preservati e cleanup con realpath/parent/prefisso verificati.
+- **76 suite Rust** totali; altre 74 e altri linguaggi non rieseguiti. Un compilatore/target, nessuna matrice MSRV/edition, nightly, Miri, assembly, benchmark, rete o autenticazione reale.
+- Sealed verificato da un modulo esterno nella stessa crate, non con una seconda crate downstream. Nessun conteggio globale delle allocazioni o prova di sicurezza di astrazioni unsafe.
+
+### Verifica editoriale e Quartz
+
+- **911 documenti raggiungibili, zero errori, 290 avvisi editoriali**, uno in meno, nessuno nella nota corrente; **9/9 test della trasformazione**.
+- Chrome **157.0.8103.79**, desktop **1440x1000** e mobile **390x844**: HTTP 200, H1, label e tipi generici preservati, sette blocchi, tabella di cinque righe e due colonne.
+- Tabella a **326 px** mobile; sei blocchi con scorrimento locale mobile, nessuno su desktop; nessun overflow del documento o errore JavaScript.
+- Otto screenshot ispezionati in `appunti-rust-marker-types-qa-nXwUSa`: titolo, tabella, validazione e trait sealed su entrambi i viewport.
+- Resta lo scroll iniziale Explorer di **236 px desktop**, **0 px mobile**; QA riportata in cima senza modificare il plugin.
+- Build completa: **3719 file, 2003 HTML, 168 redirect, 143867 riferimenti**, zero errori; **7/7 test HTTP** dopo la build. Avvisi noti su eval e repository Git della copia temporanea invariati.
+- Browser/server QA chiusi, nessuna modifica al browser personale o all'anteprima persistente. HTML soltanto generati.
+- Prettier e git diff --check superati. README e registro aggiornati; prima voce del capitolo consolidata, storico a dieci voci.
+
+### Prossimo blocco
+
+Proseguire con [[Programmazione/Rust/Pagine/Newtype pattern|Newtype pattern]], letta soltanto come contesto: alias rispetto a tipi distinti, conversioni, costruttori e invarianti, trait/orphan rule, layout e limiti di Deref. Controllare overflow e troncamento nel demo Celsius/Fahrenheit prima di presentarlo come conversione generale.
+
+Restano lo scroll iniziale Explorer e i rilievi sugli helper rustdoc di Builder pattern, prestazioni ed Extension traits, incluso count_where. Nessun commit, push o deploy remoto.
+
+## 2026-11-17 - Rust: Newtype pattern
+
+### Ambito e correzioni
+
+- Sesta nota di **Compile-Time e Type-Level Programming (6/8)**; **106/183 note principali Rust**, **77 restanti**, promemoria separati.
+- Revisionata [[Programmazione/Rust/Pagine/Newtype pattern|Newtype pattern]]: identita rispetto agli alias, API propria, conversioni esplicite, privacy e invarianti.
+- Cinque programmi completi: ID di dominio, NonEmptyString con TryFrom/AsRef e aggiornamento validato, temperature intere, DisplayList in prestito e layout transparent.
+- Sostituita la conversione numerica soggetta a troncamento/overflow con calcolo intermedio i64 e TryFrom: rifiuta frazioni e risultati fuori range, senza fingere un modello fisico completo.
+- Chiariti campo privato rispetto a metodi corretti, derive Default e getter mutabili, consumo di into_inner, assenza di delega automatica e limiti di Deref.
+- Corretto il linguaggio sulla orphan rule: il wrapper locale la rispetta, non la aggira; precisati coerenza, alias e parametri generici scoperti.
+- Distinti layout/ABI documentati, misure locali, prestazioni e costi di validazione/allocazione; nessun transmute o FFI dimostrativo.
+- Tre compile-fail con spiegazione e fonti ufficiali. Frontmatter invariato, status non revisionato e publish true mantenuti; nessuna nota spostata, indice o redirect modificato.
+
+### Verifica tecnica
+
+- Nuova suite `_Meta/tests/rust-newtype-pattern.test.mjs`: cinque programmi validi e tre compile-fail estratti dal Markdown, con E0308/E0117/E0603.
+- Rust **1.99.1**, edition **2024**, **x86_64-pc-windows-gnu**, Node **24.14.0**; sola standard library, nessuna installazione o nuova dipendenza.
+- Primo giro **47/47**, zero fallimenti/skip, **19,8 secondi**. Regressione seriale con Marker types (42 casi): **89/89**, zero fallimenti/skip, **40,5 secondi**.
+- ID: limiti e trait derivati; stringhe: vuoto, spazi/NUL/Unicode, byte/caratteri, buffer preservato, Clone indipendente, aggiornamenti rifiutati senza alterazioni, privacy e move.
+- Controprove su Default e getter mutabile che violano il contratto; conflitto From/TryFrom, assenza di coercione AsRef e di metodi ereditati.
+- Temperature: **20.053 input per esecuzione**, campionamento e frontiere con oracle i128; ripetuto con ottimizzazione e overflow-checks=no. Non esaustivo sul dominio i32.
+- Vecchia formula: troncamento e panic di overflow confermati; DisplayList: errori del writer, lifetime, Unicode e assenza di escaping; alias/orphan rule e trait locale su tipo esterno.
+- Transparent: dimensione/allineamento, marker ZST, due campi numerici rifiutati e nessuna conversione implicita; non una prova FFI.
+- Timeout, diagnostiche JSON, ambiente dei figli ripulito, YAML confrontato con HEAD, byte della nota preservati e cleanup con realpath/parent/prefisso verificati.
+- **77 suite Rust** totali; altre 75 e altri linguaggi non rieseguiti. Un compilatore/target, nessuna matrice MSRV/edition, nightly, Miri, assembly o benchmark. Nessuna crate downstream separata, deserializzazione reale o conteggio globale delle allocazioni.
+
+### Verifica editoriale e Quartz
+
+- **911 documenti raggiungibili, zero errori, 289 avvisi editoriali**, uno in meno, nessuno nella nota corrente; **9/9 test della trasformazione**.
+- Chrome **157.0.8103.79**, desktop **1440x1000** e mobile **390x844**: HTTP 200, H1 e generici preservati; otto blocchi, tabella di cinque righe/due colonne a **326 px** mobile. Sette blocchi scorrevoli su mobile, nessuno su desktop; nessun overflow del documento o errore JavaScript. Otto screenshot ispezionati in `appunti-rust-newtype-pattern-qa-4UFyE5` (titolo, tabella, temperature, NonEmptyString). Resta lo scroll iniziale Explorer di **236 px desktop**, **0 px mobile**, senza modifica al plugin.
+- Build completa: **3719 file, 2003 HTML, 168 redirect, 143922 riferimenti**, zero errori, circa cinque minuti; **7/7 test HTTP**. Avvisi noti su eval e copia temporanea senza Git invariati.
+- Browser/server QA chiusi, nessuna modifica al browser personale o all'anteprima persistente; HTML soltanto generati.
+- Prettier e git diff --check superati. README e registro aggiornati; voce del capitolo consolidata, storico a dieci voci.
+
+### Prossimo blocco
+
+Proseguire con [[Programmazione/Rust/Pagine/Typestate pattern|Typestate pattern]], letta soltanto come contesto: transizioni che consumano lo stato, gestione degli errori e distinzione fra modello in memoria e operazioni reali. Gli attuali connect/send non aprono una connessione e vanno presentati o sostituiti coerentemente.
+
+Restano lo scroll iniziale Explorer e i rilievi sugli helper rustdoc di Builder pattern, prestazioni ed Extension traits, incluso count_where. Nessun commit, push o deploy remoto.
+
+
+## 2026-11-17 - Rust: Typestate pattern
+
+### Ambito e correzioni
+
+- Settima nota di **Compile-Time e Type-Level Programming (7/8)**; **107/183 note principali Rust**, **76 restanti**, promemoria separati.
+- Revisionata [[Programmazione/Rust/Pagine/Typestate pattern|Typestate pattern]]: stato statico, valori runtime, consumo e restituzione di un nuovo valore, invarianti e visibilita.
+- Sostituito il client fittizio con due demo in memoria: documento Draft/Published con errore recuperabile, ritiro e collezione mista; builder Missing/Named con dati nello stato e build selettivo.
+- Policy esplicite basate su trim, conservazione dei dati, consumo delle transizioni e Debug distinto da riservatezza. Distinti marker PhantomData e stati con dati reali.
+- Conservata e chiarita la parte rete: connect deve ottenere una risorsa reale, Connected non garantisce disponibilita futura, write_all puo fallire dopo effetti parziali.
+- Precisati esiti incerti, limiti del retry, abbandono del flusso, Drop e RAII; nessun rollback dedotto dal solo cambio di marker.
+- Tre compile-fail con spiegazione e correzioni; fonti ufficiali Rust Book, Reference e standard library.
+- Generici nella prosa protetti come inline code per evitare interpretazione HTML. Frontmatter invariato, status non revisionato e publish true mantenuti; nessun cambio a indice, percorsi o redirect.
+
+### Verifica tecnica
+
+- Nuova suite `_Meta/tests/rust-typestate-pattern.test.mjs`: due programmi validi e tre compile-fail estratti dal Markdown, E0599/E0382/E0308.
+- Rust **1.99.1**, edition **2024**, **x86_64-pc-windows-gnu**, Node **24.14.0**; sola standard library, nessuna installazione o nuova dipendenza.
+- Primo giro **46/46**, zero fallimenti/skip, **18,5 secondi**. Aggiunta la guardia AST per il testo generico; codice Rust invariato.
+- Regressione seriale con Newtype pattern (47 casi): **93/93**, zero fallimenti/skip, **45,4 secondi**.
+- Post: priorita degli errori, whitespace ASCII/Unicode, U+200B/NUL, conservazione dei buffer, retry, ritiro, nuova validazione, privacy e API selettiva.
+- Provati Debug, assenza di Clone, uso dopo move, prestito ancora attivo e sua conclusione; enum per stati misti e shadowing rispetto ad assegnazione.
+- Builder: tutti i valori u8 prima/dopo il nome, default, recupero della configurazione, stringa e buffer conservati; campi/costruttori privati e consumo delle operazioni.
+- Drop generico con move dei campi rifiutato, specializzazione Drop rifiutata, risorsa RAII interna, abbandono del flusso e forget su ZST. Nessuna risorsa reale trattenuta dalla sonda forget.
+- Writer in memoria: errore dopo un prefisso scritto e duplicazione del prefisso al retry completo. Non e una prova di rete/database.
+- Timeout, diagnostiche JSON, ambiente dei figli ripulito, YAML confrontato con HEAD, byte preservati e cleanup con realpath/parent/prefisso verificati.
+- **78 suite Rust** totali; altre 76 e altri linguaggi non rieseguiti. Un compilatore/target, niente matrice MSRV/edition, nightly, Miri, benchmark, assembly, FFI, cancellazione async o autorizzazione reale.
+
+### Verifica editoriale e Quartz
+
+- **911 documenti raggiungibili, zero errori, 288 avvisi editoriali**, uno in meno, nessuno nella nota corrente; **9/9 test della trasformazione**.
+- Chrome **157.0.8103.79**, desktop **1440x1000** e mobile **390x844**: HTTP 200, H1, generici nel codice e nella prosa preservati; cinque blocchi, tabella di cinque righe/due colonne a **326 px** mobile. Tutti i cinque blocchi hanno scorrimento locale mobile, nessuno desktop; nessun overflow del documento o errore JavaScript. Otto screenshot ispezionati in `appunti-rust-typestate-pattern-qa-VD8xaI` (titolo, tabella, builder, documento). Resta lo scroll iniziale Explorer: **305 px desktop**, **0 px mobile**; QA riportata in cima senza cambiare il plugin.
+- Build completa: **3719 file, 2003 HTML, 168 redirect, 143970 riferimenti**, zero errori, circa cinque minuti; **7/7 test HTTP**. Avvisi noti su eval e copia temporanea senza Git invariati.
+- Browser/server QA chiusi, nessuna modifica al browser personale o all'anteprima persistente; HTML soltanto generati.
+- Prettier e git diff --check superati. README e registro aggiornati; voce del capitolo consolidata, storico a dieci voci.
+
+### Prossimo blocco
+
+Proseguire con [[Programmazione/Rust/Pagine/Zero-sized types|Zero-sized types]], letta soltanto come contesto: dimensione e allineamento, abitabilita, indirizzi non necessariamente unici, Drop, collezioni e limiti delle promesse di costo nullo. E l'ultima nota del capitolo.
+
+Restano lo scroll iniziale Explorer e i rilievi sugli helper rustdoc di Builder pattern, prestazioni ed Extension traits, incluso count_where. Nessun commit, push o deploy remoto.
+
+## 2026-11-17 - Rust: Zero-sized types
+
+### Ambito e correzioni
+
+- Completato **Compile-Time e Type-Level Programming (8/8)**; **108/183 note principali Rust**, **75 restanti**, promemoria separati.
+- Revisionata [[Programmazione/Rust/Pagine/Zero-sized types|Zero-sized types]]: separati dimensione zero, allineamento, costo runtime, ownership e abitabilita.
+- Quattro programmi completi: layout/padding, marker JSON/TOML, Vec/Box con Drop osservabile, contenitori di un tipo non abitabile. Due compile-fail spiegati e corretti.
+- Conservato il caso dei marker di formato, esplicitando che compone nomi ma non serializza o valida percorsi. Client con endpoint distinto dal solo marker.
+- Aggiunti allineamento elevato, riferimenti e indirizzi condivisi, metadati dei contenitori, valori logici, effetti dei distruttori e limiti di forget/abort.
+- Distinti Void, unit, array vuoti, PhantomData, enum a una/piu varianti; citate fonti ufficiali Reference, Rustonomicon e standard library.
+- Frontmatter invariato, status non revisionato e publish true mantenuti; nessun cambio a indice, percorsi o redirect.
+
+### Verifica tecnica
+
+- Nuova suite `_Meta/tests/rust-zero-sized-types.test.mjs`: **37/37**, zero fallimenti/skip, **17,9 secondi**.
+- Rust **1.99.1**, edition **2024**, **x86_64-pc-windows-gnu**, Node **24.14.0**; sola standard library, nessuna installazione o nuova dipendenza.
+- Regressione seriale con Typestate pattern (46 casi): **83/83**, zero fallimenti/skip, **40,2 secondi**.
+- Layout: array ZST/vuoti, padding, offset, allineamento di campo reale e PhantomData, riferimenti e Box validi; indirizzi degli elementi dello stesso buffer.
+- Formato: nomi vuoti/separatori/Unicode, indipendenza dei risultati, buffer trasferito, tipi distinti, trait necessario e nessun Drop del parametro fantasma.
+- Vec: capacita, clear e riuso, truncate/remove, iteratore parziale, conteggi delle visite e dei distruttori. Move, forget, Copy incompatibile con Drop.
+- Void: costruttore rifiutato, contenitori vuoti/PhantomData, match infallibile provato su tutti i valori u16; closure/function item/pointer e correzioni dei compile-fail.
+- Timeout, diagnostiche JSON, ambiente dei figli ripulito, YAML confrontato con HEAD, controllo AST contro HTML involontario, byte preservati e cleanup con realpath/parent/prefisso verificati.
+- **79 suite Rust** totali; altre 77 e altri linguaggi non rieseguiti. Un compilatore/target, niente matrice MSRV/edition, nightly, Miri, benchmark, assembly o FFI.
+- Nessun allocator strumentato, rete, file o serializzazione reale; contatore thread-local senza worker aggiuntivi. Nessuna prova reale di abort/uscita del processo; assenza di allocazioni ZST documentata, non misurata globalmente.
+
+### Verifica editoriale e Quartz
+
+- **911 documenti raggiungibili, zero errori, 287 avvisi editoriali**, uno in meno; **9/9 test della trasformazione**.
+- Chrome **157.0.8103.79**, desktop **1440x1000** e mobile **390x844**: HTTP 200, H1 e generici nel codice/prosa preservati; sei blocchi, tabella di cinque righe/due colonne a **326 px** mobile. Cinque blocchi con scorrimento locale mobile, nessuno desktop; nessun overflow del documento o errore JavaScript. Otto screenshot ispezionati in `appunti-rust-zero-sized-types-qa-JN3LnG` (titolo, tabella, Drop, layout). Resta lo scroll iniziale Explorer: **812 px desktop**, **0 px mobile**; QA riportata in cima senza cambiare il plugin.
+- Build completa: **3719 file, 2003 HTML, 168 redirect, 144025 riferimenti**, zero errori, circa tre minuti; **7/7 test HTTP**. Avvisi noti su eval e copia temporanea senza Git invariati.
+- Browser/server QA chiusi, nessuna modifica al browser personale o all'anteprima persistente; HTML soltanto generati.
+- Prettier e git diff --check superati. README e registro aggiornati; voce del capitolo consolidata, storico a dieci voci.
+
+### Prossimo blocco
+
+Aprire **Macros** con [[Programmazione/Rust/Pagine/Macro dichiarative|Macro dichiarative]], letta soltanto come contesto: matcher e ripetizioni, valutazione degli argomenti, fragment specifier/edition, hygiene ed esportazione. La nota non e ancora revisionata.
+
+Restano lo scroll iniziale Explorer e i rilievi sugli helper rustdoc di Builder pattern, prestazioni ed Extension traits, incluso count_where. Nessun commit, push o deploy remoto.
+
+## 2026-11-17 - Rust: Macro dichiarative
+
+### Ambito e correzioni
+
+- Aperto **Macros (1/6)**; **109/183 note principali Rust**, **74 restanti**, promemoria separati.
+- Revisionata [[Programmazione/Rust/Pagine/Macro dichiarative|Macro dichiarative]]: token, matcher/transcriber, espansione e valutazione runtime, ordine dei bracci e type checking.
+- Completati cinque programmi e tre compile-fail: log, lista variadica, ensure, confronto edition, esportazione, ambiguita, follow-set e forwarding.
+- Lista vuota separata da quella non vuota per rifiutare la virgola isolata; chiariti ordine, effetti, move, omogeneita e differenze da vec standard.
+- parse_port sostituito da validate_port: policy su u16 gia convertito, non parsing o disponibilita di rete. Messaggio lazy e return nel contesto corretto; niente rollback implicito.
+- Documentati expr/expr_2021, pat/pat_param, edition della definizione, scope, dollar-crate e privacy degli helper.
+- Eliminato il ciclo di prerequisiti: Hygiene passa a related. Tutto il resto del frontmatter conservato, compresi status non revisionato e publish true; nessun cambio a indice, percorsi o redirect.
+
+### Verifica tecnica
+
+- Nuova suite `_Meta/tests/rust-declarative-macros.test.mjs`, finale **54 casi**; programmi estratti dal Markdown, correzioni e sonde separate.
+- Rust **1.99.1**, **x86_64-pc-windows-gnu**, Node **24.14.0**; edition 2024 e sonde selezionate 2018/2021, sola standard library, nessuna nuova dipendenza/installazione.
+- Primo giro **51/53**, **23,7 secondi**: due regex cercavano after anziche for nel messaggio principale JSON. Il compilatore rifiutava gia i due controesempi come previsto; corretti solo i controlli.
+- Aggiunta una sonda sul return in async e aggiornata la verifica YAML per l'unico cambiamento ammesso nei prerequisiti.
+- Regressione seriale con Zero-sized types (37 casi): **91/91**, zero fallimenti/skip, **49,4 secondi**; comprende **54/54** casi della suite finale.
+- Log/move/Debug/hygiene, Vec e input invalidi, tutti gli u16 per validate_port, messaggio lazy, return da closure/blocco/async e effetti conservati.
+- Otto fixture con rlib e chiamante separato: macro esportata, nome rinominato, use, scope alla radice, privacy e edition incrociate della definizione/chiamata.
+- Expr, underscore e const block, pat/pat_param, scope testuale, ripetizioni disallineate, item generati, compile_error e correzioni dei tre errori intenzionali.
+- Timeout, diagnostiche JSON, ambiente ripulito, AST senza HTML accidentale, confronto YAML con HEAD, byte della nota preservati, cleanup con realpath/parent/prefisso verificati.
+- **80 suite Rust** totali; altre 78 e altri linguaggi non rieseguiti. Un compilatore/target, sonde edition limitate, niente MSRV, nightly, Miri, benchmark o snapshot delle espansioni.
+- Nessuna proc macro, dipendenza esterna, rete o verifica della disponibilita delle porte. Sonda async senza await, singolo poll con Waker::noop; non e un test di runtime asincrono.
+
+### Verifica editoriale e Quartz
+
+- **911 documenti raggiungibili, zero errori, 286 avvisi editoriali**, uno in meno; **9/9 test della trasformazione**.
+- Chrome **157.0.8103.79**, desktop **1440x1000** e mobile **390x844**: HTTP 200, H1, metavariabili e dollar-crate nel codice/prosa preservati; otto blocchi, tabella di sette righe/due colonne a **326 px** mobile. Tutti gli otto blocchi con scorrimento locale mobile, nessuno desktop; nessun overflow del documento o errore JavaScript. Otto screenshot ispezionati in `appunti-rust-macro-dichiarative-qa-GV6ZgT` (titolo, tabella, ensure, vec_like). Resta lo scroll iniziale Explorer: **236 px desktop**, **0 px mobile**; QA riportata in cima senza cambiare il plugin.
+- Build completa: **3719 file, 2003 HTML, 168 redirect, 144073 riferimenti**, zero errori, circa cinque minuti; **7/7 test HTTP**. Avvisi noti su eval e copia temporanea senza Git invariati.
+- Browser/server QA chiusi, nessuna modifica al browser personale o all'anteprima persistente; HTML soltanto generati.
+- Prettier e git diff --check superati. README e registro aggiornati; aggiunta voce Macros, rimossa dallo storico la piu vecchia del 30 ottobre (dettagli gia nel registro), mantenute dieci voci.
+
+### Prossimo blocco
+
+Proseguire con [[Programmazione/Rust/Pagine/Procedural macros|Procedural macros]], letta soltanto come contesto: crate dedicata, TokenStream, syn/quote e generics, diagnostiche, dipendenze e sicurezza della compilazione. La nota non e ancora revisionata.
+
+Restano lo scroll iniziale Explorer e i rilievi sugli helper rustdoc di Builder pattern, prestazioni ed Extension traits, incluso count_where. Nessun commit, push o deploy remoto.
+
+## 2026-11-17 - Rust: Procedural macros
+
+### Ambito e correzioni
+
+- Revisionata [[Programmazione/Rust/Pagine/Procedural macros|Procedural macros]]: **Macros 2/6**, **110/183 note principali Rust**, **73 restanti**; promemoria separati.
+- Distinti token, AST sintattico, tipi risolti ed esecuzione runtime; contratti delle tre forme e output aggiuntivo/sostitutivo.
+- Sostituiti i prototipi non compilabili con un workspace completo: crate proc-macro, helper privato testabile e chiamante separato.
+- Corretto TypeName con split_for_impl: lifetime, generics, default e where conservati; nessun bound Debug/Clone superfluo. Metodo inerente, non trait o identificatore globale.
+- Identity e keep_item dichiarati pass-through; argomenti non supportati rifiutati, tre compile-fail distinti e diagnostiche con span.
+- Documentati nomi in conflitto, crate runtime separata, dipendenze rinominate, host/target e rischi del codice eseguito in build. Fonti ufficiali Reference, Cargo, syn, quote e proc-macro2.
+- YAML confrontato con HEAD e invariato, status non revisionato e publish true mantenuti; nessun cambio a indice, percorsi o redirect. Nessun nodo HTML involontario nel Markdown.
+
+### Verifica tecnica
+
+- Nuova suite `_Meta/tests/rust-procedural-macros.test.mjs`: **29/29**, zero fallimenti/skip, **27,3 secondi**.
+- Rust **1.99.1**, edition **2024**, **x86_64-pc-windows-gnu**, Node **24.14.0**; syn **3.0.10**, quote **1.0.47**, proc-macro2 **1.0.107**, unicode-ident **1.0.27**.
+- Riusati cache Cargo Tokio e binutils GNU gia presenti; nessuna installazione, rete o modifica al lockfile del sito. Manifest della nota migrato esplicitamente da syn 2 a syn 3.
+- Estratti tre manifest e sei blocchi Rust; build/run reali, due test Rust dell'helper (inclusi nei 29 gruppi Node), check workspace e diagnostiche JSON.
+- Struct unit/tuple/generiche, enum vuote/generiche, default, lifetime/unsized, where con tipi associati, assenza di bound superflui e campi preservati.
+- Nomi uguali in moduli diversi, stringify locale, derive duplicato/non applicabile, valutazione singola e move di identity, contesti item/tipo/pattern e input errati.
+- Keep_item conserva visibilita/generics/attributi; derivazione di struct e dipendenza rinominata provate. Export pubblico normale e uso nella crate di definizione rifiutati.
+- Il vecchio impl senza generics riprodotto nella fixture non compila; sonde ripristinate e baseline eseguita nuovamente. Timeout, ambiente ripulito, Cargo offline/locked, configurazioni ereditate rifiutate, cleanup verificato e byte della nota preservati.
+- Regressione seriale con Macro dichiarative (54 casi): **83/83**, zero fallimenti/skip, **49,2 secondi**.
+- **81 suite Rust**, altre 79 e altri linguaggi non rieseguiti. Un compilatore/target, non matrice MSRV/versioni, cross-compilazione, nightly, Miri, benchmark o audit supply chain. Dipendenza rinominata provata solo per il demo senza crate runtime separata.
+
+### Verifica editoriale e Quartz
+
+- **911 documenti raggiungibili, zero errori, 285 avvisi editoriali**, uno in meno; **9/9 test della trasformazione**.
+- Prima QA mobile: tabella di 336,8 px su 326 disponibili, 11 px di overflow locale e colonna descrittiva troppo stretta. Sostituite solo le etichette lunghe della prima colonna, senza perdere la sintassi negli esempi; nessuna modifica CSS o HTML manuale.
+- Dopo la correzione ripetuti controllo del vault, trasformazione **9/9** e controllo strutturale mirato **1/1**; i blocchi Rust e TOML non sono cambiati.
+- Chrome **157.0.8103.79**, desktop **1440x1000**, mobile **390x844**: HTTP 200, H1, tabella a quattro righe/due colonne ora **326 px** mobile, tutti i 13 blocchi presenti e generics conservati. Sei blocchi con scorrimento locale mobile, nessuno desktop; nessun overflow del documento o errore JavaScript.
+- Otto screenshot finali ispezionati in `appunti-rust-procedural-macros-qa-17M4er` (titolo, tabella, entry point, helper). Scroll iniziale Explorer invariato: **236 px desktop**, **0 mobile**; QA riportata in cima senza modificare il plugin.
+- **7/7 test HTTP**; browser/server temporanei chiusi, nessuna modifica al browser personale o all'anteprima persistente.
+
+- Build finale dopo la correzione: **3719 file, 2003 HTML, 168 redirect, 144132 riferimenti**, zero errori, circa tre minuti. Stessi conteggi della prima build; avvisi noti su eval e copia temporanea senza Git invariati.
+- Prettier e git diff --check superati. README e registro aggiornati; voce del capitolo consolidata, storico a dieci voci.
+
+### Prossimo blocco
+
+Proseguire con [[Programmazione/Rust/Pagine/Derive macros|Derive macros]], letta soltanto come contesto: derive standard/custom, helper attributes con parsing reale, generics/bound, diagnostiche e comportamento del codice generato. La nota non e ancora revisionata.
+
+Restano lo scroll iniziale Explorer e i rilievi sugli helper rustdoc di Builder pattern, prestazioni ed Extension traits, incluso count_where. Nessun commit, push o deploy remoto.
+
+## 2026-11-18 - Rust: Derive macros
+
+### Ambito e correzioni
+
+- Revisionata [[Programmazione/Rust/Pagine/Derive macros|Derive macros]]: **Macros 3/6**, **111/183 note principali Rust**, **72 restanti**; promemoria separati.
+- Rimossi i segnaposto non funzionanti dalle implementazioni; conservati e completati i casi Debug/Clone e thiserror.
+- Workspace autonomo con tre crate: trait Describe e re-export, proc macro, chiamante con dipendenza rinominata. Quattro manifest e dieci blocchi Rust completi, compresi tre compile-fail intenzionali.
+- Parser reale per rename, skip e crate_path: scope, duplicati, conflitti, valori non validi e nomi campo duplicati. Forme non supportate rifiutate esplicitamente.
+- Generics, lifetime, default, unsized e where preservati senza bound Clone/Debug superflui; normalizzati gli identificatori raw, ordine dei campi conservato.
+- Distinti trait e derive, helper inerti e attribute macros, metadati e serializzazione. Dimostrato che skip non rimuove il campo e non redige Debug.
+- Fonti ufficiali Reference, syn, thiserror e Serde. YAML confrontato con HEAD e invariato, status non revisionato e publish true; nessun cambio a indice, percorsi o redirect.
+
+### Verifica tecnica
+
+- Nuova suite `_Meta/tests/rust-derive-macros.test.mjs`: **40 gruppi**, inclusi due test Rust dell'helper, build/run e check del workspace, rustc standalone e demo thiserror.
+- Rust **1.99.1**, edition **2024**, Windows GNU; Node **24.14.0**. Custom: syn **3.0.10**, quote **1.0.47**, proc-macro2 **1.0.107**, unicode-ident **1.0.27**.
+- Manifest thiserror estratto dalla nota collegata: thiserror/thiserror-impl **2.0.21**, anyhow **1.0.104**, syn **3.0.9**, altre tre dipendenze come sopra. Due cache preesistenti riusate offline; nessuna installazione o modifica al lockfile del sito.
+- Primo giro **39/40**, **32,0 secondi**: solo ordine errato nell'array atteso delle versioni thiserror. Corretta l'aspettativa; il demo thiserror non era ancora stato eseguito.
+- Regressione finale seriale con Procedural macros (29 casi): **69/69**, zero fallimenti/skip, **66,7 secondi**. Include **40/40** nuovi casi e thiserror realmente eseguito.
+- Sonde: raw identifier, Unicode/spazi, struct vuote/campi esclusi, default e where con tipi associati, assenza di bound superflui, nomi non unici globalmente.
+- Attributi ripetuti, typo con span, posizione errata, tipi sintattici errati, campi omonimi, tuple/unit struct/enum/union rifiutati; alias Cargo corretto/mancante e alias interno.
+- Helper senza derive rifiutato; impl manuale/derive ripetuto in conflitto; riemettere l'item originale riproduce E0428. Baseline ripristinata e rieseguita dopo le sonde.
+- Timeout, diagnostiche JSON, Cargo offline/locked, versioni risolte controllate, ambiente ripulito, configurazioni Cargo ereditate rifiutate; byte delle note preservati e cleanup verificato.
+- **82 suite Rust**, altre 80 e altri linguaggi non rieseguiti. Nessuna matrice MSRV/versioni, cross-target, nightly, Miri, benchmark, audit supply chain, serializzazione o I/O applicativo reale.
+
+### Verifica editoriale e Quartz
+
+- **911 documenti raggiungibili, zero errori, 284 avvisi editoriali**, uno in meno; **9/9 test della trasformazione**.
+- Chrome **157.0.8103.79**, desktop **1440x1000** e mobile **390x844**: HTTP 200, H1, sintassi e collegamenti presenti; 18 blocchi, tabella a tre righe/due colonne larga **326 px** mobile.
+- Build completa: **3719 file, 2003 HTML, 168 redirect, 144189 riferimenti**, zero errori, circa cinque minuti. Avvisi noti su eval e copia temporanea senza Git invariati.
+- Quindici blocchi con scorrimento locale mobile, nessuno desktop; nessun overflow del documento o errore JavaScript. Otto screenshot ispezionati in `appunti-rust-derive-macros-qa-xT1C6U` (titolo, tabella, parser, espansione).
+- Scroll iniziale Explorer invariato: **236 px desktop**, **0 mobile**; QA riportata in cima senza cambiare il plugin. **7/7 test HTTP**.
+- Browser/server temporanei chiusi, nessun intervento sul browser personale o sull'anteprima persistente; HTML soltanto generati.
+- Prettier e git diff --check superati. README e registro aggiornati; voce del capitolo consolidata, storico a dieci voci.
+
+### Prossimo blocco
+
+Proseguire con [[Programmazione/Rust/Pagine/Attribute macros|Attribute macros]], letta soltanto come contesto: trasformazione degli item, parsing degli argomenti, attributi/firme conservati, diagnostiche e differenza fra pass-through e funzionalita realmente implementate. La nota non e ancora revisionata.
+
+Restano lo scroll iniziale Explorer e i rilievi sugli helper rustdoc di Builder pattern, prestazioni ed Extension traits, incluso count_where. Nessun commit, push o deploy remoto.
+
+## 2026-11-18 - Rust: Attribute macros
+
+- Revisionata [[Programmazione/Rust/Pagine/Attribute macros|Attribute macros]]: **Macros 4/6**, **112/183 note principali Rust**, **71 restanti**.
+- Il vecchio esempio route restituiva l'item e non registrava alcuna rotta. Ora la nota mostra un attributo completo che inserisce una chiamata all'ingresso del corpo; distingue il comportamento del demo da instrument e dal routing di Actix Web.
+- Package di tre file compilato direttamente dai blocchi Markdown. Con Rust 1.99.1, edition 2024, syn 3.0.10 e quote 1.0.47 verificati risultato, effetti, generics, where, return e ?. Il test async crea, scarta e porta un future da Pending a Ready senza executor; provati anche ordine degli attributi e panic.
+- Undici compile-fail verificano errori di parsing e tipo, const fn, risoluzione dei nomi e conservazione di deprecated. Nuova suite **15/15**; regressione con Derive macros **55/55**, senza skip. Nessuna esecuzione dei framework citati, benchmark o prova cross-target.
+- **911 documenti raggiungibili**, zero errori strutturali, 283 avvisi editoriali; trasformazione **9/9**, anteprima HTTP **7/7**. Chrome desktop/mobile: cinque blocchi e tabella leggibili, nessun overflow del documento o errore JavaScript. Resta lo scroll iniziale Explorer gia noto.
+- YAML invariato, nessun cambio a indice o redirect. Nessun commit, push o deploy remoto.
+
+- Build Quartz locale completata: **2003 HTML, 168 redirect e 144208 riferimenti verificati, zero errori**.
+
+Prossima nota: [[Programmazione/Rust/Pagine/Function-like macros|Function-like macros]].
+
+## 2026-11-18 - Rust: Function-like macros
+
+- Revisionata [[Programmazione/Rust/Pagine/Function-like macros|Function-like macros]]: **Macros 5/6**, **113/183** note principali Rust, **70 restanti**.
+- Corretto il vecchio sql! che riemetteva token non validi in posizione di espressione. Il parser ora riconosce SELECT, wildcard o colonne esplicite e FROM, segnala duplicati e token residui, emette un letterale utilizzabile in const. Nessuna verifica sullo schema e nessuna connessione a database.
+- Conservati add! e hashmap!, separando il caso vuoto da quello con almeno una coppia. Esempi compilati ed eseguiti; verificati chiavi duplicate, sostituzione del valore, ordine e numero di valutazioni, move e inferenza.
+- **15/15** nuovi casi, **30/30** con Attribute macros, nessuno saltato. Cargo offline, Rust 1.99.1, edition 2024; nessuna installazione o modifica alle dipendenze del sito.
+- Controllo del vault: **911 documenti raggiungibili**, nessun errore, 282 avvisi editoriali; trasformazione **9/9**. Frontmatter invariato; nessun cambio a indice o redirect.
+- Quartz locale: **2003 HTML, 144226 riferimenti verificati, zero errori**; anteprima HTTP **7/7**. Controllata la nota su desktop e mobile, senza overflow della pagina o errori JavaScript. Nessun commit, push o deploy remoto.
+
+Prossima nota: [[Programmazione/Rust/Pagine/Hygiene|Hygiene]], ultima del capitolo.
+
+## 2026-11-18 - Rust: Hygiene
+
+- Revisionata [[Programmazione/Rust/Pagine/Hygiene|Hygiene]]. Completato **Macros (6/6)**: **114/183** note principali Rust revisionate, **69 restanti**.
+- Distinti nomi locali della definizione, token del chiamante e item risolti all'invocazione. L'esempio `bind!(answer, 42)` introduce un binding: non richiede una variabile preesistente. Un blocco aggiuntivo ne cambia lo scope.
+- Verificati `$crate` con una dipendenza rinominata e il limite della privacy. Due proc macro mostrano sullo stesso input la cattura con `call_site()` e il risultato diverso con `mixed_site()`.
+- **10/10** casi nuovi; regressione di tutto Macros **163/163**, nessuno saltato. Cargo offline con Rust 1.99.1. YAML invariato; nessuna modifica a indice o redirect.
+- Vault: **911 documenti raggiungibili, zero errori, 281 avvisi editoriali**. Trasformazione **9/9**, anteprima HTTP **7/7**. Controllata la pagina Quartz a 1440 e 390 px: nessun overflow della pagina o errore JavaScript.
+
+Prossima nota: [[Programmazione/Rust/Pagine/Unsafe Rust|Unsafe Rust]], prima del capitolo **Unsafe Rust in Profondita**.
+
+## 2026-11-18 - Rust: Unsafe Rust
+
+- Revisionata [[Programmazione/Rust/Pagine/Unsafe Rust|Unsafe Rust]]: **1/9** del capitolo, **115/183** note principali Rust, **68 restanti**. Nessuna modifica a YAML, indice o redirect.
+- Distinti il contratto di una `unsafe fn`, il blocco che giustifica un'operazione e la dichiarazione `unsafe impl`. La lettura dal puntatore esplicita chi garantisce durata, allineamento e validità. Per le due slice la prima scelta è il metodo standard; la versione didattica spiega confini ed esclusività.
+- Rust 1.100.0, edition 2024: **5/5** verifiche, inclusi i tre esempi eseguiti con rustdoc. Controllate le diagnostiche E0133 ed E0499. In release il wrapper concorda con la std per tutti i 153 tagli di lunghezze da 0 a 16; controllati anche ZST e panic fuori limite. Miri non eseguito.
+- **911 documenti raggiungibili, zero errori, 280 avvisi editoriali**; trasformazione **9/9**, anteprima HTTP **7/7**. La nota è leggibile su desktop e mobile, senza overflow della pagina né errori JavaScript.
+
+Prossima nota: [[Programmazione/Rust/Pagine/Raw pointers|Raw pointers]].
+
+## 2026-11-18 - Rust: Raw pointers
+
+- Revisionata [[Programmazione/Rust/Pagine/Raw pointers|Raw pointers]]: **2/9** di Unsafe Rust in Profondita, **116/183** note principali Rust, **67 restanti**. YAML, indice e URL invariati.
+- Distinti origine del puntatore, permesso di scrittura e validità per la singola operazione. Gli esempi spiegano il limite finale di una slice, il contratto FFI per il caso vuoto e l'accesso a un campo packed senza creare un riferimento intermedio.
+- Rust 1.100.0, edition 2024: quattro doctest passati sia normalmente sia con ottimizzazioni e tre prove aggiuntive su indici, sottoslice e allineamento. Regressione delle prime due note: **7/7** test Node. Nessun accesso intenzionalmente invalido, Miri e librerie C non eseguiti.
+- **911 documenti raggiungibili, zero errori, 279 avvisi editoriali**. Trasformazione **9/9**, anteprima HTTP **7/7**. A 390 e 1440 px tutti e quattro i blocchi di codice sono presenti, senza overflow della pagina o errori JavaScript.
+
+Prossima nota: [[Programmazione/Rust/Pagine/Unsafe functions|Unsafe functions]].
+
+## 2026-11-18 - Rust: Unsafe functions
+
+- Revisionata [[Programmazione/Rust/Pagine/Unsafe functions|Unsafe functions]]: **3/9** di Unsafe Rust in Profondita, **117/183** note principali Rust, **66 restanti**. Raw pointers ora è un prerequisito, Invariants un approfondimento; percorso e pubblicabilità invariati.
+- Separati precondizioni del chiamante, blocco di implementazione e controlli dell'API safe. Il caso del lifetime non vincolato confronta due alternative: prestito da una slice o copia di un buffer valido durante la chiamata. Il caso nullo/vuoto è gestito prima di creare la slice.
+- Rust 1.100.0, edition 2024: quattro doctest superati normalmente e con ottimizzazioni. Verificati il rifiuto di un prestito che sopravvivrebbe al proprietario (E0515) e di una chiamata mancante di blocco unsafe (E0133); regressione delle tre note **10/10**. Nessuna chiamata C o esecuzione con precondizioni violate.
+- **911 documenti raggiungibili, zero errori, 278 avvisi editoriali**. Trasformazione **9/9**, anteprima HTTP **7/7**; build Quartz **2003 HTML, 144289 riferimenti verificati, zero errori**. Controllata la nota a 390 e 1440 px.
+
+Prossima nota: [[Programmazione/Rust/Pagine/Unsafe traits|Unsafe traits]].
+
+## 2026-11-18 - Rust: Unsafe traits
+
+- Revisionata [[Programmazione/Rust/Pagine/Unsafe traits|Unsafe traits]]: **4/9** di Unsafe Rust in Profondita, **118/183** note principali Rust, **65 restanti**. Unsafe functions ora è un prerequisito, Invariants un approfondimento; percorso e pubblicabilità invariati.
+- Il contratto di NonEmptyBytes specifica quale proprietà l'impl deve dimostrare e quale indice il consumatore può leggere. Distinti gli obblighi di un metodo unsafe e il contratto standard di TrustedLen. Un wrapper con Box illustra gli auto trait senza presupporre che un puntatore raw dimostri la proprietà del dato.
+- Rust 1.100.0, edition 2024: tre doctest passati normalmente e con ottimizzazioni. Verificate le diagnostiche E0200 per l'impl e E0277 per i bound su Cell e Rc. Regressione delle quattro note **14/14**, senza eseguire impl che violino il contratto.
+- **911 documenti raggiungibili, zero errori, 277 avvisi editoriali**. Trasformazione **9/9**, anteprima HTTP **7/7**. Controllati esempi e tabella a 390 e 1440 px.
+
+Prossima nota: [[Programmazione/Rust/Pagine/Invariants|Invariants]].
+
+## 2026-11-18 - Rust: Invariants
+
+- Revisionata [[Programmazione/Rust/Pagine/Invariants|Invariants]]: **5/9** di Unsafe Rust in Profondita, **119/183** note principali Rust, **64 restanti**. Unsafe functions è un prerequisito; Aliasing rules resta collegata come approfondimento. Percorso e pubblicabilità invariati.
+- Distinti invariante di dominio, requisito di sicurezza, precondizione e postcondizione. NonEmptyVec preserva l'ultimo elemento; Percent rifiuta valori fuori intervallo senza cambiare stato. Per una vista su dati Rust, SliceCursor sostituisce puntatore e lunghezza con una slice che esprime il prestito.
+- Rust 1.100.0, edition 2024: tre doctest con e senza ottimizzazioni. Controllati panic della callback, rimozione ripetuta, tutte le 25.856 combinazioni di stato/input di Percent, privacy (E0616) e durata del riferimento (E0515). Regressione delle cinque note **19/19**.
+- **911 documenti raggiungibili, zero errori, 276 avvisi editoriali**. Trasformazione **9/9**, anteprima HTTP **7/7**. Controllate tabella ed esempi della nota a 390 e 1440 px.
+
+Prossima nota: [[Programmazione/Rust/Pagine/Aliasing rules|Aliasing rules]].
+
+## 2026-11-18 - Rust: Aliasing rules
+
+- Revisionata [[Programmazione/Rust/Pagine/Aliasing rules|Aliasing rules]]: **6/9** di Unsafe Rust in Profondita, **120/183** note principali Rust, **63 restanti**. Frontmatter, indice e URL invariati.
+- Confrontati accessi attraverso un prestito derivato, copie di un solo raw pointer e prestiti di elementi disgiunti. Il pattern di slice sostituisce lo split manuale unsafe; per indici dinamici la nota usa get_disjoint_mut. La durata di una guardia RefCell è distinta dall'ultimo uso statico di un riferimento.
+- Rust 1.100.0, edition 2024: quattro doctest con e senza ottimizzazioni, diagnostiche E0503 ed E0499, prova su String e su elementi di dimensione zero. Regressione delle sei note **23/23**; Miri non installato nella toolchain attiva, nessuna esecuzione con precondizioni violate.
+- **911 documenti raggiungibili, zero errori, 275 avvisi editoriali**. Trasformazione **9/9**, anteprima HTTP **7/7**. Controllate la tabella e la resa degli esempi a 390 e 1440 px.
+
+Prossima nota: [[Programmazione/Rust/Pagine/Undefined behavior|Undefined behavior]].
+
+## 2026-11-18 - Rust: Undefined behavior
+
+- Revisionata [[Programmazione/Rust/Pagine/Undefined behavior|Undefined behavior]]: **7/9** di Unsafe Rust in Profondita, **121/183** note principali Rust, **62 restanti**. Frontmatter, indice e URL invariati.
+- Stesso indice fuori intervallo, tre contratti distinti: assenza, panic e precondizione unsafe. Gli esempi ora mostrano inizializzazione tramite write e validazione di un byte prima di produrre un bool. Chiariti validità dei riferimenti, aliasing, data race, FFI e limiti di Miri.
+- Rust 1.100.0, edition 2024: tre doctest con e senza ottimizzazioni, parser provato sui 256 byte e su indici mancanti; controllo del panic e di None per indicizzazione safe in modalità ottimizzata. Regressione delle sette note **26/26**. Nessuna esecuzione con UB; Miri non eseguito (nightly non installata).
+- **911 documenti raggiungibili, zero errori, 274 avvisi editoriali**. Trasformazione **9/9**, anteprima HTTP **7/7**. Verificata la pagina a 390 e 1440 px.
+
+Prossima nota: [[Programmazione/Rust/Pagine/Miri|Miri]].
+
+## 2026-11-18 - Rust: Miri
+
+- Revisionata [[Programmazione/Rust/Pagine/Miri|Miri]]: **8/9** di Unsafe Rust in Profondita, **122/183** note principali Rust, **61 restanti**. Frontmatter, indice e URL invariati.
+- La procedura seleziona nightly senza cambiare il default, separa il setup del sysroot dai test e usa una crate senza dipendenze. Espliciti il ramo vuoto, quello che legge l'ultimo byte, il filtro esatto e la distinzione fra diagnosi di UB, assertion, operazione non supportata e test passato.
+- Windows x86_64 MSVC: Miri 0.1.0, revisione `59cbdee2e7` del 2026-11-17, nightly distribuita il 2026-11-18. Due unit test passati sia con Cargo sia con l'interprete; filtro esatto **1 passato, 1 escluso**. Toolchain e sysroot isolati rimossi; stable rimane il default.
+- Regressione delle otto note con stable: **27 passati, 1 prova Miri opzionale saltata**. Suite mirata nella nightly isolata: **2/2** verifiche, inclusa quella saltata su stable. Nessuna simulazione dell'interprete né esecuzione intenzionale di UB.
+- **911 documenti raggiungibili, zero errori, 273 avvisi editoriali**; trasformazione **9/9**, anteprima HTTP **7/7**. Quartz: **2003 HTML, 144360 riferimenti, zero errori**. Verificata la pagina a 390 e 1440 px.
+
+Prossima nota: [[Programmazione/Rust/Pagine/Unsafe abstractions sicure|Unsafe abstractions sicure]], ultima del capitolo.
+
+## 2026-11-18 - Rust: Unsafe abstractions sicure
+
+- Revisionata [[Programmazione/Rust/Pagine/Unsafe abstractions sicure|Unsafe abstractions sicure]]. Completate **9/9** note di Unsafe Rust in Profondita: **123/183** note principali Rust, **60 restanti**. Frontmatter, indice e URL invariati.
+- NonEmptySlice rende il primo elemento parte della rappresentazione. Per lo split, distinti obblighi soddisfatti dall'input, dal controllo di mid e dal contratto della primitiva standard. Per RawBuffer, distinti il prestito Rust e l'indirizzo che non impedisce riallocazioni.
+- Rust 1.100.0, edition 2024: tre doctest in entrambe le modalità, confronto in release con la std, capacità distinta dalla lunghezza e diagnostiche E0515/E0502. Regressione del capitolo su stable: **32 passati, 1 prova Miri opzionale saltata**. Quella prova era passata nella nightly isolata durante la revisione di Miri; non è stata rieseguita in questo passaggio.
+- **911 documenti raggiungibili, zero errori, 272 avvisi editoriali**; trasformazione **9/9**, anteprima HTTP **7/7**. Verificata la nota a 390 e 1440 px.
+
+Prossima nota: [[Programmazione/Rust/Pagine/FFI|FFI]], prima del capitolo **Rust di Sistema**.
+
+## 2026-11-18 - Rust: FFI
+
+- Revisionata [[Programmazione/Rust/Pagine/FFI|FFI]]: **1/13** di Rust di Sistema, **124/183** note principali Rust, **59 restanti**. Frontmatter, indice e URL invariati.
+- Distinte firma ABI, dominio degli interi, durata dei prestiti e responsabilità di rilascio. Il wrapper rifiuta il minimo prima di chiamare C; l'API Rust esporta una somma saturante e una verifica su stringhe C che ammette NULL.
+- Windows x64, Rust 1.100.0 MSVC, edition 2024: wrapper compilato ed eseguito a opt-level 0 e 3; chiamante C compilato con l'header, collegato alla DLL Rust ed eseguito con sette asserzioni. Nessun test su altri target o con puntatori invalidi. Suite FFI **2/2**; con la regressione di Unsafe abstractions sicure **7/7**.
+- **911 documenti raggiungibili, zero errori, 271 avvisi editoriali**; trasformazione **9/9**, anteprima HTTP **7/7**. Pagina FFI verificata a 390 e 1440 px, quattro blocchi di codice e tabella presenti, nessun overflow del documento.
+
+Prossima nota: [[Programmazione/Rust/Pagine/bindgen e cbindgen|bindgen e cbindgen]].
+
+## 2026-11-18 - Rust: bindgen e cbindgen
+
+- Revisionata [[Programmazione/Rust/Pagine/bindgen e cbindgen|bindgen e cbindgen]]: **2/13** di Rust di Sistema, **125/183** note principali Rust, **58 restanti**. Frontmatter, indice e URL invariati.
+- Sostituito il wrapper di addizione senza contratto sull'overflow. Due crate indipendenti distinguono input, output e implementazione: bindgen genera da un header C, cc compila il sorgente, cbindgen genera un header per una cdylib Rust.
+- Windows x64 MSVC: bindgen 0.72.1 con libclang 18.1.1; wrapper verificato su negativi, uguaglianza ed estremi. cbindgen 0.29.2: il client C include l'header generato e chiama la DLL. Due test nuovi, **4/4** con FFI. Il comando Linux e la cross-compilazione non sono stati eseguiti. Strumenti di prova temporanei rimossi.
+- **911 documenti raggiungibili, zero errori, 270 avvisi editoriali**; trasformazione **9/9**, anteprima HTTP **7/7**. Pagina verificata a 390 e 1440 px: tabella e sedici blocchi di codice, senza overflow del documento.
+
+Prossima nota: [[Programmazione/Rust/Pagine/libc e nix|libc e nix]].
+
+## 2026-11-18 - Rust: libc e nix
+
+- Revisionata [[Programmazione/Rust/Pagine/libc e nix|libc e nix]]: **3/13** di Rust di Sistema, **126/183** note principali Rust, **57 restanti**. File descriptor passa da prerequisito a collegamento correlato per eliminare il ciclo; pubblicabilità, indice e URL invariati.
+- Un manifest per nix 0.29.0 distingue le feature process e fs. L'esempio PID confronta std, libc e nix; i wrapper di lseek prendono in prestito il descriptor e distinguono offset zero ed errore ESPIPE senza chiudere la risorsa.
+- Rust 1.100.0: PID portabile eseguito e confrontato con il processo figlio su Windows x64. Controllati con Cargo tutti i target della crate per Linux x86_64 GNU, inclusi entrambi i test; verificate le diagnostiche per le feature mancanti. WSL non installato: nessuna esecuzione delle chiamate Unix su file o pipe. Toolchain e cache temporanee rimosse.
+- **911 documenti raggiungibili, zero errori, 269 avvisi editoriali**; trasformazione **9/9**, anteprima HTTP **7/7**. Pagina verificata a 390 e 1440 px senza overflow del documento.
+
+Prossima nota: [[Programmazione/Rust/Pagine/Memory layout e alignment|Memory layout e alignment]].
+
+## 2026-11-19 - Rust: Memory layout e alignment
+
+- Revisionata [[Programmazione/Rust/Pagine/Memory layout e alignment|Memory layout e alignment]]: **4/13** di Rust di Sistema, **127/183** note principali Rust, **56 restanti**. Frontmatter, indice e URL invariati.
+- Separati layout Rust, ABI C e formato di sette byte big-endian. Due programmi indipendenti, Rust 1.100.0 e C11 su Windows x64 MSVC, concordano: dimensione 12, allineamento 4, offset 0/4/8. Nessun risultato generalizzato ad altri target.
+- Tre esempi Rust eseguiti con e senza ottimizzazioni. Verificati la diagnostica E0793 in sola compilazione, tutti i 256 tag del parser e lunghezze da 0 a 12. Suite mirata **4/4**; con Raw pointers e FFI **8/8**.
+- **911 documenti raggiungibili, zero errori, 268 avvisi editoriali**; trasformazione **9/9**, anteprima HTTP **7/7**. Verificate tre tabelle e quattro blocchi di codice a 390 e 1440 px, senza overflow del documento.
+
+Prossima nota: [[Programmazione/Rust/Pagine/Allocator|Allocator]].
+
+## 2026-11-19 - Rust: Allocator
+
+- Revisionata [[Programmazione/Rust/Pagine/Allocator|Allocator]]: **5/13** di Rust di Sistema, **128/183** note principali Rust, **55 restanti**. Frontmatter, indice e URL invariati.
+- Corretto il percorso che passava il risultato non controllato di alloc a dealloc. Distinti layout, prenotazione del buffer, inizializzazione, trasferimento al Box e distruzione; trattati il caso di dimensione zero e il fallimento segnalato dall'allocatore.
+- Rust 1.100.0 su Windows x64 MSVC: eseguiti i tre programmi a opt-level 0 e 3. Verificati allineamento, distruzione unica anche per uno ZST e restituzione del valore con un rifiuto mirato di allocazione. Nessun esaurimento reale della memoria, benchmark o verifica con Miri. Suite mirata **3/3**, con la regressione sul layout **7/7**.
+- **911 documenti raggiungibili, zero errori, 267 avvisi editoriali**; trasformazione **9/9**, anteprima HTTP **7/7**. Tre blocchi di codice e una tabella presenti a 390 e 1440 px, senza overflow del documento.
+
+Prossima nota: [[Programmazione/Rust/Pagine/no_std|no_std]].
+
+## 2026-11-19 - Rust: no_std
+
+- Revisionata [[Programmazione/Rust/Pagine/no_std|no_std]]: **6/13** di Rust di Sistema, **129/183** note principali Rust, **54 restanti**. Eliminati i duplicati nel frontmatter e il ciclo di prerequisiti con Embedded Rust. Indice, pubblicabilità e URL invariati.
+- Un'unica crate distingue checksum su slice (core), buffer posseduto (alloc) e lettura da file (std). Documentate le responsabilità del binario finale per avvio, panic e heap e l'effetto delle feature predefinite.
+- Rust 1.100.0: su Windows x64 MSVC i tre gruppi hanno eseguito rispettivamente **1, 2 e 3 test**. Prodotte due rlib per thumbv7em-none-eabi (core e alloc); la configurazione std sullo stesso target viene rifiutata con E0463. Nessun linking di un firmware o esecuzione su hardware. Toolchain temporanea rimossa.
+- Suite mirata **6/6**, con Allocator **9/9**; **911 documenti raggiungibili, zero errori, 266 avvisi editoriali**. Trasformazione **9/9**, anteprima HTTP **7/7**. Pagina verificata a 390 e 1440 px: due tabelle, nove blocchi di codice e nessun overflow del documento.
+
+Prossima nota: [[Programmazione/Rust/Pagine/Embedded Rust|Embedded Rust]].
+
+## 2026-11-19 - Rust: Embedded Rust
+
+- Revisionata [[Programmazione/Rust/Pagine/Embedded Rust|Embedded Rust]]: **7/13** di Rust di Sistema, **130/183** note principali Rust, **53 restanti**. Frontmatter, indice e URL invariati.
+- Sostituito il toggle con bound insufficiente e risultato ignorato. La libreria usa le scritture di OutputPin 1.0 e avanza la sequenza solo dopo il successo. Il test su host verifica inizializzazione, propagazione dell'errore e ritentativo.
+- Per NUCLEO-F401RE, verificati pin e mappa con manuale e datasheet ST. Rust 1.100.0: collegato ELF release per thumbv7em-none-eabi, tabella dei vettori a 0x08000000, stack iniziale 0x20018000 e vettore di reset Thumb corrispondente all'entry ELF. Nessun flashing, misura del periodo o collaudo su scheda. Suite mirata **2/2**, con no_std **8/8**; toolchain temporanea rimossa.
+- **911 documenti raggiungibili, zero errori, 265 avvisi editoriali**; trasformazione **9/9**, anteprima HTTP **7/7**. Verificati dieci blocchi e una tabella a 390 e 1440 px senza overflow del documento.
+
+Prossima nota: [[Programmazione/Rust/Pagine/File descriptor|File descriptor]].
+
+## 2026-11-19 - Rust: File descriptor
+
+- Revisionata [[Programmazione/Rust/Pagine/File descriptor|File descriptor]]: **8/13** di Rust di Sistema, **131/183** note principali Rust, **52 restanti**. Frontmatter, indice e URL invariati.
+- Distinti numero, voce del processo e open file description; corretta l'attribuzione della chiusura a Stdin. Sostituita la finta chiamata C con esempi di duplicazione, prestito e trasferimento; separati flags del descriptor e flags della descrizione aperta.
+- Windows x64: verificati cursore condiviso, seconda apertura indipendente e sopravvivenza del duplicato. Miri nightly-2026-11-18 ha interpretato entrambi i test di pipe per Linux, inclusi rilascio dell'ultimo writer ed EOF. Confermate E0505 ed E0382 in sola compilazione. Nessuna esecuzione su kernel Unix nativo; toolchain Miri isolata rimossa.
+- Regressione File I/O **31/31** sulla baseline richiesta (Rust 1.99.1 GNU): al primo giro con 1.100.0 falliva il controllo della versione. Vault: **911 raggiungibili, zero errori, 264 avvisi editoriali**; trasformazione **9/9**, anteprima HTTP **7/7**. Due tabelle e quattro blocchi a 390 e 1440 px senza overflow del documento. Build: **2003 HTML, 144507 riferimenti**, zero errori.
+
+Prossima nota: [[Programmazione/Rust/Pagine/Memory mapping|Memory mapping]].
+
+## 2026-11-19 - Rust: Memory mapping
+
+- Revisionata [[Programmazione/Rust/Pagine/Memory mapping|Memory mapping]]: **9/13** di Rust di Sistema, **132/183** note principali Rust, **51 restanti**. Frontmatter, indice e URL invariati.
+- Rimossi i wrapper safe su percorsi arbitrari che non garantivano la stabilità del file. Distinti durata di File, mappa e slice, parsing indipendente, scritture condivise, copy-on-write e contratto di flush.
+- Windows x64 MSVC, Rust 1.100.0 e memmap2 0.9.9: eseguiti tre test dal Markdown su file privati; verificati anche offset di un byte e rifiuto della slice che uscirebbe dalla durata della mappa (E0515). Suite mirata **3/3**, regressione File I/O **31/31** sulla sua baseline. Nessun test di troncatura concorrente, perdita di alimentazione o prestazioni. Cache temporanea rimossa.
+- **911 documenti raggiungibili, zero errori, 263 avvisi editoriali**; trasformazione **9/9**, anteprima HTTP **7/7**. Verificati quattro blocchi di codice e due tabelle a 390 e 1440 px senza overflow del documento.
+
+Prossima nota: [[Programmazione/Rust/Pagine/Cross-compilation|Cross-compilation]].
+
+## 2026-11-19 - Rust: Cross-compilation
+
+- Revisionata [[Programmazione/Rust/Pagine/Cross-compilation|Cross-compilation]]: **10/13** di Rust di Sistema, **133/183** note principali Rust, **50 restanti**. Titolo, indice e URL invariati.
+- Distinti host, target e ambiente di esecuzione. Chiarito cosa installa rustup, quando occorrono linker e librerie del target e perché né cargo tree né cargo check provano l'avvio di un binario.
+- Suite mirata **4/4** con Rust 1.100.0: CLI nativa Windows x64, controllo senza eseguibile per Linux ARM64, verifica del modulo WASI Preview 1 ed esecuzione tramite runner Node con argomento inoltrato. Nessun linking o test su dispositivo Linux ARM64. Toolchain temporanea rimossa.
+- Vault: **911 documenti raggiungibili, zero errori, 262 avvisi editoriali**. Test di trasformazione **9/9**, anteprima HTTP **7/7**. Build Quartz: **2003 HTML**, **144523 riferimenti**, zero errori. Nella pagina finale: due tabelle, quindici blocchi di codice e output WASI verificato a 390 e 1440 px, senza overflow del documento.
+
+Prossima nota: [[Programmazione/Rust/Pagine/Linking|Linking]].
+
+## 2026-11-19 - Rust: Linking
+
+- Revisionata [[Programmazione/Rust/Pagine/Linking|Linking]]: **11/13** di Rust di Sistema, **134/183** note principali Rust, **49 restanti**. Indice e URL invariati.
+- Sostituita la libreria ipotetica con un sorgente C e una CLI Rust. Distinti dichiarazione ABI, archivio statico, import library e DLL. Confrontati gli import degli eseguibili con DUMPBIN.
+- Windows x64 MSVC e Rust 1.100.0: **4/4** test mirati, **2/2** regressioni FFI. La CLI restituisce lo stesso risultato con entrambi i collegamenti. La build dinamica riesce senza DLL accanto all'eseguibile, ma il loader restituisce `STATUS_DLL_NOT_FOUND` finché non la si copia. Verificati anche archivio assente e simbolo non risolto. Nessuna prova su Linux o macOS.
+- Vault: **911 documenti raggiungibili, zero errori, 261 avvisi editoriali**. Trasformazione Markdown **9/9**, anteprima HTTP **7/7**. Build Quartz: **2003 HTML**, **144531 riferimenti**, zero errori. Due tabelle e sedici blocchi di codice verificati a 390 e 1440 px senza overflow del documento.
+
+Prossima nota: [[Programmazione/Rust/Pagine/Performance e profiling|Performance e profiling]].
+
+## 2026-11-19 - Rust: Performance e profiling
+
+- Revisionata [[Programmazione/Rust/Pagine/Performance e profiling|Performance e profiling]]: **12/13** di Rust di Sistema, **135/183** note principali Rust, **48 restanti**. Indice e URL invariati.
+- Distinti tempo trascorso, campioni CPU, memoria residente e allocazioni. Costruito un confronto tra crescita della stringa e prenotazione dei byte: input e distruzione del risultato espliciti, profilo ottimizzato con simboli, nessuna classifica basata su un singolo tempo.
+- Suite mirata **4/4** sia su Rust 1.85.0 GNU sia su 1.100.0 MSVC, Windows x64. Verificati input vuoto e multibyte, 8192 byte di output, capacità prenotata invariata e cinque lotti per ciascuna strategia. Regressione Build profiles **20/20**. Non acquisiti profili CPU con Linux perf o Visual Studio.
+- Vault: **911 documenti raggiungibili**, zero errori, **260 avvisi editoriali**. Test di trasformazione **9/9**, anteprima HTTP **7/7**. Build Quartz: **2003 HTML**, **144540 riferimenti verificati**, zero errori. Una tabella e undici blocchi di codice verificati a 390 e 1440 px senza overflow del documento.
+
+Prossima nota: [[Programmazione/Rust/Pagine/Zero-cost abstractions|Zero-cost abstractions]].
+
+## 2026-11-19 - Rust: Zero-cost abstractions
+
+- Revisionata [[Programmazione/Rust/Pagine/Zero-cost abstractions|Zero-cost abstractions]]: chiuso **Rust di Sistema (13/13)**, **136/183** note principali Rust, **47 restanti**. Indice e URL invariati.
+- Distinti contratto di rappresentazione di un ID non nullo opzionale, costo dell'algoritmo e ottimizzazione osservata. La stessa closure viene passata per riferimento concreto o tramite trait object, senza introdurre un Box nel confronto.
+- Suite mirata **5/5** sia su Rust 1.85.0 GNU sia su 1.100.0 MSVC (Windows x64): test pubblicati, somma modulare su 512 prefissi confrontata con un accumulatore u128, emissione di assembly. Su MSVC, con i due confini di funzione mantenuti, osservati due simboli senza istruzioni call. Nessuna deduzione sui tempi o su altre architetture. Regressioni: Performance e profiling **4/4**, dispatch e newtype **93/93** sulla baseline Rust 1.99.1 GNU.
+- Vault: **911 documenti raggiungibili**, zero errori, **259 avvisi editoriali**. Trasformazione Markdown **9/9** e anteprima HTTP **7/7**. Build finale: **2003 HTML**, **144548 riferimenti verificati**, zero errori. Una tabella e nove blocchi di codice a 390 e 1440 px senza overflow del documento.
+
+Prossimo capitolo: **CLI e Tooling**, da [[Programmazione/Rust/Pagine/CLI con clap|CLI con clap]].
+
+## 2026-11-19 - Rust: CLI con clap
+
+- Revisionata [[Programmazione/Rust/Pagine/CLI con clap|CLI con clap]]: **1/6** di CLI e Tooling, **137/183** note principali Rust, **46 restanti**. Nessun nuovo URL o modifica all'indice.
+- Sostituiti due esempi dimostrativi con una CLI di sola lettura e il relativo manifest. Verificati default, flag globali, help locale, argomenti con spazi o trattino iniziale, CRLF, file vuoti e testo non UTF-8. Distinti uso errato (2), errore applicativo (1) e successo (0) anche quando è presente diagnostica su stderr.
+- Con clap **4.5.50**, suite **6/6** sia su Rust 1.85.0 sia su 1.100.0 (Windows x64 MSVC), inclusi i tre unit test pubblicati. La prova su Rust 1.85.0 GNU non ha completato la generazione della import library con dlltool; nessuna verifica dichiarata per quel target. Toolchain temporanea MSVC rimossa.
+- Vault: **911 documenti raggiungibili**, zero errori, **258 avvisi editoriali**. Trasformazione Markdown **9/9**, anteprima HTTP dopo la build **7/7**. Build Quartz: **2003 HTML**, **144554 riferimenti verificati**, zero errori. Pagina verificata a 390 e 1440 px: due tabelle e tredici blocchi di codice, senza overflow del documento.
+
+Prossima nota: [[Programmazione/Rust/Pagine/Configurazione applicativa|Configurazione applicativa]].
+
+## 2026-11-19 - Rust: Configurazione applicativa
+
+- Revisionata [[Programmazione/Rust/Pagine/Configurazione applicativa|Configurazione applicativa]]: **2/6** di CLI e Tooling, **138/183** note principali Rust, **45 restanti**. Indice e URL invariati.
+- Laboratorio con due timeout tipizzati. Verificate le **64 combinazioni** di file, ambiente e CLI, il rifiuto delle fonti malformate anche se coperte da un override, il vincolo applicato dopo la risoluzione e i codici di uscita. Controllati file assente/non UTF-8, valori vuoti e fuori intervallo, chiavi sconosciute e diagnostica senza ristampa del valore invalido.
+- Windows x64 MSVC, Rust 1.100.0, clap 4.5.50, serde 1.0.228 e toml 0.8.23: **7/7** prove mirate, regressione CLI con clap **6/6**. Il controllo riguarda il binario: nessuna connessione di rete applicativa o ricarica a caldo.
+- Vault: **911 documenti raggiungibili**, zero errori, **257 avvisi editoriali**. Trasformazione Markdown **9/9**, anteprima HTTP **7/7**. Build Quartz: **2003 HTML**, **144558 riferimenti verificati**, zero errori. Anteprima della nota a 390 e 1440 px: due tabelle e undici blocchi di codice, senza overflow del documento.
+
+Prossima nota: [[Programmazione/Rust/Pagine/Logging con log|Logging con log]].
+
+## 2026-11-19 - Rust: Logging con log
+
+- Revisionata [[Programmazione/Rust/Pagine/Logging con log|Logging con log]]: **3/6** di CLI e Tooling, **139/183** note principali Rust, **44 restanti**. Indice e URL invariati.
+- Separati emissione della libreria e backend globale del binario. Distinti il default di env_logger, la soglia applicativa, il filtro ambiente per target e quello esplicito della CLI. Il laboratorio verifica il risultato su stdout anche quando i log su stderr cambiano.
+- Windows x64 MSVC, Rust 1.100.0, log 0.4.28, env_logger 0.11.8 e clap 4.5.50: **7/7** prove mirate, regressione CLI con clap **6/6**. Verificati seconda installazione rifiutata, assenza di replay, successo con warning, errore per file assente con logging disattivato e limite `release_max_level_warn` in una build separata.
+- Vault: **911 documenti raggiungibili**, zero errori, **256 avvisi editoriali**. Trasformazione Markdown **9/9**, anteprima HTTP **7/7**. Build Quartz: **2003 HTML**, **144565 riferimenti verificati**, zero errori. Pagina a 390 e 1440 px con due tabelle e quattordici blocchi di codice, senza overflow del documento.
+
+Prossima nota: [[Programmazione/Rust/Pagine/Tracing con tracing|Tracing con tracing]].
+
+## 2026-11-19 - Rust: Tracing con tracing
+
+- Revisionata [[Programmazione/Rust/Pagine/Tracing con tracing|Tracing con tracing]]: **4/6** di CLI e Tooling, **140/183** note principali Rust, **43 restanti**. Indice e URL invariati.
+- Due documenti elaborati sullo stesso thread: eventi JSON su stderr, totale su stdout. Confrontati spawn con figlio strumentato, con il solo span corrente e senza contesto; parentela controllata per ID senza presupporre un ordine di esecuzione. Una prova separata con poll manuale distingue la guardia che attraversa Pending da Instrument.
+- Windows x64 MSVC, Rust 1.100.0, Tokio 1.54.1, tracing 0.1.44 e tracing-subscriber 0.3.22: **7/7** prove mirate e **7/7** regressioni Logging con log. Verificati il JSON d'esempio, il filtro invalido distinto da quello assente e l'esclusione del testo degli argomenti. Nessun tracing distribuito o profiling CPU.
+- Vault: **911 documenti raggiungibili**, zero errori, **255 avvisi editoriali**. Trasformazione Markdown **9/9**, anteprima HTTP **7/7**. Build Quartz: **2003 HTML**, **144572 riferimenti verificati**, zero errori. Pagina a 390 e 1440 px con due tabelle e nove blocchi di codice, senza overflow del documento.
+
+Prossima nota: [[Programmazione/Rust/Pagine/Error reporting|Error reporting]].
+
+## 2026-11-19 - Rust: Error reporting
+
+- Revisionata [[Programmazione/Rust/Pagine/Error reporting|Error reporting]]: **5/6** di CLI e Tooling, **141/183** note principali Rust, **42 restanti**. Indice e URL invariati.
+- Libreria tipizzata, contesto applicativo e report separati. Il binario indica la riga fisica anche se alcune righe sono vuote; un errore non produce risultati parziali. La modalità dettagliata conserva lo stesso codice e aggiunge la causa senza ristampare il valore errato.
+- Windows x64 MSVC, Rust 1.100.0, thiserror 2.0.21, anyhow 1.0.104 e clap 4.5.50: **7/7** prove mirate e regressione CLI con clap **6/6**. Verificati il testo del report breve, la catena con ParseIntError tipizzato e i casi di I/O, UTF-8, overflow numerico, uso errato e help. Nessun vincolo sul testo localizzato dell'errore del sistema operativo.
+- Vault: **911 documenti raggiungibili**, zero errori, **254 avvisi editoriali**. Trasformazione Markdown **9/9**, anteprima HTTP **7/7**. Build Quartz: **2003 HTML**, **144580 riferimenti verificati**, zero errori. Pagina verificata a 390 e 1440 px con due tabelle e nove blocchi di codice, senza overflow del documento.
+
+Prossima nota: [[Programmazione/Rust/Pagine/Packaging e release|Packaging e release]].
+
+## 2026-11-19 - Rust: Packaging e release
+
+- Revisionata [[Programmazione/Rust/Pagine/Packaging e release|Packaging e release]]: completato CLI e Tooling (**6/6**), **142/183** note principali Rust, **41 restanti**. Indice e URL invariati.
+- Distinti compilazione, pacchetto sorgente per Cargo e archivio per l'utente finale. L'esempio segue una sola versione dal manifest al binario estratto e al digest dello ZIP.
+- Windows x64 MSVC con Rust 1.100.0: **4/4 prove offline**. Verificati lista e contenuto reale del `.crate`, esclusione di un file locale, composizione dello ZIP, avvio del binario e corrispondenza del digest SHA-256. Nessun contatto con un registry, dry run remoto, tag o upload. Non testati altri target o installazioni pulite.
+- Vault: **911 documenti raggiungibili**, zero errori, **254 avvisi editoriali**. Trasformazione Markdown **9/9**, anteprima HTTP **7/7**. Build Quartz: **2003 HTML**, **144584 riferimenti verificati**, zero errori. Pagina verificata a 390 e 1440 px con una tabella e dodici blocchi di codice, senza overflow del documento.
+
+Prossima nota: [[Programmazione/Rust/Pagine/Networking con reqwest|Networking con reqwest]] (inizio di Backend, Networking e Database).
+
+## 2026-11-19 - Rust: Networking con reqwest
+
+- Revisionata [[Programmazione/Rust/Pagine/Networking con reqwest|Networking con reqwest]]: **1/9** di Backend, Networking e Database, **143/183** note principali Rust, **40 restanti**. Indice e URL invariati.
+- Una CLI eseguibile separa trasporto, status dell'operazione, lettura e decodifica del corpo. Contratti diversi per GET (200 o 404) e POST (201), limite di 64 KiB anche senza Content-Length, redirect disabilitati e timeout complessivo.
+- Windows x64 MSVC, reqwest 0.12.28 e Tokio 1.54.1: **6/6 prove** su HTTP di loopback. Eseguiti i casi della nota sul server Python e quelli controllati per creazione riuscita, status inattesi, schema, limite e timeout. Non verificati DNS esterno, TLS o riuso effettivo della connessione.
+- Vault: **911 documenti raggiungibili**, zero errori, **254 avvisi editoriali**. Trasformazione Markdown **9/9**, anteprima HTTP **7/7**. Build Quartz: **2003 HTML**, **144590 riferimenti verificati**, zero errori. Pagina verificata a 390 e 1440 px con una tabella e dieci blocchi di codice, senza overflow del documento.
+
+Prossima nota: [[Programmazione/Rust/Pagine/Web backend con axum|Web backend con axum]].
+
+## 2026-11-19 - Rust: Web backend con axum
+
+- Revisionata [[Programmazione/Rust/Pagine/Web backend con axum|Web backend con axum]]: **2/9** di Backend, Networking e Database, **144/183** note principali Rust, **39 restanti**. Indice e URL invariati.
+- Lo snippet SQLx con conversione HTTP incompleta è ora un server eseguibile senza database. Distingue selezione della route, rejection degli extractor ed errori di dominio; conserva i rimandi al pool, ai middleware e al graceful shutdown.
+- axum 0.8.9 e Tokio 1.54.1, **6/6 prove su loopback**. Eseguiti curl e la CLI reqwest ricompilata dalla nota precedente; controllati status, Location, JSON, limiti di 4096/4097 byte e ID distinti per dodici POST concorrenti. Nessuna prova di persistenza, avvio in produzione o graceful shutdown.
+- Vault: **911 documenti raggiungibili**, zero errori, **253 avvisi editoriali**. Trasformazione Markdown **9/9**, anteprima HTTP **7/7**. Build Quartz: **2003 HTML**, **144607 riferimenti verificati**, zero errori. Pagina verificata a 390 e 1440 px con due tabelle e undici blocchi di codice, senza overflow del documento.
+
+Prossima nota: [[Programmazione/Rust/Pagine/Tower e middleware|Tower e middleware]].
+
+## 2026-11-19 - Rust: Tower e middleware
+
+- Revisionata [[Programmazione/Rust/Pagine/Tower e middleware|Tower e middleware]]: **3/9** di Backend, Networking e Database, **145/183** note principali Rust, **38 restanti**. Indice e URL invariati.
+- Il vecchio handler senza attesa è sostituito da due route con un header osservabile: invertire i layer cambia l'header sul timeout, non lo status. Distinti timeout HTTP e `Elapsed` generico da convertire in risposta.
+- axum 0.8.9, Tower 0.5.3, tower-http 0.6.11, Tokio 1.54.1: **6/6 prove in-process**, con tempo virtuale. Verificati anche l'esclusione del fallback e delle route successive, l'effetto già avvenuto e un corpo leggibile dopo la scadenza del budget della chiamata. Non testati comportamento di rete, carico o retry.
+- Vault: **911 documenti raggiungibili**, zero errori, **252 avvisi editoriali**. Trasformazione Markdown **9/9**, anteprima HTTP **7/7**. Pagina verificata a 390 e 1440 px con due tabelle e sette blocchi di codice, senza overflow del documento.
+- Build Quartz: **2003 HTML**, **144614 riferimenti verificati**, zero errori.
+
+Prossima nota: [[Programmazione/Rust/Pagine/Serde e serializzazione|Serde e serializzazione]].
+
+## 2026-11-19 - Rust: Serde e serializzazione
+
+- Revisionata [[Programmazione/Rust/Pagine/Serde e serializzazione|Serde e serializzazione]]: **4/9** di Backend, Networking e Database, **146/183** note principali Rust, **37 restanti**. Indice e URL invariati.
+- Separati DTO d'ingresso, validazione del dominio e forma JSON pubblica. Confrontati default, alias solo in lettura, rifiuto dei campi sconosciuti e aggiornamento parziale a tre stati. Un enum con tag esplicito mostra il contratto degli eventi salvati.
+- Serde 1.0.229 e serde_json 1.0.154: **7/7 test Rust** sui blocchi Markdown. Verificati alias concorrenti, esclusione dei campi interni, patch, rappresentazione degli eventi, categorie di errore e prestito da un buffer rispetto alla lettura owned. Nessuna prova di TOML, YAML o MessagePack.
+- Vault: **911 documenti raggiungibili**, zero errori, **251 avvisi editoriali**. Trasformazione Markdown **9/9**, anteprima HTTP **7/7**. Pagina verificata a 390 e 1440 px con due tabelle e otto blocchi di codice, senza overflow del documento.
+- Build Quartz: **2003 HTML**, **144625 riferimenti verificati**, zero errori.
+
+Prossima nota: [[Programmazione/Rust/Pagine/SQLx|SQLx]].
+
+## 2026-11-19 - Rust: SQLx
+
+- Revisionata [[Programmazione/Rust/Pagine/SQLx|SQLx]]: **5/9** di Backend, Networking e Database, **147/183** note principali Rust, **36 restanti**. Indice e URL invariati.
+- Corretto il trasferimento: addebito condizionale, verifica delle righe modificate e commit solo dopo l'accredito. Distinti destinatario assente, violazione di vincolo e query non valida; nessun server PostgreSQL utilizzato né prova di concorrenza tra client.
+- SQLx e sqlx-cli 0.8.6: **6/6 test Rust** senza feature checked e **7/7** con la feature e i metadati, senza il DB di sviluppo. Provati migrazione, saldi dopo rollback, assenza di righe e mapping a runtime. Eseguiti prepare e prepare --check; una query modificata è stata rifiutata sia offline (cache mancante) sia contro lo schema SQLite (colonna inesistente).
+- Vault: **911 documenti raggiungibili**, zero errori, **250 avvisi editoriali**. Trasformazione Markdown **9/9**, anteprima HTTP **7/7**. Build Quartz: **2003 HTML**, **144636 riferimenti verificati**, zero errori. Pagina verificata a 390 e 1440 px con due tabelle e quindici blocchi di codice, senza overflow del documento.
+
+Prossima nota: [[Programmazione/Rust/Pagine/Diesel|Diesel]].
+
+## 2026-11-19 - Rust: Diesel
+
+- Revisionata [[Programmazione/Rust/Pagine/Diesel|Diesel]]: **6/9** di Backend, Networking e Database, **148/183** note principali Rust, **35 restanti**. Indice e URL invariati.
+- Esempio autonomo con migrazioni, schema Rust e archivio SQLite in memoria. Distinti assenza della riga, NULL della colonna, errore del database e aggiornamento senza righe. Una proiezione manuale che scambia due colonne di testo compila ma restituisce i campi invertiti.
+- Diesel 2.3.14, diesel_migrations 2.3.2: **6/6 test Rust su SQLite**, incluse migrazione inversa, errore di schema e rollback di un lotto con chiave duplicata. **2/2 compilazioni negative**: filtro intero su testo e colonna nullable caricata in String. Non eseguiti Diesel CLI, PostgreSQL o test di concorrenza.
+- Vault: **911 documenti raggiungibili**, zero errori, **249 avvisi editoriali**. Trasformazione Markdown **9/9**, anteprima HTTP **7/7**. Build Quartz: **2003 HTML**, **144649 riferimenti verificati**, zero errori. Pagina verificata a 390 e 1440 px con due tabelle e dieci blocchi di codice, senza overflow del documento.
+
+Prossima nota: [[Programmazione/Rust/Pagine/SeaORM|SeaORM]].
+
+## 2026-11-19 - Rust: SeaORM
+
+- Revisionata [[Programmazione/Rust/Pagine/SeaORM|SeaORM]]: **7/9** di Backend, Networking e Database, **149/183** note principali Rust, **34 restanti**. Indice e URL invariati.
+- Due entity collegate e un default osservabile distinguono i valori di un ActiveModel in inserimento e aggiornamento. Spiegati il contratto di save, il caricamento per padre rispetto al LEFT JOIN e i limiti degli update parziali.
+- SeaORM 1.1.20, Tokio 1.54.1: **7/7 test Rust** su SQLite in memoria, inclusi aggiornamento da una lettura precedente senza sovrascrivere un altro campo, padre senza figli, vincolo di chiave esterna, rollback e differenza fra assenza e guasto di schema. Non provati PostgreSQL, CLI di generazione o contesa reale tra client.
+- Vault: **911 documenti raggiungibili**, zero errori, **248 avvisi editoriali**. Trasformazione Markdown **9/9**, anteprima HTTP **7/7**. Pagina verificata a 390 e 1440 px con una tabella e otto blocchi di codice, senza overflow del documento.
+- Build Quartz: **2003 HTML**, **144658 riferimenti verificati**, zero errori.
+
+Prossima nota: [[Programmazione/Rust/Pagine/Connection pooling|Connection pooling]].
+
+## 2026-11-19 - Rust: Connection pooling
+
+- Revisionata [[Programmazione/Rust/Pagine/Connection pooling|Connection pooling]]: **8/9** di Backend, Networking e Database, **150/183** note principali Rust, **33 restanti**. Indice e URL invariati.
+- Distinti handle condiviso, prestito, connessione di sessione e transazione. L'esempio con un solo posto separa attesa di acquisizione, durata della query e scadenza della richiesta; il calcolo del budget include worker e repliche durante il deploy.
+- SQLx 0.8.6, axum 0.8.9 e Tokio 1.54.1: **7/7 test Rust** con SQLite in memoria e router in-process. Verificati sonde durante saturazione e rilascio, query più lunga del budget di acquisizione, risveglio di chi aspetta durante la chiusura, riuso di sessione e seconda acquisizione durante una transazione. Variante PostgreSQL compilata, non eseguita; non provati rete, PgBouncer o carico di produzione.
+- Vault: **911 documenti raggiungibili**, zero errori, **247 avvisi editoriali**. Trasformazione Markdown **9/9**, anteprima HTTP **7/7**. Pagina verificata a 390 e 1440 px con due tabelle e otto blocchi di codice, senza overflow del documento.
+- Build Quartz: **2003 HTML**, **144673 riferimenti verificati**, zero errori.
+
+Prossima nota: [[Programmazione/Rust/Pagine/Background jobs|Background jobs]].
+
+## 2026-11-19 - Rust: Background jobs
+
+- Revisionata [[Programmazione/Rust/Pagine/Background jobs|Background jobs]]: completato Backend, Networking e Database (**9/9**), **151/183** note principali Rust, **32 restanti**. Indice e URL invariati.
+- Distinti accettazione in RAM, commit dell'effetto e conferma al mittente. Il worker limita i job attivi e ne raccoglie gli esiti; il consumer registra nella stessa transazione la ricevuta dell'evento e l'aggiornamento del contatore. Una chiave riutilizzata per un altro documento viene segnalata come conflitto.
+- SQLx 0.8.6 e Tokio 1.54.1: **7/7 test Rust** con SQLite su file. Provati la riconsegna dopo il commit, due consumer sullo stesso evento, il rollback prima del commit, la perdita di un job in RAM e l'attesa dei task durante la chiusura. La perdita della conferma è simulata; non sono stati provati un broker esterno o un arresto forzato del processo.
+- Vault: **911 documenti raggiungibili**, zero errori, **246 avvisi editoriali**. Trasformazione Markdown **9/9**, anteprima HTTP **7/7**. Pagina verificata a 390 e 1440 px con due tabelle e sette blocchi di codice, senza overflow del documento.
+- Build Quartz: **2003 HTML**, **144680 riferimenti verificati**, zero errori.
+
+Prossima nota: [[Programmazione/Rust/Pagine/wasm-bindgen|wasm-bindgen]] (inizio di WebAssembly).
+
+## 2026-11-20 - Rust: wasm-bindgen
+
+- Revisionata [[Programmazione/Rust/Pagine/wasm-bindgen|wasm-bindgen]]: **1/5** di WebAssembly, **152/183** note principali Rust, **31 restanti**. Indice e URL invariati.
+- Esempio completo senza bundler: Cargo produce il modulo, la CLI genera i binding, il browser inizializza l'istanza. Corretto il conteggio in byte del nome; distinti valori scalari, grafemi e normalizzazione Unicode. La pagina mostra come osservare in JavaScript sia un valore restituito da Rust sia un'eccezione.
+- **4/4 scenari in Chrome** con crate e CLI wasm-bindgen 0.2.130: pagina della nota e import di console.info, Unicode e tipo dell'errore, uso prima dell'inizializzazione e dopo il rilascio di un contatore, fallimento senza binario. Compilazione reale per wasm32-unknown-unknown; non provati Node, bundler, WASI o altri browser.
+- Vault: **911 documenti raggiungibili**, zero errori, **245 avvisi editoriali**. Trasformazione Markdown **9/9**, anteprima HTTP **7/7**. Pagina verificata a 390 e 1440 px con due tabelle e dieci blocchi di codice, senza overflow del documento.
+- Build Quartz: **2003 HTML**, **144686 riferimenti verificati**, zero errori.
+
+Prossima nota: [[Programmazione/Rust/Pagine/wasm-pack|wasm-pack]].
+
+## 2026-11-20 - Rust: wasm-pack
+
+- Revisionata [[Programmazione/Rust/Pagine/wasm-pack|wasm-pack]]: **2/5** di WebAssembly, **153/183** note principali Rust, **30 restanti**. Indice e URL invariati.
+- Corretto l'esempio che importava l'inizializzatore web da un pacchetto bundler. Una sola crate espone la versione e il punteggio in byte UTF-8; tre directory separate rendono ripetibile il confronto tra ES module web, CommonJS e webpack. Distinti compilazione, creazione di un archivio e pubblicazione.
+- **4/4 scenari** con wasm-pack 0.15.1, wasm-bindgen 0.2.130, Node 24.14.0 e webpack 5.113.0: stesso risultato in Node e nelle due pagine Chrome; nell'anteprima npm verificati nome, versione, entry point, dichiarazioni e binario. Nessuna pubblicazione, nessun benchmark release e nessun test Firefox.
+- Vault: **911 documenti raggiungibili**, zero errori, **244 avvisi editoriali**. Trasformazione Markdown **9/9**, anteprima HTTP **7/7**. Pagina verificata a 390 e 1440 px con due tabelle e diciassette blocchi di codice, senza overflow del documento.
+- Build Quartz: **2003 HTML**, **144694 riferimenti verificati**, zero errori.
+
+Prossima nota: [[Programmazione/Rust/Pagine/Interop con JavaScript|Interop con JavaScript]].
+
+## 2026-11-20 - Rust: Interop con JavaScript
+
+- Revisionata [[Programmazione/Rust/Pagine/Interop con JavaScript|Interop con JavaScript]]: **3/5** di WebAssembly, **154/183** note principali Rust, **29 restanti**. Indice e URL invariati.
+- La crate di esempio accetta un record JS con numeri e booleano obbligatori. Distingue errori di forma e di overflow, eccezioni delle callback ed errori asincroni. Un esempio con una vista di byte rende osservabile la differenza tra copia e condivisione della memoria.
+- **6/6 scenari in Chrome** con wasm-bindgen 0.2.130, serde-wasm-bindgen 0.6.5, js-sys 0.3.107 e wasm-bindgen-futures 0.4.80. Verificati output dell'HTML, schema di ingresso, limite u32 in dev e release, indipendenza degli array, identità dell'oggetto restituito alla callback e del motivo di errore o rifiuto. Nessun benchmark o test di una vista zero-copy.
+- Vault: **911 documenti raggiungibili**, zero errori, **243 avvisi editoriali**. Trasformazione Markdown **9/9**, anteprima HTTP **7/7**. Pagina verificata a 390 e 1440 px con due tabelle e otto blocchi di codice, senza overflow del documento.
+- Build Quartz: **2003 HTML**, **144704 riferimenti verificati**, zero errori.
+
+Prossima nota: [[Programmazione/Rust/Pagine/WASI|WASI]].
+
+## 2026-11-20 - Rust: WASI
+
+- Revisionata [[Programmazione/Rust/Pagine/WASI|WASI]]: **4/5** di WebAssembly, **155/183** note principali Rust, **28 restanti**. Indice e URL invariati.
+- Distinte specifica, runtime e risorse concesse. La stessa CLI conta righe e byte da stdin o file: separa il nome della directory host da quello visibile al guest e mostra che ambiente e filesystem sono indipendenti. P1 e P2 producono artefatti diversi; P3 è trattato solo nel confronto delle versioni.
+- **6/6 scenari** con Rust 1.100.0 e Wasmtime 50.0.3 su Windows x64. Compilati ed eseguiti sia il modulo core P1 sia il componente P2; verificati import/formato, esempi della nota, EOF e UTF-8, accesso negato senza preopen o con alias diverso, variabile non ereditata, posizione degli argomenti ed errori su stderr. Nessun test P3, di rete o di altri runtime.
+- Vault: **911 documenti raggiungibili**, zero errori, **242 avvisi editoriali**. Trasformazione Markdown **9/9**, anteprima HTTP **7/7**. Pagina verificata a 390 e 1440 px con due tabelle e dodici blocchi di codice, senza overflow del documento.
+- Build Quartz: **2003 HTML**, **144711 riferimenti verificati**, zero errori.
+
+Prossima nota: [[Programmazione/Rust/Pagine/Limiti del runtime WebAssembly|Limiti del runtime WebAssembly]].
+
+## 2026-11-20 - Rust: Limiti del runtime WebAssembly
+
+- Revisionata [[Programmazione/Rust/Pagine/Limiti del runtime WebAssembly|Limiti del runtime WebAssembly]]: capitolo WebAssembly completo (**5/5**), **156/183** note principali Rust, **27 restanti**. Indice e URL invariati.
+- Distinte architettura, target, import e disponibilità effettiva di un servizio. La pagina carica una configurazione via HTTP: il modulo riceve il dato tramite l'host, ma non può aprire il file con std::fs. Stesso modulo con configurazioni diverse; nessuna duplicazione del calcolo per piattaforma.
+- **6/6 scenari** con rustc 1.100.0 e Chrome: lettura nativa a confronto, cfg unknown/WASI, nuovo risultato senza ricompilare, LinkError per import assente, estremi i32 sommati in i64, diagnosi per fase e crescita di memoria non condivisa. Nessun benchmark o test di thread condivisi.
+- Rieseguiti i test delle cinque note del capitolo: **26/26 scenari**, più i cinque test contenitori (**31/31** nel conteggio di Node), nessun fallimento o skip.
+- Vault: **911 documenti raggiungibili**, zero errori, **241 avvisi editoriali**. Trasformazione Markdown **9/9**, anteprima HTTP **7/7**. Pagina verificata a 390 e 1440 px con due tabelle e sette blocchi di codice, senza overflow del documento.
+- Build Quartz: **2003 HTML**, **144719 riferimenti verificati**, zero errori.
+
+Prossima nota: [[Programmazione/Rust/Pagine/no_std|no_std]] (inizio di Embedded).
+
+## 2026-11-20 - Rust: embedded-hal
+
+- Inizio Embedded: [[Programmazione/Rust/Pagine/no_std|no_std]] già revisionata come sesta nota di Rust di Sistema, ora riconfermata senza modificarla. Revisionata [[Programmazione/Rust/Pagine/embedded-hal|embedded-hal]]: **2/7** voci coperte, **157/183** note principali uniche Rust, **26 restanti**. Nessun nuovo file di contenuto o cambio di URL.
+- Il driver portabile per LIS3DH legge WHO_AM_I con il comando SPI 0x8F e distingue ID inatteso ed errore del bus. Separati ruolo della HAL di scheda, contratto di SpiDevice, operazioni di SpiBus e durata richiesta a un timer per un impulso GPIO. Fonti: trait embedded-hal 1.0.0 e datasheet ST.
+- **4/4 scenari embedded-hal**: il test pubblico prova tre esiti SPI; verificati ordine, durata richiesta e errori GPIO, compilazione della rlib ARM e fallimento atteso del test su una copia con due transazioni separate. Suite no_std **6/6**: configurazioni core/alloc/std su host, due build bare-metal e rifiuto atteso della configurazione std. Nessuna scheda programmata e nessuna misura elettrica.
+- Vault: **911 documenti raggiungibili**, zero errori, **240 avvisi editoriali**. Trasformazione Markdown **9/9**, anteprima HTTP **7/7**. Pagina verificata a 390 e 1440 px con due tabelle e otto blocchi di codice, senza overflow del documento.
+- Build Quartz: **2003 HTML**, **144721 riferimenti verificati**, zero errori.
+
+Prossima nota: [[Programmazione/Rust/Pagine/cortex-m|cortex-m]].
+
+## 2026-11-20 - Rust: cortex-m
+
+- Revisionata [[Programmazione/Rust/Pagine/cortex-m|cortex-m]]: **3/7** voci Embedded, **158/183** note principali uniche Rust, **25 restanti**. Sostituito l'esempio di una funzione ordinaria chiamata come un IRQ con un firmware che collega SysTick e attende 1 000 ingressi nel gestore. Distinti conteggio delle eccezioni e tempo trascorso, vettore del core e IRQ del chip, sezione critica locale e sincronizzazione multicore.
+- **4/4 verifiche cortex-m**: calcolo del reload sull'host, controllo dei tipi dell'esempio per Cortex-M0, ELF Cortex-M4 con il vettore 15 collegato al gestore applicativo e controprova senza attributo collegata al gestore predefinito. **2/2 regressioni Embedded Rust** sulla mappa condivisa e sull'esempio GPIO. Nessun firmware eseguito su hardware o emulatore; il periodo reale non è stato misurato.
+- Vault: **911 documenti raggiungibili**, zero errori, **239 avvisi editoriali**. Trasformazione Markdown **9/9**, anteprima HTTP **7/7**.
+- Quartz: **2003 HTML**, **144732 riferimenti verificati**, zero errori. Controllo a 390 e 1440 px: due tabelle, sei blocchi di codice, link a RTIC ed Embassy nella tabella e nessun overflow del documento.
+
+Prossima nota: [[Programmazione/Rust/Pagine/probe-rs|probe-rs]].
+
+## 2026-11-20 - Rust: probe-rs
+
+- Revisionata [[Programmazione/Rust/Pagine/probe-rs|probe-rs]]: **4/7** voci Embedded, **159/183** note principali uniche Rust, **24 restanti**. Il percorso operativo usa ora il progetto NUCLEO-F401RE già documentato. Distinti catalogo locale, enumerazione delle sonde, compilazione, programmazione e lettura dei log senza rifare il flash.
+- **3/3 verifiche tecniche**: CLI ufficiale 0.32.0, mappa di STM32F401RETx e rifiuto di un chip inesistente; help di list/run/attach; build reale dell'ELF ARM e verifica degli argomenti con un runner sostitutivo. Nessuna connessione USB, programmazione o lettura dei log da un dispositivo.
+- Vault: **911 documenti raggiungibili**, zero errori, **238 avvisi editoriali**. Trasformazione Markdown **9/9**, anteprima HTTP **7/7**.
+- Build Quartz: **2003 HTML**, **144743 riferimenti verificati**, zero errori. Anteprima della nota a 390 e 1440 px: cinque operazioni in tabella, otto blocchi di esempio, nessuno scorrimento orizzontale del documento.
+
+Prossima nota: [[Programmazione/Rust/Pagine/defmt|defmt]].
+
+## 2026-11-20 - Rust: defmt
+
+- Revisionata [[Programmazione/Rust/Pagine/defmt|defmt]]: **5/7** voci Embedded, **160/183** note principali uniche Rust, **23 restanti**. L'esempio NUCLEO-F401RE include logger RTT, panic handler, script di linking e filtro esplicito; spiega come distinguere un messaggio escluso alla compilazione da un problema di trasporto o da un ELF non corrispondente.
+- **4/4 verifiche tecniche**: firmware ARM con tabella dei messaggi e blocco RTT; decodifica sul PC dei due messaggi attesi e rifiuto di una misura troncata; confronto tra due build release con `DEFMT_LOG=info` e `DEFMT_LOG=debug`; fallimento atteso del link senza logger. I payload della prova sono sintetici e usano gli identificatori reali dell'ELF. Nessuna scheda programmata, nessun traffico RTT acquisito.
+- Vault: **911 documenti raggiungibili**, zero errori, **237 avvisi editoriali**. Trasformazione Markdown **9/9**, anteprima HTTP **7/7**.
+- Build Quartz: **2003 HTML**, **144754 riferimenti verificati**, zero errori. Pagina controllata a 390 e 1440 px: sette blocchi di esempio, output atteso presente, quattro casi di diagnosi e nessun overflow del documento.
+
+Prossima nota: [[Programmazione/Rust/Pagine/RTIC|RTIC]].
+
+## 2026-11-22 - Rust: RTIC
+
+- Revisionata [[Programmazione/Rust/Pagine/RTIC|RTIC]]: **6/7** voci Embedded, **161/183** note principali uniche Rust, **22 restanti**. Un handler di priorità 2 attiva un task software di priorità 1 e conta lo scarto quando l'istanza è già occupata. La nota distingue vettori, dispatcher, risorse locali e tetto di priorità; spiega come aggiornare il progetto defmt senza perdere il primo binario.
+- **5/5 verifiche tecniche**: ELF ARM con vettori EXTI0 e USART2 associati ai rispettivi gestori; link del primo binario `reading-log` nella configurazione aggiornata; rifiuto di task software senza `async`, conflitto di vettori e doppio proprietario di una risorsa locale. Nessun firmware eseguito su hardware o emulatore: il log è atteso, non acquisito, e la latenza non è stata misurata.
+- Vault: **911 documenti raggiungibili**, zero errori, **236 avvisi editoriali**. Trasformazione Markdown **9/9**.
+- Build Quartz: **2003 HTML**, **144769 riferimenti verificati**, zero errori. Anteprima HTTP **7/7** sul sito generato. A 390 e 1440 px la pagina contiene quattro contesti nella tabella e cinque blocchi di esempio, senza overflow del documento.
+
+Prossima nota: [[Programmazione/Rust/Pagine/Embassy|Embassy]].
+
+## 2026-11-22 - Rust: Embassy
+
+- Revisionata [[Programmazione/Rust/Pagine/Embassy|Embassy]]: **7/7** voci Embedded, capitolo completato; **162/183** note principali uniche Rust, **21 restanti**. Sostituiti gli esempi scollegati con un firmware NUCLEO-F401RE: timer TIM2, produttore con pool singolo, canale a un posto e consumatore proprietario del LED. Distinti risveglio, esecuzione del task e frequenza reale del GPIO.
+- **3/3 verifiche tecniche**: ELF ARM con vettore TIM2 associato al driver; esecuzione del produttore documentato sul PC con tempo virtuale (soglia a 250 ms, `Busy` sul secondo avvio e invio sospeso con canale pieno); fallimento atteso del link senza driver. Nessun firmware eseguito su scheda; il periodo di PA5 non è stato misurato.
+- Vault: **911 documenti raggiungibili**, zero errori, **235 avvisi editoriali**. Trasformazione Markdown **9/9**.
+- Controllo di fine capitolo: ripetuti con esito positivo **9/9** test di defmt e RTIC. Build Quartz: **2003 HTML**, **144780 riferimenti verificati**, zero errori. Anteprima HTTP **7/7**; a 390 e 1440 px la pagina conserva quattro righe di tabella e sei blocchi di esempio senza scorrimento orizzontale del documento.
+
+Prossima nota: [[Programmazione/Rust/Pagine/Unit test|Unit test]] (inizio di Testing, Qualita e Sicurezza).
+
+## 2026-11-22 - Rust: Unit test
+
+- Revisionata [[Programmazione/Rust/Pagine/Unit test|Unit test]]: **1/14** voci del capitolo Testing, Qualita e Sicurezza, **163/183** note principali uniche Rust, **20 restanti**. Una crate senza dipendenze distingue errori di parsing, saturazione e valori limite. La nota separa ciò che un modulo figlio può vedere dai casi da osservare tramite l'API pubblica.
+- **4/4 verifiche tecniche** con Cargo 1.100.0 offline: i cinque test del Markdown passano nei profili predefinito e release; elenco e filtri eseguono rispettivamente il caso giusto o zero casi; il cast anticipato fallisce su `-1`; la crate di integrazione accede all'API pubblica ma non alla funzione privata né a un helper protetto da `cfg(test)`.
+- Vault: **911 documenti raggiungibili**, zero errori, **234 avvisi editoriali**. Trasformazione Markdown **9/9**.
+- Quartz: **2003 HTML**, **144782 riferimenti verificati**, zero errori; anteprima HTTP **7/7**. A 390 e 1440 px la pagina mostra la tabella dei quattro elementi, i cinque blocchi di esempio e il filtro esatto senza overflow del documento.
+
+Prossima nota: [[Programmazione/Rust/Pagine/Integration test|Integration test]].

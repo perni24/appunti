@@ -14,13 +14,13 @@ aliases:
   - Error reporting
   - Report degli errori
 prerequisites:
-  - "[[Programmazione/Rust/Pagine/Error handling idiomatico]]"
-  - "[[Programmazione/Rust/Pagine/thiserror e anyhow]]"
-  - "[[Programmazione/Rust/Pagine/CLI con clap]]"
+  - "[[Programmazione/Rust/Pagine/Error handling idiomatico|Error handling idiomatico]]"
+  - "[[Programmazione/Rust/Pagine/thiserror e anyhow|thiserror e anyhow]]"
+  - "[[Programmazione/Rust/Pagine/CLI con clap|CLI con clap]]"
 related:
-  - "[[Programmazione/Rust/Pagine/Logging con log]]"
-  - "[[Programmazione/Rust/Pagine/Tracing con tracing]]"
-  - "[[Programmazione/Rust/Pagine/Error types pubblici]]"
+  - "[[Programmazione/Rust/Pagine/Logging con log|Logging con log]]"
+  - "[[Programmazione/Rust/Pagine/Tracing con tracing|Tracing con tracing]]"
+  - "[[Programmazione/Rust/Pagine/Error types pubblici|Error types pubblici]]"
 title: Error reporting
 ---
 
@@ -28,131 +28,190 @@ title: Error reporting
 
 ## Sintesi
 
-L'**error reporting** riguarda come un'applicazione comunica gli errori a chi la usa o la gestisce. Non coincide con l'error handling interno: puoi avere un buon uso di `Result` ma produrre messaggi finali confusi, troppo tecnici o privi di contesto.
+Un `Result` dice al **chiamante** che un'operazione è fallita; un report dice alla **persona** che cosa non ha funzionato e come intervenire. Se una CLI riceve un file con una quantità errata, «invalid digit found in string» è una causa tecnica utile, ma non dice *quale file* o *quale riga* correggere. Allo script che invoca la CLI serve invece un codice di uscita documentato, non una frase da interpretare.
 
-In una CLI Rust, un buon report di errore deve dire cosa e fallito, perche, e possibilmente cosa puo fare l'utente. Nei servizi, deve anche integrarsi con logging, tracing e codici di uscita o stato.
+## Tre responsabilità diverse
 
-## Quando usarlo
+| Livello | Responsabilità | Nel laboratorio |
+| --- | --- | --- |
+| Libreria | Restituire un errore tipizzato con dati e causa, senza stampare. | La variante `Quantity` conserva il numero di riga e il `ParseIntError`. |
+| Applicazione | Aggiungere il contesto noto solo al chiamante. | `with_context` aggiunge l'operazione e il percorso, senza sostituire la causa con una stringa. |
+| Confine CLI | Scegliere messaggio, canale e stato del processo. | Un solo report su stderr, dettagli facoltativi; stdout contiene solo il risultato valido. |
 
-Serve curare l'error reporting quando:
+Il testo è per le persone e può cambiare con la lingua, il sistema operativo o la versione di una dipendenza. Per scegliere un comportamento usa la **variante** dell'errore o, per l'I/O, `io::ErrorKind`. Non cercare «not found» nel testo dell'errore. Per la distinzione fra `#[source]`, `#[from]` e contesto vedi [[Programmazione/Rust/Pagine/thiserror e anyhow|thiserror e anyhow]].
 
-- una CLI e usata da persone o script;
-- un errore puo avere cause operative diverse;
-- devi distinguere errore utente, bug e problema ambientale;
-- vuoi conservare la chain degli errori;
-- vuoi stampare messaggi leggibili senza perdere dettagli diagnostici;
-- devi scegliere exit code coerenti.
+## Laboratorio: individuare la riga da correggere
 
-Per librerie, evita di stampare direttamente: restituisci errori ricchi e lascia all'applicazione decidere come presentarli.
+La CLI `verifica-lista` legge un piccolo file UTF-8. Ogni riga non vuota deve contenere una quantità intera compresa tra 1 e 4294967295. Le righe che contengono solo spazi sono ignorate nel conteggio, ma **mantengono il loro numero di riga** nella diagnostica. Al primo errore la CLI si ferma senza stampare un risultato parziale.
 
-## Come funziona
+Con Rust/Cargo stabile che supporti l'edition 2024 e un linker per l'host, in una directory di prova:
 
-Una strategia pulita separa tre livelli:
+```sh
+cargo new --bin --vcs none verifica-lista
+```
 
-- **errore di dominio**: tipo Rust che descrive il problema;
-- **propagazione**: uso di `Result`, `?`, `thiserror`, `anyhow` o equivalenti;
-- **presentazione**: messaggio finale, log, tracing, exit code.
+```sh
+cd verifica-lista
+```
 
-In applicazioni binarie e CLI, spesso si usa un errore applicativo flessibile per propagare contesto. Nelle librerie pubbliche, invece, e preferibile un enum di errori stabile e documentato.
+Sotto `[dependencies]` in `Cargo.toml` aggiungi le righe seguenti. Il primo build deve poter recuperare le dipendenze; conserva `Cargo.lock` per riprodurre anche le versioni transitive.
 
-La presentazione deve evitare due estremi:
+```toml
+anyhow = "=1.0.104"
+thiserror = "=2.0.21"
+clap = { version = "=4.5.50", features = ["derive"] }
+```
 
-- messaggio troppo generico: "error";
-- dump tecnico incomprensibile per l'utente.
+### Conservare la causa nella libreria
 
-## API / Sintassi
-
-Errore pubblico con `thiserror`:
+Crea `src/lib.rs`:
 
 ```rust
-use std::path::PathBuf;
-
+use std::{fs, io, num::{NonZeroU32, ParseIntError}, path::Path, str::Utf8Error};
 use thiserror::Error;
 
 #[derive(Debug, Error)]
-enum AppError {
-    #[error("configuration file not found: {0}")]
-    ConfigNotFound(PathBuf),
+#[non_exhaustive]
+pub enum CheckError {
+    #[error("impossibile leggere il file")]
+    Read(#[from] io::Error),
+    #[error("il file non è testo UTF-8")]
+    Encoding(#[from] Utf8Error),
+    #[error("quantità non valida alla riga {line}")]
+    Quantity {
+        line: usize,
+        #[source]
+        source: ParseIntError,
+    },
+}
 
-    #[error("invalid configuration: {0}")]
-    InvalidConfig(String),
+pub fn check(path: &Path) -> Result<usize, CheckError> {
+    let bytes = fs::read(path)?;
+    let text = std::str::from_utf8(&bytes)?;
+    let mut count = 0;
+    for (index, line) in text.lines().enumerate() {
+        let value = line.trim();
+        if value.is_empty() {
+            continue;
+        }
+        value.parse::<NonZeroU32>().map_err(|source| CheckError::Quantity {
+            line: index + 1,
+            source,
+        })?;
+        count += 1;
+    }
+    Ok(count)
 }
 ```
 
-Errore applicativo con contesto:
+`fs::read` e `from_utf8` sono separati: non riuscire a leggere i byte e non riuscire a interpretarli sono problemi diversi. La variante `Quantity` non conserva né ristampa il valore errato. Il suo `Display` identifica la riga; `Error::source()` espone la causa tecnica. Inserire lo stesso `{source}` anche nel messaggio della variante lo farebbe comparire due volte quando si stampa la catena completa.
+
+### Presentare il report nel binario
+
+Sostituisci `src/main.rs`:
 
 ```rust
-use anyhow::{Context, Result};
-
-fn load_text(path: &std::path::Path) -> Result<String> {
-    std::fs::read_to_string(path)
-        .with_context(|| format!("failed to read {}", path.display()))
-}
-```
-
-`Context` conserva la causa originale e aggiunge informazione utile per il report finale.
-
-## Esempio pratico
-
-`main` con report controllato:
-
-```rust
-use anyhow::{Context, Result};
+use anyhow::Context;
 use clap::Parser;
+use std::{io::ErrorKind, path::PathBuf, process::ExitCode};
+use verifica_lista::{check, CheckError};
 
-#[derive(Debug, Parser)]
+#[derive(Parser)]
 struct Cli {
-    path: std::path::PathBuf,
+    /// File UTF-8 con una quantità per riga.
+    path: PathBuf,
+    /// Aggiunge al report le cause tecniche.
+    #[arg(short, long)]
+    verbose: bool,
 }
 
-fn main() {
-    if let Err(error) = run() {
-        eprintln!("error: {error:#}");
-        std::process::exit(1);
+fn report(err: &anyhow::Error, verbose: bool) -> ExitCode {
+    let domain = err.downcast_ref::<CheckError>();
+    if verbose {
+        eprintln!("errore: {err:#}");
+    } else if let Some(detail) = domain {
+        eprintln!("errore: {err}: {detail}");
+    } else {
+        eprintln!("errore: {err}");
+    }
+
+    let (code, hint) = match domain {
+        Some(CheckError::Quantity { .. }) => (3, "usa una quantità intera positiva per riga"),
+        Some(CheckError::Encoding(_)) => (3, "converti il file in UTF-8"),
+        Some(CheckError::Read(e)) if e.kind() == ErrorKind::NotFound => {
+            (1, "verifica il percorso del file")
+        }
+        Some(CheckError::Read(_)) => (1, "verifica che il file sia leggibile"),
+        _ => (1, "controlla i dettagli con --verbose"),
+    };
+    eprintln!("suggerimento: {hint}");
+    ExitCode::from(code)
+}
+
+fn main() -> ExitCode {
+    let cli = Cli::parse();
+    match check(&cli.path).with_context(|| format!("controllo di {}", cli.path.display())) {
+        Ok(count) => {
+            println!("{count}");
+            ExitCode::SUCCESS
+        }
+        Err(err) => report(&err, cli.verbose),
     }
 }
-
-fn run() -> Result<()> {
-    let cli = Cli::parse();
-
-    let content = std::fs::read_to_string(&cli.path)
-        .with_context(|| format!("cannot read {}", cli.path.display()))?;
-
-    println!("{}", content.len());
-    Ok(())
-}
 ```
 
-`{error:#}` mostra una chain piu leggibile con `anyhow`, utile nelle CLI. Per output macchina conviene progettare formati dedicati invece di parsare messaggi testuali.
+`{err}` mostra solo il contesto esterno di `anyhow`; per questo il report breve gli affianca il messaggio del dominio. `{err:#}` mostra il contesto e le cause in sequenza, senza richiedere un backtrace. Il downcast recupera il `CheckError` incapsulato, non dipende dalle parole del messaggio e funziona anche dopo `with_context`. Per visitare le singole cause di un `anyhow::Error` usa `err.chain()`.
 
-## Varianti
+### Provare i due report
 
-- **Errore libreria**: enum esplicito, stabile, documentato.
-- **Errore applicativo**: contesto ricco, spesso con `anyhow`.
-- **Errore utente**: messaggio breve e azionabile.
-- **Errore diagnostico**: log o trace con dettagli tecnici.
-- **Exit code**: segnala a shell e CI il tipo di fallimento.
-- **Report colorato**: utile nelle CLI interattive, da disabilitare in contesti non TTY se necessario.
+Crea `lista.txt` con questo contenuto, **inclusa la riga vuota**:
 
-## Errori comuni
+```text
+12
 
-- Stampare errori dentro librerie.
-- Usare `unwrap()` e `expect()` in percorsi utente.
-- Perdere la causa originale convertendo tutto in `String`.
-- Mostrare backtrace o dettagli interni a utenti non tecnici.
-- Non distinguere errori attesi da bug.
-- Usare sempre exit code `1` anche quando servono codici specifici.
-- Loggare lo stesso errore in troppi livelli creando rumore.
+abc
+```
 
-## Checklist
+```sh
+cargo run --quiet -- lista.txt
+```
 
-- L'errore finale dice quale operazione e fallita?
-- La causa originale e preservata?
-- L'utente riceve un messaggio azionabile?
-- I dettagli tecnici finiscono in log/tracing quando opportuno?
-- Le librerie restituiscono errori invece di stampare?
-- Gli exit code sono coerenti?
-- I segreti non compaiono nei messaggi?
+Il binario lascia stdout vuoto, termina con codice **3** e scrive su stderr:
+
+```text
+errore: controllo di lista.txt: quantità non valida alla riga 3
+suggerimento: usa una quantità intera positiva per riga
+```
+
+```sh
+cargo run --quiet -- --verbose lista.txt
+```
+
+Ora la prima riga contiene anche la causa del parser. Il valore `abc` non viene ristampato e il codice resta **3**. Sostituisci `abc` con `8` e riesegui: stdout contiene `2`, stderr è vuoto e il codice è **0**. La CLI conta le righe valide, non somma le quantità.
+
+| Caso | Codice del binario | Informazione per l'utente |
+| --- | --- | --- |
+| File valido o vuoto | 0 | Conteggio su stdout; un file vuoto vale `0`. |
+| File assente o illeggibile | 1 | Percorso e suggerimento su stderr; la causa di sistema è disponibile con `--verbose`. |
+| Argomento obbligatorio omesso o opzione sconosciuta | 2 | clap segnala l'errore d'uso **prima** di chiamare la libreria. `--help` non è un errore e termina con 0. |
+| Byte non UTF-8 o quantità non valida | 3 | Il file è stato letto, ma il suo contenuto è da correggere. |
+
+Questi codici sono il **contratto di questa CLI**, non uno standard universale di Rust. Per testare i canali senza l'output di Cargo, compila con `cargo build` e invoca direttamente `target/debug/verifica-lista` (su Windows `target\debug\verifica-lista.exe`). In PowerShell leggi subito `$LASTEXITCODE`; in una shell POSIX leggi `$?`.
+
+## Limiti e scelte
+
+- **Catena e backtrace rispondono a domande diverse.** La catena spiega *quale operazione è fallita e perché*; il backtrace, quando catturato, aiuta a localizzare i punti del codice. Non serve un panic per segnalare un file non valido. Restituire `ExitCode` da `main` consente un'uscita normale, senza chiamare `process::exit` nel codice di libreria.
+- **Non stampare lo stesso errore a ogni livello.** Restituiscilo o aggiungi contesto dove conosci qualcosa di nuovo. Tieni il report per l'utente distinto da [[Programmazione/Rust/Pagine/Logging con log|log]] e [[Programmazione/Rust/Pagine/Tracing con tracing|tracing]]: disabilitare i log non deve nascondere il fallimento del comando.
+- **Dettagli tecnici non significa dettagli pubblici.** In questo esempio le cause del parser non includono il testo letto. Non generalizzare: errori di altri parser possono contenere righe di input, URL o credenziali. Valuta tutta la catena prima di mostrarla, anche con `--verbose`. In un servizio, non inviare percorsi locali o backtrace al client: usa un messaggio pubblico e, se utile, un identificatore di correlazione.
+- **Persone e automazione hanno interfacce diverse.** Non promettere che il testo del sistema operativo resti costante. Se uno script deve conoscere anche la riga o la categoria, progetta un formato strutturato documentato; colori e formattazione interattiva non devono contaminarlo.
+
+## Fonti ufficiali
+
+- [Libreria standard: Error::source e catene di errori](https://doc.rust-lang.org/std/error/trait.Error.html#method.source)
+- [thiserror: Display, source e from](https://docs.rs/thiserror/2.0.21/thiserror/)
+- [anyhow: formattazione, chain e downcast](https://docs.rs/anyhow/1.0.104/anyhow/struct.Error.html)
+- [Libreria standard: ExitCode](https://doc.rust-lang.org/std/process/struct.ExitCode.html)
+- [clap: destinazione del messaggio ed exit code](https://docs.rs/clap/4.5.50/clap/error/struct.Error.html#method.exit)
 
 ## Collegamenti
 
