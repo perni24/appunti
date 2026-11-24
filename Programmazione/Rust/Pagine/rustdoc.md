@@ -14,12 +14,13 @@ aliases:
   - rustdoc
   - cargo doc
 prerequisites:
-  - "[[Programmazione/Rust/Pagine/Doc test]]"
-  - "[[Programmazione/Rust/Pagine/Public API design]]"
+  - "[[Programmazione/Rust/Pagine/Cargo|Cargo]]"
+  - "[[Programmazione/Rust/Pagine/Public API design|Public API design]]"
 related:
-  - "[[Programmazione/Rust/Pagine/Documentazione delle crate]]"
-  - "[[Programmazione/Rust/Pagine/rustfmt]]"
-  - "[[Programmazione/Rust/Pagine/Clippy]]"
+  - "[[Programmazione/Rust/Pagine/Doc test|Doc test]]"
+  - "[[Programmazione/Rust/Pagine/Documentazione delle crate|Documentazione delle crate]]"
+  - "[[Programmazione/Rust/Pagine/rustfmt|rustfmt]]"
+  - "[[Programmazione/Rust/Pagine/Clippy|Clippy]]"
 title: rustdoc
 ---
 
@@ -27,118 +28,128 @@ title: rustdoc
 
 ## Sintesi
 
-`rustdoc` e lo strumento ufficiale che genera documentazione HTML per crate Rust a partire da commenti di documentazione, firme pubbliche, moduli, trait, struct, enum e esempi.
+`rustdoc` trasforma i commenti di documentazione e le firme delle API Rust in pagine HTML navigabili. Dalla pagina della crate un lettore può seguire il nome di una funzione e trovarne parametri, risultato, casi di errore ed esempi. **Generare la pagina non significa aver eseguito l'esempio che vi compare.**
 
-E anche parte del sistema di test: i blocchi di codice nella documentazione possono diventare doc test eseguiti da `cargo test`.
+## Scegliere il controllo
 
-## Quando usarlo
+| Domanda | Comando per la libreria dell'esempio | Che cosa non garantisce |
+| --- | --- | --- |
+| Quale documentazione vedrà chi usa la libreria? | `cargo doc --lib --no-deps` | Non esegue gli esempi; alcuni problemi di documentazione sono solo avvisi. |
+| Il nome citato nella guida punta a un elemento Rust esistente? | `cargo rustdoc --lib -- -D rustdoc::broken_intra_doc_links` | Non verifica la raggiungibilità di URL esterni né la correttezza delle promesse scritte. |
+| Il codice mostrato al lettore produce davvero il risultato dichiarato? | `cargo test --doc` | Esegue i doc test della libreria, non verifica la navigazione dell'HTML. |
 
-Usa `rustdoc` quando:
+## Esempio pratico: dalla crate alla funzione
 
-- stai pubblicando una libreria;
-- vuoi documentare API pubbliche;
-- vuoi controllare esempi e doc test;
-- vuoi generare documentazione locale;
-- vuoi verificare link e item documentati;
-- vuoi migliorare usabilita della crate.
+In una directory libera, crea una libreria senza dipendenze esterne:
 
-Per applicazioni private, documentare moduli chiave resta utile, ma la priorita e diversa rispetto a una crate pubblica.
-
-## Come funziona
-
-Commenti doc:
-
-- `///` documenta l'item successivo;
-- `//!` documenta il modulo o crate corrente;
-- Markdown e supportato;
-- link intra-doc possono puntare a item Rust;
-- esempi Rust possono essere testati.
-
-Comandi:
-
-```powershell
-cargo doc
-cargo doc --open
-cargo test --doc
+```sh
+cargo new --lib --edition 2024 quota_notes
 ```
 
-Per crate pubbliche, conviene trattare documentazione incompleta o link rotti come problemi di qualita.
+Dalla directory `quota_notes`, sostituisci **solo il file di prova** `src/lib.rs` con questo contenuto:
 
-## API / Sintassi
-
-Documentare una funzione:
-
-```rust
-/// Calcola la percentuale.
-///
-/// # Errors
-///
-/// Restituisce errore se `total` e zero.
-pub fn percentage(part: u64, total: u64) -> Result<u64, String> {
-    if total == 0 {
-        return Err("total is zero".to_string());
-    }
-
-    Ok(part * 100 / total)
-}
-```
-
-Documentazione di crate:
-
-```rust
-//! Libreria per normalizzare input testuale.
+~~~rust
+//! Percentuali intere per confrontare due quantità.
 //!
-//! Usa [`normalize`] per applicare la normalizzazione standard.
-```
+//! Per calcolare la quota di una parte sul totale usa [`percentage`].
 
-## Esempio pratico
-
-API con esempio:
-
-```rust
-/// Normalizza un nome.
+/// Calcola la percentuale intera di `part` rispetto a `total`.
+///
+/// Scarta la parte frazionaria. Se la parte supera il totale,
+/// il risultato può superare 100: non viene limitato a 100.
 ///
 /// # Examples
 ///
+/// ```rust
+/// use quota_notes::percentage;
+///
+/// assert_eq!(percentage(1, 3), Ok(33));
+/// assert_eq!(percentage(2, 1), Ok(200));
+/// assert_eq!(percentage(u64::MAX, u64::MAX), Ok(100));
 /// ```
-/// let value = my_crate::normalize(" Luca ");
-/// assert_eq!(value, "luca");
+///
+/// # Errors
+///
+/// Restituisce un errore se il totale è zero o se il risultato
+/// intero non è rappresentabile come `u64`.
+///
+/// ```rust
+/// use quota_notes::percentage;
+///
+/// assert!(percentage(1, 0).is_err());
+/// assert!(percentage(u64::MAX, 1).is_err());
 /// ```
-pub fn normalize(input: &str) -> String {
-    input.trim().to_lowercase()
+pub fn percentage(part: u64, total: u64) -> Result<u64, String> {
+    if total == 0 {
+        return Err("total is zero".to_owned());
+    }
+    let quotient = scaled(part) / u128::from(total);
+    u64::try_from(quotient).map_err(|_| "percentage exceeds u64".to_owned())
 }
+
+fn scaled(part: u64) -> u128 {
+    u128::from(part) * 100
+}
+~~~
+
+I commenti `//!` all'inizio di `lib.rs` descrivono **la crate**; in un modulo descriverebbero il modulo che li contiene. I commenti `///` descrivono **l'elemento che segue**. La prima frase riassume la funzione; `# Errors` dice al chiamante quando aspettarsi un `Err`. Usa `# Panics` o `# Safety` quando c'è davvero un panic da documentare o un obbligo a carico di chi chiama un'API unsafe.
+
+Il caso con due `u64::MAX` non è decorativo: la risposta deve essere 100, ma moltiplicare prima in `u64` può causare overflow. Qui la moltiplicazione avviene in `u128` e la conversione finale verifica che il risultato entri in `u64`.
+
+### 1. Leggere la vista pubblica
+
+```sh
+cargo doc --lib --no-deps
 ```
 
-Questo esempio e leggibile per l'utente e testabile da `cargo test`.
+Con il percorso di build predefinito, apri `target/doc/quota_notes/index.html` oppure aggiungi `--open` allo stesso comando. Nel testo introduttivo, il nome `percentage` è un **link intra-doc**: rustdoc lo risolve nel contesto Rust e lo collega a `fn.percentage.html`. Seguilo e controlla le sezioni *Examples* ed *Errors*. `--no-deps` evita di generare le pagine delle dipendenze; **non** seleziona la visibilità degli elementi.
 
-## Varianti
+### 2. Confrontare la vista interna
 
-- **Documentazione HTML locale**: `cargo doc --open`.
-- **Doc test**: esempi compilati/eseguiti.
-- **Intra-doc links**: link a item Rust.
-- **Crate-level docs**: `//!` in `lib.rs`.
-- **Documentazione privata**: generabile con opzioni dedicate.
-- **docs.rs**: documentazione generata per crate pubblicate.
+Per vedere anche l'helper privato `scaled`, genera una seconda copia:
+
+```sh
+cargo doc --lib --no-deps --document-private-items --target-dir target/internal
+```
+
+Apri `target/internal/doc/quota_notes/index.html`: qui compare anche `scaled`, senza averlo reso `pub`. I due percorsi sono distinti perché Cargo può conservare HTML di generazioni precedenti. **Omettere le pagine private non rende segreto il sorgente**: la documentazione pubblica può comunque includere collegamenti al codice. I comandi mostrati scrivono file locali; non pubblicano la crate né aggiornano docs.rs.
+
+### 3. Far fallire il controllo giusto
+
+Per rendere bloccante un riferimento Rust irrisolto nella libreria, passa il lint a rustdoc dopo `--`:
+
+```sh
+cargo rustdoc --lib -- -D rustdoc::broken_intra_doc_links
+```
+
+**Prova sul link:** nella sola riga `//!` cambia il nome tra parentesi quadre da `percentage` a `percentage_typo`. Con le impostazioni predefinite, `cargo doc --lib --no-deps` avvisa del nome irrisolto ma può terminare con successo; il comando con `-D` fallisce. Ripristina il nome corretto. Se vuoi rilevare anche elementi pubblici senza documentazione, aggiungi `-D missing_docs`: è un controllo distinto e non misura la qualità del testo.
+
+Ora esegui gli esempi pubblicati:
+
+```sh
+cargo test --doc
+```
+
+In questa crate i doc test sono **due**: si contano i blocchi Rust, non le singole asserzioni. **Prova sull'esempio:** cambia solo il risultato atteso da `Ok(33)` a `Ok(34)`. L'HTML si genera e il controllo del link passa, ma il primo doc test fallisce. Ripristina `33`. Per blocchi da compilare senza esecuzione o che devono fallire in compilazione, vedi [[Programmazione/Rust/Pagine/Doc test|Doc test]].
 
 ## Errori comuni
 
-- Documentare il "come" interno invece del contratto pubblico.
-- Scrivere esempi che non compilano.
-- Dimenticare sezioni `Errors`, `Panics` o `Safety` quando rilevanti.
-- Esporre API pubbliche senza descrivere invarianti.
-- Usare link testuali invece di link a item quando possibile.
-- Lasciare documentazione obsoleta dopo refactor.
-- Usare doc comment come commenti interni di implementazione.
+- Usare nei commenti un nome fittizio come `my_crate`: l'esempio deve importare il nome reale della libreria come farebbe un chiamante esterno.
+- Collegare la guida pubblica a un helper privato: il nome esiste, ma la sua pagina non è disponibile nella vista pubblica. È un caso diverso da un nome inesistente (`rustdoc::private_intra_doc_links`).
+- Scrivere percorsi HTML a mano nei commenti. Preferisci un link all'elemento Rust; se un tipo e una funzione hanno lo stesso nome, disambigua per esempio con `fn@nome`.
+- Dare per aggiornata una pagina solo perché esiste su disco. Controlla l'esito dell'ultima generazione e il percorso di output prima di distribuirla.
 
 ## Checklist
 
-- Le API pubbliche principali sono documentate?
-- Gli esempi compilano?
-- Errori e panic sono descritti?
-- Le funzioni unsafe hanno sezione `Safety`?
-- I link intra-doc funzionano?
-- La documentazione mostra casi reali?
-- `cargo doc` e `cargo test --doc` passano?
+- Dalla pagina iniziale si arriva al contratto dell'API senza vedere gli internals?
+- I casi di errore, gli arrotondamenti e i limiti descritti hanno esempi verificabili?
+- La CI controlla sia i link intra-doc sia l'esecuzione dei doc test?
+
+## Fonti
+
+- [Cargo Book: cargo doc, visibilità e directory di output](https://doc.rust-lang.org/cargo/commands/cargo-doc.html)
+- [Cargo Book: passare opzioni a rustdoc per un target](https://doc.rust-lang.org/cargo/commands/cargo-rustdoc.html)
+- [Rustdoc Book: link agli elementi Rust](https://doc.rust-lang.org/rustdoc/write-documentation/linking-to-items-by-name.html) e [lint della documentazione](https://doc.rust-lang.org/rustdoc/lints.html)
 
 ## Collegamenti
 

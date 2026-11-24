@@ -14,12 +14,12 @@ aliases:
   - Integration test
   - Test di integrazione Rust
 prerequisites:
-  - "[[Programmazione/Rust/Pagine/Cargo]]"
-  - "[[Programmazione/Rust/Pagine/Public API design]]"
+  - "[[Programmazione/Rust/Pagine/Cargo|Cargo]]"
+  - "[[Programmazione/Rust/Pagine/Public API design|Public API design]]"
 related:
-  - "[[Programmazione/Rust/Pagine/Unit test]]"
-  - "[[Programmazione/Rust/Pagine/Mocking]]"
-  - "[[Programmazione/Rust/Pagine/cargo-nextest]]"
+  - "[[Programmazione/Rust/Pagine/Unit test|Unit test]]"
+  - "[[Programmazione/Rust/Pagine/Mocking|Mocking]]"
+  - "[[Programmazione/Rust/Pagine/cargo-nextest|cargo-nextest]]"
 title: Integration test
 ---
 
@@ -27,119 +27,177 @@ title: Integration test
 
 ## Sintesi
 
-Gli **integration test** in Rust vivono di solito nella cartella `tests/` e verificano la crate dall'esterno, come farebbe un utente della libreria. A differenza degli unit test, non accedono ai dettagli privati: usano solo API pubbliche.
+Un test di integrazione osserva il programma **dall'esterno**. Una libreria può rifiutare correttamente un input con `Err`, ma la CLI che la usa potrebbe stampare l'errore e terminare con codice `0`. Il primo comportamento si verifica chiamando la funzione pubblica; per il secondo occorre avviare il binario e osservare il processo.
 
-Sono utili per verificare che moduli diversi collaborino correttamente e che l'interfaccia pubblica resti usabile.
+Il confine attraversato conta più della durata. Un test in `tests/` che chiama una funzione in memoria può essere rapido e non ha bisogno di rete o database.
 
-## Quando usarlo
+## Come Cargo organizza i test
 
-Usa integration test quando:
+Con la struttura standard e la scoperta automatica attiva, **ogni file `.rs` direttamente sotto `tests/`** diventa un target di integrazione: Cargo lo compila come crate separata, con il proprio eseguibile di test. Le funzioni `#[test]` nello stesso target condividono il processo e possono girare in parallelo.
 
-- vuoi testare il comportamento pubblico della crate;
-- vuoi verificare flussi completi;
-- vuoi testare una CLI, un backend o un modulo con piu componenti;
-- vuoi evitare di dipendere da dettagli privati;
-- devi proteggere compatibilita dell'API;
-- vuoi testare configurazione, filesystem temporaneo o database di test.
+| Dove si trova il codice | Che cosa vede |
+| --- | --- |
+| Modulo `#[cfg(test)]` dentro `src/lib.rs` | Il modulo padre e i suoi elementi privati, secondo le regole di visibilità. |
+| `tests/api.rs` | La libreria attraverso il suo nome di crate e i percorsi pubblici. Qui `crate::` indica la crate di **test**, non la libreria. |
+| `tests/cli.rs` | Oltre all'API pubblica, può avviare un binario del pacchetto e controllare ciò che vede chi lo esegue. |
+| `tests/common/mod.rs` | Non è un target autonomo. Ogni target che scrive `mod common;` lo include come proprio modulo; non è memoria condivisa fra eseguibili. |
 
-Gli integration test non sostituiscono gli unit test: sono piu lenti ma piu vicini all'uso reale.
+Un helper della libreria dichiarato solo con `#[cfg(test)]` non è disponibile al test esterno: in questo caso la libreria viene compilata come dipendenza. Non renderlo pubblico solo per far passare il test.
 
-## Come funziona
+## Esempio: lo stesso input, due contratti
 
-Cargo tratta ogni file in `tests/` come un crate separato di test. Questo significa che il test importa la libreria usando il nome della crate, non `super::*`.
-
-Struttura tipica:
+Partire dalla libreria `percentage_notes` della nota [[Programmazione/Rust/Pagine/Unit test|Unit test]], lasciando invariato il suo `src/lib.rs`. Espone `parse_percentage(&str) -> Result<u8, ParseIntError>`: accetta spazi esterni, limita a 100 il numero 120 e rifiuta `"42%"`. Aggiungere i file seguenti; non servono dipendenze né modifiche al manifest.
 
 ```text
-my_crate/
+percentage_notes/
+  Cargo.toml
   src/
     lib.rs
+    bin/percent.rs
   tests/
-    api_test.rs
-    cli_test.rs
+    api.rs
+    cli.rs
+    common/mod.rs
 ```
 
-I test in `tests/` possono condividere helper tramite moduli locali, ma bisogna evitare di trasformare i test in un framework parallelo troppo complesso.
+### 1. Verificare la libreria come consumatore
 
-## API / Sintassi
-
-File `tests/api_test.rs`:
+In `tests/common/mod.rs` condividiamo solo gli input. I risultati attesi restano visibili in ciascun test. Un file chiamato invece `tests/common.rs` verrebbe scoperto anche come eseguibile di test, spesso con zero test.
 
 ```rust
-use my_crate::normalize_name;
+pub const ABOVE_MAX: &str = " 120 ";
+pub const INVALID: &str = "42%";
+```
+
+In `tests/api.rs` non si importa il sorgente con `#[path]` e non si chiama l'helper privato `clamp_percentage`. Si usa la libreria come farebbe un altro pacchetto:
+
+```rust
+mod common;
+
+use percentage_notes::parse_percentage;
+use std::num::IntErrorKind;
 
 #[test]
-fn normalizes_names() {
-    assert_eq!(normalize_name(" Luca "), "luca");
+fn clamps_numeric_input() {
+    assert_eq!(parse_percentage(common::ABOVE_MAX).unwrap(), 100);
+}
+
+#[test]
+fn rejects_percent_suffix() {
+    let err = parse_percentage(common::INVALID).expect_err("atteso un errore di parsing");
+    assert_eq!(err.kind(), &IntErrorKind::InvalidDigit);
 }
 ```
 
-Esecuzione:
+Il primo test attraversa il parsing e la normalizzazione. Il secondo verifica la categoria dell'errore, non la frase prodotta dal suo `Display`: cambiare un messaggio interno non dovrebbe rompere un consumatore che usa il tipo.
 
-```powershell
+### 2. Aggiungere la CLI
+
+In `src/bin/percent.rs`, il binario si occupa solo degli argomenti e dell'esito del processo. La regola sulle percentuali resta nella libreria:
+
+```rust
+use percentage_notes::parse_percentage;
+use std::{env, process::ExitCode};
+
+fn main() -> ExitCode {
+    let mut args = env::args_os().skip(1);
+    let (Some(arg), None) = (args.next(), args.next()) else {
+        eprintln!("usage: percent VALUE");
+        return ExitCode::from(2);
+    };
+
+    if let Some(value) = arg.to_str().and_then(|s| parse_percentage(s).ok()) {
+        println!("{value}");
+        ExitCode::SUCCESS
+    } else {
+        eprintln!("invalid percentage");
+        ExitCode::from(2)
+    }
+}
+```
+
+### 3. Verificare il processo, non solo la funzione
+
+In `tests/cli.rs`, `env!("CARGO_BIN_EXE_percent")` fornisce in compilazione il percorso del binario `percent` costruito da Cargo. Non occorre indovinare `target/debug/`, aggiungere `.exe` su Windows o lanciare un altro `cargo run` dal test.
+
+```rust
+mod common;
+
+use std::process::{Command, Output};
+
+fn run(args: &[&str]) -> Output {
+    Command::new(env!("CARGO_BIN_EXE_percent"))
+        .args(args)
+        .output()
+        .expect("impossibile avviare percent")
+}
+
+#[test]
+fn prints_value_on_stdout() {
+    let out = run(&[common::ABOVE_MAX]);
+    assert!(out.status.success());
+    assert_eq!(String::from_utf8(out.stdout).unwrap().trim_end(), "100");
+    assert!(out.stderr.is_empty());
+}
+
+#[test]
+fn invalid_input_is_a_process_error() {
+    let out = run(&[common::INVALID]);
+    assert_eq!(out.status.code(), Some(2));
+    assert!(out.stdout.is_empty());
+    assert_eq!(String::from_utf8(out.stderr).unwrap().trim_end(), "invalid percentage");
+}
+
+#[test]
+fn requires_one_argument() {
+    for args in [&[][..], &["1", "2"][..]] {
+        let out = run(args);
+        assert_eq!(out.status.code(), Some(2));
+        assert!(out.stdout.is_empty());
+        assert_eq!(String::from_utf8(out.stderr).unwrap().trim_end(), "usage: percent VALUE");
+    }
+}
+```
+
+`.output().expect(...)` verifica solo che il processo sia stato avviato e che sia stato possibile raccoglierne l'output: **un processo che termina con 2 non produce un `Err` di `output()`**. Per questo il test deve leggere `out.status`. In questo esempio le due righe diagnostiche sono parte del contratto della CLI; se la loro formulazione è libera, controllare piuttosto il codice e la destinazione del messaggio.
+
+## Eseguire i casi giusti
+
+Dalla radice di `percentage_notes`, eseguire i due test dell'API:
+
+```sh
+cargo test --test api
+```
+
+Eseguire i tre test del processo:
+
+```sh
+cargo test --test cli
+```
+
+Per riprodurre soltanto il caso di input non valido, selezionare prima **il target** `cli`, poi **la funzione**. I nomi in questo caso sono alla radice di `tests/cli.rs`, quindi non hanno il prefisso `tests::`:
+
+```sh
+cargo test --test cli invalid_input_is_a_process_error -- --exact
+```
+
+Il riepilogo deve indicare **1 passato e 2 filtrati**. `--test` vuole il nome del target, non il nome della funzione. Per controllare anche i cinque test unitari della libreria ed eventuali doc test, eseguire la suite del pacchetto:
+
+```sh
 cargo test
-cargo test --test api_test
-cargo test normalizes_names
 ```
 
-Per test con risorse esterne, usa nomi chiari e isolamento tra casi.
+## Quando servono risorse esterne
 
-## Esempio pratico
+- **Filesystem:** dare a ciascun test una directory temporanea distinta e ripulirla anche in caso di errore. Due processi separati possono ancora usare per sbaglio lo stesso nome di file.
+- **HTTP:** se il contratto riguarda solo il router, esercitarlo in memoria. Se conta la connessione reale, usare il loopback, lasciare scegliere una porta libera al sistema e attendere che il server sia pronto, senza pause arbitrarie.
+- **Database:** una transazione annullata a fine test isola solo le operazioni che la usano davvero. Se l'applicazione apre altre connessioni, predisporre uno schema o un database di test isolato.
+- **Pacchetto con solo `src/main.rs`:** è possibile provare l'eseguibile come sopra. Per importare e testare la logica come API, estrarla in `src/lib.rs`; non duplicare il parser dentro il test. Per mostrare l'uso dell'API nella documentazione, preferire un [[Programmazione/Rust/Pagine/Doc test|doc test]].
 
-Testare un parser pubblico:
+## Fonti
 
-```rust
-use my_crate::{parse_command, Command};
-
-#[test]
-fn parses_add_command() {
-    let command = parse_command("add task").expect("command should parse");
-
-    assert_eq!(
-        command,
-        Command::Add {
-            title: "task".to_string()
-        }
-    );
-}
-
-#[test]
-fn rejects_empty_input() {
-    let error = parse_command("").expect_err("empty input should fail");
-    assert_eq!(error.to_string(), "empty command");
-}
-```
-
-Il test non sa come il parser e implementato: verifica solo il contratto pubblico.
-
-## Varianti
-
-- **API integration test**: verifica funzioni pubbliche.
-- **CLI test**: esegue binari con argomenti e controlla output.
-- **Database test**: usa database temporaneo o transazionale.
-- **HTTP test**: avvia router o server in memoria.
-- **End-to-end leggero**: attraversa piu layer senza servizi reali non necessari.
-- **Test con fixture**: dati di input/versionati per casi complessi.
-
-## Errori comuni
-
-- Usare integration test per controllare funzioni private.
-- Rendere i test dipendenti da ordine o stato condiviso.
-- Richiedere servizi esterni non controllati.
-- Non pulire file temporanei o database.
-- Nascondere troppa logica negli helper di test.
-- Testare output fragile invece di comportamento stabile.
-- Eseguire test lenti in ogni ciclo locale senza separazione.
-
-## Checklist
-
-- Il test usa solo API pubbliche?
-- Le risorse esterne sono isolate?
-- Il fallimento indica chiaramente cosa non funziona?
-- I dati di fixture sono piccoli e leggibili?
-- I test lenti sono marcati o separati?
-- La CLI/API viene testata come la userebbe un utente?
-- Gli helper di test restano semplici?
+- [Rust Book: test esterni e moduli di supporto](https://doc.rust-lang.org/book/ch11-03-test-organization.html) e [Cargo Book: target di integrazione](https://doc.rust-lang.org/cargo/reference/cargo-targets.html#integration-tests).
+- [Cargo Book: percorsi dei binari disponibili ai test](https://doc.rust-lang.org/cargo/reference/environment-variables.html#environment-variables-cargo-sets-for-crates) e [opzioni di cargo test](https://doc.rust-lang.org/cargo/commands/cargo-test.html).
 
 ## Collegamenti
 

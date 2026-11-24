@@ -14,12 +14,12 @@ aliases:
   - Doc test
   - Documentation test
 prerequisites:
-  - "[[Programmazione/Rust/Pagine/rustdoc]]"
-  - "[[Programmazione/Rust/Pagine/Public API design]]"
+  - "[[Programmazione/Rust/Pagine/rustdoc|rustdoc]]"
+  - "[[Programmazione/Rust/Pagine/Public API design|Public API design]]"
 related:
-  - "[[Programmazione/Rust/Pagine/Unit test]]"
-  - "[[Programmazione/Rust/Pagine/Integration test]]"
-  - "[[Programmazione/Rust/Pagine/Documentazione delle crate]]"
+  - "[[Programmazione/Rust/Pagine/Unit test|Unit test]]"
+  - "[[Programmazione/Rust/Pagine/Integration test|Integration test]]"
+  - "[[Programmazione/Rust/Pagine/Documentazione delle crate|Documentazione delle crate]]"
 title: Doc test
 ---
 
@@ -27,122 +27,123 @@ title: Doc test
 
 ## Sintesi
 
-I **doc test** sono esempi Rust scritti nella documentazione che vengono compilati ed eseguiti da `cargo test`. Servono a mantenere gli esempi pubblici sincronizzati con il codice reale.
-
-Sono particolarmente utili per librerie: un esempio nella documentazione non dovrebbe solo spiegare, ma anche continuare a compilare quando l'API cambia.
+Un **doc test** è un esempio nella documentazione Rust che `rustdoc` può verificare. Un blocco Rust ordinario passa se compila e termina senza fallire. Scrivere `parse_percentage("120")` mostra come chiamare la funzione; aggiungere un'asserzione verifica anche la promessa fatta al lettore: il risultato è `100`.
 
 ## Quando usarlo
 
-Usa doc test quando:
-
-- documenti una funzione pubblica;
-- vuoi mostrare l'uso idiomatico di un'API;
-- vuoi evitare esempi obsoleti;
-- una crate e destinata ad altri sviluppatori;
-- vuoi testare esempi minimi e leggibili;
-- vuoi documentare casi di errore o panic.
-
-Non usare doc test per scenari lunghi o con molta infrastruttura: in quel caso meglio integration test o esempi in `examples/`.
+Usalo per mostrare la prima chiamata utile a un'API pubblica, il valore restituito o un errore che il chiamante deve gestire. Se devi controllare tutti i valori limite di una funzione privata, usa un [[Programmazione/Rust/Pagine/Unit test|test unitario]]. Se devi avviare una CLI e osservarne il codice di uscita, usa un [[Programmazione/Rust/Pagine/Integration test|test di integrazione]]. Un programma dimostrativo lungo può stare in `examples/`, lasciando nella documentazione l'esempio minimo.
 
 ## Come funziona
 
-`rustdoc` estrae blocchi di codice Rust dalla documentazione e li trasforma in test. `cargo test` esegue anche questi test per le librerie.
+`///` documenta l'elemento successivo; `//!` può documentare il modulo o la crate. Nei commenti, `rustdoc` interpreta come Rust un blocco delimitato da tre backtick senza linguaggio o con `rust`. Ogni esempio deve avere gli import che gli servono: usa il nome della libreria come farebbe un chiamante esterno, senza affidarti a variabili o import di un altro blocco.
 
-Puoi controllare il comportamento con annotazioni:
-
-- `no_run`: compila ma non esegue;
-- `ignore`: ignora il blocco;
-- `compile_fail`: il codice deve fallire la compilazione;
-- `should_panic`: il codice deve andare in panic;
-- `text`: blocco non Rust.
-
-Gli esempi dovrebbero essere piccoli, completi e orientati all'utente.
-
-## API / Sintassi
-
-Esempio di documentazione testabile:
-
-```rust
-/// Somma due numeri.
-///
-/// # Examples
-///
-/// ```
-/// let result = my_crate::add(2, 3);
-/// assert_eq!(result, 5);
-/// ```
-pub fn add(left: i32, right: i32) -> i32 {
-    left + right
-}
-```
-
-Esempio che deve fallire:
-
-```rust
-/// ```compile_fail
-/// let value: u32 = -1;
-/// ```
-pub struct OnlyPositive;
-```
+| Blocco nel commento | Cosa controlla il test | Quando sceglierlo |
+| --- | --- | --- |
+| `rust` o senza annotazione | Compila ed esegue; un'asserzione fallita fa fallire il test. | Input e risultato riproducibili. |
+| `no_run` | Compila, ma non esegue il codice. | L'esempio richiede input interattivo o un servizio esterno. |
+| `ignore` | Per impostazione predefinita salta il blocco: non garantisce neppure che compili. | Un prerequisito impedisce anche la compilazione; spiegare quale. |
+| `compile_fail` | Passa se il blocco non compila. | Mostrare un uso che il sistema di tipi rifiuta. |
+| `should_panic` | Deve compilare e andare in panic durante l'esecuzione. | L'API documenta un panic; un semplice `Err` non è un panic. |
+| `text` | Non è un esempio Rust e non viene testato. | Mostrare output, non codice da verificare. |
 
 ## Esempio pratico
 
-Documentare un parser:
+Parti dalla libreria `percentage_notes` della nota [[Programmazione/Rust/Pagine/Unit test|Unit test]]. In `src/lib.rs`, incolla **solo questi commenti**, subito sopra la funzione esistente `pub fn parse_percentage`. Non serve modificare l'implementazione né rendere pubblico l'helper.
 
-```rust
-/// Converte una stringa in percentuale.
+~~~rust
+/// Legge un intero e ne limita il valore all'intervallo 0..=100.
 ///
 /// # Examples
 ///
-/// ```
-/// let value = my_crate::parse_percentage("42").unwrap();
-/// assert_eq!(value, 42);
+/// ```rust
+/// use percentage_notes::parse_percentage;
+///
+/// assert_eq!(parse_percentage(" 120 ")?, 100);
+/// # Ok::<(), std::num::ParseIntError>(())
 /// ```
 ///
 /// # Errors
 ///
-/// Restituisce errore se il valore non e un numero tra 0 e 100.
-pub fn parse_percentage(input: &str) -> Result<u8, String> {
-    let value: u8 = input.parse().map_err(|_| "invalid number".to_string())?;
+/// Restituisce un errore se, tolti gli spazi esterni, il testo non
+/// rappresenta un intero valido per `i32`. Un valore come 120 è valido.
+///
+/// ```rust
+/// use percentage_notes::parse_percentage;
+/// use std::num::IntErrorKind;
+///
+/// let error = parse_percentage("42%").unwrap_err();
+/// assert_eq!(error.kind(), &IntErrorKind::InvalidDigit);
+/// ```
+~~~
 
-    if value > 100 {
-        return Err("percentage out of range".to_string());
-    }
+Nel primo blocco, `?` propaga un eventuale errore. La riga che inizia con `# ` dà all'esempio un risultato di successo con un tipo di errore esplicito: partecipa al test ma è nascosta nella vista normale della documentazione generata da rustdoc. Nel secondo blocco, `unwrap_err()` è intenzionale: se un domani il parser accettasse `"42%"`, vogliamo che l'esempio fallisca.
 
-    Ok(value)
-}
+### Eseguire la verifica
+
+Dalla directory con il `Cargo.toml` di `percentage_notes`, esegui soltanto i doc test della libreria. Con i soli commenti sopra devono passarne **due**:
+
+```sh
+cargo test --doc
 ```
 
-L'esempio diventa parte della suite di test e protegge la documentazione dall'invecchiare.
+Per includere anche i test unitari e gli eventuali test di integrazione del pacchetto:
+
+```sh
+cargo test
+```
+
+Per generare l'HTML della libreria senza documentare le dipendenze:
+
+```sh
+cargo doc --no-deps
+```
+
+Apri `target/doc/percentage_notes/fn.parse_percentage.html` per leggere la pagina della funzione. **Controprova:** cambia solo il risultato atteso da `100` a `99`. L'HTML si genera ancora, ma `cargo test --doc` fallisce mostrando il risultato effettivo (`100`) e quello atteso (`99`). Ripristina l'asserzione prima di proseguire. `cargo test --lib` da solo non esegue i doc test.
 
 ## Varianti
 
-- **Esempi eseguibili**: blocchi Rust normali.
-- **no_run**: utile per esempi che aprono rete, file o server.
-- **compile_fail**: documenta vincoli di type system.
-- **should_panic**: documenta panic intenzionali.
-- **hidden lines**: righe nascoste per preparare contesto.
-- **examples/**: esempi piu lunghi e separati dalla documentazione inline.
+**Verificare una chiamata senza attendere input.** Questo esempio facoltativo si può aggiungere in fondo ai commenti della stessa funzione. Il chiamante legge una riga dallo standard input: interessa verificare che il codice resti valido, non simulare una tastiera. Le varianti sono indipendenti dai due test precedenti.
+
+~~~rust
+/// ```no_run
+/// use percentage_notes::parse_percentage;
+///
+/// let mut line = String::new();
+/// std::io::stdin().read_line(&mut line)?;
+/// println!("{}", parse_percentage(&line)?);
+/// # Ok::<(), Box<dyn std::error::Error>>(())
+/// ```
+~~~
+
+**Verificare un vincolo di tipo.** Il parser restituisce un `Result`, non un `u8` già pronto. Qui l'import e l'input sono validi: l'unica operazione che deve essere rifiutata è l'assegnazione. Se si aggiunge `.unwrap()` alla chiamata, il codice compila e il doc test negativo deve fallire.
+
+~~~rust
+/// ```compile_fail
+/// use percentage_notes::parse_percentage;
+///
+/// let percent: u8 = parse_percentage("42");
+/// ```
+~~~
 
 ## Errori comuni
 
-- Inserire esempi non completi.
-- Usare doc test troppo lunghi.
-- Nascondere troppo setup rendendo l'esempio poco onesto.
-- Usare `ignore` per evitare di mantenere esempi rotti.
-- Documentare API private invece del contratto pubblico.
-- Dimenticare se l'esempio deve essere eseguito o solo compilato.
-- Non spiegare errori e panic nelle sezioni dedicate.
+- Stampare un risultato e scrivere quello atteso in un commento: il test non confronta l'output. Per una funzione pura usa un'asserzione.
+- Usare `ignore` per codice che richiede solo un servizio **durante l'esecuzione**: con `no_run` il compilatore può ancora segnalare una chiamata non più valida.
+- Fidarsi di un `compile_fail` con un import sbagliato: il test passa anche se la compilazione fallisce per quel motivo. Prova la variante che dovrebbe compilare.
+- Nascondere dietro `# ` proprio il passaggio che il lettore deve imparare, ad esempio l'import pubblico o la gestione dell'errore.
 
 ## Checklist
 
-- L'esempio mostra un uso reale dell'API?
-- Il blocco compila con `cargo test`?
-- L'esempio e abbastanza breve?
-- Le annotazioni `no_run`, `ignore`, `compile_fail` sono motivate?
-- Gli errori pubblici sono documentati?
-- La documentazione resta leggibile senza conoscere il test harness?
-- I doc test coprono le API centrali della crate?
+- L'esempio funziona dal punto di vista di chi importa la libreria?
+- Un risultato sbagliato viene rilevato da un'asserzione?
+- Ogni esempio non eseguito ha un motivo esplicito?
+- La verifica in locale o in CI include `cargo test --doc` oppure la suite completa?
+
+## Fonti
+
+- [The rustdoc book: documentation tests, righe nascoste e attributi](https://doc.rust-lang.org/rustdoc/write-documentation/documentation-tests.html)
+- [The Cargo Book: cargo test e selezione dei target](https://doc.rust-lang.org/cargo/commands/cargo-test.html)
+- [The Cargo Book: cargo doc](https://doc.rust-lang.org/cargo/commands/cargo-doc.html)
 
 ## Collegamenti
 

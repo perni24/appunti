@@ -7544,3 +7544,183 @@ Prossima nota: [[Programmazione/Rust/Pagine/Unit test|Unit test]] (inizio di Tes
 - Quartz: **2003 HTML**, **144782 riferimenti verificati**, zero errori; anteprima HTTP **7/7**. A 390 e 1440 px la pagina mostra la tabella dei quattro elementi, i cinque blocchi di esempio e il filtro esatto senza overflow del documento.
 
 Prossima nota: [[Programmazione/Rust/Pagine/Integration test|Integration test]].
+
+## 2026-11-22 - Rust: Integration test
+
+- Revisionata [[Programmazione/Rust/Pagine/Integration test|Integration test]]: **2/14** voci del capitolo Testing, Qualita e Sicurezza, **164/183** note principali uniche Rust, **19 restanti**. La nota estende `percentage_notes`: distingue l'errore di parsing dal codice di uscita della CLI e il nome del target dal filtro sul singolo caso.
+- **4/4 verifiche tecniche offline**: scoperta di `api` e `cli` e differenza fra helper annidato e diretto; esecuzione separata ed esatta dei casi documentati; suite del pacchetto con cinque test unitari e cinque di integrazione; controprova cambiando soltanto lo stato di uscita della CLI. Riconfermati **4/4** controlli della nota Unit test.
+- Vault: **911 documenti raggiungibili**, zero errori, **233 avvisi editoriali**. Trasformazione Markdown **9/9**.
+- Quartz: **2003 HTML**, **144790 riferimenti verificati**, zero errori; anteprima HTTP **7/7**. A 390 e 1440 px la pagina contiene la tabella dei quattro contesti, i nove blocchi di esempio e il collegamento alla libreria della nota precedente, senza overflow del documento.
+
+Prossima nota: [[Programmazione/Rust/Pagine/Doc test|Doc test]].
+
+## 2026-11-23 - Rust: Doc test
+
+- Revisionata [[Programmazione/Rust/Pagine/Doc test|Doc test]]: **3/14** nel capitolo Testing, Qualita e Sicurezza; **165/183** note principali uniche Rust, **18 restanti**. I due esempi usano lo stesso parser delle note precedenti: saturazione di un intero valido ed errore sul testo non numerico.
+- **4/4 verifiche tecniche** con Cargo offline: esempi ordinari e suite completa; asserzione intenzionalmente errata che lascia passare test unitari e generazione HTML; errore di tipo intercettato in `no_run`; blocco `compile_fail` che fallisce quando il codice corretto compila. Riconfermate **4/4** verifiche della nota Integration test.
+- Vault: **911 documenti raggiungibili**, zero errori, **232 avvisi editoriali**. Trasformazione Markdown **9/9**; anteprima HTTP **7/7**. In Chrome a 390 e 1440 px: sei righe di confronto, sei blocchi copiabili e nessun overflow del documento; i delimitatori rustdoc interni sono conservati.
+- Build Quartz: **2003 HTML**, **144798 riferimenti verificati**, zero errori.
+
+Prossima nota: [[Programmazione/Rust/Pagine/Mocking|Mocking]].
+
+## 2026-11-23 - Rust: Mocking
+
+- Revisionata [[Programmazione/Rust/Pagine/Mocking|Mocking]]: **4/14** nel capitolo Testing, Qualita e Sicurezza, **166/183** note principali uniche Rust, **17 restanti**. Il servizio di promemoria distingue prima, alla e dopo la scadenza, senza confondere la richiesta di invio con la consegna reale. Distinti stub, fake, spy e mock.
+- **6/6 verifiche tecniche** con Cargo offline: i tre test della nota passano; cinque modifiche indipendenti fanno fallire i casi previsti per confine esclusivo, invio assente, doppio invio, destinatario sbagliato ed errore ignorato. Riconfermate **4/4** verifiche della nota Doc test.
+- Vault: **911/911 documenti raggiungibili**, zero errori, **231 avvisi editoriali**. Trasformazione Markdown **9/9**; anteprima HTTP **7/7**. In Chrome a 390 e 1440 px la pagina conserva quattro righe di confronto e cinque blocchi di codice senza overflow del documento.
+- Build Quartz: **2003 HTML**, **144811 riferimenti verificati**, zero errori.
+
+Prossima nota: [[Programmazione/Rust/Pagine/Benchmarking con Criterion|Benchmarking con Criterion]].
+
+## 2026-11-23 - Rust: Benchmarking con Criterion
+
+- Revisionata [[Programmazione/Rust/Pagine/Benchmarking con Criterion|Benchmarking con Criterion]]: **5/14** nel capitolo Testing, Qualita e Sicurezza, **167/183** note principali uniche Rust, **16 restanti**. L'esempio è una libreria completa con `harness = false`, due implementazioni della somma e due dimensioni di input; distinti correttezza, prova del target e misura.
+- **4/4 verifiche tecniche** con Criterion 0.8.2: casi noti e accumulatore volutamente troppo stretto; prova dei quattro ID senza campionamento; campioni e throughput in elementi nel profilo ottimizzato; confronto sullo stesso ID dopo una modifica, baseline nominata intatta e rifiuto di un ID privo di riferimento. Campionamento abbreviato per verificare il procedimento, non le prestazioni relative. Riconfermate **6/6** verifiche della nota Mocking.
+- Vault: **911/911 documenti raggiungibili**, zero errori, **230 avvisi editoriali**. Trasformazione Markdown **9/9**; anteprima HTTP **7/7**. In Chrome a 390 e 1440 px la pagina conserva quattro righe di confronto e nove blocchi di codice senza overflow del documento.
+- Build Quartz: **2003 HTML**, **144826 riferimenti verificati**, zero errori.
+
+Prossima nota: [[Programmazione/Rust/Pagine/Property testing|Property testing]].
+
+## 2026-11-23 - Rust: Property testing
+
+- Revisionata [[Programmazione/Rust/Pagine/Property testing|Property testing]]: **6/14** nel capitolo Testing, Qualita e Sicurezza, **168/183** note principali uniche Rust, **15 restanti**. Un'unica libreria mette a confronto idempotenza, contenuto atteso e un esempio Unicode; il generatore costruisce gli input a partire dal risultato noto.
+- **4/4 verifiche tecniche** con proptest 1.12.0: suite positiva e selezione delle proprietà; implementazioni sbagliate ma idempotenti; controesempio ridotto a `"A "`, replay con zero casi nuovi e correzione con regressione esplicita; mutazione solo ASCII rilevata dall'esempio Unicode. Riconfermate offline **4/4** verifiche della nota Benchmarking con Criterion.
+- Vault: **911/911 documenti raggiungibili**, zero errori, **229 avvisi editoriali**. Trasformazione Markdown **9/9**; anteprima HTTP **7/7**. A 390 e 1440 px: quattro righe di confronto, otto blocchi di codice e nessun overflow del documento.
+- Build Quartz: **2003 HTML**, **144834 riferimenti verificati**, zero errori.
+
+Prossima nota: [[Programmazione/Rust/Pagine/Fuzzing|Fuzzing]].
+
+## 2026-11-23 - Rust: Fuzzing
+
+- Revisionata [[Programmazione/Rust/Pagine/Fuzzing|Fuzzing]]: **7/14** nel capitolo Testing, Qualita e Sicurezza, **169/183** note principali uniche Rust, **14 restanti**. Il target e i test su stable condividono un oracolo indipendente per quattro fasce di luminosità. Distinti correttezza, feedback di copertura e corpus.
+- **Quattro verifiche tecniche superate**: esempi noti e 256 singoli byte; modifica del divisore rilevata al pixel 64 nonostante il totale invariato; 65.536 coppie e una sequenza di ripetizioni; inizializzazione ed elenco del target con cargo-fuzz 0.13.2 e `cargo check` sul manifest generato. **Una prova opzionale non eseguita**: questo host non ha la toolchain nightly. Non è stata misurata la copertura. Riconfermate offline **4/4** verifiche della nota Property testing.
+- Vault: **911/911 documenti raggiungibili**, zero errori, **228 avvisi editoriali**. Trasformazione Markdown **9/9**; anteprima HTTP **7/7**. A 390 e 1440 px: tre righe di confronto, undici blocchi e collegamento integro dalla tabella, senza overflow del documento.
+- Build Quartz: **2003 HTML**, **144846 riferimenti verificati**, zero errori.
+
+Prossima nota: [[Programmazione/Rust/Pagine/Snapshot testing|Snapshot testing]].
+
+## 2026-11-23 - Rust: Snapshot testing
+
+- Revisionata [[Programmazione/Rust/Pagine/Snapshot testing|Snapshot testing]]: **8/14** nel capitolo Testing, Qualita e Sicurezza, **170/183** note principali uniche Rust, **13 restanti**. La suite della nota osserva stdout, stderr e stato di uscita di una CLI reale, oltre alla rappresentazione JSON del modello.
+- **4/4 verifiche tecniche** con insta e cargo-insta 1.49.0: primo avvio con due proposte e un riferimento inline già valido; rifiuto di un conteggio errato e ripristino del codice; accettazione della sola intestazione voluta; ID mascherato e contatori visibili in CI senza scritture. Nella fixture le decisioni sono state applicate con i comandi non interattivi dopo il confronto dei contenuti. Ripetute offline anche le quattro verifiche su stable della nota Fuzzing; la prova opzionale su nightly non è stata eseguita.
+- Vault: **911/911 documenti raggiungibili**, zero errori, **227 avvisi editoriali**. Trasformazione Markdown **9/9**; anteprima HTTP **7/7**. A 390 e 1440 px: tre righe di confronto e dieci blocchi leggibili, con report e selettore JSON integri e senza overflow del documento.
+- Build Quartz: **2003 HTML**, **144857 riferimenti verificati**, zero errori.
+
+Prossima nota: [[Programmazione/Rust/Pagine/cargo-nextest|cargo-nextest]].
+
+## 2026-11-23 - Rust: cargo-nextest
+
+- Revisionata [[Programmazione/Rust/Pagine/cargo-nextest|cargo-nextest]]: **9/14** nel capitolo Testing, Qualita e Sicurezza, **171/183** note principali uniche Rust, **12 restanti**. La suite riprende la crate delle note sui test unitari, di integrazione e di documentazione.
+- **4/4 verifiche tecniche** con nextest 0.9.152: due casi con filtro breve, uno con binario e nome esatti; dieci casi verdi anche quando fallisce un doc test; report JUnit con dieci casi e un singolo errore CLI introdotto apposta; sola segnalazione di lentezza oppure terminazione secondo il profilo. Ripetute con successo **8/8** verifiche delle note Integration test e Doc test.
+- Vault: **911/911 documenti raggiungibili**, zero errori, **226 avvisi editoriali**. Trasformazione Markdown **9/9**.
+- Build Quartz: **2003 HTML**, **144870 riferimenti verificati**, zero errori. Anteprima HTTP **7/7**; a 390 e 1440 px il filtro resta integro nel blocco di codice e la pagina non ha overflow orizzontale.
+
+Prossima nota: [[Programmazione/Rust/Pagine/Clippy|Clippy]].
+
+## 2026-11-23 - Rust: Clippy
+
+- Revisionata [[Programmazione/Rust/Pagine/Clippy|Clippy]]: **10/14** nel capitolo Testing, Qualita e Sicurezza, **172/183** note principali uniche Rust, **11 restanti**. Sullo stesso parser un lint può essere un avviso o un errore senza cambiare il risultato dei test; un limite di 99 passa invece il lint ma viola il contratto.
+- **4/4 verifiche tecniche** con Rust 1.100.0 e Clippy 0.1.100: livello di `manual_clamp`, due test falliti per il massimo errato, `expect` non più giustificato dopo una riduzione dei parametri, avvisi visibili solo con determinati target o feature. Ripetute anche le **4/4** verifiche della nota Unit test.
+- Vault: **911/911 documenti raggiungibili**, zero errori, **225 avvisi editoriali**. Trasformazione Markdown **9/9**, anteprima HTTP **7/7**. A 390 e 1440 px sono presenti le tre righe della tabella e gli undici blocchi di codice, senza overflow orizzontale della pagina.
+- Build Quartz: **2003 HTML**, **144877 riferimenti verificati**, zero errori.
+
+Prossima nota: [[Programmazione/Rust/Pagine/rustfmt|rustfmt]].
+
+## 2026-11-23 - Rust: rustfmt
+
+- Revisionata [[Programmazione/Rust/Pagine/rustfmt|rustfmt]]: **11/14** nel capitolo Testing, Qualita e Sicurezza, **173/183** note principali uniche Rust, **10 restanti**. Un test passa sia con il sorgente non formattato sia dopo la correzione; un errore di tipo dimostra invece perché un controllo del formato verde non basta.
+- **4/4 verifiche tecniche** con rustfmt 1.11.0-stable: controllo senza scritture e seconda applicazione invariata; distinzione fra tipi e sintassi; parsing e stile di un file esterno ai target; controllo di un solo pacchetto rispetto al workspace e conservazione della sola tabella con `#[rustfmt::skip]`. Ripetute le **4/4** verifiche della nota Clippy.
+- Vault: **911/911 documenti raggiungibili**, zero errori, **224 avvisi editoriali**. Trasformazione Markdown **9/9** e anteprima HTTP **7/7**. A 390 e 1440 px, tre righe di confronto e dodici blocchi di codice senza overflow orizzontale della pagina.
+- Build Quartz: **2003 HTML**, **144889 riferimenti verificati**, zero errori.
+
+Prossima nota: [[Programmazione/Rust/Pagine/rustdoc|rustdoc]].
+
+## 2026-11-23 - Rust: rustdoc
+
+- Revisionata [[Programmazione/Rust/Pagine/rustdoc|rustdoc]]: **12/14** nel capitolo Testing, Qualita e Sicurezza, **174/183** note principali uniche Rust, **9 restanti**. L'esempio di percentuale usa un calcolo intermedio in `u128` e controlla la conversione finale; distingue totale zero e risultato fuori intervallo.
+- **4/4 verifiche tecniche** con rustdoc 1.100.0: link dalla descrizione della crate alla funzione e helper solo nella vista interna; link errato come avviso o errore; asserzione errata rilevata dai doc test ma non dalla build HTML; elemento pubblico non documentato rilevato da `missing_docs`. I due doc test validi passano anche in release. Riconfermate le **4/4** verifiche della nota Doc test.
+- Vault: **911/911 documenti raggiungibili**, zero errori, **223 avvisi editoriali**. Trasformazione Markdown **9/9** e anteprima HTTP **7/7**. A 390 e 1440 px sono visibili tre righe di confronto e sei blocchi di codice, compresa l'asserzione su `u64::MAX`, senza overflow orizzontale della pagina.
+- Build Quartz: **2003 HTML**, **144897 riferimenti verificati**, zero errori.
+
+Prossima nota: [[Programmazione/Rust/Pagine/cargo audit|cargo audit]].
+
+## 2026-11-23 - Rust: cargo audit
+
+- Revisionata [[Programmazione/Rust/Pagine/cargo audit|cargo audit]]: **13/14** nel capitolo Testing, Qualita e Sicurezza, **175/183** note principali uniche Rust, **8 restanti**. Distinti i requisiti del manifest, le versioni del lockfile, la copertura del database e le decisioni di CI.
+- **4/4 verifiche tecniche** con cargo-audit 0.23.0 e dati offline sintetici: nuovo advisory a lockfile e test invariati; correzione transitiva da 1.2.0 a 1.2.1 soltanto con vincolo compatibile; avviso informativo bloccante con `--deny warnings`; errore sul file mancante esplicito contro generazione implicita. Non è un audit di sicurezza del vault.
+- Vault: **911/911 documenti raggiungibili**, zero errori, **222 avvisi editoriali**. Trasformazione Markdown **9/9**, anteprima HTTP **7/7**. A 390 e 1440 px, quattro righe di confronto e otto blocchi di codice senza overflow orizzontale della pagina.
+- Build Quartz: **2003 HTML**, **144901 riferimenti verificati**, zero errori.
+
+Prossima nota: [[Programmazione/Rust/Pagine/cargo deny|cargo deny]].
+
+## 2026-11-23 - Rust: cargo deny e chiusura del capitolo Testing
+
+- Revisionata [[Programmazione/Rust/Pagine/cargo deny|cargo deny]]: **14/14** nel capitolo Testing, Qualita e Sicurezza, **176/183** note principali uniche Rust, **7 restanti**. Distinti i quattro controlli: i duplicati sono parte di `bans`, mentre la policy per le origini Git non verifica una directory `path`.
+- **5/5 verifiche tecniche** con cargo-deny 0.22.0: licenza `OR` ammessa contro `AND` respinta; divieto visibile solo attivando la feature; due versioni segnalate come avviso oppure errore; sorgente Git rifiutata e poi ammessa, a differenza della dipendenza locale; fallimento del check completo a database advisory assente. Le prove usano crate temporanee, senza consultare il database pubblico o certificare le dipendenze del vault.
+- Vault: **911/911 documenti raggiungibili**, zero errori, **221 avvisi editoriali**. Trasformazione Markdown **9/9**, anteprima HTTP **7/7**. A 390 e 1440 px si leggono quattro righe di confronto e undici blocchi di codice senza overflow orizzontale della pagina.
+- Build Quartz: **2003 HTML**, **144910 riferimenti verificati**, zero errori.
+
+Prossimo capitolo: **API Design Idiomatico**. Prima nota: [[Programmazione/Rust/Pagine/Public API design|Public API design]].
+
+## 2026-11-23 - Rust: Public API design
+
+- Revisionata [[Programmazione/Rust/Pagine/Public API design|Public API design]]: **177/183** note principali uniche Rust, **6 restanti**. Nel capitolo API Design Idiomatico sono coperte **2/8** voci, contando [[Programmazione/Rust/Pagine/Newtype pattern|Newtype pattern]] già trattata.
+- **5/5 verifiche tecniche** sulla libreria della nota: client in debug e release, accesso privato rifiutato, match esterno su errore non esaustivo, stabilità del percorso pubblico dopo lo spostamento del modulo e distinzione tra rappresentazione privata e normalizzazione osservabile. Riconfermati i **4/4** casi della nota Doc test.
+- Vault: **911/911 documenti raggiungibili**, zero errori, **220 avvisi editoriali**. Trasformazione Markdown **9/9**, anteprima HTTP **7/7**. Verificati cinque blocchi di codice e tre righe di confronto a 390 e 1440 px, senza overflow orizzontale della pagina.
+- Build Quartz: **2003 HTML**, **144915 riferimenti verificati**, zero errori.
+
+Prossima nota: [[Programmazione/Rust/Pagine/Error types pubblici|Error types pubblici]].
+
+## 2026-11-23 - Rust: Error types pubblici
+
+- Revisionata [[Programmazione/Rust/Pagine/Error types pubblici|Error types pubblici]]: **3/8** note del capitolo API Design Idiomatico, **178/183** note principali uniche Rust, **5 restanti**.
+- **5/5 verifiche tecniche**: client in debug e release; estremi numerici, testo errato e byte non UTF-8; directory distinta da file assente; match esterno con ramo residuale anche dopo l'aggiunta di una categoria; regressione che trasforma un valore invalido in un default pur compilando. Riconfermati **5/5** casi di Public API design.
+- Vault: **911/911 documenti raggiungibili**, zero errori, **219 avvisi editoriali**. Trasformazione Markdown **9/9**, anteprima HTTP **7/7**. A 390 e 1440 px i cinque blocchi di codice e le tre righe di confronto non causano overflow orizzontale della pagina.
+- Build Quartz: **2003 HTML**, **144915 riferimenti verificati**, zero errori.
+
+Prossima nota: [[Programmazione/Rust/Pagine/Builder pattern|Builder pattern]].
+
+## 2026-11-23 - Rust: Builder pattern
+
+- Revisionata [[Programmazione/Rust/Pagine/Builder pattern|Builder pattern]]: **4/8** nel capitolo API Design Idiomatico, **179/183** note principali uniche Rust, **4 restanti**. Eliminato il secondo builder nascosto che saltava la validazione: esempi e test usano la stessa implementazione.
+- **5/5 verifiche tecniche**: comportamento del client in debug e release; setter per riferimento di `Command` senza avviare un processo; timeout espliciti, ereditati e ripetuti ai confini; errore E0382 dopo il consumo; regressione del default che compila ma fallisce il test. Riconfermati **5/5** casi della nota Error types pubblici.
+- Vault: **911/911 documenti raggiungibili**, zero errori, **218 avvisi editoriali**. Trasformazione Markdown **9/9**, anteprima HTTP **7/7**. A 390 e 1440 px sono presenti i cinque blocchi di codice e le due righe di confronto senza overflow orizzontale della pagina.
+- Build Quartz: **2003 HTML**, **144919 riferimenti verificati**, zero errori.
+
+Prossima nota: [[Programmazione/Rust/Pagine/Extension traits|Extension traits]]; [[Programmazione/Rust/Pagine/Newtype pattern|Newtype pattern]] è già conteggiata.
+
+## 2026-11-23 - Rust: Extension traits
+
+- Revisionata [[Programmazione/Rust/Pagine/Extension traits|Extension traits]]: **5/8** nel capitolo API Design Idiomatico, **180/183** note principali uniche Rust, **3 restanti**. Corretta la firma incompatibile con `filter`: il predicato riceve un riferimento a `Item`, anche se `Item` è già un riferimento.
+- **6/6 verifiche tecniche**: tre trait provati dal client in debug e release, vecchio bound rifiutato, prestito contro consumo dell'iteratore, import e collisioni risolti con sintassi qualificata, implementazioni intrinseche o sovrapposte rifiutate, vincoli di `ResultExt`. Riconfermati **5/5** casi di Builder pattern.
+- Vault: **911/911 documenti raggiungibili**, zero errori, **217 avvisi editoriali**. Trasformazione Markdown **9/9**, anteprima HTTP **7/7**. A 390 e 1440 px si leggono cinque blocchi di codice e tre righe di confronto, senza overflow orizzontale della pagina.
+- Build Quartz: **2003 HTML**, **144926 riferimenti verificati**, zero errori.
+
+Prossima nota: [[Programmazione/Rust/Pagine/Feature flags ben progettate|Feature flags ben progettate]].
+
+## 2026-11-23 - Rust: Feature flags ben progettate
+
+- Revisionata [[Programmazione/Rust/Pagine/Feature flags ben progettate|Feature flags ben progettate]]: **6/8** nel capitolo API Design Idiomatico, **181/183** note principali uniche Rust, **2 restanti**. Un tipo scalare mantiene la stessa API di base nelle quattro combinazioni; Serde non richiede più accidentalmente `std`.
+- **6/6 verifiche tecniche** con Rust 1.100.0: matrice host, inoltro debole, compilazione per `thumbv6m-none-eabi`, JSON e I/O della CLI, grafo unificato e rottura del consumer cambiando il default. La variante errata passa sull'host e fallisce sul target con E0463; nessuna prova su hardware. Dopo aver ridotto l'output diagnostico del controesempio, suite completa **12/12** inclusi i sei casi di Extension traits.
+- Vault: **911/911 documenti raggiungibili**, zero errori, **216 avvisi editoriali**. Trasformazione Markdown **9/9**, anteprima HTTP **7/7**. I sedici blocchi e le quattro righe della matrice sono visibili a 390 e 1440 px senza overflow orizzontale della pagina.
+- Build Quartz: **2003 HTML**, **144931 riferimenti verificati**, zero errori.
+
+Prossima nota: [[Programmazione/Rust/Pagine/Compatibility e breaking changes|Compatibility e breaking changes]].
+
+## 2026-11-23 - Rust: Compatibility e breaking changes
+
+- Revisionata [[Programmazione/Rust/Pagine/Compatibility e breaking changes|Compatibility e breaking changes]]: **7/8** nel capitolo API Design Idiomatico, **182/183** note principali uniche Rust, **1 restante**.
+- **7/7 verifiche tecniche**: stesso client sulle due versioni, deprecazione e migrazione con lint severo, rimozione del wrapper, evoluzione di un enum esaustivo, regressione degli spazi, campo pubblico aggiunto e setter effettivo fino a 255 retry. Riconfermati **5/5** casi di Public API design. Nessuna verifica ABI o pretesa di compatibilità con tutti i client.
+- Vault: **911/911 documenti raggiungibili**, zero errori, **215 avvisi editoriali**. Trasformazione Markdown **9/9**, anteprima HTTP **7/7**. A 390 e 1440 px i nove blocchi di codice e le quattro righe di confronto non causano overflow orizzontale della pagina.
+- Build Quartz: **2003 HTML**, **144940 riferimenti verificati**, zero errori.
+
+Prossima nota: [[Programmazione/Rust/Pagine/Documentazione delle crate|Documentazione delle crate]].
+
+## 2026-11-23 - Rust: Documentazione delle crate e chiusura delle note principali
+
+- Revisionata [[Programmazione/Rust/Pagine/Documentazione delle crate|Documentazione delle crate]]: **8/8** nel capitolo API Design Idiomatico. Riscontro tra indici e filesystem: **185 voci, 183 file principali unici, 183/183 revisionati**; nessun file Markdown principale fuori indice e nessuna destinazione mancante. I **15 promemoria** sono separati dal totale; la revisione tecnica non equivale all'approvazione dell'utente.
+- **6/6 verifiche tecniche**: quick start incluso dal README ed esempio eseguibile; HTML e link con e senza `batch`; README obsoleto che fallisce soltanto come doc test; link condizionale non valido nella vista base; contratto sugli spazi, Unicode e lista vuota; file inclusi nel pacchetto. Riconfermate le suite rustdoc e Doc test: **14/14** casi nel giro mirato, non una riesecuzione di tutte le suite Rust.
+- Vault: **911/911 documenti raggiungibili**, zero errori, **214 avvisi editoriali**. Trasformazione Markdown **9/9**, anteprima HTTP **7/7**. A 390 e 1440 px la tabella (quattro righe) e gli undici blocchi di codice non causano overflow orizzontale della pagina.
+- Build Quartz: **2003 HTML**, **144947 riferimenti verificati**, zero errori.
+
+Prossimo blocco: [[Programmazione/Rust/Promemoria/Indice Promemoria Rust|Promemoria Rust]], a partire da [[Programmazione/Rust/Promemoria/Pagine/Rust - Sintassi essenziale|Sintassi essenziale]].

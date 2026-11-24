@@ -14,12 +14,12 @@ aliases:
   - Mocking
   - Mock Rust
 prerequisites:
-  - "[[Programmazione/Rust/Pagine/Traits]]"
-  - "[[Programmazione/Rust/Pagine/Trait objects e dyn Trait]]"
+  - "[[Programmazione/Rust/Pagine/Traits|Traits]]"
+  - "[[Programmazione/Rust/Pagine/Trait objects e dyn Trait|Trait objects e dyn Trait]]"
 related:
-  - "[[Programmazione/Rust/Pagine/Unit test]]"
-  - "[[Programmazione/Rust/Pagine/Integration test]]"
-  - "[[Programmazione/Rust/Pagine/Trait objects e dyn Trait]]"
+  - "[[Programmazione/Rust/Pagine/Unit test|Unit test]]"
+  - "[[Programmazione/Rust/Pagine/Integration test|Integration test]]"
+  - "[[Programmazione/Rust/Pagine/Trait objects e dyn Trait|Trait objects e dyn Trait]]"
 title: Mocking
 ---
 
@@ -27,132 +27,178 @@ title: Mocking
 
 ## Sintesi
 
-Il **mocking** consiste nel sostituire una dipendenza reale con una finta durante un test. In Rust si fa spesso usando trait, generics, trait object o implementazioni fake scritte a mano.
+Un servizio di promemoria deve lasciare in pace il destinatario **prima** della scadenza e inviare un solo messaggio **quando la scadenza è raggiunta**. Per provarlo non servono né un minuto di attesa né una casella di posta: al posto dell'orologio puoi fornire un'ora fissa, al posto del mittente puoi verificare a chi il servizio chiede di scrivere.
 
-Il mocking serve a isolare logica applicativa da rete, database, filesystem, clock o servizi esterni. Va usato con misura: troppi mock possono rendere i test scollegati dal comportamento reale.
+Entrambe le sostituzioni sono *test double*, ma solo la seconda ha bisogno di aspettative sulle chiamate. Se il mittente restituisse sempre `Ok(())`, il test potrebbe passare anche inviando il promemoria alla persona sbagliata.
 
 ## Quando usarlo
 
-Usa mocking quando:
-
-- una dipendenza e lenta o non deterministica;
-- vuoi testare errori difficili da produrre con la dipendenza reale;
-- devi evitare rete, database o filesystem in unit test;
-- vuoi controllare clock o randomness;
-- devi verificare logica di retry o fallback;
-- vuoi testare un service senza avviare tutta l'applicazione.
-
-Preferisci integration test reali quando il valore del test dipende proprio dall'integrazione.
+Sostituisci una dipendenza quando non controlli un input (ora, casualità), un effetto sarebbe costoso o indesiderato (rete, scrittura su disco), oppure vuoi riprodurre un errore preciso. Se invece vuoi sapere se il server accetta il messaggio, la domanda riguarda l'adattatore reale: serve un [[Programmazione/Rust/Pagine/Integration test|test di integrazione]], non un mock che risponde come gli hai detto tu.
 
 ## Come funziona
 
-Il pattern piu idiomatico e definire un trait piccolo per la dipendenza necessaria:
+Scegli il sostituto in base a **ciò che vuoi osservare**. I termini descrivono il ruolo assunto nel test, non una gerarchia di tipi di Rust.
 
-- il codice di produzione riceve qualcosa che implementa il trait;
-- il test passa una implementazione fake;
-- il trait espone solo le operazioni richieste dal dominio;
-- il fake restituisce risultati controllati.
+| Tipo | Che cosa offre al test | Esempio |
+| --- | --- | --- |
+| Stub | Una risposta prestabilita. | Un orologio che restituisce sempre `100`. |
+| Fake | Un'implementazione semplificata ma funzionante: verifichi lo stato che produce. | Una casella in memoria dove depositare e poi leggere i messaggi. Non prova la consegna via rete. |
+| Spy | Registra ciò che è avvenuto; il test ispeziona i dati **dopo** l'azione. | Una lista degli invii, sulla quale controlli destinatario e numero di messaggi. |
+| Mock | Prima dell'azione dichiari le chiamate attese; verifichi anche che siano avvenute. | Un mittente che accetta un solo invio a un certo indirizzo e rifiuta gli altri. |
 
-In Rust spesso i fake manuali sono piu semplici e leggibili di un framework di mocking.
-
-## API / Sintassi
-
-Trait piccolo:
-
-```rust
-trait EmailSender {
-    fn send(&self, to: &str, body: &str) -> Result<(), String>;
-}
-
-fn notify_user(sender: &impl EmailSender, email: &str) -> Result<(), String> {
-    sender.send(email, "welcome")
-}
-```
-
-Fake per test:
-
-```rust
-struct FakeEmailSender {
-    should_fail: bool,
-}
-
-impl EmailSender for FakeEmailSender {
-    fn send(&self, _to: &str, _body: &str) -> Result<(), String> {
-        if self.should_fail {
-            Err("send failed".to_string())
-        } else {
-            Ok(())
-        }
-    }
-}
-```
+Se il risultato della funzione o lo stato del fake bastano a rilevare l'errore, puoi fermarti lì. Per il promemoria, invece, *a chi* viene spedita la mail e *quante* mail partono sono effetti visibili all'utente.
 
 ## Esempio pratico
 
-Testare fallback:
+### 1. Separare l'orologio dal mittente
+
+Da una directory di lavoro, crea una libreria senza dipendenze esterne:
+
+```sh
+cargo new --lib --vcs none reminder_notes
+```
+
+Sostituisci `reminder_notes/src/lib.rs` con questo codice. Il valore di ritorno distingue «non ancora dovuto» da «inviato»; se il mittente fallisce, il chiamante riceve un errore. La regola vale **per una singola invocazione**: non c'è un archivio che impedisca invii successivi per la stessa scadenza.
 
 ```rust
-trait Clock {
+pub trait Clock {
     fn now_seconds(&self) -> u64;
 }
 
-fn is_expired(clock: &impl Clock, deadline: u64) -> bool {
-    clock.now_seconds() >= deadline
+#[derive(Debug, Clone, Copy, PartialEq, Eq)]
+pub struct SendError;
+
+pub trait EmailSender {
+    fn send(&mut self, to: &str, body: &str) -> Result<(), SendError>;
 }
 
-struct FixedClock {
-    now: u64,
+#[derive(Debug, PartialEq, Eq)]
+pub enum Notice {
+    NotDue,
+    Sent,
 }
+
+pub fn notify_if_due(
+    clock: &impl Clock,
+    sender: &mut impl EmailSender,
+    deadline: u64,
+    to: &str,
+) -> Result<Notice, SendError> {
+    if clock.now_seconds() < deadline {
+        return Ok(Notice::NotDue);
+    }
+    sender.send(to, "Reminder")?;
+    Ok(Notice::Sent)
+}
+
+#[cfg(test)]
+mod tests;
+```
+
+### 2. Dichiarare l'interazione attesa
+
+Crea `reminder_notes/src/tests.rs`. L'orologio è uno stub. Il mittente è un mock manuale: `Some((to, body))` significa «attendo esattamente questo invio»; `None` significa «non deve partire nulla». La risposta è configurabile anche per il caso di errore.
+
+```rust
+use super::*;
+
+struct FixedClock(u64);
 
 impl Clock for FixedClock {
-    fn now_seconds(&self) -> u64 {
-        self.now
+    fn now_seconds(&self) -> u64 { self.0 }
+}
+
+struct ExpectedMail {
+    expected: Option<(&'static str, &'static str)>,
+    reply: Result<(), SendError>,
+}
+
+impl EmailSender for ExpectedMail {
+    fn send(&mut self, to: &str, body: &str) -> Result<(), SendError> {
+        let expected = self.expected.take().expect("unexpected send");
+        assert_eq!((to, body), expected, "wrong message");
+        self.reply
     }
 }
 
-#[test]
-fn detects_expired_deadline() {
-    let clock = FixedClock { now: 100 };
-    assert!(is_expired(&clock, 90));
+impl ExpectedMail {
+    fn verify(self) {
+        assert!(self.expected.is_none(), "missing send");
+    }
 }
 ```
 
-Il test non dipende dall'orologio reale, quindi e deterministico.
+`take()` consuma l'aspettativa: un secondo invio è un errore. Ma se il servizio **non chiama mai** il mittente, nessuna asserzione dentro `send` può scoprirlo. È per questo che ogni test termina con `verify()`.
 
-## Varianti
+### 3. Provare il confine e l'errore
 
-- **Fake manuale**: implementazione semplice e leggibile.
-- **Stub**: restituisce valori predefiniti.
-- **Spy**: registra chiamate ricevute.
-- **Mock con aspettative**: verifica chiamate e parametri.
-- **Trait object**: dipendenza dinamica con `dyn Trait`.
-- **Generic parameter**: dipendenza statica e spesso zero-cost.
+Aggiungi questi tre test in fondo allo stesso `src/tests.rs`. Il secondo usa proprio `100`, non `101`: solo il valore di confine distingue «alla scadenza» da «dopo la scadenza».
+
+```rust
+const TO: &str = "reader@example.org";
+
+#[test]
+fn skips_before_deadline() {
+    let mut mail = ExpectedMail { expected: None, reply: Ok(()) };
+    assert_eq!(notify_if_due(&FixedClock(99), &mut mail, 100, TO), Ok(Notice::NotDue));
+    mail.verify();
+}
+
+#[test]
+fn sends_at_deadline() {
+    let mut mail = ExpectedMail { expected: Some((TO, "Reminder")), reply: Ok(()) };
+    assert_eq!(notify_if_due(&FixedClock(100), &mut mail, 100, TO), Ok(Notice::Sent));
+    mail.verify();
+}
+
+#[test]
+fn propagates_sender_error() {
+    let mut mail = ExpectedMail { expected: Some((TO, "Reminder")), reply: Err(SendError) };
+    assert_eq!(notify_if_due(&FixedClock(101), &mut mail, 100, TO), Err(SendError));
+    mail.verify();
+}
+```
+
+Dalla directory in cui hai creato la libreria, esegui:
+
+```sh
+cargo test --manifest-path reminder_notes/Cargo.toml --lib
+```
+
+Devono passare **tre test**, senza usare rete o orologio di sistema. **Controprova:** nel servizio elimina la sola riga `sender.send(to, "Reminder")?;` e riesegui il comando. Il test al confine riceve ancora `Sent`, ma fallisce con `missing send`; il test sull'errore riceve `Ok(Sent)` invece di `Err(SendError)`. Ripristina la riga dopo la prova.
+
+## Varianti e limiti
+
+- **Passare un valore anziché un trait.** Se la funzione deve solo confrontare due istanti, passale direttamente `now` e `deadline`. Qui il trait serve perché è il servizio a leggere l'ora.
+- **Scegliere il dispatch.** Un parametro `&impl Clock` è generico: il tipo concreto è noto a compilazione. Usa `&dyn Clock` se devi scegliere fra orologi di tipi diversi a runtime. Non è necessario il dispatch dinamico per usare un mock.
+- **Registrare una chiamata attraverso `&self`.** Qui `send` accetta `&mut self`, quindi basta modificare il campo direttamente. Se l'interfaccia reale richiede `&self`, uno spy locale può usare [[Programmazione/Rust/Pagine/RefCell T|RefCell]] per aggiornare il registro. Non cambiare il contratto di produzione solo per comodità del test.
+- **Retry e fallback.** Per provare un retry configura due risposte in sequenza (errore, poi successo) e verifica il risultato; per un fallback verifica che la seconda dipendenza intervenga solo dopo il fallimento della prima. Il servizio mostrato **propaga** l'errore: non implementa nessuno dei due.
 
 ## Errori comuni
 
-- Mockare tutto e non testare mai integrazioni reali.
-- Creare trait enormi solo per i test.
-- Verificare dettagli di implementazione invece del comportamento.
-- Usare mock per nascondere un design troppo accoppiato.
-- Duplicare nel fake la stessa logica della dipendenza reale.
-- Rendere i test fragili controllando ordine di chiamate non rilevante.
-- Dimenticare test con errori reali di I/O o database.
+- Verificare quante volte si legge l'ora senza che il requisito lo imponga. Un refactoring innocuo romperebbe il test; qui conta il numero di mail, non il numero di letture.
+- Copiare nel mock la condizione `now >= deadline`: se servizio e mock condividono lo stesso errore, il test rischia di confermarlo. Specifica le aspettative con esempi concreti.
+- Considerare `Sent` una prova di consegna reale. Nei test indica soltanto che il servizio ha ottenuto un esito positivo dal mittente sostitutivo.
 
 ## Checklist
 
-- Il trait rappresenta una dipendenza piccola?
-- Il test verifica comportamento, non implementazione?
-- Il fake e piu semplice della dipendenza reale?
-- Esistono anche integration test con dipendenze reali?
-- Errori e timeout sono simulati?
-- Il mock non nasconde problemi di design?
-- Il test resta leggibile senza conoscere framework esterni?
+- Il caso di confine sarebbe ancora verde se cambiassi `<` in `<=`? In questo esempio deve diventare rosso.
+- Il test fallisce sia per un invio mancante sia per uno inatteso o con destinatario errato?
+- Il chiamante vede la differenza tra «non dovuto» ed «errore di invio»?
+- Il comportamento del vero adattatore è verificato separatamente quando serve?
+
+## Fonti
+
+- [Martin Fowler: Test Double e distinzione tra stub, fake, spy e mock](https://martinfowler.com/bliki/TestDouble.html)
+- [The Rust Programming Language: test double e mutabilità interna](https://doc.rust-lang.org/book/ch15-05-interior-mutability.html)
+- [The Rust Reference: impl Trait nei parametri](https://doc.rust-lang.org/reference/types/impl-trait.html)
 
 ## Collegamenti
 
 - [[Programmazione/Rust/Indice Rust|Indice Rust]]
 - [[Programmazione/Rust/Pagine/Traits|Traits]]
 - [[Programmazione/Rust/Pagine/Trait objects e dyn Trait|Trait objects e dyn Trait]]
+- [[Programmazione/Rust/Pagine/RefCell T|RefCell<T> e mutabilità interna]]
 - [[Programmazione/Rust/Pagine/Unit test|Unit test]]
 - [[Programmazione/Rust/Pagine/Integration test|Integration test]]
 - [[Programmazione/Rust/Pagine/Error handling idiomatico|Error handling idiomatico]]

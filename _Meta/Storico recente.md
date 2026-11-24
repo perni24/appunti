@@ -8,15 +8,45 @@ Mantieni solo le ultime 10 voci operative.
 
 ---
 
-## 2026-11-22 - Rust: Testing, Qualita e Sicurezza
+## 2026-11-23 - Rust: completate le note principali
+
+### Fatto
+
+- Revisionata [[Programmazione/Rust/Pagine/Public API design|Public API design]]: la stessa libreria mostra quali import, valori ed errori vede il chiamante. Cinque verifiche distinguono i cambiamenti interni dalle rotture dei percorsi pubblici o del comportamento.
+- Revisionata [[Programmazione/Rust/Pagine/Error types pubblici|Error types pubblici]]: il client usa il valore predefinito solo per una configurazione assente. Verificate la classificazione, la causa originale e la risposta del client a una regressione che il compilatore non rileva.
+- Revisionata [[Programmazione/Rust/Pagine/Builder pattern|Builder pattern]]: un solo builder validato sostituisce l'esempio con helper divergente. Verificati i timeout espliciti ed ereditati, la validazione finale e la differenza tra consumo e prestito.
+- Revisionata [[Programmazione/Rust/Pagine/Extension traits|Extension traits]]: corretta e provata la firma di `count_where`. Il client distingue prestito e consumo dell'iteratore, import mancanti e metodi omonimi; il wrapper su `Result` conserva la causa.
+- Revisionata [[Programmazione/Rust/Pagine/Feature flags ben progettate|Feature flags ben progettate]]: quattro configurazioni di user-ids, controllo reale su target senza `std` e unificazione delle richieste di due chiamanti. La rimozione di `std` dal default rompe il consumer pur lasciando verde la libreria con tutte le feature.
+- Revisionata [[Programmazione/Rust/Pagine/Compatibility e breaking changes|Compatibility e breaking changes]]: un client invariato distingue la deprecazione, la rottura della compilazione e il cambiamento di un risultato promesso. Il setter dei retry è effettivo e verificato anche al limite.
+- Revisionata [[Programmazione/Rust/Pagine/Documentazione delle crate|Documentazione delle crate]]: un solo README funge da guida iniziale e da esempio eseguibile; verificati errori, feature, navigazione e contenuto del pacchetto.
+- Conclusi **API Design Idiomatico (8/8)** e la revisione tecnica delle **183/183 note principali uniche Rust**. Le 185 voci dell'indice puntano a 183 file distinti; i **15 promemoria** hanno un indice separato. Lo stato YAML resta riservato all'approvazione dell'utente.
+
+### Prossimi passi
+
+- Il prossimo blocco distinto è [[Programmazione/Rust/Promemoria/Indice Promemoria Rust|Promemoria Rust]], a partire da [[Programmazione/Rust/Promemoria/Pagine/Rust - Sintassi essenziale|Sintassi essenziale]].
+
+## 2026-11-23 - Rust: completato Testing, Qualita e Sicurezza
 
 ### Fatto
 
 - Revisionata [[Programmazione/Rust/Pagine/Unit test|Unit test]]: **1/14** nel capitolo, **163/183** note principali uniche Rust, **20 restanti**. Provati i limiti numerici e gli errori di parsing in due profili, la selezione esatta di un test e il confine fra modulo figlio e crate esterna.
+- Revisionata [[Programmazione/Rust/Pagine/Integration test|Integration test]]: **2/14** nel capitolo, **164/183** note principali uniche Rust, **19 restanti**. Verificati due target Cargo, modulo comune, selezione di un caso e comportamento del processo CLI su input validi ed errati.
+- Revisionata [[Programmazione/Rust/Pagine/Doc test|Doc test]]: **3/14** nel capitolo, **165/183** note principali uniche Rust, **18 restanti**. Gli esempi documentano il parser delle due note precedenti; provate la differenza fra test e generazione HTML e le condizioni di successo di `no_run` e `compile_fail`.
+- Revisionata [[Programmazione/Rust/Pagine/Mocking|Mocking]]: **4/14** nel capitolo, **166/183** note principali uniche Rust, **17 restanti**. Verificati il confine della scadenza, il risultato e gli invii osservabili con uno stub di orologio e un mock manuale, senza un servizio email.
+- Revisionata [[Programmazione/Rust/Pagine/Benchmarking con Criterion|Benchmarking con Criterion]]: **5/14** nel capitolo, **167/183** note principali uniche Rust, **16 restanti**. Verificati i quattro benchmark con Criterion 0.8.2 e il confronto con una baseline nominata, senza dedurre un vincitore da misure brevi.
+- Revisionata [[Programmazione/Rust/Pagine/Property testing|Property testing]]: **6/14** nel capitolo, **168/183** note principali uniche Rust, **15 restanti**. Verificati il limite dell'idempotenza, la riduzione del controesempio e il replay del seed con proptest 1.12.0.
+- Revisionata [[Programmazione/Rust/Pagine/Fuzzing|Fuzzing]]: **7/14** nel capitolo, **169/183** note principali uniche Rust, **14 restanti**. Verificati su stable il modello dell'istogramma e il target creato da cargo-fuzz 0.13.2. Non eseguita la campagna strumentata con nightly.
+- Revisionata [[Programmazione/Rust/Pagine/Snapshot testing|Snapshot testing]]: **8/14** nel capitolo, **170/183** note principali uniche Rust, **13 restanti**. Provati output della CLI, JSON con un solo campo mascherato, approvazione o rifiuto delle proposte e confronto in CI senza aggiornamenti.
+- Revisionata [[Programmazione/Rust/Pagine/cargo-nextest|cargo-nextest]]: **9/14** nel capitolo, **171/183** note principali uniche Rust, **12 restanti**. Verificati filtri su casi omonimi, doc test separati, percorso e contenuto del report JUnit, soglia di lentezza e terminazione.
+- Revisionata [[Programmazione/Rust/Pagine/Clippy|Clippy]]: **10/14** nel capitolo, **172/183** note principali uniche Rust, **11 restanti**. Provati gli esiti distinti di lint e test sullo stesso parser, una deroga locale che diventa obsoleta e i limiti di target e feature in CI.
+- Revisionata [[Programmazione/Rust/Pagine/rustfmt|rustfmt]]: **11/14** nel capitolo, **173/183** note principali uniche Rust, **10 restanti**. Verificati il diff senza scritture, la formattazione ripetuta, i limiti del controllo, l'edizione di stile e l'ambito di pacchetti ed eccezioni.
+- Revisionata [[Programmazione/Rust/Pagine/rustdoc|rustdoc]]: **12/14** nel capitolo, **174/183** note principali uniche Rust, **9 restanti**. Corretto l'overflow nell'esempio; verificati HTML pubblico e interno, link intra-doc, documentazione mancante ed esempi eseguibili.
+- Revisionata [[Programmazione/Rust/Pagine/cargo audit|cargo audit]]: **13/14** nel capitolo, **175/183** note principali uniche Rust, **8 restanti**. Verificati con dati sintetici il lockfile esplicito, una segnalazione transitiva, la correzione mirata e l'effetto della policy sugli avvisi.
+- Revisionata [[Programmazione/Rust/Pagine/cargo deny|cargo deny]]: **14/14** nel capitolo, **176/183** note principali uniche Rust, **7 restanti**. Verificati licenze alternative e cumulative, divieto su feature opzionale, duplicati, sorgenti e fallimento del controllo completo senza database advisory.
 
 ### Prossimi passi
 
-- Proseguire con [[Programmazione/Rust/Pagine/Integration test|Integration test]].
+- Iniziare API Design Idiomatico da [[Programmazione/Rust/Pagine/Public API design|Public API design]]. Il capitolo elenca otto voci, ma [[Programmazione/Rust/Pagine/Newtype pattern|Newtype pattern]] è già conteggiata.
 
 ## 2026-11-22 - Rust: completato Embedded
 
@@ -168,33 +198,4 @@ Mantieni solo le ultime 10 voci operative.
 ### Prossimi passi
 
 - Aprire **Macros** con **Macro dichiarative**, letta come contesto ma non revisionata: matcher, ripetizioni, valutazione, edition, hygiene ed esportazione.
-- Restano lo scroll iniziale Explorer e i rilievi sugli helper rustdoc di Builder pattern, prestazioni ed Extension traits, incluso count_where.
-
-## 2026-11-17 - Rust: completata Concorrenza e Asincronia
-
-### Fatto
-
-- Completata la revisione tecnica delle **13/13 note di Concorrenza e Asincronia**: **100/183 note principali Rust**, **83 restanti**; promemoria separati.
-- Blocchi precedenti fino a Channel async: dettagli e risultati conservati nel registro completo.
-- Graceful shutdown: corretto il loop watch su canale chiuso e stato iniziale; distinte ammissione, notifica, drenaggio, cleanup, attesa ed escalation.
-- Sei programmi validi, un compile-fail e manifest; token figli, TaskTracker, JoinSet con deadline unica, trigger interno/OS e handle conservato.
-- Nuova suite di **41 casi**. Primo tentativo **1/41** per dlltool assente dal PATH del processo; esempi non ancora compilati. Riusati binutils gia presenti, senza installazioni.
-- Nuova suite **41/41**, **48,8 secondi**; regressione con canali e select **118/118**, zero fallimenti/skip, **120,0 secondi**.
-- **911 documenti raggiungibili, zero errori, 295 avvisi editoriali**; **9/9 test della trasformazione**.
-- Build finale: **3719 file, 2003 HTML, 168 redirect, 143557 riferimenti**, zero errori; **7/7 test HTTP**.
-- Chrome 157 desktop/mobile: otto screenshot ispezionati, tabella a 326 px su mobile, tutti gli otto blocchi con scorrimento locale mobile; nessun errore JavaScript o overflow del documento.
-- Browser e server temporanei chiusi; rimane lo scroll iniziale Explorer di 236 px desktop, 0 px mobile. Prettier e git diff --check superati.
-
-### Decisioni
-
-- Rust 1.99.1, edition 2024, Windows GNU, Node 24.14.0, Tokio 1.54.1 e tokio-util 0.7.20.
-- Fetch iniziale autorizzato nella cache dedicata; build e regressioni offline. Binutils nel PATH dei soli processi dei test; nessun cambio globale o alle dipendenze del sito.
-- Frontmatter invariato, incluso status non revisionato; nessun cambio a indice, percorsi o redirect.
-- Ctrl+C compilato ed eseguito soltanto nel percorso interno senza listener. Nessun segnale OS reale, server, rete/database, flush reale, MSRV, benchmark o prova esaustiva delle race.
-- Un target, runtime current-thread e un job blocking controllato. Totale 71 suite Rust; altre 68 e altri linguaggi non rieseguiti.
-- Storico a dieci voci; nessun commit, push o deploy remoto.
-
-### Prossimi passi
-
-- Aprire **Compile-Time e Type-Level Programming**, iniziando da **const e static**: valutazione costante, identita, promozione, durata e stato condiviso. Letta come contesto, non revisionata.
 - Restano lo scroll iniziale Explorer e i rilievi sugli helper rustdoc di Builder pattern, prestazioni ed Extension traits, incluso count_where.

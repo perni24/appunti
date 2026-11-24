@@ -2751,6 +2751,194 @@ La suite estrae manifest, libreria e test dal Markdown. Esegue i test su host ne
 node --test _Meta/tests/rust-no-std.test.mjs
 ```
 
+## Rust: Documentazione delle crate
+
+La suite estrae dalla nota il README, le feature, la libreria e il programma di esempio. Con Cargo offline verifica il quick start incluso in rustdoc, le viste HTML con e senza `batch`, gli errori resi visibili solo dai doc test o solo dal controllo dei link, il comportamento documentato su Unicode e liste vuote, e i file restituiti da `cargo package --list`. Non pubblica nulla, né su crates.io né su docs.rs.
+
+```powershell
+node --test _Meta/tests/rust-crate-documentation.test.mjs
+```
+
+## Rust: Compatibility e breaking changes
+
+La suite ricrea offline la libreria e il client dai blocchi della nota. Prova il passaggio da 1.3 a 1.4, il vecchio import con deprecazione normale o negata, il client migrato e la rimozione del wrapper. Distingue gli errori di compilazione esterni (nome mancante, enum non esaustivo, campo aggiunto) dalle regressioni osservabili solo nei test (spazi del valore e retry ignorati). Non confronta un'ABI binaria e non usa un registry.
+
+```powershell
+node --test _Meta/tests/rust-api-compatibility.test.mjs
+```
+
+## Rust: Feature flags ben progettate
+
+La suite ricrea tre package temporanei dai blocchi della nota. Servono Cargo con edition 2024, il target `thumbv6m-none-eabi` installato e una cache Cargo con Serde 1, i suoi derive, serde_json 1 e le relative dipendenze. Il test usa la cache disponibile offline: non installa target né aggiorna le dipendenze del vault.
+
+Controlla i test eseguiti in ciascuna delle quattro configurazioni, il comportamento di `serde?/std`, il JSON e i byte della CLI e i percorsi di attivazione in `cargo tree`. Due modifiche intenzionali isolano gli errori: attivare i default di Serde può rompere la compilazione bare metal pur lasciando verdi i test host; togliere `std` dal default di user-ids rompe il consumer che usa l'I/O.
+
+```powershell
+node --test _Meta/tests/rust-feature-design.test.mjs
+```
+
+## Rust: Extension traits
+
+La suite ricrea offline la libreria e il client dai blocchi della nota. Prova `StringExt`, `IteratorExt` e `ResultExt` in debug e release. Controlla che il predicato per valore non soddisfi `filter`, che il prestito conservi la coda dell'iteratore e che la chiamata qualificata risolva le collisioni. Verifica anche le implementazioni vietate e i vincoli sul tipo di errore.
+
+```powershell
+node --test _Meta/tests/rust-extension-traits.test.mjs
+```
+
+## Rust: Builder pattern
+
+La suite crea una crate temporanea offline dai blocchi effettivi della nota. Prova i default e la validazione in debug e release, il quarto test con `Command` senza avviare processi esterni, l'ordine dei setter e i confini fino al nanosecondo. Verifica separatamente il diagnostico E0382 per il riuso di un builder consumato e la regressione osservabile se il timeout omesso non eredita più il totale finale.
+
+```powershell
+node --test _Meta/tests/rust-builder-pattern.test.mjs
+```
+
+## Rust: Error types pubblici
+
+La suite ricrea offline la libreria, il file di configurazione e il client direttamente dalla nota. Prova la lettura in debug e release, i limiti numerici, i byte non UTF-8 e la distinzione tra file assente e directory non leggibile come file. Verifica anche il match esterno su un enum non esaustivo e mostra che classificare un errore come assenza può cambiare il risultato senza produrre errori di compilazione. I controlli sul tipo concreto della causa riguardano questa implementazione, non un contratto promesso al client.
+
+```powershell
+node --test _Meta/tests/rust-public-error-types.test.mjs
+```
+
+## Rust: Public API design
+
+La suite ricostruisce offline la libreria e il client dai blocchi della nota. Verifica i due test di integrazione in debug e release, i confini di visibilità e il match su un errore non esaustivo. Confronta poi tre modifiche: rinominare il modulo, cambiare la rappresentazione privata e rimuovere gli spazi dai nomi validi. Solo l'ultima altera il risultato promesso; togliere il re-export rompe invece gli import.
+
+```powershell
+node --test _Meta/tests/rust-public-api.test.mjs
+```
+
+## Rust: cargo deny
+
+Dalla radice del vault, con Node e le dipendenze del sito installate, Cargo con supporto all'edizione 2024, Git e cargo-deny 0.22.0 nel PATH:
+
+```powershell
+node --test _Meta/tests/rust-cargo-deny.test.mjs
+```
+
+La suite estrae manifest, policy e comandi dalla nota e usa solo progetti temporanei. Verifica licenze SPDX, divieti su feature opzionali, duplicati e origini Git con un mirror locale. I check di cargo-deny sono offline: la prova sugli advisory verifica il fallimento a database assente, non esegue una scansione del database pubblico né del vault.
+
+## Rust: cargo audit
+
+Dalla radice del vault, con le dipendenze Node del sito già installate, Cargo con supporto all'edizione 2024 e cargo-audit 0.23.0 nel PATH:
+
+```powershell
+node --test _Meta/tests/rust-cargo-audit.test.mjs
+```
+
+La suite crea in directory temporanee un'app, una dipendenza transitiva vendorizzata in due versioni innocue e un database con advisory sintetici. Esegue offline i comandi della nota, legge i report JSON e controlla versioni, esiti dei test e codici di uscita. Il controllo dei pacchetti yanked è disattivato **solo nella fixture**; non viene eseguito un audit del vault o del database pubblico corrente.
+
+## Rust: rustdoc
+
+Dalla radice del vault, con le dipendenze Node del sito e una toolchain Rust con l'edizione 2024:
+
+```powershell
+node --test _Meta/tests/rust-rustdoc.test.mjs
+```
+
+La suite crea offline la crate descritta nella nota. Legge l'HTML per verificare il collegamento nel testo introduttivo, le sezioni della funzione e la separazione dei privati. Prova indipendentemente un link rotto, un'asserzione sbagliata e una costante pubblica non documentata. I doc test validi sono eseguiti sia in debug sia in release.
+
+## Rust: rustfmt
+
+Dalla radice del vault, con le dipendenze Node del sito installate, Cargo e il componente rustfmt compatibile con lo stile 2024:
+
+```powershell
+node --test _Meta/tests/rust-rustfmt.test.mjs
+```
+
+La suite estrae dal Markdown gli esempi prima e dopo la formattazione, la tabella esclusa, il file indipendente e la configurazione. Usa crate temporanee offline per distinguere controllo e scrittura, errori di tipo e di parsing, selezione dei pacchetti ed edizione di stile.
+
+## Rust: Clippy
+
+Dalla radice del vault, con le dipendenze Node del sito installate e una toolchain Rust con Clippy ed edition 2024:
+
+```powershell
+node --test _Meta/tests/rust-clippy.test.mjs
+```
+
+La suite estrae le funzioni dalle note Clippy e Unit test e le compila in progetti temporanei, senza dipendenze Cargo esterne. Controlla i codici e i livelli dei diagnostici, gli esiti dei cinque test, le eccezioni rimaste senza effetto e la portata di target e feature.
+
+## Rust: cargo-nextest
+
+Dalla radice del vault, con Node, Cargo, il comando `python` (Python 3 per leggere il JUnit XML) e cargo-nextest 0.9.152 nel PATH:
+
+```powershell
+node --test _Meta/tests/rust-nextest.test.mjs
+```
+
+La suite ricostruisce offline la crate delle note Unit test, Integration test e Doc test. Confronta i due filtri, introduce un errore solo nella documentazione, verifica i casi nel report XML sia dopo un successo sia dopo un fallimento e distingue avviso di lentezza e terminazione usando periodi abbreviati nella copia temporanea. Non modifica i test o la CI del vault.
+
+## Rust: Snapshot testing
+
+Dalla radice del vault, con Node, Rust e dipendenze Cargo disponibili da crates.io o in cache:
+
+```powershell
+node --test _Meta/tests/rust-snapshot-testing.test.mjs
+```
+
+La suite ricostruisce la CLI e i test della nota e installa cargo-insta 1.49.0 **in una directory temporanea**. Confronta le proposte con il testo e i dati attesi prima di accettarle; verifica rifiuto, accettazione di un cambio intenzionale, redazione del solo identificativo e modalità CI senza scritture. Per automatizzare le decisioni già controllate usa i comandi non interattivi della CLI soltanto nella fixture.
+
+## Rust: Fuzzing
+
+Dalla radice del vault, con Node, Rust, una toolchain C++ e le dipendenze Cargo disponibili dal registro o in cache:
+
+```powershell
+node --test _Meta/tests/rust-fuzzing.test.mjs
+```
+
+La suite ricostruisce dalla nota l'istogramma e il suo oracolo. Prova la classificazione di tutti i singoli byte e delle coppie, i duplicati e un confine volutamente errato. Installa la CLI cargo-fuzz 0.13.2 **solo in una directory temporanea**, inizializza il progetto, verifica il nome del target e ne controlla la compilazione con Cargo. Queste prove non sono fuzzing guidato dalla copertura. Su un host attrezzato con nightly e il runtime nativo si può impostare `VAULT_FUZZ_NIGHTLY=1` prima di eseguire la suite per includere il comando strumentato della nota.
+
+## Rust: Property testing
+
+Dalla radice del vault, con Node, Rust 1.88 o successivo e le dipendenze disponibili da crates.io oppure in cache:
+
+```powershell
+node --test _Meta/tests/rust-property-testing.test.mjs
+```
+
+La suite estrae il progetto dalla nota. Con proptest 1.12.0 verifica il controesempio ridotto, il replay del seed anche senza nuovi casi, il caso unitario esplicito e la differenza tra copertura ASCII e Unicode. Implementazioni volutamente errate e file di regressione vivono solo nella crate temporanea.
+
+## Rust: Benchmarking con Criterion
+
+Dalla radice del vault, con Node, Cargo e accesso a crates.io al primo avvio (oppure cache già popolata):
+
+```powershell
+node --test _Meta/tests/rust-criterion.test.mjs
+```
+
+La suite ricostruisce dalla nota una crate temporanea con Criterion 0.8.2. Controlla la somma anche oltre `u32`, distingue la prova senza misure dal benchmark ottimizzato e verifica i campioni delle due strategie su entrambe le dimensioni. Salva e rilegge una baseline nominata; la verifica richiede che resti intatta e che un ID diverso venga rifiutato. I tempi di campionamento sono abbreviati per il test: nessuna soglia di velocità o affermazione su quale implementazione vinca.
+
+## Rust: Mocking
+
+Dalla radice del vault, con Node e Cargo:
+
+```powershell
+node --test _Meta/tests/rust-mocking.test.mjs
+```
+
+La suite estrae i comandi e i tre blocchi Rust dal Markdown. Esegue i test in una libreria temporanea offline e verifica quali casi falliscono per cinque modifiche indipendenti: confronto al limite, invio mancante, invio doppio, destinatario errato ed errore del mittente ignorato.
+
+## Rust: Doc test
+
+Dalla radice del vault, con Node e Cargo installati:
+
+```powershell
+node --test _Meta/tests/rust-doc-tests.test.mjs
+```
+
+La suite innesta i commenti della nota Doc test sul parser della nota Unit test in una crate temporanea offline. Confronta doc test, test unitari e generazione HTML, poi introduce tre modifiche deliberate: un risultato atteso errato, un prestito incompatibile nel blocco `no_run` e una chiamata valida nel blocco `compile_fail`.
+
+## Rust: Integration test
+
+Dalla radice del vault:
+
+```powershell
+node --test _Meta/tests/rust-integration-tests.test.mjs
+```
+
+Con Node e Cargo, la suite ricostruisce offline il progetto delle note Unit test e Integration test. Interroga `cargo metadata` per verificare i target e la collocazione degli helper; esegue i test pubblicati, compresa la CLI reale, e confronta il filtro esatto con la suite intera. La controprova modifica solo la CLI in una copia temporanea: l'API resta verde, il test sul codice di uscita no.
+
 ## Rust: Unit test
 
 Con Node e Cargo installati, eseguire dalla radice del vault:
