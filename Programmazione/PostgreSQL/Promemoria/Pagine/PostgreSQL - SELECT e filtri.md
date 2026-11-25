@@ -22,134 +22,81 @@ title: PostgreSQL - SELECT e filtri
 
 # PostgreSQL - SELECT e filtri
 
-## SELECT
+Come scegliere righe, ordine e pagina. Per provare i blocchi, prepara questi dati una volta nella stessa sessione:
 
 ```sql
-SELECT id, name, created_at
-FROM public.entities;
+CREATE TEMP TABLE lab_scores (id int PRIMARY KEY, name text, team text, score int);
+INSERT INTO lab_scores VALUES
+    (1, 'Ada', 'A', 90), (2, 'Ida', 'A', 90),
+    (3, 'Teo', 'B', NULL), (4, 'Lia', 'B', 60);
 ```
 
-## Alias
+## Selezionare e filtrare
 
 ```sql
-SELECT
-    e.id,
-    e.name AS entity_name
-FROM public.entities AS e;
+SELECT s.id, s.name AS player
+FROM lab_scores AS s
+WHERE s.team IN ('A', 'B') AND s.score BETWEEN 60 AND 100
+ORDER BY s.score DESC, s.id;
 ```
 
-## Filtri
+Risultato: Ada, Ida, Lia. `BETWEEN` include entrambi gli estremi; il punteggio sconosciuto non soddisfa il filtro.
+
+| Cerchi | Predicato da usare in `WHERE` |
+|---|---|
+| Uguaglianza o differenza | `id = 1` oppure `id <> 1` |
+| Prefisso o sottostringa senza distinzione di maiuscole | `name LIKE 'Ad%'` oppure `name ILIKE '%ad%'` |
+| Valore assente o presente | `score IS NULL` oppure `score IS NOT NULL` |
+| Due condizioni alternative oltre a un filtro comune | `team = 'A' AND (score >= 90 OR score IS NULL)` |
+
+## Ordinare e paginare
 
 ```sql
-SELECT *
-FROM entities
-WHERE active = TRUE
-  AND score >= 60
-  AND deleted_at IS NULL;
+SELECT id, score FROM lab_scores ORDER BY score DESC NULLS LAST, id;
 ```
 
-## Operatori
+Pagina per posizione (salta due righe):
 
 ```sql
-WHERE id = 10
-WHERE id <> 10
-WHERE score BETWEEN 60 AND 100
-WHERE status IN ('active', 'pending')
-WHERE name LIKE 'Ada%'
-WHERE name ILIKE '%ada%'
-WHERE deleted_at IS NULL
-WHERE deleted_at IS NOT NULL
+SELECT id, name FROM lab_scores ORDER BY id LIMIT 2 OFFSET 2;
 ```
 
-## Ordinamento
+Pagina per cursore (riparti dall'ultimo ID letto, qui 2):
 
 ```sql
-SELECT *
-FROM entities
-ORDER BY created_at DESC, id ASC;
+SELECT id, name FROM lab_scores WHERE id > 2 ORDER BY id LIMIT 2;
 ```
 
-```sql
-ORDER BY priority DESC NULLS LAST;
-```
+Entrambe danno 3 e 4 sui dati iniziali. Il cursore deve corrispondere **all'intero ordinamento**: se ordini per punteggio e ID, il solo ID non basta. Nell'app passa il cursore come parametro del driver; `$1` non è un valore disponibile in una SELECT isolata in psql.
 
-## Limit e offset
+## Valori distinti o una riga per gruppo
 
 ```sql
-SELECT *
-FROM entities
-ORDER BY id
-LIMIT 20
-OFFSET 40;
-```
-
-Per dataset grandi preferire la paginazione keyset:
-
-```sql
-SELECT *
-FROM entities
-WHERE id > $1
-ORDER BY id
-LIMIT 20;
-```
-
-## Distinct
-
-```sql
-SELECT DISTINCT status
-FROM entities;
+SELECT DISTINCT team FROM lab_scores ORDER BY team;
 ```
 
 ```sql
-SELECT DISTINCT ON (user_id)
-    user_id,
-    created_at,
-    status
-FROM events
-ORDER BY user_id, created_at DESC;
+SELECT DISTINCT ON (team) team, name, score
+FROM lab_scores
+ORDER BY team, score DESC NULLS LAST, id;
 ```
 
-Con `DISTINCT ON`, le espressioni iniziali di `ORDER BY` devono corrispondere.
+La seconda query sceglie Ada e Lia: il gruppo viene prima nell'ordinamento, poi il punteggio migliore e infine l'ID minore per risolvere il pareggio.
 
-## CASE
+## Classificare con CASE
 
 ```sql
-SELECT
-    id,
-    CASE
-        WHEN score >= 90 THEN 'high'
-        WHEN score >= 60 THEN 'medium'
-        ELSE 'low'
-    END AS level
-FROM entities;
+SELECT id, CASE WHEN score IS NULL THEN 'unknown'
+                WHEN score >= 90 THEN 'high'
+                WHEN score >= 60 THEN 'medium' ELSE 'low' END AS level
+FROM lab_scores ORDER BY id;
 ```
 
-## Parametri
-
-```sql
-SELECT *
-FROM entities
-WHERE id = $1;
-```
-
-Passare i valori tramite parametri del driver, senza concatenare input nella query.
-
-## Ordine delle clausole
-
-```sql
-SELECT
-FROM
-JOIN
-WHERE
-GROUP BY
-HAVING
-ORDER BY
-LIMIT
-OFFSET
-```
+Ordine di scrittura: `SELECT → FROM / JOIN → WHERE → GROUP BY → HAVING → ORDER BY → LIMIT → OFFSET`.
 
 ## Approfondimento
 
+- [PostgreSQL 18: SELECT, DISTINCT ON e ordinamento](https://www.postgresql.org/docs/18/sql-select.html)
 - [[Programmazione/PostgreSQL/Pagine/SELECT INSERT UPDATE e DELETE|SELECT INSERT UPDATE e DELETE]]
 - [[Programmazione/PostgreSQL/Pagine/Prepared statements|Prepared statements]]
 - [[Programmazione/PostgreSQL/Pagine/Analisi delle Query|Analisi delle Query]]

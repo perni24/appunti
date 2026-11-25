@@ -20,173 +20,61 @@ title: Indici Parziali e Coprenti in PostgreSQL
 
 ## Sintesi
 
-Gli **indici parziali** indicizzano solo un sottoinsieme di righe. Gli **indici coprenti** includono colonne extra per permettere a PostgreSQL di rispondere leggendo solo l'indice, quando la visibility map lo consente.
+**Parziale** risponde a «quali righe entrano nell'indice?»; **coprente** risponde a «questa query trova nell'indice i valori che le servono?». Le due proprietà sono indipendenti. In un B-tree, `INCLUDE` porta un valore nelle foglie senza farne una chiave di ricerca, di ordinamento o di unicità.
 
-## Quando usarlo
+## Una coda con pochi lavori pronti
 
-Usali quando un indice normale sarebbe troppo grande o non abbastanza mirato:
-
-- query che filtrano sempre per uno stato, per esempio `status = 'pending'`;
-- righe attive molto meno numerose delle righe storiche;
-- code applicative con pochi job da processare;
-- query molto frequenti che leggono sempre poche colonne;
-- tabelle grandi dove evitare accessi alla heap riduce molto I/O.
-
-## Come funziona
-
-### Concetto chiave
-Oltre ai tipi di struttura fisica (B-Tree, GIN, ecc.), PostgreSQL permette di ottimizzare ulteriormente le performance e l'occupazione di disco attraverso tecniche di indicizzazione logica: gli **Indici Parziali** (che indicizzano solo un sottoinsieme di righe) e gli **Indici Coprenti** (che includono dati extra per evitare l'accesso alla tabella).
-
----
-### Indici Parziali (Partial Indexes)
-Un indice parziale viene creato aggiungendo una clausola `WHERE`. Contiene voci solo per le righe che soddisfano tale condizione.
-
-### Vantaggi:
-1.  **Risparmio di spazio**: L'indice è molto più piccolo di uno normale.
-2.  **Velocità di aggiornamento**: Le operazioni di scrittura sulle righe non indicizzate sono più rapide.
-
-### Esempio d'uso:
-Indicizzare solo gli utenti attivi o le fatture non pagate.
-```sql
-CREATE INDEX idx_ordini_non_pagati 
-ON ordini (data_ordine) 
-WHERE pagato = false;
-```
-
----
-### Indici Coprenti (Covering Indexes)
-Un indice è "coprente" quando contiene tutte le informazioni richieste da una query, permettendo al database di restituire i risultati leggendo solo l'indice (**Index Only Scan**) ed evitando di dover andare a leggere i dati fisici nella tabella (Heap).
-
-### La clausola `INCLUDE` (Postgres 11+)
-Permette di aggiungere colonne all'indice che **non** fanno parte della chiave di ricerca (non sono ordinate), ma vengono memorizzate nei nodi foglia per essere restituite velocemente.
-
-### Esempio d'uso:
-```sql
-CREATE INDEX idx_utenti_email_coprente 
-ON utenti (email) 
-INCLUDE (username, data_iscrizione);
-```
-
-Query coperta:
+Esegui i blocchi nella stessa sessione, con **autocommit attivo e senza `BEGIN`**: `VACUUM` non può stare in un blocco di transazione. Le tabelle sono temporanee. La coda contiene 10.000 lavori; solo gli ID multipli di 100 sono pronti.
 
 ```sql
-SELECT email, username, data_iscrizione
-FROM utenti
-WHERE email = 'test@example.com';
+CREATE TEMP TABLE lab_jobs (id integer, state text NOT NULL, title text NOT NULL);
+INSERT INTO lab_jobs
+SELECT i, CASE WHEN i % 100 = 0 THEN 'ready' ELSE 'done' END, 'job-' || i
+FROM generate_series(1, 10000) AS g(i);
+CREATE INDEX lab_ready_cover ON lab_jobs (id) INCLUDE (title) WHERE state = 'ready';
+VACUUM (ANALYZE) lab_jobs;
 ```
-
-### Logic layer: quando usare cosa
-
-- Usa gli indici parziali se la query filtra costantemente per uno stato specifico che rappresenta una piccola frazione della tabella.
-- Usa gli indici coprenti per evitare accessi casuali alla tabella quando le query leggono sempre poche colonne specifiche.
-
----
-### Considerazioni Tecniche
-#### Index Only Scan e Visibility Map
-Affinché un **Index Only Scan** funzioni, Postgres deve sapere se i dati nell'indice sono aggiornati rispetto alla tabella. Questo dipende dalla **Visibility Map**, che viene mantenuta dal processo di VACUUM. 
-> [!TIP]
-> Se noti che un indice coprente non viene usato, potrebbe essere necessario eseguire un `VACUUM ANALYZE` sulla tabella.
-
-#### Overhead degli indici coprenti
-Aggiungere troppe colonne in `INCLUDE` aumenta la dimensione dell'indice e rallenta gli `INSERT`. Inserisci in `INCLUDE` solo le colonne strettamente necessarie per le query più critiche.
-
----
-
-## API / Sintassi
-
-Indice parziale:
 
 ```sql
-CREATE INDEX index_name
-ON table_name (indexed_column)
-WHERE predicate;
+EXPLAIN (ANALYZE, BUFFERS, TIMING OFF)
+SELECT id, title FROM lab_jobs WHERE state = 'ready' ORDER BY id LIMIT 2;
 ```
 
-Indice coprente:
+Il risultato della SELECT è `(100, job-100)` e `(200, job-200)`. Il predicato limita l'indice ai lavori pronti; `id` dà l'ordine e `title` copre l'output. Non occorre conservare `state` nell'indice per rivalutare un filtro già garantito dal suo predicato.
+
+## Perché un Index Only Scan può leggere la tabella
 
 ```sql
-CREATE INDEX index_name
-ON table_name (search_column)
-INCLUDE (returned_column_1, returned_column_2);
+UPDATE lab_jobs SET title = 'urgente' WHERE id = 100;
+EXPLAIN (ANALYZE, BUFFERS, TIMING OFF)
+SELECT id, title FROM lab_jobs WHERE state = 'ready' ORDER BY id LIMIT 2;
 ```
 
-Combinazione:
+Confronta **`Heap Fetches`**, non solo il nome del nodo. La *visibility map* segnala le pagine le cui tuple sono tutte visibili a tutte le transazioni. Se il bit è impostato, l'indice può bastare; se manca, PostgreSQL consulta la tabella (*heap*) per verificare la visibilità MVCC. Una scrittura può azzerare il bit e `VACUUM` può ripristinarlo quando le condizioni lo permettono. Nel laboratorio la prima lettura può avere zero accessi alla heap e la seconda averne pur mantenendo lo stesso tipo di nodo.
+
+## Predicati e unicità
+
+- Il planner deve poter dedurre al momento della pianificazione che il filtro della query **implica il predicato dell'indice**. Un piano generico per `WHERE state = $1` non sa che il valore sarà sempre `'ready'`. Non significa che ogni query parametrizzata sia esclusa: con un piano specifico il valore può essere noto, oppure il predicato può essere un'altra condizione letterale.
+- Per imporre «una sola email attiva, storico libero», usa un indice unico parziale. Questo blocco indipendente ammette due record storici e uno attivo con la stessa email; un **secondo attivo** sarebbe rifiutato. `label` non partecipa all'unicità.
 
 ```sql
-CREATE INDEX orders_pending_customer_idx
-ON orders (customer_id, created_at)
-INCLUDE (total_amount)
-WHERE status = 'pending';
+BEGIN;
+CREATE TEMP TABLE lab_contacts (email text NOT NULL, active boolean NOT NULL, label text);
+CREATE UNIQUE INDEX lab_one_active ON lab_contacts (lower(email)) INCLUDE (label) WHERE active;
+INSERT INTO lab_contacts VALUES
+  ('ada@example.org', false, 'v1'), ('ada@example.org', false, 'v2'),
+  ('Ada@example.org', true, 'oggi');
+SELECT count(*) AS total, count(*) FILTER (WHERE active) AS active FROM lab_contacts;
+ROLLBACK;
 ```
 
-## Esempio pratico
+Risultato: **3 righe, 1 attiva**. Una colonna larga in `INCLUDE` aumenta dimensioni e manutenzione: aggiungila per una proiezione frequente, non per coprire ogni possibile `SELECT *`.
 
-Job queue con pochi job disponibili:
-
-```sql
-CREATE INDEX jobs_available_idx
-ON jobs (priority DESC, created_at)
-WHERE status = 'available';
-```
-
-Query:
-
-```sql
-SELECT id, payload
-FROM jobs
-WHERE status = 'available'
-ORDER BY priority DESC, created_at
-LIMIT 10;
-```
-
-Indice coprente per lista utenti:
-
-```sql
-CREATE INDEX users_email_include_idx
-ON users (email)
-INCLUDE (id, display_name);
-```
-
-## Varianti
-
-- Indice parziale con `WHERE deleted_at IS NULL`.
-- Indice parziale per stati rari come `status = 'failed'`.
-- Indice unico parziale per vincoli condizionati.
-- Indice coprente con `INCLUDE`.
-- Expression index parziale, per esempio su `lower(email)`.
-
-Esempio di vincolo unico condizionato:
-
-```sql
-CREATE UNIQUE INDEX users_active_email_unique_idx
-ON users (email)
-WHERE deleted_at IS NULL;
-```
-
-## Errori comuni
-
-- Creare un indice parziale con predicato diverso dalla query reale.
-- Aspettarsi che PostgreSQL usi un indice parziale se non puo dimostrare che il filtro della query implica il predicato.
-- Mettere troppe colonne in `INCLUDE`.
-- Confondere indice coprente con garanzia di `Index Only Scan`: serve anche una visibility map favorevole.
-- Creare indici parziali su condizioni che cambiano continuamente, aumentando il costo di manutenzione.
-
-## Checklist
-
-- La condizione dell'indice parziale corrisponde alle query reali?
-- La porzione indicizzata e molto piu piccola della tabella?
-- Le colonne in `INCLUDE` sono davvero restituite spesso?
-- `EXPLAIN` mostra l'uso dell'indice?
-- Dopo grandi modifiche e stato eseguito `VACUUM ANALYZE` se serve?
-- L'indice non duplica un altro indice esistente?
+**Fonti PostgreSQL 18:** [indici parziali](https://www.postgresql.org/docs/18/indexes-partial.html), [index-only scan e colonne incluse](https://www.postgresql.org/docs/18/indexes-index-only-scans.html).
 
 ## Collegamenti
 
+- [[Programmazione/PostgreSQL/Indice PostgreSQL|Indice PostgreSQL]]
 - [[Programmazione/PostgreSQL/Pagine/Tipi di Indici|Tipi di Indici]]
 - [[Programmazione/PostgreSQL/Pagine/Analisi delle Query|Analisi delle Query]]
 - [[Programmazione/PostgreSQL/Pagine/Statistiche e Query Planner|Statistiche e Query Planner]]
-
-
-## Navigazione
-
-- [[Programmazione/PostgreSQL/Indice PostgreSQL|Indice PostgreSQL]]

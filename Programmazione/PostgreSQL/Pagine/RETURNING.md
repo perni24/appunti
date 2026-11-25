@@ -20,108 +20,52 @@ title: RETURNING
 
 ## Sintesi
 
-`RETURNING` restituisce colonne dalle righe modificate da `INSERT`, `UPDATE`, `DELETE` o `MERGE`.
+`RETURNING` fa produrre alla scrittura un risultato per ogni riga su cui ha agito. È il modo per ottenere un ID generato, leggere un default o sapere **quali** righe sono cambiate senza cercarle con una seconda query. Non equivale a un `COMMIT`: puoi ricevere una riga e poi annullare la transazione.
 
-## Quando usarlo
+| Operazione | Cosa restituisce normalmente una colonna della tabella di destinazione |
+| --- | --- |
+| `INSERT` | Il valore inserito, inclusi i default calcolati dal database |
+| `UPDATE` | Il nuovo valore, anche quando coincide con il precedente |
+| `DELETE` | Il valore della riga appena rimossa, non una riga successiva alla cancellazione |
+| `MERGE` | Dipende dall'azione; qualifica le colonne se sorgente e destinazione hanno nomi uguali |
 
-Usa `RETURNING` quando una modifica deve restituire immediatamente dati utili all'applicazione:
+## Leggere il prima e il dopo
 
-- ID generati da sequenze o identity column;
-- valori default calcolati dal database;
-- timestamp impostati da trigger o da `DEFAULT now()`;
-- righe effettivamente aggiornate o cancellate;
-- risultato finale di un upsert.
-
-Evita una seconda query e riduce il rischio di leggere una riga diversa da quella appena modificata.
-
-## Come funziona
-
-### Perche e utile
-- Recuperare ID generati.
-- Ottenere valori default.
-- Evitare una seconda query.
-- Verificare cosa e stato modificato.
-
-## API / Sintassi
+Esegui i due blocchi nella stessa sessione **PostgreSQL 18**. In questa versione `old` e `new` danno accesso esplicito alle due immagini della riga. Un normale inserimento non ha un'immagine precedente; una normale cancellazione non ha un'immagine successiva.
 
 ```sql
-INSERT INTO table_name (column_1, column_2)
-VALUES (value_1, value_2)
-RETURNING column_1, column_2;
-
-UPDATE table_name
-SET column_1 = value_1
-WHERE condition
-RETURNING *;
-
-DELETE FROM table_name
-WHERE condition
-RETURNING id;
+BEGIN;
+CREATE TEMP TABLE lab_jobs (
+  id integer GENERATED ALWAYS AS IDENTITY PRIMARY KEY,
+  state text NOT NULL DEFAULT 'queued'
+);
+INSERT INTO lab_jobs DEFAULT VALUES RETURNING id, state;
+UPDATE lab_jobs SET state = 'done' WHERE id = 1
+RETURNING id, old.state AS before, new.state AS after;
 ```
 
-`RETURNING *` e comodo durante sviluppo o debugging, ma nelle query applicative e preferibile elencare solo le colonne necessarie.
-
-## Esempio pratico
-
-### Esempio
 ```sql
-INSERT INTO users (email)
-VALUES ('a@example.com')
-RETURNING id, created_at;
-```
-### Esempio con UPDATE
-```sql
-UPDATE orders
-SET status = 'paid'
-WHERE id = 42
-RETURNING id, status, updated_at;
-```
-
-## Varianti
-
-- `INSERT ... RETURNING id`: recupera la chiave primaria appena generata.
-- `UPDATE ... RETURNING old_value, new_value`: restituisce i campi dopo la modifica.
-- `DELETE ... RETURNING *`: utile per audit, log o conferma operativa.
-- `INSERT ... ON CONFLICT ... DO UPDATE ... RETURNING`: restituisce la riga finale dopo l'upsert.
-- `WITH changed AS (...) SELECT ...`: usa una CTE per riusare le righe restituite da una modifica.
-
-Esempio con CTE:
-
-```sql
-WITH deleted_sessions AS (
-  DELETE FROM sessions
-  WHERE expires_at < now()
-  RETURNING id, user_id
+UPDATE lab_jobs SET state = 'done' WHERE id = 99 RETURNING id;
+WITH removed AS (
+  DELETE FROM lab_jobs WHERE state = 'done' RETURNING id, state
 )
-SELECT user_id, count(*) AS deleted_count
-FROM deleted_sessions
-GROUP BY user_id;
+SELECT state, count(*) AS removed_count FROM removed GROUP BY state;
+ROLLBACK;
 ```
 
-## Errori comuni
+Il primo blocco restituisce `(1,queued)` e poi `(1,queued,done)`. L'update dell'ID 99 non restituisce **nessuna riga**, non una riga con ID nullo. La CTE legge i dati restituiti dal `DELETE`: il riepilogo è `(done,1)` anche se la riga non è più nella tabella.
 
-- Usare `RETURNING *` in produzione quando servono solo poche colonne.
-- Aspettarsi una riga singola quando `UPDATE` o `DELETE` possono toccare piu righe.
-- Dimenticare che `RETURNING` restituisce i valori dopo la modifica.
-- Fare comunque una seconda `SELECT` inutile dopo `INSERT ... RETURNING`.
-- Non gestire il caso in cui `RETURNING` non restituisce righe perche il `WHERE` non ha trovato match.
+## Limiti da gestire nell'applicazione
 
-## Checklist
+- Un `UPDATE` o un `DELETE` può restituire zero, una o molte righe. Per un ordine ripetibile su più righe, usa una CTE e una `SELECT ... ORDER BY` esterna. Preferisci le colonne necessarie a `RETURNING *`.
+- `ON CONFLICT DO NOTHING` non restituisce la riga esistente; con `DO UPDATE` vengono restituite solo le righe realmente inserite o aggiornate. Nel ramo di aggiornamento l'immagine `old` può esistere anche se l'istruzione comincia con `INSERT`.
+- Un default o una modifica della riga operata da un trigger `BEFORE` può influire sul valore restituito. Non assumere invece che un campo `updated_at` cambi da solo: deve cambiarlo la query o un trigger. Per verificare se l'operazione è definitiva attendi anche l'esito del commit.
 
-- Elencare solo le colonne necessarie.
-- Controllare la cardinalita attesa del risultato.
-- Usare `RETURNING` per confermare modifiche rischiose.
-- Gestire correttamente il caso di risultato vuoto.
-- Valutare CTE quando le righe modificate servono a una query successiva.
-- Collegare `RETURNING` a transazioni quando la modifica fa parte di un flusso atomico.
+**Fonti PostgreSQL 18:** [dati restituiti dalle scritture](https://www.postgresql.org/docs/18/dml-returning.html), [MERGE](https://www.postgresql.org/docs/18/sql-merge.html).
 
 ## Collegamenti
 
+- [[Programmazione/PostgreSQL/Indice PostgreSQL|Indice PostgreSQL]]
 - [[Programmazione/PostgreSQL/Pagine/SELECT INSERT UPDATE e DELETE|SELECT, INSERT, UPDATE e DELETE]]
 - [[Programmazione/PostgreSQL/Pagine/UPSERT con ON CONFLICT|UPSERT con ON CONFLICT]]
-- [[Programmazione/PostgreSQL/Pagine/Funzioni e Store Procedures|Funzioni e Store Procedures]]
-
-
-## Navigazione
-
-- [[Programmazione/PostgreSQL/Indice PostgreSQL|Indice PostgreSQL]]
+- [[Programmazione/PostgreSQL/Pagine/Funzioni e Store Procedures|Funzioni e stored procedure]]

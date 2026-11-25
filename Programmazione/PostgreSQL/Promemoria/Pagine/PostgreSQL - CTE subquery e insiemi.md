@@ -22,110 +22,78 @@ title: PostgreSQL - CTE, subquery e insiemi
 
 # PostgreSQL - CTE, subquery e insiemi
 
-## CTE
+Usa `WITH` per nominare un risultato dentro **una sola istruzione**; `EXISTS` risponde a una domanda di presenza. Ogni blocco è indipendente.
+
+## Una o più CTE
 
 ```sql
-WITH active_users AS (
-    SELECT id, name
-    FROM users
-    WHERE active = TRUE
-)
-SELECT *
-FROM active_users
-ORDER BY name;
+WITH orders(user_id, amount) AS (VALUES (1, 20), (1, 30), (2, 10)),
+totals AS (SELECT user_id, sum(amount) AS total FROM orders GROUP BY user_id)
+SELECT user_id, total FROM totals WHERE total >= 40 ORDER BY user_id;
 ```
 
-## Piu CTE
+Solo l'utente 1 supera la soglia (50). La CTE `totals` non crea una tabella per il comando successivo.
+
+## Subquery scalare o EXISTS
 
 ```sql
-WITH
-active_users AS (
-    SELECT id
-    FROM users
-    WHERE active = TRUE
-),
-totals AS (
-    SELECT user_id, SUM(amount) AS total
-    FROM orders
-    GROUP BY user_id
-)
-SELECT u.id, t.total
-FROM active_users AS u
-JOIN totals AS t ON t.user_id = u.id;
+WITH users(id) AS (VALUES (1), (2)), orders(user_id) AS (VALUES (1), (1))
+SELECT u.id,
+       (SELECT count(*) FROM orders o WHERE o.user_id = u.id) AS n,
+       EXISTS (SELECT 1 FROM orders o WHERE o.user_id = u.id) AS has_orders
+FROM users u ORDER BY u.id;
 ```
 
-## CTE di modifica
+Risultato: `1, 2, true` e `2, 0, false`. Una subquery scalare ordinaria dà NULL con zero righe ed errore con più di una; qui `count(*)` senza raggruppamento dà sempre una riga.
+
+## Ricorsione su una gerarchia
 
 ```sql
-WITH deleted AS (
-    DELETE FROM sessions
-    WHERE expires_at < CURRENT_TIMESTAMP
-    RETURNING user_id
-)
-SELECT COUNT(*) FROM deleted;
-```
-
-## CTE ricorsiva
-
-```sql
-WITH RECURSIVE tree AS (
-    SELECT id, parent_id, name, 0 AS depth
-    FROM categories
-    WHERE parent_id IS NULL
-
+WITH RECURSIVE nodes(id, parent_id) AS (VALUES (1, NULL::int), (2, 1), (3, 2)),
+tree(id, depth) AS (
+    SELECT id, 0 FROM nodes WHERE parent_id IS NULL
     UNION ALL
-
-    SELECT c.id, c.parent_id, c.name, tree.depth + 1
-    FROM categories AS c
-    JOIN tree ON tree.id = c.parent_id
+    SELECT n.id, t.depth + 1 FROM nodes n JOIN tree t ON n.parent_id = t.id
 )
-SELECT *
-FROM tree
-ORDER BY depth, name;
+SELECT id, depth FROM tree ORDER BY depth, id;
 ```
 
-## Subquery scalare
-
-```sql
-SELECT
-    u.id,
-    (
-        SELECT COUNT(*)
-        FROM orders AS o
-        WHERE o.user_id = u.id
-    ) AS order_count
-FROM users AS u;
-```
-
-## EXISTS
-
-```sql
-SELECT *
-FROM users AS u
-WHERE EXISTS (
-    SELECT 1
-    FROM orders AS o
-    WHERE o.user_id = u.id
-);
-```
+Profondità: 0, 1, 2. Questo esempio assume un albero senza cicli; per attraversare un grafo vedi [[Programmazione/PostgreSQL/Pagine/Common Table Expressions e Recursive Queries|ricorsione e rilevamento dei cicli]].
 
 ## Operazioni tra insiemi
 
 ```sql
-SELECT email FROM customers
-UNION
-SELECT email FROM leads;
+WITH a(id) AS (VALUES (1), (1), (2)), b(id) AS (VALUES (2), (3))
+SELECT id FROM a UNION SELECT id FROM b ORDER BY id;
 ```
 
-| Operatore | Effetto |
+Sostituisci solo l'operatore: serve lo stesso numero di colonne con tipi compatibili per posizione.
+
+| Operatore | Risultato nell'esempio |
 |---|---|
-| `UNION` | Unisce eliminando duplicati |
-| `UNION ALL` | Unisce mantenendo duplicati |
-| `INTERSECT` | Righe presenti in entrambi |
-| `EXCEPT` | Righe presenti solo a sinistra |
+| `UNION` | 1, 2, 3 |
+| `UNION ALL` | 1, 1, 2, 2, 3 |
+| `INTERSECT` | 2 |
+| `EXCEPT` | 1 (a sinistra ma non a destra) |
+
+## Contare le righe eliminate
+
+```sql
+BEGIN;
+CREATE TEMP TABLE lab_sessions (id int, expired boolean);
+INSERT INTO lab_sessions VALUES (1, true), (2, false);
+WITH removed AS (
+    DELETE FROM pg_temp.lab_sessions WHERE expired RETURNING id
+)
+SELECT count(*) AS removed_count FROM removed;
+ROLLBACK;
+```
+
+Il DELETE viene **eseguito**, non simulato dalla SELECT. Qui elimina una riga temporanea; il rollback annulla la prova.
 
 ## Approfondimento
 
+- [PostgreSQL 18: WITH e query ricorsive](https://www.postgresql.org/docs/18/queries-with.html)
 - [[Programmazione/PostgreSQL/Pagine/Common Table Expressions e Recursive Queries|Common Table Expressions e Recursive Queries]]
 - [[Programmazione/PostgreSQL/Pagine/Subquery|Subquery]]
 - [[Programmazione/PostgreSQL/Pagine/JOIN|JOIN]]

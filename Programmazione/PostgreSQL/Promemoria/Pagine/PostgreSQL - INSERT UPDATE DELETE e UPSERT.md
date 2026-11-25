@@ -25,110 +25,84 @@ title: PostgreSQL - INSERT, UPDATE, DELETE e UPSERT
 
 # PostgreSQL - INSERT, UPDATE, DELETE e UPSERT
 
-## INSERT
+Ricette di scrittura con `RETURNING`. Esegui i blocchi **in ordine nella stessa sessione di prova**: i bersagli sono temporanei e il blocco finale annulla tutto. Su tabelle reali, senza `WHERE`, UPDATE e DELETE interessano tutte le righe.
+
+## Preparare e inserire
 
 ```sql
-INSERT INTO entities (name, active)
-VALUES ('Example', TRUE);
+BEGIN;
+CREATE TEMP TABLE lab_items (id integer PRIMARY KEY, name text NOT NULL);
+CREATE TEMP TABLE lab_archive (id integer PRIMARY KEY, name text);
 ```
 
-## Piu righe
-
 ```sql
-INSERT INTO entities (name, active)
-VALUES
-    ('First', TRUE),
-    ('Second', FALSE);
+INSERT INTO pg_temp.lab_items (id, name) VALUES (1, 'pen') RETURNING id;
 ```
 
-## RETURNING
-
 ```sql
-INSERT INTO entities (name)
-VALUES ($1)
-RETURNING id, name, created_at;
+INSERT INTO pg_temp.lab_items (id, name) VALUES (2, 'book'), (3, 'box');
 ```
 
-## UPDATE
+## Controllare e aggiornare
 
 ```sql
-UPDATE entities
-SET
-    name = $2,
-    updated_at = CURRENT_TIMESTAMP
-WHERE id = $1
-RETURNING *;
+SELECT id, name FROM pg_temp.lab_items WHERE id = 1;
 ```
 
-## UPDATE da un'altra tabella
-
 ```sql
-UPDATE orders AS o
-SET status = s.status
-FROM order_status_updates AS s
-WHERE s.order_id = o.id;
+UPDATE pg_temp.lab_items SET name = 'pencil' WHERE id = 1 RETURNING id, name;
 ```
 
-## DELETE
+Anteprima: `1, pen`; scrittura: `1, pencil`. In presenza di altri scrittori l'anteprima non garantisce che i dati restino identici. Per aggiornare solo un valore atteso, includilo nel `WHERE` dell'UPDATE.
 
 ```sql
-DELETE FROM entities
-WHERE id = $1
-RETURNING id;
+UPDATE pg_temp.lab_items AS i SET name = s.name
+FROM (VALUES (2, 'notebook')) AS s(id, name)
+WHERE i.id = s.id RETURNING i.id, i.name;
 ```
 
-## DELETE con USING
+Con `UPDATE ... FROM` la sorgente deve dare **al massimo una corrispondenza per bersaglio** se vuoi un risultato deterministico.
+
+## Gestire un conflitto
 
 ```sql
-DELETE FROM sessions AS s
-USING users AS u
-WHERE s.user_id = u.id
-  AND u.disabled = TRUE;
+INSERT INTO pg_temp.lab_items (id, name) VALUES (2, 'diary')
+ON CONFLICT (id) DO UPDATE SET name = EXCLUDED.name
+RETURNING id, name;
 ```
 
-## UPSERT
-
 ```sql
-INSERT INTO entities (external_id, name)
-VALUES ($1, $2)
-ON CONFLICT (external_id)
-DO UPDATE SET
-    name = EXCLUDED.name,
-    updated_at = CURRENT_TIMESTAMP
-RETURNING *;
+INSERT INTO pg_temp.lab_items (id, name) VALUES (2, 'ignored')
+ON CONFLICT (id) DO NOTHING RETURNING id;
 ```
 
-Serve un vincolo o indice univoco compatibile con il conflitto.
+La chiave primaria arbitra il conflitto: il primo blocco restituisce `2, diary`; il secondo nessuna riga. `EXCLUDED` è la riga proposta. Nell'app lega ID e nome come parametri del driver.
 
-## Ignorare il conflitto
+## Archiviare, eliminare e annullare la prova
 
 ```sql
-INSERT INTO tags (name)
-VALUES ($1)
-ON CONFLICT (name) DO NOTHING;
+INSERT INTO pg_temp.lab_archive (id, name)
+SELECT id, name FROM pg_temp.lab_items WHERE id = 3;
 ```
 
-## Inserire da SELECT
-
 ```sql
-INSERT INTO archived_entities (id, name)
-SELECT id, name
-FROM entities
-WHERE deleted_at IS NOT NULL;
+DELETE FROM pg_temp.lab_items AS i USING pg_temp.lab_archive AS a
+WHERE i.id = a.id RETURNING i.id;
 ```
 
-## Modifica protetta
+```sql
+DELETE FROM pg_temp.lab_items WHERE id = 1 RETURNING id;
+```
 
-Prima di `UPDATE` o `DELETE`, verificare il filtro:
+I due DELETE restituiscono rispettivamente 3 e 1. Un DELETE senza corrispondenze non è un errore: `RETURNING` non restituisce righe.
 
 ```sql
-SELECT *
-FROM entities
-WHERE id = $1;
+ROLLBACK;
 ```
 
 ## Approfondimento
 
+- [PostgreSQL 18: INSERT e ON CONFLICT](https://www.postgresql.org/docs/18/sql-insert.html)
 - [[Programmazione/PostgreSQL/Pagine/SELECT INSERT UPDATE e DELETE|SELECT INSERT UPDATE e DELETE]]
 - [[Programmazione/PostgreSQL/Pagine/UPSERT con ON CONFLICT|UPSERT con ON CONFLICT]]
 - [[Programmazione/PostgreSQL/Pagine/RETURNING|RETURNING]]

@@ -20,81 +20,69 @@ title: Audit logging
 
 ## Sintesi
 
-L'audit logging registra chi ha fatto cosa, quando e su quali dati. Serve per sicurezza, debug, compliance e ricostruzione degli incidenti.
+Prima di attivare un audit, scegli la domanda a cui dovrà rispondere: «quale ordine ha cambiato stato ed è stato confermato?» non è la stessa domanda di «chi ha tentato di leggere questa tabella?». Un trigger e un log del server non osservano gli stessi eventi.
 
-## Quando usarlo
+| Meccanismo | Cosa osserva | Cosa non dimostra |
+| --- | --- | --- |
+| Evento applicativo | Utente finale, richiesta e contesto di business | Operazioni effettuate fuori dall'applicazione |
+| Trigger di riga | Valori rilevanti prima e dopo una modifica | `SELECT`, tentativi falliti o modifiche annullate |
+| Log server / pgAudit | Connessioni, errori e classi di statement secondo configurazione | Il solo testo dello statement non certifica il commit né quali righe siano cambiate |
 
-Usalo per dati sensibili, azioni amministrative, modifiche critiche, accessi privilegiati e sistemi con requisiti di tracciabilita.
+## Laboratorio: registrare transizioni confermate
 
-## Come funziona
-
-Puoi fare audit a livello applicativo, tramite trigger, tramite log PostgreSQL o estensioni dedicate. La scelta dipende da dettaglio richiesto, volume e requisiti legali.
-
-## API / Sintassi
-
-Tabella audit semplice:
+Database di prova vuoto, come amministratore. Il codice crea un owner non-login e una funzione trigger che registra solo identificativo, stato vecchio e nuovo, login del database e istante dell'evento. In produzione l'owner dell'audit deve restare distinto dal ruolo applicativo.
 
 ```sql
-CREATE TABLE audit_log (
-  id bigint GENERATED ALWAYS AS IDENTITY PRIMARY KEY,
-  actor text,
-  action text NOT NULL,
-  table_name text NOT NULL,
-  row_id text,
-  created_at timestamptz NOT NULL DEFAULT now()
+CREATE ROLE lab_audit_owner NOLOGIN;
+CREATE SCHEMA lab_audit AUTHORIZATION lab_audit_owner;
+BEGIN;
+SET LOCAL ROLE lab_audit_owner;
+CREATE TABLE lab_audit.orders (id integer PRIMARY KEY, status text NOT NULL);
+CREATE TABLE lab_audit.events (
+  order_id integer NOT NULL, old_status text NOT NULL, new_status text NOT NULL,
+  db_login name NOT NULL, recorded_at timestamptz NOT NULL
 );
+CREATE FUNCTION lab_audit.record_status() RETURNS trigger
+LANGUAGE plpgsql SECURITY DEFINER SET search_path = pg_catalog, pg_temp
+AS $$
+BEGIN
+  INSERT INTO lab_audit.events VALUES
+    (NEW.id, OLD.status, NEW.status, session_user, clock_timestamp());
+  RETURN NEW;
+END;
+$$;
+REVOKE ALL ON FUNCTION lab_audit.record_status() FROM PUBLIC;
+CREATE TRIGGER status_changed AFTER UPDATE OF status ON lab_audit.orders
+FOR EACH ROW WHEN (OLD.status IS DISTINCT FROM NEW.status)
+EXECUTE FUNCTION lab_audit.record_status();
+INSERT INTO lab_audit.orders VALUES (1, 'aperto');
+COMMIT;
 ```
-
-Logging statement:
 
 ```sql
-ALTER SYSTEM SET log_statement = 'mod';
-SELECT pg_reload_conf();
+UPDATE lab_audit.orders SET status = 'pagato' WHERE id = 1;
+BEGIN;
+UPDATE lab_audit.orders SET status = 'annullato' WHERE id = 1;
+ROLLBACK;
+SELECT order_id, old_status, new_status, db_login
+FROM lab_audit.events ORDER BY recorded_at;
 ```
 
-## Esempio pratico
+Con `psql` in autocommit si ottiene un solo evento: `1, aperto, pagato` con il login della sessione. L'aggiornamento annullato e il suo evento sono nella stessa transazione. `NEW` e `OLD` esistono qui **dentro la funzione trigger**, non nel normale SQL del client. Il runtime non deve poter alterare il trigger o scrivere nella tabella degli eventi.
 
-Trigger audit per update:
+## Verificare copertura e conservazione
 
-```sql
-INSERT INTO audit_log (actor, action, table_name, row_id)
-VALUES (current_user, 'update', 'orders', NEW.id::text);
-```
+`session_user` indica normalmente il login della connessione, non la persona dietro un pool applicativo. `current_user` dentro questa funzione indicherebbe il suo proprietario. Per attribuire la richiesta a una persona serve un identificativo verificato dall'app, correlabile al log del database.
 
-Per audit serio, salva anche valori vecchi/nuovi rilevanti o una rappresentazione JSON controllata.
+Per le letture o i tentativi falliti valuta i log del server e, dove disponibile, pgAudit. `log_statement=mod` comprende DDL e statement che modificano dati, non i normali `SELECT`; non è un audit completo. Il logical decoding può alimentare un flusso di modifiche confermate, non un registro di accessi in lettura. Prima di aumentare la verbosità, prova volume e presenza di dati personali o segreti. Per rilevare manomissioni da amministratori del database occorrono anche raccolta esterna, accessi separati e retention verificata: una tabella nello stesso database non è immutabile.
 
-## Varianti
+## Fonti
 
-- Audit applicativo.
-- Audit con trigger.
-- Audit via log PostgreSQL.
-- Estensioni come pgaudit.
-- Logical decoding per stream audit.
-- Audit immutabile su storage esterno.
-
-## Errori comuni
-
-- Loggare dati sensibili non necessari.
-- Non proteggere la tabella audit.
-- Non sincronizzare utente applicativo e attore reale.
-- Generare volume ingestibile.
-- Non definire retention.
-
-## Checklist
-
-- Cosa va tracciato?
-- Chi e l'attore reale?
-- I log sono protetti da modifica?
-- La retention e definita?
-- I dati sensibili sono minimizzati?
+[PostgreSQL 18: trigger](https://www.postgresql.org/docs/18/trigger-definition.html) · [Configurazione dei log](https://www.postgresql.org/docs/18/runtime-config-logging.html) · [pgAudit: ambito e compatibilità](https://github.com/pgaudit/pgaudit)
 
 ## Collegamenti
 
+- [[Programmazione/PostgreSQL/Indice PostgreSQL|Indice PostgreSQL]]
 - [[Programmazione/PostgreSQL/Pagine/Trigger e Event Trigger|Trigger e Event Trigger]]
 - [[Programmazione/PostgreSQL/Pagine/Ruoli e privilegi avanzati|Ruoli e privilegi avanzati]]
 - [[Programmazione/PostgreSQL/Pagine/Logical decoding|Logical decoding]]
-
-
-## Navigazione
-
-- [[Programmazione/PostgreSQL/Indice PostgreSQL|Indice PostgreSQL]]

@@ -20,107 +20,53 @@ title: UPSERT con ON CONFLICT
 
 ## Sintesi
 
-`ON CONFLICT` implementa l'upsert: inserisce una riga oppure aggiorna quella esistente quando viola un vincolo unico.
+`INSERT ... ON CONFLICT` fa decidere al database cosa fare se una chiave è già occupata: **saltare la riga** (`DO NOTHING`) oppure **aggiornare quella esistente** (`DO UPDATE`). È una decisione atomica rispetto al conflitto, non una promessa di idempotenza: impostare un valore e incrementare un contatore hanno effetti diversi quando ripeti la richiesta.
 
-## Quando usarlo
+## Sincronizzare un'impostazione senza riscriverla inutilmente
 
-Usa `ON CONFLICT` quando una scrittura deve essere idempotente:
-
-- creare un utente se l'email non esiste, altrimenti aggiornare alcuni campi;
-- salvare impostazioni applicative con chiave unica;
-- importare dati esterni evitando duplicati;
-- aggiornare contatori o timestamp in presenza di inserimenti concorrenti;
-- implementare sincronizzazioni dove la stessa riga puo arrivare piu volte.
-
-Il punto essenziale e che PostgreSQL puo rilevare il conflitto solo se esiste una primary key, un vincolo `UNIQUE` o un indice unico compatibile.
-
-## Come funziona
-
-### Concetto chiave
-Il conflitto deve essere definito da una primary key, unique constraint o unique index. `EXCLUDED` rappresenta la riga che si stava tentando di inserire.
-
-## API / Sintassi
+Esegui i due blocchi in ordine nella stessa sessione. La PK identifica una sola impostazione; `EXCLUDED` rappresenta la riga proposta, `s` quella già memorizzata. Il confronto `IS DISTINCT FROM` gestisce anche due valori nulli.
 
 ```sql
-INSERT INTO table_name (key_column, value_column)
-VALUES (key_value, value_value)
-ON CONFLICT (key_column)
-DO UPDATE SET
-  value_column = EXCLUDED.value_column
-RETURNING *;
+BEGIN;
+CREATE TEMP TABLE lab_settings (key text PRIMARY KEY, value text);
+INSERT INTO lab_settings AS s VALUES ('theme', NULL)
+ON CONFLICT (key) DO UPDATE SET value = EXCLUDED.value
+WHERE s.value IS DISTINCT FROM EXCLUDED.value
+RETURNING key, value;
 ```
-
-Per ignorare i duplicati:
 
 ```sql
-INSERT INTO table_name (key_column, value_column)
-VALUES (key_value, value_value)
-ON CONFLICT (key_column)
-DO NOTHING;
+INSERT INTO lab_settings AS s VALUES ('theme', 'dark')
+ON CONFLICT (key) DO UPDATE SET value = EXCLUDED.value
+WHERE s.value IS DISTINCT FROM EXCLUDED.value
+RETURNING key, value;
+
+INSERT INTO lab_settings AS s VALUES ('theme', 'dark')
+ON CONFLICT (key) DO UPDATE SET value = EXCLUDED.value
+WHERE s.value IS DISTINCT FROM EXCLUDED.value
+RETURNING key, value;
+
+INSERT INTO lab_settings VALUES ('theme', 'light')
+ON CONFLICT (key) DO NOTHING RETURNING key;
+
+SELECT key, value FROM lab_settings;
+ROLLBACK;
 ```
 
-`EXCLUDED` contiene i valori che PostgreSQL stava tentando di inserire ma che hanno generato il conflitto.
+Il primo inserimento restituisce `(theme,NULL)`. Il passaggio a `dark` restituisce `(theme,dark)`; ripeterlo non modifica né restituisce righe. Anche la proposta `light` viene saltata, stavolta da `DO NOTHING`. La lettura finale conferma `dark`. Un risultato vuoto di `RETURNING` non significa che la chiave non esista.
 
-## Esempio pratico
+## Come scegliere il conflitto
 
-### Esempio
-```sql
-INSERT INTO users (email, name)
-VALUES ('a@example.com', 'Ada')
-ON CONFLICT (email)
-DO UPDATE SET name = EXCLUDED.name;
-```
+- Per `DO UPDATE` indica l'arbitro: per esempio `(key)` per inferire un indice univoco compatibile oppure `ON CONSTRAINT nome` per un vincolo idoneo. Un indice ordinario non basta; un indice unico parziale richiede un predicato compatibile. `DO NOTHING` può anche omettere il target.
+- Il `WHERE` dopo `DO UPDATE SET` decide se effettuare la modifica **dopo** il conflitto: la riga può comunque essere bloccata. Non equivale al predicato usato per individuare un indice parziale.
+- Per un contatore, `SET hits = tabella.hits + 1` può essere corretto con più scrittori, ma una richiesta ripetuta incrementa due volte. Per contare una volta sola serve anche un'identità dell'evento.
+- In un unico inserimento multiplo con `DO UPDATE`, due proposte per la stessa chiave non possono aggiornare due volte la stessa riga. Risolvi i duplicati dell'input secondo una regola esplicita. Errori indipendenti, come un `CHECK` violato, non vengono ignorati.
 
-## Varianti
-
-```sql
-ON CONFLICT (email) DO NOTHING;
-```
-
-Varianti frequenti:
-
-- `ON CONFLICT (column_name)`: usa una colonna coperta da vincolo o indice unico.
-- `ON CONFLICT ON CONSTRAINT constraint_name`: punta direttamente a un vincolo nominato.
-- `DO NOTHING`: ignora la riga in conflitto.
-- `DO UPDATE SET ...`: aggiorna la riga esistente.
-- `WHERE` dentro `DO UPDATE`: aggiorna solo se serve davvero.
-
-Esempio con aggiornamento condizionale:
-
-```sql
-INSERT INTO users (email, name, updated_at)
-VALUES ('a@example.com', 'Ada', now())
-ON CONFLICT (email)
-DO UPDATE SET
-  name = EXCLUDED.name,
-  updated_at = EXCLUDED.updated_at
-WHERE users.name IS DISTINCT FROM EXCLUDED.name;
-```
-
-`IS DISTINCT FROM` gestisce correttamente anche i confronti con `NULL`.
-
-## Errori comuni
-
-- Non avere un vincolo unico su cui rilevare il conflitto.
-- Aggiornare sempre anche quando i dati sono identici.
-- Non considerare concorrenza e lock sulle righe coinvolte.
-
-## Checklist
-
-- Verificare che esista un vincolo unico o una primary key sul target del conflitto.
-- Usare `DO NOTHING` quando non serve aggiornare la riga esistente.
-- Usare `DO UPDATE` solo sui campi che devono cambiare davvero.
-- Valutare una clausola `WHERE` per evitare update inutili.
-- Usare `RETURNING` quando l'applicazione deve conoscere la riga finale.
-- Considerare lock e concorrenza se molti processi fanno upsert sulla stessa chiave.
+**Fonte:** [PostgreSQL 18: INSERT e ON CONFLICT](https://www.postgresql.org/docs/18/sql-insert.html).
 
 ## Collegamenti
 
+- [[Programmazione/PostgreSQL/Indice PostgreSQL|Indice PostgreSQL]]
 - [[Programmazione/PostgreSQL/Pagine/Vincoli|Vincoli]]
 - [[Programmazione/PostgreSQL/Pagine/Indici Parziali e Coprenti|Indici Parziali e Coprenti]]
 - [[Programmazione/PostgreSQL/Pagine/RETURNING|RETURNING]]
-
-
-## Navigazione
-
-- [[Programmazione/PostgreSQL/Indice PostgreSQL|Indice PostgreSQL]]

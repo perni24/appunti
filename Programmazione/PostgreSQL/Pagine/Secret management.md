@@ -20,93 +20,52 @@ title: Secret management
 
 ## Sintesi
 
-Il **secret management** riguarda gestione, rotazione e protezione di password, connection string, certificati e token usati per accedere a PostgreSQL.
+Un servizio deve poter aprire una connessione senza portare la password nel repository, nella riga di comando o nei log. Separa **come raggiungere il database** (host, porta, nome, CA) da **come autenticarsi** (password, token o chiave privata). Assegna credenziali distinte a runtime, migrazioni e operatori, e separa gli ambienti.
 
-## Quando usarlo
+## Esempio: un profilo libpq senza password
 
-Usa questa nota quando devi gestire credenziali database in modo sicuro:
+Nel file servizi dell'account applicativo, oppure nel file indicato da `PGSERVICEFILE`, configura i parametri non segreti. Esempio per un client con il percorso CA indicato:
 
-- configurazione di applicazioni;
-- rotazione password;
-- separazione tra ambienti;
-- certificati TLS;
-- backup cifrati;
-- revoca di accessi non piu validi.
-
-## Come funziona
-
-I segreti non devono stare nel codice sorgente. Devono essere conservati in un secret manager, in variabili d'ambiente controllate o in file protetti fuori dal repository.
-
-Ogni ambiente deve avere credenziali separate. Ogni servizio dovrebbe avere un ruolo dedicato, con privilegi minimi e rotazione pianificata.
-
-## API / Sintassi
-
-Esempio variabile d'ambiente:
-
-```text
-DATABASE_URL=postgresql://app_user:${DB_PASSWORD}@db.internal:5432/app_db?sslmode=verify-full
+```ini
+[app_prod]
+host=db.example.test
+port=5432
+dbname=app_db
+user=app_user
+sslmode=verify-full
+sslrootcert=/etc/postgresql/app-ca.pem
 ```
 
-Rotazione password:
+Distribuisci il passfile separatamente, per esempio da un secret manager, indicando il percorso con `PGPASSFILE`. Ogni riga usa il formato `host:porta:database:utente:password`; vince la **prima** riga corrispondente. Evita wildcard non necessarie. Su Unix il file deve escludere accessi di gruppo e altri (tipicamente `0600`), altrimenti libpq lo ignora. Su Windows il percorso predefinito è `%APPDATA%\postgresql\pgpass.conf`; limita gli accessi tramite ACL. Non versionare il file.
 
-```sql
-ALTER ROLE app_user PASSWORD 'new_strong_password';
+Prova con una **nuova** connessione. `-w` vieta il prompt: il comando fallisce se non è disponibile una credenziale valida e il server la richiede.
+
+```bash
+psql -X -w -d "service=app_prod" -c "SELECT session_user, current_database();"
 ```
 
-Revoca connessioni esistenti:
+Un `.env` ignorato da Git non è di per sé un secret manager; anche backup, output CI e log dell'app possono conservare segreti. Non dare per scontato che libpq espanda `${DB_PASSWORD}` in una URI. Preferisci un'integrazione del driver o il passfile anziché concatenare stringhe o affidare a `PGPASSWORD` la distribuzione del segreto.
 
-```sql
-SELECT pg_terminate_backend(pid)
-FROM pg_stat_activity
-WHERE usename = 'app_user'
-  AND pid <> pg_backend_pid();
+## Ruotare senza confondere accessi nuovi ed esistenti
+
+1. Identifica chi gestisce il login, quali app o pool lo usano e come si aggiornano. Conserva il nuovo valore nel gestore autorizzato; non inserirlo in SQL nel terminale o nella cronologia.
+2. Per un singolo ruolo password, coordina cambio e distribuzione: PostgreSQL non mantiene due password utilizzabili contemporaneamente per lo stesso ruolo. Da una sessione `psql` autorizzata puoi cambiare la password con un prompt che non mette il testo in chiaro nel comando:
+
+```psql
+\password app_user
 ```
 
-## Esempio pratico
+3. Aggiorna il passfile o il provider e ricarica i processi che memorizzano il segreto. Verifica che una connessione **nuova** con la credenziale corrente riesca e che la precedente non autentichi più. Non usare una query da una sessione già aperta come prova di rotazione.
+4. Il cambio di password o `NOLOGIN` non chiude le sessioni già autenticate. Pianifica il drenaggio del pool; un'eventuale terminazione forzata interrompe anche le transazioni in corso. Se serve sovrapposizione senza interruzioni, valuta due login temporaneamente distinti con lo stesso ruolo di permessi, poi ritira il vecchio dopo il passaggio.
+5. Registra proprietario, data di rotazione e risultato, **mai il segreto**. In caso di esposizione, rimuovere il valore dall'ultimo commit non lo revoca: ruotalo e verifica dove è stato distribuito.
 
-Procedura minima di rotazione:
+## Fonti
 
-1. Creare o recuperare una nuova password dal secret manager.
-2. Aggiornare il ruolo PostgreSQL con `ALTER ROLE`.
-3. Aggiornare il secret usato dall'applicazione.
-4. Riavviare o ricaricare i servizi che leggono il secret.
-5. Terminare vecchie connessioni se necessario.
-6. Verificare login e metriche applicative.
-
-## Varianti
-
-- Secret manager cloud.
-- Vault self-hosted.
-- Variabili d'ambiente protette.
-- File `.pgpass` con permessi stretti.
-- Certificati TLS client.
-- Credenziali temporanee o ruotate automaticamente.
-
-## Errori comuni
-
-- Mettere credenziali in file `.env` versionati.
-- Condividere lo stesso utente tra app, migrazioni e operatori.
-- Non revocare credenziali vecchie.
-- Loggare connection string complete.
-- Usare password uguali tra dev, staging e produzione.
-- Non documentare proprietario e scadenza dei segreti.
-
-## Checklist
-
-- I segreti sono fuori dal repository?
-- Ogni ambiente ha credenziali separate?
-- Ogni servizio ha un ruolo dedicato?
-- Esiste una procedura di rotazione testata?
-- I log mascherano password e URL completi?
-- Certificati e chiavi hanno scadenza monitorata?
+[PostgreSQL 18: password file](https://www.postgresql.org/docs/18/libpq-pgpass.html) · [File servizi](https://www.postgresql.org/docs/18/libpq-pgservice.html) · [psql e comando password](https://www.postgresql.org/docs/18/app-psql.html) · [Autenticazione password](https://www.postgresql.org/docs/18/auth-password.html)
 
 ## Collegamenti
 
+- [[Programmazione/PostgreSQL/Indice PostgreSQL|Indice PostgreSQL]]
 - [[Programmazione/PostgreSQL/Pagine/Driver e connection string|Driver e connection string]]
 - [[Programmazione/PostgreSQL/Pagine/Ruoli e privilegi avanzati|Ruoli e privilegi avanzati]]
 - [[Programmazione/PostgreSQL/Pagine/SSL e TLS|SSL/TLS]]
-
-
-## Navigazione
-
-- [[Programmazione/PostgreSQL/Indice PostgreSQL|Indice PostgreSQL]]

@@ -14,120 +14,104 @@ aliases:
   - Cheatsheet sintassi Rust
 prerequisites: []
 related:
-  - "[[Programmazione/Rust/Pagine/Sintassi di base]]"
-  - "[[Programmazione/Rust/Pagine/Tipi di dato primitivi]]"
+  - "[[Programmazione/Rust/Pagine/Sintassi di base|Sintassi di base]]"
+  - "[[Programmazione/Rust/Pagine/Tipi di dato primitivi|Tipi di dato primitivi]]"
 title: Rust - Sintassi essenziale
 ---
 
 # Rust - Sintassi essenziale
 
-## Variabili
+Blocchi indipendenti da incollare nel corpo di `fn main()`. Per i dettagli: [[Programmazione/Rust/Pagine/Sintassi di base|Sintassi di base]].
+
+## Variabili, costanti e shadowing
 
 ```rust
-let name = "Ada";
+const MAX_ITEMS: usize = 100;
 let mut count = 0;
 count += 1;
-
-const MAX_ITEMS: usize = 100;
-```
-
-## Shadowing
-
-```rust
 let input = "42";
-let input: i32 = input.parse()?;
+let input: i32 = input.parse().expect("letterale numerico");
+assert!(count < MAX_ITEMS);
+assert_eq!(input, 42);
 ```
 
-## Tipi principali
+`mut` permette di cambiare il valore; un nuovo `let` può cambiare anche il tipo.
+
+## Tipi e accesso
 
 ```rust
-let integer: i32 = 42;
+let signed: i32 = -42;
 let unsigned: u64 = 42;
-let decimal: f64 = 3.14;
+let decimal: f64 = 1.5;
 let active: bool = true;
 let letter: char = 'R';
-let tuple: (i32, &str) = (1, "one");
-let array: [i32; 3] = [1, 2, 3];
+let pair: (i32, &str) = (signed, "one");
+let array: [u64; 3] = [unsigned, 7, 8];
+assert_eq!((pair.0, pair.1, array[0]), (-42, "one", 42));
+assert!(active && decimal > 1.0 && letter == 'R');
 ```
 
-## Condizioni
+## Condizioni, range e cicli
 
 ```rust
+let score = 60;
 let label = if score >= 60 { "ok" } else { "ko" };
+assert_eq!(label, "ok");
+assert_eq!((0..3).count(), 3);  // 0, 1, 2
+assert_eq!((0..=3).count(), 4); // anche 3
 ```
 
-## Cicli
-
 ```rust
+let values = [10, 20];
 for value in &values {
     println!("{value}");
 }
-```
-
-```rust
 for (index, value) in values.iter().enumerate() {
     println!("{index}: {value}");
 }
 ```
 
 ```rust
-while count < limit {
-    count += 1;
-}
-```
-
-```rust
+let mut count = 0;
+while count < 3 { count += 1; }
 let result = loop {
-    if ready {
-        break 42;
-    }
+    count += 1;
+    if count % 2 == 0 { break count; }
 };
+assert_eq!(result, 4);
 ```
 
-## Range
+## Conversioni: testo, ampliamento, intervallo
 
 ```rust
-for value in 0..10 {}
-for value in 0..=10 {}
+fn as_byte(text: &str) -> Result<u8, Box<dyn std::error::Error>> {
+    let number = text.parse::<i32>()?;
+    let larger = i64::from(number);
+    Ok(u8::try_from(larger)?)
+}
+assert_eq!(as_byte("255").unwrap(), 255);
+assert!(as_byte("256").is_err());
+assert!(as_byte("abc").is_err());
 ```
 
-## Conversioni
+## Formattazione e macro
 
 ```rust
-let number = "42".parse::<i32>()?;
-let larger = i64::from(number);
-let checked = u8::try_from(number)?;
-```
-
-## Formattazione
-
-```rust
-println!("name={name}");
-println!("debug={value:?}");
-
+let name = "Ada";
+let values = vec![1, 2];
 let message = format!("Ciao {name}");
+println!("{message}: {values:?}");
+dbg!(&values); // stderr, senza spostare il Vec
+assert_eq!(values.len(), 2);
 ```
 
-## Macro comuni
+`format!` restituisce una `String`; `println!` scrive su stdout. `todo!()` (codice da implementare) e `unreachable!()` (ramo ritenuto impossibile) causano entrambi un panic se raggiunti.
 
-```rust
-vec![1, 2, 3]
-format!("{value}")
-println!("{value}")
-dbg!(&value)
-todo!()
-unreachable!()
-```
+## Collegamenti
 
-## Approfondimento
-
+- [[Programmazione/Rust/Promemoria/Indice Promemoria Rust|Indice Promemoria Rust]]
 - [[Programmazione/Rust/Pagine/Sintassi di base|Sintassi di base]]
 - [[Programmazione/Rust/Pagine/Variabili mutabilita e shadowing|Variabili mutabilita e shadowing]]
 - [[Programmazione/Rust/Pagine/Tipi di dato primitivi|Tipi di dato primitivi]]
-- [[Programmazione/Rust/Pagine/Operatore|Operatore]]
+- [[Programmazione/Rust/Pagine/Operatore|Operatore ?]]
 - [[Programmazione/Rust/Pagine/Controllo di flusso|Controllo di flusso]]
-
-
-## Navigazione
-
-- [[Programmazione/Rust/Promemoria/Indice Promemoria Rust|Indice Promemoria Rust]]

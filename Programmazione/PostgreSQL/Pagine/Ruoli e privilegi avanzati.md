@@ -20,118 +20,68 @@ title: Ruoli e privilegi avanzati
 
 ## Sintesi
 
-I privilegi avanzati riguardano ownership, membership, default privileges, `SECURITY DEFINER` e separazione tra ruoli umani, applicativi e tecnici. Servono a ridurre privilegi eccessivi senza bloccare il lavoro.
+Autenticarsi, ricevere un permesso e possedere una tabella sono cose diverse. Un ruolo `LOGIN` identifica una connessione; un ruolo `NOLOGIN` può possedere gli oggetti o raccogliere permessi comuni. L'applicazione non dovrebbe poter diventare owner solo perché deve leggere ordini.
 
-## Quando usarlo
+## Progettare le autorizzazioni
 
-Usa questa nota quando la gestione base dei ruoli non basta:
+| Domanda | Meccanismo | Limite |
+| --- | --- | --- |
+| Chi modifica lo schema? | Owner tecnico; l'operatore di migrazione assume quel ruolo | L'owner può alterare o eliminare i propri oggetti |
+| Chi legge? | `USAGE` sullo schema e `SELECT` sulle tabelle necessarie | `USAGE` non concede accesso ai dati |
+| Chi può annullare ordini? | `EXECUTE` su una funzione con operazione circoscritta | Non concedere anche l'`UPDATE` generico se vuoi imporre quel passaggio |
 
-- vuoi separare owner e runtime user;
-- devi configurare permessi per oggetti futuri;
-- usi funzioni `SECURITY DEFINER`;
-- hai piu team o applicazioni nello stesso database;
-- devi revocare privilegi da `PUBLIC`;
-- devi evitare che l'applicazione possieda lo schema.
+In PostgreSQL 18 una membership può permettere di ereditare i privilegi (`INHERIT`), assumere esplicitamente il ruolo (`SET`) o amministrarne la membership (`ADMIN`): sono scelte distinte. Non rendere il login applicativo membro del ruolo proprietario.
 
-## Come funziona
+## Laboratorio: leggere una tabella, esporre una sola modifica
 
-L'owner di un oggetto ha poteri speciali su quell'oggetto. Per questo e spesso utile creare un ruolo owner senza login e assegnare all'applicazione solo i privilegi necessari.
-
-I default privileges definiscono permessi applicati automaticamente ai nuovi oggetti creati da un certo ruolo in uno schema.
-
-`SECURITY DEFINER` esegue una funzione con i privilegi del proprietario della funzione. E potente, ma richiede attenzione a `search_path` e input.
-
-## API / Sintassi
-
-Owner tecnico:
+Database di prova vuoto; eseguire i blocchi in ordine nella stessa sessione amministrativa. La transazione finale viene annullata. `lab_runtime` è un ruolo di permessi che in produzione assegneresti a un login dedicato.
 
 ```sql
-CREATE ROLE app_owner NOLOGIN;
-CREATE ROLE app_runtime LOGIN PASSWORD 'change_me';
+BEGIN;
+CREATE ROLE lab_owner NOLOGIN;
+CREATE ROLE lab_runtime NOLOGIN;
+CREATE SCHEMA lab_acl AUTHORIZATION lab_owner;
+SET ROLE lab_owner;
+GRANT USAGE ON SCHEMA lab_acl TO lab_runtime;
+ALTER DEFAULT PRIVILEGES IN SCHEMA lab_acl
+  GRANT SELECT ON TABLES TO lab_runtime;
+CREATE TABLE lab_acl.orders (id integer PRIMARY KEY, status text NOT NULL);
+INSERT INTO lab_acl.orders VALUES (1, 'pending');
 ```
 
-Schema posseduto dall'owner:
+I permessi predefiniti valgono per le **nuove** tabelle create da `lab_owner` nello schema, non per quelle preesistenti o create da un altro ruolo. Per le prime serve un `GRANT` sugli oggetti esistenti; per sequenze usate direttamente occorrono privilegi separati.
 
 ```sql
-CREATE SCHEMA app AUTHORIZATION app_owner;
-GRANT USAGE ON SCHEMA app TO app_runtime;
-```
-
-Default privileges:
-
-```sql
-ALTER DEFAULT PRIVILEGES FOR ROLE app_owner IN SCHEMA app
-GRANT SELECT, INSERT, UPDATE, DELETE ON TABLES TO app_runtime;
-
-ALTER DEFAULT PRIVILEGES FOR ROLE app_owner IN SCHEMA app
-GRANT USAGE, SELECT ON SEQUENCES TO app_runtime;
-```
-
-Revoca da `PUBLIC`:
-
-```sql
-REVOKE CREATE ON SCHEMA public FROM PUBLIC;
-```
-
-## Esempio pratico
-
-Funzione controllata con `SECURITY DEFINER`:
-
-```sql
-CREATE FUNCTION app.cancel_order(order_id bigint)
-RETURNS void
-LANGUAGE plpgsql
-SECURITY DEFINER
-SET search_path = app, pg_temp
+CREATE FUNCTION lab_acl.cancel_order(p_id integer) RETURNS integer
+LANGUAGE sql SECURITY DEFINER SET search_path = pg_catalog, pg_temp
 AS $$
-BEGIN
-  UPDATE app.orders
-  SET status = 'cancelled'
-  WHERE id = order_id
-    AND status = 'pending';
-END;
+  UPDATE lab_acl.orders SET status = 'cancelled'
+  WHERE id = p_id AND status = 'pending' RETURNING id;
 $$;
-
-REVOKE ALL ON FUNCTION app.cancel_order(bigint) FROM PUBLIC;
-GRANT EXECUTE ON FUNCTION app.cancel_order(bigint) TO app_runtime;
+REVOKE ALL ON FUNCTION lab_acl.cancel_order(integer) FROM PUBLIC;
+GRANT EXECUTE ON FUNCTION lab_acl.cancel_order(integer) TO lab_runtime;
+RESET ROLE;
+SET ROLE lab_runtime;
 ```
 
-La funzione espone una singola operazione invece di concedere privilegi generici troppo ampi.
+La funzione opera come il proprietario, qui un ruolo senza privilegi amministrativi. Usa nomi qualificati, uno `search_path` controllato e pubblica la funzione e i suoi grant nella stessa transazione. Il contratto consente al chiamante di annullare **qualsiasi** ordine pendente di questo laboratorio: in un servizio multiutente servirebbe anche un controllo su quali ordini può gestire.
 
-## Varianti
+```sql
+SELECT has_table_privilege(current_user, 'lab_acl.orders', 'UPDATE') AS update_diretto;
+SELECT lab_acl.cancel_order(1) AS annullato;
+SELECT status FROM lab_acl.orders WHERE id = 1;
+ROLLBACK;
+```
 
-- Ruolo owner `NOLOGIN`.
-- Ruolo runtime con privilegi minimi.
-- Ruoli read-only e read-write.
-- Default privileges per tabelle, sequenze e funzioni.
-- `SECURITY DEFINER` per operazioni controllate.
-- `SET ROLE` per assumere temporaneamente un ruolo.
+Attesi `false`, `1`, `cancelled`. Il controllo determinante è il privilegio **effettivo** del ruolo, che può arrivare anche da membership o da `PUBLIC`: revocare un singolo grant non annulla gli altri. Controlla anche chi può creare oggetti negli schemi usati dalle funzioni privilegiate.
 
-## Errori comuni
+## Fonti
 
-- Usare l'owner dello schema come utente applicativo.
-- Concedere `SUPERUSER` senza necessita.
-- Dimenticare privilegi sulle sequenze.
-- Configurare default privileges sul ruolo sbagliato.
-- Usare `SECURITY DEFINER` senza fissare `search_path`.
-- Lasciare funzioni sensibili eseguibili da `PUBLIC`.
-
-## Checklist
-
-- Owner e runtime user sono separati?
-- I default privileges sono impostati dal ruolo che crea gli oggetti?
-- I privilegi su sequenze e funzioni sono inclusi?
-- `PUBLIC` ha privilegi solo se intenzionali?
-- Le funzioni `SECURITY DEFINER` impostano `search_path`?
-- Le grant sono documentate per ruolo e scopo?
+[PostgreSQL 18: membership dei ruoli](https://www.postgresql.org/docs/18/role-membership.html) · [Privilegi predefiniti](https://www.postgresql.org/docs/18/sql-alterdefaultprivileges.html) · [Sicurezza delle funzioni](https://www.postgresql.org/docs/18/sql-createfunction.html#SQL-CREATEFUNCTION-SECURITY)
 
 ## Collegamenti
 
+- [[Programmazione/PostgreSQL/Indice PostgreSQL|Indice PostgreSQL]]
 - [[Programmazione/PostgreSQL/Pagine/Gestione Utenti e Ruoli|Gestione Utenti e Ruoli]]
 - [[Programmazione/PostgreSQL/Pagine/Row Level Security|Row Level Security]]
 - [[Programmazione/PostgreSQL/Pagine/Audit logging|Audit logging]]
-
-
-## Navigazione
-
-- [[Programmazione/PostgreSQL/Indice PostgreSQL|Indice PostgreSQL]]

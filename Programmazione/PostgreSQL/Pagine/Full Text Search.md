@@ -20,111 +20,55 @@ title: Full Text Search in PostgreSQL
 
 ## Sintesi
 
-Il **Full Text Search** permette ricerche testuali avanzate usando dizionari, stemming, stop words, ranking e indici GIN. E piu espressivo di `LIKE` per testi lunghi e ricerche per parole.
+La ricerca full text confronta i **termini normalizzati** di un documento (`tsvector`) con quelli di una domanda (`tsquery`), tramite `@@`. È adatta a cercare parole nella documentazione o nei ticket; non è una ricerca per sottostringa e non corregge automaticamente gli errori di battitura. La configurazione linguistica decide, tra l'altro, quali parole ignorare e come ricondurre forme flesse allo stesso termine.
 
-## Quando usarlo
+## Preparare i documenti
 
-Usalo quando devi cercare dentro:
-
-- articoli;
-- documentazione;
-- descrizioni prodotto;
-- ticket e commenti;
-- log testuali;
-- contenuti multilingua.
-
-Non sostituisce sempre motori dedicati come Elasticsearch/OpenSearch, ma e spesso sufficiente per ricerca integrata in applicazioni PostgreSQL.
-
-## Come funziona
-
-PostgreSQL converte il testo in `tsvector`, cioe una rappresentazione normalizzata dei termini. La query viene convertita in `tsquery`. L'operatore `@@` verifica se il documento corrisponde alla query.
-
-La lingua scelta influenza stemming e stop words. Per performance, il `tsvector` viene spesso salvato in una colonna generata e indicizzato con GIN.
-
-## API / Sintassi
-
-Ricerca base:
+Esegui i due blocchi nella stessa sessione. La colonna generata conserva il vettore e si aggiorna quando cambia il testo. Il peso A dà più rilievo al titolo rispetto al peso D del corpo. `coalesce` impedisce che un corpo nullo faccia perdere anche le parole del titolo.
 
 ```sql
-SELECT to_tsvector('italian', 'I database sono strumenti potenti')
-       @@ to_tsquery('italian', 'strumenti & potente');
+BEGIN;
+CREATE TEMP TABLE lab_docs (
+  id integer PRIMARY KEY, title text NOT NULL, body text,
+  terms tsvector GENERATED ALWAYS AS (
+    setweight(to_tsvector('italian', title), 'A') ||
+    setweight(to_tsvector('italian', coalesce(body, '')), 'D')
+  ) STORED
+);
+CREATE INDEX lab_docs_terms_idx ON lab_docs USING gin (terms);
+INSERT INTO lab_docs (id, title, body) VALUES
+  (1, 'Stampanti', NULL),
+  (2, 'Manuale', 'Controllare la stampante'),
+  (3, 'Ricambi', 'Controllare il filtro');
 ```
 
-Colonna generata:
+## Cercare, ordinare e mostrare un estratto
 
 ```sql
-ALTER TABLE articles
-ADD COLUMN search_vector tsvector
-GENERATED ALWAYS AS (
-  to_tsvector('italian', coalesce(title, '') || ' ' || coalesce(body, ''))
-) STORED;
+WITH search(q) AS (SELECT websearch_to_tsquery('italian', 'stampante'))
+SELECT id, title,
+       ts_headline('italian', coalesce(body, title), q,
+                   'StartSel=[, StopSel=]') AS excerpt
+FROM lab_docs CROSS JOIN search
+WHERE terms @@ q
+ORDER BY ts_rank(terms, q) DESC, id;
+ROLLBACK;
 ```
 
-Indice:
+Risultati, in ordine: **1** (titolo «Stampanti») e **2** (corpo «Controllare la stampante»). Singolare e plurale corrispondono; il titolo pesa di più. Il filtro `@@` decide chi entra; `ts_rank` decide come ordinare i risultati e l'ID scioglie i pareggi. L'indice GIN aiuta a individuare le corrispondenze, **non** restituisce già le righe ordinate per rilevanza. Su tre documenti una scansione sequenziale è normale.
 
-```sql
-CREATE INDEX articles_search_vector_idx
-ON articles
-USING gin (search_vector);
-```
+## Quale funzione per la domanda?
 
-## Esempio pratico
+- `plainto_tsquery` collega con AND i termini utili del testo libero. `websearch_to_tsquery` accetta anche frasi tra virgolette, `OR` e il segno meno per escludere parole; è indicata per una casella di ricerca. Il testo dell'utente va comunque passato come **parametro SQL**.
+- `to_tsquery` è adatta a un'espressione con operatori espliciti, per esempio `'stampante & filtro'`: non è un parser di testo libero. Una query composta solo da stop word può non contenere termini ricercabili.
+- `ts_rank_cd` considera anche la vicinanza dei termini. Valuta la pertinenza su testi reali; con più lingue, scegli una configurazione coerente per documento e domanda. Per cercare un frammento di codice prodotto o tollerare refusi serve una strategia diversa.
+- `ts_headline` crea un estratto, **non** rende il testo sicuro da inserire come HTML. Per una pagina web tratta l'estratto come testo oppure sanificalo prima di renderizzarlo come markup.
 
-Ricerca con ranking:
-
-```sql
-SELECT
-  title,
-  ts_rank(search_vector, query) AS rank
-FROM articles,
-     plainto_tsquery('italian', 'postgres performance') AS query
-WHERE search_vector @@ query
-ORDER BY rank DESC
-LIMIT 20;
-```
-
-Snippet evidenziato:
-
-```sql
-SELECT ts_headline('italian', body, plainto_tsquery('italian', 'postgres performance'))
-FROM articles
-WHERE search_vector @@ plainto_tsquery('italian', 'postgres performance');
-```
-
-## Varianti
-
-- `to_tsquery`: query esplicita con operatori.
-- `plainto_tsquery`: converte testo naturale in query.
-- `websearch_to_tsquery`: sintassi simile a motori web.
-- `ts_rank` e `ts_rank_cd`: ranking.
-- `setweight`: peso diverso per titolo e corpo.
-- GIN index su `tsvector`.
-
-## Errori comuni
-
-- Usare la lingua sbagliata.
-- Calcolare `to_tsvector` al volo su ogni query senza indice.
-- Confondere ricerca full text con substring search.
-- Non gestire `NULL` con `coalesce`.
-- Non pesare titolo e corpo quando hanno importanza diversa.
-- Aspettarsi fuzzy search automatica per errori di battitura.
-
-## Checklist
-
-- La lingua del dizionario e corretta?
-- Esiste un indice GIN sul `tsvector`?
-- Il `tsvector` combina i campi giusti?
-- Il ranking produce risultati sensati?
-- Serve evidenziazione con `ts_headline`?
-- Serve un motore esterno per fuzzy search, sinonimi complessi o scala maggiore?
+**Fonti PostgreSQL 18:** [costruzione, ranking ed estratti](https://www.postgresql.org/docs/18/textsearch-controls.html), [tabelle e indici per la ricerca](https://www.postgresql.org/docs/18/textsearch-tables.html).
 
 ## Collegamenti
 
+- [[Programmazione/PostgreSQL/Indice PostgreSQL|Indice PostgreSQL]]
 - [[Programmazione/PostgreSQL/Pagine/Tipi di Indici|Tipi di Indici]]
 - [[Programmazione/PostgreSQL/Pagine/Tipi di Dato|Tipi di Dato]]
 - [[Programmazione/PostgreSQL/Pagine/Analisi delle Query|Analisi delle Query]]
-
-
-## Navigazione
-
-- [[Programmazione/PostgreSQL/Indice PostgreSQL|Indice PostgreSQL]]

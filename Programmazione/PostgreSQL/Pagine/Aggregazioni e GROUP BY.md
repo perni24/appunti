@@ -20,133 +20,70 @@ title: Aggregazioni e GROUP BY
 
 ## Sintesi
 
-Le aggregazioni riassumono gruppi di righe usando funzioni come `count`, `sum`, `avg`, `min` e `max`.
+Prima di scrivere una somma, completa la frase «voglio una riga per …». `GROUP BY customer_id` produce una riga per cliente **presente nei dati di ingresso**. Non inventa clienti mancanti. Se vuoi mantenere ogni ordine e aggiungere il totale del suo cliente, usa invece una [[Programmazione/PostgreSQL/Pagine/Window Functions|window function]].
 
-## Quando usarlo
+## WHERE, FILTER e HAVING
 
-Usa le aggregazioni quando devi trasformare molte righe in misure riassuntive:
-
-- conteggio di ordini, utenti, eventi o errori;
-- somma di importi o quantita;
-- media, minimo e massimo di valori numerici o temporali;
-- report raggruppati per cliente, giorno, stato, categoria o area geografica;
-- controlli di qualita sui dati, per esempio trovare duplicati.
-
-`GROUP BY` e adatto quando il risultato deve avere una riga per gruppo. Se invece vuoi mantenere tutte le righe originali e aggiungere un calcolo aggregato, spesso sono piu adatte le [[Programmazione/PostgreSQL/Pagine/Window Functions|Window Functions]].
-
-## Come funziona
-
-### Concetto chiave
-`GROUP BY` definisce il livello di dettaglio del risultato.
+`WHERE` rimuove righe prima del raggruppamento; `FILTER` limita l'ingresso di **un solo aggregato**; `HAVING` decide quali gruppi restituire. Questa query è autonoma:
 
 ```sql
-SELECT customer_id, count(*) AS total_orders
+WITH orders(customer_id, status, amount) AS (
+    VALUES (1,'paid',20), (1,'paid',NULL), (1,'cancelled',7),
+           (2,'paid',5), (3,'draft',40)
+)
+SELECT customer_id, count(*) AS ordini,
+       count(*) FILTER (WHERE status = 'paid') AS pagati,
+       count(amount) FILTER (WHERE status = 'paid') AS importi_noti,
+       sum(amount) FILTER (WHERE status = 'paid') AS ricavo
 FROM orders
-GROUP BY customer_id;
-```
-### HAVING
-`WHERE` filtra le righe prima dell'aggregazione. `HAVING` filtra i gruppi dopo l'aggregazione.
-
-```sql
-SELECT customer_id, count(*) AS total_orders
-FROM orders
+WHERE status <> 'draft'
 GROUP BY customer_id
-HAVING count(*) > 5;
+HAVING count(*) >= 2
+ORDER BY customer_id;
 ```
 
-## API / Sintassi
+Solo il cliente `1` supera `HAVING`: ha **3 ordini, 2 pagati, 1 importo pagato noto, ricavo noto 20**. `count(*)` conta righe; `count(amount)` e `sum(amount)` ignorano gli importi nulli. Questo non dimostra che il secondo pagamento valga zero.
+
+## Nessun ordine: zero oppure NULL?
 
 ```sql
-SELECT group_column, aggregate_function(column_name)
-FROM table_name
-WHERE row_filter
-GROUP BY group_column
-HAVING group_filter
-ORDER BY aggregate_function(column_name) DESC;
+WITH clients(id) AS (VALUES (1), (2)),
+     orders(id, client_id, amount) AS (VALUES (11, 1, 20))
+SELECT c.id, count(*) AS righe_join, count(o.id) AS ordini,
+       sum(o.amount) AS somma, coalesce(sum(o.amount), 0) AS mostrato
+FROM clients AS c
+LEFT JOIN orders AS o ON o.client_id = c.id
+GROUP BY c.id
+ORDER BY c.id;
 ```
 
-Funzioni comuni:
+Per il cliente `2` la left join fornisce una riga segnaposto: `righe_join = 1`, `ordini = 0`, `somma = NULL` e `mostrato = 0`. Usa `coalesce` solo se zero è la convenzione del report. Senza `GROUP BY`, sul vuoto un aggregato come `count(*)` restituisce una riga con zero; con gruppi e nessuna riga in ingresso, non c'è nessun gruppo da restituire.
+
+## Altri report
 
 ```sql
-count(*)
-count(column_name)
-sum(amount)
-avg(amount)
-min(created_at)
-max(created_at)
-json_agg(row_value)
-array_agg(value)
-```
-
-`WHERE` filtra le righe prima del raggruppamento. `HAVING` filtra i gruppi dopo il calcolo delle aggregazioni.
-
-## Esempio pratico
-
-Report degli ordini pagati per cliente:
-
-```sql
-SELECT
-  customer_id,
-  count(*) AS orders_count,
-  sum(total_amount) AS total_revenue,
-  avg(total_amount) AS average_order_value
-FROM orders
-WHERE status = 'paid'
-GROUP BY customer_id
-HAVING count(*) >= 3
-ORDER BY total_revenue DESC;
-```
-
-Ricerca di email duplicate:
-
-```sql
-SELECT email, count(*) AS occurrences
+WITH users(email) AS (
+    VALUES ('ada@example.org'), ('ada@example.org'), ('teo@example.org'), (NULL)
+)
+SELECT email, count(*) AS occorrenze
 FROM users
+WHERE email IS NOT NULL
 GROUP BY email
 HAVING count(*) > 1;
 ```
 
-## Varianti
+Qui l'unico duplicato è `ada@example.org` (2). `avg`, `min` e `max` operano sui valori non nulli; per ottenere elenchi ripetibili con `array_agg` o `json_agg` specifica `ORDER BY` **dentro** l'aggregato. Per report temporali definisci il fuso del giorno prima di raggruppare; per subtotali esistono `ROLLUP`, `CUBE` e `GROUPING SETS`.
 
-- `GROUP BY date_trunc('day', created_at)`: raggruppa per intervallo temporale.
-- `GROUP BY ROLLUP (...)`: produce totali gerarchici.
-- `GROUP BY CUBE (...)`: produce combinazioni multidimensionali.
-- `GROUPING SETS`: definisce esplicitamente piu livelli di aggregazione.
-- `FILTER (WHERE ...)`: calcola aggregazioni condizionali nella stessa query.
+## Errori da distinguere
 
-Esempio con `FILTER`:
+- In una query raggruppata le colonne libere devono essere coerenti con la chiave del gruppo. PostgreSQL ammette, ad esempio, altre colonne della **stessa tabella di base** quando raggruppi per l'intera sua chiave primaria. Non assume ogni dipendenza che appare ovvia nei dati.
+- Una seconda join 1:N può duplicare gli importi prima di `sum`. `count(DISTINCT order_id)` può correggere il conteggio degli ordini, ma `sum(DISTINCT amount)` eliminerebbe anche importi uguali di ordini diversi.
 
-```sql
-SELECT
-  customer_id,
-  count(*) FILTER (WHERE status = 'paid') AS paid_orders,
-  count(*) FILTER (WHERE status = 'cancelled') AS cancelled_orders
-FROM orders
-GROUP BY customer_id;
-```
-
-## Errori comuni
-
-- Selezionare colonne non aggregate e non presenti nel `GROUP BY`.
-- Usare `HAVING` quando basta `WHERE`.
-- Aggregare dati duplicati a causa di join sbagliate.
-
-## Checklist
-
-- Ogni colonna nel `SELECT` deve essere aggregata o presente nel `GROUP BY`.
-- Usare `WHERE` per ridurre le righe prima dell'aggregazione.
-- Usare `HAVING` solo per condizioni basate sul risultato aggregato.
-- Controllare che eventuali join non moltiplichino le righe prima del conteggio.
-- Valutare `count(distinct ...)` quando esistono duplicati dovuti a join.
-- Per report frequenti su tabelle grandi, controllare piano query e indici.
+**Fonti:** [funzioni aggregate](https://www.postgresql.org/docs/18/functions-aggregate.html) e [GROUP BY e HAVING](https://www.postgresql.org/docs/18/queries-table-expressions.html#QUERIES-GROUP).
 
 ## Collegamenti
 
+- [[Programmazione/PostgreSQL/Indice PostgreSQL|Indice PostgreSQL]]
 - [[Programmazione/PostgreSQL/Pagine/JOIN|JOIN]]
 - [[Programmazione/PostgreSQL/Pagine/Window Functions|Window Functions]]
 - [[Programmazione/PostgreSQL/Pagine/Analisi delle Query|Analisi delle Query]]
-
-
-## Navigazione
-
-- [[Programmazione/PostgreSQL/Indice PostgreSQL|Indice PostgreSQL]]

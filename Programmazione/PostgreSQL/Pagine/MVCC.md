@@ -20,158 +20,72 @@ title: MVCC (Multi-Version Concurrency Control) in PostgreSQL
 
 ## Sintesi
 
-MVCC permette a PostgreSQL di conservare più versioni logiche delle righe e scegliere quali sono visibili a ogni statement o transazione. Riduce la contesa tra letture e scritture, ma richiede vacuum, controllo delle transazioni lunghe e una corretta comprensione degli snapshot.
+**MVCC** (*Multi-Version Concurrency Control*) separa la riga logica dalle sue versioni fisiche. Un aggiornamento produce una nuova versione; uno **snapshot** stabilisce quali versioni la query può leggere. Per questo due sessioni possono leggere valori diversi della stessa riga senza che nessuna legga dati sporchi.
 
-Il **Multi-Version Concurrency Control (MVCC)** è il meccanismo fondamentale con cui PostgreSQL gestisce l'accesso simultaneo ai dati da parte di più utenti senza compromettere l'integrità.
+## Esperimento: quale prezzo vede il lettore?
 
-## Quando usarlo
+Apri due connessioni **A** e **B** allo stesso database di prova, con autocommit attivo fuori dai `BEGIN`. Non usare una tabella temporanea: l'altra connessione non la vedrebbe. Usa un database dove il nome `lab_mvcc_price` sia libero. Segui i passi in ordine.
 
-Serve capire MVCC quando analizzi concorrenza, bloat, vacuum e visibilita dei dati:
-
-- query lunghe che impediscono a `VACUUM` di ripulire tuple morte;
-- tabelle che crescono molto dopo molti `UPDATE` o `DELETE`;
-- differenze tra dati letti da transazioni diverse;
-- scelta del livello di isolamento;
-- problemi con `idle in transaction`;
-- interpretazione di snapshot e visibilita.
-
-## Come funziona
-
-### Concetto chiave
-La proprietà pratica di MVCC è che le normali letture di righe non confliggono con le normali scritture sulle stesse righe. Un `UPDATE` crea una nuova versione della tupla e lo snapshot decide quale versione è visibile. Il momento dello snapshot dipende dal livello di isolamento: per statement in `READ COMMITTED`, per transazione in `REPEATABLE READ` e `SERIALIZABLE`.
-
----
-### Come funziona: Versionamento delle Righe
-Ogni riga (tuple) in PostgreSQL contiene dei campi nascosti che gestiscono la visibilità:
-
-- **xmin:** L'ID della transazione che ha inserito la riga.
-- **xmax:** Informazione usata per eliminazioni, aggiornamenti e alcuni lock di riga. Un valore non nullo non basta da solo a stabilire che la tupla sia invisibile: bisogna considerare stato della transazione, bit di hint, eventuali MultiXact e snapshot corrente.
-
-### UPDATE come DELETE + INSERT
-Quando esegui un `UPDATE`:
-1.  La riga esistente viene marcata come "scaduta" (impostando `xmax` all'ID della transazione corrente).
-2.  Viene inserita una nuova riga con i dati aggiornati (impostando `xmin` all'ID corrente).
-
----
-### Visibilità delle Transazioni (Snapshot)
-Ogni statement opera rispetto a uno **snapshot**; il livello di isolamento stabilisce se gli statement successivi riusano lo stesso snapshot. In modo semplificato:
-- una versione inserita da una transazione confermata può essere visibile se il commit precede lo snapshot;
-- una versione inserita da una transazione ancora in corso o abortita non è visibile;
-- un `xmax` confermato rende la vecchia versione invisibile solo agli snapshot successivi alla modifica.
-
-Questo garantisce l'[[Programmazione/PostgreSQL/Pagine/Proprietà ACID|Isolamento]] richiesto dai diversi livelli di transazione.
-
----
-### Il problema dei "Dead Tuples" e VACUUM
-Poiché gli update e i delete non eliminano fisicamente i dati ma creano nuove versioni, lo spazio su disco tende a crescere (**Bloat**). Le vecchie versioni non più visibili a nessuna transazione attiva sono chiamate "Dead Tuples".
-
-### Il processo VACUUM
-Il compito di **VACUUM** è:
-1.  Identificare le Dead Tuples.
-2.  Marcarne lo spazio come riutilizzabile per nuovi inserimenti.
-3.  Aggiornare visibility map, free space map e alcune statistiche di tabella. Le statistiche sulla distribuzione dei valori usate dal planner vengono raccolte da `ANALYZE`.
-
-> [!INFO] Autovacuum
-> Il sottosistema autovacuum avvia worker che eseguono `VACUUM` e `ANALYZE` in base a soglie distinte, oltre a prevenire il wraparound degli ID di transazione.
-
----
-### Logic layer: Vantaggi di MVCC
-1.  **Alta Concorrenza:** Ideale per sistemi con molti lettori (es: siti web).
-2.  **Minore contesa tra DML:** Le normali letture non aspettano i row lock delle normali scritture, ma possono comunque attendere lock di tabella incompatibili, per esempio durante alcuni DDL.
-3.  **Rollback logico rapido:** Le versioni create da una transazione abortita diventano invisibili senza un undo fisico immediato; il recupero dello spazio resta compito di `VACUUM`.
-
----
-
-## API / Sintassi
-
-MVCC non e una API da chiamare direttamente, ma si osserva tramite comandi e viste:
+**1. A, preparazione condivisa.** Crea una riga confermata prima dell'esperimento.
 
 ```sql
-SELECT xmin, xmax, *
-FROM users
-WHERE id = 1;
+CREATE TABLE lab_mvcc_price (id integer PRIMARY KEY, price integer NOT NULL);
+INSERT INTO lab_mvcc_price VALUES (1, 10);
 ```
 
-Controllo tuple vive e morte:
+**2. A, lettore.** La prima lettura fissa lo snapshot e restituisce `10`.
 
 ```sql
-SELECT
-  relname,
-  n_live_tup,
-  n_dead_tup,
-  last_vacuum,
-  last_autovacuum
-FROM pg_stat_user_tables
-ORDER BY n_dead_tup DESC;
+BEGIN ISOLATION LEVEL REPEATABLE READ READ ONLY;
+SELECT price FROM lab_mvcc_price WHERE id = 1;
 ```
 
-Vacuum manuale:
+**3. B, scrittore.** B vede il proprio aggiornamento a `12`. Lascia aperta la transazione.
 
 ```sql
-VACUUM ANALYZE users;
-```
-
-## Esempio pratico
-
-Esempio concettuale:
-
-```sql
--- Transazione A
 BEGIN;
-SELECT balance FROM accounts WHERE id = 1;
+UPDATE lab_mvcc_price SET price = 12 WHERE id = 1 RETURNING price;
+```
 
--- Transazione B
-UPDATE accounts SET balance = balance + 100 WHERE id = 1;
-COMMIT;
+**4. A.** Non aspetta il commit di B: una normale `SELECT` restituisce ancora `10`.
 
--- Transazione A, in base al livello di isolamento,
--- puo continuare a vedere lo snapshot precedente.
-SELECT balance FROM accounts WHERE id = 1;
+```sql
+SELECT price FROM lab_mvcc_price WHERE id = 1;
+```
+
+**5. B.** Rendi definitiva la modifica.
+
+```sql
 COMMIT;
 ```
 
-Con MVCC, la lettura della transazione A non deve bloccare la scrittura della transazione B. PostgreSQL decide quale versione della riga e visibile in base allo snapshot.
+**6. A.** La prima query vede ancora `10`; dopo il commit di A la nuova query vede `12`. Ripetendo da zero con `READ COMMITTED` al passo 2, anche la prima query di questo passo vede `12`: lo snapshot cambia tra istruzioni.
 
-## Varianti
+```sql
+SELECT price FROM lab_mvcc_price WHERE id = 1;
+COMMIT;
+SELECT price FROM lab_mvcc_price WHERE id = 1;
+```
 
-- Snapshot per query in `READ COMMITTED`.
-- Snapshot per transazione in `REPEATABLE READ`.
-- Snapshot con controllo serializzabile in `SERIALIZABLE`.
-- HOT update quando l'update non richiede nuove voci indice.
-- Dead tuples ripulite da `VACUUM`.
-- Freeze per evitare transaction ID wraparound.
+**7. Pulizia**, solo sulla tabella di prova e a transazioni concluse. Il comando la elimina.
 
-## Errori comuni
+```sql
+DROP TABLE lab_mvcc_price;
+```
 
-- Lasciare transazioni aperte a lungo, impedendo la pulizia delle tuple morte.
-- Confondere `DELETE` con rimozione fisica immediata.
-- Ignorare bloat causato da update frequenti.
-- Disattivare o sottodimensionare autovacuum senza monitoraggio.
-- Fare batch enormi in una sola transazione quando possono essere spezzati.
-- Pensare che MVCC elimini la necessita di lock su scritture concorrenti.
+## Versioni, lock e pulizia
 
-## Checklist
+- `xmin` identifica la transazione che ha creato una **versione**. `xmax` può rappresentare una modifica o informazioni di lock: un valore diverso da zero non prova, da solo, che la riga sia stata cancellata. Non usare queste colonne di sistema come chiavi applicative.
+- L'aggiornamento non equivale a eseguire due comandi applicativi `DELETE` e `INSERT`. La vecchia versione può ancora servire a snapshot precedenti; se l'aggiornamento viene annullato, non diventa visibile agli altri. Un aggiornamento HOT può evitare nuove voci d'indice in condizioni adatte.
+- `VACUUM` recupera spazio **riutilizzabile** dalle versioni non più necessarie e contribuisce a prevenire il wraparound degli ID tramite freezing. Normalmente non riduce il file nella stessa misura. `ANALYZE` aggiorna le statistiche di distribuzione usate dal planner; autovacuum può avviare i due lavori secondo soglie distinte.
+- Una transazione che trattiene un vecchio snapshot può ritardare la pulizia anche se in quel momento è inattiva. In `pg_stat_user_tables`, `n_dead_tup` è una **stima**, non l'elenco esatto delle versioni eliminabili. Per decidere cosa fare guarda anche durata delle transazioni e attività di autovacuum.
+- Una `SELECT` ordinaria non aspetta il lock di riga dello scrittore. Un altro scrittore o un `SELECT ... FOR UPDATE` può invece attendere; un lock di tabella incompatibile può bloccare anche letture normali.
 
-- Monitorare `n_dead_tup` e autovacuum.
-- Evitare sessioni `idle in transaction`.
-- Tenere transazioni brevi.
-- Eseguire `VACUUM ANALYZE` dopo grandi modifiche se serve.
-- Controllare bloat su tabelle molto aggiornate.
-- Collegare anomalie di lettura al livello di isolamento usato.
+**Fonti PostgreSQL 18:** [MVCC](https://www.postgresql.org/docs/18/mvcc-intro.html), [colonne di sistema](https://www.postgresql.org/docs/18/ddl-system-columns.html), [vacuum ordinario](https://www.postgresql.org/docs/18/routine-vacuuming.html).
 
 ## Collegamenti
 
+- [[Programmazione/PostgreSQL/Indice PostgreSQL|Indice PostgreSQL]]
 - [[Programmazione/PostgreSQL/Pagine/Livelli di Isolamento delle Transazioni|Livelli di Isolamento delle Transazioni]]
 - [[Programmazione/PostgreSQL/Pagine/Meccanismi di Locking|Meccanismi di Locking]]
 - [[Programmazione/PostgreSQL/Pagine/Manutenzione|Manutenzione]]
-
-## Fonti
-
-- [PostgreSQL - Introduction to MVCC](https://www.postgresql.org/docs/current/mvcc-intro.html)
-- [PostgreSQL - Transaction Isolation](https://www.postgresql.org/docs/current/transaction-iso.html)
-- [PostgreSQL - Routine Vacuuming](https://www.postgresql.org/docs/current/routine-vacuuming.html)
-
-
-## Navigazione
-
-- [[Programmazione/PostgreSQL/Indice PostgreSQL|Indice PostgreSQL]]

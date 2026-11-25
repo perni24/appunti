@@ -20,108 +20,49 @@ title: LATERAL JOIN
 
 ## Sintesi
 
-`LATERAL JOIN` permette a una subquery nel `FROM` di riferirsi alle colonne delle righe gia disponibili a sinistra.
+`LATERAL` permette a una voce nel `FROM` di usare le colonne delle voci alla sua sinistra. È utile quando vuoi **fino a N risultati per ogni riga esterna**, non N risultati in totale. Se basta unire due tabelle per chiave senza scegliere o calcolare righe per ciascuna, un normale join è più semplice.
 
-## Quando usarlo
-
-### Quando usarla
-- Ultima riga correlata per ogni entita.
-- Espansione di JSON o array per riga.
-- Top-N per gruppo.
-
-## Come funziona
-
-### Concetto chiave
-E utile quando per ogni riga esterna vuoi calcolare un piccolo risultato dipendente da quella riga.
+## Ultimo ordine di ciascun cliente, anche di chi non ha ordinato
 
 ```sql
-SELECT u.id, o.id AS last_order_id
-FROM users u
+WITH customers(id) AS (VALUES (1), (2)),
+orders(id, customer_id, placed_on) AS (
+  VALUES (10, 1, DATE '2026-06-01'), (11, 1, DATE '2026-06-01')
+)
+SELECT c.id, latest.id AS order_id
+FROM customers AS c
 LEFT JOIN LATERAL (
-  SELECT id
-  FROM orders o
-  WHERE o.user_id = u.id
-  ORDER BY created_at DESC
-  LIMIT 1
-) o ON true;
+  SELECT o.id FROM orders AS o WHERE o.customer_id = c.id
+  ORDER BY o.placed_on DESC, o.id DESC LIMIT 1
+) AS latest ON true
+ORDER BY c.id;
 ```
 
-## API / Sintassi
+Restituisce `(1,11)` e `(2,NULL)`. Il filtro su `c.id` fa dipendere la ricerca dal cliente corrente; a parità di data abbiamo scelto l'ID maggiore. `LIMIT 1` va **dentro** la subquery. `ON true` non introduce altri filtri; con `CROSS JOIN LATERAL` al posto del left join e senza `ON true`, il cliente 2 sparirebbe. Anche un filtro esterno che richieda un valore non nullo di `latest` lo eliminerebbe.
+
+## Espandere un array per riga
 
 ```sql
-SELECT ...
-FROM left_table AS l
-JOIN LATERAL (
-  SELECT ...
-  FROM right_table AS r
-  WHERE r.left_id = l.id
-  ORDER BY ...
-  LIMIT ...
-) AS derived ON true;
-```
-
-Con `LEFT JOIN LATERAL`, la riga a sinistra rimane nel risultato anche se la subquery laterale non restituisce righe.
-
-## Esempio pratico
-
-Ultimo ordine per ogni utente:
-
-```sql
-SELECT
-  u.id,
-  u.email,
-  last_order.id AS last_order_id,
-  last_order.created_at AS last_order_at
-FROM users AS u
-LEFT JOIN LATERAL (
-  SELECT id, created_at
-  FROM orders AS o
-  WHERE o.user_id = u.id
-  ORDER BY created_at DESC
-  LIMIT 1
-) AS last_order ON true;
-```
-
-Espansione di un array per riga:
-
-```sql
-SELECT p.id, tag.value AS tag
+WITH products(id, tags) AS (
+  VALUES (1, ARRAY['sql','db']), (2, ARRAY[]::text[])
+)
+SELECT p.id, t.tag, t.pos
 FROM products AS p
-CROSS JOIN LATERAL unnest(p.tags) AS tag(value);
+LEFT JOIN LATERAL unnest(p.tags) WITH ORDINALITY AS t(tag, pos) ON true
+ORDER BY p.id, t.pos;
 ```
 
-## Varianti
+Il prodotto 1 genera due righe, con posizioni 1 e 2. Il prodotto 2 rimane con tag e posizione nulli: l'array vuoto **non** ha prodotto un elemento nullo, è il left join che conserva la riga di sinistra. Le funzioni nel `FROM` possono riferirsi alle colonne precedenti anche senza la parola `LATERAL`; esplicitarla aiuta a leggere la dipendenza. Lo stesso principio vale per `jsonb_array_elements`.
 
-- `JOIN LATERAL`: richiede che la subquery restituisca almeno una riga per mantenere la riga esterna.
-- `LEFT JOIN LATERAL`: mantiene la riga esterna anche senza risultati.
-- `CROSS JOIN LATERAL`: utile per espandere set-returning functions.
-- Funzioni come `jsonb_array_elements`, `unnest` o query con `LIMIT` per ogni riga.
-- Top-N per gruppo senza dover usare una window function.
+## Scelta del piano
 
-## Errori comuni
+Con pochi clienti e molti ordini, un indice B-tree su `(customer_id, placed_on DESC, id DESC)` può trovare subito la prima riga per ciascun cliente. Se stai già leggendo tutti gli ordini, confronta il piano con `row_number() OVER (PARTITION BY ...)`. La sintassi laterale indica una dipendenza logica, non garantisce che una strategia sia più veloce.
 
-- Usare `JOIN LATERAL` quando serve mantenere anche righe senza risultati: in quel caso serve `LEFT JOIN LATERAL`.
-- Dimenticare `ON true` con `LEFT JOIN LATERAL`.
-- Usarlo per sostituire join normali piu semplici.
-- Non indicizzare le colonne usate nella subquery laterale.
-- Fare subquery laterali costose per ogni riga esterna senza controllare `EXPLAIN`.
-
-## Checklist
-
-- Verificare se la subquery deve dipendere dalla riga a sinistra.
-- Scegliere `LEFT JOIN LATERAL` se i risultati laterali sono opzionali.
-- Limitare il risultato laterale quando serve solo il primo o i primi N record.
-- Controllare gli indici su chiavi e ordinamenti usati nella subquery.
-- Usare alias chiari per evitare ambiguita.
-- Confrontare con window functions se il problema e un ranking per gruppo.
+**Fonte:** [PostgreSQL 18: subquery LATERAL](https://www.postgresql.org/docs/18/queries-table-expressions.html#QUERIES-LATERAL).
 
 ## Collegamenti
 
+- [[Programmazione/PostgreSQL/Indice PostgreSQL|Indice PostgreSQL]]
 - [[Programmazione/PostgreSQL/Pagine/JOIN|JOIN]]
 - [[Programmazione/PostgreSQL/Pagine/Subquery|Subquery]]
 - [[Programmazione/PostgreSQL/Pagine/Analisi delle Query|Analisi delle Query]]
-
-
-## Navigazione
-
-- [[Programmazione/PostgreSQL/Indice PostgreSQL|Indice PostgreSQL]]

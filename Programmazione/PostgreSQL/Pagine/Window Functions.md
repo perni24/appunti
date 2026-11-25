@@ -20,161 +20,55 @@ title: Window Functions in PostgreSQL
 
 ## Sintesi
 
-Le window function calcolano valori rispetto a gruppi ordinati di righe senza collassare il risultato come farebbe `GROUP BY`. Partizione, ordinamento e frame determinano quali righe partecipano al calcolo di ranking, aggregati progressivi, `lag`, `lead` e confronti temporali.
+Una **window function** aggiunge un calcolo a ogni riga che arriva alla `SELECT`. Diversamente da `GROUP BY`, la finestra da sola non fonde le righe. Definisci separatamente **partizione** (con chi confronto la riga), **ordinamento** (chi viene prima) e **frame** (quale porzione legge il calcolo).
 
-## Quando usarlo
+## Un cumulativo per giorno o per movimento?
 
-Usa le window functions quando vuoi calcolare valori di contesto senza perdere il dettaglio delle righe:
-
-- ranking di righe dentro un gruppo;
-- totale cumulativo nel tempo;
-- confronto con la riga precedente o successiva;
-- percentuale rispetto al totale del gruppo;
-- deduplicazione scegliendo la riga piu recente per ogni chiave;
-- analisi temporali su serie ordinate.
-
-Se vuoi una sola riga per gruppo, usa `GROUP BY`. Se vuoi mantenere tutte le righe, usa una window function.
-
-## Come funziona
-
-### Concetto chiave
-Le **Window Functions** permettono di eseguire calcoli su un insieme di righe correlate alla riga corrente, senza però raggrupparle in un'unica riga di output (come fa il `GROUP BY`). Questo consente di mantenere i dettagli della singola riga pur avendo accesso a dati aggregati del contesto circostante (la "finestra").
-
----
-### Funzioni Comuni
-#### Funzioni di Ranking
-- **`ROW_NUMBER()`**: Assegna un numero progressivo univoco alle righe.
-- **`RANK()`**: Assegna un rango. In caso di parità, lascia dei "buchi" nella numerazione.
-- **`DENSE_RANK()`**: Come `RANK`, ma senza buchi nella numerazione.
-
-#### Funzioni di Valore (Navigazione)
-- **`LAG(col, n)`**: Accede al valore della colonna `col` di `n` righe **precedenti**.
-- **`LEAD(col, n)`**: Accede al valore di `n` righe **successive**.
-- **`FIRST_VALUE()` / `LAST_VALUE()`**: Restituiscono il primo o l'ultimo valore della finestra.
-
-#### Aggregazioni Windowed
-Puoi usare le classiche funzioni di aggregazione (`SUM`, `AVG`, `COUNT`) come window functions.
-- `SUM(vendite) OVER (ORDER BY data)` -> Crea una **somma cumulativa** (Running Total).
-
----
-### Logic layer: Window Functions vs GROUP BY
-| Caratteristica | GROUP BY | Window Function |
-| :--- | :--- | :--- |
-| **Effetto sulle righe** | Riduce il numero di righe (collassa i gruppi). | Mantiene tutte le righe originali. |
-| **Dettagli** | Perdi i dettagli della singola riga. | Puoi mostrare dati atomici e aggregati insieme. |
-| **Utilizzo** | Report di sintesi. | Analisi comparative, ranking, trend temporali. |
-
-> [!INFO] ESECUZIONE
-> Le window functions vengono eseguite **dopo** le clausole `WHERE`, `GROUP BY` e `HAVING`, ma **prima** dell' `ORDER BY` finale della query.
-
----
-
-## API / Sintassi
-
-### Sintassi Fondamentale
-La caratteristica distintiva è la clausola **`OVER`**, che definisce la finestra di dati su cui operare.
+Due movimenti nello stesso giorno non sono necessariamente intercambiabili. Nell'esempio, `daily` usa il frame predefinito con `ORDER BY`: comprende anche tutte le righe a pari data. `per_row` usa un ordine totale e avanza di una riga alla volta. `OVER ()`, senza ordinamento, prende l'intero insieme.
 
 ```sql
-SELECT colonna, 
-       funzione_window() OVER (
-           PARTITION BY colonna_gruppo 
-           ORDER BY colonna_ordinamento
-       )
-FROM tabella;
+WITH sales(id, day, amount) AS (VALUES (1, 10, 5), (2, 10, 7), (3, 11, 8))
+SELECT id,
+       sum(amount) OVER (ORDER BY day) AS daily,
+       sum(amount) OVER (ORDER BY day, id ROWS UNBOUNDED PRECEDING) AS per_row,
+       round(100.0 * amount / nullif(sum(amount) OVER (), 0), 1) AS pct,
+       lag(amount) OVER (ORDER BY day, id) AS previous
+FROM sales ORDER BY day, id;
 ```
 
-### Componenti della Finestra:
-- **`PARTITION BY`**: Divide le righe in gruppi logici (simile a un raggruppamento locale). Se omesso, la finestra è l'intero set di risultati.
-- **`ORDER BY`**: Definisce l'ordine delle righe all'interno della partizione. È fondamentale per funzioni di ranking o calcoli cumulativi.
-- **Frame Clause**: Definisce ulteriormente i confini della finestra (es. "le 3 righe precedenti e la corrente").
+Per gli ID 1, 2 e 3, `daily` vale **12, 12, 20**; `per_row` vale **5, 12, 20**. Il primo `lag` è nullo perché non c'è un movimento precedente; `lead` guarda nella direzione opposta. Per ripetere i calcoli per reparto, aggiungi `PARTITION BY reparto` alle rispettive finestre. Il loro `ORDER BY` non garantisce l'ordine di presentazione: serve quello finale.
 
----
-
-## Esempio pratico
-
-Calcolare il contributo percentuale di ogni vendita rispetto al totale del reparto, senza perdere il dettaglio della singola vendita.
+## Classifiche e pareggi
 
 ```sql
-SELECT reparto, 
-       prodotto, 
-       prezzo,
-       SUM(prezzo) OVER(PARTITION BY reparto) as totale_reparto,
-       ROUND(prezzo * 100.0 / SUM(prezzo) OVER(PARTITION BY reparto), 2) as percentuale
-FROM vendite;
+WITH scores(id, points) AS (VALUES (1, 90), (2, 90), (3, 80)),
+ranked AS (
+  SELECT id, rank() OVER w AS place, dense_rank() OVER w AS dense_place,
+         row_number() OVER (ORDER BY points DESC, id) AS seq
+  FROM scores WINDOW w AS (ORDER BY points DESC)
+)
+SELECT id, place, dense_place, seq FROM ranked ORDER BY seq;
 ```
 
----
+`rank` assegna **1, 1, 3**; `dense_rank` assegna **1, 1, 2**. `row_number` sceglie un ordine distinto (**1, 2, 3**) e usa l'ID per sciogliere la parità. Non aggiungere l'ID alla finestra `w` se i due punteggi devono restare a pari merito. Per una sola riga, filtra `WHERE seq = 1` nella query **esterna**; per tutti i primi a pari merito, filtra `WHERE place = 1`. Lo stesso schema con `PARTITION BY email ORDER BY updated_at DESC, id DESC` seleziona una versione per email se quel criterio risolve univocamente i pareggi.
 
-## Varianti
-
-- Ranking: `row_number()`, `rank()`, `dense_rank()`.
-- Navigazione: `lag()`, `lead()`, `first_value()`, `last_value()`.
-- Aggregazioni su finestra: `sum() over (...)`, `avg() over (...)`, `count() over (...)`.
-- Frame temporali o posizionali: `ROWS BETWEEN ...` o `RANGE BETWEEN ...`.
-- Finestra nominata con `WINDOW`.
-
-Esempio di deduplicazione:
+## L'ultimo valore di quale insieme?
 
 ```sql
-SELECT *
-FROM (
-  SELECT
-    users.*,
-    row_number() OVER (
-      PARTITION BY email
-      ORDER BY updated_at DESC
-    ) AS row_rank
-  FROM users
-) AS ranked_users
-WHERE row_rank = 1;
+WITH events(id, value) AS (VALUES (1, 'A'), (2, 'B'), (3, 'C'))
+SELECT id, last_value(value) OVER (ORDER BY id) AS last_so_far,
+       last_value(value) OVER (ORDER BY id ROWS BETWEEN UNBOUNDED PRECEDING
+                                                   AND UNBOUNDED FOLLOWING) AS last_any
+FROM events ORDER BY id;
 ```
 
-Esempio di totale cumulativo:
+La prima colonna calcolata dà A, B, C; la seconda C, C, C. `first_value` e `last_value` leggono il **frame**, non necessariamente tutta la partizione. `lag` e `lead` invece cercano la riga precedente o successiva nella **partizione**. `ROWS` conta posizioni fisiche nell'ordinamento; solo con un criterio di spareggio il cumulativo riga per riga è ripetibile fra pari. Su dati grandi controlla il costo degli ordinamenti nel piano.
 
-```sql
-SELECT
-  created_at::date AS day,
-  total_amount,
-  sum(total_amount) OVER (
-    ORDER BY created_at::date
-    ROWS BETWEEN UNBOUNDED PRECEDING AND CURRENT ROW
-  ) AS running_total
-FROM orders;
-```
-
-## Errori comuni
-
-- Confondere `PARTITION BY` con `GROUP BY`: la partizione non riduce le righe.
-- Omettere `ORDER BY` quando l'ordine e necessario per ranking o funzioni come `lag`.
-- Usare `last_value()` senza capire il frame predefinito.
-- Applicare filtri su una window function nella stessa query senza subquery o CTE.
-- Creare ordinamenti costosi senza indici coerenti su dataset grandi.
-
-## Checklist
-
-### Best Practices
-- **Alias della Finestra**: Se usi la stessa finestra per più colonne, puoi definirla una sola volta alla fine della query per pulizia:
-  `SELECT ... WINDOW w AS (PARTITION BY ... ORDER BY ...)`
-- **Attenzione ai Frame**: Se usi solo `ORDER BY` senza specificare un frame, Postgres assume di default `RANGE BETWEEN UNBOUNDED PRECEDING AND CURRENT ROW`, il che può influire sulle performance.
-- Verificare se serve mantenere tutte le righe o aggregarle.
-- Esplicitare il frame quando il risultato dipende dai confini della finestra.
-- Usare una subquery o CTE per filtrare il risultato di una window function.
-- Controllare il piano query se ci sono grandi ordinamenti.
-
----
+**Fonti PostgreSQL 18:** [funzioni di finestra](https://www.postgresql.org/docs/18/functions-window.html), [sintassi e frame](https://www.postgresql.org/docs/18/sql-expressions.html#SYNTAX-WINDOW-FUNCTIONS).
 
 ## Collegamenti
 
+- [[Programmazione/PostgreSQL/Indice PostgreSQL|Indice PostgreSQL]]
 - [[Programmazione/PostgreSQL/Pagine/Aggregazioni e GROUP BY|Aggregazioni e GROUP BY]]
 - [[Programmazione/PostgreSQL/Pagine/Common Table Expressions e Recursive Queries|Common Table Expressions e Recursive Queries]]
 - [[Programmazione/PostgreSQL/Pagine/Analisi delle Query|Analisi delle Query]]
-
-## Fonti
-
-- [PostgreSQL - Window Functions](https://www.postgresql.org/docs/current/tutorial-window.html)
-- [PostgreSQL - Window Function Calls](https://www.postgresql.org/docs/current/sql-expressions.html#SYNTAX-WINDOW-FUNCTIONS)
-
-
-## Navigazione
-
-- [[Programmazione/PostgreSQL/Indice PostgreSQL|Indice PostgreSQL]]

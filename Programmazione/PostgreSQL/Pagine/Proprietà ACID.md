@@ -20,157 +20,69 @@ title: Proprietà ACID in PostgreSQL
 
 ## Sintesi
 
-Le proprietà ACID descrivono le garanzie attese da una transazione: applicazione atomica delle modifiche, rispetto delle invarianti, isolamento dagli accessi concorrenti e persistenza dei commit secondo il livello di durabilità configurato.
+Una transazione stabilisce **quali modifiche devono riuscire insieme**. Non garantisce che le istruzioni scritte siano quelle giuste: un `UPDATE` che trova zero righe è un successo SQL, non un errore. In un trasferimento occorre verificare sia l'addebito sia l'accredito.
 
-In informatica, le proprietà **ACID** (Atomicity, Consistency, Isolation, Durability) rappresentano un insieme di caratteristiche che garantiscono che le transazioni del database vengano elaborate in modo affidabile.
+| Proprietà | Garanzia | Limite da ricordare |
+| --- | --- | --- |
+| Atomicità | Gli effetti transazionali diventano definitivi insieme al commit o vengono annullati | Un'email già inviata non torna indietro con `ROLLBACK` |
+| Consistenza | Tipi, vincoli e logica mantengono le invarianti espresse dal sistema | Un `CHECK` sul saldo non garantisce da solo che la somma dei due conti resti invariata |
+| Isolamento | Il livello scelto regola ciò che si può osservare in presenza di transazioni concorrenti | Il livello predefinito non rende seriali tutte le decisioni applicative |
+| Durabilità | Con le impostazioni durevoli e storage affidabile, un commit confermato sopravvive al crash locale | Durabilità locale, replica e backup non sono la stessa cosa |
 
-## Quando usarlo
+## Laboratorio: un trasferimento con due esiti controllati
 
-Usa il modello ACID quando progetti operazioni che devono restare corrette anche con errori, crash o concorrenza:
+Esegui i tre blocchi in ordine nella stessa sessione PostgreSQL di prova con autocommit inizialmente attivo. Gli importi sono unità intere; conti e funzione sono temporanei. La PK fa sì che ogni aggiornamento possa toccare **al massimo una** riga.
 
-- pagamenti e trasferimenti;
-- ordini e scorte;
-- prenotazioni;
-- migrazioni dati;
-- job che aggiornano piu tabelle;
-- flussi in cui un cambiamento parziale sarebbe dannoso.
-
-## Come funziona
-
-### Concetto chiave
-PostgreSQL fornisce i meccanismi necessari per transazioni ACID, ma la correttezza finale dipende anche da schema, vincoli, livello di isolamento, codice applicativo e configurazione della durabilità. Un errore di rete può inoltre lasciare al client un esito di commit ambiguo, anche quando il server ha completato correttamente la transazione.
-
----
-### Atomicità (Atomicity)
-L'atomicità garantisce che una transazione sia trattata come un'unica unità "tutto o niente". Se una parte della transazione fallisce, l'intera transazione viene annullata (**Rollback**).
-
-- **In Postgres:** Viene gestita tramite i comandi `BEGIN`, `COMMIT` e `ROLLBACK`.
-- **Meccanismo:** PostgreSQL registra lo stato della transazione e usa MVCC per rendere invisibili le versioni create da una transazione abortita. Il **Write-Ahead Log (WAL)** serve principalmente al redo e al recupero dopo un crash, non come log di undo per eseguire il rollback.
-
----
-### Consistenza (Consistency)
-La consistenza richiede che una transazione porti il database da uno stato valido a un altro stato valido. PostgreSQL applica tipi e vincoli dichiarati, mentre le invarianti non espresse nello schema restano responsabilità della logica applicativa e del livello di isolamento scelto.
-
-- **In Postgres:** Viene garantita dall'applicazione rigorosa di:
-	- [[Programmazione/PostgreSQL/Pagine/Vincoli|Vincoli (Constraints)]]: NOT NULL, UNIQUE, CHECK.
-	- Integrità Referenziale: Foreign Keys.
-	- Tipi di dato corretti.
-
----
-### Isolamento (Isolation)
-L'isolamento controlla quanto gli effetti delle transazioni concorrenti possono interferire tra loro. Solo `SERIALIZABLE` mira a un risultato equivalente a una possibile esecuzione seriale; livelli più deboli ammettono alcune anomalie in cambio di minore contesa.
-
-- **In Postgres:** Viene implementato tramite [[Programmazione/PostgreSQL/Pagine/MVCC|MVCC]], lock e, per `SERIALIZABLE`, Serializable Snapshot Isolation.
-- **Livelli di Isolamento:** Postgres permette di scegliere tra diversi livelli (Read Committed, Repeatable Read, Serializable) per bilanciare performance e rigore.
-
----
-### Durabilità (Durability)
-Con le impostazioni durevoli predefinite, un `COMMIT` confermato sopravvive a un crash perché il relativo record WAL viene reso persistente prima della risposta al client. Impostazioni come `synchronous_commit = off`, `fsync = off` o storage che dichiara flush non realmente completati riducono questa garanzia.
-
-- **In Postgres:** Il WAL viene sincronizzato sullo storage secondo le impostazioni di durabilità; le pagine dati possono essere scritte successivamente.
-- **Logic Layer:** Anche se i dati non sono ancora stati scritti nei file delle tabelle, la loro presenza nel **WAL** permette al database di "ricostruire" le transazioni mancanti al riavvio dopo un crash.
-
----
-### Logic layer: Perché ACID è fondamentale?
-Senza le proprietà ACID, un database non potrebbe essere utilizzato per applicazioni critiche (es: sistemi bancari, e-commerce). Ad esempio, senza **Atomicità**, un trasferimento bancario potrebbe sottrarre soldi da un conto senza accreditarli sull'altro se il sistema crashasse a metà operazione.
-
----
-
-## API / Sintassi
+```sql
+CREATE TEMP TABLE lab_accounts (id integer PRIMARY KEY, balance integer NOT NULL CHECK (balance >= 0));
+INSERT INTO lab_accounts VALUES (1, 100), (2, 40);
+CREATE FUNCTION pg_temp.transfer(p_from integer, p_to integer, p_amount integer)
+RETURNS void LANGUAGE plpgsql AS $$
+BEGIN
+  IF p_from IS NULL OR p_to IS NULL OR p_from = p_to OR p_amount IS NULL OR p_amount <= 0 THEN
+    RAISE EXCEPTION 'Argomenti non validi' USING ERRCODE = '22023';
+  END IF;
+  UPDATE pg_temp.lab_accounts SET balance = balance - p_amount
+    WHERE id = p_from AND balance >= p_amount;
+  IF NOT FOUND THEN RAISE EXCEPTION 'Addebito non eseguito'; END IF;
+  UPDATE pg_temp.lab_accounts SET balance = balance + p_amount WHERE id = p_to;
+  IF NOT FOUND THEN RAISE EXCEPTION 'Destinatario assente'; END IF;
+END;
+$$;
+```
 
 ```sql
 BEGIN;
-
--- Operazioni correlate
-
+SELECT pg_temp.transfer(1, 2, 30);
+SELECT id, balance FROM lab_accounts ORDER BY id;
 COMMIT;
 ```
 
-Annullamento:
+I saldi passano da `100, 40` a **70, 70**. Se il destinatario manca, l'errore annulla anche l'addebito già eseguito dalla funzione. Dentro una transazione esplicita un errore non gestito lascia la transazione in stato di errore: esegui `ROLLBACK` oppure torna a un savepoint creato **prima** dell'operazione.
 
 ```sql
 BEGIN;
-
--- Operazioni da annullare
-
-ROLLBACK;
-```
-
-Savepoint:
-
-```sql
-BEGIN;
-
-SAVEPOINT before_optional_step;
-
--- Operazione opzionale
-
-ROLLBACK TO SAVEPOINT before_optional_step;
-
+SAVEPOINT before_optional;
+SELECT pg_temp.transfer(2, 1, 10);
+ROLLBACK TO SAVEPOINT before_optional;
+SELECT id, balance FROM lab_accounts ORDER BY id;
 COMMIT;
 ```
 
-## Esempio pratico
+I saldi sono ancora `70, 70`. Il savepoint permette di scartare una parte della transazione, non rende definitivo il lavoro precedente. Senza `BEGIN` esplicito, in autocommit due istruzioni inviate separatamente sono normalmente due transazioni.
 
-Trasferimento atomico:
+## Che cosa prova un commit
 
-```sql
-BEGIN;
+Con le impostazioni durevoli predefinite il server rende persistente il record di commit nel **WAL** prima di confermare al client; non deve aver già scritto ogni pagina dati. Il WAL serve al recupero dopo crash, non a «disfare» fisicamente ogni riga al rollback. Con `synchronous_commit = off` alcuni commit recenti già confermati possono andare persi in caso di crash; disabilitare `fsync` comporta rischi più gravi, inclusa la corruzione.
 
-UPDATE accounts
-SET balance = balance - 100
-WHERE id = 1
-  AND balance >= 100;
+Se cade la connessione mentre aspetti la risposta a `COMMIT`, il client potrebbe non sapere se il server ha confermato. Non ripetere alla cieca un trasferimento reale: associa all'operazione una chiave univoca persistente e verifica l'esito dopo la riconnessione. Il laboratorio dimostra l'atomicità del saldo, **non** implementa la deduplicazione delle richieste né simula un crash.
 
-UPDATE accounts
-SET balance = balance + 100
-WHERE id = 2;
-
-COMMIT;
-```
-
-Se una parte fallisce, l'intera transazione deve essere annullata con `ROLLBACK`. In applicazione va controllato anche quante righe sono state aggiornate nel primo `UPDATE`.
-
-## Varianti
-
-- Transazioni esplicite con `BEGIN`/`COMMIT`.
-- Transazioni implicite per singola istruzione.
-- Savepoint per annullare solo una parte del lavoro.
-- Transazioni read only.
-- Diversi livelli di isolamento.
-- Durabilita influenzata da impostazioni come `synchronous_commit`.
-
-## Errori comuni
-
-- Fare operazioni correlate fuori da una transazione.
-- Tenere una transazione aperta durante chiamate API esterne.
-- Non controllare il numero di righe modificate.
-- Assumere che tutti gli errori causino automaticamente rollback del flusso applicativo.
-- Ignorare isolation level e race condition.
-- Usare vincoli solo nel codice applicativo e non nel database.
-
-## Checklist
-
-- Le operazioni che devono riuscire insieme sono nella stessa transazione?
-- Esistono vincoli per proteggere la consistenza?
-- Il livello di isolamento e adeguato?
-- Gli errori portano a `ROLLBACK`?
-- Le transazioni sono brevi?
-- I retry sono gestiti per deadlock e serialization failure?
+**Fonti PostgreSQL 18:** [transazioni e savepoint](https://www.postgresql.org/docs/18/tutorial-transactions.html), [WAL](https://www.postgresql.org/docs/18/wal-intro.html), [commit asincrono](https://www.postgresql.org/docs/18/wal-async-commit.html).
 
 ## Collegamenti
 
+- [[Programmazione/PostgreSQL/Indice PostgreSQL|Indice PostgreSQL]]
 - [[Programmazione/PostgreSQL/Pagine/Livelli di Isolamento delle Transazioni|Livelli di Isolamento delle Transazioni]]
 - [[Programmazione/PostgreSQL/Pagine/MVCC|MVCC]]
 - [[Programmazione/PostgreSQL/Pagine/Write-Ahead Logging|Write-Ahead Logging]]
-
-## Fonti
-
-- [PostgreSQL - Write-Ahead Logging](https://www.postgresql.org/docs/current/wal-intro.html)
-- [PostgreSQL - Transaction Isolation](https://www.postgresql.org/docs/current/transaction-iso.html)
-- [PostgreSQL - Asynchronous Commit](https://www.postgresql.org/docs/current/wal-async-commit.html)
-
-
-## Navigazione
-
-- [[Programmazione/PostgreSQL/Indice PostgreSQL|Indice PostgreSQL]]
+- [[Programmazione/PostgreSQL/Pagine/Vincoli|Vincoli]]

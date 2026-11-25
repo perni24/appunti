@@ -20,72 +20,55 @@ title: Prepared statements
 
 ## Sintesi
 
-I prepared statements separano preparazione ed esecuzione di una query parametrica. Aiutano sicurezza, riuso e talvolta performance, specialmente tramite driver applicativi.
+**Passare valori separati dal testo SQL** e **riutilizzare uno statement preparato sul server** sono due scelte diverse. La prima evita di costruire SQL concatenando dati; la seconda può ridurre il lavoro ripetuto di analisi e pianificazione. Non occorre conservare un piano tra chiamate per poter passare un parametro in modo corretto.
 
-## Quando usarlo
+## Laboratorio SQL: nome, esecuzioni e durata
 
-Usali per query ripetute, parametri utente, riduzione SQL injection e integrazione con driver.
-
-## Come funziona
-
-PostgreSQL prepara il piano o la struttura della query e poi la esegue passando parametri. I segnaposto evitano concatenazione di stringhe SQL non sicure.
-
-## API / Sintassi
+Su PostgreSQL 18, esegui i blocchi in ordine nella **stessa sessione** di prova:
 
 ```sql
-PREPARE get_user_by_email(text) AS
-SELECT id, email
-FROM users
-WHERE email = $1;
-
-EXECUTE get_user_by_email('ada@example.com');
-
-DEALLOCATE get_user_by_email;
+PREPARE lab_price(integer, numeric) AS
+SELECT round($1 * $2, 2) AS totale;
 ```
-
-## Esempio pratico
-
-Nel codice applicativo e preferibile usare parametri del driver:
 
 ```sql
-SELECT id, email
-FROM users
-WHERE email = $1;
+EXECUTE lab_price(2, 4.50);
+EXECUTE lab_price(3, 4.50);
 ```
 
-Il valore viene passato separatamente dal testo SQL.
+```sql
+SELECT name, from_sql, generic_plans + custom_plans AS esecuzioni
+FROM pg_prepared_statements WHERE name = 'lab_price';
+DEALLOCATE lab_price;
+```
 
-## Varianti
+Attesi `9.00`, `13.50` e `lab_price, true, 2`. Un'altra connessione non eredita il nome, e dopo `DEALLOCATE` non puoi più eseguirlo. Con `plan_cache_mode=auto` PostgreSQL può confrontare piani *custom*, scelti in base ai valori, e un piano *generic* riutilizzabile. Non dedurre da due esecuzioni che il piano sarà sempre lo stesso; su dati sbilanciati confronta parametri rappresentativi con `EXPLAIN EXECUTE`.
 
-- Prepared statement SQL con `PREPARE`.
-- Prepared statement gestiti dal driver.
-- Server-side prepared statements.
-- Generic plan e custom plan.
-- Statement cache lato driver.
+## Laboratorio Python: parametri senza statement persistente
 
-## Errori comuni
+Con Psycopg 3 e il profilo `lab_app` della nota sul driver:
 
-- Concatenare input utente nella query.
-- Preparare troppe query diverse e consumare memoria.
-- Usare prepared statements con pooler transaction senza verificarne compatibilita.
-- Aspettarsi sempre miglioramento performance.
-- Non tipizzare correttamente i parametri.
+```python
+import psycopg
 
-## Checklist
+with psycopg.connect("service=lab_app") as conn:
+    row = conn.execute("SELECT %s::text", ("D'Amico",), prepare=False).fetchone()
+    print(row[0])
+```
 
-- Gli input utente sono parametri?
-- Il driver gestisce prepared statements?
-- Il pooler e compatibile?
-- La query viene riusata abbastanza?
-- Il piano scelto e ancora buono per parametri diversi?
+Atteso: `D'Amico`, apostrofo compreso. `%s` è il segnaposto del driver, **non** la formattazione di stringhe Python; la virgola rende l'argomento una tupla di un elemento. `prepare=False` evita la preparazione persistente per questa chiamata, non il binding. I parametri rappresentano **valori**, non nomi di colonne, direzioni di ordinamento o altre parti della grammatica SQL. Per identificatori dinamici usa un insieme ammesso e gli strumenti di composizione del driver.
+
+## Riuso e pooler
+
+Il `PREPARE` SQL esplicito è legato alla sessione backend. Psycopg può anche preparare automaticamente uno statement con il protocollo dopo più esecuzioni sulla stessa connessione. In modalità *transaction pooling*, la transazione successiva può finire su un altro backend: la compatibilità degli statement **di protocollo** dipende da driver, versione e configurazione di PgBouncer. Non estendere quella garanzia a `PREPARE`/`EXECUTE` SQL. Misura il beneficio prima di aumentare la cache di statement.
+
+## Fonti
+
+[PostgreSQL 18: PREPARE](https://www.postgresql.org/docs/18/sql-prepare.html) · [Psycopg: parametri](https://www.psycopg.org/psycopg3/docs/basic/params.html) · [Preparazione automatica](https://www.psycopg.org/psycopg3/docs/advanced/prepare.html) · [PgBouncer: compatibilità per modalità](https://www.pgbouncer.org/features.html)
 
 ## Collegamenti
 
+- [[Programmazione/PostgreSQL/Indice PostgreSQL|Indice PostgreSQL]]
 - [[Programmazione/PostgreSQL/Pagine/Driver e connection string|Driver e connection string]]
 - [[Programmazione/PostgreSQL/Pagine/Analisi delle Query|Analisi delle Query]]
 - [[Programmazione/PostgreSQL/Pagine/Connection Pooling|Connection Pooling]]
-
-
-## Navigazione
-
-- [[Programmazione/PostgreSQL/Indice PostgreSQL|Indice PostgreSQL]]

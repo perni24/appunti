@@ -20,103 +20,46 @@ title: Failover e Load Balancing in PostgreSQL
 
 ## Sintesi
 
-Il **failover** promuove una replica a primario quando il primario fallisce. Il **load balancing** distribuisce traffico, di solito letture, tra piu nodi. In PostgreSQL richiedono replica, monitoring e routing affidabile.
+**Failover** significa scegliere e promuovere un nuovo primario dopo un guasto. **Bilanciamento** significa distribuire nuove connessioni o letture tra nodi idonei. Sono decisioni diverse: una porta TCP aperta non dimostra che il nodo possa accettare scritture, e due nodi scrivibili non costituiscono un sistema ad alta disponibilità sicuro.
 
-## Quando usarlo
+## Identificare ruolo e capacità
 
-Usalo quando servono:
-
-- alta disponibilita;
-- riduzione del downtime;
-- distribuzione delle letture;
-- manutenzione con interruzioni minime;
-- replica geografica;
-- routing automatico verso il primario corrente.
-
-## Come funziona
-
-La replica mantiene uno o piu standby aggiornati. Il sistema di HA monitora il primario e, se necessario, promuove uno standby. Il routing deve poi indirizzare le scritture al nuovo primario.
-
-Il load balancing in PostgreSQL e quasi sempre read-oriented: le scritture devono andare al primario, mentre query read-only possono andare alle repliche se l'applicazione tollera dati leggermente in ritardo.
-
-Strumenti comuni includono Patroni, repmgr, HAProxy, PgBouncer, pgcat e meccanismi di service discovery.
-
-## API / Sintassi
-
-Promozione manuale:
-
-```bash
-pg_ctl promote -D /var/lib/postgresql/data
-```
-
-Oppure via SQL su standby:
+Su ogni nodo interrogabile:
 
 ```sql
-SELECT pg_promote();
+SELECT pg_is_in_recovery() AS in_recovery,
+       current_setting('transaction_read_only') AS transazione_sola_lettura;
 ```
 
-Controllare se un nodo e in recovery:
+Su uno standby fisico ci si aspetta `true/on`. Sul primario una transazione può essere di sola lettura: `false/on` **non** identifica una replica. Il risultato descrive il nodo e la transazione interrogati, non dimostra che il vecchio primario sia isolato.
 
-```sql
-SELECT pg_is_in_recovery();
-```
-
-Misurare lag su replica:
-
-```sql
-SELECT now() - pg_last_xact_replay_timestamp() AS replica_lag;
-```
-
-## Esempio pratico
-
-Schema tipico:
+Un client libpq può selezionare un host all'apertura della connessione. Esempio di parametri, da completare con credenziali protette e TLS adeguato:
 
 ```text
-app -> HAProxy/PgBouncer -> primary
-                       \-> read replica 1
-                       \-> read replica 2
+host=db-a,db-b port=5432 dbname=app target_session_attrs=read-write connect_timeout=3
 ```
 
-L'applicazione puo usare due endpoint:
+`read-write` scarta i nodi che non accettano transazioni in scrittura per impostazione predefinita. Per letture, `standby` richiede uno standby, `prefer-standby` consente un ripiego. La selezione avviene per **connessione**, non per statement: né libpq né il normale transaction pooling separano automaticamente `SELECT` e `INSERT`. Le connessioni già aperte non migrano.
 
-- endpoint write: sempre verso il primario corrente;
-- endpoint read: verso repliche, con controllo del lag.
+## Sequenza di failover
 
-## Varianti
+1. **Definisci gli obiettivi.** RPO: quanti dati confermati si possono perdere? RTO: quanto tempo può passare prima che l'app torni operativa? Replica asincrona e perdita improvvisa del primario possono comportare perdita di commit già confermati.
+2. **Accerta il guasto e isola il vecchio writer.** Un timeout può essere una partizione di rete. Il *fencing* deve impedirgli di accettare altre scritture anche se si riconnette; cambiare DNS non basta.
+3. **Scegli il candidato.** Confronta stato di recovery, WAL disponibile e avanzamento di replay. Valuta l'eventuale perdita rispetto all'RPO. In uno switchover pianificato puoi fermare prima le scritture e aspettare il recupero.
+4. **Promuovi una sola volta**, con il gestore HA adottato oppure con `pg_ctl promote` sullo standby designato. Verifica uscita dalla recovery, scrivibilità e instradamento dei nuovi client. Non impartire promozioni manuali concorrenti a un orchestratore.
+5. **Recupera il servizio.** Riapri le connessioni del pool; se è caduta la connessione durante `COMMIT`, l'esito può essere ignoto. Verifica l'operazione tramite una chiave idempotente prima di ritentarla. Reintegra il vecchio primario soltanto come standby riallineato (nuova copia di base o `pg_rewind` se applicabile).
 
-- Failover manuale.
-- Failover automatico con Patroni o repmgr.
-- Virtual IP.
-- DNS dinamico.
-- Service discovery con etcd/Consul.
-- Read/write split applicativo.
-- Proxy layer con health check.
+## Esercizio di accettazione
 
-## Errori comuni
+In una topologia di prova, verifica che l'endpoint write apra una nuova connessione al writer, quello read rispetti la politica di ritardo e che il vecchio writer rimanga escluso anche al riavvio. Misura il tempo **fino alla prima operazione applicativa riuscita**, non soltanto il tempo di promozione. Ripeti il test anche con una risposta di commit persa.
 
-- Non prevenire split brain.
-- Promuovere una replica troppo indietro senza valutare perdita dati.
-- Non aggiornare routing dopo failover.
-- Mandare scritture a repliche read-only.
-- Ignorare replica lag nelle letture.
-- Non testare failover periodicamente.
+## Fonti
 
-## Checklist
-
-- Esiste un solo primario alla volta?
-- Il failover e testato?
-- Il routing viene aggiornato automaticamente?
-- Le app distinguono letture e scritture?
-- Il lag delle repliche e monitorato?
-- Esiste una procedura per reintegrare il vecchio primario?
+[PostgreSQL 18: failover](https://www.postgresql.org/docs/18/warm-standby-failover.html) · [libpq: connessioni multihost e target_session_attrs](https://www.postgresql.org/docs/18/libpq-connect.html#LIBPQ-CONNECT-TARGET-SESSION-ATTRS)
 
 ## Collegamenti
 
+- [[Programmazione/PostgreSQL/Indice PostgreSQL|Indice PostgreSQL]]
 - [[Programmazione/PostgreSQL/Pagine/Replicazione Fisica|Replicazione Fisica]]
 - [[Programmazione/PostgreSQL/Pagine/Read replicas|Read replicas]]
 - [[Programmazione/PostgreSQL/Pagine/Connection Pooling|Connection Pooling]]
-
-
-## Navigazione
-
-- [[Programmazione/PostgreSQL/Indice PostgreSQL|Indice PostgreSQL]]

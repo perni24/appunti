@@ -20,196 +20,64 @@ title: Analisi delle Query in PostgreSQL
 
 ## Sintesi
 
-L'analisi delle query confronta il piano stimato dal planner con l'esecuzione reale. `EXPLAIN`, `ANALYZE` e `BUFFERS` aiutano a individuare stime errate, scansioni costose, join inefficienti, sort su disco e colli di bottiglia dovuti a I/O.
+`EXPLAIN` mostra **come il planner prevede** di ottenere un risultato; `EXPLAIN ANALYZE` esegue il comando e mostra anche **che cosa è successo**. Per decidere un intervento cerca il primo punto in cui la stima o il lavoro svolto non corrispondono alle attese. Il nodo col costo più grande non è necessariamente il problema: spesso include il lavoro dei figli.
 
-L'analisi delle query è il pilastro fondamentale per il **Database Tuning**. In PostgreSQL, questo processo ruota attorno alla comprensione del **Query Planner** e all'utilizzo del comando `EXPLAIN`.
+## Laboratorio: gli ultimi tre ordini di un cliente
 
-## Quando usarlo
-
-Usa l'analisi delle query quando devi capire perche una query e lenta o instabile:
-
-- query che peggiorano dopo crescita dati;
-- timeout applicativi;
-- join che producono troppe righe;
-- indici esistenti ma non usati;
-- differenze tra ambiente di sviluppo e produzione;
-- scelta tra nuovo indice, riscrittura query o aggiornamento statistiche.
-
-## Come funziona
-
-### Concetto chiave
-Il Query Planner (o Optimizer) riceve una query SQL e decide la strategia più efficiente per recuperare i dati, generando un **Piano di Esecuzione**. L'analisi consiste nel verificare se la scelta del Planner coincide con la realtà dei dati.
-
----
-### Lo Strumento: EXPLAIN
-Il comando `EXPLAIN` mostra il piano di esecuzione senza eseguire la query (nella forma base).
-
-### EXPLAIN ANALYZE
-Per una diagnosi accurata, si usa quasi sempre `EXPLAIN ANALYZE`.
-- **Esegue realmente la query.**
-- Fornisce i tempi reali di esecuzione e il numero di righe processate.
-
-```sql
--- Analisi completa con statistiche sui buffer di memoria
-EXPLAIN (ANALYZE, BUFFERS, VERBOSE) 
-SELECT * FROM ordini WHERE cliente_id = 42;
-```
-
-> [!WARNING] Effetti Collaterali
-> Poiché `EXPLAIN ANALYZE` esegue la query, se stai analizzando una `DELETE` o una `UPDATE`, i dati verranno modificati. Usa sempre un `ROLLBACK` in una transazione se non vuoi rendere permanenti i cambiamenti.
-
----
-### Anatomia di un Piano (Execution Nodes)
-Un piano di esecuzione è un albero di **nodi**. Ogni nodo rappresenta un'operazione specifica.
-
-### Metriche Fondamentali
-1. **Cost**: Un'unità di misura arbitraria del planner. Il formato è `costo_avvio..costo_totale`.
-2. **Rows**: Numero stimato di righe che il nodo restituirà.
-3. **Actual Time**: Tempo reale speso in quel nodo (solo con `ANALYZE`).
-4. **Loops**: Quante volte quel nodo è stato ripetuto.
-
----
-### Metodi di Accesso ai Dati (Scan Types)
-PostgreSQL sceglie come leggere le tabelle in base agli indici disponibili e alla selettività della query:
-
-| Metodo | Descrizione | Logic Layer |
-| :--- | :--- | :--- |
-| **Seq Scan** | Scansione sequenziale | Legge l'intera tabella. Efficiente solo per tabelle piccole o se deve leggere >20% dei dati. |
-| **Index Scan** | Scansione tramite Indice | Usa l'indice per trovare i puntatori alle righe, poi legge i dati dalla tabella (Heap). |
-| **Index Only Scan** | Solo Indice | Se tutte le colonne richieste sono nell'indice, evita del tutto di leggere la tabella. |
-| **Bitmap Scan** | Scansione Ibrida | Crea una mappa di bit in memoria per raggruppare le letture su disco ed evitare accessi casuali eccessivi. |
-
----
-### Algoritmi di Join
-Quando la query coinvolge più tabelle, il planner deve scegliere come unirle:
-
-- **Nested Loop:** Per ogni riga della tabella A, cerca nella tabella B. Ideale se una delle due è piccola e l'altra è indicizzata.
-- **Hash Join:** Crea una tabella hash in memoria per una delle tabelle. Molto veloce per join di uguaglianza su grandi volumi.
-- **Merge Join:** Ordina entrambe le tabelle e le fonde. Usato se i dati sono già ordinati (es. tramite un [[Programmazione/PostgreSQL/Pagine/Tipi di Indici|Indice B-Tree]]).
-
----
-### Il Ruolo delle Statistiche
-Il Planner decide basandosi sulle statistiche memorizzate in `pg_statistic`.
-
-> [!INFO] L'importanza di ANALYZE
-> Se le statistiche sono obsolete (es. dopo un caricamento massivo di dati), il Planner potrebbe scegliere un piano disastroso. Il comando `ANALYZE nome_tabella` aggiorna manualmente questi dati.
-
-### Discrepanze (Estimation Error)
-Se noti una grande differenza tra `rows` (stimato) e `actual rows` (reale), significa che le statistiche sono vecchie o che la distribuzione dei dati è complessa (es. colonne correlate).
-
----
-### Strumenti Avanzati
-1. **pg_stat_statements:** Estensione indispensabile per monitorare quali query consumano più risorse nel tempo.
-2. **auto_explain:** Modulo per loggare automaticamente i piani delle query che superano una certa soglia di tempo.
-3. **PEV (Postgres Explain Visualizer):** Strumenti online per visualizzare graficamente l'albero dei nodi e identificare immediatamente il "collo di bottiglia".
-
----
-
-## API / Sintassi
-
-```sql
-EXPLAIN
-SELECT ...
-FROM ...;
-
-EXPLAIN (ANALYZE, BUFFERS)
-SELECT ...
-FROM ...;
-
-EXPLAIN (ANALYZE, BUFFERS, VERBOSE, FORMAT JSON)
-SELECT ...
-FROM ...;
-```
-
-Per query che modificano dati:
+Esegui i tre blocchi nella stessa sessione. La tabella temporanea contiene 25 ordini per ciascuno di 1000 clienti. Prima osserva come il database individua i tre ordini più recenti senza un indice adatto.
 
 ```sql
 BEGIN;
+CREATE TEMP TABLE lab_orders (id integer, customer_id integer, amount integer);
+INSERT INTO lab_orders SELECT i, i % 1000, i % 80 FROM generate_series(1,25000) AS g(i);
+ANALYZE lab_orders;
+EXPLAIN (ANALYZE, BUFFERS, TIMING OFF)
+SELECT id, amount FROM lab_orders WHERE customer_id = 42 ORDER BY id DESC LIMIT 3;
+```
 
-EXPLAIN (ANALYZE, BUFFERS)
-UPDATE orders
-SET status = 'expired'
-WHERE expires_at < now();
+```sql
+CREATE INDEX lab_recent_orders ON lab_orders (customer_id, id DESC);
+EXPLAIN (ANALYZE, BUFFERS, TIMING OFF)
+SELECT id, amount FROM lab_orders WHERE customer_id = 42 ORDER BY id DESC LIMIT 3;
+```
 
+Il risultato non deve cambiare: gli ID sono **24042, 23042, 22042**. Nel primo piano cerca le 25 righe rimaste dopo il filtro, l'ordinamento e il `Limit` che ne restituisce tre. Nel secondo cerca se `customer_id = 42` è diventato un `Index Cond` e se la scansione si ferma a tre righe senza `Sort`. Non c'è una percentuale universale oltre la quale un `Seq Scan` sia giusto o sbagliato: contano anche ordine, `LIMIT`, distribuzione fisica, cache e costi stimati.
+
+**Scritture:** il blocco seguente modifica davvero la tabella temporanea. Un savepoint permette di confrontare il valore prima del rollback e dopo; il rollback finale elimina il laboratorio.
+
+```sql
+SAVEPOINT before_measure;
+EXPLAIN (ANALYZE, BUFFERS, TIMING OFF)
+UPDATE lab_orders SET amount = amount + 1 WHERE id = 42;
+SELECT amount FROM lab_orders WHERE id = 42;
+ROLLBACK TO before_measure;
+SELECT amount FROM lab_orders WHERE id = 42;
 ROLLBACK;
 ```
 
-`ROLLBACK` evita di rendere permanente l'effetto di `EXPLAIN ANALYZE`.
+Vedrai **43, poi 42**. Un rollback non annulla tutto ciò che una routine può fare, per esempio l'avanzamento di una sequenza o una chiamata esterna. Per scritture reali con effetti non noti, parti da `EXPLAIN` senza `ANALYZE` o da una copia dei dati.
 
-## Esempio pratico
+## EXPLAIN in produzione
 
-Query da analizzare:
+Parti dalla query, dal ruolo e dai parametri che hanno mostrato il problema. Osserva il piano stimato con `EXPLAIN` senza `ANALYZE`: non otterrai tempi reali, ma neppure avvierai l'esecuzione che stai diagnosticando. Prima di passare a `ANALYZE`, chiediti se puoi riprodurre il lavoro su una copia rappresentativa. Anche una lettura può competere per CPU, I/O e lock; una replica con statistiche, cache o carico diversi non è un cronometro del primario.
 
-```sql
-EXPLAIN (ANALYZE, BUFFERS)
-SELECT o.id, o.total_amount, u.email
-FROM orders AS o
-JOIN users AS u
-  ON u.id = o.user_id
-WHERE o.status = 'paid'
-ORDER BY o.created_at DESC
-LIMIT 50;
-```
+Se è necessario misurare sul sistema in servizio, concorda la finestra, limita i timeout alla sessione e misura una richiesta alla volta. `TIMING OFF` riduce la strumentazione per nodo, non il costo della query. Per DML o funzioni con effetti collaterali non usare il rollback come garanzia generale di innocuità: vedi il laboratorio precedente. Conserva il piano con il contesto della misura, oscurando dati sensibili.
 
-Cosa osservare:
+## Come leggere il piano
 
-- il nodo piu costoso in tempo reale;
-- differenza tra `rows` e `actual rows`;
-- letture da buffer condivisi o da disco;
-- ordinamenti espliciti con `Sort`;
-- `Seq Scan` su tabelle grandi;
-- nested loop ripetuti molte volte.
+- **Costo e cardinalità:** in `cost=inizio..totale` i costi sono unità del modello, non millisecondi. `rows` indica l'output stimato del nodo, non le righe visitate. Con `LIMIT` un nodo può fermarsi presto: una differenza dalle sue righe stimate non implica statistiche errate.
+- **Righe e ripetizioni:** `actual rows` e i tempi del nodo, se presenti, sono medie per esecuzione. Con `loops=100` e `actual rows=3` il nodo ha restituito circa 300 righe in tutto. Non sommare i tempi o i buffer dei figli a quelli del genitore. `TIMING OFF` mantiene le cardinalità e riduce il costo della misura per nodo.
+- **Accessi:** `Seq Scan` legge la tabella in sequenza; `Index Scan` usa l'indice e consulta la heap; `Index Only Scan` può ancora fare `Heap Fetches`. Un `Bitmap Heap Scan` raggruppa gli accessi per pagina a partire dai candidati dell'indice. `Filter` elimina righe dopo l'accesso; `Index Cond` limita l'accesso stesso.
+- **Buffer:** `shared hit` indica una pagina già nei buffer PostgreSQL; `read` non prova da solo un accesso al dispositivo fisico, perché può intervenire la cache del sistema operativo. Per le tabelle temporanee dell'esempio vedrai buffer **local**. `temp read/written` segnala invece file di lavoro, per esempio per un ordinamento su disco.
+- **Join:** per un nested loop guarda quante volte viene eseguito il lato interno. Per un hash join controlla la dimensione del lato usato per costruire l'hash e i batch; per un merge join verifica se l'ordine richiesto è già disponibile o va prodotto con un sort.
 
-Possibile indice:
+Per un confronto ripetibile mantieni dati e parametri uguali e cambia una cosa per volta. `FORMAT JSON` facilita il confronto automatico e i visualizzatori come PEV; `VERBOSE` aggiunge dettagli su espressioni e oggetti. Per risalire dal carico reale alle query da studiare, `pg_stat_statements` aggrega le esecuzioni; `auto_explain` può registrare i piani delle query lente. Un piano può rivelare nomi e valori applicativi: controllalo prima di condividerlo.
 
-```sql
-CREATE INDEX orders_paid_created_at_idx
-ON orders (created_at DESC)
-WHERE status = 'paid';
-```
-
-Dopo l'indice, ripetere l'analisi e verificare se il piano migliora davvero.
-
-## Varianti
-
-- `EXPLAIN`: mostra il piano stimato senza eseguire.
-- `EXPLAIN ANALYZE`: esegue e mostra tempi reali.
-- `BUFFERS`: mostra uso della cache e letture.
-- `VERBOSE`: mostra piu dettagli su output e oggetti.
-- `FORMAT JSON`: utile per strumenti esterni.
-- `pg_stat_statements`: identifica query costose nel tempo.
-- `auto_explain`: registra piani lenti nei log.
-
-## Errori comuni
-
-- Usare `EXPLAIN ANALYZE` su `UPDATE` o `DELETE` senza transazione e `ROLLBACK`.
-- Concludere che `Seq Scan` sia sempre sbagliato.
-- Ottimizzare una query sintetica diversa da quella reale.
-- Guardare solo il costo stimato e ignorare tempi reali.
-- Creare indici senza misurare prima e dopo.
-- Non aggiornare statistiche prima della diagnosi.
-
-## Checklist
-
-- Riprodurre la query reale con parametri realistici.
-- Eseguire `EXPLAIN (ANALYZE, BUFFERS)`.
-- Confrontare righe stimate e reali.
-- Identificare scansioni, join e sort piu costosi.
-- Verificare statistiche e indici.
-- Applicare una modifica alla volta e rimisurare.
+**Fonti PostgreSQL 18:** [lettura di EXPLAIN](https://www.postgresql.org/docs/18/using-explain.html), [opzioni e semantica del comando](https://www.postgresql.org/docs/18/sql-explain.html).
 
 ## Collegamenti
 
+- [[Programmazione/PostgreSQL/Indice PostgreSQL|Indice PostgreSQL]]
 - [[Programmazione/PostgreSQL/Pagine/Statistiche e Query Planner|Statistiche e Query Planner]]
 - [[Programmazione/PostgreSQL/Pagine/Tipi di Indici|Tipi di Indici]]
 - [[Programmazione/PostgreSQL/Pagine/Indici Parziali e Coprenti|Indici Parziali e Coprenti]]
-
-## Fonti
-
-- [PostgreSQL - Using EXPLAIN](https://www.postgresql.org/docs/current/using-explain.html)
-- [PostgreSQL - EXPLAIN](https://www.postgresql.org/docs/current/sql-explain.html)
-
-
-## Navigazione
-
-- [[Programmazione/PostgreSQL/Indice PostgreSQL|Indice PostgreSQL]]

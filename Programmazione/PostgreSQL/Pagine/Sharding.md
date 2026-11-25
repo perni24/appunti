@@ -19,66 +19,45 @@ title: Sharding
 
 ## Sintesi
 
-Lo sharding divide dati su piu nodi indipendenti usando una shard key. Serve quando un singolo cluster non basta piu per volume, throughput o isolamento.
+Con lo sharding **nodi indipendenti possiedono righe diverse**. Con una replica più nodi conservano gli stessi dati; con il normale partizionamento locale più tabelle figlie restano gestite dallo stesso server. Lo sharding ha senso quando il limite è il volume, il carico di scrittura o un requisito di isolamento che un singolo nodo non soddisfa.
 
-## Quando usarlo
+## Scegliere la chiave con una query concreta
 
-Usalo solo dopo aver esaurito opzioni piu semplici: indici, partizionamento, read replicas, tuning e archiviazione.
+In un servizio multi-tenant, una richiesta `(tenant_id, order_id)` può raggiungere un solo shard se tutti gli ordini del cliente risiedono insieme. Una richiesta che conosce soltanto `order_id` non sa dove andare: serve un indice di routing separato o una ricerca su più nodi. Un tenant che genera metà del traffico resta un punto caldo anche distribuendo bene tutti gli altri.
 
-## Come funziona
+## Laboratorio: una mappa esplicita
 
-I dati vengono assegnati a shard diversi in base a una chiave, per esempio `tenant_id` o `account_id`. L'applicazione o un middleware indirizza query allo shard corretto.
+Questa query non crea server né sposta dati: simula la decisione del router su un solo database. Le richieste sono separate dalla mappa affinché sia visibile anche il caso di un tenant non configurato.
 
-## API / Sintassi
-
-Non esiste un comando PostgreSQL standard per sharding generale. Approcci comuni:
-
-```text
-tenant_id -> shard_01
-tenant_id -> shard_02
-tenant_id -> shard_03
+```sql
+WITH mappa(tenant_id, shard) AS (
+  VALUES (10, 'eu_1'), (20, 'eu_2'), (30, 'eu_1')
+), richieste(tenant_id) AS (
+  VALUES (10), (20), (99)
+)
+SELECT r.tenant_id, m.shard
+FROM richieste AS r LEFT JOIN mappa AS m USING (tenant_id)
+ORDER BY r.tenant_id;
 ```
 
-## Esempio pratico
+Risultati: `10 → eu_1`, `20 → eu_2`, `99 → NULL`. Un router deve rifiutare o accodare l'ultima richiesta finché non esiste un'assegnazione: scegliere un nodo di default rischia di creare una seconda copia autorevole. In produzione la mappa deve essere disponibile, versionata e coerente con eventuali migrazioni.
 
-Multi-tenant:
+## Vincoli e operazioni tra nodi
 
-- ogni tenant appartiene a uno shard;
-- query con `tenant_id` vanno a un solo shard;
-- query globali devono aggregare risultati da piu shard.
+- Una chiave univoca sullo shard non impedisce lo stesso valore su un altro. Per un vincolo globale servono una regola di collocazione che porti tutti i possibili duplicati sullo stesso nodo, oppure coordinamento esplicito.
+- Per un report globale, somma i parziali disgiunti. Per una **media** combina somme e conteggi, non le medie locali: 1 ordine da 100 e 9 da 10 danno `190 / 10 = 19`, non `(100 + 10) / 2 = 55`.
+- Con routing per intervallo, hash o directory cambiano i costi di ribilanciamento. Usare direttamente `hash(chiave) % numero_nodi` può rimappare molte chiavi quando aggiungi un nodo. Una mappa tra gruppi logici e nodi permette di spostarli separatamente.
+- Per spostare un tenant: copia, recupera le modifiche concorrenti o sospendi le sue scritture, verifica i dati, quindi cambia il routing impedendo scritture sulla vecchia destinazione. Prevedi come ripristinare **sia mappa sia dati** a uno stato coerente.
 
-## Varianti
+PostgreSQL offre strumenti come `postgres_fdw` per accedere a tabelle remote, non un router generale che risolve automaticamente vincoli globali, ribilanciamento o failover. Prima di distribuire i dati, confronta l'alternativa locale su un carico rappresentativo.
 
-- Sharding applicativo.
-- Sharding per tenant.
-- Sharding per hash.
-- Sharding per range.
-- Estensioni/sistemi distribuiti.
-- Federazione con FDW.
+## Fonti
 
-## Errori comuni
-
-- Shardare troppo presto.
-- Scegliere shard key sbagliata.
-- Ignorare query cross-shard.
-- Non pianificare rebalancing.
-- Sottovalutare complessita operativa.
-
-## Checklist
-
-- Il problema non si risolve con partizionamento o replica?
-- La shard key e presente in quasi tutte le query?
-- Le query cross-shard sono rare?
-- Esiste piano di rebalancing?
-- Backup e restore sono pensati per piu shard?
+[PostgreSQL 18: partizionamento](https://www.postgresql.org/docs/18/ddl-partitioning.html) · [postgres_fdw: operazioni e transazioni remote](https://www.postgresql.org/docs/18/postgres-fdw.html)
 
 ## Collegamenti
 
+- [[Programmazione/PostgreSQL/Indice PostgreSQL|Indice PostgreSQL]]
 - [[Programmazione/PostgreSQL/Pagine/Partitioning|Partitioning]]
 - [[Programmazione/PostgreSQL/Pagine/Read replicas|Read replicas]]
 - [[Programmazione/PostgreSQL/Pagine/FDW|FDW]]
-
-
-## Navigazione
-
-- [[Programmazione/PostgreSQL/Indice PostgreSQL|Indice PostgreSQL]]

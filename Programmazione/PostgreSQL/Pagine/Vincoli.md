@@ -20,178 +20,76 @@ title: Vincoli (Constraints) in PostgreSQL
 
 ## Sintesi
 
-I vincoli dichiarano nel database quali stati sono ammessi. `NOT NULL`, `CHECK`, `UNIQUE`, `PRIMARY KEY`, `FOREIGN KEY` ed exclusion constraint proteggono invarianti anche quando i dati vengono modificati da applicazioni o procedure diverse.
+Un tipo dice quali valori si possono rappresentare; un vincolo dice quali stati del database sono ammessi. Per esempio, `integer` rappresenta anche numeri negativi: per una quantità obbligatoria e positiva servono **sia** `NOT NULL` **sia** `CHECK (qty > 0)`. La validazione nell'app migliora il messaggio all'utente, ma non protegge gli altri client che scrivono sulla stessa tabella.
 
-## Quando usarlo
+## Scegliere la regola
 
-Usa i vincoli ogni volta che una regola del dominio deve essere sempre vera:
+| Regola | Vincolo e limite |
+|---|---|
+| Campo obbligatorio | `NOT NULL`. Un `CHECK` respinge **false**, non il risultato sconosciuto dovuto a `NULL`. |
+| Unicità | `UNIQUE`, anche su più colonne. Di default ammette più valori nulli; `UNIQUE NULLS NOT DISTINCT` li considera uguali. |
+| Identità della riga | Una sola `PRIMARY KEY` per tabella, anche composta: impone unicità e non-nullità. PK e unique creano l'indice che applica l'unicità. |
+| Relazione fra tabelle | `FOREIGN KEY` verifica il riferimento. Con una FK semplice nullable, `NULL` indica assenza di riferimento: aggiungi `NOT NULL` se il legame è obbligatorio. Sul lato figlio non nasce automaticamente un indice; valutalo per accessi e cancellazioni frequenti. |
+| Relazione fra righe | `EXCLUDE` vieta una coppia per cui **tutti** i confronti dichiarati sono veri; non devono essere tutti confronti di uguaglianza. Non usare un normale `CHECK` per confrontare righe diverse. |
 
-- una colonna obbligatoria non deve essere `NULL`;
-- un valore deve essere unico;
-- una riga deve riferirsi a una riga valida in un'altra tabella;
-- un importo deve essere positivo;
-- due intervalli non devono sovrapporsi;
-- una cancellazione deve essere impedita o propagata secondo una regola esplicita.
+## Esempio: cliente obbligatorio e quantità positiva
 
-La validazione applicativa e utile, ma i vincoli proteggono i dati anche da script, import manuali, bug e applicazioni diverse.
+Esegui l'intero blocco su un database di prova senza transazione aperta. Le tabelle temporanee vengono annullate alla fine.
 
-## Come funziona
-
-### Concetto chiave
-I **Vincoli** sono regole applicate alle colonne o alle tabelle per limitare il tipo di dati che possono essere inseriti. Il loro scopo fondamentale è garantire l'**Integrità dei Dati** (Data Integrity) a livello di database, impedendo che errori applicativi o inserimenti manuali corrompano la coerenza delle informazioni.
-
----
-### Tipologie di Vincoli
-#### NOT NULL
-Garantisce che una colonna non possa contenere valori `NULL`.
 ```sql
-CREATE TABLE utenti (
-    id serial PRIMARY KEY,
-    username text NOT NULL
+BEGIN;
+CREATE TEMP TABLE lab_customers (
+    id integer PRIMARY KEY,
+    email text NOT NULL UNIQUE,
+    external_ref text UNIQUE
 );
+CREATE TEMP TABLE lab_orders (
+    id integer GENERATED ALWAYS AS IDENTITY PRIMARY KEY,
+    customer_id integer NOT NULL,
+    qty integer NOT NULL CONSTRAINT lab_qty_positive CHECK (qty > 0),
+    CONSTRAINT lab_customer_fk FOREIGN KEY (customer_id)
+        REFERENCES lab_customers(id) ON DELETE RESTRICT
+);
+INSERT INTO lab_customers VALUES (1,'ada@example.org',NULL), (2,'teo@example.org',NULL);
+INSERT INTO lab_orders (customer_id, qty) VALUES (1, 2) RETURNING customer_id, qty;
+ROLLBACK;
 ```
 
-#### UNIQUE
-Assicura che tutti i valori in una colonna (o combinazione di colonne) siano distinti tra loro.
-- **Nota:** Postgres crea automaticamente un indice per supportare questo vincolo.
+Risultato: `1, 2`. I due `NULL` in `external_ref` sono ammessi. In questa struttura una quantità zero viola il `CHECK`; una quantità nulla viola `NOT NULL`; un cliente inesistente viola la FK. I nomi dei vincoli aiutano a distinguere questi errori senza dipendere dal testo tradotto del messaggio.
 
-#### PRIMARY KEY
-Unisce `NOT NULL` e `UNIQUE`. Identifica univocamente ogni riga della tabella. Ogni tabella può avere una sola chiave primaria.
+Con `ON DELETE RESTRICT` non puoi cancellare il cliente finché esiste un ordine che lo riferisce. `CASCADE` eliminerebbe anche gli ordini; `SET NULL` richiederebbe che la colonna figlia ammetta il nullo. La scelta descrive la regola del dominio, non una scorciatoia per far riuscire una cancellazione.
 
-#### FOREIGN KEY (Integrità Referenziale)
-Garantisce che un valore in una colonna corrisponda a un valore esistente in un'altra tabella.
+## Esempio: prenotazioni non sovrapposte
+
+Per questo blocco serve `btree_gist` disponibile sul server: fornisce l'operatore GiST di uguaglianza per l'intero della stanza. Solo in un **database di prova** e con i permessi necessari, esegui il blocco intero. L'eventuale creazione dell'estensione è annullata dal rollback; se era già presente non viene rimossa.
 
 ```sql
-CREATE TABLE ordini (
-    id serial PRIMARY KEY,
-    utente_id int REFERENCES utenti(id) ON DELETE CASCADE
-);
-```
-**Referential Actions:**
-- `ON DELETE CASCADE`: Se elimini l'utente, vengono eliminati anche i suoi ordini.
-- `ON DELETE SET NULL`: Se elimini l'utente, il campo `utente_id` negli ordini diventa NULL.
-- `ON DELETE RESTRICT`: Impedisce l'eliminazione dell'utente se ha ordini associati.
-
-#### CHECK
-Consente di definire espressioni booleane personalizzate che i dati devono soddisfare.
-```sql
-CREATE TABLE prodotti (
-    prezzo numeric CHECK (prezzo > 0),
-    sconto numeric CHECK (sconto >= 0 AND sconto < prezzo)
-);
-```
-
-#### EXCLUSION (Esclusione)
-Un vincolo avanzato di PostgreSQL che garantisce che, se due righe vengono confrontate su colonne specifiche usando determinati operatori, non tutte le uguaglianze siano vere contemporaneamente.
-- **Esempio tipico:** Impedire la sovrapposizione di prenotazioni (range temporali).
-
----
-### Logic layer: Integrità Dichiarativa
-L'utilizzo dei vincoli implementa l'**Integrità Dichiarativa**. 
-
-> [!INFO] Perché nel Database e non nell'App?
-> Sebbene sia possibile validare i dati nel codice dell'applicazione, i vincoli nel database sono l'ultima linea di difesa. Essi garantiscono la coerenza indipendentemente da quale applicazione o script acceda ai dati, proteggendo il sistema da bug software o accessi diretti via SQL.
-
----
-
-## API / Sintassi
-
-```sql
-CREATE TABLE users (
-  id bigint GENERATED ALWAYS AS IDENTITY,
-  email text NOT NULL,
-  status text NOT NULL DEFAULT 'active',
-
-  CONSTRAINT users_pk PRIMARY KEY (id),
-  CONSTRAINT users_email_unique UNIQUE (email),
-  CONSTRAINT users_status_check CHECK (status IN ('active', 'disabled'))
-);
-```
-
-Foreign key:
-
-```sql
-CREATE TABLE orders (
-  id bigint GENERATED ALWAYS AS IDENTITY PRIMARY KEY,
-  user_id bigint NOT NULL,
-  total_amount numeric(12, 2) NOT NULL,
-
-  CONSTRAINT orders_user_fk
-    FOREIGN KEY (user_id)
-    REFERENCES users(id)
-    ON DELETE RESTRICT,
-
-  CONSTRAINT orders_total_positive
-    CHECK (total_amount > 0)
-);
-```
-
-## Esempio pratico
-
-Impedire prenotazioni sovrapposte:
-
-```sql
+BEGIN;
 CREATE EXTENSION IF NOT EXISTS btree_gist;
-
-CREATE TABLE room_bookings (
-  id bigint GENERATED ALWAYS AS IDENTITY PRIMARY KEY,
-  room_id bigint NOT NULL,
-  period tstzrange NOT NULL,
-
-  CONSTRAINT room_bookings_no_overlap
-    EXCLUDE USING gist (
-      room_id WITH =,
-      period WITH &&
-    )
+CREATE TEMP TABLE lab_bookings (
+    room_id integer NOT NULL,
+    period tstzrange NOT NULL CHECK (NOT isempty(period)),
+    CONSTRAINT lab_no_overlap EXCLUDE USING gist (room_id WITH =, period WITH &&)
 );
+INSERT INTO lab_bookings VALUES
+    (1, tstzrange('2026-06-01 10:00+00', '2026-06-01 11:00+00', '[)')),
+    (1, tstzrange('2026-06-01 11:00+00', '2026-06-01 12:00+00', '[)')),
+    (2, tstzrange('2026-06-01 10:00+00', '2026-06-01 11:00+00', '[)'));
+SELECT room_id, count(*) FROM lab_bookings GROUP BY room_id ORDER BY room_id;
+ROLLBACK;
 ```
 
-Il vincolo di esclusione impedisce che due prenotazioni della stessa stanza abbiano periodi sovrapposti.
+La stanza 1 ammette le due prenotazioni adiacenti; la stanza 2 può usare la stessa fascia della 1. Una terza prenotazione della stanza 1 dalle 10:30 alle 11:30 sarebbe rifiutata.
 
-## Varianti
+## Quando avviene il controllo?
 
-- `NOT NULL`: campo obbligatorio.
-- `UNIQUE`: valore o combinazione di valori univoca.
-- `PRIMARY KEY`: identificatore della riga.
-- `FOREIGN KEY`: integrita referenziale.
-- `CHECK`: regola booleana personalizzata.
-- `EXCLUDE`: regola avanzata basata su operatori.
-- `DEFERRABLE`: controllo rimandabile fino al commit della transazione.
+Normalmente gli errori emergono durante l'istruzione. `UNIQUE`, `PRIMARY KEY`, `FOREIGN KEY` ed `EXCLUDE` possono essere dichiarati `DEFERRABLE`: con controllo differito il fallimento può emergere al `COMMIT`, non alla singola scrittura. `CHECK` e `NOT NULL` non si possono rendere differibili. Per esigenze di verifica differita sulle cancellazioni non confondere `RESTRICT` con `NO ACTION`.
 
-## Errori comuni
-
-- Mettere tutte le regole solo nell'applicazione.
-- Non nominare i vincoli, ottenendo messaggi di errore meno leggibili.
-- Dimenticare indici sulle colonne foreign key molto usate.
-- Usare `ON DELETE CASCADE` senza valutare l'impatto sui dati figli.
-- Usare `CHECK` troppo deboli o non allineati con il dominio.
-- Non gestire `NULL` nei vincoli e nei confronti.
-
-## Checklist
-
-### Best Practices
-- **Nomi ai vincoli:** Assegna sempre un nome esplicito ai vincoli complessi (specialmente `CHECK` e `FOREIGN KEY`) per facilitare il debugging degli errori:
-  `CONSTRAINT prezzo_positivo CHECK (prezzo > 0)`
-- **Validazione differita:** Se necessario, i vincoli possono essere impostati come `DEFERRABLE`, permettendo di violarli temporaneamente durante una transazione e controllandoli solo al `COMMIT`.
-- **Indici su FK:** Postgres non crea automaticamente indici sulle Foreign Key. È quasi sempre consigliabile crearli manualmente per velocizzare le JOIN e le operazioni di eliminazione.
-- Verificare che ogni regola importante sia espressa nel database.
-- Scegliere policy `ON DELETE` esplicite.
-- Testare inserimenti validi e non validi.
-- Documentare i vincoli che rappresentano regole di business.
-
----
+**Fonti:** [vincoli di PostgreSQL 18](https://www.postgresql.org/docs/18/ddl-constraints.html), [CREATE TABLE: DEFERRABLE](https://www.postgresql.org/docs/18/sql-createtable.html) e [btree_gist](https://www.postgresql.org/docs/18/btree-gist.html).
 
 ## Collegamenti
 
+- [[Programmazione/PostgreSQL/Indice PostgreSQL|Indice PostgreSQL]]
 - [[Programmazione/PostgreSQL/Pagine/Chiavi primarie e foreign key|Chiavi primarie e foreign key]]
 - [[Programmazione/PostgreSQL/Pagine/Tipi di Dato|Tipi di Dato]]
 - [[Programmazione/PostgreSQL/Pagine/Normalizzazione|Normalizzazione]]
-
-## Fonti
-
-- [PostgreSQL - Constraints](https://www.postgresql.org/docs/current/ddl-constraints.html)
-
-
-## Navigazione
-
-- [[Programmazione/PostgreSQL/Indice PostgreSQL|Indice PostgreSQL]]

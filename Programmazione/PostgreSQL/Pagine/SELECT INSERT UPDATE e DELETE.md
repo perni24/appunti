@@ -20,127 +20,65 @@ title: SELECT, INSERT, UPDATE e DELETE
 
 ## Sintesi
 
-`SELECT`, `INSERT`, `UPDATE` e `DELETE` sono i comandi DML fondamentali per leggere e modificare dati in PostgreSQL.
+`SELECT` legge un insieme di righe; `INSERT` aggiunge righe; `UPDATE` modifica quelle selezionate e `DELETE` le elimina. Per le scritture separa due domande: **quali righe ha toccato l'istruzione?** (`RETURNING`) e **le modifiche sono state confermate?** (`COMMIT`). Vedere un risultato non equivale al commit.
 
-## Quando usarlo
+## Esempio: seguire una riga
 
-Usa questi comandi in quasi ogni interazione applicativa con PostgreSQL:
-
-- `SELECT` per leggere dati, costruire report, verificare condizioni o alimentare viste applicative.
-- `INSERT` per creare nuove righe.
-- `UPDATE` per modificare righe esistenti.
-- `DELETE` per rimuovere righe quando la cancellazione fisica e davvero necessaria.
-
-In applicazioni reali conviene sempre combinarli con transazioni, vincoli e filtri espliciti. `UPDATE` e `DELETE` sono i piu rischiosi perche, senza una clausola `WHERE` corretta, possono modificare l'intera tabella.
-
-## Come funziona
-
-### Concetto chiave
-Questi comandi lavorano sulle righe delle tabelle. `SELECT` legge, `INSERT` crea, `UPDATE` modifica e `DELETE` elimina.
-
-```sql
-SELECT id, email FROM users WHERE active = true;
-
-INSERT INTO users (email, active)
-VALUES ('a@example.com', true);
-
-UPDATE users
-SET active = false
-WHERE id = 10;
-
-DELETE FROM users
-WHERE id = 10;
-```
-
-## API / Sintassi
-
-```sql
-SELECT column_list
-FROM table_name
-WHERE condition
-ORDER BY column_name
-LIMIT n;
-
-INSERT INTO table_name (column_1, column_2)
-VALUES (value_1, value_2)
-RETURNING id;
-
-UPDATE table_name
-SET column_1 = new_value
-WHERE condition
-RETURNING *;
-
-DELETE FROM table_name
-WHERE condition
-RETURNING *;
-```
-
-In PostgreSQL `RETURNING` e molto utile per ottenere subito le righe create, modificate o eliminate senza fare una seconda query.
-
-## Esempio pratico
+Nel database di prova esegui i blocchi **in ordine, nella stessa sessione**, senza una transazione già aperta. La tabella è temporanea e il rollback finale annulla l'esercizio.
 
 ```sql
 BEGIN;
-
-INSERT INTO users (email, active)
-VALUES ('ada@example.com', true)
-RETURNING id;
-
-UPDATE users
-SET last_login_at = now()
-WHERE email = 'ada@example.com'
-RETURNING id, last_login_at;
-
-SELECT id, email, last_login_at
-FROM users
-WHERE active = true
-ORDER BY last_login_at DESC NULLS LAST
-LIMIT 20;
-
-COMMIT;
+CREATE TEMP TABLE lab_users (
+    id integer GENERATED ALWAYS AS IDENTITY PRIMARY KEY,
+    email text NOT NULL UNIQUE,
+    active boolean NOT NULL DEFAULT true,
+    last_login_at timestamptz
+);
+INSERT INTO lab_users (email) VALUES ('ada@example.org')
+RETURNING id, active;
+INSERT INTO lab_users (email) VALUES ('teo@example.org');
 ```
 
-Per una cancellazione controllata:
+Il primo inserimento restituisce `1, true`. La lettura seguente chiede un ordine preciso: utenti con accessi più recenti per primi, valori mancanti alla fine e `id` per sciogliere le parità. Senza `ORDER BY`, `LIMIT` non identifica stabilmente «il primo».
 
 ```sql
-DELETE FROM sessions
-WHERE expires_at < now()
-RETURNING id, user_id;
+UPDATE lab_users
+SET last_login_at = timestamptz '2026-06-01 08:00+00'
+WHERE email = 'ada@example.org'
+RETURNING id, email;
+SELECT id, email FROM lab_users
+WHERE active
+ORDER BY last_login_at DESC NULLS LAST, id
+LIMIT 1;
 ```
 
-La clausola `RETURNING` permette di verificare immediatamente cosa e stato toccato.
+Sia `UPDATE` sia `SELECT` restituiscono Ada. Ora elimina **solo** l'utente che non ha mai effettuato l'accesso:
+
+```sql
+DELETE FROM lab_users
+WHERE last_login_at IS NULL
+RETURNING id, email;
+SELECT count(*) AS rimasti FROM lab_users;
+ROLLBACK;
+```
+
+`DELETE` restituisce Teo (id `2`); prima del rollback resta una riga. Se il filtro non corrisponde a nulla, `UPDATE` e `DELETE` modificano zero righe: non è un errore SQL. Controlla il conteggio quando l'applicazione si aspetta esattamente una riga.
+
+## Prima di una scrittura reale
+
+- Senza `WHERE`, `UPDATE` e `DELETE` riguardano tutte le righe della tabella. Una `SELECT` con lo stesso predicato è un'anteprima, non blocca cambiamenti concorrenti. Usa una chiave, una transazione e, quando serve coordinare scrittori, un blocco mirato come `SELECT … FOR UPDATE`.
+- Usa colonne esplicite sia in lettura sia in `INSERT`. `RETURNING` restituisce normalmente i valori inseriti o aggiornati, oppure i valori rimossi nel caso di `DELETE`. L'ordine di più righe restituite non è garantito.
+- Se più modifiche devono riuscire insieme, conferma con `COMMIT` solo dopo le verifiche. In autocommit un successivo `ROLLBACK` non annulla un'istruzione già confermata.
 
 ## Varianti
 
-- `INSERT ... SELECT`: inserisce righe prodotte da una query.
-- `INSERT ... ON CONFLICT`: gestisce l'upsert quando esiste un vincolo unico.
-- `UPDATE ... FROM`: aggiorna una tabella usando dati provenienti da un'altra tabella.
-- `DELETE ... USING`: elimina righe usando una join logica con altre tabelle.
-- `SELECT ... FOR UPDATE`: legge righe bloccandole per modificarle in una transazione.
-- `WITH ... INSERT/UPDATE/DELETE`: usa CTE per rendere espliciti passaggi intermedi.
+`INSERT … SELECT` carica dati provenienti da una query; `ON CONFLICT` gestisce un conflitto di unicità previsto. `UPDATE … FROM` e `DELETE … USING` usano altre tabelle per individuare le righe: con `UPDATE … FROM` assicurati che ogni riga bersaglio incontri al massimo una riga sorgente. Una CTE (`WITH`) può dare un nome a un passaggio intermedio, non sostituisce il controllo della cardinalità.
 
-## Errori comuni
-
-- Eseguire `UPDATE` o `DELETE` senza `WHERE`.
-- Usare `SELECT *` in query applicative stabili.
-- Non controllare il numero di righe modificate.
-
-## Checklist
-
-- Verificare sempre la clausola `WHERE` prima di `UPDATE` e `DELETE`.
-- Usare `RETURNING` quando serve confermare le righe modificate.
-- Evitare `SELECT *` nelle query applicative stabili.
-- Controllare gli indici sulle colonne usate in `WHERE`, `JOIN` e `ORDER BY`.
-- Usare transazioni quando piu modifiche devono essere atomiche.
-- Testare prima con `SELECT` equivalente quando una modifica e rischiosa.
+**Fonti:** [modifica dei dati e RETURNING](https://www.postgresql.org/docs/18/dml-returning.html) e [UPDATE … FROM](https://www.postgresql.org/docs/18/sql-update.html).
 
 ## Collegamenti
 
+- [[Programmazione/PostgreSQL/Indice PostgreSQL|Indice PostgreSQL]]
 - [[Programmazione/PostgreSQL/Pagine/Tipi di Dato|Tipi di Dato]]
 - [[Programmazione/PostgreSQL/Pagine/Vincoli|Vincoli]]
 - [[Programmazione/PostgreSQL/Pagine/RETURNING|RETURNING]]
-
-
-## Navigazione
-
-- [[Programmazione/PostgreSQL/Indice PostgreSQL|Indice PostgreSQL]]

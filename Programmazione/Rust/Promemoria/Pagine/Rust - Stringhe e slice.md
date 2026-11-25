@@ -15,116 +15,86 @@ aliases:
   - Cheatsheet stringhe Rust
 prerequisites: []
 related:
-  - "[[Programmazione/Rust/Pagine/Stringhe String e &str]]"
-  - "[[Programmazione/Rust/Pagine/Slices]]"
+  - "[[Programmazione/Rust/Pagine/Stringhe String e &str|Stringhe String e &str]]"
+  - "[[Programmazione/Rust/Pagine/Slices|Slices]]"
 title: Rust - Stringhe e slice
 ---
 
 # Rust - Stringhe e slice
 
-## `String` e `&str`
+Usa `&str` per leggere testo, `String` per possederlo e modificarne la lunghezza. I blocchi sono indipendenti e vanno nel corpo di `fn main()`.
+
+## Creare, prestare e concatenare
 
 ```rust
-let borrowed: &str = "hello";
-let owned: String = String::from("hello");
-let owned = "hello".to_owned();
-```
-
-```rust
-fn print_name(name: &str) {
-    println!("{name}");
-}
-
-print_name(&owned);
+fn print_name(name: &str) { println!("{name}"); }
+let borrowed: &str = "Ada";
+let owned = String::from(borrowed); // anche borrowed.to_owned()
 print_name(borrowed);
+print_name(&owned);
+
+let greeting = "Ciao";
+let mut message = format!("{greeting} {borrowed}");
+message.push('!');
+message.push_str(" A presto");
+assert_eq!(message, "Ciao Ada! A presto");
 ```
 
-Accettare `&str` quando basta leggere testo.
+## Indici UTF-8: byte, non caratteri
 
-## Modificare una String
+```rust
+let text = "è!";
+assert_eq!(text.len(), 3);                 // byte UTF-8
+assert_eq!(text.chars().count(), 2);       // valori scalari Unicode
+assert_eq!(text.bytes().count(), 3);
+assert_eq!(text.get(0..2), Some("è"));
+assert_eq!(text.get(0..1), None);          // dentro il primo carattere
+```
+
+Non usare `text[i]`. Se gli estremi possono essere errati usa `get`: `&text[0..1]` qui causerebbe un panic. `chars()` non conta necessariamente i caratteri percepiti dall'utente.
 
 ```rust
 let mut text = String::new();
-
-text.push('R');
-text.push_str("ust");
-text.insert(0, '!');
-text.truncate(4);
+text.push('è');
+text.push_str("!");
+text.insert(0, '#');
+text.truncate(3); // confine valido dopo "#è"
+assert_eq!(text, "#è");
 text.clear();
+assert!(text.is_empty());
 ```
 
-## Concatenare
+## Cercare, dividere e convertire
 
 ```rust
-let message = format!("{greeting} {name}");
+let path = "notes/data.json";
+assert!(path.starts_with("notes/") && path.contains("data") && path.ends_with(".json"));
+assert_eq!(" A ".trim().to_lowercase(), "a");
+assert_eq!("Ada".to_uppercase(), "ADA");
+assert_eq!("old.csv".replace("old", "new"), "new.csv");
+assert_eq!("a,b".split(',').collect::<Vec<_>>(), ["a", "b"]);
+assert_eq!("a\nb".lines().count(), 2);
+assert_eq!(" 42 ".trim().parse::<i32>(), Ok(42));
 ```
+
+## Slice di elementi
 
 ```rust
-let mut message = String::from("Hello");
-message.push(' ');
-message.push_str(name);
+fn first(values: &[i32]) -> Option<&i32> { values.first() }
+fn reset(values: &mut [i32]) { values.fill(0); }
+let mut values = vec![1, 2, 3, 4];
+assert_eq!(first(&[]), None);
+assert_eq!(&values[1..3], &[2, 3]);
+reset(&mut values[1..3]);
+assert_eq!(values, [1, 0, 0, 4]);
 ```
 
-## Metodi principali
+Per una slice di `i32` gli indici contano **elementi**; per `str` contano **byte**. Teoria: [[Programmazione/Rust/Pagine/Slices|Slice]].
 
-```rust
-text.len()
-text.is_empty()
-text.contains("term")
-text.starts_with("http")
-text.ends_with(".json")
-text.trim()
-text.to_lowercase()
-text.to_uppercase()
-text.replace("old", "new")
-text.split(',')
-text.lines()
-```
+## Collegamenti
 
-## Iterare Unicode
-
-```rust
-for character in text.chars() {}
-for byte in text.bytes() {}
-```
-
-Non indicizzare una stringa con `text[index]`.
-
-## Parsing
-
-```rust
-let number: i32 = text.trim().parse()?;
-```
-
-## Slice
-
-```rust
-fn first(values: &[i32]) -> Option<&i32> {
-    values.first()
-}
-```
-
-```rust
-let values = vec![1, 2, 3, 4];
-let middle = &values[1..3];
-```
-
-## Slice mutabile
-
-```rust
-fn reset(values: &mut [i32]) {
-    values.fill(0);
-}
-```
-
-## Approfondimento
-
+- [[Programmazione/Rust/Promemoria/Indice Promemoria Rust|Indice Promemoria Rust]]
 - [[Programmazione/Rust/Pagine/Stringhe String e &str|Stringhe String e &str]]
 - [[Programmazione/Rust/Pagine/Slices|Slices]]
 - [[Programmazione/Rust/Pagine/OsStr e OsString|OsStr e OsString]]
 - [[Programmazione/Rust/Pagine/References e Borrowing|References e Borrowing]]
-
-
-## Navigazione
-
-- [[Programmazione/Rust/Promemoria/Indice Promemoria Rust|Indice Promemoria Rust]]

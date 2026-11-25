@@ -20,125 +20,65 @@ title: Gestione Utenti e Ruoli in PostgreSQL
 
 ## Sintesi
 
-In PostgreSQL utenti e gruppi sono entrambi **ruoli**. Un ruolo con `LOGIN` puo connettersi; un ruolo senza `LOGIN` viene spesso usato come gruppo per aggregare permessi.
+I ruoli sono globali al cluster. `LOGIN` permette di presentarsi all'autenticazione; per lavorare servono anche accesso al database e privilegi sui singoli oggetti. Un ruolo `NOLOGIN` può essere un proprietario tecnico o un gruppo di permessi: non è un account che deve avere una password.
 
-## Quando usarlo
+## Separare i compiti
 
-Usa questa nota quando devi creare accessi o separare privilegi:
+| Identità | Compito |
+|---|---|
+| Proprietario delle migrazioni | Crea e modifica lo schema. Non è l'identità runtime. |
+| Gruppo `NOLOGIN` | Raccoglie i privilegi di lettura o scrittura richiesti; si assegna agli utenti tramite membership. |
+| Ruolo `LOGIN` | Identifica l'utente o il servizio. Non assegnargli `SUPERUSER`, `CREATEROLE`, `CREATEDB` o `REPLICATION` per risolvere un normale errore SQL. |
 
-- utente applicativo;
-- utente read-only;
-- ruolo per migrazioni;
-- ruoli umani per amministrazione;
-- gruppi di permessi;
-- revoca di privilegi troppo ampi.
+## Esempio: lettore di tabelle esistenti e future
 
-## Come funziona
-
-I ruoli sono globali nel cluster PostgreSQL. I privilegi sugli oggetti sono invece legati a database, schema, tabelle, sequenze, funzioni e altri oggetti.
-
-Una buona configurazione separa:
-
-- owner degli oggetti;
-- ruolo runtime dell'applicazione;
-- ruoli di lettura;
-- ruoli per migrazioni;
-- ruoli amministrativi.
-
-Il principio guida e il least privilege: ogni ruolo deve avere solo i permessi necessari.
-
-## API / Sintassi
-
-Creare un ruolo utente:
+Nel **database di prova**, esegui i tre blocchi in ordine, nella stessa sessione amministrativa, con i nomi `lab_*` liberi. La transazione finale viene annullata: nessun account o schema dell'esempio resta nel cluster.
 
 ```sql
-CREATE ROLE app_user
-WITH LOGIN PASSWORD 'change_me';
+BEGIN;
+CREATE ROLE lab_owner NOLOGIN;
+CREATE ROLE lab_read NOLOGIN;
+CREATE ROLE lab_analyst LOGIN;
+GRANT lab_read TO lab_analyst;
+CREATE SCHEMA lab_reports AUTHORIZATION lab_owner;
+SET LOCAL ROLE lab_owner;
+CREATE TABLE lab_reports.today (id integer);
+GRANT USAGE ON SCHEMA lab_reports TO lab_read;
+GRANT SELECT ON ALL TABLES IN SCHEMA lab_reports TO lab_read;
 ```
 
-Creare un ruolo gruppo:
+Il `GRANT … ON ALL TABLES` copre solo le tabelle **già esistenti**. Per quelle future imposta i default del ruolo che effettivamente creerà gli oggetti, nel database e nello schema corretti:
 
 ```sql
-CREATE ROLE app_readonly;
+ALTER DEFAULT PRIVILEGES FOR ROLE lab_owner IN SCHEMA lab_reports
+    GRANT SELECT ON TABLES TO lab_read;
+CREATE TABLE lab_reports.tomorrow (id integer);
+RESET ROLE;
 ```
 
-Assegnare membership:
+Verifica il risultato dal punto di vista dell'utente. Attesi: `true` per le prime tre colonne, `false` per l'ultima.
 
 ```sql
-GRANT app_readonly TO analyst_user;
+SELECT has_schema_privilege('lab_analyst', 'lab_reports', 'USAGE') AS entra,
+       has_table_privilege('lab_analyst', 'lab_reports.today', 'SELECT') AS legge_oggi,
+       has_table_privilege('lab_analyst', 'lab_reports.tomorrow', 'SELECT') AS legge_domani,
+       has_table_privilege('lab_analyst', 'lab_reports.today', 'INSERT') AS scrive;
+ROLLBACK;
 ```
 
-Permessi su schema e tabelle:
+La prova verifica l'autorizzazione, **non** un login. Per un account persistente con autenticazione password, imposta il segreto con `\password nome_ruolo` in `psql` o con il sistema di gestione segreti; non copiarlo in un `CREATE ROLE … PASSWORD '…'` in cronologia o negli appunti.
 
-```sql
-GRANT USAGE ON SCHEMA public TO app_readonly;
-GRANT SELECT ON ALL TABLES IN SCHEMA public TO app_readonly;
-```
+## Adattare a un'applicazione
 
-Revoca:
+- `USAGE` sullo schema consente di risolvere i nomi, non di leggere tabelle. `CREATE` permette di creare oggetti nello schema: al runtime di solito non serve.
+- Per un ruolo di scrittura concedi solo le operazioni richieste sulle tabelle. Se un default usa `nextval` su una sequenza (ad esempio `serial`), verifica anche `USAGE` sulla sequenza: i grant sulle tabelle non lo includono.
+- I default sono del **creatore**: se le migrazioni creano oggetti come un altro ruolo, quelli di `lab_owner` non si applicano. Per revocare un accesso considera anche membership, proprietà e privilegi concessi a `PUBLIC` (tutti i ruoli).
 
-```sql
-REVOKE CREATE ON SCHEMA public FROM PUBLIC;
-```
-
-## Esempio pratico
-
-Ruolo applicativo con lettura e scrittura limitata:
-
-```sql
-CREATE ROLE app_runtime WITH LOGIN PASSWORD 'change_me';
-
-GRANT CONNECT ON DATABASE app_db TO app_runtime;
-GRANT USAGE ON SCHEMA public TO app_runtime;
-GRANT SELECT, INSERT, UPDATE, DELETE ON ALL TABLES IN SCHEMA public TO app_runtime;
-GRANT USAGE, SELECT ON ALL SEQUENCES IN SCHEMA public TO app_runtime;
-```
-
-Default privileges per nuove tabelle:
-
-```sql
-ALTER DEFAULT PRIVILEGES IN SCHEMA public
-GRANT SELECT, INSERT, UPDATE, DELETE ON TABLES TO app_runtime;
-
-ALTER DEFAULT PRIVILEGES IN SCHEMA public
-GRANT USAGE, SELECT ON SEQUENCES TO app_runtime;
-```
-
-## Varianti
-
-- `LOGIN`: ruolo che puo autenticarsi.
-- `NOLOGIN`: ruolo gruppo o owner tecnico.
-- `SUPERUSER`: bypassa quasi tutti i controlli, da evitare per applicazioni.
-- `CREATEDB`: puo creare database.
-- `CREATEROLE`: puo gestire altri ruoli.
-- `REPLICATION`: usato per replica fisica.
-- Role membership: assegna permessi tramite gruppi.
-
-## Errori comuni
-
-- Usare `postgres` o un owner come utente applicativo.
-- Dare `SUPERUSER` per risolvere problemi di permessi.
-- Dimenticare `USAGE` sulle sequenze.
-- Dimenticare `USAGE` sullo schema.
-- Lasciare `CREATE` sullo schema `public` a `PUBLIC`.
-- Assegnare permessi a singoli utenti invece che a ruoli gruppo.
-
-## Checklist
-
-- L'applicazione usa un ruolo non owner?
-- I permessi sono assegnati tramite gruppi?
-- `PUBLIC` ha solo privilegi intenzionali?
-- Le sequenze hanno privilegi corretti?
-- I nuovi oggetti ricevono default privileges coerenti?
-- Nessun ruolo applicativo e `SUPERUSER`?
+**Fonti:** [ruoli e appartenenza](https://www.postgresql.org/docs/18/role-membership.html), [privilegi sugli oggetti](https://www.postgresql.org/docs/18/ddl-priv.html) e [ALTER DEFAULT PRIVILEGES](https://www.postgresql.org/docs/18/sql-alterdefaultprivileges.html).
 
 ## Collegamenti
 
+- [[Programmazione/PostgreSQL/Indice PostgreSQL|Indice PostgreSQL]]
 - [[Programmazione/PostgreSQL/Pagine/Ruoli e privilegi avanzati|Ruoli e privilegi avanzati]]
 - [[Programmazione/PostgreSQL/Pagine/Row Level Security|Row Level Security]]
 - [[Programmazione/PostgreSQL/Pagine/Secret management|Secret management]]
-
-
-## Navigazione
-
-- [[Programmazione/PostgreSQL/Indice PostgreSQL|Indice PostgreSQL]]

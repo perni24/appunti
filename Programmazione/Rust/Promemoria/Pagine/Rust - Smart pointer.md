@@ -14,105 +14,91 @@ aliases:
   - Cheatsheet smart pointer Rust
 prerequisites: []
 related:
-  - "[[Programmazione/Rust/Pagine/Box T]]"
-  - "[[Programmazione/Rust/Pagine/Rc T e Arc T]]"
-  - "[[Programmazione/Rust/Pagine/RefCell T]]"
+  - "[[Programmazione/Rust/Pagine/Box T|Box T]]"
+  - "[[Programmazione/Rust/Pagine/Rc T e Arc T|Rc T e Arc T]]"
+  - "[[Programmazione/Rust/Pagine/RefCell T|RefCell T]]"
 title: Rust - Smart pointer
 ---
 
 # Rust - Smart pointer
 
-## Box
+Scegli separatamente chi possiede il dato e come viene modificato. Ogni blocco è indipendente e va nel corpo di `fn main()`.
+
+| Esigenza | Scelta rapida |
+|---|---|
+| Un proprietario, dato su heap | `Box<T>`; utile anche per tipi ricorsivi o `Box<dyn Trait>`. |
+| Più proprietari sullo stesso thread | `Rc<T>`; aggiungi `RefCell<T>` per modificare attraverso handle condivisi. |
+| Più proprietari tra thread | `Arc<T>` se `T` è `Send + Sync`; per accesso mutabile esclusivo, spesso `Arc<Mutex<T>>`. |
+| Osservare senza tenere vivo il dato | `Weak<T>` della famiglia `rc` o `sync`; `upgrade()` può restituire `None`. |
+
+## Un proprietario o più handle
 
 ```rust
-let value = Box::new(42);
-println!("{}", *value);
+let mut value = Box::new(41);
+*value += 1;
+assert_eq!(*value, 42);
 ```
-
-Usato per allocazione su heap, tipi ricorsivi e trait object.
-
-## Rc
 
 ```rust
 use std::rc::Rc;
-
-let shared = Rc::new(String::from("value"));
-let second = Rc::clone(&shared);
-
-println!("{}", Rc::strong_count(&shared));
+let owner = Rc::new(String::from("Guida"));
+let weak = Rc::downgrade(&owner);
+let other = Rc::clone(&owner);
+assert!(Rc::ptr_eq(&owner, &other)); // stesso dato, non una copia della String
+assert_eq!(Rc::strong_count(&owner), 2);
+drop(owner);
+assert_eq!(weak.upgrade().as_deref(), Some(&*other));
+drop(other);
+assert!(weak.upgrade().is_none());
 ```
 
-`Rc<T>` e per ownership condivisa nello stesso thread.
+Un `Weak` non incrementa il numero di proprietari forti. Usalo, ad esempio, per il collegamento da un figlio al genitore senza creare un ciclo di riferimenti forti.
 
-## Arc
-
-```rust
-use std::sync::Arc;
-
-let shared = Arc::new(String::from("value"));
-let second = Arc::clone(&shared);
-```
-
-`Arc<T>` e per ownership condivisa tra thread.
-
-## RefCell
-
-```rust
-use std::cell::RefCell;
-
-let value = RefCell::new(vec![1, 2]);
-value.borrow_mut().push(3);
-```
-
-`RefCell<T>` verifica le regole di borrowing a runtime e puo generare panic.
-
-## Rc con RefCell
+## Modificare nello stesso thread
 
 ```rust
 use std::{cell::RefCell, rc::Rc};
-
-let shared = Rc::new(RefCell::new(0));
-*shared.borrow_mut() += 1;
+let items = Rc::new(RefCell::new(vec![1, 2]));
+let other = Rc::clone(&items);
+let reader = items.borrow();
+assert!(other.try_borrow_mut().is_err()); // reader è ancora attiva
+drop(reader);
+other.borrow_mut().push(3);
+assert_eq!(&*items.borrow(), &[1, 2, 3]);
 ```
 
-## Arc con Mutex
+`RefCell` controlla i prestiti a runtime: `borrow_mut()` in conflitto causa panic, `try_borrow_mut()` restituisce un errore. `Rc` da solo non offre accesso mutabile condiviso.
+
+## Condividere tra thread
 
 ```rust
-use std::sync::{Arc, Mutex};
-
-let shared = Arc::new(Mutex::new(0));
-
-{
-    let mut value = shared.lock().expect("mutex poisoned");
-    *value += 1;
-}
+use std::{sync::Arc, thread};
+let text = Arc::new(String::from("Guida"));
+let reader = Arc::clone(&text);
+let worker = thread::spawn(move || reader.len());
+assert_eq!(worker.join().unwrap(), 5);
+assert_eq!(text.as_str(), "Guida");
 ```
 
-## Weak
+`Arc` rende atomico il conteggio dei riferimenti, non le operazioni su `T`. `Arc<RefCell<T>>` non rende `RefCell` condivisibile fra thread. [Garanzie di Arc](https://doc.rust-lang.org/std/sync/struct.Arc.html#thread-safety).
 
 ```rust
-let weak = Rc::downgrade(&shared);
-
-if let Some(value) = weak.upgrade() {
-    println!("{value:?}");
-}
+use std::{sync::{Arc, Mutex}, thread};
+let count = Arc::new(Mutex::new(0));
+let other = Arc::clone(&count);
+let worker = thread::spawn(move || {
+    let mut guard = other.lock().expect("mutex poisoned");
+    *guard += 1;
+}); // la guardia rilascia il lock a fine blocco
+worker.join().expect("worker panicked");
+assert_eq!(*count.lock().expect("mutex poisoned"), 1);
 ```
 
-Usare `Weak` per riferimenti non proprietari e per interrompere cicli.
+`Mutex<T>` protegge l'accesso; `Arc` serve qui a condividere la proprietà del mutex. Non tenere una guardia mentre aspetti un thread che deve acquisire lo stesso lock.
 
-## Scelta rapida
+## Collegamenti
 
-| Tipo | Uso |
-|---|---|
-| `Box<T>` | Singolo proprietario, heap |
-| `Rc<T>` | Piu proprietari, singolo thread |
-| `Arc<T>` | Piu proprietari, piu thread |
-| `RefCell<T>` | Mutabilita interna, singolo thread |
-| `Mutex<T>` | Mutabilita sincronizzata |
-| `Weak<T>` | Riferimento senza ownership |
-
-## Approfondimento
-
+- [[Programmazione/Rust/Promemoria/Indice Promemoria Rust|Indice Promemoria Rust]]
 - [[Programmazione/Rust/Pagine/Box T|Box T]]
 - [[Programmazione/Rust/Pagine/Rc T e Arc T|Rc T e Arc T]]
 - [[Programmazione/Rust/Pagine/RefCell T|RefCell T]]
@@ -120,8 +106,3 @@ Usare `Weak` per riferimenti non proprietari e per interrompere cicli.
 - [[Programmazione/Rust/Pagine/Interior mutability|Interior mutability]]
 - [[Programmazione/Rust/Pagine/Deref Trait|Deref Trait]]
 - [[Programmazione/Rust/Pagine/Drop Trait|Drop Trait]]
-
-
-## Navigazione
-
-- [[Programmazione/Rust/Promemoria/Indice Promemoria Rust|Indice Promemoria Rust]]

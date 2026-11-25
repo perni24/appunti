@@ -20,101 +20,69 @@ title: Logical decoding
 
 ## Sintesi
 
-Il **logical decoding** trasforma modifiche registrate nel WAL in un flusso logico di eventi, consumabile da replica logica, Change Data Capture e sistemi esterni.
+Il *logical decoding* trasforma i record del WAL in modifiche logiche interpretabili da un consumer. Un **output plugin** decide il formato; uno **slot logico** tiene traccia del punto di lettura per un database. Non ottieni lo storico precedente alla creazione dello slot né gli accessi in lettura: non è un audit completo.
 
-## Quando usarlo
+## Laboratorio: osservare senza consumare
 
-Usalo quando ti serve osservare o trasmettere cambiamenti:
-
-- Change Data Capture;
-- integrazione con Kafka o sistemi di streaming;
-- audit avanzato;
-- sincronizzazione verso altri database;
-- replication slot logici;
-- debug della replicazione logica.
-
-## Come funziona
-
-PostgreSQL scrive modifiche nel WAL. Con `wal_level = logical`, un output plugin puo decodificare quei record in eventi leggibili.
-
-Un logical replication slot mantiene la posizione del consumer. Finche il consumer non avanza, PostgreSQL trattiene WAL necessario. Questo evita perdita eventi, ma puo riempire disco se il consumer si ferma.
-
-## API / Sintassi
-
-Creare uno slot logico:
+Su un primario PostgreSQL 18 di prova servono `wal_level=logical`, uno slot libero, il modulo server `test_decoding` e un ruolo autorizzato alla replica e alla creazione della tabella. `test_decoding` è un output plugin: non serve `CREATE EXTENSION test_decoding`. Esegui i blocchi nella **stessa connessione**, con autocommit e nomi riservati al laboratorio. Usiamo una tabella ordinaria: le modifiche a tabelle temporanee non sono l'esempio giusto per il WAL.
 
 ```sql
-SELECT * FROM pg_create_logical_replication_slot('cdc_slot', 'test_decoding');
+CREATE TABLE public.lab_cdc (id integer PRIMARY KEY, status text NOT NULL);
 ```
-
-Leggere cambiamenti:
 
 ```sql
-SELECT * FROM pg_logical_slot_get_changes('cdc_slot', NULL, NULL);
+SELECT slot_name FROM pg_create_logical_replication_slot(
+  'lab_cdc_demo', 'test_decoding', true
+);
 ```
 
-Controllare slot:
+Il terzo argomento crea uno slot **temporaneo**: deve essere usato prima che la sessione termini. Ora separa un commit da una transazione annullata:
 
 ```sql
-SELECT
-  slot_name,
-  plugin,
-  slot_type,
-  active,
-  restart_lsn,
-  confirmed_flush_lsn
-FROM pg_replication_slots;
+INSERT INTO public.lab_cdc VALUES (1, 'confermato');
+BEGIN;
+INSERT INTO public.lab_cdc VALUES (2, 'annullato');
+ROLLBACK;
 ```
-
-## Esempio pratico
-
-Flusso minimo:
 
 ```sql
-SELECT * FROM pg_create_logical_replication_slot('events_slot', 'test_decoding');
-
-INSERT INTO events (type, payload)
-VALUES ('user.created', '{"id": 1}'::jsonb);
-
-SELECT * FROM pg_logical_slot_get_changes('events_slot', NULL, NULL);
+SELECT data FROM pg_logical_slot_peek_changes(
+  'lab_cdc_demo', NULL, NULL, 'skip-empty-xacts', '1'
+) WHERE data LIKE 'table public.lab_cdc:%';
 ```
 
-In produzione si usano spesso plugin e connector dedicati, per esempio Debezium.
+Ripeti questa lettura: ritrovi l'inserimento di `id=1`, non quello annullato. `peek` lascia il flusso disponibile; il filtro mostra soltanto le righe di interesse e nasconde i delimitatori di transazione del plugin.
 
-## Varianti
+```sql
+SELECT data FROM pg_logical_slot_get_changes(
+  'lab_cdc_demo', NULL, NULL, 'skip-empty-xacts', '1'
+) WHERE data LIKE 'table public.lab_cdc:%';
+```
 
-- `test_decoding`: plugin utile per test.
-- `pgoutput`: plugin usato dalla replicazione logica nativa.
-- Plugin CDC esterni.
-- Slot logici temporanei.
-- Slot logici persistenti.
-- Decoding integrato in pipeline di streaming.
+`get_changes` **consuma** le modifiche lette. Senza altre scritture, una seconda chiamata non mostra più quella riga. Il `WHERE` filtra l'output SQL, non ciò che viene consumato dallo slot: non usarlo per «conservare gli altri eventi» di uno slot in uso da un servizio.
 
-## Errori comuni
+## Controllare lo slot e chiudere la prova
 
-- Dimenticare che slot non consumati trattengono WAL.
-- Non monitorare lag.
-- Trattare eventi come se fossero exactly-once senza progettazione.
-- Usare logical decoding senza spazio disco adeguato.
-- Non gestire riconnessioni del consumer.
-- Confondere logical decoding con audit completo a livello applicativo.
+```sql
+SELECT slot_name, plugin, temporary, restart_lsn, confirmed_flush_lsn
+FROM pg_replication_slots WHERE slot_name = 'lab_cdc_demo';
+```
 
-## Checklist
+`confirmed_flush_lsn` indica fin dove il consumer ha confermato il flusso; `restart_lsn` delimita il WAL più vecchio che può ancora servire. Non sono la stessa posizione. Chiudi la connessione per liberare lo slot temporaneo; la tabella ordinaria resta nel database di prova. Non eliminare né consumare manualmente uno slot di produzione per vedere «cosa contiene».
 
-- `wal_level` e impostato a `logical`?
-- Gli slot logici sono monitorati?
-- Esiste alert sulla crescita WAL?
-- Il consumer salva la propria posizione?
-- Gli eventi sono idempotenti lato consumer?
-- E chiaro cosa succede se il consumer resta fermo?
+## Dal laboratorio alla CDC
+
+La replica logica nativa usa `pgoutput` con publication/subscription; un connettore CDC come Debezium deve supportare il protocollo e il formato scelti. Per un caricamento completo coordina uno snapshot iniziale con il punto di partenza del flusso. Per UPDATE/DELETE verifica la replica identity: non viene garantita una copia integrale della vecchia riga in ogni caso.
+
+Uno slot persistente può trattenere WAL anche quando il consumer è disconnesso; limiti di retention o invalidazione possono impedirne la ripresa. Monitora spazio e avanzamento. Se il consumer cade dopo aver applicato un evento ma prima della conferma, può riceverlo di nuovo: coordina checkpoint e scrittura sul destinatario o rendi l'elaborazione idempotente. Evita anche l'errore opposto, confermare prima che il dato sia durevole.
+
+## Fonti
+
+[PostgreSQL 18: concetti del logical decoding](https://www.postgresql.org/docs/18/logicaldecoding-explanation.html) · [Funzioni per leggere gli slot](https://www.postgresql.org/docs/18/functions-admin.html) · [Plugin test_decoding](https://www.postgresql.org/docs/18/test-decoding.html)
 
 ## Collegamenti
 
+- [[Programmazione/PostgreSQL/Indice PostgreSQL|Indice PostgreSQL]]
 - [[Programmazione/PostgreSQL/Pagine/Write-Ahead Logging|Write-Ahead Logging]]
 - [[Programmazione/PostgreSQL/Pagine/Replicazione Logica|Replicazione Logica]]
 - [[Programmazione/PostgreSQL/Pagine/Pattern outbox|Pattern outbox]]
-
-
-## Navigazione
-
-- [[Programmazione/PostgreSQL/Indice PostgreSQL|Indice PostgreSQL]]

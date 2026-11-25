@@ -21,113 +21,70 @@ title: Tipi numerici, testuali e temporali
 
 ## Sintesi
 
-PostgreSQL offre tipi numerici, testuali e temporali con semantiche diverse. Scegliere il tipo corretto evita sprechi, bug e conversioni inutili.
+Scegli il tipo in base alla domanda che farai al dato: una fattura scade in un **giorno di calendario**, un pagamento avviene in un **istante**, il saldo si calcola su **importi decimali**. Una stringa può contenere tutti e tre, ma non ne garantisce l'ordinamento, la validità o l'aritmetica.
 
-## Quando usarlo
+## Numeri e testo
 
-Usa questa distinzione quando scegli colonne per dati applicativi comuni:
+| Caso | Tipo utile | Limite da conoscere |
+| --- | --- | --- |
+| Conteggio o quantità indivisibile | `integer`; `bigint` se serve più intervallo | Numeri negativi ammessi: per vietarli serve un vincolo |
+| Importo in una valuta nota | `numeric(p,s)` | Con `numeric(5,2)` PostgreSQL arrotonda ai centesimi e poi controlla che restino al massimo tre cifre intere: `999.995` va fuori intervallo |
+| Misura approssimata | `real` o `double precision` | Non usare l'uguaglianza tra risultati arrotondati come garanzia contabile |
+| Nome o identificatore alfanumerico | `text`; `varchar(n)` per un vero massimo di `n` caratteri | `varchar(n)` non è un'accelerazione. Un cast esplicito può troncare un valore lungo invece di rifiutarlo; `char(n)` aggiunge spazi di riempimento |
 
-- ID, contatori e quantita intere;
-- importi, prezzi e misure che richiedono precisione;
-- testo libero, codici e stringhe con limite di dominio;
-- date di calendario, timestamp di eventi, durate e scadenze;
-- filtri e ordinamenti basati su tempo.
+## Giorno, ora locale o istante?
 
-## Come funziona
+- `date` conserva un giorno, senza fuso. `time` conserva un orario senza data; da solo non identifica un evento.
+- `timestamp without time zone` conserva data e ora civile, non il fuso. `timestamptz` conserva un istante: la visualizzazione dipende dal fuso della sessione e non conserva il nome del fuso originario. Se quel nome è un dato del dominio, salvalo a parte.
+- `interval` può esprimere mesi, giorni e tempo. Aggiungere un mese non equivale a sommare un numero fisso di secondi; in un fuso con ora legale un giorno di calendario può durare più o meno di 24 ore.
 
-### Tipi numerici
-- `integer`, `bigint`: interi.
-- `numeric`: precisione arbitraria, utile per denaro e calcoli esatti.
-- `real`, `double precision`: floating point.
-### Tipi testuali
-- `text`: scelta generale consigliata.
-- `varchar(n)`: testo con limite.
-- `char(n)`: lunghezza fissa, raramente utile.
-### Tipi temporali
-- `timestamp`: data e ora senza timezone.
-- `timestamptz`: istante assoluto con gestione timezone.
-- `date`, `time`, `interval`.
-
-## API / Sintassi
+`AT TIME ZONE` cambia significato in base al tipo di partenza. Questo blocco è indipendente dal laboratorio sulle fatture:
 
 ```sql
-CREATE TABLE invoices (
-  id bigint GENERATED ALWAYS AS IDENTITY PRIMARY KEY,
-  invoice_number text NOT NULL UNIQUE,
-  amount numeric(12, 2) NOT NULL,
+SELECT (timestamp '2026-07-01 10:00' AT TIME ZONE 'Europe/Rome')
+         = timestamptz '2026-07-01 08:00+00' AS same_instant,
+       timestamptz '2026-07-01 08:00+00' AT TIME ZONE 'Europe/Rome' AS wall_time;
+```
+
+Risultato: vero e `2026-07-01 10:00:00`. Da sinistra a destra, la prima espressione **interpreta** le dieci come ora di Roma; la seconda **mostra** quell'istante sull'orologio di Roma.
+
+## Esempio: fatture scadute e totale emesso
+
+Esegui i due blocchi seguenti nella stessa sessione. Importi in euro; `due_on` è l'ultimo giorno utile per pagare. Fissare la data di osservazione rende ripetibile il risultato.
+
+```sql
+BEGIN;
+CREATE TEMP TABLE lab_invoices (
+  number text PRIMARY KEY,
+  amount numeric(8,2) NOT NULL CHECK (amount >= 0),
   issued_on date NOT NULL,
-  paid_at timestamptz,
-  payment_deadline interval
+  due_on date NOT NULL CHECK (due_on >= issued_on),
+  paid_at timestamptz
 );
+INSERT INTO lab_invoices VALUES
+  ('A', 19.995, DATE '2026-05-02', DATE '2026-06-01', NULL),
+  ('B', 30,     DATE '2026-05-08', DATE '2026-06-02', NULL),
+  ('C', 10,     DATE '2026-06-01', DATE '2026-06-01', timestamptz '2026-06-01 09:00+00');
 ```
-
-Conversioni comuni:
 
 ```sql
-SELECT now()::date;
-SELECT created_at AT TIME ZONE 'Europe/Rome';
-SELECT date_trunc('day', created_at);
+SELECT number, amount FROM lab_invoices
+WHERE paid_at IS NULL AND due_on < DATE '2026-06-02'
+ORDER BY number;
+
+SELECT date_trunc('month', issued_on::timestamp)::date AS month, sum(amount) AS issued
+FROM lab_invoices
+GROUP BY 1 ORDER BY 1;
+ROLLBACK;
 ```
 
-## Esempio pratico
+Nello stato del campione, la sola fattura **ancora insoluta** già scaduta il 2 giugno è A (`20.00` dopo l'arrotondamento); B è pagabile anche quel giorno, C risulta pagata. Il totale **emesso**, non incassato, è `50.00` a maggio e `10.00` a giugno. Se devi ricostruire lo stato *storico* a fine giornata, `paid_at IS NULL` da solo non basta: includi anche i pagamenti successivi al limite e traduci quel limite in un istante nel fuso contabile.
 
-Query per fatture scadute:
-
-```sql
-SELECT id, invoice_number, amount, issued_on
-FROM invoices
-WHERE paid_at IS NULL
-  AND issued_on + interval '30 days' < current_date
-ORDER BY issued_on;
-```
-
-Importi aggregati:
-
-```sql
-SELECT
-  date_trunc('month', issued_on)::date AS month,
-  sum(amount) AS total_amount
-FROM invoices
-GROUP BY date_trunc('month', issued_on)::date
-ORDER BY month;
-```
-
-## Varianti
-
-- `smallint`, `integer`, `bigint`: interi con range crescente.
-- `numeric(p, s)`: precisione e scala dichiarate.
-- `real`, `double precision`: approssimati, utili per misure scientifiche ma non per denaro.
-- `text`: scelta generale per stringhe.
-- `varchar(n)`: utile quando il limite massimo e una regola del dominio.
-- `timestamp`: data e ora senza timezone.
-- `timestamptz`: istante assoluto, di solito migliore per eventi applicativi.
-- `interval`: durata.
-
-## Errori comuni
-
-- Usare floating point per denaro.
-- Confondere `timestamp` e `timestamptz`.
-- Salvare date come testo.
-- Usare `varchar(n)` solo per abitudine, senza una regola reale sul limite.
-- Usare `now()` e timezone applicative senza una convenzione chiara.
-- Ordinare valori numerici salvati come testo.
-
-## Checklist
-
-- Per importi usare `numeric`.
-- Per eventi nel tempo preferire `timestamptz`.
-- Per date senza orario usare `date`.
-- Per testo libero usare `text`.
-- Per limiti di dominio usare `CHECK` o `varchar(n)` se il limite e significativo.
-- Verificare che confronti e ordinamenti usino tipi coerenti.
+**Fonti PostgreSQL 18:** [tipi numerici](https://www.postgresql.org/docs/18/datatype-numeric.html), [tipi testuali](https://www.postgresql.org/docs/18/datatype-character.html), [funzioni temporali e AT TIME ZONE](https://www.postgresql.org/docs/18/functions-datetime.html).
 
 ## Collegamenti
 
+- [[Programmazione/PostgreSQL/Indice PostgreSQL|Indice PostgreSQL]]
 - [[Programmazione/PostgreSQL/Pagine/Tipi di Dato|Tipi di Dato]]
 - [[Programmazione/PostgreSQL/Pagine/Vincoli|Vincoli]]
 - [[Programmazione/PostgreSQL/Pagine/Indici Parziali e Coprenti|Indici Parziali e Coprenti]]
-
-
-## Navigazione
-
-- [[Programmazione/PostgreSQL/Indice PostgreSQL|Indice PostgreSQL]]

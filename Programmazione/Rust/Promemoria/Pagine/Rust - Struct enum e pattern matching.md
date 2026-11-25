@@ -16,114 +16,90 @@ aliases:
   - Cheatsheet struct enum Rust
 prerequisites: []
 related:
-  - "[[Programmazione/Rust/Pagine/Structs]]"
-  - "[[Programmazione/Rust/Pagine/Enums]]"
-  - "[[Programmazione/Rust/Pagine/Pattern Matching]]"
+  - "[[Programmazione/Rust/Pagine/Structs|Structs]]"
+  - "[[Programmazione/Rust/Pagine/Enums|Enums]]"
+  - "[[Programmazione/Rust/Pagine/Pattern Matching|Pattern Matching]]"
 title: Rust - Struct, enum e pattern matching
 ---
 
 # Rust - Struct, enum e pattern matching
 
-## Struct
+Ogni blocco è indipendente e va nel corpo di `fn main()`. Teoria: [[Programmazione/Rust/Pagine/Pattern Matching|Pattern matching]].
+
+## Struct: costruire, aggiornare, destrutturare
 
 ```rust
 #[derive(Debug, Clone)]
-struct User {
-    id: u64,
-    name: String,
-    active: bool,
-}
+struct User { id: u64, name: String, active: bool }
+let user = User { id: 1, name: "Ada".into(), active: true };
+let updated = User { active: false, ..user };
+let User { id, name, .. } = updated;
+assert_eq!((id, name.as_str(), updated.active), (1, "Ada", false));
+assert_eq!(user.id, 1); // Copy; user.name invece è stato spostato
 ```
-
-```rust
-let user = User {
-    id: 1,
-    name: String::from("Ada"),
-    active: true,
-};
-```
-
-## Update syntax
-
-```rust
-let updated = User {
-    active: false,
-    ..user
-};
-```
-
-I campi non `Copy` possono essere spostati da `user`.
 
 ## Tuple struct e newtype
 
 ```rust
 struct UserId(u64);
 struct Point(i32, i32);
+let id = UserId(7);
+let Point(x, y) = Point(3, 4);
+let (first, second) = (x, y);
+assert_eq!((id.0, first, second), (7, 3, 4));
 ```
 
-## Enum
+## Enum: match esaustivo e guardia
 
 ```rust
-enum Command {
-    Create { name: String },
-    Delete(u64),
-    List,
+enum Command { Create { name: String }, Delete(u64), List }
+fn describe(command: Command) -> String {
+    match command {
+        Command::Create { name } => format!("create {name}"),
+        Command::Delete(id) => format!("delete {id}"),
+        Command::List => "list".into(),
+    }
 }
+assert_eq!(describe(Command::Create { name: "Ada".into() }), "create Ada");
+assert_eq!(describe(Command::Delete(7)), "delete 7");
+assert_eq!(describe(Command::List), "list");
 ```
 
-## Match
-
 ```rust
-match command {
-    Command::Create { name } => create(name),
-    Command::Delete(id) => delete(id),
-    Command::List => list(),
+fn label(value: Option<i32>) -> &'static str {
+    match value {
+        Some(n) if n > 0 => "positive",
+        Some(_) => "non-positive", // la guardia non copre tutti i Some
+        None => "missing",
+    }
 }
+assert_eq!(label(Some(0)), "non-positive");
+assert_eq!(label(None), "missing");
 ```
 
-## Guard
+## if let, let else, while let
 
 ```rust
-match value {
-    Some(number) if number > 0 => println!("positive"),
-    Some(_) => println!("non-positive"),
-    None => println!("missing"),
+let selected = Some("Ada");
+if let Some(name) = selected { println!("{name}"); }
+
+fn initials(name: Option<&str>) -> Option<char> {
+    let Some(name) = name else { return None; };
+    name.chars().next()
 }
+assert_eq!(initials(selected), Some('A'));
+assert_eq!(initials(None), None);
+
+let mut queue = std::collections::VecDeque::from([1, 2]);
+while let Some(item) = queue.pop_front() { println!("{item}"); }
+assert!(queue.is_empty());
 ```
 
-## `if let`
+Con `let ... else` il ramo `else` deve uscire da quel percorso (per esempio con `return`); dopo l'istruzione i nomi del pattern sono disponibili.
 
-```rust
-if let Some(user) = user {
-    println!("{}", user.name);
-}
-```
+## Collegamenti
 
-## `let else`
-
-```rust
-let Some(user) = find_user(id) else {
-    return;
-};
-```
-
-## `while let`
-
-```rust
-while let Some(item) = queue.pop_front() {
-    process(item);
-}
-```
-
-## Destructuring
-
-```rust
-let User { id, name, .. } = user;
-let (first, second) = pair;
-```
-
-## Approfondimento
-
+- [[Programmazione/Rust/Promemoria/Indice Promemoria Rust|Indice Promemoria Rust]]
 - [[Programmazione/Rust/Pagine/Structs|Structs]]
 - [[Programmazione/Rust/Pagine/Tuple structs|Tuple structs]]
 - [[Programmazione/Rust/Pagine/Enums|Enums]]
@@ -131,8 +107,3 @@ let (first, second) = pair;
 - [[Programmazione/Rust/Pagine/if let e while let|if let e while let]]
 - [[Programmazione/Rust/Pagine/Destructuring|Destructuring]]
 - [[Programmazione/Rust/Pagine/Newtype pattern|Newtype pattern]]
-
-
-## Navigazione
-
-- [[Programmazione/Rust/Promemoria/Indice Promemoria Rust|Indice Promemoria Rust]]

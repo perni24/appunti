@@ -20,199 +20,59 @@ title: Statistiche e Query Planner in PostgreSQL
 
 ## Sintesi
 
-Il planner confronta percorsi di esecuzione usando un modello di costo, statistiche sui dati, operatori disponibili, indici e struttura della query. Stime imprecise sulle cardinalità possono propagarsi nel piano e portare a join, scansioni o ordinamenti inefficienti.
+Il planner non conta tutte le righe prima di scegliere un piano: stima quante supereranno ciascun filtro (**cardinalità**) e usa la stima per confrontare i costi. Una stima errata già nella scansione iniziale può moltiplicare l'errore in un join. Creare un indice aggiunge un percorso di accesso; non insegna automaticamente al planner che due colonne descrivono lo stesso fatto.
 
-Il **Query Planner** (o Optimizer) sceglie il percorso con costo stimato minore. Le statistiche sono fondamentali, ma la scelta dipende anche dai cost parameters, dagli access path disponibili, dagli operatori e dalla forma della query.
+## Esperimento: due filtri, una sola informazione
 
-## Quando usarlo
-
-Usa questa nota quando una query sceglie un piano inatteso o peggiora dopo cambi di dati:
-
-- PostgreSQL usa `Seq Scan` anche se esiste un indice;
-- `EXPLAIN ANALYZE` mostra grande differenza tra `rows` stimate e reali;
-- dopo import massivi le query diventano lente;
-- colonne correlate portano il planner a sottostimare o sovrastimare;
-- devi capire se servono `ANALYZE`, statistiche estese o indici diversi.
-
-## Come funziona
-
-### Concetto chiave
-PostgreSQL utilizza un **Cost-Based Optimizer (CBO)**. Il Planner stima il "costo" di diverse strategie di esecuzione (es. usare un indice vs scansione sequenziale) e sceglie quella con il costo totale minimo. La qualità di questa scelta dipende direttamente dall'accuratezza delle statistiche.
-
----
-### Come vengono raccolte le Statistiche?
-Le statistiche non sono aggiornate in tempo reale a ogni `INSERT` o `UPDATE` (sarebbe troppo costoso). Vengono raccolte dal processo **Autovacuum** o tramite il comando manuale `ANALYZE`.
-
-### Il comando ANALYZE
-```sql
-ANALYZE nome_tabella;
-```
-Questo comando campiona casualmente una porzione della tabella e aggiorna la tabella di sistema `pg_statistic` (accessibile in modo più leggibile tramite la vista `pg_stats`).
-
----
-### Cosa analizza il Planner? (pg_stats)
-Per ogni colonna di ogni tabella, PostgreSQL memorizza dati cruciali:
-
-1.  **null_frac:** Frazione di righe con valori NULL.
-2.  **avg_width:** Larghezza media della colonna in byte.
-3.  **n_distinct:** Numero stimato di valori distinti. Se negativo (es. `-1`), indica la frazione di righe (es. `-1` = tutti i valori sono univoci).
-4.  **Most Common Values (MCV):** Una lista dei valori più frequenti e le loro frequenze.
-5.  **Histogram Bounds:** Per colonne con molti valori, divide i dati in "secchi" (buckets) di uguale dimensione per stimare la distribuzione dei valori non presenti nei MCV.
-
-> [!INFO] Logic Layer: Selettività
-> La **Selettività** è la frazione di righe che una condizione (es. `WHERE età > 30`) restituirà. Il Planner moltiplica la selettività per il numero totale di righe per ottenere le `rows` stimate che vediamo in [[Programmazione/PostgreSQL/Pagine/Analisi delle Query|EXPLAIN]].
-
----
-### Il Calcolo del Costo
-Il costo è una combinazione di diversi fattori configurabili nel `postgresql.conf`:
-
-- `seq_page_cost` (default `1.0`): Costo per leggere una pagina dal disco sequenzialmente.
-- `random_page_cost` (default `4.0`): Costo per un accesso casuale (tipico degli indici).
-- `cpu_tuple_cost` (default `0.01`): Costo per processare una singola riga.
-- `cpu_index_tuple_cost` (default `0.005`): Costo per processare una riga durante una scansione dell'indice.
-
-> [!TIP] SSD vs HDD
-> Se usi un SSD, il valore di `random_page_cost` dovrebbe essere abbassato (es. a `1.1`), poiché la differenza tra accesso sequenziale e casuale è minima rispetto a un disco meccanico.
-
----
-### Problemi Comuni e Correlazioni
-Il Planner assume che le colonne siano **indipendenti**. Se hai una query con `WHERE città = 'Roma' AND cap = '00100'`, il Planner moltiplicherà le probabilità di entrambi, ottenendo una stima molto più bassa del reale (perché le due colonne sono correlate).
-
-### Statistiche Estese (Extended Statistics)
-Per risolvere questo problema, puoi creare statistiche sulle correlazioni tra colonne:
-```sql
-CREATE STATISTICS stts_geo (dependencies) ON citta, cap FROM indirizzi;
-ANALYZE indirizzi;
-```
-
----
-### Debugging delle Statistiche
-Se `EXPLAIN ANALYZE` mostra una discrepanza enorme tra le righe stimate e quelle reali:
-1.  **Controlla l'ultima analisi:** `SELECT last_analyze FROM pg_stat_user_tables;`
-2.  **Aumenta il campionamento:** Se i dati sono molto variegati, aumenta il dettaglio delle statistiche per una colonna:
-    ```sql
-    ALTER TABLE ordini ALTER COLUMN totale SET STATISTICS 500; -- Default 100
-    ANALYZE ordini;
-    ```
-
----
-
-## API / Sintassi
-
-Aggiornare statistiche:
+Esegui i blocchi in ordine nella stessa sessione. In questi dati ciascuna regione ha una sola zona con lo stesso codice. Ogni codice compare 100 volte su 10.000 righe. Non ci sono indici: vogliamo cambiare **la stima**, non il metodo di accesso.
 
 ```sql
-ANALYZE table_name;
-ANALYZE table_name (column_name);
-VACUUM ANALYZE table_name;
+BEGIN;
+CREATE TEMP TABLE lab_zones AS
+SELECT i % 100 AS region, i % 100 AS zone FROM generate_series(1,10000) AS g(i);
+ANALYZE lab_zones;
+SELECT attname, null_frac, n_distinct FROM pg_stats
+WHERE schemaname = pg_my_temp_schema()::regnamespace::text AND tablename = 'lab_zones'
+ORDER BY attname;
 ```
-
-Leggere statistiche:
 
 ```sql
-SELECT
-  attname,
-  null_frac,
-  n_distinct,
-  most_common_vals,
-  most_common_freqs
-FROM pg_stats
-WHERE schemaname = 'public'
-  AND tablename = 'orders';
+EXPLAIN (ANALYZE, TIMING OFF)
+SELECT * FROM lab_zones WHERE region = 7 AND zone = 7;
 ```
 
-Aumentare dettaglio statistico:
+Le statistiche di ciascuna colonna sono corrette: 100 valori distinti e nessun nullo. Ma assumendo indipendenza il calcolo sarebbe `10000 × 0,01 × 0,01 = 1`, mentre le righe restituite sono **100**. Controlla `rows` stimato accanto a `actual rows` sul nodo di scansione.
 
 ```sql
-ALTER TABLE orders
-ALTER COLUMN status SET STATISTICS 500;
-
-ANALYZE orders;
+CREATE STATISTICS pg_temp.lab_zones_dep (dependencies) ON region, zone FROM lab_zones;
+ANALYZE lab_zones;
+EXPLAIN (ANALYZE, TIMING OFF)
+SELECT * FROM lab_zones WHERE region = 7 AND zone = 7;
+ROLLBACK;
 ```
 
-Statistiche estese:
+`CREATE STATISTICS` registra cosa osservare; è il successivo `ANALYZE` che raccoglie i dati. Nel campione la stima si avvicina a **100** mentre il risultato resta identico. Anche se la scansione resta sequenziale, la correzione può contare per un join a valle. Le dipendenze statistiche **non** sono vincoli: non impediscono di inserire una regione con un'altra zona.
 
-```sql
-CREATE STATISTICS orders_customer_status_stats
-  (dependencies, ndistinct)
-ON customer_id, status
-FROM orders;
+## Scegliere la statistica giusta
 
-ANALYZE orders;
-```
+| Segnale | Informazione da consultare | Come interpretarla |
+| --- | --- | --- |
+| Un singolo valore è molto più frequente degli altri | `most_common_vals` e `most_common_freqs` in `pg_stats` | L'istogramma descrive la distribuzione rimanente; `null_frac` misura i nulli, `avg_width` la larghezza media |
+| Il numero di valori distinti cresce con la tabella | `n_distinct` | Positivo: numero stimato. Negativo: frazione del numero di righe, ad esempio `-0.5` indica circa un distinto ogni due righe |
+| Due filtri di uguaglianza sulla stessa tabella non sono indipendenti | `dependencies` oppure `mcv` | Le dipendenze aiutano con uguaglianze a costanti o liste compatibili; `mcv` descrive combinazioni frequenti. Non aspettarti che correggano in generale intervalli o join tra tabelle |
+| Il planner sbaglia il numero di gruppi multicolonna | `ndistinct` su quelle colonne | Stima il numero di combinazioni distinte; non è un indice per `GROUP BY` |
 
-## Esempio pratico
+## Diagnosi prima della configurazione
 
-Diagnosi di stime sbagliate:
+Dopo import o variazioni importanti controlla `last_analyze` **e** `last_autoanalyze` in `pg_stat_user_tables`. `ANALYZE` può campionare i dati, quindi le stime possono cambiare leggermente tra esecuzioni. Se una sola colonna ha una distribuzione difficile, valuta un target più alto con `ALTER TABLE ... ALTER COLUMN ... SET STATISTICS`, poi riesegui `ANALYZE`: un target alto richiede più raccolta e spazio.
 
-```sql
-EXPLAIN (ANALYZE, BUFFERS)
-SELECT *
-FROM orders
-WHERE customer_id = 42
-  AND status = 'pending';
-```
+`seq_page_cost` e `random_page_cost` esprimono costi relativi delle pagine; `cpu_tuple_cost` e `cpu_index_tuple_cost` rappresentano lavoro CPU. `effective_cache_size` è una stima per il planner, **non** riserva RAM. Con `LIMIT` può contare più il costo per ottenere le prime righe che il costo per restituirle tutte. Non dedurre un valore di `random_page_cost` dalla sola presenza di un SSD: confronta query rappresentative prima di cambiare un parametro globale.
 
-Se il piano mostra:
-
-```text
-rows=10 actual rows=50000
-```
-
-il planner sta sottostimando. Possibili azioni:
-
-```sql
-ANALYZE orders;
-
-CREATE STATISTICS orders_customer_status_stats
-  (dependencies)
-ON customer_id, status
-FROM orders;
-
-ANALYZE orders;
-```
-
-Poi si riesegue `EXPLAIN (ANALYZE, BUFFERS)` e si confrontano stime, tempi e strategia scelta.
-
-## Varianti
-
-- Statistiche standard raccolte da `ANALYZE`.
-- Statistiche estese `dependencies` per colonne correlate.
-- Statistiche estese `ndistinct` per combinazioni di valori distinti.
-- Statistiche estese `mcv` per combinazioni di valori frequenti.
-- Parametri di costo come `random_page_cost` e `effective_cache_size`.
-- Autovacuum/autanalyze per aggiornamento automatico.
-
-## Errori comuni
-
-- Guardare solo il tempo totale senza confrontare `rows` stimate e reali.
-- Creare indici quando il problema sono statistiche obsolete.
-- Cambiare parametri globali di costo per risolvere una singola query.
-- Dimenticare `ANALYZE` dopo import o migrazioni massicce.
-- Non considerare correlazioni tra colonne.
-- Aspettarsi che le statistiche siano aggiornate in tempo reale.
-
-## Checklist
-
-- Confrontare `rows` e `actual rows` nel piano.
-- Eseguire `ANALYZE` dopo grandi variazioni di dati.
-- Controllare `pg_stats` per colonne usate nei filtri.
-- Creare statistiche estese se piu colonne sono correlate.
-- Verificare che gli indici siano coerenti con filtri e ordinamenti.
-- Non modificare parametri globali senza misurazioni ripetibili.
+**Fonti PostgreSQL 18:** [statistiche del planner](https://www.postgresql.org/docs/18/planner-stats.html), [parametri di costo](https://www.postgresql.org/docs/18/runtime-config-query.html#RUNTIME-CONFIG-QUERY-CONSTANTS).
 
 ## Collegamenti
 
+- [[Programmazione/PostgreSQL/Indice PostgreSQL|Indice PostgreSQL]]
 - [[Programmazione/PostgreSQL/Pagine/Analisi delle Query|Analisi delle Query]]
 - [[Programmazione/PostgreSQL/Pagine/Tipi di Indici|Tipi di Indici]]
 - [[Programmazione/PostgreSQL/Pagine/Indici Parziali e Coprenti|Indici Parziali e Coprenti]]
-
-## Fonti
-
-- [PostgreSQL - Planner Statistics](https://www.postgresql.org/docs/current/planner-stats.html)
-- [PostgreSQL - Planner Cost Constants](https://www.postgresql.org/docs/current/runtime-config-query.html#RUNTIME-CONFIG-QUERY-CONSTANTS)
-
-
-## Navigazione
-
-- [[Programmazione/PostgreSQL/Indice PostgreSQL|Indice PostgreSQL]]

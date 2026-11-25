@@ -20,173 +20,80 @@ title: Livelli di Isolamento delle Transazioni in PostgreSQL
 
 ## Sintesi
 
-I livelli di isolamento stabiliscono quali cambiamenti concorrenti sono visibili e quali anomalie devono essere impedite. In PostgreSQL `READ UNCOMMITTED` si comporta come `READ COMMITTED`, mentre `REPEATABLE READ` usa uno snapshot stabile e `SERIALIZABLE` aggiunge il rilevamento dei conflitti con retry applicativo.
+Il livello di isolamento decide **quali cambiamenti altrui puoi osservare** e quali combinazioni di decisioni concorrenti PostgreSQL deve impedire. Uno snapshot stabile rende ripetibile un report; non basta necessariamente a proteggere una regola che coinvolge più righe.
 
-L'isolamento è la "I" delle [[Programmazione/PostgreSQL/Pagine/Proprietà ACID|Proprietà ACID]]. Determina come una transazione vede le modifiche apportate da altre transazioni concorrenti. PostgreSQL gestisce questi livelli tramite il meccanismo [[Programmazione/PostgreSQL/Pagine/MVCC|MVCC]].
+| Livello in PostgreSQL | Cosa vedono due SELECT ordinarie nella stessa transazione | Cosa può ancora succedere |
+| --- | --- | --- |
+| `READ COMMITTED` (predefinito) | Ognuna usa uno snapshot a inizio istruzione | Una riga cambia fra due letture o cambia l'insieme che soddisfa un filtro. `READ UNCOMMITTED` in PostgreSQL si comporta allo stesso modo |
+| `REPEATABLE READ` | Stesso snapshot dalla prima istruzione che ne ha bisogno, oltre alle proprie modifiche | Nessuna lettura sporca, non ripetibile o fantasma; sono possibili anomalie tra scritture su righe diverse |
+| `SERIALIZABLE` | Snapshot stabile e controllo delle dipendenze tra transazioni | Per garantire un esito equivalente a un ordine seriale delle transazioni serializzabili confermate, il server può rifiutarne una con `40001` |
 
-## Quando usarlo
+## Esperimento: due persone possono lasciare insieme il turno?
 
-Usa questa nota quando una logica applicativa dipende da letture coerenti in presenza di concorrenza:
-
-- trasferimenti di denaro o aggiornamenti di saldo;
-- prenotazioni o assegnazioni di risorse limitate;
-- report che devono vedere uno snapshot stabile;
-- job concorrenti che modificano gli stessi dati;
-- bug intermittenti dovuti a race condition;
-- scelta tra throughput e garanzie piu forti.
-
-## Come funziona
-
-### Concetto chiave
-Lo standard SQL definisce quattro livelli di isolamento, basati sulle anomalie che possono verificarsi durante l'esecuzione di query concorrenti. In PostgreSQL, il livello di default è **Read Committed**.
-
----
-### Anomalie dei Dati
-| Anomalia | Descrizione |
-| :--- | :--- |
-| **Dirty Read** | Una transazione legge dati non ancora confermati (uncommitted) da un'altra. |
-| **Non-repeatable Read** | Rileggendo la stessa riga, i dati sono cambiati perché un'altra transazione ha fatto COMMIT. |
-| **Phantom Read** | Rieseguendo una query con filtro (es. `WHERE età > 20`), compaiono nuove righe inserite da altri. |
-| **Serialization Anomaly** | Il risultato di un gruppo di transazioni non è coerente con nessuna esecuzione sequenziale. |
-
----
-### Livelli in PostgreSQL
-PostgreSQL implementa i livelli in modo più rigoroso rispetto allo standard (es. non permette mai i Dirty Read).
-
-### Read Uncommitted
-In molti DB permette di leggere dati "sporchi". In PostgreSQL **si comporta esattamente come Read Committed**.
-
-### Read Committed (Default)
-Una query vede solo i dati confermati prima dell'inizio della query stessa (non della transazione).
-- **Previene:** Dirty Read.
-- **Caso d'uso:** Adatto alla maggior parte delle applicazioni web.
-
-### Repeatable Read
-Tutte le query all'interno della transazione vedono lo stesso snapshot dei dati (quello esistente al momento della prima query della transazione).
-- **Previene:** Dirty Read, Non-repeatable Read e (in Postgres) Phantom Read.
-- **Errore di Serializzazione:** Se due transazioni tentano di modificare la stessa riga, la seconda fallirà con un errore di "concurrent update", richiedendo un riprovo (retry) dall'applicazione.
-
-### Serializable
-Garantisce che il risultato sia identico a quello di un'esecuzione sequenziale delle transazioni.
-- **Previene:** Tutte le anomalie, inclusa la *Serialization Anomaly*.
-- **Costo:** È il livello più costoso in termini di performance perché richiede un monitoraggio attivo dei lock e delle dipendenze tra transazioni.
-
----
-### Come impostare il livello
-Puoi impostare il livello per l'intera sessione o per una singola transazione:
+Regola: deve restare almeno una persona reperibile. Apri **due sessioni** A e B nello stesso database di prova, con autocommit attivo fuori dai `BEGIN`. Crea da A una tabella nuova con nome libero:
 
 ```sql
--- Per la transazione corrente
-BEGIN TRANSACTION ISOLATION LEVEL REPEATABLE READ;
-
--- Per la sessione
-SET SESSION CHARACTERISTICS AS TRANSACTION ISOLATION LEVEL SERIALIZABLE;
+CREATE TABLE lab_on_call (id integer PRIMARY KEY, available boolean NOT NULL);
+INSERT INTO lab_on_call VALUES (1, true), (2, true);
 ```
 
----
-### Logic layer: Quale scegliere?
-> [!TIP] Bilanciamento Performance/Rigore
-> - **Read Committed:** Massimo throughput. Accetta che i dati possano cambiare tra una SELECT e l'altra nella stessa transazione.
-> - **Repeatable Read:** Fondamentale per reportistica o batch processing dove i dati devono rimanere "congelati" per tutta la durata dell'operazione.
-> - **Serializable:** Obbligatorio per logiche di business estremamente critiche (es. calcoli finanziari complessi su più tabelle correlate) dove le anomalie di scrittura (write skew) non sono tollerabili.
-
----
-
-## API / Sintassi
+**1. A e poi B:** esegui il blocco una volta **in ciascuna** sessione prima di qualsiasi aggiornamento. Entrambe contano due persone.
 
 ```sql
-BEGIN TRANSACTION ISOLATION LEVEL READ COMMITTED;
-
-BEGIN TRANSACTION ISOLATION LEVEL REPEATABLE READ;
-
-BEGIN TRANSACTION ISOLATION LEVEL SERIALIZABLE;
+BEGIN ISOLATION LEVEL REPEATABLE READ;
+SELECT count(*) FROM lab_on_call WHERE available;
 ```
 
-Impostazione per sessione:
+**2. Solo A:** la persona 1 esce se risulta disponibile un'altra persona. Conferma prima di passare a B.
 
 ```sql
-SET SESSION CHARACTERISTICS AS TRANSACTION
-ISOLATION LEVEL REPEATABLE READ;
-```
-
-Controllo corrente:
-
-```sql
-SHOW transaction_isolation;
-```
-
-## Esempio pratico
-
-Report coerente con `REPEATABLE READ`:
-
-```sql
-BEGIN TRANSACTION ISOLATION LEVEL REPEATABLE READ;
-
-SELECT count(*) FROM orders WHERE status = 'paid';
-SELECT sum(total_amount) FROM orders WHERE status = 'paid';
-
+UPDATE lab_on_call SET available = false
+WHERE id = 1 AND (SELECT count(*) FROM lab_on_call WHERE available) > 1
+RETURNING id;
 COMMIT;
 ```
 
-Le due query leggono lo stesso snapshot, anche se altre transazioni inseriscono nuovi ordini pagati nel frattempo.
-
-Transazione critica con retry applicativo:
+**3. Solo B:** applica la stessa regola alla persona 2 usando ancora il suo snapshot iniziale.
 
 ```sql
-BEGIN TRANSACTION ISOLATION LEVEL SERIALIZABLE;
-
-UPDATE accounts
-SET balance = balance - 100
-WHERE id = 1;
-
-UPDATE accounts
-SET balance = balance + 100
-WHERE id = 2;
-
+UPDATE lab_on_call SET available = false
+WHERE id = 2 AND (SELECT count(*) FROM lab_on_call WHERE available) > 1
+RETURNING id;
 COMMIT;
 ```
 
-Con `SERIALIZABLE`, l'applicazione deve essere pronta a riprovare la transazione se PostgreSQL segnala una serialization failure.
+**4. Verifica** dopo la fine di entrambe le transazioni:
 
-## Varianti
+```sql
+SELECT count(*) FROM lab_on_call WHERE available;
+```
 
-- `READ UNCOMMITTED`: in PostgreSQL equivale a `READ COMMITTED`.
-- `READ COMMITTED`: default, snapshot per singola query.
-- `REPEATABLE READ`: snapshot stabile per tutta la transazione.
-- `SERIALIZABLE`: risultato equivalente a una esecuzione seriale.
-- `READ ONLY`: transazione che non modifica dati.
-- `DEFERRABLE`: utile con `SERIALIZABLE READ ONLY` per attendere uno snapshot sicuro.
+Con `REPEATABLE READ` il risultato è **0**. Nessuna transazione ha sovrascritto la riga cambiata dall'altra: ciascuna ha preso una decisione su un insieme comune, poi ha scritto su una riga diversa. Questa anomalia si chiama *write skew*.
 
-## Errori comuni
+**Seconda prova:** ripristina i dati in autocommit, poi ripeti i passi 1–4 sostituendo `REPEATABLE READ` con `SERIALIZABLE` **in entrambe le sessioni**.
 
-- Pensare che `READ COMMITTED` dia uno snapshot stabile per tutta la transazione.
-- Usare `SERIALIZABLE` senza implementare retry.
-- Tenere transazioni lunghe aperte mentre l'utente interagisce con l'applicazione.
-- Confondere isolamento con lock espliciti.
-- Risolvere race condition solo con controlli applicativi non protetti da transazione.
-- Ignorare errori di serialization failure o deadlock.
+```sql
+UPDATE lab_on_call SET available = true;
+```
 
-## Checklist
+Con l'ordine indicato, A è già confermata e B riceve `40001` durante la scrittura o al commit. Se la transazione è ancora in errore, chiudila con `ROLLBACK`. Rimane **1** persona. Un nuovo tentativo di B dall'inizio vede una sola persona e non aggiorna nulla. Alla fine, elimina solo la tabella del laboratorio:
 
-- Il flusso richiede snapshot stabile o basta `READ COMMITTED`?
-- Le transazioni critiche hanno retry applicativo?
-- Le transazioni sono brevi?
-- Le modifiche avvengono in ordine coerente per ridurre deadlock?
-- Servono lock espliciti come `SELECT ... FOR UPDATE`?
-- I test coprono accessi concorrenti?
+```sql
+DROP TABLE lab_on_call;
+```
+
+## Scegliere e riprovare
+
+- Per leggere più totali coerenti, `REPEATABLE READ READ ONLY` evita che un commit intermedio cambi lo snapshot. `SERIALIZABLE READ ONLY DEFERRABLE` può aspettare all'inizio uno snapshot sicuro. Nessun livello rende una transazione lunga priva di costi.
+- Per una scrittura su una sola riga può bastare un `UPDATE` con la condizione nel `WHERE`. In `READ COMMITTED` se un altro scrittore ha modificato la riga, il comando può attendere e rivalutare la condizione sulla versione aggiornata. In `REPEATABLE READ` una modifica concorrente successiva allo snapshot può invece produrre `40001` anche sulla stessa riga.
+- Per invarianti tra righe valuta un vincolo dichiarativo, un lock su una risorsa comune usato da **tutti** i percorsi di scrittura, oppure `SERIALIZABLE` con retry. Non esiste una graduatoria di throughput valida per ogni carico.
+- Con `40001` ripeti **l'intera transazione**, incluse letture e decisioni, con tentativi limitati. Non ripetere alla cieca effetti esterni già eseguiti. `SHOW transaction_isolation` mostra il livello attivo; `SET SESSION CHARACTERISTICS AS TRANSACTION ...` cambia il default per le transazioni successive della connessione.
+
+**Fonti PostgreSQL 18:** [livelli e anomalie](https://www.postgresql.org/docs/18/transaction-iso.html), [gestione degli errori di serializzazione](https://www.postgresql.org/docs/18/mvcc-serialization-failure-handling.html).
 
 ## Collegamenti
 
+- [[Programmazione/PostgreSQL/Indice PostgreSQL|Indice PostgreSQL]]
 - [[Programmazione/PostgreSQL/Pagine/MVCC|MVCC]]
 - [[Programmazione/PostgreSQL/Pagine/Meccanismi di Locking|Meccanismi di Locking]]
 - [[Programmazione/PostgreSQL/Pagine/Proprietà ACID|Proprietà ACID]]
-
-## Fonti
-
-- [PostgreSQL - Transaction Isolation](https://www.postgresql.org/docs/current/transaction-iso.html)
-- [PostgreSQL - Serializable Isolation](https://www.postgresql.org/docs/current/transaction-iso.html#XACT-SERIALIZABLE)
-
-
-## Navigazione
-
-- [[Programmazione/PostgreSQL/Indice PostgreSQL|Indice PostgreSQL]]

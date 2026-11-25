@@ -16,106 +16,81 @@ aliases:
   - Cheatsheet error handling Rust
 prerequisites: []
 related:
-  - "[[Programmazione/Rust/Pagine/Option]]"
-  - "[[Programmazione/Rust/Pagine/Result]]"
-  - "[[Programmazione/Rust/Pagine/Error handling idiomatico]]"
+  - "[[Programmazione/Rust/Pagine/Option|Option]]"
+  - "[[Programmazione/Rust/Pagine/Result|Result]]"
+  - "[[Programmazione/Rust/Pagine/Error handling idiomatico|Error handling idiomatico]]"
 title: Rust - Option, Result ed errori
 ---
 
 # Rust - Option, Result ed errori
 
-## Option
+Usa `Option<T>` per assenza prevista, `Result<T, E>` quando serve sapere perché l'operazione è fallita. I blocchi vanno in `fn main()`, salvo il programma finale.
+
+## Option: trasformare o scegliere un default
 
 ```rust
-let value: Option<i32> = Some(42);
+let value = Some(3_i32);
 let missing: Option<i32> = None;
+assert_eq!(missing.unwrap_or(7), 7);
+assert_eq!(missing.unwrap_or_default(), 0);
+assert_eq!(value.map(|n| n * 2), Some(6));
+assert_eq!(value.and_then(|n| n.checked_add(1)), Some(4));
+assert_eq!(value.filter(|&n| n > 5), None);
+let label = Some(String::from("Ada"));
+assert_eq!(label.as_ref().map(|s| s.len()), Some(3)); // non consuma label
 ```
 
-```rust
-value.unwrap_or(0)
-value.unwrap_or_default()
-value.map(|number| number * 2)
-value.and_then(validate)
-value.filter(|number| *number > 0)
-value.as_ref()
-```
-
-## Convertire Option in Result
-
-```rust
-let user = user.ok_or(AppError::UserNotFound)?;
-```
-
-```rust
-let user = user.ok_or_else(|| AppError::UserNotFound)?;
-```
-
-## Result
-
-```rust
-fn parse_id(value: &str) -> Result<u64, std::num::ParseIntError> {
-    value.parse()
-}
-```
-
-```rust
-result.map(transform)
-result.map_err(AppError::InvalidId)
-result.and_then(validate)
-result.unwrap_or(default)
-```
-
-## Operatore `?`
-
-```rust
-fn load_id(text: &str) -> Result<u64, AppError> {
-    let id = text.trim().parse::<u64>().map_err(AppError::InvalidId)?;
-    Ok(id)
-}
-```
-
-`map_err` converte `ParseIntError` in `AppError` prima di `?`. Per scrivere solo `parse::<u64>()?` serve invece `impl From<std::num::ParseIntError> for AppError`.
-
-## Match esplicito
-
-```rust
-match operation() {
-    Ok(value) => println!("{value}"),
-    Err(error) => eprintln!("{error}"),
-}
-```
-
-## Errore personalizzato
+## Da Option a Result, da testo a ID
 
 ```rust
 #[derive(Debug)]
-enum AppError {
-    UserNotFound,
-    InvalidId(std::num::ParseIntError),
+enum AppError { UserNotFound, InvalidId(std::num::ParseIntError) }
+fn load_id(input: Option<&str>) -> Result<u64, AppError> {
+    let text = input.ok_or(AppError::UserNotFound)?;
+    let id = text.trim().parse::<u64>().map_err(AppError::InvalidId)?;
+    Ok(id)
 }
+assert!(matches!(load_id(None), Err(AppError::UserNotFound)));
+assert!(matches!(load_id(Some("x")), Err(AppError::InvalidId(e))
+    if *e.kind() == std::num::IntErrorKind::InvalidDigit));
+assert_eq!(load_id(Some(" 42 ")).unwrap(), 42);
 ```
 
-## `main` fallibile
+`ok_or(error)` valuta subito l'errore; `ok_or_else(|| costruisci_errore())` lo costruisce solo su `None`. Per fare `parse::<u64>()?` senza `map_err` qui servirebbe `From<ParseIntError> for AppError`.
+
+## Result: map, and_then, match
+
+```rust
+fn parse_id(text: &str) -> Result<u64, std::num::ParseIntError> { text.parse() }
+let doubled = parse_id("4").map(|id| id * 2);
+assert_eq!(doubled, Ok(8));
+let checked = parse_id("0").map_err(|_| "not a number").and_then(|id| {
+    if id == 0 { Err("zero") } else { Ok(id) }
+});
+match checked {
+    Ok(id) => println!("id={id}"),
+    Err(reason) => eprintln!("{reason}"),
+}
+assert_eq!(parse_id("x").unwrap_or(99), 99); // solo se 99 è un ripiego voluto
+```
+
+## Main fallibile e panic
+
+Programma completo. `?` esce con `Err` se il parsing fallisce.
 
 ```rust
 fn main() -> Result<(), Box<dyn std::error::Error>> {
-    run()?;
+    let id = "42".parse::<u64>()?;
+    println!("id={id}");
     Ok(())
 }
 ```
 
-## Panic
+`assert!` e `assert_eq!` verificano aspettative; `unreachable!()` causa un panic se il ramo viene raggiunto. Non usare `unwrap()` o `expect()` al posto di gestire input esterno non valido. Teoria: [[Programmazione/Rust/Pagine/Error handling idiomatico|Gestione degli errori]].
 
-```rust
-assert!(value > 0);
-assert_eq!(actual, expected);
-unreachable!("stato gia validato");
-```
+## Collegamenti
 
-Evitare `unwrap()` ed `expect()` per errori recuperabili provenienti dall'esterno.
-
-## Approfondimento
-
+- [[Programmazione/Rust/Promemoria/Indice Promemoria Rust|Indice Promemoria Rust]]
 - [[Programmazione/Rust/Pagine/Option|Option]]
 - [[Programmazione/Rust/Pagine/Result|Result]]
 - [[Programmazione/Rust/Pagine/Error handling idiomatico|Error handling idiomatico]]
@@ -123,8 +98,3 @@ Evitare `unwrap()` ed `expect()` per errori recuperabili provenienti dall'estern
 - [[Programmazione/Rust/Pagine/Error reporting|Error reporting]]
 - [[Programmazione/Rust/Pagine/thiserror e anyhow|thiserror e anyhow]]
 - [[Programmazione/Rust/Pagine/panic|panic]]
-
-
-## Navigazione
-
-- [[Programmazione/Rust/Promemoria/Indice Promemoria Rust|Indice Promemoria Rust]]

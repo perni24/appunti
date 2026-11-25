@@ -2751,6 +2751,106 @@ La suite estrae manifest, libreria e test dal Markdown. Esegue i test su host ne
 node --test _Meta/tests/rust-no-std.test.mjs
 ```
 
+## PostgreSQL: suite cumulativa delle note
+
+Serve una distribuzione **PostgreSQL 18.x** completa con supporto TLS, `postgres`, `initdb`, `pg_ctl`, `createdb`, `pg_basebackup` e `psql` nel PATH oppure con `PG_BIN` impostata alla directory dei binari. Per generare i certificati di prova serve anche la CLI `openssl` nel PATH o il percorso dell'eseguibile in `PG_TEST_OPENSSL`. Eseguire come utente che può inizializzare un cluster, non come root su Unix.
+
+```sh
+node --test _Meta/tests/postgresql-architettura.test.mjs
+```
+
+La suite estrae i dieci blocchi SQL dai quattro Markdown; avvia e arresta un cluster temporaneo, non un servizio. Usa solo 127.0.0.1, una porta libera e una password casuale con SCRAM. Non si collega al database abituale dell'utente. I sei casi controllano sessioni, attese e lock, metodi di sort, percorsi e privilegi. Richiede una directory temporanea scrivibile e il permesso di aprire una porta locale. Non richiede PgBouncer o una replica.
+
+Lo stesso comando esegue gli otto casi di `postgresql-setup.cases.mjs`: crea un database nel cluster di prova e verifica i dieci blocchi SQL e i tre meta-comandi delle cinque note di Setup. Controlla anche `pending_restart` prima e dopo il reset nella stessa sessione, i default al login, i privilegi del creatore e il rollback dello script `psql -1`. Il bootstrap automatico usa una password casuale via `--pwfile` al posto di `-W`. Non installa un servizio, non apre la rete esterna e non negozia TLS.
+
+I dieci casi di `postgresql-sql-fondamentale.cases.mjs` eseguono tutti i 17 blocchi SQL delle sei note di SQL Fondamentale e alcune varianti che devono produrre risultati o errori precisi. Per il caso sulle prenotazioni serve anche l'estensione fornita con PostgreSQL `btree_gist` (su alcune distribuzioni è nel pacchetto contrib). Si crea esclusivamente nel database temporaneo. La suite distingue i risultati nulli dalle stringhe vuote e verifica i codici SQLSTATE, non il testo localizzato. Non misura le prestazioni delle query.
+
+Gli otto casi di `postgresql-modellazione.cases.mjs` eseguono i nove blocchi SQL delle quattro note. Controllano il prezzo pattuito dopo una variazione di listino, la FK composta e le coppie parziali, l'opzionalità e il conteggio indipendente dei figli, gli effetti di RESTRICT e CASCADE, i due versi di AT TIME ZONE, scadenze e totali in fattura, overflow numerico e limiti di lunghezza. Il rimando JSON/JSONB è coperto dai test di SQL Fondamentale.
+
+I dodici casi di `postgresql-avanzato.cases.mjs` eseguono tutti i 15 blocchi SQL del capitolo successivo. Verificano cicli e percorsi distinti, frame e pareggi, join laterali, righe restituite o saltate nelle scritture, refresh concorrente e ricerca testuale italiana. La prova sul refresh usa uno schema privato al cluster di test, creato e annullato nella transazione. Non è una misura dei tempi di risposta o dei lock con lettori simultanei.
+
+I dieci casi di `postgresql-integrita.cases.mjs` eseguono i 13 blocchi su trigger, regole, PL/pgSQL, routine ed estensioni. Richiedono PL/pgSQL e i file server di `pgcrypto`, presente in contrib. Il superuser del cluster usa e getta crea un event trigger in una transazione annullata; una prova separata verifica la procedura con un ruolo ordinario, prima senza e poi con i privilegi sulla tabella. Non sono richiesti privilegi sul database personale. Il test sulle scorte copre risultati e argomenti non validi, non il carico concorrente.
+
+I nove casi di `postgresql-transazioni.cases.mjs` eseguono i 25 blocchi delle quattro note di Transazioni e concorrenza. Il laboratorio avvia due client psql sullo stesso cluster; un osservatore controlla in `pg_stat_activity` l'avanzamento dei passi e, nel caso di deadlock, osserva la prima attesa prima di richiedere il secondo lock. I test distinguono errori di serializzazione, deadlock e lock non disponibile. Nessun crash del server, benchmark o collegamento a database personali.
+
+I dieci casi di `postgresql-performance.cases.mjs` eseguono i 16 blocchi di Performance e Query Planning. Sul cluster di prova confrontano i dati restituiti e i nodi dei piani anche in formato JSON: indice scelto, sort, cardinalità, heap fetch prima e dopo una scrittura. Verificano inoltre unicità parziale, savepoint dopo EXPLAIN ANALYZE, dimensione della heap dopo un DELETE e monitoraggio di relazioni omonime. Nessuna asserzione su tempi assoluti o soglie universali; per VACUUM i blocchi vengono inviati nella stessa sessione senza una transazione esterna.
+
+I sei casi di `postgresql-storage.cases.mjs` verificano WAL e checkpoint, fillfactor di heap e B-tree, aggiornamenti HOT, TOAST e tablespace. Per il tablespace usano il superuser del cluster usa e getta, generano una directory vuota sorella di PGDATA e passano il percorso al prompt dello script psql. Il server deve poter creare il collegamento al tablespace sul filesystem. I test non richiedono volumi aggiuntivi, non simulano un crash e non verificano archiviazione, restore PITR o replica.
+
+I cinque casi di `postgresql-scalabilita.cases.mjs` richiedono anche `pg_basebackup`. Il primario temporaneo usa `wal_level=logical`. I test aprono solo porte di loopback e creano prima uno standby fisico, poi un subscriber indipendente con credenziali di prova. Verificano pruning e detach, durata di SET LOCAL, instradamento simulato per tenant, avanzamento del replay dopo una pausa controllata, rifiuto delle scritture sullo standby, selezione del writer con libpq e applicazione delle modifiche pubblicate. Il servizio libpq è definito in una directory temporanea; non si usano database o configurazioni personali. Non vengono avviati PgBouncer, un orchestratore HA o shard distribuiti.
+
+I sei casi di `postgresql-sicurezza.cases.mjs` usano un database dedicato nel cluster temporaneo. Verificano grant predefiniti del creatore e SECURITY DEFINER, due contesti RLS sulla stessa connessione, eventi di audit transazionali, catalogo e installazione trusted di pgcrypto, rotazione SCRAM con un passfile e verifica TLS end-to-end. Per TLS generano CA e certificati effimeri, usano solo il loopback e ripristinano la configurazione della fixture. La prova rifiuta nome errato, CA estranea e TCP in chiaro. Non esegue il prompt interattivo di rotazione, un secret manager esterno o pgAudit.
+
+I sei casi di `postgresql-osservabilita.cases.mjs` eseguono i 12 blocchi SQL di Slow query log, Lock monitoring e Metriche e alerting. Servono i moduli server `pg_stat_statements` e `auto_explain`. Solo nel cluster usa e getta il primo è precaricato all'avvio e il log è diretto al file di pg_ctl. I test leggono le nuove voci di log, confrontano due campioni di statement normalizzati, osservano un lock advisory da una terza connessione e misurano incrementi di rollback e distanza WAL di uno slot di prova. Non fanno benchmark, non installano un collector e non inviano notifiche.
+
+I sette casi di `postgresql-operativita.cases.mjs` richiedono anche `pg_dump`, `pg_restore`, `pg_dumpall`, `pg_verifybackup` (con `pg_waldump` disponibile) e il modulo server `basic_archive`. Usano solo directory e database usa e getta. Ripristinano archivi custom, plain e directory, verificano dati, sequenza e vincoli, provano validazione differita, indice concorrente, atomicità del registro e passaggio tra vecchi e nuovi scrittori. Per il PITR inizializzano un primario separato con archiviazione locale, verificano il manifest e avviano una seconda copia fino al restore point: la riga inserita dopo il backup e cancellata dopo il target deve essere presente solo sulla copia. Entrambi i processi vengono fermati senza promuovere la copia. Non servono servizi di backup esterni.
+
+I sei casi di `postgresql-estensioni.cases.mjs` coprono il capitolo Estensioni e funzionalità. Tre richiedono i moduli PostgreSQL `uuid-ossp`, `pgcrypto`, `postgres_fdw` e `test_decoding`: verificano i tipi di UUID, un mapping SCRAM tra due database locali e la lettura ripetibile o consumante di uno slot temporaneo. Le credenziali sono casuali e appartengono solo alla fixture.
+
+Per includere anche le tre prove esterne, imposta `PG_TEST_EXTERNAL_EXTENSIONS=1` e fornisci moduli compatibili con i binari PostgreSQL del test: PostGIS (incluse le risorse PROJ), pgvector e TimescaleDB. Senza il flag questi tre casi risultano esplicitamente saltati; con il flag un modulo mancante fa fallire il test. La prova TimescaleDB avvia un cluster separato su loopback con precaricamento del modulo e telemetria disabilitata. Configurazione verificata: PostgreSQL 18.7, PostGIS 3.7.0, pgvector 0.8.2, TimescaleDB 2.23.1. Le prove non installano pacchetti di sistema, non misurano prestazioni ANN e non avviano servizi CDC esterni.
+
+Gli otto casi di `postgresql-integrazione.cases.mjs` leggono gli esempi di driver, prepared statements, ORM, outbox e job table dai Markdown. Per i tre casi Python imposta `PG_APP_PYTHON` al percorso dell'interprete di un ambiente con Psycopg 3 e SQLAlchemy 2 (verificati con Python 3.12, `psycopg[binary]==3.2.9` e `SQLAlchemy==2.0.44`). Senza quel percorso i tre casi sono saltati esplicitamente. Per un giro senza skip servono anche i prerequisiti e il flag delle estensioni del paragrafo precedente.
+
+Il profilo libpq e il passfile del login applicativo sono temporanei e usati solo su loopback. I test contano le SELECT sui dati, non le interrogazioni di inizializzazione. Per la job table usano due sessioni distinte, poi simulano la scadenza della lease agendo sulle date nella sola fixture. Le due consegne outbox sono simulate in SQL: non viene avviato un broker né viene promesso un effetto esterno eseguito esattamente una volta.
+
+## PostgreSQL: promemoria Query
+
+Con i binari PostgreSQL 18.x indicati sopra, dal root del vault:
+
+```sh
+node --test --test-name-pattern="Promemoria Query" _Meta/tests/postgresql-architettura.test.mjs
+```
+
+Il filtro esegue le sei prove di `postgresql-promemoria-query.cases.mjs` sui 41 blocchi SQL delle sei schede. Non servono driver Python o estensioni esterne. I test leggono il Markdown, usano sessioni temporanee e confrontano le righe (inclusi i NULL), le liste ordinate, il contenuto JSON e lo stato dopo rollback. Le varianti di UNION vengono eseguite con gli stessi input. Le prove verificano la correttezza dei risultati, non i tempi di paginazione né la concorrenza fra scrittori.
+
+## PostgreSQL: promemoria Tipi e funzioni
+
+Per eseguire questo blocco insieme al precedente su PostgreSQL 18.x:
+
+```sh
+node --test --test-name-pattern="Promemoria (Query|Tipi e funzioni)" _Meta/tests/postgresql-architettura.test.mjs
+```
+
+Le quattro prove di `postgresql-promemoria-tipi.cases.mjs` leggono i 28 blocchi SQL delle schede. Verificano il codice errore di un cast non valido, il numero di righe delle regex, il giorno romano di 23 ore da due fusi di sessione, gli oggetti JSON per contenuto e l'access method dell'indice temporaneo. Non servono moduli esterni. La prova dell'indice non misura prestazioni né impone al planner di usarlo.
+
+## PostgreSQL: promemoria Struttura e prestazioni
+
+Per eseguire tutti e quattro i capitoli dei promemoria su PostgreSQL 18.x:
+
+```sh
+node --test --test-name-pattern="Promemoria" _Meta/tests/postgresql-architettura.test.mjs
+```
+
+I tre casi di `postgresql-promemoria-struttura.cases.mjs` leggono 30 blocchi SQL dal Markdown. Provano i vincoli anche con dati non validi, controllano le definizioni degli indici e le righe effettive di EXPLAIN senza imporre un piano. Due client e una connessione osservatrice verificano NOWAIT, prenotazione con SKIP LOCKED, attesa e rilascio. Non misurano le prestazioni sotto carico. Il database della suite appartiene solo al cluster temporaneo.
+
+## PostgreSQL: promemoria Gestione
+
+Il filtro `Promemoria` include anche le tre prove di `postgresql-promemoria-gestione.cases.mjs`. I test eseguono i 24 blocchi delle ultime due schede: 13 SQL, 10 invocazioni dei client PostgreSQL e un meta-comando psql. Verificano grant attuali e futuri, revoca, righe visibili e scritture rifiutate sotto due identità distinte. Per i dump custom e plain ripristinano in due database vuoti e controllano dati, sequenza e vincoli; leggono inoltre il CSV locale e l'export dei globali senza verificatori di password. Non provano autenticazione di rete, recovery fisico o tempi di ripristino in produzione.
+
+## Rust: promemoria di linguaggio e astrazioni
+
+Dal root del vault, con Node.js e un `rustc` che supporta l'edition 2024:
+
+```sh
+node --test _Meta/tests/rust-promemoria-linguaggio.test.mjs
+```
+
+La suite estrae i 33 blocchi Rust dalle sette schede del capitolo Linguaggio e li compila con `-Dwarnings`. Ogni frammento viene eseguito in uno scope indipendente; il programma completo mantiene il proprio `main` e la suite ne confronta l'output con `id=42`. Tre varianti volutamente errate verificano la riassegnazione senza `mut` (E0384), il riuso dopo un move (E0382) e due prestiti in conflitto (E0502).
+
+Per Astrazioni lo stesso comando esegue 22 blocchi in quattro schede, inclusi i casi di prestito dinamico con `RefCell`, ultimo proprietario di un `Rc` e accesso da un secondo thread. Quattro varianti devono fallire: vettore consumato (E0382), confronto senza bound (E0369), riferimento a una variabile locale (E0515) e `Arc<RefCell<_>>` inviato a un thread (E0277).
+
+## Rust: promemoria di sistema e progetto
+
+Dalla radice del vault, con Node, Rust edition 2024, Cargo, rustfmt e Clippy:
+
+```sh
+node --test _Meta/tests/rust-promemoria-sistema.test.mjs
+```
+
+La suite ricostruisce quattro progetti di esempio e i frammenti autonomi in directory temporanee. Le sei prove coprono I/O senza sovrascrittura, round-trip JSON, feature Cargo disabilitata/abilitata, thread standard, runtime Tokio e test di una libreria reale (unit, integrazione, doctest e lint). Non esegue indiscriminatamente i comandi shell presenti nelle note.
+
+Per impostazione predefinita Cargo lavora offline: devono essere già in cache Serde con derive, serde_json, Tokio con macros e le dipendenze transitive. Per una prima esecuzione con accesso a crates.io si può impostare `CARGO_NET_OFFLINE=false` nell'ambiente. Su Windows usare una directory temporanea dal percorso breve se il linker restituisce LNK1104 sui file generati.
+
 ## Rust: Documentazione delle crate
 
 La suite estrae dalla nota il README, le feature, la libreria e il programma di esempio. Con Cargo offline verifica il quick start incluso in rustdoc, le viste HTML con e senza `batch`, gli errori resi visibili solo dai doc test o solo dal controllo dei link, il comportamento documentato su Unicode e liste vuote, e i file restituiti da `cargo package --list`. Non pubblica nulla, né su crates.io né su docs.rs.

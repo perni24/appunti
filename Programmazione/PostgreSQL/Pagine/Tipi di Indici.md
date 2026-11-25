@@ -20,165 +20,63 @@ title: Tipi di Indici in PostgreSQL
 
 ## Sintesi
 
-PostgreSQL offre diversi access method per collegare operatori e pattern di query a strutture indicizzate. La scelta non dipende solo dal tipo della colonna, ma dagli operatori usati, dalla selettività, dall'ordinamento richiesto, dalla distribuzione fisica dei dati e dal costo sulle scritture.
+Scegli l'indice partendo dalla **query**: quali operatori usa il filtro, quante righe restituisce, in quale ordine e con quale limite? Un indice utile per cercare un valore dentro un documento non è necessariamente utile per ordinare i documenti. Anche un indice compatibile può essere ignorato se leggere direttamente la tabella costa meno.
 
-## Quando usarlo
+## Scegliere il metodo di accesso
 
-Usa gli indici quando una query deve trovare poche righe, ordinare risultati o verificare vincoli senza scansionare tutta la tabella:
+| Metodo | Quando valutarlo | Limite da ricordare |
+| --- | --- | --- |
+| B-tree (predefinito) | Uguaglianza, intervalli, ordinamento e primi N risultati in ordine | Ordine delle colonne e direzione contano; può anche imporre unicità |
+| Hash | Uguaglianza su un valore | Non serve a intervalli o ordinamento; confrontalo con un B-tree, che supporta già l'uguaglianza |
+| GIN | Appartenenza o contenimento in array, `jsonb`, ricerca su `tsvector` | La *operator class* decide quali operatori sono supportati; non ordina i risultati per rilevanza |
+| GiST | Intersezioni tra intervalli o vicini più prossimi con tipi e operatori adatti | È un'infrastruttura per strategie diverse, non un indice universale per qualsiasi confronto |
+| SP-GiST | Ricerca su valori che possono essere partizionati nello spazio o per prefisso, secondo la classe disponibile | Un tipo geometrico o testuale non rende automaticamente indicizzabile qualsiasi espressione |
+| BRIN | Intervalli su tabelle grandi in cui i valori vicini sono anche fisicamente vicini, per esempio log cronologici | Riassume **gruppi di pagine**, non singole righe; min/max è una strategia, non l'unica. I candidati vanno ricontrollati |
 
-- filtri frequenti in `WHERE`;
-- colonne usate in `JOIN`;
-- ordinamenti ricorrenti con `ORDER BY`;
-- vincoli `UNIQUE`;
-- ricerche in `jsonb`, array o full text search;
-- tabelle grandi con dati temporalmente ordinati.
+## Laboratorio: due domande sulla stessa tabella
 
-Un indice non e sempre un miglioramento: ogni indice aumenta spazio su disco e costo di scrittura.
-
-## Come funziona
-
-### Concetto chiave
-Gli **Indici** sono strutture di dati ausiliarie progettate per velocizzare il recupero delle righe filtrando i dati senza dover scansionare l'intera tabella (*Sequential Scan*). PostgreSQL offre una vasta gamma di tipi di indici, ognuno ottimizzato per specifici tipi di dati e operatori di confronto.
-
----
-### Panoramica dei Tipi di Indici
-#### B-Tree (Balanced Tree)
-È il tipo di indice predefinito. È estremamente versatile e gestisce la maggior parte dei tipi di dati comuni.
-- **Utilizzo**: Operatori di confronto standard (`<`, `<=`, `=`, `>=`, `>`).
-- **Ottimale per**: Ricerche puntuali e ordinamenti (range queries).
-
-#### Hash
-Memorizza un hash a 32 bit del valore della colonna indicizzata.
-- **Utilizzo**: Solo per operatori di uguaglianza (`=`).
-- **Nota**: In passato erano sconsigliati, ma dalla versione 10+ sono robusti e performanti. Non supportano l'ordinamento.
-
-#### GIN (Generalized Inverted Index)
-Fondamentale per dati "multivalore" dove una singola colonna contiene più elementi ricercabili.
-- **Utilizzo**: [[Programmazione/PostgreSQL/Pagine/Tipi di Dato|Array]], [[Programmazione/PostgreSQL/Pagine/Full Text Search|Full Text Search]], `JSONB`.
-- **Punto di forza**: Ideale quando si ha bisogno di indicizzare le chiavi o i valori all'interno di un documento JSON.
-
-#### GiST (Generalized Search Tree)
-Una struttura ad albero bilanciata che permette di implementare schemi di indicizzazione personalizzati.
-- **Utilizzo**: Dati geometrici (punti, poligoni), range types, Full Text Search.
-- **Operatori**: "contiene", "all'interno di", "distanza minima".
-
-#### BRIN (Block Range Index)
-Invece di indicizzare ogni riga, BRIN memorizza i valori minimi e massimi di ogni blocco di pagine.
-- **Utilizzo**: Tabelle gigantesche (miliardi di righe) dove i dati hanno una correlazione naturale con l'inserimento fisico (es. log cronologici, sensori).
-- **Vantaggio**: Possono essere molto più piccoli di un B-Tree quando i dati sono fisicamente correlati con il valore indicizzato.
-
-#### SP-GiST (Space-Partitioned GiST)
-Ottimizzato per partizionare spazi non bilanciati.
-- **Utilizzo**: Strutture a prefisso (Trie), alberi quadrati, dati con distribuzioni molto irregolari.
-
----
-### Logic layer: Quale indice scegliere?
-> [!IMPORTANT] Criteri di Selezione
-> 1. **Uguaglianza, range e ordinamento su tipi scalari**: parti da **B-Tree**, poi verifica il piano reale.
-> 2. **Contenimento e ricerca interna in `jsonb`**: valuta **GIN** e scegli l'operator class in base agli operatori; per un singolo campo possono essere migliori expression index o B-Tree.
-> 3. **Dati geografici PostGIS**: **GiST** è la scelta comune, ma alcune geometrie e query possono usare SP-GiST o BRIN.
-> 4. **Tabelle di Log enormi (Time Series)**: Considera **BRIN** per risparmiare spazio su disco pur mantenendo prestazioni di scansione accettabili.
-
----
-
-## API / Sintassi
+Esegui i blocchi nella stessa sessione di prova. Su 12.000 eventi, solo uno su mille è un checkout. Un B-tree ordina gli eventi per cliente e ID; per il contenimento nel documento creiamo invece un GIN.
 
 ```sql
-CREATE INDEX index_name ON table_name (column_name);
-
-CREATE UNIQUE INDEX index_name ON table_name (column_name);
-
-CREATE INDEX CONCURRENTLY index_name ON table_name (column_name);
-
-DROP INDEX CONCURRENTLY index_name;
+BEGIN;
+CREATE TEMP TABLE lab_events (id integer, customer_id integer, payload jsonb);
+INSERT INTO lab_events
+SELECT i, i % 10, jsonb_build_object('kind',
+       CASE WHEN i % 1000 = 0 THEN 'checkout' ELSE 'view' END)
+FROM generate_series(1, 12000) AS g(i);
+CREATE INDEX lab_customer_latest ON lab_events (customer_id, id DESC);
+CREATE INDEX lab_payload_kind ON lab_events USING gin (payload jsonb_path_ops);
+ANALYZE lab_events;
 ```
-
-Tipi principali:
 
 ```sql
-CREATE INDEX users_email_btree_idx ON users USING btree (email);
-CREATE INDEX events_payload_gin_idx ON events USING gin (payload);
-CREATE INDEX bookings_period_gist_idx ON bookings USING gist (period);
-CREATE INDEX logs_created_at_brin_idx ON logs USING brin (created_at);
+EXPLAIN (ANALYZE, BUFFERS, TIMING OFF)
+SELECT id FROM lab_events WHERE customer_id = 3 ORDER BY id DESC LIMIT 3;
 ```
 
-## Esempio pratico
-
-Query lenta:
+Per il cliente 3 i primi ID sono **11993, 11983, 11973**. Il B-tree può raggiungere il primo valore del cliente e fermarsi dopo tre righe senza un ordinamento separato. `EXPLAIN ANALYZE` restituisce il piano, non la lista degli ID: togli il prefisso per leggere i risultati.
 
 ```sql
-SELECT id, email
-FROM users
-WHERE email = 'ada@example.com';
+EXPLAIN (ANALYZE, BUFFERS, TIMING OFF)
+SELECT id FROM lab_events WHERE payload @> '{"kind":"checkout"}';
+ROLLBACK;
 ```
 
-Indice adatto:
+Il filtro trova **12 eventi**. Cerca il nome `lab_payload_kind` nel piano e distingui la ricerca nell'indice dal recupero delle righe. `jsonb_path_ops` supporta il contenimento `@>`, non il controllo di esistenza `?`; per quest'ultimo valuta `jsonb_ops`. Se filtri sempre uno specifico valore estratto, per esempio `payload->>'kind'`, anche un B-tree sull'espressione può essere appropriato.
 
-```sql
-CREATE UNIQUE INDEX users_email_idx ON users (email);
-```
+## Prima di aggiungere o togliere un indice
 
-Query su JSONB:
+- Un indice `UNIQUE` cambia anche le scritture ammesse: non usarlo solo per accelerare un filtro se i duplicati sono validi. Una PK ha già un indice; una foreign key non crea automaticamente un indice **sul lato che fa riferimento**.
+- Ogni indice occupa spazio e può aumentare il costo delle modifiche. Indici con lo stesso prefisso non sono necessariamente duplicati: confronta unicità, ordine, predicato e colonne incluse. `idx_scan = 0` in `pg_stat_user_indexes` va interpretato rispetto al periodo osservato e ai vincoli tutelati.
+- Su una tabella ordinaria in uso, `CREATE INDEX CONCURRENTLY` consente di proseguire le normali scritture, ma richiede più lavoro, può attendere transazioni e non può stare in un blocco `BEGIN`. Un fallimento può lasciare un indice non valido. Anche `DROP INDEX CONCURRENTLY` ha restrizioni: verifica le dipendenze prima di rimuovere un indice reale.
 
-```sql
-SELECT id
-FROM events
-WHERE payload @> '{"type": "checkout"}';
-```
-
-Indice adatto:
-
-```sql
-CREATE INDEX events_payload_gin_idx ON events USING gin (payload);
-```
-
-## Varianti
-
-- B-tree: default, adatto a uguaglianza, range e ordinamento.
-- Hash: uguaglianza pura, uso piu specialistico.
-- GIN: valori composti come array, `jsonb` e full text search.
-- GiST: range, geometrie, esclusione e operatori specializzati.
-- BRIN: tabelle molto grandi con dati fisicamente correlati.
-- SP-GiST: dati partizionabili nello spazio o per prefisso.
-- Indici parziali: indicizzano solo righe che soddisfano una condizione.
-- Indici coprenti: includono colonne extra con `INCLUDE`.
-
-## Errori comuni
-
-- Indicizzare ogni colonna senza una query reale da ottimizzare.
-- Creare indici ridondanti che hanno lo stesso prefisso di altri indici.
-- Ignorare il costo degli indici su scritture frequenti.
-- Aspettarsi che un indice venga usato anche quando la query restituisce molte righe.
-- Usare funzioni nella `WHERE` senza un expression index coerente.
-- Creare indici in produzione senza `CONCURRENTLY` quando la tabella deve restare scrivibile.
-
-## Checklist
-
-### Best Practices
-- **Non indicizzare tutto**: Ogni indice rallenta le operazioni di scrittura (`INSERT`, `UPDATE`, `DELETE`) perché Postgres deve aggiornare anche l'indice.
-- **Indici su Foreign Keys**: Postgres non crea automaticamente indici sulle chiavi esterne; ricordati di crearli se prevedi frequenti `JOIN`.
-- **Monitoraggio**: Usa `pg_stat_user_indexes` per identificare indici mai utilizzati che consumano spazio e risorse inutilmente.
-- **CREATE INDEX CONCURRENTLY**: In ambienti di produzione, usa questa keyword per creare un indice senza bloccare le scritture sulla tabella.
-- Collegare ogni indice a una query o a un vincolo concreto.
-- Controllare `EXPLAIN` prima e dopo la creazione.
-- Monitorare indici inutilizzati con `pg_stat_user_indexes`.
-- Rimuovere indici duplicati o non usati dopo verifica.
-
----
+**Fonti PostgreSQL 18:** [metodi di indice](https://www.postgresql.org/docs/18/indexes-types.html), [classi di operatori](https://www.postgresql.org/docs/18/indexes-opclass.html), [BRIN](https://www.postgresql.org/docs/18/brin.html), [CREATE INDEX](https://www.postgresql.org/docs/18/sql-createindex.html).
 
 ## Collegamenti
 
+- [[Programmazione/PostgreSQL/Indice PostgreSQL|Indice PostgreSQL]]
 - [[Programmazione/PostgreSQL/Pagine/Indici Parziali e Coprenti|Indici Parziali e Coprenti]]
 - [[Programmazione/PostgreSQL/Pagine/Analisi delle Query|Analisi delle Query]]
 - [[Programmazione/PostgreSQL/Pagine/Statistiche e Query Planner|Statistiche e Query Planner]]
-
-## Fonti
-
-- [PostgreSQL - Index Types](https://www.postgresql.org/docs/current/indexes-types.html)
-- [PostgreSQL - GIN Indexes](https://www.postgresql.org/docs/current/gin.html)
-- [PostgreSQL - BRIN Indexes](https://www.postgresql.org/docs/current/brin.html)
-
-
-## Navigazione
-
-- [[Programmazione/PostgreSQL/Indice PostgreSQL|Indice PostgreSQL]]
+- [[Programmazione/PostgreSQL/Pagine/Full Text Search|Full text search]]
+- [[Programmazione/PostgreSQL/Pagine/Tipi di Dato|Tipi di dato]]

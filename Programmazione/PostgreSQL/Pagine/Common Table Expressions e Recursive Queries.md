@@ -20,146 +20,50 @@ title: Common Table Expressions e Recursive Queries
 
 ## Sintesi
 
-Le **Common Table Expressions** o CTE sono query temporanee definite con `WITH` e utilizzabili dalla query principale. In PostgreSQL servono per rendere piu leggibili query complesse, riusare risultati intermedi e costruire query ricorsive con `WITH RECURSIVE`.
+Una **common table expression** (CTE) dà un nome a un risultato intermedio per la durata di **una sola istruzione**. Usa `WITH` per rendere leggibile un passaggio; usa `WITH RECURSIVE` quando le righe trovate in un passo servono a trovare le successive, per esempio i discendenti di una categoria.
 
-## Quando usarlo
+## Separare due domande
 
-Usa una CTE quando vuoi dare un nome a un passaggio intermedio:
-
-- scomporre query lunghe in blocchi leggibili;
-- riusare lo stesso risultato nella query principale;
-- concatenare operazioni DML con `RETURNING`;
-- costruire gerarchie, alberi o grafi con `WITH RECURSIVE`;
-- rendere esplicita una trasformazione prima di aggregare o filtrare.
-
-Se la CTE contiene logica riusata in molte query, valuta una view o una materialized view.
-
-## Come funziona
-
-Una CTE esiste solo durante l'esecuzione della singola istruzione SQL. Non crea una tabella permanente.
+Quali clienti superano 100 di spesa complessiva? Prima calcola il totale per cliente, poi filtra quel totale. Il blocco è autonomo:
 
 ```sql
-WITH customer_totals AS (
-  SELECT customer_id, sum(total_amount) AS total_revenue
-  FROM orders
-  GROUP BY customer_id
+WITH orders(customer_id, amount) AS (VALUES (1, 60), (1, 50), (2, 90)),
+totals AS (
+  SELECT customer_id, sum(amount) AS spent FROM orders GROUP BY customer_id
 )
-SELECT customer_id, total_revenue
-FROM customer_totals
-WHERE total_revenue > 1000;
+SELECT customer_id, spent FROM totals WHERE spent > 100 ORDER BY customer_id;
 ```
 
-Con `WITH RECURSIVE`, la CTE e composta da:
+Risultato: cliente `1`, totale `110`. Qui basterebbe anche `HAVING`: la CTE vale la pena quando il nome del passaggio o il suo riuso aiutano a leggere la query. Per riutilizzare la stessa definizione tra istruzioni diverse, valuta una vista.
 
-- termine non ricorsivo, cioe il punto di partenza;
-- `UNION` o `UNION ALL`;
-- termine ricorsivo, che fa riferimento alla CTE stessa;
-- condizione naturale di terminazione, di solito l'assenza di nuovi figli.
+## Ricorsione: visitare una gerarchia che contiene un ciclo
 
-PostgreSQL esegue il termine iniziale, poi ripete il termine ricorsivo usando una tabella di lavoro finche non vengono prodotte nuove righe.
-
-Dal punto di vista delle performance, nelle versioni moderne PostgreSQL puo fare inline di una CTE non ricorsiva. Puoi influenzare il comportamento con `MATERIALIZED` o `NOT MATERIALIZED`.
-
-## API / Sintassi
+Ogni arco va da un padre a un figlio. Parti da 1: puoi raggiungere 2 e 3, ma da 2 puoi anche tornare a 1. La parte prima di `UNION ALL` crea la riga iniziale; ad ogni iterazione la parte successiva espande soltanto le righe del passo precedente.
 
 ```sql
-WITH cte_name AS (
-  SELECT ...
-)
-SELECT ...
-FROM cte_name;
-```
-
-CTE ricorsiva:
-
-```sql
-WITH RECURSIVE cte_name AS (
-  SELECT ... -- termine iniziale
-
+WITH RECURSIVE edges(parent_id, child_id) AS (VALUES (1, 2), (1, 3), (2, 1)),
+walk(id, depth) AS (
+  SELECT 1, 0
   UNION ALL
-
-  SELECT ... -- termine ricorsivo
-  FROM cte_name
-  JOIN ...
-)
-SELECT *
-FROM cte_name;
+  SELECT e.child_id, w.depth + 1
+  FROM walk AS w JOIN edges AS e ON e.parent_id = w.id
+) CYCLE id SET is_cycle USING visit_path
+SELECT id, depth, is_cycle FROM walk ORDER BY depth, id;
 ```
 
-Controllo di materializzazione:
+Ottieni `(1,0,false)`, `(2,1,false)`, `(3,1,false)`, `(1,2,true)`. `CYCLE` segnala la riga che chiude il ciclo e **non prosegue da quella riga**. Aggiungi `WHERE NOT is_cycle` nella SELECT finale se non vuoi mostrarla. Il controllo è per percorso: due percorsi validi possono raggiungere lo stesso nodo. In un albero con più radici, il termine iniziale può invece selezionare tutte le categorie senza padre.
 
-```sql
-WITH expensive_step AS MATERIALIZED (
-  SELECT ...
-)
-SELECT ...
-FROM expensive_step;
-```
+## Decisioni ed errori comuni
 
-## Esempio pratico
+- `UNION` scarta righe interamente duplicate. Se proietti anche la profondità, lo stesso nodo a profondità diversa **non** è un duplicato. Un `LIMIT` esterno non sostituisce una condizione di arresto; un ordinamento potrebbe richiedere l'intero risultato.
+- In PostgreSQL 18 una CTE `SELECT` non ricorsiva, senza effetti collaterali e referenziata una sola volta viene normalmente integrata nella query esterna. `MATERIALIZED` impone un calcolo separato; `NOT MATERIALIZED` può far arrivare prima i filtri ma anche ripetere lavoro. Verifica con `EXPLAIN`, non dedurre il piano dalla sola presenza di `WITH`.
+- In una CTE di modifica, il risultato da passare alla query esterna è quello di `RETURNING`. Non contare sull'ordine testuale fra modifiche sorelle per osservare gli aggiornamenti.
 
-Gerarchia di categorie:
-
-```sql
-WITH RECURSIVE category_tree AS (
-  SELECT
-    id,
-    name,
-    parent_id,
-    1 AS depth
-  FROM categories
-  WHERE parent_id IS NULL
-
-  UNION ALL
-
-  SELECT
-    c.id,
-    c.name,
-    c.parent_id,
-    ct.depth + 1
-  FROM categories AS c
-  JOIN category_tree AS ct
-    ON c.parent_id = ct.id
-)
-SELECT *
-FROM category_tree
-ORDER BY depth, name;
-```
-
-La prima `SELECT` trova le radici. La seconda scende di livello unendo ogni categoria ai figli della working table.
-
-## Varianti
-
-- CTE non ricorsiva: migliora la leggibilita di query complesse.
-- CTE ricorsiva: percorre strutture gerarchiche.
-- CTE con `INSERT`, `UPDATE` o `DELETE`: usa `RETURNING` come input di una query successiva.
-- `MATERIALIZED`: forza il calcolo separato della CTE.
-- `NOT MATERIALIZED`: suggerisce all'ottimizzatore di fare inline quando possibile.
-
-## Errori comuni
-
-- Usare CTE solo per estetica quando una subquery semplice sarebbe piu chiara.
-- Creare ricorsioni senza una condizione di terminazione reale.
-- Usare `UNION` invece di `UNION ALL` senza motivo, introducendo deduplicazione costosa.
-- Pensare che una CTE sia sempre materializzata.
-- Non limitare profondita o dimensione in gerarchie potenzialmente cicliche.
-
-## Checklist
-
-- Dare nomi chiari alle CTE.
-- Verificare se la CTE semplifica davvero la query.
-- Usare `EXPLAIN` quando la CTE contiene molti dati.
-- Nelle ricorsive, controllare il caso di cicli o profondita inattesa.
-- Preferire `UNION ALL` quando non serve deduplicare.
-- Valutare view o materialized view se la logica e riusata spesso.
+**Fonte:** [PostgreSQL 18: WITH, ricorsione e materializzazione](https://www.postgresql.org/docs/18/queries-with.html).
 
 ## Collegamenti
 
+- [[Programmazione/PostgreSQL/Indice PostgreSQL|Indice PostgreSQL]]
 - [[Programmazione/PostgreSQL/Pagine/Subquery|Subquery]]
 - [[Programmazione/PostgreSQL/Pagine/RETURNING|RETURNING]]
 - [[Programmazione/PostgreSQL/Pagine/Views e Materialized Views|Views e Materialized Views]]
-
-
-## Navigazione
-
-- [[Programmazione/PostgreSQL/Indice PostgreSQL|Indice PostgreSQL]]

@@ -20,74 +20,64 @@ title: Versionamento database
 
 ## Sintesi
 
-Il versionamento database registra l'evoluzione dello schema con migrazioni ordinate, tracciabili e ripetibili.
+Git dice **quali migrazioni sono previste**; il registro del database dice **quali sono state applicate a quel database**. Nessuno dei due, da solo, prova che lo schema reale corrisponda al previsto: una modifica manuale può introdurre una divergenza (*drift*) senza cambiare il registro.
 
-## Quando usarlo
+## Che cosa tenere nel repository
 
-Serve in ogni progetto applicativo dove schema e codice evolvono insieme.
+Conserva script ordinati e identificati in modo univoco, compresi vincoli, grant, funzioni, trigger e viste necessari all'app. Dopo l'applicazione in un ambiente condiviso considera immutabile una migrazione versionata: una correzione è un nuovo file. Uno snapshot dello schema aiuta a confrontare ambienti, ma non descrive come trasformare i dati esistenti.
 
-## Come funziona
+Flyway, Liquibase, Alembic e i runner degli ORM hanno convenzioni diverse. Verifica nel tuo strumento ordinamento, controllo dei checksum, esclusione di due deploy simultanei e gestione delle operazioni non transazionali. Non costruire un secondo registro manuale accanto a quello del runner.
 
-Uno strumento di migrazione mantiene una tabella con le versioni applicate. Ogni modifica al database viene rappresentata da uno script o da una migration file nel repository.
+## Laboratorio: rendere atomici schema e registro
 
-## API / Sintassi
-
-Tabella concettuale:
+Database di prova vuoto, un solo esecutore, ruolo autorizzato a creare tabelle, `psql` in autocommit. La tabella qui sotto illustra il principio: non implementa un runner di produzione, checksum o coordinamento dei deploy.
 
 ```sql
-CREATE TABLE schema_migrations (
-  version text PRIMARY KEY,
-  applied_at timestamptz NOT NULL DEFAULT now()
+CREATE TABLE lab_schema_history (
+  version integer PRIMARY KEY, description text NOT NULL,
+  applied_at timestamptz NOT NULL DEFAULT clock_timestamp()
 );
+CREATE TABLE lab_accounts (id integer PRIMARY KEY);
 ```
 
-Migrazione:
+Questo blocco rappresenta una migrazione transazionale, ad esempio `V001__account_timezone.sql`. Un vero runner deve fermarsi al primo errore.
 
 ```sql
-ALTER TABLE users ADD COLUMN timezone text;
+BEGIN;
+ALTER TABLE lab_accounts ADD COLUMN timezone text;
+INSERT INTO lab_schema_history (version, description) VALUES (1, 'account timezone');
+COMMIT;
 ```
 
-## Esempio pratico
+```sql
+SELECT h.version, h.description, c.column_name
+FROM lab_schema_history AS h
+JOIN information_schema.columns AS c
+  ON c.table_schema = current_schema() AND c.table_name = 'lab_accounts'
+ AND c.column_name = 'timezone'
+WHERE h.version = 1;
+```
 
-Flusso consigliato:
+Atteso `1, account timezone, timezone`. Se l'inserimento nel registro fallisce **prima del commit**, viene annullata anche l'aggiunta della colonna. Per verificare questo comportamento su un database usa e getta, parti dalla versione 1 e prova una nuova colonna insieme a una registrazione che riutilizza la chiave 1: dopo il rollback la nuova colonna deve essere assente. Un file già applicato non va rilanciato alla cieca.
 
-1. Scrivi migrazione in repository.
-2. Testala su database locale.
-3. Testala su staging con dati realistici.
-4. Applica in produzione con monitoring.
-5. Registra esito e durata.
+## Decidere dopo un errore
 
-## Varianti
+| Situazione | Decisione |
+| --- | --- |
+| Migrazione transazionale fallita | Verifica rollback, schema e versione applicata; risolvi la causa prima di riprovare |
+| Passo non transazionale interrotto | Confronta il catalogo con lo stato atteso, per esempio la validità di un indice concorrente; non segnare «eseguito» sulla fiducia |
+| Migrazione riuscita ma app incompatibile | Se lo schema è ancora compatibile, ripristina la versione applicativa; altrimenti pianifica una migrazione correttiva in avanti |
+| Script già applicato e poi modificato in Git | Confronta contenuto o checksum con il rilascio originale e distribuisci una nuova versione; non riscrivere la cronologia per far passare il controllo |
 
-- Migrazioni up/down.
-- Migrazioni solo forward.
-- Strumenti come Flyway, Liquibase, Alembic, Prisma o Diesel.
-- Migrazioni SQL manuali.
-- Schema dump.
+In CI prova due percorsi: ricreazione da zero e upgrade dalla versione precedente con dati rappresentativi. Verifica comportamento e vincoli, non solo il numero della versione. Una migrazione inversa può rimuovere una colonna ma non ricostruisce automaticamente i dati eliminati; un restore può invece perdere le scritture successive al backup.
 
-## Errori comuni
+## Fonte
 
-- Modificare schema manualmente senza migrazione.
-- Cambiare una migration gia applicata.
-- Non versionare funzioni, trigger e view.
-- Non separare migrazioni lente da deploy applicativo.
-- Non testare rollback o fix forward.
-
-## Checklist
-
-- Ogni cambio schema ha una migrazione?
-- Le migrazioni sono immutabili dopo applicazione?
-- Staging replica dati realistici?
-- Funzioni/view/trigger sono versionati?
-- Esiste procedura per fallimenti?
+[PostgreSQL 18: atomicità delle transazioni](https://www.postgresql.org/docs/18/tutorial-transactions.html)
 
 ## Collegamenti
 
+- [[Programmazione/PostgreSQL/Indice PostgreSQL|Indice PostgreSQL]]
 - [[Programmazione/PostgreSQL/Pagine/Migrazioni schema|Migrazioni schema]]
 - [[Programmazione/PostgreSQL/Pagine/Strategie zero-downtime|Strategie zero-downtime]]
 - [[Programmazione/PostgreSQL/Pagine/Backup e Ripristino|Backup e Ripristino]]
-
-
-## Navigazione
-
-- [[Programmazione/PostgreSQL/Indice PostgreSQL|Indice PostgreSQL]]

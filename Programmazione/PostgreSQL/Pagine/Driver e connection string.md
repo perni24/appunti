@@ -20,96 +20,56 @@ title: Driver e connection string
 
 ## Sintesi
 
-I driver permettono alle applicazioni di connettersi a PostgreSQL. La connection string descrive host, porta, database, utente, password e opzioni come TLS, timeout e application name.
+Il driver apre la connessione, scambia messaggi con PostgreSQL e converte tipi e risultati. La *connection string* indica **quale servizio raggiungere e con quale identità**. Prima di diagnosticare una query, verifica che l'app sia davvero nel database atteso, con il ruolo runtime e attraverso l'endpoint previsto.
 
-## Quando usarlo
+## Descrivere una connessione senza pubblicare credenziali
 
-Usa questa nota quando configuri l'accesso applicativo al database:
-
-- backend web;
-- script di migrazione;
-- worker e job schedulati;
-- strumenti CLI;
-- connessione tramite PgBouncer;
-- ambienti con TLS obbligatorio.
-
-## Come funziona
-
-Una connection string raccoglie i parametri necessari al driver. Puo essere in formato URL o keyword/value. Il driver interpreta questi valori e apre una connessione TCP o Unix socket verso PostgreSQL o verso un pooler.
-
-Le opzioni importanti includono:
-
-- `host`, `port`, `dbname`;
-- `user`, `password`;
-- `sslmode`;
-- timeout di connessione;
-- `application_name`;
-- parametri specifici del driver.
-
-## API / Sintassi
-
-Formato URL:
+Questi due esempi **libpq** descrivono lo stesso endpoint TCP. La password non è parte dell'esempio: il client può riceverla da un passfile protetto o dal gestore di segreti. Per `verify-full` serve una CA attendibile e il certificato deve corrispondere al nome richiesto.
 
 ```text
-postgresql://app_user:secret@localhost:5432/app_db?sslmode=require
+postgresql://orders_app@db.example.test:5432/orders?sslmode=verify-full&connect_timeout=3&application_name=orders-api
 ```
-
-Formato keyword/value:
 
 ```text
-host=localhost port=5432 dbname=app_db user=app_user password=secret sslmode=require
+host=db.example.test port=5432 dbname=orders user=orders_app sslmode=verify-full connect_timeout=3 application_name=orders-api
 ```
 
-Con application name:
+In una URI i caratteri riservati nei componenti vanno codificati; il formato `keyword=value` ha regole di quoting diverse. Libpq non sostituisce da sola una stringa come `${DB_PASSWORD}`. Meglio passare parametri separati anziché costruire una URI con interpolazione. JDBC e altri driver possono usare nomi e sintassi propri.
 
-```text
-postgresql://app_user:secret@db.internal:5432/app_db?sslmode=verify-full&application_name=api
+## Laboratorio: verificare la sessione dal driver
+
+Prerequisiti: Python con Psycopg 3, un database di prova `lab_app`, un login ordinario `lab_app_user` e un profilo libpq `lab_app` che punti a entrambi. Predisponi il profilo e la credenziale come in [[Programmazione/PostgreSQL/Pagine/Secret management|Secret management]]. Non servono tabelle o diritti di amministrazione.
+
+```python
+import psycopg
+
+with psycopg.connect("service=lab_app", application_name="orders-api",
+                     connect_timeout=3) as conn:
+    row = conn.execute("""
+        SELECT current_database(), session_user, current_setting('application_name')
+    """).fetchone()
+    print(*row, sep=" | ")
 ```
 
-## Esempio pratico
+Atteso: `lab_app | lab_app_user | orders-api`. Il contesto della connessione Psycopg chiude la connessione in uscita e, se c'è una transazione, fa commit in caso di successo o rollback se esce un'eccezione. Con un pool, invece, normalmente prendi in prestito una connessione e la restituisci al gestore del pool.
 
-Connection string per produzione dietro PgBouncer:
+## Distinguere i timeout
 
-```text
-postgresql://app_user:${DB_PASSWORD}@pgbouncer.internal:6432/app_db?sslmode=verify-full&application_name=orders-api
-```
+| Dove aspetta l'app? | Che cosa controllare |
+| --- | --- |
+| Prima di ottenere una connessione dal pool | Limite e tempo di attesa del pool applicativo |
+| Durante l'apertura verso il server | `connect_timeout` di libpq, applicato per host; non è un limite di durata delle query |
+| Dopo l'invio dello statement | `statement_timeout` sul server; `lock_timeout` riguarda l'attesa dei lock |
 
-In applicazione conviene leggere la stringa da un secret manager o da variabili d'ambiente non versionate.
+Su sistemi Unix un host omesso può selezionare un socket locale anziché TCP. Dietro PgBouncer, host e porta indicano il **pooler**: verifica TLS sui due tratti e non usare il PID del backend come identità dell'utente finale. Nei log annota servizio, database, nome dell'app e classe d'errore; non stampare una DSN completa che potrebbe contenere credenziali.
 
-## Varianti
+## Fonti
 
-- URL connection string.
-- Keyword/value connection string.
-- Unix socket locale.
-- Connessione diretta a PostgreSQL.
-- Connessione tramite PgBouncer.
-- TLS con `sslmode=require`, `verify-ca` o `verify-full`.
-
-## Errori comuni
-
-- Loggare connection string complete con password.
-- Versionare `.env` contenenti segreti.
-- Usare `sslmode=require` pensando che verifichi il nome host.
-- Non impostare timeout di connessione.
-- Condividere lo stesso utente tra applicazione, migrazioni e operatori.
-- Non impostare `application_name`, rendendo difficile il monitoring.
-
-## Checklist
-
-- La password non e hardcoded?
-- La connection string non viene loggata?
-- `sslmode` e coerente con l'ambiente?
-- Esiste un timeout di connessione?
-- `application_name` identifica servizio e ambiente?
-- L'utente ha solo i privilegi necessari?
+[PostgreSQL 18: parametri e formati libpq](https://www.postgresql.org/docs/18/libpq-connect.html) · [Psycopg 3: connessioni e transazioni](https://www.psycopg.org/psycopg3/docs/basic/transactions.html)
 
 ## Collegamenti
 
+- [[Programmazione/PostgreSQL/Indice PostgreSQL|Indice PostgreSQL]]
 - [[Programmazione/PostgreSQL/Pagine/Connection Pooling|Connection Pooling]]
 - [[Programmazione/PostgreSQL/Pagine/SSL e TLS|SSL/TLS]]
 - [[Programmazione/PostgreSQL/Pagine/Secret management|Secret management]]
-
-
-## Navigazione
-
-- [[Programmazione/PostgreSQL/Indice PostgreSQL|Indice PostgreSQL]]

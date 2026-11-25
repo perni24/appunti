@@ -20,121 +20,67 @@ title: Partitioning in PostgreSQL
 
 ## Sintesi
 
-Il **partitioning** divide una tabella grande in partizioni fisiche piu piccole. Serve soprattutto per dataset molto grandi, retention temporale, manutenzione veloce e query che filtrano sulla chiave di partizionamento.
+Il partizionamento dichiarativo mantiene una sola tabella logica e instrada ogni riga verso una tabella figlia in base alla chiave di partizione. Non distribuisce da solo il carico su più server. Conviene quando i filtri delle query o il ciclo di vita dei dati coincidono con i confini delle partizioni, non al superamento di una soglia fissa di GB.
 
-## Quando usarlo
+## Scegliere la chiave
 
-Usalo quando:
+| Strategia | Quando aiuta | Costo da prevedere |
+| --- | --- | --- |
+| `RANGE` | Ordini per mese: leggere o archiviare un intervallo | Creare in anticipo l'intervallo successivo |
+| `LIST` | Gruppi noti, per esempio paesi | Gestire i valori nuovi, eventualmente con una partizione `DEFAULT` |
+| `HASH` | Distribuire chiavi senza confini naturali | Non agevola la retention per data; non elimina gli squilibri dovuti a una singola chiave molto frequente |
 
-- una tabella cresce fino a centinaia di GB o TB;
-- i dati hanno una chiara dimensione temporale;
-- devi eliminare velocemente dati vecchi;
-- query frequenti filtrano per data, area o tenant;
-- autovacuum e indici diventano difficili da gestire;
-- vuoi caricare o staccare blocchi di dati in modo operativo.
+Una `PRIMARY KEY` o `UNIQUE` sul padre deve includere tutte le colonne della chiave di partizione, che in questo caso non può contenere espressioni. Nell'esempio la coppia `(id, created_at)` è unica, **non** `id` da solo.
 
-## Come funziona
+## Laboratorio: dove finisce un ordine?
 
-PostgreSQL usa declarative partitioning. La tabella parent definisce struttura e strategia. Le partizioni contengono fisicamente le righe.
-
-Il planner puo fare partition pruning: se la query filtra sulla chiave di partizionamento, PostgreSQL scarta le partizioni non rilevanti.
-
-Il partizionamento non e una scorciatoia universale per performance. Funziona bene quando le query e la manutenzione sono allineate alla chiave scelta.
-
-## API / Sintassi
-
-Range partitioning:
+Eseguire i blocchi in ordine nella stessa sessione. Sono tabelle temporanee: non servono modifiche a dati esistenti.
 
 ```sql
-CREATE TABLE orders (
-  id bigint NOT NULL,
+CREATE TEMP TABLE lab_orders (
+  id integer NOT NULL,
   created_at date NOT NULL,
-  total_amount numeric(12, 2) NOT NULL,
   PRIMARY KEY (id, created_at)
 ) PARTITION BY RANGE (created_at);
-
-CREATE TABLE orders_2026_01
-PARTITION OF orders
-FOR VALUES FROM ('2026-01-01') TO ('2026-02-01');
+CREATE TEMP TABLE lab_jan PARTITION OF lab_orders
+  FOR VALUES FROM ('2026-01-01') TO ('2026-02-01');
+CREATE TEMP TABLE lab_feb PARTITION OF lab_orders
+  FOR VALUES FROM ('2026-02-01') TO ('2026-03-01');
+INSERT INTO lab_orders VALUES (1, '2026-01-31'), (1, '2026-02-01');
 ```
-
-List partitioning:
 
 ```sql
-CREATE TABLE users_by_country (
-  id bigint,
-  country text NOT NULL
-) PARTITION BY LIST (country);
+SELECT id, created_at, tableoid::regclass AS partizione
+FROM lab_orders ORDER BY created_at;
 ```
 
-Hash partitioning:
+Il limite inferiore è incluso, quello superiore escluso: il primo ordine va in `lab_jan`, il secondo in `lab_feb`. Un inserimento al 1° marzo fallirebbe perché manca una partizione adatta.
 
 ```sql
-CREATE TABLE events (
-  id bigint,
-  payload jsonb
-) PARTITION BY HASH (id);
+EXPLAIN (COSTS OFF)
+SELECT id FROM lab_orders
+WHERE created_at >= DATE '2026-02-01' AND created_at < DATE '2026-03-01';
 ```
 
-## Esempio pratico
+Nel piano cerca `lab_feb` e l'assenza di `lab_jan`: questo è il *partition pruning*. La scelta fra scansione sequenziale e indice **dentro** febbraio è un'altra decisione.
 
-Retention mensile:
+## Retention senza cancellare le singole righe
 
 ```sql
-ALTER TABLE orders
-DETACH PARTITION orders_2025_01;
-
-DROP TABLE orders_2025_01;
+ALTER TABLE lab_orders DETACH PARTITION lab_jan;
+SELECT count(*) FROM lab_orders;
+SELECT count(*) FROM lab_jan;
 ```
 
-Staccare e droppare una partizione vecchia e molto piu efficiente di un grande `DELETE`, perche evita enormi quantita di WAL e bloat.
+Entrambe le query restituiscono `1`: gennaio non è più visibile dal padre, ma esiste ancora come tabella. `DROP TABLE` invece eliminerebbe i dati. In produzione pianifica lock, archiviazione e verifica prima della rimozione; `DETACH PARTITION ... CONCURRENTLY` riduce il lock sul padre ma ha restrizioni. Troppe partizioni aumentano il lavoro di pianificazione: controlla piani reali prima di aggiungere un secondo livello.
 
-Verifica del pruning:
+## Fonte
 
-```sql
-EXPLAIN
-SELECT *
-FROM orders
-WHERE created_at >= '2026-01-10'
-  AND created_at < '2026-01-11';
-```
-
-Il piano dovrebbe mostrare solo le partizioni rilevanti.
-
-## Varianti
-
-- Range partitioning: date, ID crescenti, intervalli.
-- List partitioning: regioni, stati, tenant.
-- Hash partitioning: distribuzione uniforme.
-- Subpartitioning: partizioni annidate.
-- Partizioni default.
-- Attach/detach partition per manutenzione.
-
-## Errori comuni
-
-- Partizionare tabelle troppo piccole.
-- Scegliere una chiave non usata nei filtri.
-- Creare troppe partizioni.
-- Dimenticare che primary key e unique constraint devono includere la chiave di partizionamento.
-- Aspettarsi pruning se la query usa espressioni non compatibili.
-- Non automatizzare creazione delle nuove partizioni.
-
-## Checklist
-
-- La tabella e abbastanza grande da giustificare partizionamento?
-- Le query filtrano sulla chiave di partizionamento?
-- Esiste una procedura per creare nuove partizioni?
-- Esiste una procedura di retention?
-- Gli indici sulle partizioni sono coerenti?
-- `EXPLAIN` mostra partition pruning?
+[PostgreSQL 18: partizionamento dichiarativo, manutenzione e pruning](https://www.postgresql.org/docs/18/ddl-partitioning.html)
 
 ## Collegamenti
 
+- [[Programmazione/PostgreSQL/Indice PostgreSQL|Indice PostgreSQL]]
 - [[Programmazione/PostgreSQL/Pagine/Analisi delle Query|Analisi delle Query]]
 - [[Programmazione/PostgreSQL/Pagine/Manutenzione|Manutenzione]]
 - [[Programmazione/PostgreSQL/Pagine/Write-Ahead Logging|Write-Ahead Logging]]
-
-
-## Navigazione
-
-- [[Programmazione/PostgreSQL/Indice PostgreSQL|Indice PostgreSQL]]

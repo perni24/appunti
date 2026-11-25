@@ -7724,3 +7724,167 @@ Prossima nota: [[Programmazione/Rust/Pagine/Documentazione delle crate|Documenta
 - Build Quartz: **2003 HTML**, **144947 riferimenti verificati**, zero errori.
 
 Prossimo blocco: [[Programmazione/Rust/Promemoria/Indice Promemoria Rust|Promemoria Rust]], a partire da [[Programmazione/Rust/Promemoria/Pagine/Rust - Sintassi essenziale|Sintassi essenziale]].
+
+## 2026-11-24 - Rust: promemoria di linguaggio
+
+- Completate le sette schede di **Linguaggio** nell'[[Programmazione/Rust/Promemoria/Indice Promemoria Rust|indice dei promemoria Rust]]: sintassi, funzioni e closure, ownership e borrowing, stringhe e slice, collezioni, struct/enum/pattern e Option/Result.
+- Rimossi i prerequisiti impliciti dagli esempi. Precisati la differenza fra cattura `move` e consumo alla chiamata, i confini UTF-8 nello slicing e la distinzione tra valore assente ed errore di parsing.
+- Suite dedicata: 33 frammenti compilati ed eseguiti, tre mutazioni rifiutate con il codice diagnostico atteso; **10/10 test**. Controllo del vault: 911 documenti raggiungibili, zero errori e 214 avvisi editoriali. Trasformazione: **9/9 test**.
+- Build locale Quartz: 2003 HTML e 144874 riferimenti verificati, zero errori. Controllati i blocchi di codice negli HTML delle sette schede; superati i sette test dei percorsi di anteprima.
+- Avanzamento: **7/15 promemoria**; le 183 note principali Rust sono conteggiate separatamente. Prossimo blocco: **Astrazioni**, a partire da [[Programmazione/Rust/Promemoria/Pagine/Rust - Iteratori|Iteratori]].
+
+## 2026-11-24 - Rust: promemoria di astrazioni
+
+- Revisionati i quattro promemoria del capitolo **Astrazioni**: consumo e avanzamento degli iteratori; bound minimi, tipi associati e dispatch; prestiti in uscita dalle funzioni e dai metodi; scelta tra proprietà condivisa e mutabilità interna.
+- Eseguiti 22 blocchi Rust indipendenti. Quattro varianti rifiutate da `rustc` verificano altrettanti limiti spiegati nelle schede. Regressione cumulativa: **18/18 test**, 55 esempi eseguiti e sette casi negativi.
+- Vault: 911 documenti raggiungibili, zero errori e 210 avvisi editoriali; trasformazione: **9/9 test**.
+- Quartz: 2003 HTML, 144836 riferimenti verificati senza errori; i 22 esempi nelle quattro pagine HTML coincidono con i sorgenti Markdown. Anteprima locale: **7/7 test**.
+- Avanzamento: **11/15 promemoria**. Prossimo blocco: **Sistema e progetto**, da [[Programmazione/Rust/Promemoria/Pagine/Rust - File percorsi e Serde|File, percorsi e Serde]].
+
+## 2026-11-24 - Rust: promemoria di sistema e progetto
+
+- Completate le quattro schede di **Sistema e progetto** nell'[[Programmazione/Rust/Promemoria/Indice Promemoria Rust|indice dei promemoria Rust]]. Esempi di I/O e Serde che rifiutano di sovrascrivere; progetto con più moduli e feature JSON facoltativa; concorrenza standard e Tokio; libreria con unit test, integration test e doctest distinti.
+- Suite dedicata: sei prove eseguono gli 11 blocchi Rust, inclusi i file che formano insieme una crate, con i tre manifest o frammenti TOML delle schede. Rifiuto della sovrascrittura verificato su disco; eseguiti il runtime Tokio, Clippy e il controllo di formattazione. Regressione cumulativa offline: **24/24 test**.
+- Vault: 911 documenti raggiungibili, zero errori e 206 avvisi editoriali. Trasformazione: **9/9 test**. I 38 blocchi HTML delle quattro schede riproducono i sorgenti normalizzando gli spazi sulle sole righe vuote.
+- Build Quartz locale: 2003 HTML e 144776 riferimenti verificati senza errori. Test HTTP dell'anteprima: **7/7**.
+- Avanzamento: **15/15 promemoria**; le 183 note principali sono conteggiate separatamente. Lo stato di approvazione personale non è stato modificato.
+
+## 2026-11-24 - PostgreSQL: Architettura e Fondamenti
+
+- Revisionate [[Programmazione/PostgreSQL/Pagine/Modello Client-Server|Modello client-server]], [[Programmazione/PostgreSQL/Pagine/Architettura dei Processi|Architettura dei processi]], [[Programmazione/PostgreSQL/Pagine/Gestione della Memoria|Gestione della memoria]] e [[Programmazione/PostgreSQL/Pagine/File System Layout e Data Directory|File system layout e data directory]]. Frontmatter, percorsi e pubblicabilità invariati.
+- PostgreSQL **18.7**, Windows x64, cluster usa e getta su loopback con SCRAM. **6/6 prove** dai dieci blocchi SQL: stati di due sessioni, backend/worker, lock conteso e rilasciato, sort su disco e in RAM con ripristino delle impostazioni, percorso fisico e dimensioni, privilegio richiesto per leggere la configurazione. Nessuna istanza personale usata. Pooling, TLS, replica, archiviazione e ripristino descritti ma non collaudati.
+- Vault: 911 documenti raggiungibili, zero errori e 202 avvisi editoriali. Trasformazione **9/9**; Quartz: 2003 HTML e 144748 riferimenti senza errori. Tutti gli undici blocchi di codice delle quattro schede corrispondono agli HTML normalizzando le righe vuote.
+- **4/72** note principali e **0/15** promemoria in questa passata. Prossimo capitolo: **Setup e Amministrazione Base** nell'[[Programmazione/PostgreSQL/Indice PostgreSQL|indice PostgreSQL]].
+
+## 2026-11-24 - PostgreSQL: Setup e Amministrazione Base
+
+- Revisionate le cinque note del capitolo: installazione e inizializzazione, configurazione, utenti e ruoli, comandi psql, schemi e search_path. Percorsi, frontmatter e indici invariati.
+- PostgreSQL 18.7: otto nuove prove su un cluster isolato. Verificati database e versione server, SET LOCAL, reload senza cambio dell'indirizzo attivo, pending_restart prima e dopo il reset nella stessa sessione, default di ruolo dopo nuovo login, privilegi di lettura e scrittura, creator-specific default, CSV su stdout, rollback di uno script in errore e risoluzione dei nomi tra schemi. Suite cumulativa **14/14**. Non verificati installazione da pacchetto, servizio di sistema, provider cloud o TLS remoto.
+- Vault: 911 documenti raggiungibili, zero errori e 197 avvisi editoriali; trasformazione **9/9**. Build Quartz: 2003 HTML e 144712 riferimenti senza errori. Confrontati i 21 blocchi delle cinque pagine generate con il Markdown.
+- **9/72** note principali PostgreSQL e **0/15** promemoria. Prossimo capitolo: SQL Fondamentale, da [[Programmazione/PostgreSQL/Pagine/Tipi di Dato|Tipi di dato]]. Schemi e Search Path compare anche lì e non va ricontata.
+
+## 2026-11-24 - PostgreSQL: SQL Fondamentale
+
+- Revisionate le sei note su tipi di dato, comandi DML, JOIN, aggregazioni, subquery e vincoli. Schemi e Search Path era già coperta. L'indice collega direttamente il paragrafo sui tipi JSON. Nessun cambio a frontmatter o percorsi.
+- Verificati i 17 blocchi SQL su PostgreSQL 18.7 e dieci nuovi casi di test: risultati ordinati e cardinalità, differenza fra NULL JSON, chiave assente e SQL NULL, effetti di RETURNING e ROLLBACK, filtro in ON o WHERE, gruppi senza dati, subquery scalari e NOT IN con NULL, vincoli sulle singole righe e tra righe. Provati i periodi sovrapposti con btree_gist e un errore al COMMIT per FK differita. Su 18.7 la cancellazione vietata da RESTRICT produce 23001, distinta dal riferimento mancante (23503).
+- Suite cumulativa **24/24**. Vault: 911 documenti raggiungibili, zero errori e 192 avvisi editoriali; trasformazione **9/9**. Confrontati i 17 blocchi di codice negli HTML e verificata la destinazione del link JSON e JSONB.
+- Build locale Quartz completata: 2003 HTML, 144644 riferimenti verificati e zero errori.
+- **15/72** note principali, **0/15** promemoria. Prossimo capitolo: **Modellazione Dati**, da [[Programmazione/PostgreSQL/Pagine/Normalizzazione|Normalizzazione]]; il rimando JSON e JSONB non aggiunge una nuova nota.
+
+## 2026-11-24 - PostgreSQL: Modellazione Dati
+
+- Revisionate le quattro note del capitolo: normalizzazione con dipendenze funzionali e distinzione fra listino e prezzo pattuito; PK/FK composte; cardinalità e partecipazione facoltativa; scelta dei tipi per importi, scadenze e istanti. Il rimando a JSON e JSONB era già coperto. Nessun cambio di percorso, frontmatter o stato di approvazione.
+- Su PostgreSQL 18.7, gli otto nuovi test eseguono i nove blocchi SQL e controllano anche i casi rifiutati: duplicati, riferimenti mancanti o parziali, cancellazione vincolata, importo fuori intervallo e testo troppo lungo. Confrontati i due versi di AT TIME ZONE in due fusi di sessione. Suite cumulativa **32/32** su cluster temporaneo.
+- Vault: 911 documenti raggiungibili, zero errori e 188 avvisi editoriali. Trasformazione **9/9**; i nove blocchi SQL delle quattro pagine HTML corrispondono al Markdown. Build locale Quartz: 2003 HTML e 144594 riferimenti verificati senza errori.
+- Percorso base concluso: **19/72** note principali PostgreSQL; **0/15** promemoria. Si riparte dal capitolo **SQL Avanzato**, con [[Programmazione/PostgreSQL/Pagine/Common Table Expressions e Recursive Queries|CTE e query ricorsive]].
+
+## 2026-11-24 - PostgreSQL: SQL Avanzato
+
+- Revisionate tutte le sette note del capitolo: CTE ricorsive, finestre, LATERAL, UPSERT, RETURNING, viste e ricerca full text. Conservati percorsi, frontmatter e rimandi; gli esempi ora esplicitano dati, prerequisiti, ordinamento e risultati attesi.
+- PostgreSQL 18.7 su cluster temporaneo: 15 blocchi SQL, 12 nuovi test e **44/44** cumulativi. Coperti ciclo reale e nodo raggiunto da più percorsi, pareggi nei cumulativi e nelle classifiche, join laterale senza righe, upsert non modificante, immagini old/new, risultato materializzato prima e dopo il refresh, indice parziale insufficiente, vettore italiano aggiornato e stop word. Nessun benchmark o test di carico.
+- Vault: 911 documenti raggiungibili, zero errori, 182 avvisi editoriali; trasformazione **9/9**. Build Quartz locale: 2003 HTML e 144498 riferimenti verificati senza errori; tutti i 15 blocchi SQL delle sette pagine corrispondono ai sorgenti Markdown.
+- **26/72** note principali e **0/15** promemoria. Riprendere da [[Programmazione/PostgreSQL/Pagine/Trigger e Event Trigger|Trigger ed event trigger]] nel capitolo Integrità e logica di business.
+
+## 2026-11-24 - PostgreSQL: Integrità e logica di business
+
+- Revisionate tutte le cinque note del capitolo: trigger ed event trigger, regole, PL/pgSQL, funzioni e stored procedure, gestione delle estensioni. Corretto il nome visibile delle stored procedure senza spostare il file né cambiare l'URL.
+- Su PostgreSQL 18.7: 13 blocchi SQL, dieci nuove prove e **54/54** test cumulativi. Verificati audit e rollback, event trigger DDL, soft delete multi-riga, rifiuto delle quantità negative/nulle, cardinalità di INTO STRICT, parametri OUT, privilegi di un ruolo ordinario, controllo di transazione con CALL e distinzione fra UUID nativo ed estensione pgcrypto. Nessun servizio installato e nessun test di carico.
+- Vault: 911 documenti raggiungibili, zero errori e 177 avvisi editoriali; trasformazione **9/9**. Build Quartz locale: 2003 HTML, 144460 riferimenti verificati senza errori. I 13 esempi nel sito corrispondono ai blocchi SQL del Markdown; verificati anche il titolo corretto delle stored procedure e il collegamento al vecchio URL.
+- **31/72** note principali PostgreSQL, **0/15** promemoria. Il prossimo capitolo è Transazioni e concorrenza, da [[Programmazione/PostgreSQL/Pagine/Proprietà ACID|Proprietà ACID]].
+
+## 2026-11-24 - PostgreSQL: Transazioni e concorrenza
+
+- Revisionate le quattro note ACID, MVCC, livelli di isolamento e locking. Il trasferimento interrompe entrambe le scritture se una delle due non riesce; le prove concorrenti distinguono le connessioni e rendono osservabili i risultati. Deadlock e advisory lock hanno rimandi di sezione, non sono note aggiuntive.
+- PostgreSQL 18.7: eseguiti 25 blocchi SQL, nove nuovi casi e **63/63** test cumulativi. Verificati saldi e savepoint, snapshot prima/dopo commit, write skew e retry dopo 40001, lock di riga con NOWAIT e SKIP LOCKED, deadlock con una vittima 40P01, durata degli advisory lock. Non sono state simulate perdite di alimentazione o misurate le prestazioni.
+- Vault: 911 documenti raggiungibili, zero errori e 177 avvisi editoriali; trasformazione **9/9**. Build Quartz: 2003 HTML e 144343 riferimenti verificati senza errori. I 25 blocchi SQL coincidono con quelli degli HTML; le due ancore sono presenti e collegate dall'indice.
+- **35/72** note principali, **0/15** promemoria. Prossimo capitolo: Performance e Query Planning, da [[Programmazione/PostgreSQL/Pagine/Tipi di Indici|Tipi di indici]].
+
+## 2026-11-24 - PostgreSQL: Performance e Query Planning
+
+- Revisionate le cinque note su tipi di indici, indici parziali e coprenti, lettura dei piani, statistiche e manutenzione. Rimossi la soglia fissa del 20% per le scansioni e il valore prescritto a priori per gli SSD. L'indice porta alle sezioni VACUUM e ANALYZE, Bloat e Autovacuum.
+- PostgreSQL 18.7: 16 blocchi SQL e dieci nuovi test, **73/73** cumulativi. Verificati i risultati e i piani sul campione: B-tree e GIN, accessi alla heap dopo un aggiornamento, differenza fra filtro letterale e piano generico, unicità parziale, top-N senza sort, effetti reali di EXPLAIN ANALYZE su UPDATE, statistiche multicolonna, recupero dello spazio senza troncamento e monitoraggio senza tabelle temporanee. Nessun benchmark su carichi di produzione.
+- Vault: 911 documenti raggiungibili, zero errori e 175 avvisi editoriali; trasformazione **9/9**. Build Quartz: 2003 HTML e 144219 riferimenti verificati senza errori. Confrontati tutti i 16 blocchi e controllate le tre ancore dell'indice.
+- **40/72** note principali e **0/15** promemoria. Prossimo capitolo: Storage, WAL e Manutenzione, da [[Programmazione/PostgreSQL/Pagine/Write-Ahead Logging|Write-Ahead Logging]]. Non ricontare la nota Manutenzione nel capitolo successivo.
+
+## 2026-11-24 - PostgreSQL: Storage, WAL e Manutenzione
+
+- Revisionate le tre note rimanenti del capitolo: WAL, Fillfactor e Tablespace. Aggiunto il laboratorio TOAST alla nota già revisionata sul layout dei file. L'indice collega i paragrafi Checkpoint, TOAST e Autovacuum, senza creare o contare duplicati.
+- PostgreSQL 18.7: sei nuove prove, **79/79** cumulative. Verificati avanzamento e flush del WAL, record di checkpoint e relativo redo, dimensioni iniziali con due fillfactor, contatori HOT con e senza modifica della chiave B-tree e storage TOAST esterno. Creato e rimosso un tablespace nella fixture; verificati anche il prompt psql, il trasferimento separato di heap e indice e la conservazione dei dati. Nessuna prova di crash, replica, archiviazione remota o restore PITR.
+- Vault: 911 documenti raggiungibili, zero errori e 172 avvisi editoriali; trasformazione **9/9**. Build Quartz locale: 2003 HTML e 144204 riferimenti verificati senza errori. I 18 blocchi delle quattro pagine HTML corrispondono al Markdown, incluse le tre query preesistenti sul layout. Verificati entrambi i nuovi collegamenti alle sezioni.
+- **43/72** note principali e **0/15** promemoria. Prossimo capitolo: Scalabilità e alta affidabilità, da [[Programmazione/PostgreSQL/Pagine/Partitioning|Partitioning]].
+
+## 2026-11-24 - PostgreSQL: Scalabilità e alta affidabilità
+
+- Revisionate le sette note: partizionamento, replica fisica e logica, pooling, failover e bilanciamento, sharding e read replicas. Chiariti confini di partizione, limiti della replica logica, durata dello stato di sessione e differenza tra WAL ricevuto e applicato.
+- PostgreSQL 18.7: **84/84** prove cumulative. Uno standby creato con pg_basebackup ha rifiutato le scritture e ha reso visibile la riga dopo la ripresa del replay; libpq ha selezionato il writer. Un subscriber indipendente ha ricevuto dati iniziali e INSERT/UPDATE/DELETE. Test locali anche per pruning, detach, SET LOCAL e mappa dei tenant. Nessuna promozione, prova PgBouncer o distribuzione reale degli shard.
+- Vault: 911 documenti raggiungibili, zero errori, 165 avvisi editoriali; test di trasformazione **9/9**. Confrontati i **21** blocchi di esempio nelle sette pagine HTML locali con i rispettivi sorgenti Markdown.
+- **50/72** note principali e **0/15** promemoria. Prossimo capitolo: Sicurezza, da [[Programmazione/PostgreSQL/Pagine/Ruoli e privilegi avanzati|Ruoli e privilegi avanzati]].
+
+## 2026-11-24 - PostgreSQL: Sicurezza
+
+- Revisionate le sei note del capitolo. Corretti la query per il flag trusted e il trigger di audit; distinti permessi diretti e delegati, righe nascoste e scritture negate, connessione cifrata e identità del server verificata. Rimossi i segreti in chiaro dagli esempi di connessione e rotazione.
+- PostgreSQL 18.7: sei nuove prove, **90/90** cumulative, nessuna saltata. Con ruoli ordinari verificati i grant del creatore, l'operazione delegata, due tenant sulla stessa connessione, gli effetti del rollback sull'audit e l'installazione di pgcrypto. Prove locali anche per SCRAM/passfile e TLS con CA effimera: rifiutati password precedente, nome errato, CA estranea e collegamento non cifrato. Non provati pgAudit, il prompt interattivo di psql, proxy o gestori di segreti esterni.
+- Vault: 911 documenti raggiungibili, zero errori strutturali, 160 avvisi editoriali. Test di trasformazione **9/9**; i **17** blocchi delle sei pagine HTML locali corrispondono ai sorgenti Markdown.
+- **56/72** note principali e **0/15** promemoria. Prossimo capitolo: Osservabilità e troubleshooting; verificare i rimandi per pg_stat_activity, pg_stat_statements ed EXPLAIN senza ricontare le pagine già revisionate.
+
+## 2026-11-25 - PostgreSQL: Osservabilità e troubleshooting
+
+- Revisionate Slow query log, Lock monitoring e Metriche e alerting: soglia per singolo statement, aggregazione per famiglia, strumentazione di auto_explain, bloccanti in coda, attesa effettiva, contatori e stato degli slot. Integrata nella nota esistente la sezione EXPLAIN in produzione; corretti tre rimandi dell'indice senza creare duplicati.
+- PostgreSQL 18.7: verificati i 12 blocchi SQL delle tre note. Primo giro cumulativo 95/96: il confronto testuale della cardinalità nel log di auto_explain era troppo rigido. Confrontati numericamente righe e cicli; riesecuzione mirata **6/6**, poi suite completa **96/96**, senza skip. Nessun database di produzione, sistema di alert o servizio di monitoraggio coinvolto.
+- Vault: 911 documenti raggiungibili, zero errori, 157 avvisi editoriali; trasformazione **9/9**. Build locale: 2003 HTML e 144108 riferimenti verificati senza errori. Confrontati 15 blocchi nelle quattro pagine HTML modificate e verificati i tre collegamenti alle sezioni.
+- **59/72** note principali; **0/15** promemoria. Prossimo capitolo: Backup, migrazioni e operatività, da [[Programmazione/PostgreSQL/Pagine/Backup e Ripristino|Backup e Ripristino]].
+
+## 2026-11-25 - PostgreSQL: Backup, migrazioni e operatività
+
+- Revisionate Backup e Ripristino, Migrazioni schema, Versionamento database e Strategie zero-downtime. Aggiunto il recupero a punto nominato nella nota WAL già conteggiata. L'indice ora apre i paragrafi su pg_dump/pg_restore e PITR.
+- PostgreSQL 18.7: sette nuove prove, **103/103** cumulative senza skip. Ripristinati dump custom, plain e directory su database distinti. Verificati contenuto, sequenza, vincolo, export dei globali senza password, validazione dello storico, indice concorrente e rollback congiunto di DDL e registro. Provati backfill ripetuti, riparazione di un valore obsoleto non nullo e passaggio completo al nuovo campo mantenendo NOT NULL.
+- PITR locale: backup fisico verificato con pg_verifybackup, WAL archiviato con basic_archive e copia ripristinata in pausa al restore point registrato nel log. La riga inserita dopo la fine del backup era presente sulla copia, non più sul primario. Nessun restore su sistemi esistenti, test di storage remoto o misura di RPO/RTO sotto carico.
+- Vault: 911 documenti raggiungibili, zero errori strutturali, 153 avvisi editoriali; trasformazione **9/9**. Confrontati i 32 blocchi delle cinque pagine HTML locali con i sorgenti e verificati i due rimandi alle sezioni.
+- **63/72** note principali; **0/15** promemoria. Prossimo capitolo: Estensioni e funzionalità; verificare i due rimandi PostGIS e pgvector a Gestione delle Estensioni senza ricontare la nota.
+
+## 2026-11-25 - PostgreSQL: Estensioni e funzionalità
+
+- Revisionate TimescaleDB, uuid-ossp e pgcrypto, FDW e Logical decoding. Aggiunte le sezioni PostGIS e pgvector nella nota generale già conteggiata, con due ancore nell'indice. Corretti i prerequisiti per gli UUID nativi e resi espliciti i due database del laboratorio FDW e la durata dello slot temporaneo.
+- PostgreSQL 18.7: sei nuove prove, suite completa **109/109**, nessuna saltata. Eseguiti esempi con PostGIS 3.7.0 (distanza su geography), pgvector 0.8.2 (vicini esatti e differenza dal coseno) e TimescaleDB 2.23.1 (medie orarie UTC, due chunk giornalieri). Verificati UUID/digest, filtro e autorizzazioni di postgres_fdw e differenza tra peek/get dopo commit e rollback. Nessuna misura di latenza, qualità degli indici approssimati o integrazione con un connettore CDC esterno.
+- Vault: 911 documenti raggiungibili, zero errori strutturali e 149 avvisi editoriali; trasformazione **9/9**. Confrontati i 22 blocchi nelle cinque pagine HTML con i sorgenti e verificati i rimandi PostGIS e pgvector.
+- **67/72** note principali e **0/15** promemoria. Prossimo blocco: Integrazione applicativa, da [[Programmazione/PostgreSQL/Pagine/Driver e connection string|Driver e connection string]]; non ricontare il pooling.
+
+## 2026-11-25 - PostgreSQL: Integrazione applicativa e chiusura delle note principali
+
+- Revisionate Driver e connection string, Prepared statements, ORM, Pattern outbox e Code e job table. Il rimando al dimensionamento del pool apre la sezione della nota già conteggiata.
+- PostgreSQL 18.7: otto nuove prove, **117/117** cumulative senza skip. Verificate la connessione via servizio libpq e la distinzione tra parametri e preparazione. Con SQLAlchemy gli stessi clienti, incluso quello senza ordini, richiedono quattro SELECT con caricamento pigro e due con selectinload.
+- Outbox: un ordine assente o già pagato non genera eventi; un errore annulla insieme modifica ed evento. Una riconsegna non duplica l'effetto nel database del consumatore. Coda: provati due worker concorrenti, scadenza della prenotazione, rifiuto del vecchio token e limite dei tentativi. Non è stato usato un broker esterno: le prove non garantiscono un'unica esecuzione degli effetti fuori dal database.
+- Vault: 911 documenti raggiungibili, zero errori strutturali e 144 avvisi editoriali; trasformazione **9/9**. Build locale: 2003 HTML e 144049 riferimenti verificati senza errori. Confrontati i 19 blocchi delle cinque pagine con il Markdown e verificato il rimando al pooling.
+- **72/72** note principali presenti nell'indice e revisionate tecnicamente; **0/15** promemoria. Prossimo blocco: [[Programmazione/PostgreSQL/Promemoria/Pagine/PostgreSQL - SELECT e filtri|SELECT e filtri]].
+
+## 2026-11-25 - PostgreSQL: promemoria Query
+
+- Revisionate tutte e sei le schede del capitolo: SELECT e filtri, scritture e UPSERT, JOIN, aggregazioni, CTE e insiemi, funzioni finestra. Ogni pagina indica se i blocchi sono indipendenti o richiedono la stessa sessione e collega la teoria e il manuale PostgreSQL 18.
+- Eseguiti i **41 blocchi SQL** estratti dalle sei schede su PostgreSQL 18.7. Verificati l'ordinamento a parità di punteggio o data, il cliente senza ordini, la differenza fra somma nulla e conteggio zero, il contenuto JSON, i duplicati negli insiemi e il rollback delle scritture.
+- Suite mirata **6/6**. Regressione complessiva: 117 test superati su 123, nessun fallimento; esclusi tre casi per estensioni esterne e tre per driver Python. Nessuna prova di carico o di stabilità delle pagine durante scritture concorrenti.
+- Vault: 911 documenti raggiungibili, zero errori strutturali, 138 avvisi editoriali; trasformazione **9/9**. Verificata la corrispondenza dei 41 blocchi con le pagine HTML.
+- **72/72** note principali e **6/15** promemoria. Restano nove schede. Prossimo blocco: Tipi e funzioni, da [[Programmazione/PostgreSQL/Promemoria/Pagine/PostgreSQL - Tipi cast e NULL|Tipi, cast e NULL]].
+
+## 2026-11-25 - PostgreSQL: promemoria Tipi e funzioni
+
+- Revisionati Tipi, cast e NULL; Stringhe e regex; Date, ore e intervalli; JSONB e array. Le quattro schede contengono esempi eseguibili senza tabelle applicative, risultati attesi e collegamenti al manuale PostgreSQL 18.
+- Eseguiti i **28 blocchi SQL** su PostgreSQL 18.7. Verificati cast non valido (22P02), stringa vuota e NULL, regex senza corrispondenze, percorso JSON mancante e dimensione di un array vuoto. Il filtro sul 29 marzo 2026 a Roma include l'estremo iniziale, esclude quello finale e copre 23 ore sia con sessione UTC sia con sessione America/New_York.
+- Le due suite dei promemoria passano insieme: **10/10**. Regressione complessiva: 121 prove superate, sei facoltative non eseguite (estensioni esterne e driver Python), nessun fallimento. Verificata la creazione dell'indice GIN temporaneo, non la selettività o la scelta di piano su un carico reale.
+- Vault: 911 documenti raggiungibili, zero errori strutturali e 134 avvisi editoriali. Test di trasformazione **9/9**; confrontati tutti i 28 blocchi SQL con le quattro pagine HTML.
+- **72/72** note principali e **10/15** promemoria. Restano cinque schede; prossimo blocco: Struttura e prestazioni, da [[Programmazione/PostgreSQL/Promemoria/Pagine/PostgreSQL - Tabelle schemi e vincoli|Tabelle, schemi e vincoli]].
+
+## 2026-11-25 - PostgreSQL: promemoria Struttura e prestazioni
+
+- Revisionati Tabelle, schemi e vincoli; Indici ed EXPLAIN; Transazioni e lock. Eseguiti i 30 blocchi SQL delle tre schede su PostgreSQL 18.7 e confrontati con l'HTML. Il trasferimento con controllo dei saldi rimanda alla nota ACID già verificata.
+- DDL: provati FK differita e verifica immediata, conversione reale da testo a intero, errori per vincoli e rimozione in ordine di dipendenza. Indici: controllati cataloghi, unicità sull'espressione, comandi concorrenti fuori da BEGIN e tre righe effettive del piano; nessuna misura sotto carico.
+- Lock: due sessioni e un osservatore confermano il rifiuto NOWAIT, la prenotazione del secondo job con SKIP LOCKED e la scomparsa dell'attesa al rilascio. Primo giro con errore Windows nella pulizia dopo le prove; riesecuzione in directory dedicata **13/13**. Regressione complessiva: 124 test superati, zero fallimenti, sei facoltativi non eseguiti (driver Python ed estensioni esterne).
+- Vault: 911 documenti raggiungibili, zero errori strutturali, 131 avvisi editoriali; trasformazione **9/9**. Build locale: 2003 HTML, 143960 riferimenti verificati senza errori.
+- **72/72** note principali e **13/15** promemoria. Ultimo blocco: Gestione, da [[Programmazione/PostgreSQL/Promemoria/Pagine/PostgreSQL - Ruoli privilegi e RLS|Ruoli, privilegi e RLS]] a [[Programmazione/PostgreSQL/Promemoria/Pagine/PostgreSQL - psql backup e manutenzione|psql, backup e manutenzione]].
+
+## 2026-11-25 - PostgreSQL: promemoria Gestione e chiusura del percorso
+
+- Revisionate le due schede Gestione. RLS provata con due ruoli distinti non proprietari: la riga altrui non compare, le modifiche consentite riescono, un autore non ammesso è rifiutato. Verificati anche il grant sugli oggetti futuri, la revoca e il rollback della configurazione.
+- Su PostgreSQL 18.7: eseguiti l'export CSV e i ripristini custom e plain in due destinazioni vuote, senza clean. Entrambe conservano le righe, il prossimo ID e i vincoli; la sorgente resta invariata. Esaminato l'export dei globali senza verificatori di password. Nessuna prova di disaster recovery su infrastruttura di produzione.
+- Tutti i quattro capitoli dei promemoria: **16/16 test**. Regressione PostgreSQL complessiva: 127 superati su 133, nessun fallimento, sei casi facoltativi non eseguiti (driver Python ed estensioni esterne).
+- Vault: 911 documenti raggiungibili, zero errori strutturali, 129 avvisi editoriali; trasformazione **9/9**. Build locale: 2003 HTML e 143943 riferimenti verificati senza errori. Tutti i 24 blocchi delle due pagine corrispondono ai sorgenti.
+- **72/72 note principali e 15/15 promemoria PostgreSQL** revisionati tecnicamente; verificata la corrispondenza esatta fra i 15 file dei promemoria e le voci dell'indice. L'approvazione dell'utente rimane distinta. Prossimo blocco proposto: [[Programmazione/Strutture di Progetto/Indice Strutture di Progetto|Strutture di progetto]].

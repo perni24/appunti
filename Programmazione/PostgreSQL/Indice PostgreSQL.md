@@ -36,7 +36,7 @@
 - [[Programmazione/PostgreSQL/Pagine/Chiavi primarie e foreign key|Chiavi primarie e foreign key]]
 - [[Programmazione/PostgreSQL/Pagine/Relazioni 1 a 1 1 a N e N a N|Relazioni 1:1, 1:N e N:N]]
 - [[Programmazione/PostgreSQL/Pagine/Tipi numerici testuali e temporali|Tipi numerici, testuali e temporali]]
-- [[Programmazione/PostgreSQL/Pagine/Tipi di Dato|JSON e JSONB]]
+- [[Programmazione/PostgreSQL/Pagine/Tipi di Dato#JSON e JSONB|JSON e JSONB]]
 
 ## Percorso Intermedio
 
@@ -55,7 +55,7 @@
 - [[Programmazione/PostgreSQL/Pagine/Trigger e Event Trigger|Trigger e Event Trigger]]
 - [[Programmazione/PostgreSQL/Pagine/Regole|Regole]]
 - [[Programmazione/PostgreSQL/Pagine/PL-pgSQL|PL/pgSQL]]
-- [[Programmazione/PostgreSQL/Pagine/Funzioni e Store Procedures|Funzioni e Store Procedures]]
+- [[Programmazione/PostgreSQL/Pagine/Funzioni e Store Procedures|Funzioni e stored procedure]]
 - [[Programmazione/PostgreSQL/Pagine/Gestione delle Estensioni|Gestione delle Estensioni]]
 
 ### Transazioni e Concorrenza
@@ -64,8 +64,8 @@
 - [[Programmazione/PostgreSQL/Pagine/MVCC|MVCC]]
 - [[Programmazione/PostgreSQL/Pagine/Livelli di Isolamento delle Transazioni|Livelli di Isolamento delle Transazioni]]
 - [[Programmazione/PostgreSQL/Pagine/Meccanismi di Locking|Meccanismi di Locking]]
-- [[Programmazione/PostgreSQL/Pagine/Meccanismi di Locking|Deadlock]]
-- [[Programmazione/PostgreSQL/Pagine/Meccanismi di Locking|Advisory locks]]
+- [[Programmazione/PostgreSQL/Pagine/Meccanismi di Locking#Attese e deadlock|Deadlock]]
+- [[Programmazione/PostgreSQL/Pagine/Meccanismi di Locking#Advisory lock|Advisory lock]]
 
 ### Performance e Query Planning
 
@@ -73,17 +73,17 @@
 - [[Programmazione/PostgreSQL/Pagine/Indici Parziali e Coprenti|Indici Parziali e Coprenti]]
 - [[Programmazione/PostgreSQL/Pagine/Analisi delle Query|Analisi delle Query]]
 - [[Programmazione/PostgreSQL/Pagine/Statistiche e Query Planner|Statistiche e Query Planner]]
-- [[Programmazione/PostgreSQL/Pagine/Manutenzione|VACUUM e ANALYZE]]
-- [[Programmazione/PostgreSQL/Pagine/Manutenzione|Bloat]]
+- [[Programmazione/PostgreSQL/Pagine/Manutenzione#VACUUM e ANALYZE|VACUUM e ANALYZE]]
+- [[Programmazione/PostgreSQL/Pagine/Manutenzione#Bloat|Bloat]]
 
 ## Percorso Avanzato
 
 ### Storage, WAL e Manutenzione
 
 - [[Programmazione/PostgreSQL/Pagine/Write-Ahead Logging|Write-Ahead Logging]]
-- [[Programmazione/PostgreSQL/Pagine/Write-Ahead Logging|Checkpoint]]
-- [[Programmazione/PostgreSQL/Pagine/Manutenzione|Autovacuum]]
-- [[Programmazione/PostgreSQL/Pagine/File System Layout e Data Directory|TOAST]]
+- [[Programmazione/PostgreSQL/Pagine/Write-Ahead Logging#Checkpoint|Checkpoint]]
+- [[Programmazione/PostgreSQL/Pagine/Manutenzione#Autovacuum|Autovacuum]]
+- [[Programmazione/PostgreSQL/Pagine/File System Layout e Data Directory#TOAST|TOAST]]
 - [[Programmazione/PostgreSQL/Pagine/Fillfactor|Fillfactor]]
 - [[Programmazione/PostgreSQL/Pagine/Tablespace|Tablespace]]
 - [[Programmazione/PostgreSQL/Pagine/Manutenzione|Manutenzione]]
@@ -109,11 +109,11 @@
 
 ### Osservabilita e Troubleshooting
 
-- [[Programmazione/PostgreSQL/Pagine/Statistiche e Query Planner|pg_stat_activity]]
-- [[Programmazione/PostgreSQL/Pagine/Statistiche e Query Planner|pg_stat_statements]]
+- [[Programmazione/PostgreSQL/Pagine/Architettura dei Processi#Diagnosi: stato e attesa non sono sinonimi|pg_stat_activity]]
+- [[Programmazione/PostgreSQL/Pagine/Slow query log#pg_stat_statements|pg_stat_statements]]
 - [[Programmazione/PostgreSQL/Pagine/Slow query log|Slow query log]]
 - [[Programmazione/PostgreSQL/Pagine/Lock monitoring|Lock monitoring]]
-- [[Programmazione/PostgreSQL/Pagine/Analisi delle Query|Explain analyze in produzione]]
+- [[Programmazione/PostgreSQL/Pagine/Analisi delle Query#EXPLAIN in produzione|EXPLAIN ANALYZE in produzione]]
 - [[Programmazione/PostgreSQL/Pagine/Metriche e alerting|Metriche e alerting]]
 
 ## Applicazioni e Ecosistema
@@ -121,16 +121,16 @@
 ### Backup, Migrazioni e Operativita
 
 - [[Programmazione/PostgreSQL/Pagine/Backup e Ripristino|Backup e Ripristino]]
-- [[Programmazione/PostgreSQL/Pagine/Backup e Ripristino|pg_dump e pg_restore]]
-- [[Programmazione/PostgreSQL/Pagine/Write-Ahead Logging|Point-in-Time Recovery]]
+- [[Programmazione/PostgreSQL/Pagine/Backup e Ripristino#pg_dump e pg_restore|pg_dump e pg_restore]]
+- [[Programmazione/PostgreSQL/Pagine/Write-Ahead Logging#Point-in-Time Recovery|Point-in-Time Recovery]]
 - [[Programmazione/PostgreSQL/Pagine/Migrazioni schema|Migrazioni schema]]
 - [[Programmazione/PostgreSQL/Pagine/Versionamento database|Versionamento database]]
 - [[Programmazione/PostgreSQL/Pagine/Strategie zero-downtime|Strategie zero-downtime]]
 
 ### Estensioni e Funzionalita
 
-- [[Programmazione/PostgreSQL/Pagine/Gestione delle Estensioni|PostGIS]]
-- [[Programmazione/PostgreSQL/Pagine/Gestione delle Estensioni|pgvector]]
+- [[Programmazione/PostgreSQL/Pagine/Gestione delle Estensioni#PostGIS|PostGIS]]
+- [[Programmazione/PostgreSQL/Pagine/Gestione delle Estensioni#pgvector|pgvector]]
 - [[Programmazione/PostgreSQL/Pagine/TimescaleDB|TimescaleDB]]
 - [[Programmazione/PostgreSQL/Pagine/uuid-ossp e pgcrypto|uuid-ossp e pgcrypto]]
 - [[Programmazione/PostgreSQL/Pagine/FDW|FDW]]
@@ -139,7 +139,7 @@
 ### Integrazione Applicativa
 
 - [[Programmazione/PostgreSQL/Pagine/Driver e connection string|Driver e connection string]]
-- [[Programmazione/PostgreSQL/Pagine/Connection Pooling|Connection pooling applicativo]]
+- [[Programmazione/PostgreSQL/Pagine/Connection Pooling#Dimensionamento e diagnosi|Connection pooling applicativo]]
 - [[Programmazione/PostgreSQL/Pagine/Prepared statements|Prepared statements]]
 - [[Programmazione/PostgreSQL/Pagine/ORM|ORM]]
 - [[Programmazione/PostgreSQL/Pagine/Pattern outbox|Pattern outbox]]

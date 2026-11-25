@@ -15,85 +15,87 @@ aliases:
   - Cheatsheet Cargo Rust
 prerequisites: []
 related:
-  - "[[Programmazione/Rust/Pagine/Moduli crate e package]]"
-  - "[[Programmazione/Rust/Pagine/Cargo]]"
-  - "[[Programmazione/Rust/Pagine/Cargo.toml]]"
+  - "[[Programmazione/Rust/Pagine/Moduli crate e package|Moduli crate e package]]"
+  - "[[Programmazione/Rust/Pagine/Cargo|Cargo]]"
+  - "[[Programmazione/Rust/Pagine/Cargo.toml|Cargo.toml]]"
 title: Rust - Moduli e Cargo
 ---
 
 # Rust - Moduli e Cargo
 
-## Dichiarare un modulo
+`mod` dichiara un modulo, `use` abbrevia un percorso e `pub use` espone un nome attraverso l'API pubblica. I tre file sotto appartengono **allo stesso package**.
 
-```rust
-mod config;
-mod services;
-```
+## Creare il progetto
 
-## Importare
+Dalla directory che dovrà contenere il nuovo progetto binario:
 
-```rust
-use crate::config::Settings;
-use crate::services::{create_user, delete_user};
-```
-
-```rust
-use std::collections::HashMap as Map;
-```
-
-## Visibilita
-
-```rust
-pub struct User {}
-pub(crate) fn internal_operation() {}
-pub(super) fn parent_only() {}
-```
-
-## Re-export
-
-```rust
-pub use repository::UserRepository;
-```
-
-## Creare un progetto
-
-```powershell
+```sh
 cargo new app
 ```
 
-```powershell
+Per creare **in alternativa** una sola libreria:
+
+```sh
 cargo new library --lib
 ```
 
-## Compilare ed eseguire
+Per l'esempio usa `app`. Da qui in poi esegui i comandi nella cartella che contiene il suo `Cargo.toml`.
 
-```powershell
-cargo check
+## Dichiarazione, visibilità e re-export
+
+`src/lib.rs` (crealo accanto a `main.rs`):
+
+```rust
+mod repository;
+pub use repository::UserRepository;
+
+pub fn first_name() -> &'static str {
+    repository::default_name()
+}
 ```
 
-```powershell
-cargo build
+`src/repository.rs`, caricato da `mod repository;`:
+
+```rust
+use std::collections::HashMap as Map;
+
+#[derive(Default)]
+pub struct UserRepository {
+    users: Map<u64, String>,
+}
+
+impl UserRepository {
+    pub fn insert(&mut self, id: u64, name: String) {
+        self.users.insert(id, name);
+    }
+    pub fn get(&self, id: u64) -> Option<&str> {
+        self.users.get(&id).map(String::as_str)
+    }
+}
+
+pub(super) fn default_name() -> &'static str { "Ada" }
 ```
 
-```powershell
-cargo run
+`src/main.rs`:
+
+```rust
+use app::{UserRepository, first_name};
+
+fn main() {
+    let mut repo = UserRepository::default();
+    repo.insert(7, first_name().into());
+    assert_eq!(repo.get(7), Some("Ada"));
+    println!("{}", repo.get(7).unwrap());
+    #[cfg(feature = "json")]
+    println!("{}", serde_json::json!({ "name": repo.get(7) }));
+}
 ```
 
-```powershell
-cargo build --release
-```
+`pub(super)` apre al modulo padre; `pub(crate)` apre all'intera crate. Il binario e la libreria sono **crate diverse**: in `main.rs`, `crate::` parte dal binario; `app::` raggiunge l'API pubblica della libreria.
 
-## Aggiungere una dipendenza
+## Manifest e feature
 
-```powershell
-cargo add serde --features derive
-```
-
-```powershell
-cargo add serde_json --optional
-```
-
-## Cargo.toml
+Per questo esempio usa il seguente `Cargo.toml`. La feature `json` abilita la dipendenza opzionale e il blocco `#[cfg(...)]` insieme. [Cargo Book: features](https://doc.rust-lang.org/cargo/reference/features.html).
 
 ```toml
 [package]
@@ -102,44 +104,76 @@ version = "0.1.0"
 edition = "2024"
 
 [dependencies]
-serde = { version = "1", features = ["derive"] }
 serde_json = { version = "1", optional = true }
-```
 
-## Feature
-
-```toml
 [features]
 default = []
 json = ["dep:serde_json"]
 ```
 
-`dep:serde_json` attiva una dipendenza opzionale. Con queste sezioni nello stesso manifest, `serde_json` si compila solo abilitando `json`.
+In un altro progetto puoi dichiarare una dipendenza con `cargo add`: modifica il manifest. Non occorre rieseguire questi comandi dopo aver copiato il manifest sopra.
 
-```powershell
-cargo build --features json
+```sh
+cargo add serde --features derive
 ```
 
-## Aggiornare
+```sh
+cargo add serde_json --optional
+```
 
-```powershell
+## Compilare e ispezionare
+
+Controllo dei tipi senza produrre l'eseguibile:
+
+```sh
+cargo check
+```
+
+Build di sviluppo:
+
+```sh
+cargo build
+```
+
+Esecuzione predefinita: stampa `Ada`.
+
+```sh
+cargo run
+```
+
+Esecuzione con JSON: stampa anche `{"name":"Ada"}`.
+
+```sh
+cargo run --features json
+```
+
+Build ottimizzata:
+
+```sh
+cargo build --release
+```
+
+Albero delle dipendenze effettivamente selezionate con la feature attiva:
+
+```sh
+cargo tree --features json
+```
+
+Aggiorna `Cargo.lock` entro i vincoli del manifest; controlla il diff prima del commit:
+
+```sh
 cargo update
 ```
 
-## Albero dipendenze
+Genera la documentazione locale. Aggiungi `--open` per aprirla nel browser.
 
-```powershell
-cargo tree
+```sh
+cargo doc --no-deps
 ```
 
-## Documentazione
+## Collegamenti
 
-```powershell
-cargo doc --open
-```
-
-## Approfondimento
-
+- [[Programmazione/Rust/Promemoria/Indice Promemoria Rust|Indice Promemoria Rust]]
 - [[Programmazione/Rust/Pagine/Moduli crate e package|Moduli crate e package]]
 - [[Programmazione/Rust/Pagine/Visibilita pub use e mod|Visibilita pub use e mod]]
 - [[Programmazione/Rust/Pagine/Cargo|Cargo]]
@@ -148,8 +182,3 @@ cargo doc --open
 - [[Programmazione/Rust/Pagine/Cargo features|Cargo features]]
 - [[Programmazione/Rust/Pagine/Workspace|Workspace]]
 - [[Programmazione/Rust/Pagine/Rust 2018 2021 e 2024|Rust 2018 2021 e 2024]]
-
-
-## Navigazione
-
-- [[Programmazione/Rust/Promemoria/Indice Promemoria Rust|Indice Promemoria Rust]]

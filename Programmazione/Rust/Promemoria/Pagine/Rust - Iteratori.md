@@ -14,115 +14,95 @@ aliases:
   - Cheatsheet iteratori Rust
 prerequisites: []
 related:
-  - "[[Programmazione/Rust/Pagine/Iteratori]]"
-  - "[[Programmazione/Rust/Pagine/Iterator API]]"
+  - "[[Programmazione/Rust/Pagine/Iteratori|Iteratori]]"
+  - "[[Programmazione/Rust/Pagine/Iterator API|Iterator API]]"
 title: Rust - Iteratori
 ---
 
 # Rust - Iteratori
 
-## Creare un iteratore
+Per scegliere una pipeline chiediti chi possiede gli elementi e come vuoi trattare gli errori. Ogni blocco è indipendente e va nel corpo di `fn main()`.
+
+## Leggere, modificare o prendere possesso
 
 ```rust
-values.iter()       // &T
-values.iter_mut()   // &mut T
-values.into_iter()  // T
+let mut names = vec![String::from("Ada"), String::from("Teo")];
+assert_eq!(names.iter().next().map(String::as_str), Some("Ada")); // &String
+for name in names.iter_mut() { name.push('!'); }                 // &mut String
+let owned: Vec<String> = names.into_iter().collect();            // String
+assert_eq!(owned, ["Ada!", "Teo!"]);
 ```
 
-`into_iter()` su una collezione posseduta la consuma.
+Su un `Vec<T>` posseduto, `into_iter()` sposta il vettore. Su `&vec` produce invece riferimenti: conta il tipo del ricevitore, non solo il nome del metodo.
 
-## Trasformare e filtrare
+## Trasformare e cercare
 
 ```rust
-let doubled: Vec<i32> = values
-    .iter()
-    .copied()
-    .filter(|value| *value > 0)
-    .map(|value| value * 2)
-    .collect();
+let values = [-2, 3, 8];
+let mut doubled = values.iter().copied().filter(|&n| n > 0).map(|n| n * 2);
+assert_eq!(doubled.next(), Some(6));
+assert_eq!(doubled.collect::<Vec<_>>(), [16]); // solo ciò che resta
 ```
 
-## Cercare e verificare
+`filter` e `map` sono pigri: costruiscono un iteratore; sono `next`, `collect` o un ciclo a chiedere i valori.
 
 ```rust
-values.iter().find(|value| **value > 10)
-values.iter().position(|value| *value > 10)
-values.iter().any(|value| *value < 0)
-values.iter().all(|value| *value > 0)
+let values = [4, 12, 20];
+assert_eq!(values.iter().copied().find(|&n| n > 10), Some(12)); // valore
+assert_eq!(values.iter().position(|&n| n > 10), Some(1));       // posizione
+assert!(values.iter().any(|&n| n == 20));
+assert!(values.iter().all(|&n| n > 0));
 ```
 
-## Ridurre
+## Ridurre, enumerare e combinare
 
 ```rust
-let total = values.iter().sum::<i32>();
-let product = values.iter().product::<i32>();
-```
-
-```rust
-let total = values.iter().fold(0, |sum, value| sum + value);
-```
-
-## Enumerare e combinare
-
-```rust
-for (index, value) in values.iter().enumerate() {
-    println!("{index}: {value}");
-}
+let values = [2, 3, 4];
+assert_eq!(values.iter().sum::<i32>(), 9);
+assert_eq!(values.iter().product::<i32>(), 24);
+assert_eq!(values.iter().fold(10, |acc, &n| acc + n), 19); // base esplicita
 ```
 
 ```rust
-for (name, score) in names.iter().zip(scores.iter()) {
-    println!("{name}: {score}");
-}
+let names = ["Ada", "Teo", "Lia"];
+let scores = [9, 7];
+let rows: Vec<_> = names.into_iter().zip(scores).enumerate().collect();
+assert_eq!(rows, [(0, ("Ada", 9)), (1, ("Teo", 7))]);
 ```
 
-`zip()` termina con l'iteratore piu corto.
+`zip` termina con l'iteratore più corto: non segnala una differenza di lunghezza.
 
-## Ignorare o limitare
+## Saltare elementi o lavorare su una slice
 
 ```rust
-values.iter().skip(2)
-values.iter().take(5)
-values.iter().step_by(2)
+let values = [0, 1, 2, 3, 4, 5];
+let selected: Vec<_> = values.iter().copied().skip(1).step_by(2).take(2).collect();
+assert_eq!(selected, [1, 3]);
+let s = &[1, 2, 3][..];
+assert_eq!(s.windows(2).collect::<Vec<_>>(), [&s[0..2], &s[1..3]]);
+assert_eq!(s.chunks(2).collect::<Vec<_>>(), [&s[0..2], &s[2..3]]);
 ```
 
-## Flatten e filter_map
+`windows` sovrappone le finestre; `chunks` no e può lasciare un ultimo blocco corto. La dimensione deve essere positiva.
+
+## Scartare valori mancanti o conservare l'errore
 
 ```rust
-let values: Vec<i32> = optional_values.into_iter().flatten().collect();
+let present: Vec<_> = [Some(1), None, Some(3)].into_iter().flatten().collect();
+assert_eq!(present, [1, 3]);
+let texts = ["2", "x", "4"];
+let valid: Vec<_> = texts.iter().filter_map(|s| s.parse::<i32>().ok()).collect();
+assert_eq!(valid, [2, 4]); // scarta gli errori
+let all: Result<Vec<_>, _> = texts.iter().map(|s| s.parse::<i32>()).collect();
+assert!(all.is_err()); // primo errore, non un Vec parziale
 ```
 
-```rust
-let numbers: Vec<i32> = texts
-    .iter()
-    .filter_map(|text| text.parse().ok())
-    .collect();
-```
+Riferimento: [metodi di Iterator](https://doc.rust-lang.org/std/iter/trait.Iterator.html).
 
-## Finestre e blocchi
+## Collegamenti
 
-```rust
-for pair in values.windows(2) {}
-for chunk in values.chunks(3) {}
-```
-
-## Collect fallibile
-
-```rust
-let numbers: Result<Vec<i32>, _> = texts
-    .iter()
-    .map(|text| text.parse())
-    .collect();
-```
-
-## Approfondimento
-
+- [[Programmazione/Rust/Promemoria/Indice Promemoria Rust|Indice Promemoria Rust]]
 - [[Programmazione/Rust/Pagine/Iteratori|Iteratori]]
 - [[Programmazione/Rust/Pagine/Iterator API|Iterator API]]
 - [[Programmazione/Rust/Pagine/Closure|Closure]]
 - [[Programmazione/Rust/Pagine/Rayon e parallel iterators|Rayon e parallel iterators]]
-
-
-## Navigazione
-
-- [[Programmazione/Rust/Promemoria/Indice Promemoria Rust|Indice Promemoria Rust]]

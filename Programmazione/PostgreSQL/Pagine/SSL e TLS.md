@@ -21,93 +21,54 @@ title: SSL/TLS
 
 ## Sintesi
 
-SSL/TLS protegge la connessione tra client e server PostgreSQL cifrando il traffico e, se configurato correttamente, verificando l'identita del server.
+TLS risponde a due domande diverse: «il traffico è cifrato?» e «sono connesso al server previsto?». SCRAM autentica il login; non sostituisce la verifica del certificato del server. Se usi un pooler o un proxy, considera separatamente il tratto client-pooler e quello pooler-database.
 
-## Quando usarlo
+## Scegliere la modalità libpq
 
-Usa TLS quando il traffico database attraversa reti non completamente fidate:
+| `sslmode` | Cosa richiede il client |
+| --- | --- |
+| `disable` / `prefer` | Nessun TLS / tentativo TLS con possibile ripiego: non sono una garanzia di cifratura |
+| `require` | Richiede cifratura. Per compatibilità, se trova una CA radice si comporta come `verify-ca`; non usarlo per esprimere una politica di verifica del nome |
+| `verify-ca` | Richiede cifratura e una catena valida verso una CA attendibile, ma non verifica il nome dell'host |
+| `verify-full` | Richiede anche la corrispondenza tra host richiesto e certificato: scelta esplicita per connessioni remote che devono autenticare il server |
 
-- connessioni da applicazioni a database gestiti;
-- traffico tra host diversi;
-- ambienti cloud;
-- accesso da reti private condivise;
-- connessioni amministrative remote;
-- requisiti di compliance o audit.
+## Esempio: verificare il server
 
-## Come funziona
+Prerequisiti: PostgreSQL con supporto TLS, `ssl=on`, certificato e chiave server; il certificato deve essere valido per il nome usato dal client. Distribuisci al client la CA attendibile attraverso un canale controllato. Il certificato pubblico della CA non è una password: ne è essenziale l'integrità; la **chiave privata** invece deve restare segreta.
 
-PostgreSQL puo accettare connessioni cifrate. Il client decide il livello di verifica tramite `sslmode`.
+Esempio `psql` per un client con i percorsi indicati. La password non compare nel comando: usa il prompt o un passfile protetto. Con libpq, `gssencmode=disable` rende questa prova specifica per TLS anche in ambienti che offrono cifratura GSS.
 
-`require` cifra il traffico, ma non sempre verifica pienamente l'identita del server. `verify-ca` verifica la CA. `verify-full` verifica CA e hostname, ed e la scelta piu forte quando possibile.
-
-## API / Sintassi
-
-Modalita client comuni:
-
-```text
-sslmode=disable
-sslmode=prefer
-sslmode=require
-sslmode=verify-ca
-sslmode=verify-full
+```bash
+psql "host=db.example.test dbname=app_db user=app_user sslmode=verify-full sslrootcert=/etc/postgresql/app-ca.pem gssencmode=disable"
 ```
 
-Connection string:
+Nella connessione appena aperta:
 
-```text
-postgresql://app_user:secret@db.example.com:5432/app_db?sslmode=verify-full
+```sql
+SELECT ssl, version, cipher
+FROM pg_stat_ssl WHERE pid = pg_backend_pid();
 ```
 
-Regola `pg_hba.conf` solo TLS:
+Atteso: `ssl=true`, protocollo e cifrario valorizzati. Questa vista descrive la tratta che arriva a PostgreSQL: **non dimostra** quale `sslmode` ha usato il client. Verifica separatamente che il client rifiuti un nome non coperto dal certificato o una CA diversa.
+
+## Richiedere TLS anche sul server
+
+Esempio di regole HBA per la sola combinazione database, ruolo e rete IPv4 indicata; verificare ordine e ambito anche per altri indirizzi e IPv6:
 
 ```text
-hostssl app_db app_user 10.0.0.0/24 scram-sha-256
+hostnossl app_db app_user 10.0.0.0/24 reject
+hostssl   app_db app_user 10.0.0.0/24 scram-sha-256
 ```
 
-## Esempio pratico
+Vale la **prima** regola applicabile. Una `hostssl` da sola non impedisce a una successiva regola `host` più ampia di accettare connessioni non cifrate. Valida le regole prima della distribuzione, verifica le nuove connessioni e pianifica rinnovo, catena di fiducia e permessi sulla chiave. L'autenticazione con certificato client è un'opzione distinta dalla verifica del certificato server.
 
-Connessione applicativa con verifica forte:
+## Fonti
 
-```text
-postgresql://app_user:${DB_PASSWORD}@db.prod.example.com:5432/app_db?sslmode=verify-full&sslrootcert=/etc/ssl/postgres/ca.pem
-```
-
-In questo caso il client rifiuta il server se il certificato non e firmato dalla CA attesa o se l'hostname non corrisponde.
-
-## Varianti
-
-- TLS solo cifratura: `sslmode=require`.
-- Verifica CA: `sslmode=verify-ca`.
-- Verifica CA e hostname: `sslmode=verify-full`.
-- Autenticazione client con certificato.
-- TLS terminato su proxy o pooler.
-- Regole `hostssl` in `pg_hba.conf`.
-
-## Errori comuni
-
-- Usare `require` pensando che verifichi l'identita del server.
-- Non ruotare certificati.
-- Esporre database su rete pubblica senza policy di rete.
-- Disabilitare verifica per aggirare problemi di certificato.
-- Dimenticare TLS tra app e pooler o tra pooler e database.
-- Non monitorare scadenza dei certificati.
-
-## Checklist
-
-- Il traffico attraversa reti non fidate?
-- `sslmode` e almeno `verify-full` dove possibile?
-- CA e certificati sono gestiti come segreti?
-- Le regole `pg_hba.conf` richiedono `hostssl` se necessario?
-- La scadenza dei certificati e monitorata?
-- Pooler e proxy mantengono TLS dove serve?
+[PostgreSQL 18: verifica TLS in libpq](https://www.postgresql.org/docs/18/libpq-ssl.html) · [TLS lato server](https://www.postgresql.org/docs/18/ssl-tcp.html) · [Ordine e tipi delle regole HBA](https://www.postgresql.org/docs/18/auth-pg-hba-conf.html)
 
 ## Collegamenti
 
+- [[Programmazione/PostgreSQL/Indice PostgreSQL|Indice PostgreSQL]]
 - [[Programmazione/PostgreSQL/Pagine/Driver e connection string|Driver e connection string]]
 - [[Programmazione/PostgreSQL/Pagine/Secret management|Secret management]]
 - [[Programmazione/PostgreSQL/Pagine/Gestione Utenti e Ruoli|Gestione Utenti e Ruoli]]
-
-
-## Navigazione
-
-- [[Programmazione/PostgreSQL/Indice PostgreSQL|Indice PostgreSQL]]

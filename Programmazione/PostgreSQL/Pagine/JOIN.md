@@ -20,133 +20,64 @@ title: JOIN
 
 ## Sintesi
 
-Le `JOIN` combinano righe provenienti da piu tabelle in base a una relazione logica, spesso una chiave esterna.
+Una join produce una riga **per ogni coppia** che soddisfa la condizione. Non occorre una foreign key per eseguirla; il vincolo garantisce l'integrità dei dati, mentre `ON` stabilisce come abbinarli. Decidi prima se il risultato deve avere una riga per cliente, per ordine o per cliente senza ordini.
 
-## Quando usarlo
+## Quali righe rimangono?
 
-Usa una `JOIN` quando i dati necessari sono distribuiti su piu tabelle:
+| Forma | Risultato |
+|---|---|
+| `INNER JOIN` (anche `JOIN`) | Solo le coppie con condizione vera. |
+| `LEFT JOIN` | Le coppie trovate e, per ogni riga sinistra senza match, una riga con le colonne destre a `NULL`. |
+| `RIGHT JOIN` / `FULL JOIN` | Conserva anche le righe senza match a destra / da entrambe le parti. Una right join si può leggere come left join scambiando i lati. |
+| `CROSS JOIN` | Tutte le combinazioni: con M e N righe produce M × N righe. Non richiede `ON`. |
 
-- leggere ordini insieme ai dati del cliente;
-- mostrare righe figlie insieme alla riga padre;
-- applicare filtri basati su tabelle correlate;
-- costruire report combinando tabelle normalizzate;
-- trovare righe mancanti o non associate con `LEFT JOIN`.
+## Esempio: clienti e ordini pagati
 
-Le `JOIN` sono centrali nel modello relazionale: permettono di mantenere dati normalizzati senza duplicare informazioni in ogni tabella.
-
-## Come funziona
-
-### Tipi principali
-- `INNER JOIN`: restituisce solo righe con corrispondenza.
-- `LEFT JOIN`: mantiene tutte le righe della tabella sinistra.
-- `RIGHT JOIN`: mantiene tutte le righe della tabella destra.
-- `FULL JOIN`: mantiene righe di entrambi i lati.
-- `CROSS JOIN`: prodotto cartesiano.
+Esegui i blocchi in ordine nella stessa sessione di prova. Ada ha due ordini pagati, Teo un ordine aperto, Lia nessun ordine: **avere zero ordini pagati non significa non avere ordini**.
 
 ```sql
-SELECT orders.id, users.email
-FROM orders
-JOIN users ON users.id = orders.user_id;
+BEGIN;
+CREATE TEMP TABLE lab_clients (id integer PRIMARY KEY, name text NOT NULL);
+CREATE TEMP TABLE lab_orders (
+    id integer PRIMARY KEY, client_id integer NOT NULL REFERENCES lab_clients, status text NOT NULL
+);
+INSERT INTO lab_clients VALUES (1,'Ada'), (2,'Teo'), (3,'Lia');
+INSERT INTO lab_orders VALUES (11,1,'paid'), (12,1,'paid'), (13,2,'open');
 ```
-
-## API / Sintassi
 
 ```sql
-SELECT columns
-FROM left_table AS l
-JOIN right_table AS r
-  ON r.id = l.right_table_id
-WHERE condition;
+SELECT c.name, o.id
+FROM lab_clients AS c
+LEFT JOIN lab_orders AS o ON o.client_id = c.id AND o.status = 'paid'
+ORDER BY c.id, o.id;
 ```
 
-Tipi principali:
+La query restituisce **quattro righe**: Ada/11, Ada/12, Teo/`NULL` e Lia/`NULL`. Il filtro in `ON` decide quali ordini possono abbinarsi. Se lo sposti in `WHERE o.status = 'paid'`, le righe senza un ordine pagato vengono scartate: rimangono solo le due righe di Ada.
+
+Per trovare chi non ha **nessun** ordine, non filtrare sullo stato: controlla l'assenza di un valore che in un ordine reale non può essere nullo.
 
 ```sql
--- Solo corrispondenze
-INNER JOIN
-
--- Tutte le righe a sinistra, anche senza corrispondenza
-LEFT JOIN
-
--- Tutte le righe a destra, anche senza corrispondenza
-RIGHT JOIN
-
--- Tutte le righe di entrambi i lati
-FULL JOIN
-
--- Prodotto cartesiano
-CROSS JOIN
+SELECT c.name
+FROM lab_clients AS c
+LEFT JOIN lab_orders AS o ON o.client_id = c.id
+WHERE o.id IS NULL
+ORDER BY c.id;
+ROLLBACK;
 ```
 
-In pratica `RIGHT JOIN` e spesso evitabile riscrivendo la query con le tabelle invertite e usando `LEFT JOIN`.
+Risultato: solo Lia. `WHERE o.note IS NULL`, se `note` fosse facoltativa, non distinguerebbe un ordine assente da un ordine esistente con nota mancante.
 
-## Esempio pratico
+## Varianti e diagnosi
 
-Ordini con email del cliente:
+- Una *self join* usa due alias per la stessa tabella. Ad esempio `employees AS e LEFT JOIN employees AS m ON m.id = e.manager_id` conserva anche chi non ha responsabile.
+- Una [[Programmazione/PostgreSQL/Pagine/LATERAL JOIN|LATERAL JOIN]] consente alla sorgente di destra di usare valori della riga di sinistra. Se interessa solo sapere se esiste un ordine, usa invece [[Programmazione/PostgreSQL/Pagine/Subquery|EXISTS]]: non moltiplica i clienti.
+- Un totale gonfiato dopo una join è spesso un problema di cardinalità: collega un cliente a ordini **e** contatti e potresti ottenere tutte le combinazioni fra i due insiemi. Aggrega ciascun lato al livello necessario prima di combinarli; un indice non corregge il risultato. Per le prestazioni controlla il piano prima di aggiungere indici.
 
-```sql
-SELECT
-  o.id AS order_id,
-  o.total_amount,
-  u.email
-FROM orders AS o
-JOIN users AS u
-  ON u.id = o.user_id
-WHERE o.status = 'paid';
-```
-
-Utenti senza ordini:
-
-```sql
-SELECT u.id, u.email
-FROM users AS u
-LEFT JOIN orders AS o
-  ON o.user_id = u.id
-WHERE o.id IS NULL;
-```
-
-Il secondo esempio usa `LEFT JOIN` per mantenere gli utenti anche quando non esiste una riga corrispondente in `orders`.
-
-## Varianti
-
-- `INNER JOIN`: restituisce solo righe con match.
-- `LEFT JOIN`: mantiene tutte le righe della tabella sinistra.
-- `FULL JOIN`: utile per confrontare due insiemi e vedere righe presenti solo da un lato.
-- `CROSS JOIN`: genera tutte le combinazioni tra due insiemi.
-- `LATERAL JOIN`: permette alla tabella a destra di usare valori della riga a sinistra.
-- Self join: la stessa tabella viene usata due volte con alias diversi.
-
-Esempio di self join:
-
-```sql
-SELECT e.name AS employee, m.name AS manager
-FROM employees AS e
-LEFT JOIN employees AS m
-  ON m.id = e.manager_id;
-```
-
-## Errori comuni
-
-- Dimenticare la condizione `ON`.
-- Confondere filtro in `WHERE` con filtro nella `JOIN`.
-- Usare join non indicizzate su tabelle grandi.
-
-## Checklist
-
-- Scrivere sempre condizioni `ON` esplicite.
-- Usare alias leggibili quando la query coinvolge piu tabelle.
-- Verificare se una `LEFT JOIN` viene trasformata di fatto in `INNER JOIN` da condizioni nel `WHERE`.
-- Controllare che le colonne di join siano indicizzate sulle tabelle grandi.
-- Controllare la cardinalita: una join 1:N puo moltiplicare le righe.
-- Usare `EXPLAIN` quando una join diventa lenta o cambia piano.
+**Fonte:** [PostgreSQL 18: tabelle unite e differenza fra ON e WHERE](https://www.postgresql.org/docs/18/queries-table-expressions.html#QUERIES-JOIN).
 
 ## Collegamenti
 
+- [[Programmazione/PostgreSQL/Indice PostgreSQL|Indice PostgreSQL]]
 - [[Programmazione/PostgreSQL/Pagine/Chiavi primarie e foreign key|Chiavi primarie e foreign key]]
 - [[Programmazione/PostgreSQL/Pagine/LATERAL JOIN|LATERAL JOIN]]
 - [[Programmazione/PostgreSQL/Pagine/Analisi delle Query|Analisi delle Query]]
-
-
-## Navigazione
-
-- [[Programmazione/PostgreSQL/Indice PostgreSQL|Indice PostgreSQL]]

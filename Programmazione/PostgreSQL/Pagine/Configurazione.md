@@ -20,120 +20,63 @@ title: Configurazione di PostgreSQL
 
 ## Sintesi
 
-La configurazione di PostgreSQL controlla risorse, connessioni, logging, sicurezza e comportamento del server. I file principali sono `postgresql.conf` e `pg_hba.conf`.
+Prima di cambiare un parametro identifica **da dove arriva il valore della tua sessione** e **quando la modifica può avere effetto**. Le impostazioni del server e le regole di autenticazione non sono la stessa cosa: `postgresql.conf` regola il comportamento dell'istanza, `pg_hba.conf` seleziona il metodo di autenticazione delle nuove connessioni.
 
-## Quando usarlo
-
-Usa questa nota quando devi modificare o verificare il comportamento del server:
-
-- abilitare connessioni remote;
-- configurare memoria, logging o timeout;
-- cambiare metodi di autenticazione;
-- applicare parametri per database o ruolo;
-- capire se serve reload o restart;
-- documentare tuning e scelte operative.
-
-## Come funziona
-
-`postgresql.conf` contiene parametri del server: memoria, connessioni, logging, WAL, planner e autovacuum.
-
-`pg_hba.conf` controlla chi puo connettersi, da dove, a quale database e con quale metodo di autenticazione.
-
-Alcuni parametri si applicano con reload, altri richiedono restart. I parametri possono anche essere impostati a livello di sessione, ruolo, database o tramite `ALTER SYSTEM`.
-
-## API / Sintassi
-
-Reload:
+## Leggere prima di modificare
 
 ```sql
-SELECT pg_reload_conf();
-```
-
-Controllare un parametro:
-
-```sql
-SHOW shared_buffers;
-SELECT name, setting, unit, context
+SELECT name, setting, unit, source, context, pending_restart
 FROM pg_settings
-WHERE name = 'shared_buffers';
+WHERE name IN ('listen_addresses', 'shared_buffers', 'work_mem', 'statement_timeout')
+ORDER BY name;
 ```
 
-Impostare a livello sessione:
+`source` indica la provenienza del valore effettivo, non sempre il file principale. `context = 'postmaster'` richiede riavvio; `sighup` indica che il server può rileggere il valore con un reload. `pending_restart` segnala una modifica del file già rilevata ma non applicabile senza riavvio; `false` non prova che ogni modifica sul disco sia già stata riletta.
+
+## Scegliere l'ambito
+
+| Ambito | Effetto |
+|---|---|
+| `SET` / `RESET` | Cambia o ripristina un parametro della sessione. `SET LOCAL` vale solo nella transazione corrente. |
+| `ALTER ROLE … SET` / `ALTER DATABASE … SET` | Definisce il default per nuove sessioni del ruolo o del database. Non aggiorna le connessioni già aperte; `SET ROLE` non simula un nuovo login. |
+| `postgresql.conf` / `ALTER SYSTEM` | Default di istanza. `ALTER SYSTEM` scrive `postgresql.auto.conf`, che prevale sul file principale; non implica reload o riavvio automatici. |
+
+Prova reversibile, in una singola sessione senza transazioni aperte. Confronta il valore prima, durante e dopo:
 
 ```sql
-SET work_mem = '64MB';
+SHOW statement_timeout;
+BEGIN;
+SET LOCAL statement_timeout = '2s';
+SHOW statement_timeout;
+ROLLBACK;
+SHOW statement_timeout;
 ```
 
-Impostare a livello ruolo:
+Un default persistente come `ALTER ROLE app_user SET statement_timeout = '30s'` presuppone un ruolo esistente e privilegi adeguati. Per verificarlo riconnettiti come quel ruolo; per rimuoverlo usa `ALTER ROLE app_user RESET statement_timeout`.
+
+## Modificare l'accesso remoto
+
+Per aprire un endpoint servono tre condizioni indipendenti: il server ascolta sull'interfaccia desiderata, la rete permette il traffico e una regola HBA ammette quella connessione. Un `GRANT CONNECT` sul database non sostituisce l'autenticazione. Non cambiare questi file per provare una normale connessione al laboratorio locale.
+
+- **Indirizzi:** `listen_addresses` si legge all'avvio. Cambiarlo nel file e chiamare solo `pg_reload_conf()` **non** apre una nuova interfaccia: serve un riavvio pianificato.
+- **Autenticazione:** PostgreSQL usa la **prima** regola HBA corrispondente; se l'autenticazione fallisce non prova quelle successive. `local` riguarda socket Unix, `host` TCP con o senza TLS, `hostssl` solo TCP con TLS già configurato. SCRAM autentica, non cifra la connessione.
+- **TLS obbligatorio:** un esempio mirato è `hostssl app_db app_user 10.0.0.0/24 scram-sha-256`. Questa riga da sola non esclude accessi non cifrati ammessi da altre regole: verifica ordine e fallback. Il client deve anche verificare il certificato del server.
+
+Dopo una modifica amministrativa ai file, cerca errori di parsing con un ruolo autorizzato (nessuna riga significa nessun errore segnalato dalla vista):
 
 ```sql
-ALTER ROLE app_user SET statement_timeout = '30s';
+SELECT line_number, error
+FROM pg_hba_file_rules
+WHERE error IS NOT NULL;
 ```
 
-Regole `pg_hba.conf`:
+Un amministratore può richiedere la rilettura con `SELECT pg_reload_conf();`. Un risultato `true` attesta l'invio del segnale, **non** che tutte le modifiche siano valide o già attive. Controlla log, `pg_settings` e una **nuova** connessione, conservando la sessione amministrativa fino alla verifica. Su Windows le modifiche HBA interessano direttamente le nuove connessioni, senza richiedere il reload per quel file.
 
-```text
-local   all      all                         scram-sha-256
-host    app_db   app_user   10.0.0.0/24      scram-sha-256
-hostssl app_db   app_user   10.0.0.0/24      scram-sha-256
-```
-
-## Esempio pratico
-
-Abilitare connessioni applicative da una rete privata:
-
-```conf
-# postgresql.conf
-listen_addresses = '10.0.1.10'
-```
-
-```text
-# pg_hba.conf
-hostssl app_db app_user 10.0.0.0/24 scram-sha-256
-```
-
-Poi applicare:
-
-```sql
-SELECT pg_reload_conf();
-```
-
-Se il parametro richiede restart, `pg_settings.context` lo indica come `postmaster`.
-
-## Varianti
-
-- `postgresql.conf`: configurazione principale.
-- `postgresql.auto.conf`: scritto da `ALTER SYSTEM`.
-- `pg_hba.conf`: autenticazione client.
-- `ALTER ROLE SET`: default per ruolo.
-- `ALTER DATABASE SET`: default per database.
-- `SET`: valore solo per sessione o transazione.
-
-## Errori comuni
-
-- Usare `trust` fuori da ambienti locali controllati.
-- Mettere regole troppo permissive in `pg_hba.conf`.
-- Cambiare `max_connections` senza considerare memoria e pooling.
-- Aumentare `work_mem` globalmente senza calcolare il numero di operazioni concorrenti.
-- Non documentare perche un parametro e stato cambiato.
-- Aspettarsi che ogni modifica basti con reload.
-
-## Checklist
-
-- Le regole `pg_hba.conf` sono specifiche e sicure?
-- Le modifiche richiedono reload o restart?
-- I parametri sono documentati?
-- Esistono timeout per sessioni e query applicative?
-- La memoria e coerente con carico e connessioni?
-- Le credenziali usano `scram-sha-256` o metodo adeguato?
+**Fonti:** [impostazione dei parametri](https://www.postgresql.org/docs/18/config-setting.html), [pg_settings](https://www.postgresql.org/docs/18/view-pg-settings.html) e [regole HBA](https://www.postgresql.org/docs/18/auth-pg-hba-conf.html).
 
 ## Collegamenti
 
+- [[Programmazione/PostgreSQL/Indice PostgreSQL|Indice PostgreSQL]]
 - [[Programmazione/PostgreSQL/Pagine/File System Layout e Data Directory|File System Layout e Data Directory]]
 - [[Programmazione/PostgreSQL/Pagine/Connection Pooling|Connection Pooling]]
 - [[Programmazione/PostgreSQL/Pagine/SSL e TLS|SSL/TLS]]
-
-
-## Navigazione
-
-- [[Programmazione/PostgreSQL/Indice PostgreSQL|Indice PostgreSQL]]

@@ -21,87 +21,76 @@ title: PostgreSQL - Stringhe e regex
 
 # PostgreSQL - Stringhe e regex
 
-## Concatenare
+Blocchi indipendenti, senza tabelle. Scegli `LIKE` per i caratteri jolly, una regex per cercare un pattern o catturare gruppi.
+
+## Comporre un testo con parti facoltative
 
 ```sql
-SELECT first_name || ' ' || last_name AS full_name
-FROM users;
+SELECT 'Ada' || NULL::text AS missing, concat('Ada', NULL, 'L.') AS joined,
+       concat_ws(' ', 'Ada', NULL, 'L.') AS label, format('User %s (%s)', 'Ada', 7) AS display;
 ```
 
-`||` restituisce `NULL` se uno degli operandi e `NULL`.
+Risultati: NULL, `AdaL.`, `Ada L.`, `User Ada (7)`. `concat_ws` salta gli argomenti NULL, non le stringhe vuote.
+
+## Modificare e dividere
+
+| Operazione | Espressione da inserire in una SELECT | Risultato |
+|---|---|---|
+| Maiuscole e minuscole | `upper('Sql')`, `lower('Sql')`, `initcap('due parole')` | `SQL`, `sql`, `Due Parole` |
+| Spazi alle estremità | `trim('  Ada  ')` | `Ada`; `ltrim` o `rtrim` per un solo lato |
+| Lunghezza in caratteri | `char_length('casa')` o `length('casa')` | 4 |
+| Estrarre | `left('abcd', 2)`, `right('abcd', 2)`, `substring('abcd' FROM 2 FOR 2)` | `ab`, `cd`, `bc` |
+| Sostituire o invertire | `replace('2026/07', '/', '-')`, `reverse('abc')` | `2026-07`, `cba` |
 
 ```sql
-SELECT concat(first_name, ' ', last_name);
-SELECT concat_ws(' ', first_name, middle_name, last_name);
+SELECT split_part('a,b,c', ',', 2), string_to_array('a,b,c', ','),
+       array_to_string(ARRAY['a','b','c'], '/');
 ```
 
-## Formattare
+Risultati: `b`, `{a,b,c}`, `a/b/c`.
+
+## Filtrare con LIKE o regex
 
 ```sql
-SELECT format('User %s (%s)', name, id)
-FROM users;
+SELECT 'Ada' LIKE 'Ad%' AS prefix, 'Ada' ILIKE '%ADA%' AS anywhere,
+       'a_b' LIKE 'a!_b' ESCAPE '!' AS literal_underscore,
+       'item-42' ~ '^[0-9]+$' AS digits_only, 'AbC' ~* '^[a-z]+$' AS letters;
 ```
 
-## Metodi principali
+Risultati: vero, vero, vero, falso, vero. `LIKE` confronta la stringa intera: `%` vale zero o più caratteri, `_` uno. Una regex cerca anche all'interno: usa `^` e `$` per ancorarla. `~*` ignora le maiuscole; `!~` e `!~*` negano il confronto.
+
+## Estrarre il primo risultato o tutti
 
 ```sql
-SELECT lower(value);
-SELECT upper(value);
-SELECT initcap(value);
-SELECT trim(value);
-SELECT ltrim(value);
-SELECT rtrim(value);
-SELECT length(value);
-SELECT char_length(value);
-SELECT left(value, 5);
-SELECT right(value, 5);
-SELECT substring(value FROM 2 FOR 4);
-SELECT replace(value, 'old', 'new');
-SELECT reverse(value);
+SELECT regexp_match('A12 B34', '([0-9]+)') AS first_match,
+       regexp_match('nessuno', '([0-9]+)') AS no_match;
 ```
 
-## Dividere e unire
+Una riga: `{12}` e NULL. Per ricevere **una riga per corrispondenza**, usa il plurale con `g`:
 
 ```sql
-SELECT split_part('a,b,c', ',', 2);
-SELECT string_to_array('a,b,c', ',');
-SELECT array_to_string(ARRAY['a', 'b', 'c'], ',');
+SELECT m.parts[1] AS number FROM regexp_matches('A12 B34', '([0-9]+)', 'g')
+    WITH ORDINALITY AS m(parts, pos) ORDER BY pos;
 ```
 
-## LIKE
+Due righe, `12` e `34`; se non c'è corrispondenza, **zero righe**.
+
+## Sostituire o separare con una regex
 
 ```sql
-WHERE name LIKE 'Ada%'
-WHERE name ILIKE '%ada%'
+SELECT regexp_replace('uno  due   tre', '[[:space:]]+', ' ', 'g') AS normalized;
 ```
-
-`%` indica qualsiasi sequenza; `_` un singolo carattere.
-
-## Regex
 
 ```sql
-WHERE value ~ '^[0-9]+$'
-WHERE value ~* '^[a-z]+$'
-WHERE value !~ 'pattern'
+SELECT token FROM regexp_split_to_table('rosso, verde , blu', '[[:space:]]*,[[:space:]]*')
+    WITH ORDINALITY AS s(token, pos) ORDER BY pos;
 ```
 
-| Operatore | Effetto |
-|---|---|
-| `~` | Corrisponde, case-sensitive |
-| `~*` | Corrisponde, case-insensitive |
-| `!~` | Non corrisponde |
-| `!~*` | Non corrisponde, case-insensitive |
-
-## Estrarre e sostituire
-
-```sql
-SELECT regexp_match(value, '([0-9]+)');
-SELECT regexp_matches(value, '([0-9]+)', 'g');
-SELECT regexp_replace(value, '\s+', ' ', 'g');
-SELECT regexp_split_to_table(value, '\s*,\s*');
-```
+Il primo blocco dà `uno due tre` (senza `g` sostituisce solo la prima occorrenza); il secondo dà tre righe senza spazi intorno alla virgola.
 
 ## Approfondimento
+
+- [PostgreSQL 18: funzioni per il testo](https://www.postgresql.org/docs/18/functions-string.html) e [pattern matching](https://www.postgresql.org/docs/18/functions-matching.html).
 
 - [[Programmazione/PostgreSQL/Pagine/Tipi numerici testuali e temporali|Tipi numerici testuali e temporali]]
 - [[Programmazione/PostgreSQL/Pagine/Full Text Search|Full Text Search]]

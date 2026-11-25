@@ -23,109 +23,90 @@ title: PostgreSQL - Ruoli, privilegi e RLS
 
 # PostgreSQL - Ruoli, privilegi e RLS
 
-## Creare ruoli
+`GRANT` decide **quali operazioni** può fare un ruolo; RLS decide **su quali righe**. Esegui i blocchi in ordine, nella stessa connessione amministrativa a un cluster di prova. I ruoli sono globali al cluster: servono nomi liberi. Il `ROLLBACK` finale annulla tutto.
 
-```sql
-CREATE ROLE app_owner NOLOGIN;
-CREATE ROLE app_user LOGIN;
-CREATE ROLE app_readonly LOGIN;
-```
-
-Impostare le password tramite un canale amministrativo sicuro, senza salvarle negli script versionati.
-
-## Assegnare appartenenza
-
-```sql
-GRANT app_owner TO migration_user;
-```
-
-## Database e schema
-
-```sql
-GRANT CONNECT ON DATABASE app_db TO app_user;
-GRANT USAGE ON SCHEMA app TO app_user;
-```
-
-## Tabelle e sequenze
-
-```sql
-GRANT SELECT, INSERT, UPDATE, DELETE
-ON ALL TABLES IN SCHEMA app
-TO app_user;
-```
-
-```sql
-GRANT USAGE, SELECT
-ON ALL SEQUENCES IN SCHEMA app
-TO app_user;
-```
-
-## Privilegi predefiniti
-
-Eseguire come ruolo che creera i nuovi oggetti:
-
-```sql
-ALTER DEFAULT PRIVILEGES IN SCHEMA app
-GRANT SELECT, INSERT, UPDATE, DELETE ON TABLES TO app_user;
-```
-
-```sql
-ALTER DEFAULT PRIVILEGES IN SCHEMA app
-GRANT USAGE, SELECT ON SEQUENCES TO app_user;
-```
-
-## Revocare
-
-```sql
-REVOKE CREATE ON SCHEMA public FROM PUBLIC;
-REVOKE ALL ON TABLE app.secrets FROM app_user;
-```
-
-## Cambiare ruolo
-
-```sql
-SET ROLE app_owner;
-RESET ROLE;
-```
-
-## RLS
-
-```sql
-ALTER TABLE app.documents ENABLE ROW LEVEL SECURITY;
-```
-
-```sql
-CREATE POLICY documents_by_owner
-ON app.documents
-USING (
-    owner_id = current_setting('app.user_id')::bigint
-)
-WITH CHECK (
-    owner_id = current_setting('app.user_id')::bigint
-);
-```
+## Separare proprietario, gruppo e identità
 
 ```sql
 BEGIN;
-SET LOCAL app.user_id = '42';
-SELECT * FROM app.documents;
-COMMIT;
+CREATE ROLE memo_doc_owner NOLOGIN;
+CREATE ROLE memo_doc_editor NOLOGIN;
+CREATE ROLE memo_doc_ada NOLOGIN;
+CREATE ROLE memo_doc_teo NOLOGIN;
+GRANT memo_doc_editor TO memo_doc_ada, memo_doc_teo;
+CREATE SCHEMA memo_docs AUTHORIZATION memo_doc_owner;
+SET LOCAL ROLE memo_doc_owner;
 ```
 
-Eseguire sulla stessa connessione; in caso di errore fare `ROLLBACK`. Il backend imposta l'ID autenticato a ogni transazione: un setting modificabile dal client non e una prova di identita.
+Il proprietario crea gli oggetti; Ada e Teo ereditano i privilegi del gruppo, non la proprietà. Sono `NOLOGIN` perché il laboratorio simula le identità con `SET LOCAL ROLE`. Per connessioni reali servono un ruolo `LOGIN`, autenticazione configurata e `CONNECT` al database: il solo `CONNECT` non concede accesso alle tabelle. Non salvare password negli script.
 
-Il ruolo proprietario normalmente bypassa RLS; `FORCE ROW LEVEL SECURITY` puo assoggettarlo alle policy, ma non limita superuser o ruoli `BYPASSRLS`. Verificare con il ruolo dell'applicazione. Dettagli in [[Programmazione/PostgreSQL/Pagine/Row Level Security|Row Level Security]].
-
-## Privilegi di una tabella
+## Concedere soltanto il necessario
 
 ```sql
-SELECT *
-FROM information_schema.role_table_grants
-WHERE table_schema = 'app'
-  AND table_name = 'documents';
+CREATE TABLE memo_docs.documents (
+    id serial PRIMARY KEY, author name NOT NULL DEFAULT current_user, title text NOT NULL
+);
+INSERT INTO memo_docs.documents (author, title)
+VALUES ('memo_doc_ada', 'Alfa'), ('memo_doc_teo', 'Beta');
+GRANT USAGE ON SCHEMA memo_docs TO memo_doc_editor;
+GRANT SELECT, INSERT, UPDATE ON memo_docs.documents TO memo_doc_editor;
+GRANT USAGE ON SEQUENCE memo_docs.documents_id_seq TO memo_doc_editor;
 ```
 
+`USAGE` sullo schema permette di raggiungere la tabella. Per questo `serial` serve anche `USAGE` sulla sequenza durante gli inserimenti. Non abbiamo concesso `DELETE`.
+
+```sql
+ALTER DEFAULT PRIVILEGES IN SCHEMA memo_docs GRANT SELECT ON TABLES TO memo_doc_editor;
+CREATE TABLE memo_docs.notices (title text);
+```
+
+Il default vale per le **future tabelle create da questo proprietario** nello schema; non modifica quelle esistenti né abilita RLS. Usalo soltanto se ogni nuova tabella deve essere leggibile dal gruppo. Per una sola tabella usa `GRANT ... ON nome_tabella`; `ON ALL TABLES IN SCHEMA` riguarda invece quelle già presenti. Le sequenze hanno grant e default separati.
+
+## Filtrare righe esistenti e controllare quelle nuove
+
+```sql
+ALTER TABLE memo_docs.documents ENABLE ROW LEVEL SECURITY;
+CREATE POLICY own_docs ON memo_docs.documents TO memo_doc_editor
+    USING (author = current_user) WITH CHECK (author = current_user);
+RESET ROLE;
+SET LOCAL ROLE memo_doc_ada;
+```
+
+Qui ogni persona ha un ruolo distinto. Con un unico login applicativo `current_user` non distingue gli utenti finali. Il modello con contesto per richiesta è nella [[Programmazione/PostgreSQL/Pagine/Row Level Security|nota RLS]]: un parametro scelto dal client non prova l'identità.
+
+```sql
+SELECT title FROM memo_docs.documents ORDER BY id;
+INSERT INTO memo_docs.documents (title) VALUES ('Bozza') RETURNING author, title;
+UPDATE memo_docs.documents SET title = 'Nuovo titolo' WHERE title = 'Beta' RETURNING id;
+```
+
+Ada legge solo `Alfa` e inserisce `Bozza` a proprio nome. L'UPDATE su `Beta` restituisce **zero righe**, non un errore (`USING`). Un INSERT che attribuisse la riga a Teo fallirebbe invece con `42501` (`WITH CHECK`).
+
+## Verificare con la seconda identità e revocare
+
+```sql
+RESET ROLE;
+SET LOCAL ROLE memo_doc_teo;
+SELECT current_user, title FROM memo_docs.documents ORDER BY id;
+SELECT has_table_privilege(current_user, 'memo_docs.notices', 'SELECT') AS future_read,
+       has_table_privilege(current_user, 'memo_docs.documents', 'DELETE') AS can_delete;
+```
+
+Attesi `memo_doc_teo, Beta` e poi `true, false`. Un test fatto come superuser o proprietario non dimostra l'isolamento del runtime. `FORCE ROW LEVEL SECURITY` può assoggettare il proprietario alle policy; non limita superuser o ruoli `BYPASSRLS`.
+
+```sql
+RESET ROLE;
+SET LOCAL ROLE memo_doc_owner;
+REVOKE UPDATE ON memo_docs.documents FROM memo_doc_editor;
+SELECT has_table_privilege('memo_doc_ada', 'memo_docs.documents', 'UPDATE') AS can_update;
+ROLLBACK;
+```
+
+Qui `can_update` è falso. Una revoca da un gruppo non annulla privilegi ricevuti anche da altre appartenenze o da `PUBLIC`. Per i grant espliciti consulta `information_schema.role_table_grants`; per il permesso effettivo usa `has_table_privilege`, che **non** indica quali righe ammette RLS.
+
 ## Approfondimento
+
+- PostgreSQL 18: [privilegi predefiniti](https://www.postgresql.org/docs/18/sql-alterdefaultprivileges.html) e [policy sulle righe](https://www.postgresql.org/docs/18/ddl-rowsecurity.html).
 
 - [[Programmazione/PostgreSQL/Pagine/Gestione Utenti e Ruoli|Gestione Utenti e Ruoli]]
 - [[Programmazione/PostgreSQL/Pagine/Ruoli e privilegi avanzati|Ruoli e privilegi avanzati]]

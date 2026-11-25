@@ -20,179 +20,93 @@ title: Meccanismi di Locking in PostgreSQL
 
 ## Sintesi
 
-PostgreSQL combina MVCC con lock di tabella, riga, transazione e lock consultivi. Capire compatibilità, durata e ordine di acquisizione dei lock è necessario per diagnosticare attese, prevenire deadlock e costruire code di lavoro concorrenti.
+Un lock coordina operazioni incompatibili su una risorsa. Prima di sceglierlo, chiediti **che cosa va protetto** (riga, tabella, attività applicativa) e **cosa fare se è occupato** (attendere, fallire o passare oltre). MVCC consente ai lettori ordinari di leggere una versione confermata senza prendere il lock di riga dello scrittore.
 
-Sebbene il sistema [[Programmazione/PostgreSQL/Pagine/MVCC|MVCC]] permetta a lettori e scrittori di non bloccarsi a vicenda, esistono situazioni in cui PostgreSQL deve utilizzare dei **Lock** (blocchi) per garantire l'integrità dei dati, specialmente quando più transazioni tentano di modificare le stesse risorse contemporaneamente.
+| Risorsa | Esempio | Effetto pratico |
+| --- | --- | --- |
+| Tabella | `ACCESS SHARE` per una SELECT ordinaria; `ROW EXCLUSIVE` per INSERT/UPDATE/DELETE | Sono compatibili tra loro. `ACCESS EXCLUSIVE`, richiesto per esempio da `VACUUM FULL` e da molti ma non tutti gli `ALTER TABLE`, confligge anche con la lettura |
+| Riga | `FOR UPDATE` | Blocca modifiche e richieste di lock incompatibili sulla stessa riga, non le SELECT ordinarie. Esistono anche `FOR NO KEY UPDATE`, `FOR SHARE` e `FOR KEY SHARE`, meno restrittivi in casi diversi |
+| Chiave applicativa | Advisory lock | Protegge una convenzione: un client che non chiede quel lock può comunque modificare i dati |
 
-## Quando usarlo
+## Due worker, due lavori
 
-Usa questa nota quando devi capire o prevenire blocchi tra transazioni:
-
-- due transazioni modificano le stesse righe;
-- una migrazione DDL resta bloccata;
-- query applicative finiscono in timeout;
-- worker concorrenti devono processare righe diverse;
-- compaiono deadlock nei log;
-- devi scegliere tra `FOR UPDATE`, `SKIP LOCKED` e advisory lock.
-
-## Come funziona
-
-### Concetto chiave
-I lock sono meccanismi di sincronizzazione che impediscono a transazioni concorrenti di interferire tra loro in modi che violerebbero le [[Programmazione/PostgreSQL/Pagine/Proprietà ACID|Proprietà ACID]]. PostgreSQL gestisce i lock in modo granulare, dal livello di singola riga fino all'intera tabella.
-
----
-### Livelli di Locking
-#### Table-Level Locks (Blocchi a livello di Tabella)
-Questi lock controllano l'accesso a un'intera tabella. Non bloccano necessariamente tutte le operazioni, ma regolano la compatibilità tra comandi DDL (es. `ALTER TABLE`) e DML (es. `INSERT`).
-
-| Modo | Innescato da | Compatibilità |
-| :--- | :--- | :--- |
-| **Access Share** | `SELECT` | Compatibile con tutto tranne `Access Exclusive`. |
-| **Row Exclusive** | `INSERT`, `UPDATE`, `DELETE` | Permette letture e altre scritture concorrenti su righe diverse. |
-| **Access Exclusive** | `ALTER TABLE`, `DROP TABLE`, `VACUUM FULL` | Blocca **qualsiasi** altro accesso alla tabella (anche letture). |
-
-#### Row-Level Locks (Blocchi a livello di Riga)
-PostgreSQL non memorizza i lock di riga in memoria (che saturerebbe la RAM), ma li scrive direttamente nella riga stessa (nel file dei dati).
-
-- **FOR UPDATE:** Blocca la riga per una futura modifica. Altre transazioni che tentano di fare `UPDATE`, `DELETE` o `SELECT FOR UPDATE` sulla stessa riga dovranno attendere.
-- **FOR SHARE:** Permette ad altre transazioni di leggere la riga, ma impedisce loro di modificarla finché il lock non viene rilasciato.
+Servono due connessioni A e B allo stesso database di prova, autocommit inizialmente attivo e nome `lab_lock_jobs` libero. **Preparazione da A**:
 
 ```sql
--- Esempio: Prenotazione di una riga per evitare race conditions
-BEGIN;
-SELECT * FROM conti WHERE id = 1 FOR UPDATE;
--- Esegui logica di business...
-UPDATE conti SET bilancio = bilancio - 100 WHERE id = 1;
-COMMIT;
+CREATE TABLE lab_lock_jobs (id integer PRIMARY KEY, state text NOT NULL);
+INSERT INTO lab_lock_jobs VALUES (1, 'ready'), (2, 'ready');
 ```
 
----
-### Advisory Locks (Blocchi Consultivi)
-Sono lock definiti dall'applicazione. Il database non li impone automaticamente; è lo sviluppatore che decide quando acquisirli.
-
-- **Uso:** Sincronizzare operazioni che non riguardano direttamente una riga di tabella (es. impedire che due processi worker eseguano lo stesso report pesante contemporaneamente).
-- **Funzioni:** `pg_advisory_lock(id)`, `pg_try_advisory_lock(id)`.
-
----
-### Deadlocks (Stallo)
-Un deadlock si verifica quando due transazioni si bloccano a vicenda aspettando un lock detenuto dall'altra.
-
-> [!INFO] Rilevamento Automatico
-> PostgreSQL ha un detector di deadlock interno. Se rileva uno stallo (dopo un timeout definito da `deadlock_timeout`), interrompe forzatamente una delle transazioni coinvolte per permettere all'altra di procedere.
-
----
-
-## API / Sintassi
-
-Lock di riga:
-
-```sql
-SELECT *
-FROM accounts
-WHERE id = 1
-FOR UPDATE;
-```
-
-Varianti:
-
-```sql
-SELECT * FROM jobs
-WHERE status = 'available'
-ORDER BY priority DESC
-FOR UPDATE SKIP LOCKED
-LIMIT 10;
-
-SELECT * FROM accounts
-WHERE id = 1
-FOR UPDATE NOWAIT;
-```
-
-Advisory lock:
-
-```sql
-SELECT pg_advisory_lock(12345);
-SELECT pg_advisory_unlock(12345);
-
-SELECT pg_try_advisory_lock(12345);
-```
-
-Timeout utili:
-
-```sql
-SET lock_timeout = '2s';
-SET statement_timeout = '30s';
-```
-
-## Esempio pratico
-
-Worker concorrenti su una job table:
+**A:** riserva la riga 1 e lascia aperta la transazione.
 
 ```sql
 BEGIN;
+SELECT id FROM lab_lock_jobs WHERE id = 1 FOR UPDATE;
+```
 
+**B:** acquisisci un lavoro pronto con una sola istruzione e rendi persistente il cambio di stato. `ORDER BY id` dà una priorità ripetibile fra le righe disponibili.
+
+```sql
+BEGIN;
 WITH picked AS (
-  SELECT id
-  FROM jobs
-  WHERE status = 'available'
-  ORDER BY priority DESC, created_at
-  FOR UPDATE SKIP LOCKED
-  LIMIT 1
+  SELECT id FROM lab_lock_jobs WHERE state = 'ready'
+  ORDER BY id LIMIT 1 FOR UPDATE SKIP LOCKED
 )
-UPDATE jobs
-SET status = 'running',
-    started_at = now()
-FROM picked
-WHERE jobs.id = picked.id
-RETURNING jobs.*;
-
+UPDATE lab_lock_jobs AS j SET state = 'running'
+FROM picked WHERE j.id = picked.id RETURNING j.id;
 COMMIT;
 ```
 
-`SKIP LOCKED` permette a piu worker di saltare righe gia prese da altri worker e processare job diversi.
+B ottiene **2**, nonostante 1 sia ancora `ready`: la prima riga è bloccata. **A:** rilascia il lock senza modificare il lavoro.
 
-## Varianti
+```sql
+ROLLBACK;
+```
 
-- Table lock impliciti generati da DDL e DML.
-- Row lock con `FOR UPDATE`, `FOR NO KEY UPDATE`, `FOR SHARE`, `FOR KEY SHARE`.
-- `NOWAIT`: fallisce subito se il lock non e disponibile.
-- `SKIP LOCKED`: salta righe gia bloccate.
-- Advisory lock a livello sessione.
-- Advisory lock a livello transazione con `pg_advisory_xact_lock`.
+Ripeti ora il blocco di B: ottieni **1**. `SKIP LOCKED` serve a distribuire lavori fra consumatori, non a fare inventari completi o a garantire l'ordine globale. Non garantisce neppure il completamento del lavoro dopo il commit: serve una politica per i worker che si arrestano. Al termine elimina solo la tabella di prova:
 
-## Errori comuni
+```sql
+DROP TABLE lab_lock_jobs;
+```
 
-- Tenere lock mentre si attende input utente o una chiamata HTTP esterna.
-- Accedere a tabelle e righe in ordine diverso tra flussi concorrenti.
-- Usare `LOCK TABLE` quando bastano lock di riga.
-- Non impostare `lock_timeout` durante migrazioni rischiose.
-- Usare advisory lock senza convenzione chiara sulle chiavi.
-- Ignorare le sessioni `idle in transaction`.
+## Attese e deadlock
 
-## Checklist
+**Attesa:** B vuole la riga che A trattiene, ma A può concludere e sbloccarla. **Deadlock:** A trattiene la riga 1 e aspetta la 2, mentre B trattiene la 2 e aspetta la 1. Nessuno può avanzare: PostgreSQL rileva il ciclo e interrompe una delle transazioni (`40P01`). Non progettare il codice supponendo quale sarà la vittima.
 
-### Logic layer: Best Practices
-1.  **Ordine Costante:** Accedi sempre alle tabelle (e alle righe) nello stesso ordine logico per minimizzare il rischio di deadlock.
-2.  **Transazioni Brevi:** Mantieni i lock per il minor tempo possibile. Non includere chiamate a API esterne o input utente all'interno di una transazione che detiene lock pesanti.
-3.  **Usa `SKIP LOCKED`:** In sistemi di code (queues), usa `SELECT ... FOR UPDATE SKIP LOCKED` per permettere a più worker di processare righe diverse senza bloccarsi a vicenda.
-- Impostare `lock_timeout` per operazioni DDL in produzione.
-- Monitorare sessioni in attesa con `pg_stat_activity` e `pg_locks`.
-- Gestire retry applicativo per deadlock e serialization failure.
-- Documentare l'ordine di acquisizione lock nei flussi critici.
+- Acquisisci le risorse nello stesso ordine in tutti i percorsi, mantieni breve la transazione e non attendere input utente o risposte HTTP mentre detieni lock. In caso di deadlock, annulla e riprova l'intera operazione se è ripetibile.
+- `FOR UPDATE NOWAIT` fallisce subito (`55P03`) per un lock di riga incompatibile, mentre `SKIP LOCKED` salta quella riga. Le due opzioni non evitano la necessità di prendere il lock di tabella. `SET LOCAL lock_timeout` limita l'attesa per ogni acquisizione nella transazione; `statement_timeout` limita invece la durata dell'istruzione. `deadlock_timeout` avvia la verifica di un possibile ciclo, non impone la durata massima di ogni attesa.
+- Per diagnosticare, parti da `pg_blocking_pids(pid)` e da `pg_stat_activity`; usa `pg_locks` per le risorse coinvolte. I lock di riga sono registrati soprattutto nelle tuple: chi attende può comparire in `pg_locks` come in attesa dell'ID di una transazione, non come elenco di tutte le righe bloccate.
 
----
+## Advisory lock
+
+Per impedire che due processi cooperanti avviino contemporaneamente lo stesso report, scegli una coppia di chiavi documentata (qui famiglia 8602, report 1). Non serve una tabella. Prova in un database di laboratorio con la coppia libera.
+
+**A:** tieni aperta la transazione. La funzione `try` restituisce `true` se ha acquisito il lock e non aspetta se è occupato.
+
+```sql
+BEGIN;
+SELECT pg_try_advisory_xact_lock(8602, 1);
+```
+
+**B, in autocommit:** mentre A è aperta restituisce `false`. Dopo che A ha eseguito il `ROLLBACK` seguente, ripeti la stessa query in B: restituisce `true` e il lock di B termina con l'istruzione.
+
+```sql
+SELECT pg_try_advisory_xact_lock(8602, 1);
+```
+
+**A, rilascio:**
+
+```sql
+ROLLBACK;
+```
+
+Un lock `..._xact_lock` dura fino alla fine della transazione. Un lock di **sessione** (`pg_advisory_lock` o `pg_try_advisory_lock`) invece sopravvive al rollback: va rilasciato con `pg_advisory_unlock` per ogni acquisizione, oppure termina chiudendo la connessione. Con un pool un lock di sessione dimenticato può restare sulla connessione riutilizzata.
+
+**Fonti PostgreSQL 18:** [lock espliciti, deadlock e lock consultivi](https://www.postgresql.org/docs/18/explicit-locking.html), [funzioni di amministrazione](https://www.postgresql.org/docs/18/functions-admin.html), [SELECT e clausole di locking](https://www.postgresql.org/docs/18/sql-select.html).
 
 ## Collegamenti
 
+- [[Programmazione/PostgreSQL/Indice PostgreSQL|Indice PostgreSQL]]
 - [[Programmazione/PostgreSQL/Pagine/Lock monitoring|Lock monitoring]]
 - [[Programmazione/PostgreSQL/Pagine/MVCC|MVCC]]
 - [[Programmazione/PostgreSQL/Pagine/Livelli di Isolamento delle Transazioni|Livelli di Isolamento delle Transazioni]]
-
-## Fonti
-
-- [PostgreSQL - Explicit Locking](https://www.postgresql.org/docs/current/explicit-locking.html)
-- [PostgreSQL - pg_locks](https://www.postgresql.org/docs/current/view-pg-locks.html)
-
-
-## Navigazione
-
-- [[Programmazione/PostgreSQL/Indice PostgreSQL|Indice PostgreSQL]]

@@ -8,6 +8,48 @@ Mantieni solo le ultime 10 voci operative.
 
 ---
 
+## 2026-11-25 - PostgreSQL: completate le note principali e i promemoria
+
+### Fatto
+
+- Revisionate le quattro note iniziali: sessioni e pool, ruoli dei processi e attese, memoria e piani di ordinamento, percorsi fisici e dimensioni. Fonti PostgreSQL 18 e PgBouncer nelle note.
+- Verificati i dieci blocchi SQL su PostgreSQL 18.7 in un cluster temporaneo: sei prove superate. Build Quartz e controlli strutturali senza errori; i dettagli sono nel registro completo.
+- Completate anche le cinque note di Setup e Amministrazione Base. Otto nuove prove su configurazione, ruoli, script e schemi: regressione cumulativa **14/14**.
+- Revisionate le sei note rimanenti di SQL Fondamentale. Dieci nuove prove sui risultati e sugli errori SQL attesi; suite cumulativa **24/24**. Il rimando JSON e JSONB ora raggiunge il paragrafo della nota sui tipi.
+- Completate le quattro note di Modellazione Dati. Eseguiti tutti i nove blocchi SQL: otto nuove prove, **32/32** complessive su PostgreSQL 18.7.
+- Revisionate le sette note di SQL Avanzato: 15 blocchi SQL e 12 nuove prove, **44/44** complessive. Esempi con pareggi, cicli, scritture senza righe restituite, refresh e ricerca italiana.
+- Completate le cinque note su integrità e logica di business: audit effettivo, regole di riscrittura, scorte positive, procedure e privilegi, estensioni per database. Dieci nuove prove, **54/54** complessive.
+- Completate le quattro note su ACID, MVCC, isolamento e lock; nove nuove prove, **63/63** complessive. Le voci Deadlock e Advisory lock dell'indice portano ai rispettivi paragrafi.
+- Revisionate le cinque note di Performance e Query Planning: indici, EXPLAIN, statistiche e manutenzione. Eseguiti i 16 blocchi SQL e dieci nuove prove, **73/73** complessive.
+- Completato Storage, WAL e Manutenzione: revisionate WAL, Fillfactor e Tablespace, integrata la sezione TOAST nel layout dei file. Sei nuovi test, **79/79** complessivi; nessuna simulazione di crash o PITR.
+- Revisionate le sette note di Scalabilità e alta affidabilità. Verificate replica fisica e logica tra istanze temporanee e selezione del writer con libpq: cinque nuove prove, **84/84** complessive su PostgreSQL 18.7.
+- Completate le sei note di Sicurezza: ruoli, RLS, TLS, audit, segreti ed estensioni. Verificati accessi consentiti e negati, isolamento tra tenant, rotazione delle credenziali e identità TLS. Suite complessiva **90/90**.
+- Revisionate le tre note rimanenti di Osservabilità e troubleshooting. L'indice ora porta alle sezioni per sessioni, statement aggregati e EXPLAIN in produzione. Sei nuove prove su log reali, lock e contatori.
+- Completate le quattro note di Backup, migrazioni e operatività e integrata la prova PITR nella nota WAL. Ripristinati tre formati di dump e verificato un recupero a punto nominato su una copia fisica.
+- Completate le quattro note di Estensioni e funzionalità e aggiunte le sezioni PostGIS e pgvector nella nota generale già conteggiata. Verificati i tre moduli esterni, gli UUID, i permessi FDW e il consumo degli eventi logici.
+- Revisionate le ultime cinque note di Integrazione applicativa: esempi Psycopg e SQLAlchemy, transizione atomica con outbox, deduplica e recupero dei job con token di tentativo. Il rimando al pooling riutilizza la sezione sul dimensionamento.
+- Completato il capitolo Query dei promemoria PostgreSQL: sei schede con dati di prova e risultati attesi; tutti i 41 blocchi SQL sono stati eseguiti su PostgreSQL 18.7 e confrontati con l'HTML di Quartz.
+- Completati anche i quattro promemoria Tipi e funzioni. Verificati 28 blocchi SQL, inclusi i casi senza corrispondenze delle regex, il cambio d'ora di Roma e la distinzione fra chiave assente e null JSON.
+- Completati i tre promemoria Struttura e prestazioni: 30 blocchi verificati su PostgreSQL 18.7 e nell'HTML di Quartz. Provati vincoli differiti, piani stimati ed effettivi, prenotazione e osservazione dei lock fra sessioni.
+- Completate anche le due schede Gestione: policy RLS provate con ruoli non proprietari e dump custom/plain ripristinati in due database separati. I quattro capitoli dei promemoria passano insieme (16/16 test).
+
+### Prossimi passi
+
+- **72/72 note principali PostgreSQL e 15/15 promemoria** revisionati tecnicamente. Tutte le schede compaiono nel rispettivo indice; nessuna ulteriore scheda PostgreSQL in attesa di questo passaggio. L'approvazione personale dell'utente rimane separata.
+
+## 2026-11-24 - Rust: completata la revisione dei promemoria
+
+### Fatto
+
+- Revisionati tutti i sette promemoria del capitolo Linguaggio. Gli esempi sono indipendenti; la teoria resta nelle note collegate.
+- Eseguiti i 33 blocchi Rust e verificati tre casi che devono essere rifiutati dal compilatore. Dettagli nel registro di revisione e nel README dei test.
+- Revisionati anche Iteratori, Generics e trait, Lifetime e Smart pointer: 22 esempi eseguiti e quattro casi negativi. La suite cumulativa copre 55 esempi eseguibili e sette diagnostici.
+- Concluso Sistema e progetto: I/O e JSON, moduli e feature Cargo, thread e Tokio, test e qualità. Le due suite dei promemoria passano insieme offline (24/24).
+
+### Prossimi passi
+
+- Nessun promemoria Rust in attesa di questa revisione tecnica (15/15); lo stato di approvazione personale delle note rimane separato.
+
 ## 2026-11-23 - Rust: completate le note principali
 
 ### Fatto
@@ -151,51 +193,3 @@ Mantieni solo le ultime 10 voci operative.
 ### Prossimi passi
 
 - Iniziare **Rust di Sistema** da **FFI**. I promemoria restano separati dal conteggio.
-
-## 2026-11-18 - Rust: completato Macros
-
-### Fatto
-
-- Revisionate **6/6** note del capitolo, fino a **Hygiene**: **114/183** note principali Rust, **69 restanti**; promemoria separati.
-- Nella quarta nota il pass-through route e sostituito da un attributo compilabile che inserisce un hook. Esempio con generics, ritorno anticipato e operatore ?; routing e tracing restano distinti dal demo.
-- Quindici nuovi casi estratti dalla nota o costruiti come chiamanti di prova; regressione con Derive macros **55/55**, senza skip. Prove offline su Rust 1.99.1, edition 2024, Windows GNU.
-- Function-like: il parser sql! genera un letterale Rust; hashmap! distingue lista vuota da virgola isolata. Verificati entrambi i programmi e le rispettive diagnostiche. **15/15** casi nuovi, **30/30** con la regressione su Attribute macros.
-- Hygiene: verificati il nome introdotto dal chiamante, la risoluzione con `$crate` e la cattura di una variabile con `call_site()` rispetto a `mixed_site()`. **10/10** casi nuovi.
-- **911 documenti raggiungibili, zero errori, 281 avvisi editoriali**; trasformazione **9/9**. Dettagli delle note precedenti nel registro completo.
-
-### Decisioni
-
-- Conservati frontmatter, pubblicabilita e percorso. Nessuna nuova dipendenza del sito, nessun commit, push o deploy remoto.
-- Verificati gli effetti runtime promessi dal demo, inclusi primo poll, ripresa dopo Pending e ordine di due attributi. I framework citati non sono stati eseguiti.
-
-### Prossimi passi
-
-- Proseguire con **Unsafe Rust**, prima nota del capitolo **Unsafe Rust in Profondita**.
-- Restano lo scroll iniziale Explorer e i rilievi sugli helper rustdoc di Builder pattern, prestazioni ed Extension traits, incluso count_where.
-
-## 2026-11-17 - Rust: completato Compile-Time e Type-Level Programming
-
-### Fatto
-
-- Revisionate le note da **const e static** a **Zero-sized types**: **8/8** del capitolo, **108/183** note principali Rust, **75 restanti**; promemoria separati.
-- Risultati delle prime sette note conservati nel registro completo.
-- ZST: dimensione distinta da allineamento, costi, ownership e abitabilita; quattro programmi completi e due compile-fail.
-- Precisati padding, marker JSON/TOML senza serializzazione, metadati Vec/Box, distruttori, riferimenti e indirizzi, Void e contenitori vuoti.
-- Nuova suite **37/37**, **17,9 secondi**; regressione con Typestate **83/83**, **40,2 secondi**, zero fallimenti/skip.
-- **911 documenti raggiungibili, zero errori, 287 avvisi editoriali**; trasformazione **9/9**.
-- Build completa: **3719 file, 2003 HTML, 168 redirect, 144025 riferimenti**, zero errori, circa tre minuti; **7/7 test HTTP**. Avvisi noti su eval e copia temporanea senza Git invariati.
-- Chrome 157 desktop/mobile: otto screenshot ispezionati, tabella a 326 px mobile, cinque blocchi con scorrimento locale; nessun overflow del documento o errore JavaScript. Scroll iniziale Explorer ancora presente: 812 px desktop, 0 mobile.
-- README e registro aggiornati; storico consolidato a dieci voci.
-
-### Decisioni
-
-- Rust 1.99.1, edition 2024, Windows GNU, Node 24.14.0; sola standard library, nessuna installazione o dipendenza aggiunta.
-- Frontmatter invariato, incluso status non revisionato; nessun cambio a indice, percorsi o redirect.
-- Un compilatore/target, niente matrice MSRV/edition, nightly, Miri, benchmark, assembly o FFI. Totale 79 suite Rust; altre 77 e altri linguaggi non rieseguiti.
-- Nessun allocator strumentato, file, rete o serializzazione reale. Nessuna prova di abort/uscita del processo o thread aggiuntivi; sonde Drop limitate al flusso controllato.
-- Browser/server temporanei chiusi. Prettier e git diff --check superati. Nessun commit, push o deploy remoto.
-
-### Prossimi passi
-
-- Aprire **Macros** con **Macro dichiarative**, letta come contesto ma non revisionata: matcher, ripetizioni, valutazione, edition, hygiene ed esportazione.
-- Restano lo scroll iniziale Explorer e i rilievi sugli helper rustdoc di Builder pattern, prestazioni ed Extension traits, incluso count_where.

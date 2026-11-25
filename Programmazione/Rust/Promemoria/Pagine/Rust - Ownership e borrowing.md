@@ -15,114 +15,78 @@ aliases:
   - Cheatsheet ownership Rust
 prerequisites: []
 related:
-  - "[[Programmazione/Rust/Pagine/Ownership]]"
-  - "[[Programmazione/Rust/Pagine/References e Borrowing]]"
+  - "[[Programmazione/Rust/Pagine/Ownership|Ownership]]"
+  - "[[Programmazione/Rust/Pagine/References e Borrowing|References e Borrowing]]"
 title: Rust - Ownership e borrowing
 ---
 
 # Rust - Ownership e borrowing
 
-## Move
+Scegli se trasferire, duplicare o prestare un valore. Ogni blocco è indipendente e va nel corpo di `fn main()`.
+
+## Move, Clone e Copy
 
 ```rust
 let first = String::from("hello");
-let second = first;
+let second = first;          // move: first non è più utilizzabile
+let mut copy = second.clone();
+copy.push('!');
+assert_eq!(second, "hello");
+assert_eq!(copy, "hello!");
 
-// first non e piu utilizzabile
+let a = 42_i32;
+let b = a;                   // Copy: anche a resta utilizzabile
+assert_eq!(a, b);
 ```
 
-## Clone
+## Scegliere la firma
+
+| Necessità | Esempio |
+| --- | --- |
+| Leggere senza acquisire il testo | `fn byte_len(s: &str) -> usize` |
+| Modificare in-place senza ridimensionare | `fn lower(s: &mut str)` |
+| Conservare o trasformare il testo posseduto | `fn lower_owned(s: String) -> String` |
+| Creare testo indipendente dal chiamante | `fn name() -> String` |
 
 ```rust
-let first = String::from("hello");
-let second = first.clone();
-```
-
-## Copy
-
-```rust
-let first = 42;
-let second = first;
-
-println!("{first} {second}");
-```
-
-I tipi che implementano `Copy` vengono copiati implicitamente.
-
-## Prestito immutabile
-
-```rust
-fn length(value: &str) -> usize {
-    value.len()
+fn byte_len(s: &str) -> usize { s.len() }
+fn lower(s: &mut str) { s.make_ascii_lowercase(); }
+fn name() -> String { String::from("ADA") }
+fn lower_owned(mut s: String) -> String {
+    lower(&mut s);
+    s
 }
-
-let name = String::from("Ada");
-let size = length(&name);
+let mut text = name();
+assert_eq!(byte_len(&text), 3);
+lower(&mut text);
+assert_eq!(text, "ada");
+let result = lower_owned(text);
+assert_eq!(result, "ada");
 ```
 
-## Prestito mutabile
+## Prestiti e reborrow
 
 ```rust
-fn normalize(value: &mut String) {
-    value.make_ascii_lowercase();
+fn add_dot(s: &mut String) { s.push('.'); }
+fn finish(s: &mut String) {
+    add_dot(&mut *s); // prestito temporaneo del valore già prestato
+    s.push('!');      // il prestito di add_dot è finito
 }
-
-let mut name = String::from("ADA");
-normalize(&mut name);
+let mut text = String::from("ok");
+let view = &text;
+assert_eq!(view, "ok"); // ultimo uso di view
+finish(&mut text);
+assert_eq!(text, "ok.!");
 ```
 
-## Regola rapida
+Sul **medesimo dato**, più prestiti condivisi oppure uno esclusivo mentre sono in uso. Non usare `view` dopo la chiamata mutabile: ne prolungheresti il prestito. Teoria: [[Programmazione/Rust/Pagine/Borrow checker|Borrow checker]].
 
-Nello stesso intervallo:
+## Collegamenti
 
-- piu riferimenti `&T`; oppure
-- un solo riferimento `&mut T`.
-
-## Restituire ownership
-
-```rust
-fn create_name() -> String {
-    String::from("Ada")
-}
-```
-
-## Consumare e restituire
-
-```rust
-fn normalize(mut value: String) -> String {
-    value.make_ascii_lowercase();
-    value
-}
-```
-
-## Reborrow
-
-```rust
-fn update(value: &mut String) {
-    helper(&mut *value);
-    value.push('!');
-}
-```
-
-## Copia o prestito
-
-| Necessita | Scelta |
-|---|---|
-| Solo leggere | `&T` |
-| Modificare | `&mut T` |
-| Conservare il valore | `T` |
-| Duplicare intenzionalmente | `clone()` |
-
-## Approfondimento
-
+- [[Programmazione/Rust/Promemoria/Indice Promemoria Rust|Indice Promemoria Rust]]
 - [[Programmazione/Rust/Pagine/Ownership|Ownership]]
 - [[Programmazione/Rust/Pagine/References e Borrowing|References e Borrowing]]
 - [[Programmazione/Rust/Pagine/Borrow checker|Borrow checker]]
 - [[Programmazione/Rust/Pagine/Move semantics|Move semantics]]
 - [[Programmazione/Rust/Pagine/Copy e Clone|Copy e Clone]]
 - [[Programmazione/Rust/Pagine/Aliasing rules|Aliasing rules]]
-
-
-## Navigazione
-
-- [[Programmazione/Rust/Promemoria/Indice Promemoria Rust|Indice Promemoria Rust]]

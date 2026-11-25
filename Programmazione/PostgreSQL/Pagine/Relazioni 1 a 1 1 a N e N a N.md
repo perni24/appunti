@@ -19,86 +19,67 @@ title: Relazioni 1 a 1, 1 a N e N a N
 
 ## Sintesi
 
-Le relazioni descrivono come le entita del dominio si collegano: uno-a-uno, uno-a-molti e molti-a-molti. In PostgreSQL si modellano con primary key, foreign key e tabelle ponte.
+Per modellare una relazione servono **due domande, una per direzione**: a quante righe di B può corrispondere una riga di A? E quante sono obbligatorie? Dire «uno a uno» senza specificare il minimo non distingue un profilo facoltativo da un profilo richiesto.
 
-## Quando usarlo
+| Regola del dominio | Vincolo che la realizza | Cosa rimane possibile |
+| --- | --- | --- |
+| Un socio ha al massimo un profilo; ogni profilo appartiene a un socio | La PK del profilo è anche una FK verso il socio | Un socio senza profilo |
+| Un socio può avere più incarichi; ogni incarico ha un socio | FK `NOT NULL` sul lato **incarichi**, senza `UNIQUE` | Un socio con zero incarichi |
+| Un socio può aderire a più circoli e viceversa | Tabella iscrizioni con due FK e PK sulla coppia | Un socio o un circolo senza iscrizioni |
 
-Serve durante progettazione schema, normalizzazione, definizione foreign key e scrittura di join.
+## Esempio: soci, profili e iscrizioni
 
-## Come funziona
-
-Una relazione 1:1 usa una foreign key unica. Una relazione 1:N mette la foreign key sul lato molti. Una relazione N:N richiede una tabella ponte con due foreign key.
-
-## API / Sintassi
-
-1:N:
+Esegui i due blocchi nella stessa sessione. La cancellazione di un socio elimina profilo e iscrizioni, che dipendono da lui; la presenza di un incarico impedisce invece di eliminarlo prima di riassegnare o chiudere l'incarico (in questo esempio, rimuoverne la riga).
 
 ```sql
-CREATE TABLE customers (
-  id bigint GENERATED ALWAYS AS IDENTITY PRIMARY KEY
+BEGIN;
+CREATE TEMP TABLE lab_members (id integer PRIMARY KEY, name text NOT NULL);
+CREATE TEMP TABLE lab_profiles (
+  member_id integer PRIMARY KEY REFERENCES lab_members ON DELETE CASCADE,
+  nickname text NOT NULL
 );
-
-CREATE TABLE orders (
-  id bigint GENERATED ALWAYS AS IDENTITY PRIMARY KEY,
-  customer_id bigint NOT NULL REFERENCES customers(id)
+CREATE TEMP TABLE lab_tasks (
+  id integer PRIMARY KEY,
+  member_id integer NOT NULL REFERENCES lab_members ON DELETE RESTRICT
 );
+CREATE TEMP TABLE lab_clubs (id integer PRIMARY KEY, name text NOT NULL);
+CREATE TEMP TABLE lab_memberships (
+  member_id integer REFERENCES lab_members ON DELETE CASCADE,
+  club_id integer REFERENCES lab_clubs ON DELETE CASCADE,
+  joined_on date NOT NULL,
+  PRIMARY KEY (member_id, club_id)
+);
+INSERT INTO lab_members VALUES (1, 'Ada'), (2, 'Lia'), (3, 'Teo');
+INSERT INTO lab_profiles VALUES (1, 'ada1');
+INSERT INTO lab_tasks VALUES (10, 1), (11, 1);
+INSERT INTO lab_clubs VALUES (7, 'Lettura'), (8, 'Musica');
+INSERT INTO lab_memberships VALUES
+  (1, 7, DATE '2026-05-01'), (1, 8, DATE '2026-05-02'), (2, 7, DATE '2026-05-03');
 ```
-
-N:N:
 
 ```sql
-CREATE TABLE users_roles (
-  user_id bigint REFERENCES users(id),
-  role_id bigint REFERENCES roles(id),
-  PRIMARY KEY (user_id, role_id)
-);
+SELECT m.name, p.nickname,
+       (SELECT count(*) FROM lab_tasks AS t WHERE t.member_id = m.id) AS tasks,
+       (SELECT count(*) FROM lab_memberships AS s WHERE s.member_id = m.id) AS clubs
+FROM lab_members AS m LEFT JOIN lab_profiles AS p ON p.member_id = m.id
+ORDER BY m.id;
+ROLLBACK;
 ```
 
-## Esempio pratico
+Ada ha profilo `ada1`, due incarichi e due iscrizioni. Lia non ha profilo né incarichi, ma ha un'iscrizione; Teo non ha nessuno dei tre. Contare incarichi e iscrizioni **separatamente** evita di ottenere quattro combinazioni per Ada: un unico join sui due insiemi di figli moltiplicherebbe le righe prima del conteggio.
 
-Utente e profilo 1:1:
+## Limiti e varianti
 
-```sql
-CREATE TABLE user_profiles (
-  user_id bigint PRIMARY KEY REFERENCES users(id),
-  display_name text NOT NULL
-);
-```
+- **Profilo obbligatorio in entrambe le direzioni:** la PK condivisa impedisce un secondo profilo ma non intercetta l'inserimento di un socio senza profilo. Se i dati hanno lo stesso ciclo di vita, metti i campi davvero obbligatori nella tabella dei soci con `NOT NULL`.
+- **Dati della relazione:** `joined_on` descrive l'iscrizione, non il socio né il circolo. La PK sulla coppia vieta un secondo record anche con data diversa. Per conservare uscite e reiscrizioni, modella periodi distinti e decidi se vietarne la sovrapposizione: una PK sulla coppia da sola non rappresenta uno storico.
+- **Relazione ricorsiva:** una FK nullable `manager_id` sulla stessa tabella consente persone senza responsabile e impedisce riferimenti inesistenti. Non rileva cicli nella gerarchia.
+- **Indici e navigazione:** la PK `(member_id, club_id)` supporta la ricerca dei circoli di un socio. Se cerchi spesso tutti i soci di un circolo, valuta anche un indice che inizi da `club_id`. Una lista testuale di ID non offre le stesse garanzie delle due FK.
 
-La primary key su `user_id` impedisce piu profili per lo stesso utente.
-
-## Varianti
-
-- 1:1 obbligatoria.
-- 1:1 opzionale.
-- 1:N classica.
-- N:N con tabella ponte.
-- Tabella ponte con attributi aggiuntivi.
-- Relazione ricorsiva, per esempio manager/dipendente.
-
-## Errori comuni
-
-- Salvare liste di ID in una colonna testuale.
-- Modellare N:N senza tabella ponte.
-- Dimenticare indici sulle foreign key.
-- Usare `ON DELETE CASCADE` senza valutare effetti.
-- Confondere relazione opzionale con `NOT NULL`.
-
-## Checklist
-
-- La cardinalita e chiara?
-- La foreign key e sul lato corretto?
-- Le relazioni N:N hanno tabella ponte?
-- Le policy `ON DELETE` sono esplicite?
-- Le foreign key usate in join sono indicizzate?
+**Fonte:** [PostgreSQL 18: vincoli e tabelle molti-a-molti](https://www.postgresql.org/docs/18/ddl-constraints.html#DDL-CONSTRAINTS-FK).
 
 ## Collegamenti
 
+- [[Programmazione/PostgreSQL/Indice PostgreSQL|Indice PostgreSQL]]
 - [[Programmazione/PostgreSQL/Pagine/Normalizzazione|Normalizzazione]]
 - [[Programmazione/PostgreSQL/Pagine/Chiavi primarie e foreign key|Chiavi primarie e foreign key]]
 - [[Programmazione/PostgreSQL/Pagine/JOIN|JOIN]]
-
-
-## Navigazione
-
-- [[Programmazione/PostgreSQL/Indice PostgreSQL|Indice PostgreSQL]]

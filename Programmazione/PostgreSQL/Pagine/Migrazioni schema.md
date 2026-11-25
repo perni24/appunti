@@ -19,75 +19,72 @@ title: Migrazioni schema
 
 ## Sintesi
 
-Le migrazioni schema modificano struttura, vincoli, indici e dati tecnici del database in modo versionato e ripetibile.
+Una migrazione porta il database da uno stato noto a quello richiesto dalla prossima versione. Prima di distribuire DDL, chiediti separatamente **quanto dura il lavoro**, **quale lock richiede** e **quale versione dell'app può ancora scrivere**. Una modifica veloce su una tabella vuota può aspettare a lungo un lock in produzione.
 
-## Quando usarlo
+## Laboratorio: introdurre un vincolo su dati esistenti
 
-Serve per evolvere schema applicativo, aggiungere colonne, creare indici, cambiare vincoli, modificare funzioni o preparare deploy.
-
-## Come funziona
-
-Una migrazione e uno script ordinato. Gli strumenti di migrazione registrano quali migrazioni sono state applicate. In produzione bisogna considerare lock, durata, compatibilita con versione precedente dell'app e rollback.
-
-## API / Sintassi
-
-Esempi:
+Database di prova, con `psql` in autocommit e come proprietario degli oggetti. Esegui i blocchi in ordine. Usiamo volutamente un dato storico non valido per distinguere l'installazione del vincolo dalla sua validazione.
 
 ```sql
-ALTER TABLE users ADD COLUMN last_login_at timestamptz;
-CREATE INDEX CONCURRENTLY users_last_login_at_idx ON users (last_login_at);
+CREATE TABLE lab_mig_orders (id integer PRIMARY KEY, amount integer NOT NULL);
+INSERT INTO lab_mig_orders VALUES (1, 20), (2, -5);
 ```
-
-Vincolo non validato:
 
 ```sql
-ALTER TABLE orders
-ADD CONSTRAINT orders_total_positive CHECK (total_amount > 0) NOT VALID;
-
-ALTER TABLE orders VALIDATE CONSTRAINT orders_total_positive;
+BEGIN;
+SET LOCAL lock_timeout = '2s';
+ALTER TABLE lab_mig_orders ADD CONSTRAINT lab_amount_positive
+  CHECK (amount > 0) NOT VALID;
+COMMIT;
 ```
 
-## Esempio pratico
+Il secondo blocco non scansiona lo storico, ma deve acquisire il lock del DDL. Da questo momento le **nuove** righe e quelle aggiornate devono rispettare il check. `INSERT` con un importo negativo fallisce; la riga storica con `id=2` è ancora presente. `NOT VALID` non significa «vincolo spento».
 
-Aggiunta colonna compatibile:
+```sql
+SELECT id, amount FROM lab_mig_orders WHERE amount <= 0;
+```
 
-1. Aggiungi colonna nullable.
-2. Deploy app che scrive nuova colonna.
-3. Backfill a batch.
-4. Aggiungi vincolo `NOT NULL` quando i dati sono pronti.
+Se provassi a validare adesso, PostgreSQL rifiuterebbe la validazione. Nel laboratorio sappiamo che l'importo corretto per l'ordine 2 è 5. Nella realtà occorre una regola di dominio, non una correzione numerica arbitraria.
 
-## Varianti
+```sql
+UPDATE lab_mig_orders SET amount = 5 WHERE id = 2 AND amount = -5;
+```
 
-- Migrazioni DDL.
-- Migrazioni dati.
-- Backfill.
-- Indici concorrenti.
-- Vincoli `NOT VALID`.
-- Migrazioni reversibili e irreversibili.
+```sql
+ALTER TABLE lab_mig_orders VALIDATE CONSTRAINT lab_amount_positive;
+```
 
-## Errori comuni
+```sql
+SELECT convalidated FROM pg_constraint
+WHERE conrelid = 'lab_mig_orders'::regclass AND conname = 'lab_amount_positive';
+```
 
-- Eseguire DDL bloccante in orario di picco.
-- Aggiungere colonna `NOT NULL DEFAULT` senza valutare lock/versione.
-- Creare indici senza `CONCURRENTLY` su tabelle grandi.
-- Non testare migrazioni su dati realistici.
-- Mescolare deploy app e schema senza compatibilita.
+Atteso `true`. Validare in una **transazione successiva** evita di trattenere il lock più forte della fase iniziale durante la scansione. La validazione di questo check prende `SHARE UPDATE EXCLUSIVE`: permette il normale DML, ma può contendere risorse e lock con altre manutenzioni. `lock_timeout` limita l'attesa di un lock, non il costo totale della scansione.
 
-## Checklist
+## Indici e modifiche di colonne
 
-- La migrazione e compatibile con la versione app precedente?
-- I lock sono noti?
-- Gli indici su tabelle grandi usano `CONCURRENTLY`?
-- Esiste piano di rollback?
-- Il backfill e a batch?
+Solo nel database di prova, **fuori da un blocco di transazione**:
+
+```sql
+CREATE INDEX CONCURRENTLY lab_mig_amount_idx ON lab_mig_orders (amount);
+```
+
+```sql
+SELECT indisready, indisvalid FROM pg_index
+WHERE indexrelid = 'lab_mig_amount_idx'::regclass;
+```
+
+Attesi due `true`. La creazione concorrente permette scritture durante la costruzione, ma richiede più lavoro e può attendere altre transazioni. Se fallisce può restare un indice invalido: controlla il catalogo e pianifica la rimozione o ricostruzione, non un nuovo tentativo cieco con `IF NOT EXISTS`. Con un runner che racchiude ogni file in una transazione, pianifica questo passo separatamente.
+
+Per aggiungere una colonna, un default non volatile può evitare di riscrivere ogni riga su PostgreSQL 18; questo **non** elimina il lock del DDL. Per dati derivati da altre colonne, introduci prima il campo compatibile, aggiorna a batch e applica i vincoli solo quando tutte le versioni che scrivono rispettano il nuovo contratto. Verifica sia l'upgrade da dati reali sia l'avvio su schema vuoto.
+
+## Fonti
+
+[PostgreSQL 18: ALTER TABLE e validazione](https://www.postgresql.org/docs/18/sql-altertable.html) · [Creazione concorrente degli indici](https://www.postgresql.org/docs/18/sql-createindex.html#SQL-CREATEINDEX-CONCURRENTLY) · [Modifiche alle tabelle](https://www.postgresql.org/docs/18/ddl-alter.html)
 
 ## Collegamenti
 
+- [[Programmazione/PostgreSQL/Indice PostgreSQL|Indice PostgreSQL]]
 - [[Programmazione/PostgreSQL/Pagine/Strategie zero-downtime|Strategie zero-downtime]]
 - [[Programmazione/PostgreSQL/Pagine/Versionamento database|Versionamento database]]
 - [[Programmazione/PostgreSQL/Pagine/Lock monitoring|Lock monitoring]]
-
-
-## Navigazione
-
-- [[Programmazione/PostgreSQL/Indice PostgreSQL|Indice PostgreSQL]]

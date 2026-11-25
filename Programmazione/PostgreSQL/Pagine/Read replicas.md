@@ -20,86 +20,59 @@ title: Read replicas
 
 ## Sintesi
 
-Le **read replicas** sono repliche usate per servire traffico di lettura, isolare query pesanti e ridurre carico sul primario. Di solito sono basate su replica fisica.
+Uno standby fisico in *hot standby* può rispondere a query in sola lettura usando il WAL **già applicato**. Spostare un report sullo standby alleggerisce il primario, ma non garantisce che il report veda l'ultima scrittura né che possa terminare senza interruzioni.
 
-## Quando usarlo
+## Decidere dove leggere
 
-Usale quando:
+| Operazione | Destinazione ragionevole | Perché |
+| --- | --- | --- |
+| Conferma di un ordine appena salvato | Primario, in una nuova transazione dopo il commit | L'utente deve ritrovare la propria scrittura |
+| Dashboard con tolleranza al ritardo | Replica monitorata | Una versione precedente è accettabile entro il limite del servizio |
+| Report lungo | Replica dedicata se necessario | Le query possono confliggere con il replay; separala dal candidato HA se gli obiettivi divergono |
 
-- il primario e saturo da query di lettura;
-- report e dashboard interferiscono con scritture;
-- vuoi eseguire backup senza caricare il primario;
-- serve un nodo caldo per failover;
-- l'applicazione tollera letture leggermente stale.
+## Distinguere ricezione, replay e inattività
 
-## Come funziona
-
-Il primario riceve scritture. Le repliche applicano WAL o eventi logici e rispondono a query read-only. Poiche la replica puo essere asincrona, le letture possono essere in ritardo rispetto al primario.
-
-L'applicazione deve sapere quali query possono andare in replica. Le query che devono leggere subito una scrittura appena fatta dovrebbero restare sul primario o verificare il lag.
-
-## API / Sintassi
-
-Verificare se il nodo e una replica:
+Esegui sullo **standby fisico**, non sul subscriber di una publication:
 
 ```sql
-SELECT pg_is_in_recovery();
+SELECT pg_is_in_recovery() AS standby,
+       pg_wal_lsn_diff(pg_last_wal_receive_lsn(), pg_last_wal_replay_lsn())
+         AS byte_ricevuti_non_applicati,
+       pg_last_xact_replay_timestamp() AS ultimo_commit_o_abort_applicato;
 ```
 
-Lag sulla replica:
+La differenza misura due posizioni **locali** in condizioni di streaming normali: non misura il WAL ancora sul primario. Zero può significare che tutto il WAL *ricevuto* è stato applicato, anche se la connessione è caduta. Il timestamp descrive l'ultima transazione riprodotta: se il primario è inattivo può invecchiare su una replica perfettamente allineata. `NULL` significa misura non disponibile.
+
+## Esempio: garantire una lettura dopo scrittura
+
+1. Scrivi e conferma sul primario. Nella stessa connessione, **dopo** il commit, acquisisci una posizione obiettivo:
 
 ```sql
-SELECT now() - pg_last_xact_replay_timestamp() AS replica_lag;
+SELECT pg_current_wal_lsn() AS obiettivo;
 ```
 
-Bloccare scritture applicative su replica e naturale: lo standby accetta solo query read-only.
+2. Sulla replica scelta, nella stessa storia WAL, confronta la posizione applicata con l'obiettivo. Qui `psql` chiede il valore del passo precedente; in applicazione passalo come parametro di tipo `pg_lsn`.
 
-## Esempio pratico
-
-Routing applicativo:
-
-```text
-POST /orders       -> primary
-GET /orders/123    -> primary se serve read-after-write
-GET /reports/sales -> read replica
+```psql
+\prompt 'LSN del primario: ' obiettivo
+SELECT pg_last_wal_replay_lsn() >= :'obiettivo'::pg_lsn AS pronto;
 ```
 
-Se il report e lungo, conviene mandarlo su replica per non competere con transazioni del primario.
+3. Se il risultato è `true`, apri **una nuova lettura** sulla stessa replica: uno snapshot precedente può ancora vedere dati vecchi. Se è `false` o `NULL`, attesa limitata oppure lettura sul writer corrente. La posizione può comprendere lavoro di altre sessioni: è una soglia sufficiente, non l'identificativo esatto dell'ordine.
 
-## Varianti
+Il laboratorio presume commit locale durevole (`synchronous_commit=on`) e nessun cambio di timeline tra i passi. Non riutilizzare alla cieca un token dopo un failover. `remote_apply` può attendere il replay sugli standby sincroni richiesti, non su qualunque replica raggiungibile dal bilanciatore.
 
-- Replica asincrona.
-- Replica sincrona.
-- Replica geografica.
-- Replica dedicata a reportistica.
-- Replica dedicata a backup.
-- Replica candidata al failover.
+## Errori operativi
 
-## Errori comuni
+Una query lunga può trattenere uno snapshot incompatibile con la pulizia già registrata nel WAL. Lo standby può cancellarla per proseguire il recovery: controlla `pg_stat_database_conflicts`. Aumentare l'attesa favorisce il report a scapito della freschezza; `hot_standby_feedback` può ridurre i conflitti da pulizia ma favorire righe morte sul primario. Un nodo aggiornato non sostituisce un backup indipendente.
 
-- Ignorare replica lag.
-- Usare replica per letture che richiedono consistenza immediata.
-- Lasciare query lunghissime sulla replica senza limiti.
-- Pensare che la replica sostituisca un backup.
-- Non distinguere endpoint read e write.
-- Non monitorare conflitti o replay ritardato.
+## Fonti
 
-## Checklist
-
-- L'applicazione tollera dati stale?
-- Il lag massimo accettabile e definito?
-- Esistono timeout per query analitiche?
-- Le scritture vanno sempre al primario?
-- La replica e monitorata?
-- I backup sono indipendenti dalla replica?
+[PostgreSQL 18: hot standby e conflitti](https://www.postgresql.org/docs/18/hot-standby.html) · [Funzioni di recovery e posizioni WAL](https://www.postgresql.org/docs/18/functions-admin.html) · [Replica sincrona](https://www.postgresql.org/docs/18/warm-standby.html#SYNCHRONOUS-REPLICATION)
 
 ## Collegamenti
 
+- [[Programmazione/PostgreSQL/Indice PostgreSQL|Indice PostgreSQL]]
 - [[Programmazione/PostgreSQL/Pagine/Replicazione Fisica|Replicazione Fisica]]
 - [[Programmazione/PostgreSQL/Pagine/Replicazione Logica|Replicazione Logica]]
 - [[Programmazione/PostgreSQL/Pagine/Failover e Load Balancing|Failover e Load Balancing]]
-
-
-## Navigazione
-
-- [[Programmazione/PostgreSQL/Indice PostgreSQL|Indice PostgreSQL]]
