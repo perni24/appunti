@@ -25,73 +25,35 @@ title: Funzioni piccole
 
 ## Sintesi
 
-Le **funzioni piccole** sono funzioni con uno scopo limitato, facili da leggere e verificare. Non sono piccole solo per numero di righe: sono piccole per carico cognitivo.
+Una funzione è abbastanza piccola quando chi legge può seguirne lo scopo senza tenere in mente dettagli estranei. Conta il lavoro necessario a ricostruire il flusso, non una soglia di righe. Una sequenza di più chiamate può già essere l'unità giusta.
 
-Una funzione piccola permette al lettore di capire rapidamente cosa succede.
+## Esempio: che cosa vale la pena estrarre?
 
-## Problema che risolve
-
-Funzioni lunghe tendono a mescolare:
-
-- validazione;
-- calcolo;
-- accesso dati;
-- gestione errori;
-- logging;
-- trasformazioni;
-- effetti collaterali.
-
-Questo rende difficile testare e modificare il comportamento.
-
-## Concetto chiave
-
-Una funzione piccola dovrebbe:
-
-- stare a un singolo livello di astrazione;
-- avere pochi motivi per cambiare;
-- avere input e output chiari;
-- nascondere dettagli solo quando il nome li spiega bene;
-- essere leggibile senza scorrere molto.
-
-Non esiste un numero magico di righe, ma una funzione che richiede molte spiegazioni e spesso troppo grande.
-
-## Dettagli importanti
-
-- Estrarre funzioni serve a nominare concetti.
-- Non estrarre funzioni solo per rispettare un limite numerico.
-- Troppe micro-funzioni senza nomi chiari peggiorano la lettura.
-- Le funzioni piccole facilitano test mirati.
-- Una funzione piccola puo comunque essere sbagliata se il nome e debole.
-
-## Esempio
-
-Funzione lunga:
+Al checkout si devono validare l'ordine, addebitare il totale e solo dopo inviare la ricevuta. Le righe contengono quantità positive e prezzi unitari in centesimi; non ci sono tasse o sconti nell'esempio. I servizi sono forniti dal chiamante.
 
 ```js
-function checkout(order) {
+function orderTotalCents(lines) {
+  return lines.reduce((sum, line) => sum + line.quantity * line.unitPriceCents, 0);
+}
+
+async function checkout(order, { validateOrder, chargePayment, sendReceipt }) {
   validateOrder(order);
-  const total = calculateTotal(order);
-  chargePayment(order.customer, total);
-  sendReceipt(order.customer);
+  const totalCents = orderTotalCents(order.lines);
+  const payment = await chargePayment(order.customer, totalCents);
+  await sendReceipt(order.customer, payment);
+  return payment;
 }
 ```
 
-Questa funzione e accettabile se resta orchestration ad alto livello. I dettagli stanno in funzioni nominate.
+`orderTotalCents` dà un nome a un calcolo con input e risultato propri. Lo puoi provare su due pezzi da 350 centesimi e uno da 100: il totale deve essere 800. `checkout` mantiene visibile l'ordine degli effetti. Estrarre `multiply(a, b)` solo per accorciare la riga del calcolo costringerebbe invece a seguire un altro rimando senza spiegare una regola.
 
-## Limiti
+## Dettagli importanti
 
-- Alcuni algoritmi sono piu leggibili se restano insieme.
-- Estrarre troppi passaggi puo nascondere il flusso.
-- Le funzioni piccole non risolvono design sbagliato.
-- In codice performance-critical l'estrazione va valutata.
+La validazione è sincrona e segnala un ordine non valido lanciando un errore; un addebito rifiutato impedisce l'invio. Se fallisce l'invio, l'addebito è **già avvenuto**: l'estrazione non rende atomiche le operazioni. Un checkout reale deve gestire recupero e tentativi ripetuti, non rilanciare l'intera sequenza alla cieca.
 
-## Errori comuni
+## Limiti ed errori comuni
 
-- Estrarre funzioni con nomi generici come `handleData`.
-- Creare funzioni piccole ma piene di side effects.
-- Mescolare livelli di astrazione.
-- Lasciare parametri globali impliciti.
-- Pensare che meno righe significhi sempre codice migliore.
+Tieni insieme passaggi brevi che condividono strettamente lo stato locale. Se l'helper richiede di passargli mezza funzione o si chiama `doStep2`, prova a lasciarlo in linea. Viceversa, un calcolo con un nome di dominio può meritare una funzione anche se occupa una sola riga.
 
 ## Collegamenti
 
@@ -104,4 +66,4 @@ Questa funzione e accettabile se resta orchestration ad alto livello. I dettagli
 ## Fonti
 
 - Robert C. Martin, *Clean Code*
-- Martin Fowler, *Refactoring*
+- Martin Fowler, [Extract Function](https://refactoring.com/catalog/extractFunction.html), con il rimando all’operazione inversa *Inline Function*.

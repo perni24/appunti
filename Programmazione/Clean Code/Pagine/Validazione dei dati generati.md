@@ -27,83 +27,38 @@ title: Validazione dei dati generati
 
 ## Sintesi
 
-La **validazione dei dati generati** controlla output prodotti da modelli, automazioni o trasformazioni prima che vengano usati come fonte affidabile.
+Un output conforme può citare la fonte sbagliata, inventare una frase o riportare correttamente poche parole che, nel contesto, significano il contrario. **Forma, tracciabilità e sostegno all'affermazione vanno verificati separatamente.** Nessuno di questi controlli conferisce il permesso di eseguire un'azione.
 
-Un dato generato non deve essere considerato corretto solo perche ha il formato giusto.
+## Esempio: controllare una proposta contro la sorgente
 
-## Quando usarlo
-
-- Quando un LLM produce JSON, codice, query o decisioni.
-- Quando uno script genera file o configurazioni.
-- Quando una pipeline trasforma dati provenienti da fonti esterne.
-- Quando output automatici vengono salvati in database.
-- Quando un errore generato puo produrre effetti reali.
-
-## Come funziona
-
-La validazione dovrebbe controllare:
-
-- forma;
-- tipi;
-- vincoli;
-- completezza;
-- coerenza con input;
-- permessi;
-- sicurezza;
-- eventuale revisione umana.
-
-La profondita della validazione dipende dal rischio.
-
-## API / Sintassi
-
-```text
-generated output -> schema validation -> business validation -> safe use
-```
-
-Lo schema controlla la struttura. Le regole applicative controllano se il contenuto ha senso.
-
-## Esempio pratico
+`proposal` è **già passato** dal [[Programmazione/Clean Code/Pagine/Output strutturati|parser v1]]. `passages` è lo stesso snapshot autorizzato e immutato fornito al modello, non una versione più recente né un documento scelto dal modello. Il verificatore non invia nulla e non aggiorna lo stato della consegna.
 
 ```js
-function validateGeneratedTask(task) {
-  if (typeof task.title !== "string" || task.title.length === 0) {
-    return { ok: false, error: "title_required" };
-  }
-
-  if (!["low", "medium", "high"].includes(task.priority)) {
-    return { ok: false, error: "invalid_priority" };
-  }
-
-  return { ok: true, value: task };
+function checkEvidence(proposal, passages) {
+  const { passageId, quote } = proposal;
+  if (passageId === null) return { kind: "abstained" };
+  const matches = passages.filter(p => p.id === passageId);
+  if (matches.length !== 1) return { kind: "unsupported", code: "source_not_unique_or_missing" };
+  const source = matches[0];
+  if (!source.text.includes(quote)) return { kind: "unsupported", code: "quote_not_found" };
+  return { kind: "needs_review", passageId, quote, context: source.text };
 }
 ```
 
-Il dato generato viene accettato solo se rispetta schema e valori ammessi.
+## Perché serve ancora il contesto?
 
-## Varianti
+| Fonte fornita | Proposta | Decisione |
+| --- | --- | --- |
+| S2: «Consegna confermata per il 18 maggio.» | S2, «18 maggio» | Citazione presente. Il revisore può controllare la conferma |
+| S3: «Il 18 maggio non è una data confermata.» | S3, «18 maggio» | Stesso riscontro letterale; **non** sostiene una conferma |
+| S2 contiene solo «18 maggio» | S2, «19 maggio» | Citazione assente: scarta la proposta |
+| Nessun passaggio con ID S9 | S9, «18 maggio» | Fonte non disponibile: non cercare altrove per giustificare l'output |
 
-- Validazione sintattica.
-- Validazione semantica.
-- Confronto con sorgenti autorevoli.
-- Human-in-the-loop.
-- Quarantena per output incerti.
-- Test di regressione su esempi storici.
+Una citazione riscontrata produce `needs_review`, mai «consegna confermata». Mostra al revisore il passaggio intero e rendi consultabile il resto dello snapshot per verificare anche eventuali contraddizioni. L'astensione significa «nessuna proposta», **non** «la consegna non esiste». Se cambi la versione della sorgente, ripeti la verifica.
 
-## Errori comuni
+## Controlli prima di usare il dato
 
-- Usare direttamente output LLM in query, file o comandi.
-- Validare solo che il JSON sia parseabile.
-- Non controllare valori ammessi.
-- Non conservare input e output per audit.
-- Non distinguere errore di generazione e errore di validazione.
-
-## Checklist
-
-- L'output generato ha uno schema?
-- Il contenuto viene validato rispetto alle regole applicative?
-- Esiste un fallback o una revisione umana?
-- Input, prompt e output sono tracciabili quando serve?
-- Gli output invalidi non producono side effects?
+Per una corrispondenza puramente deterministica applica la regola nel codice, senza delegarla al modello. Per un'interpretazione conserva l'esito del revisore distinto dalla proposta, l'ID e la versione della fonte e i riferimenti a prompt e schema. Proteggi questo materiale secondo i permessi originali: un log di audit non è una ragione per copiare interi documenti. Testa un falso positivo **con citazione autentica**, non solo JSON rotto o riferimenti inventati.
 
 ## Collegamenti
 
@@ -119,3 +74,5 @@ Il dato generato viene accettato solo se rispetta schema e valori ammessi.
 - OpenAI Documentation, *Structured Outputs*
 - OWASP, *LLM Top 10*
 - JSON Schema Documentation
+- [W3C PROV-O: rappresentare la provenienza di dati e derivazioni](https://www.w3.org/TR/prov-o/)
+- [JSON Schema: cosa verifica la forma di un oggetto](https://json-schema.org/understanding-json-schema/reference/object)

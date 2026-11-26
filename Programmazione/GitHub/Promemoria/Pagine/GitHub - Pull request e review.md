@@ -24,6 +24,8 @@ title: GitHub - Pull request e review
 
 ## Creare una pull request
 
+Con `gh` autenticato nel repository giusto, scegli **uno** dei due esempi. `--fill` ricava titolo e descrizione dai commit; `--base` è il branch di destinazione, `--head` quello delle modifiche. Nel secondo esempio il branch sorgente deve essere già pubblicato.
+
 ```powershell
 gh pr create --fill
 ```
@@ -48,11 +50,15 @@ gh pr diff 123
 
 ## Checkout locale
 
+Cambia il branch del clone, non lo stato della PR. Controlla prima di non avere lavoro locale da preservare.
+
 ```powershell
 gh pr checkout 123
 ```
 
 ## Controlli
+
+Il primo comando fotografa i check; `--watch` ne segue l’esito. Per vedere solo quelli richiesti dalla protezione del branch aggiungi `--required`: i check verdi non sostituiscono le approvazioni richieste.
 
 ```powershell
 gh pr checks 123
@@ -63,6 +69,8 @@ gh pr checks 123 --watch
 ```
 
 ## Review
+
+Scegli un solo esito. Un commento non approva la PR; non puoi approvare la tua PR.
 
 ```powershell
 gh pr review 123 --approve
@@ -88,6 +96,8 @@ gh pr ready 123
 
 ## Merge
 
+Alternative, da usare solo quando vuoi integrare la PR. `--squash` concentra il lavoro in un commit, `--rebase` riapplica i commit separatamente; `--delete-branch` richiede anche la rimozione del branch sorgente locale e remoto. Se vuoi conservarlo, ometti il flag. Con una merge queue obbligatoria lascia che sia la coda a gestire l’integrazione.
+
 ```powershell
 gh pr merge 123 --squash --delete-branch
 ```
@@ -103,6 +113,12 @@ gh pr merge 123 --rebase --delete-branch
 - Nessun segreto o file generato.
 - Descrizione con motivazione e verifica.
 - Migrazioni e breaking change segnalati.
+
+## Fonti
+
+- [GitHub CLI: creare una PR](https://cli.github.com/manual/gh_pr_create)
+- [GitHub CLI: consultare i check](https://cli.github.com/manual/gh_pr_checks)
+- [GitHub CLI: merge, coda ed eliminazione del branch](https://cli.github.com/manual/gh_pr_merge)
 
 ## Approfondimento
 

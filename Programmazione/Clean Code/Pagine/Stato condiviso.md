@@ -27,83 +27,40 @@ title: Stato condiviso
 
 ## Sintesi
 
-Lo **stato condiviso** e uno stato accessibile da piu parti del programma, spesso da thread, processi, callback, worker o richieste concorrenti.
+Uno stato è **condiviso** quando più operazioni accedono alla stessa informazione. Se è immutabile, le letture non si ostacolano; se qualcuno lo modifica, individua il proprietario e il punto in cui un'altra operazione può intervenire. Concorrenza significa che più attività sono in corso; parallelismo significa che eseguono lavoro nello stesso istante. Per perdere un aggiornamento basta la prima.
 
-Nel Clean Code lo stato condiviso va ridotto, reso esplicito e protetto da regole chiare.
+## Esempio: due lavori, un contatore
 
-## Problema che risolve
-
-Lo stato condiviso non controllato rende il comportamento dipendente dall'ordine di esecuzione.
-
-Questo produce problemi come:
-
-- race condition;
-- aggiornamenti persi;
-- cache incoerenti;
-- test intermittenti;
-- dati osservati in stati intermedi;
-- bug difficili da riprodurre.
-
-## Concetto chiave
-
-Ogni stato condiviso dovrebbe avere:
-
-- un proprietario;
-- regole di accesso;
-- operazioni di modifica nominate;
-- protezione contro accessi concorrenti;
-- test sui casi critici.
-
-Se non serve condividerlo, conviene tenerlo locale o immutabile.
-
-## Dettagli importanti
-
-- Lo stato immutabile e piu facile da condividere.
-- Lo stato mutabile condiviso richiede sincronizzazione.
-- Le code riducono condivisione diretta passando messaggi.
-- Le cache sono stato condiviso e vanno invalidate.
-- In applicazioni web, database e sessioni sono spesso punti di stato condiviso.
-
-## Esempio
-
-Fragile:
+Ogni chiamata a `jobMetrics()` crea un contatore distinto. I lavori dello **stesso** componente condividono la stessa istanza. `run` è una funzione asincrona: si conta solo il lavoro terminato con successo.
 
 ```js
-let processedCount = 0;
-
-async function processJob(job) {
-  await run(job);
-  processedCount += 1;
+function jobMetrics() {
+  let completed = 0;
+  return {
+    async process(job, run) {
+      await run(job);
+      completed += 1;
+    },
+    count() { return completed; },
+  };
 }
 ```
 
-Se piu worker aggiornano lo stesso contatore, l'aggiornamento puo non essere sicuro.
+Sul singolo agente JavaScript dell'esempio, con una variabile numerica locale, nessun'altra continuazione si inserisce **dentro** `completed += 1`. L'attesa avviene prima della lettura del contatore. Se invece si salvasse `const before = completed` **prima** di `await run(job)` e poi si scrivesse `completed = before + 1`, due lavori potrebbero leggere entrambi zero e lasciare uno invece di due.
 
-Piu chiaro:
+## Dove vive il dato?
 
-```js
-async function processJob(job, metrics) {
-  await run(job);
-  await metrics.incrementProcessedJobs();
-}
-```
+| Ambito | Che cosa osserva il contatore? | Conseguenza |
+| --- | --- | --- |
+| Una richiesta | Solo i lavori di quell'istanza | Nessun totale applicativo |
+| Un'istanza condivisa nello stesso agente | I completamenti di chi usa quell'istanza | Riparte da zero al riavvio |
+| Più processi o worker con stato locale | Un conteggio distinto per ciascuno | Serve aggregazione, non basta un modulo globale |
 
-La gestione concorrente viene spostata in un componente responsabile.
+Per una metrica locale può andare bene contare **tentativi riusciti**: lo stesso job eseguito due volte conta due. Per un totale fatturabile di job unici, servono identità stabili e un archivio che le registri una volta sola. Spostare `+= 1` in una funzione dal nome migliore non cambia la garanzia.
 
-## Limiti
+## Verifica
 
-- Alcuni sistemi richiedono stato condiviso per coordinamento e performance.
-- Eliminare tutto lo stato condiviso puo complicare inutilmente il design.
-- Database e cache distribuite hanno regole di coerenza proprie.
-- La sincronizzazione puo introdurre deadlock o rallentamenti.
-
-## Errori comuni
-
-- Usare stato globale per comodita.
-- Modificare oggetti condivisi senza lock o transazioni.
-- Pensare che un singolo processo sia sempre single-threaded.
-- Ignorare concorrenza tra richieste web.
-- Non testare aggiornamenti simultanei.
+Avvia due lavori con promesse controllabili e completa per primo il secondo. Entrambi devono contribuire al totale, uno rifiutato no. Crea poi una seconda istanza: deve partire da zero. Queste verifiche non dicono nulla su memoria condivisa tra thread, per la quale servono primitive adeguate.
 
 ## Collegamenti
 
@@ -119,3 +76,5 @@ La gestione concorrente viene spostata in un componente responsabile.
 - Brian Goetz, *Java Concurrency in Practice*
 - Martin Kleppmann, *Designing Data-Intensive Applications*
 - Michael Nygard, *Release It!*
+- [ECMAScript: agenti, job e contesti di esecuzione](https://tc39.es/ecma262/multipage/executable-code-and-execution-contexts.html)
+- [Node.js: worker e condivisione esplicita della memoria](https://nodejs.org/api/worker_threads.html)

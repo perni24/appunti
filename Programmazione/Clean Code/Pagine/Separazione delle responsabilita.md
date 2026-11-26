@@ -26,74 +26,33 @@ title: Separazione delle responsabilita
 
 ## Sintesi
 
-La **separazione delle responsabilita** consiste nel dividere il codice in parti con scopi distinti, evitando che un singolo componente gestisca troppi aspetti del sistema.
+Separare le responsabilità significa decidere **chi risponde a ciascuna domanda**. In un annullamento di prenotazione «la richiesta è leggibile?», «l'annullamento è ancora consentito?» e «la modifica è stata salvata?» sono domande diverse. Spostare le tre risposte da un controller a un unico `Service` non le separa.
 
-E uno dei principi piu pratici per ridurre complessita e rendere le modifiche piu localizzate.
+## Esempio: annullare fino a 24 ore prima
 
-## Problema che risolve
+Nel prodotto di esempio l'annullamento è consentito **anche esattamente 24 ore prima** dell'inizio. Si tratta di 24 ore trascorse, non del giorno di calendario precedente. La regola opera su istanti già validati, in millisecondi, forniti dal caso d'uso:
 
-Quando validazione, business logic, persistenza, UI, logging e integrazioni esterne sono mescolate, ogni modifica diventa rischiosa.
-
-Il codice funziona, ma e difficile capire quale parte sia responsabile di cosa.
-
-## Concetto chiave
-
-Una responsabilita e un motivo per cambiare.
-
-Separare responsabilita significa chiedersi:
-
-- cosa cambia insieme?
-- cosa cambia per ragioni diverse?
-- quale parte conosce il dominio?
-- quale parte conosce il framework?
-- quale parte conosce l'infrastruttura?
-
-Le risposte guidano confini, moduli e classi.
-
-## Dettagli importanti
-
-- La separazione puo avvenire tra funzioni, classi, moduli o layer.
-- Separare responsabilita non significa creare piu astrazioni del necessario.
-- Le responsabilita devono essere riconoscibili dai nomi.
-- I confini migliori seguono il dominio o il comportamento.
-- Una responsabilita tecnica non deve inglobare logica di dominio senza motivo.
-
-## Esempio
-
-Mescolato:
-
-```text
-Controller:
-- legge request
-- valida regole di dominio
-- scrive database
-- invia email
-- costruisce HTML
+```js
+function cancellationAllowed(startsAtMs, nowMs) {
+  const noticeMs = 24 * 60 * 60 * 1000;
+  return startsAtMs - nowMs >= noticeMs;
+}
 ```
 
-Separato:
+| Responsabile | Decisione che gli appartiene |
+| --- | --- |
+| Adattatore HTTP | Interpreta identificatore e richiesta; traduce gli esiti del caso d'uso in risposte HTTP. Non decide la soglia. |
+| Caso d'uso | Carica la prenotazione, prende l'ora di riferimento, consulta la regola e chiede il salvataggio solo se l'annullamento è ammesso. |
+| Regola di dominio | Decide l'ammissibilità temporale. Non legge né il database né l'orologio di sistema. |
+| Adattatore di persistenza | Salva lo stato e riferisce conflitti o errori. Non trasforma un errore di scrittura in un successo. |
 
-```text
-Controller -> Use case -> Repository
-                    -> Email sender
-```
+## Verifica pratica
 
-Il controller coordina l'input, ma non contiene tutta la logica.
+A 24 ore esatte la funzione restituisce `true`; un millisecondo dopo restituisce `false`. Per verificare questa soglia non occorre un server. Servono invece altre prove per dimostrare che il controller traduca bene gli esiti, che il repository scriva e che due richieste concorrenti non annullino due volte la stessa prenotazione. Se la scadenza passa a 48 ore, cerca la costante nel dominio, non in ciascun ingresso HTTP o CLI.
 
-## Limiti
+## Quando fermarsi
 
-- Separare troppo presto puo creare indirezione inutile.
-- In script piccoli puo bastare una struttura piu semplice.
-- Alcune responsabilita sono naturalmente vicine.
-- La separazione va rivista quando emergono nuovi casi d'uso.
-
-## Errori comuni
-
-- Separare per tipo tecnico invece che per motivo di cambiamento.
-- Creare layer vuoti senza comportamento.
-- Mettere tutta la logica nei service.
-- Lasciare controller o componenti UI troppo intelligenti.
-- Usare "responsabilita singola" come regola meccanica.
+Questa suddivisione può vivere in poche funzioni nello stesso modulo. La separazione delle responsabilità non richiede una classe per riga della tabella. Non spargere la decisione temporale per «difesa»: due copie della regola possono divergere proprio sul caso limite.
 
 ## Collegamenti
 
@@ -106,5 +65,5 @@ Il controller coordina l'input, ma non contiene tutta la logica.
 
 ## Fonti
 
-- Edsger Dijkstra, *On the role of scientific thought*
+- Edsger W. Dijkstra, [On the role of scientific thought](https://www.cs.utexas.edu/~EWD/transcriptions/EWD04xx/EWD447.html)
 - Robert C. Martin, *Clean Architecture*

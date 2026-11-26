@@ -26,68 +26,38 @@ title: Ottimizzazione prematura
 
 ## Sintesi
 
-L'**ottimizzazione prematura** e il tentativo di rendere il codice piu veloce prima di sapere dove siano davvero i colli di bottiglia.
+Un'ottimizzazione è prematura quando introduce un costo certo, per esempio memoria o invalidazione, a fronte di un beneficio che non sai ancora descrivere. Non significa rinviare ogni scelta: se un file non entra nella RAM disponibile, leggerlo a blocchi è un requisito di progetto, non una micro-ottimizzazione.
 
-E pericolosa perche aggiunge complessita senza una prova concreta del beneficio.
+## Esempio: serve davvero una cache globale?
 
-## Problema che risolve
-
-Molti sistemi accumulano codice difficile per motivi ipotetici:
-
-- cache inutili;
-- strutture dati complicate;
-- funzioni poco leggibili;
-- branch speciali;
-- duplicazione per evitare chiamate percepite come costose;
-- astrazioni nate da supposizioni.
-
-Il risultato e debito tecnico mascherato da performance.
-
-## Concetto chiave
-
-Non ottimizzare cio che non e misurato.
-
-Prima identifica requisito, metrica e scenario. Poi misura. Solo dopo cambia il codice.
-
-## Dettagli importanti
-
-- Prematura non significa sempre sbagliata: alcuni vincoli sono noti fin dall'inizio.
-- Scegliere un algoritmo adeguato non e micro-ottimizzazione.
-- Evitare sprechi evidenti e parte del buon design.
-- Le ottimizzazioni devono avere un motivo tracciabile.
-- Dopo l'ottimizzazione bisogna verificare che il comportamento sia invariato.
-
-## Esempio
-
-Scelta fragile:
+Un export riceve una lista di codici e cerca la descrizione di ciascuno. Prima di introdurre una cache condivisa tra richieste, prova un'alternativa più limitata: **riusare una lettura solo all'interno dello stesso export**. Il contratto d'esempio ammette che ogni codice abbia la stessa descrizione per l'intero lotto; `null` indica una descrizione assente.
 
 ```js
-// Cache aggiunta senza sapere se questa funzione e lenta.
-const cache = new Map();
+async function describeBatch(codes, readDescription) {
+  const seen = new Map();
+  const result = [];
+  for (const code of codes) {
+    if (!seen.has(code)) seen.set(code, await readDescription(code));
+    result.push(seen.get(code));
+  }
+  return result;
+}
 ```
 
-Scelta piu disciplinata:
+Con `["A", "B", "A"]` ci sono due letture invece di tre, ma il risultato contiene tre posizioni nell'ordine originale. `has` distingue un valore `null` già letto da una chiave sconosciuta. Un errore di lettura interrompe il lotto: non viene trasformato in «nessuna descrizione». Il lotto successivo riparte con una mappa vuota.
 
-```text
-1. misuro latenza della funzione
-2. verifico che sia in hot path
-3. aggiungo cache con strategia di invalidazione
-4. misuro di nuovo
-```
+## Decisione prima del rilascio
 
-## Limiti
+| Osservazione | Decisione ragionata |
+| --- | --- |
+| Quasi tutti i codici sono distinti | Il numero di letture non scende: la mappa aggiunge memoria senza risolvere quel costo |
+| Molte ripetizioni nello stesso lotto, letture costose | Confronta la versione locale con la base, stesso input e stesso archivio |
+| Si vuole riusare il risultato tra lotti o tra utenti | È un altro contratto: definisci chiave completa, scadenza, isolamento e invalidazione |
+| Ogni lettura deve riflettere il dato più recente | Anche la sola mappa locale può essere scorretta: non adottarla |
 
-- In sistemi embedded, realtime o ad alto volume, alcuni vincoli vanno considerati subito.
-- Alcune scelte architetturali sono costose da correggere dopo.
-- Non misurare perche "tanto e leggibile" e l'errore opposto.
+## Verifica
 
-## Errori comuni
-
-- Citare la performance senza dati.
-- Rendere opaco codice non critico.
-- Aggiungere cache senza invalidazione.
-- Usare strutture low-level dove una struttura standard basta.
-- Non rimuovere ottimizzazioni che non servono piu.
+Registra totale dei codici, distinti e chiamate effettive alla sorgente. La differenza è un beneficio in **letture evitate**, non in millisecondi. Misura poi il tempo del lotto con dati rappresentativi. Questa versione rimane intenzionalmente sequenziale; una API batch o letture concorrenti limitate sono alternative da valutare separatamente.
 
 ## Collegamenti
 
@@ -102,3 +72,4 @@ Scelta piu disciplinata:
 - Donald Knuth, *Structured Programming with go to Statements*
 - Martin Fowler, *Refactoring*
 - Brendan Gregg, *Systems Performance*
+- [Microsoft Azure Architecture Center: costi e coerenza della cache](https://learn.microsoft.com/en-us/azure/architecture/patterns/cache-aside)

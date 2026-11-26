@@ -27,69 +27,27 @@ title: Modellazione del dominio
 
 ## Sintesi
 
-La **modellazione del dominio** consiste nel rappresentare nel codice concetti, regole e vincoli del problema reale.
+Modellare il dominio significa dare un posto preciso alle decisioni del prodotto. Una colonna `status` registra un fatto; non dice **chi può cambiare lo stato, a quali condizioni, né cosa restituire se la transizione è vietata**. Una funzione può esprimere queste regole tanto quanto un metodo di una classe.
 
-Nel Clean Code e importante perche un buon modello riduce condizioni sparse, duplicazioni e interpretazioni ambigue.
+## Esempio: emettere una bozza
 
-## Problema che risolve
-
-Quando il dominio non e modellato, le regole finiscono disperse in controller, service, helper, query e UI.
-
-Il risultato e codice che sa fare molte operazioni ma non esprime chiaramente il problema che sta risolvendo.
-
-## Concetto chiave
-
-Un modello di dominio dovrebbe rendere espliciti:
-
-- concetti principali;
-- stati validi;
-- transizioni ammesse;
-- invarianti;
-- termini usati dagli esperti del dominio;
-- differenza tra dati grezzi e decisioni di business.
-
-Non serve sempre un modello complesso. Serve un modello adeguato al rischio e alla complessita del dominio.
-
-## Esempio
-
-Regola sparsa:
+In questa applicazione una fattura può essere emessa una sola volta, deve contenere almeno una riga e il totale deve essere positivo. Le righe arrivano dal modello interno: importi interi non negativi in centesimi, con somma rappresentabile. Il modulo `invoice.mjs` implementa soltanto la decisione:
 
 ```js
-if (invoice.status !== "draft" || invoice.total <= 0) {
-  throw new Error("Invoice cannot be issued");
+export function issueInvoice(invoice) {
+  if (invoice.status !== "draft") return { ok: false, code: "not_draft" };
+  if (invoice.lineCents.length === 0) return { ok: false, code: "empty_invoice" };
+  const totalCents = invoice.lineCents.reduce((sum, cents) => sum + cents, 0);
+  if (totalCents === 0) return { ok: false, code: "zero_total" };
+  return { ok: true, invoice: { ...invoice, status: "issued", totalCents } };
 }
 ```
 
-Regola nel dominio:
+Una bozza vuota e una con una riga gratuita non hanno lo stesso esito: nel primo caso manca una riga, nel secondo manca un importo positivo. Il caso d'uso può tradurre questi codici in messaggi senza ricostruire le regole. Una seconda chiamata **sulla fattura emessa** è rifiutata; la bozza originale non viene modificata.
 
-```js
-invoice.issue();
-```
+## Dove finisce il modello?
 
-Il metodo `issue` puo proteggere internamente le condizioni valide per emettere una fattura.
-
-## Dettagli importanti
-
-- I nomi del codice dovrebbero riflettere il linguaggio del dominio.
-- Le regole stabili meritano un posto esplicito.
-- DTO, record database e modelli di dominio non sono sempre la stessa cosa.
-- Un modello utile impedisce stati incoerenti o li rende evidenti.
-- Il modello deve evolvere insieme alla comprensione del problema.
-
-## Limiti
-
-- Per CRUD semplici un modello ricco puo essere eccessivo.
-- Un dominio mal compreso produce astrazioni sbagliate.
-- Non tutte le regole appartengono agli oggetti: alcune sono policy o servizi di dominio.
-- Il modello non elimina la necessita di validare input esterni.
-
-## Errori comuni
-
-- Creare classi anemiche che contengono solo dati e nessuna regola.
-- Mettere tutta la logica nei service e lasciare il dominio passivo.
-- Copiare la struttura del database come modello interno.
-- Usare termini tecnici al posto dei concetti del dominio.
-- Modellare troppo presto senza esempi reali.
+Il DTO del form accetta dati grezzi, la funzione decide la transizione, il repository la rende persistente. Il risultato contiene una copia superficiale: le righe condivise vanno trattate come immutabili. Due richieste possono ancora leggere la stessa bozza: per impedire una doppia emissione nel database occorre anche verificare la versione o lo stato quando si scrive. Le regole di fatturazione qui sono un esempio di prodotto, non prescrizioni fiscali.
 
 ## Collegamenti
 
@@ -102,6 +60,5 @@ Il metodo `issue` puo proteggere internamente le condizioni valide per emettere 
 
 ## Fonti
 
-- Eric Evans, *Domain-Driven Design*
-- Vaughn Vernon, *Implementing Domain-Driven Design*
-- Martin Fowler, *Patterns of Enterprise Application Architecture*
+- Martin Fowler, [Domain Model](https://martinfowler.com/eaaCatalog/domainModel.html)
+- Eric Evans, *Domain-Driven Design*; Vaughn Vernon, *Implementing Domain-Driven Design*; Martin Fowler, *Patterns of Enterprise Application Architecture*

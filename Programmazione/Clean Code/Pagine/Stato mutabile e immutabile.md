@@ -26,80 +26,46 @@ title: Stato mutabile e immutabile
 
 ## Sintesi
 
-Lo **stato mutabile** puo cambiare nel tempo. Lo **stato immutabile** viene creato e poi non modificato.
+Con uno stato mutabile, due riferimenti allo stesso oggetto osservano anche le modifiche successive. Con un aggiornamento immutabile, chi ha conservato la versione precedente continua a vedere i vecchi dati. Il sistema cambia comunque: cambia **quale versione** viene scelta come corrente.
 
-Nel Clean Code, ridurre la mutabilita aiuta a rendere il comportamento piu prevedibile, soprattutto quando i dati attraversano molte funzioni o thread.
+## Esempio: cambiare la quantità di una riga
 
-## Problema che risolve
-
-La mutabilita non controllata rende difficile capire quando e perche un valore cambia.
-
-Questo causa bug come:
-
-- dati modificati da funzioni inattese;
-- ordine di esecuzione fragile;
-- test che si influenzano tra loro;
-- race condition;
-- oggetti in stati intermedi non validi.
-
-## Concetto chiave
-
-Non tutta la mutabilita e sbagliata. Il punto e renderla:
-
-- localizzata;
-- intenzionale;
-- visibile;
-- protetta da invarianti;
-- evitata quando non serve.
-
-L'immutabilita e utile per valori, configurazioni, eventi, DTO e risultati di trasformazioni.
-
-## Dettagli importanti
-
-- I value objects sono spesso immutabili.
-- Lo stato mutabile dovrebbe avere un owner chiaro.
-- Le funzioni pure sono piu facili da testare.
-- Copiare dati immutabili puo avere un costo.
-- Nei sistemi concorrenti la mutabilita richiede ancora piu disciplina.
-
-## Esempio
-
-Mutazione implicita:
+Considera un ordine con righe già validate, ciascuna con `id` univoco e `quantity` positiva. Fare una copia dell'ordine con lo spread non copia le righe. Qui il chiamante osserverebbe la modifica anche attraverso l'ordine originale:
 
 ```js
-function applyDiscount(order) {
-  order.total = order.total * 0.9;
-  return order;
+function withQuantityWrong(order, id, quantity) {
+  const next = { ...order };
+  const line = next.lines.find((item) => item.id === id);
+  if (!line) throw new RangeError("Riga assente");
+  line.quantity = quantity;
+  return next;
 }
 ```
 
-Trasformazione esplicita:
+Nella versione corretta si copiano i livelli attraversati dalla modifica: ordine, array delle righe e riga interessata. Le righe non modificate possono restare condivise.
 
 ```js
-function withDiscount(order) {
-  return {
-    ...order,
-    total: order.total * 0.9,
-  };
+function withQuantity(order, id, quantity) {
+  if (!Number.isSafeInteger(quantity) || quantity <= 0) {
+    throw new RangeError("Quantità non valida");
+  }
+  const index = order.lines.findIndex((line) => line.id === id);
+  if (index < 0) throw new RangeError("Riga assente");
+  if (order.lines[index].quantity === quantity) return order;
+
+  const lines = order.lines.slice();
+  lines[index] = { ...lines[index], quantity };
+  return { ...order, lines };
 }
 ```
 
-La seconda versione rende piu chiaro che nasce un nuovo valore.
+Con la prima riga che passa da 1 a 3, il vecchio ordine deve continuare a mostrare 1. Anche l'identità racconta qualcosa: l'array e la prima riga sono nuovi, la seconda riga è lo stesso oggetto. Se la quantità richiesta è già presente, la funzione restituisce direttamente l'ordine originale. Modificare **la copia locale dell'array** è lecito: nessun altro la possiede ancora.
 
-## Limiti
+## Limiti ed errori comuni
 
-- L'immutabilita totale puo essere costosa o scomoda.
-- Alcuni domini sono naturalmente stateful.
-- Database, UI e cache richiedono gestione dello stato.
-- Copiare strutture grandi puo impattare performance.
-
-## Errori comuni
-
-- Modificare oggetti ricevuti come parametri senza dichiararlo.
-- Condividere stato mutabile tra moduli lontani.
-- Rendere mutabili value objects.
-- Confondere immutabilita con assenza di cambiamento nel sistema.
-- Usare copie superficiali pensando che proteggano tutto.
+- Questa è una **trasformazione non mutante**, non un congelamento profondo. Scrivere dopo sulla seconda riga condivisa cambierebbe entrambe le versioni. Chi le riceve deve trattare come immutabili i rami condivisi.
+- `const` impedisce di riassegnare il riferimento, non di cambiare gli oggetti raggiungibili. Analogamente, aggiornare solo il totale di un ordine copiato non rende indipendenti i suoi dati annidati.
+- La copia dell'array richiede lavoro proporzionale al numero di righe. Una mutazione locale con un solo proprietario può essere preferibile; l'aspetto decisivo è chi può osservare le modifiche. Due scrittori che pubblicano versioni concorrenti possono ancora perdere un aggiornamento.
 
 ## Collegamenti
 
@@ -111,5 +77,5 @@ La seconda versione rende piu chiaro che nasce un nuovo valore.
 
 ## Fonti
 
-- Eric Evans, *Domain-Driven Design*
-- Martin Fowler, *Refactoring*
+- React, [Updating Objects in State: updating a nested object](https://react.dev/learn/updating-objects-in-state#updating-a-nested-object)
+- Eric Evans, *Domain-Driven Design*; Martin Fowler, *Refactoring*

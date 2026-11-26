@@ -25,68 +25,32 @@ title: Naming di variabili e funzioni
 
 ## Sintesi
 
-Il **naming di variabili e funzioni** e una delle parti piu importanti del Clean Code. Un buon nome comunica intenzione, ruolo e livello di astrazione.
+Un nome deve permettere di usare correttamente un valore o una funzione nel suo contesto. Per un valore chiedi «che cosa rappresenta, in quale unità?»; per una funzione «quale risultato ottengo o quale effetto avvio?». Un nome più lungo non è per forza più informativo.
 
-Un nome sbagliato obbliga il lettore a leggere l'implementazione per capire il concetto.
+## Esempio: la scadenza di un abbonamento
 
-## Problema che risolve
+```js
+function isRenewalDue(expiresAtMs, nowMs) {
+  return nowMs >= expiresAtMs;
+}
+```
 
-Nomi vaghi come `data`, `item`, `tmp`, `handle`, `process` o `doStuff` rendono difficile capire cosa rappresenta il codice.
-
-Un buon naming riduce commenti inutili e rende piu semplice individuare errori logici.
-
-## Concetto chiave
-
-Un nome efficace risponde a una domanda:
-
-- variabile: cosa rappresenta?
-- funzione: quale azione o trasformazione esegue?
-- booleano: quale condizione esprime?
-- collezione: che tipo di elementi contiene?
-
-Il nome deve essere proporzionato allo scope: piu un simbolo vive a lungo, piu deve essere chiaro.
+I parametri sono **istanti**, entrambi espressi in millisecondi dalla stessa origine, non durate. Con `expiresAtMs = 2000`, a `1999` il risultato è falso e a `2000` è vero. `isRenewalDue` risponde a una domanda; non invia un promemoria. Per un comando che effettua l'invio, `sendRenewalReminder` comunicherebbe un contratto diverso.
 
 ## Dettagli importanti
 
-- Usa nomi di dominio quando esistono.
-- Evita abbreviazioni non condivise.
-- Una funzione dovrebbe avere un verbo o una frase verbale.
-- Una variabile dovrebbe avere un sostantivo o frase nominale.
-- I booleani funzionano bene con prefissi come `is`, `has`, `can`, `should`.
-- Nomi generici sono accettabili solo in scope molto piccoli.
+| Scelta | Quando è utile |
+| --- | --- |
+| `activeSubscriptions` invece di `data` | Il nome rivela la selezione e il fatto che si tratta di una raccolta |
+| `hasCredit` invece di `notEmpty` | Nel chiamante si legge una condizione positiva del dominio |
+| `timeoutMs` invece di `timeout` | Il chiamante deve distinguere millisecondi e secondi |
+| `i` come indice di un ciclo breve | Il ruolo è già evidente; un nome più lungo non aggiunge informazione |
 
-## Esempio
+## Limiti ed errori comuni
 
-Naming debole:
-
-```js
-const d = getData(u);
-process(d);
-```
-
-Naming piu chiaro:
-
-```js
-const activeSubscriptions = getActiveSubscriptions(user);
-sendRenewalReminder(activeSubscriptions);
-```
-
-Il secondo esempio comunica il dominio senza leggere l'implementazione.
-
-## Limiti
-
-- Nomi troppo lunghi possono diventare rumorosi.
-- In algoritmi locali, nomi brevi possono essere accettabili.
-- Alcune abbreviazioni sono standard nel dominio.
-- Il naming deve restare coerente con il linguaggio e il team.
-
-## Errori comuni
-
-- Usare nomi che descrivono il tipo tecnico invece del significato.
-- Cambiare nome allo stesso concetto in moduli diversi.
-- Usare verbi generici per funzioni importanti.
-- Usare booleani negativi difficili da leggere.
-- Inserire dettagli implementativi nel nome quando non servono.
+- Usa il vocabolario condiviso: se «cliente» e «intestatario» hanno ruoli differenti, non alternarli per varietà.
+- Un suffisso come `Ms` segnala una convenzione, ma non converte né valida un valore. Al confine con un'API in secondi serve una conversione esplicita.
+- La rinomina di una variabile locale non ha lo stesso impatto della rinomina di una chiave JSON pubblica. Controlla prima chi dipende da quel nome.
 
 ## Collegamenti
 
@@ -100,3 +64,4 @@ Il secondo esempio comunica il dominio senza leggere l'implementazione.
 
 - Robert C. Martin, *Clean Code*
 - Steve McConnell, *Code Complete*
+- Martin Fowler, [Rename Variable](https://refactoring.com/catalog/renameVariable.html)

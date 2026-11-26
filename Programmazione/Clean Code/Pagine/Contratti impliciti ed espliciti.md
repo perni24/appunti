@@ -27,66 +27,34 @@ title: Contratti impliciti ed espliciti
 
 ## Sintesi
 
-Un **contratto** descrive cosa una funzione, classe o modulo si aspetta in input e cosa promette in output.
+Un contratto stabilisce **che cosa deve fornire il chiamante e che cosa può osservare dopo la chiamata**: risultato, assenza di un risultato, errori, mutazioni ed effetti. Un parametro chiamato `data` dice poco; anche una firma con nomi precisi può lasciare implicito se l'assenza di un record sia normale o eccezionale.
 
-Nel Clean Code conviene rendere i contratti piu espliciti possibile, per evitare che il comportamento corretto dipenda da convenzioni non dette.
+## Esempio: cercare una fattura
 
-## Problema che risolve
-
-I contratti impliciti obbligano il lettore a indovinare regole nascoste:
-
-- quali valori sono ammessi;
-- quali campi sono obbligatori;
-- quali errori possono uscire;
-- se una funzione muta i parametri;
-- se un metodo puo restituire `null`;
-- se una chiamata produce side effects.
-
-Quando queste informazioni non sono visibili, il codice diventa fragile.
-
-## Concetto chiave
-
-Un contratto esplicito puo essere espresso con tipi, nomi, validazione, documentazione minima, test e messaggi di errore.
-
-L'obiettivo non e scrivere commenti lunghi, ma far capire rapidamente le regole essenziali di utilizzo.
-
-## Esempio
-
-Contratto debole:
+In questa applicazione l'identificatore è una stringa non vuota. Si ignorano gli spazi esterni, non gli zeri iniziali. Il repository espone `findById`, che risolve con un record oppure con `null`, e rifiuta la promessa se la lettura fallisce.
 
 ```js
-function createUser(data) {
-  // ...
+async function findInvoice(rawId, repository) {
+  if (typeof rawId !== "string" || !rawId.trim()) {
+    throw new TypeError("Identificatore fattura richiesto");
+  }
+  return repository.findById(rawId.trim());
 }
 ```
 
-Contratto piu chiaro:
+| Chiamata | Promessa pubblica |
+| --- | --- |
+| ID vuoto o non testuale | Promise rifiutata; il repository non viene chiamato. |
+| `" 007 "` | Si effettua una lettura con `"007"`. Un record assente è `null`. |
+| Lettura fallita | Il chiamante riceve il rifiuto, non `null`: non si sa se il record esista. |
 
-```js
-function createUser({ email, displayName, role }) {
-  if (!email) throw new Error("User email is required");
-  if (!role) throw new Error("User role is required");
+## Come verificarlo
 
-  return userRepository.create({ email, displayName, role });
-}
-```
-
-La seconda versione rende visibili requisiti e fallimenti principali.
+Una prova controlla che l'ID invalido non generi I/O; un'altra distingue assenza e indisponibilità. La tabella descrive ciò che il client usa, non quale query scrivere. Il wrapper **si fida del contratto interno** del repository: se un adattatore restituisce `undefined` anziché `null`, è l'adattatore da correggere o tradurre, non ogni chiamante.
 
 ## Limiti
 
-- Non tutto puo essere espresso nei tipi.
-- Troppa validazione duplicata puo rendere il codice rumoroso.
-- I contratti cambiano: devono restare allineati con test e implementazione.
-- Nei sistemi dinamici serve disciplina aggiuntiva.
-
-## Errori comuni
-
-- Usare `null` come valore speciale senza documentarlo.
-- Accettare oggetti generici e assumere campi nascosti.
-- Restituire tipi diversi in base a casi non dichiarati.
-- Nascondere side effects dietro nomi neutri.
-- Considerare i test come unico contratto leggibile.
+Un tipo esprime parte del contratto, ma non dice da solo se un errore va ritentato, se un valore è in centesimi o se una scrittura è idempotente. Rendi esplicite le distinzioni che cambiano il comportamento del cliente; non duplicare la documentazione per ogni dettaglio interno.
 
 ## Collegamenti
 
@@ -98,6 +66,5 @@ La seconda versione rende visibili requisiti e fallimenti principali.
 
 ## Fonti
 
-- Bertrand Meyer, *Object-Oriented Software Construction*
-- Robert C. Martin, *Clean Code*
-- Martin Fowler, *Refactoring*
+- Eiffel, [Design by Contract and Assertions](https://www.eiffel.org/doc/solutions/Design_by_Contract_and_Assertions)
+- Bertrand Meyer, *Object-Oriented Software Construction*; Robert C. Martin, *Clean Code*; Martin Fowler, *Refactoring*

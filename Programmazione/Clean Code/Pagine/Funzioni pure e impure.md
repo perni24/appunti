@@ -27,82 +27,38 @@ title: Funzioni pure e impure
 
 ## Sintesi
 
-Una **funzione pura** restituisce sempre lo stesso risultato a parita di input e non produce side effects osservabili.
+Una funzione è **pura** se il risultato dipende soltanto dai valori di ingresso e la chiamata non produce effetti osservabili all'esterno. Sono due condizioni distinte. Una funzione che registra ogni chiamata può restituire sempre lo stesso totale e restare impura; una funzione che legge l'ora può non scrivere nulla e restare imprevedibile a parità di argomenti.
 
-Una **funzione impura** dipende da stato esterno o modifica qualcosa fuori dal proprio valore di ritorno.
+## Esempio: di chi è la decisione sullo sconto?
 
-Nel Clean Code questa distinzione serve a capire quali parti del codice sono prevedibili e quali parti interagiscono con il mondo esterno.
-
-## Problema che risolve
-
-Quando una funzione legge o modifica stato esterno senza renderlo chiaro, il lettore deve ricostruire piu contesto di quanto dovrebbe.
-
-Questo porta a problemi come:
-
-- test fragili;
-- bug che dipendono dall'ordine di esecuzione;
-- funzioni difficili da riusare;
-- logica di dominio mescolata con I/O;
-- modifiche apparentemente locali che cambiano comportamenti lontani.
-
-## Concetto chiave
-
-Una funzione pura e una trasformazione esplicita:
-
-```text
-input -> output
-```
-
-Non legge clock, rete, database, variabili globali o stato condiviso. Non scrive file, non muta parametri e non invia eventi.
-
-Una funzione impura invece puo essere necessaria, ma dovrebbe essere riconoscibile. In un buon design, la logica pura viene separata dai punti in cui il programma produce effetti.
-
-## Dettagli importanti
-
-- Le funzioni pure sono piu facili da testare.
-- Le funzioni impure sono inevitabili in applicazioni reali.
-- Il problema non e l'impurita in se, ma l'impurita nascosta.
-- Una funzione che muta un parametro e impura anche se non usa servizi esterni.
-- Una funzione che legge `Date.now()`, random, cache globale o configurazione mutabile non e pura.
-
-## Esempio
-
-Funzione impura:
+Il negozio calcola il prezzo finale in centesimi. Per questo esempio il listino fornisce un intero tra 0 e 1.000.000 e uno sconto percentuale intero tra 0 e 100. La regola arrotonda **il totale finale** al centesimo più vicino, per eccesso a metà centesimo:
 
 ```js
-let discount = 0.1;
+function discountedTotalCents(listCents, percentOff) {
+  return Math.round(listCents * (100 - percentOff) / 100);
+}
 
-function calculateTotal(order) {
-  return order.total * (1 - discount);
+let currentDiscount = 10;
+
+function quoteFromSettings(listCents) {
+  return discountedTotalCents(listCents, currentDiscount);
 }
 ```
 
-Il risultato dipende da `discount`, che non e passato come input.
+`discountedTotalCents(1250, 15)` restituisce 1063 anche se cambia la configurazione del negozio. `quoteFromSettings(1250)`, invece, passa da 1125 a 1063 quando `currentDiscount` passa da 10 a 15. Il calcolo è lo stesso: è la **lettura nascosta di un valore modificabile** a rendere impura la seconda funzione. La validazione degli importi esterni è un compito separato.
 
-Funzione pura:
+## Come riconoscerla
 
-```js
-function calculateTotal(order, discount) {
-  return order.total * (1 - discount);
-}
-```
-
-Ora il comportamento dipende solo dagli argomenti.
+| Operazione | Cosa osserva il chiamante |
+| --- | --- |
+| Aggiungere elementi a un array locale appena creato e restituirlo | Nessuna mutazione di dati preesistenti: la mutazione locale, da sola, non rende impura la trasformazione. |
+| Aggiungere elementi all'array ricevuto | Anche chi possiede un altro riferimento vede il cambiamento, persino se la funzione restituisce un numero. |
+| Leggere una costante numerica immutabile | Il semplice fatto che la costante sia dichiarata fuori dalla funzione non introduce variabilità. |
+| Chiamare un orologio passato come parametro | La dipendenza è esplicita, ma la funzione legge ancora il tempo. Per un calcolo puro passa **l'istante misurato**, non l'orologio. |
 
 ## Limiti
 
-- Non tutto il codice puo essere puro.
-- UI, database, rete, log e file system richiedono effetti.
-- Rendere tutto puro puo produrre astrazioni artificiali.
-- In alcuni casi passare troppi parametri puo peggiorare la leggibilita.
-
-## Errori comuni
-
-- Chiamare pura una funzione che muta oggetti ricevuti in input.
-- Nascondere accessi a servizi esterni dentro helper apparentemente innocui.
-- Usare variabili globali per evitare parametri espliciti.
-- Mescolare validazione, trasformazione e salvataggio nella stessa funzione.
-- Pensare che una funzione senza `return` sia solo una procedura innocua: spesso e piena di effetti.
+Due chiamate riuscite con lo stesso risultato non provano la purezza: potrebbero avere anche scritto due righe di log. Se si restituisce un nuovo oggetto, «stesso risultato» va inteso rispetto al contratto sui valori, non come promessa della stessa identità JavaScript. Non serve rendere pura l'intera applicazione: separare la scelta dello sconto dal calcolo permette di testarli per ciò che fanno.
 
 ## Collegamenti
 
@@ -115,6 +71,5 @@ Ora il comportamento dipende solo dagli argomenti.
 
 ## Fonti
 
-- Robert C. Martin, *Clean Code*
-- Martin Fowler, *Refactoring*
-- Eric Elliott, *Composing Software*
+- React, [Keeping Components Pure](https://react.dev/learn/keeping-components-pure), inclusa la distinzione tra mutazione locale e mutazione di dati preesistenti.
+- Robert C. Martin, *Clean Code*; Martin Fowler, *Refactoring*; Eric Elliott, *Composing Software*

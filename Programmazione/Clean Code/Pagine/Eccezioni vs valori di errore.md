@@ -26,76 +26,44 @@ title: Eccezioni vs valori di errore
 
 ## Sintesi
 
-**Eccezioni** e **valori di errore** sono due modi diversi per rappresentare un fallimento.
+Un **valore di errore** torna al chiamante come un risultato ordinario. Un'**eccezione** trasferisce il controllo al gestore; con una funzione `async` arriva come rifiuto della promessa. La scelta dipende da chi può prendere una decisione, non dalla gravità del messaggio.
 
-La scelta non dovrebbe essere estetica: dipende da quanto il fallimento e previsto, recuperabile e parte del contratto del chiamante.
+## Quando scegliere
 
-## Quando usarlo
-
-- Usa valori di errore quando il fallimento e normale e il chiamante deve decidere.
-- Usa eccezioni quando il flusso non puo continuare in modo sensato.
-- Usa una convenzione unica per modulo o progetto.
-- Usa errori tipizzati quando il chiamante deve distinguere cause diverse.
-
-## Come funziona
-
-Le eccezioni interrompono il flusso normale e risalgono lo stack finche qualcuno le gestisce.
-
-I valori di errore restano nel flusso ordinario: il chiamante deve controllarli e decidere cosa fare.
-
-## API / Sintassi
-
-```js
-// Eccezione
-const user = loadUserOrThrow(userId);
-
-// Valore di errore
-const result = loadUser(userId);
-if (!result.ok) {
-  return handleMissingUser(result.error);
-}
-```
-
-Entrambe le forme possono essere pulite se il contratto e chiaro.
+| Situazione | Contratto utile | Cosa può fare il chiamante |
+| --- | --- | --- |
+| Ricerca completata, utente assente | Risultato `not_found` (o `null` se l'assenza è l'unica alternativa) | Mostrare «utente non trovato» |
+| Impossibile interrogare l'archivio | Eccezione con la causa | Segnalare indisponibilità; non dichiarare l'utente assente |
+| Input con più campi errati | Raccolta di errori per campo | Mostrare tutte le correzioni in una volta |
 
 ## Esempio pratico
 
+L'archivio ha un contratto preciso: `findById` restituisce un utente o **esattamente** `null` se la ricerca non trova nulla; rifiuta la promessa se la ricerca fallisce.
+
 ```js
-function findUser(users, userId) {
-  const user = users.find((item) => item.id === userId);
-
-  if (!user) {
-    return { ok: false, error: "user_not_found" };
+async function findUser(repo, id) {
+  let user;
+  try {
+    user = await repo.findById(id);
+  } catch (cause) {
+    throw new Error("Lettura dell'archivio utenti non riuscita", { cause });
   }
-
+  if (user === null) return { ok: false, error: "not_found" };
   return { ok: true, value: user };
 }
 ```
 
-La mancata presenza dell'utente e un caso previsto, quindi un valore di errore puo essere piu leggibile.
-
-## Varianti
-
-- `throw`: interrompe il flusso e richiede gestione a un livello superiore.
-- `Result`: rende obbligatorio controllare successo o errore.
-- `null` / `undefined`: semplice, ma spesso troppo ambiguo.
-- Codici errore: utili per API, ma vanno documentati.
+Un gestore HTTP può tradurre `not_found` in 404; un guasto dell'archivio segue il percorso degli errori del servizio. Il `try` copre solo l'operazione che si vuole descrivere. `cause` mantiene l'errore originale per la diagnosi interna: non inviarlo tal quale al client.
 
 ## Errori comuni
 
-- Usare eccezioni per normale controllo di flusso.
-- Restituire `null` senza spiegare il motivo.
-- Ignorare valori di errore.
-- Catturare eccezioni troppo genericamente.
-- Mescolare stili diversi nella stessa API.
+- Restituire `not_found` dal `catch`: l'archivio indisponibile non ha risposto alla domanda.
+- Supporre che la forma `{ ok, ... }` obblighi JavaScript a controllarla: il risultato può essere ignorato. Il chiamante deve distinguere i rami; tipi discriminati possono aiutare in TypeScript.
+- Aggiungere un `catch` in ogni strato solo per loggare e rilanciare. Traduci l'errore dove cambia il contratto o dove puoi agire.
 
 ## Checklist
 
-- Il fallimento e previsto?
-- Il chiamante puo recuperare?
-- Serve distinguere piu cause?
-- Il contratto e visibile dal nome, dal tipo o dalla documentazione?
-- I test coprono entrambe le forme di uscita?
+Verifica separatamente **presenza**, **assenza** e **lettura fallita**. Nell'ultimo caso prova anche che la causa rimanga accessibile, non soltanto che venga sollevato un errore.
 
 ## Collegamenti
 
@@ -110,3 +78,4 @@ La mancata presenza dell'utente e un caso previsto, quindi un valore di errore p
 - Robert C. Martin, *Clean Code*
 - Scott Wlaschin, *Domain Modeling Made Functional*
 - Martin Fowler, *Refactoring*
+- [ECMAScript: costruzione di Error con cause](https://tc39.es/ecma262/multipage/fundamental-objects.html#sec-error-message)

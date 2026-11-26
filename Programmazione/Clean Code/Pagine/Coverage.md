@@ -27,75 +27,49 @@ title: Coverage
 
 ## Sintesi
 
-La **coverage** misura quanta parte del codice viene eseguita dai test.
+La coverage misura **quale codice è stato attraversato**, non se l'asserzione sarebbe capace di riconoscere un risultato sbagliato. Una riga eseguita, una funzione chiamata e un ramo preso sono misure diverse. Leggi anche il perimetro del report: i file esclusi non diventano coperti.
 
-E un indicatore utile, ma non misura da sola la qualita dei test: codice eseguito non significa comportamento verificato bene.
+## Esempio: due rami coperti, una soglia non verificata
 
-## Quando usarlo
+Regola del progetto di esempio: su importi interi non negativi in centesimi, la spedizione è gratuita **a partire da 2000**, altrimenti costa 350. In `shipping.mjs`:
 
-- Quando vuoi individuare zone non coperte.
-- Quando lavori su codice critico o legacy.
-- Quando vuoi evitare regressioni nella copertura.
-- Quando una pull request modifica logica importante.
-- Quando vuoi guidare test aggiuntivi, non sostituire review.
-
-## Come funziona
-
-Gli strumenti di coverage eseguono i test e registrano quali righe, rami o funzioni sono stati attraversati.
-
-Le metriche comuni sono:
-
-- line coverage;
-- branch coverage;
-- function coverage;
-- statement coverage.
-
-## API / Sintassi
-
-```text
-test --coverage
-coverage report
+```js
+export function shippingCents(total) {
+  if (total >= 2000) {
+    return 0;
+  }
+  return 350;
+}
 ```
 
-Il report mostra aree eseguite e non eseguite.
+In `shipping.test.mjs`, con il test runner di Node 24:
 
-## Esempio pratico
+```js
+import test from "node:test";
+import assert from "node:assert/strict";
+import { shippingCents } from "./shipping.mjs";
 
-```text
-Coverage alta ma test debole:
-- il test esegue una funzione
-- non verifica il risultato importante
-
-Coverage piu utile:
-- il test copre il ramo
-- verifica output, errori e side effects attesi
+test("costo sotto e sopra la soglia", () => {
+  assert.equal(shippingCents(1999), 350);
+  assert.equal(shippingCents(2001), 0);
+});
 ```
 
-Il numero va interpretato insieme alla qualita delle asserzioni.
+Esegui il report **sul solo modulo della tariffa**, non sul test:
 
-## Varianti
+```sh
+node --test --experimental-test-coverage --test-coverage-include=shipping.mjs shipping.test.mjs
+```
 
-- Coverage per righe.
-- Coverage per branch.
-- Coverage differenziale sulla pull request.
-- Coverage per file critici.
-- Coverage combinata unit e integration test.
+Con questi casi entrambi i ritorni vengono eseguiti. Eppure, se il confronto diventasse `>`, le due asserzioni passerebbero ancora: **1999 e 2001 non distinguono le due implementazioni**. Il test mancante riguarda 2000, non una riga che il report colora come non eseguita.
 
-## Errori comuni
+## Come usare il dato
 
-- Inseguire il 100% senza pensare al valore.
-- Scrivere test senza asserzioni utili.
-- Escludere file problematici senza motivo.
-- Misurare solo unit test ignorando integrazione.
-- Bloccare modifiche per soglie irrealistiche su legacy code.
+1. Individua un percorso scoperto e chiediti se corrisponde a un comportamento promesso: rifiuto, errore di scrittura, limite esatto o stato invariato dopo un fallimento.
+2. Aggiungi un'asserzione osservabile. Invocare la funzione senza controllarne l'effetto può far salire il numero senza proteggere nulla.
+3. Specifica quali file e quali metriche contano. Una soglia sulle righe dell'intero progetto può nascondere codice nuovo non provato; la copertura differenziale riguarda soltanto il cambiamento.
 
-## Checklist
-
-- La coverage copre i rami importanti?
-- I test verificano comportamento, non solo esecuzione?
-- Le soglie sono realistiche?
-- Il report evidenzia codice nuovo non coperto?
-- Le esclusioni sono motivate?
+Per verificare *se i test reagiscono* al difetto sulla soglia, usa l'esperimento in [[Programmazione/Clean Code/Pagine/Mutation testing|Mutation testing]].
 
 ## Collegamenti
 
@@ -111,3 +85,5 @@ Il numero va interpretato insieme alla qualita delle asserzioni.
 - Martin Fowler, *TestCoverage*
 - Gerard Meszaros, *xUnit Test Patterns*
 - Kent Beck, *Test Driven Development*
+- [Node.js 24: test runner e raccolta della coverage](https://nodejs.org/docs/latest-v24.x/api/test.html#collecting-code-coverage)
+- [Martin Fowler: Test Coverage](https://martinfowler.com/bliki/TestCoverage.html)

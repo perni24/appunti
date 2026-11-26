@@ -93,6 +93,7 @@ frontend/
 |-- index.html
 |-- package.json
 |-- package-lock.json
+|-- tsconfig.json
 `-- vite.config.js
 ```
 
@@ -100,7 +101,23 @@ frontend/
 
 La struttura proposta mescola componenti `.jsx` e moduli `.ts`. Vite puo trasformare entrambi, ma questa scelta non fornisce automaticamente un controllo completo dei tipi nei componenti React.
 
-Sono possibili due strategie coerenti.
+L'albero mostra una **variante mista intenzionale**: i moduli API e i contratti sono TypeScript; pagine e Context restano JavaScript. Per controllare proprio i moduli tipizzati, il `tsconfig.json` della radice può essere:
+
+```json
+{
+  "compilerOptions": {
+    "target": "ES2022",
+    "module": "ESNext",
+    "moduleResolution": "Bundler",
+    "strict": true,
+    "noEmit": true,
+    "types": ["vite/client"]
+  },
+  "include": ["src/api/**/*.ts", "src/types/**/*.ts"]
+}
+```
+
+Con questa configurazione `tsc --noEmit` **non verifica il JSX**. Di seguito due alternative se vuoi usare un solo linguaggio.
 
 ### Progetto TypeScript
 
@@ -145,7 +162,7 @@ export function formatEntity(entity) {
 
 Mescolare le estensioni senza una strategia esplicita puo dare l'impressione di avere controlli statici che in realta non coprono l'intera applicazione.
 
-Gli esempi successivi mantengono i nomi originali, ma il progetto reale dovrebbe scegliere una delle due varianti.
+Gli esempi successivi usano la variante mista. Per la conversione completa a TSX aggiorna anche gli import, il riferimento in `index.html` e la configurazione del compilatore (inclusione di tutta `src`, JSX React e tipi React).
 
 ## Flusso di avvio
 
@@ -209,7 +226,7 @@ Contiene i componenti che definiscono la struttura visiva comune:
 - contenitore principale;
 - layout autenticato.
 
-Un layout riceve il contenuto tramite `children` o tramite il sistema di routing. Non dovrebbe caricare dati specifici di una singola entita.
+Un layout riceve il contenuto tramite `children` o tramite il sistema di routing. Non dovrebbe caricare dati specifici di una singola entita. Il frammento è una variante: `Header` va definito e importato se aggiungi questo layout; la Home dell'esempio non lo usa.
 
 ```jsx
 export function MainLayout({ children }) {
@@ -460,7 +477,7 @@ export interface PaginatedResponse<T> {
 }
 ```
 
-Non e necessario avvolgere ogni risposta in un tipo generico se il backend non usa realmente quel formato.
+Questi due wrapper sono opzionali, **non** il formato del backend Python collegato: quello restituisce direttamente un array per la lista, un oggetto per il dettaglio o la creazione e `detail` per gli errori FastAPI.
 
 ### `src/api/apiCore.ts`
 
@@ -475,7 +492,7 @@ Centralizza il comportamento comune delle richieste:
 - eventuale autenticazione.
 
 ```typescript
-const API_BASE_URL = import.meta.env.VITE_API_BASE_URL
+const API_BASE_URL = (import.meta.env.VITE_API_BASE_URL || "/api").replace(/\/+$/, "")
 
 
 export class ApiError extends Error {
@@ -488,16 +505,15 @@ export class ApiError extends Error {
 }
 
 
-export async function apiRequest<T>(
+export async function apiRequest(
   path: string,
   options: RequestInit = {},
-): Promise<T> {
+): Promise<unknown> {
+  const headers = new Headers(options.headers)
+  if (!headers.has("Accept")) headers.set("Accept", "application/json")
   const response = await fetch(`${API_BASE_URL}${path}`, {
     ...options,
-    headers: {
-      Accept: "application/json",
-      ...options.headers,
-    },
+    headers,
   })
 
   if (!response.ok) {
@@ -505,14 +521,14 @@ export async function apiRequest<T>(
   }
 
   if (response.status === 204) {
-    return undefined as T
+    throw new Error("L'endpoint JSON ha restituito una risposta vuota")
   }
 
-  return response.json() as Promise<T>
+  return response.json()
 }
 ```
 
-Il cast del JSON non valida la risposta. Quando il contratto e critico, il risultato deve essere controllato con uno schema runtime prima di essere restituito.
+`apiRequest` serve endpoint che promettono JSON: uno status non riuscito conserva il codice in `ApiError.status`; un `204` non diventa un'entità fittizia. Per operazioni senza body usa un helper separato che restituisca `Promise<void>`. La forma del JSON si verifica nel modulo che conosce la risorsa.
 
 Le variabili con prefisso `VITE_` vengono incluse nel bundle client. Non devono contenere password, token privati o altri segreti.
 
@@ -525,31 +541,42 @@ import type { CreateEntityInput, Entity } from "../types/entities"
 import { apiRequest } from "./apiCore"
 
 
-export function getEntities(signal?: AbortSignal): Promise<Entity[]> {
-  return apiRequest<Entity[]>("/entities", { signal })
+function readEntity(value: unknown): Entity {
+  if (typeof value !== "object" || value === null ||
+      !("id" in value) || typeof value.id !== "number" || !Number.isSafeInteger(value.id) ||
+      !("name" in value) || typeof value.name !== "string") {
+    throw new Error("Risposta API: entità non valida")
+  }
+  return { id: value.id, name: value.name }
+}
+
+export async function getEntities(signal?: AbortSignal): Promise<Entity[]> {
+  const data = await apiRequest("/entities", { signal })
+  if (!Array.isArray(data)) throw new Error("Risposta API: elenco atteso")
+  return data.map(readEntity)
 }
 
 
-export function getEntity(
+export async function getEntity(
   entityId: number,
   signal?: AbortSignal,
 ): Promise<Entity> {
-  return apiRequest<Entity>(`/entities/${entityId}`, { signal })
+  return readEntity(await apiRequest(`/entities/${entityId}`, { signal }))
 }
 
 
-export function createEntity(input: CreateEntityInput): Promise<Entity> {
-  return apiRequest<Entity>("/entities", {
+export async function createEntity(input: CreateEntityInput): Promise<Entity> {
+  return readEntity(await apiRequest("/entities", {
     method: "POST",
     headers: {
       "Content-Type": "application/json",
     },
     body: JSON.stringify(input),
-  })
+  }))
 }
 ```
 
-Questo modulo non deve mostrare notifiche, cambiare pagina o modificare direttamente un Context.
+Questo modulo non mostra notifiche né modifica il Context. Con il [[Programmazione/Strutture di Progetto/Pagine/Python - Backend API a livelli|backend Python di esempio]], `getEntities()` chiama `GET /api/entities` e riceve un array; `createEntity({name: "Example"})` riceve l'entità completa con status 201, non soltanto l'ID. Un duplicato arriva come `ApiError` con status 409.
 
 ### `src/App.jsx`
 
@@ -642,14 +669,15 @@ import react from "@vitejs/plugin-react"
 
 export default defineConfig({
   plugins: [react()],
+  server: { proxy: { "/api": "http://127.0.0.1:8000" } },
 })
 ```
 
-Configurazioni come proxy API, alias e percorso base devono essere aggiunte soltanto quando richieste dal deployment.
+Il proxy qui serve **solo in sviluppo**: la richiesta del browser a Vite su `/api/entities` arriva a FastAPI con lo stesso percorso. In produzione configura il reverse proxy dell'host o imposta `VITE_API_BASE_URL` all'URL pubblico dell'API **prima della build**. Se l'origine è diversa, configura CORS anche sul backend: il proxy di sviluppo non viene distribuito con i file statici.
 
 ### `package.json`
 
-Descrive dipendenze e comandi del progetto. Per una variante TypeScript:
+Descrive dipendenze e comandi del progetto. Questo è il frammento degli script, non un manifest installabile da solo: servono `react` e `react-dom`, più Vite, il plugin React, TypeScript ed ESLint (con i plugin usati dalla configurazione) tra le dipendenze di sviluppo.
 
 ```json
 {
@@ -825,7 +853,7 @@ In questo modello i file specifici di `Entity` rimangono vicini. `components/com
 
 ## Checklist
 
-- [ ] Il progetto usa coerentemente JavaScript oppure TypeScript.
+- [ ] È esplicito quali file sono controllati da TypeScript, anche nel progetto misto JSX/TS.
 - [ ] Se usa TypeScript, il comando di build esegue anche il type checking.
 - [ ] `main` contiene soltanto il bootstrap dell'applicazione.
 - [ ] Le pagine compongono componenti e gestiscono gli stati della vista.

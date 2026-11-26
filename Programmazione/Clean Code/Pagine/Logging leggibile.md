@@ -27,76 +27,31 @@ title: Logging leggibile
 
 ## Sintesi
 
-Il **logging leggibile** registra eventi utili per capire cosa e successo nel sistema senza sommergere chi legge.
+Un log leggibile descrive un **evento osservato** con campi stabili. «Autorizzazione negata» è diverso da «non sappiamo se il provider ha risposto»: nel primo caso conosci l'esito, nel secondo no. Un'unica riga `"Payment failed"` può suggerire all'operatore l'azione sbagliata.
 
-Un log buono aiuta debug, monitoraggio e analisi post incidente.
+## Esempio: evento e contesto minimo
 
-## Problema che risolve
-
-Log casuali o rumorosi non aiutano.
-
-Problemi comuni:
-
-- messaggi generici;
-- mancanza di contesto;
-- livelli sbagliati;
-- dati sensibili esposti;
-- log duplicati;
-- assenza di correlation id;
-- errori registrati troppo lontano dalla causa.
-
-## Concetto chiave
-
-Un log dovrebbe rispondere a domande operative:
-
-- cosa e successo?
-- su quale entita?
-- con quale esito?
-- quale richiesta o processo lo ha prodotto?
-- serve intervenire?
-
-## Esempio
-
-Poco utile:
+Per questo esempio `outcome` è uno degli esiti già classificati dall'adattatore: `"declined"` o `"unknown"`. `requestId` è un identificatore opaco generato dal servizio, non un valore arbitrario ricevuto in un header. Il sink riceve un record strutturato, non l'intero oggetto del provider:
 
 ```js
-logger.error("Error");
+function logAuthorization(outcome, requestId, write) {
+  if (outcome !== "declined" && outcome !== "unknown") {
+    throw new RangeError("Esito di autorizzazione non riconosciuto");
+  }
+  write({
+    event: "payment.authorization",
+    level: outcome === "declined" ? "info" : "warn",
+    outcome,
+    requestId,
+  });
+}
 ```
 
-Piu utile:
+In questo sistema un rifiuto previsto è informativo; un esito ignoto merita attenzione. Il livello è una **scelta operativa**, non una verità universale. A parità di evento si può cercare per `outcome` o correlare con `requestId` senza interpretare una frase libera. Non passare al sink token, payload completi, indirizzi email o testo grezzo delle eccezioni.
 
-```js
-logger.error("Payment authorization failed", {
-  orderId,
-  paymentProvider,
-  reason,
-});
-```
+## Come verificare il log
 
-Il secondo log fornisce contesto diagnostico.
-
-## Dettagli importanti
-
-- Usa livelli coerenti: debug, info, warn, error.
-- Non loggare segreti, password, token o dati personali non necessari.
-- Preferisci log strutturati quando possibile.
-- Includi identificativi utili, non interi oggetti rumorosi.
-- Log e messaggi utente hanno scopi diversi.
-
-## Limiti
-
-- Il logging non sostituisce metriche, tracing e alerting.
-- Troppi log possono aumentare costi e rumore.
-- In ambienti regolati bisogna considerare privacy e retention.
-- Loggare ogni eccezione a ogni livello crea duplicati.
-
-## Errori comuni
-
-- Usare `console.log` lasciati dal debug.
-- Scrivere messaggi senza contesto.
-- Registrare lo stesso errore in ogni layer.
-- Usare `error` per eventi normali.
-- Esporre dati sensibili nei log.
+Cattura i record in un sink di prova. Controlla evento, esito, livello e insieme delle chiavi; il timestamp e la destinazione finale possono essere responsabilità del logger. Una riga per ogni livello dello stack duplicherà lo stesso incidente: registra l'esito dove il suo significato è noto. I log non sostituiscono contatori o tracing e il loro successo non prova che il pagamento sia stato eseguito.
 
 ## Collegamenti
 
@@ -108,6 +63,5 @@ Il secondo log fornisce contesto diagnostico.
 
 ## Fonti
 
-- Michael Nygard, *Release It!*
-- Charity Majors, Liz Fong-Jones, George Miranda, *Observability Engineering*
-- Robert C. Martin, *Clean Code*
+- OpenTelemetry, [Logs Data Model](https://opentelemetry.io/docs/specs/otel/logs/data-model/)
+- Michael Nygard, *Release It!*; Charity Majors, Liz Fong-Jones e George Miranda, *Observability Engineering*; Robert C. Martin, *Clean Code*

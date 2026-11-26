@@ -27,71 +27,39 @@ title: Gestione dello stato
 
 ## Sintesi
 
-La **gestione dello stato** riguarda dove vivono i dati mutabili, chi puo modificarli e quali regole ne proteggono la coerenza.
+Prima di scegliere *dove* tenere uno stato, chiediti **per quanto tempo e per chi quel valore è vero**. L'utente corrente appartiene alla richiesta, non al processo che la esegue. Due richieste possono alternarsi a ogni `await`: un'unica variabile globale non può rappresentarle entrambe.
 
-Nel Clean Code lo stato non e un problema da eliminare, ma una responsabilita da rendere visibile e controllata.
+## Quale stato stai leggendo?
 
-## Problema che risolve
+| Valore | Chi lo possiede | Durata utile |
+| --- | --- | --- |
+| Utente autenticato | Contesto della richiesta | Fino al termine della richiesta |
+| Proprietario di un documento | Archivio dei documenti | Fino a una modifica confermata |
+| Esito di un controllo | Funzione che prende la decisione | Per quella coppia di utente e documento |
 
-Stato sparso e non governato rende il sistema difficile da capire:
-
-- valori modificati da punti lontani;
-- ordine di chiamata fragile;
-- test che si influenzano tra loro;
-- cache incoerenti;
-- oggetti in stati intermedi;
-- side effects difficili da tracciare.
-
-## Concetto chiave
-
-Ogni stato mutabile dovrebbe avere un proprietario chiaro.
-
-Il codice pulito distingue tra dati immutabili, stato locale temporaneo, stato di dominio, stato applicativo, cache e stato infrastrutturale.
-
-## Dettagli importanti
-
-- Lo stato locale e piu facile da controllare dello stato globale.
-- Lo stato condiviso richiede contratti piu forti.
-- La mutazione dovrebbe avvenire tramite operazioni nominate.
-- Gli invarianti devono restare validi dopo ogni transizione.
-- Nei test, lo stato deve essere isolato e ripristinabile.
+L'esito si può calcolare dai primi due valori: conservarlo come terzo stato mutabile obbligherebbe a invalidarlo quando cambia l'uno o l'altro.
 
 ## Esempio
 
-Stato globale fragile:
-
-```js
-let currentUser = null;
-
-function canEditDocument(document) {
-  return currentUser.role === "admin" || document.ownerId === currentUser.id;
-}
-```
-
-Stato esplicito:
+Il gestore riceve `user` dal livello di autenticazione. `load(id)` restituisce un documento valido oppure `null`; un guasto dell'archivio rifiuta la promessa.
 
 ```js
 function canEditDocument(user, document) {
-  return user.role === "admin" || document.ownerId === user.id;
+  if (user === null || document === null) return false;
+  return user.role === "admin" || user.id === document.ownerId;
+}
+
+async function checkEdit(user, id, load) {
+  const document = await load(id);
+  return canEditDocument(user, document);
 }
 ```
 
-La seconda versione rende la dipendenza visibile e testabile.
+Anna avvia la lettura del suo documento; Bruno avvia un'altra richiesta prima che termini la prima. Se il controllo rilegge `currentUser` da una variabile globale, può trovare Bruno al posto di Anna. Qui ogni chiamata conserva il proprio parametro. Il confronto presuppone identità già validate, non un oggetto utente costruito dal client.
 
-## Limiti
+## Limiti e verifica
 
-- Alcuni sistemi sono naturalmente stateful.
-- UI, sessioni, transazioni e workflow richiedono stato persistente.
-- Rendere ogni stato immutabile puo essere costoso.
-- Troppa astrazione nella gestione dello stato puo nascondere il flusso reale.
-
-## Errori comuni
-
-- Usare variabili globali come scorciatoia.
-- Modificare oggetti ricevuti senza dichiararlo.
-- Lasciare stati intermedi osservabili.
-- Duplicare lo stesso stato in piu punti.
-- Non definire chi possiede la mutazione.
+Passare un oggetto non ne fa una copia: il contesto della richiesta non deve essere mutato da altri durante l'attesa. Un risultato `true` descrive il documento **letto**; se proprietario o permessi possono cambiare prima del salvataggio, la scrittura deve verificare la condizione sulla versione corrente. Per provare l'isolamento, fai partire due letture e completa per prima la seconda, senza timer.
 
 ## Collegamenti
 
@@ -106,3 +74,4 @@ La seconda versione rende la dipendenza visibile e testabile.
 - Martin Fowler, *Refactoring*
 - Michael Feathers, *Working Effectively with Legacy Code*
 - Eric Evans, *Domain-Driven Design*
+- [ECMAScript: sospensione e ripresa con Await](https://tc39.es/ecma262/multipage/control-abstraction-objects.html#await)

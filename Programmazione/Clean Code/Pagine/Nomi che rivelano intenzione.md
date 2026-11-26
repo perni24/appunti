@@ -25,70 +25,26 @@ title: Nomi che rivelano intenzione
 
 ## Sintesi
 
-I **nomi che rivelano intenzione** spiegano il motivo o il concetto dietro una variabile, funzione o classe, non solo la sua forma tecnica.
+Un nome rivela l'intenzione se permette di distinguere due concetti che hanno lo **stesso tipo** ma ragioni diverse per esistere. `days` descrive una misura; `trialPeriodDays` dice *quale regola* stai configurando.
 
-Un nome buono riduce la distanza tra codice e dominio.
+## Esempio: due valori uguali, due decisioni
 
-## Problema che risolve
-
-Un nome puo essere tecnicamente corretto ma poco utile:
-
-```js
-const list = [];
-```
-
-Il lettore sa che e una lista, ma non sa di cosa, perche esiste o come verra usata.
-
-## Concetto chiave
-
-Un nome rivela intenzione quando chiarisce:
-
-- cosa rappresenta;
-- perche esiste;
-- quale ruolo ha nel flusso;
-- quale regola di dominio incarna;
-- quale risultato produce.
-
-Il nome deve evitare domande inutili.
-
-## Dettagli importanti
-
-- Preferisci nomi di dominio a nomi tecnici generici.
-- Evita nomi basati solo sul tipo: `array`, `object`, `map`.
-- Usa nomi coerenti per lo stesso concetto.
-- Una funzione dovrebbe dire cosa ottieni, non solo cosa fa internamente.
-- Se serve un commento per spiegare un nome, spesso il nome e debole.
-
-## Esempio
-
-Nome tecnico:
-
-```js
-const days = 30;
-```
-
-Nome intenzionale:
+In questo prodotto di esempio la prova gratuita e il preavviso di disdetta durano entrambi 30 giorni. Il marketing decide la prima durata; il contratto con il cliente determina la seconda.
 
 ```js
 const trialPeriodDays = 30;
+const cancellationNoticeDays = 30;
 ```
 
-La seconda versione comunica una regola di dominio.
+Se la prova gratuita passa a 14 giorni, cambia soltanto `trialPeriodDays`. Un'unica costante `defaultDays` inviterebbe invece ad aggiornare anche il preavviso. Non è la ripetizione del numero a determinare se c'è duplicazione: conta se si tratta **della stessa decisione**.
 
-## Limiti
+## Come scegliere il nome
 
-- Un nome non puo contenere tutta la documentazione.
-- Nomi troppo specifici possono diventare falsi se il comportamento cambia.
-- In codice molto locale, un nome breve puo bastare.
-- Il dominio deve essere compreso prima di nominare bene.
+Completa la frase del chiamante: «La prova termina dopo ___» e «La disdetta richiede un preavviso di ___». Se un solo nome sembra intercambiabile in entrambe le frasi, verifica se è troppo generico. Lo stesso criterio vale per `list`: la domanda non è «è un array?», ma «sono fatture da pagare o pagamenti già eseguiti?».
 
-## Errori comuni
+## Limiti ed errori comuni
 
-- Usare `result`, `data`, `value` fuori da scope immediati.
-- Nominare in base a come il dato e calcolato invece che al suo significato.
-- Usare sinonimi diversi per lo stesso concetto.
-- Nascondere regole di business dietro nomi generici.
-- Usare nomi che promettono piu di quanto il codice faccia.
+Il nome non sostituisce il contratto. `trialPeriodDays` non dice se si contano giorni di calendario o intervalli di 24 ore, né se l'ultimo giorno sia incluso; specifica la regola dove si calcola la scadenza e coprila con un caso limite. Evita sia nomi generici lontani dal punto d'uso, sia nomi che promettono condizioni non verificate.
 
 ## Collegamenti
 
@@ -101,3 +57,4 @@ La seconda versione comunica una regola di dominio.
 ## Fonti
 
 - Robert C. Martin, *Clean Code*
+- Martin Fowler, [Replace Magic Literal](https://refactoring.com/catalog/replaceMagicLiteral.html)

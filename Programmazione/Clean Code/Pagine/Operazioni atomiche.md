@@ -27,81 +27,40 @@ title: Operazioni atomiche
 
 ## Sintesi
 
-Un'**operazione atomica** e un'operazione che viene osservata come indivisibile: o avviene completamente, o non avviene.
+Per prenotare l'ultima unità non basta che la lettura dello stock e la scrittura siano sicure **separatamente**. La domanda da rivolgere al database è «puoi togliere una unità **se è ancora disponibile**?». Il punto che decide deve essere lo stesso che modifica il dato.
 
-Nel Clean Code l'atomicita rende piu chiaro quali passaggi non possono essere separati senza creare inconsistenza.
+## Esempio: aggiornamento condizionale SQLite
 
-## Quando usarlo
-
-- Quando fai `read -> modify -> write` su stato condiviso.
-- Quando aggiorni contatori o stock.
-- Quando crei record con vincoli unici.
-- Quando devi coordinare piu scritture in una transazione.
-- Quando un retry potrebbe duplicare effetti.
-
-## Come funziona
-
-L'atomicita puo essere garantita da:
-
-- primitive del linguaggio;
-- lock;
-- transazioni database;
-- vincoli unici;
-- operazioni condizionali;
-- compare-and-swap;
-- code con ack controllato.
-
-La scelta dipende dal livello in cui vive lo stato.
-
-## API / Sintassi
-
-```sql
-UPDATE products
-SET stock = stock - 1
-WHERE id = ? AND stock > 0;
-```
-
-Questa forma evita di leggere stock e aggiornarlo in due passaggi separati.
-
-## Esempio pratico
+Si presuppone `products(id TEXT PRIMARY KEY, stock INTEGER NOT NULL CHECK (stock >= 0))` con quantità intere, e una connessione SQLite in autocommit. Il risultato della stessa istruzione dice se il decremento è avvenuto e quanto rimane: non occorre una seconda lettura.
 
 ```js
-async function reserveProduct(productId, repository) {
-  const updated = await repository.decrementStockIfAvailable(productId);
-
-  if (!updated) {
-    return { ok: false, error: "out_of_stock" };
-  }
-
-  return { ok: true };
+function reserveOne(db, id) {
+  const row = db.prepare(
+    "UPDATE products SET stock = stock - 1 " +
+    "WHERE id = ? AND stock > 0 RETURNING stock"
+  ).get(id);
+  if (row === undefined) return { ok: false, reason: "unavailable" };
+  return { ok: true, remaining: row.stock };
 }
 ```
 
-Il repository espone un'operazione atomica, non una sequenza fragile.
+Da stock uno il primo tentativo restituisce `{ ok: true, remaining: 0 }`: **zero è il risultato di un successo**. Il tentativo seguente non aggiorna righe. Il contratto usa `unavailable` sia per ID assente sia per stock esaurito, perché l'istruzione non li distingue. Un database occupato o una scrittura fallita sollevano un errore, non significano «esaurito».
 
-## Varianti
+## Tre garanzie diverse
 
-- Atomic increment: contatori.
-- Compare-and-swap: aggiorna solo se il valore atteso e ancora valido.
-- Transaction: piu operazioni trattate come unita.
-- Unique constraint: impedisce duplicati.
-- Upsert: crea o aggiorna in un'unica operazione.
+| Garanzia | Domanda | Cosa offre l'esempio |
+| --- | --- | --- |
+| Atomicità | La modifica può essere applicata a metà? | Il decremento è una sola istruzione condizionale |
+| Isolamento | Chi vede o può modificare il dato mentre lavoro? | SQLite serializza le scritture; un altro scrittore può dover attendere o ricevere un errore di contesa |
+| Idempotenza | Ripetere la stessa richiesta è innocuo? | **No**: se ci sono due unità, due chiamate possono consumarle entrambe |
 
-## Errori comuni
+## Quando una sola istruzione non basta
 
-- Dividere controllo e scrittura in passaggi separati.
-- Pensare che una funzione sia atomica solo perche e corta.
-- Ignorare concorrenza tra processi diversi.
-- Usare transazioni senza capire isolamento.
-- Non verificare il risultato dell'operazione atomica.
+Se devi inserire anche la prenotazione, racchiudi le scritture nella stessa transazione e comunica il successo **dopo** il commit. Un vincolo univoco serve per l'identità, un aggiornamento condizionale per lo stock, un confronto di versione per rilevare dati cambiati. Un `ack` di coda non estende nessuna di queste garanzie a un database o servizio separato.
 
-## Checklist
+## Verifica
 
-- Quale stato deve essere protetto?
-- L'operazione e davvero indivisibile al livello corretto?
-- Il risultato segnala successo o fallimento?
-- Esistono vincoli o transazioni che proteggono i dati?
-- I retry sono sicuri?
+Oltre all'ultimo pezzo, prova il caso di due unità e un ID inesistente. Con due connessioni allo stesso file mantieni aperta una transazione di scrittura: la contesa sulla seconda deve rimanere distinguibile da una prenotazione rifiutata per stock non disponibile.
 
 ## Collegamenti
 
@@ -117,3 +76,5 @@ Il repository espone un'operazione atomica, non una sequenza fragile.
 - Martin Kleppmann, *Designing Data-Intensive Applications*
 - Brian Goetz, *Java Concurrency in Practice*
 - Michael Nygard, *Release It!*
+- [SQLite: isolamento tra connessioni e scritture](https://www.sqlite.org/isolation.html)
+- [SQLite: risultati e limiti di RETURNING](https://www.sqlite.org/lang_returning.html)

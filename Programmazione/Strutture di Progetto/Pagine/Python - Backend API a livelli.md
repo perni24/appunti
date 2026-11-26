@@ -90,35 +90,13 @@ backend/
 `-- requirements.txt
 ```
 
-Il nome corretto dei file di inizializzazione e `__init__.py`, con due caratteri underscore prima e dopo `init`. La grafia con `init` in grassetto deriva dalla formattazione Markdown e non rappresenta un nome file Python valido.
+I file `__init__.py` possono essere vuoti. I moduli dell'esempio si importano dalla directory `backend/`: è questa la directory di lavoro per i comandi sotto, non la sua cartella padre.
 
 ## Flusso di una richiesta
 
 ```text
-Client HTTP
-    |
-    v
-main.py
-    |
-    v
-routes/api.py
-    |
-    v
-routes/entity_routes.py
-    |
-    +--> validators/request_validator.py
-    |
-    v
-services/entity_service.py
-    |
-    v
-db/repositories/entity_repo.py
-    |
-    v
-db/db.py
-    |
-    v
-Database
+Avvio:     main.create_app -> composizione delle dipendenze e registrazione dei router
+Richiesta: client -> route registrata -> validazione -> service -> repository -> SQLite
 ```
 
 Il risultato percorre il flusso inverso:
@@ -139,25 +117,35 @@ E il composition root dell'applicazione. Deve:
 - inizializzare le dipendenze condivise;
 - registrare router e middleware;
 - configurare gestione degli errori e ciclo di vita;
-- avviare l'applicazione solo quando eseguito direttamente.
+- esporre la factory usata dal server ASGI, senza aprire una porta quando il modulo viene importato.
 
 Non deve contenere query SQL o regole di business.
 
-Esempio concettuale con FastAPI:
+Esempio con FastAPI, Pydantic 2 e SQLite (Python 3.12+). La factory fornisce alle route un modo per aprire un service: ogni operazione ha la propria connessione.
 
 ```python
+from contextlib import contextmanager
+
 from fastapi import FastAPI
 
-from routes.api import api_router
+from config import load_settings
+from db.db import transaction
+from db.repositories.entity_repo import EntityRepository
+from routes.api import make_api_router
+from services.entity_service import EntityService
 
 
 def create_app() -> FastAPI:
+    settings = load_settings()
+
+    @contextmanager
+    def open_service():
+        with transaction(settings.database_path) as connection:
+            yield EntityService(EntityRepository(connection))
+
     app = FastAPI(title="Backend API")
-    app.include_router(api_router, prefix="/api")
+    app.include_router(make_api_router(open_service), prefix="/api")
     return app
-
-
-app = create_app()
 ```
 
 La funzione `create_app()` facilita i test perche consente di costruire una nuova istanza dell'applicazione senza avviare un server.
@@ -179,17 +167,17 @@ from os import getenv
 
 @dataclass(frozen=True)
 class Settings:
-    database_url: str
+    database_path: str
     default_locale: str
 
 
 def load_settings() -> Settings:
-    database_url = getenv("DATABASE_URL")
-    if not database_url:
-        raise RuntimeError("DATABASE_URL is required")
+    database_path = getenv("DATABASE_PATH")
+    if not database_path:
+        raise RuntimeError("DATABASE_PATH is required")
 
     return Settings(
-        database_url=database_url,
+        database_path=database_path,
         default_locale=getenv("DEFAULT_LOCALE", "it"),
     )
 ```
@@ -210,6 +198,21 @@ Il modulo non deve contenere query relative a una specifica entita: quelle appar
 
 Una funzione che restituisce sempre la stessa connessione globale e rischiosa, soprattutto con richieste concorrenti. E preferibile ottenere una connessione per richiesta o usare il pool fornito dal driver.
 
+```python
+from contextlib import closing, contextmanager
+import sqlite3
+
+
+@contextmanager
+def transaction(path):
+    with closing(sqlite3.connect(path, autocommit=False)) as connection:
+        connection.row_factory = sqlite3.Row
+        with connection:
+            yield connection
+```
+
+Il blocco interno fa commit all'uscita normale e rollback su eccezione; quello esterno chiude la connessione. Apertura, uso e chiusura avvengono nella stessa route sincrona. Usa un file, non `:memory:`: con connessioni distinte il database in memoria ordinario non è condiviso.
+
 ### `db/repositories/entity_repo.py`
 
 Contiene le operazioni di persistenza relative all'entita:
@@ -225,19 +228,24 @@ class EntityRepository:
     def __init__(self, connection) -> None:
         self._connection = connection
 
+    def list_all(self):
+        rows = self._connection.execute("SELECT id, name FROM entities ORDER BY id")
+        return [dict(row) for row in rows]
+
     def find_by_id(self, entity_id: int):
         cursor = self._connection.execute(
             "SELECT id, name FROM entities WHERE id = ?",
             (entity_id,),
         )
-        return cursor.fetchone()
+        row = cursor.fetchone()
+        return dict(row) if row is not None else None
 
-    def create(self, name: str) -> int:
+    def create(self, name: str):
         cursor = self._connection.execute(
-            "INSERT INTO entities (name) VALUES (?)",
+            "INSERT INTO entities (name) VALUES (?) ON CONFLICT(name) DO NOTHING",
             (name,),
         )
-        return int(cursor.lastrowid)
+        return {"id": cursor.lastrowid, "name": name} if cursor.rowcount == 1 else None
 ```
 
 I placeholder SQL dipendono dal driver. L'esempio usa la sintassi `?`, comune in `sqlite3`; non deve essere copiato senza verificare il driver scelto.
@@ -259,9 +267,16 @@ class EntityNotFoundError(Exception):
     pass
 
 
+class DuplicateNameError(Exception):
+    pass
+
+
 class EntityService:
     def __init__(self, repository) -> None:
         self._repository = repository
+
+    def list_entities(self):
+        return self._repository.list_all()
 
     def get_entity(self, entity_id: int):
         entity = self._repository.find_by_id(entity_id)
@@ -269,11 +284,14 @@ class EntityService:
             raise EntityNotFoundError(entity_id)
         return entity
 
-    def create_entity(self, name: str) -> int:
+    def create_entity(self, name: str):
         normalized_name = name.strip()
         if len(normalized_name) < 3:
             raise ValueError("name must contain at least 3 characters")
-        return self._repository.create(normalized_name)
+        entity = self._repository.create(normalized_name)
+        if entity is None:
+            raise DuplicateNameError(normalized_name)
+        return entity
 ```
 
 Il service non deve restituire oggetti specifici del framework, codici HTTP o risposte JSON. La conversione degli errori applicativi in `404`, `409` o `422` appartiene al livello HTTP.
@@ -296,11 +314,13 @@ La validazione della richiesta non sostituisce le regole di business. Per esempi
 Con FastAPI il modulo puo contenere modelli Pydantic:
 
 ```python
-from pydantic import BaseModel, Field
+from typing import Annotated
+
+from pydantic import BaseModel, StringConstraints
 
 
 class CreateEntityRequest(BaseModel):
-    name: str = Field(min_length=3, max_length=100)
+    name: Annotated[str, StringConstraints(strip_whitespace=True, min_length=3, max_length=100)]
 ```
 
 Per progetti piccoli i modelli possono stare accanto alla funzionalita. Una cartella `validators` separata diventa utile quando le stesse regole vengono condivise o quando la validazione e articolata.
@@ -317,28 +337,38 @@ Definisce gli endpoint relativi a una risorsa. Una route deve limitarsi a:
 ```python
 from fastapi import APIRouter, HTTPException
 
-from services.entity_service import EntityNotFoundError
+from services.entity_service import DuplicateNameError, EntityNotFoundError
 from validators.request_validator import CreateEntityRequest
 
 
-router = APIRouter(prefix="/entities", tags=["entities"])
+def make_entity_router(open_service):
+    router = APIRouter(prefix="/entities", tags=["entities"])
 
+    @router.get("")
+    def list_entities():
+        with open_service() as service:
+            return service.list_entities()
 
-@router.get("/{entity_id}")
-def get_entity(entity_id: int):
-    try:
-        return entity_service.get_entity(entity_id)
-    except EntityNotFoundError as error:
-        raise HTTPException(status_code=404, detail="Entity not found") from error
+    @router.get("/{entity_id}")
+    def get_entity(entity_id: int):
+        try:
+            with open_service() as service:
+                return service.get_entity(entity_id)
+        except EntityNotFoundError as error:
+            raise HTTPException(404, detail="Entity not found") from error
 
+    @router.post("", status_code=201)
+    def create_entity(request: CreateEntityRequest):
+        try:
+            with open_service() as service:
+                return service.create_entity(request.name)
+        except DuplicateNameError as error:
+            raise HTTPException(409, detail="Name already exists") from error
 
-@router.post("", status_code=201)
-def create_entity(request: CreateEntityRequest):
-    entity_id = entity_service.create_entity(request.name)
-    return {"id": entity_id}
+    return router
 ```
 
-`entity_service` nell'esempio rappresenta una dipendenza gia costruita. Nell'implementazione reale deve essere fornita esplicitamente tramite factory, dependency injection del framework o composition root. Una variabile globale creata all'importazione rende piu difficili configurazione e test.
+**Contratto con il frontend:** la lista restituisce un array (anche vuoto); dettaglio e creazione restituiscono un oggetto `{id, name}`. Su un database nuovo, creare `{"name":"  Example  "}` dà `201` con `{"id":1,"name":"Example"}`; ripetere dà `409`, un nome di soli spazi dà `422` e un ID assente dà `404`. Il controllo di unicità è del database, non una SELECT preventiva.
 
 ### `routes/api.py`
 
@@ -347,11 +377,13 @@ Aggrega i router dell'API senza implementare i singoli casi d'uso:
 ```python
 from fastapi import APIRouter
 
-from routes.entity_routes import router as entity_router
+from routes.entity_routes import make_entity_router
 
 
-api_router = APIRouter()
-api_router.include_router(entity_router)
+def make_api_router(open_service):
+    router = APIRouter()
+    router.include_router(make_entity_router(open_service))
+    return router
 ```
 
 Questa separazione permette a `main.py` di registrare un solo router principale.
@@ -433,6 +465,30 @@ E sufficiente per un database semplice o un prototipo. Quando lo schema evolve n
 
 Per rendere piu chiara la responsabilita, il file puo essere spostato in `db/schema.sql`.
 
+**Prova locale**, da `backend/` con ambiente virtuale attivo. Installa le dipendenze:
+
+```bash
+python -m pip install -r requirements.txt
+```
+
+In PowerShell indica il file SQLite (su shell POSIX: `export DATABASE_PATH=dev.sqlite3`):
+
+```powershell
+$env:DATABASE_PATH = "dev.sqlite3"
+```
+
+Con la CLI SQLite disponibile, inizializza **una sola volta** il file nuovo:
+
+```bash
+sqlite3 dev.sqlite3 ".read schema.sql"
+```
+
+Avvia il server di sviluppo, quindi esegui le richieste di `test/entity.http`:
+
+```bash
+python -m uvicorn main:create_app --factory --reload
+```
+
 ### `build_portable.py`
 
 E uno script di distribuzione specifico del progetto. Puo:
@@ -452,9 +508,9 @@ Se il progetto non richiede una distribuzione portabile, il file puo essere rimo
 Elenca le dipendenze installabili:
 
 ```text
-fastapi
+fastapi>=0.115,<1
 uvicorn
-pydantic
+pydantic>=2,<3
 ```
 
 Per un'applicazione distribuita, le versioni devono essere controllate e aggiornate intenzionalmente. Le dipendenze usate soltanto per test, lint e sviluppo possono essere separate da quelle necessarie in produzione.
@@ -513,7 +569,7 @@ Le route traducono soltanto gli errori previsti in risposte HTTP. Gli errori ina
 - Non salvare segreti nel repository Git.
 - Limitare dimensione e tipo dei payload.
 - Non restituire dettagli interni negli errori HTTP.
-- Configurare CORS in base ai client realmente autorizzati.
+- Se il browser usa un'altra origine, configura CORS per le origini previste. CORS non autentica il chiamante e non sostituisce i controlli sugli endpoint.
 - Applicare autenticazione e autorizzazione prima delle operazioni protette.
 - Registrare eventi utili senza includere password, token o dati sensibili.
 
@@ -586,8 +642,14 @@ features/
 - [ ] Le dipendenze sono controllate e riproducibili.
 - [ ] Cache, log, database locali e build sono esclusi da Git.
 
+## Riferimenti
+
+- [FastAPI: composizione dei router](https://fastapi.tiangolo.com/tutorial/bigger-applications/)
+- [Python 3.12: transazioni e context manager di sqlite3](https://docs.python.org/3.12/library/sqlite3.html#how-to-use-the-connection-context-manager)
+
 ## Collegamenti
 
+- [[Programmazione/Strutture di Progetto/Pagine/React - Frontend SPA a livelli|Frontend React: il client di questa API]]
 - [[Programmazione/Strutture di Progetto/Pagine/PHP - Applicazione web tradizionale|PHP - Applicazione web tradizionale]]
 - [[Programmazione/Python/Pagine/Creazione di Package|Creazione di Package]]
 - [[Programmazione/Python/Pagine/Configurazione e Variabili d Ambiente|Configurazione e Variabili d Ambiente]]

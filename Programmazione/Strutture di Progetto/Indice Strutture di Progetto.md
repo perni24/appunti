@@ -2,6 +2,8 @@
 
 - [[Programmazione/Indice Programmazione|Tutti i percorsi di Programmazione]]
 
+Per pagine HTML generate sul server, parti da PHP. Per un'applicazione con frontend e backend separati, leggi insieme le schede Python e React: condividono il contratto HTTP di `/api/entities`.
+
 ## PHP
 
 - [[Programmazione/Strutture di Progetto/Pagine/PHP - Applicazione web tradizionale|Applicazione web tradizionale]]

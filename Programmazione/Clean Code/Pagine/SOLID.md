@@ -26,69 +26,43 @@ title: SOLID
 
 ## Sintesi
 
-**SOLID** e un insieme di cinque principi di design orientati a rendere il codice piu comprensibile, estendibile e meno accoppiato.
+**SOLID** raccoglie cinque domande su come un componente cambia e su cosa promette ai suoi clienti. Sostituire tre classi con tre interfacce non dimostra di aver applicato cinque principi: può cambiare la direzione delle dipendenze, ma non dimostra che un'implementazione rispetti il comportamento atteso.
 
-Non e una checklist da applicare meccanicamente: e un linguaggio per ragionare su responsabilita, dipendenze e cambiamento.
+## Cinque domande per lo stesso catalogo
 
-## Problema che risolve
+| Principio | Domanda da porre | Esempio |
+| --- | --- | --- |
+| **S**ingle Responsibility | Quali decisioni cambiano per ragioni o interlocutori diversi? | La politica commerciale sui nomi e il formato del report non devono cambiare insieme per forza. |
+| **O**pen/Closed | Per quale variazione concreta serve un punto di estensione? | Il report riceve una funzione di ricerca; introdurre un catalogo in memoria non richiede un altro `if` nel report. |
+| **L**iskov Substitution | Un sostituto mantiene risultati, precondizioni ed errori promessi? | Se un ID assente vale `null`, una nuova ricerca che lancia un'eccezione su quell'ID rompe il cliente. |
+| **I**nterface Segregation | Da quali operazioni dipende davvero questo cliente? | Il report legge le etichette; non deve implementare né simulare la cancellazione di voci. |
+| **D**ependency Inversion | Chi definisce il contratto e chi si adatta? | Il report richiede una ricerca di etichette; è l'adattatore a tradurre le righe SQL, non il report a importare il driver. |
 
-Sistemi con classi grandi, dipendenze rigide e interfacce confuse diventano difficili da evolvere.
+## Esempio: stessa firma, comportamento diverso
 
-SOLID aiuta a identificare dove il design rende costoso aggiungere o modificare comportamento.
+La ricerca seguente è sincrona; accetta anche ID non presenti e restituisce `null` quando manca l'etichetta. Una stringa vuota è un'etichetta presente. Qui interessa la sostituibilità, non la gestione di un archivio remoto.
 
-## Concetto chiave
+```ts
+type FindLabel = (id: string) => string | null;
 
-I cinque principi sono:
+function displayLabel(id: string, find: FindLabel): string {
+  return find(id) ?? "(non in catalogo)";
+}
 
-- **S**: Single Responsibility Principle;
-- **O**: Open Closed Principle;
-- **L**: Liskov Substitution Principle;
-- **I**: Interface Segregation Principle;
-- **D**: Dependency Inversion Principle.
+const labels = new Map([["A", "Carta"], ["B", ""]]);
+const lookup: FindLabel = (id) => labels.get(id) ?? null;
 
-Il tema comune e progettare componenti con responsabilita chiare e dipendenze controllate.
-
-## Dettagli importanti
-
-- SRP riguarda motivi di cambiamento, non numero di metodi.
-- OCP suggerisce estensione senza modifiche continue al codice stabile.
-- LSP protegge sostituibilita e correttezza delle astrazioni.
-- ISP evita interfacce troppo grandi.
-- DIP riduce dipendenza da dettagli concreti.
-
-## Esempio
-
-Violazione tipica:
-
-```text
-ReportService dipende direttamente da PdfExporter, EmailClient e Database.
+const incompatible: FindLabel = (id) => {
+  if (!labels.has(id)) throw new Error("ID assente");
+  return labels.get(id)!;
+};
 ```
 
-Design piu flessibile:
+TypeScript accetta entrambe le funzioni. Per `"A"` danno lo stesso risultato; per `"B"` il cliente conserva la stringa vuota. Solo `lookup` permette al cliente di mostrare il testo di ripiego per un ID assente. Il test utile è **lo stesso caso d'uso** applicato a ogni sostituto, non il solo controllo della firma.
 
-```text
-ReportService dipende da interfacce:
-- ReportRepository
-- ReportExporter
-- NotificationSender
-```
+## Limiti ed errori comuni
 
-Il servizio conosce contratti, non dettagli specifici.
-
-## Limiti
-
-- SOLID nasce in contesto object-oriented, ma molte idee sono trasferibili.
-- Applicarlo troppo presto puo generare astrazioni inutili.
-- Non sostituisce modellazione del dominio.
-- Non ogni classe deve essere progettata per estensione.
-
-## Errori comuni
-
-- Applicare SOLID come dogma.
-- Creare interfacce per ogni classe senza motivo.
-- Confondere SRP con funzioni minuscole.
-- Usare DIP per nascondere dipendenze invece che controllarle.
-- Cercare estendibilita dove serve solo semplicita.
+OCP non promette che il codice non cambierà mai: protegge una direzione di variazione scelta, non tutte quelle immaginabili. LSP non impone che le implementazioni siano identiche al loro interno, ma che rispettino le osservazioni promesse al cliente. Se nessun cliente deve scegliere tra strategie e il costo di cambiare è basso, una funzione diretta può essere la soluzione più chiara.
 
 ## Collegamenti
 
@@ -101,5 +75,5 @@ Il servizio conosce contratti, non dettagli specifici.
 
 ## Fonti
 
-- Robert C. Martin, *Agile Software Development, Principles, Patterns, and Practices*
-- Robert C. Martin, *Clean Architecture*
+- Robert C. Martin, [Solid Relevance](https://blog.cleancoder.com/uncle-bob/2020/10/18/Solid-Relevance.html)
+- Robert C. Martin, *Agile Software Development, Principles, Patterns, and Practices*; *Clean Architecture*

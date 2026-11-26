@@ -26,65 +26,37 @@ title: Formatter
 
 ## Sintesi
 
-Un **formatter** applica automaticamente uno stile di formattazione al codice: indentazione, spazi, newline, ordine di alcuni elementi e convenzioni sintattiche.
+Un formatter decide **come si presenta** un programma, non quale regola di business dovrebbe applicare. Prettier può uniformare spazi e indentazione; non corregge una tariffa errata e non è, di per sé, uno strumento per riordinare gli import. Separare la formattazione da una modifica funzionale rende il diff più facile da verificare.
 
-Nel Clean Code serve a togliere discussioni manuali sullo stile e rendere il codice piu uniforme.
+## Esempio: controllo e scrittura non sono la stessa operazione
 
-## Quando usarlo
+In un progetto di prova con Prettier 3.8.1 già installato localmente, metti in `shipping.mjs` questo esempio volutamente non formattato. La tariffa è espressa in centesimi.
 
-- In progetti con piu sviluppatori.
-- Quando vuoi ridurre diff rumorosi.
-- Quando il linguaggio ha formattatori standard o molto diffusi.
-- Prima di commit, pull request o build CI.
-- Quando vuoi separare stile e contenuto nelle code review.
-
-## Come funziona
-
-Il formatter legge i file e li riscrive seguendo regole configurate o predefinite.
-
-L'obiettivo non e creare lo stile perfetto, ma avere uno stile stabile e automatico.
-
-## API / Sintassi
-
-```text
-formatter check
-formatter write
+```js
+export function shippingCents(total){return total>=2000?0:350}
 ```
 
-In genere si usa una modalita di controllo in CI e una modalita di scrittura in locale.
+Verifica lo stile **senza modificare il file**. `--no-install` evita di installare il tool se manca; le regole di progetto devono essere le stesse per editor e CI.
 
-## Esempio pratico
-
-```text
-prima del commit -> formatter write -> test/lint -> commit
-CI -> formatter check -> fallisce se il codice non e formattato
+```sh
+npx --no-install prettier --check shipping.mjs
 ```
 
-La formattazione diventa parte del flusso normale.
+Riscrivi solo il file indicato e controlla il diff:
 
-## Varianti
+```sh
+npx --no-install prettier --write shipping.mjs
+```
 
-- Formatter opinionated: poche opzioni, stile deciso dallo strumento.
-- Formatter configurabile: molte opzioni di progetto.
-- Formatter integrato nell'IDE.
-- Formatter eseguito in pre-commit.
-- Formatter eseguito in CI solo come controllo.
+Con lo stile predefinito entrambi gli importi restano identici. Il primo controllo segnala il file da formattare con codice 1; dopo la scrittura lo stesso controllo termina con 0. Un errore di esecuzione di Prettier è distinto dal semplice disallineamento di stile. Una seconda scrittura con la stessa versione e configurazione non dovrebbe produrre un altro diff.
 
-## Errori comuni
+## Come usarlo in un progetto
 
-- Discutere manualmente regole gia automatizzabili.
-- Cambiare configurazione spesso.
-- Formattare tutto il repository insieme a una modifica logica.
-- Non allineare IDE, pre-commit e CI.
-- Usare formatter diversi nello stesso progetto.
+- Fissa la versione nel progetto e nel lockfile. Una nuova versione può stampare lo stesso codice in modo diverso.
+- Fai riscrivere all'editor o a un comando locale; in CI usa il controllo in sola lettura, così la correzione resta nel commit dell'autore.
+- Escludi consapevolmente dipendenze e output generati. Una riformattazione estesa va in un commit separato.
 
-## Checklist
-
-- Il formatter e documentato nel progetto?
-- IDE e CI usano la stessa configurazione?
-- La formattazione viene controllata automaticamente?
-- Le modifiche di sola formattazione sono separate da refactoring logici?
-- Il team sa come eseguire il formatter localmente?
+Un programma che usa `>` anziché `>=` può essere perfettamente formattato. Quel difetto richiede una specifica e un test sul valore di soglia; vedi [[Programmazione/Clean Code/Pagine/Mutation testing|Mutation testing]]. Per la configurazione completa vedi [[Programmazione/JavaScript/Pagine/Prettier|Prettier in JavaScript]].
 
 ## Collegamenti
 
@@ -99,3 +71,4 @@ La formattazione diventa parte del flusso normale.
 - Prettier Documentation
 - Black Documentation
 - rustfmt Documentation
+- [Prettier: CLI, check, write ed exit code](https://prettier.io/docs/cli)

@@ -27,81 +27,37 @@ title: Trasformazioni dichiarative
 
 ## Sintesi
 
-Le **trasformazioni dichiarative** descrivono cosa deve accadere ai dati piu che ogni dettaglio meccanico di come farlo.
+Una trasformazione dichiarativa dice **quali elementi tenere e quale valore ricavarne**, lasciando all'operazione di collezione il compito di visitarli. È una scelta di espressione, non una garanzia automatica di purezza, velocità o equivalenza rispetto a un ciclo.
 
-Nel Clean Code aiutano a rendere leggibili operazioni come filtrare, mappare, raggruppare, validare e normalizzare dati.
+## Esempio: quali totali sono stati pagati?
 
-## Problema che risolve
-
-Il codice imperativo dettagliato puo nascondere l'intenzione dietro variabili temporanee e controllo manuale del flusso.
-
-Il lettore vede molti dettagli:
-
-- indici;
-- accumulatori;
-- condizioni annidate;
-- mutazioni;
-- cicli;
-- stati intermedi.
-
-Ma deve dedurre da solo lo scopo finale.
-
-## Concetto chiave
-
-Una trasformazione dichiarativa rende visibile l'intenzione:
-
-```text
-filtra ordini pagati -> estrai totale -> somma
-```
-
-Il focus non e eliminare ogni ciclo, ma scegliere una forma che faccia emergere il dominio.
-
-## Dettagli importanti
-
-- `map`, `filter`, `reduce`, query builder e pipeline sono strumenti dichiarativi comuni.
-- Il codice dichiarativo non deve diventare criptico.
-- I nomi dei predicati e delle trasformazioni contano molto.
-- Una trasformazione dichiarativa e piu utile quando lavora su dati ben modellati.
-- Le operazioni complesse possono richiedere passaggi nominati.
-
-## Esempio
-
-Versione imperativa:
+Il risultato richiesto è una **lista**, non una somma: i totali in centesimi degli ordini pagati, nell'ordine di ingresso, inclusi zeri e duplicati. L'input è un array denso di normali record già validati, senza getter o modifiche durante la visita.
 
 ```js
-const totals = [];
-
-for (const order of orders) {
-  if (order.status === "paid") {
-    totals.push(order.total);
+function paidTotalsLoop(orders) {
+  const totals = [];
+  for (const order of orders) {
+    if (order.status === "paid") totals.push(order.totalCents);
   }
+  return totals;
+}
+
+function paidTotals(orders) {
+  return orders
+    .filter((order) => order.status === "paid")
+    .map((order) => order.totalCents);
 }
 ```
 
-Versione dichiarativa:
+Con un ordine in bozza da 300, un pagato da 0 e due pagati da 250, entrambe restituiscono `[0, 250, 250]`. Senza ordini pagati restituiscono `[]`. Un filtro applicato al totale come valore booleano perderebbe lo zero; un `Set` eliminerebbe un duplicato; un `reduce` che somma i valori risponderebbe a un'altra domanda.
 
-```js
-const paidTotals = orders
-  .filter((order) => order.status === "paid")
-  .map((order) => order.total);
-```
+## Quando cambia il comportamento?
 
-La seconda versione evidenzia filtro e trasformazione.
+Il ciclo legge stato e, se necessario, totale di ogni ordine prima di passare al successivo. Con gli array JavaScript, `filter` completa il filtro e crea un array intermedio **prima** che `map` legga i totali. Se i campi sono getter con effetti, l'ordine delle letture è osservabile: lo stesso array restituito non implica allora equivalenza completa.
 
-## Limiti
+## Quando preferire il ciclo
 
-- Catene troppo lunghe possono essere difficili da debuggare.
-- `reduce` usato male puo diventare meno leggibile di un ciclo.
-- Alcuni algoritmi sono piu chiari in forma esplicitamente imperativa.
-- Le astrazioni dichiarative possono nascondere costi di performance.
-
-## Errori comuni
-
-- Usare stile dichiarativo per sembrare elegante, non per chiarire.
-- Scrivere callback troppo lunghe dentro `map` o `filter`.
-- Nascondere side effects dentro trasformazioni.
-- Usare `reduce` per operazioni che richiedono nomi intermedi.
-- Confondere codice compatto con codice leggibile.
+Se devi uscire al primo errore, procedere con uno stato che dipende dal passo precedente o evitare una grande collezione intermedia, il ciclo può spiegare l'algoritmo meglio della catena. Per trovare il **primo** elemento che soddisfa una condizione considera anche `find`. Non aggiungere effetti nelle callback per accorciare il codice; per decisioni sulle prestazioni misura con dati rappresentativi.
 
 ## Collegamenti
 
@@ -114,6 +70,6 @@ La seconda versione evidenzia filtro e trasformazione.
 
 ## Fonti
 
-- Robert C. Martin, *Clean Code*
-- Martin Fowler, *Refactoring*
-- Eric Elliott, *Composing Software*
+- ECMA-262, [Array.prototype.filter](https://tc39.es/ecma262/multipage/indexed-collections.html#sec-array.prototype.filter) e [Array.prototype.map](https://tc39.es/ecma262/multipage/indexed-collections.html#sec-array.prototype.map)
+- Martin Fowler, [Collection Pipeline](https://martinfowler.com/articles/collection-pipeline/)
+- Robert C. Martin, *Clean Code*; Martin Fowler, *Refactoring*; Eric Elliott, *Composing Software*

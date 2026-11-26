@@ -26,89 +26,35 @@ title: Query leggibili
 
 ## Sintesi
 
-Le **query leggibili** rendono chiaro quali dati vengono richiesti, come vengono filtrati, quali relazioni sono coinvolte e quale forma ha il risultato.
+Una query è leggibile se dal testo si possono ricostruire **cosa rappresenta una riga**, perché entra nel risultato e come si ordina rispetto alle altre. L'indentazione aiuta, ma non corregge un join che moltiplica le righe o una paginazione che salta gli ordini a pari data.
 
-Una query e codice: va scritta per essere capita, modificata e verificata.
+## Esempio: leggere una pagina di ordini in attesa
 
-## Quando usarlo
-
-- In repository e data access layer.
-- In reportistica e dashboard.
-- In migrazioni o script dati.
-- Quando una query contiene join, filtri o aggregazioni non banali.
-- Quando performance e correttezza dipendono dal database.
-
-## Come funziona
-
-Una query leggibile usa:
-
-- nomi coerenti;
-- alias chiari;
-- condizioni ordinate;
-- join espliciti;
-- formattazione stabile;
-- separazione tra query di lettura e logica applicativa.
-
-## API / Sintassi
+Una riga deve rappresentare **un ordine**. Si assumono `orders(id INTEGER PRIMARY KEY, customer_id, created_ms, status)` con chiave cliente e data non nulle, e `customers(id INTEGER PRIMARY KEY, email)`. Il riferimento al cliente è valido e univoco: l'`INNER JOIN` trova esattamente un cliente per ordine. L'email è parte di questo report interno, non una proprietà da includere per default in qualunque API.
 
 ```sql
 SELECT
-  orders.id,
-  orders.status,
-  customers.email
-FROM orders
-JOIN customers ON customers.id = orders.customer_id
-WHERE orders.status = 'pending'
-ORDER BY orders.created_at DESC;
+  o.id         AS order_id,
+  o.created_ms AS created_ms,
+  c.email      AS customer_email
+FROM orders AS o
+JOIN customers AS c ON c.id = o.customer_id
+WHERE o.status = 'pending'
+  AND (:before_ms IS NULL OR (o.created_ms, o.id) < (:before_ms, :before_id))
+ORDER BY o.created_ms DESC, o.id DESC
+LIMIT :page_size;
 ```
 
-La formattazione aiuta a vedere campi, join e filtri.
+Alla prima pagina passa `NULL` per entrambi i valori `before`; alla successiva passa **data e ID dell'ultima riga ricevuta**. Il chiamante valida che i due valori del cursore siano entrambi presenti o entrambi assenti e che la dimensione della pagina sia un intero, ad esempio fra 1 e 100. I valori vengono associati ai parametri, non concatenati al testo SQL.
 
-## Esempio pratico
+Con tre ordini pendenti `(1000, 12)`, `(1000, 11)`, `(999, 15)` e pagina di una riga, dopo l'ordine 12 deve arrivare **11**. Un filtro sulla sola data lo salterebbe. La coppia nel confronto corrisponde alle due colonne dell'ordinamento; l'ID univoco risolve il pareggio.
 
-Query fragile:
+## Errori comuni e verifica
 
-```sql
-SELECT * FROM orders o, customers c WHERE c.id=o.customer_id AND o.status='pending';
-```
-
-Query piu leggibile:
-
-```sql
-SELECT
-  orders.id,
-  orders.created_at,
-  customers.email
-FROM orders
-JOIN customers ON customers.id = orders.customer_id
-WHERE orders.status = 'pending';
-```
-
-La seconda evita `SELECT *`, usa join esplicito e mostra i campi necessari.
-
-## Varianti
-
-- SQL scritto a mano.
-- Query builder.
-- ORM.
-- View o materialized view.
-- Query object dedicati per letture complesse.
-
-## Errori comuni
-
-- Usare `SELECT *` in codice applicativo.
-- Nascondere query costose dietro metodi innocui.
-- Mescolare filtri applicativi e filtri database senza criterio.
-- Non testare query importanti.
-- Ignorare indici e piano di esecuzione quando la query e critica.
-
-## Checklist
-
-- La query seleziona solo i campi necessari?
-- I join sono espliciti?
-- Alias e nomi sono comprensibili?
-- La query e coperta da test o esempi?
-- Performance e indici sono stati verificati se il percorso e critico?
+- `SELECT *` non stabilisce la proiezione pubblicata: una nuova colonna può cambiare il risultato; qui i tre alias hanno un significato preciso.
+- Un join aggiunto sulle righe di dettaglio può produrre più righe per ordine. Verifica la cardinalità prima di applicare `LIMIT`; `DISTINCT` non sostituisce la scelta dell'unità di risultato.
+- Il cursore non congela il database. Se lo stato o le chiavi d'ordine cambiano tra pagine, il risultato complessivo non equivale necessariamente a uno snapshot. Per un export coerente occorre una strategia apposita.
+- Un indice su stato, data e ID può essere candidato, non una garanzia: valuta il piano e i volumi effettivi. Per la correttezza prova parità di data, ordini esclusi e pagina finale vuota.
 
 ## Collegamenti
 
@@ -123,3 +69,5 @@ La seconda evita `SELECT *`, usa join esplicito e mostra i campi necessari.
 - Martin Fowler, *Patterns of Enterprise Application Architecture*
 - Markus Winand, *SQL Performance Explained*
 - PostgreSQL Documentation, *Queries*
+- [SQLite: confronti su valori di riga e paginazione](https://www.sqlite.org/rowvalue.html)
+- [SQLite: ORDER BY e LIMIT](https://www.sqlite.org/lang_select.html#orderby)

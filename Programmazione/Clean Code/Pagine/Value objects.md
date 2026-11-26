@@ -26,79 +26,39 @@ title: Value objects
 
 ## Sintesi
 
-Un **value object** e un oggetto identificato dal suo valore, non da una identita propria. Due value objects con gli stessi valori rappresentano lo stesso concetto.
+Un **value object** rappresenta qualcosa che puoi sostituire con un altro esemplare dello stesso valore senza cambiare il significato del programma. Il posto «fila 3, sedile 2» resta lo stesso posto sulla pianta anche se leggi due volte il biglietto. Due **prenotazioni** per quel posto, invece, possono avere clienti, date e identità diverse.
 
-Nel Clean Code i value objects aiutano a rendere espliciti concetti di dominio che altrimenti sarebbero rappresentati con primitive generiche come stringhe, numeri o booleani.
+## Esempio: confrontare due posti
 
-## Problema che risolve
-
-Molti bug nascono quando un valore tecnicamente corretto non e semanticamente valido. Una stringa puo rappresentare un'email, un codice fiscale, una valuta o un token. Un numero puo essere prezzo, percentuale, quantita o durata.
-
-Senza un tipo dedicato, il significato resta implicito e le regole vengono duplicate.
-
-## Concetto chiave
-
-Un value object:
-
-- rappresenta un concetto del dominio;
-- valida le proprie invarianti;
-- e spesso immutabile;
-- non ha identita autonoma;
-- puo contenere comportamento collegato al valore;
-- rende illegali alcuni stati non validi.
-
-La sua utilita principale e trasformare una regola sparsa in un concetto nominato.
-
-## Dettagli importanti
-
-- Un value object dovrebbe essere piccolo e coerente.
-- La validazione va concentrata nel punto di creazione.
-- Se il valore cambia, spesso si crea un nuovo value object.
-- Il confronto avviene sui valori interni.
-- Un buon value object riduce controlli ripetuti nel resto del codice.
-
-## Esempio
-
-Primitive generica:
+Supponiamo una singola sala con 12 file da 8 sedili, numerati a partire da 1. Si confrontano entrambe le coordinate; nessuna delle due può cambiare dopo la costruzione.
 
 ```ts
-function sendEmail(email: string) {
-  // Il codice deve fidarsi che la stringa sia valida.
-}
-```
-
-Value object:
-
-```ts
-class EmailAddress {
-  private constructor(readonly value: string) {}
-
-  static create(value: string): EmailAddress {
-    if (!value.includes("@")) {
-      throw new Error("Email non valida");
+class Seat {
+  constructor(readonly row: number, readonly numberInRow: number) {
+    if (!Number.isInteger(row) || row < 1 || row > 12 ||
+        !Number.isInteger(numberInRow) || numberInRow < 1 || numberInRow > 8) {
+      throw new RangeError("Posto fuori dalla pianta della sala");
     }
+    Object.freeze(this);
+  }
 
-    return new EmailAddress(value);
+  equals(other: Seat): boolean {
+    return this.row === other.row && this.numberInRow === other.numberInRow;
   }
 }
 ```
 
-Il resto del codice non riceve una stringa qualsiasi, ma un valore gia validato.
+Con `a = new Seat(3, 2)` e `b = new Seat(3, 2)`, `a.equals(b)` è vero, ma `a === b` è falso: in JavaScript le due istanze hanno riferimenti distinti. Anche una `Map` con chiavi oggetto non invoca `equals`. Se devi ritrovare lo stesso posto usando un'altra istanza, scegli una chiave stabile derivata da entrambe le coordinate.
 
-## Limiti
+## Cosa garantisce, e cosa no
 
-- Non ogni valore merita un tipo dedicato.
-- Troppi value objects possono appesantire codice semplice.
-- In alcuni linguaggi il costo sintattico puo essere alto.
-- Serve evitare value objects senza comportamento o regole reali.
+- Il costruttore rifiuta anche `NaN`, frazioni e coordinate fuori limite. `readonly` aiuta il compilatore; il congelamento basta qui perché i due campi sono numeri, non oggetti mutabili.
+- Un posto valido può essere **occupato**. La disponibilità appartiene alla prenotazione per uno spettacolo, non alle coordinate. Per confrontare posti di sale diverse occorrerebbe anche l'identificatore della sala.
+- Il tipo deve promettere soltanto ciò che verifica. Per esempio, `value.includes("@")` accetta anche `"@"`: non basta a garantire che una stringa sia un indirizzo email valido, né che la casella sia raggiungibile.
 
-## Errori comuni
+## Quando conviene
 
-- Creare value objects per ogni campo senza motivo.
-- Lasciare validazione duplicata fuori dal value object.
-- Rendere mutabile un valore che dovrebbe essere stabile.
-- Inserire logica di persistenza nel value object.
-- Confondere value object e entity con identita.
+Introduci il valore quando il concetto attraversa più punti del sistema e vuoi un'unica definizione di validità o uguaglianza. Non serve aggiungere metodi artificiali, un ID o dipendenze dal database solo per trasformare due dati locali in una classe.
 
 ## Collegamenti
 
@@ -112,4 +72,4 @@ Il resto del codice non riceve una stringa qualsiasi, ma un valore gia validato.
 ## Fonti
 
 - Eric Evans, *Domain-Driven Design*
-- Martin Fowler, *Value Object*
+- Martin Fowler, [Value Object](https://martinfowler.com/bliki/ValueObject.html)

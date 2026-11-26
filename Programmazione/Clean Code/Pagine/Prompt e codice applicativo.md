@@ -27,77 +27,40 @@ title: Prompt e codice applicativo
 
 ## Sintesi
 
-Quando un'applicazione usa un LLM, il **prompt** diventa parte del comportamento applicativo.
+Per un'applicazione un prompt è una **richiesta di lavoro**, non una funzione che garantisce la risposta giusta. Il caso di esempio è estrarre una frase che confermi esplicitamente una data di consegna. Il modello può proporre la frase o astenersi; non può confermare la consegna, scrivere nell'archivio o autorizzare un'azione.
 
-Va quindi trattato come codice: versionato, testato, leggibile, con input e output attesi chiari.
+## Esempio: comporre la richiesta e gestire gli esiti
 
-## Problema che risolve
+`passages` contiene passaggi autorizzati per questa richiesta, con ID univoci e testo. `generate` è un adattatore dell'applicazione, **non** la firma di un SDK: deve consegnare separatamente istruzioni e dati e restituire `complete` con testo, `refused` oppure `incomplete`. Un guasto di trasporto rifiuta la promessa. Il [[Programmazione/Clean Code/Pagine/Output strutturati|parser]] e la [[Programmazione/Clean Code/Pagine/Validazione dei dati generati|verifica sulla fonte]] sono dipendenze distinte.
 
-Prompt gestiti come testo improvvisato causano:
-
-- comportamento instabile;
-- output difficili da validare;
-- dipendenza da dettagli non documentati;
-- modifiche non tracciate;
-- prompt duplicati;
-- test impossibili o fragili.
-
-## Concetto chiave
-
-Un prompt applicativo dovrebbe dichiarare:
-
-- ruolo del modello;
-- input disponibili;
-- vincoli;
-- formato di output;
-- esempi quando utili;
-- errori o casi limite da gestire.
-
-Il codice intorno al prompt deve comunque validare l'output.
-
-## Dettagli importanti
-
-- I prompt importanti vanno tenuti in file o funzioni nominate.
-- Versiona prompt e schema di output insieme.
-- Non inserire dati sensibili non necessari.
-- Se l'output alimenta codice o database, serve validazione forte.
-- I test dovrebbero coprire casi reali e regressioni note.
-
-## Esempio
-
-Prompt fragile:
-
-```text
-Riassumi questo testo.
-```
-
-Prompt applicativo piu chiaro:
-
-```text
-Estrai una sintesi operativa in italiano.
-Rispondi con JSON valido:
-{
-  "summary": "string",
-  "open_questions": ["string"]
+```js
+async function proposeDelivery(passages, { generate, parseProposal, checkEvidence }) {
+  const reply = await generate({
+    promptVersion: "delivery-1",
+    schemaVersion: 1,
+    instruction: [
+      "Cerca una data di consegna esplicitamente confermata nei passaggi.",
+      "Restituisci solo JSON con version: 1, passageId e quote.",
+      "Copia una citazione contigua (massimo 240 unità UTF-16) e il suo ID.",
+      "Se manca una conferma o le fonti sono in conflitto, usa null per entrambi.",
+    ].join(" "),
+    data: passages.map(({ id, text }) => ({ id, text })),
+  });
+  if (reply.kind === "refused" || reply.kind === "incomplete") return { kind: reply.kind };
+  if (reply.kind !== "complete") throw new Error("Esito dell'adattatore sconosciuto");
+  const parsed = parseProposal(reply.text);
+  if (!parsed.ok) return { kind: "invalid_output", code: parsed.code };
+  return checkEvidence(parsed.value, passages);
 }
 ```
 
-Il secondo prompt definisce un contratto verificabile.
+Il passaggio `{id: "S2", text: "Consegna confermata per il 18 maggio."}` può sostenere una proposta. «Data da concordare» non la sostiene. Un rifiuto del modello e la sua conclusione «non ho trovato conferme» non sono equivalenti; nemmeno un timeout fornisce informazioni sulle fonti.
 
-## Limiti
+## Come verificare una modifica al prompt
 
-- Un prompt non garantisce da solo correttezza.
-- I modelli possono cambiare comportamento tra versioni.
-- Test deterministici su LLM richiedono tolleranze e validazione strutturale.
-- Prompt troppo lunghi possono diventare difficili da mantenere.
-
-## Errori comuni
-
-- Affidarsi a testo libero quando serve output strutturato.
-- Non versionare prompt critici.
-- Non validare output prima di usarlo.
-- Mescolare prompt, business logic e parsing in una sola funzione.
-- Non registrare modello, parametri e prompt usati in un'esecuzione importante.
+- Tieni insieme versione del prompt, versione del formato e un piccolo insieme di casi annotati: conferma, assenza, negazione e due date discordanti. Conserva solo il materiale che sei autorizzato a trattare.
+- Con un adattatore sostitutivo testa in modo deterministico esiti, campi inviati e blocco degli output invalidi. Per confrontare due prompt sul modello reale misura anche proposte supportate, citazioni sbagliate e astensioni: uno stub non misura la qualità del modello.
+- Registra modello, versioni ed esito, non il testo integrale per default. Separare istruzioni e passaggi rende il contratto leggibile, ma **non** è una barriera di sicurezza: mantieni nel codice controllo delle fonti, permessi e decisione finale.
 
 ## Collegamenti
 
@@ -113,3 +76,4 @@ Il secondo prompt definisce un contratto verificabile.
 - OpenAI Documentation, *Structured Outputs*
 - Simon Willison, *Prompt injection*
 - Martin Fowler, *Refactoring*
+- [Anthropic: distinguere valutazioni del comportamento e risultati del sistema](https://www.anthropic.com/engineering/demystifying-evals-for-ai-agents)

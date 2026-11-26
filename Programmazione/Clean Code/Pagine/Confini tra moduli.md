@@ -26,79 +26,41 @@ title: Confini tra moduli
 
 ## Sintesi
 
-I **confini tra moduli** definiscono cosa un modulo espone, cosa nasconde e da quali altri moduli puo dipendere.
+Un confine definisce **ciò su cui gli altri moduli possono fare affidamento**: percorso di import, nomi, unità, risultati ed errori. Un file `index` comunica l'ingresso consigliato; da solo non impedisce a un altro file di importare direttamente un dettaglio interno.
 
-Un buon confine riduce accoppiamento e rende possibile cambiare l'implementazione senza cambiare tutto il sistema.
+## Esempio: esporre il prezzo, non il file del listino
 
-## Problema che risolve
+Riprendiamo `rates.mjs` dalla nota [[Programmazione/Clean Code/Pagine/Moduli piccoli|Moduli piccoli]]. Supponiamo che il modulo sia un pacchetto Node installato con il nome `@app/shipping`. Nella sua radice il `package.json` espone solo l'ingresso principale:
 
-Senza confini, ogni parte del progetto puo conoscere dettagli interni di ogni altra parte. Questo crea dipendenze fragili: una modifica locale produce effetti globali.
-
-Il risultato e codice difficile da refactorare e testare.
-
-## Concetto chiave
-
-Un confine di modulo e fatto da:
-
-- API pubblica;
-- dettagli privati;
-- dipendenze consentite;
-- dati che possono attraversare il confine;
-- errori che possono uscire;
-- responsabilita dichiarata.
-
-Il modulo dovrebbe esporre il minimo necessario.
-
-## Dettagli importanti
-
-- I dettagli interni non dovrebbero essere importati da altri moduli.
-- I confini non sono solo cartelle: sono regole di dipendenza.
-- Un modulo puo avere un file `index` o facciata pubblica.
-- I DTO possono essere utili per attraversare confini.
-- I test possono rivelare se un confine e troppo fragile.
-
-## Esempio
-
-Confine debole:
-
-```text
-orders/
-  internal-pricing.ts
-  internal-discount.ts
-  order-service.ts
-
-users/
-  user-service.ts importa orders/internal-discount.ts
+```json
+{
+  "name": "@app/shipping",
+  "private": true,
+  "exports": "./index.mjs"
+}
 ```
 
-Confine piu chiaro:
+Il file `index.mjs` riesporta un solo nome. È il pacchetto, non il chiamante, a conoscere la posizione di `rates.mjs`:
 
-```text
-orders/
-  index.ts
-  pricing.ts
-  order-service.ts
-
-users/
-  user-service.ts importa orders/index.ts
+```js
+export { shippingFeeCents } from "./rates.mjs";
 ```
 
-Il modulo `users` usa solo cio che `orders` decide di esporre.
+Il consumatore usa l'ingresso pubblico:
 
-## Limiti
+```js
+import { shippingFeeCents } from "@app/shipping";
 
-- Confini troppo rigidi possono rallentare modifiche semplici.
-- In progetti piccoli alcune separazioni sono premature.
-- I confini vanno aggiornati quando cambia il dominio.
-- Un confine non sostituisce test e naming chiaro.
+const fee = shippingFeeCents(501); // 590 centesimi
+```
 
-## Errori comuni
+Un import per nome di pacchetto da `@app/shipping/rates.mjs` fallisce con `ERR_PACKAGE_PATH_NOT_EXPORTED`, anche se il file esiste. Se sposti il listino, puoi aggiornare il solo percorso nella facciata e rieseguire lo **stesso consumatore**. Se cambi centesimi in euro, invece, rompi il contratto anche conservando nome e percorso.
 
-- Usare cartelle come confini ma importare dettagli interni ovunque.
-- Esporre tutto per comodita.
-- Creare dipendenze circolari tra moduli.
-- Lasciare tipi interni diventare parte della API pubblica.
-- Non documentare regole di dipendenza importanti.
+## Quanto protegge il confine?
+
+- `exports` governa la risoluzione per **nome di pacchetto**. Non è una barriera di sicurezza sul filesystem e non vieta import relativi tra semplici cartelle dello stesso progetto. Per questi ultimi occorrono regole di dipendenza, lint o review.
+- `private: true` evita la pubblicazione accidentale con npm; non rende privati i file. Dichiarare `exports` in un pacchetto già usato può rompere gli import profondi che prima funzionavano.
+- Non riesportare indistintamente ogni helper con `export *`. Se un tipo interno, una tabella o un errore del driver diventa parte del contratto, sostituirlo può richiedere modifiche in tutti i consumatori.
 
 ## Collegamenti
 
@@ -110,5 +72,5 @@ Il modulo `users` usa solo cio che `orders` decide di esporre.
 
 ## Fonti
 
-- David Parnas, *On the Criteria To Be Used in Decomposing Systems into Modules*
-- Robert C. Martin, *Clean Architecture*
+- Node.js, [Packages: package entry points](https://nodejs.org/api/packages.html#package-entry-points)
+- David Parnas, *On the Criteria To Be Used in Decomposing Systems into Modules*; Robert C. Martin, *Clean Architecture*

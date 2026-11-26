@@ -27,68 +27,48 @@ title: Pipeline di trasformazione
 
 ## Sintesi
 
-Una **pipeline di trasformazione** organizza il codice come una sequenza di passaggi, dove ogni passaggio riceve un valore e produce il valore successivo.
+Una pipeline rende visibile il percorso di un dato da una forma alla successiva. Il vantaggio non è avere molte funzioni, ma sapere **che cosa è già stato controllato, dove ci si può fermare e quale passaggio modifica il mondo esterno**.
 
-E utile quando un dato attraversa normalizzazione, validazione, arricchimento, filtro e formattazione.
+## Esempio: importare una riga cliente
 
-## Problema che risolve
-
-Senza una pipeline, la trasformazione di un dato puo diventare una funzione lunga con molte variabili temporanee e condizioni annidate.
-
-Questo rende difficile capire:
-
-- qual e l'ordine dei passaggi;
-- quali passaggi sono obbligatori;
-- dove vengono introdotti gli effetti;
-- quale forma ha il dato in ogni fase;
-- dove inserire un nuovo comportamento.
-
-## Concetto chiave
-
-Una pipeline rende esplicito il percorso del dato.
-
-Il codice dovrebbe permettere di leggere i passaggi dall'alto verso il basso, come una ricetta tecnica:
-
-```text
-input grezzo -> normalizzato -> validato -> trasformato -> output
-```
-
-## Dettagli importanti
-
-- Ogni passaggio dovrebbe avere un nome chiaro.
-- Le pipeline sono piu leggibili quando i passaggi sono puri.
-- La validazione dovrebbe avvenire prima delle trasformazioni che assumono dati validi.
-- I side effects dovrebbero stare all'inizio o alla fine, non sparsi in mezzo.
-- Se il dato cambia forma, conviene rendere espliciti i nomi delle fasi.
-
-## Esempio
+L'ingresso è una riga proveniente da JSON. Il codice cliente è una sequenza non vuota di cifre ASCII: `"007"` è distinto da `"7"`. Il nome non può essere vuoto dopo la rimozione degli spazi esterni. Prima si controlla la forma necessaria a usare `trim`; poi si normalizza e si verifica la regola di dominio. I campi non previsti non vengono copiati.
 
 ```js
-function importCustomer(rawCustomer) {
-  const normalized = normalizeCustomer(rawCustomer);
-  const validCustomer = validateCustomer(normalized);
-  const customer = toCustomer(validCustomer);
+function parseCustomerRow(row) {
+  if (row === null || typeof row !== "object" || Array.isArray(row)) {
+    return { ok: false, field: "row" };
+  }
+  if (typeof row.code !== "string") return { ok: false, field: "code" };
+  if (typeof row.name !== "string") return { ok: false, field: "name" };
 
-  return saveCustomer(customer);
+  const code = row.code.trim();
+  const displayName = row.name.trim();
+  if (!/^[0-9]+$/.test(code)) return { ok: false, field: "code" };
+  if (!displayName) return { ok: false, field: "name" };
+  return { ok: true, customer: { code, displayName } };
+}
+
+async function importCustomer(row, save) {
+  const parsed = parseCustomerRow(row);
+  if (!parsed.ok) return parsed;
+  const id = await save(parsed.customer);
+  return { ok: true, id };
 }
 ```
 
-La funzione mostra il flusso principale. I dettagli vivono nei passaggi nominati.
+`parseCustomerRow` trasforma senza scrivere. `importCustomer` decide se chiamare l'archivio, che per contratto restituisce l'ID salvato. Con `{ code: " 007 ", name: " Ada " }` l'archivio riceve `{ code: "007", displayName: "Ada" }`. Convertire prima il codice in un numero perderebbe gli zeri iniziali: l'ordine delle fasi fa parte del contratto.
 
-## Limiti
+## Come leggere gli esiti
 
-- Non ogni flusso e lineare.
-- Gestione errori e branching possono rendere la pipeline meno pulita.
-- Una pipeline con troppi step puo diventare difficile da seguire.
-- Se i passaggi hanno side effects nascosti, la pipeline diventa ingannevole.
+| Caso | Salvataggi richiesti | Esito del chiamante |
+| --- | --- | --- |
+| Riga malformata o campo non ammesso dalla sua regola | Nessuno | Promise risolta con `ok: false` e il campo del primo controllo fallito. |
+| Riga valida e archivio disponibile | Uno | Promise risolta con `ok: true` e l'ID dell'archivio. |
+| Riga valida, ma `save` fallisce | Uno tentato | Promise rifiutata con l'errore dell'archivio. Non è un errore di formato. |
 
-## Errori comuni
+## Limiti ed errori comuni
 
-- Inserire salvataggi, logica di rete o mutazioni nascoste dentro passaggi di trasformazione.
-- Usare nomi vaghi come `step1`, `processData`, `handle`.
-- Cambiare forma del dato senza renderlo chiaro.
-- Continuare la pipeline dopo un errore di validazione.
-- Creare pipeline generiche quando il dominio richiede passaggi espliciti.
+Questa pipeline gestisce **una riga**, non garantisce unicità del codice né atomicità di un import di più righe. Per un lotto occorre decidere se fermarsi al primo errore o accumulare gli scarti. Non nascondere la scrittura in un passaggio chiamato `normalize` e non trattare il risultato di un validatore booleano come se fosse il record validato.
 
 ## Collegamenti
 
@@ -101,6 +81,5 @@ La funzione mostra il flusso principale. I dettagli vivono nei passaggi nominati
 
 ## Fonti
 
-- Martin Fowler, *Refactoring*
-- Robert C. Martin, *Clean Code*
-- Eric Elliott, *Composing Software*
+- Martin Fowler, [Split Phase](https://refactoring.com/catalog/splitPhase.html)
+- Martin Fowler, *Refactoring*; Robert C. Martin, *Clean Code*; Eric Elliott, *Composing Software*

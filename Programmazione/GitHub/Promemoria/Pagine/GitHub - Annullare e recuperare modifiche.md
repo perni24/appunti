@@ -26,6 +26,8 @@ title: GitHub - Annullare e recuperare modifiche
 
 ## Rimuovere dallo staging
 
+Controlla prima `git status --short`. In un repository con commit, `--staged` riprende la versione da `HEAD` per il solo indice: il file sul disco resta com’è. Sostituisci i percorsi e gli SHA di esempio.
+
 ```powershell
 git restore --staged path/to/file
 ```
@@ -36,9 +38,11 @@ git restore --staged path/to/file
 git restore path/to/file
 ```
 
-Questo elimina le modifiche non salvate nel file.
+Attenzione: il comando sovrascrive il file tracciato sul disco con la versione **nello staging**, non necessariamente con quella di `HEAD`. Le modifiche non preparate possono andare perse.
 
 ## Ripristinare da un commit
+
+Senza `--staged` scrive la versione scelta solo nel working tree: non la prepara per il commit.
 
 ```powershell
 git restore --source commit-sha path/to/file
@@ -51,10 +55,10 @@ git revert commit-sha
 ```
 
 ```powershell
-git revert --no-commit first-sha..last-sha
+git revert --no-commit 'first-sha..last-sha'
 ```
 
-`revert` crea un nuovo commit e non riscrive la cronologia.
+Il primo comando crea un commit inverso. Il secondo, per una sequenza lineare, esclude `first-sha` e include `last-sha`: controlla prima l’intervallo con `git log --oneline first-sha..last-sha`. `--no-commit` prepara le inversioni senza registrarle; controlla `git diff --staged` prima del commit.
 
 ## Reset soft
 
@@ -62,7 +66,7 @@ git revert --no-commit first-sha..last-sha
 git reset --soft HEAD~1
 ```
 
-Mantiene modifiche e staging.
+Sposta il branch al commit precedente senza cambiare indice né file sul disco. Usa i reset che spostano il branch solo per cronologia locale non condivisa.
 
 ## Reset mixed
 
@@ -70,7 +74,7 @@ Mantiene modifiche e staging.
 git reset HEAD~1
 ```
 
-Mantiene i file modificati ma svuota lo staging.
+Riallinea lo staging al commit scelto e lascia i file sul disco invariati. Le differenze rispetto al nuovo `HEAD` non sono preparate.
 
 ## Reset hard
 
@@ -78,9 +82,11 @@ Mantiene i file modificati ma svuota lo staging.
 git reset --hard commit-sha
 ```
 
-Elimina le modifiche tracciate non salvate. Verificare sempre stato e SHA prima di usarlo.
+Distruttivo: riallinea indice e file tracciati al commit scelto; può sovrascrivere anche file non tracciati che ostacolano il ripristino. Controlla SHA, `git diff` e `git diff --staged` e metti al sicuro il lavoro da conservare prima di usarlo.
 
 ## Recuperare con reflog
+
+Il reflog è locale e le sue voci possono scadere. Può ritrovare commit prima raggiungibili, non è un backup delle modifiche mai registrate. Ispeziona lo SHA e crea un branch per mantenerlo raggiungibile.
 
 ```powershell
 git reflog
@@ -103,6 +109,13 @@ git reflog
 ```powershell
 git branch restored-branch commit-sha
 ```
+
+## Fonti
+
+- [Git: sorgente di restore e destinazioni](https://git-scm.com/docs/git-restore)
+- [Git: revert con o senza nuovo commit](https://git-scm.com/docs/git-revert)
+- [Git: effetti di reset](https://git-scm.com/docs/git-reset)
+- [Git: registro locale dei riferimenti](https://git-scm.com/docs/git-reflog)
 
 ## Approfondimento
 

@@ -27,77 +27,37 @@ title: Complessita cognitiva
 
 ## Sintesi
 
-La **complessita cognitiva** misura quanto e difficile per una persona seguire il flusso del codice.
+La difficoltà di lettura non coincide con il numero di percorsi. La **Cognitive Complexity di SonarSource** è una metrica che usa incrementi per certe interruzioni del flusso lineare e per l'annidamento. È un indicatore, non una misura diretta del tempo che servirà a una persona per capire il codice.
 
-Rispetto alla complessita ciclomatica, si concentra di piu su annidamenti, salti mentali e struttura leggibile.
+## Esempio: tre decisioni in due forme
 
-## Problema che risolve
-
-Due funzioni possono avere un numero simile di rami, ma una puo essere molto piu difficile da leggere.
-
-La difficolta aumenta quando il lettore deve tenere in memoria:
-
-- annidamenti profondi;
-- condizioni negative;
-- stati temporanei;
-- eccezioni al flusso;
-- side effects nascosti;
-- livelli di astrazione mescolati.
-
-## Concetto chiave
-
-Il codice pulito riduce il lavoro mentale necessario per capire il flusso.
-
-Una funzione con poca complessita cognitiva permette di identificare rapidamente percorso principale, casi speciali e responsabilita.
-
-## Esempio
-
-Annidamento difficile:
+Con dati ordinari, il benvenuto è ammesso solo per un utente presente, attivo e non bloccato:
 
 ```js
-if (user) {
-  if (user.active) {
-    if (!user.locked) {
-      sendWelcomeEmail(user);
+function nested(user) {
+  if (user) {
+    if (user.active) {
+      if (!user.locked) return true;
     }
   }
+  return false;
+}
+
+function guarded(user) {
+  if (!user) return false;
+  if (!user.active) return false;
+  if (user.locked) return false;
+  return true;
 }
 ```
 
-Con guard clauses:
+Con il conteggio manuale del modello Sonar per questi soli `if`, `nested` vale **1 + 2 + 3 = 6**: il secondo e il terzo controllo sono annidati. `guarded` vale **1 + 1 + 1 = 3**. I normali `return` non aggiungono punti in questo esempio. La complessità **ciclomatica** rimane invece 4 in entrambi: cambiano la profondità e il modo di leggere la condizione, non il numero di decisioni.
 
-```js
-if (!user) return;
-if (!user.active) return;
-if (user.locked) return;
+## Come interpretarla
 
-sendWelcomeEmail(user);
-```
+Verifica separatamente assenza dell'utente, inattività, blocco e ammissione. Il punteggio più basso non certifica che le due funzioni siano equivalenti. Nomi fuorvianti, dipendenze nascoste o una regola di dominio sconosciuta possono pesare sulla comprensione senza comparire nel conteggio.
 
-Il secondo esempio riduce profondita e rumore.
-
-## Dettagli importanti
-
-- Annidamento profondo pesa molto sulla lettura.
-- Condizioni nominate sono spesso piu leggibili di espressioni lunghe.
-- Il flusso principale dovrebbe essere visibile.
-- Funzioni pure e dati immutabili riducono sorpresa.
-- Una buona struttura puo valere piu di una metrica bassa.
-
-## Limiti
-
-- La percezione di complessita dipende anche dal dominio.
-- Una metrica automatica non sostituisce code review.
-- Alcuni algoritmi sono intrinsecamente complessi.
-- Spezzare troppo puo spostare la fatica sulla navigazione tra file.
-
-## Errori comuni
-
-- Usare condizioni negative complesse.
-- Tenere molti stati temporanei mutabili.
-- Mescolare validazione, decisione e side effects.
-- Nascondere il percorso principale in mezzo ai casi speciali.
-- Considerare leggibile solo cio che e corto.
+Non spostare rami in helper dal nome generico solo per scendere sotto una soglia: chi legge deve comunque ricomporli. Se automatizzi la misura, indica linguaggio, analizzatore e versione prima di confrontare numeri di progetti diversi.
 
 ## Collegamenti
 
@@ -110,6 +70,5 @@ Il secondo esempio riduce profondita e rumore.
 
 ## Fonti
 
-- SonarSource, *Cognitive Complexity*
-- Robert C. Martin, *Clean Code*
-- Martin Fowler, *Refactoring*
+- SonarSource, [Cognitive Complexity: definizione e regole di conteggio](https://www.sonarsource.com/docs/CognitiveComplexity.pdf)
+- Robert C. Martin, *Clean Code*; Martin Fowler, *Refactoring*

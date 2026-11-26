@@ -26,60 +26,43 @@ title: Test di integrazione
 
 ## Sintesi
 
-I **test di integrazione** verificano che piu componenti lavorino correttamente insieme.
+Un test di integrazione verifica **un confine concreto**: per esempio il repository parla davvero SQL e la sua query concorda con lo schema? Non è necessario attraversare browser, HTTP e database per rispondere a questa domanda. Sostituire il database con un oggetto che restituisce sempre successo lascerebbe invece non verificato proprio quel confine.
 
-Servono a coprire confini reali: database, API, file system, code, framework, serializzazione e configurazione.
+## Esempio: repository e SQLite reale
 
-## Problema che risolve
+File `invoice-repository.test.mjs`, verificabile con Node 24 e il modulo integrato `node:sqlite`. Il motore è reale ma lavora in memoria, senza toccare dati personali. Il nome della fattura può contenere apostrofi: i valori vengono associati ai parametri, non concatenati al testo SQL.
 
-I test unitari possono passare anche quando il sistema reale non funziona.
+```js
+import test from "node:test";
+import assert from "node:assert/strict";
+import { DatabaseSync } from "node:sqlite";
 
-Gli errori spesso nascono nei punti di contatto:
+function insertInvoice(db, invoice) {
+  db.prepare("INSERT INTO invoices (id, label) VALUES (?, ?)")
+    .run(invoice.id, invoice.label);
+}
 
-- mapping errati;
-- query sbagliate;
-- configurazioni mancanti;
-- transazioni non gestite;
-- serializzazione incompatibile;
-- permessi o credenziali;
-- contratti API divergenti.
+test("il repository conserva l'etichetta e rifiuta un ID duplicato", () => {
+  const db = new DatabaseSync(":memory:");
+  try {
+    db.exec("CREATE TABLE invoices (id TEXT PRIMARY KEY NOT NULL, label TEXT NOT NULL)");
+    insertInvoice(db, { id: "I-7", label: "Ordine d'aprile" });
+    assert.throws(() => insertInvoice(db, { id: "I-7", label: "duplicato" }),
+      /UNIQUE constraint failed/);
 
-## Concetto chiave
-
-Un test di integrazione non deve coprire ogni combinazione logica. Deve verificare che i collegamenti critici tra parti del sistema funzionino davvero.
-
-La logica fine resta nei test unitari; il cablaggio reale viene controllato in integrazione.
-
-## Esempio
-
-```text
-API request -> controller -> service -> repository -> database -> response
+    const rows = db.prepare("SELECT label FROM invoices WHERE id = ?").all("I-7");
+    assert.deepEqual(rows.map(row => row.label), ["Ordine d'aprile"]);
+  } finally {
+    db.close();
+  }
+});
 ```
 
-Un test di integrazione puo verificare che una richiesta valida crei davvero una riga e restituisca il formato atteso.
+## Cosa dimostra?
 
-## Dettagli importanti
+Il test osserva il dato **riletto** e un rifiuto effettivo del motore. Una nuova connessione in memoria isola ogni prova. La SELECT non richiama lo stesso metodo di scrittura per confermarsi da sola.
 
-- Usa dati di test isolati e ripetibili.
-- Preferisci setup esplicito a fixture opache.
-- Pulisci lo stato tra test.
-- Verifica i confini piu rischiosi.
-- Mantieni pochi test end-to-end completi e piu test di integrazione mirati.
-
-## Limiti
-
-- Sono piu lenti dei test unitari.
-- Richiedono ambiente, dati e servizi stabili.
-- Possono fallire per problemi esterni non legati al codice.
-- Troppi test di integrazione rendono la suite lenta e fragile.
-
-## Errori comuni
-
-- Sostituire ogni test unitario con integrazione.
-- Usare database condivisi senza isolamento.
-- Dipendere da servizi esterni non controllati.
-- Nascondere troppo setup in fixture globali.
-- Non verificare migrazioni, serializzazione e configurazione.
+Lo schema qui è una fixture minima: il test non collauda le migrazioni del prodotto. Se in produzione usi PostgreSQL, non dare per verificati i suoi tipi, SQL o lock con una prova SQLite. Esegui i casi di compatibilità sul motore e sulla versione previsti. Per routing, autenticazione o serializzazione HTTP scegli separatamente se serve un test più ampio.
 
 ## Collegamenti
 
@@ -92,6 +75,6 @@ Un test di integrazione puo verificare che una richiesta valida crei davvero una
 
 ## Fonti
 
-- Martin Fowler, *IntegrationTest*
-- Gerard Meszaros, *xUnit Test Patterns*
-- Michael Feathers, *Working Effectively with Legacy Code*
+- Martin Fowler, [Integration Test](https://martinfowler.com/bliki/IntegrationTest.html)
+- Node.js, [SQLite](https://nodejs.org/api/sqlite.html); SQLite, [In-memory databases](https://www.sqlite.org/inmemorydb.html)
+- Gerard Meszaros, *xUnit Test Patterns*; Michael Feathers, *Working Effectively with Legacy Code*

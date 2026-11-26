@@ -27,80 +27,48 @@ title: Mutation testing
 
 ## Sintesi
 
-Il **mutation testing** modifica automaticamente piccole parti del codice e verifica se i test falliscono.
+Il mutation testing chiede: **se introduco una piccola modifica al comportamento, la suite se ne accorge?** Si parte da test verdi sul codice originale. Il motore applica un mutante per volta, esegue i test pertinenti e classifica l'esito. Un test che falliva già prima non è una prova contro il mutante.
 
-Serve a capire se i test controllano davvero il comportamento o se eseguono codice senza rilevare errori.
+## Esperimento ripetibile: la soglia inclusiva
 
-## Quando usarlo
-
-- Su logica critica.
-- Quando la coverage e alta ma non ti fidi dei test.
-- Prima di refactoring rischiosi.
-- In librerie o moduli con contratti importanti.
-- Come controllo periodico, non necessariamente su ogni commit.
-
-## Come funziona
-
-Lo strumento crea mutanti, per esempio:
-
-- cambia `>` in `>=`;
-- sostituisce `true` con `false`;
-- rimuove una chiamata;
-- cambia un valore costante;
-- inverte una condizione.
-
-Se i test non falliscono, il mutante sopravvive e indica un possibile buco nei test.
-
-## API / Sintassi
-
-```text
-mutation-test run
-mutation-test report
-```
-
-Il report mostra mutanti uccisi, sopravvissuti e non coperti.
-
-## Esempio pratico
-
-Codice:
+Parti da `shipping.mjs` e `shipping.test.mjs` della nota [[Programmazione/Clean Code/Pagine/Coverage|Coverage]]. In una **copia di prova**, sostituisci solo la funzione con questo mutante:
 
 ```js
-function canBuy(age) {
-  return age >= 18;
+export function shippingCents(total) {
+  if (total > 2000) {
+    return 0;
+  }
+  return 350;
 }
 ```
 
-Mutante:
+I casi 1999 e 2001 continuano a passare. Aggiungi al file di test, che importa già `test`, `assert` e `shippingCents`:
 
 ```js
-return age > 18;
+test("anche la soglia esatta dà spedizione gratuita", () => {
+  assert.equal(shippingCents(2000), 0);
+});
 ```
 
-Se i test non controllano il caso `18`, il mutante puo sopravvivere.
+```sh
+node --test shipping.test.mjs
+```
 
-## Varianti
+| Codice | Solo 1999 e 2001 | Anche 2000 |
+| --- | --- | --- |
+| Originale con `>=` | Passa | Passa |
+| Mutante con `>` | Passa: mutante sopravvissuto | Fallisce: attesi 0 centesimi, ottenuti 350 |
 
-- Mutation testing completo.
-- Mutation testing su file critici.
-- Mutation testing differenziale.
-- Soglie di mutation score.
-- Esecuzione periodica in CI notturna.
+Il nuovo test nasce dalla regola di spedizione, non da un dettaglio del mutatore. Ripristina l'originale nella copia e verifica che la suite completa torni verde. Questo è **un esperimento manuale su un solo mutante**, non un punteggio dell'intero modulo.
 
-## Errori comuni
+## Interpretare un report reale
 
-- Usarlo su tutto il repository senza considerare tempi.
-- Trattare ogni mutante sopravvissuto come bug certo.
-- Ignorare mutanti equivalenti.
-- Non migliorare asserzioni dopo il report.
-- Usarlo come sostituto della progettazione dei test.
+- **Killed:** almeno un test distingue il mutante dall'originale. Controlla che fallisca per il motivo atteso, non per un guasto ambientale.
+- **Survived / no coverage:** nel primo caso i test eseguiti non distinguono la modifica; nel secondo nessun test raggiunge il punto. Gli interventi utili possono essere diversi.
+- **Equivalente:** per tutti gli input ammessi il comportamento rimane lo stesso. Per esempio, sul dominio dei soli centesimi interi `total >= 2000` e `total > 1999` sono equivalenti. Non inventare un requisito sui decimali solo per far fallire un test.
+- Timeout ed errori di compilazione non sono sinonimi di asserzioni efficaci: leggi le categorie e il denominatore del tuo strumento prima di confrontare due mutation score.
 
-## Checklist
-
-- Il modulo e abbastanza critico da giustificare il costo?
-- I test sono gia stabili?
-- I mutanti sopravvissuti indicano asserzioni deboli?
-- I mutanti equivalenti vengono gestiti?
-- Il risultato viene usato per migliorare test reali?
+Usa una campagna mirata su moduli con logica critica e suite stabile. Stryker e PIT automatizzano la generazione; i loro report non sostituiscono la scelta degli esempi di dominio.
 
 ## Collegamenti
 
@@ -116,3 +84,4 @@ Se i test non controllano il caso `18`, il mutante puo sopravvivere.
 - PIT Mutation Testing Documentation
 - Stryker Mutator Documentation
 - Gerard Meszaros, *xUnit Test Patterns*
+- [Stryker: stati dei mutanti e metriche](https://stryker-mutator.io/docs/mutation-testing-elements/mutant-states-and-metrics/)

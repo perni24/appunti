@@ -27,70 +27,35 @@ title: Tipi significativi
 
 ## Sintesi
 
-I **tipi significativi** rappresentano concetti del dominio invece di usare solo primitive generiche come stringhe, numeri e booleani.
+Un tipo è significativo quando rende difficile confondere due valori che il dominio considera diversi. Rinominare `number` in `Amount` aiuta a leggere ma non distingue, da solo, un prezzo in euro da uno in dollari. Una regola può riguardare **la relazione fra due valori**, non solo la validità di ciascuno.
 
-Servono a comunicare intenzione, ridurre errori e rendere piu forti i contratti del codice.
+## Esempio: sottrarre uno sconto nella stessa valuta
 
-## Problema che risolve
+Il servizio supporta EUR e USD; i valori sono interi non negativi in centesimi. Una fattura da 500 EUR-cent e uno sconto da 100 USD-cent sono entrambi importi validi, ma non sono sottraibili senza una politica di cambio.
 
-Primitive generiche possono rappresentare troppe cose diverse.
+```ts
+type Currency = "EUR" | "USD";
 
-Una `string` puo essere email, slug, password, currency code, stato, ruolo o percorso file. Un `number` puo essere prezzo, quantita, percentuale, durata o id.
-
-Senza tipi significativi, il codice perde informazioni importanti.
-
-## Concetto chiave
-
-Un tipo significativo incorpora nome, vincoli e intenzione.
-
-Anche nei linguaggi dinamici, si puo ottenere un effetto simile con value objects, factory, validazione, naming e strutture dati esplicite.
-
-## Esempio
-
-Contratto debole:
-
-```js
-function applyDiscount(total, discount) {
-  return total - discount;
-}
-```
-
-Contratto piu chiaro:
-
-```js
-function applyDiscount(orderTotal, discountAmount) {
-  if (discountAmount.value > orderTotal.value) {
-    throw new Error("Discount cannot exceed order total");
+class Money {
+  constructor(readonly cents: number, readonly currency: Currency) {
+    if (!Number.isSafeInteger(cents) || cents < 0) throw new RangeError("Importo non valido");
+    if (currency !== "EUR" && currency !== "USD") throw new RangeError("Valuta non supportata");
+    Object.freeze(this);
   }
 
-  return Money.of(orderTotal.value - discountAmount.value, orderTotal.currency);
+  lessDiscount(discount: Money): Money {
+    if (discount.currency !== this.currency) throw new RangeError("Valute diverse");
+    if (discount.cents > this.cents) throw new RangeError("Sconto superiore al totale");
+    return new Money(this.cents - discount.cents, this.currency);
+  }
 }
 ```
 
-Il codice distingue importo, valuta e regola.
+Uno sconto pari al totale restituisce un nuovo importo zero; il prezzo originale resta invariato. L'unione `Currency` esclude valute non supportate nei chiamanti tipizzati, ma due variabili di tipo `Money` possono benissimo avere valute diverse: il confronto nel metodo serve ancora.
 
-## Dettagli importanti
+## Limiti ed errori comuni
 
-- Un buon tipo impedisce o rende difficile rappresentare valori invalidi.
-- I booleani spesso nascondono stati che meritano un tipo o enum.
-- Un id specifico e piu chiaro di un generico `id`.
-- I tipi significativi aiutano autocomplete, refactoring e test.
-- Nei sistemi distribuiti i tipi devono essere tradotti nei DTO ai confini.
-
-## Limiti
-
-- Troppi tipi piccoli possono appesantire codice semplice.
-- Non tutte le regole possono stare nel tipo.
-- Nei linguaggi poco tipizzati serve disciplina di progetto.
-- I tipi devono restare comprensibili, non diventare gerarchie inutili.
-
-## Errori comuni
-
-- Usare `string` per tutto.
-- Passare parametri dello stesso tipo in ordine fragile.
-- Usare booleani come flag oscuri.
-- Creare tipi senza invarianti reali.
-- Confondere tipi di trasporto e tipi di dominio.
+Il metodo presuppone istanze già costruite e validate, non oggetti JSON forzati con `as Money`. Per un nuovo formato di trasporto serve un parser. Per valute con unità minori diverse o conversioni occorre un altro contratto: questa classe non le approssima. Applica la stessa domanda a identificatori e stati: un nome basta per una variabile locale; tipi distinti o un costruttore controllato servono quando uno scambio passa inosservato.
 
 ## Collegamenti
 
@@ -103,6 +68,5 @@ Il codice distingue importo, valuta e regola.
 
 ## Fonti
 
-- Eric Evans, *Domain-Driven Design*
-- Scott Wlaschin, *Domain Modeling Made Functional*
-- Martin Fowler, *Refactoring*
+- Martin Fowler, [Value Object](https://martinfowler.com/bliki/ValueObject.html)
+- Eric Evans, *Domain-Driven Design*; Scott Wlaschin, *Domain Modeling Made Functional*; Martin Fowler, *Refactoring*

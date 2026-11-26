@@ -26,81 +26,39 @@ title: Organizzazione dei file
 
 ## Sintesi
 
-L'**organizzazione dei file** riguarda come distribuire codice, test, configurazioni e documentazione dentro un progetto.
+Organizzare i file significa rendere prevedibile **dove intervenire per una modifica concreta**. La struttura delle cartelle indica le aree del progetto; la scelta del singolo file decide quali regole si leggono, si testano e cambiano insieme.
 
-Una buona organizzazione rende prevedibile dove cercare una cosa e dove aggiungere una modifica.
+## Esempio: cambia la tariffa di spedizione
 
-## Problema che risolve
-
-Quando i file sono organizzati in modo casuale, ogni modifica richiede esplorazione. Il lettore deve capire se una funzione sta in `utils`, `helpers`, `common`, `services` o in un file senza responsabilita chiara.
-
-Questa incertezza aumenta duplicazione e rende piu facile inserire codice nel posto sbagliato.
-
-## Concetto chiave
-
-Un progetto leggibile ha regole chiare su:
-
-- dove stanno i moduli di dominio;
-- dove stanno entry point e adapter;
-- dove stanno test e fixture;
-- dove stanno configurazioni;
-- dove stanno utility realmente condivise;
-- dove sta la documentazione.
-
-L'organizzazione deve aiutare il lettore a ricostruire il sistema.
-
-## Dettagli importanti
-
-- File troppo grandi nascondono responsabilita diverse.
-- File troppo piccoli e frammentati possono rendere difficile seguire il flusso.
-- Le cartelle dovrebbero riflettere confini reali, non solo tipi tecnici.
-- I test dovrebbero essere facili da associare al codice testato.
-- Le utility generiche vanno tenute sotto controllo: spesso diventano discariche.
-
-## Esempio
-
-Organizzazione debole:
+Nel progetto di esempio il checkout espone il costo di spedizione, ma non decide il prezzo. La tariffa dipende dal peso del pacco. Se domani cambia la soglia, chi legge dovrebbe poter arrivare dalla richiesta del cliente alla regola e al suo test senza cercare fra `utils`, `helpers` e `common`.
 
 ```text
 src/
-  helpers.ts
-  utils.ts
-  functions.ts
-  data.ts
-  app.ts
+  checkout/
+    submit-order.mjs
+  shipping/
+    index.mjs
+    rates.mjs
+    rates.test.mjs
+  main.mjs
 ```
 
-Organizzazione piu leggibile:
+| Cambiamento | Primo file da aprire | Perché |
+| --- | --- | --- |
+| Varia la tariffa oltre 500 grammi | `shipping/rates.mjs` e `rates.test.mjs` | Sono la decisione e gli esempi ai suoi limiti. |
+| Il checkout deve mostrare il costo separatamente | `checkout/submit-order.mjs` | Cambia l'uso del risultato, non il calcolo. |
+| Si sostituisce un servizio esterno all'avvio | `main.mjs` | È il punto in cui questo progetto costruisce e collega i collaboratori. |
+| Un altro modulo deve usare la tariffa | `shipping/index.mjs` | Controlla prima se esiste già un ingresso pubblico. |
 
-```text
-src/
-  orders/
-    order-service.ts
-    order-policy.ts
-    order-repository.ts
-  users/
-    user-service.ts
-    user-repository.ts
-  shared/
-    date-format.ts
-```
+## Quando separare un file
 
-La seconda struttura mostra concetti e confini piu chiaramente.
+Estrai un file se puoi nominare la decisione che contiene e indicare chi ne ha bisogno. Non dividere una funzione e il suo unico helper solo per ridurre il numero di righe. Mettere il test accanto al codice è una convenzione di questo esempio: anche una directory `tests/` va bene se il test pertinente si trova facilmente e il runner lo scopre.
 
-## Limiti
+## Limiti ed errori comuni
 
-- Non esiste una struttura valida per ogni progetto.
-- Nei progetti piccoli una struttura troppo articolata puo essere rumore.
-- Nei framework alcune posizioni sono imposte o convenzionali.
-- La struttura deve evolvere quando il dominio cambia.
-
-## Errori comuni
-
-- Creare cartelle `utils` e `helpers` per qualunque cosa.
-- Separare solo per tipo tecnico senza considerare il dominio.
-- Lasciare file enormi con molte responsabilita.
-- Spostare file senza aggiornare import, test e documentazione.
-- Cambiare struttura spesso senza una regola condivisa.
+- Due trasformazioni apparentemente identiche in moduli diversi non meritano automaticamente un `shared/utils.mjs`. Prima chiedi se devono cambiare per lo stesso requisito.
+- Spostare un file non sposta automaticamente i suoi consumatori: verifica import, test, fixture, percorsi usati dagli script e riferimenti nella documentazione. Per una libreria, controlla anche gli ingressi già pubblicati.
+- Non duplicare codice solo per far combaciare un albero ideale. Rispetta i percorsi richiesti dal framework; applica le convenzioni locali dove hai libertà di scelta.
 
 ## Collegamenti
 
@@ -113,5 +71,5 @@ La seconda struttura mostra concetti e confini piu chiaramente.
 
 ## Fonti
 
-- Steve McConnell, *Code Complete*
-- Robert C. Martin, *Clean Code*
+- Steve McConnell, *Code Complete*; Robert C. Martin, *Clean Code*
+- Angular, [Style guide: Project structure](https://angular.dev/style-guide#project-structure). Un esempio di convenzioni per funzionalità, non una struttura obbligatoria per Node.

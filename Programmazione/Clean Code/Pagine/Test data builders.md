@@ -27,62 +27,26 @@ title: Test data builders
 
 ## Sintesi
 
-I **test data builders** sono helper che creano dati di test leggibili e modificabili.
+Un test data builder prepara **un nuovo dato di prova** con default espliciti e validi. Chi legge il test dovrebbe vedere subito il campo importante per lo scenario. Il builder non dovrebbe eseguire il comportamento che si vuole verificare, né salvare dati senza dirlo.
 
-Servono a evitare setup ripetitivo e a rendere chiaro quali dettagli contano in uno scenario.
+## Esempio: preparare bozze indipendenti
 
-## Problema che risolve
-
-I test spesso richiedono oggetti con molti campi obbligatori.
-
-Senza builder, ogni test deve costruire manualmente dati lunghi, anche quando solo un campo e rilevante. Questo nasconde l'intenzione del test.
-
-## Concetto chiave
-
-Un builder fornisce default validi e permette di sovrascrivere solo cio che serve al caso.
-
-Il test resta concentrato sul comportamento, non sulla burocrazia del setup.
-
-## Esempio
+Per il modello delle fatture un semplice helper con parametri nominati basta; non serve un'interfaccia fluente. La bozza di default è emettibile. L'array è copiato, perché il test non deve modificare per sbaglio né l'argomento né i dati di un'altra prova.
 
 ```js
-function userBuilder(overrides = {}) {
-  return {
-    id: "user-1",
-    email: "user@example.com",
-    active: true,
-    role: "customer",
-    ...overrides,
-  };
+function aDraftInvoice({ id = "I-1", lineCents = [100] } = {}) {
+  return { id, status: "draft", lineCents: [...lineCents] };
 }
-
-const lockedUser = userBuilder({ active: false });
 ```
 
-Il test mostra solo la variazione importante.
+Per verificare il caso senza righe scrivi `aDraftInvoice({ lineCents: [] })`. Per il totale zero usa `aDraftInvoice({ lineCents: [0] })`: chiamare entrambi `invalidInvoice()` nasconderebbe proprio ciò che li distingue. Il builder non calcola il totale e non crea automaticamente una riga quando riceve una lista vuota.
 
-## Dettagli importanti
+## Limiti ed errori comuni
 
-- I default devono rappresentare un oggetto valido.
-- I builder devono usare termini del dominio.
-- Evita builder globali enormi e magici.
-- Un builder puo nascondere dettagli tecnici, non regole importanti.
-- Quando il dominio cambia, i builder riducono il costo di aggiornamento dei test.
-
-## Limiti
-
-- Builder troppo generici diventano difficili da capire.
-- Default non realistici possono mascherare bug.
-- Troppi helper possono rendere difficile capire i dati reali.
-- Nei test di integrazione servono spesso factory che persistono dati.
-
-## Errori comuni
-
-- Nascondere condizioni essenziali dentro default invisibili.
-- Usare nomi come `makeData` o `fixture1`.
-- Creare dati validi solo per caso.
-- Condividere oggetti mutabili tra test.
-- Usare builder per compensare modelli troppo complessi o confusi.
+- Due chiamate di default restituiscono oggetti e array distinti ma lo **stesso ID**. In un test che salva più fatture, specifica ID differenti o esplicita che stai provando il vincolo di unicità.
+- La copia superficiale basta qui perché gli elementi sono numeri. Se le righe diventano oggetti mutabili, decidi se crearli o copiarli per ogni prova.
+- Un default è utile se irrilevante per il test. Quando il comportamento dipende dal totale, rendi visibili le righe; altrimenti un cambiamento del default modifica silenziosamente il significato del caso.
+- Il builder produce dati in memoria. Una fixture che persiste una fattura dovrebbe avere un nome che renda esplicito l'effetto.
 
 ## Collegamenti
 
@@ -95,6 +59,5 @@ Il test mostra solo la variazione importante.
 
 ## Fonti
 
-- Nat Pryce, *Test Data Builders*
-- Gerard Meszaros, *xUnit Test Patterns*
-- Kent Beck, *Test Driven Development*
+- Nat Pryce, *Test Data Builders*; Gerard Meszaros, *xUnit Test Patterns*; Kent Beck, *Test Driven Development*
+- Martin Fowler, [Object Mother](https://martinfowler.com/bliki/ObjectMother.html), per il confronto con fixture preconfezionate.

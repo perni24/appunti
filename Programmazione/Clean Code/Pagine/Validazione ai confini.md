@@ -26,63 +26,32 @@ title: Validazione ai confini
 
 ## Sintesi
 
-La **validazione ai confini** consiste nel controllare dati esterni appena entrano nel sistema.
+Al confine del sistema ricevi una rappresentazione, non ancora un oggetto di dominio. **Validare** significa decidere quali dati accettare e tradurli in una forma interna affidabile. Un cast TypeScript non ispeziona il JSON; un controllo di forma non conferma che una risorsa esista o che l'utente possa modificarla.
 
-Un confine puo essere una API HTTP, un form, un file, una coda, una CLI, un database o una chiamata tra moduli con responsabilita diverse.
+## Esempio: una riga da aggiungere a una fattura
 
-## Problema che risolve
-
-Se dati non affidabili attraversano il sistema senza controllo, ogni funzione interna deve difendersi da tutto.
-
-Questo produce:
-
-- controlli duplicati;
-- errori lontani dalla causa;
-- messaggi poco utili;
-- stati di dominio invalidi;
-- test piu difficili;
-- codice pieno di condizioni difensive.
-
-## Concetto chiave
-
-Valida al confine, poi lavora internamente con dati affidabili e modellati.
-
-Il codice interno non dovrebbe continuare a chiedersi se un campo obbligatorio esiste: quella verifica dovrebbe essere gia stata fatta prima.
-
-## Esempio
+Il trasporto ammette un codice articolo testuale e una quantità intera da 1 a 99 inclusi. Il parser opera su JSON già decodificato, non sulla stringa del corpo HTTP. Copia soltanto i due campi previsti; gli altri sono ignorati per scelta del contratto.
 
 ```js
-function handleCreateInvoiceRequest(request) {
-  const input = validateCreateInvoiceInput(request.body);
-  const command = toCreateInvoiceCommand(input);
-
-  return createInvoice(command);
+function parseInvoiceLine(raw) {
+  if (raw === null || typeof raw !== "object" || Array.isArray(raw)) {
+    return { ok: false, field: "body" };
+  }
+  if (typeof raw.sku !== "string" || !raw.sku.trim()) {
+    return { ok: false, field: "sku" };
+  }
+  if (!Number.isSafeInteger(raw.quantity) || raw.quantity < 1 || raw.quantity > 99) {
+    return { ok: false, field: "quantity" };
+  }
+  return { ok: true, line: { sku: raw.sku.trim(), quantity: raw.quantity } };
 }
 ```
 
-Il controller valida e traduce. La logica applicativa riceve un comando gia coerente.
+`{ sku: " 007 ", quantity: 1 }` conserva il codice `"007"`; `quantity: "1"` è rifiutato, non convertito. Il chiamante usa `line` solo nel ramo `ok: true`. Un JSON sintatticamente malformato va invece rifiutato dal decodificatore, prima di chiamare questa funzione.
 
-## Dettagli importanti
+## Che cosa resta da verificare?
 
-- La validazione sintattica controlla forma, tipo e presenza.
-- La validazione semantica controlla regole del dominio.
-- Le regole di sicurezza vanno applicate prima di fidarsi dell'input.
-- I dati esterni non dovrebbero essere usati direttamente nei modelli interni.
-- La validazione dovrebbe produrre errori comprensibili.
-
-## Limiti
-
-- Alcune regole richiedono dati esterni, quindi non sono solo controlli locali.
-- Validare troppo presto puo duplicare regole che appartengono al dominio.
-- La validazione non sostituisce autorizzazione, transazioni e controlli di concorrenza.
-
-## Errori comuni
-
-- Validare lo stesso campo in dieci punti diversi.
-- Lasciare passare stringhe grezze invece di creare tipi o value objects.
-- Confondere validazione input con regole di business.
-- Restituire errori generici come `Invalid input`.
-- Fidarsi di dati provenienti dal database senza considerare migrazioni e legacy.
+Il comando è ben formato, ma l'articolo potrebbe essere inesistente, la fattura già emessa o l'utente privo di permesso. Queste decisioni richiedono il modello, lo stato aggiornato o il contesto di accesso. Non ripetere la stessa verifica di tipo in ogni funzione interna; non eliminare, per contro, il controllo sullo stato al momento della scrittura.
 
 ## Collegamenti
 
@@ -95,6 +64,5 @@ Il controller valida e traduce. La logica applicativa riceve un comando gia coer
 
 ## Fonti
 
-- Martin Fowler, *Patterns of Enterprise Application Architecture*
-- Eric Evans, *Domain-Driven Design*
-- Robert C. Martin, *Clean Architecture*
+- OWASP, [Input Validation Cheat Sheet](https://cheatsheetseries.owasp.org/cheatsheets/Input_Validation_Cheat_Sheet.html)
+- Martin Fowler, *Patterns of Enterprise Application Architecture*; Eric Evans, *Domain-Driven Design*; Robert C. Martin, *Clean Architecture*

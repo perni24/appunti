@@ -27,70 +27,46 @@ title: Invarianti interne
 
 ## Sintesi
 
-Le **invarianti interne** sono condizioni che un oggetto, modulo o componente deve mantenere sempre vere per funzionare correttamente.
+Un'invariante descrive ciò che deve essere vero **ogni volta che il componente è osservabile**: appena costruito e dopo ogni operazione, anche rifiutata. Per una coda limitata la regola è `0 ≤ numero di elementi ≤ capacità`. Dire al chiamante di non modificare l'array non basta se l'array rimane pubblico.
 
-Proteggono la coerenza interna anche quando il codice evolve.
-
-## Problema che risolve
-
-Senza invarianti interne, un componente puo entrare in stati incoerenti:
-
-- campi obbligatori mancanti;
-- cache e sorgente non allineate;
-- contatori negativi;
-- oggetti chiusi ma ancora usabili;
-- collezioni duplicate;
-- transizioni di stato impossibili.
-
-## Concetto chiave
-
-Un'invariante deve essere protetta nel punto che possiede lo stato.
-
-Non basta sperare che i chiamanti usino bene l'oggetto: il componente dovrebbe impedire o intercettare stati invalidi.
-
-## Dettagli importanti
-
-- Le invarianti interne non sono sempre regole di dominio.
-- Possono riguardare performance, cache, lifecycle o consistenza tecnica.
-- L'incapsulamento aiuta a proteggerle.
-- I test dovrebbero coprire le transizioni che potrebbero romperle.
-- Le assert interne possono essere utili per errori di programmazione.
-
-## Esempio
+## Esempio: una coda con capienza fissata alla creazione
 
 ```js
 class LimitedQueue {
+  #limit;
+  #items = [];
+
   constructor(limit) {
-    this.limit = limit;
-    this.items = [];
+    if (!Number.isSafeInteger(limit) || limit < 1) throw new RangeError("Capacità non valida");
+    this.#limit = limit;
   }
+  get size() { return this.#items.length; }
 
   push(item) {
-    if (this.items.length >= this.limit) {
-      throw new Error("Queue limit exceeded");
-    }
-
-    this.items.push(item);
+    if (this.size >= this.#limit) throw new RangeError("Coda piena");
+    this.#items.push(item);
   }
+
+  take() {
+    if (!this.size) return { found: false };
+    return { found: true, value: this.#items.shift() };
+  }
+
+  snapshot() { return [...this.#items]; }
 }
 ```
 
-L'oggetto protegge direttamente il proprio limite.
+Con capacità uno, dopo `push("A")` un secondo inserimento fallisce **prima** di cambiare lo stato: `take()` restituisce ancora A. Il limite viene controllato anche alla costruzione: con `NaN` un confronto di capienza basato solo su `>=` non bloccherebbe nulla. La copia di `snapshot()` protegge la struttura della coda; non clona gli oggetti contenuti.
 
-## Limiti
+## Precondizione, invariante, risultato
 
-- Troppe difese interne possono rendere il codice rumoroso.
-- Alcune invarianti richiedono transazioni o lock.
-- In sistemi distribuiti alcune invarianti sono eventuali.
-- Non tutte le precondizioni devono essere replicate ovunque.
+- **Precondizione:** per costruire la coda serve una capienza intera positiva.
+- **Invariante:** nessuna operazione pubblica può portare la dimensione oltre il limite. Un contatore separato sarebbe un secondo valore da mantenere coerente.
+- **Risultato:** un prelievo riuscito toglie l'elemento più vecchio. Il ramo `found` distingue una coda vuota da una che contiene deliberatamente `undefined`.
 
-## Errori comuni
+## Limiti e verifica
 
-- Esporre collezioni mutabili interne.
-- Consentire campi pubblici che rompono lo stato.
-- Spostare la protezione solo nei controller.
-- Non testare transizioni invalide.
-- Lasciare oggetti in stati intermedi osservabili.
+Verifica pieno, vuoto, ordine FIFO e stato dopo un rifiuto. Modifica anche la copia restituita per escludere che aggiri la protezione. L'esempio è locale e sincrono, senza attese o callback tra controllo e modifica; non impone una capienza globale a più processi. Se il vincolo appartiene a un archivio condiviso deve essere protetto anche lì.
 
 ## Collegamenti
 
@@ -106,3 +82,4 @@ L'oggetto protegge direttamente il proprio limite.
 - Bertrand Meyer, *Object-Oriented Software Construction*
 - Eric Evans, *Domain-Driven Design*
 - Robert C. Martin, *Clean Code*
+- [ECMAScript: elementi privati di una classe](https://tc39.es/ecma262/multipage/ecmascript-language-functions-and-classes.html#sec-class-definitions)

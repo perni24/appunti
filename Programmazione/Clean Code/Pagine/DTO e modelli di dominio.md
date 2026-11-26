@@ -27,70 +27,39 @@ title: DTO e modelli di dominio
 
 ## Sintesi
 
-I **DTO** trasferiscono dati tra confini. I **modelli di dominio** rappresentano concetti, regole e invarianti del problema.
+Un **DTO** descrive i dati che attraversano un confine. Un **modello di dominio** rappresenta uno stato valido e le transizioni consentite. I due possono anche essere semplici oggetti: la distinzione non dipende dall'uso di classi, ma da **chi ha il diritto di decidere ogni valore**.
 
-Confonderli porta a codice che espone dettagli interni o tratta regole di business come semplici campi.
+## Tre forme per la stessa fattura
 
-## Problema che risolve
+| Forma | Campi nell'esempio | Chi li decide |
+| --- | --- | --- |
+| Comando in ingresso | `invoiceId` | Il client sceglie quale fattura; il parser verifica il formato |
+| Modello interno | `id`, `state`, `issuedAtMs`, `internalNote` | Archivio, regola di emissione e orologio applicativo |
+| Risposta pubblica | `id`, `status`, `issuedAtMs` | Il contratto HTTP; non espone la nota interna |
 
-Usare lo stesso oggetto per API, database e dominio sembra comodo, ma crea accoppiamento:
-
-- cambi una risposta API e rompi il dominio;
-- cambi una tabella e rompi il contratto esterno;
-- campi tecnici entrano nella logica di business;
-- validazioni di trasporto vengono confuse con invarianti;
-- dati esterni non affidabili arrivano troppo dentro il sistema.
-
-## Concetto chiave
-
-Un DTO descrive una forma di scambio. Un modello di dominio protegge comportamento e regole.
-
-Il mapping tra i due e un costo esplicito che spesso compra chiarezza, stabilita e sicurezza.
-
-## Dettagli importanti
-
-- I DTO possono essere versionati in base alle API.
-- I modelli di dominio dovrebbero mantenere invarianti.
-- Un record database non e automaticamente un modello di dominio.
-- Nei sistemi semplici la distinzione puo essere leggera.
-- Nei sistemi complessi separare i modelli riduce accoppiamento.
-
-## Esempio
-
-DTO di input:
+## Esempio: la transizione non è il mapper
 
 ```js
-{
-  "email": "USER@EXAMPLE.COM",
-  "displayName": "Luca"
+function issueDraft(invoice, nowMs) {
+  if (invoice.state !== "draft") return null;
+  if (!Number.isSafeInteger(nowMs) || nowMs < 0) {
+    throw new RangeError("Atteso un istante in millisecondi dall'epoch");
+  }
+  return { ...invoice, state: "issued", issuedAtMs: nowMs };
+}
+
+function publicInvoice(invoice) {
+  return { id: invoice.id, status: invoice.state, issuedAtMs: invoice.issuedAtMs };
 }
 ```
 
-Modello di dominio:
+`issueDraft` riceve un modello già valido: nell'esempio gli stati ammessi sono `draft` e `issued`. Restituisce una nuova fattura oppure `null` se non può emetterla; non tocca la bozza caricata. Un orologio invalido è un errore tecnico, non un errore dell'utente. Il tempo zero è invece un istante valido. Persistenza e invio della notifica non fanno parte della transizione.
 
-```js
-const user = User.register({
-  email: EmailAddress.parse(input.email),
-  displayName: input.displayName,
-});
-```
+`publicInvoice` **seleziona** i campi anziché restituire l'intero oggetto: aggiungere domani una colonna interna non cambia il JSON. L'input del client non viene copiato nel modello con uno spread: non può impostare `status` o l'orario di emissione. Lo decide il caso d'uso, non un campo del DTO.
 
-Il DTO trasporta dati; il dominio valida e costruisce concetti significativi.
+## Verifica e limiti
 
-## Limiti
-
-- Per CRUD molto semplici la separazione completa puo essere pesante.
-- Troppi mapper possono diventare rumore.
-- Se il dominio e povero, il modello separato non aggiunge valore.
-- La duplicazione dei campi va gestita con test e convenzioni.
-
-## Errori comuni
-
-- Esporre direttamente entita database nelle API.
-- Mettere metodi di business nei DTO.
-- Usare DTO non validati come oggetti di dominio.
-- Lasciare che il formato JSON determini il modello interno.
-- Creare mapper opachi e non testati.
+Controlla separatamente la transizione e l'elenco esatto delle chiavi pubbliche. Qui i campi sono primitivi; la copia superficiale non isolerebbe strutture annidate mutabili. Per un CRUD senza regole può bastare una proiezione esplicita: introdurre tre classi con gli stessi campi non crea un dominio.
 
 ## Collegamenti
 
@@ -106,3 +75,4 @@ Il DTO trasporta dati; il dominio valida e costruisce concetti significativi.
 - Martin Fowler, *Data Transfer Object*
 - Eric Evans, *Domain-Driven Design*
 - Robert C. Martin, *Clean Architecture*
+- [Martin Fowler: Data Transfer Object](https://martinfowler.com/eaaCatalog/dataTransferObject.html)

@@ -27,72 +27,52 @@ title: Lifecycle degli oggetti
 
 ## Sintesi
 
-Il **lifecycle degli oggetti** descrive le fasi attraversate da un oggetto: creazione, inizializzazione, uso, transizioni di stato e rilascio.
+Il ciclo di vita di un oggetto è l'insieme delle **operazioni ammesse in ogni fase**. Un writer deve poter scrivere subito dopo la creazione, rifiutare scritture dopo l'inizio della chiusura e distinguere «chiusura riuscita» da «chiusura tentata ma fallita». Un solo booleano `closed` perde quest'ultima informazione.
 
-Un lifecycle chiaro evita oggetti mezzi validi, inizializzazioni incomplete e cleanup dimenticato.
+## Esempio: writer sincrono
 
-## Problema che risolve
-
-Oggetti con lifecycle confuso causano bug difficili:
-
-- costruttori che non inizializzano tutto;
-- metodi chiamabili nell'ordine sbagliato;
-- oggetti usati dopo la chiusura;
-- stati intermedi visibili;
-- risorse non rilasciate;
-- invarianti validi solo in alcuni momenti.
-
-## Concetto chiave
-
-Un oggetto dovrebbe essere valido appena creato, oppure rendere esplicito il suo stato incompleto.
-
-Le transizioni importanti devono essere modellate con metodi chiari e controlli sugli invarianti.
-
-## Dettagli importanti
-
-- Evita oggetti costruiti in piu passaggi non protetti.
-- I metodi dovrebbero essere validi solo negli stati previsti.
-- Le risorse possedute dall'oggetto richiedono cleanup.
-- Un oggetto chiuso non dovrebbe poter essere usato come se fosse aperto.
-- Le factory possono aiutare a garantire creazione valida.
-
-## Esempio
+Il costruttore riceve un adattatore già aperto con metodi **sincroni** `write` e `close`. Da quel momento il writer è responsabile di chiuderlo; il chiamante non lo usa direttamente.
 
 ```js
 class ReportWriter {
-  constructor(file) {
-    this.file = file;
-    this.closed = false;
-  }
+  #file;
+  #state = "open";
+
+  constructor(file) { this.#file = file; }
+  get state() { return this.#state; }
 
   write(line) {
-    if (this.closed) throw new Error("Cannot write to a closed report");
-    this.file.write(line);
+    if (this.#state !== "open") throw new Error("Report non scrivibile");
+    this.#file.write(line);
   }
 
   close() {
-    this.closed = true;
-    this.file.close();
+    if (this.#state === "closed") return;
+    if (this.#state !== "open") throw new Error("Chiusura non ripetibile");
+    this.#state = "closing";
+    try {
+      this.#file.close();
+      this.#state = "closed";
+    } catch (error) {
+      this.#state = "close_failed";
+      throw error;
+    }
   }
 }
 ```
 
-Lo stato `closed` protegge il lifecycle della risorsa.
+## Leggere le transizioni
 
-## Limiti
+| Stato | `write` | `close` |
+| --- | --- | --- |
+| `open` | Delega all'adattatore | Avvia una chiusura |
+| `closing` | Rifiuta | Rifiuta una chiamata rientrante |
+| `closed` | Rifiuta | Non fa nulla: la chiusura riuscita è ripetibile |
+| `close_failed` | Rifiuta | Non ritenta alla cieca: lo stato della risorsa sottostante è incerto |
 
-- Modellare ogni stato con una classe diversa puo essere eccessivo.
-- Alcuni framework impongono lifecycle propri.
-- Oggetti molto semplici non richiedono gestione formale.
-- La concorrenza rende il lifecycle piu difficile da proteggere.
+## Limiti e verifica
 
-## Errori comuni
-
-- Lasciare campi obbligatori inizializzati a `null`.
-- Consentire chiamate fuori ordine.
-- Fare lavoro pesante in costruttori difficili da testare.
-- Non distinguere oggetto aperto, chiuso e fallito.
-- Nascondere dipendenze necessarie alla costruzione.
+Un errore di `write` si propaga e il proprietario può ancora tentare il cleanup: non significa che si possa riscrivere la stessa riga senza duplicarla. Se `close` o `write` restituiscono promesse, questo modello **non basta**: bisogna attendere le scritture in corso e la chiusura effettiva. Nei test conta le chiamate all'adattatore e controlla lo stato dopo un errore, non solo il messaggio ricevuto.
 
 ## Collegamenti
 
@@ -108,3 +88,4 @@ Lo stato `closed` protegge il lifecycle della risorsa.
 - Martin Fowler, *Refactoring*
 - Eric Evans, *Domain-Driven Design*
 - Michael Feathers, *Working Effectively with Legacy Code*
+- [ECMAScript: semantica della classe e degli elementi privati](https://tc39.es/ecma262/multipage/ecmascript-language-functions-and-classes.html#sec-class-definitions)

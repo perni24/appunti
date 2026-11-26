@@ -27,76 +27,44 @@ title: Data objects e behavior objects
 
 ## Sintesi
 
-I **data objects** sono oggetti che contengono soprattutto dati. I **behavior objects** contengono comportamento, regole e operazioni.
+Un **data object** descrive dei dati; un **DTO** (*Data Transfer Object*) lo fa per trasportarli attraverso un confine. Un oggetto di dominio, invece, può decidere se un'operazione è ammessa e applicarla senza esporre i campi da modificare. La differenza è chi prende la decisione, non la presenza della parola `class`.
 
-La distinzione e utile per capire se il codice sta solo trasportando informazioni o se sta modellando responsabilita reali.
+## Esempio: mostrare un saldo e spendere un credito
 
-## Problema che risolve
-
-Un errore comune e avere oggetti pieni di dati e logica sparsa altrove. In questo caso il codice diventa procedurale travestito da object-oriented: i dati viaggiano, ma le regole sono duplicate in servizi, controller o helper.
-
-All'opposto, inserire comportamento dentro ogni struttura dati puo creare oggetti gonfi e poco chiari.
-
-## Concetto chiave
-
-La domanda da fare e:
-
-```text
-Questo oggetto rappresenta solo dati o protegge una regola?
-```
-
-Se l'oggetto deve proteggere invarianti, applicare regole o impedire stati non validi, probabilmente deve avere comportamento.
-
-Se deve attraversare un confine, serializzarsi o rappresentare input/output, puo essere un data object.
-
-## Dettagli importanti
-
-- I DTO sono spesso data objects.
-- Le entity e i value objects spesso contengono comportamento.
-- Un data object non e automaticamente sbagliato.
-- Il problema nasce quando regole importanti sono sparse fuori dai dati.
-- Il comportamento deve stare vicino ai dati che protegge.
-
-## Esempio
-
-Data object:
+Il client deve mostrare il saldo dei crediti, ma non deve poter spendere lo stesso ultimo credito due volte sulla stessa istanza. Il costruttore valida il saldo; `spendOne` decide e aggiorna; `snapshot` restituisce soltanto i dati da trasmettere.
 
 ```ts
-type UserDto = {
-  id: string;
-  email: string;
-  active: boolean;
-};
-```
+type CreditBalanceDto = { available: number };
 
-Behavior object:
+class CreditBalance {
+  #available: number;
 
-```ts
-class User {
-  constructor(private active: boolean) {}
+  constructor(initial: number) {
+    if (!Number.isSafeInteger(initial) || initial < 0) {
+      throw new RangeError("Saldo iniziale non valido");
+    }
+    this.#available = initial;
+  }
 
-  canLogin(): boolean {
-    return this.active;
+  spendOne(): boolean {
+    if (this.#available === 0) return false;
+    this.#available -= 1;
+    return true;
+  }
+
+  snapshot(): CreditBalanceDto {
+    return { available: this.#available };
   }
 }
 ```
 
-Il DTO trasporta dati. L'oggetto `User` espone una regola.
+Partendo da 1, due chiamate a `spendOne()` restituiscono `true` e `false`; il saldo finale è 0. Un DTO ottenuto prima continua a mostrare 1. Scriverci `available = 100` cambia la copia, non autorizza una nuova spesa. Il DTO ha lo scopo di separare due contratti, non di autenticare i dati ricevuti dal client.
 
-## Limiti
+## Criterio di scelta
 
-- In applicazioni CRUD semplici, data objects possono essere sufficienti.
-- In domini complessi, behavior objects aiutano a evitare duplicazione.
-- Non tutto il comportamento deve stare dentro l'oggetto dati.
-- Alcune architetture preferiscono servizi di dominio separati.
-
-## Errori comuni
-
-- Mettere tutta la logica nei service e lasciare oggetti anemici.
-- Inserire logica infrastrutturale dentro oggetti di dominio.
-- Confondere DTO e modello di dominio.
-- Rendere behavior objects dipendenti da database o framework.
-- Usare classi solo come contenitori senza motivo.
+- Se devi soltanto proiettare o serializzare dati per un report, il DTO basta. Non ha senso inventare metodi per farlo sembrare un oggetto di dominio.
+- Se la stessa decisione di spesa compare nel controller, nel job e nell'interfaccia, c'è il rischio che una copia dimentichi il controllo. Concentrala nel modello o in una funzione di dominio condivisa: non è obbligatorio adottare uno stile a classi.
+- Due istanze caricate dallo stesso record non si coordinano tramite questo metodo. Per proteggere il saldo condiviso tra richieste serve anche una scrittura condizionata o una transazione con controllo della concorrenza nel sistema che lo conserva.
 
 ## Collegamenti
 
@@ -105,8 +73,9 @@ Il DTO trasporta dati. L'oggetto `User` espone una regola.
 - [[Programmazione/Clean Code/Pagine/Oggetti con responsabilita chiara|Oggetti con responsabilita chiara]]
 - [[Programmazione/Clean Code/Pagine/Value objects|Value objects]]
 - [[Programmazione/Clean Code/Pagine/Invarianti del dominio|Invarianti del dominio]]
+- [[Programmazione/Clean Code/Pagine/DTO e modelli di dominio|DTO e modelli di dominio]]
 
 ## Fonti
 
-- Martin Fowler, *Anemic Domain Model*
+- Martin Fowler, [Data Transfer Object](https://martinfowler.com/eaaCatalog/dataTransferObject.html) e *Anemic Domain Model*
 - Eric Evans, *Domain-Driven Design*

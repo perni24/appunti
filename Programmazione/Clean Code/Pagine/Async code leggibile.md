@@ -27,74 +27,50 @@ title: Async code leggibile
 
 ## Sintesi
 
-Il **codice asincrono leggibile** rende chiari ordine, concorrenza, errori e cancellazione.
+Prima di scrivere `await`, disegna le dipendenze: ciò che richiede un risultato deve aspettare; ciò che è indipendente può partire insieme. **`Promise.all` coordina promesse, non crea thread e non annulla le altre operazioni quando una fallisce.** Decidi esplicitamente se un risultato parziale ha valore.
 
-L'asincronia non deve nascondere il flusso: deve mostrare quali operazioni sono sequenziali, quali parallele e come vengono gestiti i fallimenti.
+## Esempio: caricare un riepilogo completo
 
-## Problema che risolve
-
-Il codice async diventa fragile quando:
-
-- le promesse o task non vengono attesi;
-- gli errori si perdono;
-- le operazioni parallele modificano lo stesso stato;
-- non esistono timeout;
-- la cancellazione non e gestita;
-- il logging perde contesto.
-
-## Concetto chiave
-
-Il lettore deve capire tre cose:
-
-- cosa deve succedere in ordine;
-- cosa puo succedere in parallelo;
-- cosa accade se una parte fallisce.
-
-La struttura del codice dovrebbe rendere queste scelte esplicite.
-
-## Dettagli importanti
-
-- Non avviare lavoro asincrono senza gestirne risultato o errore.
-- Dai nomi chiari ai passaggi asincroni.
-- Se esegui operazioni in parallelo, verifica che non condividano stato fragile.
-- Usa timeout e cancellazione quando l'attesa non puo essere infinita.
-- Mantieni correlation id e contesto nei log.
-
-## Esempio
-
-Sequenziale quando l'ordine conta:
+Le preferenze si leggono con l'ID richiesto; gli ordini, invece, richiedono l'ID canonico restituito dal profilo. Se manca uno dei tre dati il riepilogo è inutilizzabile. I tre metodi di `api` sono funzioni `async` che accettano un `AbortSignal` e devono rispettarlo per interrompere l'I/O. Esempio per Node 24.
 
 ```js
-const user = await loadUser(userId);
-const orders = await loadOrders(user.id);
-return buildSummary(user, orders);
+async function loadDashboard(id, api, callerSignal) {
+  const stop = new AbortController();
+  const signal = callerSignal ? AbortSignal.any([callerSignal, stop.signal]) : stop.signal;
+  signal.throwIfAborted();
+
+  async function loadAccount() {
+    const user = await api.user(id, signal);
+    signal.throwIfAborted();
+    const orders = await api.orders(user.id, signal);
+    return { user, orders };
+  }
+
+  try {
+    const [account, settings] = await Promise.all([loadAccount(), api.settings(id, signal)]);
+    signal.throwIfAborted();
+    return { ...account, settings };
+  } catch (error) {
+    stop.abort(error);
+    throw error;
+  }
+}
 ```
 
-Parallelo quando le operazioni sono indipendenti:
+Profilo e preferenze partono senza attendersi. Gli ordini non partono fino all'arrivo del profilo. Se le preferenze falliscono, il chiamante riceve l'errore e l'altro ramo riceve un segnale. Se un caricatore ignora quel segnale, può restare attivo: `abort` **non** termina forzatamente una promessa. Il controllo dopo il profilo evita almeno di avviare gli ordini quando l'operazione è già stata annullata.
 
-```js
-const [user, settings] = await Promise.all([
-  loadUser(userId),
-  loadSettings(userId),
-]);
-```
+## Come scegliere
 
-La forma scelta comunica l'intenzione.
+| Requisito | Forma utile |
+| --- | --- |
+| B dipende dall'esito di A | Attendi A, poi avvia B |
+| Servono tutti i risultati indipendenti | Avvia le operazioni e attendi `Promise.all`; definisci la politica di annullamento |
+| Ogni risultato ha valore anche se altri falliscono | `Promise.allSettled` e gestione esplicita di ciascun esito |
+| Migliaia di elementi indipendenti | Limita le operazioni in volo; costruire tutte le promesse subito non impone un limite |
 
-## Limiti
+## Verifica
 
-- Troppa parallelizzazione puo aumentare carico e fallimenti.
-- Alcuni framework impongono modelli async specifici.
-- Debuggare codice concorrente richiede log e tracing migliori.
-- Timeout, retry e cancellazione possono complicare il flusso.
-
-## Errori comuni
-
-- Usare `Promise.all` su operazioni che dipendono l'una dall'altra.
-- Non gestire il fallimento parziale.
-- Avviare task fire-and-forget senza monitoraggio.
-- Mescolare callback, promise e async/await senza convenzione.
-- Dimenticare timeout verso servizi esterni.
+Con promesse controllate osserva quali metodi sono già partiti, non quanti millisecondi impiegano. Prova un segnale già annullato, un rifiuto mentre l'altro ramo attende e l'ordine dei dati restituiti. Al confine con un servizio esterno stabilisci anche una scadenza: una semplice gara con un timer limita l'attesa del chiamante, non ferma da sola il lavoro sottostante.
 
 ## Collegamenti
 
@@ -110,3 +86,5 @@ La forma scelta comunica l'intenzione.
 - Martin Kleppmann, *Designing Data-Intensive Applications*
 - Michael Nygard, *Release It!*
 - Brian Goetz, *Java Concurrency in Practice*
+- [ECMAScript: Promise.all e Promise.allSettled](https://tc39.es/ecma262/multipage/control-abstraction-objects.html#sec-promise.all)
+- [Node.js: AbortController e AbortSignal](https://nodejs.org/api/globals.html#class-abortsignal)

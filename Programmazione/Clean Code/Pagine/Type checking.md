@@ -27,67 +27,40 @@ title: Type checking
 
 ## Sintesi
 
-Il **type checking** verifica che valori, funzioni e strutture rispettino i tipi attesi.
+Un type checker verifica relazioni tra i tipi **che il programma dichiara o che può inferire**. Non osserva automaticamente il JSON che arriverà domani. In TypeScript `type UserId = string` è un alias: migliora il nome, ma non impedisce di passare una comune stringa o un altro identificativo anch'esso alias di `string`.
 
-Nel Clean Code i tipi sono uno strumento per rendere contratti e assunzioni piu espliciti prima dell'esecuzione.
+## Esempio: un ID controllato al confine
 
-## Quando usarlo
-
-- Quando il linguaggio supporta tipi statici o graduali.
-- Quando vuoi ridurre errori di integrazione tra moduli.
-- Quando API e DTO devono avere contratti chiari.
-- Quando refactoring e autocomplete devono essere piu sicuri.
-- Quando vuoi documentare forme dati complesse.
-
-## Come funziona
-
-Il type checker confronta uso e dichiarazioni dei tipi.
-
-Puo intercettare parametri mancanti, valori incompatibili, campi inesistenti, ritorni non previsti e contratti non rispettati.
-
-## API / Sintassi
-
-```text
-typecheck
-```
-
-Il comando dipende dal linguaggio, ma il principio e eseguire un controllo senza necessariamente avviare l'applicazione.
-
-## Esempio pratico
+In `user-id.ts`, il costruttore accetta `unknown`, verifica a runtime il formato deciso dall'applicazione e restituisce un identificativo riconoscibile dal compilatore. Il contratto di esempio è una sequenza di 1–16 cifre ASCII; gli zeri iniziali sono significativi.
 
 ```ts
-type UserId = string;
+declare const userIdTag: unique symbol;
+export type UserId = string & { readonly [userIdTag]: true };
 
-function loadUser(userId: UserId): Promise<User> {
-  return repository.findById(userId);
+export function parseUserId(value: unknown): UserId {
+  if (typeof value !== "string" || value.length === 0 ||
+      value.length > 16 || /[^0-9]/.test(value)) {
+    throw new TypeError("UserId deve contenere da 1 a 16 cifre");
+  }
+  return value as UserId;
+}
+
+export function userPath(id: UserId): string {
+  return "/users/" + id;
 }
 ```
 
-Il tipo chiarisce l'intenzione del parametro e aiuta il refactoring.
+Con TypeScript 5.9 installato nel progetto di prova, controlla il modulo senza generare JavaScript:
 
-## Varianti
+```sh
+npx --no-install tsc --strict --noEmit user-id.ts
+```
 
-- Tipi statici obbligatori.
-- Tipi graduali.
-- Type hints.
-- Brand types o newtypes.
-- Schema runtime piu tipi generati.
+`userPath(parseUserId("007"))` produce `/users/007`; `userPath("007")` è invece rifiutato dal compilatore. `parseUserId(7)` **deve compilare** perché il parametro è `unknown`: è la guardia a rifiutare il numero durante l'esecuzione. Il marchio non aggiunge una proprietà alla stringa e non dimostra che l'utente esista nell'archivio.
 
 ## Errori comuni
 
-- Usare `any` o equivalenti per evitare il problema.
-- Tipizzare solo la superficie e lasciare `unknown` non validati.
-- Confondere tipi compile-time e validazione runtime.
-- Creare tipi troppo generici.
-- Non modellare stati impossibili.
-
-## Checklist
-
-- I tipi esprimono concetti del dominio?
-- I confini esterni vengono validati a runtime?
-- Il type checker gira in CI?
-- I tipi evitano parametri ambigui?
-- Gli errori di tipo vengono corretti, non aggirati?
+Un'asserzione `as UserId` applicata direttamente alla risposta esterna aggira l'intento del controllo. Nell'esempio l'asserzione è confinata al punto in cui è stato appena verificato il formato. Mantieni distinti i test delle diagnosi statiche, quelli sugli input al runtime e quelli dell'accesso ai dati. Il type checking è utile anche con tipi graduali in Python o con nuovi tipi in Rust, ma le garanzie dipendono dal linguaggio e dalla configurazione.
 
 ## Collegamenti
 
@@ -103,3 +76,6 @@ Il tipo chiarisce l'intenzione del parametro e aiuta il refactoring.
 - TypeScript Handbook
 - Python Documentation, *typing*
 - Rust Book, *The Type System*
+- [TypeScript: type aliases e type assertions](https://www.typescriptlang.org/docs/handbook/2/everyday-types.html)
+- [TypeScript: narrowing](https://www.typescriptlang.org/docs/handbook/2/narrowing.html)
+- [TypeScript: noEmit](https://www.typescriptlang.org/tsconfig/noEmit.html)

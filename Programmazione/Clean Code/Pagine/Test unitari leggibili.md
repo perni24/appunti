@@ -27,64 +27,39 @@ title: Test unitari leggibili
 
 ## Sintesi
 
-I **test unitari leggibili** verificano una piccola porzione di comportamento e spiegano chiaramente scenario, azione e risultato atteso.
+Un test unitario leggibile identifica la regola che si romperebbe. Se il nome dice «lo sconto spetta **solo** agli iscritti attivi», provare soltanto un iscritto attivo non basta: anche una funzione che concede lo sconto a tutti passerebbe il test.
 
-Un buon test deve aiutare a capire il codice, non solo proteggere da regressioni.
+## Esempio: verificare entrambi i lati della regola
 
-## Problema che risolve
-
-Test confusi diventano un costo:
-
-- falliscono senza spiegare il motivo;
-- richiedono setup enorme;
-- testano dettagli interni;
-- duplicano logica dell'implementazione;
-- rendono difficile refactorare;
-- vengono ignorati perche rumorosi.
-
-## Concetto chiave
-
-Un test leggibile ha un'intenzione evidente.
-
-Il nome del test, il setup e le asserzioni dovrebbero raccontare il comportamento atteso in un caso specifico.
-
-## Esempio
+Per questo esempio gli importi sono centesimi interi non negativi. Lo sconto per un cliente attivo è il 10% arrotondato per difetto al centesimo; quello per un cliente inattivo è zero. Modulo `member-discount.mjs`:
 
 ```js
-test("applies discount only to active customers", () => {
-  const customer = activeCustomer();
-  const order = orderWithTotal(100);
+export function discountCents(totalCents, active) {
+  return active ? Math.floor(totalCents / 10) : 0;
+}
+```
 
-  const total = calculateDiscountedTotal(order, customer);
+File `member-discount.test.mjs` accanto al modulo, con il runner nativo di Node:
 
-  expect(total).toBe(90);
+```js
+import test from "node:test";
+import assert from "node:assert/strict";
+import { discountCents } from "./member-discount.mjs";
+
+test("cliente attivo: 105 centesimi danno 10 centesimi di sconto", () => {
+  assert.equal(discountCents(105, true), 10);
+});
+
+test("cliente inattivo: lo stesso carrello non riceve sconto", () => {
+  assert.equal(discountCents(105, false), 0);
 });
 ```
 
-Il test mostra scenario, azione e aspettativa senza dettagli irrilevanti.
+## Perché questi dati?
 
-## Dettagli importanti
+Tenere identico il totale isola il ruolo dello stato del cliente; scegliere 105 anziché 100 rende osservabile anche l'arrotondamento. Il valore atteso è scritto nel test, non ricalcolato con la stessa formula della produzione. Cambiare il calcolo interno senza cambiare il comportamento non dovrebbe richiedere di riscrivere le asserzioni.
 
-- Un test dovrebbe avere una ragione chiara per fallire.
-- Il setup deve contenere solo cio che serve al caso.
-- Le asserzioni dovrebbero essere specifiche ma non fragili.
-- I nomi dei test devono parlare di comportamento.
-- I helper di test devono migliorare lettura, non nascondere troppo.
-
-## Limiti
-
-- Non tutti i comportamenti sono verificabili bene con unit test.
-- Test troppo isolati possono ignorare errori di integrazione.
-- Mock eccessivi rendono i test fragili.
-- Un test leggibile non compensa un design confuso.
-
-## Errori comuni
-
-- Usare nomi generici come `should work`.
-- Creare setup condiviso difficile da seguire.
-- Testare metodi privati invece del comportamento pubblico.
-- Mettere molte asserzioni non correlate nello stesso test.
-- Copiare la logica produttiva dentro l'asserzione.
+Qui un builder o un mock nasconderebbe gli unici due dati importanti. Per molti casi omogenei una tabella può aiutare, ma una percentuale di copertura elevata non sostituisce il controesempio che smaschererebbe la regola sbagliata.
 
 ## Collegamenti
 
@@ -97,6 +72,5 @@ Il test mostra scenario, azione e aspettativa senza dettagli irrilevanti.
 
 ## Fonti
 
-- Kent Beck, *Test Driven Development*
-- Gerard Meszaros, *xUnit Test Patterns*
-- Martin Fowler, *TestPyramid*
+- Node.js, [Test runner](https://nodejs.org/api/test.html)
+- Kent Beck, *Test Driven Development*; Gerard Meszaros, *xUnit Test Patterns*; Martin Fowler, *Test Pyramid*

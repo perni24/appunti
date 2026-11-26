@@ -27,65 +27,42 @@ title: Legacy code
 
 ## Sintesi
 
-Il **legacy code** e codice difficile da cambiare con sicurezza. Spesso manca di test, ha dipendenze implicite, logica accoppiata e comportamento poco documentato.
+Per lavorare su codice legacy la prima domanda utile è **«che cosa cambierebbe per chi lo usa?»**. L'età del modulo conta meno della possibilità di verificarlo. Un test di caratterizzazione registra ciò che il programma fa oggi, anche quando non è ancora chiaro se quel comportamento sia desiderato.
 
-Non e semplicemente codice vecchio: e codice che resiste al cambiamento.
+## Esempio: un esportatore usato da un vecchio importatore
 
-## Problema che risolve
+La funzione esistente riceve codici testuali e un destinatario sincrono `write`. Il parametro del writer permette di osservare le scritture senza raggiungere il sistema esterno; se fosse nascosto nel modulo, il primo piccolo intervento sarebbe rendere sostituibile proprio quella dipendenza, mantenendo lo stesso writer in produzione.
 
-Trattare il legacy code come codice normale porta a modifiche rischiose.
-
-Bisogna prima creare punti di controllo, capire il comportamento esistente e ridurre il rischio prima di cambiare struttura o funzionalita.
-
-## Concetto chiave
-
-La strategia pragmatica e:
-
-```text
-capire -> proteggere -> modificare -> ripulire
+```js
+function exportCodesLegacy(codes, write) {
+  let n = 0;
+  for (const code of codes) {
+    if (code !== "") {
+      write("C;" + code + "\r\n");
+      n += 1;
+    }
+  }
+  return n;
+}
 ```
 
-Prima si osserva il comportamento, poi si aggiungono test o controlli, poi si modifica in piccoli passi.
+## Caratterizzare prima di correggere
 
-## Dettagli importanti
+| Sonda | Comportamento osservabile |
+| --- | --- |
+| Nessun codice o solo stringhe vuote | Nessuna chiamata a `write`; ritorna `0` |
+| `["007", "", "0"]` | Due chiamate nell'ordine, zeri preservati, terminatore CRLF dopo **ogni** codice; ritorna `2` |
+| Il writer rifiuta la seconda riga lanciando un errore | La prima è già stata consegnata al writer; nessun terzo tentativo e l'errore arriva al chiamante |
 
-- I characterization tests descrivono il comportamento attuale, anche se non ideale.
-- Le seam sono punti in cui si puo isolare una dipendenza.
-- Non tutto il legacy va riscritto.
-- Il codice piu rischioso e quello modificato spesso e poco coperto.
-- Migliorare una zona mentre la tocchi e piu realistico che ripulire tutto.
+Per verificare l'ultima riga della tabella, usa un writer che registra solo le scritture accettate e fallisce al secondo tentativo. Una prova sul solo valore di ritorno non vedrebbe il lavoro parziale. Non confondere «consegnato al writer» con «salvato su disco»: per quest'ultima garanzia serve una prova con il destinatario reale.
 
-## Esempio
+## Decidere il passo successivo
 
-Approccio rischioso:
-
-```text
-riscrivere il modulo prima di capire tutti i casi reali
-```
-
-Approccio piu sicuro:
-
-```text
-aggiungere test di caratterizzazione sui casi usati
-estrarre una dipendenza esterna
-modificare il comportamento richiesto
-lasciare il modulo leggermente migliore di prima
-```
+Chiedi a chi usa l'importatore quali comportamenti siano compatibilità richiesta e quali difetti: per esempio, nessuna delle prove dimostra che gli identificativi contenenti `;` siano ammessi. Per una pulizia strutturale mantieni l'output rilevato e confrontalo con la versione in [[Programmazione/Clean Code/Pagine/Refactoring sicuro|Refactoring sicuro]]. Per correggere un difetto concordato, scrivi una prova del nuovo comportamento e aggiorna deliberatamente quella storica interessata.
 
 ## Limiti
 
-- Alcune basi legacy hanno vincoli tecnologici reali.
-- Aggiungere test puo richiedere refactoring preliminare.
-- Riscrivere puo essere giusto quando il comportamento e piccolo e ben compreso.
-- La qualita va bilanciata con rischio e valore di business.
-
-## Errori comuni
-
-- Riscrivere tutto per frustrazione.
-- Refactorare senza test o osservabilita.
-- Eliminare comportamento apparentemente inutile senza verificarlo.
-- Ignorare dipendenze esterne e dati storici.
-- Considerare legacy solo il codice scritto da altri.
+Proteggi prima i percorsi che devi davvero toccare. Un test che fotografa ogni dettaglio interno rende difficile anche una rinomina; una riscrittura completa basata sui soli casi felici perde invece i contratti impliciti. Con dati storici, usa esempi sintetici rappresentativi, non copie contenenti dati personali.
 
 ## Collegamenti
 
@@ -101,3 +78,4 @@ lasciare il modulo leggermente migliore di prima
 - Michael Feathers, *Working Effectively with Legacy Code*
 - Martin Fowler, *Refactoring*
 - Robert C. Martin, *Clean Code*
+- [Martin Fowler: isolare una dipendenza nel codice legacy](https://martinfowler.com/bliki/LegacySeam.html)

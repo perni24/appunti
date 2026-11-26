@@ -28,74 +28,41 @@ title: Code e worker
 
 ## Sintesi
 
-Le **code** e i **worker** permettono di spostare lavoro fuori dal flusso sincrono principale.
+Una coda separa il momento in cui un produttore chiede un lavoro da quello in cui un worker lo esegue. Con consegna *almeno una volta*, un messaggio già elaborato può tornare. **L'ack conferma la consegna al broker, non dimostra da solo che l'effetto applicativo sia avvenuto una sola volta.**
 
-Sono utili per job lenti, retry, integrazioni esterne, elaborazioni batch e attivita che non devono bloccare l'utente.
+## Esempio: registrare una ricevuta prima dell'ack
 
-## Quando usarlo
-
-- Quando un'operazione e lenta o variabile.
-- Quando serve retry controllato.
-- Quando vuoi assorbire picchi di carico.
-- Quando un servizio esterno puo fallire temporaneamente.
-- Quando il lavoro puo essere eseguito in background.
-
-## Come funziona
-
-Il produttore pubblica un messaggio in coda. Uno o piu worker lo leggono, eseguono il lavoro e confermano l'elaborazione.
-
-Il design pulito deve chiarire:
-
-- formato del messaggio;
-- idempotenza del job;
-- gestione retry;
-- dead letter queue;
-- logging e tracing;
-- timeout e limiti.
-
-## API / Sintassi
-
-```text
-producer -> queue -> worker -> ack / retry / dead letter
-```
-
-Ogni passaggio deve avere responsabilita chiara.
-
-## Esempio pratico
+Il messaggio contiene versione, tenant, chiave stabile e ordine. `save` usa il contratto di [[Programmazione/Clean Code/Pagine/Idempotenza|Idempotenza]] e termina solo quando la ricevuta è registrata. `delivery` è un adattatore applicativo: `ack()` conferma la consegna; `deadLetter(reason)` deve gestirla definitivamente secondo la configurazione del broker. **Non** sono firme di un client RabbitMQ.
 
 ```js
-async function handleSendReceiptJob(job, emailService) {
-  const { orderId, email, idempotencyKey } = job;
+async function consumeReceipt(delivery, save) {
+  const job = delivery.body;
+  const valid = job?.version === 1 &&
+    [job.tenant, job.key, job.orderId].every(v => typeof v === "string" && v.trim() !== "");
+  if (!valid) return delivery.deadLetter("invalid_job");
 
-  await emailService.sendReceipt(email, orderId, { idempotencyKey });
+  const result = await save({ tenant: job.tenant, key: job.key, orderId: job.orderId });
+  if (result.kind === "key_conflict") return delivery.deadLetter("key_conflict");
+  if (result.kind !== "created" && result.kind !== "replayed") {
+    throw new Error("Esito del registro sconosciuto");
+  }
+  return delivery.ack();
 }
 ```
 
-Il job contiene dati essenziali e una chiave utile a evitare duplicazioni.
+## Cosa succede se si ferma il worker?
 
-## Varianti
+| Momento | Stato possibile | Decisione |
+| --- | --- | --- |
+| Prima della registrazione | Ricevuta assente e messaggio non confermato | Ritentare la consegna |
+| Dopo la registrazione ma prima che l'ack raggiunga il broker | Ricevuta presente, possibile riconsegna | Stessa chiave, nessuna seconda ricevuta, nuovo ack |
+| Messaggio malformato o chiave incompatibile | Ripetere lo stesso input non lo corregge | Isolare il messaggio; non confermarlo due volte |
 
-- Queue semplice: un messaggio viene elaborato da un worker.
-- Pub/sub: piu consumer ricevono eventi.
-- Scheduled jobs: lavoro pianificato.
-- Dead letter queue: messaggi falliti isolati.
-- Worker pool: piu worker elaborano in parallelo.
+## Limiti operativi
 
-## Errori comuni
+Il chiamante deve gestire il rifiuto di `consumeReceipt`. Un errore transitorio richiede retry limitati con attese crescenti; un errore ignoto va reso visibile. Non lasciare il messaggio sospeso indefinitamente e non rimandarlo immediatamente in coda senza un limite. Se il trasferimento alla coda degli scarti può fallire, non confermare prima l'originale rischiando di perderlo.
 
-- Creare job non idempotenti.
-- Non distinguere errori temporanei e permanenti.
-- Perdere contesto di tracing.
-- Mettere troppa logica nel consumer senza test.
-- Non monitorare backlog e fallimenti.
-
-## Checklist
-
-- Il messaggio contiene dati sufficienti e stabili?
-- Il worker e idempotente?
-- Esiste una strategia di retry?
-- Gli errori permanenti finiscono in una dead letter queue?
-- Log e tracing permettono di seguire il job?
+Limita i messaggi in volo alla capacità del destinatario. Più worker aumentano la concorrenza, non garantiscono ordine globale. Per capire se la coda sta assorbendo un picco o sta accumulando ritardo, osserva l'età del messaggio più vecchio, le riconsegne e gli scarti, non soltanto quante elaborazioni terminano.
 
 ## Collegamenti
 
@@ -111,3 +78,4 @@ Il job contiene dati essenziali e una chiave utile a evitare duplicazioni.
 - Martin Kleppmann, *Designing Data-Intensive Applications*
 - Michael Nygard, *Release It!*
 - Enterprise Integration Patterns, *Message Queue*
+- [RabbitMQ: consumer acknowledgements, riconsegna e publisher confirms](https://www.rabbitmq.com/docs/confirms)

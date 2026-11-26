@@ -26,68 +26,45 @@ title: Notebook mantenibili
 
 ## Sintesi
 
-I **notebook mantenibili** sono notebook usati per esplorazione, analisi o prototipazione senza diventare accumuli fragili di celle eseguite in ordine casuale.
+Un notebook è riproducibile se un lettore può **riavviare il kernel, eseguire dall'alto e ricostruire la conclusione**. Le celle visibili non sono tutta la storia: il kernel può ricordare una variabile da una cella eliminata e il file può ancora mostrare un output prodotto con dati precedenti.
 
-Un notebook pulito deve raccontare il ragionamento e permettere di riprodurre il risultato.
+## Esempio: misurare gli scarti di un import
 
-## Problema che risolve
+Tre celle Python, nell'ordine di esecuzione. Richiedono i due moduli delle note [[Programmazione/Clean Code/Pagine/Pipeline dati leggibili|Pipeline dati leggibili]] e [[Programmazione/Clean Code/Pagine/Parsing di input esterni|Parsing di input esterni]] disponibili al kernel. Il CSV incorporato è una fixture sintetica, non una misura di produzione.
 
-I notebook diventano difficili quando:
+**Cella 1: sorgente e contratto.**
 
-- dipendono dall'ordine invisibile di esecuzione;
-- contengono variabili globali mutate in molte celle;
-- mescolano esperimenti, produzione e output finali;
-- non dichiarano sorgenti dati;
-- non separano funzioni riusabili e analisi;
-- producono risultati non riproducibili.
+```python
+from io import StringIO
+from catalog_pipeline import read_catalog
 
-## Concetto chiave
-
-Un notebook e utile quando mantiene una narrazione lineare:
-
-```text
-contesto -> dati -> pulizia -> analisi -> risultato -> limiti
+snapshot = "sku,price\n007,1.20\nX,\nX,0\n"
 ```
 
-Se il codice diventa stabile o operativo, dovrebbe essere estratto in script, modulo o pipeline.
+**Cella 2: ricalcolare dalle sorgenti.** Creare uno stream nuovo ogni volta evita che una seconda esecuzione riparta dalla fine del file.
 
-## Dettagli importanti
-
-- Tieni le celle in ordine eseguibile dall'alto verso il basso.
-- Sposta funzioni riusabili fuori dal notebook.
-- Fissa seed, input e parametri importanti.
-- Riduci output rumorosi.
-- Documenta assunzioni e limiti dell'analisi.
-
-## Esempio
-
-Struttura leggibile:
-
-```text
-1. import e configurazione
-2. caricamento dati
-3. pulizia e validazione
-4. analisi
-5. grafici o risultati
-6. conclusioni e prossimi passi
+```python
+products, issues = read_catalog(StringIO(snapshot, newline=""))
+total = len(products) + len(issues)
+rejected_share = len(issues) / total if total else None
 ```
 
-Questa struttura aiuta sia una persona sia un LLM a capire il contesto.
+**Cella 3: rendere esplicito il denominatore.**
 
-## Limiti
+```python
+summary = {"accepted": len(products), "rejected": len(issues), "rejected_share": rejected_share}
+print(summary)
+```
 
-- I notebook non sono sempre adatti a job di produzione.
-- Visualizzazioni interattive possono ridurre riproducibilita.
-- Dataset grandi richiedono pipeline o storage dedicati.
-- Un notebook pulito non sostituisce test per codice critico.
+Il risultato contiene **2 accettati e 1 scartato su 3 record**, non uno scarto su due SKU distinti. Con sola intestazione la quota è `None`: nessun record osservato non equivale a una quota di errore dello 0%.
 
-## Errori comuni
+## Prova di riproducibilità
 
-- Usare celle eseguite fuori ordine.
-- Lasciare codice morto o output temporanei.
-- Salvare credenziali nel notebook.
-- Mescolare esperimenti alternativi senza spiegazione.
-- Non indicare versione o origine dei dati.
+1. Riavvia il kernel ed esegui tutte le celle in ordine, senza riusare output salvati. Poi riesegui la cella di calcolo due volte: il risultato non deve accumularsi.
+2. Per dati reali annota versione o impronta dell'input, parametri, ambiente e versione dei moduli. Un seed controlla solo le operazioni casuali che lo usano; non fissa un dataset remoto.
+3. Mantieni nel notebook la domanda, il risultato e i limiti; estrai il parsing riutilizzabile in un modulo con test. L'esecuzione non interattiva di un notebook può rilevare celle fuori ordine, ma non verifica che la conclusione statistica sia sensata.
+
+Prima di condividere controlla **anche gli output salvati**, non soltanto il codice: tabelle, percorsi ed eccezioni possono contenere dati che non volevi pubblicare.
 
 ## Collegamenti
 
@@ -102,3 +79,5 @@ Questa struttura aiuta sia una persona sia un LLM a capire il contesto.
 - Joel Grus, *I Don't Like Notebooks*
 - Jupyter Documentation
 - Wes McKinney, *Python for Data Analysis*
+- [Jupyter nbformat: celle, output ed execution count](https://nbformat.readthedocs.io/en/latest/format_description.html)
+- [Jupyter nbclient: esecuzione non interattiva di un notebook](https://nbclient.readthedocs.io/en/latest/client.html)

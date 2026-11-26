@@ -27,83 +27,41 @@ title: Gestione delle risorse
 
 ## Sintesi
 
-La **gestione delle risorse** riguarda acquisizione, uso e rilascio di elementi limitati o esterni: file, socket, connessioni database, lock, memoria, thread, handle e stream.
+Il proprietario di una risorsa deve sapere **quando l'acquisizione è riuscita** e quale operazione ne conclude l'uso. Chi prende in prestito una connessione non deve chiuderla; può però essere responsabile di una transazione aperta su quella connessione. `COMMIT`, `ROLLBACK` e chiusura della connessione non sono sinonimi.
 
-Una risorsa deve avere un ciclo di vita chiaro.
+## Esempio: ordine e riga devono comparire insieme
 
-## Quando usarlo
-
-- Quando apri file, stream o connessioni.
-- Quando acquisisci lock o transazioni.
-- Quando lavori con pool di connessioni.
-- Quando una libreria richiede chiamate di cleanup.
-- Quando un errore puo interrompere il flusso prima del rilascio.
-
-## Come funziona
-
-La sequenza sicura e:
-
-```text
-acquisisci -> usa -> rilascia sempre
-```
-
-Il rilascio deve avvenire anche in caso di errore. Nei linguaggi moderni esistono costrutti come `try/finally`, context manager, RAII, `defer` o `using`.
-
-## API / Sintassi
+Esempio per `DatabaseSync` di `node:sqlite` in Node 24.14. Si presuppongono una connessione aperta, vincoli di chiave esterna abilitati e tre tabelle: `orders(id)`, `products(id)` e `order_lines(order_id, product_id)`. Il riferimento al prodotto è dichiarato `DEFERRABLE INITIALLY DEFERRED`: un prodotto inesistente può emergere al **commit**, non all'inserimento della riga.
 
 ```js
-const resource = acquireResource();
-
-try {
-  useResource(resource);
-} finally {
-  resource.close();
-}
-```
-
-Il blocco `finally` protegge il rilascio.
-
-## Esempio pratico
-
-```js
-async function withTransaction(database, work) {
-  const transaction = await database.beginTransaction();
-
+function saveOrder(db, orderId, productId) {
+  db.exec("BEGIN");
   try {
-    const result = await work(transaction);
-    await transaction.commit();
-    return result;
-  } catch (error) {
-    await transaction.rollback();
-    throw error;
+    db.prepare("INSERT INTO orders(id) VALUES (?)").run(orderId);
+    db.prepare("INSERT INTO order_lines(order_id, product_id) VALUES (?, ?)").run(orderId, productId);
+    db.exec("COMMIT");
+  } catch (primary) {
+    if (db.isTransaction) {
+      try {
+        db.exec("ROLLBACK");
+      } catch (cleanup) {
+        throw new AggregateError([primary, cleanup], "Ordine e rollback falliti");
+      }
+    }
+    throw primary;
   }
 }
 ```
 
-La gestione della risorsa transazione e centralizzata.
+`BEGIN` resta fuori dal `try`: se il chiamante aveva già una transazione aperta, il nuovo `BEGIN` fallisce e la funzione **non annulla lavoro altrui**. Dopo l'acquisizione, `isTransaction` indica se serve ancora il rollback. Solo il chiamante chiuderà `db`. In un pool, restituire una connessione sana e scartare una di stato incerto sono decisioni diverse.
 
-## Varianti
+## Scegliere la strategia
 
-- RAII: la risorsa viene rilasciata quando l'oggetto esce dallo scope.
-- Context manager: il blocco gestisce entrata e uscita.
-- Pool: le risorse vengono riusate e restituite.
-- `defer` / `finally`: rilascio esplicito a fine scope.
+Per file e handle basta spesso acquisire, usare e chiudere in un `finally`. RAII, context manager e `using` legano il rilascio allo scope; non decidono da soli se confermare o annullare un'operazione di dominio. Per più risorse indipendenti, registra il rilascio dopo ogni acquisizione riuscita, non dopo l'ultima.
 
-## Errori comuni
+## Limiti e verifica
 
-- Aprire risorse senza chiuderle.
-- Rilasciare solo nel percorso di successo.
-- Nascondere risorse in oggetti senza metodo di cleanup.
-- Condividere risorse non thread-safe.
-- Ignorare timeout e cancellazione.
-
-## Checklist
-
-- Chi acquisisce la risorsa?
-- Chi la rilascia?
-- Il rilascio avviene anche in caso di errore?
-- La risorsa puo essere condivisa in sicurezza?
-- Esiste un test o una convenzione per evitare leak?
+Questo esempio è sincrono, su una sola connessione SQLite, senza transazioni annidate. Verifica che un errore alla seconda istruzione o al commit non lasci un nuovo ordine senza riga. Non estendere automaticamente la regola a un database remoto: una disconnessione durante il commit può lasciare il client senza certezza sull'esito.
 
 ## Collegamenti
 
@@ -119,3 +77,6 @@ La gestione della risorsa transazione e centralizzata.
 - Robert C. Martin, *Clean Code*
 - Michael Nygard, *Release It!*
 - Bjarne Stroustrup, *The C++ Programming Language*
+- [SQLite: transazioni e gestione degli errori](https://www.sqlite.org/lang_transaction.html)
+- [SQLite: vincoli di chiave esterna differiti](https://www.sqlite.org/foreignkeys.html#fk_deferred)
+- [Node.js: DatabaseSync.isTransaction](https://nodejs.org/api/sqlite.html#databaseistransaction)

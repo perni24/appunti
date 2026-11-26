@@ -27,85 +27,45 @@ title: Idempotenza
 
 ## Sintesi
 
-Un'operazione e **idempotente** quando eseguirla una o piu volte produce lo stesso risultato finale.
+Un'operazione è **idempotente** quando ripetere la stessa intenzione ha lo stesso effetto voluto che applicarla una volta. Non significa ottenere necessariamente la stessa risposta: «creata» al primo tentativo e «già registrata» al secondo sono compatibili con una sola ricevuta.
 
-Nel Clean Code e fondamentale in sistemi con retry, messaggi duplicati, API, code e operazioni distribuite.
+## Esempio: la ricevuta è l'effetto da proteggere
 
-## Problema che risolve
+Il client conserva una chiave per l'intera operazione, anche quando non sa se la prima risposta sia andata persa. Per questo servizio la chiave è unica **per tenant**; `orderId` è l'intero contenuto significativo della richiesta. Il registro SQLite è persistente in produzione e le righe non vengono modificate o cancellate durante il periodo in cui sono ammessi i retry.
 
-In un sistema reale non sempre sai se un'operazione e fallita prima o dopo aver prodotto un effetto.
-
-Esempi:
-
-- richiesta HTTP ritentata dal client;
-- worker che riprende dopo crash;
-- messaggio consegnato due volte;
-- timeout dopo scrittura riuscita;
-- job schedulato rilanciato manualmente.
-
-Senza idempotenza, ogni retry puo duplicare effetti.
-
-## Concetto chiave
-
-L'idempotenza sposta la domanda da:
-
-```text
-questa operazione e gia partita?
+```sql
+CREATE TABLE receipts (
+  id INTEGER PRIMARY KEY,
+  tenant TEXT NOT NULL,
+  request_key TEXT NOT NULL,
+  order_id TEXT NOT NULL,
+  UNIQUE (tenant, request_key)
+);
 ```
-
-a:
-
-```text
-questo effetto finale e gia stato applicato?
-```
-
-Spesso serve una chiave idempotente, un vincolo unico o uno stato persistente che registri l'operazione.
-
-## Dettagli importanti
-
-- `set status = paid` e piu idempotente di `increment paid_count`.
-- Le API possono accettare un `Idempotency-Key`.
-- I worker dovrebbero tollerare messaggi duplicati.
-- L'idempotenza richiede storage o vincoli quando produce effetti persistenti.
-- Non tutte le operazioni sono naturalmente idempotenti.
-
-## Esempio
-
-Fragile:
 
 ```js
-async function chargeOrder(order) {
-  await paymentProvider.charge(order.card, order.total);
-  await repository.markPaid(order.id);
+function registerReceipt(db, { tenant, key, orderId }) {
+  const created = db.prepare(
+    "INSERT INTO receipts (tenant, request_key, order_id) VALUES (?, ?, ?) " +
+    "ON CONFLICT (tenant, request_key) DO NOTHING RETURNING id"
+  ).get(tenant, key, orderId);
+  if (created) return { kind: "created", id: created.id };
+
+  const previous = db.prepare(
+    "SELECT id, order_id FROM receipts WHERE tenant = ? AND request_key = ?"
+  ).get(tenant, key);
+  if (previous.order_id !== orderId) return { kind: "key_conflict" };
+  return { kind: "replayed", id: previous.id };
 }
 ```
 
-Se il processo cade dopo il pagamento ma prima di `markPaid`, un retry puo addebitare due volte.
+La funzione usa `DatabaseSync` di Node e riceve tre stringhe non vuote già validate. La scrittura del registro **è la creazione della ricevuta**: non c'è una seconda operazione da fare dopo. Il vincolo decide chi può inserire, senza un fragile «prima controlla se esiste». Chi ripete la stessa chiave con un altro ordine ottiene un conflitto, non la ricevuta del primo. Una chiave diversa rappresenta una nuova intenzione, anche per lo stesso ordine: se il dominio ammette una sola ricevuta per ordine serve un vincolo ulteriore.
 
-Piu sicuro:
+## Limiti e verifica
 
-```js
-async function chargeOrder(order, idempotencyKey) {
-  return paymentProvider.charge(order.card, order.total, { idempotencyKey });
-}
-```
+Un timeout non dimostra che la creazione sia fallita. Prova a ignorare la prima risposta e ripetere la richiesta: deve tornare lo stesso ID. Verifica anche il riuso scorretto della chiave e la separazione fra tenant. Se cambiano i parametri rilevanti, confronta anche quelli; se cancelli il registro troppo presto, una vecchia richiesta può produrre un nuovo effetto.
 
-La chiave permette al provider di riconoscere tentativi duplicati.
-
-## Limiti
-
-- Idempotenza non significa assenza di side effects.
-- Alcune operazioni richiedono compensazioni invece di idempotenza pura.
-- Le chiavi idempotenti devono avere durata e scope chiari.
-- Sistemi esterni potrebbero non supportarla.
-
-## Errori comuni
-
-- Fare retry su pagamenti, email o creazioni senza chiave.
-- Confondere idempotenza con atomicita.
-- Usare chiavi non univoche.
-- Non proteggere la scrittura dello stato idempotente.
-- Ignorare concorrenza tra due richieste con la stessa chiave.
+Per un addebito esterno o un'email la riga locale **non rende idempotente il provider**. Un arresto tra chiamata esterna e scrittura locale lascia un esito incerto: occorrono il contratto di deduplicazione del destinatario o una procedura di riconciliazione.
 
 ## Collegamenti
 
@@ -120,4 +80,6 @@ La chiave permette al provider di riconoscere tentativi duplicati.
 
 - Martin Kleppmann, *Designing Data-Intensive Applications*
 - Michael Nygard, *Release It!*
-- Stripe Documentation, *Idempotent requests*
+- [RFC 9110: semantica dei metodi idempotenti](https://www.rfc-editor.org/rfc/rfc9110.html#section-9.2.2)
+- [SQLite: UPSERT e vincolo che attiva ON CONFLICT](https://www.sqlite.org/lang_upsert.html)
+- [Stripe: contratto delle richieste idempotenti](https://docs.stripe.com/api/idempotent_requests)

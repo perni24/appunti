@@ -8,6 +8,124 @@ Questi test sono infrastruttura editoriale, esclusa dal sito. Estraggono frammen
 - Node.js compatibile con il progetto; esecuzione verificata con `24.14.0`.
 - Solo per i test browser: pacchetto Playwright e Google Chrome installato. Nella sessione di revisione e stato usato il runtime Playwright gia fornito dall'ambiente Codex, senza aggiungere dipendenze al sito.
 
+## Clean Code: fondamenti
+
+Dalla radice del vault, con Node e le dipendenze di `site`:
+
+```sh
+node --test _Meta/tests/clean-code-fondamenti.test.mjs
+```
+
+La suite esegue gli esempi JavaScript delle note: regole alle soglie, valutazione dei getter, esiti delle Promise, ordine degli effetti e dimensione dei lotti. I servizi sono sostituti locali: non vengono inviati messaggi o pagamenti. La scheda sul debito tecnico è un caso ragionato, non un programma.
+
+## Clean Code: strutture dati e modellazione
+
+```sh
+node --test _Meta/tests/clean-code-modellazione.test.mjs
+```
+
+La suite riusa il compilatore TypeScript di `site` per i cinque esempi tipizzati ed esegue anche i due esempi JavaScript di copia delle righe. Per la union distingue i casi leciti, gli errori statici con `exactOptionalPropertyTypes` e un nuovo caso non gestito. La scheda sulle responsabilità è un esercizio di design; le prove non simulano un servizio di prenotazione o la concorrenza tra scritture su database.
+
+## Clean Code: file, moduli e ambiente
+
+```sh
+node --test _Meta/tests/clean-code-file-moduli.test.mjs
+```
+
+Le cinque prove estraggono gli esempi dalle note: tariffe, collaboratori della fatturazione, ingresso pubblico di un pacchetto Node, compatibilità del vecchio prezzo e script npm di formattazione. Il pacchetto e il file da formattare vivono in directory temporanee; la suite usa le dipendenze già disponibili in `site` e non installa pacchetti. I tre comandi della nota README sono i controlli reali del vault e si eseguono separatamente.
+
+## Clean Code: programmazione ad oggetti e design
+
+```sh
+node --test _Meta/tests/clean-code-oggetti-design.test.mjs
+```
+
+Le sette prove leggono i blocchi JS e TS dalle note. I due file del DIP vengono compilati insieme come moduli ESM temporanei: si controllano import, accettazione e rifiuto del trasporto simulato. Il test ISP distingue il rifiuto del compilatore dagli errori asincroni del lettore; il gestore di conferma usa la classe della nota sull'incapsulamento. Nessuna chiamata a provider di pagamento, posta o database.
+
+## Clean Code: concetti funzionali e composizione
+
+```sh
+node --test _Meta/tests/clean-code-funzionale.test.mjs
+```
+
+Sette prove eseguono i blocchi JavaScript delle note: configurazione mutabile, ordine delle funzioni, alias e snapshot, ordine delle letture, import con scarti, guardie e fallimenti parziali. Gli archivi e l'invio sono sostituti locali: si verifica la sequenza osservabile, non la consegna di email o una transazione distribuita.
+
+## Clean Code: contratti, tipi e qualità
+
+```sh
+node --test _Meta/tests/clean-code-contratti-qualita.test.mjs
+```
+
+Richiede Node 24 con `node:sqlite` e TypeScript da `site`. Le dieci prove leggono gli esempi dai Markdown; una avvia a sua volta i sette test nativi delle note contro i moduli estratti, con un vero database SQLite in memoria e senza servizi remoti. I punteggi di complessità sono illustrati nelle note con un conteggio manuale: la suite verifica comportamento e casi di confine, non esegue ESLint o Sonar.
+
+## Clean Code: Standard Library Pratica
+
+```sh
+node --test _Meta/tests/clean-code-standard-library.test.mjs
+```
+
+Sette prove eseguono i blocchi JavaScript estratti dalle note con Node e i dati di fuso orario di Intl. Per la creazione esclusiva viene usata una directory temporanea locale. Tracer, logger, pagamento e archivio utenti sono sostituti: non servono un collector, un database o credenziali.
+
+## Clean Code: Internals e Gestione Risorse
+
+```sh
+node --test _Meta/tests/clean-code-internals.test.mjs
+```
+
+Nove prove estraggono gli esempi dai Markdown. Baseline: Node 24.14 con `node:sqlite`; gli errori immediati e differiti della transazione usano un database reale in memoria. Le letture della cache sono sbloccate dal test, senza ritardi casuali. Lock, writer e pagamenti sono esempi locali: non occorrono servizi esterni.
+
+## Clean Code: Concorrenza e Parallelismo
+
+```sh
+node --test _Meta/tests/clean-code-concorrenza.test.mjs
+```
+
+Sette prove estraggono il codice dalle sette schede. Usano Node 24.14 con i lock nativi e SQLite: due connessioni allo stesso file temporaneo esercitano la contesa, un'altra prova riapre il registro delle ricevute. Il worker usa un adattatore di coda simulato; gli ordini di completamento sono imposti con promesse controllate, non con ritardi casuali.
+
+## Clean Code: Performance e Distribuzione
+
+```sh
+node --test _Meta/tests/clean-code-performance.test.mjs
+```
+
+Sei prove eseguono gli esempi delle sei nuove schede revisionate. Baseline: Node 24.14 con SQLite in memoria. Il comando CPU genera un vero profilo V8 in una directory temporanea; il confronto SQL conta le esecuzioni, non la durata. I test sulle sonde verificano la decisione locale, non distribuiscono un servizio. Nessuna soglia di velocità, memoria o campionamento dipende dalla macchina.
+
+## Clean Code: Web, API e Database
+
+```sh
+node --test _Meta/tests/clean-code-web-api-database.test.mjs
+```
+
+Sette prove su Node 24.14 leggono il JavaScript e l'SQL dalle sette schede. Il controller usa Request e Response in memoria e attraversa parser, dominio, service e repository fino a SQLite. La suite prova rollback se l'outbox fallisce, paginazione con date uguali, vecchio scrittore tardivo e contrazione dello schema. Non avvia un server HTTP, non consegna eventi a un broker e non migra un database esterno.
+
+## Clean Code: Data, Automazione e LLM
+
+```sh
+node --test _Meta/tests/clean-code-data-automazione.test.mjs
+```
+
+Sette prove leggono gli esempi dalle sette schede. Usano Node 24 e Python 3.12 con la standard library (`PYTHON_TEST_EXECUTABLE` può indicare l'interprete). CSV, moduli e CLI girano in una directory temporanea; le celle sono eseguite anche in due processi Python puliti, senza frontend o kernel Jupyter. Il percorso prompt → parser → verifica usa un adattatore locale: non chiama modelli e non valuta la loro accuratezza.
+
+## Clean Code: Tooling e Qualità del Codice
+
+```sh
+node --test _Meta/tests/clean-code-tooling.test.mjs
+```
+
+Otto prove su Node 24, Python 3.12 e Git. Usano Prettier e TypeScript da `site/node_modules`; per ESLint 10 imposta `ESLINT_TOOLS_DIR` come nella sezione «Tooling: Testing ed ESLint» (default: `appunti-eslint-tools` nella directory temporanea). Nessuna installazione automatica. Coverage reale di Node, mutazione manuale isolata e commit di prova solo in un repository temporaneo. Il test del gate legge lo YAML ed esegue i comandi locali, senza avviare Actions o cambiare protezioni di branch.
+
+## Strutture di progetto: PHP, Python e React
+
+La suite `strutture-di-progetto.test.mjs` materializza i blocchi pertinenti del Markdown in progetti temporanei. Servono PHP 8.3+ con le estensioni per PHPUnit 12, Composer, Node con le dipendenze di `site` e Python 3.12+. Predisporre **fuori dal vault** una cartella di strumenti con `vendor/` (PHPUnit 12.5), `node_modules/` (React e React DOM 19, Vite 7, plugin React 5) e un ambiente Python con FastAPI, Pydantic 2 e HTTPX.
+
+Impostare `STRUCTURE_TOOLS` al percorso assoluto di quella cartella, `STRUCTURE_PYTHON` all'interprete dell'ambiente e `COMPOSER_PHAR` al file di Composer. La suite non installa pacchetti; crea e rimuove solo la propria sottocartella. Eseguire dalla radice del vault:
+
+```sh
+node --test _Meta/tests/strutture-di-progetto.test.mjs
+```
+
+Le quattro prove coprono il test PHPUnit del template e la lettura delle variabili di processo, rollback e chiusura SQLite, type checking dei moduli API e build Vite della Home, e l'API client contro le vere route FastAPI tramite trasporto ASGI in-process. Verificati anche JSON malformato nella struttura e risposta 204 inattesa. Non simulano il router PHP illustrativo, un browser interattivo, CORS o un reverse proxy di produzione.
+
 ## Rust: Sintassi, Tipi e Binding
 
 Primo blocco della revisione Rust: Sintassi di base, Tipi di dato primitivi e Variabili, mutabilita e shadowing. Baseline **Rust 1.99.1**, edition **2024**, target **x86_64-pc-windows-gnu**, Node **24.14.0**. Nessuna crate esterna.

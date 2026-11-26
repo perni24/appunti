@@ -27,78 +27,39 @@ title: Allocazioni inutili
 
 ## Sintesi
 
-Le **allocazioni inutili** sono creazioni di oggetti, array, stringhe o buffer che non aggiungono valore reale e aumentano lavoro di memoria e garbage collector.
+Un'allocazione è superflua **rispetto al risultato richiesto**, non perché ogni oggetto nuovo sia un problema. In `users.filter(...).map(...)` si ottengono due array: il primo è **intermedio**, il secondo è **il risultato**. Restituire tutti i nomi richiede comunque spazio per quei nomi; fondere i passaggi non rende il risultato a memoria costante.
 
-Sono importanti soprattutto in hot path, loop grandi, pipeline dati e sistemi con vincoli di memoria.
+## Esempio: rimuovere solo la raccolta intermedia
 
-## Quando usarlo
-
-- Quando il profiler mostra pressione sulla memoria.
-- Quando un loop crea molti oggetti temporanei.
-- Quando una pipeline copia dati grandi piu volte.
-- Quando una funzione e in hot path.
-- Quando un sistema soffre di pause o picchi di memoria.
-
-## Come funziona
-
-Ogni allocazione ha un costo:
-
-- memoria occupata;
-- inizializzazione;
-- possibile copia;
-- lavoro di cleanup o garbage collection;
-- pressione su cache CPU.
-
-Il punto non e evitare ogni allocazione, ma eliminare quelle non necessarie nei punti che contano.
-
-## API / Sintassi
+Contratto: `users` è un array denso di record ordinari, senza getter né modifiche durante la lettura. Le due funzioni restituiscono un array nuovo di nomi nello stesso ordine, mantenendo i duplicati.
 
 ```js
-// Due passaggi e due array temporanei.
-const activeNames = users
-  .filter((user) => user.active)
-  .map((user) => user.name);
-```
+function activeNamesPipeline(users) {
+  return users.filter(u => u.active).map(u => u.name);
+}
 
-Questa forma e leggibile. In un hot path enorme puo essere sostituita con un passaggio unico misurato.
-
-## Esempio pratico
-
-```js
-const activeNames = [];
-
-for (const user of users) {
-  if (user.active) {
-    activeNames.push(user.name);
+function activeNamesSinglePass(users) {
+  const names = [];
+  for (const user of users) {
+    if (user.active) names.push(user.name);
   }
+  return names;
 }
 ```
 
-Il ciclo evita un array temporaneo. Ha senso solo se la misura mostra che l'allocazione e rilevante.
+Con `N` utenti e `K` attivi, la pipeline raccoglie prima `K` riferimenti agli utenti e poi `K` nomi. Il ciclo conserva soltanto l'array di output. Questo è un confronto delle strutture costruite dal codice, non un conteggio di byte né una previsione delle pause del garbage collector.
 
-## Varianti
+## Quando cambia il comportamento
 
-- Riutilizzo di buffer.
-- Streaming invece di caricare tutto in memoria.
-- Lazy evaluation.
-- Strutture dati piu compatte.
-- Batch controllati per ridurre oggetti intermedi.
+La pipeline legge **tutti** i campi `active` prima di leggere i nomi; il ciclo legge il nome di ogni utente attivo prima di passare al successivo. Un getter con effetti osservabili può quindi produrre risultati diversi. Anche gli array sparsi esulano dal contratto: `filter` salta gli indici mancanti, mentre il ciclo può ottenere `undefined` e fallire su `user.active`.
 
-## Errori comuni
+Non risolvere il problema riusando un array globale: due chiamanti potrebbero ricevere lo stesso oggetto e vedere il primo risultato cambiare in seguito. Se al chiamante basta consumare un nome alla volta, un iteratore può evitare anche l'array finale, ma cambia l'API e il momento delle letture.
 
-- Ottimizzare allocazioni in codice non critico.
-- Sacrificare leggibilita senza misura.
-- Riutilizzare oggetti mutabili creando bug.
-- Ignorare copie profonde involontarie.
-- Confondere immutabilita utile con copia inutile.
+## Misurare la memoria giusta
 
-## Checklist
-
-- Il profiler mostra pressione sulla memoria?
-- Il codice e in hot path?
-- L'allocazione puo essere rimossa senza introdurre mutazione fragile?
-- Esiste un test che protegge il comportamento?
-- Il miglioramento e stato misurato dopo la modifica?
+- **Allocazioni nel tempo:** quali punti creano molti temporanei? Usa un profilo delle allocazioni su un lotto rappresentativo.
+- **Memoria trattenuta:** quali oggetti restano raggiungibili dopo il lotto e chi li trattiene? Confronta lo stato dopo l'esecuzione; un temporaneo non è di per sé un leak.
+- **Decisione:** verifica output, ordine, indipendenza tra chiamate e picco di memoria alla scala attesa. Una differenza tra due letture istantanee dell'heap non misura tutti i byte allocati nel frattempo.
 
 ## Collegamenti
 
@@ -114,3 +75,5 @@ Il ciclo evita un array temporaneo. Ha senso solo se la misura mostra che l'allo
 - Brendan Gregg, *Systems Performance*
 - Martin Thompson, *Mechanical Sympathy*
 - Martin Fowler, *Refactoring*
+- [ECMAScript: Array.prototype.filter e iterazione degli array](https://tc39.es/ecma262/multipage/indexed-collections.html#sec-array.prototype.filter)
+- [Node.js: profilare le allocazioni nello heap](https://nodejs.org/en/learn/diagnostics/memory/using-heap-profiler)

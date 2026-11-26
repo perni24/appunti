@@ -27,82 +27,32 @@ title: Composizione di funzioni
 
 ## Sintesi
 
-La **composizione di funzioni** consiste nel costruire comportamento complesso combinando funzioni piccole, nominate e prevedibili.
+Comporre due funzioni significa usare **il risultato della prima come ingresso della seconda**. Se `f` trasforma A in B e `g` trasforma B in C, la funzione che riceve A e restituisce `g(f(a))` va da A a C. Chiamare due funzioni una dopo l'altra senza passare il risultato non è la stessa cosa.
 
-Nel Clean Code e utile per trasformare codice procedurale lungo in una sequenza di passaggi leggibili.
+## Esempio: buono e confezione regalo
 
-## Problema che risolve
-
-Una funzione grande spesso contiene molti livelli di dettaglio:
-
-- normalizzazione input;
-- validazione;
-- calcolo;
-- trasformazione;
-- filtro;
-- formattazione;
-- side effects finali.
-
-Quando tutto e nello stesso blocco, diventa difficile capire il flusso principale.
-
-## Concetto chiave
-
-Comporre funzioni significa far passare un valore attraverso piu trasformazioni, dove ogni trasformazione ha uno scopo chiaro.
-
-Il lettore dovrebbe poter leggere i nomi delle funzioni e capire la storia generale prima di entrare nei dettagli.
-
-## Dettagli importanti
-
-- Le funzioni composte dovrebbero avere input e output compatibili.
-- I nomi devono descrivere il ruolo del passaggio.
-- La composizione funziona meglio con funzioni pure o con side effects confinati.
-- La funzione di alto livello puo restare orchestration.
-- La composizione non elimina la necessita di modellare bene i dati.
-
-## Esempio
-
-Codice poco leggibile:
+Regola del negozio: un buono da 500 centesimi sconta solo la merce e non porta il prezzo sotto zero. La confezione regalo costa altri 200 centesimi e **non** è scontabile. Gli importi di esempio sono interi non negativi di piccola entità.
 
 ```js
-function getActiveCustomerEmails(customers) {
-  return customers
-    .filter((customer) => customer.active && customer.email)
-    .map((customer) => customer.email.trim().toLowerCase())
-    .filter((email) => email.includes("@"));
+const applyVoucher = (goodsCents) => Math.max(0, goodsCents - 500);
+const addGiftWrap = (netGoodsCents) => netGoodsCents + 200;
+
+function giftTotalCents(goodsCents) {
+  return addGiftWrap(applyVoucher(goodsCents));
 }
 ```
 
-Versione composta con nomi espliciti:
+Con 300 centesimi di merce, prima il buono porta la merce a 0 e poi la confezione porta il totale a 200. Invertendo l'ordine, `applyVoucher(addGiftWrap(300))` restituisce 0: la confezione è stata scontata. **Due funzioni pure non sono necessariamente intercambiabili di posto.** Con 1000 centesimi entrambe le sequenze danno 700: un test limitato al caso ordinario non rileverebbe l'errore.
 
-```js
-const isActiveCustomer = (customer) => customer.active && customer.email;
-const normalizeEmail = (customer) => customer.email.trim().toLowerCase();
-const isValidEmail = (email) => email.includes("@");
+## Che cosa deve combaciare?
 
-function getActiveCustomerEmails(customers) {
-  return customers
-    .filter(isActiveCustomer)
-    .map(normalizeEmail)
-    .filter(isValidEmail);
-}
-```
-
-La seconda versione esplicita i concetti del dominio.
+- **Forma:** il secondo passaggio deve poter usare il valore prodotto dal primo. Una funzione che restituisce una Promise non si compone direttamente con una che si aspetta il valore risolto: attendi il risultato o usa una continuazione.
+- **Significato:** `goodsCents` e totale comprensivo della confezione sono entrambi numeri, ma rappresentano momenti diversi del calcolo. Il tipo da solo non basta.
+- **Promessa del nome:** in una catena di filtro e normalizzazione, non chiamare `isValidEmail` un predicato che cerca soltanto una `@`. Dare un nome ai passaggi non ne rafforza le garanzie.
 
 ## Limiti
 
-- Troppe funzioni minuscole con nomi deboli peggiorano la navigazione.
-- Una composizione troppo astratta puo nascondere dettagli importanti.
-- Debuggare catene molto lunghe puo essere scomodo.
-- Non tutti gli algoritmi sono piu chiari se spezzati in pipeline.
-
-## Errori comuni
-
-- Estrarre funzioni solo per ridurre righe.
-- Usare nomi generici come `process`, `handle`, `transform`.
-- Comporre funzioni che mutano lo stesso oggetto in punti diversi.
-- Nascondere side effects dentro passaggi che sembrano trasformazioni.
-- Mescolare livelli di astrazione nella funzione orchestratrice.
+Un helper generico `compose` non è necessario per due passaggi. Se stai perdendo di vista l'ordine o il punto in cui può nascere un errore, assegna il risultato intermedio a una variabile con un nome di dominio. Per un flusso con validazione, rifiuti e scritture vedi la nota sulla pipeline.
 
 ## Collegamenti
 
@@ -115,6 +65,5 @@ La seconda versione esplicita i concetti del dominio.
 
 ## Fonti
 
-- Robert C. Martin, *Clean Code*
-- Martin Fowler, *Refactoring*
-- Eric Elliott, *Composing Software*
+- Brian Lonsdorf, [A Mostly Adequate Guide to Functional Programming: Coding by Composing](https://mostly-adequate.gitbook.io/mostly-adequate-guide/ch05)
+- Robert C. Martin, *Clean Code*; Martin Fowler, *Refactoring*; Eric Elliott, *Composing Software*

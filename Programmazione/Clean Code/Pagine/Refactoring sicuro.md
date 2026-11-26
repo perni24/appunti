@@ -27,66 +27,41 @@ title: Refactoring sicuro
 
 ## Sintesi
 
-Il **refactoring sicuro** modifica la struttura interna del codice senza cambiare il comportamento osservabile.
+Un refactoring cambia **come** è organizzato il codice, non il comportamento sul quale conta il chiamante. Quel comportamento include i dati restituiti, ma anche il numero e l'ordine delle scritture e ciò che resta visibile se una scrittura fallisce.
 
-E sicuro quando esistono feedback rapidi: test, piccoli passi, controllo versione e verifiche manuali mirate.
+## Esempio: estrarre il formato senza cambiare l'export
 
-## Problema che risolve
+La versione di partenza è in [[Programmazione/Clean Code/Pagine/Legacy code|Legacy code]]. Scrive su un destinatario **sincrono** una riga per ogni codice non vuoto e restituisce il numero di righe. I codici sono stringhe senza separatori né terminatori di riga: questo formato storico non è un encoder CSV generico.
 
-Il codice peggiora quando ogni modifica e troppo rischiosa.
+```js
+function formatCodeRow(code) {
+  return "C;" + code + "\r\n";
+}
 
-Senza refactoring, si accumulano:
-
-- duplicazione;
-- funzioni lunghe;
-- dipendenze implicite;
-- nomi deboli;
-- code smells;
-- debito tecnico;
-- paura di modificare.
-
-## Concetto chiave
-
-Refactorare non significa riscrivere.
-
-Significa migliorare il design in piccoli passaggi verificabili, mantenendo il sistema funzionante dopo ogni passo.
-
-## Dettagli importanti
-
-- Prima caratterizza il comportamento esistente.
-- Cambia una cosa per volta.
-- Usa test automatici quando disponibili.
-- Mantieni commit piccoli se il lavoro e lungo.
-- Se il comportamento cambia, non e solo refactoring: e anche modifica funzionale.
-
-## Esempio
-
-Sequenza prudente:
-
-```text
-1. aggiungi test sul comportamento attuale
-2. rinomina variabili poco chiare
-3. estrai una funzione piccola
-4. sposta duplicazione in un punto unico
-5. rilancia i test
+function exportCodes(codes, write) {
+  let written = 0;
+  for (const code of codes) {
+    if (code === "") continue;
+    write(formatCodeRow(code));
+    written++;
+  }
+  return written;
+}
 ```
 
-Ogni passaggio ha rischio limitato.
+Per `["", "007", "0"]` il destinatario riceve due chiamate: `"C;007\r\n"` e `"C;0\r\n"`. Non convertire i codici in numeri: gli zeri iniziali hanno significato. Con un input senza codici validi non viene chiamato affatto.
 
-## Limiti
+## Un controesempio utile
 
-- Senza test, il refactoring richiede piu cautela.
-- Codice legacy con side effects nascosti e piu difficile da cambiare.
-- Alcune modifiche strutturali richiedono migrazioni progressive.
-- Refactoring senza obiettivo puo diventare lavoro estetico.
+Accumulare tutte le righe e chiamare `write` una sola volta sembra equivalente quando si controlla **solo il testo finale**. Non lo è per un destinatario che fallisce alla seconda chiamata: prima poteva aver già accettato la prima riga; dopo la modifica potrebbe accettarle tutte. Anche sostituire `\r\n` con il terminatore di riga della macchina cambia il formato.
 
-## Errori comuni
+## Procedura di verifica
 
-- Mescolare refactoring e feature nello stesso passaggio.
-- Fare grandi riscritture senza rete di sicurezza.
-- Cambiare API pubbliche senza compatibilita.
-- Ignorare test di integrazione.
-- Refactorare codice non compreso.
+1. Registra l'output della versione attuale, comprese le chiamate effettuate prima di un errore; non dedurre il contratto dalla nuova implementazione.
+2. Estrai solo `formatCodeRow` e semplifica il ramo vuoto senza spostare le scritture. Esegui gli stessi casi su entrambe le versioni.
+3. Se serve supportare separatori nel codice o passare a un writer asincrono, apri una modifica funzionale separata con esempi nuovi.
+
+I test riducono il rischio, ma non provano equivalenza universale: qui si coprono input del formato dichiarato e un destinatario sincrono.
 
 ## Collegamenti
 
@@ -102,3 +77,4 @@ Ogni passaggio ha rischio limitato.
 - Martin Fowler, *Refactoring*
 - Michael Feathers, *Working Effectively with Legacy Code*
 - Kent Beck, *Test Driven Development*
+- [Martin Fowler: definizione e pratica del refactoring](https://refactoring.com/)

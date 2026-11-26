@@ -25,69 +25,39 @@ title: Commenti che spiegano il perche non il cosa
 
 ## Sintesi
 
-I commenti utili spiegano **perche** il codice prende una decisione, non ripetono **cosa** il codice sta gia mostrando.
+Un commento è utile se conserva un'informazione che non si può ricavare dal codice: un vincolo esterno, una scelta tra alternative, il motivo di un workaround. Per documentare un'API è utile anche dire **che cosa promette**: il consiglio «spiega il perché» riguarda soprattutto i commenti interni che parafrasano istruzioni ovvie.
 
-Un buon commento conserva contesto che non e evidente dal codice.
+## Esempio: un limite che non si può indovinare
 
-## Problema che risolve
-
-Commenti ridondanti aumentano rumore e diventano facilmente obsoleti. Commenti assenti in punti decisionali lasciano invece il lettore senza contesto.
-
-La differenza e capire se il commento aggiunge informazione reale.
-
-## Concetto chiave
-
-Il codice dovrebbe spiegare il **cosa** attraverso nomi, struttura e test. Il commento dovrebbe spiegare il **perche** quando la ragione non e deducibile.
-
-Commenta:
-
-- vincoli esterni;
-- decisioni non ovvie;
-- workaround;
-- tradeoff;
-- riferimenti a bug o issue;
-- ragioni di compatibilita.
-
-## Dettagli importanti
-
-- Se un commento spiega cosa fa una riga, prova prima a rinominare o estrarre una funzione.
-- I commenti temporanei devono avere ownership o tracking.
-- Un commento falso e peggio di nessun commento.
-- Le decisioni architetturali importanti possono stare in documenti dedicati.
-- I commenti devono essere aggiornati insieme al codice.
-
-## Esempio
-
-Commento inutile:
+Supponiamo che il destinatario di un export accetti al massimo 100 record **compresa** una riga di controllo, aggiunta al momento della serializzazione. Il codice qui divide solo le righe dati:
 
 ```js
-// Incrementa il contatore
-count++;
+function exportBatches(rows) {
+  // Il destinatario conta anche la riga di controllo: restano 99 posti per i dati.
+  const maxDataRows = 99;
+  const batches = [];
+  for (let i = 0; i < rows.length; i += maxDataRows) {
+    batches.push(rows.slice(i, i + maxDataRows));
+  }
+  return batches;
+}
 ```
 
-Commento utile:
+«Incrementa `i`» ripeterebbe un'istruzione visibile. Il commento sul limite impedisce invece una correzione apparentemente ovvia da 99 a 100. Con 100 righe dati il risultato deve avere lotti da 99 e 1; si può verificare senza sapere come funziona il ciclo.
 
-```js
-// Il provider rifiuta richieste con timestamp futuro anche di pochi secondi.
-const safeTimestamp = now.minusSeconds(5);
-```
+## Dove conservare l'informazione
 
-Il secondo commento spiega una ragione esterna non visibile dal codice.
+| Informazione | Posto adatto |
+| --- | --- |
+| Il significato di una variabile | Nel nome, quando basta |
+| Il motivo di un limite non deducibile | Vicino al valore, con il riferimento alla specifica reale se disponibile |
+| Un comportamento promesso a chi chiama | Nella documentazione dell'API e in un test del contratto |
+| Quando rimuovere un workaround | In un ticket con responsabile e condizione di rimozione; nel codice il rimando utile |
+| Una decisione che coinvolge più moduli | Nel documento di progetto, evitando di copiarlo in ogni file |
 
-## Limiti
+## Limiti ed errori comuni
 
-- Non tutto il contesto deve stare nei commenti.
-- Troppi commenti possono mascherare codice poco chiaro.
-- Alcuni commenti diventano obsoleti rapidamente.
-- La documentazione esterna serve quando il contesto e ampio.
-
-## Errori comuni
-
-- Commentare codice ovvio.
-- Lasciare TODO senza ticket o responsabilita.
-- Non aggiornare commenti dopo refactoring.
-- Usare commenti per giustificare nomi poco chiari.
-- Scrivere commenti lunghi invece di semplificare il codice.
+Se il requisito cambia, aggiorna **insieme** limite, commento e test: il codice non controlla la verità della spiegazione. Nell'esempio verificare i lotti non verifica il serializzatore né la compatibilità con un servizio reale. Non mascherare con una spiegazione lunga un nome fuorviante o una condizione che si può rendere più chiara.
 
 ## Collegamenti
 
@@ -101,3 +71,4 @@ Il secondo commento spiega una ragione esterna non visibile dal codice.
 
 - Robert C. Martin, *Clean Code*
 - Martin Fowler, *Refactoring*
+- Google Engineering Practices, [What to look for in a code review: Comments](https://google.github.io/eng-practices/review/reviewer/looking-for.html#comments)

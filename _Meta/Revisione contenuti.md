@@ -7888,3 +7888,108 @@ Prossimo blocco: [[Programmazione/Rust/Promemoria/Indice Promemoria Rust|Promemo
 - Tutti i quattro capitoli dei promemoria: **16/16 test**. Regressione PostgreSQL complessiva: 127 superati su 133, nessun fallimento, sei casi facoltativi non eseguiti (driver Python ed estensioni esterne).
 - Vault: 911 documenti raggiungibili, zero errori strutturali, 129 avvisi editoriali; trasformazione **9/9**. Build locale: 2003 HTML e 143943 riferimenti verificati senza errori. Tutti i 24 blocchi delle due pagine corrispondono ai sorgenti.
 - **72/72 note principali e 15/15 promemoria PostgreSQL** revisionati tecnicamente; verificata la corrispondenza esatta fra i 15 file dei promemoria e le voci dell'indice. L'approvazione dell'utente rimane distinta. Prossimo blocco proposto: [[Programmazione/Strutture di Progetto/Indice Strutture di Progetto|Strutture di progetto]].
+
+## 2026-11-26 - Programmazione: Strutture di progetto
+
+- Revisionate le tre schede dell'indice. Distinti il front controller PHP illustrativo dal test di rendering eseguibile e la composizione all'avvio dal percorso della richiesta FastAPI. Client React e backend ora concordano su prefisso, lista, dettaglio, creazione e formato dei dati.
+- **4/4 prove** con codice estratto dal Markdown. PHP 8.3.1 e PHPUnit 12.5.45: Composer esegue il test del template. Python 3.12, FastAPI 0.115.14, Pydantic 2.11.9 e SQLite: rollback e chiusura della connessione. React 19.2, Vite 7.3.1 e TypeScript 5.9.3: typecheck dei moduli API, build JSX e client verificato contro i veri handler tramite HTTPX/ASGI. Provati 200, 201, 404, 409, 422, oggetto incompleto e 204 inatteso.
+- Non sono testati un router PHP completo, un browser interattivo, un reverse proxy o un deployment. I 31 blocchi PHP, 24 Python e 30 React (inclusi diagrammi, comandi e varianti) sono stati **confrontati con l'HTML**, non tutti eseguiti come programmi. Confronto al netto degli spazi sulle righe vuote aggiunti dall'evidenziatore.
+- Vault: 911 documenti raggiungibili, zero errori strutturali, 129 avvisi editoriali; trasformazione **9/9**. **3/3** schede dell'area revisionate tecnicamente, stato personale invariato. Prossimo percorso proposto: [[Programmazione/Clean Code/Indice Clean Code|Clean Code]].
+
+## 2026-11-26 - Clean Code: Fondamenti del Codice Pulito
+
+- Revisionate le **12/12** note dei Fondamenti. Distinte leggibilità e manutenibilità, regola di dominio e meccanismo sostituibile, bug e debito ricorrente. Gli esempi di naming, responsabilità e commenti mostrano anche i limiti del consiglio.
+- **9/9** prove sui 12 blocchi JavaScript estratti dalle 11 note con codice. Verificati casi al confine, differenza osservabile con un getter, propagazione degli errori asincroni, ordine degli effetti e lotti di export. Il debito tecnico è un caso ragionato. Nessun invio, pagamento o servizio esterno reale.
+- Vault: 911 documenti raggiungibili, 0 errori, 117 avvisi editoriali; trasformazione **9/9**. Confrontati i 12 blocchi di codice con le pagine HTML e verificata la presenza dei link alle fonti.
+- **12/109** note uniche di Clean Code revisionate in questo percorso. Le 110 voci dell'indice coprono tutti i 109 file; una nota ricorre in due capitoli. Stato personale delle note invariato. Prossimo capitolo: **Strutture Dati e Modellazione**, sette pagine da [[Programmazione/Clean Code/Pagine/Value objects|Value objects]].
+
+## 2026-11-26 - Clean Code: Strutture Dati e Modellazione
+
+- Revisionate le **7/7** note. Distinte uguaglianza per valore e identità del riferimento, copia di un DTO e modifica del modello, validità della singola istanza e vincoli su prenotazioni concorrenti. La scheda sulle responsabilità mappa le decisioni a modifiche concrete, senza prescrivere una classe per ruolo.
+- **6/6 nuove prove**, **15/15** con i Fondamenti. Compilati ed eseguiti i cinque esempi TypeScript e i due blocchi JavaScript. Verificati estremi temporali, date invalide o mutate, record strutturali non validati, campi esclusi, esaustività della union e condivisione dei rami non modificati. Nessuna prova su database concorrenti.
+- Vault: 911 documenti raggiungibili, nessun errore strutturale, 110 avvisi editoriali; trasformazione **9/9**. Confrontati i sette blocchi con le pagine HTML e verificata la presenza dei link alle fonti.
+- **19/109** note uniche revisionate tecnicamente. Lo stato di approvazione personale resta invariato. Prossimo capitolo: **File, Moduli e Ambiente**, otto note da [[Programmazione/Clean Code/Pagine/Organizzazione dei file|Organizzazione dei file]].
+
+## 2026-11-26 - Clean Code: File, Moduli e Ambiente
+
+- Revisionate le **8/8** note. Distinte la posizione di un file, la responsabilità del modulo e la protezione degli ingressi pubblici. Le mappe per layer e per feature mostrano gli stessi file; README, TODO e convenzioni indicano esiti verificabili e limiti.
+- **5/5 nuove prove**, **20/20** complessive per Clean Code. Verificati la soglia di spedizione, orologio e archivio sostituibili, lo stesso consumatore Node prima e dopo la rinomina del file interno, il rifiuto dell'import profondo, il prezzo zero e il diverso effetto di controllo e scrittura del formatter. Nessuna pubblicazione di pacchetti né chiamata a un database.
+- Vault: 911 documenti raggiungibili, 0 errori strutturali, 102 avvisi editoriali; trasformazione **9/9**. Confrontati con l'HTML tutti i 16 blocchi, inclusi diagrammi, comandi e configurazioni; presenti i collegamenti alle fonti.
+- **27/109** note uniche revisionate tecnicamente: completato il Percorso Base. L'approvazione personale rimane distinta. Il Percorso Intermedio inizia con **Programmazione ad Oggetti e Design**, nove note da [[Programmazione/Clean Code/Pagine/Incapsulamento|Incapsulamento]].
+
+## 2026-11-26 - Clean Code: Programmazione ad Oggetti e Design
+
+- Revisionate le **9/9** note del capitolo. La stessa classe Order è usata nella prova di incapsulamento e nel gestore di conferma; separati il comportamento del contratto dalla sola firma, la direzione degli import dalla chiamata a runtime e la diagnosi di uno smell dal numero dei file modificati.
+- **7/7 nuove prove**, **27/27** con i capitoli precedenti. Verificati i rifiuti senza cambio di stato, la soglia di annullamento, il sostituto non conforme, l'adattatore mail e gli errori del trasporto, il tipo del lettore e la destinazione di consegna con due rappresentazioni diverse. Il trasporto è simulato, non sono coinvolti provider o database reali.
+- Vault: 911 documenti raggiungibili, nessun errore strutturale e 93 avvisi editoriali; trasformazione **9/9**. Verificati gli otto blocchi di codice e i link alle fonti nelle nove pagine HTML.
+- **36/109** note uniche revisionate tecnicamente. L'approvazione personale resta separata. Prossimo capitolo: **Concetti Funzionali e Composizione**, sette note da [[Programmazione/Clean Code/Pagine/Funzioni pure e impure|Funzioni pure e impure]].
+
+## 2026-11-26 - Clean Code: Concetti Funzionali e Composizione
+
+- Revisionate le **7/7** note. Distinte purezza e determinismo, copia superficiale e ricevuta stabile, composizione e ordine delle operazioni. Corretto il refactoring delle guard clauses che poteva ammettere un totale mancante o NaN.
+- **7/7 nuove prove**, **34/34** con i capitoli precedenti. Verificati gli esiti e l'ordine osservabile delle letture, gli scarti senza salvataggio, l'errore di invio e il rifiuto dell'audit dopo una vendita già salvata. Collaboratori locali, senza invii o scritture su servizi reali.
+- Vault: 911 documenti raggiungibili, 0 errori strutturali, 86 avvisi editoriali; trasformazione **9/9**. Confrontati tutti i nove blocchi JavaScript e verificata la presenza dei riferimenti alle fonti nelle sette pagine HTML.
+- **43/109** note uniche revisionate tecnicamente; stato di approvazione personale invariato. Prossimo capitolo: **Contratti, Tipi e Qualita**, quindici note da [[Programmazione/Clean Code/Pagine/Contratti impliciti ed espliciti|Contratti impliciti ed espliciti]].
+
+## 2026-11-26 - Clean Code: Contratti, Tipi e Qualità
+
+- Revisionate le **15/15** note. Corrette la sottrazione di sconti in valute diverse, l'unità della scadenza e l'affermazione sullo sconto esclusivo senza controesempio. Distinte assenza e indisponibilità, validazione e autorizzazione, copertura dei percorsi e comprensione del codice.
+- **10/10 nuove prove**, **44/44** con i capitoli precedenti. Una delle dieci avvia sette test nativi estratti dalle note, inclusa un'integrazione reale con SQLite in memoria. Verificati anche il rifiuto statico della valuta non supportata, gli otto input del listino, i campi dei log e il documento JSON d'errore. Nessun provider o server HTTP reale; i punteggi di complessità sono conteggi manuali, non misure eseguite con ESLint o Sonar.
+- Vault: 911 documenti raggiungibili, 0 errori strutturali, 71 avvisi editoriali; trasformazione **9/9**. Confrontati tutti i 15 blocchi con l'HTML e verificata la presenza dei collegamenti alle fonti.
+- **58/109** note uniche di Clean Code revisionate tecnicamente; stato di approvazione personale invariato. Prossimo capitolo: **Standard Library Pratica**, sette note da [[Programmazione/Clean Code/Pagine/Gestione esplicita degli errori|Gestione esplicita degli errori]].
+
+## 2026-11-26 - Clean Code: Standard Library Pratica
+
+- Revisionate le **7/7** note. Corretti l'importo vuoto interpretato come zero, lo span non chiuso e la conversione ambigua da ora civile a istante. Distinti il rifiuto dell'archivio dall'assenza, i default dagli input invalidi e la creazione esclusiva di un file dalla scrittura atomica.
+- **7/7 nuove prove**, **51/51** per Clean Code. Test su entrambi i cambi d'ora del 2025 a Roma, campi esposti dal JSON, rifiuto delle configurazioni scorrette senza diffusione di credenziali, contenuto UTF-8 e collisione su filesystem temporaneo locale. Il tracing usa sostituti: non sono stati provati un collector o un servizio pagamenti.
+- Vault: 911 documenti raggiungibili, 0 errori strutturali, 64 avvisi editoriali. Trasformazione **9/9**. Verificati i sette blocchi JavaScript e i 13 collegamenti alle fonti nelle rispettive pagine HTML.
+- Completato il Percorso Intermedio: **65/109** note uniche, 44 da revisionare. Approvazione personale invariata. Prossimo capitolo: **Internals e Gestione Risorse**, nove note da [[Programmazione/Clean Code/Pagine/Gestione dello stato|Gestione dello stato]].
+
+## 2026-11-26 - Clean Code: Internals e Gestione Risorse
+
+- Revisionate le **9/9** note. Distinti stato di richiesta e stato condiviso, autorità di modifica e possesso della risorsa, errore di lavoro e di rilascio. La coda non espone più l'array interno; il writer distingue chiusura riuscita e fallita.
+- **9/9 nuove prove**, **60/60** per Clean Code. Una transazione SQLite reale in memoria verifica vincoli immediati e differiti e non annulla transazioni altrui. Una cache locale conserva il prezzo zero e non ripristina voci invalidate quando vecchie letture terminano. Il confronto dell'export legacy verifica anche terminatori, numero di scritture e fallimento parziale. Nessun lock distribuito, servizio pagamenti o importatore esterno reale.
+- Vault: 911 documenti raggiungibili, 0 errori strutturali, 55 avvisi editoriali. Trasformazione **9/9**. Confrontati i nove blocchi JavaScript e verificata la presenza dei 12 link alle fonti nelle pagine HTML.
+- **74/109** note uniche di Clean Code revisionate tecnicamente; ne restano 35. Approvazione personale invariata. Prossimo capitolo: **Concorrenza e Parallelismo**, sette note da [[Programmazione/Clean Code/Pagine/Stato condiviso|Stato condiviso]].
+
+## 2026-11-26 - Clean Code: Concorrenza e Parallelismo
+
+- Revisionate le **7/7** note. Distinti incremento sincrono e lettura separata da un'attesa, esclusione locale e aggiornamento condizionale nel database, atomicità e idempotenza, ack del messaggio e conferma dell'effetto applicativo.
+- **7/7 nuove prove**, **67/67** per Clean Code. Test con lock nativi Node e due connessioni SQLite sullo stesso file; il registro delle ricevute mantiene gli ID dopo la riapertura. Riconsegna e perdita dell'ack simulate con lo stesso registro; nessun broker reale o servizio di pagamento. Verificati anche risultati di ricerca obsoleti, avvio dei rami async e annullamento cooperativo.
+- Vault: 911 documenti raggiungibili, 0 errori strutturali, 48 avvisi editoriali. Trasformazione **9/9**. Confrontati gli otto blocchi di codice e verificata la presenza dei 13 link alle fonti nelle sette pagine HTML.
+- **81/109** note uniche di Clean Code revisionate tecnicamente; ne restano 28. Approvazione personale invariata. Prossimo capitolo: **Performance e Distribuzione**, da [[Programmazione/Clean Code/Pagine/Performance e leggibilita|Performance e leggibilità]]. Sei note ancora da revisionare su sette voci dell'indice.
+
+## 2026-11-26 - Clean Code: Performance e Distribuzione
+
+- Revisionate le **6/6** note rimanenti del capitolo; la settima voce, Configurazione applicativa, era già stata trattata in Standard Library Pratica. Distinti numero di accessi e latenza, array intermedio e risultato richiesto, processo vivo e servizio pronto al traffico.
+- **6/6 nuove prove**, **73/73** per Clean Code. Con tre progetti SQLite reali in memoria si passa da quattro esecuzioni a una, preservando il gruppo vuoto. Il comando Node ha prodotto un profilo V8 leggibile; verificati anche input duplicati, limiti di equivalenza con getter e array sparsi, perdita e recupero della dipendenza e arresto del servizio. Non sono stati misurati p95 di produzione, byte risparmiati o velocità relativa; nessun rollout su un cluster.
+- Vault: 911 documenti raggiungibili, 0 errori strutturali, 42 avvisi editoriali. Trasformazione **9/9**. Confrontati gli otto blocchi JavaScript e shell e verificata la presenza dei 12 link alle fonti nelle sei pagine HTML.
+- Completato il Percorso Avanzato: **87/109** note uniche revisionate tecnicamente; ne restano 22. Approvazione personale invariata. Prossimo capitolo: **Web, API e Database**, sette note da [[Programmazione/Clean Code/Pagine/Controller sottili|Controller sottili]].
+
+## 2026-11-26 - Clean Code: Web, API e Database
+
+- Revisionate le **7/7** note. Controller, parser, service, dominio e repository condividono un caso di emissione fattura; distinti assenza, conflitto, guasto e proiezione pubblica. Query e migrazione esplicitano rispettivamente ordinamento a pari data e compatibilità con i vecchi scrittori.
+- **7/7 nuove prove**, **80/80** per Clean Code. Request e Response in memoria, SQL reale su SQLite: rollback della fattura se fallisce l'outbox, isolamento della nota interna, pagine senza salti, riconciliazione di valori non nulli obsoleti e rollback di una contrazione prematura. Nessun server HTTP, broker o database di produzione coinvolto.
+- Vault: 911 documenti raggiungibili, 0 errori strutturali, 35 avvisi editoriali. Trasformazione **9/9**. Confrontati i 12 blocchi JavaScript e SQL e verificata la presenza dei 14 link alle fonti nelle sette pagine HTML.
+- **94/109** note uniche revisionate tecnicamente; ne restano 15. Approvazione personale invariata. Prossimo capitolo: **Data, Automazione e LLM**, sette note da [[Programmazione/Clean Code/Pagine/Pipeline dati leggibili|Pipeline dati leggibili]].
+
+## 2026-11-26 - Clean Code: Data, Automazione e LLM
+
+- Revisionate le **7/7** note. Un listino collega parsing dei prezzi, diagnostica di riga, notebook e CLI. Le schede LLM separano richiesta al modello, struttura della risposta e riscontro di una citazione nel contesto.
+- **7/7 nuove prove**, **87/87** per Clean Code. Eseguiti il parsing CSV multilinea, gli import con scarti, le celle in processi Python puliti e la CLI su file temporanei. Provati rifiuto, risposta incompleta, astensione, versione inattesa e citazione autentica in una negazione. Nessun kernel Jupyter o modello esterno eseguito: non è una valutazione dell'accuratezza di un modello.
+- Vault: 911 documenti raggiungibili, 0 errori strutturali, 28 avvisi editoriali. Trasformazione **9/9**. Confrontati i 12 blocchi di esempio e verificata la presenza dei 12 link alle fonti nelle sette pagine HTML.
+- **101/109** note uniche revisionate tecnicamente; ne restano otto. Approvazione personale invariata. Ultimo capitolo: **Tooling e Qualità del Codice**, da [[Programmazione/Clean Code/Pagine/Formatter|Formatter]].
+
+## 2026-11-26 - Clean Code: Tooling e Qualità del Codice
+
+- Revisionate le otto schede finali: formatter, linter, analisi statica, controllo dei tipi, coverage, mutation testing, quality gate e hook di pre-commit. Gli esempi distinguono ciò che ogni controllo rileva da ciò che può sfuggirgli.
+- Lo stesso calcolo delle spese di spedizione mostra perché una suite con il 100% di copertura può non distinguere `>=` da `>`: il mutante manuale viene rilevato solo con una prova sul valore di soglia. Il gate è un esempio, non una regola attivata sul repository.
+- Verificate tutte le **95 prove** di Clean Code: 94 nella suite confinata e l'hook Git separatamente, in un repository temporaneo. Il controllo del vault raggiunge 911/911 note senza errori; superati i 9 test di trasformazione. Confrontati con gli HTML i 20 blocchi di codice e i 14 riferimenti delle otto schede.
+- **109/109** note uniche revisionate tecnicamente. L'elenco dell'indice coincide con i file in `Pagine/`; l'approvazione personale resta distinta dalla revisione tecnica.
+
+## 2026-11-26 - GitHub: nove promemoria operativi senza fonti
+
+- Revisionate le nove schede segnalate nell’[[Programmazione/GitHub/Promemoria/Indice Promemoria GitHub|indice dei promemoria GitHub]]: staging, branch, sincronizzazione, recupero, pull request, issue e progetti, CLI, release e ruleset. Le altre sei schede dell’indice non facevano parte di questo blocco.
+- Aggiunte fonti Git, GitHub CLI e GitHub Docs accanto agli approfondimenti. Distinti indice e working tree, branch locale e remoto, tag e release, assegnazione dei code owner e approvazione obbligatoria. Aggiunta la procedura per inserire un’issue in un Project.
+- Quattro prove Git in un repository temporaneo: due versioni dello stesso file, diff dalla base comune, intervallo di revert senza commit e tag annotato. Analizzati dal parser PowerShell tutti i 130 blocchi di comandi delle nove schede. Per GitHub CLI e impostazioni del servizio: verifica documentale, senza uso di credenziali e senza operazioni remote.
+- Il rapporto editoriale scende da 20 a **11 avvisi**: sette promemoria Rust e quattro schede open source ancora senza fonti web esplicite. Nessun errore strutturale; approvazione personale invariata.

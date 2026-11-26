@@ -26,88 +26,42 @@ title: README e documentazione tecnica
 
 ## Sintesi
 
-Il **README** e la documentazione tecnica spiegano come orientarsi nel progetto: cosa fa, come si avvia, come si testa, come si configura e quali decisioni importanti sono state prese.
+Un README deve permettere a chi arriva nel repository di compiere una **prima operazione verificabile**: sapere da dove partire, quale comando eseguire e come riconoscere il successo. Un elenco di comandi senza directory, prerequisiti o risultato atteso non è ancora una guida.
 
-Nel Clean Code la documentazione non sostituisce codice leggibile, ma riduce contesto implicito.
+## Esempio: verificare questo vault in locale
 
-## Problema che risolve
+Questo è un esempio di sezione operativa del README, con comandi reali. **Punto di partenza:** la radice del repository, quella che contiene `Home.md` e `site/`. **Prerequisiti:** Node.js 24, npm, dipendenze del progetto e plugin Quartz già installati come descritto nella sezione *Verifica Locale* del README di radice. Non occorrono credenziali di deploy.
 
-Un progetto puo avere buon codice ma essere difficile da usare se nessuno sa:
+**1. Controlla le note.** Il rapporto distingue errori strutturali e avvisi editoriali. L'opzione `--report` aggiorna il rapporto Markdown locale; non riscrive gli appunti.
 
-- come installarlo;
-- quali comandi eseguire;
-- dove mettere configurazioni;
-- come lanciare test;
-- come fare deploy;
-- quali convenzioni seguire.
-
-Questa conoscenza non dovrebbe vivere solo nella testa del team.
-
-## Concetto chiave
-
-La documentazione tecnica dovrebbe rispondere alle domande operative piu frequenti.
-
-Un buon README contiene:
-
-- scopo del progetto;
-- prerequisiti;
-- installazione;
-- comandi principali;
-- configurazione;
-- test;
-- struttura generale;
-- link a documenti piu profondi.
-
-## Dettagli importanti
-
-- Il README deve restare aggiornato con il codice.
-- I documenti lunghi vanno divisi per tema.
-- Le decisioni architetturali importanti possono stare in ADR o note dedicate.
-- La documentazione deve distinguere setup locale, test e deploy.
-- Esempi e comandi devono essere copiabili.
-
-## Esempio
-
-README minimo:
-
-````md
-# Nome progetto
-
-## Requisiti
-
-- Node.js 22
-
-## Setup
-
-```bash
-npm install
+```powershell
+npm --prefix site run content:check -- --report
 ```
 
-## Comandi
+**2. Verifica la trasformazione.** Questo comando esegue i test del passaggio dal vault al sito. L'esito atteso è zero test falliti; non vengono eseguiti tutti gli esempi presenti nelle note.
 
-```bash
-npm test
-npm run lint
-npm run build
+```powershell
+npm --prefix site run content:test
 ```
-````
 
-Un README cosi riduce domande ripetute e onboarding lento.
+**3. Genera il sito.** La build rigenera `site/public/` e verifica i riferimenti nell'HTML. L'esito atteso è un riepilogo senza errori. Non modificare quella cartella a mano: è output generato. Questa operazione non pubblica nulla su GitHub Pages.
 
-## Limiti
+```powershell
+npm --prefix site run site:build
+```
 
-- Documentazione non aggiornata diventa dannosa.
-- Troppa documentazione puo non essere letta.
-- Il codice deve restare la fonte principale del comportamento.
-- Alcuni dettagli vanno automatizzati invece che documentati.
+## Cosa tenere nel README
 
-## Errori comuni
+| Domanda del lettore | Dove rispondere |
+| --- | --- |
+| Cosa fa il progetto e qual è il percorso minimo per provarlo? | Nel README, con prerequisiti, configurazione minima, comandi ed esito atteso. |
+| Quali sono tutte le opzioni di configurazione? | In un riferimento collegato; nel README basta l'esempio necessario per partire, senza segreti reali. |
+| Perché è stata scelta questa architettura? | In una nota di decisione (*ADR*) che conservi contesto, alternative e conseguenze. |
+| Come pubblico o recupero una release fallita? | In una procedura operativa distinta dalla prova locale: specifica permessi, destinazione e impatto. |
 
-- Scrivere README iniziale e poi dimenticarlo.
-- Documentare comandi che non funzionano piu.
-- Mescolare guida utente, guida sviluppo e decisioni architetturali.
-- Nascondere configurazioni importanti.
-- Usare documentazione per compensare codice confuso.
+## Come accorgersi che è invecchiato
+
+Ripeti il percorso da una copia pulita o in CI. Verifica directory iniziale, script dichiarati, artefatto prodotto e risultato osservabile. Un README che promette `npm run lint` quando lo script non esiste inganna anche se il paragrafo sul lint è tecnicamente corretto. La documentazione indica dove guardare; non sostituisce né un test né una procedura di rilascio.
 
 ## Collegamenti
 
@@ -116,8 +70,9 @@ Un README cosi riduce domande ripetute e onboarding lento.
 - [[Programmazione/Clean Code/Pagine/Convenzioni di progetto|Convenzioni di progetto]]
 - [[Programmazione/Clean Code/Pagine/Commenti temporanei e TODO|Commenti temporanei e TODO]]
 - [[Programmazione/Clean Code/Pagine/Leggibilita del codice|Leggibilita del codice]]
+- [[Programmazione/GitHub/Pagine/README LICENSE e gitignore|README, licenza e gitignore in un repository]]
 
 ## Fonti
 
-- GitHub Docs, *About READMEs*
-- Diataxis, *Documentation system*
+- GitHub Docs, [About the repository README file](https://docs.github.com/en/repositories/managing-your-repositorys-settings-and-features/customizing-your-repository/about-readmes)
+- [Diátaxis: forme della documentazione tecnica](https://diataxis.fr/)

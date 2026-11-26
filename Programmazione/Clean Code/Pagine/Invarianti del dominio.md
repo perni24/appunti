@@ -26,81 +26,45 @@ title: Invarianti del dominio
 
 ## Sintesi
 
-Le **invarianti del dominio** sono regole che devono restare sempre vere perche un oggetto o un processo sia valido.
+Un'**invariante** è una proprietà che deve essere vera per ogni stato valido del modello, quando lo si osserva dalla sua interfaccia. Non coincide con una precondizione di un'operazione: «restano almeno zero crediti» è un'invariante; «per spenderne uno ne serve almeno uno» è una precondizione. Controllare l'input nel controller non basta se un altro percorso può poi rompere la regola.
 
-Nel Clean Code, rendere esplicite le invarianti riduce bug e chiarisce quali stati il sistema deve impedire.
+## Esempio: una prenotazione con durata positiva
 
-## Problema che risolve
-
-Se una regola importante e controllata solo in alcuni punti, prima o poi verra dimenticata.
-
-Esempi:
-
-- un ordine pagato non puo tornare a `draft`;
-- un prezzo non puo essere negativo;
-- un intervallo deve avere `start` prima di `end`;
-- un utente bannato non puo fare login;
-- una percentuale deve stare tra 0 e 100.
-
-## Concetto chiave
-
-Una invariante va protetta nel punto piu vicino al dato o all'oggetto che la possiede.
-
-Questo significa:
-
-- validare alla creazione;
-- impedire modifiche non valide;
-- nascondere stato interno quando serve;
-- usare metodi che rappresentano transizioni valide;
-- evitare setter generici se rompono regole.
-
-## Dettagli importanti
-
-- Le invarianti non sono solo validazioni di input.
-- Una invariante puo riguardare piu campi insieme.
-- Le regole vanno testate come comportamento di dominio.
-- Se una invariante e sparsa, e facile creare stati incoerenti.
-- I value objects sono utili per invarianti locali.
-
-## Esempio
-
-Intervallo non protetto:
-
-```ts
-type DateRange = {
-  start: Date;
-  end: Date;
-};
-```
-
-Intervallo con invariante:
+Il requisito è un intervallo **[inizio, fine)** tra due istanti validi: l'inizio è incluso, la fine esclusa e deve essere strettamente successiva. In JavaScript una `Date` può essere invalida o modificata dopo la creazione. Due proprietà `readonly` di tipo `Date` impedirebbero di riassegnarle in TypeScript, ma non di chiamare `setTime` sulle date che contengono.
 
 ```ts
 class DateRange {
-  constructor(readonly start: Date, readonly end: Date) {
-    if (start > end) {
-      throw new Error("start deve precedere end");
+  #startMs: number;
+  #endMs: number;
+
+  constructor(start: Date, end: Date) {
+    const startMs = start.getTime();
+    const endMs = end.getTime();
+    if (!Number.isFinite(startMs) || !Number.isFinite(endMs) || startMs >= endMs) {
+      throw new RangeError("Occorrono due istanti validi con inizio prima della fine");
     }
+    this.#startMs = startMs;
+    this.#endMs = endMs;
+  }
+
+  contains(instant: Date): boolean {
+    const ms = instant.getTime();
+    return this.#startMs <= ms && ms < this.#endMs;
   }
 }
 ```
 
-La regola viene applicata appena il valore nasce.
+`getTime()` restituisce `NaN` per una data invalida: il solo confronto degli estremi non la respinge. Il costruttore legge gli istanti una volta e conserva numeri privati, non riferimenti alle date del chiamante. Per [10, 20) millisecondi, 10 appartiene all'intervallo e 20 no; modificare le date originali non altera la risposta. Una data invalida passata a `contains` non appartiene all'intervallo.
+
+## Come scegliere dove proteggere la regola
+
+- **Creazione:** rifiuta estremi uguali, invertiti o invalidi. Se il prodotto ammette intervalli vuoti, cambia il requisito e i casi di prova, non solo l'operatore di confronto.
+- **Modifica:** un futuro metodo di riprogrammazione deve verificare la nuova coppia prima di renderla osservabile. Due setter indipendenti permetterebbero aggiornamenti a metà.
+- **Più oggetti:** due intervalli singolarmente validi possono sovrapporsi. Impedire una doppia prenotazione della stessa sala richiede un controllo coordinato anche fra scritture concorrenti; nessun `DateRange` isolato può garantirlo.
 
 ## Limiti
 
-- Alcune invarianti dipendono dal database o da sistemi esterni.
-- Non tutte le regole possono stare in un singolo oggetto.
-- Validare troppo presto puo impedire flussi legittimi di bozza.
-- Serve distinguere stati incompleti da stati invalidi.
-
-## Errori comuni
-
-- Mettere invarianti solo nel controller.
-- Usare setter pubblici che permettono stati non validi.
-- Duplicare la stessa regola in molti service.
-- Non testare le transizioni vietate.
-- Confondere validazione di formato e regola di dominio.
+Un form con una sola data inserita è una **bozza**, non per forza una prenotazione errata: modellalo separatamente prima di costruire l'intervallo. L'esempio usa istanti assoluti; non decide come interpretare un orario locale ambiguo.
 
 ## Collegamenti
 
@@ -112,5 +76,6 @@ La regola viene applicata appena il valore nasce.
 
 ## Fonti
 
-- Eric Evans, *Domain-Driven Design*
-- Martin Fowler, *Refactoring*
+- Eric Evans, *Domain-Driven Design*; Martin Fowler, *Refactoring*
+- ECMA-262, [Date.prototype.getTime](https://tc39.es/ecma262/multipage/numbers-and-dates.html#sec-date.prototype.gettime)
+- TypeScript Handbook, [Object Types: readonly properties](https://www.typescriptlang.org/docs/handbook/2/objects.html#readonly-properties)

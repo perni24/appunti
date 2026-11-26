@@ -26,62 +26,40 @@ title: Test come documentazione
 
 ## Sintesi
 
-I **test come documentazione** descrivono esempi concreti di comportamento atteso.
+Un test diventa documentazione eseguibile quando mostra **un esempio del contratto** che interessa al lettore. Un'asserzione verde conferma quel caso, non la correttezza del requisito né la completezza degli esempi scelti.
 
-Sono utili per capire come usare una funzione, quali casi sono supportati e quali regole non devono essere rotte.
+## Esempio: quando una fattura non può essere emessa?
 
-## Problema che risolve
-
-La documentazione testuale puo diventare obsoleta. I test, invece, falliscono quando il comportamento non e piu rispettato.
-
-Questo li rende una forma di documentazione eseguibile.
-
-## Concetto chiave
-
-Un test documenta bene quando e leggibile anche da chi non conosce l'implementazione.
-
-Deve mostrare:
-
-- contesto;
-- input;
-- azione;
-- output atteso;
-- motivo del comportamento.
-
-## Esempio
+Usa il modulo `invoice.mjs` di [[Programmazione/Clean Code/Pagine/Modellazione del dominio|Modellazione del dominio]] e metti accanto questo `invoice.test.mjs`. Le prime due prove distinguono condizioni che un messaggio generico come «fattura non valida» nasconderebbe:
 
 ```js
-test("rejects an invoice without line items", () => {
-  const invoice = draftInvoiceWithoutItems();
+import test from "node:test";
+import assert from "node:assert/strict";
+import { issueInvoice } from "./invoice.mjs";
 
-  expect(() => issueInvoice(invoice)).toThrow("Invoice must contain at least one item");
+test("bozza senza righe: serve almeno una riga", () => {
+  assert.deepEqual(issueInvoice({ status: "draft", lineCents: [] }),
+    { ok: false, code: "empty_invoice" });
+});
+
+test("bozza con riga gratuita: la riga esiste ma il totale è zero", () => {
+  assert.deepEqual(issueInvoice({ status: "draft", lineCents: [0] }),
+    { ok: false, code: "zero_total" });
+});
+
+test("dopo l'emissione la stessa fattura non si può emettere di nuovo", () => {
+  const issued = issueInvoice({ status: "draft", lineCents: [125, 75] });
+  assert.equal(issued.ok, true);
+  assert.equal(issued.invoice.totalCents, 200);
+  assert.deepEqual(issueInvoice(issued.invoice), { ok: false, code: "not_draft" });
 });
 ```
 
-Il test documenta una regola di dominio e il messaggio atteso.
+## Cosa lasciare fuori dal test
 
-## Dettagli importanti
+Il codice di errore serve all'applicazione; il testo italiano può cambiare senza rompere il contratto. Se l'utente deve leggere una particolare istruzione, testala nella presentazione, non bloccando alla stessa frase il modello di dominio.
 
-- I test documentano meglio quando usano termini del dominio.
-- I nomi devono spiegare comportamento, non implementazione.
-- Gli esempi dovrebbero coprire casi normali e casi limite importanti.
-- I test possono sostituire commenti superflui, non tutta la documentazione.
-- Quando cambia una regola, aggiornare test e note insieme.
-
-## Limiti
-
-- Una suite enorme non e automaticamente buona documentazione.
-- Test pieni di setup tecnico sono difficili da leggere.
-- I test non spiegano sempre il perche storico di una scelta.
-- Non sostituiscono diagrammi o documenti architetturali quando servono.
-
-## Errori comuni
-
-- Scrivere test che descrivono dettagli interni.
-- Usare dati casuali o poco significativi.
-- Nascondere tutto in helper non leggibili.
-- Mantenere test obsoleti adattandoli meccanicamente.
-- Considerare la copertura come misura della qualita documentale.
+Questi test descrivono **cosa** accade. Per il **perché** della regola sul totale occorre il requisito di prodotto. Un test di caratterizzazione scritto su codice esistente può registrare anche un difetto: prima di chiamarlo specifica, chiedi quale comportamento il prodotto intenda garantire.
 
 ## Collegamenti
 
@@ -94,6 +72,5 @@ Il test documenta una regola di dominio e il messaggio atteso.
 
 ## Fonti
 
-- Kent Beck, *Test Driven Development*
-- Gerard Meszaros, *xUnit Test Patterns*
-- Martin Fowler, *SpecificationByExample*
+- Martin Fowler, [Given When Then](https://martinfowler.com/bliki/GivenWhenThen.html)
+- Kent Beck, *Test Driven Development*; Gerard Meszaros, *xUnit Test Patterns*; Martin Fowler, *Specification by Example*

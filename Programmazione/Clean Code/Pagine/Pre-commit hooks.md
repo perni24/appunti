@@ -27,70 +27,48 @@ title: Pre-commit hooks
 
 ## Sintesi
 
-I **pre-commit hooks** sono controlli eseguiti automaticamente prima di creare un commit.
+Un hook `pre-commit` è un programma locale che Git invoca prima di creare un commit. Un esito non zero interrompe il commit. La domanda utile è **«ho controllato ciò che entrerà nel commit?»**: dopo uno staging parziale, il contenuto nell'indice può essere diverso dal file nella working tree.
 
-Aiutano a intercettare problemi semplici presto: formattazione, lint, file generati, segreti, test rapidi o controlli specifici.
+## Esempio: controllare il diff preparato senza riscriverlo
 
-## Quando usarlo
+In un repository di prova crea `.githooks/pre-commit` con terminatori LF. Git for Windows fornisce una shell compatibile con questo script; su Unix il file deve essere eseguibile nella working tree.
 
-- Quando vuoi evitare commit non formattati.
-- Quando vuoi bloccare segreti o file indesiderati.
-- Quando controlli rapidi possono girare localmente.
-- Quando vuoi ridurre fallimenti banali in CI.
-- Quando il team accetta uno standard comune.
-
-## Come funziona
-
-Git permette di eseguire script in momenti specifici del flusso.
-
-Il pre-commit hook viene eseguito prima della creazione del commit. Se fallisce, il commit viene bloccato finche il problema non viene corretto o bypassato consapevolmente.
-
-## API / Sintassi
-
-```text
-git commit
--> pre-commit hook
--> controlli
--> commit consentito o bloccato
+```sh
+#!/bin/sh
+exec git diff --cached --check
 ```
 
-Gli hook devono essere veloci e affidabili.
+`--cached` confronta ciò che è nell'indice con `HEAD` (sul primo commit, con l'albero vuoto). `--check` segnala, tra l'altro, gli errori di whitespace introdotti nel diff secondo la configurazione Git. `exec` conserva il codice di uscita. Il comando **non** riformatta i file, non aggiunge modifiche allo staging, non analizza i segreti e non prova il comportamento applicativo.
 
-## Esempio pratico
+Su Unix rendi eseguibile lo script:
 
-```text
-pre-commit:
-- format staged files
-- lint staged files
-- scan secrets
-- reject large generated files
+```sh
+chmod +x .githooks/pre-commit
 ```
 
-I controlli locali evitano errori banali prima della pull request.
+Prepara lo script per il commit registrando il bit eseguibile anche nell'indice:
 
-## Varianti
+```sh
+git add --chmod=+x -- .githooks/pre-commit
+```
 
-- Hook Git manuali.
-- Framework `pre-commit`.
-- Hook su file staged.
-- Hook su tutto il progetto.
-- Hook server-side o CI come controllo finale.
+Solo nel repository in cui vuoi attivarlo, indica a Git dove cercare gli hook:
 
-## Errori comuni
+```sh
+git config --local core.hooksPath .githooks
+```
 
-- Eseguire controlli troppo lenti.
-- Avere hook diversi tra sviluppatori.
-- Non documentare installazione e bypass.
-- Affidarsi solo agli hook locali senza CI.
-- Modificare file durante il commit senza renderlo chiaro.
+Questa impostazione locale cambia la directory per **tutti** gli hook del repository: prima controlla se il progetto usa già un gestore. Lo script versionato viene clonato, l'impostazione locale no. Non sostituire una configurazione esistente solo per provare l'esempio.
 
-## Checklist
+## Prova decisiva: indice contro working tree
 
-- Gli hook sono veloci?
-- Sono documentati e installabili facilmente?
-- CI ripete i controlli importanti?
-- I bypass sono eccezioni consapevoli?
-- Gli hook lavorano solo sui file rilevanti quando possibile?
+1. Prepara nell'indice una riga nuova con spazi finali. Toglili nella working tree **senza** ripetere `git add`: il commit deve essere rifiutato perché lo snapshot preparato li contiene ancora.
+2. Prepara la correzione. Se sporchi di nuovo **solo** la working tree, il controllo sul diff preparato passa; quella modifica locale non entra nel commit.
+3. Dopo una correzione automatica di un altro strumento, guarda il diff staged prima di aggiungerlo. Un `git add` indiscriminato può includere anche modifiche che avevi scelto di lasciare fuori.
+
+## Limiti
+
+L'hook può non essere installato e non controlla la storia o le righe invariate. Tieni locali i controlli veloci e ripeti in CI quelli necessari per il merge. Un framework come `pre-commit` aiuta a distribuire versioni e configurazioni, non sostituisce la verifica sul server.
 
 ## Collegamenti
 
@@ -106,3 +84,5 @@ I controlli locali evitano errori banali prima della pull request.
 - Git Documentation, *Hooks*
 - pre-commit Documentation
 - GitHub Actions Documentation
+- [Git: pre-commit e directory degli hook](https://git-scm.com/docs/githooks)
+- [Git: diff --cached e --check](https://git-scm.com/docs/git-diff)

@@ -27,58 +27,35 @@ title: Complessita ciclomatica
 
 ## Sintesi
 
-La **complessita ciclomatica** misura quanti percorsi logici indipendenti esistono in una funzione o modulo.
+La complessità ciclomatica di McCabe misura il numero di **percorsi linearmente indipendenti** nel grafo di controllo, non tutte le combinazioni di input o tutte le possibili esecuzioni. Un ciclo può ripetersi molte volte senza che la metrica diventi infinita.
 
-In pratica aumenta con `if`, `else`, `switch`, loop, condizioni booleane e rami di controllo.
+## Esempio: quanti percorsi ha il listino?
 
-## Problema che risolve
-
-Una funzione con molti rami e difficile da capire e testare.
-
-Ogni ramo aggiunge combinazioni possibili, casi limite e percorsi da verificare. La metrica aiuta a individuare funzioni che meritano attenzione.
-
-## Concetto chiave
-
-La complessita ciclomatica non dice se il codice e sbagliato, ma segnala quanto e difficile coprire tutti i percorsi.
-
-Una funzione con valore alto spesso sta facendo troppe decisioni insieme.
-
-## Esempio
+Gli sconti non si sommano. Vince la prima regola applicabile nell'ordine VIP, promozione, coupon:
 
 ```js
-function priceFor(customer, product) {
-  if (customer.vip) return product.price * 0.8;
-  if (product.onSale) return product.price * 0.9;
-  if (customer.hasCoupon) return product.price * 0.85;
-
-  return product.price;
+function discountPercent(vip, onSale, hasCoupon) {
+  if (vip) return 20;
+  if (onSale) return 10;
+  if (hasCoupon) return 15;
+  return 0;
 }
 ```
 
-La funzione contiene piu rami decisionali. Se le regole crescono, conviene estrarle in policy nominate o tabelle di regole.
+Per una funzione connessa con uscita comune (anche virtuale), `V = E - N + 2`: archi meno nodi più due. Qui ci sono tre decisioni binarie semplici; si può usare la scorciatoia **1 + 3 = 4**. Il ramo `else` di una scelta già conteggiata non aggiunge un'altra decisione. Le combinazioni dei tre booleani sono invece otto.
 
-## Dettagli importanti
+| Input: VIP, promozione, coupon | Prima regola che decide | Risultato |
+| --- | --- | --- |
+| Sì, sì, sì | VIP | 20 |
+| No, sì, sì | Promozione | 10 |
+| No, no, sì | Coupon | 15 |
+| No, no, no | Nessuna | 0 |
 
-- La metrica e utile come segnale, non come giudizio assoluto.
-- Funzioni con molti rami richiedono piu test.
-- Estrarre funzioni puo ridurre il carico locale, ma non sempre la complessita totale.
-- Strategie, policy e guard clauses possono semplificare il flusso.
-- Alcuni parser o algoritmi hanno complessita naturale piu alta.
+## Come usare il numero
 
-## Limiti
+Questi quattro casi attraversano i quattro percorsi e provano alcuni conflitti di precedenza. Non dimostrano, da soli, che tutti i requisiti del listino siano corretti. Spostare un `if` in un helper può abbassare il punteggio locale senza eliminare la scelta dal sistema.
 
-- Non misura quanto il codice e leggibile per una persona.
-- Non considera nomi, dominio, side effects o struttura dei dati.
-- Una funzione con bassa complessita puo comunque essere confusa.
-- Ridurre la metrica meccanicamente puo peggiorare il design.
-
-## Errori comuni
-
-- Inseguire una soglia numerica senza capire il codice.
-- Spezzare funzioni in modo artificiale.
-- Ignorare combinazioni tra rami indipendenti.
-- Non aggiungere test per percorsi alternativi.
-- Confondere complessita ciclomatica e complessita cognitiva.
+Specifica la variante dello strumento se confronti punteggi reali: per esempio ESLint distingue varianti per il conteggio di `switch` e può contare anche espressioni con corto circuito. Non confondere questa misura con la difficoltà umana di seguire l'annidamento.
 
 ## Collegamenti
 
@@ -92,5 +69,5 @@ La funzione contiene piu rami decisionali. Se le regole crescono, conviene estra
 ## Fonti
 
 - Thomas J. McCabe, *A Complexity Measure*
-- SonarSource, *Cognitive Complexity*
-- Martin Fowler, *Refactoring*
+- ESLint, [Regola complexity e varianti](https://eslint.org/docs/latest/rules/complexity)
+- SonarSource, *Cognitive Complexity*; Martin Fowler, *Refactoring*

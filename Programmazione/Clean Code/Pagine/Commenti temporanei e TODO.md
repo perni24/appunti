@@ -26,68 +26,35 @@ title: Commenti temporanei e TODO
 
 ## Sintesi
 
-I **commenti temporanei** e i `TODO` servono a segnalare lavoro incompleto, compromessi o punti da rivedere. Sono utili solo se hanno contesto, ownership e una possibilita reale di essere risolti.
+Un `TODO` utile segnala una **condizione temporanea**: spiega perché il codice attuale è necessario e quale fatto permetterà di eliminarlo. Il ticket serve a gestire il lavoro; il commento nel codice serve a impedire che qualcuno rimuova troppo presto il comportamento provvisorio.
 
-Un `TODO` senza responsabilita diventa facilmente debito tecnico invisibile.
+## Esempio: migrare un campo senza scartare lo zero
 
-## Problema che risolve
-
-Durante lo sviluppo capita di lasciare una soluzione provvisoria. Il problema nasce quando il provvisorio resta nel codice senza spiegazione.
-
-Commenti temporanei ben scritti permettono di non perdere contesto, ma non devono diventare una discarica.
-
-## Concetto chiave
-
-Un `TODO` utile dovrebbe spiegare:
-
-- cosa manca;
-- perche non e stato fatto ora;
-- quale rischio crea;
-- chi o cosa lo traccia;
-- quando va rimosso.
-
-Se non c'e un piano, il commento sta solo spostando il problema.
-
-## Dettagli importanti
-
-- Collega il `TODO` a issue, ticket o decisione.
-- Evita commenti generici come `fix later`.
-- Rimuovi commenti temporanei quando il lavoro viene completato.
-- Non usare `TODO` per spiegare codice incomprensibile.
-- I workaround devono spiegare il vincolo esterno.
-
-## Esempio
-
-Debole:
+Nel caso di esempio due versioni del catalogo inviano prezzi in centesimi. La nuova usa `unitPriceCents`, la precedente `price_cents`. Finché esiste almeno un produttore vecchio, il lettore deve accettare entrambi. `CAT-42` è un ticket illustrativo, non una issue del vault. L'input della funzione è un record JSON già riconosciuto come oggetto.
 
 ```js
-// TODO: sistemare
-calculatePrice(order);
+function readUnitPriceCents(row) {
+  // TODO(CAT-42, team catalogo): rimuovere il fallback dopo la migrazione
+  // dell'ultimo produttore e l'esaurimento dei messaggi nel vecchio formato.
+  const value = Object.hasOwn(row, "unitPriceCents") ? row.unitPriceCents : row.price_cents;
+  if (!Number.isSafeInteger(value) || value < 0) {
+    throw new RangeError("Prezzo atteso in centesimi interi non negativi");
+  }
+  return value;
+}
 ```
 
-Migliore:
+Un nuovo prezzo pari a 0 prevale sul vecchio. Se il campo nuovo **è presente ma invalido**, il lettore segnala l'errore anziché ripiegare silenziosamente sul vecchio valore. Un semplice `newPrice || oldPrice` confonderebbe assenza e zero. Il commento non spiega l'operatore: conserva la ragione per cui non si legge ancora soltanto il nuovo campo.
 
-```js
-// TODO(#421): sostituire questa regola quando il nuovo listino sara attivo.
-calculateLegacyPrice(order);
-```
+## Come chiudere il TODO
 
-Il secondo commento rende chiaro contesto e tracciamento.
+1. Nel ticket identifica i produttori interessati, il responsabile e il criterio per considerare consumati anche i messaggi arretrati. Una data sul calendario non dimostra da sola che il vecchio formato sia scomparso.
+2. Fino a quel momento conserva prove per «solo vecchio», «solo nuovo», «entrambi», «nuovo invalido». Il test descrive il comportamento attuale, non certifica lo stato della migrazione in produzione.
+3. Quando c'è evidenza che il vecchio formato non serve più, elimina insieme fallback e commento. Aggiorna il test per verificare che un record con il solo campo vecchio sia ora rifiutato.
 
-## Limiti
+## Limiti ed errori comuni
 
-- Alcuni team preferiscono non lasciare `TODO` nel codice.
-- Troppi `TODO` riducono fiducia nella codebase.
-- Un ticket esterno puo essere piu adatto di un commento.
-- Non tutto il lavoro incompleto deve entrare nel branch principale.
-
-## Errori comuni
-
-- Lasciare `TODO` senza issue.
-- Usare commenti temporanei per mesi senza revisione.
-- Scrivere commenti vaghi.
-- Non rimuovere workaround non piu necessari.
-- Usare `TODO` per evitare una decisione tecnica.
+Per una regola permanente spiega il *perché* senza chiamarla temporanea. Se un difetto viola già oggi un requisito indispensabile, non rendere accettabile il rilascio scrivendo `TODO: sistemare`. Se non c'è una riga specifica su cui mettere in guardia il lettore, può bastare il ticket.
 
 ## Collegamenti
 
@@ -99,5 +66,5 @@ Il secondo commento rende chiaro contesto e tracciamento.
 
 ## Fonti
 
-- Robert C. Martin, *Clean Code*
-- Martin Fowler, *Technical Debt*
+- Google, [Python Style Guide: TODO comments](https://google.github.io/styleguide/pyguide.html#312-todo-comments). Qui il formato è adattato al team di esempio.
+- Robert C. Martin, *Clean Code*; Martin Fowler, *Technical Debt*

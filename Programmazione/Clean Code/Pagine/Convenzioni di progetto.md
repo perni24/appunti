@@ -26,65 +26,54 @@ title: Convenzioni di progetto
 
 ## Sintesi
 
-Le **convenzioni di progetto** sono regole condivise su naming, struttura, formattazione, test, commit, error handling e organizzazione del codice.
+Una convenzione evita di ridiscutere una scelta a ogni modifica. Perché sia utile, specifica **dove si applica, chi la verifica e che cosa fare se non è adatta**. «Usiamo uno stile coerente» non basta per decidere se accettare una modifica.
 
-Servono a ridurre decisioni ripetitive e rendere il codice piu uniforme.
+## Esempio: rendere ripetibile il controllo dello stile
 
-## Problema che risolve
+In un piccolo pacchetto Node si è scelto Prettier per un file `rates.mjs`. Il team registra Prettier tra le dipendenze di sviluppo e versiona il lockfile. Esempio di `.prettierrc.json`:
 
-Senza convenzioni, ogni file puo usare uno stile diverso. Il lettore deve adattarsi continuamente e il team discute su dettagli invece che su comportamento e design.
-
-Le convenzioni spostano molte scelte da preferenze individuali a regole condivise.
-
-## Concetto chiave
-
-Una buona convenzione e:
-
-- esplicita;
-- semplice da applicare;
-- automatizzabile quando possibile;
-- motivata;
-- coerente con linguaggio e framework;
-- modificabile quando non serve piu.
-
-Le convenzioni dovrebbero ridurre attrito, non diventare burocrazia.
-
-## Dettagli importanti
-
-- Formatter e linter automatizzano parte delle convenzioni.
-- Le convenzioni non automatizzabili devono stare in documentazione.
-- Le eccezioni devono essere rare e spiegate.
-- Le convenzioni vanno introdotte gradualmente in codebase legacy.
-- Una convenzione locale non deve contraddire idiomi forti del linguaggio.
-
-## Esempio
-
-Convenzioni utili:
-
-```text
-- nomi booleani con is/has/can/should
-- test accanto al modulo testato
-- errori di dominio in domain/errors
-- nessun import da cartelle internal di altri moduli
-- formatter obbligatorio via pre-commit
+```json
+{
+  "singleQuote": true,
+  "semi": true
+}
 ```
 
-Queste regole aiutano il team a prendere decisioni coerenti.
+Nel `package.json` del pacchetto, integra questi script con quelli esistenti; non sostituire l'intero manifest:
 
-## Limiti
+```json
+{
+  "scripts": {
+    "format:check": "prettier --check rates.mjs",
+    "format:write": "prettier --write rates.mjs"
+  }
+}
+```
 
-- Troppe convenzioni possono rallentare.
-- Convenzioni non spiegate sembrano arbitrarie.
-- Alcune regole diventano obsolete con il progetto.
-- Le convenzioni non sostituiscono il giudizio tecnico.
+Dalla radice del pacchetto, con le dipendenze installate, il comando per la CI è di sola lettura: codice di uscita 0 se il file è conforme, 1 se differisce. Un errore dello strumento non va interpretato come semplice differenza di stile.
 
-## Errori comuni
+```sh
+npm run format:check
+```
 
-- Documentare convenzioni che nessuno applica.
-- Non automatizzare cio che puo essere automatizzato.
-- Cambiare stile a ogni PR.
-- Importare convenzioni da altri progetti senza adattarle.
-- Usare convenzioni per evitare discussioni architetturali reali.
+Per applicare la convenzione **in locale**, il comando seguente riscrive il file: controlla il diff prima del commit. I due script coprono soltanto `rates.mjs`, non tutto il repository.
+
+```sh
+npm run format:write
+```
+
+## Quale controllo scegliere?
+
+| Convenzione | Controllo adeguato |
+| --- | --- |
+| Spaziatura e virgolette coerenti | Formatter con la stessa configurazione in locale e in CI; un hook locale è un aiuto, non l'unico controllo. |
+| Vietare dipendenze da percorsi interni di altre feature | Regola sugli import o test di architettura; il formatter non controlla il grafo. |
+| Nomi booleani positivi, errori di dominio comprensibili | Esempi nel documento per i contributori e review sul significato nel contesto. |
+| Non riformattare codice generato o di terzi | Definire i percorsi esclusi e motivarli; non disabilitare la regola per tutto il progetto. |
+
+## Limiti ed errori comuni
+
+Su codice esistente separa una riformattazione meccanica da un cambiamento di comportamento. Documenta le eccezioni vicino alla regola e indica quando rivalutarle. Un controllo verde dimostra soltanto la proprietà verificata: un prezzo sbagliato può essere formattato perfettamente.
 
 ## Collegamenti
 
@@ -93,8 +82,9 @@ Queste regole aiutano il team a prendere decisioni coerenti.
 - [[Programmazione/Clean Code/Pagine/README e documentazione tecnica|README e documentazione tecnica]]
 - [[Programmazione/Clean Code/Pagine/Struttura delle cartelle|Struttura delle cartelle]]
 - [[Programmazione/Clean Code/Pagine/Naming di variabili e funzioni|Naming di variabili e funzioni]]
+- [[Programmazione/Clean Code/Pagine/Pre-commit hooks|Pre-commit hooks]]
 
 ## Fonti
 
-- Steve McConnell, *Code Complete*
-- Google Engineering Practices, *Code Review Developer Guide*
+- Prettier, [CLI: controllo e scrittura](https://prettier.io/docs/cli)
+- Steve McConnell, *Code Complete*; Google Engineering Practices, *Code Review Developer Guide*

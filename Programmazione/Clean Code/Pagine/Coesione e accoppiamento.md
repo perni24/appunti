@@ -27,73 +27,25 @@ title: Coesione e accoppiamento
 
 ## Sintesi
 
-La **coesione** indica quanto gli elementi di un modulo stanno bene insieme. L'**accoppiamento** indica quanto un modulo dipende da altri moduli.
+La **coesione** riguarda l'interno di un modulo: le sue parti collaborano alla stessa decisione? L'**accoppiamento** riguarda una relazione: che cosa deve sapere un modulo dell'altro per usarlo correttamente? Non sono estremi di una stessa scala. Un modulo può essere coeso e, al tempo stesso, dipendere da dettagli fragili.
 
-Nel Clean Code l'obiettivo e avere alta coesione e basso accoppiamento.
+## Esempio: il report delle iscrizioni
 
-## Problema che risolve
+Un report che seleziona iscrizioni attive e le presenta in ordine alfabetico ha uno scopo riconoscibile. Se però legge direttamente colonne, codici di stato e date della tabella utenti, conosce anche il modo in cui quei dati sono conservati. Rinominare una colonna può rompere il report pur lasciando immutata la nozione di «iscrizione attiva».
 
-Codice con bassa coesione contiene responsabilita non correlate. Codice con alto accoppiamento richiede modifiche a catena.
+| Scelta | Che cosa migliora | Che cosa può ancora andare storto |
+| --- | --- | --- |
+| Spostare il report fuori da un `UserService` che invia anche newsletter e crea fatture | La coesione: il report non cambia più per una modifica alla newsletter. | Può continuare a conoscere lo schema SQL. |
+| Chiedere `listActiveMembers()` a una sorgente che restituisce i soli dati concordati | L'accoppiamento allo schema: la sorgente può adattarsi a una rinomina interna. | Restano vere dipendenze dal significato di «attivo», dai campi restituiti e dalla gestione degli errori. |
+| Spostare la query in `common` ma far interpretare al report gli stessi codici del database | Cambia il percorso del codice. | La conoscenza della rappresentazione resta nel chiamante. |
 
-In entrambi i casi la codebase diventa difficile da cambiare in modo locale.
+## Come verificarlo in review
 
-## Concetto chiave
+Immagina due modifiche indipendenti. Per cambiare l'ordinamento alfabetico dovresti intervenire sul report; per cambiare la codifica dello stato nel database non dovresti riscrivere il report né i suoi test. Se invece cambia **chi ha diritto** a comparire, può essere corretto rivedere entrambi: è cambiato il significato del contratto, non solo la sua implementazione.
 
-Un modulo coeso contiene elementi che cambiano per la stessa ragione.
+## Limiti ed errori comuni
 
-Un modulo poco accoppiato:
-
-- conosce pochi dettagli degli altri moduli;
-- dipende da interfacce stabili;
-- non accede a stato interno altrui;
-- puo essere testato con meno setup;
-- puo cambiare senza rompere molte parti.
-
-## Dettagli importanti
-
-- Coesione e accoppiamento vanno valutati insieme.
-- Un modulo piccolo ma molto accoppiato resta fragile.
-- Un modulo grande ma molto coeso puo essere accettabile temporaneamente.
-- Le dipendenze circolari sono un forte segnale di accoppiamento problematico.
-- L'accoppiamento ai dettagli e piu fragile dell'accoppiamento alle astrazioni.
-
-## Esempio
-
-Bassa coesione:
-
-```text
-UserService:
-- registra utente
-- calcola sconto
-- invia newsletter
-- genera fattura
-```
-
-Alta coesione:
-
-```text
-UserRegistration
-DiscountPolicy
-NewsletterSender
-InvoiceService
-```
-
-Ogni componente ha una ragione piu chiara per cambiare.
-
-## Limiti
-
-- Ridurre l'accoppiamento a zero non e realistico.
-- Le astrazioni introdotte per disaccoppiare hanno un costo.
-- Alcune dipendenze sono naturali nel dominio.
-- Separare troppo presto puo produrre struttura inutile.
-
-## Errori comuni
-
-- Creare moduli generici con responsabilita casuali.
-- Usare `shared` o `common` come scorciatoia.
-- Far dipendere il dominio da dettagli infrastrutturali.
-- Separare codice senza ridurre dipendenze reali.
-- Ignorare dipendenze circolari perche "funzionano".
+Non usare il conteggio degli import come misura assoluta. Una sola dipendenza da un oggetto globale può nascondere più vincoli di tre collaboratori ben definiti. Una dipendenza ciclica merita indagine, ma aggiungere un'interfaccia per ogni chiamata non garantisce né minor accoppiamento né maggiore coesione.
 
 ## Collegamenti
 
@@ -106,5 +58,5 @@ Ogni componente ha una ragione piu chiara per cambiare.
 
 ## Fonti
 
-- Robert C. Martin, *Clean Architecture*
-- David Parnas, *On the Criteria To Be Used in Decomposing Systems into Modules*
+- Martin Fowler, [Reducing Coupling](https://martinfowler.com/ieeeSoftware/coupling.pdf)
+- Robert C. Martin, *Clean Architecture*; David Parnas, *On the Criteria To Be Used in Decomposing Systems into Modules*

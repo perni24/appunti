@@ -27,73 +27,74 @@ title: Script di automazione
 
 ## Sintesi
 
-Gli **script di automazione** eseguono procedure ripetitive: import, export, backup, pulizia dati, generazione file, chiamate API o manutenzione.
+Uno script operativo deve rendere prevedibili **il primo avvio, il secondo e un fallimento a metà**. Per l'export del listino scegliamo questo contratto: anteprima per default, nessun file se ci sono scarti, creazione solo su richiesta e nessuna sovrascrittura implicita.
 
-Anche se piccoli, devono essere leggibili, configurabili e sicuri da rilanciare.
+## Esempio: export ripetibile del listino
 
-## Quando usarlo
+`export_catalog.py`, accanto a `catalog_parse.py` e `catalog_pipeline.py` delle note collegate. L'input è un piccolo CSV UTF-8 e la cartella di destinazione deve esistere. A parità di record **e ordine** il JSON in UTF-8 ha gli stessi byte.
 
-- Quando una procedura manuale viene ripetuta spesso.
-- Quando serve ridurre errori operativi.
-- Quando devi trasformare o spostare dati.
-- Quando vuoi rendere riproducibile una manutenzione.
-- Quando un job deve essere eseguito da CLI, scheduler o CI.
+```python
+import argparse
+import json
+import sys
+from pathlib import Path
+from catalog_pipeline import read_catalog
 
-## Come funziona
 
-Uno script mantenibile dovrebbe avere:
+def export_catalog(source, target, apply):
+    with source.open(encoding="utf-8", newline="") as stream:
+        products, issues = read_catalog(stream)
+    if issues:
+        first = issues[0]
+        raise ValueError(f"{len(issues)} scarti; primo: linea {first['line']}, {first['code']}")
+    data = (json.dumps(products, ensure_ascii=False, indent=2) + "\n").encode("utf-8")
+    try:
+        old = target.read_bytes()
+    except FileNotFoundError:
+        pass
+    else:
+        if old == data:
+            return "unchanged"
+        raise ValueError("Destinazione presente con contenuto diverso")
+    if not apply:
+        return "would_create"
+    with target.open("xb") as stream:
+        stream.write(data)
+    return "created"
 
-- input espliciti;
-- configurazione validata;
-- dry-run quando utile;
-- logging leggibile;
-- gestione errori;
-- exit code coerenti;
-- idempotenza quando possibile.
 
-## API / Sintassi
-
-```text
-parse args -> load config -> validate input -> execute steps -> report result
+if __name__ == "__main__":
+    parser = argparse.ArgumentParser()
+    parser.add_argument("source", type=Path)
+    parser.add_argument("target", type=Path)
+    parser.add_argument("--apply", action="store_true")
+    args = parser.parse_args()
+    try:
+        print(export_catalog(args.source, args.target, args.apply))
+    except (OSError, ValueError) as error:
+        print(error, file=sys.stderr)
+        sys.exit(1)
 ```
 
-Lo script dovrebbe mostrare chiaramente cosa fa e dove puo fallire.
+## Esecuzione
 
-## Esempio pratico
+Verifica l'input e confronta il risultato atteso con la destinazione senza scrivere:
 
-```js
-async function main(args, env) {
-  const config = loadConfig(env);
-  const options = parseArgs(args);
-
-  await exportReport(config, options);
-}
+```sh
+python export_catalog.py catalog.csv report.json
 ```
 
-Separare `main`, configurazione e logica rende lo script testabile.
+Crea il file solo se manca e il lotto è valido:
 
-## Varianti
+```sh
+python export_catalog.py catalog.csv report.json --apply
+```
 
-- Script one-shot: usato una volta, ma comunque tracciabile.
-- Script ricorrente: richiede logging e idempotenza.
-- Script CI: deve fallire con exit code chiari.
-- Script di migrazione: richiede backup o rollback.
+`would_create`, `created` e `unchanged` sono esiti riusciti (exit code 0). Un file diverso o un lotto non valido producono codice 1 e un messaggio su stderr; gli errori negli argomenti sono gestiti da `argparse`. Il dry-run non prenota il nome: se un altro processo crea il file nel frattempo, `xb` rifiuta la nuova apertura.
 
-## Errori comuni
+## Limiti operativi
 
-- Hardcodare percorsi e credenziali.
-- Non gestire rilanci parziali.
-- Stampare output non strutturato quando serve automazione.
-- Non distinguere warning ed errori.
-- Lasciare script importanti senza documentazione minima.
-
-## Checklist
-
-- Input e configurazione sono espliciti?
-- Lo script puo essere rilanciato in sicurezza?
-- Gli errori producono exit code corretti?
-- Esiste un dry-run per operazioni rischiose?
-- Log e output sono utili a chi lo esegue?
+Creazione esclusiva **non** significa pubblicazione atomica. Un arresto durante la scrittura può lasciare un file parziale: al rilancio lo script vede contenuto diverso e si ferma. Controlla il file prima di scegliere una nuova destinazione; non cancellarlo automaticamente. Per lettori concorrenti o dati che devono sopravvivere a un guasto servono una strategia di pubblicazione e garanzie di persistenza adeguate al filesystem.
 
 ## Collegamenti
 
@@ -109,3 +110,5 @@ Separare `main`, configurazione e logica rende lo script testabile.
 - The Twelve-Factor App
 - Michael Nygard, *Release It!*
 - Martin Fowler, *Refactoring*
+- [Python 3.12: open e modalità di creazione esclusiva](https://docs.python.org/3.12/library/functions.html#open)
+- [Python 3.12: argparse ed errori della CLI](https://docs.python.org/3.12/library/argparse.html)

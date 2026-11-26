@@ -26,83 +26,43 @@ title: Primitive obsession
 
 ## Sintesi
 
-La **primitive obsession** e un code smell in cui concetti importanti del dominio vengono rappresentati con primitive generiche: `string`, `number`, `boolean`, array o mappe anonime.
+La **primitive obsession** si riconosce quando il significato di un valore dipende da informazioni che ogni chiamante deve ricordare: `transfer(1250, "EUR")` indica 1.250 euro o 12,50 euro? Il difetto non è che si usi un numero, ma che si possano scambiare unità, invertire parametri o applicare regole diverse senza accorgersene.
 
-Il problema non e usare primitive, ma usarle dove servirebbe un concetto nominato.
+## Esempio: costruire un importo da trasferire
 
-## Problema che risolve
-
-Quando tutto e una stringa o un numero, il compilatore e il lettore non possono distinguere valori con significati diversi.
-
-Esempi:
-
-- `string` per email, username, token, codice ordine;
-- `number` per euro, percentuali, secondi, quantita;
-- `boolean` per stati complessi;
-- `Record<string, unknown>` per oggetti con struttura stabile.
-
-Questo porta a validazioni duplicate e parametri scambiati per errore.
-
-## Concetto chiave
-
-Una primitiva dovrebbe diventare un tipo dedicato quando:
-
-- ha regole di validazione;
-- ha un significato di dominio;
-- viene passata in molte funzioni;
-- puo essere confusa con valori simili;
-- contiene comportamento naturale;
-- causa controlli ripetuti.
-
-Il refactoring tipico e introdurre un value object o un tipo semantico.
-
-## Dettagli importanti
-
-- Non ogni primitiva e un problema.
-- Le primitive vanno bene in codice locale e ovvio.
-- Il problema cresce quando il valore attraversa molti confini.
-- I booleani sono spesso segnali di stati modellati male.
-- I tipi dedicati migliorano leggibilita e testabilita.
-
-## Esempio
-
-Prima:
+Per questo servizio sono ammessi solo trasferimenti positivi in EUR o USD. L'unità è il centesimo per entrambe le valute. Dare un nome ai campi permette di leggere l'importo; una funzione che riceve dati grezzi controlla che i valori rispettino la regola.
 
 ```ts
-function transfer(amount: number, currency: string) {
-  // ...
-}
-```
-
-Dopo:
-
-```ts
-type Money = {
-  amount: number;
+type TransferAmount = Readonly<{
+  cents: number;
   currency: "EUR" | "USD";
-};
+}>;
 
-function transfer(money: Money) {
-  // ...
+function transferAmount(cents: unknown, currency: unknown): TransferAmount {
+  if (currency !== "EUR" && currency !== "USD") {
+    throw new RangeError("Valuta non supportata");
+  }
+  if (typeof cents !== "number" || !Number.isSafeInteger(cents) || cents <= 0) {
+    throw new RangeError("Importo atteso in centesimi interi positivi");
+  }
+  return { cents, currency };
 }
 ```
 
-Il secondo codice riduce ambiguita tra importo e valuta.
+`transferAmount(1250, "EUR")` rappresenta 12,50 euro. `12.5` è rifiutato, non arrotondato; `"1250"` non viene convertito implicitamente. Non sono regole universali del denaro: un saldo può essere zero e una valuta diversa può non usare i centesimi.
 
-## Limiti
+## Criterio di scelta
 
-- Introdurre tipi per tutto puo rendere il codice pesante.
-- In prototipi o script brevi, le primitive possono essere sufficienti.
-- Alcuni linguaggi rendono piu costosa la modellazione fine.
-- Serve bilanciare chiarezza e semplicita.
+| Se il problema è… | Prima soluzione da considerare |
+| --- | --- |
+| Un valore locale poco chiaro | Rinominare `n` in `amountCents` |
+| Valuta e importo che viaggiano separati | Raggrupparli in un record con campi nominati |
+| Valori esterni con formato o intervallo incerti | Farli passare da un costruttore o parser controllato |
+| Due identificatori numerici corretti ma scambiabili | Usare tipi distinti, per esempio dei *brand*, nei punti in cui si incontrano |
 
-## Errori comuni
+## Limiti ed errori comuni
 
-- Lasciare stringhe libere per valori con formato obbligatorio.
-- Usare booleani multipli per rappresentare uno stato.
-- Duplicare validazioni invece di centralizzarle.
-- Usare mappe generiche al posto di strutture esplicite.
-- Creare wrapper senza regole o comportamento.
+Un alias come `type Cents = number` non crea da solo un tipo distinto. Anche `TransferAmount` è strutturale: scrivere direttamente `{ cents: -1, currency: "EUR" }` può soddisfare il tipo. La positività è garantita **per i risultati della funzione al momento della costruzione**, non per qualsiasi oggetto annotato con quel nome. `Readonly` non valida il JSON né congela l'oggetto a runtime.
 
 ## Collegamenti
 
@@ -111,8 +71,9 @@ Il secondo codice riduce ambiguita tra importo e valuta.
 - [[Programmazione/Clean Code/Pagine/Invarianti del dominio|Invarianti del dominio]]
 - [[Programmazione/Clean Code/Pagine/Modellare stati impossibili|Modellare stati impossibili]]
 - [[Programmazione/Clean Code/Pagine/Codice esplicito vs codice implicito|Codice esplicito vs codice implicito]]
+- [[Programmazione/TypeScript/Pagine/Brand Types|Brand types in TypeScript]]
 
 ## Fonti
 
-- Martin Fowler, *Refactoring*
+- Martin Fowler, [Replace Primitive with Object](https://refactoring.com/catalog/replacePrimitiveWithObject.html)
 - Eric Evans, *Domain-Driven Design*

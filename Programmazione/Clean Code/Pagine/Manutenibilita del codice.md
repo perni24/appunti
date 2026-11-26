@@ -25,68 +25,33 @@ title: Manutenibilita del codice
 
 ## Sintesi
 
-La **manutenibilita del codice** misura quanto e facile correggere, estendere, testare e adattare un sistema nel tempo.
-
-Un codice manutenibile non e solo leggibile: e anche organizzato in modo che le modifiche abbiano un impatto prevedibile.
+La manutenibilità è la facilità con cui si può cambiare un sistema e verificare che il resto continui a funzionare. La leggibilità aiuta a capire una funzione; la manutenibilità si osserva seguendo una modifica attraverso l'intero sistema.
 
 ## Problema che risolve
 
-Molti progetti diventano lenti non per mancanza di funzionalita, ma perche ogni modifica rompe qualcosa o richiede di toccare troppe parti.
-
-La manutenibilita riduce questo costo di cambiamento.
-
-## Concetto chiave
-
-Un codice manutenibile ha:
-
-- responsabilita separate;
-- dipendenze limitate;
-- interfacce stabili;
-- test significativi;
-- comportamento osservabile;
-- convenzioni coerenti;
-- poca complessita accidentale.
-
-Il segnale piu chiaro di bassa manutenibilita e la paura di modificare il codice.
-
-## Dettagli importanti
-
-- La manutenibilita riguarda il futuro, non solo lo stato attuale.
-- Un modulo molto usato deve essere piu stabile e chiaro di codice temporaneo.
-- La documentazione aiuta, ma non compensa una struttura confusa.
-- Test fragili riducono manutenibilita anche se aumentano coverage.
-- Le dipendenze implicite sono una delle cause principali di regressioni.
+Checkout, preventivo e conferma email contengono tre copie leggibili della stessa soglia di spedizione gratuita. Il giorno in cui la soglia cambia, correggerne solo due produce totali discordanti anche se ogni singola funzione è facile da leggere.
 
 ## Esempio
 
-Codice poco manutenibile:
+Il requisito è spedizione gratuita **a partire da** 50 euro; sotto soglia costa 4,90 euro. Gli importi sono interi non negativi, espressi in centesimi di euro.
 
-```text
-Modifica al calcolo prezzo -> tocca controller, database, email, report e UI.
+```js
+function shippingFeeCents(subtotalCents) {
+  return subtotalCents >= 5000 ? 0 : 490;
+}
 ```
 
-Codice piu manutenibile:
+Checkout e preventivo chiamano la stessa regola. Se la soglia passa a 60 euro, si modifica la regola e si verificano 5999 e 6000 centesimi. La conferma di **un ordine già accettato**, invece, mostra la spesa registrata sull'ordine: ricalcolarla al momento dell'invio riscriverebbe la storia. Centralizzare la decisione non significa riprenderla ogni volta.
 
-```text
-Modifica al calcolo prezzo -> tocca modulo Pricing e relativi test.
-```
+## Come valutare una modifica
 
-La seconda situazione non elimina la complessita del dominio, ma la localizza.
+1. Scrivi un caso di confine prima di toccare il calcolo: oggi 4999 costa 490, 5000 costa zero.
+2. Individua chi decide il prezzo e chi deve solo mostrarlo. Controlla anche gli utilizzi indiretti, come report, email o dati salvati.
+3. Dopo la modifica verifica sia il preventivo nuovo sia la lettura di un ordine precedente. Un test sul solo modulo dei prezzi non copre quel secondo percorso.
 
-## Limiti
+## Limiti ed errori comuni
 
-- Non tutto il codice richiede lo stesso livello di cura.
-- Codice sperimentale puo essere meno strutturato, se il costo viene riconosciuto.
-- Troppa astrazione puo peggiorare la manutenibilita.
-- La manutenibilita deve essere valutata rispetto al ciclo di vita del progetto.
-
-## Errori comuni
-
-- Confondere codice funzionante con codice mantenibile.
-- Rimandare refactoring fino a quando diventa troppo costoso.
-- Aggiungere casi speciali senza rivedere il modello.
-- Non scrivere test per il comportamento critico.
-- Ignorare i segnali di debito tecnico ricorrente.
+Non misurare la manutenibilità contando i file toccati: una migrazione del formato persistito può richiedere più interventi legittimi. È un segnale più utile dover indovinare **quali copie della stessa decisione** aggiornare. Per uno script usa e getta può bastare una sola funzione; una gerarchia di moduli senza modifiche indipendenti non compra stabilità.
 
 ## Collegamenti
 
@@ -100,3 +65,4 @@ La seconda situazione non elimina la complessita del dominio, ma la localizza.
 
 - Martin Fowler, *Refactoring*
 - Robert C. Martin, *Clean Code*
+- Martin Fowler, [Design Stamina Hypothesis](https://martinfowler.com/bliki/DesignStaminaHypothesis.html)

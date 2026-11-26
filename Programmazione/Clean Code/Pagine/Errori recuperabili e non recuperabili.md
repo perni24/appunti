@@ -26,71 +26,24 @@ title: Errori recuperabili e non recuperabili
 
 ## Sintesi
 
-Un **errore recuperabile** e un errore da cui il programma puo reagire in modo previsto.
+Un errore è recuperabile **per un certo chiamante** se quel chiamante dispone di un'azione sicura e prevista per proseguire. «Recuperabile» non è sinonimo di «ritentabile»; restituire un valore anziché lanciare un'eccezione non rende automaticamente possibile il recupero.
 
-Un **errore non recuperabile** indica una condizione che viola assunzioni fondamentali o rende insicuro continuare.
+## Esempio: quattro esiti di una richiesta
 
-Distinguere i due casi rende il codice piu chiaro e affidabile.
+| Cosa sappiamo | Chi può agire | Comportamento sensato |
+| --- | --- | --- |
+| La quantità non è valida; nessuna scrittura avviata | Utente o client | Mostrare il campo da correggere. Ripetere lo stesso input non aiuta. |
+| La bozza è già stata emessa | Caso d'uso | Ricaricare lo stato o mostrare l'esito già noto, secondo contratto. Non ricreare la fattura. |
+| Una lettura temporaneamente indisponibile non ha prodotto effetti applicativi | Chiamante della lettura | Un nuovo tentativo può servire, con limite di tempo, numero di tentativi e attesa fra di essi. |
+| Una scrittura va in timeout dopo l'invio | Sistema che gestisce l'operazione | L'esito è **ignoto**, non necessariamente negativo. Cercare l'operazione tramite ID, oppure riprovare solo con garanzie di idempotenza adeguate. |
 
-## Problema che risolve
+## Come scegliere la rappresentazione
 
-Trattare tutti gli errori allo stesso modo produce codice confuso:
+Per gli esiti attesi della nota [[Programmazione/Clean Code/Pagine/Modellazione del dominio|Modellazione del dominio]], il chiamante può distinguere `empty_invoice` e `not_draft` senza interpretare testo libero. Se il repository non è disponibile, restituire `empty_invoice` sarebbe falso: propaga invece il guasto con contesto e conserva la causa. Al confine esterno lo si può tradurre senza esporre dettagli interni.
 
-- eccezioni ingoiate;
-- retry su errori permanenti;
-- crash per input utente correggibili;
-- messaggi inutili;
-- log rumorosi;
-- flussi di errore non testati.
+## Quando fermarsi
 
-## Concetto chiave
-
-Un errore recuperabile deve diventare parte del contratto del flusso.
-
-Un errore non recuperabile deve fallire in modo visibile, con contesto sufficiente per diagnosi e senza corrompere stato.
-
-## Esempio
-
-Recuperabile:
-
-```js
-if (!isValidEmail(email)) {
-  return { ok: false, reason: "invalid_email" };
-}
-```
-
-Non recuperabile:
-
-```js
-if (!paymentProvider) {
-  throw new Error("Payment provider is not configured");
-}
-```
-
-Nel primo caso l'utente puo correggere l'input. Nel secondo manca una dipendenza essenziale.
-
-## Dettagli importanti
-
-- Input utente invalido e spesso recuperabile.
-- Configurazione mancante e spesso non recuperabile.
-- Timeout e rete possono essere recuperabili con retry o fallback.
-- Errori di programmazione non dovrebbero essere nascosti.
-- La scelta dipende dal contesto operativo.
-
-## Limiti
-
-- La distinzione non e sempre assoluta.
-- Un errore recuperabile in un job batch puo essere bloccante in una transazione sincrona.
-- Troppi tipi di errore possono complicare l'API.
-- Retry e fallback devono evitare duplicazioni e side effects.
-
-## Errori comuni
-
-- Catturare ogni eccezione e continuare.
-- Mostrare stack trace all'utente finale.
-- Nascondere errori non recuperabili dietro valori di default.
-- Usare messaggi generici senza causa.
-- Fare retry senza idempotenza.
+Una configurazione obbligatoria mancante può rendere impossibile **avviare il servizio**, pur essendo correggibile dall'operatore. Un input sbagliato può far fallire una singola riga di un lotto senza obbligare a terminare l'intero processo. Stabilisci esplicitamente l'unità di fallimento: riga, richiesta, transazione o processo. Evita sia il `catch` che finge successo sia i retry illimitati che moltiplicano il carico o gli effetti.
 
 ## Collegamenti
 
@@ -103,6 +56,5 @@ Nel primo caso l'utente puo correggere l'input. Nel secondo manca una dipendenza
 
 ## Fonti
 
-- Robert C. Martin, *Clean Code*
-- Michael Nygard, *Release It!*
-- Martin Fowler, *Patterns of Enterprise Application Architecture*
+- Amazon Builders' Library, [Timeouts, retries, and backoff with jitter](https://aws.amazon.com/builders-library/timeouts-retries-and-backoff-with-jitter/)
+- Robert C. Martin, *Clean Code*; Michael Nygard, *Release It!*; Martin Fowler, *Patterns of Enterprise Application Architecture*

@@ -25,71 +25,29 @@ title: Codice esplicito vs codice implicito
 
 ## Sintesi
 
-Il **codice esplicito** mostra chiaramente dati, dipendenze, condizioni ed effetti. Il **codice implicito** richiede al lettore di dedurre informazioni nascoste da contesto, convenzioni o stato globale.
+Una dipendenza è implicita quando per prevedere il risultato devi conoscere qualcosa che non compare al punto d'uso: per esempio un client globale, l'orologio di sistema o una configurazione letta durante l'import. Renderla esplicita serve quando quella dipendenza cambia gli esiti o rende difficile verificarli.
 
-Il codice esplicito e spesso piu lungo, ma piu facile da cambiare con sicurezza.
+## Esempio: attendere davvero un invio
 
-## Problema che risolve
-
-Quando troppe informazioni sono implicite, il lettore deve sapere "come funziona tutto" prima di cambiare anche una piccola parte.
-
-Questo aumenta bug, regressioni e dipendenza da conoscenza tribale.
-
-## Concetto chiave
-
-Rendere esplicito significa esporre:
-
-- input necessari;
-- output attesi;
-- dipendenze;
-- stato modificato;
-- errori possibili;
-- assunzioni importanti.
-
-Non significa scrivere piu codice senza motivo, ma ridurre ambiguita.
-
-## Dettagli importanti
-
-- Le dipendenze passate come parametri sono piu visibili di quelle globali.
-- I nomi possono rendere esplicita un'intenzione.
-- Una validazione esplicita ai confini evita assunzioni interne fragili.
-- I default impliciti vanno documentati o resi chiari.
-- Le convenzioni aiutano solo se sono condivise dal team.
-
-## Esempio
-
-Dipendenza implicita:
-
-```js
-function sendWelcomeEmail(user) {
-  emailClient.send(user.email, "Welcome");
-}
-```
-
-Dipendenza esplicita:
+Con un `emailClient` globale, la firma `sendWelcomeEmail(user)` non rivela quale servizio userà il codice. Qui il chiamante fornisce un client il cui metodo `send` restituisce una Promise con la ricevuta di invio:
 
 ```js
 function sendWelcomeEmail(user, emailClient) {
-  emailClient.send(user.email, "Welcome");
+  return emailClient.send(user.email, "Welcome");
 }
 ```
 
-La seconda versione e piu testabile e rende evidente cosa serve alla funzione.
+Il `return` conta quanto il parametro: consente al chiamante di attendere il completamento o gestire il rifiuto. Scrivere solo `emailClient.send(...)` avvierebbe comunque l'operazione, ma restituirebbe `undefined`: un `await` del chiamante non aspetterebbe l'invio.
 
-## Limiti
+## Verifica pratica
 
-- Esplicitare ogni dettaglio puo rendere il codice rumoroso.
-- Alcune convenzioni implicite sono normali nei framework.
-- Dipendenze passate ovunque possono indicare un problema di design.
-- Serve equilibrio tra chiarezza e ergonomia.
+Fornisci un client locale che annota destinatario e messaggio e restituisce una ricevuta nota. Poi fanne uno che restituisce una Promise rifiutata: il chiamante deve ricevere l'errore, non un apparente successo. Questa prova verifica il contratto tra funzione e client; non dimostra che un'email sia stata consegnata.
 
-## Errori comuni
+## Limiti ed errori comuni
 
-- Nascondere dipendenze in singleton o variabili globali.
-- Usare configurazioni invisibili senza fallback chiari.
-- Affidarsi a side effects non documentati.
-- Non validare input esterni.
-- Confondere codice conciso con codice chiaro.
+- Non serve passare ogni costante come parametro. Un formatter deterministico importato da un modulo e un servizio di rete globale hanno costi di verifica diversi.
+- Se dieci funzioni intermedie inoltrano lo stesso client senza usarlo, può essere più leggibile passarlo una volta alla creazione del servizio. Un contenitore globale chiamato `dependencies` non rende esplicito quali servizi siano davvero necessari.
+- Un parametro esplicito non sostituisce la validazione ai confini: qui si assume che `user.email` sia già stato validato.
 
 ## Collegamenti
 
@@ -103,3 +61,4 @@ La seconda versione e piu testabile e rende evidente cosa serve alla funzione.
 
 - Robert C. Martin, *Clean Code*
 - Steve McConnell, *Code Complete*
+- Martin Fowler, [Inversion of Control Containers and the Dependency Injection pattern](https://martinfowler.com/articles/injection.html)

@@ -26,67 +26,41 @@ title: Linter
 
 ## Sintesi
 
-Un **linter** analizza il codice per segnalare problemi di stile, errori probabili, pattern rischiosi e convenzioni non rispettate.
+Un linter cerca nel sorgente violazioni di **regole attive per quel file**. Può trovare un nome non dichiarato senza eseguire una funzione. Non decide invece se la spedizione debba costare 350 o 500 centesimi: entrambi sono programmi validi per il linguaggio.
 
-Nel Clean Code aiuta a spostare controlli ripetitivi dalla code review agli strumenti automatici.
+## Esempio: da quale regola arriva la diagnosi?
 
-## Quando usarlo
+Progetto di prova con ESLint 10 installato localmente. Il file `eslint.config.mjs` abilita esplicitamente due regole sui moduli JavaScript:
 
-- Quando vuoi individuare bug semplici prima dei test.
-- Quando il progetto ha convenzioni condivise.
-- Quando vuoi evitare pattern noti come pericolosi.
-- In editor, pre-commit e CI.
-- Quando vuoi rendere le code review piu concentrate sul design.
-
-## Come funziona
-
-Il linter scansiona i file e applica un insieme di regole.
-
-Alcune regole sono stilistiche, altre cercano bug o problemi di sicurezza. Le regole devono essere poche, utili e sostenibili.
-
-## API / Sintassi
-
-```text
-linter check
-linter fix
+```js
+export default [{
+  files: ["**/*.mjs"],
+  rules: { "no-undef": "error", "prefer-const": "warn" },
+}];
 ```
 
-Molti linter possono correggere automaticamente una parte dei problemi.
+Questo `shipping.mjs` contiene sia un refuso sia una dichiarazione migliorabile:
 
-## Esempio pratico
-
-```text
-1. esegui formatter
-2. esegui linter con fix automatico
-3. correggi manualmente i problemi rimasti
-4. fai passare il controllo in CI
+```js
+export function shippingCents(total) {
+  let fee = 350;
+  return total >= 2000 ? 0 : fees;
+}
 ```
 
-Formatter e linter hanno ruoli diversi ma complementari.
+```sh
+npx --no-install eslint --max-warnings 0 shipping.mjs
+```
 
-## Varianti
+`no-undef` segnala `fees`: non esiste in questo scope. Sta a chi conosce il codice decidere se la risposta corretta sia `fee`. `prefer-const` segnala che il binding `fee` non viene riassegnato; si può dichiarare `const`. La correzione automatica disponibile per una regola non implica che ogni altra diagnosi abbia una correzione automatica sicura.
 
-- Linter di stile.
-- Linter di bug pattern.
-- Linter di sicurezza.
-- Linter specifici per framework.
-- Linter con autofix.
+## Interpretare il risultato
 
-## Errori comuni
+- Con il refuso c'è almeno un errore e il controllo fallisce. Correggendo solo `fees` rimane un warning: il comando mostrato fallisce ancora **per la soglia zero**, non perché un warning sia sempre bloccante.
+- Dopo entrambe le correzioni il comando passa. Cambiando `>=` in `>` continuerà a passare con queste regole: il linter non conosce il contratto della tariffa.
+- Prima di sopprimere una diagnosi verifica regola, file inclusi e ambiente. Un file ignorato o una regola spenta non sono prove di correttezza. Ricontrolla il diff dopo `--fix`; non mescolare riscritture estese con una correzione di logica.
 
-- Attivare troppe regole non rilevanti.
-- Ignorare warning fino a renderli rumore.
-- Disabilitare regole senza motivo.
-- Usare il linter come sostituto dei test.
-- Mescolare formattazione e linting senza sapere quale strumento decide cosa.
-
-## Checklist
-
-- Le regole attive sono utili al progetto?
-- I warning vengono trattati con disciplina?
-- Le eccezioni sono motivate?
-- Il linter gira in CI?
-- Gli autofix sono separati dalle modifiche funzionali quando necessario?
+Per altri linguaggi lo stesso principio si applica a Ruff e Clippy; regole e correzioni non sono intercambiabili. Per ESLint vedi [[Programmazione/JavaScript/Pagine/ESLint|la scheda di configurazione]].
 
 ## Collegamenti
 
@@ -101,3 +75,5 @@ Formatter e linter hanno ruoli diversi ma complementari.
 - ESLint Documentation
 - Ruff Documentation
 - Clippy Documentation
+- [ESLint: no-undef](https://eslint.org/docs/latest/rules/no-undef)
+- [ESLint: CLI, autofix e soglia dei warning](https://eslint.org/docs/latest/use/command-line-interface)

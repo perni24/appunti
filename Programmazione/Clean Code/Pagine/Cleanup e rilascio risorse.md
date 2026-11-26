@@ -26,77 +26,46 @@ title: Cleanup e rilascio risorse
 
 ## Sintesi
 
-Il **cleanup** e il rilascio delle risorse garantiscono che file, connessioni, lock, processi, timer e memoria esterna non restino aperti oltre il necessario.
+Il cleanup deve **tentare** il rilascio di ciò che è stato acquisito. Un `finally` garantisce il passaggio dal codice di rilascio nel normale flusso delle eccezioni, non il successo del rilascio. Se falliscono sia il lavoro sia il cleanup, un secondo `throw` può nascondere il primo.
 
-E una parte essenziale della robustezza, non un dettaglio finale.
+## Esempio: usare un lock preso in prestito
 
-## Quando usarlo
-
-- Quando apri una connessione.
-- Quando acquisisci un lock.
-- Quando crei file temporanei.
-- Quando avvii timer, worker o listener.
-- Quando un errore puo interrompere l'operazione.
-
-## Come funziona
-
-Il cleanup dovrebbe essere legato allo scope o al lifecycle dell'operazione.
-
-Se acquisizione e rilascio sono distanti, aumenta il rischio di dimenticare il rilascio in un ramo di errore.
-
-## API / Sintassi
+`acquire(key)` restituisce un handle con `release()` asincrono. Il callback riceve il lock in prestito: non deve rilasciarlo o avviare attività che continuino a usarlo dopo la conclusione della promessa restituita.
 
 ```js
-const lock = await acquireLock(key);
-
-try {
-  await runCriticalSection();
-} finally {
-  await lock.release();
-}
-```
-
-Il `finally` assicura rilascio anche in caso di eccezione.
-
-## Esempio pratico
-
-```js
-async function writeTempReport(tempFile, report) {
+async function withLock(key, acquire, work) {
+  const lock = await acquire(key);
+  let result;
   try {
-    await tempFile.write(report);
-    return tempFile.path;
-  } catch (error) {
-    await tempFile.remove();
-    throw error;
+    result = await work(lock);
+  } catch (primary) {
+    try {
+      await lock.release();
+    } catch (cleanup) {
+      throw new AggregateError([primary, cleanup], "Lavoro e rilascio falliti");
+    }
+    throw primary;
   }
+  await lock.release();
+  return result;
 }
 ```
 
-Se la scrittura fallisce, il file temporaneo non resta sporco.
+## Quale esito arriva al chiamante?
 
-## Varianti
+| Acquisizione | Lavoro | Rilascio | Esito |
+| --- | --- | --- | --- |
+| Fallita | Non eseguito | Non tentato | Errore di acquisizione |
+| Riuscita | Riuscito | Riuscito | Valore del lavoro |
+| Riuscita | Fallito | Riuscito | Stesso errore del lavoro |
+| Riuscita | Riuscito | Fallito | Errore di rilascio; il lavoro potrebbe avere già prodotto effetti |
+| Riuscita | Fallito | Fallito | `AggregateError.errors` contiene le due cause, in ordine |
 
-- Cleanup sincrono: semplice e immediato.
-- Cleanup asincrono: necessario per rete, file e processi.
-- Scope guard: oggetto che rilascia a fine scope.
-- Cleanup compensativo: annulla effetti gia prodotti.
-- Cleanup best-effort: registra errore ma non blocca tutto.
+## Limiti e checklist
 
-## Errori comuni
+`await work(lock)` è essenziale: restituire direttamente la promessa da un `try/finally` può far partire il rilascio **prima** che il lavoro termini. Il doppio percorso dell'esempio serve a conservare entrambe le cause; se il rilascio non può fallire, un solo `finally` è più semplice.
 
-- Rilasciare risorse solo nel percorso di successo.
-- Ignorare errori durante cleanup.
-- Fare cleanup in punti troppo lontani dall'acquisizione.
-- Lasciare listener o timer attivi nei test.
-- Non gestire cancellazione o timeout.
-
-## Checklist
-
-- Ogni risorsa acquisita ha un rilascio?
-- Il rilascio avviene anche se fallisce un passaggio?
-- Il cleanup e idempotente?
-- Gli errori di cleanup vengono registrati?
-- I test lasciano l'ambiente pulito?
+Rilasciare un lock non annulla i dati scritti. Analogamente, cancellare un file temporaneo dopo una scrittura fallita è un tentativo distinto che può a sua volta fallire. Un arresto del processo può impedire qualsiasi cleanup locale: lease con scadenza, recupero di temporanei e compensazioni sono politiche separate. Nei test conta i tentativi di rilascio e verifica che non avvengano prima della fine del lavoro.
 
 ## Collegamenti
 
@@ -112,3 +81,5 @@ Se la scrittura fallisce, il file temporaneo non resta sporco.
 - Robert C. Martin, *Clean Code*
 - Michael Feathers, *Working Effectively with Legacy Code*
 - Michael Nygard, *Release It!*
+- [ECMAScript: valutazione di try, catch e finally](https://tc39.es/ecma262/multipage/ecmascript-language-statements-and-declarations.html#sec-try-statement)
+- [ECMAScript: AggregateError](https://tc39.es/ecma262/multipage/fundamental-objects.html#sec-aggregate-error-objects)

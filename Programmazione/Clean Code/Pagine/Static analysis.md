@@ -27,66 +27,37 @@ title: Static analysis
 
 ## Sintesi
 
-La **static analysis** analizza il codice senza eseguirlo per trovare errori, vulnerabilita, complessita, dead code, problemi di dipendenze o violazioni di regole architetturali.
+L'analisi statica ricava informazioni dal programma **senza eseguire il codice analizzato**. Anche linting e controllo dei tipi ne sono forme. Per valutare un risultato, chiediti quali file sono stati letti, quali costrutti riconosce l'analizzatore e quale regola sta verificando.
 
-E piu ampia del linting: puo includere sicurezza, qualita, tipi, metriche e dipendenze.
+## Esempio: controllare un confine architetturale
 
-## Quando usarlo
+Supponiamo che nel dominio gli import diretti del modulo standard `sqlite3` debbano stare solo nell'adattatore di persistenza. Una ricerca testuale troverebbe anche commenti e stringhe; l'albero sintattico di Python distingue un'importazione da una spiegazione.
 
-- Prima di merge o release.
-- In progetti con molti moduli.
-- Quando vuoi controllare complessita e duplicazione.
-- Quando devi individuare vulnerabilita note.
-- Quando vuoi applicare regole architetturali.
+```python
+import ast
 
-## Come funziona
 
-Gli strumenti di analisi statica costruiscono informazioni dal codice sorgente: AST, grafo delle dipendenze, tipi, flussi di dati o metriche.
-
-Il risultato deve essere interpretato: non ogni warning e un bug, ma ogni warning ricorrente va governato.
-
-## API / Sintassi
-
-```text
-static-analysis scan
-static-analysis report
-static-analysis fail-on-threshold
+def direct_sqlite_imports(source):
+    findings = []
+    for node in ast.walk(ast.parse(source)):
+        if isinstance(node, ast.Import):
+            names = [alias.name for alias in node.names]
+        elif isinstance(node, ast.ImportFrom) and node.level == 0:
+            names = [node.module or ""]
+        else:
+            continue
+        if any(name.split(".")[0] == "sqlite3" for name in names):
+            findings.append(node.lineno)
+    return sorted(findings)
 ```
 
-In CI si usano soglie e regole per decidere quando bloccare una modifica.
+Per `import sqlite3 as db` e `from sqlite3 import connect` il controllo restituisce il numero di riga. Una stringa che descrive `"import sqlite3"` non è una violazione. La funzione analizza solo il sorgente ricevuto: spetta al chiamante selezionare i moduli del dominio, non l'intero repository. Un errore di sintassi impedisce l'analisi e va riportato, non tradotto in «zero problemi».
 
-## Esempio pratico
+## Come leggere un report
 
-```text
-scan -> trova funzione con complessita alta -> review -> estrai responsabilita -> aggiungi test -> ripeti scan
-```
+Il controllo vede anche un import dentro un ramo non eseguito: per un divieto **sintattico** è corretto, non dimostra che sia stata aperta una connessione. Non segue import transitivi o dinamici e non risolve quale modulo sia effettivamente installato. Un esito vuoto significa «nessun import diretto riconosciuto», non «il dominio non accede mai al database».
 
-L'analisi statica e un segnale per guidare il refactoring, non un giudice assoluto.
-
-## Varianti
-
-- Analisi di sicurezza.
-- Analisi della complessita.
-- Analisi dei tipi.
-- Analisi delle dipendenze.
-- Analisi architetturale.
-- Analisi di duplicazione.
-
-## Errori comuni
-
-- Bloccare il team con regole troppo rumorose.
-- Ignorare risultati fino a renderli inutili.
-- Trattare metriche come obiettivi ciechi.
-- Non distinguere codice nuovo e codice legacy.
-- Non documentare eccezioni accettate.
-
-## Checklist
-
-- Le regole sono adatte al progetto?
-- I falsi positivi sono gestiti?
-- Le soglie sono realistiche?
-- Il report distingue problemi nuovi e storici?
-- Le eccezioni sono tracciate?
+Strumenti più ampi possono seguire flussi di dati, misurare complessità o costruire grafi di dipendenze. Il controllo di vulnerabilità **note nelle versioni dei pacchetti** richiede invece anche inventario e dati sugli avvisi: non si ottiene dal solo AST. Per un progetto legacy distingui nuove violazioni da quelle note e motiva le eccezioni con un responsabile e una condizione di rimozione.
 
 ## Collegamenti
 
@@ -102,3 +73,4 @@ L'analisi statica e un segnale per guidare il refactoring, non un giudice assolu
 - SonarSource Documentation
 - CodeQL Documentation
 - OWASP, *Static Application Security Testing*
+- [Python 3.12: ast.parse, ast.walk e nodi Import/ImportFrom](https://docs.python.org/3.12/library/ast.html)

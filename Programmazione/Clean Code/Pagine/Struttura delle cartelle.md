@@ -26,78 +26,46 @@ title: Struttura delle cartelle
 
 ## Sintesi
 
-La **struttura delle cartelle** e il modo in cui un progetto organizza fisicamente codice, test, documentazione e configurazioni.
+La struttura delle cartelle è una **mappa di navigazione**: stabilisce quale domanda porre per prima quando cerchi del codice. Una struttura per layer chiede «che tipo di lavoro fa?», una per feature «quale funzione del prodotto riguarda?». Nessuna delle due, da sola, impedisce dipendenze indesiderate.
 
-Una buona struttura rende visibili responsabilita e confini senza richiedere spiegazioni continue.
+## Esempio: gli stessi quattro file, due percorsi di ricerca
 
-## Problema che risolve
-
-Una struttura confusa rende difficile capire dove aggiungere codice nuovo. Quando non c'e un posto chiaro, il codice finisce in cartelle generiche come `utils`, `misc`, `shared` o `common`.
-
-Nel tempo queste cartelle diventano punti di accoppiamento.
-
-## Concetto chiave
-
-La struttura dovrebbe riflettere una scelta:
-
-- organizzazione per feature;
-- organizzazione per layer;
-- organizzazione per dominio;
-- organizzazione imposta dal framework;
-- organizzazione ibrida.
-
-La scelta deve essere coerente e adatta al progetto.
-
-## Dettagli importanti
-
-- Per feature: utile quando il dominio ha aree chiare.
-- Per layer: utile in sistemi semplici o framework convenzionali.
-- Per dominio: utile quando le regole di business sono centrali.
-- Nei framework, conviene rispettare convenzioni note se aiutano il team.
-- Le cartelle condivise devono avere regole strette.
-
-## Esempio
-
-Struttura per layer:
+Un'applicazione accetta ordini e resi. In una struttura **per layer**, i due ingressi HTTP stanno insieme e le due regole di dominio anche:
 
 ```text
 src/
-  controllers/
-  services/
-  repositories/
-  models/
+  http/
+    submit-order.mjs
+    request-return.mjs
+  domain/
+    order-policy.mjs
+    return-policy.mjs
 ```
 
-Struttura per feature:
+In una struttura **per feature** si raggruppano l'ingresso e la regola di ciascun caso d'uso:
 
 ```text
 src/
   orders/
-    order-controller.ts
-    order-service.ts
-    order-repository.ts
-  users/
-    user-controller.ts
-    user-service.ts
-    user-repository.ts
+    submit-order.mjs
+    order-policy.mjs
+  returns/
+    request-return.mjs
+    return-policy.mjs
 ```
 
-La seconda rende piu visibili i confini di dominio.
+Per cambiare la finestra di reso e la risposta HTTP quando è scaduta, la seconda mappa porta subito in `returns/`. Per uniformare gli header di tutti gli ingressi, la prima rende più facile trovarli insieme; se la decisione è davvero condivisa, può essere preferibile un unico middleware. **Il comportamento dei quattro file non cambia con il loro indirizzo.**
 
-## Limiti
+## Criteri di scelta
 
-- La struttura perfetta non esiste.
-- Una struttura per feature puo duplicare pattern tra cartelle.
-- Una struttura per layer puo disperdere il dominio.
-- Migrare struttura in un progetto grande va fatto gradualmente.
+- **Per layer:** utile se molti interventi seguono la stessa responsabilità tecnica o il framework impone percorsi. Rischio: una singola feature si ricostruisce attraversando molte directory.
+- **Per feature o area di dominio:** utile quando le richieste cambiano insieme per area. Non creare una feature per ogni schermata se più schermate condividono la stessa regola di dominio.
+- **Ibrida:** puoi usare `orders/` come primo livello e separare `http/` e `domain/` al suo interno quando crescono davvero. Mantieni un solo criterio per livello, rispettando gli ingressi convenzionali del framework.
+- **Condivisione:** estrai `shared/` solo se sai chi possiede il codice e quali dipendenze può avere. Se `shared/` importa da `orders/` e `orders/` importa da `shared/`, la nuova cartella ha nascosto un ciclo, non l'ha risolto.
 
-## Errori comuni
+## Prova prima di migrare
 
-- Copiare una struttura senza capirne il motivo.
-- Cambiare struttura prima che emerga il bisogno.
-- Mescolare feature e layer senza regole.
-- Lasciare cartelle condivise crescere senza controllo.
-- Usare la struttura come sostituto di confini architetturali reali.
+Prendi due modifiche recenti: segna dove le avresti cercate nelle due mappe. Se emerge un vantaggio, sposta **una sola area** senza cambiarne anche la logica; aggiorna import, discovery dei test, risorse e documentazione. Verifica gli ingressi pubblici da un consumatore. Se il progetto è piccolo e si naviga già bene, non c'è un problema da risolvere.
 
 ## Collegamenti
 
@@ -106,8 +74,10 @@ La seconda rende piu visibili i confini di dominio.
 - [[Programmazione/Clean Code/Pagine/Moduli piccoli|Moduli piccoli]]
 - [[Programmazione/Clean Code/Pagine/Confini tra moduli|Confini tra moduli]]
 - [[Programmazione/Clean Code/Pagine/Convenzioni di progetto|Convenzioni di progetto]]
+- [[Programmazione/Strutture di Progetto/Indice Strutture di Progetto|Strutture di progetto per linguaggio e utilizzo]]
 
 ## Fonti
 
-- Robert C. Martin, *Clean Architecture*
-- Eric Evans, *Domain-Driven Design*
+- Martin Fowler, [Presentation Domain Data Layering](https://martinfowler.com/bliki/PresentationDomainDataLayering.html)
+- Angular, [Style guide: Project structure](https://angular.dev/style-guide#project-structure)
+- Robert C. Martin, *Clean Architecture*; Eric Evans, *Domain-Driven Design*

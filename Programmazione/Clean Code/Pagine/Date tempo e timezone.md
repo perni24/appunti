@@ -29,74 +29,47 @@ title: Date tempo e timezone
 
 ## Sintesi
 
-Date, tempo e timezone sono una fonte frequente di bug perche sembrano semplici ma dipendono da fuso orario, formato, calendario, precisione e ambiente.
+«Il 26 ottobre», «le 02:30 a Roma» e «un'ora dopo» non rappresentano lo stesso tipo di dato. **Un istante ordina gli eventi; una data civile appartiene al calendario; una durata misura un intervallo.** Scegli prima che cosa intende il dominio, poi il formato.
 
-Nel Clean Code il tempo va trattato come una dipendenza esplicita, non come dettaglio casuale letto ovunque.
+## Come scegliere
 
-## Quando usarlo
-
-- Quando salvi eventi, scadenze o appuntamenti.
-- Quando confronti date tra utenti o sistemi.
-- Quando generi token, sessioni o timeout.
-- Quando importi dati da formati esterni.
-- Quando scrivi test su comportamenti temporali.
-
-## Come funziona
-
-Una buona gestione del tempo distingue:
-
-- istante assoluto;
-- data locale;
-- orario locale;
-- durata;
-- timezone;
-- formato di presentazione.
-
-Queste cose non dovrebbero essere rappresentate tutte con una stringa generica.
-
-## API / Sintassi
-
-```text
-clock.now() -> instant
-instant + timezone -> local date/time
-local date/time + timezone -> instant
-```
-
-Il clock dovrebbe essere iniettato nei punti testabili.
+| Domanda | Rappresentazione | Errore da evitare |
+| --- | --- | --- |
+| Quando è scaduta la sessione? | Istante, per esempio millisecondi dall'epoch o timestamp con offset | Confrontare stringhe con offset differenti |
+| Qual è il giorno del compleanno? | Data civile, senza ora e senza fuso | Trasformarla in mezzanotte UTC e mostrarla come giorno precedente |
+| Quando suona ogni giorno alle 09:00 a Roma? | Ora locale, regola di ricorrenza e zona IANA `Europe/Rome` | Sommare sempre 24 ore al primo istante |
+| Quanto è durata una ricerca? | Differenza tra letture di un orologio monotono | Usare un orologio civile che può essere corretto durante la misura |
 
 ## Esempio pratico
 
+Il 26 ottobre 2025 a Roma, al ritorno all'ora solare, le **02:30 si presentano due volte**. L'offset numerico distingue i due istanti; il nome della zona permette di ricostruire l'ora civile di ciascuno.
+
 ```js
-function isExpired(expiresAt, now) {
-  return now >= expiresAt;
+const firstMs = Date.parse("2025-10-26T02:30:00+02:00");
+const secondMs = Date.parse("2025-10-26T02:30:00+01:00");
+const romeClock = new Intl.DateTimeFormat("it-IT", {
+  timeZone: "Europe/Rome", hour: "2-digit", minute: "2-digit", hourCycle: "h23",
+});
+
+function isExpired(expiresAtMs, nowMs) {
+  if (![expiresAtMs, nowMs].every(Number.isSafeInteger)) {
+    throw new TypeError("Attesi istanti in millisecondi interi");
+  }
+  return nowMs >= expiresAtMs;
 }
 ```
 
-Passare `now` come parametro rende il comportamento testabile e non dipendente dall'orologio di sistema.
+`romeClock.format(firstMs)` e `romeClock.format(secondMs)` mostrano entrambi `02:30`, ma la differenza è **3.600.000 ms**. Per una scadenza al secondo istante, al primo non è ancora scaduta; a parità di istante sì. Passare `nowMs` consente di provare entrambi i casi senza aspettare.
 
-## Varianti
+## L'operazione inversa
 
-- UTC per salvataggio di istanti.
-- Timezone locale per visualizzazione e pianificazione.
-- Date-only per compleanni o scadenze senza ora.
-- Clock finto nei test.
-- Librerie dedicate quando la standard library e insufficiente.
-
-## Errori comuni
-
-- Salvare date locali senza timezone.
-- Confrontare stringhe invece di istanti.
-- Usare il clock globale in logica di dominio.
-- Ignorare ora legale e cambi timezone.
-- Mescolare formato di storage e formato di visualizzazione.
+Da **istante + zona** ricavi un'ora civile. Da **ora civile + zona** puoi ottenere due istanti (ora ripetuta), uno, oppure nessuno: a Roma il 30 marzo 2025 si passò dalle 01:59 alle 03:00. Un modulo di prenotazione deve scegliere una regola esplicita: per esempio rifiutare le ore inesistenti e chiedere quale occorrenza si intende per quelle doppie. `Intl.DateTimeFormat` formatta istanti: non effettua questa scelta. Un offset fisso non sostituisce le regole di una zona per eventi futuri.
 
 ## Checklist
 
-- Stai rappresentando un istante o una data locale?
-- Il timezone e esplicito?
-- I test controllano il clock?
-- Il formato esterno e validato?
-- Storage e presentazione sono separati?
+- Il nome indica l'unità, soprattutto se un'API lavora in secondi e l'altra in millisecondi?
+- La zona è quella del dominio o dell'utente, non quella implicita del server?
+- I test includono l'istante esatto della scadenza e un passaggio di ora legale?
 
 ## Collegamenti
 
@@ -109,5 +82,7 @@ Passare `now` come parametro rende il comportamento testabile e non dipendente d
 ## Fonti
 
 - Martin Fowler, *TimeNarrative*
-- IANA Time Zone Database
 - ISO 8601
+- [IANA: banca dati dei fusi orari](https://www.iana.org/time-zones)
+- [ECMA-402: Intl.DateTimeFormat](https://tc39.es/ecma402/#datetimeformat-objects)
+- [ECMAScript: formato delle stringhe data e ora](https://tc39.es/ecma262/multipage/numbers-and-dates.html#sec-date-time-string-format)

@@ -27,69 +27,26 @@ title: Codice testabile
 
 ## Sintesi
 
-Il **codice testabile** e codice progettato in modo che comportamento, dipendenze e stati siano osservabili e controllabili nei test.
+Un comportamento è testabile se si possono **controllare le condizioni di partenza** e **osservare il risultato o l'effetto che conta**. Per provare una scadenza non serve attendere un'ora né leggere campi privati: serve scegliere l'istante iniziale e osservare la scadenza passata all'archivio.
 
-Non significa scrivere codice solo per i test, ma evitare design che rendono i test inutilmente difficili.
+## Esempio: un promemoria tra un'ora
 
-## Problema che risolve
-
-Codice difficile da testare spesso segnala problemi di design:
-
-- dipendenze globali;
-- side effects nascosti;
-- funzioni troppo grandi;
-- stato condiviso;
-- tempo e random non controllabili;
-- logica di dominio mescolata con framework o I/O.
-
-## Concetto chiave
-
-Un buon design rende semplice isolare decisioni e verificare effetti.
-
-La logica pura dovrebbe essere testabile senza database, rete o file system. Gli effetti andrebbero testati nei punti di integrazione appropriati.
-
-## Esempio
-
-Difficile da testare:
+Il modulo `reminder.mjs` usa istanti Unix in **millisecondi**, come `Date.now()`. Il codice di avvio passa `Date.now` come `nowMs` e l'operazione di persistenza come `save`. L'ID della fattura è già validato.
 
 ```js
-function createToken(user) {
-  return sign(user.id, process.env.SECRET, { expiresAt: Date.now() + 3600 });
+export async function scheduleReminder(invoiceId, { nowMs, save }) {
+  const dueAtMs = nowMs() + 60 * 60 * 1000;
+  return save({ invoiceId, dueAtMs });
 }
 ```
 
-Piu testabile:
+Con un orologio che restituisce 1000, l'archivio deve ricevere `dueAtMs: 3601000`. Aggiungere solo 3600 a `Date.now()` sposterebbe la scadenza di **3,6 secondi**, non di un'ora. Qui «tra un'ora» è una durata trascorsa, non una regola di calendario o il formato richiesto da una libreria di token.
 
-```js
-function createToken(user, secret, now) {
-  return sign(user.id, secret, { expiresAt: now + 3600 });
-}
-```
+## Dove fermare il test
 
-Tempo e configurazione diventano input espliciti.
+Un sostituto locale di `save` può registrare il dato ricevuto e restituire un ID noto. Si controllano così la scadenza **e** la promessa che l'ID o l'errore arrivino al chiamante. Questa prova non dimostra che un job parta davvero, che la scrittura sia durabile o che un server usi la stessa unità: quelle sono prove dell'adattatore o dell'integrazione.
 
-## Dettagli importanti
-
-- Dipendenze esplicite rendono i test piu controllabili.
-- Funzioni piccole riducono setup e casi da coprire.
-- I side effects dovrebbero essere confinati.
-- Testabilita e leggibilita spesso migliorano insieme.
-- Un test difficile puo indicare responsabilita confuse.
-
-## Limiti
-
-- Non tutto deve essere unit-testato in isolamento.
-- Mock eccessivi possono testare implementazione invece di comportamento.
-- Alcuni bug emergono solo in integrazione.
-- Rendere tutto configurabile puo appesantire API semplici.
-
-## Errori comuni
-
-- Usare singleton globali per database, clock o configurazione.
-- Testare dettagli interni invece di comportamento osservabile.
-- Mescolare domain logic e framework.
-- Scrivere codice con side effects in costruttori o import.
-- Ignorare il feedback dei test difficili da scrivere.
+Non introdurre un contenitore globale di servizi per rendere configurabili due operazioni. Il test completo, con una sola azione e due osservazioni dello stesso comportamento, è in [[Programmazione/Clean Code/Pagine/Arrange Act Assert|Arrange Act Assert]].
 
 ## Collegamenti
 
@@ -102,6 +59,5 @@ Tempo e configurazione diventano input espliciti.
 
 ## Fonti
 
-- Michael Feathers, *Working Effectively with Legacy Code*
-- Kent Beck, *Test Driven Development*
-- Robert C. Martin, *Clean Code*
+- Martin Fowler, [Clock Wrapper](https://martinfowler.com/bliki/ClockWrapper.html)
+- Michael Feathers, *Working Effectively with Legacy Code*; Kent Beck, *Test Driven Development*; Robert C. Martin, *Clean Code*

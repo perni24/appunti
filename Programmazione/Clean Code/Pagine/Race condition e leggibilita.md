@@ -26,76 +26,47 @@ title: Race condition e leggibilita
 
 ## Sintesi
 
-Una **race condition** si verifica quando il risultato dipende dall'ordine non garantito di operazioni concorrenti.
+Una **race condition** è un difetto per cui un ordine di esecuzione consentito viola una regola del programma. Non serve che due thread scrivano nello stesso istante. Due ricerche su un singolo event loop possono terminare in ordine inverso e mostrare all'utente il risultato di una domanda che non sta più facendo.
 
-Nel Clean Code non basta usare primitivi di concorrenza: il codice deve rendere leggibile dove esistono rischi di interleaving.
+## Esempio: vince l'ultima ricerca avviata
 
-## Problema che risolve
-
-Le race condition sono difficili perche spesso:
-
-- appaiono solo sotto carico;
-- non si riproducono sempre;
-- dipendono da timing;
-- passano i test locali;
-- vengono mascherate da retry o cache;
-- causano dati corrotti senza crash evidente.
-
-## Concetto chiave
-
-Un codice concorrente leggibile mostra chiaramente:
-
-- quale stato e condiviso;
-- quale operazione deve essere indivisibile;
-- quale lock, transazione o operazione atomica protegge il dato;
-- cosa succede se due operazioni arrivano insieme.
-
-La leggibilita riduce la probabilita di protezioni incomplete.
-
-## Dettagli importanti
-
-- La sequenza `read -> modify -> write` e spesso pericolosa.
-- Le transazioni database sono una forma di protezione.
-- I lock devono avere scope piccolo e nome chiaro.
-- L'idempotenza riduce danni da retry e duplicati.
-- I test concorrenti aiutano, ma non dimostrano assenza di race.
-
-## Esempio
-
-Fragile:
+La regola della schermata è «mostra il risultato della richiesta più **recente per avvio**», non «mostra qualunque risposta arrivi per ultima». Ogni schermata crea la propria funzione `search`; `render` è sincrona.
 
 ```js
-const stock = await repository.getStock(productId);
-
-if (stock > 0) {
-  await repository.setStock(productId, stock - 1);
+function latestSearch(load, render) {
+  let latest;
+  return async function search(query) {
+    const ticket = Symbol();
+    latest = ticket;
+    let rows;
+    try {
+      rows = await load(query);
+    } catch (error) {
+      if (latest !== ticket) return "obsolete";
+      throw error;
+    }
+    if (latest !== ticket) return "obsolete";
+    render(rows);
+    return "shown";
+  };
 }
 ```
 
-Due richieste possono leggere lo stesso stock e vendere piu pezzi del disponibile.
+| Passo | Evento | Effetto visibile |
+| --- | --- | --- |
+| 1 | L'utente cerca A, poi B | B diventa la richiesta corrente |
+| 2 | B termina per prima | Si mostrano i risultati di B |
+| 3 | A termina o fallisce | A è obsoleta: non sovrascrive B e non mostra un errore tardivo |
 
-Piu sicuro:
+Due ricerche con lo **stesso testo** sono ancora due richieste: per questo il confronto usa un ticket e non la stringa. Un errore della ricerca corrente arriva al chiamante. Il controllo impedisce un aggiornamento obsoleto dell'interfaccia; non interrompe il lavoro già avviato.
 
-```js
-await repository.decrementStockIfAvailable(productId);
-```
+## Quando serve una protezione diversa
 
-Il nome segnala che decremento e controllo devono essere un'unica operazione protetta.
+Per un risultato di ricerca è lecito scartare il vecchio esito. Per la prenotazione dell'ultimo pezzo non basta ignorare una risposta: controllo della disponibilità e decremento vanno eseguiti nell'archivio che possiede lo stock. Vedi [[Programmazione/Clean Code/Pagine/Operazioni atomiche|Operazioni atomiche]]. Un nome come `decrementIfAvailable` non dimostra che l'implementazione mantenga quella promessa.
 
-## Limiti
+## Verifica
 
-- Alcune race sono a livello di sistema distribuito, non di singolo processo.
-- Lock e transazioni possono ridurre throughput.
-- Non tutte le incoerenze richiedono consistenza forte.
-- Alcuni bug richiedono test sotto carico o analisi specifica.
-
-## Errori comuni
-
-- Proteggere solo una parte della sequenza critica.
-- Usare lock troppo ampi e creare colli di bottiglia.
-- Fare retry senza idempotenza.
-- Ignorare concorrenza a livello database.
-- Nascondere operazioni concorrenti dietro helper generici.
+Sblocca B, osserva cosa viene mostrato, poi sblocca A; ripeti con A che fallisce. È un test dell'ordine problematico, non una gara tra due timeout scelti a caso. Provare entrambi gli ordini è più informativo che eseguire molte volte solo quello abituale.
 
 ## Collegamenti
 
@@ -111,3 +82,4 @@ Il nome segnala che decremento e controllo devono essere un'unica operazione pro
 - Brian Goetz, *Java Concurrency in Practice*
 - Martin Kleppmann, *Designing Data-Intensive Applications*
 - Michael Nygard, *Release It!*
+- [ECMAScript: sospensione e ripresa di una funzione con Await](https://tc39.es/ecma262/multipage/control-abstraction-objects.html#await)

@@ -27,63 +27,34 @@ title: Performance e leggibilita
 
 ## Sintesi
 
-**Performance e leggibilita** non sono obiettivi opposti in modo assoluto. Spesso codice semplice, diretto e ben strutturato e anche abbastanza veloce.
+La prima domanda non è «un ciclo è più veloce di due?», ma **«quale comportamento devo conservare, e quale costo voglio ridurre?»**. Un indice può rendere il codice più leggibile e ridurre le ricerche, ma ha un costo di costruzione e occupa memoria. Se lo usi una sola volta su tre elementi, la scansione più semplice può bastare.
 
-Il problema nasce quando si sacrifica chiarezza per ottimizzazioni non misurate, oppure quando si ignora una criticita reale per mantenere codice comodo.
+## Esempio: filtrare un elenco senza cambiare il risultato
 
-## Problema che risolve
-
-Il codice puo peggiorare in due direzioni:
-
-- ottimizzazioni premature che rendono difficile capire il comportamento;
-- codice molto leggibile ma inefficiente nei punti realmente critici.
-
-Un buon approccio distingue tra codice normale e hot path misurati.
-
-## Concetto chiave
-
-Prima rendi il codice corretto e leggibile. Poi misura. Solo dopo ottimizza dove serve.
-
-Quando ottimizzi, conserva intenzione e confini:
-
-- isola il codice piu complesso;
-- nomina la ragione dell'ottimizzazione;
-- aggiungi test e benchmark;
-- documenta il vincolo se non e evidente.
-
-## Dettagli importanti
-
-- La leggibilita riduce bug e costo di manutenzione.
-- Le performance vanno valutate con dati reali.
-- Un algoritmo migliore puo essere piu leggibile e piu veloce.
-- Micro-ottimizzazioni senza misura raramente valgono il costo.
-- I vincoli di latenza, memoria e throughput devono essere espliciti.
-
-## Esempio
-
-Codice leggibile ma potenzialmente inefficiente:
+Un export deve includere solo gli utenti dei gruppi abilitati. Gli ID sono stringhe, i record sono ordinari e i due array sono densi. Il contratto richiede di conservare **ordine e ripetizioni degli utenti**, non l'ordine dei gruppi.
 
 ```js
-const activeUsers = users.filter((user) => user.active);
-const emails = activeUsers.map((user) => user.email);
+function allowedUsersScan(users, allowedGroups) {
+  return users.filter(user => allowedGroups.includes(user.groupId));
+}
+
+function allowedUsersIndexed(users, allowedGroups) {
+  const allowed = new Set(allowedGroups);
+  return users.filter(user => allowed.has(user.groupId));
+}
 ```
 
-In un punto non critico va bene. In un hot path con milioni di elementi, puo essere meglio fondere i passaggi o usare streaming, ma solo dopo misura.
+Entrambe le versioni restituiscono un nuovo array con gli stessi riferimenti agli utenti ammessi. Un gruppo duplicato nella lista dei permessi non duplica l'utente. Per `N` utenti e `M` gruppi, nel caso di nessuna corrispondenza la prima versione esamina `N × M` voci di gruppo; la seconda costruisce l'indice una volta e fa `N` interrogazioni. Lo standard richiede accessi medi sublineari per `Set`, non promette una durata fissa per ogni chiamata.
+
+## Come scegliere
+
+- Includi la **costruzione del Set** nella misura se avviene a ogni export. Escluderla significa confrontare la scansione con un indice già pronto, cioè uno scenario diverso.
+- Se molti export condividono gli stessi permessi, l'indice è riutilizzabile solo fino al loro aggiornamento. Indica chi lo ricostruisce.
+- Prova insieme casi frequenti, rari e assenti, con le dimensioni attese. Confronta sia la durata dell'intero export sia il consumo di memoria, prima di accettare una variante più complessa.
 
 ## Limiti
 
-- Alcuni domini richiedono performance come requisito primario.
-- Il codice ottimizzato puo richiedere strutture meno intuitive.
-- I benchmark possono mentire se non rappresentano l'uso reale.
-- La leggibilita per un esperto di dominio puo essere diversa dalla leggibilita per un principiante.
-
-## Errori comuni
-
-- Ottimizzare senza profiler.
-- Cambiare strutture dati senza misurare l'impatto.
-- Rendere tutto piu complesso per casi rari.
-- Ignorare prestazioni degradate in produzione.
-- Non lasciare test o commenti sulle ottimizzazioni non ovvie.
+Il test di equivalenza protegge il risultato; il conteggio delle ricerche spiega **perché** i costi possono divergere. Nessuno dei due misura da solo la latenza in produzione. Per il diverso caso di due passaggi `filter` e `map` con una raccolta intermedia, vedi [[Programmazione/Clean Code/Pagine/Allocazioni inutili|Allocazioni inutili]].
 
 ## Collegamenti
 
@@ -99,3 +70,5 @@ In un punto non critico va bene. In un hot path con milioni di elementi, puo ess
 - Donald Knuth, *Structured Programming with go to Statements*
 - Martin Fowler, *Refactoring*
 - Brendan Gregg, *Systems Performance*
+- [ECMAScript: requisiti di accesso di Set](https://tc39.es/ecma262/multipage/keyed-collections.html#sec-set-objects)
+- [ECMAScript: Array.prototype.includes](https://tc39.es/ecma262/multipage/indexed-collections.html#sec-array.prototype.includes)

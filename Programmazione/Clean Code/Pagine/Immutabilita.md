@@ -26,74 +26,41 @@ title: Immutabilita
 
 ## Sintesi
 
-L'**immutabilita** e la scelta di rappresentare dati che, una volta creati, non vengono modificati.
+**Non modificare l'input durante una chiamata** e **restituire un valore che nessuno potrà alterare in seguito** sono garanzie diverse. Una copia superficiale può soddisfare la prima ma non la seconda: il nuovo contenitore mantiene i riferimenti agli stessi oggetti annidati.
 
-Nel Clean Code riduce sorpresa e ambiguita: invece di cambiare un valore esistente, il codice crea un nuovo valore che rappresenta il nuovo stato.
+## Esempio: aggiornamento della fattura o ricevuta storica?
 
-## Problema che risolve
-
-La mutazione condivisa rende difficile rispondere a domande semplici:
-
-- chi ha cambiato questo valore?
-- in quale momento e cambiato?
-- esiste uno stato intermedio non valido?
-- due parti del programma stanno guardando lo stesso oggetto?
-- un test ha lasciato stato sporco per il test successivo?
-
-## Concetto chiave
-
-Con l'immutabilita, i dati diventano piu simili a fatti che a contenitori modificabili.
-
-Questo non significa che il sistema non cambi. Significa che il cambiamento viene rappresentato creando nuove versioni dei dati, invece di alterare quella vecchia in modo implicito.
-
-## Dettagli importanti
-
-- I value objects sono candidati naturali all'immutabilita.
-- L'immutabilita protegge invarianti e rende piu sicuro il passaggio di dati.
-- Nei linguaggi con copie superficiali bisogna distinguere immutabilita esterna e interna.
-- Le strutture persistenti possono ridurre il costo delle copie.
-- L'immutabilita rende piu semplice ragionare su concorrenza e cache.
-
-## Esempio
-
-Mutazione diretta:
+Una fattura contiene un identificatore testuale `id`, un totale intero in centesimi `totalCents` e un array di righe. Il chiamante passa una `Date` valida. Per aggiornare la vista corrente senza toccare l'oggetto precedente si potrebbe scrivere:
 
 ```js
-function markPaid(invoice) {
-  invoice.status = "paid";
-  invoice.paidAt = new Date();
-  return invoice;
+function withPayment(invoice, paidAt) {
+  return { ...invoice, status: "paid", paidAt };
 }
 ```
 
-Nuovo valore:
+Durante la chiamata la fattura originale non viene modificata. Ma la nuova fattura condivide `lines` con la vecchia e contiene proprio la `Date` del chiamante. Se domani il chiamante usa `paidAt.setTime(0)`, cambia anche il valore letto dalla nuova fattura. Congelare soltanto il contenitore con `Object.freeze` non elimina questi riferimenti.
+
+Per conservare **una ricevuta con i soli dati necessari**, proietta invece su campi primitivi. Non è una copia completa della fattura: il diverso nome segnala un diverso contratto.
 
 ```js
-function markPaid(invoice, paidAt) {
-  return {
-    ...invoice,
-    status: "paid",
-    paidAt,
-  };
+function paymentSnapshot(invoice, paidAt) {
+  const paidAtMs = paidAt.getTime();
+  if (!Number.isFinite(paidAtMs)) throw new RangeError("Istante di pagamento non valido");
+  return Object.freeze({
+    invoiceId: invoice.id,
+    totalCents: invoice.totalCents,
+    paidAtMs,
+  });
 }
 ```
 
-La seconda versione evita di modificare l'oggetto ricevuto.
+Qui non passa alla ricevuta né l'array né l'oggetto `Date`. Con l'ID testuale e il totale numerico previsti, congelare il record basta a mantenerne stabili i dati. Se servono anche le righe storiche occorre decidere quali campi conservare e come isolarli: aggiungere `lines: invoice.lines` reintrodurrebbe il problema.
 
-## Limiti
+## Criterio di scelta
 
-- Copiare strutture molto grandi puo avere un costo.
-- Alcune API o framework lavorano in modo mutabile.
-- Database e UI restano sistemi stateful.
-- L'immutabilita non sostituisce una buona modellazione del dominio.
-
-## Errori comuni
-
-- Usare spread o copie superficiali credendo di proteggere oggetti annidati.
-- Mescolare oggetti immutabili e mutabili senza convenzioni chiare.
-- Rendere immutabile un dato ma lasciare mutabili le sue dipendenze interne.
-- Creare copie inutili in hot path senza misurare.
-- Confondere immutabilita con assenza di eventi o cambiamenti nel programma.
+- Per aggiornare lo stato di un'interfaccia, condividere rami che tutti trattano come immutabili evita copie inutili. Per il procedimento vedi [[Programmazione/Clean Code/Pagine/Stato mutabile e immutabile|Stato mutabile e immutabile]].
+- Per un documento storico, conserva i valori validi **al momento dell'evento**; una copia completa del grafo può costare di più senza rispondere meglio al requisito.
+- L'immutabilità non verifica che un pagamento sia avvenuto e non impedisce a due scrittori di sovrascrivere la versione corrente. Sono vincoli diversi, da proteggere altrove.
 
 ## Collegamenti
 
@@ -106,6 +73,6 @@ La seconda versione evita di modificare l'oggetto ricevuto.
 
 ## Fonti
 
-- Eric Evans, *Domain-Driven Design*
-- Martin Fowler, *Refactoring*
-- Eric Elliott, *Composing Software*
+- React, [Updating Objects in State](https://react.dev/learn/updating-objects-in-state)
+- MDN, [Object.freeze(): congelamento superficiale](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object/freeze)
+- Eric Evans, *Domain-Driven Design*; Martin Fowler, *Refactoring*; Eric Elliott, *Composing Software*

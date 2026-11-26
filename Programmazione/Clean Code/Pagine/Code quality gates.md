@@ -28,78 +28,47 @@ title: Code quality gates
 
 ## Sintesi
 
-I **code quality gates** sono controlli automatici che una modifica deve superare prima di essere accettata, fusa o rilasciata.
+Un controllo produce un risultato; un **quality gate** collega quel risultato a una decisione: «questa modifica può essere integrata?». Un job rosso segnala un problema, ma **il solo file YAML non impedisce il merge**. Serve una regola del repository che richieda quel controllo sul branch di destinazione.
 
-Servono a rendere ripetibili gli standard minimi di qualita.
+## Esempio: un piccolo gate di pull request
 
-## Quando usarlo
+Esempio per un **progetto dimostrativo**, non per il workflow di pubblicazione di questo vault. Nella radice si trovano il modulo e i test della nota [[Programmazione/Clean Code/Pagine/Coverage|Coverage]], incluso il caso di soglia di [[Programmazione/Clean Code/Pagine/Mutation testing|Mutation testing]]. Bastano Node 24 e la sua libreria standard: non c'è un pacchetto da installare. Un possibile `.github/workflows/quality.yml`:
 
-- In pull request.
-- Prima del merge su branch principali.
-- Prima di release o deploy.
-- Quando vuoi evitare regressioni su test, lint, coverage o sicurezza.
-- Quando il team cresce e la review manuale non basta.
-
-## Come funziona
-
-Un quality gate puo controllare:
-
-- formatter;
-- linter;
-- type checking;
-- test;
-- coverage;
-- static analysis;
-- vulnerabilita;
-- build;
-- migrazioni o controlli specifici.
-
-Il gate deve fallire con messaggi utili e azioni chiare.
-
-## API / Sintassi
-
-```text
-format check -> lint -> typecheck -> test -> coverage -> static analysis -> merge allowed
+```yaml
+name: Quality
+on: [pull_request]
+permissions:
+  contents: read
+jobs:
+  tariff-contract:
+    name: tariff-contract
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v6
+      - uses: actions/setup-node@v6
+        with:
+          node-version: '24'
+      - name: Controlla la sintassi
+        run: node --check shipping.mjs
+      - name: Verifica il contratto
+        run: node --test shipping.test.mjs
 ```
 
-La sequenza dipende dal progetto, ma deve essere automatica e riproducibile localmente.
+Entrambi i comandi sono riproducibili dalla radice del progetto. Il primo non esegue la tariffa; il secondo controlla i risultati attesi. Per bloccare il merge, configura un ruleset o la protezione del branch con `tariff-contract` come status check richiesto, e verifica la regola con una PR di prova. Mantieni un nome di job stabile e univoco. Il gate qui **non** fa deploy e non impone una percentuale di coverage.
 
-## Esempio pratico
+## Come scegliere cosa blocca
 
-```text
-Pull request bloccata se:
-- formatter non passa
-- typecheck fallisce
-- test falliscono
-- coverage sul codice nuovo scende sotto soglia
-- static analysis trova vulnerabilita critica
-```
+| Fase | Segnale utile | Decisione |
+| --- | --- | --- |
+| Editor o pre-commit | Feedback rapido su stile e modifiche preparate | Correggi prima del push; non è una garanzia per il branch |
+| Pull request | Controlli ripetibili su versione proposta: tipi, lint, test o build secondo il progetto | Blocca al fallimento dei controlli dichiarati obbligatori |
+| Prima della release | Costi maggiori: integrazione, migrazioni, verifiche specifiche di rilascio | Non promuovere un artefatto non verificato |
 
-Il gate protegge il branch principale.
+## Errori comuni e verifica
 
-## Varianti
+Non mascherare un controllo obbligatorio con `continue-on-error`. Non rendere obbligatorio un workflow che per alcuni percorsi non parte affatto senza prevedere come arriverà il check richiesto. Se usi una merge queue, configura anche l'evento richiesto per quella coda: il solo `pull_request` del frammento non la copre. Per le eccezioni documenta il rischio accettato, chi può autorizzarle e quando scadono.
 
-- Gate locale in pre-commit.
-- Gate su pull request.
-- Gate su branch principale.
-- Gate pre-release.
-- Gate differenziale solo sul codice modificato.
-
-## Errori comuni
-
-- Creare gate lenti e rumorosi.
-- Bloccare per warning non rilevanti.
-- Non permettere riproduzione locale.
-- Usare soglie uguali per codice legacy e codice nuovo.
-- Ignorare eccezioni e override.
-
-## Checklist
-
-- I controlli sono veloci abbastanza?
-- Gli errori sono comprensibili?
-- Il gate distingue problemi nuovi e storici?
-- Gli sviluppatori possono eseguire i controlli localmente?
-- Le eccezioni sono tracciate?
+Prova sia il percorso verde sia un errore significativo: con `>` al posto di `>=` la sintassi resta valida, ma il test sull'importo esattamente alla soglia deve fermare il job. Un test locale dei comandi non certifica le impostazioni di GitHub.
 
 ## Collegamenti
 
@@ -117,3 +86,5 @@ Il gate protegge il branch principale.
 - GitHub Actions Documentation
 - SonarSource Documentation
 - Martin Fowler, *Continuous Integration*
+- [GitHub: required status checks e branch protetti](https://docs.github.com/en/repositories/configuring-branches-and-merges-in-your-repository/managing-protected-branches/about-protected-branches)
+- [GitHub: risolvere i problemi dei controlli richiesti](https://docs.github.com/en/repositories/configuring-branches-and-merges-in-your-repository/troubleshooting-required-status-checks)

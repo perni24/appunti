@@ -27,70 +27,43 @@ title: Ownership concettuale
 
 ## Sintesi
 
-L'**ownership concettuale** indica quale parte del sistema possiede un dato, una risorsa o una decisione.
+**Possedere una decisione non significa possedere ogni dato che la riguarda.** Il servizio pagamenti può attestare che un pagamento è riuscito; il modello dell'ordine decide se quella conferma è compatibile con il suo stato. Il repository persiste l'esito, ma non è un secondo posto in cui riscrivere la regola.
 
-Non riguarda solo memoria o linguaggi specifici: riguarda responsabilita, confini e autorita di modifica.
+## Esempio: a chi spetta segnare l'ordine come pagato?
 
-## Problema che risolve
-
-Quando nessuno possiede davvero un concetto, tutti lo modificano.
-
-Questo porta a:
-
-- regole duplicate;
-- stato modificato da moduli lontani;
-- confini deboli;
-- bug da ordine di esecuzione;
-- responsabilita distribuite male;
-- difficolta nel refactoring.
-
-## Concetto chiave
-
-Per ogni dato importante dovrebbe essere chiaro:
-
-- chi lo crea;
-- chi puo modificarlo;
-- chi lo valida;
-- chi lo persiste;
-- chi lo espone;
-- chi lo elimina o invalida.
-
-L'ownership riduce ambiguita e accoppiamento.
-
-## Dettagli importanti
-
-- Un modulo puo leggere un dato senza possederlo.
-- Chi possiede una regola dovrebbe proteggere i suoi invarianti.
-- Trasferire ownership deve essere un evento esplicito.
-- Le API pubbliche dovrebbero evitare di esporre dettagli modificabili.
-- Nel dominio, ownership e responsabilita spesso coincidono.
-
-## Esempio
-
-Se `OrderService`, `PaymentService` e `InvoiceService` modificano tutti lo stato `order.status`, nessuno controlla davvero il lifecycle dell'ordine.
-
-Una soluzione piu chiara e far passare le transizioni attraverso il modello o il servizio che possiede l'ordine:
+Il contratto di questo ordine prevede un solo pagamento. Alla prima conferma registra l'identificativo; se arriva di nuovo la stessa conferma, non cambia nulla. Una conferma per un pagamento diverso è un conflitto, non un aggiornamento silenzioso.
 
 ```js
-order.markAsPaid(paymentId);
+class OrderPayment {
+  #paymentId = null;
+
+  confirm(paymentId) {
+    if (typeof paymentId !== "string" || paymentId.trim() === "") {
+      throw new TypeError("Identificativo pagamento mancante");
+    }
+    if (this.#paymentId === paymentId) return "already_recorded";
+    if (this.#paymentId !== null) throw new Error("Pagamento in conflitto");
+    this.#paymentId = paymentId;
+    return "recorded";
+  }
+
+  snapshot() {
+    return { status: this.#paymentId === null ? "pending" : "paid", paymentId: this.#paymentId };
+  }
+}
 ```
 
-La regola resta nel posto responsabile.
+`snapshot()` offre alla fatturazione una copia composta solo di valori primitivi. Cambiare `snapshot().status` non modifica l'ordine. Gli identificativi non vuoti sono opachi: il confronto non rimuove spazi né cambia maiuscole. La conferma presuppone un evento già verificato; non effettua addebiti né autentica il mittente.
+
+## Lettura, prestito e trasferimento
+
+- **Lettura:** un altro servizio può mostrare la proiezione, non modificare l'ordine attraverso di essa.
+- **Prestito:** un metodo può usare una connessione del chiamante senza acquisire il diritto di chiuderla.
+- **Trasferimento:** se una funzione restituisce un file aperto delegandone la chiusura, il contratto deve dire quando passa questa responsabilità, anche in caso di errore.
 
 ## Limiti
 
-- In sistemi distribuiti l'ownership puo essere condivisa o eventuale.
-- Alcune decisioni attraversano piu domini.
-- L'ownership troppo rigida puo rallentare evoluzione e integrazione.
-- Serve disciplina nei confini, non solo nomi di moduli.
-
-## Errori comuni
-
-- Esporre oggetti mutabili e considerarli incapsulati.
-- Far modificare lo stesso dato da molti servizi.
-- Mettere regole di ownership solo nella documentazione.
-- Confondere ownership con semplice importazione di un modulo.
-- Duplicare copie dello stesso stato senza fonte autorevole.
+Il campo privato protegge **una singola istanza**, non due processi che hanno caricato lo stesso ordine. Se le conferme arrivano in parallelo, la persistenza deve rilevare i conflitti, per esempio con un aggiornamento condizionale sulla versione. L'idempotenza della transizione locale non garantisce che una fattura o un addebito esterno vengano emessi una sola volta.
 
 ## Collegamenti
 
@@ -106,3 +79,4 @@ La regola resta nel posto responsabile.
 - Eric Evans, *Domain-Driven Design*
 - Robert C. Martin, *Clean Architecture*
 - Martin Fowler, *Patterns of Enterprise Application Architecture*
+- [Martin Fowler: aggregati e confine di consistenza](https://martinfowler.com/bliki/DDD_Aggregate.html)

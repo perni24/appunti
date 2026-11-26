@@ -26,74 +26,31 @@ title: Law of Demeter
 
 ## Sintesi
 
-La **Law of Demeter** suggerisce che un oggetto dovrebbe parlare solo con collaboratori vicini, evitando catene di accesso a oggetti interni.
+La **Law of Demeter** (principio della minima conoscenza) invita a far collaborare un metodo con gli oggetti che conosce direttamente: per esempio i suoi parametri, i collaboratori propri o gli oggetti che crea. Il rischio non è «usare troppi punti», ma dover conoscere la struttura interna di un collaboratore per ottenere una risposta di dominio.
 
-E un principio per ridurre accoppiamento e conoscenza dei dettagli interni altrui.
+## Esempio: destinazione della spedizione, non residenza del cliente
 
-## Problema che risolve
-
-Catene come:
+Nell'esempio i pacchi partono dall'Italia e la destinazione decide se usare la coda nazionale o internazionale. `order.customer.address.country.code` impone al chiamante di conoscere quattro livelli della struttura e, peggio, può restituire il **paese del cliente**, non quello di consegna. Creare un metodo `isForCountry` che nasconde la stessa lettura sbagliata conserva il bug.
 
 ```ts
-order.customer.address.country.code
-```
+type Shipment = { destinationCountry(): string };
 
-mostrano che il codice conosce troppa struttura interna. Se cambia una parte della catena, il chiamante si rompe.
-
-## Concetto chiave
-
-Un oggetto dovrebbe interagire principalmente con:
-
-- se stesso;
-- i propri parametri;
-- oggetti creati localmente;
-- collaboratori diretti;
-- componenti esplicitamente ricevuti.
-
-Non dovrebbe navigare profondamente dentro oggetti di oggetti.
-
-## Dettagli importanti
-
-- La Law of Demeter non vieta ogni accesso a proprieta.
-- Il problema e la dipendenza da struttura interna lontana.
-- Spesso si risolve aggiungendo metodi che esprimono intenzione.
-- Aiuta a proteggere incapsulamento.
-- Va applicata con buon senso su DTO e strutture dati semplici.
-
-## Esempio
-
-Catena fragile:
-
-```ts
-if (order.customer.address.country.code === "IT") {
-  applyItalianTax(order);
+function queueFor(shipment: Shipment): "domestic" | "international" {
+  return shipment.destinationCountry() === "IT" ? "domestic" : "international";
 }
 ```
 
-Metodo piu intenzionale:
+Il contratto richiede un codice paese già validato, in maiuscolo, relativo **a quella consegna**. L'adattatore che conosce l'ordine o il JSON di ingresso ricava la destinazione nel suo formato specifico. Il selettore di coda non ha bisogno di conoscere cliente, indirizzo di fatturazione o struttura del JSON. Un ordine fatturato in Italia e consegnato in Francia deve andare nella coda internazionale. Non è una regola fiscale.
 
-```ts
-if (order.isForCountry("IT")) {
-  applyItalianTax(order);
-}
-```
+## Come verificare che il confine serva
 
-Il chiamante non conosce piu la struttura interna dell'ordine.
+Se il magazzino sostituisce l'indirizzo annidato con un codice di destinazione al primo livello, adatta il dato in un solo punto. Esegui lo stesso selettore con i due adattatori: a parità di destinazione deve scegliere la stessa coda. Se devi ancora modificare il selettore, qualche dettaglio interno continua ad attraversare il confine.
 
-## Limiti
+## Limiti ed errori comuni
 
-- Nei DTO annidati una catena puo essere accettabile.
-- Applicarla ovunque puo creare metodi pass-through inutili.
-- Non sostituisce una buona modellazione.
-- In alcuni linguaggi o framework certe catene sono idiomatiche.
-
-## Errori comuni
-
-- Ignorare lunghe catene di accesso in codice di dominio.
-- Creare wrapper banali senza migliorare il modello.
-- Confondere la legge con un divieto di usare punti.
-- Esporre strutture interne mutabili.
-- Far dipendere moduli da layout interni di altri moduli.
+- `items.filter(...).map(...)` non dimostra da sola una violazione: è una successione di trasformazioni della collezione, non una ricerca di collaboratori nascosti. Al contrario, spezzare un accesso annidato in quattro variabili locali non ne riduce l'accoppiamento.
+- Un adattatore **deve** conoscere lo schema esterno che traduce. L'obiettivo è non disperdere quella conoscenza in ogni caso d'uso.
+- Non aggiungere una serie di passacarte che restituiscono uno dopo l'altro cliente, indirizzo e paese. Chiedi il dato o il comportamento che manca davvero al chiamante.
 
 ## Collegamenti
 
@@ -105,5 +62,5 @@ Il chiamante non conosce piu la struttura interna dell'ordine.
 
 ## Fonti
 
-- Ian Holland, *The Law of Demeter*
+- Progetto Demeter, Northeastern University, [Law of Demeter: Principle of Least Knowledge](https://www.ccs.neu.edu/home/lieber/LoD.html)
 - Robert C. Martin, *Clean Code*

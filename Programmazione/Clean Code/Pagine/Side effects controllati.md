@@ -27,85 +27,40 @@ title: Side effects controllati
 
 ## Sintesi
 
-I **side effects** sono effetti osservabili prodotti da una funzione oltre al valore restituito: scrivere su database, inviare email, modificare stato globale, loggare, pubblicare eventi o mutare un oggetto ricevuto.
+Un **effetto collaterale** è un cambiamento osservabile oltre al risultato della funzione: scrivere un ordine, registrare un evento, inviare un messaggio o modificare un argomento condiviso. Controllare gli effetti significa rendere espliciti **chi li avvia, in quale ordine e cosa sa il chiamante se uno fallisce**. Non significa che siano reversibili.
 
-Nel Clean Code non vanno eliminati sempre, ma resi espliciti, confinati e testabili.
+## Esempio: calcolare un totale e registrare la vendita
 
-## Problema che risolve
-
-I side effects nascosti rendono il codice imprevedibile.
-
-Una funzione apparentemente innocua puo:
-
-- salvare dati;
-- inviare notifiche;
-- cambiare configurazione globale;
-- modificare un parametro;
-- scrivere log rumorosi;
-- dipendere dall'ordine di chiamata.
-
-Questo aumenta il rischio di regressioni.
-
-## Concetto chiave
-
-La regola pratica e separare:
-
-- decisioni pure;
-- trasformazioni;
-- side effects;
-- coordinamento.
-
-Il codice di dominio dovrebbe decidere cosa deve succedere. Il bordo applicativo dovrebbe eseguire gli effetti necessari.
-
-## Dettagli importanti
-
-- Un side effect dovrebbe essere visibile dal nome o dal tipo della funzione.
-- Le dipendenze che producono effetti dovrebbero essere esplicite.
-- Le funzioni che scrivono dovrebbero essere piu facili da individuare di quelle che leggono.
-- I side effects vanno testati con integrazione, mock mirati o adapter.
-- In una pipeline, gli effetti dovrebbero stare in punti chiari.
-
-## Esempio
-
-Side effect nascosto:
+Nell'esempio le righe sono già validate: quantità intere positive, prezzi non negativi in centesimi e somme nel campo degli interi sicuri. L'archivio restituisce un ID dopo il salvataggio; l'audit è obbligatorio per dichiarare completata l'intera operazione.
 
 ```js
-function calculateTotal(order) {
-  auditLog("Calculating total");
-  return order.items.reduce((sum, item) => sum + item.price, 0);
+function totalCents(lines) {
+  return lines.reduce((sum, line) => sum + line.quantity * line.unitPriceCents, 0);
+}
+
+async function recordSale(lines, { save, audit }) {
+  const total = totalCents(lines);
+  const id = await save({ totalCents: total });
+  await audit({ event: "sale-saved", id, totalCents: total });
+  return id;
 }
 ```
 
-Separazione piu chiara:
+Il calcolo da solo non deve salvare la vendita né scrivere log: puoi usarlo nell'anteprima di un ordine senza registrare una transazione. Il significato dell'evento è «vendita salvata», non «tentativo di vendita»; per questo serve l'ID e l'audit segue il salvataggio.
 
-```js
-function calculateTotal(order) {
-  return order.items.reduce((sum, item) => sum + item.price, 0);
-}
+## Esiti osservabili
 
-function calculateAndLogTotal(order, logger) {
-  const total = calculateTotal(order);
-  logger.info("Calculated total", { total });
-  return total;
-}
-```
+| Esito | Effetti ed esito per il chiamante |
+| --- | --- |
+| Salvataggio e audit confermati | Un salvataggio, poi un audit con lo stesso ID; `recordSale` restituisce l'ID. |
+| `save` rifiuta la promessa | Nessuna chiamata ad `audit`; il chiamante riceve l'errore di `save`. Un timeout reale non prova da solo che il server non abbia scritto. |
+| `save` riesce, `audit` rifiuta | La vendita è già salvata; l'operazione complessiva rifiuta la promessa. Non c'è rollback automatico. |
 
-La logica pura resta isolata; l'effetto e esplicito.
+## Criteri pratici
 
-## Limiti
-
-- Alcune applicazioni sono principalmente orchestrazione di effetti.
-- Separare tutto puo introdurre troppi livelli.
-- Il logging tecnico puo essere trasversale, ma va comunque governato.
-- Gli effetti asincroni richiedono attenzione a retry, idempotenza e ordine.
-
-## Errori comuni
-
-- Mutare parametri senza comunicarlo.
-- Nascondere salvataggi dentro funzioni chiamate `calculate`, `build` o `get`.
-- Usare singletons globali per servizi con effetti.
-- Mescolare validazione e scrittura nello stesso helper.
-- Testare solo il valore di ritorno ignorando gli effetti prodotti.
+- Nei test controlla traccia delle chiamate, dati passati ed errori oltre al valore restituito. I sostituti locali provano l'orchestrazione, non la durabilità di un archivio reale.
+- Se la registrazione è telemetria facoltativa, decidi come segnalare o recuperare il suo guasto senza cambiare l'esito della vendita. Non ingoiare indistintamente qualunque errore.
+- Se vendita ed evento devono essere conservati insieme, valuta una transazione che salvi anche un evento da consegnare successivamente. Due `await` consecutivi non creano una transazione; ripetere alla cieca `recordSale` dopo un esito parziale può duplicare la vendita.
 
 ## Collegamenti
 
@@ -118,6 +73,5 @@ La logica pura resta isolata; l'effetto e esplicito.
 
 ## Fonti
 
-- Robert C. Martin, *Clean Code*
-- Martin Fowler, *Refactoring*
-- Michael Feathers, *Working Effectively with Legacy Code*
+- Martin Fowler, [Separate Query from Modifier](https://refactoring.com/catalog/separateQueryFromModifier.html)
+- Robert C. Martin, *Clean Code*; Martin Fowler, *Refactoring*; Michael Feathers, *Working Effectively with Legacy Code*

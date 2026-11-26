@@ -26,76 +26,37 @@ title: Moduli piccoli
 
 ## Sintesi
 
-I **moduli piccoli** raggruppano codice intorno a una responsabilita chiara e limitata. Un modulo piccolo e piu facile da capire, testare, sostituire e riusare.
+Un modulo è abbastanza piccolo quando il suo chiamante può usarlo senza conoscere le decisioni interne. La misura utile non è quante righe contiene, ma che cosa devi capire e modificare per cambiare **una regola**. Un modulo può occupare più file.
 
-La dimensione non e solo numero di righe: e quante ragioni ha il modulo per cambiare.
+## Esempio: nascondere il listino, non la tariffa
 
-## Problema che risolve
+Il checkout ha bisogno di un costo in centesimi per un peso in grammi, non di conoscere gli scaglioni. In questo esempio i pacchi fino a 500 g inclusi costano 390 centesimi; quelli più pesanti 590. Il file `rates.mjs` esporta una sola funzione:
 
-I moduli grandi diventano punti di attrazione per codice non correlato. Nel tempo accumulano funzioni, tipi, costanti, adapter, validazioni e casi speciali.
+```js
+const lightLimitGrams = 500;
 
-Questo rende rischioso cambiare anche una parte piccola.
-
-## Concetto chiave
-
-Un modulo piccolo dovrebbe avere:
-
-- un nome chiaro;
-- un confine comprensibile;
-- poche dipendenze;
-- API pubblica ridotta;
-- responsabilita coesa;
-- test associabili.
-
-Il lettore dovrebbe poter descrivere il modulo in una frase.
-
-## Dettagli importanti
-
-- Un modulo piccolo non deve esporre tutti i suoi dettagli interni.
-- La coesione e piu importante della dimensione assoluta.
-- Moduli piccoli aiutano a limitare l'impatto dei cambiamenti.
-- La API pubblica dovrebbe essere piu stabile dell'implementazione.
-- Un modulo condiviso da molti altri deve essere trattato con piu cura.
-
-## Esempio
-
-Modulo troppo ampio:
-
-```text
-order-utils.ts
-- valida ordine
-- calcola totale
-- invia email
-- salva su database
-- formatta report
+export function shippingFeeCents(weightGrams) {
+  if (!Number.isSafeInteger(weightGrams) || weightGrams <= 0) {
+    throw new RangeError("Peso atteso in grammi interi positivi");
+  }
+  return weightGrams <= lightLimitGrams ? 390 : 590;
+}
 ```
 
-Moduli piu piccoli:
+Con 500 g il risultato è 390, con 501 g è 590; zero è un errore, non una spedizione gratuita. Se domani arriva un terzo scaglione, si può usare una tabella interna mantenendo la firma. Il cambio di prezzo è comunque un cambiamento di comportamento: aggiorna i test in base al nuovo requisito.
 
-```text
-order-validation.ts
-order-pricing.ts
-order-notifications.ts
-order-repository.ts
-order-report.ts
-```
+## Cosa tenere insieme
 
-Ogni file ha un motivo piu chiaro per cambiare.
+| Dentro il modulo delle tariffe | Fuori |
+| --- | --- |
+| Significato dell'unità, validazione del peso e selezione dello scaglione | Conversione del testo di un form in un numero |
+| Listino e test sui suoi confini | Salvataggio dell'ordine, invio di notifiche e formato di stampa del prezzo |
 
-## Limiti
+Dieci funzioni esportate per leggere e combinare i singoli scaglioni sposterebbero la decisione sui chiamanti. Al contrario, un solo file `order-utils` che calcola prezzi, invia email e genera report costringerebbe a dipendere da operazioni non correlate. Una facciata stretta è utile solo se evita davvero al chiamante di conoscere i dettagli.
 
-- Troppi moduli piccoli possono rendere il progetto frammentato.
-- Se i nomi sono deboli, la separazione non aiuta.
-- Alcuni moduli orchestratori devono conoscere piu collaboratori.
-- La granularita giusta dipende dal dominio e dal team.
+## Limiti ed errori comuni
 
-## Errori comuni
-
-- Separare codice solo per ridurre righe.
-- Esporre troppi dettagli interni.
-- Creare moduli piccoli ma molto accoppiati.
-- Usare moduli `common` senza regole.
-- Spostare codice senza ridurre dipendenze.
+Non estrarre un modulo per ogni costante. Se due parti si importano a vicenda per ogni operazione, la divisione ha probabilmente aggiunto passaggi senza ridurre l'accoppiamento. Cerca un confine nel quale la sostituzione dell'implementazione lasci invariati i chiamanti e i test del contratto.
 
 ## Collegamenti
 
@@ -108,4 +69,4 @@ Ogni file ha un motivo piu chiaro per cambiare.
 ## Fonti
 
 - Robert C. Martin, *Clean Code*
-- David Parnas, *On the Criteria To Be Used in Decomposing Systems into Modules*
+- David Parnas, [On the Criteria To Be Used in Decomposing Systems into Modules](https://doi.org/10.1145/361598.361623)

@@ -25,73 +25,29 @@ title: Principio del minimo stupore
 
 ## Sintesi
 
-Il **principio del minimo stupore** dice che il codice dovrebbe comportarsi nel modo piu prevedibile possibile per chi lo legge o lo usa.
+Un'API rispetta il principio del minimo stupore quando ciò che il chiamante può ragionevolmente prevedere coincide con ciò che avviene: restituzione, modifiche ai dati, errori e costo dell'operazione. Il riferimento sono le convenzioni del progetto, non l'intuizione di una singola persona.
 
-Se un nome, una funzione o un modulo fanno una cosa sorprendente, il codice diventa piu difficile da usare correttamente.
+## Esempio: leggere o registrare un accesso?
 
-## Problema che risolve
+Se `getUser(id)` di norma è una lettura, chi la chiama due volte non si aspetta di creare due eventi di audit. Supponiamo invece che il requisito sia **registrare ogni tentativo**, anche per un ID inesistente, e non procedere alla lettura se la registrazione fallisce.
 
-Molti bug nascono da aspettative sbagliate. Una funzione sembra innocua ma modifica stato globale. Un getter esegue una chiamata di rete. Un metodo chiamato `validate` salva dati.
+```js
+async function lookupUserWithAudit(id, { recordAttempt, findUser }) {
+  await recordAttempt(id);
+  return findUser(id);
+}
+```
 
-Il principio riduce queste sorprese.
-
-## Concetto chiave
-
-Un codice prevedibile allinea:
-
-- nome;
-- comportamento;
-- effetti collaterali;
-- errori possibili;
-- costo operativo;
-- livello di astrazione.
-
-Quando questi elementi non sono coerenti, il lettore viene tratto in inganno.
+Il nome avverte che c'è un effetto, la sequenza nel corpo ne chiarisce l'ordine. Nel contratto di esempio `findUser` restituisce `null` se l'utente non esiste. Un errore dell'audit viene propagato senza chiamare `findUser`; un errore della lettura viene propagato **dopo** aver registrato il tentativo.
 
 ## Dettagli importanti
 
-- Un nome deve promettere solo cio che la funzione fa davvero.
-- Gli effetti collaterali importanti devono essere visibili.
-- Le API dovrebbero seguire convenzioni del linguaggio e del progetto.
-- Il comportamento speciale va reso esplicito.
-- Le eccezioni alla regola devono essere rare e motivate.
+- «Registrare un tentativo» e «registrare un accesso riuscito» sono requisiti diversi. Invertire le due chiamate non è un refactoring neutro.
+- Il nome non promette atomicità né deduplicazione: ripetere l'intera operazione può produrre un altro evento. Distinguere bene i due casi è più utile che elencare tutti i dettagli nel nome.
 
-## Esempio
+## Limiti ed errori comuni
 
-Nome sorprendente:
-
-```js
-function getUser(id) {
-  auditAccess(id);
-  return database.findUser(id);
-}
-```
-
-Nome piu onesto:
-
-```js
-function getUserAndRecordAccess(id) {
-  auditAccess(id);
-  return database.findUser(id);
-}
-```
-
-Il secondo nome rende visibile l'effetto collaterale.
-
-## Limiti
-
-- Non tutte le sorprese possono essere eliminate.
-- Alcune API storiche hanno nomi imperfetti ma ormai stabili.
-- Rendere tutto esplicito puo creare nomi troppo lunghi.
-- La prevedibilita dipende anche dalle convenzioni del contesto.
-
-## Errori comuni
-
-- Usare nomi troppo generici.
-- Nascondere operazioni costose dietro metodi apparentemente semplici.
-- Modificare stato dentro funzioni che sembrano pure.
-- Usare convenzioni opposte a quelle del linguaggio.
-- Far dipendere il comportamento da configurazioni invisibili.
+Un getter che usa una cache interna non deve necessariamente chiamarsi `getAndUpdateCache`. Rendi visibile ciò che cambia il modo *corretto* di usare l'API: una scrittura osservabile, una chiamata di rete costosa, una mutazione dell'argomento o una nuova condizione di errore. Per un'API pubblica già in uso, cambiare nome o semantica richiede anche una strategia di compatibilità.
 
 ## Collegamenti
 
@@ -105,3 +61,4 @@ Il secondo nome rende visibile l'effetto collaterale.
 
 - Robert C. Martin, *Clean Code*
 - Martin Fowler, *Refactoring*
+- Martin Fowler, [Command Query Separation](https://martinfowler.com/bliki/CommandQuerySeparation.html)

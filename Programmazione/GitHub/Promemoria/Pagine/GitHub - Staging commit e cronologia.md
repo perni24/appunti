@@ -35,6 +35,8 @@ git status --short
 
 ## Differenze
 
+`git diff` confronta i file tracciati sul disco con lo staging; `--staged` confronta lo staging con `HEAD`. Se modifichi un file dopo `git add`, può comparire in entrambi i diff: solo la versione nello staging entrerà nel commit.
+
 ```powershell
 git diff
 ```
@@ -44,10 +46,12 @@ git diff --staged
 ```
 
 ```powershell
-git diff main...feature
+git diff main...feature/user-search
 ```
 
 ## Aggiungere allo staging
+
+Scegli un file, singoli blocchi (`--patch`) oppure tutte le modifiche sotto la directory corrente (`.`), incluse le rimozioni. Sostituisci i percorsi e i nomi dei branch con i tuoi.
 
 ```powershell
 git add path/to/file
@@ -83,7 +87,7 @@ git commit --amend
 git commit --amend --no-edit
 ```
 
-Evitare `--amend` su commit gia condivisi.
+`--amend` sostituisce l’ultimo commit con un nuovo commit che include lo staging attuale; `--no-edit` conserva il messaggio, non il vecchio identificatore. Evitalo su commit già condivisi.
 
 ## Cronologia
 
@@ -110,6 +114,11 @@ git blame path/to/file
 ```powershell
 git check-ignore -v path/to/file
 ```
+
+## Fonti
+
+- [Git: confrontare working tree, indice e commit](https://git-scm.com/docs/git-diff)
+- [Git: selezionare le modifiche con add](https://git-scm.com/docs/git-add)
 
 ## Approfondimento
 

@@ -27,79 +27,41 @@ title: Gestione esplicita degli errori
 
 ## Sintesi
 
-La **gestione esplicita degli errori** rende visibili i casi di fallimento nel flusso del codice.
-
-Invece di trattare gli errori come dettagli secondari, il codice pulito li considera parte del contratto di funzioni, moduli e integrazioni.
+**Un errore esplicito dice al chiamante quale decisione prendere.** In un modulo di rimborso, «campo mancante», «importo non valido» e «zero centesimi» hanno effetti diversi: solo l'ultimo è un importo. Restituire zero in tutti e tre i casi farebbe proseguire l'operazione con un dato inventato.
 
 ## Quando usarlo
 
-- Quando una funzione puo fallire per input non valido.
-- Quando una dipendenza esterna puo non rispondere.
-- Quando il chiamante deve decidere come reagire.
-- Quando il fallimento e previsto dal dominio.
-- Quando serve distinguere errori recuperabili e non recuperabili.
-
-## Come funziona
-
-La forma concreta dipende dal linguaggio:
-
-- eccezioni;
-- valori di ritorno;
-- `Result` / `Either`;
-- codici errore;
-- oggetti errore strutturati;
-- validazioni accumulate.
-
-La regola pratica e non nascondere il fallimento. Se il chiamante deve gestirlo, deve poterlo vedere.
-
-## API / Sintassi
-
-```text
-operation(input) -> success value
-operation(input) -> error value
-operation(input) throws error
-```
-
-La cosa importante e che il contratto dichiari chiaramente quale comportamento aspettarsi.
+Definisci il contratto al confine tra un input esterno e il dominio. Un codice stabile permette all'interfaccia di scegliere il messaggio; il testo mostrato all'utente può cambiare o essere tradotto senza modificare il contratto. Non trasformare un guasto al database in un errore di compilazione del modulo.
 
 ## Esempio pratico
 
-```js
-function parseAmount(value) {
-  const amount = Number(value);
+Il campo arriva da un modulo web: accetta **centesimi interi non negativi**, già espressi come testo decimale. Gli spazi esterni sono ammessi, gli zeri iniziali non cambiano il valore. Un campo assente o bianco richiede di inserire un valore; per un testo non numerico serve invece correggere il formato.
 
-  if (!Number.isFinite(amount) || amount < 0) {
+```js
+function parseCents(raw) {
+  if (raw == null || (typeof raw === "string" && raw.trim() === "")) {
+    return { ok: false, error: "amount_required" };
+  }
+  if (typeof raw !== "string" || !/^[0-9]+$/.test(raw.trim())) {
     return { ok: false, error: "invalid_amount" };
   }
-
-  return { ok: true, value: amount };
+  const cents = Number(raw.trim());
+  if (!Number.isSafeInteger(cents)) return { ok: false, error: "amount_out_of_range" };
+  return { ok: true, value: cents };
 }
 ```
 
-Il chiamante deve gestire esplicitamente il caso `ok: false`.
+`parseCents("0")` ha successo; `parseCents(" ")` no. Il controllo precede la conversione: `Number("")` e `Number(null)` darebbero entrambi zero. Il limite dell'intero sicuro riguarda la rappresentazione in JavaScript; un eventuale massimale di rimborso è una regola di dominio separata.
 
-## Varianti
+## Decisione del chiamante
 
-- Eccezioni: adatte a errori inattesi o flussi in cui il fallimento interrompe l'operazione.
-- Valori di errore: adatti a errori previsti e recuperabili.
-- Validazione accumulata: utile quando bisogna mostrare piu errori insieme.
-- Errori tipizzati: utili quando il chiamante deve distinguere molte cause.
-
-## Errori comuni
-
-- Catturare errori e restituire valori fittizi.
-- Mescolare eccezioni e valori di errore senza convenzione.
-- Perdere la causa originale dell'errore.
-- Loggare e rilanciare in ogni layer.
-- Usare messaggi generici senza contesto.
+Controlla `result.ok` prima di usare `result.value`: `if (!result.value)` scarterebbe anche lo zero valido. Per un modulo con più campi può convenire raccogliere **tutti** gli errori di validazione; un errore di lettura del modulo, invece, può impedire di validarli. Non catturare ogni eccezione per trasformarla in `invalid_amount`: quel codice promette qualcosa di preciso sull'input.
 
 ## Checklist
 
-- Il chiamante sa che l'operazione puo fallire?
-- Gli errori recuperabili sono distinguibili?
-- Il messaggio contiene contesto utile?
-- Gli errori non recuperabili falliscono in modo visibile?
-- I test coprono almeno un caso di errore significativo?
+- I casi distinti richiedono davvero risposte diverse da parte del chiamante?
+- Il valore limite valido e l'input mancante restano distinguibili?
+- Un guasto inatteso conserva la sua causa e viene registrato nel punto che lo gestisce?
 
 ## Collegamenti
 
@@ -114,3 +76,4 @@ Il chiamante deve gestire esplicitamente il caso `ok: false`.
 - Robert C. Martin, *Clean Code*
 - Michael Nygard, *Release It!*
 - Scott Wlaschin, *Domain Modeling Made Functional*
+- [ECMAScript: Number.isSafeInteger](https://tc39.es/ecma262/multipage/numbers-and-dates.html#sec-number.issafeinteger)

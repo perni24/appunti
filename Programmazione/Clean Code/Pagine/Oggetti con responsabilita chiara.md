@@ -26,81 +26,27 @@ title: Oggetti con responsabilita chiara
 
 ## Sintesi
 
-Un **oggetto con responsabilita chiara** rappresenta un concetto preciso e contiene solo dati e comportamento coerenti con quel concetto.
+Una responsabilità è chiara quando si può dire **quale decisione appartiene all'oggetto** e quali cambiamenti non dovrebbero riguardarlo. Conta la coesione delle decisioni, non il numero di metodi. Due operazioni come prenotare e liberare un posto possono stare bene insieme se proteggono la stessa disponibilità.
 
-La chiarezza della responsabilita riduce accoppiamento, duplicazione e confusione tra livelli applicativi.
+## Esempio: scomporre un UserManager
 
-## Problema che risolve
+Immagina un `UserManager` che valida iscrizioni, salva utenti, invia email, calcola sconti e prepara report. Rinominare la classe non riduce l'accoppiamento. Prova invece a seguire tre richieste di modifica: cambiare il testo del benvenuto, passare a un altro database, riservare uno sconto ai clienti abituali. Quale contratto ciascuna modifica deve lasciare intatto?
 
-Oggetti con responsabilita confuse diventano contenitori generici: fanno validazione, accesso dati, calcolo, logging, mapping e comunicazione esterna.
+| Componente | Decisione che possiede | Dettaglio che non deve conoscere |
+| --- | --- | --- |
+| `UserRegistration` | Quali passi servono per completare l'iscrizione e in quale ordine | Il testo dell'email o la sintassi SQL |
+| `UserRepository` | Come salvare e ritrovare un utente | Quando il prodotto considera conclusa l'iscrizione |
+| `WelcomeEmailSender` | Come comporre e inviare il benvenuto | Come calcolare lo sconto |
+| `DiscountPolicy` | Quali clienti hanno diritto allo sconto | Il formato del report |
+| `UserReport` | Quali dati mostrare e come presentarli | Una seconda implementazione della regola di sconto |
 
-Quando un oggetto fa troppe cose, ogni modifica rischia di avere effetti non previsti.
+## Verifica pratica
 
-## Concetto chiave
+Se cambia l'aliquota, una prova della politica dovrebbe usare solo i dati rilevanti del cliente, senza database o server email. Se cambia il fornitore di posta, verifica il nuovo adattatore e il contratto di invio; non dovrebbero cambiare le regole di iscrizione. Se invece il prodotto decide che un invio fallito **non deve più bloccare** l'iscrizione, è cambiata la politica del caso d'uso: non nascondere la scelta nel mittente facendo sparire l'errore.
 
-Un oggetto dovrebbe avere una risposta chiara alla domanda:
+## Limiti ed errori comuni
 
-```text
-Di cosa e responsabile?
-```
-
-Una responsabilita chiara si vede da:
-
-- nome dell'oggetto;
-- metodi pubblici;
-- dati interni;
-- dipendenze;
-- motivi per cambiare.
-
-Se questi elementi puntano in direzioni diverse, l'oggetto e probabilmente confuso.
-
-## Dettagli importanti
-
-- Un oggetto di dominio non dovrebbe conoscere dettagli di framework.
-- Un DTO non dovrebbe contenere regole complesse.
-- Un service non dovrebbe diventare un deposito di logica casuale.
-- Le responsabilita dovrebbero seguire il linguaggio del dominio.
-- La coesione e piu importante della dimensione assoluta.
-
-## Esempio
-
-Responsabilita confuse:
-
-```text
-UserManager:
-- valida input
-- salva su database
-- invia email
-- calcola sconti
-- genera report
-```
-
-Responsabilita separate:
-
-```text
-UserRegistration
-UserRepository
-WelcomeEmailSender
-DiscountPolicy
-UserReport
-```
-
-Ogni concetto ha un motivo piu chiaro per cambiare.
-
-## Limiti
-
-- Separare troppo puo creare molti oggetti piccoli ma poco utili.
-- Alcuni oggetti orchestrano piu collaboratori ed e normale.
-- Il confine corretto puo cambiare quando il dominio diventa piu chiaro.
-- Una responsabilita non coincide sempre con una singola classe.
-
-## Errori comuni
-
-- Usare nomi come `Manager`, `Helper`, `Utils` per responsabilita non definite.
-- Inserire logica di dominio nei controller.
-- Mettere accesso database dentro oggetti di dominio.
-- Rendere gli oggetti solo sacchi di getter e setter.
-- Separare per tipo tecnico invece che per concetto.
+La tabella è una mappa delle responsabilità, non una prescrizione di cinque classi, interfacce o servizi distribuiti. Per un'applicazione piccola possono bastare funzioni nello stesso modulo. Separale quando puoi nominare una decisione autonoma o provarla senza infrastrutture estranee; tenerle vicine è ragionevole se cambiano sempre insieme. Un nome come `Manager` è un invito a porre la domanda, non la prova di un problema.
 
 ## Collegamenti
 
@@ -112,5 +58,5 @@ Ogni concetto ha un motivo piu chiaro per cambiare.
 
 ## Fonti
 
-- Rebecca Wirfs-Brock, *Object Design*
-- Eric Evans, *Domain-Driven Design*
+- Rebecca Wirfs-Brock, *Object Design*; Eric Evans, *Domain-Driven Design*
+- Robert C. Martin, [The Single Responsibility Principle](https://blog.cleancoder.com/uncle-bob/2014/05/08/SingleReponsibilityPrinciple.html)

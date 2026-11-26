@@ -28,73 +28,51 @@ title: File system e IO
 
 ## Sintesi
 
-Il **file system** e l'**I/O** sono punti in cui il codice interagisce con risorse esterne: file, stream, percorsi, permessi, encoding e dispositivi.
-
-Nel Clean Code queste operazioni vanno isolate, gestite con errori espliciti e protette da assunzioni fragili.
+Un file assente, un file illeggibile e un file contenente testo non valido richiedono decisioni diverse. **Tenta l'operazione e gestisci l'esito di quella chiamata**: controllare prima che il file esista non garantisce che esista ancora quando lo apri.
 
 ## Quando usarlo
 
-- Quando leggi o scrivi file.
-- Quando importi dati da directory.
-- Quando generi report, cache o artefatti.
-- Quando lavori con stream.
-- Quando una procedura dipende da percorsi configurabili.
-
-## Come funziona
-
-L'I/O e un side effect. Per questo conviene separare:
-
-- calcolo del percorso;
-- lettura/scrittura;
-- parsing del contenuto;
-- validazione;
-- trasformazione;
-- gestione degli errori.
-
-Questa separazione rende il codice piu testabile e meno dipendente dall'ambiente.
-
-## API / Sintassi
-
-```text
-path config -> safe path -> read/write -> parse/serialize -> domain result
-```
-
-Il percorso dovrebbe essere validato e l'errore dovrebbe conservare il contesto.
+Qui un programma Node legge una piccola preferenza facoltativa e genera un report che non deve sovrascriverne un altro. I percorsi provengono dall'applicazione, non da un nome arbitrario inviato dall'utente. Per file grandi serve uno stream o un limite di dimensione: `readFile` carica tutto il contenuto in memoria.
 
 ## Esempio pratico
 
+Il primo contratto distingue «nessun documento» da un documento JSON contenente `null`. Il secondo crea un nuovo report in una directory già esistente.
+
 ```js
-function loadJsonFile(fileSystem, path) {
-  const content = fileSystem.readText(path);
-  return JSON.parse(content);
+import { open, readFile } from "node:fs/promises";
+
+export async function readOptionalJson(path) {
+  let text;
+  try {
+    text = await readFile(path, "utf8");
+  } catch (error) {
+    if (error.code === "ENOENT") return { found: false };
+    throw error;
+  }
+  return { found: true, value: JSON.parse(text) };
+}
+
+export async function createReport(path, text) {
+  const file = await open(path, "wx");
+  try {
+    await file.writeFile(text, "utf8");
+  } finally {
+    await file.close();
+  }
 }
 ```
 
-Passare `fileSystem` come dipendenza permette di testare il comportamento senza toccare il disco reale.
+`ENOENT` può indicare anche che manca una directory del percorso: qui entrambe le assenze significano «nessuna preferenza». Per un file obbligatorio andrebbero invece segnalate. `EACCES` non viene mascherato; un file vuoto genera un errore di sintassi, non un default. La verifica della struttura del documento, se richiesta, resta un passaggio successivo.
 
-## Varianti
+## Scrittura e limiti
 
-- Lettura sincrona: semplice per CLI piccole o startup.
-- Lettura asincrona: adatta a server e operazioni concorrenti.
-- Stream: utile per file grandi.
-- File temporanei: richiedono cleanup esplicito.
-- Path configurati: utili ma da validare.
-
-## Errori comuni
-
-- Hardcodare percorsi assoluti.
-- Ignorare encoding.
-- Non chiudere risorse o stream.
-- Leggere file grandi interamente senza bisogno.
-- Mescolare I/O, parsing e logica di dominio.
+- `"wx"` chiede al filesystem la creazione esclusiva: su un normale disco locale, se il nome è già occupato la chiamata fallisce con `EEXIST` e il contenuto esistente resta intatto. Su filesystem di rete verifica le garanzie effettive.
+- `finally` chiude l'handle anche quando la scrittura fallisce. **Non è un rollback**: un errore dopo l'apertura può lasciare un file vuoto o parziale. Se anche la chiusura fallisce, il suo errore può sostituire quello della scrittura.
+- Se i lettori non devono mai vedere contenuto parziale, valuta scrittura su un temporaneo nella stessa directory e pubblicazione secondo le garanzie della piattaforma. Non confondere visibilità atomica, divieto di sovrascrittura e persistenza dopo un arresto.
 
 ## Checklist
 
-- Il percorso arriva da configurazione controllata?
-- Gli errori contengono nome file o contesto utile?
-- Le risorse vengono chiuse o rilasciate?
-- Parsing e I/O sono separati?
-- I test evitano dipendenza non necessaria dal file system reale?
+Prova nel filesystem temporaneo l'assenza, il JSON scorretto e due creazioni sullo stesso percorso. Fissa l'encoding e verifica i byte o il testo riletti. Per la logica che usa il documento basta spesso un lettore sostitutivo; il comportamento di apertura, codifica e collisione merita una prova su disco.
 
 ## Collegamenti
 
@@ -110,3 +88,5 @@ Passare `fileSystem` come dipendenza permette di testare il comportamento senza 
 - Robert C. Martin, *Clean Code*
 - Michael Feathers, *Working Effectively with Legacy Code*
 - POSIX Base Specifications
+- [Node.js: filesystem, FileHandle e flag di apertura](https://nodejs.org/api/fs.html)
+- [Node.js: codici degli errori di sistema](https://nodejs.org/api/errors.html#common-system-errors)

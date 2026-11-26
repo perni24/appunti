@@ -27,75 +27,47 @@ title: Service layer
 
 ## Sintesi
 
-Il **service layer** coordina casi d'uso applicativi e regole di orchestrazione tra dominio, repository, integrazioni esterne e transazioni.
+Il service layer definisce **che cosa deve riuscire insieme** per completare un caso d'uso. Per l'emissione di una fattura non basta passare da `draft` a `issued`: occorre anche lasciare una notifica da consegnare. Salvare e poi chiamare un bus esterno lascia una finestra in cui la fattura risulta emessa ma nessun evento è partito.
 
-Serve a evitare che controller, UI o job contengano direttamente il flusso applicativo.
+## Esempio: un confine di commit per due scritture
 
-## Problema che risolve
-
-Senza un layer applicativo chiaro, la logica viene distribuita in punti difficili da governare:
-
-- controller;
-- job;
-- handler di eventi;
-- componenti UI;
-- repository;
-- helper generici.
-
-Questo produce duplicazione e rende incerto dove modificare un caso d'uso.
-
-## Concetto chiave
-
-Un service applicativo dovrebbe rappresentare un'azione significativa del sistema:
-
-```text
-createOrder
-issueInvoice
-registerPayment
-sendPasswordReset
-```
-
-Non dovrebbe diventare una classe enorme con metodi scollegati, ne sostituire il modello di dominio.
-
-## Dettagli importanti
-
-- Coordina dipendenze, transazioni e side effects.
-- Delega regole di dominio ai modelli o policy appropriate.
-- Espone un contratto stabile per controller, job e API.
-- Dovrebbe essere testabile senza framework web.
-- Non deve trasformarsi in un contenitore generico di logica casuale.
-
-## Esempio
+`issueInvoice` non conosce HTTP. Riceve il comando validato, un orologio e la transizione [[Programmazione/Clean Code/Pagine/DTO e modelli di dominio|issueDraft]]. `repo` è il [[Programmazione/Clean Code/Pagine/Repository pattern|repository SQLite]] costruito **sulla stessa connessione** che possiede la transazione. In questo esempio tutte le operazioni, inclusa `work`, sono sincrone (Node 24, `DatabaseSync`); non passare callback che restituiscono promesse.
 
 ```js
-async function issueInvoice(command, dependencies) {
-  const invoice = await dependencies.invoiceRepository.findById(command.invoiceId);
+function inWriteTransaction(db, work) {
+  db.exec("BEGIN IMMEDIATE");
+  try {
+    const value = work();
+    db.exec("COMMIT");
+    return value;
+  } catch (primary) {
+    if (db.isTransaction) {
+      try { db.exec("ROLLBACK"); }
+      catch (cleanup) { throw new AggregateError([primary, cleanup], "Rollback fallito"); }
+    }
+    throw primary;
+  }
+}
 
-  invoice.issue(command.issuedAt);
-
-  await dependencies.invoiceRepository.save(invoice);
-  await dependencies.eventBus.publish("invoice.issued", { invoiceId: invoice.id });
-
-  return invoice;
+function issueInvoice({ invoiceId }, { db, repo, nowMs, issueDraft }) {
+  return inWriteTransaction(db, () => {
+    const current = repo.find(invoiceId);
+    if (current === null) return { kind: "missing" };
+    const issued = issueDraft(current, nowMs());
+    if (issued === null || !repo.saveIssued(issued)) return { kind: "conflict" };
+    repo.enqueueIssued(issued);
+    return { kind: "issued", invoice: issued };
+  });
 }
 ```
 
-Il service coordina caricamento, regola di dominio, salvataggio ed evento.
+## Esiti e limiti
 
-## Limiti
+- **Fattura assente o già emessa:** esito applicativo previsto; non viene accodata una seconda notifica.
+- **Scrittura nell'outbox fallita:** l'errore risale; il rollback annulla anche il cambio di stato. Il chiamante non riceve un successo prima del commit. `BEGIN` è fuori dal `try` perché la funzione non deve annullare una transazione che non ha acquisito.
+- **Commit riuscito:** la fattura e la riga nell'outbox sono persistite insieme. Un processo separato leggerà l'outbox e consegnerà l'evento. Questo **non** garantisce consegna esattamente una volta: se il processo si ferma dopo l'invio ma prima della conferma, il consumatore deve tollerare un duplicato.
 
-- Un service layer anemico puo solo aggiungere passaggi inutili.
-- Un service layer troppo grande diventa un "god service".
-- Non sostituisce una buona modellazione del dominio.
-- Per CRUD banali puo essere sufficiente una struttura piu semplice.
-
-## Errori comuni
-
-- Mettere tutte le regole nel service e lasciare oggetti passivi.
-- Creare metodi generici come `processData`.
-- Far dipendere i service da dettagli HTTP.
-- Mescolare orchestration applicativa e query low-level.
-- Duplicare lo stesso caso d'uso in piu service.
+La regola «solo una bozza si può emettere» appartiene al dominio; la sequenza «carica, applica la regola, salva e registra l'evento» al service. Verifica la seconda scrittura con un errore controllato e rileggi la prima: un test che osserva soltanto che i due metodi sono stati chiamati non dimostra l'atomicità.
 
 ## Collegamenti
 
@@ -111,3 +83,6 @@ Il service coordina caricamento, regola di dominio, salvataggio ed evento.
 - Martin Fowler, *Service Layer*
 - Robert C. Martin, *Clean Architecture*
 - Eric Evans, *Domain-Driven Design*
+- [Martin Fowler: Service Layer](https://martinfowler.com/eaaCatalog/serviceLayer.html)
+- [Transactional Outbox: garanzie e duplicati](https://microservices.io/patterns/data/transactional-outbox.html)
+- [SQLite: BEGIN IMMEDIATE e transazioni](https://www.sqlite.org/lang_transaction.html)

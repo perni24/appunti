@@ -150,7 +150,7 @@ browser
 
 Ogni passaggio ha una responsabilita distinta:
 
-1. Il web server inoltra la richiesta a `public/index.php`.
+1. Il web server serve direttamente gli asset pubblici e inoltra le richieste dinamiche a `public/index.php`. Impostare la document root non configura da solo questo inoltro.
 2. Il front controller carica Composer e avvia l'applicazione.
 3. Il router associa metodo e percorso a un handler.
 4. I middleware applicano controlli trasversali.
@@ -159,6 +159,8 @@ Ogni passaggio ha una responsabilita distinta:
 7. Repository e integrazioni comunicano con sistemi esterni.
 8. Il controller prepara dati e risposta.
 9. Il template produce HTML senza contenere logica applicativa.
+
+**Esempio, `POST /contact`:** la route in `routes/web.php` seleziona `ContactController::store`. Dopo i controlli sul form, il controller passa i dati a `SendContactMessage`; il service usa il repository o il provider di posta. Se l'invio riesce il controller può restituire un redirect `303`; se i dati non sono validi può renderizzare il form con `422` senza chiamare il provider. Una home statica non ha bisogno di attraversare service e repository solo per rispettare il diagramma.
 
 ## Responsabilita delle directory
 
@@ -214,7 +216,7 @@ $response = $app->handle($request);
 $response->send();
 ```
 
-`Application`, `Request` e `Response` devono essere implementati dal progetto oppure forniti da librerie dedicate. Il frammento mostra il flusso, non un'API standard di PHP.
+`Application`, `Request` e `Response` devono essere implementati dal progetto oppure forniti da librerie dedicate. Il frammento mostra il flusso, non un'API standard di PHP: `bootstrap/app.php` deve **restituire** l'applicazione e il router deve poter costruire i controller con le loro dipendenze. Dichiarare una route non crea il controller. Errori e logging vanno configurati al confine HTTP; il frammento non include un gestore completo.
 
 ### `public/assets/`
 
@@ -306,6 +308,8 @@ Pagine per errori destinati all'utente:
 - `403.php`;
 - `500.php`.
 
+#### Dati e rendering di una pagina
+
 I template possono:
 
 - leggere dati preparati dal controller;
@@ -322,6 +326,14 @@ Non devono:
 - effettuare chiamate HTTP esterne.
 
 Ogni dato inserito in HTML deve essere sottoposto all'escaping appropriato al contesto.
+
+Esempio concreto di `templates/pages/home.php`: il controller passa una stringa `$displayName` e il template la inserisce in un **nodo di testo HTML**.
+
+```php
+<h1>Ciao, <?= htmlspecialchars($displayName, ENT_QUOTES | ENT_SUBSTITUTE, 'UTF-8') ?>!</h1>
+```
+
+Con il nome `Ada & Teo` il sorgente contiene `Ada &amp; Teo`, mentre il browser mostra `Ada & Teo`. Questo escaping non sostituisce la validazione di un URL o la serializzazione di dati JavaScript.
 
 ### `src/`
 
@@ -511,9 +523,9 @@ Esempio:
 <?php
 
 return [
-    'name' => $_ENV['APP_NAME'] ?? 'Nome App',
-    'environment' => $_ENV['APP_ENV'] ?? 'production',
-    'debug' => filter_var($_ENV['APP_DEBUG'] ?? false, FILTER_VALIDATE_BOOL),
+    'name' => getenv('APP_NAME') ?: 'Nome App',
+    'environment' => getenv('APP_ENV') ?: 'production',
+    'debug' => filter_var(getenv('APP_DEBUG'), FILTER_VALIDATE_BOOL),
 ];
 ```
 
@@ -587,6 +599,32 @@ Esempi:
 
 I test non vengono esposti dal web server e non fanno parte del codice eseguito in produzione.
 
+#### Esempio di integrazione: template Home
+
+Per verificare **solo il rendering** senza avviare il router, metti questo test in `tests/Integration/HomeTemplateTest.php`. Il buffer cattura il markup prodotto dall'inclusione senza inviarlo al client:
+
+```php
+<?php
+declare(strict_types=1);
+
+use PHPUnit\Framework\TestCase;
+
+final class HomeTemplateTest extends TestCase
+{
+    public function testRendersTheNameAsText(): void
+    {
+        $displayName = 'Ada & Teo';
+        ob_start();
+        try {
+            require dirname(__DIR__, 2) . '/templates/pages/home.php';
+            self::assertSame('<h1>Ciao, Ada &amp; Teo!</h1>', trim(ob_get_contents()));
+        } finally {
+            ob_end_clean();
+        }
+    }
+}
+```
+
 ### `vendor/`
 
 E generata da Composer e contiene:
@@ -611,6 +649,12 @@ Esempio minimo:
 {
   "name": "acme/nome-app",
   "type": "project",
+  "require": {
+    "php": "^8.3"
+  },
+  "require-dev": {
+    "phpunit/phpunit": "^12.5"
+  },
   "autoload": {
     "psr-4": {
       "App\\": "src/"
@@ -622,10 +666,18 @@ Esempio minimo:
     }
   },
   "scripts": {
-    "test": "phpunit"
+    "test": "phpunit tests"
   }
 }
 ```
+
+Con PHP 8.3+, le estensioni richieste da PHPUnit 12 e le dipendenze di sviluppo installate, esegui dalla radice:
+
+```bash
+composer test
+```
+
+Lo script usa il binario di progetto. Un'installazione di produzione con `--no-dev` non include PHPUnit. Il test del template non verifica il routing, gli header né l'invio del form: a questi servono i test di feature.
 
 Dopo aver cambiato la configurazione di autoload:
 
@@ -662,6 +714,8 @@ Il file reale `.env`:
 - non deve trovarsi in `public/`;
 - deve avere valori specifici dell'ambiente;
 - non deve essere incluso nei log.
+
+PHP e Composer non caricano automaticamente questo file. Lo snippet in `config/app.php` usa le variabili del **processo PHP** tramite `getenv()`. Configurale nel server oppure adotta nel bootstrap un lettore di `.env` coerente con l'API scelta (popolare solo `$_ENV` non equivale a impostare `getenv()`).
 
 ### `.gitignore`
 
@@ -944,6 +998,7 @@ Soluzione: document root su `public/`.
 - [Composer - Basic usage and autoloading](https://getcomposer.org/doc/01-basic-usage.md#autoloading)
 - [PHP-FIG - PSR-4](https://www.php-fig.org/psr/psr-4/)
 - [PHP Manual - User submitted data](https://www.php.net/manual/en/security.variables.php)
+- [PHPUnit 12: installazione locale e requisiti](https://docs.phpunit.de/en/12.5/installation.html)
 
 ## Collegamenti
 

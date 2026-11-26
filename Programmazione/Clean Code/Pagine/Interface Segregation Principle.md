@@ -26,70 +26,39 @@ title: Interface Segregation Principle
 
 ## Sintesi
 
-L'**Interface Segregation Principle** dice che un client non dovrebbe dipendere da metodi che non usa.
+L'**Interface Segregation Principle** (ISP) suggerisce di definire i contratti a partire dai **clienti**. Un report che consulta un utente non dovrebbe dover conoscere salvataggio e cancellazione solo perché lo stesso archivio offre anche quelle operazioni. Il criterio è l'uso, non un limite al numero di metodi.
 
-In pratica: meglio interfacce piccole e specifiche rispetto a contratti enormi che obbligano implementazioni e chiamanti a conoscere troppo.
-
-## Problema che risolve
-
-Interfacce grandi creano accoppiamento artificiale. Un modulo che ha bisogno solo di leggere dati dipende anche da metodi di scrittura, cancellazione o sincronizzazione.
-
-Questo rende test e implementazioni piu complicati.
-
-## Concetto chiave
-
-Una interfaccia dovrebbe essere definita dal bisogno del client, non dalla lista completa di capacita dell'oggetto concreto.
-
-Se due client usano parti diverse di una interfaccia, probabilmente servono contratti separati.
-
-## Dettagli importanti
-
-- ISP riduce dipendenze inutili.
-- Interfacce piccole rendono piu facili test e fake.
-- Una interfaccia non deve essere piccola per forza, ma coesa.
-- Il nome dell'interfaccia dovrebbe descrivere il ruolo.
-- ISP e collegato alla coesione: metodi che cambiano per ragioni diverse non dovrebbero stare sempre insieme.
-
-## Esempio
-
-Interfaccia troppo ampia:
+## Esempio: due clienti, un solo archivio possibile
 
 ```ts
-interface UserRepository {
-  findById(id: string): Promise<User>;
-  save(user: User): Promise<void>;
-  delete(id: string): Promise<void>;
-}
-```
+type User = { id: string; displayName: string };
 
-Contratto piu specifico:
-
-```ts
 interface UserReader {
-  findById(id: string): Promise<User>;
+  findById(id: string): Promise<User | null>;
 }
 
-interface UserWriter {
+interface UserEditor {
   save(user: User): Promise<void>;
+  remove(id: string): Promise<void>;
+}
+
+async function nameForReport(reader: UserReader, id: string): Promise<string> {
+  const user = await reader.findById(id);
+  return user?.displayName ?? "(utente assente)";
 }
 ```
 
-Un caso d'uso di lettura non dipende piu da operazioni di scrittura.
+Il report può usare un sostituto che implementa **solo** `findById`. Non servono metodi finti che lanciano «operazione non supportata». L'editor amministrativo dell'esempio usa salvataggio e rimozione; un adattatore concreto può soddisfare entrambi i contratti. Se il flusso amministrativo deve anche consultare un utente, può richiedere `UserReader & UserEditor` senza allargare il contratto del report.
 
-## Limiti
+## Verifica del confine
 
-- Troppe interfacce piccole possono frammentare il design.
-- Separare contratti senza bisogni reali e prematuro.
-- Alcuni framework richiedono interfacce piu ampie.
-- Il confine giusto emerge osservando i client reali.
+Una ricerca riuscita con `null` produce `"(utente assente)"`; una connessione interrotta è un errore e non viene trasformata nello stesso testo. Cambiare la firma di `remove` non deve obbligare a riscrivere il sostituto del report. Un tentativo di chiamare `reader.remove(id)` attraverso il tipo `UserReader` viene respinto dal compilatore.
 
-## Errori comuni
+## Limiti ed errori comuni
 
-- Creare una singola interfaccia per ogni repository con tutte le operazioni CRUD.
-- Far implementare metodi vuoti o non supportati.
-- Separare interfacce per metodo senza coesione.
-- Definire interfacce dal punto di vista dell'implementazione.
-- Non aggiornare i contratti quando cambiano i casi d'uso.
+- Un tipo di sola lettura restringe le operazioni visibili **al codice tipizzato**, non revoca permessi all'utente o al database. Un oggetto concreto può ancora esporre più metodi a runtime.
+- Non rendere `save?` e `remove?` opzionali su un'unica interfaccia per aggirare il problema: sposteresti su ogni chiamante la domanda «posso usare questo metodo?».
+- Se gli stessi clienti usano sempre due operazioni per una sola responsabilità, tenerle insieme può essere più leggibile. ISP chiede **quale porzione** serve al cliente; DIP chiede **chi definisce** quel contratto.
 
 ## Collegamenti
 
@@ -102,5 +71,5 @@ Un caso d'uso di lettura non dipende piu da operazioni di scrittura.
 
 ## Fonti
 
-- Robert C. Martin, *Agile Software Development, Principles, Patterns, and Practices*
-- Robert C. Martin, *Clean Architecture*
+- Robert C. Martin, [Solid Relevance: Interface Segregation](https://blog.cleancoder.com/uncle-bob/2020/10/18/Solid-Relevance.html)
+- Robert C. Martin, *Agile Software Development, Principles, Patterns, and Practices*; *Clean Architecture*

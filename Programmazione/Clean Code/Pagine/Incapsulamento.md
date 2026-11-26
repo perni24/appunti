@@ -26,80 +26,45 @@ title: Incapsulamento
 
 ## Sintesi
 
-L'**incapsulamento** consiste nel nascondere i dettagli interni di un oggetto o modulo ed esporre solo operazioni coerenti con la sua responsabilita.
+Un ordine è incapsulato quando **non puoi dichiararlo pagato senza rispettare la regola di pagamento**. Rendere privato il campo `status` e poi esporre `setStatus("paid")` cambierebbe la sintassi, ma lascerebbe la stessa decisione a tutti i chiamanti.
 
-Non significa solo usare `private`: significa proteggere invarianti e impedire che il resto del sistema dipenda da dettagli interni.
+## Esempio: registrare una conferma, non addebitare denaro
 
-## Problema che risolve
-
-Quando lo stato interno e liberamente modificabile, ogni parte del codice puo rompere regole che dovrebbero essere locali.
-
-Il risultato e un sistema fragile: per capire una modifica devi cercare tutti i punti in cui un campo viene letto o scritto.
-
-## Concetto chiave
-
-Un buon incapsulamento:
-
-- espone comportamento, non solo dati;
-- protegge lo stato interno;
-- rende valide le transizioni;
-- riduce dipendenze da dettagli implementativi;
-- rende piu semplice cambiare l'interno senza cambiare l'esterno.
-
-La domanda utile e: "chi puo modificare questo stato e con quali regole?"
-
-## Dettagli importanti
-
-- Getter e setter automatici non garantiscono incapsulamento.
-- Un metodo pubblico dovrebbe rappresentare una operazione significativa.
-- Gli invarianti dovrebbero essere protetti dentro il confine dell'oggetto.
-- I dettagli interni possono cambiare se l'interfaccia resta stabile.
-- L'incapsulamento vale anche per moduli e servizi, non solo classi.
-
-## Esempio
-
-Stato esposto:
+Per questo negozio un ordine nasce in bozza, con un totale non negativo in centesimi. Per registrare un pagamento servono un totale positivo e un riferimento non vuoto. Si può registrare una sola conferma. L'operazione **non** verifica il provider: chi la chiama ha già verificato la conferma.
 
 ```ts
 class Order {
-  status = "draft";
-}
+  #totalCents: number;
+  #paymentRef: string | null = null;
 
-order.status = "paid";
-```
-
-Stato protetto:
-
-```ts
-class Order {
-  private status = "draft";
-
-  markAsPaid() {
-    if (this.status !== "draft") {
-      throw new Error("Ordine non pagabile");
+  constructor(totalCents: number) {
+    if (!Number.isSafeInteger(totalCents) || totalCents < 0) {
+      throw new RangeError("Totale non valido");
     }
+    this.#totalCents = totalCents;
+  }
 
-    this.status = "paid";
+  markAsPaid(reference: string): void {
+    if (this.#paymentRef !== null) throw new Error("Ordine già pagato");
+    if (this.#totalCents === 0) throw new Error("Ordine gratuito");
+    const ref = reference.trim();
+    if (!ref) throw new Error("Conferma priva di riferimento");
+    this.#paymentRef = ref;
+  }
+
+  get status(): "draft" | "paid" {
+    return this.#paymentRef === null ? "draft" : "paid";
   }
 }
 ```
 
-Nel secondo caso la modifica passa da una regola esplicita.
+Lo stato viene **derivato** dal riferimento: non ci sono due campi da tenere sincronizzati. Con un ordine da 500 centesimi, un riferimento vuoto viene rifiutato e lascia lo stato in bozza; dopo una conferma valida lo stato è `paid` e una seconda conferma viene rifiutata. Per testarlo bastano le operazioni pubbliche, senza ispezionare i campi privati.
 
-## Limiti
+## Dove passa il confine
 
-- Nascondere troppo puo rendere l'oggetto difficile da usare.
-- Alcuni data objects devono essere semplici contenitori.
-- L'incapsulamento non deve impedire test sensati.
-- Nei linguaggi dinamici serve piu disciplina convenzionale.
-
-## Errori comuni
-
-- Esporre campi mutabili senza controllo.
-- Creare setter per ogni proprieta.
-- Mettere logica fuori dall'oggetto e lasciare dati anemici.
-- Confondere incapsulamento con complessita artificiale.
-- Nascondere dipendenze invece di nascondere dettagli interni.
+- Un getter di sola lettura per uno stato osservabile è utile. Se invece restituisse la stessa lista mutabile usata dall'oggetto, il chiamante potrebbe cambiarla senza passare per le regole. Restituisci una proiezione o una copia adeguata ai dati che contiene.
+- L'incapsulamento può stare in una classe, in una closure o in un modulo. Un DTO destinato soltanto al trasporto non deve per forza avere metodi.
+- L'esempio protegge **un'istanza in memoria**. Non garantisce autenticità del pagamento, deduplicazione di eventi esterni o coordinamento fra due processi che caricano lo stesso ordine.
 
 ## Collegamenti
 
@@ -112,4 +77,4 @@ Nel secondo caso la modifica passa da una regola esplicita.
 ## Fonti
 
 - Robert C. Martin, *Clean Code*
-- Martin Fowler, *Refactoring*
+- Martin Fowler, [Encapsulate Collection](https://refactoring.com/catalog/encapsulateCollection.html), sul caso in cui un accessore espone una collezione modificabile.

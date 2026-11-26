@@ -25,7 +25,7 @@ title: GitHub - Ruleset, CODEOWNERS e impostazioni
 
 ## CODEOWNERS
 
-Posizioni riconosciute:
+GitHub legge il **primo** `CODEOWNERS` trovato nel branch di destinazione della PR, nell’ordine seguente. I tre file non vengono combinati:
 
 ```text
 .github/CODEOWNERS
@@ -42,13 +42,13 @@ Esempio:
 /.github/workflows/       @example-org/devops-team
 ```
 
-L'ultima regola corrispondente prevale.
+Nel file scelto prevale l’ultima riga che corrisponde al percorso. Per esempio, per `/docs/guida.md` vale `@example-org/docs-team`, non anche `@owner`. Metti sulla stessa riga i proprietari alternativi dello stesso percorso.
 
 Sostituire utenti, organizzazione e team con quelli reali. Utenti: `@username`; team: `@org/team`. Servono permessi `write`; i team devono essere visibili e avere accesso `write` esplicito. Per bloccare il merge senza approvazione attivare anche la review obbligatoria dei code owner nel ruleset.
 
 ## Ruleset del branch principale
 
-Controlli consigliati:
+Seleziona il branch di destinazione e verifica che il ruleset sia **Active**: salvare una bozza di configurazione o lasciarlo disabilitato non blocca i merge. Scegli i controlli adatti al progetto:
 
 - pull request obbligatoria;
 - numero minimo di approvazioni;
@@ -62,7 +62,7 @@ Controlli consigliati:
 
 ## Status check
 
-Usare nomi stabili per job e workflow:
+Frammento di un job esistente: assegna un nome stabile e univoco fra i workflow che pubblicano check sullo stesso repository.
 
 ```yaml
 jobs:
@@ -70,7 +70,7 @@ jobs:
     name: Verify
 ```
 
-Il ruleset deve richiedere esattamente il check pubblicato.
+Prima esegui il workflow su una PR, poi seleziona nel ruleset il check effettivamente pubblicato. Il nome nel file YAML da solo non rende obbligatorio il check.
 
 ## Impostazioni repository
 
@@ -97,6 +97,8 @@ Verificare:
 
 ## Repository da CLI
 
+Il primo comando legge le impostazioni. Il secondo cambia una preferenza del repository per tutti e richiede i permessi appropriati: non è necessario per consultarla.
+
 ```powershell
 gh repo view --json defaultBranchRef,visibility
 ```
@@ -104,6 +106,11 @@ gh repo view --json defaultBranchRef,visibility
 ```powershell
 gh repo edit --delete-branch-on-merge
 ```
+
+## Fonti
+
+- [GitHub Docs: posizione e precedenza di CODEOWNERS](https://docs.github.com/en/repositories/managing-your-repositorys-settings-and-features/customizing-your-repository/about-code-owners)
+- [GitHub Docs: regole disponibili e check richiesti](https://docs.github.com/en/repositories/configuring-branches-and-merges-in-your-repository/managing-rulesets/available-rules-for-rulesets)
 
 ## Approfondimento
 

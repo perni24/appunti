@@ -26,77 +26,29 @@ title: Code smells
 
 ## Sintesi
 
-I **code smells** sono segnali nel codice che indicano un possibile problema di design, leggibilita o manutenibilita.
+Un **code smell** è un indizio che suggerisce una domanda sul design. Non è una diagnosi, un bug o un ordine di riscrittura. Una review utile passa da «questa classe è grande» a «per cambiare questa politica devo modificare tre copie e una è già divergente».
 
-Non sono bug certi e non vanno corretti automaticamente. Sono indizi da valutare.
+## Esempio: sei file per cambiare un prezzo
 
-## Problema che risolve
+Una soglia di sconto cambia da 10 a 12 pezzi. Il diff tocca sei file: prima di chiamarlo *shotgun surgery*, guarda **quante decisioni indipendenti** hai dovuto riallineare.
 
-Senza un linguaggio comune, molti problemi di qualita restano vaghi: "questa classe e brutta", "questa funzione non mi convince", "qui c'e qualcosa che non va".
+| Cosa trovi nei sei file | Diagnosi | Intervento |
+| --- | --- | --- |
+| Checkout, preventivo e importatore contengono ciascuno il proprio confronto con 10 | Una sola regola vive in più punti: *shotgun surgery*. | Identifica i chiamanti della stessa politica, caratterizza il comportamento e concentra lì il confronto. |
+| Una sola politica, più test, esempi e note di rilascio | Il numero dei file da solo non dimostra duplicazione. | Aggiorna il contratto e i casi interessati, senza introdurre un altro livello. |
+| Il preventivo è promozionale; gli ordini storici conservano lo sconto pattuito | I numeri oggi uguali non implicano la stessa regola. | Non ricalcolare gli ordini storici con la soglia corrente solo per eliminare una somiglianza. |
 
-I code smells danno nomi a sintomi ricorrenti e aiutano a discutere refactoring in modo concreto.
+Se decidi di estrarre la politica, **separa il refactoring dal cambio di prezzo**: con la vecchia soglia verifica 9, 10 e 11 pezzi, poi sposta il calcolo lasciando invariati i risultati. Solo dopo cambia il requisito e prova 11, 12 e 13. Se le implementazioni iniziali divergono, chiarisci prima quale comportamento è voluto: un test di caratterizzazione registra l'esistente, non lo approva.
 
-## Concetto chiave
+## Altri segnali da leggere con cautela
 
-Un code smell segnala una domanda:
+- **Divergent change:** il contrario della dispersione appena descritta: un solo modulo cambia per richieste scollegate, come prezzo, notifiche e formato PDF.
+- **Feature envy:** un metodo legge molti dettagli di un altro oggetto per prendere una decisione che potrebbe appartenere a quest'ultimo. Verifica prima che non sia semplicemente un adattatore di dati.
+- **Primitive obsession, flag ambigui, codice apparentemente morto:** cerca parametri scambiati, combinazioni non valide o punti di ingresso non evidenti. Un flag davvero binario o una funzione usata tramite registrazione dinamica non sono difetti per definizione.
 
-```text
-Questo codice e difficile da cambiare per una ragione strutturale?
-```
+## Quando non intervenire
 
-Esempi frequenti:
-
-- funzioni lunghe;
-- classi troppo grandi;
-- duplicazione;
-- feature envy;
-- shotgun surgery;
-- primitive obsession;
-- dead code;
-- boolean blindness.
-
-## Dettagli importanti
-
-- Un smell non implica sempre una correzione immediata.
-- Il contesto decide la gravita.
-- Gli smell sono utili durante review e refactoring.
-- Alcuni smell sono accettabili in codice temporaneo.
-- Smell ripetuti indicano debito tecnico sistemico.
-
-## Esempio
-
-Smell:
-
-```text
-Ogni nuova regola di prezzo richiede modifiche in 6 file diversi.
-```
-
-Possibile diagnosi:
-
-```text
-Shotgun surgery: la responsabilita del pricing e dispersa.
-```
-
-Possibile refactoring:
-
-```text
-Concentrare le regole di prezzo in un modulo o policy dedicata.
-```
-
-## Limiti
-
-- Gli smell non sostituiscono test e misurazione.
-- Alcuni pattern sembrano smell ma sono scelte consapevoli.
-- Correggere smell senza capire comportamento puo introdurre bug.
-- Non tutti gli smell valgono lo stesso costo.
-
-## Errori comuni
-
-- Trattare ogni smell come emergenza.
-- Fare refactoring estetico senza beneficio.
-- Correggere smell senza test.
-- Usare nomi di smell per bloccare discussioni.
-- Ignorare smell in aree ad alto cambiamento.
+Priorità e rischio contano: una duplicazione locale stabile può costare meno di un'astrazione condivisa prematura. Dai priorità a segnali con un effetto osservato (correzioni ripetute, incompatibilità, regressioni) e un modo per verificare la modifica. Un linter o una soglia di righe sono inviti a guardare, non misure sufficienti della qualità.
 
 ## Collegamenti
 
@@ -109,5 +61,5 @@ Concentrare le regole di prezzo in un modulo o policy dedicata.
 
 ## Fonti
 
-- Martin Fowler, *Refactoring*
+- Martin Fowler, [Code Smell](https://martinfowler.com/bliki/CodeSmell.html) e *Refactoring*
 - Kent Beck, *Implementation Patterns*

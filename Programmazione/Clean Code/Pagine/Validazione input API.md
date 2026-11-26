@@ -27,80 +27,43 @@ title: Validazione input API
 
 ## Sintesi
 
-La **validazione input API** controlla dati ricevuti da richieste esterne prima che entrino nella logica applicativa.
+Un body JSON leggibile non è ancora un comando valido. `null`, un numero e un array sono JSON validi, ma nessuno dei tre identifica la fattura da emettere. Il parser di questo endpoint restituisce **o** il comando con i soli campi ammessi **o** un errore stabile con campo e motivo.
 
-Serve a proteggere il sistema da formato errato, campi mancanti, valori non ammessi e ambiguita di contratto.
+## Esempio: validare la forma, senza interrogare il database
 
-## Quando usarlo
-
-- In endpoint HTTP pubblici o interni.
-- In webhook e integrazioni esterne.
-- In GraphQL, RPC, CLI o message handler.
-- Prima di trasformare payload in comandi applicativi.
-- Quando vuoi restituire errori coerenti al client.
-
-## Come funziona
-
-La validazione API dovrebbe distinguere:
-
-- parsing del formato;
-- presenza dei campi;
-- tipo dei valori;
-- vincoli sintattici;
-- autorizzazione;
-- regole di dominio.
-
-Non tutte queste regole vivono nello stesso punto.
-
-## API / Sintassi
-
-```text
-request payload -> schema/validator -> input DTO -> use case
-```
-
-Il controller o handler deve bloccare input non valido prima che entri nel caso d'uso.
-
-## Esempio pratico
+Contratto di `POST /invoice-issues`: un oggetto con la sola proprietà `invoiceId`, una stringa opaca da 1 a 40 caratteri ASCII tra lettere maiuscole, cifre e trattino. Questa è una convenzione dell'esempio, non una regola generale per gli ID. Non si modificano maiuscole, spazi o zeri iniziali; le chiavi sconosciute vengono rifiutate.
 
 ```js
-function validateCreateUserInput(body) {
-  if (typeof body.email !== "string") {
-    return { ok: false, error: "email_required" };
+function parseIssue(body) {
+  const invalid = (field, code) => ({ ok: false, error: { field, code } });
+  if (body === null || typeof body !== "object" || Array.isArray(body)) {
+    return invalid("body", "expected_object");
   }
-
-  if (!body.email.includes("@")) {
-    return { ok: false, error: "email_invalid" };
+  if (Object.keys(body).some(key => key !== "invoiceId")) {
+    return invalid("body", "unknown_field");
   }
-
-  return { ok: true, value: { email: body.email.trim() } };
+  if (!Object.hasOwn(body, "invoiceId")) return invalid("invoiceId", "required");
+  const id = body.invoiceId;
+  if (typeof id !== "string" || id.length < 1 || id.length > 40 || /[^A-Z0-9-]/.test(id)) {
+    return invalid("invoiceId", "invalid_format");
+  }
+  return { ok: true, value: { invoiceId: id } };
 }
 ```
 
-La risposta di validazione e esplicita e testabile.
+## A chi spetta quale controllo?
 
-## Varianti
+| Input o situazione | Responsabilità | Esito dell'esempio |
+| --- | --- | --- |
+| Body non decodificabile come JSON | Controller HTTP | 400, nessuna chiamata al service |
+| Oggetto con ID mancante, numerico o proprietà inattesa | Parser | Errore per campo; il controller lo traduce in 422 |
+| `"007"` ben formato ma inesistente | Repository e caso d'uso | Comando valido, poi fattura non trovata |
+| Fattura già emessa | Dominio e caso d'uso | Conflitto di stato, non errore di formato |
+| Il chiamante non ha il permesso di emettere | Politica di accesso | Un ID valido non autorizza l'azione |
 
-- Validazione manuale.
-- Schema validation.
-- Middleware di validazione.
-- Parser typed.
-- Validazione accumulata per mostrare piu errori insieme.
+## Limiti e verifica
 
-## Errori comuni
-
-- Validare solo lato frontend.
-- Restituire `400 Bad Request` senza dettagli utili.
-- Mescolare autorizzazione e validazione sintattica senza chiarezza.
-- Far arrivare payload grezzi al dominio.
-- Duplicare schemi senza una fonte chiara.
-
-## Checklist
-
-- L'input viene validato al confine?
-- Gli errori indicano campo e motivo?
-- I payload validi diventano DTO espliciti?
-- Le regole di dominio restano nel dominio?
-- I test coprono input mancante, malformato e valido?
+Il parser assume un valore ottenuto da un decoder JSON. Il limite di 40 caratteri riguarda il campo, non il numero di byte accettabili per il body: quello va limitato prima della decodifica. Il controllo si ferma al primo problema; per un modulo che deve mostrare più errori può essere utile accumularli. Per un indirizzo email, analogamente, la sola presenza di `@` non dimostra neppure una sintassi completa, tanto meno il possesso della casella.
 
 ## Collegamenti
 
@@ -116,3 +79,5 @@ La risposta di validazione e esplicita e testabile.
 - Microsoft, *REST API Guidelines*
 - Martin Fowler, *Patterns of Enterprise Application Architecture*
 - Robert C. Martin, *Clean Architecture*
+- [RFC 8259: valori rappresentabili in JSON](https://www.rfc-editor.org/rfc/rfc8259.html)
+- [RFC 9110: 422 Unprocessable Content](https://www.rfc-editor.org/rfc/rfc9110.html#section-15.5.21)

@@ -26,79 +26,42 @@ title: Modellare stati impossibili
 
 ## Sintesi
 
-**Modellare stati impossibili** significa progettare tipi e strutture in modo che certe combinazioni non valide non possano essere rappresentate, o siano molto difficili da creare.
+Rendere uno stato impossibile significa progettare il modello in modo che un programma ben tipizzato non possa costruire **una particolare combinazione**. Una risposta con `success: boolean`, `data?` ed `error?` permette sia «successo senza dati» sia «dati ed errore insieme». Se il protocollo ha due esiti esclusivi, rappresentali direttamente.
 
-E un modo potente per spostare errori dal runtime al design del codice.
-
-## Problema che risolve
-
-Molti bug derivano da stati che non dovrebbero esistere:
-
-- ordine con stato `paid` ma senza pagamento;
-- utente attivo ma senza email verificata;
-- richiesta con `success: true` e `error` valorizzato;
-- prezzo negativo;
-- oggetto con campi incompatibili.
-
-Se il modello permette questi stati, tutto il codice successivo deve difendersi.
-
-## Concetto chiave
-
-Il modello dovrebbe rappresentare solo stati validi.
-
-Strategie comuni:
-
-- usare tipi dedicati;
-- separare stati con union o enum;
-- evitare campi opzionali non correlati;
-- creare costruttori validanti;
-- usare transizioni esplicite;
-- eliminare booleani ambigui.
-
-## Dettagli importanti
-
-- Non sempre lo stato invalido puo essere eliminato completamente.
-- Gli input esterni vanno comunque validati.
-- La modellazione deve seguire il dominio, non solo il tipo tecnico.
-- Rendere impossibile uno stato riduce controlli difensivi.
-- Il codice diventa piu chiaro perche esprime i casi reali.
-
-## Esempio
-
-Modello ambiguo:
+## Esempio: legare il contenuto all'esito
 
 ```ts
-type ApiResult = {
-  success: boolean;
-  data?: User;
-  error?: string;
-};
-```
+type User = { name: string };
 
-Modello piu sicuro:
-
-```ts
 type ApiResult =
-  | { status: "success"; data: User }
-  | { status: "error"; error: string };
+  | { status: "success"; data: User; error?: never }
+  | { status: "error"; error: string; data?: never };
+
+function describe(result: ApiResult): string {
+  switch (result.status) {
+    case "success": return result.data.name;
+    case "error": return result.error;
+    default: {
+      const unhandled: never = result;
+      return unhandled;
+    }
+  }
+}
 ```
 
-Nel secondo caso non puo esistere una risposta con `success` e `error` insieme.
+Il discriminante `status` rende obbligatorio `data` nel successo ed `error` nel fallimento. I campi `?: never` vietano anche di assegnare una **variabile** con `status: "success"`, dati validi e una stringa `error`: senza quel divieto esplicito il controllo strutturale potrebbe accettare il campo in più. Con `strict` e `exactOptionalPropertyTypes: true` non è consentito nemmeno passare esplicitamente `error: undefined` al posto dell'assenza del campo.
 
-## Limiti
+## Tre garanzie diverse
 
-- Alcuni linguaggi supportano meglio questa tecnica di altri.
-- Troppi tipi possono rendere il codice difficile da navigare.
-- Stati intermedi di form o wizard possono essere legittimamente incompleti.
-- Serve evitare modelli troppo rigidi per domini ancora instabili.
+| Domanda | Risposta del modello |
+| --- | --- |
+| Il programma può costruire un successo privo di dati? | Il compilatore lo rifiuta prima dell'esecuzione. |
+| Cosa accade se si aggiunge un esito `pending`? | Il controllo con `never` segnala che `describe` non ha ancora gestito quel caso. |
+| Un JSON ricevuto dalla rete rispetta la union? | Non lo sappiamo. Trattarlo come `unknown` e controllarne discriminante e contenuto prima di usarlo. Un cast non effettua questa verifica. |
 
-## Errori comuni
+## Limiti ed errori comuni
 
-- Usare molti booleani per rappresentare stati esclusivi.
-- Rendere tutto opzionale per comodita.
-- Non distinguere dati grezzi e dati validati.
-- Validare in ritardo quando il dato ha gia attraversato il sistema.
-- Creare enum senza controllare transizioni valide.
+La union elenca **stati**, non **transizioni**: non impedisce, da sola, di passare da «pagato» a «bozza». Per una macchina a stati occorre anche stabilire da quale stato è consentita ogni operazione. Allo stesso modo un prezzo positivo richiede un controllo numerico, non soltanto un nome di tipo. Un risultato parziale legittimo va aggiunto come variante, non nascosto rendendo tutto opzionale.
 
 ## Collegamenti
 
@@ -107,8 +70,11 @@ Nel secondo caso non puo esistere una risposta con `success` e `error` insieme.
 - [[Programmazione/Clean Code/Pagine/Value objects|Value objects]]
 - [[Programmazione/Clean Code/Pagine/Primitive obsession|Primitive obsession]]
 - [[Programmazione/Clean Code/Pagine/Codice esplicito vs codice implicito|Codice esplicito vs codice implicito]]
+- [[Programmazione/TypeScript/Pagine/Discriminated Unions|Discriminated unions in TypeScript]]
+- [[Programmazione/TypeScript/Pagine/Validazione runtime e tipi statici|Validazione runtime e tipi statici]]
 
 ## Fonti
 
-- Yaron Minsky, *Effective ML*
-- Scott Wlaschin, *Domain Modeling Made Functional*
+- TypeScript Handbook, [Discriminated unions ed exhaustiveness checking](https://www.typescriptlang.org/docs/handbook/2/narrowing.html#discriminated-unions)
+- TypeScript TSConfig, [exactOptionalPropertyTypes](https://www.typescriptlang.org/tsconfig/exactOptionalPropertyTypes.html)
+- Yaron Minsky, *Effective ML*; Scott Wlaschin, *Domain Modeling Made Functional*

@@ -27,79 +27,46 @@ title: Cache e invalidazione
 
 ## Sintesi
 
-Una **cache** conserva risultati o dati per evitare calcoli o accessi costosi. L'**invalidazione** decide quando quei dati non sono piu affidabili.
+In una cache *cache-aside* la sorgente resta autorevole: al primo accesso si legge da lì, poi si riusa il risultato per un tempo limitato. **Un prezzo di zero è un dato presente.** Verificare `if (price)` mescola due domande diverse: «esiste la voce?» e «quanto vale?».
 
-La cache migliora performance, ma introduce stato duplicato.
+## Esempio: listino locale con letture asincrone
 
-## Quando usarlo
-
-- Quando una lettura e costosa e frequente.
-- Quando il dato cambia raramente.
-- Quando la latenza e un problema misurato.
-- Quando il sistema puo tollerare dati leggermente obsoleti.
-- Quando il costo di invalidazione e gestibile.
-
-## Come funziona
-
-Una cache deve avere regole esplicite:
-
-- chi la popola;
-- chi la legge;
-- quando scade;
-- quando viene invalidata;
-- cosa succede in caso di errore;
-- quale coerenza e richiesta.
-
-Senza queste regole, la cache diventa una fonte di bug.
-
-## API / Sintassi
-
-```text
-key -> cached value
-miss -> load source -> store -> return
-invalidate -> remove or refresh
-```
-
-La chiave deve rappresentare tutti i fattori che influenzano il risultato.
-
-## Esempio pratico
+`loadPrice(id)` restituisce il prezzo in centesimi o fallisce. L'esempio assume un solo listino e una sola valuta. La scadenza parte dalla lettura riuscita; l'orologio in millisecondi è sostituibile nei test. Ogni voce conserva una promessa: due lettori simultanei della stessa chiave possono aspettare lo stesso lavoro.
 
 ```js
-async function getProduct(productId, cache, repository) {
-  const cached = cache.get(productId);
-  if (cached) return cached;
-
-  const product = await repository.findById(productId);
-  cache.set(productId, product, { ttlSeconds: 300 });
-  return product;
+function priceCache(loadPrice, nowMs, ttlMs) {
+  if (!Number.isSafeInteger(ttlMs) || ttlMs <= 0) throw new RangeError("TTL non valido");
+  const entries = new Map();
+  return {
+    get(id) {
+      const hit = entries.get(id);
+      if (hit && (hit.expiresAt === null || nowMs() < hit.expiresAt)) return hit.pending;
+      const entry = { expiresAt: null };
+      entry.pending = Promise.resolve().then(() => loadPrice(id)).then(price => {
+        entry.expiresAt = nowMs() + ttlMs;
+        return price;
+      }).catch(error => {
+        if (entries.get(id) === entry) entries.delete(id);
+        throw error;
+      });
+      entries.set(id, entry);
+      return entry.pending;
+    },
+    invalidate(id) { entries.delete(id); },
+  };
 }
 ```
 
-La cache e esplicita e il TTL limita la durata del dato.
+## Cosa accade durante una modifica
 
-## Varianti
+Dopo una scrittura **confermata** in archivio, il proprietario invalida la chiave. Se una vecchia lettura A è ancora in corso, chi la attende può ricevere il prezzo precedente. Il lettore successivo avvia B; A modifica solo la propria voce, non può rimetterla nella mappa. Anche se A fallisce dopo B, il confronto d'identità impedisce che cancelli B. Al limite esatto del TTL la voce è già scaduta.
 
-- TTL: scadenza temporale.
-- Write-through: scrittura su cache e sorgente insieme.
-- Write-behind: scrittura differita.
-- Cache locale: veloce ma non condivisa.
-- Cache distribuita: condivisa ma piu complessa.
+## Limiti e alternative
 
-## Errori comuni
-
-- Non definire una strategia di invalidazione.
-- Usare chiavi incomplete.
-- Caching di dati utente senza isolamento.
-- Nascondere cache dentro funzioni pure apparenti.
-- Aggiungere cache prima di misurare il problema.
-
-## Checklist
-
-- La cache risolve un problema misurato?
-- La chiave include tutti i parametri rilevanti?
-- Esiste una strategia di invalidazione?
-- La staleness e accettabile?
-- I test coprono hit, miss e invalidazione?
+- La scadenza viene controllata **in lettura**: non rimuove automaticamente le chiavi mai più consultate. Per un catalogo non limitato servono anche un limite di capacità e una politica di espulsione.
+- Il TTL non è un timeout per `loadPrice`. Se la lettura rimane sospesa occorre un timeout nella dipendenza. Per intervalli di processo usa un orologio monotono.
+- Una chiave composta solo dall'ID va bene **solo** se il prezzo non dipende da cliente, listino o valuta. Un `Map` locale non invalida le cache degli altri processi. Una scrittura fallita, un'invalidazione persa o una lettura già avviata non implicano consistenza immediata.
+- Prima di introdurre cache distribuite o aggiornamenti differiti, misura il costo delle letture e stabilisci per quanto tempo un valore vecchio sia accettabile.
 
 ## Collegamenti
 
@@ -111,6 +78,6 @@ La cache e esplicita e il TTL limita la durata del dato.
 
 ## Fonti
 
-- Martin Fowler, *Cache-Aside*
 - Michael Nygard, *Release It!*
 - Martin Kleppmann, *Designing Data-Intensive Applications*
+- [Microsoft Azure Architecture Center: Cache-Aside](https://learn.microsoft.com/en-us/azure/architecture/patterns/cache-aside)

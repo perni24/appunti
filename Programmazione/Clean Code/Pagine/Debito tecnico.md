@@ -25,70 +25,27 @@ title: Debito tecnico
 
 ## Sintesi
 
-Il **debito tecnico** e il costo futuro generato da una scelta tecnica che rende piu veloce il presente ma piu costoso il cambiamento successivo.
-
-Non tutto il debito e negativo: il problema nasce quando non viene riconosciuto, tracciato o ripagato.
-
-## Problema che risolve
-
-Il concetto aiuta a distinguere tra:
-
-- scorciatoie consapevoli;
-- scelte temporanee;
-- degrado non controllato;
-- complessita accumulata;
-- lavoro invisibile che rallenta il team.
-
-Senza questa distinzione, ogni problema di qualita sembra solo "codice brutto".
+Il debito tecnico è una metafora per parlare del **costo aggiuntivo dei cambiamenti futuri** dovuto a una scelta tecnica. Può nascere da un compromesso deliberato oppure emergere quando il team impara qualcosa che non sapeva all'inizio. Un difetto visibile oggi, una funzionalità mancante e un debito possono coesistere, ma non sono la stessa cosa.
 
 ## Concetto chiave
 
-Il debito tecnico funziona come un debito finanziario:
+Il **capitale** è il lavoro che servirebbe per eliminare l'ostacolo. Gli **interessi** sono il lavoro extra e il rischio che sostieni ogni volta che l'ostacolo conta. Non maturano a un tasso fisso: una parte stabile e prossima alla dismissione può costare meno lasciata com'è.
 
-- permette di ottenere qualcosa prima;
-- produce interessi nel tempo;
-- puo essere gestito;
-- diventa pericoloso se ignorato.
+## Esempio: rendere una decisione verificabile
 
-Gli interessi sono bug, lentezza nello sviluppo, paura di cambiare codice, test fragili e onboarding difficile.
+Per un pilota si è copiata la regola di sconto dal checkout al preventivo. Alla seconda campagna il team ha dovuto modificare due punti e correggere un preventivo discordante. Il prezzo errato è un **bug** da risolvere; dover riallineare a ogni campagna due copie della stessa politica è il **debito**.
 
-## Dettagli importanti
+| Da registrare | Esempio per questo caso |
+| --- | --- |
+| Beneficio iniziale | Avviare il pilota senza modificare il checkout |
+| Evidenza degli interessi | Due interventi per campagna e un disallineamento osservato |
+| Intervento e proprietario | Il team prezzi estrae la regola condivisa e verifica entrambi i chiamanti |
+| Quando rivalutare | Prima della prossima campagna; se il pilota termina, rimuovere la copia |
+| Criterio di chiusura | Un'unica decisione sullo sconto; preventivo e checkout concordano alla soglia |
 
-- Il debito intenzionale deve essere documentato.
-- Il debito non intenzionale nasce spesso da mancanza di conoscenza.
-- Non tutto il debito va ripagato subito.
-- Il debito in aree critiche costa piu del debito in codice periferico.
-- Il refactoring e uno dei modi principali per ripagare debito.
+## Limiti ed errori comuni
 
-## Esempio
-
-Debito intenzionale:
-
-```text
-Implementiamo una soluzione semplice per validare il mercato.
-Apriamo una issue per sostituirla prima della release pubblica.
-```
-
-Debito non controllato:
-
-```text
-Copiamo la stessa logica in cinque punti e nessuno sa quale sia la versione corretta.
-```
-
-## Limiti
-
-- Il termine puo diventare una scusa per riscrivere tutto.
-- Non ogni imperfezione e debito urgente.
-- Alcuni compromessi sono corretti rispetto al contesto.
-- Serve collegare il debito a impatti concreti, non solo a preferenze.
-
-## Errori comuni
-
-- Chiamare debito tecnico ogni codice che non piace.
-- Non documentare scorciatoie temporanee.
-- Ripagare debito in aree che non cambiano mai.
-- Ignorare debito in aree centrali.
-- Accumulare TODO senza ownership.
+Non basta aprire un TODO o proporre una riscrittura. Chiedi quale cambiamento costa più del necessario, con quale frequenza si presenta e quanto costerebbe correggere la causa. Se non hai ancora evidenza, annota un'ipotesi da verificare; un nome che semplicemente non piace non giustifica una priorità di progetto.
 
 ## Collegamenti
 
@@ -101,4 +58,4 @@ Copiamo la stessa logica in cinque punti e nessuno sa quale sia la versione corr
 ## Fonti
 
 - Ward Cunningham, metafora del technical debt
-- Martin Fowler, *Technical Debt Quadrant*
+- Martin Fowler, [Technical Debt Quadrant](https://martinfowler.com/bliki/TechnicalDebtQuadrant.html)

@@ -8,6 +8,50 @@ Mantieni solo le ultime 10 voci operative.
 
 ---
 
+## 2026-11-26 - GitHub: revisionati i nove promemoria segnalati
+
+### Fatto
+
+- Aggiunte fonti ufficiali e corretti gli esempi Git e GitHub CLI nelle nove schede segnalate. La scheda su issue e progetti mostra ora come aggiungere un’issue esistente a un Project.
+- Provati in un repository locale temporaneo staging e ripristino, confronto tra branch divergenti, revert di un intervallo e tag annotato. I comandi GitHub sono stati verificati sulla documentazione, senza scritture remote.
+
+### Prossimi passi
+
+- Completare le fonti dei sette promemoria Rust già revisionati tecnicamente; restano inoltre quattro segnalazioni nelle schede di Programmi open source.
+
+## 2026-11-26 - Clean Code: revisione tecnica completata
+
+### Fatto
+
+- Revisionate le 12 note del capitolo. Gli esempi distinguono una rinomina da un cambiamento di contratto, una regola unica dalle sue copie e un tentativo registrato da una lettura riuscita. Nove prove sugli esempi superate.
+- Completate le sette note di Strutture Dati e Modellazione. Verificati gli esempi di confronto per valore, DTO, invarianti, union e mutabilità; **15/15** prove complessive per le prime **19/109** note.
+- Revisionate le otto note su file, moduli e ambiente: ingresso pubblico Node verificato da un consumatore, comandi del README eseguiti sul vault e script Prettier provati in isolamento. **20/20** prove sugli esempi per le prime **27/109** note.
+- Completate le nove note di Programmazione ad Oggetti e Design: sostituibilità, DIP e ISP verificati sia nei tipi sia nel comportamento. **27/27** prove per le prime **36/109** note.
+- Revisionate le sette note di Concetti Funzionali e Composizione: verificati anche l'ordine dei passaggi, la stabilità di una ricevuta e l'equivalenza delle guardie con valori mancanti. **34/34** prove per le prime **43/109** note.
+- Completate le 15 note di Contratti, Tipi e Qualità: esempi e test collegati fra pagine, unità e valute esplicite, prova di integrazione su SQLite in memoria. **44/44** prove per le prime **58/109** note.
+- Completate le sette note di Standard Library Pratica. Verificate assenza e guasto, scelta dei campi pubblici, doppia ora locale a Roma e creazione esclusiva di file su disco. **51/51** prove per le prime **65/109** note.
+- Revisionate le nove note di Internals e Gestione Risorse. Verificati rollback SQLite, chiusura del writer, doppio errore di cleanup, letture in corso durante l'invalidazione e contratto dell'export legacy. **60/60** prove per le prime **74/109** note.
+- Revisionate le sette note di Concorrenza e Parallelismo. Verificati gli ordini di completamento, i lock nativi Node, la contesa fra connessioni SQLite e la riconsegna simulata dopo un ack perso. **67/67** prove per le prime **81/109** note.
+- Concluse le sei note rimanenti di Performance e Distribuzione: conteggio reale delle query SQLite, profilo CPU Node, allocazioni intermedie e transizioni delle sonde. Configurazione applicativa già revisionata. **73/73** prove per le prime **87/109** note.
+- Revisionate le sette note di Web, API e Database. Verificati il percorso di emissione fattura dal controller a SQLite, il rollback dell'outbox, la paginazione a pari data e la migrazione con vecchi scrittori. **80/80** prove per le prime **94/109** note.
+- Revisionate le sette note di Data, Automazione e LLM. Verificati listino CSV e scarti, celle ripetibili, rilancio della CLI e distinzione fra output valido, citazione presente e proposta da approvare. **87/87** prove per le prime **101/109** note.
+- Completate le otto note di Tooling e Qualità del Codice, incluse le prove di soglia per il mutation testing e dello staging parziale per l'hook Git. Totale: **109/109** note e **95** prove verificate. Le otto pagine Quartz conservano tutti gli esempi e le fonti dei Markdown.
+
+### Prossimi passi
+
+- La revisione tecnica di Clean Code è conclusa; l'approvazione personale resta all'utente.
+
+## 2026-11-26 - Strutture di progetto: PHP, Python e React
+
+### Fatto
+
+- Revisionate tutte e tre le schede e chiarita la scelta nell'indice: PHP server-rendered oppure frontend React e backend Python accoppiati tramite il contratto HTTP.
+- Verificati template PHP con PHPUnit, transazioni SQLite, build JSX, type checking dell'API client e scambio di dati con le route FastAPI. Le quattro prove estraggono il codice direttamente dalle note.
+
+### Prossimi passi
+
+- Nessuna scheda di Strutture di progetto da revisionare in questo passaggio. Prossimo percorso proposto: [[Programmazione/Clean Code/Indice Clean Code|Clean Code]].
+
 ## 2026-11-25 - PostgreSQL: completate le note principali e i promemoria
 
 ### Fatto
@@ -137,59 +181,3 @@ Mantieni solo le ultime 10 voci operative.
 ### Prossimi passi
 
 - Iniziare WebAssembly da [[Programmazione/Rust/Pagine/wasm-bindgen|wasm-bindgen]].
-
-## 2026-11-19 - Rust: completato CLI e Tooling
-
-### Fatto
-
-- Revisionata [[Programmazione/Rust/Pagine/CLI con clap|CLI con clap]]: **1/6** del capitolo, **137/183** note principali Rust, **46 restanti**. Verificato il contratto del binario per parsing, errori di I/O, stdout, stderr e codici di uscita.
-- Revisionata [[Programmazione/Rust/Pagine/Configurazione applicativa|Configurazione applicativa]]: **2/6**, **138/183** note principali Rust, **45 restanti**. Verificate le precedenze per campo e la distinzione tra valori di fonte malformati e vincoli sulla configurazione effettiva.
-- Revisionata [[Programmazione/Rust/Pagine/Logging con log|Logging con log]]: **3/6**, **139/183** note principali Rust, **44 restanti**. Verificati filtri per target, priorità di `-v`, output con e senza backend e limite in compilazione release.
-- Revisionata [[Programmazione/Rust/Pagine/Tracing con tracing|Tracing con tracing]]: **4/6**, **140/183** note principali Rust, **43 restanti**. Confrontati i record dei task con span figlio, con il solo padre e senza propagazione. Verificata l'attribuzione errata di un evento con una guardia mantenuta durante un await.
-- Revisionata [[Programmazione/Rust/Pagine/Error reporting|Error reporting]]: **5/6**, **141/183** note principali Rust, **42 restanti**. Verificati messaggio breve e dettagliato, causa tipizzata dopo il contesto, numero di riga e codici distinti per uso, I/O e dati.
-- Revisionata [[Programmazione/Rust/Pagine/Packaging e release|Packaging e release]]: capitolo completo (**6/6**), **142/183** note principali Rust, **41 restanti**. Provati offline il pacchetto sorgente, lo ZIP Windows x64 MSVC, il binario estratto e il digest SHA-256.
-
-### Prossimi passi
-
-- Iniziare Backend, Networking e Database da [[Programmazione/Rust/Pagine/Networking con reqwest|Networking con reqwest]].
-
-## 2026-11-19 - Rust: completato Rust di Sistema
-
-### Fatto
-
-- Revisionata [[Programmazione/Rust/Pagine/FFI|FFI]]: **1/13** del capitolo, **124/183** note principali Rust, **59 restanti**.
-- Verificati entrambi i versi del confine: il wrapper Rust chiama la libreria C e un programma C usa l'header della nota per chiamare le funzioni di una DLL Rust. Risultati e limiti in [[_Meta/Revisione contenuti|Revisione dei contenuti]].
-- Revisionata [[Programmazione/Rust/Pagine/bindgen e cbindgen|bindgen e cbindgen]]: **2/13** del capitolo, **125/183** note principali Rust, **58 restanti**. Verificati i due generatori con compilazione, collegamento e chiamanti reali su Windows x64.
-- Revisionata [[Programmazione/Rust/Pagine/libc e nix|libc e nix]]: **3/13** del capitolo, **126/183** note principali Rust, **57 restanti**. Eseguito il PID portabile; esempi e feature di nix controllati per Linux, senza esecuzione Unix.
-- Revisionata [[Programmazione/Rust/Pagine/Memory layout e alignment|Memory layout e alignment]]: **4/13** del capitolo, **127/183** note principali Rust, **56 restanti**. Misurato lo stesso layout in C11 e Rust; testato separatamente il parsing del formato binario.
-- Revisionata [[Programmazione/Rust/Pagine/Allocator|Allocator]]: **5/13** del capitolo, **128/183** note principali Rust, **55 restanti**. Verificati il rilascio del valore da parte di Box e il recupero della proprietà quando l'allocatore rifiuta la richiesta.
-- Revisionata [[Programmazione/Rust/Pagine/no_std|no_std]]: **6/13** del capitolo, **129/183** note principali Rust, **54 restanti**. Verificate le tre modalità su host e le build core/alloc per un target bare-metal, senza esecuzione su scheda.
-- Revisionata [[Programmazione/Rust/Pagine/Embedded Rust|Embedded Rust]]: **7/13** del capitolo, **130/183** note principali Rust, **53 restanti**. Verificati su host gli errori GPIO e, nell'ELF per NUCLEO-F401RE, i vettori di avvio. Nessuna scheda programmata.
-- Revisionata [[Programmazione/Rust/Pagine/File descriptor|File descriptor]]: **8/13** del capitolo, **131/183** note principali Rust, **52 restanti**. Verificati sul file i cursori e con Miri/Linux il trasferimento e la chiusura dei descriptor di una pipe.
-- Revisionata [[Programmazione/Rust/Pagine/Memory mapping|Memory mapping]]: **9/13** del capitolo, **132/183** note principali Rust, **51 restanti**. Verificati su file privati la lettura dopo il drop del File e i diversi effetti delle scritture condivise e private.
-- Revisionata [[Programmazione/Rust/Pagine/Cross-compilation|Cross-compilation]]: **10/13** del capitolo, **133/183** note principali Rust, **50 restanti**. Stessa CLI eseguita su Windows e su WASI Preview 1; per Linux ARM64 verificato il solo controllo senza collegamento.
-- Revisionata [[Programmazione/Rust/Pagine/Linking|Linking]]: **11/13** del capitolo, **134/183** note principali Rust, **49 restanti**. Su Windows x64 la stessa CLI usa un archivio statico o una DLL; verificata la differenza fra errori del linker e del loader.
-- Revisionata [[Programmazione/Rust/Pagine/Performance e profiling|Performance e profiling]]: **12/13** del capitolo, **135/183** note principali Rust, **48 restanti**. Confrontate due strategie di concatenazione separando correttezza, crescita del buffer e tempo per lotto, senza attribuire un vantaggio di velocità generale.
-- Revisionata [[Programmazione/Rust/Pagine/Zero-cost abstractions|Zero-cost abstractions]]: **13/13**, capitolo completo. **136/183** note principali Rust, **47 restanti**. Separati layout garantito, dispatch in prestito e codice generato per ciclo e iteratore con lo stesso contratto di overflow.
-
-### Prossimi passi
-
-- Iniziare **CLI e Tooling** da [[Programmazione/Rust/Pagine/CLI con clap|CLI con clap]].
-
-## 2026-11-18 - Rust: completato Unsafe Rust in Profondita
-
-### Fatto
-
-- Revisionate **9/9** note, da **Unsafe Rust** a **Unsafe abstractions sicure**: **123/183** note principali Rust, **60 restanti**. Nella prima nota, distinti contratto della firma, responsabilità del blocco e garanzie di un wrapper safe.
-- Eseguiti i tre esempi di Unsafe Rust e le verifiche su diagnostiche, prestiti e comportamento in release. Raw pointers: quattro esempi con e senza ottimizzazioni; confronti su indici e buffer vuoti, letture non allineate. Dettagli in [[_Meta/Revisione contenuti|Revisione dei contenuti]].
-- Unsafe functions: corretto il contratto del buffer esterno e confrontati prestito vincolato all'ingresso e copia posseduta. Regressione delle tre note: **10/10**.
-- Unsafe traits: collegata la garanzia dell'implementazione all'accesso del consumatore. Verificati il trasferimento di una cella posseduta e i limiti di Send/Sync. Regressione delle quattro note: **14/14**.
-- Invariants: verificati costruttori, mutazioni, stato su errore e panic; una slice lega la durata della vista ai dati. Regressione delle cinque note: **19/19**.
-- Aliasing rules: distinti prestito derivato, copia del raw pointer, accesso a elementi disgiunti e durata della guardia RefCell. Regressione delle sei note: **23/23**.
-- Undefined behavior: confrontati accesso controllato, panic e precondizione unsafe; parser di flag verificato su tutti i 256 byte. Regressione delle sette note: **26/26**.
-- Miri: eseguiti i due unit test della nota sia con Cargo sia con l'interprete e verificato il filtro esatto. Nightly isolata rimossa dopo la prova, toolchain predefinita invariata.
-- Unsafe abstractions sicure: verificati rappresentazione non vuota, contratto dello split e durata delle viste del buffer. Regressione dell'intero capitolo su stable: **32 passati, 1 prova Miri opzionale saltata**, già eseguita con nightly nel passo precedente.
-
-### Prossimi passi
-
-- Iniziare **Rust di Sistema** da **FFI**. I promemoria restano separati dal conteggio.

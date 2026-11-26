@@ -27,78 +27,35 @@ title: Lock e sezioni critiche
 
 ## Sintesi
 
-Un **lock** protegge una risorsa condivisa impedendo accessi concorrenti non sicuri.
+Una sezione critica comprende **tutte** le operazioni che devono essere viste come esclusive dagli altri partecipanti. Nel caso di una prenotazione: leggere la disponibilità, decidere e registrare il posto. Se si legge prima di prendere il lock, la decisione può basarsi su una disponibilità già cambiata.
 
-Una **sezione critica** e il tratto di codice che deve essere eseguito in modo esclusivo.
+## Esempio: prenotazioni nello stesso processo
 
-## Quando usarlo
-
-- Quando piu flussi modificano lo stesso stato.
-- Quando una sequenza deve essere indivisibile.
-- Quando una risorsa non e thread-safe.
-- Quando serve proteggere cache, contatori, file o strutture condivise.
-- Quando una transazione database non basta o non e disponibile.
-
-## Come funziona
-
-La forma base e:
-
-```text
-acquisisci lock -> esegui sezione critica -> rilascia lock
-```
-
-Il rilascio deve essere garantito anche in caso di errore.
-
-## API / Sintassi
+Esempio ESM su Node 24.14. `locks` di `node:worker_threads` è disponibile da Node 24.5 ed è sperimentale nella serie 24. Il repository dell'esempio risolve `isAvailable(id)` con un booleano e `markReserved(id)` quando la modifica è completa. Tutti i partecipanti usano lo stesso nome di lock per lo stesso posto.
 
 ```js
-await mutex.runExclusive(async () => {
-  const current = state.value;
-  state.value = current + 1;
-});
-```
+import { locks } from "node:worker_threads";
 
-L'operazione protetta deve essere piccola e chiara.
-
-## Esempio pratico
-
-```js
-async function reserveSeat(seatId, lock, repository) {
-  return lock.runExclusive(`seat:${seatId}`, async () => {
-    const seat = await repository.findSeat(seatId);
-    if (seat.reserved) return false;
-
-    await repository.markReserved(seatId);
+export function reserveSeat(seatId, repo) {
+  return locks.request("seat:" + seatId, async () => {
+    if (!(await repo.isAvailable(seatId))) return false;
+    await repo.markReserved(seatId);
     return true;
   });
 }
 ```
 
-Il lock rende esplicita la sezione critica della prenotazione.
+Il lock esclusivo resta detenuto fino alla conclusione della promessa del callback, anche se il callback fallisce. **Poi** viene rilasciato: un secondo richiedente può entrare e rileggere lo stato. Una notifica via email non fa parte della prenotazione e non dovrebbe prolungare la sezione critica. Un rifiuto del callback non annulla una scrittura già riuscita.
 
-## Varianti
+## Scegliere l'ambito
 
-- Mutex: accesso esclusivo in un processo.
-- Read-write lock: molte letture, scrittura esclusiva.
-- Distributed lock: coordinamento tra processi o nodi.
-- Transazione database: protezione a livello dati.
-- Semaphore: limita concorrenza, non sempre esclusione totale.
+- Due posti diversi hanno nomi diversi: non c'è ragione di bloccare la prenotazione di B mentre A è occupato.
+- Un lettore o uno scrittore che ignora il lock non viene protetto. Questo gestore coordina i partecipanti **nello stesso processo Node**; per più istanze che condividono un database usa un vincolo o una modifica condizionale nel database.
+- Un semaforo permette fino a *N* accessi: con *N* maggiore di uno non protegge da solo un aggiornamento esclusivo. Se imponi più lock, stabilisci un ordine comune di acquisizione; riacquisire lo stesso lock esclusivo mentre lo si detiene può far attendere il proprio callback indefinitamente.
 
-## Errori comuni
+## Verifica
 
-- Dimenticare il rilascio del lock.
-- Tenere lock durante operazioni lente o remote.
-- Acquisire lock in ordini diversi e creare deadlock.
-- Proteggere codice troppo ampio.
-- Usare lock distribuiti senza capire timeout e lease.
-
-## Checklist
-
-- La sezione critica e davvero minima?
-- Il lock viene sempre rilasciato?
-- L'ordine di acquisizione e coerente?
-- Sono gestiti timeout e cancellazione?
-- Esistono test o controlli sui casi concorrenti?
+Sospendi la prima scrittura, richiedi lo stesso posto e uno diverso: solo il posto diverso deve poter procedere nel frattempo. Fai anche fallire una prenotazione e controlla che la successiva possa entrare. Questo prova l'esclusione locale, non un lock distribuito né un rollback del repository.
 
 ## Collegamenti
 
@@ -114,3 +71,5 @@ Il lock rende esplicita la sezione critica della prenotazione.
 - Brian Goetz, *Java Concurrency in Practice*
 - Michael Nygard, *Release It!*
 - Martin Kleppmann, *Designing Data-Intensive Applications*
+- [Node.js 24: LockManager e durata di locks.request](https://nodejs.org/docs/latest-v24.x/api/worker_threads.html#class-lockmanager)
+- [W3C: Web Locks API](https://www.w3.org/TR/web-locks/)

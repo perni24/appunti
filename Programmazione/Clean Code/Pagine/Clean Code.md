@@ -25,72 +25,45 @@ title: Clean Code
 
 ## Sintesi
 
-Il **Clean Code** e codice scritto in modo da essere capito, modificato e verificato con il minor attrito possibile.
-
-Non significa codice elegante per gusto personale. Significa codice che riduce il costo futuro delle modifiche.
+Un tratto di codice è «pulito» se chi deve cambiarlo riesce a capire quale comportamento deve conservare e dove intervenire. Formattazione uniforme e nomi curati aiutano, ma non rendono corretta una regola sbagliata.
 
 ## Problema che risolve
 
-Un programma puo funzionare oggi ma diventare difficile da cambiare domani. Il Clean Code affronta questo problema: rende il comportamento leggibile, le responsabilita chiare e gli errori piu facili da individuare.
-
-Il punto centrale e che il codice viene letto molte piu volte di quante venga scritto.
+Un utente attivo può prenotare una lezione solo se ha almeno un credito. Durante una review, la domanda utile non è «potremmo accorciare questo `if`?», ma «si capisce quando la prenotazione verrà rifiutata?».
 
 ## Concetto chiave
 
-Codice pulito significa:
-
-- nomi che spiegano intenzione;
-- funzioni piccole e focalizzate;
-- dipendenze visibili;
-- comportamento esplicito;
-- test e controlli comprensibili;
-- struttura coerente con il dominio;
-- poche sorprese per chi legge.
-
-Il codice pulito non nasce da una singola regola, ma da molte decisioni locali coerenti.
-
-## Dettagli importanti
-
-- Un codice pulito puo usare astrazioni, ma solo quando aiutano davvero.
-- La leggibilita vale piu della compattezza.
-- La duplicazione non e sempre il male peggiore: a volte un'astrazione prematura costa di piu.
-- Il codice pulito deve restare vicino al problema reale, non solo a un pattern.
-- La qualita si vede quando arriva una modifica, non solo quando il codice viene scritto.
+Distingui una modifica di *forma* da una modifica di *comportamento*. Rinominare un parametro locale o dare un nome a una condizione può essere un refactoring; cambiare `> 0` in `>= 0` introduce una nuova regola. Se fai entrambe le cose nello stesso passaggio, è più difficile capire perché un test non passa.
 
 ## Esempio
 
-Codice poco chiaro:
+Prima, con crediti interi e un campo booleano `isActive`:
 
 ```js
-if (u.a && u.s > 0) {
-  p(u);
+function canBook(u) {
+  return u.isActive && u.remainingCredits > 0;
 }
 ```
 
-Codice piu leggibile:
+Dopo, con la stessa firma per chi chiama e gli stessi campi sull'oggetto:
 
 ```js
-if (user.isActive && user.remainingCredits > 0) {
-  processUser(user);
+function canBook(member) {
+  const hasCredit = member.remainingCredits > 0;
+  return member.isActive && hasCredit;
 }
 ```
 
-Il secondo esempio non cambia il comportamento, ma riduce il lavoro mentale necessario per capirlo.
+Per oggetti di dati già validati, un iscritto attivo con un credito ottiene `true`; con zero crediti ottiene `false`, così come un iscritto inattivo con un credito. La verifica riguarda ciò che restituisce `canBook`, non il nome della variabile locale.
 
-## Limiti
+## Dettagli importanti
 
-- Il Clean Code non sostituisce architettura, test e conoscenza del dominio.
-- Non tutte le regole valgono in ogni linguaggio o contesto.
-- Un codice troppo astratto puo sembrare pulito ma diventare difficile da seguire.
-- La leggibilita va bilanciata con performance, compatibilita e vincoli reali.
+- Il secondo esempio legge sempre `remainingCredits`; il primo lo legge solo se `isActive` è vero. Con un getter che lancia un errore o registra gli accessi, le versioni **non** sono equivalenti. Prima di estrarre un'espressione controlla anche *quando* viene valutata.
+- Formato dei dati, nomi pubblici, errori ed effetti fanno parte del contratto quando un chiamante vi fa affidamento. Non rinominare una chiave di un payload esterno come se fosse una variabile locale.
 
-## Errori comuni
+## Limiti ed errori comuni
 
-- Confondere Clean Code con stile personale.
-- Applicare regole senza capire il motivo.
-- Estrarre funzioni solo per ridurre righe, non complessita.
-- Creare astrazioni prima di vedere pattern reali.
-- Ignorare il contesto del team e del progetto.
+Una condizione breve con nomi già chiari può restare in linea. Aggiungere classi o funzioni per gusto personale non riduce il costo della prossima modifica. Se proponi un'astrazione, indica la regola che rende più facile leggere, cambiare o verificare.
 
 ## Collegamenti
 
@@ -104,3 +77,4 @@ Il secondo esempio non cambia il comportamento, ma riduce il lavoro mentale nece
 
 - Robert C. Martin, *Clean Code*
 - Martin Fowler, *Refactoring*
+- Martin Fowler, [Definition of Refactoring](https://martinfowler.com/bliki/DefinitionOfRefactoring.html)

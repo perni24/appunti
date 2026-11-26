@@ -27,74 +27,56 @@ title: Repository pattern
 
 ## Sintesi
 
-Il **Repository pattern** incapsula l'accesso ai dati dietro un'interfaccia orientata al dominio o al caso d'uso.
+Un repository nasconde **come si accede** ai dati, non **che cosa significa** il risultato. Il chiamante deve poter distinguere «nessuna fattura con questo ID», «aggiornamento rifiutato perché non è più una bozza» e «database non disponibile». Un unico `false` per tutti e tre renderebbe impossibile decidere correttamente.
 
-Aiuta a separare logica applicativa e dettagli di persistenza come SQL, ORM, collezioni, indici e mapping.
+## Schema minimo dell'esempio
 
-## Problema che risolve
+Su una connessione SQLite con chiavi esterne abilitate, inizializza una base vuota con questo schema. L'outbox è dedicata al solo evento di emissione, una volta per fattura; non è una tabella universale per qualunque evento.
 
-Quando query e dettagli database sono sparsi ovunque, il codice diventa difficile da cambiare:
-
-- controller con SQL;
-- service accoppiati a ORM specifici;
-- duplicazione di query;
-- mapping incoerenti;
-- test lenti o fragili;
-- regole di persistenza confuse con regole di dominio.
-
-## Concetto chiave
-
-Un repository dovrebbe esporre operazioni significative, non solo riflettere tabelle.
-
-Esempi:
-
-```text
-findOrderById
-saveInvoice
-decrementStockIfAvailable
-findPendingJobs
+```sql
+CREATE TABLE invoices (
+  id TEXT PRIMARY KEY NOT NULL,
+  state TEXT NOT NULL CHECK (state IN ('draft', 'issued')),
+  issued_ms INTEGER,
+  internal_note TEXT NOT NULL DEFAULT '',
+  CHECK ((state = 'draft' AND issued_ms IS NULL)
+      OR (state = 'issued' AND issued_ms IS NOT NULL))
+);
+CREATE TABLE invoice_issued_outbox (
+  invoice_id TEXT PRIMARY KEY NOT NULL REFERENCES invoices(id),
+  issued_ms INTEGER NOT NULL
+);
 ```
 
-L'interfaccia deve rendere chiaro cosa il chiamante puo aspettarsi.
-
-## Dettagli importanti
-
-- Il repository puo nascondere SQL o ORM.
-- Non deve diventare un wrapper passivo di ogni metodo database.
-- Le query complesse possono meritare query object o reader dedicati.
-- Le transazioni vanno coordinate a livello applicativo o unit of work.
-- Il mapping tra database e dominio deve essere esplicito.
-
-## Esempio
+## Repository: tre metodi, tre contratti
 
 ```js
-async function reserveProduct(productId, productRepository) {
-  const reserved = await productRepository.decrementStockIfAvailable(productId);
-
-  if (!reserved) {
-    return { ok: false, error: "out_of_stock" };
-  }
-
-  return { ok: true };
+function invoiceRepository(db) {
+  const find = db.prepare("SELECT id, state, issued_ms, internal_note FROM invoices WHERE id = ?");
+  const save = db.prepare("UPDATE invoices SET state = 'issued', issued_ms = ? WHERE id = ? AND state = 'draft'");
+  const enqueue = db.prepare("INSERT INTO invoice_issued_outbox(invoice_id, issued_ms) VALUES (?, ?)");
+  return {
+    find(id) {
+      const row = find.get(id);
+      return row === undefined ? null : {
+        id: row.id, state: row.state, issuedAtMs: row.issued_ms, internalNote: row.internal_note,
+      };
+    },
+    saveIssued(invoice) {
+      return save.run(invoice.issuedAtMs, invoice.id).changes === 1;
+    },
+    enqueueIssued(invoice) {
+      enqueue.run(invoice.id, invoice.issuedAtMs);
+    },
+  };
 }
 ```
 
-Il service non conosce la query concreta, ma richiede un'operazione atomica significativa.
+`find` mappa i nomi SQL e restituisce `null` **solo** per una ricerca riuscita senza righe. `saveIssued` riceve il modello già transitato a `issued`: il filtro sul vecchio stato viene valutato nello stesso `UPDATE`. Zero righe modificate non permette, da solo, di distinguere tra riga assente e stato cambiato. `enqueueIssued` non ignora i conflitti del vincolo univoco; è il [[Programmazione/Clean Code/Pagine/Service layer|service]] a decidere il confine del commit, non ogni metodo a confermare per conto proprio.
 
-## Limiti
+## Quando non usarlo
 
-- In CRUD semplici un repository puo essere eccessivo.
-- Nascondere troppo l'ORM puo creare astrazioni deboli.
-- Query di reportistica spesso non si adattano bene al modello repository classico.
-- Non elimina la necessita di capire transazioni e performance database.
-
-## Errori comuni
-
-- Creare repository con metodi generici `get`, `set`, `update` senza intenzione.
-- Restituire direttamente record database quando il chiamante si aspetta dominio.
-- Nascondere query inefficienti dietro nomi innocui.
-- Duplicare repository per ogni tabella senza criterio.
-- Usare repository per evitare di progettare il modello.
+Un report che aggrega righe di più tabelle può avere un lettore SQL dedicato invece di ricostruire molte entità. Un wrapper che espone ogni metodo dell'ORM senza cambiare il contratto aggiunge poco. Per operazioni condizionali come il decremento dello stock, verifica il numero di righe modificate e non scambiare un errore tecnico per «esaurito».
 
 ## Collegamenti
 
@@ -110,3 +92,5 @@ Il service non conosce la query concreta, ma richiede un'operazione atomica sign
 - Martin Fowler, *Repository*
 - Eric Evans, *Domain-Driven Design*
 - Martin Fowler, *Patterns of Enterprise Application Architecture*
+- [Martin Fowler: Repository](https://martinfowler.com/eaaCatalog/repository.html)
+- [Node.js: DatabaseSync e StatementSync](https://nodejs.org/api/sqlite.html)

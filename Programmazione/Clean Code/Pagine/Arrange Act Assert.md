@@ -26,63 +26,36 @@ title: Arrange Act Assert
 
 ## Sintesi
 
-**Arrange Act Assert** e una struttura per scrivere test leggibili:
+**Arrange, Act, Assert** separa la preparazione del caso, l'azione sotto esame e le osservazioni finali. La regola pratica è **un comportamento riconoscibile**, non «una sola asserzione» o «tre commenti obbligatori».
 
-- Arrange: prepara lo scenario;
-- Act: esegui il comportamento;
-- Assert: verifica il risultato.
+## Esempio: verificare una scrittura asincrona
 
-Aiuta a separare setup, azione e verifica.
-
-## Problema che risolve
-
-Molti test diventano difficili da leggere perche mischiano preparazione, chiamate e asserzioni.
-
-Quando queste parti sono confuse, non e chiaro cosa il test stia davvero verificando.
-
-## Concetto chiave
-
-Un test dovrebbe avere un'azione principale.
-
-Se ci sono molte azioni o molte verifiche non correlate, probabilmente il test sta coprendo piu comportamenti insieme.
-
-## Esempio
+Metti `reminder.test.mjs` accanto al modulo `reminder.mjs` di [[Programmazione/Clean Code/Pagine/Codice testabile|Codice testabile]]. Il sostituto registra la richiesta, ma non decide lui la scadenza:
 
 ```js
-test("calculates total with tax", () => {
-  const order = orderWithItems([item(100)]);
-  const taxRate = 0.22;
+import test from "node:test";
+import assert from "node:assert/strict";
+import { scheduleReminder } from "./reminder.mjs";
 
-  const total = calculateTotal(order, taxRate);
+test("il promemoria è salvato un'ora dopo e restituisce l'ID assegnato", async () => {
+  const saved = [];
+  const deps = {
+    nowMs: () => 1000,
+    save: async reminder => { saved.push(reminder); return "R-7"; },
+  };
 
-  expect(total).toBe(122);
+  const id = await scheduleReminder("I-3", deps);
+
+  assert.equal(id, "R-7");
+  assert.deepEqual(saved, [{ invoiceId: "I-3", dueAtMs: 3601000 }]);
 });
 ```
 
-Il test separa chiaramente scenario, esecuzione e aspettativa.
-
-## Dettagli importanti
-
-- Arrange deve essere il piu breve possibile.
-- Act dovrebbe essere una singola chiamata significativa.
-- Assert deve verificare comportamento osservabile.
-- I builder aiutano a rendere leggibile il setup.
-- Non serve commentare sempre le tre sezioni se la struttura e gia evidente.
-
-## Limiti
-
-- Alcuni test di integrazione richiedono piu passaggi.
-- Flussi asincroni o event-driven possono richiedere struttura diversa.
-- Forzare AAA in ogni caso puo produrre test artificiosi.
-- Non sostituisce buoni nomi e buoni dati di test.
+La riga vuota isola l'azione. Controllare soltanto l'ID lascerebbe passare una scrittura con scadenza sbagliata; controllare soltanto il record non rileverebbe la perdita del valore restituito. Le due asserzioni descrivono lo stesso contratto.
 
 ## Errori comuni
 
-- Fare piu `Act` nello stesso test.
-- Mettere asserzioni nel setup.
-- Preparare dati irrilevanti.
-- Verificare dettagli interni.
-- Usare AAA come formato rigido invece che come guida.
+Completa l'azione con `await` **prima** di verificare i suoi effetti. Se il comportamento atteso è un errore asincrono, l'invocazione può stare dentro `await assert.rejects(...)`: non chiamare due volte il sistema solo per separare visivamente le fasi. Per il caso «archivio indisponibile» scrivi una prova distinta; non modificare a metà test un collaboratore per avviare un secondo scenario scollegato.
 
 ## Collegamenti
 
@@ -94,6 +67,5 @@ Il test separa chiaramente scenario, esecuzione e aspettativa.
 
 ## Fonti
 
-- Bill Wake, *Arrange Act Assert*
-- Kent Beck, *Test Driven Development*
-- Gerard Meszaros, *xUnit Test Patterns*
+- Bill Wake, [3A: Arrange, Act, Assert](https://xp123.com/3a-arrange-act-assert/)
+- Kent Beck, *Test Driven Development*; Gerard Meszaros, *xUnit Test Patterns*

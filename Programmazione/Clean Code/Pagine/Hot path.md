@@ -26,54 +26,47 @@ title: Hot path
 
 ## Sintesi
 
-Un **hot path** e una parte del codice eseguita molto spesso o con impatto significativo su latenza, CPU, memoria o I/O.
+Un **hot path** è un tratto che pesa sul costo del *carico osservato*. «È chiamato spesso» è un indizio: conta anche quanto costa ogni chiamata. Un'operazione rara e lenta può dominare la latenza di alcune richieste pur occupando pochi campioni nel profilo CPU complessivo.
 
-Nel Clean Code un hot path puo giustificare scelte piu attente alla performance, ma deve essere identificato con misure.
+## Esempio: lavoro costante ripetuto nel ciclo
 
-## Problema che risolve
-
-Non tutto il codice ha lo stesso peso.
-
-Ottimizzare codice poco eseguito porta poco valore. Trascurare un hot path reale puo invece degradare l'intero sistema.
-
-## Concetto chiave
-
-Il trattamento del codice dipende dal suo ruolo.
-
-Nel codice normale, privilegia chiarezza e semplicita. Nel hot path, conserva chiarezza ma valuta con piu attenzione allocazioni, I/O, complessita algoritmica e strutture dati.
-
-## Dettagli importanti
-
-- Un hot path va confermato con profiling o metriche.
-- Piccole inefficienze ripetute milioni di volte diventano rilevanti.
-- I/O e database possono essere hot path quanto la CPU.
-- Ottimizzazioni in hot path meritano test e commenti mirati.
-- Una cache in hot path richiede invalidazione corretta.
-
-## Esempio
+Un filtro conta record per regione. `region` nei record è già normalizzata all'ingresso; il filtro ricevuto è una stringa ASCII da ripulire. La normalizzazione del filtro dipende dalla richiesta, non dalla riga. Spostarla prima del ciclo è lecito perché non ha effetti collaterali e il filtro non cambia.
 
 ```js
-function normalizeEmail(email) {
-  return email.trim().toLowerCase();
+function countRegion(rows, input) {
+  const wanted = input.trim().toLowerCase();
+  let matches = 0;
+  for (const row of rows) {
+    if (row.region === wanted) matches++;
+  }
+  return matches;
 }
 ```
 
-Questa funzione e semplice. Se viene eseguita miliardi di volte in una pipeline dati, anche dettagli piccoli possono diventare misurabili. In una API normale, probabilmente non serve ottimizzarla.
+Per un lotto di 10.000 righe vengono fatti sempre 10.000 confronti, ma la normalizzazione del **filtro** avviene una volta, non 10.000. Il costo algoritmico del ciclo resta lineare. Questo non autorizza a normalizzare allo stesso modo qualunque identificativo, per esempio un indirizzo email intero senza una regola di dominio.
 
-## Limiti
+## Prova locale: leggere un profilo CPU
 
-- Un hot path puo cambiare con uso, dati e deploy.
-- Misure locali possono non riflettere produzione.
-- Ottimizzare un hot path puo spostare il collo di bottiglia altrove.
-- Non tutto cio che e frequente e anche importante per l'utente.
+In una directory di prova usa il blocco sopra come inizio di `region.mjs` e aggiungi questo carico riproducibile:
 
-## Errori comuni
+```js
+const rows = Array.from({ length: 10_000 }, (_, i) => ({ region: i % 2 ? "eu" : "us" }));
+let total = 0;
+for (let i = 0; i < 80; i++) total += countRegion(rows, " EU ");
+console.log(total);
+```
 
-- Dichiarare hot path una funzione senza dati.
-- Ottimizzare micro-dettagli ignorando algoritmi e I/O.
-- Rendere il codice critico illeggibile senza documentare il motivo.
-- Non aggiornare benchmark dopo cambiamenti.
-- Ignorare percentili e casi peggiori.
+Esegui con Node 24 in quella directory. Usa una directory vuota per non sovrascrivere un profilo con lo stesso nome.
+
+```sh
+node --cpu-prof --cpu-prof-name=region.cpuprofile region.mjs
+```
+
+Il totale atteso è `400000` (5.000 corrispondenze per 80 lotti). A fine processo Node scrive `region.cpuprofile`, ispezionabile con un visualizzatore di profili V8. Cerca i campioni **propri** della funzione e quelli **inclusivi** dei discendenti: sommare padre e figlio conta due volte parte del lavoro. Una prova così breve può campionare soprattutto avvio e preparazione: l'assenza della funzione tra i primi frame non dimostra che costi zero.
+
+## Limiti e verifica
+
+Confronta il profilo sul carico che motiva la modifica e misura l'intera operazione anche **senza** profiler. Non fissare nei test una percentuale di campioni o un tempo minimo di miglioramento. Con un archivio remoto a dominare l'attesa, ottimizzare il filtro può non cambiare affatto la latenza percepita.
 
 ## Collegamenti
 
@@ -88,3 +81,5 @@ Questa funzione e semplice. Se viene eseguita miliardi di volte in una pipeline 
 - Brendan Gregg, *Systems Performance*
 - Martin Thompson, *Mechanical Sympathy*
 - Martin Fowler, *Refactoring*
+- [Node.js CLI: generare un profilo CPU con --cpu-prof](https://nodejs.org/api/cli.html#--cpu-prof)
+- [Brendan Gregg: campioni CPU, larghezza dei frame e stack](https://www.brendangregg.com/FlameGraphs/cpuflamegraphs.html)

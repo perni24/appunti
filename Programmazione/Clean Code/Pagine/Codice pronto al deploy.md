@@ -27,77 +27,52 @@ title: Codice pronto al deploy
 
 ## Sintesi
 
-Il **codice pronto al deploy** non e solo codice che compila o passa i test. E codice che puo essere eseguito in un ambiente reale con configurazione, osservabilita, gestione errori e rollback ragionevoli.
+«Il processo è partito», «può ricevere richieste» e «questa versione funziona per gli utenti» sono tre affermazioni diverse. Una build verde è necessaria ma non basta: servono segnali distinti per instradare il traffico, osservare il rilascio e fermarlo se peggiora il servizio.
 
-Nel Clean Code la prontezza al deploy fa parte della qualita del codice.
+## Esempio: vivo non significa pronto
 
-## Quando usarlo
+Questa parte di un servizio HTTP decide gli stati delle sonde. La configurazione viene validata all'avvio come in [[Programmazione/Clean Code/Pagine/Configurazione applicativa|Configurazione applicativa]]. Il monitor della dipendenza obbligatoria chiama `setDependencyAvailable` dopo un controllo recente, con timeout; il gestore della sonda non apre una nuova connessione ad ogni richiesta.
 
-- Prima di rilasciare una feature.
-- Quando aggiungi integrazioni esterne.
-- Quando cambi configurazione, migrazioni o job.
-- Quando un componente deve girare in produzione.
-- Quando il comportamento dipende da ambiente o dati reali.
+```js
+function serviceHealth() {
+  let initialized = false;
+  let dependencyAvailable = false;
+  let draining = false;
 
-## Come funziona
+  function canAcceptWork() {
+    return initialized && dependencyAvailable && !draining;
+  }
 
-Un codice deploy-ready rende espliciti:
-
-- configurazione richiesta;
-- dipendenze esterne;
-- migrazioni;
-- log e metriche;
-- gestione errori;
-- timeout e retry;
-- compatibilita;
-- piano di rollback.
-
-## API / Sintassi
-
-```text
-code + config + migrations + observability + rollback path = deploy-ready
+  return {
+    initialized() { initialized = true; },
+    setDependencyAvailable(available) { dependencyAvailable = available === true; },
+    beginDrain() { draining = true; },
+    canAcceptWork,
+    probeStatus(path) {
+      if (path === "/live") return 200;
+      if (path === "/ready") return canAcceptWork() ? 200 : 503;
+      return 404;
+    },
+  };
+}
 ```
 
-Se manca una di queste parti, il rischio operativo aumenta.
+Se il database diventa indisponibile, `/ready` passa a 503 ma `/live` resta a 200 **se il processo riesce a rispondere**: riavviare tutte le repliche non ripara un database esterno. Quando inizia lo spegnimento, la readiness non deve tornare positiva per un controllo tardivo riuscito. Rifiuta nuovo lavoro anche all'ingresso del servizio e lascia terminare quello in corso entro un limite: il bilanciatore può impiegare tempo ad aggiornarsi. Se il monitor si blocca, il chiamante deve far scadere un esito positivo troppo vecchio; il frammento non implementa questo timer.
 
-## Esempio pratico
+## Checklist di rilascio
 
-Prima di rilasciare un nuovo worker:
+| Fase | Controllo operativo | Se non passa |
+| --- | --- | --- |
+| Avvio | Configurazione e segreti presenti; dipendenze obbligatorie e schema utilizzabili | Non dichiarare readiness. Per un avvio lento distingui startup probe e liveness |
+| Distribuzione graduale | Confronta canary e versione stabile per errori, latenza e volume omogeneo; per un worker anche backlog e riconsegne | Ferma la promozione; senza campioni sufficienti non dichiarare il canary sano |
+| Migrazione | Vecchia e nuova versione leggono lo schema durante la convivenza | Prima **aggiungi** il nuovo formato, migra i dati e i lettori, poi rimuovi il vecchio |
+| Arresto | Togli readiness, interrompi l'acquisizione di nuovi job, attendi quelli in corso, chiudi le risorse | Allo scadere del limite applica la politica documentata di riconsegna e deduplicazione |
 
-```text
-1. configurazione validata all'avvio
-2. coda e permessi creati
-3. job idempotente
-4. log con jobId e correlationId
-5. retry e dead letter queue definiti
-6. metriche su successo, errore e backlog
-```
+Per un worker controlla coda, permessi, limite dei retry e destinazione degli scarti. Registra versione e identificativo del job senza segreti, e indica nel runbook chi decide di sospendere il rollout. Un feature flag può disattivare una funzione, ma né il flag né il rollback del binario annullano un'email già inviata o ricreano una colonna eliminata.
 
-Il codice non e valutato solo localmente, ma nel suo contesto operativo.
+## Verifica
 
-## Varianti
-
-- Feature flag per rilascio graduale.
-- Migrazioni backward-compatible.
-- Canary release.
-- Rollback applicativo.
-- Runbook operativo.
-
-## Errori comuni
-
-- Hardcodare valori di ambiente.
-- Non validare configurazione.
-- Non avere log utili in caso di errore.
-- Rilasciare migrazioni non reversibili senza piano.
-- Non considerare retry, idempotenza e timeout.
-
-## Checklist
-
-- La configurazione obbligatoria e validata?
-- Log e tracing permettono diagnosi?
-- Gli errori sono gestiti e classificati?
-- Le migrazioni sono compatibili con il deploy?
-- Esiste un percorso di rollback o disattivazione?
+Prova in ordine avvio incompleto, readiness positiva, perdita e recupero della dipendenza, poi drain e risposta tardiva del monitor. Questi passaggi verificano la **decisione del codice**. Instradamento reale, segnali del sistema operativo, migrazione e rollback richiedono prove nell'ambiente di rilascio.
 
 ## Collegamenti
 
@@ -113,3 +88,5 @@ Il codice non e valutato solo localmente, ma nel suo contesto operativo.
 - Michael Nygard, *Release It!*
 - The Twelve-Factor App
 - Martin Fowler, *FeatureToggle*
+- [Kubernetes: startup, liveness e readiness probes](https://kubernetes.io/docs/concepts/workloads/pods/probes/)
+- [Google SRE Workbook: valutare un canary prima della promozione](https://sre.google/workbook/canarying-releases/)

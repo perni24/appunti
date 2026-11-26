@@ -27,75 +27,41 @@ title: Parsing di input esterni
 
 ## Sintesi
 
-Il **parsing di input esterni** trasforma dati non affidabili in strutture interne controllate.
+Un parser non dovrebbe «indovinare» cosa intendeva la sorgente. Se il contratto dice che il prezzo arriva come testo decimale con il punto, `""` non significa zero e `"1,20"` non può diventare `1.20` in silenzio. In JavaScript persino `Number("")` dà zero: controllare soltanto il risultato della conversione perde la distinzione tra campo assente e prezzo gratuito.
 
-Ogni input esterno va considerato sospetto finche non e stato letto, validato e normalizzato.
+## Esempio: una riga di listino
 
-## Quando usarlo
+Il file ha intestazione `sku,price`. La libreria CSV separa i campi; questo modulo Python 3.12, `catalog_parse.py`, interpreta **un record già separato**. Lo SKU è una stringa opaca di 1–24 caratteri ASCII tra maiuscole, cifre e trattino. La valuta è EUR per tutto il file; il prezzo ha da una a sei cifre intere, senza zeri iniziali salvo lo zero stesso, e zero oppure due cifre decimali dopo il punto.
 
-- File importati da utenti o sistemi terzi.
-- Payload API e webhook.
-- Output di comandi CLI.
-- CSV, JSON, XML, HTML o log.
-- Risposte generate da modelli LLM.
+```python
+import re
 
-## Come funziona
 
-Un parser pulito dovrebbe:
+class RowError(ValueError):
+    def __init__(self, field, code):
+        super().__init__(code)
+        self.field = field
+        self.code = code
 
-- distinguere formato non valido e valore non valido;
-- conservare contesto dell'errore;
-- normalizzare solo cio che e sicuro normalizzare;
-- non eseguire side effects;
-- produrre un risultato tipizzato o strutturato.
 
-## API / Sintassi
-
-```text
-raw external input -> parse -> validate -> normalized input
+def parse_product(fields):
+    if len(fields) != 2:
+        raise RowError("record", "field_count")
+    sku, price = fields
+    if not re.fullmatch(r"[A-Z0-9-]{1,24}", sku):
+        raise RowError("sku", "invalid_sku")
+    match = re.fullmatch(r"(0|[1-9][0-9]{0,5})(?:\.([0-9]{2}))?", price)
+    if not match:
+        raise RowError("price", "invalid_price")
+    whole, fraction = match.groups()
+    return {"sku": sku, "price_cents": int(whole) * 100 + int(fraction or "0")}
 ```
 
-Il parser dovrebbe restituire successo o errore esplicito.
+`["007", "0.09"]` diventa `{"sku": "007", "price_cents": 9}`. Lo zero iniziale dello SKU resta significativo; `"0"` è un prezzo valido; `""`, `"1.2"`, `"-1"` e `"1e2"` non seguono il formato. La conversione avviene **dopo** il controllo sull'intera stringa e non passa da un numero in virgola mobile.
 
-## Esempio pratico
+## Dove segnalare l'errore
 
-```js
-function parsePrice(rawPrice) {
-  const value = Number(rawPrice);
-
-  if (!Number.isFinite(value) || value < 0) {
-    return { ok: false, error: "invalid_price" };
-  }
-
-  return { ok: true, value };
-}
-```
-
-Il chiamante non deve indovinare se il parsing e riuscito.
-
-## Varianti
-
-- Parser permissivo: accetta piu formati e normalizza.
-- Parser stretto: accetta solo il formato previsto.
-- Parser con schema: valida forma e tipi.
-- Parser streaming: utile per file grandi.
-- Parser con errori accumulati: utile per import massivi.
-
-## Errori comuni
-
-- Fidarsi di dati esterni perche arrivano da un sistema interno.
-- Restituire `null` senza motivo.
-- Perdere numero di riga, campo o sorgente.
-- Normalizzare in modo distruttivo.
-- Mescolare parsing e salvataggio.
-
-## Checklist
-
-- L'origine dell'input e tracciabile?
-- Gli errori mantengono contesto utile?
-- Il parser e testabile senza side effects?
-- Il formato esterno e separato dal dominio?
-- Esistono test su input malformati?
+Il parser conosce campo e motivo, ma non percorso o posizione nel file: li aggiunge la [[Programmazione/Clean Code/Pagine/Pipeline dati leggibili|pipeline che legge il CSV]]. Non dividere il testo con `split(",")`: una virgola tra virgolette appartiene allo stesso campo, che può poi risultare non valido **come prezzo**. Cambiare separatore decimale, valuta o regola di arrotondamento richiede una scelta esplicita sul contratto, non una correzione automatica dei dati.
 
 ## Collegamenti
 
@@ -111,3 +77,5 @@ Il chiamante non deve indovinare se il parsing e riuscito.
 - Martin Fowler, *Patterns of Enterprise Application Architecture*
 - Microsoft, *REST API Guidelines*
 - Martin Kleppmann, *Designing Data-Intensive Applications*
+- [Python 3.12: lettura CSV e dialetti](https://docs.python.org/3.12/library/csv.html)
+- [Python 3.12: re.fullmatch](https://docs.python.org/3.12/library/re.html#re.fullmatch)

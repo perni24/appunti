@@ -26,72 +26,53 @@ title: Dependency Inversion Principle
 
 ## Sintesi
 
-Il **Dependency Inversion Principle** dice che il codice di alto livello non dovrebbe dipendere direttamente da dettagli di basso livello. Entrambi dovrebbero dipendere da astrazioni.
+Il **Dependency Inversion Principle** (DIP) riguarda la direzione delle dipendenze nel **codice sorgente**. Il caso d'uso definisce il servizio di cui ha bisogno nel proprio linguaggio; l'adattatore conosce quel contratto e traduce il servizio concreto. A runtime il caso d'uso chiama comunque l'adattatore: non c'è contraddizione.
 
-In pratica: la logica importante non dovrebbe essere legata direttamente a database, framework, API esterne o librerie specifiche.
+## Esempio: accodare un benvenuto
 
-## Problema che risolve
+La politica applicativa richiede di saltare i contatti non verificati. Per un contatto verificato considera conclusa l'operazione solo quando il trasporto **accetta** il messaggio; non promette che sia stato consegnato. Due file TypeScript, con i percorsi di import dell'output JavaScript.
 
-Quando il dominio dipende da dettagli infrastrutturali, cambiare database, provider email, sistema di pagamento o framework diventa costoso.
-
-Anche i test diventano piu difficili, perche la logica richiede ambiente reale o mock complicati.
-
-## Concetto chiave
-
-La direzione delle dipendenze dovrebbe proteggere il codice piu stabile e importante.
-
-Il codice di dominio o use case definisce cosa gli serve. L'infrastruttura implementa quei contratti.
-
-```text
-Use case -> interfaccia -> implementazione concreta
-```
-
-## Dettagli importanti
-
-- DIP non significa usare sempre dependency injection container.
-- Una astrazione deve rappresentare un bisogno reale del chiamante.
-- Le interfacce dovrebbero stare vicino al codice che le usa quando proteggono il dominio.
-- DIP funziona bene con test, adapter e boundary.
-- Troppa inversione crea indirezione inutile.
-
-## Esempio
-
-Dipendenza diretta:
+**`welcome.ts`: il caso d'uso e il suo contratto.**
 
 ```ts
-class RegisterUser {
-  constructor(private emailClient: SmtpEmailClient) {}
+export interface WelcomeQueue {
+  enqueueWelcome(address: string): Promise<void>;
+}
+
+export async function welcome(
+  contact: { address: string; verified: boolean },
+  queue: WelcomeQueue,
+): Promise<"skipped" | "queued"> {
+  if (!contact.verified) return "skipped";
+  await queue.enqueueWelcome(contact.address);
+  return "queued";
 }
 ```
 
-Dipendenza da contratto:
+**`mail-adapter.ts`: la traduzione verso il trasporto.**
 
 ```ts
-interface EmailSender {
-  sendWelcomeEmail(user: User): Promise<void>;
-}
+import type { WelcomeQueue } from "./welcome.js";
 
-class RegisterUser {
-  constructor(private emailSender: EmailSender) {}
+type Transport = {
+  submit(message: { to: string; template: string }): Promise<{ accepted: boolean }>;
+};
+
+export function mailQueue(transport: Transport): WelcomeQueue {
+  return {
+    async enqueueWelcome(address) {
+      const result = await transport.submit({ to: address, template: "welcome" });
+      if (!result.accepted) throw new Error("Messaggio non accettato");
+    },
+  };
 }
 ```
 
-Il caso d'uso non conosce SMTP, conosce solo il comportamento necessario.
+All'avvio, il codice che compone l'applicazione costruisce `mailQueue(transport)` e lo passa a `welcome`. Solo quel punto deve conoscere entrambi i moduli. **Nel sorgente** l'adattatore importa il contratto da `welcome.ts`, non viceversa; **durante l'esecuzione** `welcome` invoca `enqueueWelcome` e questo invoca `submit`. Un rifiuto o un errore del trasporto non deve diventare `"queued"`.
 
-## Limiti
+## DIP, injection e limiti
 
-- In codice piccolo una interfaccia puo essere prematura.
-- Se esiste una sola implementazione stabile, l'astrazione potrebbe non servire.
-- Le astrazioni sbagliate sono piu dannose delle dipendenze dirette.
-- DIP non elimina la complessita, la sposta su confini piu controllati.
-
-## Errori comuni
-
-- Creare interfacce identiche alle classi concrete.
-- Usare DIP per ogni dipendenza, anche banale.
-- Mettere interfacce in cartelle generiche senza contesto.
-- Far dipendere il dominio da tipi del framework.
-- Confondere inversione delle dipendenze e inversione del controllo.
+Passare `SmtpClient` al costruttore sarebbe già *dependency injection*, ma se il caso d'uso richiedesse proprio quel tipo conoscerebbe ancora l'infrastruttura. Qui l'iniezione collega gli oggetti; il DIP decide **quale vocabolario può attraversare il confine**. Non servono un container né un'interfaccia per ogni funzione pura. Se il contratto espone ancora il tipo di risposta del provider, aver rinominato il client non risolve il problema.
 
 ## Collegamenti
 
@@ -104,5 +85,5 @@ Il caso d'uso non conosce SMTP, conosce solo il comportamento necessario.
 
 ## Fonti
 
-- Robert C. Martin, *Clean Architecture*
-- Martin Fowler, *Inversion of Control Containers and the Dependency Injection pattern*
+- Robert C. Martin, [The Clean Architecture: The Dependency Rule](https://blog.cleancoder.com/uncle-bob/2012/08/13/the-clean-architecture.html)
+- Martin Fowler, [Inversion of Control Containers and the Dependency Injection pattern](https://martinfowler.com/articles/injection.html)

@@ -23,6 +23,8 @@ title: GitHub - GitHub CLI
 
 ## Autenticazione
 
+`gh auth status` verifica account e host; `login` e `logout` modificano le credenziali locali. Non includere token nell’output condiviso.
+
 ```powershell
 gh auth login
 ```
@@ -36,6 +38,8 @@ gh auth logout
 ```
 
 ## Repository
+
+Sostituisci `owner/repository`. `repo create --source . --push` crea un repository su GitHub e vi invia i commit locali: prima verifica directory, cronologia e account. In un clone del fork, `gh repo sync` senza argomenti aggiorna il branch locale dal progetto originale; specificando `gh repo sync owner/repository` la destinazione è invece il fork remoto.
 
 ```powershell
 gh repo clone owner/repository
@@ -65,6 +69,8 @@ gh status
 
 ## Workflow
 
+`workflow run` avvia un’esecuzione reale: il workflow deve prevedere `workflow_dispatch` ed essere presente sul branch predefinito. Per ottenere il numero da sostituire a `run-id`, elenca le esecuzioni con il campo `databaseId`.
+
 ```powershell
 gh workflow list
 ```
@@ -74,7 +80,7 @@ gh workflow run ci.yml
 ```
 
 ```powershell
-gh run list
+gh run list --json databaseId,workflowName,status,conclusion
 ```
 
 ```powershell
@@ -101,12 +107,14 @@ gh release view v1.0.0
 
 ## API REST
 
+In PowerShell racchiudi l’endpoint tra apici: le parentesi graffe devono arrivare intatte a `gh`, che risolve `{owner}` e `{repo}` dal repository corrente.
+
 ```powershell
-gh api repos/{owner}/{repo}
+gh api 'repos/{owner}/{repo}'
 ```
 
 ```powershell
-gh api repos/{owner}/{repo}/pulls --paginate
+gh api 'repos/{owner}/{repo}/pulls' --paginate
 ```
 
 ## JSON e jq
@@ -124,6 +132,13 @@ gh pr list --json number,title --jq '.[] | [.number, .title]'
 ```powershell
 gh issue list --repo owner/repository
 ```
+
+## Fonti
+
+- [GitHub CLI: endpoint e segnaposto di gh api](https://cli.github.com/manual/gh_api)
+- [GitHub CLI: creare un repository da sorgenti locali](https://cli.github.com/manual/gh_repo_create)
+- [GitHub CLI: distinguere sincronizzazione locale e remota](https://cli.github.com/manual/gh_repo_sync)
+- [GitHub CLI: avviare un workflow](https://cli.github.com/manual/gh_workflow_run)
 
 ## Approfondimento
 
