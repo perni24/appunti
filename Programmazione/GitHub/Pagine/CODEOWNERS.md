@@ -27,104 +27,39 @@ title: CODEOWNERS
 
 ## Sintesi
 
-`CODEOWNERS` e un file GitHub che associa percorsi del repository a persone o team responsabili. Quando una pull request modifica quei percorsi, GitHub puo richiedere automaticamente review dai code owner.
+`CODEOWNERS` risponde alla domanda **«chi deve essere coinvolto nella review di questi file?»**. Non concede accesso al codice e non blocca il merge da solo. Per richiedere un’approvazione configura anche una regola sul branch di destinazione o un ruleset applicabile.
 
-Serve a evitare che modifiche critiche entrino senza revisione di chi conosce quella parte del sistema.
+## Quale file viene letto?
 
-## Quando usarlo
+GitHub usa il `CODEOWNERS` del **branch base** della pull request, anche se il contributo arriva da un fork. Cerca prima `.github/CODEOWNERS`, poi `CODEOWNERS` nella radice, infine `docs/CODEOWNERS`; legge il primo trovato, senza unirli. Una nuova regola proposta in una PR non decide chi deve approvare quella stessa PR.
 
-Usa `CODEOWNERS` quando:
+Per ricevere la richiesta un utente deve avere accesso **write**; un team deve essere visibile e avere accesso esplicito di scrittura al repository. Usa `@organizzazione/team` per un team: `@team` indica un account utente. Una PR in bozza non genera automaticamente la richiesta agli owner finché non diventa pronta per la review.
 
-- il repository ha piu aree tecniche;
-- alcune cartelle richiedono review specialistica;
-- lavori con team diversi;
-- vuoi review automatica per sicurezza, deploy o database;
-- vuoi rendere chiara la responsabilita del codice;
-- vuoi collegare review richieste alle regole del branch.
+## Esempio: dalla regola generale all’eccezione
 
-## Come funziona
-
-Il file `CODEOWNERS` puo stare in posizioni convenzionali come:
+In `.github/CODEOWNERS`, con nomi di organizzazione e team **da sostituire**:
 
 ```text
-CODEOWNERS
-.github/CODEOWNERS
-docs/CODEOWNERS
+*                     @example-org/maintainers
+*.md                  @example-org/docs
+/apps/api/            @example-org/backend
+/apps/api/README.md   @example-org/backend @example-org/docs
+/.github/workflows/   @example-org/platform
+/.github/CODEOWNERS   @example-org/maintainers
 ```
 
-Le regole mappano pattern di file a utenti o team.
+| Percorso modificato | Owner secondo il file | Perché |
+| --- | --- | --- |
+| `README.md` | docs | La regola per i Markdown viene dopo il fallback. |
+| `apps/api/guida.md` | backend | La regola per la directory viene dopo `*.md`: i risultati non si sommano. |
+| `apps/api/README.md` | backend **o** docs | L’ultima riga corrispondente elenca i due team **sulla stessa riga**. |
+| `.github/workflows/deploy-pages.yml` | platform | Il pattern è ancorato alla directory dei workflow nella radice. |
 
-```text
-*.md @example-org/docs-team
-/src/auth/ @example-org/security-team
-/.github/workflows/ @example-org/devops-team
-```
+Quando è richiesta la review dei code owner, per il file `apps/api/README.md` basta l’approvazione di **uno** dei due owner indicati; il numero totale di review richieste o eventuali altre regole restano separati. Non usare questa sintassi per esprimere «servono entrambi i team».
 
-Prevale l'ultima regola corrispondente, non automaticamente quella piu specifica. Metti i fallback prima delle eccezioni. Se esistono piu file, GitHub usa il primo trovato nell'ordine `.github/`, radice, `docs/`, senza unirli.
+## Diagnosi: perché non è arrivata la richiesta?
 
-## API / Sintassi
-
-Esempio:
-
-```text
-# Owner globale
-* @example-org/owner-team
-
-# Documentazione
-/docs/ @example-org/docs-team
-
-# Workflow CI/CD
-/.github/workflows/ @example-org/devops-team
-
-# Area autenticazione
-/src/auth/ @example-org/security-team
-```
-
-Sostituisci `example-org` e i team con nomi reali. Un utente si indica con `@username`, un team con `@organizzazione/team`: `@docs-team` da solo identifica un eventuale utente, non un team.
-
-Gli owner devono avere accesso `write`. Un team deve inoltre essere visibile e avere accesso di scrittura esplicito al repository; non basta che lo abbiano i singoli membri. Owner inesistenti o senza permessi adeguati non vengono assegnati.
-
-## Esempio pratico
-
-Se una PR modifica:
-
-```text
-.github/workflows/release.yml
-```
-
-e il file contiene:
-
-```text
-/.github/workflows/ @example-org/devops-team
-```
-
-GitHub richiede automaticamente review a `@example-org/devops-team` sulle PR non draft. Il file utilizzato e quello del branch di destinazione. Per rendere obbligatoria l'approvazione devi anche configurare la protezione del branch o un ruleset: la sola assegnazione non blocca il merge.
-
-## Varianti
-
-- **Owner globale**: fallback per tutto il repository.
-- **Owner per cartella**: team responsabili per area.
-- **Owner per estensione**: utile per docs o config.
-- **Owner per file critico**: workflow, deploy, security policy.
-- **Team owner**: preferibile a utenti singoli in repository condivisi.
-
-## Errori comuni
-
-- Usare utenti singoli invece di team stabili.
-- Non dare accesso al team indicato.
-- Creare regole troppo generiche.
-- Dimenticare aree critiche come workflow e configurazioni.
-- Non allineare `CODEOWNERS` con branch protection.
-- Lasciare owner non piu attivi.
-
-## Checklist
-
-- Le aree critiche hanno owner?
-- Gli utenti hanno accesso `write` e i team sono visibili con accesso `write` esplicito?
-- I team sono preferiti agli utenti singoli?
-- Le regole sono leggibili?
-- Le review dei code owner sono richieste sulle branch protette?
-- Il file viene aggiornato quando cambia ownership?
+Controlla base della PR, stato di bozza, ultima regola corrispondente e accesso degli owner. I percorsi distinguono maiuscole e minuscole anche se il computer locale non lo fa. La sintassi somiglia a `.gitignore`, ma non ne supporta tutte le forme, tra cui la negazione con `!` e le classi `[abc]`. GitHub segnala le righe non valide nella pagina del file. Assegna un owner anche a `CODEOWNERS` stesso e verifica sul branch protetto che l’approvazione sia effettivamente richiesta.
 
 ## Collegamenti
 
@@ -132,7 +67,9 @@ GitHub richiede automaticamente review a `@example-org/devops-team` sulle PR non
 - [[Programmazione/GitHub/Pagine/Pull request|Pull request]]
 - [[Programmazione/GitHub/Pagine/Review code su GitHub|Review code su GitHub]]
 - [[Programmazione/GitHub/Pagine/Repository GitHub|Repository GitHub]]
+- [[Programmazione/GitHub/Pagine/Branch protection rules|Branch protection rules]]
 
 ## Fonti
 
 - [GitHub Docs - About code owners](https://docs.github.com/en/repositories/managing-your-repositorys-settings-and-features/customizing-your-repository/about-code-owners)
+- [GitHub Docs: protezioni e review richieste](https://docs.github.com/en/repositories/configuring-branches-and-merges-in-your-repository/managing-protected-branches/about-protected-branches)

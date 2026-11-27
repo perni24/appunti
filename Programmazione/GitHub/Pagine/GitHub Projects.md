@@ -27,92 +27,34 @@ title: GitHub Projects
 
 ## Sintesi
 
-**GitHub Projects** serve a organizzare issue, pull request e lavoro di progetto in viste strutturate. E utile quando una semplice lista di issue non basta piu e vuoi vedere stato, priorita, roadmap, assegnazioni e avanzamento.
+Un **Project** raccoglie issue, pull request e bozze, anche di repository diversi. La stessa attività può comparire in una tabella, in una board per stato e in una roadmap per data: sono viste degli stessi elementi, non tre copie da aggiornare. Il Project appartiene a un **utente o a un’organizzazione**. La scheda Projects del repository può elencare un Project dello stesso proprietario, ma il collegamento non concede automaticamente l’accesso né importa tutte le issue.
 
-Non sostituisce issue e pull request: le usa come elementi di lavoro e aggiunge viste, campi e filtri.
+## Che cosa stai modificando?
 
-## Quando usarlo
+| Elemento | Esempio | Dove ha effetto |
+| --- | --- | --- |
+| Issue o PR esistente | Titolo, assignee, label, milestone | Sono dati dell’elemento nel repository: non sono una copia privata della board. |
+| Campo del Project | Priorità, iterazione, data obiettivo | Serve alla pianificazione del Project. La priorità non deve essere anche una label, a meno che serva fuori dal Project. |
+| Bozza (*draft issue*) | «Valutare l’export PDF» | Rimane nel Project finché non la converti in una issue scegliendo il repository. |
+| Vista | Board raggruppata per `Status` | Cambiare ordinamento o filtro cambia ciò che vedi, non chiude le issue escluse. |
 
-Usa GitHub Projects quando:
+## Esempio: seguire una correzione fino alla consegna
 
-- il repository ha molte issue aperte;
-- vuoi distinguere backlog, in corso, review e completato;
-- devi pianificare una release o milestone;
-- vuoi coordinare lavoro tra piu persone;
-- vuoi avere viste diverse per priorita, area o stato;
-- vuoi collegare pianificazione e codice nello stesso posto.
-
-## Come funziona
-
-Un project raccoglie elementi come:
-
-- issue;
-- pull request;
-- draft item;
-- campi personalizzati;
-- viste tabellari o board;
-- filtri e ordinamenti.
-
-La vista board e utile per flussi tipo Kanban. La vista tabellare e utile per pianificazione, priorita e triage.
-
-## API / Sintassi
-
-Esempio di stati utili:
+1. Nel Project aggiungi **l’issue esistente** «Il CSV vuoto perde l’intestazione», incollandone l’URL in una nuova riga. Non creare una bozza con lo stesso titolo: sarebbe un elemento diverso.
+2. Nella tabella aggiungi un campo a scelta singola `Priority` e assegna una priorità. Per registrare chi farà il lavoro usa `Assignees` sull’issue. Se l’obiettivo è una release del repository usa la milestone; se è un intervallo di pianificazione del team usa un campo iterazione.
+3. Salva una board raggruppata per `Status`. Per vedere solo il tuo lavoro in corso, usa il filtro seguente nella **vista del Project**; il valore deve esistere tra le opzioni del campo:
 
 ```text
-Backlog
-Ready
-In progress
-In review
-Blocked
-Done
+assignee:@me status:"In progress"
 ```
 
-Filtri tipici:
+4. Se l’elemento sembra sparito, torna alla tabella senza filtri. Per una roadmap, imposta i campi data o iterazione usati dalla vista: una riga senza collocazione temporale non dice quando il lavoro sarà consegnato.
 
-```text
-assignee:@me
-label:bug
-status:"In review"
-```
+## Prima di spostare una scheda in Done
 
-## Esempio pratico
+Non dedurre lo stato dell’issue dal solo nome della colonna. Nei Projects dello stesso proprietario del repository, GitHub documenta una sincronizzazione fra opzioni `Status` corrispondenti e stati delle issue (funzione in anteprima): se è attiva, uno spostamento può anche chiudere o riaprire l’issue. Controlla **Workflows** nel Project: anche a sincronizzazione disattivata, un’automazione configurata può chiudere l’issue al cambio di stato o impostare `Done` alla chiusura. Verifica l’esito aprendo l’issue.
 
-Per un progetto applicativo puoi usare:
-
-- `Status`: backlog, in progress, review, done;
-- `Priority`: high, medium, low;
-- `Area`: frontend, backend, database, docs;
-- `Milestone`: versione o obiettivo;
-- `Assignee`: responsabile operativo.
-
-Le issue descrivono il lavoro. Le pull request chiudono o implementano quel lavoro. Il project mostra lo stato complessivo.
-
-## Varianti
-
-- **Board Kanban**: utile per flusso operativo.
-- **Tabella backlog**: utile per triage e priorita.
-- **Roadmap**: utile per pianificazione temporale.
-- **Project repository-level**: legato a un repository.
-- **Project organization-level**: utile per piu repository.
-
-## Errori comuni
-
-- Usare Projects come duplicato manuale delle issue.
-- Creare troppi stati.
-- Non aggiornare stato e priorita.
-- Usare assignee senza responsabilita reale.
-- Pianificare in Projects ma discutere tutto altrove.
-- Aggiungere campi che nessuno mantiene.
-
-## Checklist
-
-- Gli stati sono pochi e chiari?
-- Ogni item importante e collegato a issue o PR?
-- I campi sono davvero usati dal team?
-- Le viste rispondono a domande pratiche?
-- Il project mostra cosa e bloccato?
-- Il lavoro completato viene chiuso anche nelle issue?
+Per popolare il Project, il workflow **Auto-add** può aggiungere elementi che corrispondono al filtro quando vengono creati o aggiornati. Abilitarlo non importa retroattivamente tutto il backlog: aggiungi a parte gli elementi già esistenti che non hanno ricevuto aggiornamenti.
 
 ## Collegamenti
 
@@ -120,7 +62,13 @@ Le issue descrivono il lavoro. Le pull request chiudono o implementano quel lavo
 - [[Programmazione/GitHub/Pagine/Issues GitHub|Issues GitHub]]
 - [[Programmazione/GitHub/Pagine/Pull request|Pull request]]
 - [[Programmazione/GitHub/Pagine/Labels milestones e assignees|Labels milestones e assignees]]
+- [[Programmazione/GitHub/Promemoria/Pagine/GitHub - Issue label e progetti|Promemoria: issue, label e progetti]]
 
 ## Fonti
 
 - [GitHub Docs - About Projects](https://docs.github.com/en/issues/planning-and-tracking-with-projects/learning-about-projects/about-projects)
+- [GitHub Docs: collegare un Project al repository](https://docs.github.com/en/issues/planning-and-tracking-with-projects/managing-your-project/adding-your-project-to-a-repository)
+- [GitHub Docs: filtri delle viste](https://docs.github.com/en/issues/planning-and-tracking-with-projects/customizing-views-in-your-project/filtering-projects)
+- [GitHub Docs: sincronizzazione con gli stati delle issue](https://docs.github.com/en/issues/tracking-your-work-with-issues/learning-about-issues/about-issue-statuses)
+- [GitHub Docs: automazioni integrate e disattivazione della sincronizzazione](https://docs.github.com/en/issues/planning-and-tracking-with-projects/automating-your-project/using-the-built-in-automations)
+- [GitHub Docs: aggiunta automatica e limiti per gli elementi esistenti](https://docs.github.com/en/issues/planning-and-tracking-with-projects/automating-your-project/adding-items-automatically)

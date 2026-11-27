@@ -28,74 +28,31 @@ title: Configurare branch protection
 
 ## Obiettivo
 
-Configurare regole che impediscono modifiche rischiose sul branch principale, richiedendo review, status check e policy di merge prima di accettare codice.
+Far sì che una modifica a `main` richieda **una PR, il check corretto e, se il team lo prevede, un'approvazione**. La spunta verde di un deploy successivo al merge non può essere usata come prova prima del merge.
 
-Branch protection serve a trasformare convenzioni di team in vincoli effettivi.
+## Prerequisiti
 
-## Quando usarlo
+Occorre il permesso di amministrare le regole; disponibilità e opzioni dipendono da piano e visibilità. Verificare il nome del branch predefinito. Usare un repository di prova per la prima configurazione: una regola sbagliata può bloccare tutte le PR.
 
-Usalo quando:
+## Procedura: protezione classica
 
-- il repository e condiviso;
-- `main` o `master` rappresentano codice stabile;
-- esiste una pipeline CI;
-- vuoi richiedere review;
-- vuoi impedire push diretti;
-- vuoi proteggere release branch.
+1. **Preparare il check.** Su una PR verso `main`, far riuscire il job che dovrà diventare obbligatorio. Se si usa l'esempio in [[Programmazione/GitHub/Pagine/Pipeline CI GitHub Actions|Pipeline CI GitHub Actions]], il nome del job è `Validazione appunti`. Non selezionare `deploy` del workflow Pages, che nel vault non parte sulle PR.
+2. **Scegliere la regola.** In *Settings → Branches* aggiungere una regola di protezione classica con pattern esatto `main`, oppure modificare quella già applicabile. I *ruleset* sono un'alternativa distinta: verificarne stato, target e bypass in *Settings → Rules → Rulesets*. Evitare regole sovrapposte senza sapere quali vincoli resteranno effettivi.
+3. **Impostare il requisito di review.** Abilitare *Require a pull request before merging*. Se esiste un secondo revisore abilitato, richiedere per esempio un'approvazione. Chi apre una PR non può approvare la propria: per un progetto individuale si può richiedere la PR e la CI senza richiedere approvazioni. Per una review obbligatoria dei code owner serve anche l'apposita opzione, non basta avere `CODEOWNERS`.
+4. **Richiedere il risultato giusto.** Attivare i required status checks, selezionare il nome esatto e, dove opportuno, la sorgente attesa. *Require branches to be up to date* è una scelta separata: riduce il rischio di incompatibilità con la base ma può richiedere aggiornamenti e nuove esecuzioni.
+5. **Verificare le eccezioni prima di salvare.** Lasciare disabilitati force push ed eliminazione per il branch protetto. Decidere chi, se qualcuno, può fare bypass; una prova come amministratore può non riflettere i vincoli di un normale collaboratore.
 
-## Procedura
+## Prova di accettazione
 
-1. Apri repository settings.
-2. Vai nella sezione branch protection o rulesets.
-3. Crea una regola per il branch principale.
-4. Richiedi pull request prima del merge.
-5. Richiedi almeno una review.
-6. Richiedi status checks aggiornati.
-7. Se usi CODEOWNERS, richiedi review dai code owner.
-8. Blocca force push e deletion.
-9. Valuta se applicare le regole anche agli admin.
-10. Salva e prova una PR reale.
-
-## Snippet
-
-Configurazione minima consigliata:
-
-```text
-Branch pattern: main
-Require pull request before merging: yes
-Required approvals: 1
-Require status checks: yes
-Require branches to be up to date: yes
-Require conversation resolution: yes
-Allow force pushes: no
-Allow deletions: no
-```
-
-## Adattamenti comuni
-
-- **Repository personale**: regole leggere, almeno CI prima del merge.
-- **Team piccolo**: una review e CI obbligatoria.
-- **Repository critico**: code owners, signed commits, required status checks e regole applicate agli admin.
-- **Monorepo**: combina branch protection con CODEOWNERS.
-- **Organizzazione**: valuta repository rulesets per standardizzare piu repository.
+Su una PR di prova, con un account soggetto alla regola, verificare **prima** che un check fallito blocchi il merge e **poi** che, corretto il problema, il nuovo commit riceva il proprio check. Se è richiesta anche una review, il solo check verde non deve sbloccare il merge. Basta osservare i requisiti nella PR: non serve fondere la modifica né tentare un force push su `main`.
 
 ## Debug rapido
 
-- Se uno status check non appare, prima deve esistere almeno una run del workflow.
-- Se la PR non puo fare merge, leggi quale requirement manca.
-- Se CODEOWNERS non viene richiesto, controlla path e sintassi del file.
-- Se gli admin possono bypassare, controlla l'opzione relativa.
-- Se la regola non si applica, verifica pattern del branch.
-
-## Checklist finale
-
-- Il branch principale e coperto.
-- Le PR sono obbligatorie.
-- Le review sono obbligatorie.
-- I required status checks sono corretti.
-- Force push e deletion sono bloccati.
-- CODEOWNERS e configurato se serve.
-- Il comportamento e stato testato con una PR.
+| Sintomo | Cosa verificare |
+| --- | --- |
+| Il check non è selezionabile | Deve essere riuscito nel repository negli ultimi sette giorni. Controllare il nome del job, non solo il titolo del workflow, ed evitare nomi ambigui tra workflow. |
+| Il check resta atteso | Verificare filtri di branch o percorsi: se saltano l'intero workflow, il check obbligatorio può restare in attesa. Con la merge queue prevedere anche `merge_group`. |
+| Una PR sembra ignorare la regola | Verificare branch base, pattern, bypass e ruleset attivi. Se manca la review del code owner, controllare anche il file sul branch base e i permessi dei proprietari. |
 
 ## Collegamenti
 
@@ -109,4 +66,6 @@ Allow deletions: no
 
 ## Fonti
 
-- [GitHub Docs - About protected branches](https://docs.github.com/en/repositories/configuring-branches-and-merges-in-your-repository/managing-protected-branches/about-protected-branches)
+- [GitHub Docs: gestire la protezione classica](https://docs.github.com/en/repositories/configuring-branches-and-merges-in-your-repository/managing-protected-branches/managing-a-branch-protection-rule)
+- [GitHub Docs: diagnosi dei check obbligatori](https://docs.github.com/en/pull-requests/how-tos/merge-and-close-pull-requests/troubleshooting-required-status-checks)
+- [GitHub Docs: regole disponibili nei ruleset](https://docs.github.com/en/repositories/configuring-branches-and-merges-in-your-repository/managing-rulesets/available-rules-for-rulesets)

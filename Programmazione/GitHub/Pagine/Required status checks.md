@@ -27,98 +27,52 @@ title: Required status checks
 
 ## Sintesi
 
-I **required status checks** sono controlli che devono passare prima di poter unire una pull request. Di solito corrispondono a test, lint, build, analisi statica o controlli di sicurezza eseguiti da CI.
+Un **required status check** è un risultato che la protezione del branch si aspetta da una CI per la revisione in esame. Non è il comando di test: `npm test` è qualcosa che il runner può eseguire; il check da selezionare è il **nome effettivamente riportato** dal job o dal servizio esterno. Mantienilo stabile e non riutilizzare lo stesso nome per job diversi.
 
-Sono il ponte tra collaborazione e automazione: una review umana non dovrebbe sostituire i controlli automatici ripetibili.
+## Esempio: un controllo prima del merge, non un deploy
 
-## Quando usarlo
+Questo workflow **di esempio** per un repository di documentazione verifica che il `README.md` tracciato contenga almeno una riga non vuota. Non costruisce e non pubblica il sito. Il controllo ha un nome che dice esattamente cosa prova:
 
-Usali quando:
+```yaml
+name: Verifica documentazione
+on:
+  pull_request:
+  merge_group:
 
-- vuoi impedire merge con test falliti;
-- vuoi richiedere lint o build;
-- vuoi garantire che la CI giri su ogni PR;
-- vuoi proteggere `main`;
-- vuoi bloccare regressioni automatiche;
-- vuoi imporre controlli di sicurezza prima del merge.
+permissions:
+  contents: read
 
-## Come funziona
-
-Uno status check e un risultato associato a un commit. GitHub lo mostra nella pull request.
-
-Una branch protection rule o un ruleset puo richiedere che specifici check siano verdi prima del merge.
-
-Esempi di check:
-
-- `test`;
-- `lint`;
-- `build`;
-- `typecheck`;
-- `security-scan`;
-- `e2e`.
-
-## API / Sintassi
-
-Esempio concettuale:
-
-```text
-Required checks:
-- test
-- lint
-- build
+jobs:
+  readme:
+    name: docs-readme
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v6
+      - name: Verifica il contenuto del README nel commit
+        run: git grep -q '[^[:space:]]' HEAD -- README.md
 ```
 
-Con GitHub CLI puoi vedere i check di una PR:
+Prima lascia che il job riesca su una PR. Poi, se quel requisito serve al progetto, seleziona `docs-readme` fra i check disponibili nella protezione della base, con la sorgente attesa se configurata. Il job fallisce se il file manca o contiene solo spazi; **non** verifica link, grammatica o build. Per quelli servono test diversi. `merge_group` permette a una merge queue, se usata, di richiedere una verifica separata sul gruppo proposto.
+
+Il workflow Quartz di questo vault (`.github/workflows/deploy-pages.yml`) serve a un altro scopo: parte su push a `main` o su avvio manuale. Vedere il deploy verde **dopo** il merge non significa aver convalidato la PR **prima** del merge.
+
+## Perché la PR mostra ancora un blocco?
+
+| Sintomo | Controllo da fare |
+| --- | --- |
+| Il check è atteso ma non arriva | Confronta il nome richiesto con quello pubblicato. Se l’intero workflow è stato saltato per filtri su branch o percorsi, il check può restare in attesa. |
+| La CI è verde per una revisione precedente | Confronta gli SHA. Se GitHub mostra i check del commit di merge di prova, sono quelli rilevanti; in assenza di un risultato su quel commit conta l’ultimo head. |
+| Il job è saltato ma la PR risulta idonea | Un job saltato per una condizione non equivale a un workflow mai partito. Gli esiti `success`, `neutral` o `skipped` possono soddisfare il requisito: verifica che i test necessari siano stati realmente eseguiti. |
+| Il branch deve essere aggiornato | In modalità **strict** deve essere aggiornato rispetto alla base; in **loose** questo non è richiesto, ma restano obbligatori i check selezionati. |
+| Il nome coincide, ma la sorgente no | Se la regola richiede una GitHub App specifica, deve essere quella a pubblicare l’esito. |
+
+Con `gh` autenticato, sostituisci repository e numero per vedere **solo** i check obbligatori. Ometti `--required` per confrontarli con tutti gli altri:
 
 ```bash
-gh pr checks
+gh pr checks 123 --repo OWNER/REPO --required
 ```
 
-Oppure una PR specifica:
-
-```bash
-gh pr checks 123
-```
-
-## Esempio pratico
-
-Policy per progetto TypeScript:
-
-```text
-Required status checks:
-- npm test
-- npm run lint
-- npm run typecheck
-- npm run build
-```
-
-Se `typecheck` fallisce, GitHub blocca il merge finche la pull request non viene corretta.
-
-## Varianti
-
-- **Check CI**: test, build, lint.
-- **Check sicurezza**: secret scanning, dependency scanning, SAST.
-- **Check di deploy preview**: verifica ambiente temporaneo.
-- **Check matrix**: piu versioni di runtime o sistemi operativi.
-- **Check esterni**: servizi integrati oltre GitHub Actions.
-
-## Errori comuni
-
-- Richiedere check con nomi che cambiano tra workflow.
-- Rendere obbligatori check lenti o instabili senza motivo.
-- Non richiedere test essenziali.
-- Consentire merge quando la CI e skipped.
-- Non aggiornare required checks dopo rinomina workflow.
-- Confondere review approvata con codice verificato.
-
-## Checklist
-
-- I check obbligatori sono quelli davvero critici?
-- I nomi dei check sono stabili?
-- I check girano su pull request?
-- La CI fallisce se test o lint falliscono?
-- I check non sono inutilmente lenti?
-- Le regole sono aggiornate quando cambia la pipeline?
+Il comando legge gli esiti, non avvia test. In uno script, il codice di uscita `8` indica check in attesa, non un fallimento del programma sotto test.
 
 ## Collegamenti
 
@@ -129,5 +83,7 @@ Se `typecheck` fallisce, GitHub blocca il merge finche la pull request non viene
 
 ## Fonti
 
-- [GitHub Docs - About status checks](https://docs.github.com/en/pull-requests/collaborating-with-pull-requests/collaborating-on-repositories-with-code-quality-features/about-status-checks)
-- [GitHub Docs - Required status checks](https://docs.github.com/en/pull-requests/collaborating-with-pull-requests/collaborating-on-repositories-with-code-quality-features/troubleshooting-required-status-checks)
+- [GitHub Docs: status checks](https://docs.github.com/en/pull-requests/reference/status-checks)
+- [GitHub Docs: check in attesa, commit e merge queue](https://docs.github.com/en/pull-requests/how-tos/merge-and-close-pull-requests/troubleshooting-required-status-checks)
+- [GitHub Docs: opzioni strict e loose](https://docs.github.com/en/repositories/configuring-branches-and-merges-in-your-repository/managing-protected-branches/about-protected-branches)
+- [GitHub CLI: leggere i check di una PR](https://cli.github.com/manual/gh_pr_checks)

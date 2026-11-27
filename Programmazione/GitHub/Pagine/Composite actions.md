@@ -29,100 +29,62 @@ title: Composite actions
 
 ## Sintesi
 
-Le **composite actions** sono action personalizzate che raggruppano piu step in una singola action. Sono utili quando vuoi riusare una sequenza tecnica dentro piu workflow senza creare un intero workflow riutilizzabile.
+Una **composite action** raggruppa più step che devono girare nello **stesso job del chiamante**. Vede il suo workspace: può controllare i file lasciati dallo step precedente e restituire un risultato al successivo. Non sceglie il runner, non crea job e non costituisce un confine di sicurezza separato.
 
-La differenza pratica e questa: una composite action riusa step; un reusable workflow riusa job o workflow completi.
+## Esempio pratico: verificare la home ed esporne la dimensione
 
-## Quando usarlo
-
-Usale quando:
-
-- ripeti gli stessi step in molti workflow;
-- vuoi incapsulare setup, lint, build o validazioni;
-- vuoi distribuire una piccola automazione interna;
-- vuoi evitare script lunghi direttamente nel workflow;
-- vuoi creare una action locale dentro `.github/actions`;
-- vuoi pubblicare una action riusabile in piu repository.
-
-## Come funziona
-
-Una composite action ha un file `action.yml` o `action.yaml` che descrive:
-
-- nome e descrizione;
-- input;
-- output;
-- step eseguiti;
-- shell usata dagli step `run`.
-
-La action puo vivere:
-
-- nello stesso repository, per uso locale;
-- in un repository separato, per uso condiviso;
-- in una cartella come `.github/actions/nome-action`.
-
-## API / Sintassi
-
-File `.github/actions/setup-project/action.yml`:
+Definizione didattica in `.github/actions/verifica-home/action.yml`. Legge `Home.md` dalla radice del checkout; richiede PowerShell 7 (`pwsh`). La soglia è un input, non un comando: viene passata tramite `env` e validata prima dell’uso.
 
 ```yaml
-name: Setup project
-description: Prepara dipendenze e cache del progetto
-
+name: Verifica home
+description: Verifica la dimensione minima della home del vault
+inputs:
+  minimo:
+    description: Dimensione minima in byte
+    default: '1'
+outputs:
+  byte:
+    description: Dimensione osservata
+    value: ${{ steps.misura.outputs.byte }}
 runs:
   using: composite
   steps:
-    - uses: actions/setup-node@v4
-      with:
-        node-version: "22"
-    - run: npm ci
-      shell: bash
+    - id: misura
+      shell: pwsh
+      env:
+        MINIMO: ${{ inputs.minimo }}
+      run: |
+        $min = 0
+        if (-not [int]::TryParse($env:MINIMO, [ref]$min) -or $min -lt 1) {
+          throw 'La soglia deve essere un intero positivo'
+        }
+        $file = Get-Item -LiteralPath 'Home.md' -ErrorAction Stop
+        if ($file.PSIsContainer -or $file.Length -lt $min) { throw 'Home non valida' }
+        "byte=$($file.Length)" >> $env:GITHUB_OUTPUT
 ```
 
-Uso nel workflow:
+Uso in `steps` di un job, dopo aver aggiunto la definizione al repository:
 
 ```yaml
-steps:
-  - uses: actions/checkout@v4
-  - uses: ./.github/actions/setup-project
+- uses: actions/checkout@v6
+- id: home
+  uses: ./.github/actions/verifica-home
+  with:
+    minimo: '1'
+- name: Leggi il risultato
+  shell: pwsh
+  env:
+    DIMENSIONE: ${{ steps.home.outputs.byte }}
+  run: Write-Output "$env:DIMENSIONE byte"
 ```
 
-## Esempio pratico
+`misura` è l’ID **interno** dell’action; `home` è l’ID scelto dal **chiamante**. Una home vuota deve far fallire lo step, non produrre un output di successo pari a zero. Una home non vuota non garantisce che i suoi collegamenti siano validi: per quello serve `content:check`.
 
-Se ogni workflow ripete:
+## Errori da evitare
 
-```yaml
-- uses: actions/setup-node@v4
-- run: npm ci
-- run: npm run lint
-```
+Una composite locale non è disponibile prima del checkout. Ogni suo step `run` dichiara la shell; gli input non diventano automaticamente variabili `INPUT_*`. Se distribuisci script insieme all’action, cerca gli script con `github.action_path` e i dati del progetto nel workspace del chiamante.
 
-puoi creare una composite action `project-checks` e richiamarla da CI, release e deploy. Il workflow diventa piu leggibile e la logica ripetuta rimane in un solo posto.
-
-## Varianti
-
-- **Composite action locale**: vive nello stesso repository.
-- **Composite action pubblica**: vive in un repository dedicato.
-- **Composite action interna**: usata solo da un'organizzazione.
-- **JavaScript action**: piu adatta quando serve logica complessa in Node.js.
-- **Docker action**: utile quando serve un ambiente containerizzato.
-
-## Errori comuni
-
-- Usare una composite action per orchestrare interi job.
-- Nascondere troppa logica rendendo i log difficili da capire.
-- Non dichiarare `shell` negli step `run`.
-- Eseguire input non fidato senza validazione.
-- Usare action esterne senza pinning a tag o SHA.
-- Confondere composite action e reusable workflow.
-
-## Checklist
-
-- Gli step raggruppati sono davvero ripetuti?
-- Il nome della action descrive il risultato?
-- Gli input sono documentati?
-- Gli output servono davvero?
-- La action e versionata se usata da altri repository?
-- I log restano leggibili?
+Per usarla da un altro repository occorrono accesso e un riferimento esplicito, preferibilmente uno SHA verificato. Se hai bisogno di una libreria Node articolata valuta un’action JavaScript; se devi definire un ambiente Linux tramite un’immagine valuta un’action Docker. Nessuna delle due è necessaria per questa semplice verifica.
 
 ## Collegamenti
 
@@ -134,4 +96,6 @@ puoi creare una composite action `project-checks` e richiamarla da CI, release e
 
 ## Fonti
 
-- [GitHub Docs - Creating a composite action](https://docs.github.com/en/actions/tutorials/create-actions/create-a-composite-action)
+- [GitHub Docs - Creare una composite action](https://docs.github.com/en/actions/tutorials/create-actions/create-a-composite-action)
+- [GitHub Docs - Input, output e shell delle action](https://docs.github.com/en/actions/reference/workflows-and-actions/metadata-syntax)
+- [GitHub Docs - Uso sicuro delle action](https://docs.github.com/en/actions/reference/security/secure-use)

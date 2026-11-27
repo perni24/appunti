@@ -97,6 +97,12 @@ assert!(queue.is_empty());
 
 Con `let ... else` il ramo `else` deve uscire da quel percorso (per esempio con `return`); dopo l'istruzione i nomi del pattern sono disponibili.
 
+## Fonti
+
+- [Rust Book: aggiornare una struct e trasferirne i campi](https://doc.rust-lang.org/book/ch05-01-defining-structs.html)
+- [Rust Book: destrutturazione e guardie di `match`](https://doc.rust-lang.org/book/ch19-03-pattern-syntax.html)
+- [Rust Book: `if let` e `let ... else`](https://doc.rust-lang.org/book/ch06-03-if-let.html)
+
 ## Collegamenti
 
 - [[Programmazione/Rust/Promemoria/Indice Promemoria Rust|Indice Promemoria Rust]]

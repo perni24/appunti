@@ -27,92 +27,48 @@ title: Sicurezza dei token GitHub
 
 ## Sintesi
 
-I token GitHub permettono ad applicazioni, script, CLI e automazioni di agire su GitHub. Sono credenziali: se vengono esposti, possono consentire accesso a codice, issue, package, Actions o impostazioni.
+Per scegliere una credenziale chiediti **chi deve agire, su quali repository, per fare cosa e per quanto tempo**. Un token personale rappresenta una persona; il token di un job Actions rappresenta il workflow nel suo repository. Conservare una credenziale in un secret manager la protegge nel deposito, ma non ne riduce i permessi.
 
-La regola base e usare token con permessi minimi, durata limitata e conservazione sicura.
+## Quale identità scegliere?
 
-## Quando usarlo
+| Situazione | Scelta di partenza | Limite da ricordare |
+| --- | --- | --- |
+| Uso interattivo sul proprio computer | Login di GitHub CLI o gestore credenziali; SSH per operazioni Git. | Una chiave SSH non è un bearer token per l’API REST. |
+| Script personale su repository selezionati | **Fine-grained PAT** con proprietario, repository, permessi e scadenza necessari. | Non attribuisce privilegi che la persona non possiede. Un’organizzazione può richiedere approvazione; verifica che l’endpoint supporti il tipo di token. |
+| Job Actions che opera sul proprio repository | **GITHUB_TOKEN**, emesso per ciascun job, con `permissions` espliciti. | Non è un token personale permanente o un accesso automatico a tutti i repository dell’organizzazione. |
+| Integrazione condivisa, anche su più repository | **GitHub App** installata sui repository necessari, con token d’installazione di breve durata. | Evita di legare il servizio all’account di una persona che potrebbe lasciare il team. |
+| Accesso Git via SSH da una macchina a un singolo repository | **Deploy key**, in sola lettura se sufficiente. | Gestisci e revoca la chiave separatamente dagli account. |
 
-Studia la sicurezza dei token quando:
+Un **PAT classic** ha scope spesso più ampi: se un’operazione non è supportata dal fine-grained PAT, verifica prima se è appropriata una GitHub App. Per un deploy verso un cloud che supporta OIDC, valuta credenziali temporanee del provider invece di conservare una sua chiave permanente.
 
-- usi GitHub CLI;
-- configuri script locali;
-- integri CI/CD;
-- usi GitHub API;
-- installi GitHub Apps;
-- devi sostituire password o credenziali vecchie.
+## Esempio: leggere una issue senza creare un PAT
 
-## Come funziona
+Frammento `jobs:` di un workflow didattico per un repository con Issues abilitate e una issue `12` leggibile. Su un runner GitHub-hosted Ubuntu con `gh` disponibile, il job chiede sola lettura delle issue. Non effettua checkout e non stampa il token:
 
-GitHub supporta diversi meccanismi di accesso:
-
-- personal access token classici;
-- fine-grained personal access token;
-- token generati da GitHub Actions;
-- token di GitHub Apps;
-- deploy key SSH;
-- autenticazione SSH per Git.
-
-Per automazioni moderne e preferibile evitare token personali ampi e usare identita con scope limitato.
-
-## API / Sintassi
-
-Esempio di uso token via variabile ambiente:
-
-```bash
-export GITHUB_TOKEN="..."
+```yaml
+jobs:
+  leggi-issue:
+    runs-on: ubuntu-latest
+    permissions:
+      issues: read
+    steps:
+      - name: Leggi lo stato della issue
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: gh api "repos/$GITHUB_REPOSITORY/issues/12" --jq '.state'
 ```
 
-Chiamata API:
+`GH_TOKEN` è qui il nome della variabile letta dalla CLI, non una nuova credenziale. Per questa richiesta GET servono la risorsa corretta e il permesso di lettura; non serve `issues: write`. Un `404` può indicare sia un numero inesistente sia una risorsa non visibile: controlla repository, identità e accessi prima di ampliare i permessi.
+
+Per controllare la sessione **locale** della CLI, senza richiedere il valore del token:
 
 ```bash
-curl -H "Authorization: Bearer $GITHUB_TOKEN" \
-  https://api.github.com/repos/owner/repository
+gh auth status --hostname github.com
 ```
 
-Controllare autenticazione GitHub CLI:
+## Conservazione e revoca
 
-```bash
-gh auth status
-```
-
-## Esempio pratico
-
-Per uno script che legge issue:
-
-1. crea token fine-grained;
-2. limita accesso al solo repository;
-3. concedi solo permessi necessari;
-4. imposta scadenza;
-5. salva il token in secret manager o variabile sicura;
-6. revoca il token quando non serve piu.
-
-## Varianti
-
-- **Fine-grained PAT**: preferibile per scope limitati.
-- **Classic PAT**: piu ampio, da usare con cautela.
-- **GITHUB_TOKEN in Actions**: token automatico del workflow.
-- **GitHub App token**: adatto a integrazioni installabili.
-- **Deploy key**: accesso Git SSH a repository.
-- **SSH key personale**: autenticazione Git da macchina locale.
-
-## Errori comuni
-
-- Salvare token in repository.
-- Usare token personali in CI condivisa.
-- Dare scope `repo` quando basta lettura limitata.
-- Non impostare scadenza.
-- Non revocare token dopo leak o cambio uso.
-- Condividere token tra persone o progetti.
-
-## Checklist
-
-- Il token ha permessi minimi?
-- Ha scadenza?
-- E limitato ai repository necessari?
-- E conservato fuori dal codice?
-- Secret scanning e push protection sono attivi?
-- Esiste una procedura di revoca e rotazione?
+Non incollare valori reali in comandi salvati nella cronologia, file Markdown, URL del remoto, ticket o log. In locale usa il gestore credenziali; in CI passa le credenziali solo ai job o agli step che ne hanno bisogno. Inventaria proprietario, scopo, scadenza e consumatori senza registrarne il valore. Se un token è stato esposto, revocalo presso l’emittente e aggiorna i consumatori autorizzati: sostituire il valore nel workflow non disabilita quello vecchio.
 
 ## Collegamenti
 
@@ -120,7 +76,12 @@ Per uno script che legge issue:
 - [[Programmazione/GitHub/Pagine/Accessi ruoli e permessi GitHub|Accessi ruoli e permessi GitHub]]
 - [[Programmazione/GitHub/Pagine/Secret scanning|Secret scanning]]
 - [[Programmazione/GitHub/Pagine/Repository settings|Repository settings]]
+- [[Programmazione/GitHub/Pagine/OIDC GitHub Actions|OIDC GitHub Actions]]
+- [[Programmazione/GitHub/Pagine/Fine-grained token GitHub|Fine-grained token GitHub]]
 
 ## Fonti
 
-- [GitHub Docs - Managing personal access tokens](https://docs.github.com/en/authentication/keeping-your-account-and-data-secure/managing-your-personal-access-tokens)
+- [GitHub Docs: token personali, limiti e scadenze](https://docs.github.com/en/authentication/keeping-your-account-and-data-secure/managing-your-personal-access-tokens)
+- [GitHub Docs: identità e durata del GITHUB_TOKEN](https://docs.github.com/en/actions/concepts/security/github_token)
+- [GitHub REST API: permessi per leggere una issue](https://docs.github.com/en/rest/issues/issues#get-an-issue)
+- [GitHub CLI: autenticazione da variabili d’ambiente](https://cli.github.com/manual/gh_help_environment)

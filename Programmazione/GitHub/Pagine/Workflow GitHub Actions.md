@@ -26,103 +26,56 @@ title: Workflow GitHub Actions
 
 ## Sintesi
 
-Un **workflow GitHub Actions** e un file YAML che definisce un processo automatizzato. Un workflow indica quando partire, quali job eseguire, su quali runner e con quali step.
+Un workflow è un file `.yml` o `.yaml` direttamente in `.github/workflows/`. `name` è l’etichetta nell’interfaccia, `on` decide **quando** partire e `jobs` descrive **che cosa** eseguire. Chiamare il file `deploy.yml` non pubblica nulla; allo stesso modo, un controllo su una PR non richiede permessi di deploy.
 
-Il workflow e il confine principale dell'automazione: se diventa troppo grande, e piu difficile da capire, mantenere e mettere in sicurezza.
+## Esempio pratico: validare gli appunti prima del merge
 
-## Quando usarlo
-
-Crea workflow separati quando:
-
-- vuoi distinguere CI, release e deploy;
-- vuoi trigger diversi per operazioni diverse;
-- vuoi ridurre tempi di esecuzione;
-- vuoi isolare permessi e secret;
-- vuoi rendere i log piu leggibili;
-- vuoi evitare che un fallimento blocchi processi non correlati.
-
-## Come funziona
-
-Un workflow vive in:
-
-```text
-.github/workflows/nome-workflow.yml
-```
-
-Contiene:
-
-- `name`;
-- `on`;
-- `permissions`;
-- `env`;
-- `jobs`;
-- eventuali `defaults`, `concurrency` o condizioni.
-
-Ogni workflow puo avere piu job. I job possono essere indipendenti o dipendere da altri tramite `needs`.
-
-## API / Sintassi
-
-Workflow con due job:
+Questo è un workflow completo **di esempio**, distinto dal deploy Quartz attivo. Il caso d’uso è dare un esito all’autore di una PR verso `main` senza caricare il sito su Pages. Presuppone la struttura del vault: manifesto npm e lockfile si trovano in `site/`, non nella radice.
 
 ```yaml
-name: CI
+name: Controllo appunti
 
 on:
   pull_request:
+    branches: [main]
+
+permissions:
+  contents: read
 
 jobs:
-  test:
+  controlla:
     runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: site
     steps:
-      - uses: actions/checkout@v4
-      - run: npm test
-
-  build:
-    needs: test
-    runs-on: ubuntu-latest
-    steps:
-      - uses: actions/checkout@v4
-      - run: npm run build
+      - uses: actions/checkout@v6
+      - uses: actions/setup-node@v6
+        with:
+          node-version: '24'
+          cache: npm
+          cache-dependency-path: site/package-lock.json
+      - name: Installa le dipendenze dal lockfile
+        run: npm ci
+      - name: Controlla metadati e collegamenti
+        run: npm run content:check
+      - name: Verifica la trasformazione delle note
+        run: npm run content:test
 ```
 
-## Esempio pratico
+## Perché le operazioni sono in questo ordine
 
-Separazione consigliata:
+- `checkout` rende disponibili i file della PR. Scegliere un runner con `runs-on` non scarica automaticamente il repository.
+- `setup-node` prepara la versione di Node richiesta. `cache-dependency-path` indica all’action quale lockfile usare per la chiave della cache npm; non cambia la directory di lavoro e non ripristina `node_modules`.
+- `defaults.run.working-directory` vale per gli step `run`, non per `uses`. I tre comandi npm trovano lo stesso `package.json` e, nello stesso job, i controlli riusano l’installazione fatta da `npm ci`.
 
-```text
-.github/workflows/ci.yml
-.github/workflows/release.yml
-.github/workflows/deploy.yml
-```
+## Come interpretare il risultato
 
-`ci.yml` gira su PR e push. `release.yml` gira su tag. `deploy.yml` gira solo da branch o ambiente controllato.
+Se a PR, release e pubblicazione servono eventi o permessi diversi, puoi separare i file: per esempio `ci.yml` per i controlli, `release.yml` per preparare una release su tag e `deploy.yml` per pubblicare. Sono nomi convenzionali, non tre file richiesti da GitHub.
 
-## Varianti
+Se `npm ci` fallisce, verifica percorso e coerenza del lockfile: i controlli successivi normalmente non partono. Un errore in `content:check` riguarda invece il contenuto o la struttura del vault. Un job verde dice che questi controlli sono passati, **non** che il sito è stato generato o che la PR è bloccata in caso di fallimento: per quest’ultima proprietà il repository deve richiedere il check al merge.
 
-- **Workflow CI**: test e build.
-- **Workflow release**: crea artefatti e changelog.
-- **Workflow deploy**: pubblica su ambiente.
-- **Workflow manuale**: usa `workflow_dispatch`.
-- **Workflow schedulato**: usa `schedule`.
-- **Reusable workflow**: richiamabile da altri workflow.
-
-## Errori comuni
-
-- Mettere CI, release e deploy nello stesso file senza separazione.
-- Usare nomi generici come `build.yml` per tutto.
-- Dimenticare `permissions`.
-- Duplicare molto YAML invece di estrarre workflow riutilizzabili.
-- Rendere job dipendenti senza motivo.
-- Non documentare workflow manuali o pericolosi.
-
-## Checklist
-
-- Il workflow ha responsabilita singola?
-- Il nome del file e descrittivo?
-- Gli eventi sono limitati?
-- I job hanno dipendenze chiare?
-- I permessi sono dichiarati?
-- I log sono facili da leggere?
+Usa job separati quando serve un runner diverso, del parallelismo o un confine di permessi. Dividere installazione e test in due job solo per dare loro nomi diversi fa perdere il filesystem condiviso: qui bastano step distinti nei log.
 
 ## Collegamenti
 
@@ -135,3 +88,5 @@ Separazione consigliata:
 ## Fonti
 
 - [GitHub Docs - Workflows](https://docs.github.com/en/actions/concepts/workflows-and-actions/workflows)
+- [GitHub Docs - Sintassi e directory di lavoro](https://docs.github.com/en/actions/reference/workflows-and-actions/workflow-syntax)
+- [actions/setup-node - Cache e lockfile](https://github.com/actions/setup-node/tree/v6)

@@ -28,111 +28,42 @@ title: Clone fork e template repository
 
 ## Sintesi
 
-**Clone**, **fork** e **template repository** sono tre modi diversi di partire da un repository GitHub.
+La scelta dipende da due domande: **dove deve vivere la copia** e **deve condividere la storia del progetto originale**?
 
-- `clone`: scarica una copia locale di un repository.
-- `fork`: crea una copia su GitHub collegata al progetto originale.
-- `template repository`: crea un nuovo repository indipendente partendo da una struttura esistente.
+| Operazione | Risultato | Quando sceglierla |
+| --- | --- | --- |
+| Clone | Repository Git sul tuo computer, con un remoto verso la sorgente | Vuoi lavorare in locale. Non crea un nuovo repository su GitHub e non concede il diritto di push. |
+| Fork | Nuovo repository su GitHub, collegato alla rete di fork dell’originale | Vuoi pubblicare un tuo branch e aprire una PR verso l’originale senza scrivervi direttamente. |
+| Usa un template | Nuovo repository con i file iniziali selezionati ma senza la storia di commit del modello | Vuoi avviare un progetto indipendente; gli aggiornamenti del template non vengono incorporati automaticamente. |
+| Scarica ZIP | I file a una certa revisione, senza `.git` | Ti serve solo leggere o usare una copia dei file. |
 
-Scegliere il meccanismo giusto evita confusione su permessi, pull request e aggiornamenti futuri.
+## Esempio: contribuire senza accesso in scrittura
 
-## Quando usarlo
-
-Usa:
-
-- **clone** quando vuoi lavorare localmente su un repository a cui hai accesso;
-- **fork** quando vuoi contribuire a un progetto dove non puoi fare push diretto;
-- **template** quando vuoi creare un nuovo progetto usando una base gia pronta;
-- **download ZIP** solo per consultare file senza history Git.
-
-## Come funziona
-
-Il clone copia history e branch sul tuo computer:
+Sul sito crea un fork del progetto e clona **il tuo** fork (sostituisci i segnaposto). Per un repository pubblico, la sola lettura via HTTPS non richiede un token:
 
 ```bash
-git clone https://github.com/owner/repository.git
+git clone https://github.com/TUO-ACCOUNT/progetto.git
 ```
 
-Il fork crea un repository nel tuo account. Di solito:
+Entra nella cartella `progetto`. Nel clone normale Git ha creato `origin` con l’URL che hai usato. C’è normalmente un solo branch locale iniziale, quello estratto; `git branch --remotes` mostra invece i riferimenti ai branch remoti conosciuti dal clone.
 
-- il tuo fork diventa `origin`;
-- il repository originale puo essere aggiunto come `upstream`;
-- lavori su branch nel fork;
-- apri una pull request verso il progetto originale.
-
-Il template invece non mantiene un rapporto di fork. Serve per iniziare un nuovo progetto indipendente.
-
-## API / Sintassi
-
-Clone:
+Come **alternativa** ai due passaggi sul sito e nel terminale, da fuori del clone e con la CLI autenticata:
 
 ```bash
-git clone https://github.com/owner/repository.git
+gh repo fork OWNER/progetto --clone
 ```
 
-Fork con GitHub CLI:
+In entrambi i casi controlla `git remote -v` prima di aggiungere un eventuale `upstream`: la CLI può averlo già configurato. Crea un branch dedicato, registra il tuo cambiamento e pubblica il branch su `origin`. Nella PR scegli come **base** il progetto originale e come **head** il branch del fork. Una PR non concede accesso in scrittura all’originale.
 
-```bash
-gh repo fork owner/repository --clone
-```
+## Quando il template è la scelta giusta
 
-Aggiungere upstream:
+Per tre applicazioni con la stessa struttura iniziale, usa **Use this template** e crea tre repository indipendenti. Di norma basta il branch predefinito. Se includi tutti i branch del template, i branch generati hanno storie indipendenti tra loro: non è un modo per conservare la genealogia di sviluppo. Se invece vuoi restituire correzioni al progetto di partenza, scegli un fork.
 
-```bash
-git remote add upstream https://github.com/original-owner/repository.git
-git fetch upstream
-```
+## Controlli pratici
 
-Aggiornare il branch locale dal progetto originale:
-
-```bash
-git switch main
-git fetch upstream
-git merge upstream/main
-```
-
-## Esempio pratico
-
-Contribuire a una libreria open source:
-
-```bash
-gh repo fork original/progetto --clone
-cd progetto
-git switch -c fix/errore-validazione
-
-# modifica i file
-git add .
-git commit -m "Corregge validazione"
-git push -u origin fix/errore-validazione
-```
-
-Poi apri una pull request dal tuo fork verso il repository originale.
-
-## Varianti
-
-- **Clone HTTPS**: semplice, usa credenziali/token.
-- **Clone SSH**: comodo per sviluppatori abituali con chiavi SSH.
-- **Fork personale**: utile per contributi esterni.
-- **Fork interno a organizzazione**: utile per team con permessi separati.
-- **Template repository**: utile per starter kit e standard di progetto.
-
-## Errori comuni
-
-- Fare fork quando basta clone.
-- Usare template quando vuoi contribuire al progetto originale.
-- Non configurare `upstream` dopo un fork.
-- Lavorare su `main` del fork invece che su branch dedicato.
-- Confondere pull request dal fork con push diretto.
-- Dimenticare di sincronizzare il fork con il repository originale.
-
-## Checklist
-
-- Devi contribuire al progetto originale o creare un progetto nuovo?
-- Hai permessi di push sul repository originale?
-- `origin` punta al tuo fork o al repository principale?
-- Hai configurato `upstream` se lavori da fork?
-- Stai lavorando su un branch dedicato?
-- La pull request ha base e compare corretti?
+- HTTPS o SSH cambia il trasporto e l’autenticazione, non trasforma un clone in fork.
+- Per usare `git push` occorrono credenziali valide **e** il permesso di scrivere sul destinatario. Un fork può essere personale o di un’organizzazione, se le regole lo consentono.
+- Se l’originale avanza, il tuo fork non si aggiorna per il solo fatto di esservi collegato: sincronizzalo esplicitamente.
 
 ## Collegamenti
 
@@ -143,6 +74,7 @@ Poi apri una pull request dal tuo fork verso il repository originale.
 
 ## Fonti
 
-- [GitHub Docs - Cloning a repository](https://docs.github.com/en/repositories/creating-and-managing-repositories/cloning-a-repository)
-- [GitHub Docs - About forks](https://docs.github.com/en/pull-requests/collaborating-with-pull-requests/working-with-forks/about-forks)
-- [GitHub Docs - Creating a repository from a template](https://docs.github.com/en/repositories/creating-and-managing-repositories/creating-a-repository-from-a-template)
+- [GitHub Docs: clonare un repository](https://docs.github.com/en/repositories/creating-and-managing-repositories/cloning-a-repository)
+- [GitHub Docs: come funzionano i fork](https://docs.github.com/en/pull-requests/reference/forks)
+- [GitHub Docs: generare un repository da un template](https://docs.github.com/en/repositories/creating-and-managing-repositories/creating-a-repository-from-a-template)
+- [GitHub CLI: creare e clonare un fork](https://cli.github.com/manual/gh_repo_fork)

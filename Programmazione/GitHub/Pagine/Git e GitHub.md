@@ -23,117 +23,47 @@ title: Git e GitHub
 
 ## Sintesi
 
-**Git** e il sistema di versionamento distribuito. **GitHub** e una piattaforma che ospita repository Git e aggiunge collaborazione, review, automazione e gestione del progetto.
+**Git** registra versioni e confronta storie. **GitHub** è uno dei servizi che possono ospitare un remoto Git e offre anche issue, pull request, review, permessi e automazione. Per capire «perché non vedo la mia modifica su GitHub?» bisogna sapere quale copia stai osservando.
 
-La distinzione e fondamentale: i commit, i branch, i tag e la history appartengono a Git; pull request, issue, Actions, review e permessi sono funzionalita GitHub.
+## Tre stati da distinguere
 
-## Quando usarlo
+| Stato | Come osservarlo | Cosa non dimostra |
+| --- | --- | --- |
+| File modificati e staging del clone | `git status --short` | Che esista un commit |
+| Commit sul branch locale | `git log -1 --oneline` | Che sia già stato inviato |
+| Ultimo stato remoto conosciuto dal clone | `origin/main` dopo un fetch | Che i file sul disco siano stati aggiornati |
 
-Studia questa distinzione quando:
+`git status`, `git log`, `git branch` e `git switch` lavorano sul clone. `git remote -v` legge gli URL configurati, non verifica la connessione. `git fetch`, `git pull` e `git push` sono anch’essi comandi **Git**, ma scambiano dati con un altro repository: non richiedono che il server sia GitHub. `gh issue list` e `gh pr create` operano invece sul servizio GitHub. Anche una modifica dall’interfaccia web può creare un normale commit Git.
 
-- un comando Git fallisce e non capisci se il problema e locale o remoto;
-- devi collaborare tramite pull request;
-- devi configurare `origin` e `upstream`;
-- devi spiegare perche il codice e diverso tra macchina locale e GitHub;
-- devi decidere se risolvere un problema da terminale o dall'interfaccia GitHub.
+## Esempio: il commit è locale o è stato pubblicato?
 
-## Come funziona
+Nel clone di un repository con remoto `origin`, posizionati sul branch locale `main`. Se il progetto usa un altro nome, sostituiscilo in entrambi i riferimenti.
 
-Git lavora principalmente in locale:
-
-- conserva la history;
-- crea commit;
-- gestisce branch;
-- confronta differenze;
-- permette merge e rebase.
-
-GitHub lavora come remoto e piattaforma:
-
-- riceve push;
-- espone repository via web;
-- gestisce pull request;
-- esegue workflow;
-- controlla permessi;
-- integra issue, progetti e sicurezza.
-
-Il collegamento tra i due avviene tramite remote:
+Aggiorna ciò che sai del remoto, senza unire né modificare i file del branch corrente:
 
 ```bash
-git remote -v
-```
-
-Di solito `origin` punta al repository GitHub principale o al tuo fork.
-
-## API / Sintassi
-
-Comandi Git locali:
-
-```bash
-git status
-git log --oneline
-git branch
-git switch main
-git pull
-git push
-```
-
-Comandi verso GitHub:
-
-```bash
-git remote -v
-git push origin main
 git fetch origin
 ```
 
-Operazioni GitHub da CLI:
+Mostra i commit raggiungibili da `main` ma non da `origin/main`:
 
 ```bash
-gh repo clone owner/repository
-gh pr create
-gh issue list
+git log --oneline origin/main..main
 ```
 
-## Esempio pratico
-
-Controllare se il repository locale punta a GitHub:
+Inverti l’intervallo per vedere i commit presenti sul branch del server all’ultimo fetch ma assenti da quello locale:
 
 ```bash
-git remote -v
+git log --oneline main..origin/main
 ```
 
-Output tipico:
-
-```text
-origin  https://github.com/luca/progetto.git (fetch)
-origin  https://github.com/luca/progetto.git (push)
-```
-
-Qui Git usa GitHub come remoto chiamato `origin`.
-
-## Varianti
-
-- **Git senza GitHub**: repository locale o remoto su un altro server.
-- **GitHub senza terminale**: modifiche da interfaccia web, utili ma limitate.
-- **GitHub CLI**: ponte tra terminale e API GitHub.
-- **Repository mirror**: copia sincronizzata di un repository.
-- **Fork workflow**: il tuo `origin` e un fork, `upstream` e il progetto originale.
+Se compare una riga solo nel primo elenco, il branch locale è avanti. Se compaiono righe in entrambi, le storie sono divergenti: ispezionale prima di integrarle. Nessuna riga in entrambi significa che le punte coincidono, **non** che il working tree sia pulito.
 
 ## Errori comuni
 
-- Dire "ho fatto commit su GitHub" quando il commit e locale e manca il push.
-- Fare `git pull` senza sapere da quale remote e branch.
-- Confondere pull request e `git pull`.
-- Pensare che una branch locale esista automaticamente su GitHub.
-- Usare GitHub per risolvere problemi che sono solo di working tree locale.
-
-## Checklist
-
-- Sai se il problema e locale o remoto?
-- Hai controllato `git status`?
-- Hai controllato `git remote -v`?
-- La branch locale ha una branch remota associata?
-- Il commit e stato anche inviato con `push`?
-- La pull request punta al branch base corretto?
+- `git pull` recupera e integra nel branch corrente. Una **pull request** è una proposta su GitHub: non scarica nulla nel clone del revisore.
+- `origin` è un nome locale, non una garanzia che l’URL appartenga all’originale. Può puntare al tuo fork, a un altro servizio o a un repository su disco.
+- Un clone, anche mirror, non è un backup completo di issue, discussioni e impostazioni GitHub.
 
 ## Collegamenti
 
@@ -144,4 +74,5 @@ Qui Git usa GitHub come remoto chiamato `origin`.
 
 ## Fonti
 
-- [GitHub Docs - About GitHub and Git](https://docs.github.com/en/get-started/start-your-journey/about-github-and-git)
+- [GitHub Docs: Git e GitHub](https://docs.github.com/en/get-started/start-your-journey/what-is-github)
+- [Git: quali riferimenti aggiorna fetch](https://git-scm.com/docs/git-fetch)

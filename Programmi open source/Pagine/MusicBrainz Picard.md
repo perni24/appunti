@@ -25,58 +25,36 @@ publish: true
 
 ## Sintesi
 
-**MusicBrainz Picard** e un programma open source per identificare, correggere e organizzare i metadati dei file musicali.
+MusicBrainz Picard è un programma open source per Windows, macOS e Linux che identifica i file audio e ne corregge i tag, come artista, album, titolo, numero di traccia e anno. Può anche recuperare copertine e organizzare i file per nome o cartella. Serve a catalogare una libreria, non a riprodurre la musica né a eliminare automaticamente i duplicati.
 
-Serve soprattutto quando una libreria audio ha tag incompleti, nomi file disordinati, album duplicati o informazioni incoerenti su artista, titolo, album, anno, traccia e copertina.
+## Scegliere tra Lookup e Scan
 
-## Quando usarlo
+| Situazione | Comando | Su cosa si basa |
+| --- | --- | --- |
+| I file hanno già artista, album o titolo plausibili | `Cluster`, poi `Lookup` sul gruppo | Raggruppa per album e cerca in MusicBrainz usando i metadati esistenti. |
+| I tag mancano o indicano il brano sbagliato | `Scan` sui file | Calcola un’impronta dall’audio e cerca la registrazione tramite AcoustID. |
 
-- Sistemare una collezione di file audio locali.
-- Correggere tag ID3 o metadati incompleti.
-- Rinominare file musicali in modo coerente.
-- Aggiungere copertine e informazioni album.
-- Identificare brani anche quando il nome del file non e affidabile.
-
-## Come funziona
-
-Picard confronta i file audio con il database MusicBrainz. Quando possibile usa anche impronte acustiche, tramite AcoustID, per riconoscere un brano dal contenuto audio e non solo dal nome del file.
-
-Dopo il riconoscimento, propone i metadati corretti e permette di salvarli nei file. Puo anche rinominare e spostare i file seguendo uno schema scelto dall'utente.
+La stessa registrazione può apparire nell’album originale e in una compilation: riconoscere **il brano** non basta per scegliere **l’edizione** da cui provengono i tuoi file.
 
 ## Esempio pratico
 
-```text
-1. Apri MusicBrainz Picard.
-2. Trascina nella finestra una cartella con file musicali.
-3. Usa "Scan" o "Lookup" per cercare corrispondenze.
-4. Controlla album, artista, tracce e copertina.
-5. Salva i tag corretti nei file.
-```
-
-## Funzionalita
-
-- **Database ampio**: usa MusicBrainz, un database musicale collaborativo.
-- **Riconoscimento acustico**: puo identificare brani anche con nomi file errati.
-- **Rinominazione automatica**: permette di ordinare i file secondo regole personalizzate.
-- **Supporto copertine**: puo aggiungere artwork agli album.
-- **Multipiattaforma**: disponibile per Windows, Linux e macOS.
+1. Lavora sulla copia di un album. Trascina i file nel pannello sinistro e scegli il metodo adatto dalla tabella.
+2. Nel pannello destro verifica l’edizione proposta: confronta artista, ordine, numero e durata delle tracce, poi controlla tag e copertina.
+3. Prima di salvare, verifica se le opzioni per rinominare o spostare i file sono abilitate. Lasciale disattivate se vuoi cambiare soltanto i tag.
+4. Seleziona i file abbinati e usa `Save`. Verifica sul disco i tag e il percorso del piccolo lotto prima di passare al resto della libreria.
 
 ## Limiti
 
-- Richiede controllo manuale quando ci sono album con molte edizioni simili.
-- Non e un player musicale: serve per metadatazione e organizzazione.
-- I risultati dipendono dalla qualita dei dati presenti in MusicBrainz.
-- La rinominazione automatica va provata con cautela su una copia o su pochi file alla volta.
+Una corrispondenza è una proposta, non una garanzia. Se nessuna edizione coincide con quella in tuo possesso, non sovrascrivere i tag originali sulla base del solo titolo. Conserva una copia prima di applicare salvataggi o rinominazioni in massa.
 
-## Checklist
+## Collegamenti
 
-- Fare un backup prima di modificare grandi librerie musicali.
-- Controllare sempre album, artista e numero traccia prima di salvare.
-- Usare il riconoscimento acustico quando i nomi file sono poco affidabili.
-- Definire uno schema di rinominazione coerente.
-- Applicare le modifiche a piccoli gruppi prima di processare tutta la libreria.
-
-
-## Navigazione
-
+- [[Programmi open source/Pagine/Yt-dlp|yt-dlp]]
 - [[Programmi open source/Indice Programmi Open Source|Catalogo open source]]
+
+## Fonti
+
+- [Picard: raggruppare e cercare file con metadati](https://picard-docs.musicbrainz.org/en/latest/workflows/workflow_metadata.html)
+- [Picard: identificare i file tramite impronta acustica](https://picard-docs.musicbrainz.org/en/latest/usage/retrieve_scan.html)
+- [Picard: salvare le modifiche nei file](https://picard-docs.musicbrainz.org/en/latest/usage/save.html)
+- [Picard: download per piattaforma](https://picard.musicbrainz.org/downloads/)

@@ -27,85 +27,64 @@ title: Creare un repository GitHub
 
 ## Obiettivo
 
-Creare un nuovo repository GitHub con nome, visibilita, file iniziali e impostazioni di base coerenti con lo scopo del progetto.
+Creare il repository sotto l'owner giusto e arrivare a una sola cronologia condivisa. **Si parte da zero oppure da commit locali già esistenti:** scegliere un solo percorso, non eseguire entrambi.
 
-Una buona creazione iniziale evita molti problemi successivi: repository senza README, visibilita sbagliata, licenza assente, `.gitignore` mancante o ownership non chiara.
+## Prima di iniziare
 
-## Quando usarlo
-
-Usa questa procedura quando:
-
-- inizi un nuovo progetto;
-- sposti un progetto locale su GitHub;
-- crei un repository dentro un'organizzazione;
-- vuoi partire da un template;
-- vuoi preparare una base ordinata per CI, issue e pull request.
-
-## Procedura
-
-1. Scegli l'owner corretto: account personale o organizzazione.
-2. Scegli un nome descrittivo e stabile.
-3. Aggiungi una descrizione breve.
-4. Decidi la visibilita: public, private o internal se disponibile.
-5. Se esiste un template adatto, crea il repository dal template.
-6. Se parti da zero, aggiungi README, `.gitignore` e LICENSE quando servono.
-7. Crea il repository.
-8. Clonalo in locale.
-9. Aggiungi i primi file del progetto.
-10. Configura impostazioni minime: default branch, features attive, accessi e branch protection se il repository e condiviso.
-
-## Snippet
-
-Creazione con GitHub CLI:
+Servono Git, GitHub CLI autenticata e permesso di creare repository nell'account o nell'organizzazione scelti. Sostituire `OWNER/REPO`. Verificare account attivo, nome disponibile e visibilità desiderata; gli esempi creano repository **privati**.
 
 ```bash
-gh repo create OWNER/REPOSITORY --private --description "Descrizione breve"
+gh auth status
 ```
 
-Clone dopo la creazione:
+## Percorso A: nuovo progetto senza cronologia locale
+
+Da una directory che possa contenere il nuovo clone, creare su GitHub il repository con un primo README e clonarlo:
 
 ```bash
-git clone https://github.com/OWNER/REPOSITORY.git
-cd REPOSITORY
+gh repo create OWNER/REPO --private --add-readme --clone
 ```
 
-Primo push da progetto locale:
+Entrare nella nuova directory `REPO`. Il clone ha già il commit iniziale e il remoto `origin`: non servono un altro `git init` o un secondo `remote add`. Se si parte da un template organizzativo, generare invece il repository dal template, poi clonare quello generato.
+
+## Percorso B: progetto locale da pubblicare
+
+1. Dalla radice del progetto, verificare la cronologia con `git log -1 --oneline`. Se è una cartella **non ancora inizializzata**, usare `git init -b main`, preparare README e `.gitignore` e creare il primo commit selezionando esplicitamente i file. Controllare anche la cronologia già esistente: un file rimosso dall'ultima versione può restare nei commit da pubblicare.
+2. Creare il remoto **vuoto**, senza README, licenza o template generati su GitHub:
 
 ```bash
-git init
-git remote add origin https://github.com/OWNER/REPOSITORY.git
-git add .
-git commit -m "Initial commit"
-git branch -M main
-git push -u origin main
+gh repo create OWNER/REPO --private
 ```
 
-## Adattamenti comuni
+3. Controllare i remoti già configurati. Se `origin` esiste, verificarne l'indirizzo: non sovrascriverlo per tentativi.
 
-- **Repository personale**: va bene per studio, demo e progetti individuali.
-- **Repository organizzazione**: preferibile per progetti di team o lavoro.
-- **Repository da template**: utile se vuoi CI, struttura e file standard gia pronti.
-- **Repository pubblico**: richiede piu attenzione a license, secret e dati sensibili.
-- **Repository privato**: comunque non deve contenere secret in chiaro.
+```bash
+git remote -v
+```
 
-## Debug rapido
+Solo se `origin` manca, collegare la cartella locale al remoto appena creato:
 
-- Se non puoi creare repository nell'organizzazione, controlla i permessi di creazione.
-- Se il push fallisce, verifica remote `origin` e autenticazione.
-- Se hai creato README su GitHub e anche commit locali, potresti avere storie divergenti.
-- Se il nome non e disponibile, controlla repository esistenti, archiviati o rinominati.
-- Se il repository deve essere pubblico, controlla prima che non contenga secret o dati privati.
+```bash
+git remote add origin https://github.com/OWNER/REPO.git
+```
 
-## Checklist finale
+4. Leggere il nome del branch corrente. Se l'output è vuoto, si è su un commit senza branch: fermarsi e scegliere quale branch pubblicare.
 
-- Owner corretto.
-- Nome descrittivo.
-- Visibilita corretta.
-- README presente.
-- `.gitignore` coerente con linguaggio e tooling.
-- LICENSE presente se il progetto e pubblico o open source.
-- Remote locale configurato.
-- Accessi e branch protection valutati.
+```bash
+git branch --show-current
+```
+
+5. Se il branch da pubblicare si chiama `main` e contiene i commit desiderati, inviarlo e impostare il relativo upstream. Per un nome diverso adattare il comando; non è necessario rinominare a forza il branch.
+
+```bash
+git push --set-upstream origin main
+```
+
+## Verifica e problemi comuni
+
+- Aprire il repository e confrontare branch, ultimo commit e visibilità. In locale, `git branch -vv` mostra il branch remoto seguito.
+- Se il primo push viene rifiutato perché il remoto contiene già commit, **non forzarlo**. Per un progetto appena iniziato può essere più semplice partire dal clone remoto e portarvi i file; se entrambe le storie sono importanti, esaminarle prima di integrarle.
+- Configurare descrizione, accessi, branch predefinito e protezioni utili. Scegliere una licenza appropriata se si intende consentire il riuso: rendere pubblico il repository non è una licenza.
 
 ## Collegamenti
 
@@ -119,4 +98,6 @@ git push -u origin main
 
 ## Fonti
 
-- [GitHub Docs - Creating a new repository](https://docs.github.com/en/repositories/creating-and-managing-repositories/creating-a-new-repository)
+- [GitHub Docs: creare un repository](https://docs.github.com/en/repositories/creating-and-managing-repositories/creating-a-new-repository)
+- [GitHub CLI: creazione, inizializzazione e clone](https://cli.github.com/manual/gh_repo_create)
+- [Git: push e upstream](https://git-scm.com/docs/git-push)

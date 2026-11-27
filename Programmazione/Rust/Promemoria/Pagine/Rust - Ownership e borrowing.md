@@ -81,6 +81,11 @@ assert_eq!(text, "ok.!");
 
 Sul **medesimo dato**, più prestiti condivisi oppure uno esclusivo mentre sono in uso. Non usare `view` dopo la chiamata mutabile: ne prolungheresti il prestito. Teoria: [[Programmazione/Rust/Pagine/Borrow checker|Borrow checker]].
 
+## Fonti
+
+- [Rust Book: move, clone e tipi `Copy`](https://doc.rust-lang.org/book/ch04-01-what-is-ownership.html)
+- [Rust Book: riferimenti e prestiti mutabili](https://doc.rust-lang.org/book/ch04-02-references-and-borrowing.html)
+
 ## Collegamenti
 
 - [[Programmazione/Rust/Promemoria/Indice Promemoria Rust|Indice Promemoria Rust]]

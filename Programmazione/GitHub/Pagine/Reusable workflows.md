@@ -29,121 +29,63 @@ title: Reusable workflows
 
 ## Sintesi
 
-I **reusable workflows** permettono di richiamare un workflow GitHub Actions da un altro workflow. Servono a evitare duplicazione quando piu repository o piu workflow devono usare la stessa pipeline.
+Scegli un **workflow riutilizzabile** se vuoi condividere un’intera procedura che sceglie i propri runner, esegue uno o più job e restituisce un esito. Se vuoi invece inserire alcune operazioni *tra due step già esistenti*, ti serve una composite action. La differenza si vede nel punto di chiamata: `jobs.<id>.uses` per il workflow, `steps[*].uses` per l’action.
 
-Sono diversi dalle action: una action riusa step, mentre un reusable workflow riusa un intero job o una sequenza di job.
+## Esempio pratico: due file, un solo controllo del vault
 
-## Quando usarlo
-
-Usali quando:
-
-- piu repository devono eseguire la stessa CI;
-- vuoi centralizzare regole di build, test o release;
-- vuoi standardizzare permessi e controlli;
-- vuoi evitare copia e incolla di YAML;
-- vuoi offrire una pipeline comune a un'organizzazione;
-- vuoi cambiare una logica una volta sola.
-
-## Come funziona
-
-Un workflow diventa riutilizzabile quando dichiara:
+**Chiamato**, `.github/workflows/verifica-vault.yml`. Espone l’input booleano `test`: metadati e link vengono sempre controllati; i test della trasformazione sono facoltativi. Entrambi i comandi esistono in `site/package.json`.
 
 ```yaml
-on:
-  workflow_call:
-```
-
-Il workflow chiamante usa `jobs.<job_id>.uses`, non uno step `uses`. Questo e importante: un reusable workflow si richiama al livello del job.
-
-Il workflow riutilizzabile puo definire:
-
-- `inputs`, per dati configurabili;
-- `secrets`, per credenziali esplicite;
-- `outputs`, per restituire valori;
-- `permissions`, per limitare i privilegi;
-- job multipli, se la logica condivisa e piu complessa.
-
-## API / Sintassi
-
-Workflow riutilizzabile:
-
-```yaml
-name: Reusable CI
-
+name: Verifica riutilizzabile del vault
 on:
   workflow_call:
     inputs:
-      node-version:
-        required: true
-        type: string
-
+      test:
+        type: boolean
+        default: true
+permissions:
+  contents: read
 jobs:
-  test:
+  verifica:
     runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: site
     steps:
-      - uses: actions/checkout@v4
-      - uses: actions/setup-node@v4
+      - uses: actions/checkout@v6
+      - uses: actions/setup-node@v6
         with:
-          node-version: ${{ inputs.node-version }}
+          node-version: '24'
+          cache: npm
+          cache-dependency-path: site/package-lock.json
       - run: npm ci
-      - run: npm test
+      - run: npm run content:check
+      - if: inputs.test
+        run: npm run content:test
 ```
 
-Workflow chiamante:
+**Chiamante**, per esempio `.github/workflows/ci-note.yml`. Questi due file sono didattici, non due workflow già installati nel vault.
 
 ```yaml
+name: CI delle note
+on: pull_request
+permissions:
+  contents: read
 jobs:
-  ci:
-    uses: ./.github/workflows/reusable-ci.yml
+  note:
+    uses: ./.github/workflows/verifica-vault.yml
     with:
-      node-version: "22"
+      test: true
 ```
 
-## Esempio pratico
+Il job `note` delega l’esecuzione: non aggiungervi `runs-on` o `steps`. Con `test: false` si salta **solo** l’ultimo step, non la validazione. Un ulteriore job del chiamante può aspettare l’esito con `needs: note`.
 
-In un'organizzazione con molti repository JavaScript puoi creare un workflow comune:
+## Cosa passa davvero tra i due file
 
-```text
-org/.github/.github/workflows/node-ci.yml
-```
-
-Ogni repository lo richiama:
-
-```yaml
-jobs:
-  ci:
-    uses: org/.github/.github/workflows/node-ci.yml@v1
-    with:
-      node-version: "22"
-```
-
-Questo rende piu semplice aggiornare versioni, cache e policy di sicurezza.
-
-## Varianti
-
-- **Workflow locale**: richiamato con `./.github/workflows/file.yml`.
-- **Workflow remoto**: richiamato con `owner/repo/.github/workflows/file.yml@ref`.
-- **Workflow versionato**: usa tag o SHA per stabilita.
-- **Workflow con secrets espliciti**: passa solo i segreti necessari.
-- **Workflow con `secrets: inherit`**: comodo dentro la stessa organizzazione, ma da usare con attenzione.
-
-## Errori comuni
-
-- Richiamare un reusable workflow dentro `steps` invece che dentro `jobs`.
-- Usare branch mobili come `@main` per workflow critici.
-- Passare troppi secret con `secrets: inherit`.
-- Non dichiarare input con tipi chiari.
-- Mettere logica troppo specifica in un workflow che dovrebbe essere generale.
-- Dimenticare che i workflow riutilizzabili devono stare in `.github/workflows`.
-
-## Checklist
-
-- Il workflow riutilizzabile ha una responsabilita chiara?
-- Gli input sono pochi e tipizzati?
-- I secret sono espliciti quando possibile?
-- Il workflow chiamato e versionato?
-- I permessi sono dichiarati?
-- La documentazione spiega come chiamarlo?
+- Il percorso locale usa la stessa revisione del chiamante. Per un altro repository usa `owner/repo/.github/workflows/file.yml@ref`. Uno SHA completo fissa la revisione; un tag può spostarsi. I file riutilizzabili stanno direttamente in `.github/workflows/`.
+- Il normale checkout nel chiamato scarica il **repository del chiamante**. Per usare questo esempio tra più repository, ciascun chiamante deve quindi avere `site/`, lockfile e script compatibili.
+- Le variabili `env` a livello di workflow del chiamante non sono un’interfaccia implicita. Passa valori con `with` e i soli secret necessari con `secrets`. `secrets: inherit` è più ampio e non inoltra automaticamente i secret lungo tutta una catena di chiamate. Il chiamato non può aumentare i privilegi del `GITHUB_TOKEN` ricevuto.
+- Per restituire un valore, collegalo dall’output dello step a quello del job, poi a `on.workflow_call.outputs`. Il chiamante lo legge via `needs.note.outputs.<nome>`. L’esito successo/fallimento del job non richiede un output personalizzato.
 
 ## Collegamenti
 
@@ -156,4 +98,5 @@ Questo rende piu semplice aggiornare versioni, cache e policy di sicurezza.
 
 ## Fonti
 
-- [GitHub Docs - Reuse workflows](https://docs.github.com/en/actions/how-tos/reuse-automations/reuse-workflows)
+- [GitHub Docs - Definire e richiamare un workflow](https://docs.github.com/en/actions/how-tos/reuse-automations/reuse-workflows)
+- [GitHub Docs - Contesto, accesso e permessi tra workflow](https://docs.github.com/en/actions/reference/workflows-and-actions/reusing-workflow-configurations)

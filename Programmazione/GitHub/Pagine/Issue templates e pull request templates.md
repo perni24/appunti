@@ -28,107 +28,61 @@ title: Issue templates e pull request templates
 
 ## Sintesi
 
-Gli **issue templates** e i **pull request templates** guidano chi apre issue o PR a fornire informazioni utili. Riducono richieste incomplete, review confuse e bug report non riproducibili.
+Per ricevere una segnalazione utile puoi offrire **testo libero guidato** (template Markdown) oppure **campi da compilare** (issue form YAML). Una pull request usa invece un template di testo: chiede all’autore cosa cambia e come l’ha verificato, ma non impone che i test passino.
 
-Un template buono non deve essere lungo: deve chiedere le informazioni che servono davvero per decidere o verificare.
+## Quale file vede chi contribuisce?
 
-## Quando usarlo
+| File, dalla radice del repository | Effetto |
+| --- | --- |
+| `.github/ISSUE_TEMPLATE/bug_report.md` | Il selettore delle issue propone un testo modificabile. Inserisci frontmatter YAML con `name` e `about`, seguito dalle sezioni da compilare. |
+| `.github/ISSUE_TEMPLATE/bug_report.yml` | Il selettore presenta un modulo con `name`, `description` e `body`. All’invio le risposte diventano il corpo Markdown modificabile dell’issue. |
+| `.github/ISSUE_TEMPLATE/config.yml` | Configura il selettore, per esempio link al supporto o disponibilità delle issue vuote. Non è un modulo. |
+| `.github/pull_request_template.md` | Precompila la descrizione di una nuova PR; sono supportati anche la radice e `docs/`. Non richiede frontmatter né accetta issue forms. |
 
-Usali quando:
+I template devono essere sul **branch predefinito** per essere proposti ai collaboratori. Una PR che li introduce permette di rivederne il testo, ma da sola non li attiva. Se mantieni più template per PR, usa una directory `PULL_REQUEST_TEMPLATE/` e seleziona il file con il parametro `template`: non aspettarti lo stesso selettore delle issue.
 
-- ricevi issue vaghe;
-- vuoi standardizzare bug report e feature request;
-- vuoi ricordare test e checklist nelle pull request;
-- lavori con contributor esterni;
-- vuoi ridurre tempo di triage;
-- vuoi rendere espliciti criteri di accettazione.
+## Esempio: un modulo per segnalare un difetto
 
-## Come funziona
+Contenuto di `.github/ISSUE_TEMPLATE/bug_report.yml`. I due campi separano ciò che permette di ripetere il caso da ciò che dovrebbe succedere:
 
-GitHub legge template in percorsi convenzionali del repository, di solito sotto `.github/`.
-
-Esempi comuni:
-
-```text
-.github/ISSUE_TEMPLATE/bug_report.md
-.github/ISSUE_TEMPLATE/feature_request.md
-.github/pull_request_template.md
+```yaml
+name: Segnalazione difetto
+description: Descrivi un caso riproducibile e il risultato previsto.
+body:
+  - type: textarea
+    id: riproduzione
+    attributes:
+      label: Passi e risultato osservato
+      placeholder: Esporta un report con zero righe. Il file ottenuto è vuoto.
+    validations:
+      required: true
+  - type: input
+    id: atteso
+    attributes:
+      label: Risultato atteso
+      placeholder: Il file deve contenere la riga di intestazione.
+    validations:
+      required: true
 ```
 
-Quando una persona apre una issue o PR, GitHub precompila il corpo con il template.
+`placeholder` è un suggerimento, non una risposta precompilata. Secondo lo schema GitHub la validazione `required` per questi campi blocca l’invio nei repository pubblici; non affidarle la qualità del contenuto. Per una proposta di funzionalità chiedi invece problema, alternativa attuale e risultato desiderato. Non chiedere segreti o segnalazioni riservate in un modulo pubblico: indica il canale privato previsto dal progetto.
 
-## API / Sintassi
+## Esempio: un template per la PR di correzione
 
-Template bug report:
+Contenuto di `.github/pull_request_template.md`:
 
 ```md
-## Descrizione
+## Problema e modifica
+<!-- Collega l'issue e indica cosa cambia per chi usa l'esportatore. -->
 
-## Passi per riprodurre
+## Come verificare
+<!-- Indica dati di ingresso, comando o procedura e risultato atteso. -->
 
-1.
-2.
-3.
-
-## Risultato attuale
-
-## Risultato atteso
-
-## Ambiente
+## Compatibilità
+<!-- Il formato cambia per chi legge il CSV? Se no, spiegalo in una riga. -->
 ```
 
-Template PR:
-
-```md
-## Cosa cambia
-
-## Perche
-
-## Verifica
-
-- [ ] Test eseguiti
-- [ ] Lint eseguito
-- [ ] Documentazione aggiornata
-```
-
-## Esempio pratico
-
-Per un progetto web, una PR dovrebbe sempre chiarire:
-
-- cosa cambia;
-- perche cambia;
-- come e stata verificata;
-- se ci sono screenshot;
-- se cambia API, schema dati o configurazione;
-- quali issue chiude.
-
-Questo evita che la review parta leggendo solo il diff.
-
-## Varianti
-
-- **Bug report template**: passi, ambiente, risultato atteso.
-- **Feature request template**: problema, proposta, alternative.
-- **Security report template**: meglio spesso usare canali privati o security policy.
-- **Pull request template unico**: semplice e pratico.
-- **Template multipli**: utili in progetti grandi.
-
-## Errori comuni
-
-- Template troppo lunghi che nessuno compila.
-- Chiedere informazioni non usate.
-- Non aggiornare template quando cambia il workflow.
-- Usare checkbox generiche senza significato.
-- Non distinguere bug, feature e supporto.
-- Mettere istruzioni che duplicano documentazione altrove.
-
-## Checklist
-
-- Il template riduce domande ripetute?
-- Le sezioni sono brevi?
-- I campi richiesti sono davvero necessari?
-- La PR template chiede verifica e impatto?
-- I template sono versionati nel repository?
-- I maintainer li usano durante triage e review?
+Una descrizione compilata dovrebbe permettere al revisore di rifare la prova. Se il passaggio dei test è obbligatorio, configuralo come **required status check**: né un commento HTML né una casella Markdown bloccano il merge. Per controllare l’installazione apri la schermata di una nuova issue o PR dopo il merge dei template; non occorre pubblicarla.
 
 ## Collegamenti
 
@@ -142,3 +96,5 @@ Questo evita che la review parta leggendo solo il diff.
 
 - [GitHub Docs - Configuring issue templates](https://docs.github.com/en/communities/using-templates-to-encourage-useful-issues-and-pull-requests/configuring-issue-templates-for-your-repository)
 - [GitHub Docs - Creating a pull request template](https://docs.github.com/en/communities/using-templates-to-encourage-useful-issues-and-pull-requests/creating-a-pull-request-template-for-your-repository)
+- [GitHub Docs: differenze tra template e form](https://docs.github.com/en/communities/using-templates-to-encourage-useful-issues-and-pull-requests/about-issue-and-pull-request-templates)
+- [GitHub Docs: schema di input, textarea e validazioni](https://docs.github.com/en/communities/using-templates-to-encourage-useful-issues-and-pull-requests/syntax-for-githubs-form-schema)

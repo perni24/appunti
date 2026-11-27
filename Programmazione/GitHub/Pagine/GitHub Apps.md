@@ -29,93 +29,33 @@ title: GitHub Apps
 
 ## Sintesi
 
-Le **GitHub Apps** sono integrazioni registrate su GitHub che possono interagire con repository, organizzazioni e utenti tramite permessi specifici, token temporanei e webhooks.
+Una **GitHub App** è utile quando un’integrazione deve continuare a funzionare indipendentemente da una persona ed essere installabile su repository diversi. **Registrare** l’App definisce capacità, eventi ed eventuali URL di callback; **installarla** decide dove può operare. Rendere l’App pubblicamente installabile non le dà accesso ai repository di chi non l’ha installata.
 
-Per automazioni serie o condivise sono spesso preferibili ai personal access token, perche non dipendono da un utente specifico e permettono permessi piu controllati.
+## Quale identità sta agendo?
 
-## Quando usarlo
+| Identità | A cosa serve | Limite da ricordare |
+| --- | --- | --- |
+| App, tramite JWT firmato con la sua chiave privata | Identificare l’App e richiedere un token per una sua installazione. | Il JWT non è la credenziale generica per commentare una issue. |
+| Installazione, tramite installation access token | Eseguire un compito server-to-server, per esempio applicare una label. | Operazioni e repository dipendono dall’installazione e dai limiti del token. Il token scade normalmente dopo un’ora. |
+| Utente per conto dell’App, tramite user access token | Agire in seguito all’autorizzazione di una persona. | Si applicano sia i permessi dell’App sia l’accesso dell’utente: uno non estende l’altro. |
 
-Usa una GitHub App quando:
+Per uno step isolato del workflow nel proprio repository verifica prima se basta il `GITHUB_TOKEN`. Una OAuth App è orientata all’autorizzazione di un utente; una GitHub App può anche operare come installazione quando nessun utente è presente.
 
-- vuoi un'integrazione installabile su piu repository;
-- vuoi permessi granulari e auditabili;
-- vuoi token temporanei invece di token personali lunghi;
-- vuoi reagire a eventi con webhooks;
-- vuoi costruire bot, controlli o strumenti interni;
-- vuoi evitare account di servizio fragili.
+## Esempio pratico: triage su due repository
 
-## Come funziona
+Supponi che l’App sia installata su `esempio/guide` e `esempio/esercizi` con `Issues: write`, ma non su `esempio/sito`. Un webhook `issues.opened` porta l’ID dell’installazione: il servizio valida la consegna, seleziona l’installazione attesa e usa il suo token per aggiungere la label al repository giusto. Non occorrono permessi di scrittura sui contenuti. Il **secret del webhook** autentica il corpo in ingresso; la **chiave privata dell’App** serve all’autenticazione in uscita: non sono intercambiabili.
 
-Una GitHub App viene registrata con:
+Per diagnosticare il perimetro, con `gh` e **un token d’installazione già fornito al processo come `GH_TOKEN`**:
 
-- nome e descrizione;
-- permessi richiesti;
-- eventi webhook;
-- chiave privata;
-- URL callback o setup se servono;
-- visibilita privata o pubblica.
-
-L'app puo autenticarsi:
-
-- come app, usando un JWT;
-- come installation, usando un installation access token;
-- per conto di un utente, usando un user access token.
-
-## API / Sintassi
-
-Flusso server-to-server semplificato:
-
-```text
-crea JWT con private key
-chiama API per ottenere installation access token
-usa installation token per REST o GraphQL API
+```bash
+gh api --paginate installation/repositories --jq '.repositories[].full_name'
 ```
 
-Uso logico:
+È una lettura. Con un token valido per entrambi i repository dell’esempio devono comparire entrambi i nomi, ma non `esempio/sito`. Se il token è stato ristretto a un solo repository, la lista può essere più corta. La sessione personale di `gh` non è un sostituto per questo controllo dell’installazione.
 
-```text
-webhook pull_request -> app valida firma -> app ottiene token installazione -> app commenta la PR
-```
+## Manutenzione
 
-## Esempio pratico
-
-Un bot di review automatica puo:
-
-1. ricevere evento `pull_request`;
-2. controllare file modificati;
-3. verificare convenzioni del repository;
-4. pubblicare un commento;
-5. aggiungere label;
-6. aggiornare uno status o un check.
-
-La GitHub App agisce con permessi dedicati, senza usare il token personale di uno sviluppatore.
-
-## Varianti
-
-- **App privata**: usata solo dal proprietario.
-- **App pubblica**: installabile da altri account.
-- **App server-to-server**: agisce come integrazione.
-- **App user-to-server**: agisce per conto di un utente autorizzato.
-- **App con webhooks**: reagisce a eventi GitHub.
-- **OAuth App**: diversa da GitHub App, piu centrata sull'autorizzazione utente.
-
-## Errori comuni
-
-- Usare un PAT quando serve un'integrazione persistente.
-- Richiedere permessi troppo ampi.
-- Non ruotare o proteggere la private key.
-- Non validare i webhook ricevuti.
-- Non gestire installazioni sospese o rimosse.
-- Confondere token dell'app, token dell'installazione e token utente.
-
-## Checklist
-
-- Serve davvero una GitHub App o basta `GITHUB_TOKEN`?
-- I permessi sono minimi?
-- Gli eventi webhook sono solo quelli necessari?
-- La private key e conservata in modo sicuro?
-- I token temporanei non vengono salvati in chiaro?
-- L'app gestisce errori, retry e disinstallazione?
+Proteggi e ruota la chiave privata. Conserva la scadenza restituita con il token anziché presumere che una credenziale in cache sia ancora valida. Se un repository viene rimosso o l’installazione viene sospesa, smetti di elaborarne il lavoro; rinnovare il token non ripristina un accesso revocato. Un controllo di review, un commento o uno status possono richiedere permessi diversi: parti dall’endpoint usato, non dal generico nome «bot».
 
 ## Collegamenti
 
@@ -129,5 +69,7 @@ La GitHub App agisce con permessi dedicati, senza usare il token personale di un
 
 ## Fonti
 
-- [GitHub Docs - GitHub Apps](https://docs.github.com/en/apps)
-- [GitHub Docs - About creating GitHub Apps](https://docs.github.com/en/apps/creating-github-apps/about-creating-github-apps/about-creating-github-apps)
+- [GitHub Docs - Registrazione e responsabilità dell’App](https://docs.github.com/en/apps/creating-github-apps/about-creating-github-apps/about-creating-github-apps)
+- [GitHub Docs - Autenticazione come installazione](https://docs.github.com/en/apps/creating-github-apps/authenticating-with-a-github-app/authenticating-as-a-github-app-installation)
+- [GitHub Docs - Agire per conto di un utente](https://docs.github.com/en/apps/creating-github-apps/authenticating-with-a-github-app/authenticating-with-a-github-app-on-behalf-of-a-user)
+- [GitHub REST - Repository accessibili all’installazione](https://docs.github.com/en/rest/apps/installations#list-repositories-accessible-to-the-app-installation)

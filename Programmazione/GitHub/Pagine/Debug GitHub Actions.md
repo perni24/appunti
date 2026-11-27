@@ -29,95 +29,50 @@ title: Debug GitHub Actions
 
 ## Sintesi
 
-Il **debug di GitHub Actions** consiste nel capire perche un workflow fallisce, resta in coda, salta step, non trova secret o produce risultati diversi dall'ambiente locale.
+Prima di aumentare la verbosità, identifica **dove** si interrompe il flusso: nessun run, job in attesa, step saltato o comando fallito. Non sono quattro versioni dello stesso errore. Per il vault conserva sempre evento, SHA e numero del tentativo: il job `deploy` saltato può essere soltanto la conseguenza di un errore precedente in `build`.
 
-Un buon debug parte dai log, poi controlla trigger, contesti, permessi, ambiente del runner e differenze tra branch.
+## Trovare il primo errore utile
 
-## Quando usarlo
+Dalla radice del clone, con GitHub CLI autenticata e accesso in lettura, elenca le esecuzioni del workflow reale:
 
-Serve quando:
-
-- un job fallisce senza messaggio chiaro;
-- uno step viene saltato;
-- un secret risulta vuoto;
-- un workflow non parte;
-- una cache non viene usata;
-- un artifact non viene generato;
-- un deploy funziona a mano ma fallisce in CI.
-
-## Come funziona
-
-Il debug pratico segue questo ordine:
-
-1. apri la run fallita;
-2. controlla quale job e quale step fallisce;
-3. leggi comando, exit code e log;
-4. verifica evento, branch e input;
-5. controlla `permissions`, secrets e environment;
-6. isola il comando fallito;
-7. aggiungi log temporanei senza stampare segreti.
-
-GitHub supporta anche log di debug piu verbosi tramite variabili o secret dedicati.
-
-## API / Sintassi
-
-Abilitare step debug logging:
-
-```text
-ACTIONS_STEP_DEBUG=true
+```bash
+gh run list --workflow deploy-pages.yml --limit 5 --json databaseId,event,headSha,status,conclusion
 ```
 
-Esempio di log sicuro:
+Per un run fallito, sostituisci `RUN_ID` con il suo `databaseId`:
+
+```bash
+gh run view RUN_ID --log-failed
+```
+
+| Cosa vedi | Cosa controllare |
+| --- | --- |
+| Nessun run per lo SHA | Evento e filtri; un commit locale non è un push. Se c’è un errore di sintassi guarda anche le annotazioni del workflow. |
+| Job in coda o in attesa | Disponibilità del runner, gruppo di concorrenza o approvazione dell’environment. Non ci sono ancora log di uno step che non è partito. |
+| Job o step *skipped* | Condizione `if` e dipendenze `needs`. Controlla il primo job fallito prima di investigare il deploy. |
+| Comando npm fallito | Prima riga utile del log, directory effettiva, versione di Node, presenza del lockfile. Un cache miss da solo non è un errore. |
+| 403 o artifact assente | Per il 403 verifica evento, token e permessi del job; per l’artifact guarda prima l’esito del produttore, il percorso e il nome dell’upload. |
+
+## Diagnostica mirata, senza esporre l’ambiente
+
+Step temporaneo da inserire **dopo checkout e setup di Node**. Nel vault `package-lock.json` è in `site/`. Se la directory dello step non esiste, il runner fallisce prima di avviare la shell: controlla il percorso nel YAML.
 
 ```yaml
-- name: Debug context minimale
+- name: Controlla il contesto npm
+  working-directory: site
+  shell: pwsh
   run: |
-    echo "ref=${GITHUB_REF}"
-    echo "event=${GITHUB_EVENT_NAME}"
+    Write-Output "Evento: $env:GITHUB_EVENT_NAME"
+    Write-Output "SHA: $env:GITHUB_SHA"
     node --version
+    if (-not (Test-Path -LiteralPath 'package-lock.json' -PathType Leaf)) {
+      throw 'Lockfile assente nella directory del comando'
+    }
 ```
 
-## Esempio pratico
+Per approfondire puoi rieseguire con debug oppure impostare nel repository `ACTIONS_STEP_DEBUG` a `true` (dettagli degli step) o `ACTIONS_RUNNER_DEBUG` (diagnostica del runner). Non è sufficiente fare `echo` di quelle stringhe nello script. Se coesistono secret e variabile con lo stesso nome, prevale il secret. Evita dump di `env` o di interi contesti; conserva solo log mirati e rimuovi la diagnostica temporanea.
 
-Se una action fallisce solo su pull request:
-
-```yaml
-- name: Check event
-  run: |
-    echo "event=${GITHUB_EVENT_NAME}"
-    echo "ref=${GITHUB_REF}"
-    echo "sha=${GITHUB_SHA}"
-```
-
-Poi controlla se il workflow usa `pull_request`, `pull_request_target`, fork esterni o permessi ridotti del `GITHUB_TOKEN`.
-
-## Varianti
-
-- **Debug log GitHub**: abilita log piu verbosi.
-- **Log applicativi**: aggiungi output nei comandi.
-- **Artifact di debug**: carica file generati, report o snapshot.
-- **Rerun failed jobs**: riesegue solo job falliti.
-- **Rerun with debug logging**: utile per errori non riproducibili.
-- **Debug locale**: replica il comando fuori da Actions quando possibile.
-
-## Errori comuni
-
-- Stampare secret nei log.
-- Debuggare il comando sbagliato invece dello step fallito.
-- Ignorare differenze tra `push` e `pull_request`.
-- Non controllare `permissions`.
-- Non verificare la working directory.
-- Confondere cache mancata con dipendenze non installate.
-
-## Checklist
-
-- Il workflow e partito dall'evento previsto?
-- Branch e commit sono quelli attesi?
-- Lo step fallito mostra exit code e comando?
-- I secret sono disponibili nel contesto giusto?
-- I permessi del job sono sufficienti ma non eccessivi?
-- Il runner ha tool e versioni attese?
-- I file di debug sono caricati come artifact se servono?
+**Rerun o nuovo run?** Il rerun usa lo stesso SHA e ref dell’esecuzione originale: serve a indagare un guasto transitorio. Per verificare una correzione appena committata serve un run sul **nuovo** SHA. Un rerun di un workflow di deploy può ripeterne gli effetti.
 
 ## Collegamenti
 
@@ -130,4 +85,7 @@ Poi controlla se il workflow usa `pull_request`, `pull_request_target`, fork est
 
 ## Fonti
 
-- [GitHub Docs - Enable debug logging](https://docs.github.com/en/actions/how-tos/monitor-workflows/enable-debug-logging)
+- [GitHub Docs - Log diagnostici degli step e del runner](https://docs.github.com/en/actions/how-tos/monitor-workflows/enable-debug-logging)
+- [GitHub CLI - gh run list](https://cli.github.com/manual/gh_run_list)
+- [GitHub CLI - gh run view](https://cli.github.com/manual/gh_run_view)
+- [GitHub Docs - Revisione ed effetti del rerun](https://docs.github.com/en/actions/how-tos/manage-workflow-runs/re-run-workflows-and-jobs)

@@ -23,69 +23,79 @@ title: GitHub - Repository e remote
 
 # GitHub - Repository e remote
 
-## Configurazione utente
+## Iniziare oppure clonare
+
+Scegliere **una** strada. Da una cartella di progetto nuova, creare il repository solo sul disco:
 
 ```powershell
-git config --global user.name "Nome Cognome"
+git init -b main
+```
+
+Per lavorare su un repository già esistente, clonarlo invece dalla directory che conterrà il progetto. Sostituire `OWNER/REPO`; HTTPS e SSH sono alternative. Il clone configura già `origin`.
+
+```powershell
+git clone https://github.com/OWNER/REPO.git
 ```
 
 ```powershell
-git config --global user.email "email@example.com"
+git clone git@github.com:OWNER/REPO.git
+```
+
+## Identità dei commit
+
+Dentro il clone, impostare l'autore **solo per questo repository**. Non sono credenziali di accesso a GitHub.
+
+```powershell
+git config --local user.name "Nome Cognome"
 ```
 
 ```powershell
-git config --global init.defaultBranch main
+git config --local user.email "nome@example.com"
 ```
 
-## Inizializzare
+Per un default dell'utente usare `--global` al posto di `--local`. Per i futuri `git init` si può impostare `git config --global init.defaultBranch main`: non rinomina branch esistenti.
+
+## Controllare prima di cambiare
 
 ```powershell
-git init
+git status --short --branch
 ```
-
-```powershell
-git status
-```
-
-## Clonare
-
-```powershell
-git clone https://github.com/owner/repository.git
-```
-
-```powershell
-git clone git@github.com:owner/repository.git
-```
-
-## Elencare remote
 
 ```powershell
 git remote -v
 ```
 
-## Aggiungere origin
+Leggere la destinazione di push configurata senza contattare il server:
 
 ```powershell
-git remote add origin https://github.com/owner/repository.git
+git remote get-url --push origin
 ```
 
-## Modificare URL
+`git remote show origin` interroga anche il remoto; non prova che si possa scrivere.
+
+## Cambiare la configurazione locale
+
+**Aggiungere** `origin` se manca (per esempio dopo `git init`); se esiste già, **cambiarne** l'URL con il secondo comando. Nessuno dei due crea il repository su GitHub o invia commit.
 
 ```powershell
-git remote set-url origin git@github.com:owner/repository.git
+git remote add origin https://github.com/OWNER/REPO.git
 ```
 
-## Aggiungere upstream
+```powershell
+git remote set-url origin git@github.com:OWNER/REPO.git
+```
+
+In un fork, `origin` indica di solito la propria copia; `upstream` è un nome convenzionale per il progetto originale:
 
 ```powershell
-git remote add upstream https://github.com/original-owner/repository.git
+git remote add upstream https://github.com/ORIGINAL-OWNER/REPO.git
 ```
 
 ```powershell
 git fetch upstream
 ```
 
-## Rimuovere o rinominare
+Il fetch aggiorna i riferimenti locali al remoto, non integra le modifiche nel branch corrente. Per rinominare o scollegare un remoto, scegliere solo l'operazione necessaria:
 
 ```powershell
 git remote rename origin github
@@ -95,11 +105,13 @@ git remote rename origin github
 git remote remove upstream
 ```
 
-## Informazioni remote
+La rimozione cancella dal clone la configurazione e i riferimenti di tracciamento di quel remoto, **non** il repository su GitHub.
 
-```powershell
-git remote show origin
-```
+## Fonti
+
+- [Git: inizializzazione](https://git-scm.com/docs/git-init)
+- [Git: livelli di configurazione](https://git-scm.com/docs/git-config)
+- [Git: gestione dei remote](https://git-scm.com/docs/git-remote)
 
 ## Approfondimento
 
@@ -108,7 +120,6 @@ git remote show origin
 - [[Programmazione/GitHub/Pagine/Clone fork e template repository|Clone fork e template repository]]
 - [[Programmazione/GitHub/Pagine/Remote origin e upstream|Remote origin e upstream]]
 - [[Programmazione/GitHub/Pagine/Git e GitHub|Git e GitHub]]
-
 
 ## Navigazione
 

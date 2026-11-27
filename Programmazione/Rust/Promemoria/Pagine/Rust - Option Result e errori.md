@@ -88,6 +88,12 @@ fn main() -> Result<(), Box<dyn std::error::Error>> {
 
 `assert!` e `assert_eq!` verificano aspettative; `unreachable!()` causa un panic se il ramo viene raggiunto. Non usare `unwrap()` o `expect()` al posto di gestire input esterno non valido. Teoria: [[Programmazione/Rust/Pagine/Error handling idiomatico|Gestione degli errori]].
 
+## Fonti
+
+- [Libreria standard: `Option::ok_or_else`](https://doc.rust-lang.org/std/option/enum.Option.html#method.ok_or_else)
+- [Libreria standard: `Result::map_err`](https://doc.rust-lang.org/std/result/enum.Result.html#method.map_err)
+- [Rust Book: propagare gli errori con `?`](https://doc.rust-lang.org/book/ch09-02-recoverable-errors-with-result.html)
+
 ## Collegamenti
 
 - [[Programmazione/Rust/Promemoria/Indice Promemoria Rust|Indice Promemoria Rust]]

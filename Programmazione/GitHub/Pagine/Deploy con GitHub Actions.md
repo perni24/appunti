@@ -27,96 +27,34 @@ title: Deploy con GitHub Actions
 
 ## Sintesi
 
-Il **deploy con GitHub Actions** automatizza la pubblicazione di applicazioni, siti, package o artefatti verso un ambiente esterno. E la parte CD del flusso CI/CD.
+La CI verifica un cambiamento. Il **deploy** rende una revisione disponibile in una destinazione precisa, per esempio il sito Pages del repository. Creare un tag, caricare un artifact o pubblicare una release sono operazioni distinte: nessuna delle tre, da sola, aggiorna il sito.
 
-Un deploy non dovrebbe essere solo uno script che copia file: deve avere trigger controllati, permessi minimi, segreti protetti, tracciabilita e possibilita di blocco o approvazione.
+Con la *continuous delivery* prepari una versione distribuibile e puoi decidere quando promuoverla; con il *continuous deployment* un cambiamento che supera i controlli arriva automaticamente in produzione. Per capire quale flusso hai davanti guarda trigger, controlli e destinazione, non il nome del file YAML.
 
-## Quando usarlo
+## Seguire un deploy del vault
 
-Usalo quando:
+| Fase | Che cosa dimostra | Che cosa non dimostra |
+| --- | --- | --- |
+| Push su `main` o avvio manuale | È partita un’esecuzione per una certa revisione. | Un commit rimasto locale non avvia il workflow remoto. |
+| `build` | I controlli sono passati ed è stato generato `site/public`. | I file nel workspace del runner non sono ancora online. |
+| Upload dell’artifact Pages | Quell’output è disponibile per il deploy del run. | Un upload riuscito non è un deployment riuscito. |
+| `deploy` con `needs: build` | Il job di pubblicazione attende la build e usa il suo artifact. | Il nome `github-pages` non dimostra che qualcuno abbia approvato. |
 
-- vuoi pubblicare dopo test e build;
-- vuoi deploy ripetibili;
-- vuoi legare deploy a branch, tag o release;
-- vuoi approvazioni per produzione;
-- vuoi evitare credenziali manuali;
-- vuoi audit trail dei rilasci.
+Questo è il comportamento descritto in `.github/workflows/deploy-pages.yml`, non l’esito di uno specifico run. Un’alternativa per un’applicazione è promuovere lo **stesso artifact** prima in staging e poi in produzione: compilare di nuovo al momento della promozione può produrre un risultato diverso da quello testato.
 
-## Come funziona
+## Esempio pratico: un controllo prima dell’upload
 
-Un workflow di deploy tipico:
+Dalla radice del vault, dopo la build e con Node disponibile, verifica che la home generata sia un file non vuoto. Il comando non contatta GitHub e non pubblica nulla.
 
-1. parte da un evento controllato;
-2. esegue checkout;
-3. prepara runtime;
-4. esegue build o scarica artifact;
-5. autentica verso provider;
-6. pubblica;
-7. registra stato del deployment.
-
-Per produzione e preferibile usare environments, approval e OIDC quando il provider lo supporta.
-
-## API / Sintassi
-
-Deploy manuale semplificato:
-
-```yaml
-name: Deploy
-
-on:
-  workflow_dispatch:
-
-jobs:
-  deploy:
-    runs-on: ubuntu-latest
-    environment: production
-    permissions:
-      contents: read
-      id-token: write
-    steps:
-      - uses: actions/checkout@v4
-      - run: ./deploy.sh
+```bash
+node -e "const s = require('node:fs').statSync('site/public/index.html'); if (!s.isFile() || s.size === 0) process.exitCode = 1"
 ```
 
-## Esempio pratico
+È un controllo preliminare: non verifica i link profondi, l’URL pubblico o i permessi della destinazione. Se manca la home, correggi la build; se l’artifact esiste ma il job non parte, guarda dipendenze e regole dell’environment; se il job fallisce, leggi il primo errore della pubblicazione.
 
-Pattern sicuro:
+## Recuperare una versione funzionante
 
-```text
-pull request -> CI
-main -> build artifact
-tag v* -> release
-manual approval -> production deploy
-```
-
-In questo modo il deploy di produzione non dipende da una modifica casuale o da una pull request non approvata.
-
-## Varianti
-
-- **Deploy su push**: semplice, utile per staging.
-- **Deploy manuale**: usa `workflow_dispatch`.
-- **Deploy su tag**: utile per release versionate.
-- **Deploy con environment**: abilita approvazioni e secrets dedicati.
-- **Deploy con OIDC**: evita secret statici verso cloud provider.
-- **Deploy via provider action**: usa action ufficiali o verificate.
-
-## Errori comuni
-
-- Deploy automatico da branch non protetti.
-- Usare token statici a lunga durata.
-- Dare permessi di scrittura a job che devono solo buildare.
-- Mischiare test, release e deploy senza separazione.
-- Non distinguere staging e produzione.
-- Non conservare artifact o log utili al debug.
-
-## Checklist
-
-- Il trigger del deploy e controllato?
-- La CI passa prima del deploy?
-- L'ambiente di produzione richiede approvazione?
-- I segreti sono limitati all'environment corretto?
-- I permessi del workflow sono minimi?
-- Esiste rollback o procedura di recupero?
+Registra SHA, run, artifact e URL del deployment. Per il vault, se è una modifica agli appunti ad aver rotto il sito, puoi proporre il revert di quella modifica e far ripassare la pipeline. Rilanciare la build dello **stesso commit difettoso** non è un rollback. Per servizi con migrazioni dati verifica anche la compatibilità della versione precedente con lo schema corrente.
 
 ## Collegamenti
 
@@ -129,5 +67,6 @@ In questo modo il deploy di produzione non dipende da una modifica casuale o da 
 
 ## Fonti
 
-- [GitHub Docs - Deploying with GitHub Actions](https://docs.github.com/en/actions/how-tos/deploy/configure-and-manage-deployments/control-deployments)
-- [GitHub Docs - Deploying to third-party platforms](https://docs.github.com/en/actions/how-tos/deploy/deploy-to-third-party-platforms)
+- [GitHub Docs - Gestire i deployment](https://docs.github.com/en/actions/how-tos/deploy/configure-and-manage-deployments/control-deployments)
+- [GitHub Docs - Workflow di pubblicazione Pages](https://docs.github.com/en/pages/getting-started-with-github-pages/using-custom-workflows-with-github-pages)
+- [GitHub Docs - Ambienti e regole di protezione](https://docs.github.com/en/actions/reference/workflows-and-actions/deployments-and-environments)

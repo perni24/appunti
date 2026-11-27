@@ -28,114 +28,54 @@ title: Markdown su GitHub
 
 ## Sintesi
 
-GitHub usa una variante di Markdown chiamata spesso **GitHub Flavored Markdown**. Serve per `README.md`, issue, pull request, commenti, wiki, discussioni e documentazione.
+GitHub rende i file Markdown, i corpi di issue e pull request e i commenti usando una sintassi basata su **GitHub Flavored Markdown** (GFM). Tabelle e liste di attività fanno parte di GFM; riconoscere una menzione, notificare un utente o collegare una PR a un’issue sono **comportamenti di GitHub**, non effetti garantiti da qualunque renderer Markdown.
 
-Scrivere bene Markdown su GitHub rende repository, issue e pull request piu leggibili e facili da mantenere.
+## Esempio: una guida leggibile anche come file
 
-## Quando usarlo
-
-Usalo quando:
-
-- scrivi un `README.md`;
-- documenti installazione o API;
-- apri issue o pull request;
-- lasci commenti di review;
-- crei checklist operative;
-- vuoi includere blocchi codice, tabelle o link.
-
-## Come funziona
-
-GitHub renderizza Markdown in HTML. Supporta:
-
-- titoli;
-- liste;
-- link;
-- immagini;
-- blocchi di codice con evidenziazione;
-- tabelle;
-- checklist;
-- quote;
-- mention;
-- riferimenti a issue e pull request.
-
-Nei repository GitHub, i file Markdown sono spesso il primo punto di lettura per persone e modelli LLM.
-
-## API / Sintassi
-
-Esempi principali:
+Supponi che `README.md` sia nella radice e che `docs/avvio.md` esista nello stesso repository. Il link relativo resta utile nel clone, nel browser e sui branch che contengono entrambi i file. Per le immagini vale lo stesso principio: usa un percorso relativo reale, non il percorso assoluto del tuo computer.
 
 ````md
-# Titolo
+# Esportatore CSV
 
-## Sezione
+## Primo avvio
 
-- Elemento
-- Altro elemento
+Leggi la [guida di avvio](docs/avvio.md).
+
+| Caso | Risultato atteso |
+| --- | --- |
+| Zero righe | Solo intestazione |
+| Una riga | Intestazione e un record |
 
 ```bash
 npm test
 ```
-
-- [ ] Task aperto
-- [x] Task completato
-
-| Campo | Significato |
-| --- | --- |
-| `main` | Branch principale |
-
-Vedi #12
 ````
 
-Quando devi mostrare blocchi Markdown dentro altro Markdown, fai attenzione a non rompere le code fence.
+Il comando è un esempio per un progetto che **definisce** lo script `test`. La lingua del blocco dà l’evidenziazione, non esegue il comando. Per mostrare letteralmente le tre backtick dell’esempio dentro un altro blocco Markdown, usa quattro backtick per il recinto esterno.
 
-## Esempio pratico
-
-Template di pull request:
+## Esempio: descrizione di una pull request
 
 ```md
 ## Cosa cambia
 
-- 
+L'esportatore mantiene l'intestazione quando il report non contiene righe.
 
 ## Verifica
 
-- [ ] Test eseguiti
-- [ ] Lint eseguito
-- [ ] Documentazione aggiornata
+- [x] Test eseguito sul report vuoto
+- [ ] Verificare il caso con una riga
 
-## Note
-
--
+Riferimento: #12
 ```
 
-Questo formato aiuta autore e reviewer a controllare sempre gli stessi punti.
+- Spunta solo le attività realmente verificate. Una casella selezionata nel testo **non** è uno status check e non sostituisce un test CI.
+- Nella descrizione di una PR, `#12` richiama l’issue o la PR numerata nello stesso repository; non la chiude. Per chiudere un’issue tramite merge vedi [[Programmazione/GitHub/Pagine/Issues GitHub|Issues GitHub]]. Se il link deve funzionare anche nel README o fuori dal sito, usa un normale link Markdown con testo descrittivo e destinazione esplicita.
+- Per citare testo usa `>`; per mostrare codice o una menzione **come testo** usa backtick. Prima di inviare un vero `@username` ricorda che può notificare una persona.
+- In un repository GitHub usa collegamenti Markdown standard. I wikilink delle note di questo vault sono una convenzione Obsidian che Quartz trasforma per il sito, non una sintassi portabile nei README.
 
-## Varianti
+## Controllo prima di pubblicare
 
-- **README**: documentazione stabile del progetto.
-- **Issue body**: descrizione di bug, feature o task.
-- **Pull request body**: contesto della modifica.
-- **Commenti review**: osservazioni su righe specifiche.
-- **Checklist**: tracciamento di sotto-task.
-- **Tabelle**: confronto di opzioni o configurazioni.
-
-## Errori comuni
-
-- Scrivere README troppo lunghi senza struttura.
-- Non specificare il linguaggio nei blocchi codice.
-- Usare titoli incoerenti.
-- Inserire checklist senza aggiornarle.
-- Linkare risorse esterne senza contesto.
-- Dimenticare che Markdown GitHub non e identico a Obsidian.
-
-## Checklist
-
-- Il documento ha titoli chiari?
-- I blocchi codice indicano il linguaggio?
-- Le checklist sono aggiornabili?
-- I link hanno testo descrittivo?
-- Tabelle e liste sono leggibili anche su mobile?
-- Il Markdown resta comprensibile anche in plain text?
+Apri **Preview** nel contesto in cui il testo sarà letto. Verifica titoli, link relativi, tabelle strette e chiusura dei blocchi. Un README deve restare consultabile nel tempo; la descrizione di una PR deve spiegare invece cosa è cambiato e come è stato verificato.
 
 ## Collegamenti
 
@@ -149,3 +89,4 @@ Questo formato aiuta autore e reviewer a controllare sempre gli stessi punti.
 
 - [GitHub Docs - Basic writing and formatting syntax](https://docs.github.com/en/get-started/writing-on-github/getting-started-with-writing-and-formatting-on-github/basic-writing-and-formatting-syntax)
 - [GitHub Docs - GitHub Flavored Markdown Spec](https://github.github.com/gfm/)
+- [GitHub Docs: riferimenti automatici nei contesti di collaborazione](https://docs.github.com/en/get-started/writing-on-github/working-with-advanced-formatting/autolinked-references-and-urls)

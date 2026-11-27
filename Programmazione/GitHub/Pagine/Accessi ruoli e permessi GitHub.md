@@ -27,90 +27,39 @@ title: Accessi ruoli e permessi GitHub
 
 ## Sintesi
 
-Accessi, ruoli e permessi GitHub determinano chi puo leggere, scrivere, amministrare, rivedere e configurare un repository. Sono una parte essenziale della sicurezza: un repository ben protetto con permessi troppo larghi resta comunque fragile.
+Prima di assegnare un permesso, scrivi **quale operazione** la persona deve poter compiere e **su quale repository**. Leggere una PR, chiedere una review, approvare in modo valido per il merge e modificare le protezioni sono quattro capacità diverse. Un ruolo sul repository non equivale a un ruolo nell’organizzazione.
 
-Il principio guida e il **least privilege**: ogni persona o automazione dovrebbe avere solo i permessi necessari.
+## Prima distinzione: chi possiede il repository?
 
-## Quando usarlo
+- **Account personale**: esistono proprietario e collaboratori. In un repository personale privato l’invito a collaborare attribuisce scrittura: non è un invito di sola lettura. Per una contribuzione a un progetto pubblico spesso bastano fork e PR, senza aggiungere la persona ai collaboratori.
+- **Organizzazione**: può assegnare ruoli ai membri, ai team e ai collaboratori esterni. I permessi di base dell’organizzazione valgono per i membri, **non** per gli esterni. Un accesso più alto ottenuto da un altro team o da un’assegnazione diretta non viene ridotto concedendo un ruolo inferiore.
 
-Gestisci permessi con attenzione quando:
+## Quale ruolo serve in un’organizzazione?
 
-- aggiungi collaboratori;
-- lavori in organizzazioni;
-- assegni team a repository;
-- configuri CI/CD;
-- dai accesso a bot o integrazioni;
-- lavori su repository privati o sensibili.
+| Compito | Ruolo di riferimento | Limite da ricordare |
+| --- | --- | --- |
+| Leggere codice e commentare una proposta | **Read** | Il feedback non conta come approvazione obbligatoria. |
+| Assegnare issue e applicare label esistenti | **Triage** | Non concede push. |
+| Moderare e modificare issue altrui, per esempio correggerne il titolo | **Moderate**, dove disponibile | Non richiede scrittura sul codice. Verifica la matrice relativa all’edizione in uso. |
+| Pubblicare branch e contribuire alle review richieste | **Write** | I vincoli del branch continuano ad applicarsi; il ruolo non autorizza automaticamente un merge. |
+| Gestire la manutenzione ordinaria del progetto | **Maintain** | Non equivale a gestire tutti gli accessi o a poter eliminare il repository. |
+| Gestire accessi e operazioni amministrative sensibili | **Admin** | Non usarlo solo per assegnare issue o svolgere review. |
 
-## Come funziona
+Esempio: chi classifica le segnalazioni sul CSV può usare **Triage**. Chi corregge l’esportatore in un branch condiviso può aver bisogno di **Write**. La persona che deve soltanto verificare una frase della documentazione può lasciare un commento, senza ricevere **Write** per questo.
 
-I permessi possono essere assegnati a:
+## Verificare il proprio accesso
 
-- utenti singoli;
-- team;
-- organizzazioni;
-- GitHub Apps;
-- deploy keys;
-- token e automazioni.
-
-In generale i livelli possono includere lettura, triage, scrittura, maintain e admin. Il significato preciso dipende dal contesto GitHub e dal tipo di repository.
-
-## API / Sintassi
-
-Esempio di matrice concettuale:
-
-```text
-Reader: legge codice e issue consentite
-Triage: gestisce issue e PR senza push
-Write: fa push e crea branch
-Maintain: gestisce parte delle impostazioni
-Admin: controlla settings e accessi
-```
-
-Controllare repository con CLI:
+Con `gh` autenticato, sostituisci il nome del repository. Il campo `viewerPermission` riguarda **l’identità attiva**, non un altro utente:
 
 ```bash
-gh repo view
+gh repo view OWNER/REPO --json nameWithOwner,viewerPermission
 ```
 
-## Esempio pratico
+Il risultato non elenca tutte le fonti di accesso e non predice da solo l’esito di un push. Per una revisione dei permessi controlla l’assegnazione diretta, la membership nei team e il permesso di base. Dopo un cambio di mansione verifica **l’accesso effettivo**: rimuovere una sola assegnazione può non bastare.
 
-Per un team applicativo:
+## Persone e automazioni non sono lo stesso soggetto
 
-- sviluppatori: write;
-- reviewer senior: maintain solo se devono gestire impostazioni operative;
-- release manager: permessi su release e tag;
-- bot CI: token con permessi minimi;
-- utenti esterni: accesso temporaneo o fork workflow.
-
-Evita di dare admin solo per permettere operazioni quotidiane.
-
-## Varianti
-
-- **Collaboratore diretto**: accesso a singolo repository.
-- **Team GitHub**: accesso gestito per gruppo.
-- **Organizzazione**: governance centralizzata.
-- **GitHub App**: integrazione con permessi dichiarati.
-- **Deploy key**: accesso SSH a repository.
-- **Token personale**: potente, da limitare e ruotare.
-
-## Errori comuni
-
-- Dare permessi admin per comodita.
-- Non rimuovere accessi di persone non piu coinvolte.
-- Usare token personali in automazioni condivise.
-- Non distinguere permessi di repository e organizzazione.
-- Dare write a contributor esterni quando basta fork e PR.
-- Non controllare permessi delle GitHub Apps installate.
-
-## Checklist
-
-- Ogni accesso ha una motivazione?
-- I permessi sono minimi?
-- I team sono preferiti agli utenti singoli?
-- Gli accessi inattivi sono rimossi?
-- Bot e token hanno scope limitati?
-- Gli admin sono pochi e consapevoli?
+Un workflow usa un token con permessi propri; una GitHub App usa i permessi dell’installazione; una deploy key abilita accesso SSH al repository secondo la sua configurazione. Non attribuire Admin a una persona per risolvere il problema di un job. Nell’uscita dal team controlla anche le credenziali condivise e le integrazioni: revocare l’accesso personale non revoca automaticamente una deploy key e non cancella i cloni già presenti sul disco.
 
 ## Collegamenti
 
@@ -122,4 +71,7 @@ Evita di dare admin solo per permettere operazioni quotidiane.
 
 ## Fonti
 
-- [GitHub Docs - Repository roles for an organization](https://docs.github.com/en/organizations/managing-access-to-your-organizations-repositories/repository-roles-for-an-organization)
+- [GitHub Docs: matrice dei ruoli nei repository di organizzazione](https://docs.github.com/en/organizations/managing-user-access-to-your-organizations-repositories/managing-repository-roles/repository-roles-for-an-organization)
+- [GitHub Docs: permessi nei repository personali](https://docs.github.com/en/repositories/managing-your-repositorys-settings-and-features/repository-access-and-collaboration/permission-levels-for-a-personal-account-repository)
+- [GitHub Docs: permessi di base dell’organizzazione](https://docs.github.com/en/organizations/managing-user-access-to-your-organizations-repositories/managing-repository-roles/setting-base-permissions-for-an-organization)
+- [GitHub CLI: informazioni sull’accesso dell’utente corrente](https://cli.github.com/manual/gh_repo_view)

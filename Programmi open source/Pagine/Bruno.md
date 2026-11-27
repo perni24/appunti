@@ -22,53 +22,35 @@ publish: true
 
 ## Sintesi
 
-**Bruno** e un client open source per testare API HTTP, simile a strumenti come Postman o Insomnia, ma pensato per salvare le collection come file locali facilmente versionabili con Git.
-
-E utile quando vuoi documentare, provare e condividere richieste API senza dipendere da un workspace cloud obbligatorio.
-
-## Quando usarlo
-
-- Testare endpoint REST, GraphQL o API HTTP.
-- Salvare collection API dentro un repository Git.
-- Condividere richieste, ambienti e variabili con un team.
-- Tenere la documentazione operativa delle API vicino al codice.
-- Evitare che le collection restino bloccate in un servizio cloud.
-
-## Come funziona
-
-Bruno organizza le richieste in collection e le salva su filesystem. Le modifiche diventano quindi normali modifiche a file, controllabili con Git, revisionabili in pull request e sincronizzabili con il repository del progetto.
+Bruno è un client open source per provare API REST e GraphQL. Salva le richieste in una **collection**, una cartella di file locali: puoi tenere gli esempi vicino al codice, rivedere le modifiche in una pull request e condividerli con Git senza un workspace cloud obbligatorio.
 
 ## Esempio pratico
 
-```text
-1. Crea una collection per il progetto.
-2. Aggiungi una richiesta GET, POST, PUT o DELETE.
-3. Configura URL, header, body e variabili ambiente.
-4. Esegui la richiesta e controlla status code e risposta.
-5. Versiona i file della collection insieme al progetto.
+Supponi che il tuo servizio di sviluppo esponga `GET /health` e risponda con HTTP 200 quando è pronto.
+
+1. Crea una collection e un ambiente chiamato `Local`. Imposta la variabile `baseUrl` all’indirizzo effettivo del servizio, senza slash finale.
+2. Crea la richiesta `GET {{baseUrl}}/health` e seleziona l’ambiente `Local`. Per altre richieste puoi salvare anche header e body.
+3. Nella scheda delle asserzioni imposta **espressione** `res.status`, **operatore** `equals`, **valore** `200`. Invia la richiesta: ricevere una risposta non basta, l’asserzione deve risultare superata.
+4. Salva la richiesta e verifica il diff della collection prima del commit.
+
+Per ripetere gli stessi controlli in terminale o in CI, con Bruno CLI installata e il servizio avviato, esegui dalla cartella della collection:
+
+```bash
+bru run --env Local
 ```
 
-## Funzionalita
+## Limiti e precauzioni
 
-- **Git-friendly**: le collection sono file locali.
-- **Open source**: il formato non dipende da una piattaforma chiusa.
-- **Adatto al team**: le richieste possono essere revisionate insieme al codice.
-- **Pratico per debugging**: permette di riprodurre velocemente chiamate API.
-
-## Limiti
-
-- Richiede disciplina nel mantenere aggiornate le collection.
-- Non sostituisce test automatici veri e propri.
-- Le variabili sensibili non dovrebbero essere salvate nel repository.
-
-## Checklist
-
-- Separare ambienti locali, staging e produzione.
-- Non committare token, password o chiavi API.
-- Usare nomi chiari per collection e richieste.
-- Versionare le collection insieme al codice dell'API.
-- Affiancare Bruno a test automatici quando serve validazione continua.
+- Le asserzioni verificano ciò che osservi via HTTP. Un `200` da solo non garantisce un body valido: controlla anche i campi da cui dipende il client. Queste prove affiancano i test interni dell’applicazione.
+- La CLI esegue le richieste della collection, incluse eventuali scritture. Tieni separate le collection o gli ambienti di test e produzione; controlla il valore di `baseUrl` prima di avviare un’intera raccolta.
+- Per i token usa variabili contrassegnate come **segrete**: l’app non salva il valore nel file ambiente versionato. In CI fornisci il valore tramite il meccanismo dei segreti del runner; non copiarlo negli header salvati o nel repository.
 
 ## Collegamenti
 
 - [[Programmi open source/Indice Programmi Open Source|Catalogo open source]]
+
+## Fonti
+
+- [Bruno: asserzioni su stato, header e body](https://docs.usebruno.com/testing/tests/assertions)
+- [Bruno CLI: eseguire una collection con un ambiente](https://docs.usebruno.com/bru-cli/run/overview)
+- [Bruno: dove vengono conservate le variabili segrete](https://docs.usebruno.com/secrets-management/secret-variables)

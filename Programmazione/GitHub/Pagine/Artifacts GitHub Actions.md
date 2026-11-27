@@ -25,86 +25,45 @@ title: Artifacts GitHub Actions
 
 ## Sintesi
 
-Gli **artifacts** di GitHub Actions sono file prodotti da un workflow e conservati da GitHub. Servono per scaricare build, log, report, coverage o per passare file tra job.
+Un **artifact** conserva un output identificabile di un run: per esempio un report di test, un bundle o un log diagnostico. Usalo se qualcuno deve ispezionare quel risultato o se un altro job deve consumare **proprio quei file**. Una cache non offre questa garanzia; un asset di release, invece, va pubblicato esplicitamente.
 
-Non sono una cache: un artifact rappresenta un output di un run specifico.
+## Esempio pratico: conservare il report anche se un test fallisce
 
-## Quando usarlo
-
-Usa artifacts quando:
-
-- vuoi conservare report di test o coverage;
-- vuoi scaricare build prodotte dalla CI;
-- vuoi passare file tra job;
-- vuoi debuggare output di un workflow;
-- vuoi pubblicare artefatti in una release dopo una fase successiva;
-- vuoi conservare log strutturati.
-
-## Come funziona
-
-Gli artifact si caricano con action dedicate, di solito `actions/upload-artifact`. Possono poi essere scaricati manualmente o da altri job con `actions/download-artifact`.
-
-Ogni artifact e collegato a uno specifico workflow run e ha retention configurabile.
-
-## API / Sintassi
-
-Upload:
+Frammento di `steps` su GitHub.com, dopo checkout, setup di Node 24 e `npm ci` in `site/`. Il comando parte dalla **radice del repository**. Il reporter JUnit del test runner Node scrive un XML nel workspace; non è un report di coverage.
 
 ```yaml
-- uses: actions/upload-artifact@v4
+- name: Esegui i test e scrivi il report JUnit
+  run: node --test --test-reporter=junit --test-reporter-destination=risultati.xml site/scripts/content.test.mjs
+- name: Conserva il report del run
+  if: ${{ !cancelled() && hashFiles('risultati.xml') != '' }}
+  uses: actions/upload-artifact@v7
   with:
-    name: test-report
-    path: reports/
+    name: report-trasformazione
+    path: risultati.xml
+    retention-days: 7
+    if-no-files-found: error
 ```
 
-Download:
+Se un’asserzione fallisce, il test resta rosso. La condizione dell’upload consente di conservare il report già scritto senza trasformare il fallimento in successo. Se i test non sono nemmeno partiti e il file non esiste, l’upload viene saltato: cerca la causa nel primo step fallito. `retention-days` deve rispettare il limite del repository o dell’organizzazione.
+
+## Leggere il risultato in un altro job
+
+Frammento di `steps` nel job consumatore **dello stesso run**. Aggiungi `needs` con l’ID del produttore per aspettarne la fine. Normalmente un job dipendente parte solo dopo il successo; se deve diagnosticare un fallimento, serve anche una condizione esplicita sul **job** e va gestito il possibile report mancante.
 
 ```yaml
-- uses: actions/download-artifact@v4
+- uses: actions/download-artifact@v8
   with:
-    name: test-report
-    path: downloaded-reports/
+    name: report-trasformazione
+    path: scaricati
 ```
 
-## Esempio pratico
-
-Salvare coverage:
-
-```yaml
-- run: npm test -- --coverage
-- uses: actions/upload-artifact@v4
-  with:
-    name: coverage
-    path: coverage/
-```
-
-Questo permette di ispezionare il report anche se non viene pubblicato altrove.
-
-## Varianti
-
-- **Report artifact**: coverage, junit, log.
-- **Build artifact**: binari o bundle.
-- **Debug artifact**: file utili dopo fallimenti.
-- **Artifact tra job**: passaggio output da build a deploy.
-- **Release asset**: artifact promosso e pubblicato in release.
+Con il nome esplicito, il file si trova in `scaricati/risultati.xml`. Il download di un artifact non richiede il checkout del sorgente. Per il controllo umano puoi scaricarlo dal riepilogo del run finché non scade.
 
 ## Errori comuni
 
-- Usare artifacts come cache.
-- Caricare file troppo grandi o inutili.
-- Conservare segreti negli artifact.
-- Non impostare nomi chiari.
-- Confondere artifact di workflow con asset di release.
-- Non definire retention appropriata.
-
-## Checklist
-
-- L'artifact serve davvero dopo il run?
-- Il nome e descrittivo?
-- Non contiene segreti?
-- La retention e adeguata?
-- Il path e corretto?
-- Se serve in una release, viene promosso esplicitamente?
+- In una matrix assegna a ciascun upload un nome distinto (per esempio con OS e runtime). Non far scrivere più job nello stesso artifact immutabile.
+- Carica soltanto i file previsti: log completi, dump del database e configurazioni locali possono contenere credenziali. Per il coverage scegli il reporter del progetto e verifica che produca la directory indicata.
+- Il sito Quartz è un caso diverso: il job di build usa `actions/upload-pages-artifact` per `site/public`; il job di deploy lo pubblica. Caricare un comune artifact con gli HTML non aggiorna il sito.
 
 ## Collegamenti
 
@@ -115,4 +74,7 @@ Questo permette di ispezionare il report anche se non viene pubblicato altrove.
 
 ## Fonti
 
-- [GitHub Docs - Store and share data with workflow artifacts](https://docs.github.com/en/actions/tutorials/store-and-share-data)
+- [GitHub Docs - Salvare e condividere gli artifact](https://docs.github.com/en/actions/tutorials/store-and-share-data)
+- [actions/upload-artifact - File, nomi e conservazione](https://github.com/actions/upload-artifact/tree/v7)
+- [actions/download-artifact - Destinazione e nome](https://github.com/actions/download-artifact/tree/v8)
+- [Node.js - Test reporter e destinazioni](https://nodejs.org/docs/latest-v24.x/api/test.html)

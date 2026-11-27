@@ -28,89 +28,47 @@ title: Migrazione repository GitHub
 
 ## Sintesi
 
-La **migrazione di un repository GitHub** sposta codice, storico e metadati da un contesto a un altro: tra account, organizzazioni, piattaforme Git o prodotti GitHub. Puo essere semplice come trasferire un repository, oppure complessa come migrare molte repository con issue, pull request, utenti e permessi.
+**Trasferire** cambia il proprietario dello stesso repository GitHub. **Duplicare con Git** crea una copia di oggetti e riferimenti in un altro repository. Scegliere in base a ciò che deve sopravvivere, non soltanto al fatto che la cronologia del codice sia visibile alla fine.
 
-La parte critica non e solo il codice Git: sono permessi, automazioni, secret, release, package, Pages, issue e integrazioni.
+## Quale strada scegliere
 
-## Quando usarlo
+| Obiettivo | Strumento | Cosa non dare per scontato |
+| --- | --- | --- |
+| Passare da un account a un'organizzazione su GitHub | Trasferimento del repository | Restano associati elementi come issue, PR, wiki, stelle, webhook, secret e deploy key. Verificare permessi ereditati, integrazioni e policy del nuovo owner. |
+| Copiare la cronologia Git su un'altra destinazione | Mirror Git | Non trasferisce issue, discussioni, metadati delle PR, asset delle release, permessi o binari LFS. La wiki è un repository Git separato. |
+| Migrare da un'altra piattaforma con i relativi dati | Strumento di importazione compatibile con l'origine | Distinguere l'importazione della storia Git dalla migrazione dei metadati. Per Enterprise Importer verificare matrice di supporto, mapping degli utenti, esclusioni e log prima del passaggio definitivo. |
 
-Serve migrare quando:
+## Esempio: trasferimento a un'organizzazione
 
-- un progetto passa da account personale a organizzazione;
-- un team cambia organizzazione GitHub;
-- si passa da un altro host Git a GitHub;
-- si consolida un monorepo o si divide un repository;
-- si migra da GitHub Enterprise Server a GitHub Enterprise Cloud;
-- si vuole trasferire ownership senza perdere storico.
-
-## Come funziona
-
-I casi principali sono:
-
-- **transfer repository**: sposta un repository a un nuovo owner GitHub;
-- **mirror push**: copia solo repository Git e cronologia;
-- **GitHub Importer**: importa codice da altro host Git;
-- **GitHub Enterprise Importer**: migrazioni enterprise con piu metadati;
-- **backup o archive**: non sempre ripristinabile come migrazione completa.
-
-Prima di migrare devi mappare cosa deve essere conservato: codice, issue, PR, release, wiki, Actions, secrets, Pages, package, team, branch protection e webhook.
-
-## API / Sintassi
-
-Aggiornare remote dopo transfer:
+1. Verificare autorizzazioni di chi trasferisce e di chi riceve, disponibilità del nome e vincoli della rete di fork. Concordare una finestra e inventariare nomi e utilizzatori delle credenziali, **senza copiarne i valori**.
+2. Eseguire il transfer dalle impostazioni GitHub e completare l'eventuale accettazione. Il vecchio URL del repository può reindirizzare al nuovo; **l'URL del sito Pages non viene reindirizzato dal transfer**. Non riutilizzare il vecchio nome: si perde il redirect.
+3. Aggiornare i clone locali. Questo comando modifica soltanto `origin` nel clone corrente; **non trasferisce** alcun repository:
 
 ```bash
 git remote set-url origin https://github.com/NEW_OWNER/REPOSITORY.git
 ```
 
-Mirror clone per copia Git:
+4. Con un account dal ruolo rappresentativo, verificare lettura, accessi attesi, PR, tag, branch protetti, Actions, package e Pages, incluso il dominio personalizzato. Aggiornare badge e link esterni.
+
+## Alternativa: controllare un mirror prima di scrivere
+
+Per una copia **solo Git**, scegliere una destinazione nuova, vuota e dedicata. Sostituire i nomi di esempio. Il clone seguente scarica i riferimenti esposti dalla sorgente in una directory locale senza working tree:
 
 ```bash
-git clone --mirror https://github.com/OLD_OWNER/REPOSITORY.git
-cd REPOSITORY.git
-git push --mirror https://github.com/NEW_OWNER/REPOSITORY.git
+git clone --mirror https://github.com/OLD_OWNER/REPOSITORY.git progetto.git
 ```
 
-## Esempio pratico
+Simulare l'invio senza aggiornare i riferimenti sulla destinazione:
 
-Migrazione da account personale a organizzazione:
-
-```text
-1. verifica permessi nell'organizzazione
-2. controlla nome repository disponibile
-3. salva elenco secret, webhook e deploy key
-4. trasferisci repository
-5. aggiorna remote locali
-6. verifica Actions, Pages, package e branch protection
-7. aggiorna documentazione e link
+```bash
+git -C progetto.git push --dry-run --mirror https://github.com/NEW_OWNER/REPOSITORY.git
 ```
 
-## Varianti
+`--mirror` non significa «aggiungi solo ciò che manca»: senza `--dry-run` può **forzare aggiornamenti ed eliminare riferimenti presenti solo a destinazione**. Fermarsi davanti a cancellazioni inattese. Alcuni riferimenti gestiti dall'host non sono scrivibili; un dry run non garantisce l'accettazione da parte del server reale. LFS richiede una procedura separata per gli oggetti.
 
-- **Transfer GitHub -> GitHub**: conserva molti metadati e redirect.
-- **Mirror Git**: conserva cronologia Git, ma non issue e PR.
-- **Import da altra piattaforma**: dipende dal tool disponibile.
-- **Migrazione enterprise**: richiede pianificazione, mapping utenti e log.
-- **Migrazione con archiviazione**: vecchio repository archiviato e nuovo repository attivo.
+## Criterio di completamento
 
-## Errori comuni
-
-- Pensare che Git contenga anche issue, PR e release.
-- Non aggiornare `origin` nei clone locali.
-- Non controllare GitHub Pages e custom domain.
-- Dimenticare secrets, webhook e deploy key.
-- Non verificare branch protection nel nuovo owner.
-- Trasferire senza comunicare il cambio agli utenti.
-
-## Checklist
-
-- Hai deciso cosa deve essere migrato?
-- Il nuovo owner puo ricevere il repository?
-- Nome repository e fork network sono compatibili?
-- Remote locali e documentazione verranno aggiornati?
-- Secret, Actions, Pages e package sono verificati?
-- Issue, PR e release sono preservate o esportate?
-- Il vecchio repository va archiviato o lasciato con redirect?
+Confrontare i commit di punta dei branch e i tag necessari. Aprire una PR storica, scaricare un asset atteso e provare gli URL usati dai consumatori **se erano nel perimetro concordato**. Finché i controlli non sono superati, conservare la sorgente e indicare al team quale copia usare per le nuove modifiche.
 
 ## Collegamenti
 
@@ -124,5 +82,7 @@ Migrazione da account personale a organizzazione:
 
 ## Fonti
 
-- [GitHub Docs - Transferring a repository](https://docs.github.com/en/repositories/creating-and-managing-repositories/transferring-a-repository)
-- [GitHub Docs - Migrations](https://docs.github.com/en/migrations)
+- [GitHub Docs: trasferire un repository](https://docs.github.com/en/repositories/creating-and-managing-repositories/transferring-a-repository)
+- [GitHub Docs: duplicare un repository, incluso LFS](https://docs.github.com/en/repositories/creating-and-managing-repositories/duplicating-a-repository)
+- [GitHub Docs: pianificare una migrazione](https://docs.github.com/en/migrations/overview/planning-your-migration-to-github)
+- [Git: semantica di push --mirror](https://git-scm.com/docs/git-push)

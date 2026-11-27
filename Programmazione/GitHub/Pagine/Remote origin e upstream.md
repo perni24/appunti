@@ -27,113 +27,75 @@ title: Remote origin e upstream
 
 ## Sintesi
 
-In Git, un **remote** e un collegamento a un repository esterno. Su GitHub i remote piu comuni sono:
+Un **remote** è una configurazione locale che associa un nome a uno o più URL. `origin` è il nome predefinito assegnato da `git clone`, non significa «progetto originale». Nel clone di un fork, `origin` normalmente punta al fork; `upstream` è il nome convenzionale che puoi dare al repository sorgente.
 
-- `origin`: repository remoto principale per la tua copia locale;
-- `upstream`: repository originale da cui deriva un fork.
+## Tre significati da non confondere
 
-Capire `origin` e `upstream` evita push nel posto sbagliato, pull request verso branch sbagliati e fork non aggiornati.
+| Termine | Significato nell’esempio |
+| --- | --- |
+| `upstream` | Nome di un remoto configurato nel clone. Si può chiamare diversamente. |
+| `upstream/main` | Riferimento **locale** all’ultimo stato noto di `main` su quel remoto. |
+| Upstream **del branch** locale `main` | Branch configurato per il tracciamento, spesso `origin/main` anche quando esiste un remoto chiamato `upstream`. |
 
-## Quando usarlo
-
-Serve padroneggiare i remote quando:
-
-- cloni un repository;
-- lavori da fork;
-- cambi URL remoto da HTTPS a SSH;
-- devi sincronizzare un fork;
-- devi inviare branch a GitHub;
-- una pull request punta al repository sbagliato.
-
-## Come funziona
-
-Git salva i remote nella configurazione del repository. Puoi leggerli con:
+Per leggere indirizzi di fetch e push:
 
 ```bash
 git remote -v
 ```
 
-Esempio in un fork:
-
-```text
-origin    git@github.com:luca/progetto.git (fetch)
-origin    git@github.com:luca/progetto.git (push)
-upstream  git@github.com:original/progetto.git (fetch)
-upstream  git@github.com:original/progetto.git (push)
-```
-
-Di solito fai push verso `origin` e fetch/pull da `upstream` per aggiornarti dal progetto originale.
-
-## API / Sintassi
-
-Mostrare remote:
+Per vedere cosa traccia ciascun branch locale:
 
 ```bash
-git remote -v
+git branch -vv
 ```
 
-Aggiungere un remote:
+La riga `(push)` mostra un indirizzo, **non** prova che tu sia autorizzato a scriverci.
+
+## Esempio: sincronizzare un fork senza creare un merge inatteso
+
+Prerequisiti: `origin` è il tuo fork, il progetto originale e il fork usano `main` e la copia di lavoro è pulita. Se il remoto dell’originale non è ancora configurato, aggiungilo **una sola volta** con l’URL reale:
 
 ```bash
-git remote add upstream https://github.com/original/progetto.git
+git remote add upstream https://github.com/OWNER/progetto.git
 ```
 
-Cambiare URL:
-
-```bash
-git remote set-url origin git@github.com:luca/progetto.git
-```
-
-Rimuovere remote:
-
-```bash
-git remote remove upstream
-```
-
-Inviare un branch:
-
-```bash
-git push -u origin nome-branch
-```
-
-## Esempio pratico
-
-Aggiornare un fork:
+Passa al branch da aggiornare:
 
 ```bash
 git switch main
+```
+
+Aggiorna i riferimenti del progetto originale; questo non cambia i tuoi file:
+
+```bash
 git fetch upstream
-git merge upstream/main
+```
+
+Per mantenere `main` allineato all’originale, controlla prima i commit **solo locali** rispetto a `upstream/main`. Se l’elenco non è vuoto, fermati e decidi quali modifiche conservare su un branch dedicato.
+
+```bash
+git log --oneline upstream/main..main
+```
+
+Altrimenti avanza solo se non serve creare un commit di merge:
+
+```bash
+git merge --ff-only upstream/main
+```
+
+Solo dopo la verifica, aggiorna il fork sul server:
+
+```bash
 git push origin main
 ```
 
-Questo porta nel tuo fork le modifiche del repository originale.
+Se le storie divergono, `--ff-only` rifiuta l’integrazione. Se invece fallisce il push, anche il fork remoto può essere avanzato: recupera e confronta la sua storia prima di riprovare. Non serve un push forzato per diagnosticare nessuno dei due casi.
 
-## Varianti
+## Altre operazioni
 
-- **HTTPS remote**: usa URL `https://github.com/...`.
-- **SSH remote**: usa URL `git@github.com:...`.
-- **origin unico**: comune nei repository propri.
-- **origin + upstream**: comune nei fork.
-- **multiple remote**: utile per mirror o migrazioni.
-
-## Errori comuni
-
-- Fare push su `upstream` senza volerlo.
-- Non avere `upstream` in un fork.
-- Usare `git pull` senza sapere quale remote usa.
-- Cambiare URL remoto e rompere autenticazione.
-- Confondere branch remoto `origin/main` con branch locale `main`.
-- Non usare `-u` al primo push di un branch.
-
-## Checklist
-
-- Hai controllato `git remote -v`?
-- `origin` punta al repository corretto?
-- In un fork, `upstream` punta al repository originale?
-- Stai facendo push verso il remote giusto?
-- La branch locale traccia la branch remota corretta?
-- L'URL remoto usa il metodo di autenticazione desiderato?
+- `git push -u origin nome-branch` pubblica il branch indicato e ne configura il tracciamento. `-u` è utile, non obbligatorio per un push esplicito.
+- `git remote set-url origin NUOVO-URL` cambia la destinazione **in questo clone**, per esempio da HTTPS a SSH; verifica poi URL e credenziali.
+- `git remote remove upstream` rimuove la configurazione di quel remoto e i suoi riferimenti di tracciamento dal clone, non elimina il repository sul server.
 
 ## Collegamenti
 
@@ -144,4 +106,6 @@ Questo porta nel tuo fork le modifiche del repository originale.
 
 ## Fonti
 
-- [GitHub Docs - About remote repositories](https://docs.github.com/en/get-started/git-basics/about-remote-repositories)
+- [GitHub Docs: connessioni ai remoti](https://docs.github.com/en/get-started/git-basics/about-remote-repositories)
+- [Git: aggiungere, cambiare o rimuovere un remoto](https://git-scm.com/docs/git-remote)
+- [Git: comportamento di fetch](https://git-scm.com/docs/git-fetch)

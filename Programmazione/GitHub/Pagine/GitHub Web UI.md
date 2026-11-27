@@ -27,92 +27,30 @@ title: GitHub Web UI
 
 ## Sintesi
 
-La **GitHub Web UI** e l'interfaccia web con cui si navigano repository, file, branch, pull request, issue, Actions, release e impostazioni. Anche se molte operazioni si fanno da terminale, l'interfaccia web resta centrale per review, discussioni, permessi e configurazioni del repository.
+L’interfaccia web è utile quando vuoi leggere un progetto senza clonarlo o capire perché una modifica non è pronta per il merge. Prima di interpretare ciò che vedi, identifica **repository, branch o commit**: lo stesso percorso può avere contenuti diversi in due revisioni.
 
-Padroneggiarla significa sapere dove trovare rapidamente contesto, history, controlli automatici e impostazioni critiche.
+## Dove cercare
 
-## Quando usarlo
+| Domanda | Punto di partenza |
+| --- | --- |
+| Qual è il contenuto di un file? Quando è cambiato? | **Code**: selettore del branch o del tag, file e relativa cronologia. |
+| Perché serve la modifica? Che cosa cambia? | **Issues** per il problema; **Pull requests → Conversation** per contesto e decisioni, **Files changed** per il diff. |
+| Quale controllo è fallito? | Dalla PR apri i dettagli del check; in **Actions** scegli esecuzione, job e step. Confronta branch e commit, non solo il nome del workflow. |
+| Dove trovo piano di lavoro, distribuzioni e amministrazione? | **Projects**, **Releases**, **Insights**, area di sicurezza e **Settings**, secondo funzionalità abilitate e permessi. |
 
-Usa la Web UI quando:
+Leggere un repository non concede automaticamente permessi per cambiare regole, modificare un file, rilanciare un workflow o unire una PR. La posizione delle voci può variare: una scheda non visibile non dimostra che il progetto sia privo di quella funzione.
 
-- devi leggere un repository senza clonarlo;
-- vuoi aprire o rivedere una pull request;
-- devi commentare righe di codice;
-- devi controllare status check e workflow;
-- vuoi gestire issue, label, milestone o project;
-- devi modificare impostazioni di sicurezza o permessi.
+## Esempio: citare la configurazione realmente esaminata
 
-## Come funziona
+1. Nel repository degli appunti apri **Code** e scegli il branch o il commit che vuoi esaminare. Premi `t` e cerca `deploy-pages.yml`: il selettore cerca **nomi o percorsi**, non testo dentro i file.
+2. Apri `.github/workflows/deploy-pages.yml`. Premi `y` sulla pagina del file: il collegamento passa dal nome del branch al commit. Copia questo permalink se vuoi che un’altra persona veda **quella versione**, anche dopo il prossimo push.
+3. In **Actions** individua l’esecuzione di interesse e leggi l’esito dei singoli job. La presenza del file di configurazione non dimostra che quella versione sia stata eseguita o pubblicata.
 
-La pagina di un repository organizza le informazioni principali in tab:
+## Leggere, modificare o eseguire?
 
-- `Code`: file, branch, tag, clone e history;
-- `Issues`: problemi, task e richieste;
-- `Pull requests`: proposte di modifica;
-- `Actions`: workflow e automazioni;
-- `Projects`: pianificazione;
-- `Security`: avvisi e controlli di sicurezza;
-- `Insights`: statistiche e attivita;
-- `Settings`: configurazione del repository.
-
-Molte azioni critiche richiedono permessi specifici: vedere codice, fare push, gestire issue e modificare settings sono capacita diverse.
-
-## API / Sintassi
-
-Percorsi web comuni:
-
-```text
-https://github.com/owner/repository
-https://github.com/owner/repository/issues
-https://github.com/owner/repository/pulls
-https://github.com/owner/repository/actions
-https://github.com/owner/repository/settings
-```
-
-Scorciatoie utili:
-
-```text
-t   cerca file nel repository
-.   apre github.dev nel repository
-```
-
-## Esempio pratico
-
-Per capire lo stato di una modifica:
-
-1. apri la pull request;
-2. leggi titolo e descrizione;
-3. controlla la tab `Files changed`;
-4. guarda i commenti di review;
-5. controlla gli status check;
-6. verifica se il branch e aggiornato;
-7. solo dopo valuta merge o richiesta modifiche.
-
-## Varianti
-
-- **Repository view**: lettura file e struttura.
-- **Pull request view**: diff, review e controlli.
-- **Issue view**: discussione e tracciamento lavoro.
-- **Actions view**: log di CI/CD.
-- **Settings view**: configurazioni e protezioni.
-- **Security view**: avvisi, scanning e dipendenze.
-
-## Errori comuni
-
-- Modificare file dalla Web UI senza capire branch e PR.
-- Cercare impostazioni di sicurezza dentro `Code` invece che `Settings` o `Security`.
-- Fare merge guardando solo il diff e non gli status check.
-- Non distinguere permessi repository e permessi organizzazione.
-- Ignorare la tab `Conversation` di una pull request.
-
-## Checklist
-
-- Sai in quale tab si trova l'informazione?
-- Stai lavorando sul branch corretto?
-- Hai controllato status check e review?
-- Hai i permessi necessari per l'azione?
-- La modifica web crea commit sul branch atteso?
-- Le impostazioni critiche sono documentate?
+- Per un controllo di sola lettura bastano Code, la PR e i log. Prima di fare merge verifica separatamente diff, review e check richiesti.
+- `.` apre l’editor web **github.dev**. È adatto a modifiche di testo, ma non offre un terminale dove lanciare la build: usa un clone locale o un ambiente con runtime, come Codespaces.
+- Se modifichi dal browser, verifica la destinazione prima del commit: proporre la modifica su un nuovo branch non è la stessa cosa che scrivere direttamente sul branch predefinito.
 
 ## Collegamenti
 
@@ -125,3 +63,6 @@ Per capire lo stato di una modifica:
 ## Fonti
 
 - [GitHub Docs - GitHub quickstart](https://docs.github.com/en/get-started/start-your-journey/hello-world)
+- [GitHub Docs: scorciatoie da tastiera](https://docs.github.com/en/get-started/accessibility/keyboard-shortcuts)
+- [GitHub Docs: permalink a un file](https://docs.github.com/en/repositories/working-with-files/using-files/getting-permanent-links-to-files)
+- [GitHub Docs: possibilità e limiti di github.dev](https://docs.github.com/en/codespaces/the-githubdev-web-based-editor)

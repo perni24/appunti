@@ -25,115 +25,43 @@ title: Eventi e trigger GitHub Actions
 
 ## Sintesi
 
-Gli **eventi** definiscono quando un workflow GitHub Actions parte. Il campo `on` puo ascoltare eventi come `push`, `pull_request`, `release`, `workflow_dispatch`, `schedule` e molti altri.
+`on` seleziona gli eventi che possono creare un **run**. Prima di aggiungere un filtro decidi quale domanda deve ricevere risposta: «Questa PR è valida?» richiede `pull_request`; «Il contenuto arrivato su `main` va pubblicato?» richiede `push` su quel branch. Le due domande possono riguardare lo stesso commit, ma non sono lo stesso evento.
 
-Scegliere il trigger giusto e importante per sicurezza, costi e tempi di feedback.
+## Esempio pratico: leggere i filtri
 
-## Quando usarlo
-
-Studia i trigger quando:
-
-- una CI parte troppo spesso o troppo poco;
-- vuoi eseguire controlli su pull request;
-- vuoi pubblicare solo su tag;
-- vuoi workflow manuali;
-- vuoi job schedulati;
-- vuoi evitare rischi con fork e secret.
-
-## Come funziona
-
-Il campo `on` puo essere:
-
-- una singola stringa;
-- una lista di eventi;
-- una mappa con filtri per branch, tag o path.
-
-Esempi:
-
-```yaml
-on: push
-```
+Questa è solo la sezione `on` di un workflow didattico, non la configurazione attiva di Quartz:
 
 ```yaml
 on:
   push:
     branches: [main]
   pull_request:
-```
-
-## API / Sintassi
-
-Esecuzione manuale:
-
-```yaml
-on:
+    branches: [main]
+    paths:
+      - 'Programmazione/**'
+      - 'site/**'
   workflow_dispatch:
 ```
 
-Schedulazione:
+| Cosa succede | Si avvia? | Motivo |
+| --- | --- | --- |
+| Push su `main` che cambia solo `Home.md` | Sì | Il filtro per percorso appartiene a `pull_request`, non a `push`. |
+| Apertura di una PR da `docs` verso `main` con una nota in `Programmazione/` | Sì | Per `pull_request`, `branches` indica il branch **di destinazione**. |
+| Aggiornamento della stessa PR con un diff complessivo che cambia solo `Home.md` | No | Il branch corrisponde ma nessun file modificato corrisponde ai percorsi. |
+| Push su `docs` senza PR aperta | No | Non corrisponde al push su `main` e non genera un evento di PR. |
 
-```yaml
-on:
-  schedule:
-    - cron: "0 6 * * 1"
-```
+Eventi diversi sono alternative; **branch e percorsi dello stesso evento** devono invece corrispondere entrambi. Senza `types`, `pull_request` risponde normalmente ad apertura, riapertura e aggiornamento del branch della PR. Se un check è obbligatorio per il merge, saltare l’intero workflow tramite filtri può lasciarlo in attesa: decidi prima quali PR devono sempre ricevere un esito.
 
-Filtro path:
+## Altri trigger: scegli in base all’effetto
 
-```yaml
-on:
-  pull_request:
-    paths:
-      - "src/**"
-      - "package.json"
-```
-
-## Esempio pratico
-
-CI normale:
-
-```yaml
-on:
-  pull_request:
-  push:
-    branches: [main]
-```
-
-Release su tag:
-
-```yaml
-on:
-  push:
-    tags:
-      - "v*"
-```
-
-## Varianti
-
-- **push**: parte su commit inviati.
-- **pull_request**: parte su eventi della PR.
-- **workflow_dispatch**: avvio manuale.
-- **schedule**: avvio programmato.
-- **release**: eventi di release.
-- **workflow_run**: parte dopo un altro workflow.
+- **Manuale:** `workflow_dispatch` permette di scegliere un riferimento da eseguire. Per essere avviabile in questo modo, il workflow deve esistere sul branch predefinito.
+- **Periodico:** `schedule` usa il branch predefinito; per esempio `17 6 * * 1` significa lunedì alle 06:17 UTC se non si specifica un fuso. È una pianificazione, non una garanzia al minuto.
+- **Tag o release:** `push.tags: ['v*']` reagisce al push del riferimento Git; `release` con `types: [published]` alla pubblicazione di una release GitHub. Creare un tag non equivale a pubblicare una release.
+- **Altri workflow:** `workflow_call` espone un workflow riutilizzabile chiamato esplicitamente; `workflow_run` reagisce al ciclo di vita di un altro workflow.
 
 ## Errori comuni
 
-- Usare `push` su tutti i branch senza bisogno.
-- Usare `pull_request_target` senza capirne i rischi.
-- Far partire deploy su PR da fork.
-- Non filtrare path in monorepo.
-- Usare schedule per job che devono essere deterministici al minuto esatto.
-- Dimenticare che un tag puo avviare release se il workflow lo ascolta.
-
-## Checklist
-
-- Il trigger rispecchia lo scopo del workflow?
-- Branch, tag o path sono filtrati?
-- I secret sono disponibili solo in contesti sicuri?
-- Le PR da fork sono gestite con cautela?
-- I workflow manuali sono documentati?
-- Il costo di esecuzione e proporzionato?
+Un push sul branch di una PR può soddisfare sia `push` sia `pull_request` se entrambi sono abilitati senza filtri. Controlla l’evento di ciascun run prima di concludere che la CI sia duplicata. Nelle PR da fork mantieni separata la verifica del codice dalla pubblicazione: non passare a `pull_request_target` soltanto per rendere disponibili dei secret.
 
 ## Collegamenti
 
@@ -144,4 +72,6 @@ on:
 
 ## Fonti
 
-- [GitHub Docs - Events that trigger workflows](https://docs.github.com/en/actions/reference/workflows-and-actions/events-that-trigger-workflows)
+- [GitHub Docs - Eventi e tipi di attività](https://docs.github.com/en/actions/reference/workflows-and-actions/events-that-trigger-workflows)
+- [GitHub Docs - Filtri per branch, tag e percorsi](https://docs.github.com/en/actions/reference/workflows-and-actions/workflow-syntax)
+- [GitHub Docs - Avviare un workflow manualmente](https://docs.github.com/en/actions/how-tos/manage-workflow-runs/manually-run-a-workflow)

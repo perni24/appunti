@@ -26,104 +26,61 @@ title: Commit e cronologia su GitHub
 
 ## Sintesi
 
-Un **commit** e uno snapshot della modifica salvato nella cronologia Git. GitHub visualizza i commit, permette di esplorare diff, blame, history dei file e collega i commit a branch, pull request, issue e release.
+Un commit registra **lo snapshot dei file tracciati così come sono nello staging**. L’oggetto commit fa riferimento all’albero dei file e agli eventuali commit genitori, e conserva autore, committer e messaggio. Il primo commit non ha genitori; un merge può averne più di uno. Il diff che leggi su GitHub è un **confronto** tra snapshot, non una patch memorizzata nel commit.
 
-Una buona cronologia non serve solo a "salvare": serve a capire perche il codice e cambiato.
+## Esempio: una correzione e il suo test
 
-## Quando usarlo
+Sul branch `fix/export-vuoto` hai modificato `src/export.js` e `tests/export.test.js`. Vuoi registrarli insieme, lasciando fuori gli appunti personali.
 
-Cura commit e cronologia quando:
-
-- lavori su una pull request;
-- vuoi rendere una review piu semplice;
-- devi capire quando e stato introdotto un bug;
-- vuoi collegare modifiche a issue o release;
-- vuoi mantenere un progetto leggibile nel tempo.
-
-## Come funziona
-
-Un commit contiene:
-
-- identificativo hash;
-- autore;
-- data;
-- messaggio;
-- diff rispetto al commit precedente;
-- riferimento al parent commit.
-
-GitHub mostra questa cronologia nella scheda `Commits` e nelle pagine dei file. In una pull request, GitHub mostra i commit e il diff complessivo.
-
-## API / Sintassi
-
-Creare un commit:
+Controlla cosa è cambiato:
 
 ```bash
-git status
-git add file.md
-git commit -m "Aggiunge documentazione setup"
+git status --short
 ```
 
-Vedere la cronologia:
+Prepara i due percorsi:
 
 ```bash
-git log --oneline --graph --decorate
+git add -- src/export.js tests/export.test.js
 ```
 
-Vedere differenze:
+Controlla il contenuto che entrerebbe nel commit:
+
+```bash
+git diff --staged
+```
+
+Se tocchi nuovamente un file dopo `git add`, la seconda modifica rimane sul disco ma **non** entra nel commit finché non la prepari. Per vederla:
 
 ```bash
 git diff
-git diff main...HEAD
 ```
 
-Modificare l'ultimo commit prima del push:
+Dopo aver verificato il comportamento, crea il commit locale:
 
 ```bash
-git commit --amend
+git commit -m "Mantiene l'intestazione CSV nei report vuoti"
 ```
 
-## Esempio pratico
+È un commit **atomico** se codice e test descrivono una sola modifica logica. `fix` direbbe poco; mescolare qui un refactor indipendente renderebbe più difficile sia la review sia l’annullamento. Il commit apparirà sul remoto soltanto dopo il push.
 
-Commit leggibile:
+## Leggere o correggere la cronologia
+
+Per orientarti fra i branch locali e i riferimenti remoti già scaricati:
 
 ```bash
-git add src/auth.js tests/auth.test.js
-git commit -m "Valida token scaduti nel login"
+git log --oneline --graph --decorate --all
 ```
 
-Commit poco utile:
+Per esaminare l’ultimo commit ordinario e la modifica rispetto al suo genitore:
 
 ```bash
-git commit -m "fix"
+git show HEAD
 ```
 
-Il primo aiuta review e debug. Il secondo costringe a leggere il diff per capire cosa e successo.
+Su GitHub la cronologia del file aiuta a circoscrivere una regressione. **Blame** indica il commit a cui è attribuita l’ultima modifica di una riga, non chi abbia introdotto un difetto. Un commit di merge registra l’unione delle storie; uno squash può rappresentare un’intera PR.
 
-## Varianti
-
-- **Commit atomico**: contiene una singola modifica logica.
-- **Commit di fix**: corregge un problema specifico.
-- **Commit di refactor**: cambia struttura senza cambiare comportamento.
-- **Commit di merge**: unisce due linee di sviluppo.
-- **Commit squashato**: risultato di piu commit compressi in uno.
-
-## Errori comuni
-
-- Fare commit enormi con molte modifiche non correlate.
-- Usare messaggi generici.
-- Committare file temporanei o generati.
-- Mescolare refactor e cambio comportamento nello stesso commit.
-- Riscrivere history gia condivisa senza coordinarsi.
-- Pensare che il commit sia su GitHub prima del `push`.
-
-## Checklist
-
-- Il commit ha un obiettivo chiaro?
-- Il messaggio spiega cosa cambia?
-- Il diff contiene solo file attesi?
-- Hai escluso segreti e file generati?
-- I test o controlli collegati passano?
-- La cronologia aiuta una futura review?
+Se devi correggere l’ultimo commit **non condiviso**, controlla lo staging e poi usa `git commit --amend`: il commit viene sostituito e può cambiare identificatore. Per una cronologia già condivisa, preferisci un commit correttivo salvo accordo esplicito del team.
 
 ## Collegamenti
 
@@ -135,3 +92,4 @@ Il primo aiuta review e debug. Il secondo costringe a leggere il diff per capire
 ## Fonti
 
 - [GitHub Docs - About commits](https://docs.github.com/en/pull-requests/committing-changes-to-your-project/creating-and-editing-commits/about-commits)
+- [Pro Git: oggetti commit, tree e genitori](https://git-scm.com/book/en/v2/Git-Internals-Git-Objects)

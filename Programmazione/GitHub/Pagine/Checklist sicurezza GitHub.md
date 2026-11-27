@@ -29,74 +29,35 @@ title: Checklist sicurezza GitHub
 
 ## Obiettivo
 
-Verificare che un repository GitHub riduca i rischi principali: secret esposti, dipendenze vulnerabili, codice insicuro, permessi eccessivi, token troppo ampi e supply chain non controllata.
+Prima di una pubblicazione, di un deploy o di un passaggio di consegne, verificare **quali superfici sono state controllate e con quale copertura**. Una scheda vuota può significare nessun alert visibile, funzione non attiva o permessi insufficienti. Non certifica che il repository sia sicuro.
 
-Questa checklist non sostituisce un audit di sicurezza, ma copre i controlli minimi da non saltare.
+## Checklist per chi mantiene il progetto
 
-## Quando usarlo
+- [ ] **Accessi.** Confermare visibilità, collaboratori, team e integrazioni con accesso in scrittura. Per branch e tag critici verificare regole effettive, check obbligatori ed eccezioni. Non considerare «privato» sinonimo di accesso minimo.
+- [ ] **Credenziali.** Controllare che sia stato esaminato anche lo storico pertinente e che gli alert di secret scanning siano stati gestiti. Un valore confermato esposto va revocato o ruotato presso l'emittente; cancellare il file o chiudere l'alert non invalida la credenziale.
+- [ ] **Dipendenze e codice.** Verificare che i manifest pertinenti siano nel dependency graph; per gli alert Dependabot valutare gravità, utilizzo reale e aggiornamento disponibile. Per code scanning controllare linguaggi analizzati, branch ed esito dell'ultima analisi. Indicare cosa non è coperto o non è disponibile sul piano usato.
+- [ ] **Workflow e identità.** Riesaminare origine delle action e codice eseguito prima di concedere scrittura o secret. Un riferimento a uno SHA completo rende immutabile la revisione selezionata, **non** rende affidabile il suo contenuto. Dare al job i soli permessi necessari; preferire identità a breve durata o dedicate alle credenziali personali, ove supportato.
+- [ ] **Distribuzione.** Verificare chi può pubblicare package o release e quali environment proteggono il deploy. Se il progetto distribuisce una SBOM o attestazioni, controllare che si riferiscano all'artefatto consegnato; una lista di componenti non dimostra l'assenza di vulnerabilità.
 
-- Prima di rendere pubblico un repository.
-- Prima di collegare deploy o package.
-- Prima di una release.
-- Durante audit periodici.
-- Quando erediti un repository con automazioni esistenti.
+## Esempio: un file è sparito, ma era già tracciato?
 
-## Procedura
+Dalla radice di un clone Git, questi controlli leggono **nomi o identificativi**, non il contenuto di `.env`. Il primo interroga l'indice corrente:
 
-1. Controlla visibilita e dati sensibili.
-2. Abilita o verifica secret scanning.
-3. Verifica Dependabot e dependency graph.
-4. Controlla code scanning se il progetto lo giustifica.
-5. Verifica token, PAT e `GITHUB_TOKEN`.
-6. Controlla branch protection e required checks.
-7. Verifica Actions, secret e environment.
-8. Controlla release, package e attestazioni se usati.
-
-## Snippet
-
-Checklist sintetica:
-
-```text
-[ ] Nessun secret nel codice
-[ ] Secret scanning attivo
-[ ] Dependabot alerts controllati
-[ ] Dependency graph attivo
-[ ] Code scanning valutato
-[ ] Branch principale protetto
-[ ] Required status checks configurati
-[ ] Workflow con permissions minimi
-[ ] Secrets limitati per environment
-[ ] OIDC valutato per cloud provider
-[ ] PAT non usati per automazioni stabili
-[ ] Release e package pubblicati da workflow controllati
+```bash
+git ls-files -- .env
 ```
 
-## Adattamenti comuni
+Il secondo cerca commit che hanno interessato quel preciso percorso nella storia raggiungibile dai riferimenti presenti nel clone:
 
-- **Repository privato**: non dare per scontato che sia sicuro.
-- **Repository pubblico**: controlla storico Git prima della pubblicazione.
-- **Repository con deploy**: usa environment, approval e OIDC se possibile.
-- **Repository con package**: verifica token e permessi di pubblicazione.
-- **Organizzazione**: centralizza policy con rulesets, team e secret organizzativi.
+```bash
+git log --all --format=%h -- .env
+```
 
-## Debug rapido
+Se il primo non restituisce righe ma il secondo sì, il file non è più nell'indice ma quel percorso compare nella storia. Non è prova che contenesse un secret; neppure due output vuoti escludono altri nomi, rami non scaricati, log o artifact. In un rapporto annotare percorso, identificativo e responsabile della verifica, **mai il valore sensibile**.
 
-- Se un secret e stato committato, revocalo prima di rimuoverlo dal codice.
-- Se Dependabot segnala molte vulnerabilita, ordina per severita e exploitability.
-- Se un workflow richiede permessi ampi, separa job o workflow.
-- Se una action esterna non e affidabile, pinna a SHA o usa action ufficiali.
-- Se i fork eseguono workflow, controlla eventi e disponibilita dei secret.
+## Quando fermarsi
 
-## Checklist finale
-
-- Secret non presenti nel repository.
-- Dipendenze monitorate.
-- Code scanning valutato.
-- Branch e tag critici protetti.
-- Token e permessi ridotti.
-- Secrets separati per environment.
-- Actions controllate e versionate.
-- Release e package non dipendono da credenziali personali.
+Bloccare la pubblicazione se si sospetta una credenziale ancora valida esposta o non è chiaro chi possa distribuire il prodotto. Coinvolgere il responsabile tramite un canale riservato; registrare eventuali rischi accettati e la data del prossimo controllo.
 
 ## Collegamenti
 
@@ -112,4 +73,7 @@ Checklist sintetica:
 
 ## Fonti
 
-- [GitHub Docs - Securing your repository](https://docs.github.com/en/code-security/getting-started/securing-your-repository)
+- [GitHub Docs: gestire alert di secret scanning](https://docs.github.com/en/code-security/secret-scanning/managing-alerts-from-secret-scanning/resolving-alerts)
+- [GitHub Docs: uso sicuro delle action](https://docs.github.com/en/actions/reference/security/secure-use)
+- [Git: interrogare l'indice](https://git-scm.com/docs/git-ls-files)
+- [Git: consultare la cronologia per percorso](https://git-scm.com/docs/git-log)

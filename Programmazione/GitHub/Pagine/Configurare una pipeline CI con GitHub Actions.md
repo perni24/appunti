@@ -18,8 +18,7 @@ prerequisites:
   - "[[Programmazione/GitHub/Pagine/GitHub Actions]]"
   - "[[Programmazione/GitHub/Pagine/Pipeline CI GitHub Actions]]"
 related:
-  - Workflow per test
-  - lint e build
+  - "[[Programmazione/GitHub/Pagine/Workflow per test, lint e build|Workflow per test, lint e build]]"
   - "[[Programmazione/GitHub/Pagine/Cache GitHub Actions]]"
   - "[[Programmazione/GitHub/Pagine/Permissions GitHub Actions]]"
 title: Configurare una pipeline CI con GitHub Actions
@@ -29,90 +28,54 @@ title: Configurare una pipeline CI con GitHub Actions
 
 ## Obiettivo
 
-Configurare una pipeline CI che esegue installazione dipendenze, lint, test e build su pull request e push al branch principale.
-
-La pipeline deve fallire quando il codice non e verificabile e deve essere abbastanza veloce da non bloccare il lavoro quotidiano.
-
-## Quando usarlo
-
-Usalo quando:
-
-- vuoi validare ogni pull request;
-- vuoi impedire merge con test falliti;
-- vuoi automatizzare lint e build;
-- vuoi usare required status checks;
-- vuoi rendere ripetibile il controllo del progetto.
+Installare una CI che **segnali prima del merge** un errore nei contenuti o nella trasformazione dei Markdown. In questo esempio si valida il vault: non si pubblicano HTML, non servono credenziali di produzione e non si cambia il workflow Pages esistente.
 
 ## Procedura
 
-1. Crea `.github/workflows/ci.yml`.
-2. Definisci eventi `pull_request` e `push`.
-3. Imposta `permissions` minimi.
-4. Scegli runner.
-5. Fai checkout del repository.
-6. Installa runtime e dipendenze.
-7. Esegui lint.
-8. Esegui test.
-9. Esegui build.
-10. Aggiungi cache o artifact solo se servono.
-11. Dopo una run riuscita, usa il job come required status check se il repository e protetto.
+**1. Riprodurre i controlli in locale.** Dalla radice, con Git, Node e npm compatibili con `site/package.json` (il workflow del vault usa Node 24), installare le dipendenze dal lockfile. `npm ci` ricrea `site/node_modules`: non eseguirlo mentre un'altra build usa quella directory.
 
-## Snippet
-
-Esempio Node.js:
-
-```yaml
-name: CI
-
-on:
-  pull_request:
-  push:
-    branches: [main]
-
-permissions:
-  contents: read
-
-jobs:
-  test:
-    runs-on: ubuntu-latest
-    steps:
-      - uses: actions/checkout@v4
-      - uses: actions/setup-node@v4
-        with:
-          node-version: "22"
-          cache: npm
-      - run: npm ci
-      - run: npm run lint
-      - run: npm test
-      - run: npm run build
+```bash
+npm --prefix site ci
 ```
 
-## Adattamenti comuni
+Verificare metadati, collegamenti e raggiungibilità:
 
-- **Python**: usa `actions/setup-python` e comandi `ruff`, `pytest`.
-- **Rust**: usa `cargo fmt`, `cargo clippy`, `cargo test`.
-- **Matrix**: utile per piu versioni runtime o sistemi operativi.
-- **Cache**: utile se riduce davvero i tempi.
-- **Artifact**: utile per report, coverage o build output.
-- **Monorepo**: usa path filter o job separati.
+```bash
+npm --prefix site run content:check
+```
+
+Verificare le regole che trasformano le note per il sito:
+
+```bash
+npm --prefix site run content:test
+```
+
+**2. Creare il file CI.** Per adottare questa configurazione, partire dal workflow completo in [[Programmazione/GitHub/Pagine/Pipeline CI GitHub Actions|Pipeline CI GitHub Actions]] e salvarlo come `.github/workflows/ci.yml` dalla radice. Il job si chiama `Validazione appunti`, usa `contents: read` ed esegue i passi `run` da `site`. Il percorso per la cache di `setup-node` invece è relativo al workspace: `site/package-lock.json`. La cache npm non sostituisce `npm ci`.
+
+**3. Decidere quando validare.** Per controllare le PR dirette a `main`, i push su quel branch e i gruppi di una eventuale merge queue, sostituire soltanto il blocco `on` dell'esempio con questo **frammento**:
+
+```yaml
+on:
+  pull_request:
+    branches: [main]
+  push:
+    branches: [main]
+  merge_group:
+```
+
+Il filtro `branches` di `pull_request` riguarda la **base**, non il nome del branch della modifica. Omettere `merge_group` se non si usa una coda. Evitare filtri `paths` a livello di workflow se il check è obbligatorio per tutte le PR.
+
+**4. Provare entrambi gli esiti.** Su un branch di prova aggiungere temporaneamente in una nota pubblica un wikilink a una pagina inesistente: deve fallire `content:check`. Correggere il link e verificare che sull'ultimo commit siano verdi entrambi gli step. Solo allora selezionare il check nella regola di `main` se deve bloccare il merge. Creare il workflow da solo non lo rende obbligatorio.
+
+## Adattare la procedura
+
+- Un progetto applicativo può richiedere anche lint, test e build. Usare i comandi **esistenti nel progetto**: per Python, per esempio, Ruff e pytest con dipendenze fissate; per Rust, rustfmt, Clippy e test con la toolchain prevista.
+- Una matrix serve se si supportano davvero più runtime o piattaforme. Conservare report come artifact quando aiutano la diagnosi; un artifact CI non è un deployment.
+- Se la verifica deve comprendere il rendering Quartz, aggiungere installazione dei plugin e `site:build` come nel workflow reale. I soli controlli dei Markdown non garantiscono che ogni HTML venga generato.
 
 ## Debug rapido
 
-- Se il workflow non parte, controlla path `.github/workflows/ci.yml` e trigger.
-- Se `npm ci` fallisce, controlla lockfile e versione Node.
-- Se i test passano in locale ma falliscono in CI, controlla variabili ambiente e sistema operativo.
-- Se la cache non funziona, controlla package manager e lockfile.
-- Se il required check non compare, esegui almeno una run con quel nome.
-
-## Checklist finale
-
-- Workflow in `.github/workflows`.
-- Trigger su pull request e branch principale.
-- `permissions` minimi.
-- Installazione riproducibile.
-- Lint, test e build presenti.
-- Cache configurata solo se utile.
-- CI collegata a branch protection se serve.
+`ENOENT` sul lockfile indica spesso la directory sbagliata. Un job verde senza i controlli attesi può invece essere il job di un altro workflow: confrontare evento, SHA e nomi degli step nella scheda *Actions*.
 
 ## Collegamenti
 
@@ -127,4 +90,6 @@ jobs:
 
 ## Fonti
 
-- [GitHub Docs - Building and testing Node.js](https://docs.github.com/en/actions/tutorials/build-and-test-code/nodejs)
+- [GitHub Docs: sintassi dei workflow](https://docs.github.com/en/actions/reference/workflows-and-actions/workflow-syntax)
+- [actions/setup-node: directory e cache](https://github.com/actions/setup-node)
+- [GitHub Docs: check richiesti e merge queue](https://docs.github.com/en/pull-requests/how-tos/merge-and-close-pull-requests/troubleshooting-required-status-checks)

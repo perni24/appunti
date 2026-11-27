@@ -104,6 +104,12 @@ assert_eq!(queue.pop_front(), Some("first"));
 assert_eq!(queue.pop_front(), None);
 ```
 
+## Fonti
+
+- [Libreria standard: confronto fra collezioni](https://doc.rust-lang.org/std/collections/index.html)
+- [Libreria standard: limiti di `Vec::insert`](https://doc.rust-lang.org/std/vec/struct.Vec.html#method.insert)
+- [Libreria standard: inserimento su richiesta con `Entry::or_insert_with`](https://doc.rust-lang.org/std/collections/hash_map/enum.Entry.html#method.or_insert_with)
+
 ## Collegamenti
 
 - [[Programmazione/Rust/Promemoria/Indice Promemoria Rust|Indice Promemoria Rust]]

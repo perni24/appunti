@@ -28,102 +28,53 @@ title: Variabili e secrets GitHub Actions
 
 ## Sintesi
 
-In GitHub Actions, **variables** e **secrets** servono a passare configurazione ai workflow. Le variabili sono per valori non sensibili. I secrets sono per credenziali e valori riservati.
+Chiediti separatamente **chi può leggere il valore** e **in quali step deve esistere**. Il nome di un ambiente può stare in una variabile di configurazione; una credenziale no. Sia una variabile sia un secret possono essere passati alla shell con `env`: dichiararli sotto `env` non li rende automaticamente segreti.
 
-Usarli correttamente evita hardcoding, riduce rischio di leak e rende i workflow riutilizzabili tra ambienti.
+| Strumento | A cosa serve | Come si legge |
+| --- | --- | --- |
+| `env` nel YAML | Valore per workflow, job o step. A parità di nome vince l’ambito più specifico. | Nella shell: `$env:NOME` in PowerShell, `"$NOME"` in Bash. |
+| Contesto `vars` | Configurazione non riservata salvata su organizzazione, repository o environment. | `${{ vars.NOME }}`; non diventa da sola una variabile della shell. |
+| Contesto `secrets` | Valore sensibile con accesso limitato. | `${{ secrets.NOME }}` nello step che ne ha bisogno. Un secret non disponibile restituisce una stringa vuota. |
+| `GITHUB_ENV` | File per impostare una variabile negli **step successivi dello stesso job**. | Lo step che scrive nel file non vede automaticamente il nuovo valore. Non è un archivio per secret. |
 
-## Quando usarlo
+## Esempio pratico: distinguere configurazione e credenziale assente
 
-Usa variabili quando:
-
-- il valore non e sensibile;
-- vuoi cambiare configurazione senza modificare YAML;
-- vuoi differenziare ambiente o progetto.
-
-Usa secrets quando:
-
-- il valore e una credenziale;
-- serve un token API;
-- serve una chiave privata;
-- il valore non deve comparire nei log.
-
-## Come funziona
-
-Le variabili possono essere disponibili a livello di repository, organizzazione o ambiente, a seconda della configurazione.
-
-I secrets vengono referenziati tramite contesto `secrets`. Non devono essere stampati nei log. Alcuni eventi, soprattutto da fork, possono avere accesso limitato ai secrets per motivi di sicurezza.
-
-## API / Sintassi
-
-Variabile:
+Il workflow manuale funziona anche senza configurare nulla. `REPORT_KIND` sceglie un’etichetta non sensibile; `REPORT_TOKEN` è solo un nome didattico. Lo step segnala se la credenziale è disponibile senza mostrarla, usarla o contattare servizi. Non serve creare un token per provare il ramo «assente».
 
 ```yaml
-env:
-  NODE_ENV: test
-```
-
-Secret:
-
-```yaml
-steps:
-  - name: Deploy
-    env:
-      API_TOKEN: ${{ secrets.API_TOKEN }}
-    run: ./deploy.sh
-```
-
-Variable configuration:
-
-```yaml
-env:
-  APP_ENV: ${{ vars.APP_ENV }}
-```
-
-## Esempio pratico
-
-Deploy controllato:
-
-```yaml
+name: Verifica configurazione report
+on: workflow_dispatch
+permissions: {}
 jobs:
-  deploy:
-    runs-on: ubuntu-latest
-    environment: production
+  verifica:
+    runs-on: windows-latest
+    env:
+      REPORT_KIND: ${{ vars.REPORT_KIND || 'anteprima' }}
     steps:
-      - uses: actions/checkout@v4
-      - run: ./deploy.sh
+      - name: Verifica la configurazione
+        shell: pwsh
         env:
-          DEPLOY_TOKEN: ${{ secrets.DEPLOY_TOKEN }}
-          APP_ENV: ${{ vars.APP_ENV }}
+          REPORT_TOKEN: ${{ secrets.REPORT_TOKEN }}
+        run: |
+          Write-Output "Tipo di report: $env:REPORT_KIND"
+          if ([string]::IsNullOrEmpty($env:REPORT_TOKEN)) {
+            Write-Output 'Credenziale non disponibile'
+          } else {
+            Write-Output 'Credenziale disponibile'
+          }
 ```
 
-Qui `DEPLOY_TOKEN` e segreto. `APP_ENV` e configurazione non sensibile.
+## Se un secret risulta vuoto
 
-## Varianti
+Controlla nome, ambito e **evento** prima di rigenerarlo. I secret di un environment richiedono che il job dichiari quell’environment e rispetti le sue eventuali protezioni. Nei normali workflow `pull_request` da fork pubblici i secret del repository non vengono passati; `GITHUB_TOKEN` è un caso distinto, normalmente di sola lettura in quel contesto.
 
-- **Repository secrets**: validi per un repository.
-- **Organization secrets**: condivisi tra repository autorizzati.
-- **Environment secrets**: legati a un ambiente come staging o production.
-- **Repository variables**: configurazione non sensibile.
-- **Environment variables**: valori disponibili durante il job.
-- **OIDC**: alternativa a secret statici per cloud provider compatibili.
+Non leggere `secrets.NOME` direttamente in una condizione `if` di Actions: mappalo nell’ambiente del job o controllane la presenza nella shell dello step, come sopra. Se l’operazione richiede davvero la credenziale, interrompila quando manca: nell’esempio si prosegue solo perché è una diagnosi.
 
-## Errori comuni
+## Errori da evitare
 
-- Usare secrets per valori non sensibili e rendere tutto opaco.
-- Usare variables per credenziali.
-- Stampare secret nei log.
-- Passare secret ad action terze non fidate.
-- Dare secrets a workflow attivati da contesti non sicuri.
-- Non ruotare secret dopo un leak.
+Se una credenziale reale compare nei log, revocala o ruotala presso il servizio che l’ha emessa e aggiorna il secret nei repository autorizzati. Cancellare la riga di log non invalida una copia già letta.
 
-## Checklist
-
-- I valori sensibili sono secrets, non variables?
-- I secret sono disponibili solo dove servono?
-- I workflow da fork non ricevono credenziali rischiose?
-- Le action che ricevono secret sono fidate?
-- I secret hanno nomi chiari?
-- Esiste rotazione o revoca per secret critici?
+Non stampare l’intero ambiente e non affidarti al mascheramento dei log per rendere sicuro l’output. Per operazioni sul repository valuta il `GITHUB_TOKEN` con i permessi strettamente necessari; per un provider cloud che lo supporta valuta OIDC, evitando di conservare una chiave di lunga durata.
 
 ## Collegamenti
 
@@ -135,5 +86,7 @@ Qui `DEPLOY_TOKEN` e segreto. `APP_ENV` e configurazione non sensibile.
 
 ## Fonti
 
-- [GitHub Docs - Variables](https://docs.github.com/en/actions/concepts/workflows-and-actions/variables)
-- [GitHub Docs - Use secrets](https://docs.github.com/en/actions/how-tos/write-workflows/choose-what-workflows-do/use-secrets)
+- [GitHub Docs - Variabili di configurazione e ambiente](https://docs.github.com/en/actions/concepts/workflows-and-actions/variables)
+- [GitHub Docs - Uso dei secret e restrizioni](https://docs.github.com/en/actions/how-tos/write-workflows/choose-what-workflows-do/use-secrets)
+- [GitHub Docs - GITHUB_ENV e step successivi](https://docs.github.com/en/actions/reference/workflows-and-actions/workflow-commands)
+- [GitHub Docs - Contesti disponibili](https://docs.github.com/en/actions/reference/workflows-and-actions/contexts)

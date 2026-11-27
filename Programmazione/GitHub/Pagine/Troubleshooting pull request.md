@@ -28,85 +28,48 @@ title: Troubleshooting pull request
 
 ## Obiettivo
 
-Diagnosticare perche una pull request non si apre, non viene revisionata, non passa i controlli o non puo essere mergiata.
+Capire se manca **qualcosa da proporre**, se Git non riesce a combinare i branch oppure se GitHub attende un requisito di merge. Aggiornare o riscrivere il branch non risolve una review mancante.
 
-La regola pratica e separare il problema in categorie: branch, permessi, conflitti, CI, review, branch protection o descrizione insufficiente.
+## La PR non si apre o mostra i file sbagliati
 
-## Quando usarlo
+Prima di cambiare il branch, controllare nella schermata di confronto le due coppie **repository + branch**: la base riceve la modifica, la head la propone. Nei fork i nomi dei branch possono coincidere ma gli owner differire. Verificare anche se esiste già una PR per lo stesso confronto.
 
-- La PR non puo essere creata.
-- La PR punta al branch sbagliato.
-- La PR non mostra le modifiche attese.
-- La PR e bloccata da review o status check.
-- Il pulsante di merge e disabilitato.
-- I reviewer non capiscono cosa devono controllare.
-
-## Procedura
-
-1. Controlla branch base e branch head.
-2. Verifica che i branch siano diversi.
-3. Controlla se la PR arriva da fork o dallo stesso repository.
-4. Verifica permessi dell'utente.
-5. Controlla conflitti e branch protection.
-6. Controlla status check e CI.
-7. Controlla review richieste, CODEOWNERS e conversazioni aperte.
-8. Rileggi titolo, descrizione e file modificati.
-
-## Snippet
-
-Controllo branch locale:
+In un clone sul branch della modifica, con i riferimenti remoti aggiornati, confrontare l'esempio con la propria situazione. Qui `origin/main` rappresenta la base: se la base è nel progetto originale e `origin` è il proprio fork, usare invece il riferimento del remoto corretto. Elencare i commit locali non raggiungibili dalla base:
 
 ```bash
-git status
-git branch --show-current
-git remote -v
-git log --oneline --decorate -5
+git log --oneline origin/main..HEAD
 ```
 
-Aggiornare il branch con `main`:
+Vedere quali file sono cambiati rispetto all'antenato comune:
 
 ```bash
-git fetch origin
-git rebase origin/main
-git push --force-with-lease
+git diff --name-status origin/main...HEAD
 ```
 
-Alternativa con merge:
+I due comandi rispondono a domande diverse: anche con commit propri, modifiche introdotte e poi annullate possono produrre un diff vuoto. Se il diff locale è corretto ma GitHub ne mostra un altro, confrontare lo SHA di `git rev-parse HEAD` con la punta **pubblicata** del branch proposto. I file non committati e i commit non inviati non entrano nella PR. Cambiare base soltanto se il destinatario è errato e ricontrollare il diff dopo il cambio.
+
+## La PR esiste ma il merge è bloccato
+
+Con GitHub CLI autenticata, sostituire `42` e `OWNER/REPO`. Lettura dello stato, senza modifiche alla PR:
 
 ```bash
-git fetch origin
-git merge origin/main
-git push
+gh pr view 42 --repo OWNER/REPO --json baseRefName,headRefName,headRefOid,isDraft,mergeable,reviewDecision
 ```
 
-## Adattamenti comuni
+| Segnale | Controllo successivo |
+| --- | --- |
+| `mergeable: CONFLICTING` | Aprire i file segnalati e seguire [[Programmazione/GitHub/Pagine/Troubleshooting merge conflict\|la procedura per i conflitti]]. `UNKNOWN` non significa conflitto: il calcolo può non essere terminato. |
+| Nessun conflitto, ma pulsante disabilitato | Leggere il requisito vicino al pulsante: bozza, approvazione richiesta, conversazioni irrisolte, regola sulla base aggiornata o permesso di merge. Git può unire i file anche quando la policy non lo consente. |
+| Check atteso, fallito o apparentemente verde | Controllare i check richiesti sulla revisione corrente, non il deploy di un vecchio push. Un workflow saltato per filtro di percorso può lasciare il check in attesa. |
+| Review ferma | Controllare revisori richiesti e regole CODEOWNERS sulla base. Se manca contesto, indicare perché serve la modifica, ordine di lettura e test eseguiti. Cambiare la cronologia non fornisce un'approvazione. |
 
-- **PR da fork**: controlla base repository, head repository e permessi sui workflow.
-- **PR draft**: non e pronta per merge finche resta draft.
-- **PR con CODEOWNERS**: richiede reviewer specifici se configurato.
-- **PR con required checks**: non puo fare merge finche i check richiesti non passano.
-- **PR troppo grande**: dividila o aggiungi una guida alla review.
+Per isolare i check obbligatori:
 
-## Debug rapido
+```bash
+gh pr checks 42 --repo OWNER/REPO --required
+```
 
-- Se la PR non mostra modifiche, controlla se il branch e gia allineato alla base.
-- Se la PR punta al branch sbagliato, cambia base branch dalla UI.
-- Se la PR e bloccata, leggi il messaggio vicino al pulsante merge.
-- Se mancano reviewer, controlla CODEOWNERS e branch protection.
-- Se la CI non parte, controlla trigger, fork e path del workflow.
-- Se la PR e incomprensibile, migliora descrizione, screenshot e test dichiarati.
-
-## Checklist finale
-
-- Branch base corretto.
-- Branch head corretto.
-- Diff coerente.
-- Permessi sufficienti.
-- Conflitti assenti o gestiti.
-- CI e required checks verificati.
-- Review richieste completate.
-- Conversazioni risolte.
-- Descrizione aggiornata.
+Un codice di uscita `8` indica check in attesa. La diagnosi è conclusa quando si sa **quale requisito manca, su quale revisione e chi può soddisfarlo**; non è necessario eseguire il merge per verificarlo.
 
 ## Collegamenti
 
@@ -121,4 +84,7 @@ git push
 
 ## Fonti
 
-- [GitHub Docs - Creating a pull request](https://docs.github.com/en/pull-requests/collaborating-with-pull-requests/proposing-changes-to-your-work-with-pull-requests/creating-a-pull-request)
+- [GitHub CLI: leggere una PR](https://cli.github.com/manual/gh_pr_view)
+- [GitHub CLI: controllare i check](https://cli.github.com/manual/gh_pr_checks)
+- [GitHub Docs: check obbligatori in attesa](https://docs.github.com/en/pull-requests/how-tos/merge-and-close-pull-requests/troubleshooting-required-status-checks)
+- [Git: confronto dall'antenato comune](https://git-scm.com/docs/git-diff)

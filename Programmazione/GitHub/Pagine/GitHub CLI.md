@@ -27,106 +27,57 @@ title: GitHub CLI
 
 ## Sintesi
 
-**GitHub CLI** e lo strumento da terminale `gh` per interagire con GitHub. Permette di gestire repository, issue, pull request, release, workflow e autenticazione senza passare sempre dalla Web UI.
+`git` gestisce file, staging e commit; **GitHub CLI** (`gh`) ti permette di consultare o modificare risorse ospitate su GitHub, come issue, pull request, run e release. Una PR può essere letta con `gh` anche fuori dal clone se indichi il repository; controllare le modifiche **non committate** sul tuo disco resta un lavoro per Git.
 
-E utile per velocizzare operazioni frequenti e per integrare GitHub in script locali.
+## Prima di agire
 
-## Quando usarlo
-
-Usa GitHub CLI quando:
-
-- lavori spesso da terminale;
-- vuoi creare pull request senza aprire il browser;
-- devi consultare issue o PR velocemente;
-- vuoi controllare status check;
-- vuoi clonare repository in modo rapido;
-- vuoi automatizzare operazioni ripetibili.
-
-## Come funziona
-
-`gh` usa l'account GitHub autenticato e dialoga con API GitHub. Lavora bene dentro repository Git locali per capire automaticamente owner, repository, branch e pull request corrente.
-
-Le aree principali sono:
-
-- `gh auth`: autenticazione;
-- `gh repo`: repository;
-- `gh issue`: issue;
-- `gh pr`: pull request;
-- `gh run`: workflow run;
-- `gh release`: release.
-
-## API / Sintassi
-
-Autenticazione:
+Con la CLI installata, consulta l’help anche senza account:
 
 ```bash
-gh auth login
-gh auth status
+gh pr view --help
 ```
 
-Repository:
+Per iniziare una sessione personale usa `gh auth login`. Per verificare quale account è attivo su GitHub.com, senza chiedere di mostrare il token:
 
 ```bash
-gh repo view
-gh repo clone owner/repository
-gh repo create nome-repository
+gh auth status --hostname github.com
 ```
 
-Pull request:
+Nel clone la CLI può ricavare il repository dai remoti; fuori dal clone o con più fork è preferibile `--repo OWNER/REPO`. L’account di `gh`, l’autore dei commit e la credenziale usata da `git push` sono tre cose distinte.
+
+## Esempio: controllare una PR senza modificarla
+
+Sostituisci `OWNER/REPO` e `34`. Gli esempi leggono dati dal servizio: non fanno checkout, non eseguono test e non cambiano branch.
+
+Leggi base, head e stato della bozza in un formato utilizzabile anche da uno script:
 
 ```bash
-gh pr create
-gh pr status
-gh pr checks
-gh pr checkout 123
+gh pr view 34 --repo OWNER/REPO --json number,title,baseRefName,headRefName,isDraft
 ```
 
-Issue:
+Controlla i check richiesti per il merge:
 
 ```bash
-gh issue list
-gh issue create
-gh issue view 12
+gh pr checks 34 --repo OWNER/REPO --required
 ```
 
-## Esempio pratico
+Senza `--required` vedi anche gli altri check. Per `gh pr checks` il codice di uscita `8` indica check in attesa: uno script non dovrebbe registrarlo come «test falliti». Nessun check richiesto non significa che la modifica sia stata testata.
 
-Creare una pull request dal branch corrente:
+## Scegliere il comando
+
+| Scopo | Lettura | Operazione con effetti |
+| --- | --- | --- |
+| Repository | `gh repo view` | `gh repo clone` scrive un clone sul disco; `gh repo create` crea un repository su GitHub. |
+| Issue e PR | `gh issue list`, `gh issue view 12`, `gh pr status` | `gh issue create` e `gh pr create` pubblicano; `gh pr checkout 34` cambia il clone locale. |
+| Run e release | `gh run list`, `gh release list` | Rilanciare un run o creare una release cambia lo stato sul server. |
+
+Per aprire una PR, parti da un branch già pubblicato e verifica base e head. Esempio per due branch nello stesso repository:
 
 ```bash
-git switch -c feature/export-csv
-git add .
-git commit -m "Aggiunge export CSV"
-git push -u origin feature/export-csv
-gh pr create --base main --fill
+gh pr create --repo OWNER/REPO --base main --head fix/export-vuoto --fill
 ```
 
-`--fill` usa dati dei commit per precompilare titolo e descrizione. Conviene comunque controllare e migliorare il testo.
-
-## Varianti
-
-- **Uso interattivo**: `gh pr create` guida tramite prompt.
-- **Uso scriptabile**: flag espliciti per automazioni.
-- **Uso con editor**: apre testo di PR o issue nell'editor configurato.
-- **Uso con API**: `gh api` permette chiamate dirette alle API GitHub.
-- **Uso in CI**: possibile, ma richiede token e permessi corretti.
-
-## Errori comuni
-
-- Usare `gh` senza controllare quale account e autenticato.
-- Creare PR con descrizioni generate automaticamente ma poco chiare.
-- Confondere `gh` con `git`: uno parla con GitHub, l'altro gestisce Git.
-- Usare token troppo permissivi per automazioni.
-- Eseguire comandi nel repository locale sbagliato.
-
-## Checklist
-
-- `gh auth status` mostra l'account corretto?
-- Sei nella cartella del repository giusto?
-- Il branch corrente e quello della modifica?
-- La PR ha base e head corretti?
-- I comandi scriptati usano permessi minimi?
-- Hai verificato l'output prima di procedere?
+`--fill` ricava titolo e descrizione dai commit: **non** è un’anteprima e non garantisce che il testo spieghi problema e verifiche. Per scrivere la descrizione interattivamente ometti `--fill`. Negli script usa output strutturato, permessi minimi e un token fornito dall’ambiente (per esempio `GH_TOKEN` in CI), mai dal codice o dai log. Per operazioni non coperte dai sottocomandi esiste `gh api`.
 
 ## Collegamenti
 
@@ -139,3 +90,7 @@ gh pr create --base main --fill
 ## Fonti
 
 - [GitHub CLI Manual](https://cli.github.com/manual/)
+- [GitHub CLI: campi strutturati di una PR](https://cli.github.com/manual/gh_pr_view)
+- [GitHub CLI: stato e codici di uscita dei check](https://cli.github.com/manual/gh_pr_checks)
+- [GitHub CLI: creare una pull request](https://cli.github.com/manual/gh_pr_create)
+- [GitHub CLI: variabili d’ambiente e autenticazione](https://cli.github.com/manual/gh_help_environment)

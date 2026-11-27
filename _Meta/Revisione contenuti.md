@@ -7993,3 +7993,127 @@ Prossimo blocco: [[Programmazione/Rust/Promemoria/Indice Promemoria Rust|Promemo
 - Aggiunte fonti Git, GitHub CLI e GitHub Docs accanto agli approfondimenti. Distinti indice e working tree, branch locale e remoto, tag e release, assegnazione dei code owner e approvazione obbligatoria. Aggiunta la procedura per inserire un’issue in un Project.
 - Quattro prove Git in un repository temporaneo: due versioni dello stesso file, diff dalla base comune, intervallo di revert senza commit e tag annotato. Analizzati dal parser PowerShell tutti i 130 blocchi di comandi delle nove schede. Per GitHub CLI e impostazioni del servizio: verifica documentale, senza uso di credenziali e senza operazioni remote.
 - Il rapporto editoriale scende da 20 a **11 avvisi**: sette promemoria Rust e quattro schede open source ancora senza fonti web esplicite. Nessun errore strutturale; approvazione personale invariata.
+
+## 2026-11-26 - Rust: fonti dei sette promemoria sul linguaggio
+
+- Aggiunti 19 riferimenti al Rust Book, alla Rust Reference e alla libreria standard nelle sette schede della sezione Linguaggio dell’[[Programmazione/Rust/Promemoria/Indice Promemoria Rust|indice dei promemoria Rust]]. Snippet, collegamenti alla teoria e stato di approvazione invariati.
+- Eseguita la suite `rust-promemoria-linguaggio.test.mjs` con Rust 1.100.0, edition 2024: **18/18** prove sull’intera suite, inclusi tutti i **33 blocchi Rust** delle sette note interessate.
+- Il rapporto passa da 11 a **4 avvisi**, tutti relativi a fonti assenti nelle schede di programmi open source. Nessun errore strutturale e 911/911 documenti raggiungibili.
+
+## 2026-11-27 - Programmi open source: Aider, Bruno, MusicBrainz Picard e OpenSCAD
+
+- Integrati 12 riferimenti ufficiali nelle quattro schede segnalate del [[Programmi open source/Indice Programmi Open Source|catalogo open source]]. Chiariti i commit automatici di Aider, le asserzioni e i segreti di Bruno, e la scelta tra ricerca per tag e impronta acustica in Picard.
+- Eseguito lo script della rondella con OpenSCAD 2021.01. Esportati e controllati due STL: fori da 8 e 12, diametro esterno 30 e altezza 10 in entrambi i casi; mesh chiuse. Nessuna stampa fisica. Aider, Bruno e Picard: verifica documentale, senza inviare codice a un modello, chiamare un servizio o modificare file audio.
+- Rapporto editoriale da quattro a **zero avvisi**, 911/911 documenti raggiungibili e nessun errore strutturale. Superati i nove test di trasformazione. Lo stato di approvazione personale non cambia.
+
+## 2026-11-27 - GitHub: Fondamenti di GitHub
+
+- Revisionate tutte le sette note del primo capitolo dell’[[Programmazione/GitHub/Indice GitHub|indice GitHub]]: piattaforma, Git e GitHub, account e profilo, repository, clone/fork/template, remoti, README/licenza/gitignore. Chiariti autore e autenticazione, scelta della storia di partenza, tracciamento dei branch e limiti di `.gitignore`.
+- **4/4** prove in `_Meta/tests/github-fondamenti.test.mjs`: Git reale, repository temporanei, nessuna rete. Verificati identità locale e commit già esistenti, staging e push selettivo, fetch senza integrazione, fast-forward e divergenza, rimozione dall’indice senza perdita del file o della storia. I due remoti simulano i ruoli di originale e fork, non una relazione creata su GitHub. Profili, template, autorizzazioni e PR verificati sui manuali, non su un account reale.
+- **9/9** test di trasformazione; 911/911 documenti raggiungibili, nessun errore o avviso editoriale. Riscontrati nei sette HTML i 36 blocchi e i 20 riferimenti delle fonti.
+- Avanzamento: **7/99** note principali e **9/15** promemoria; restano **92 principali e 6 promemoria**. Prossimo capitolo: **Flusso di lavoro base**, da [[Programmazione/GitHub/Pagine/Branch su GitHub|Branch su GitHub]]. Approvazione personale invariata.
+
+## 2026-11-27 - GitHub: Flusso di lavoro base
+
+- Revisionate le sette note del capitolo: branch, commit e cronologia, pull request, review, metodi di merge, issue, label/milestone/assignee. Il caso di un report CSV vuoto collega segnalazione, branch, proposta, verifica e integrazione.
+- **5/5** prove in `_Meta/tests/github-flusso-base.test.mjs`, su repository temporanei: base comune del diff, snapshot dello staging e amend, merge a due genitori, squash senza avanzamento immediato di HEAD, rebase su base divergente seguito da fast-forward. Il riferimento remoto del nuovo gruppo è locale e predisposto per il test. Rieseguita anche la suite Fondamenti: **4/4**; per i trasferimenti su disco è stata necessaria la shell di Git for Windows fuori dal sandbox.
+- Stati della review, regole di chiusura delle issue e comandi GitHub CLI verificati sui manuali; nessuna PR o issue reale creata o modificata. Superati i **9/9** test di trasformazione; 911/911 documenti raggiungibili, nessun errore o avviso editoriale. Nei sette HTML coincidono i 36 blocchi di esempio e i 19 riferimenti delle fonti.
+- Avanzamento: **14/99** note principali e **9/15** promemoria; restano **85 principali e 6 promemoria**. Prossimo capitolo: **Interfaccia e strumenti**, da [[Programmazione/GitHub/Pagine/GitHub Web UI|GitHub Web UI]]. Stato di approvazione personale invariato.
+
+## 2026-11-27 - GitHub: Interfaccia e strumenti
+
+- Revisionate le sei note su Web UI, CLI, Desktop, ricerca codice, notifiche e Markdown. Il workflow Quartz del vault è l’esempio per distinguere un nome di file, il suo contenuto a un commit preciso e l’esito di una sua esecuzione. Nella inbox si cercano notifiche, mentre nelle PR si cerca chi deve ancora fare review.
+- **4/4** prove locali in `_Meta/tests/github-interfaccia.test.mjs`: commit selettivo, ricerca in HEAD rispetto ai file tracciati sul disco e lettura a SHA fissato, regex per il nome esatto del manifesto, lettura di tabella, codice annidato e checklist con il parser GFM. Interfacce e comandi remoti verificati sui manuali ufficiali: nessuna sessione autenticata e nessuna operazione su GitHub.
+- **9/9** test di trasformazione; 911/911 documenti raggiungibili, nessun errore o avviso editoriale. Build Quartz: nei sei HTML sono presenti i 17 blocchi e i 22 riferimenti delle fonti.
+- Percorso Base terminato: **20/99** note principali e **9/15** promemoria. Restano **79 principali e 6 promemoria**. Prossimo capitolo: **Collaborazione e project management**, da [[Programmazione/GitHub/Pagine/GitHub Projects|GitHub Projects]]. Approvazione personale invariata.
+
+## 2026-11-27 - GitHub: Collaborazione e project management
+
+- Revisionate tutte le sette note del capitolo: Projects, Discussions, template per issue e PR, CODEOWNERS, Conventional Commits, strategie di branch e monorepo. Un caso di export CSV collega pianificazione, segnalazione, review e compatibilità. Distinti il proprietario del Project dal repository collegato, la creazione di un’issue dalla conversione della conversazione e la richiesta di review dal requisito per il merge.
+- **4/4** prove in `_Meta/tests/github-collaborazione.test.mjs`: struttura del modulo YAML, messaggio completo con footer di migrazione, fetch da bundle e branch senza upstream implicito, diff dalla base comune in un monorepo. Automazioni di Projects, permessi, moduli web e richieste ai code owner verificati sulla documentazione ufficiale; nessuna operazione remota.
+- **9/9** test di trasformazione; 911/911 documenti raggiungibili, nessun errore o avviso editoriale. Nei sette HTML sono presenti i 12 blocchi di esempio e i 25 riferimenti delle fonti.
+- Avanzamento: **27/99** note principali e **9/15** promemoria. Restano **72 principali e 6 promemoria**. Prossimo capitolo: **Protezione del repository**, da [[Programmazione/GitHub/Pagine/Branch protection rules|Branch protection rules]]. Approvazione personale invariata.
+
+## 2026-11-27 - GitHub: Protezione del repository
+
+- Revisionate le sette note su branch protection, ruleset, required status checks, tag protetti, impostazioni, ruoli e team. Corrette la falsa equivalenza tra firma del commit e del tag, l’assegnazione di Write per sottocartella e l’idea che basti il nome di un comando di test per richiederlo al merge. Il workflow Quartz del vault illustra la distinzione tra deploy e verifica della PR.
+- **3/3** prove locali in `_Meta/tests/github-protezione.test.mjs`: comando del check su commit con README valido, vuoto o mancante; tag annotato e leggero; corrispondenza dell’esempio Pages con il workflow versionato. Nessun push, nessuna modifica a protezioni o credenziali. Ruoli, regole e comandi GitHub CLI verificati sulle fonti ufficiali, non su un account autenticato.
+- **9/9** test di trasformazione; 911/911 documenti raggiungibili, nessun errore o avviso editoriale. Nei sette HTML sono presenti gli 11 blocchi di esempio e i 26 riferimenti delle fonti.
+- Avanzamento: **34/99** note principali e **9/15** promemoria; restano **65 principali e 6 promemoria**. Prossimo capitolo: **Sicurezza e supply chain**, da [[Programmazione/GitHub/Pagine/Dependabot|Dependabot]]. Approvazione personale invariata.
+
+## 2026-11-27 - GitHub: Sicurezza e supply chain
+
+- Revisionate le sette note su Dependabot, dependency graph, code scanning, secret scanning, advisory, SBOM e attestazioni, sicurezza dei token. Gli esempi distinguono una dipendenza del generatore da un componente distribuito, un job completato da un risultato senza alert e la provenienza di un archivio dal suo inventario.
+- **5/5** prove locali in `_Meta/tests/github-supply-chain.test.mjs`: configurazione didattica di Dependabot sui percorsi del vault, catena npm diretta e transitiva, struttura del workflow CodeQL, regole di ignore su file fittizi tracciati e non tracciati, permessi di sola lettura nel job per le issue. Eseguiti anche i due comandi npm della nota. Scansioni, token del servizio, segnalazione privata e verifica crittografica remota controllati sui manuali, non eseguiti su GitHub.
+- **9/9** test di trasformazione; 911/911 documenti raggiungibili, nessun errore o avviso editoriale. Nei sette HTML sono presenti gli 11 blocchi di esempio e i 25 riferimenti delle fonti.
+- Percorso Intermedio terminato: **41/99** note principali e **9/15** promemoria. Restano **58 principali e 6 promemoria**. Prossimo capitolo: **Fondamenti GitHub Actions**, da [[Programmazione/GitHub/Pagine/GitHub Actions|GitHub Actions]]. Approvazione personale invariata.
+
+## 2026-11-27 - GitHub: Fondamenti GitHub Actions
+
+- Revisionate le sette note del capitolo. Il deploy Quartz del repository è il caso reale: un push su `main` o un avvio manuale genera il sito e il job successivo pubblica l’artifact. L’esempio di CI su PR è separato: usa il lockfile di `site/`, verifica le note e non distribuisce nulla.
+- **6/6** prove locali in `_Meta/tests/github-actions-fondamenti.test.mjs`: confronto con il workflow versionato, directory npm, filtri dei trigger e SHA di checkout, output tra job, verifica della home e presenza o assenza di un secret fittizio. Gli script PowerShell sono stati eseguiti; i trigger, il provisioning dei runner e le autorizzazioni del servizio non sono stati simulati. Nessun workflow remoto avviato o modificato.
+- **9/9** test di trasformazione; 911/911 documenti raggiungibili, nessun errore o avviso editoriale. Nei sette HTML verificati gli otto blocchi di esempio coincidono con i Markdown e sono presenti i 23 riferimenti delle sezioni Fonti.
+- Avanzamento: **48/99** note principali e **9/15** promemoria. Restano **51 principali e 6 promemoria**. Prossimo capitolo: **CI con GitHub Actions**, da [[Programmazione/GitHub/Pagine/Pipeline CI GitHub Actions|Pipeline CI GitHub Actions]]. Approvazione personale invariata.
+
+## 2026-11-27 - GitHub: CI con GitHub Actions
+
+- Revisionate le sette note del capitolo: pipeline su PR, test/lint/build, matrix, cache, artifact, service container e permessi. Riparati quattro campi `related` che dividevano un unico titolo alla virgola. Distinti la validazione del vault dal lint del generatore, il fallback di cache dall’installazione e l’identità OIDC dal ruolo presso il provider.
+- **6/6** prove in `_Meta/tests/github-actions-ci.test.mjs`: la CI usa gli script del manifesto, le combinazioni della matrix sono quattro, la cache usa il lockfile del vault, il reporter JUnit conserva anche l’esito rosso, client e servizio PostgreSQL sono configurati sulla stessa rete, Git distingue un file tracciato da uno solo presente su disco. Eseguiti reporter e comando Git; non avviati container, runner GitHub o trasferimenti di artifact.
+- **9/9** test di trasformazione; 911/911 documenti raggiungibili, nessun errore o avviso editoriale. Nei sette HTML sono presenti i nove blocchi di esempio e i 22 riferimenti delle fonti.
+- Avanzamento: **55/99** note principali e **9/15** promemoria. Restano **44 principali e 6 promemoria**. Prossimo capitolo: **CD, release e deploy**, da [[Programmazione/GitHub/Pagine/Deploy con GitHub Actions|Deploy con GitHub Actions]]. Approvazione personale invariata.
+
+## 2026-11-27 - GitHub: CD, release e deploy
+
+- Revisionate le sette note su deploy, environment, approvazioni, release, Pages, Packages e OIDC. Il caso Pages usa il workflow reale e il percorso `site/public`; gli altri esempi distinguono le regole impostate sul servizio da ciò che dichiara il YAML. Chiariti l’effetto di una bozza di release, l’ambito npm, la differenza tra audience, soggetto OIDC e privilegi del ruolo.
+- **6/6** prove locali in `_Meta/tests/github-actions-cd.test.mjs`: home mancante/vuota, configurazione di staging, archivio della revisione committata, corrispondenza dei due estratti Pages, contenuto del package con npm in modalità offline, confronto di condizioni OIDC con valori fittizi. Nessuna release creata, nessun package inviato e nessuna autenticazione cloud; le regole di review sono documentate, non provate su un account.
+- **9/9** test di trasformazione; 911/911 documenti raggiungibili, nessun errore o avviso editoriale. Nei sette HTML gli 11 blocchi di esempio coincidono con i Markdown e sono presenti i 22 riferimenti delle sezioni Fonti.
+- Avanzamento: **62/99** note principali e **9/15** promemoria. Restano **37 principali e 6 promemoria**. Prossimo capitolo: **Actions avanzato**, da [[Programmazione/GitHub/Pagine/Reusable workflows|Reusable workflows]]. Approvazione personale invariata.
+
+## 2026-11-27 - GitHub: Actions avanzato
+
+- Revisionate tutte le sette note: chiamata di workflow a livello di job e di composite a livello di step, runner self-hosted e gruppi, concorrenza, dispatch e cron, debug, costi e limiti. Il gruppo Pages del vault spiega perché proteggere il run attivo non implica pubblicare ogni push. L’esempio di matrix distingue tempo trascorso, lavoro dei runner e importo fatturato.
+- **7/7** prove in `_Meta/tests/github-actions-avanzato.test.mjs`: interfaccia dei due workflow, output e soglia della composite, etichetta e gruppo del runner, confronto con la concorrenza del deploy, orario di Roma in inverno ed estate, log mirati e assenza del lockfile, calcolo dei minuti. Eseguiti gli step PowerShell; non simulati accodamento remoto, scheduler GitHub, fatturazione o compilatore embedded.
+- **9/9** test di trasformazione; 911/911 documenti raggiungibili, nessun errore o avviso editoriale. Nei sette HTML coincidono con i Markdown i 15 blocchi di esempio e sono presenti i 21 riferimenti delle sezioni Fonti.
+- Completata la sezione **GitHub Actions** dell’indice. Avanzamento: **69/99** note principali e **9/15** promemoria; restano **30 principali e 6 promemoria**. Prossimo capitolo: **API e automazione**, da [[Programmazione/GitHub/Pagine/GitHub REST API|GitHub REST API]]. Approvazione personale invariata.
+
+## 2026-11-27 - GitHub: API e automazione
+
+- Revisionate le sette note del capitolo con un caso di triage comune: REST distingue issue e PR nelle pagine; GraphQL espone cursori ed errori parziali; la ricezione del webhook è distinta dalle scritture API. Separati anche autenticazione dell’App, accesso dell’installazione, token personali e permesso minimo per aggiungere una label.
+- **6/6** prove in `_Meta/tests/github-api-automazione.test.mjs`. Eseguiti il report su pagine REST locali, la verifica HMAC sul vettore ufficiale GitHub e la classificazione dei file di PR, compresa una rinomina tra aree. Controllati staticamente query GraphQL, comandi CLI, trigger e permessi. Nessun account, token reale, webhook o repository remoto utilizzato per i test.
+- **9/9** test di trasformazione; 911/911 documenti raggiungibili, nessun errore o avviso editoriale. Nei sette HTML coincidono i 12 blocchi di esempio e sono presenti i 27 riferimenti delle sezioni Fonti.
+- Avanzamento: **76/99** note principali e **9/15** promemoria; restano **23 principali e 6 promemoria**. Prossimo capitolo: **Governance e manutenzione**, da [[Programmazione/GitHub/Pagine/Governance repository GitHub|Governance repository GitHub]]. Approvazione personale invariata.
+
+## 2026-11-27 - GitHub: governance e manutenzione
+
+- Revisionate le sette note del capitolo. Distinti regole scritte e controlli obbligatori, archiviazione e backup, trasferimento e mirror, tag e release, template copiati e file di community predefiniti. Corretto l'esempio SemVer che rimuoveva una configurazione pubblica in una release minore.
+- **7/7** prove in `_Meta/tests/github-governance.test.mjs`: branch integrato con squash, file ignorati e tracciati, ripristino da bundle, simulazione di cancellazione con mirror, tag annotato, trigger Pages, comandi CLI ed esempio YAML. Solo Git locale e controlli statici; nessuna archiviazione, migrazione o release su GitHub.
+- **9/9** test di trasformazione; **911/911** documenti raggiungibili, nessun errore o avviso editoriale. Nei sette HTML verificati i 20 blocchi di esempio e i 30 riferimenti nelle sezioni Fonti.
+- Completato il **Percorso avanzato**. Avanzamento: **83/99** note principali e **9/15** promemoria; restano **16 principali e 6 promemoria**. Prossimo blocco: **Procedure pratiche**, da [[Programmazione/GitHub/Pagine/Creare un repository GitHub|Creare un repository GitHub]]. Approvazione personale invariata.
+
+## 2026-11-27 - GitHub: procedure pratiche
+
+- Revisionate le sei procedure. Separati creazione con README e primo push di una cronologia esistente, base e head della PR, check richiesto e deploy Pages. La procedura CI usa l'esempio completo già presente e ripara il riferimento YAML spezzato; quella sui secret distingue presenza, autorizzazione e revoca.
+- **6/6** prove in `_Meta/tests/github-procedure-pratiche.test.mjs`: primo push verso un repository temporaneo, confronto a tre punti con base avanzata, coerenza tra job e check, trigger e comandi CI, corrispondenza con il deploy Quartz, esecuzione dello step PowerShell con valore assente, vuoto o fittizio. Nessuna operazione sull'account o sui repository GitHub.
+- **9/9** test di trasformazione; **911/911** documenti raggiungibili senza errori o avvisi editoriali. Nei sei HTML controllati 24 blocchi di esempio e 19 riferimenti nelle sezioni Fonti.
+- Avanzamento: **89/99** note principali e **9/15** promemoria; restano **10 principali e 6 promemoria**. Prossimo blocco: le cinque **Checklist**, da [[Programmazione/GitHub/Pagine/Checklist repository GitHub|Checklist repository GitHub]]. Approvazione personale invariata.
+
+## 2026-11-27 - GitHub: checklist
+
+- Revisionate le cinque checklist su repository, pull request, sicurezza, Actions e release. Le verifiche distinguono account corrente e accessi complessivi, review e check, copertura degli alert, run attivo e in attesa, commit e oggetto tag. Il comando di release crea una bozza solo su tag esistente; rimosso un prerequisito YAML duplicato.
+- **5/5** prove in `_Meta/tests/github-checklist.test.mjs`: differenza tra indice e cronologia con un file fittizio rimosso, lettura di tag assenti, leggeri e annotati in repository locali, confronto con il workflow Pages e verifica statica dei comandi GitHub CLI. Nessun account utilizzato e nessuna release creata.
+- **9/9** test di trasformazione; **911/911** documenti raggiungibili senza errori o avvisi editoriali. Nei cinque HTML verificate 28 caselle, 10 blocchi di esempio e 17 riferimenti nelle sezioni Fonti.
+- Avanzamento: **94/99** note principali e **9/15** promemoria; restano **5 note di troubleshooting e 6 promemoria**. Prossima pagina: [[Programmazione/GitHub/Pagine/Troubleshooting pull request|Troubleshooting pull request]]. Approvazione personale invariata.
+
+## 2026-11-27 - GitHub: troubleshooting e chiusura delle note principali
+
+- Revisionate le cinque note finali. Distinti PR senza diff e merge bloccato, risoluzione di merge e rebase, job assente e job saltato, tentativo precedente e nuovo SHA, permessi del job e autorizzazione esterna. Corretta la diagnosi dei secret: il nome GitHub non distingue maiuscole e minuscole, il valore non va stampato e un controllo di presenza non verifica l'accesso al servizio.
+- **5/5** prove in `_Meta/tests/github-troubleshooting.test.mjs`. Verificati con Git locale commit aggiuntivi senza differenza finale, conflitto, annullamento, marcatori nell'indice e risoluzione; eseguito lo step PowerShell con valori assenti o fittizi. Controlli statici sui comandi CLI, il workflow Pages e i permessi. Nessuna operazione sull'account GitHub.
+- Regressione complessiva GitHub: **79/79** prove, nessuna saltata. **9/9** test di trasformazione; **911/911** documenti raggiungibili, nessun errore o avviso editoriale. Nei cinque HTML verificati 13 blocchi di esempio e 16 riferimenti nelle sezioni Fonti.
+- **99/99 note principali** e **9/15 promemoria**. I sei rimanenti nell'[[Programmazione/GitHub/Promemoria/Indice Promemoria GitHub|indice dei promemoria]] sono Repository e remote, Workflow Actions di base, Trigger/espressioni/permessi, Job/matrix/cache/artifact, Secrets/environments/OIDC e Sicurezza repository. Approvazione personale invariata.
+
+## 2026-11-27 - GitHub: ultimi sei promemoria e chiusura dell'area
+
+- Revisionati Repository e remote, i quattro promemoria Actions e Sicurezza repository. Separati comandi locali e operazioni remote, workflow interi e frammenti, dipendenze tra job e trasferimento di file, permessi GitHub e autorizzazione cloud. Corretti il percorso npm per Dependabot, le condizioni YAML duplicate e il riferimento immutabile di esempio.
+- **6/6** prove in `_Meta/tests/github-promemoria.test.mjs`. Eseguiti i cambi di configurazione dei remote in un clone temporaneo, la generazione del report TAP e lo step di presenza con valori assenti o fittizi. Le combinazioni della matrix, i trigger, la cache, gli artifact, i permessi e Dependabot sono stati controllati come configurazione, senza avviare workflow o deploy su GitHub.
+- **85/85** prove complessive GitHub e **9/9** test di trasformazione. **911/911** documenti raggiungibili senza errori o avvisi editoriali. Nei sei HTML aggiornati verificati 34 blocchi di esempio e 20 riferimenti nelle sezioni Fonti.
+- Confrontati i due indici con i file nelle rispettive cartelle: **99/99 note principali e 15/15 promemoria**. Nessuna scheda GitHub residua in questa passata; nessun percorso spostato. L'approvazione personale resta distinta.

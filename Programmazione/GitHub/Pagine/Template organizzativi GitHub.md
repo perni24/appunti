@@ -28,110 +28,57 @@ title: Template organizzativi GitHub
 
 ## Sintesi
 
-I **template organizzativi GitHub** standardizzano file e configurazioni comuni tra repository. Possono essere template repository, default community health files nel repository `.github`, issue template, pull request template, CODEOWNERS e file di sicurezza.
+Per condividere una base tra repository, distinguere **ciò che va copiato una volta** da **ciò che GitHub deve mostrare come default nel tempo**. Un template di progetto fa la prima cosa; il repository pubblico speciale `ORG/.github` fa la seconda per un elenco preciso di file della community.
 
-Servono a evitare che ogni repository reinventa struttura, checklist e policy.
+## Scegliere il meccanismo
 
-## Quando usarlo
+| Necessità | Dove mettere il file | Cosa succede dopo |
+| --- | --- | --- |
+| Avviare ogni servizio con codice, README, test e CI | Repository contrassegnato come **Template repository** | Il nuovo repository parte da una copia con una nuova storia. Le modifiche future al template non si propagano. |
+| Usare la stessa guida ai contributi, policy di sicurezza o modello di PR | Repository pubblico `ORG/.github`, nei percorsi supportati per il file | GitHub mostra il default dove il progetto non ha il proprio file supportato. Il default non viene aggiunto al clone. |
+| Assegnare reviewer o distribuire una licenza | `CODEOWNERS` e `LICENSE` nel singolo progetto, eventualmente copiati dal template | **Non** sono default ereditati dal repository `ORG/.github`. I file copiati vanno aggiornati nei singoli progetti. |
 
-Usali quando:
+Generare un repository da un template **non è un fork**: non si eredita la cronologia del progetto modello. Per impostazione predefinita si copia il branch predefinito; se si includono anche gli altri branch, le loro storie nel nuovo repository non sono correlate.
 
-- un'organizzazione crea molti repository simili;
-- vuoi README, CONTRIBUTING o SECURITY coerenti;
-- vuoi template issue e PR comuni;
-- vuoi standardizzare configurazioni iniziali;
-- vuoi ridurre lavoro manuale nei nuovi repository;
-- vuoi separare default organizzativi e personalizzazioni per repository.
+## Esempio: un modulo per segnalare errori nelle note
 
-## Come funziona
-
-GitHub supporta due pattern principali:
-
-- **template repository**: repository usato come base per crearne altri;
-- **repository `.github`**: contiene file di community default usati dai repository che non ne hanno uno proprio.
-
-Il repository `.github` puo fornire file come:
-
-- `CODE_OF_CONDUCT.md`;
-- `CONTRIBUTING.md`;
-- `SECURITY.md`;
-- issue template;
-- pull request template;
-- funding e support files.
-
-I repository possono sovrascrivere i default aggiungendo file specifici.
-
-## API / Sintassi
-
-Struttura tipica del repository `.github`:
+Nel repository **pubblico chiamato `.github`** dell'organizzazione, usare questa struttura. La prima riga rappresenta il repository; la directory `.github/` al suo interno non è un refuso:
 
 ```text
-.github/
+ORG/.github/
   CONTRIBUTING.md
-  CODE_OF_CONDUCT.md
   SECURITY.md
-  ISSUE_TEMPLATE/
-    bug_report.yml
-    feature_request.yml
-  pull_request_template.md
+  .github/
+    ISSUE_TEMPLATE/
+      correzione.yml
+    pull_request_template.md
 ```
 
-Template repository:
+Contenuto di `.github/ISSUE_TEMPLATE/correzione.yml` sul branch predefinito:
 
-```text
-template-node-service/
-  README.md
-  .github/workflows/ci.yml
-  .gitignore
-  src/
-  tests/
+```yaml
+name: Correzione di una nota
+description: Segnala un punto impreciso o un esempio errato.
+body:
+  - type: input
+    id: percorso
+    attributes:
+      label: Percorso della nota
+    validations:
+      required: true
 ```
 
-## Esempio pratico
+Aprire **New issue** in un repository dell'organizzazione con le issue abilitate e senza template locali: il modulo dovrebbe comparire. Se la directory locale `.github/ISSUE_TEMPLATE/` contiene un file supportato, anche solo `config.yml`, GitHub non combina i due insiemi: usa la configurazione locale, non i template organizzativi.
 
-Organizzazione con molti servizi:
+## Esempio: una base tecnica per nuovi servizi
 
-```text
-org/.github
-  SECURITY.md comune
-  CONTRIBUTING.md comune
-  issue template comuni
-
-org/template-api-service
-  CI base
-  Dockerfile
-  README iniziale
-  struttura cartelle
-```
-
-Il primo standardizza policy. Il secondo accelera la creazione di nuovi progetti.
-
-## Varianti
-
-- **Repository `.github`**: default organizzativi.
-- **Template repository**: base tecnica per nuovi repository.
-- **Issue forms YAML**: template issue piu strutturati.
-- **Pull request template**: checklist comune per review.
-- **CODEOWNERS comune**: responsabilita su file o cartelle.
-- **Template per linguaggio**: Python, Node, Rust, documentazione, librerie.
+Tenere `src/`, `tests/`, un README iniziale e `.github/workflows/ci.yml` in un repository template separato. Dopo la generazione, controllare i permessi del workflow e assegnare in `CODEOWNERS` persone o team reali con accesso in scrittura. La richiesta automatica di review e l'obbligo di approvazione sono due controlli diversi.
 
 ## Errori comuni
 
-- Usare un template repository per policy che dovrebbero stare in `.github`.
-- Duplicare `SECURITY.md` in ogni repository senza motivo.
-- Non documentare come aggiornare i template.
-- Rendere il template troppo specifico.
-- Non lasciare spazio a override locali.
-- Confondere issue template globali e template specifici del repository.
-
-## Checklist
-
-- I default comuni sono nel repository `.github`?
-- I template tecnici sono in template repository dedicati?
-- I file sono mantenuti da owner chiari?
-- I repository possono sovrascrivere i default quando serve?
-- Le issue e PR template sono coerenti?
-- La sicurezza ha un `SECURITY.md` chiaro?
+- Mettere dati riservati nel repository pubblico dei default.
+- Aggiornare la CI nel template e presumere che i servizi esistenti abbiano ricevuto la modifica.
+- Cercare nel clone un file mostrato da GitHub come default: per verificarne l'origine, confrontare l'interfaccia con i file davvero versionati.
 
 ## Collegamenti
 
@@ -145,5 +92,7 @@ Il primo standardizza policy. Il secondo accelera la creazione di nuovi progetti
 
 ## Fonti
 
-- [GitHub Docs - Creating a template repository](https://docs.github.com/en/repositories/creating-and-managing-repositories/creating-a-template-repository)
-- [GitHub Docs - Creating a default community health file](https://docs.github.com/en/communities/setting-up-your-project-for-healthy-contributions/creating-a-default-community-health-file)
+- [GitHub Docs: generare un repository da un template](https://docs.github.com/en/repositories/creating-and-managing-repositories/creating-a-repository-from-a-template)
+- [GitHub Docs: default supportati e precedenza](https://docs.github.com/en/communities/setting-up-your-project-for-healthy-contributions/creating-a-default-community-health-file)
+- [GitHub Docs: configurare i template delle issue](https://docs.github.com/en/communities/using-templates-to-encourage-useful-issues-and-pull-requests/configuring-issue-templates-for-your-repository)
+- [GitHub Docs: CODEOWNERS e requisiti di accesso](https://docs.github.com/en/repositories/managing-your-repositorys-settings-and-features/customizing-your-repository/about-code-owners)

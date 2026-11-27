@@ -27,35 +27,21 @@ title: Secret scanning
 
 ## Sintesi
 
-**Secret scanning** cerca token, chiavi API, password e altre credenziali esposte nel repository. GitHub puo rilevare pattern noti, segnalare alert e, in alcuni casi, bloccare push con push protection.
+**Secret scanning** segnala credenziali riconosciute in contenuti già presenti su GitHub, inclusa la storia Git. **Push protection** può invece bloccare un push che contiene un segreto riconosciuto, prima che venga accettato. Entrambi dipendono dalla copertura dei rilevatori e dalle funzioni abilitate: l’assenza di alert non dimostra l’assenza di segreti.
 
-E una protezione critica perche un secret committato va considerato compromesso: rimuoverlo dalla history non basta.
+## Tre casi da non confondere
 
-## Quando usarlo
+| Evento | Che cosa significa | Prima decisione |
+| --- | --- | --- |
+| Push bloccato | GitHub non ha accettato quel push. La credenziale potrebbe però essere stata condivisa altrove. | Rimuovi il valore dalle modifiche da pubblicare e verifica se esistono altre copie esposte. Non trattare un token reale come un falso positivo. |
+| Alert su un commit già pubblicato | Il valore è stato presente nella storia, anche se il file attuale non lo contiene più. | Identifica l’emittente e revoca o ruota la credenziale. Non aspettare la pulizia della storia. |
+| Validità `unknown` | Per quel tipo di credenziale la validità non è stata determinata. | Non equivale a `inactive`: verifica tramite il provider. Non pubblicare il valore per chiedere conferma. |
 
-Usalo quando:
+Alcuni rilevamenti vengono notificati ai provider partner; il comportamento varia per tipo di credenziale. Non presumere che una notifica abbia già comportato la revoca. Per formati interni valuta pattern personalizzati dove supportati; per eccezioni legittime usa il processo di approvazione del progetto, non credenziali vere nei test.
 
-- il repository contiene codice applicativo o configurazioni;
-- lavori con cloud provider, API esterne o deploy;
-- hai contributor esterni;
-- vuoi bloccare credenziali prima del push;
-- vuoi monitorare repository pubblici;
-- vuoi ridurre rischio di incidenti supply chain.
+## Prevenzione: cosa fa davvero .gitignore
 
-## Come funziona
-
-Secret scanning confronta contenuti del repository con pattern noti o personalizzati. Le funzionalita possono includere:
-
-- alert su secret rilevati;
-- push protection;
-- custom patterns;
-- validity checks, quando supportati;
-- bypass controllato;
-- notifiche a provider partner, dove applicabile.
-
-## API / Sintassi
-
-Esempi di file da proteggere con `.gitignore`:
+Esempio di regole Git per file locali. Nell’eventuale `.env.example` versionato lascia solo nomi e valori dimostrativi:
 
 ```gitignore
 .env
@@ -65,54 +51,25 @@ Esempi di file da proteggere con `.gitignore`:
 secrets.json
 ```
 
-Esempio di variabile ambiente invece di secret hardcoded:
+Quando il percorso non è già tracciato, questo comando mostra **quale regola** lo ignora, senza leggerne il contenuto:
 
 ```bash
-export API_TOKEN="..."
+git check-ignore -v -- .env
 ```
 
-Nel codice:
+Quest’altro comando verifica invece se Git lo traccia già:
 
-```js
-const token = process.env.API_TOKEN;
+```bash
+git ls-files -- .env
 ```
 
-## Esempio pratico
+Se il secondo stampa `.env`, aggiungere il nome a `.gitignore` non lo rimuove né dall’indice né dai commit passati. Se non stampa nulla, non dimostra che il file non sia mai stato condiviso. L’applicazione può leggere il valore da `process.env.API_TOKEN` dopo che il sistema di esecuzione lo ha fornito: evita di inserirlo nei comandi salvati nella cronologia o di stamparlo nei log.
 
-Se viene committato un token:
+## Risposta a un’esposizione confermata
 
-1. revoca subito il token presso il provider;
-2. crea un token nuovo;
-3. sostituisci il secret nei sistemi legittimi;
-4. rimuovi il riferimento dal codice;
-5. valuta se riscrivere history, ma non considerarla soluzione sufficiente;
-6. chiudi l'alert solo dopo revoca e verifica.
-
-## Varianti
-
-- **Secret scanning alert**: notifica su secret trovato.
-- **Push protection**: blocca il push prima che il secret entri nel repository.
-- **Custom pattern**: rileva formati interni.
-- **Validity check**: aiuta a capire se un secret e ancora valido.
-- **Bypass request**: eccezione tracciata quando il blocco e falso positivo.
-
-## Errori comuni
-
-- Pensare che cancellare il file risolva il leak.
-- Non revocare il token.
-- Conservare secret in `.env` versionati.
-- Usare token personali in CI.
-- Disattivare push protection per comodita.
-- Non creare pattern custom per segreti interni.
-
-## Checklist
-
-- Secret scanning e attivo?
-- Push protection e abilitata dove possibile?
-- `.env` e file chiave sono ignorati?
-- I token esposti vengono revocati subito?
-- I secret CI sono in GitHub Secrets o sistema equivalente?
-- Gli alert hanno processo di triage?
+1. Revoca la credenziale esposta o ruotala presso l’emittente, assicurandoti che il valore precedente non sia più valido. Aggiorna solo i consumatori autorizzati e verifica il funzionamento con la sostituzione.
+2. Controlla i log di utilizzo disponibili nella finestra di esposizione e correggi la fonte: codice, configurazione, artefatto o log di build. Conserva nel registro dell’incidente riferimenti e orari, **non** il valore segreto.
+3. Valuta con i manutentori l’eventuale bonifica della storia e delle copie. Chiudi l’alert con la motivazione corretta dopo aver verificato la revoca e registrato le azioni: chiudere l’alert non invalida la credenziale.
 
 ## Collegamenti
 
@@ -123,4 +80,8 @@ Se viene committato un token:
 
 ## Fonti
 
-- [GitHub Docs - Secret scanning](https://docs.github.com/en/code-security/concepts/secret-security/secret-scanning)
+- [GitHub Docs: secret scanning e monitoraggio dei provider](https://docs.github.com/en/code-security/concepts/secret-security/secret-scanning)
+- [GitHub Docs: push protection](https://docs.github.com/en/code-security/concepts/secret-security/push-protection)
+- [GitHub Docs: come interpretare la validità](https://docs.github.com/en/code-security/concepts/secret-security/validity-checks)
+- [GitHub Docs: risoluzione degli alert](https://docs.github.com/en/code-security/how-tos/manage-security-alerts/manage-secret-scanning-alerts/resolving-alerts)
+- [Git: effetto delle regole sui file non tracciati](https://git-scm.com/docs/gitignore)

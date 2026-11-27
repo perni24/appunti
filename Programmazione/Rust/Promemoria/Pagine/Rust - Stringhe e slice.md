@@ -91,6 +91,12 @@ assert_eq!(values, [1, 0, 0, 4]);
 
 Per una slice di `i32` gli indici contano **elementi**; per `str` contano **byte**. Teoria: [[Programmazione/Rust/Pagine/Slices|Slice]].
 
+## Fonti
+
+- [Libreria standard: `str::get` e confini UTF-8](https://doc.rust-lang.org/std/primitive.str.html#method.get)
+- [Libreria standard: `String::truncate` e indici in byte](https://doc.rust-lang.org/std/string/struct.String.html#method.truncate)
+- [Libreria standard: slice di elementi](https://doc.rust-lang.org/std/primitive.slice.html)
+
 ## Collegamenti
 
 - [[Programmazione/Rust/Promemoria/Indice Promemoria Rust|Indice Promemoria Rust]]

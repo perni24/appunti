@@ -107,6 +107,12 @@ assert_eq!(values.len(), 2);
 
 `format!` restituisce una `String`; `println!` scrive su stdout. `todo!()` (codice da implementare) e `unreachable!()` (ramo ritenuto impossibile) causano entrambi un panic se raggiunti.
 
+## Fonti
+
+- [Rust Book: variabili, mutabilità e shadowing](https://doc.rust-lang.org/book/ch03-01-variables-and-mutability.html)
+- [Rust Book: condizioni e cicli](https://doc.rust-lang.org/book/ch03-05-control-flow.html)
+- [Libreria standard: conversioni fallibili con `TryFrom`](https://doc.rust-lang.org/std/convert/trait.TryFrom.html)
+
 ## Collegamenti
 
 - [[Programmazione/Rust/Promemoria/Indice Promemoria Rust|Indice Promemoria Rust]]

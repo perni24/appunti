@@ -30,96 +30,53 @@ title: Automazioni issue e pull request
 
 ## Sintesi
 
-Le **automazioni issue e pull request** servono a ridurre lavoro ripetitivo su triage, label, assegnazioni, commenti, controlli e aggiornamenti di stato.
+Decidi prima **l’effetto** dell’automazione: applicare una label modifica i metadati, scrivere un commento notifica persone, un check richiesto può bloccare il merge. Per il semplice triage di un repository bastano un evento Actions e il token del job. Una GitHub App con webhook è più adatta se lo stesso servizio deve mantenere stato e policy per più installazioni.
 
-Possono essere implementate con GitHub Actions, REST API, GraphQL API, Webhooks o GitHub Apps. La scelta dipende da complessita, sicurezza e durata dell'automazione.
+## Esempio pratico: una sola label sulle nuove issue
 
-## Quando usarlo
-
-Usale quando:
-
-- vuoi aggiungere label in base a file o titolo;
-- vuoi assegnare reviewer o owner;
-- vuoi chiudere issue inattive;
-- vuoi commentare PR con report automatici;
-- vuoi controllare template o convenzioni;
-- vuoi sincronizzare GitHub con strumenti esterni;
-- vuoi costruire bot di repository.
-
-## Come funziona
-
-Ci sono tre modelli principali:
-
-1. **GitHub Actions**: automazione dentro il repository, utile per workflow semplici.
-2. **Webhooks + API**: servizio esterno che reagisce a eventi GitHub.
-3. **GitHub App**: integrazione installabile con permessi granulari e token temporanei.
-
-Per automazioni piccole parti da GitHub Actions. Per automazioni multi-repository, usa GitHub App o servizio esterno.
-
-## API / Sintassi
-
-Esempio con GitHub Actions su issue:
+Workflow didattico per un repository di prova con Issues abilitate e label `triage` già esistente. **Se installato, modifica davvero le nuove issue.** Non richiede checkout, non esegue codice della segnalazione e non usa token personali.
 
 ```yaml
-name: Issue triage
-
+name: Triage delle nuove issue
 on:
   issues:
     types: [opened]
-
-permissions:
-  issues: write
-
+permissions: {}
 jobs:
-  label:
+  etichetta:
     runs-on: ubuntu-latest
+    permissions:
+      issues: write
     steps:
-      - name: Add label
-        run: gh issue edit "$ISSUE_URL" --add-label "triage"
+      - name: Aggiungi triage senza sostituire le altre label
+        shell: bash
         env:
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-          ISSUE_URL: ${{ github.event.issue.html_url }}
+          REPO: ${{ github.repository }}
+          NUMBER: ${{ github.event.issue.number }}
+        run: gh api --method POST "repos/$REPO/issues/$NUMBER/labels" -f 'labels[]=triage' --silent
 ```
 
-## Esempio pratico
+Qui `POST` **aggiunge** la label. Se una issue ha già `bug`, il risultato atteso è `bug` più `triage`; ripetere l’aggiunta non duplica l’etichetta. `PUT` sullo stesso endpoint imposta invece l’intero insieme e potrebbe eliminare `bug`. La stessa garanzia non vale per un commento: se il report deve essere aggiornato, identifica il commento del bot e aggiorna quello invece di crearne uno a ogni run.
 
-Automazione per pull request:
+## Variante: classificare una PR senza eseguirne il codice
 
-1. trigger su `pull_request`;
-2. legge file modificati;
-3. assegna label `frontend`, `backend` o `docs`;
-4. commenta se manca una checklist;
-5. fallisce il check solo se la regola e bloccante.
+Per distinguere le aree del vault, leggi con la REST API **tutte** le pagine dei file modificati della PR. Su GitHub.com questo endpoint restituisce al massimo 3.000 file per PR, anche con paginazione. Questo esempio calcola una proposta di label dai metadati; non scrive nulla e non richiede checkout. In una rinomina tra due aree conta sia il percorso precedente sia quello attuale.
 
-La parte importante e separare automazioni informative da controlli bloccanti.
+```js
+export function etichetteProposte(files) {
+  const aree = [
+    ['Programmazione/', 'programmazione'],
+    ['Stampante 3D/', 'stampa-3d'],
+    ['Programmi open source/', 'open-source']
+  ];
+  const percorsi = files.flatMap(f => [f.filename, f.previous_filename].filter(Boolean));
+  return aree.filter(([prefisso]) => percorsi.some(p => p.startsWith(prefisso)))
+    .map(([, label]) => label);
+}
+```
 
-## Varianti
-
-- **Label automatiche**: basate su path, titolo o template.
-- **Commenti automatici**: utili per report o istruzioni contestuali.
-- **Assegnazione reviewer**: integrata con CODEOWNERS o logica custom.
-- **Stale issue**: chiusura o reminder su issue inattive.
-- **Bot esterno**: usa webhook e REST API.
-- **GitHub App**: adatta a molte repository e permessi dedicati.
-
-## Errori comuni
-
-- Dare `contents: write` quando basta `issues: write`.
-- Usare `pull_request_target` senza capire i rischi.
-- Commentare troppe volte creando rumore.
-- Bloccare PR per controlli non affidabili.
-- Non gestire fork e permessi ridotti.
-- Usare PAT personali invece di `GITHUB_TOKEN` o GitHub App.
-
-## Checklist
-
-- L'automazione deve essere informativa o bloccante?
-- I permessi sono minimi?
-- Funziona con fork esterni?
-- Evita commenti duplicati?
-- Gestisce retry e fallimenti API?
-- I token non sono esposti nei log?
-- La regola e documentata nel repository?
+Un elenco incompleto non giustifica la rimozione di label esistenti. Nelle PR da fork separa la **classificazione in lettura** dalla eventuale scrittura autorizzata. Non passare a `pull_request_target` per eseguire codice della PR con privilegi maggiori. Per richieste di review valuta CODEOWNERS; per stale issue prevedi un avviso e un criterio di esclusione prima di chiudere lavoro ancora attivo. Una label informativa non rende il controllo obbligatorio per il merge.
 
 ## Collegamenti
 
@@ -134,6 +91,7 @@ La parte importante e separare automazioni informative da controlli bloccanti.
 
 ## Fonti
 
-- [GitHub Docs - REST API issues](https://docs.github.com/en/rest/issues/issues)
-- [GitHub Docs - REST API pull requests](https://docs.github.com/en/rest/pulls/pulls)
-- [GitHub Docs - GitHub Actions manage issues and pull requests](https://docs.github.com/en/actions/use-cases-and-examples/project-management)
+- [GitHub Docs - Workflow di labeling](https://docs.github.com/en/actions/tutorials/manage-your-work/add-labels-to-issues)
+- [GitHub REST - Aggiungere o sostituire label](https://docs.github.com/en/rest/issues/labels)
+- [GitHub REST - File modificati di una pull request](https://docs.github.com/en/rest/pulls/pulls#list-pull-requests-files)
+- [GitHub Docs - Eventi di issue e pull request](https://docs.github.com/en/actions/reference/workflows-and-actions/events-that-trigger-workflows)

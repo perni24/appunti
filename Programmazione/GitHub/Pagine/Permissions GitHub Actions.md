@@ -29,111 +29,44 @@ title: Permissions GitHub Actions
 
 ## Sintesi
 
-Le **permissions GitHub Actions** controllano cosa puo fare il `GITHUB_TOKEN` generato per un workflow o job. Dichiarare permessi minimi riduce l'impatto di workflow compromessi, action vulnerabili o script pericolosi.
+`permissions` limita il **`GITHUB_TOKEN` del job**: riguarda le operazioni verso le API e il repository, non la possibilità di creare file sul runner. Un job può generare migliaia di HTML con `contents: read` senza poter creare un commit su GitHub. Il blocco non riduce i privilegi di un eventuale PAT o di una credenziale cloud passata separatamente.
 
-Il principio e: un workflow di test non dovrebbe avere permessi di scrittura se deve solo leggere codice ed eseguire test.
+## Esempio pratico: leggere il repository senza scriverci
 
-## Quando usarlo
-
-Configura `permissions` quando:
-
-- un workflow usa `GITHUB_TOKEN`;
-- pubblichi release o package;
-- commenti issue o pull request da workflow;
-- usi action terze;
-- gestisci deploy;
-- vuoi applicare least privilege.
-
-## Come funziona
-
-Puoi dichiarare `permissions` a livello di workflow o job. Se un job ha esigenze diverse, dichiarale sul job.
-
-Esempi di scope:
-
-- `contents`;
-- `issues`;
-- `pull-requests`;
-- `actions`;
-- `checks`;
-- `packages`;
-- `id-token`.
-
-Il valore puo essere `read`, `write` o `none`, in base allo scope.
-
-## API / Sintassi
-
-Permessi minimi per CI:
+Questo workflow su PR non ha bisogno di commentare, pubblicare o richiedere un token OIDC. Parte da `permissions: {}` e concede al solo job `verifica` la lettura necessaria al checkout. Il comando controlla che `Home.md` sia **tracciato in Git**; non bastano un file generato o una modifica non aggiunta all’indice.
 
 ```yaml
-permissions:
-  contents: read
-```
-
-Permessi per scrivere commenti su PR:
-
-```yaml
-permissions:
-  contents: read
-  pull-requests: write
-```
-
-Permessi OIDC:
-
-```yaml
-permissions:
-  contents: read
-  id-token: write
-```
-
-## Esempio pratico
-
-Workflow CI:
-
-```yaml
-name: CI
-
-on:
-  pull_request:
-
-permissions:
-  contents: read
-
+name: Verifica file tracciato
+on: pull_request
+permissions: {}
 jobs:
-  test:
+  verifica:
     runs-on: ubuntu-latest
+    permissions:
+      contents: read
     steps:
-      - uses: actions/checkout@v4
-      - run: npm test
+      - uses: actions/checkout@v6
+        with:
+          persist-credentials: false
+      - run: git ls-files --error-unmatch -- Home.md
 ```
 
-Questo workflow puo leggere codice ma non scrivere nel repository.
+## Leggere i permessi effettivi
 
-## Varianti
+La configurazione del repository o dell’organizzazione fornisce i default. Il workflow può dichiarare i propri e il job può specificare la propria mappa: se assegni permessi espliciti, quelli non elencati sono `none`. Non trattare il blocco del job come una lista di permessi da aggiungere automaticamente a quelli del workflow. Le restrizioni delle PR da fork possono limitare ulteriormente i permessi.
 
-- **Workflow-level permissions**: default per tutti i job.
-- **Job-level permissions**: override piu specifico.
-- **Read-only CI**: `contents: read`.
-- **Write for release**: permessi limitati a job release.
-- **OIDC**: usa `id-token: write` per autenticazione federata.
-- **No permissions**: `permissions: {}` dove possibile.
+| Operazione | Permesso da valutare | Cosa non implica |
+| --- | --- | --- |
+| Leggere codice per test o lint | `contents: read` | Non autorizza un push. |
+| Commentare una issue o una PR | `issues: write` o `pull-requests: write` secondo l’endpoint | Non è necessario per mostrare il normale esito della CI. |
+| Pubblicare package o creare una release | `packages: write` per il registry GitHub; `contents: write` per una release | Non assegnarli a tutti i job di test. |
+| Ottenere un token OIDC | `id-token: write` nel job che si autentica | Permette di richiedere l’identità; è il provider esterno a decidere accesso e ruolo. |
 
-## Errori comuni
+Il deploy Quartz del vault dichiara `contents: read`, `pages: write` e `id-token: write` **a livello di workflow**. È un esempio di pubblicazione, non la lista da copiare per una CI su PR.
 
-- Lasciare permessi impliciti troppo ampi.
-- Dare `contents: write` alla CI.
-- Passare token con scrittura ad action terze non fidate.
-- Usare token personali al posto di `GITHUB_TOKEN`.
-- Non separare job test e job release.
-- Non considerare PR da fork.
+## Se compare un errore 403
 
-## Checklist
-
-- Il workflow dichiara `permissions`?
-- La CI usa solo lettura?
-- I job con scrittura sono separati?
-- Le action terze ricevono solo permessi necessari?
-- `id-token: write` e usato solo dove serve?
-- I secret e token sono protetti da contesti non fidati?
+Individua job, evento, endpoint e token davvero usato. Per esempio, un checkout riuscito non prova che lo stesso token possa scrivere una release. Controlla anche la provenienza da fork e le policy dell’organizzazione. Assegna il minimo permesso al job che esegue l’operazione; non risolvere un 403 consegnando un token personale con ampi privilegi al codice di una PR.
 
 ## Collegamenti
 
@@ -145,5 +78,6 @@ Questo workflow puo leggere codice ma non scrivere nel repository.
 
 ## Fonti
 
-- [GitHub Docs - GITHUB_TOKEN](https://docs.github.com/en/actions/concepts/security/github_token)
-- [GitHub Docs - Workflow syntax permissions](https://docs.github.com/en/actions/reference/workflows-and-actions/workflow-syntax#permissions)
+- [GitHub Docs - GITHUB_TOKEN e durata per job](https://docs.github.com/en/actions/concepts/security/github_token)
+- [GitHub Docs - Permissions e precedenza](https://docs.github.com/en/actions/reference/workflows-and-actions/workflow-syntax#permissions)
+- [GitHub Docs - Relazione di fiducia OIDC](https://docs.github.com/en/actions/how-tos/secure-your-work/security-harden-deployments/oidc-in-cloud-providers)

@@ -22,57 +22,55 @@ publish: true
 
 ## Sintesi
 
-**Aider** e uno strumento open source da terminale che usa modelli LLM per aiutare a modificare codice dentro un repository Git.
-
-Serve come assistente di programmazione operativo: legge i file rilevanti, propone modifiche, applica patch e puo lavorare su bugfix, refactor, test e piccole feature.
-
-## Quando usarlo
-
-- Modificare codice restando nel terminale.
-- Chiedere a un LLM di intervenire su file reali del repository.
-- Generare patch controllabili con Git.
-- Iterare su bug, test e refactor senza copiare manualmente blocchi di codice.
-- Lavorare su progetti dove e importante vedere chiaramente le diff.
+Aider è un assistente di programmazione open source da terminale. Può modificare i file di un repository Git tramite il modello linguistico scelto dall’utente. È utile per interventi circoscritti, per esempio correggere un bug, rifattorizzare una funzione o aggiungere un test.
 
 ## Come funziona
 
-Aider si collega a un modello LLM tramite provider configurato dall'utente e lavora nel contesto di una repository Git. L'utente indica cosa vuole ottenere e quali file sono rilevanti; lo strumento propone e applica modifiche che poi possono essere controllate con `git diff`.
+Avvia Aider nel repository e indica i file su cui può intervenire. Se usi un provider remoto, il contesto inviato al modello può contenere codice: non includere credenziali o materiale che non puoi condividere. Un modello locale richiede invece un backend compatibile e configurato.
 
 ## Esempio pratico
 
+Dalla radice di un repository di prova, con Aider installato e il modello configurato, controlla se ci sono modifiche preesistenti:
+
 ```bash
-# Avvia aider dentro una repository Git
-aider
+git status --short
 ```
 
-Scrivere poi nell'interfaccia di Aider, non nella shell:
+Avvia la sessione indicando due file del progetto (sostituisci i percorsi con quelli reali):
+
+```bash
+aider src/cli.py tests/test_cli.py
+```
+
+Nella chat di Aider, non nella shell:
 
 ```text
-Correggi il parsing degli argomenti CLI e aggiungi un test.
+Correggi il parsing degli argomenti CLI e aggiungi un test per un argomento mancante.
 ```
 
-## Funzionalita
+Per vedere cosa è cambiato dall’ultimo messaggio, usa il comando della chat:
 
-- **Terminal-first**: si integra bene con workflow da shell.
-- **Git-aware**: le modifiche restano controllabili come diff.
-- **Utile per iterare**: adatto a correzioni e refactor guidati.
-- **Flessibile**: puo essere usato con diversi modelli e provider supportati.
+```text
+/diff
+```
 
-## Limiti
+## Verifica e limiti
 
-- Richiede configurazione di chiavi API o provider locali.
-- Le modifiche vanno sempre revisionate.
-- Su codebase grandi bisogna fornire contesto in modo selettivo.
-- Non sostituisce test, review e comprensione del dominio.
+- **Con i commit automatici** (comportamento predefinito), `git diff` può essere vuoto: mostra le modifiche non preparate, non quelle già registrate. Se quello di Aider è l’ultimo commit, controllane messaggio e patch dalla shell:
 
-## Checklist
+```bash
+git show HEAD
+```
 
-- Lavorare dentro una repository Git pulita o con modifiche note.
-- Controllare sempre `git diff` dopo le modifiche.
-- Eseguire test e lint quando disponibili.
-- Non passare segreti o file sensibili al modello.
-- Dare richieste piccole e verificabili.
+- **Per decidere tu quando registrare le modifiche**, avvia una sessione con `aider --no-auto-commits` partendo da un repository pulito. Prima del tuo commit controlla `git status`, `git diff` e gli eventuali nuovi file non tracciati.
+- Esegui il test aggiunto e quelli esistenti. Una patch leggibile o un commit riuscito non dimostrano che il comportamento sia corretto.
 
 ## Collegamenti
 
 - [[Programmi open source/Indice Programmi Open Source|Catalogo open source]]
+
+## Fonti
+
+- [Aider: integrazione con Git e commit automatici](https://aider.chat/docs/git.html)
+- [Aider: comandi disponibili nella chat](https://aider.chat/docs/usage/commands.html)
+- [Aider: modelli e provider supportati](https://aider.chat/docs/llms.html)

@@ -23,62 +23,49 @@ publish: true
 
 ## Sintesi
 
-**OpenSCAD** e un programma open source per creare modelli 3D usando codice invece di strumenti grafici tradizionali.
-
-E particolarmente utile per progettare oggetti parametrici, pezzi tecnici, supporti, adattatori, contenitori e componenti destinati alla stampa 3D, dove le dimensioni devono essere precise e modificabili.
-
-## Quando usarlo
-
-- Creare modelli 3D riproducibili partendo da uno script.
-- Progettare oggetti parametrici modificando variabili come altezza, diametro o spessore.
-- Generare varianti dello stesso pezzo senza ridisegnarlo a mano.
-- Preparare modelli semplici o tecnici per stampa 3D.
-- Salvare il progetto in un formato facile da versionare con Git.
+OpenSCAD è un CAD open source per descrivere solidi con uno script. È utile per pezzi tecnici, supporti, adattatori e contenitori: cambi una quota e rigeneri il modello, senza ridisegnarlo. Il sorgente `.scad` è testo e può essere versionato con Git.
 
 ## Come funziona
 
-In OpenSCAD il modello viene descritto con un linguaggio testuale. Si combinano primitive geometriche, come cubi, sfere e cilindri, con operazioni booleane come unione, differenza e intersezione.
-
-Questo approccio rende il progetto molto controllabile: cambiando una variabile nello script si puo modificare l'intero modello.
+Si posizionano primitive geometriche come cubi, sfere e cilindri e si combinano con unione, differenza o intersezione. In `difference()` il **primo** solido è il pezzo da conservare; tutti i successivi vengono sottratti.
 
 ## Esempio pratico
+
+Una rondella con diametro esterno 30, altezza 10 e foro passante di diametro 8. Le quote dell’esempio sono pensate in millimetri.
 
 ```scad
 diametro = 30;
 altezza = 10;
 foro = 8;
+eps = 0.01;
+$fn = 96;
 
 difference() {
-  cylinder(h = altezza, d = diametro);
-  cylinder(h = altezza + 1, d = foro);
+    cylinder(h = altezza, d = diametro);
+    translate([0, 0, -eps])
+        cylinder(h = altezza + 2 * eps, d = foro);
 }
 ```
 
-Questo esempio crea un cilindro con un foro centrale. Modificando `diametro`, `altezza` o `foro` si ottengono rapidamente varianti dello stesso pezzo.
+Il cilindro da sottrarre parte sotto la base e termina sopra la faccia superiore. Questo piccolo margine evita facce coincidenti: non aumenta il diametro del foro e **non** rappresenta il gioco meccanico da lasciare per la stampa. `$fn` controlla quanti segmenti approssimano la circonferenza.
 
-## Funzionalita
+## Verifica ed esportazione
 
-- **Parametrico**: le dimensioni possono essere controllate tramite variabili.
-- **Versionabile**: i file sono testo e funzionano bene con Git.
-- **Preciso**: adatto a pezzi tecnici e forme geometriche semplici.
-- **Riproducibile**: lo stesso script genera sempre lo stesso modello.
-- **Leggero**: non richiede un ambiente CAD complesso per modifiche semplici.
+1. Apri il file `.scad` e usa `F5` per l’anteprima. Cambia `foro` mantenendolo positivo e minore di `diametro`: deve variare solo l’apertura.
+2. Usa `F6` per il rendering e controlla che la console non segnali problemi con la geometria.
+3. Conserva il sorgente parametrico ed esporta una copia in STL. Nello slicer verifica unità, dimensioni esterne e presenza del foro prima di stampare.
 
 ## Limiti
 
-- Non e ideale per modellazione organica, scultura 3D o forme molto libere.
-- Richiede familiarita con logica, coordinate e composizione geometrica.
-- Per assiemi meccanici complessi puo essere meno comodo di un CAD parametrico come [[Programmi open source/Pagine/FreeCAD|FreeCAD]].
+L’STL conserva una mesh, non le variabili né le operazioni dello script. Per forme organiche o assiemi con molti vincoli può essere più adatto un altro strumento. Se riutilizzi la stessa forma più volte, separala in un modulo parametrico.
 
-## Checklist
+## Collegamenti
 
-- Definire le misure principali come variabili.
-- Separare le parti ripetute in moduli.
-- Usare `difference()` per fori, scassi e tagli.
-- Esportare in STL solo quando il modello e pronto per la stampa.
-- Controllare sempre dimensioni e tolleranze prima di stampare.
-
-
-## Navigazione
-
+- [[Programmi open source/Pagine/FreeCAD|FreeCAD]]
+- [[Stampante 3D/Indice Stampante 3D|Appunti sulla stampa 3D]]
 - [[Programmi open source/Indice Programmi Open Source|Catalogo open source]]
+
+## Fonti
+
+- [OpenSCAD: linguaggio, primitive e operazioni booleane](https://files.openscad.org/documentation/manual/The_OpenSCAD_Language.html)
+- [OpenSCAD: interfaccia, anteprima e rendering](https://files.openscad.org/documentation/manual/The_OpenSCAD_User_Interface.html)

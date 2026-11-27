@@ -28,98 +28,50 @@ title: GitHub Packages con Actions
 
 ## Sintesi
 
-**GitHub Packages con Actions** permette di pubblicare e installare package tramite workflow GitHub Actions. Puo gestire container image, package npm, Maven, Gradle, NuGet, RubyGems e altri registri supportati.
+Un **package** viene distribuito da un registry e consumato con un package manager. Non è un artifact temporaneo del workflow né un file allegato a una release. Scegli prima l’ecosistema: una libreria Node può andare in `npm.pkg.github.com`, un’immagine Docker in `ghcr.io`. Maven/Gradle, NuGet e RubyGems hanno configurazioni proprie.
 
-Il tema centrale e l'autenticazione: quando possibile, usa `GITHUB_TOKEN` con permessi minimi invece di token personali.
+## Esempio pratico: vedere cosa riceverebbe chi installa una libreria
 
-## Quando usarlo
+In una **cartella di prova separata**, supponi di avere `index.js` e questo `package.json` minimo. `@esempio` è uno scope fittizio: per pubblicare servirebbe il proprietario reale, in minuscolo. Non modificare `site/package.json` del vault: è intenzionalmente `private: true` e serve a costruire il sito.
 
-Usalo quando:
+```json
+{
+  "name": "@esempio/guida",
+  "version": "1.2.0",
+  "files": ["index.js"],
+  "publishConfig": { "registry": "https://npm.pkg.github.com" }
+}
+```
 
-- vuoi pubblicare package dopo test e build;
-- vuoi pubblicare immagini container su GitHub Container Registry;
-- vuoi distribuire librerie interne;
-- vuoi collegare package a release e repository;
-- vuoi automatizzare versioni;
-- vuoi evitare pubblicazione manuale.
+Dalla cartella di prova, con npm disponibile, ispeziona l’elenco dei file prima di inviare qualcosa:
 
-## Come funziona
+```bash
+npm pack --dry-run --ignore-scripts --json
+```
 
-Un workflow package tipico:
+Il risultato deve elencare `index.js` e `package.json`; possono esserci file inclusi per convenzione, come README e licenza. Il comando non pubblica, non richiede token e non prova l’accesso al registry. `--ignore-scripts` evita di eseguire gli script del pacchetto: se il progetto **genera** i file prima del pack, prepara e testa prima quel contenuto.
 
-1. parte da tag, release o branch controllato;
-2. esegue CI;
-3. costruisce package;
-4. autentica al registry;
-5. pubblica;
-6. eventualmente genera attestazioni o release.
+## Come cambia la pubblicazione reale
 
-Il workflow deve dichiarare permessi adeguati, spesso:
+Per una libreria realmente destinata a GitHub Packages, questi sono gli **step finali del job di pubblicazione**, dopo checkout, installazione, build e test nella libreria. Presuppongono che la directory corrente contenga il suo manifesto, non quello del vault. Il job deve avere `contents: read` e `packages: write` e partire solo da una revisione di rilascio autorizzata. **`npm publish` invia il package al registry.**
 
 ```yaml
-permissions:
-  contents: read
-  packages: write
+- uses: actions/setup-node@v6
+  with:
+    node-version: '24'
+    registry-url: https://npm.pkg.github.com
+    scope: '@esempio'
+- name: Pubblica la versione verificata
+  env:
+    NODE_AUTH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+  run: npm publish
 ```
 
-## API / Sintassi
+Prima dell’invio confronta versione del manifesto, tag e file del pacchetto. Se la versione esiste già, non contare su una sovrascrittura: verifica cosa è stato pubblicato. Se ricevi un 403 controlla scope, proprietario, collegamento al repository e permessi **del package per quel repository**. Concedere `packages: write` nel YAML non dà al repository accesso a qualsiasi package privato.
 
-Esempio container registry:
+## Variante: un’immagine su GHCR
 
-```yaml
-permissions:
-  contents: read
-  packages: write
-
-steps:
-  - uses: actions/checkout@v4
-  - name: Login to GHCR
-    run: echo "${{ secrets.GITHUB_TOKEN }}" | docker login ghcr.io -u "${{ github.actor }}" --password-stdin
-  - run: docker build -t ghcr.io/${{ github.repository }}:latest .
-  - run: docker push ghcr.io/${{ github.repository }}:latest
-```
-
-## Esempio pratico
-
-Package su tag:
-
-```text
-tag v1.2.0
-workflow package
-test
-build package
-publish to GitHub Packages
-create release
-```
-
-In questo schema il package deriva da codice testato e versionato.
-
-## Varianti
-
-- **Container image**: pubblicata su `ghcr.io`.
-- **npm package**: pacchetto JavaScript/TypeScript.
-- **Maven/Gradle package**: ecosistema Java.
-- **NuGet package**: ecosistema .NET.
-- **Package privato**: accessibile solo a repository o utenti autorizzati.
-- **Package pubblico**: distribuibile esternamente.
-
-## Errori comuni
-
-- Usare PAT quando basta `GITHUB_TOKEN`.
-- Non dichiarare `packages: write`.
-- Pubblicare da branch non protetti.
-- Pubblicare package senza test.
-- Non gestire versioni duplicate.
-- Non collegare package e repository.
-
-## Checklist
-
-- Il workflow parte da branch o tag controllato?
-- La CI passa prima della pubblicazione?
-- I permessi includono solo cio che serve?
-- Il package ha versione coerente?
-- Il registry e quello corretto?
-- L'accesso al package e configurato correttamente?
+Per un’immagine, autenticati su `ghcr.io` con il token del job di pubblicazione, costruisci dal Dockerfile testato e usa un nome immagine in minuscolo. Associa l’immagine al repository, per esempio con la label OCI `org.opencontainers.image.source`. Un tag come `latest` può spostarsi; per distribuire esattamente l’immagine verificata registra il **digest**. Visibilità e accesso del package vanno controllati nel registry, non dedotti dal successo della build.
 
 ## Collegamenti
 
@@ -131,4 +83,7 @@ In questo schema il package deriva da codice testato e versionato.
 
 ## Fonti
 
-- [GitHub Docs - Publishing and installing a package with GitHub Actions](https://docs.github.com/en/packages/managing-github-packages-using-github-actions-workflows/publishing-and-installing-a-package-with-github-actions)
+- [GitHub Docs - Pubblicare e installare con Actions](https://docs.github.com/en/packages/managing-github-packages-using-github-actions-workflows/publishing-and-installing-a-package-with-github-actions)
+- [GitHub Docs - Registry npm, scope e accessi](https://docs.github.com/en/packages/working-with-a-github-packages-registry/working-with-the-npm-registry)
+- [GitHub Docs - Container Registry](https://docs.github.com/en/packages/working-with-a-github-packages-registry/working-with-the-container-registry)
+- [npm Docs - npm pack e dry-run](https://docs.npmjs.com/cli/v11/commands/npm-pack/)

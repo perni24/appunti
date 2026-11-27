@@ -27,97 +27,28 @@ title: Branch protection rules
 
 ## Sintesi
 
-Le **branch protection rules** proteggono branch importanti, come `main`, impedendo modifiche non controllate. Servono a obbligare pull request, review, controlli automatici e altre condizioni prima del merge.
+Una **branch protection rule** classica stabilisce a quali condizioni GitHub accetta un aggiornamento di un branch. Proteggere `main` non significa rendere il clone di sola lettura: puoi creare un branch e fare commit in locale. La protezione interviene sul repository remoto. **Richiedere una PR**, **richiedere un’approvazione** e **richiedere un check** sono tre scelte distinte.
 
-Sono una delle impostazioni piu importanti per evitare che codice instabile, non revisionato o non testato entri nel ramo principale.
+## Esempio: una correzione alla guida
 
-## Quando usarlo
+Vuoi che una modifica a `main` passi da una PR, che un collega la approvi e che la documentazione venga verificata. Per configurare la regola servono i permessi di amministrazione del repository o un ruolo autorizzato a modificarne le regole. La disponibilità dipende dal piano e dalla visibilità del repository.
 
-Usale quando:
+| Risultato voluto | Che cosa configurare | Che cosa verificare |
+| --- | --- | --- |
+| Nessuna modifica ordinaria direttamente su `main` | In **Settings → Branches** crea una regola classica per il nome esatto `main` e richiedi una PR. | La PR deve avere `main` come **base**; il nome del branch di lavoro è irrilevante. |
+| Un’altra persona ha letto il diff | Richiedi un’approvazione. Per file con owner, richiedi anche la review dei code owner se è parte della policy. | Un commento o una richiesta di review non sono un’approvazione. In un progetto individuale serve un altro revisore idoneo per soddisfare questa regola. |
+| La versione proposta supera un test | Rendilo un **required status check** dopo averlo visto eseguito su una PR. | Un test verde su un commit precedente o un deploy dopo il merge non verificano la modifica corrente. |
+| La storia condivisa non viene riscritta o cancellata | Mantieni disabilitati force push e cancellazione sul branch protetto. | L’eliminazione del branch di lavoro dopo il merge è un’altra impostazione: non elimina `main`. |
 
-- `main` deve restare stabile;
-- lavori con piu persone;
-- vuoi impedire push diretti;
-- vuoi richiedere review prima del merge;
-- vuoi obbligare test e lint;
-- vuoi applicare regole diverse a branch di release.
+Se vuoi che i vincoli valgano anche per gli amministratori, controlla l’opzione che applica le regole senza eccezione a quei ruoli. Se le approvazioni devono riferirsi al codice appena cambiato, scegli consapevolmente fra annullare le approvazioni diventate obsolete e richiedere l’approvazione dell’ultimo push da parte di un’altra persona.
 
-## Come funziona
+## Quale regola si applica?
 
-Una regola di protezione si applica a un pattern di branch, per esempio:
+Tra regole **classiche** se ne applica una sola per branch: il nome esatto ha precedenza sul pattern; a parità di nome esatto prevale la regola creata prima. Le regole con caratteri jolly sono valutate secondo l’ordine di creazione. `release/*` copre `release/1.x` ma non `release/mobile/1.x`, perché `*` non attraversa `/`. Non dare per scontato che due regole classiche sommino le proprie condizioni. I **ruleset**, invece, possono aggiungere ulteriori vincoli alla protezione classica.
 
-```text
-main
-release/*
-```
+## Come controllare senza cambiare impostazioni
 
-Puoi configurare condizioni come:
-
-- pull request obbligatoria;
-- numero minimo di review;
-- review da code owner;
-- status check richiesti;
-- branch aggiornato prima del merge;
-- divieto di force push;
-- divieto di deletion.
-
-## API / Sintassi
-
-Esempio di policy concettuale:
-
-```text
-Branch: main
-Require pull request: yes
-Required approvals: 1
-Require status checks: test, lint, build
-Allow force pushes: no
-Allow deletions: no
-```
-
-Da GitHub CLI puoi aprire direttamente le impostazioni del repository:
-
-```bash
-gh repo view --web
-```
-
-## Esempio pratico
-
-Per un progetto applicativo:
-
-1. proteggi `main`;
-2. richiedi pull request;
-3. richiedi almeno una review;
-4. richiedi CI verde;
-5. blocca force push;
-6. elimina i branch dopo merge.
-
-Questa configurazione rende difficile rompere il branch principale per errore.
-
-## Varianti
-
-- **Protezione minima**: PR obbligatoria e niente force push.
-- **Protezione team**: PR, review e status check.
-- **Protezione code owner**: review obbligatoria dalle aree competenti.
-- **Protezione release**: regole piu rigide su `release/*`.
-- **Protezione amministratori**: applica regole anche agli admin, quando necessario.
-
-## Errori comuni
-
-- Proteggere `main` ma lasciare force push abilitato.
-- Richiedere status check con nomi instabili.
-- Non proteggere branch di release.
-- Rendere la regola cosi rigida da bloccare hotfix senza procedura.
-- Non aggiornare regole quando cambia la CI.
-- Dare eccezioni permanenti invece di risolvere il workflow.
-
-## Checklist
-
-- `main` e protetto?
-- Le pull request sono obbligatorie?
-- Le review richieste sono proporzionate al rischio?
-- I controlli CI principali sono richiesti?
-- Force push e deletion sono disabilitati?
-- Le regole sono documentate per il team?
+Nel browser apri le impostazioni del repository e confronta il branch base con la regola; `gh repo view --web` apre il **repository**, non la schermata delle protezioni. Nella PR leggi separatamente i motivi del blocco: approvazioni, conversazioni, check e aggiornamento rispetto alla base. Un requisito non soddisfatto resta tale anche se tutti gli altri sono verdi.
 
 ## Collegamenti
 
@@ -130,4 +61,6 @@ Questa configurazione rende difficile rompere il branch principale per errore.
 
 ## Fonti
 
-- [GitHub Docs - About protected branches](https://docs.github.com/en/repositories/configuring-branches-and-merges-in-your-repository/managing-protected-branches/about-protected-branches)
+- [GitHub Docs: protezioni dei branch e opzioni di review](https://docs.github.com/en/repositories/configuring-branches-and-merges-in-your-repository/managing-protected-branches/about-protected-branches)
+- [GitHub Docs: precedenza delle regole e pattern](https://docs.github.com/en/repositories/configuring-branches-and-merges-in-your-repository/managing-protected-branches/managing-a-branch-protection-rule)
+- [GitHub CLI: cosa apre gh repo view](https://cli.github.com/manual/gh_repo_view)

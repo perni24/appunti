@@ -26,100 +26,39 @@ title: Review code su GitHub
 
 ## Sintesi
 
-La **code review su GitHub** e il processo con cui una o piu persone controllano una pull request prima del merge. Serve a intercettare bug, regressioni, rischi di sicurezza, problemi di manutenzione e mancanza di test.
+La review verifica se una PR risolve il problema senza introdurre regressioni. Non equivale al lint: un codice ben formattato può generare un CSV sbagliato. Controlla comportamento, test, compatibilità, manutenzione e, quando rilevanti, permessi, migrazioni e documentazione.
 
-Una buona review non cerca solo stile: valuta comportamento, compatibilita, chiarezza e impatto operativo.
+## Esempio: rivedere la PR 34
 
-## Quando usarlo
-
-Usa review quando:
-
-- la modifica tocca codice condiviso;
-- cambia comportamento utente o API;
-- introduce automazioni, permessi o deploy;
-- modifica database, sicurezza o configurazioni;
-- un errore avrebbe impatto alto;
-- vuoi mantenere standard di team.
-
-## Come funziona
-
-GitHub permette di:
-
-- commentare righe specifiche;
-- aprire conversazioni;
-- richiedere modifiche;
-- approvare;
-- lasciare commenti generali;
-- confrontare commit successivi;
-- bloccare merge finche mancano review richieste.
-
-Gli stati principali sono:
-
-- **Comment**: osservazione senza bloccare.
-- **Approve**: modifica accettata.
-- **Request changes**: modifica da correggere prima del merge.
-
-## API / Sintassi
-
-Comandi utili con GitHub CLI:
+Sostituisci `34` con il numero reale. Leggi prima descrizione e issue collegata, poi il diff:
 
 ```bash
-gh pr view
-gh pr diff
-gh pr checkout 123
-gh pr review --approve
-gh pr review --request-changes
+gh pr view 34
 ```
-
-Controllare localmente una PR:
 
 ```bash
-gh pr checkout 123
-npm test
-npm run lint
+gh pr diff 34
 ```
 
-## Esempio pratico
+Nel caso dell’export, controlla **sia zero righe sia un report non vuoto**. Un commento utile collega osservazione, impatto e verifica: «Il ritorno anticipato salta anche l’intestazione. Possiamo aggiungere un test con zero righe che si aspetti la sola intestazione?». Per un dettaglio stilistico non richiesto dal progetto, segnala invece che il suggerimento è facoltativo.
 
-Commento poco utile:
+Se serve una prova locale, `gh pr checkout 34` cambia il branch nel clone. Salva il lavoro in corso; prima di installare dipendenze o eseguire script di una PR esterna, ispezionali e usa un ambiente isolato senza credenziali. Scegli test e lint previsti dal progetto.
 
-```text
-Non mi piace.
+## Commento, approvazione o richiesta di modifiche?
+
+| Esito | Quando sceglierlo | Cosa succede |
+| --- | --- | --- |
+| Comment | Domanda o miglioramento facoltativo | Registra il feedback, senza esprimere approvazione. |
+| Request changes | C’è un difetto concreto da correggere | Registra la richiesta; l’effettivo blocco del merge dipende dalle regole della base e dai permessi del revisore. |
+| Approve | La revisione del diff corrente è favorevole | Non esegue il merge e non sostituisce i check obbligatori. |
+
+Per inviare una richiesta motivata, da un account revisore e sul repository corretto:
+
+```bash
+gh pr review 34 --request-changes --body "Aggiungere un test per il CSV senza righe: manca l'intestazione."
 ```
 
-Commento utile:
-
-```text
-Questa validazione accetta stringhe vuote. Possiamo aggiungere un test per il caso `""` e restituire errore esplicito?
-```
-
-Il secondo indica problema, impatto e azione verificabile.
-
-## Varianti
-
-- **Review funzionale**: verifica comportamento e casi limite.
-- **Review architetturale**: valuta struttura, dipendenze e confini.
-- **Review di sicurezza**: cerca input non validati, segreti, permessi e supply chain.
-- **Review di test**: controlla copertura dei casi importanti.
-- **Review documentale**: controlla README, changelog o docs.
-
-## Errori comuni
-
-- Limitarsi alla formattazione.
-- Fare review senza leggere descrizione e issue collegata.
-- Approvare PR con test falliti senza motivo.
-- Chiedere cambiamenti soggettivi senza spiegare il tradeoff.
-- Non distinguere blocchi reali da suggerimenti.
-- Lasciare commenti non risolti e fare merge comunque.
-
-## Checklist
-
-- La modifica risolve il problema dichiarato?
-- Ci sono test per i casi importanti?
-- Ci sono regressioni possibili?
-- La soluzione e coerente con il progetto?
-- I controlli automatici passano?
-- I commenti bloccanti sono stati risolti?
+Dopo la correzione leggi il nuovo diff e verifica il test prima di approvare. Chiudere un thread non ritira da solo una review negativa. Se la base invalida le approvazioni obsolete, nuovi commit possono rendere necessaria un’altra approvazione. L’autore non può approvare la propria PR.
 
 ## Collegamenti
 
@@ -131,3 +70,5 @@ Il secondo indica problema, impatto e azione verificabile.
 ## Fonti
 
 - [GitHub Docs - About pull request reviews](https://docs.github.com/en/pull-requests/collaborating-with-pull-requests/reviewing-changes-in-pull-requests/about-pull-request-reviews)
+- [GitHub Docs: inviare una review e condizioni di blocco](https://docs.github.com/en/pull-requests/how-tos/review-pull-requests/reviewing-proposed-changes-in-a-pull-request)
+- [GitHub CLI: inviare una review](https://cli.github.com/manual/gh_pr_review)

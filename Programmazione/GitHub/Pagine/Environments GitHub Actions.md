@@ -26,104 +26,43 @@ title: Environments GitHub Actions
 
 ## Sintesi
 
-Gli **environments** di GitHub Actions rappresentano ambienti di deploy come `staging`, `production` o `preview`. Possono avere secret, variabili, approvazioni e regole di protezione dedicate.
+Un **environment** è una destinazione logica del repository: può avere regole di accesso, variabili, secret e una cronologia dei deployment. Non crea l’infrastruttura: chiamarlo `production` non crea un server, non carica alcun file e non attiva automaticamente un’approvazione.
 
-Sono il modo corretto per distinguere deploy tecnici da deploy verso ambienti reali con rischio diverso.
+| Nel workflow | Significato |
+| --- | --- |
+| `environment: staging` sul job | Collega il job alla destinazione e alle sue regole. |
+| `env:` sul workflow, job o step | Definisce variabili di processo; non associa un deployment a una destinazione. |
+| `environment.url` | Fornisce un collegamento alla destinazione. Non ne verifica la raggiungibilità. |
 
-## Quando usarlo
+## Esempio pratico: provare la configurazione senza pubblicare
 
-Usali quando:
-
-- hai staging e produzione;
-- vuoi secret separati per ambiente;
-- vuoi approvazione prima del deploy;
-- vuoi tracciare deployment history;
-- vuoi limitare chi puo pubblicare;
-- vuoi usare regole diverse per ambienti diversi.
-
-## Come funziona
-
-Nel job dichiari:
+In un repository di prova prepara **prima** l’environment `staging` in **Settings → Environments** e definisci *in quell’ambiente* la variabile non sensibile `SITE_LABEL`. Per osservare il caso «mancante», non definirla anche a livello di repository o organizzazione. Il workflow manuale seguente controlla il valore e non effettua deploy esterni.
 
 ```yaml
-environment: production
-```
-
-GitHub associa quel job all'environment. Se l'environment ha protection rules, il job puo restare in attesa prima di eseguire step sensibili.
-
-Gli environment possono contenere:
-
-- secrets;
-- variables;
-- reviewers richiesti;
-- wait timer;
-- branch o tag consentiti;
-- history dei deployment.
-
-## API / Sintassi
-
-Job con environment:
-
-```yaml
+name: Verifica configurazione staging
+on: workflow_dispatch
+permissions: {}
 jobs:
-  deploy:
+  verifica:
     runs-on: ubuntu-latest
-    environment: production
+    environment: staging
     steps:
-      - uses: actions/checkout@v4
-      - run: ./deploy.sh
+      - name: Verifica l'etichetta della destinazione
+        shell: pwsh
+        env:
+          SITE_LABEL: ${{ vars.SITE_LABEL }}
+        run: |
+          if ([string]::IsNullOrWhiteSpace($env:SITE_LABEL)) { throw 'SITE_LABEL assente' }
+          Write-Output "Destinazione: $env:SITE_LABEL"
 ```
 
-Environment con URL:
+L’accesso ai secret dell’environment è subordinato alle protezioni configurate. Questo esempio non ne usa: il nome di una destinazione non è una credenziale. Un refuso nel nome dell’environment può crearne uno nuovo, senza le regole e i secret attesi; non usare il fatto che un job parta come prova che la configurazione sia corretta.
 
-```yaml
-environment:
-  name: production
-  url: https://example.com
-```
+## Staging, produzione e preview
 
-## Esempio pratico
+Per staging puoi ammettere `main` e pubblicare automaticamente; per produzione puoi limitare branch o tag **nelle impostazioni** e richiedere una review. Mantieni le credenziali di produzione nell’ambiente corretto, non come secret comune se tutti i job non devono usarle. Un ambiente preview non prepara né elimina da solo un’istanza: sono responsabilità del deploy.
 
-Separazione comune:
-
-```text
-staging:
-  deploy automatico da main
-  secret di staging
-
-production:
-  deploy manuale o da tag
-  approval obbligatoria
-  secret di produzione
-```
-
-Questo impedisce di usare credenziali di produzione in workflow di staging.
-
-## Varianti
-
-- **staging**: test realistico prima della produzione.
-- **production**: ambiente utente finale.
-- **preview**: ambiente temporaneo per PR.
-- **environment con approval**: richiede revisori.
-- **environment con branch restriction**: accetta deploy solo da branch o tag specifici.
-
-## Errori comuni
-
-- Usare gli stessi secret per tutti gli ambienti.
-- Fare deploy produzione senza environment.
-- Lasciare approval solo come convenzione manuale esterna.
-- Non limitare branch o tag per produzione.
-- Usare nomi environment incoerenti.
-- Non controllare deployment history.
-
-## Checklist
-
-- Gli ambienti principali sono modellati?
-- I secret sono separati per ambiente?
-- Production richiede protezioni adeguate?
-- Il workflow dichiara `environment`?
-- Branch o tag ammessi sono limitati?
-- La history dei deploy e consultabile?
+Nel vault il job di pubblicazione dichiara `github-pages` e usa l’output `page_url` per il link al sito. Dal solo file YAML non puoi dedurre revisori, wait timer, secret o altre impostazioni effettive. La disponibilità delle protezioni dipende anche dal piano e dalla visibilità del repository.
 
 ## Collegamenti
 
@@ -135,4 +74,6 @@ Questo impedisce di usare credenziali di produzione in workflow di staging.
 
 ## Fonti
 
-- [GitHub Docs - Managing environments](https://docs.github.com/en/actions/how-tos/deploy/configure-and-manage-deployments/manage-environments)
+- [GitHub Docs - Configurare un environment](https://docs.github.com/en/actions/how-tos/deploy/configure-and-manage-deployments/manage-environments)
+- [GitHub Docs - Regole e disponibilità](https://docs.github.com/en/actions/reference/workflows-and-actions/deployments-and-environments)
+- [GitHub Docs - Review di un deployment](https://docs.github.com/en/actions/how-tos/deploy/configure-and-manage-deployments/review-deployments)

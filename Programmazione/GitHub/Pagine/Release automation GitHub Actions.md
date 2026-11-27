@@ -28,103 +28,43 @@ title: Release automation GitHub Actions
 
 ## Sintesi
 
-La **release automation** con GitHub Actions automatizza creazione di release, generazione di artefatti, changelog, pubblicazione asset e, quando serve, deploy o pubblicazione package.
+Un **tag Git** identifica una revisione; una **release GitHub** aggiunge a un tag note, stato di pubblicazione ed eventuali asset scaricabili. Un artifact di Actions resta invece legato a un run e alla sua conservazione. Creare un tag non carica un binario; pubblicare una release non aggiorna automaticamente Pages o un registry.
 
-Una release GitHub e diversa da un artifact di workflow: la release e un oggetto pubblico o privato collegato a tag, note e asset scaricabili.
+## Esempio pratico: preparare una bozza dal tag già esistente
 
-## Quando usarlo
-
-Usala quando:
-
-- pubblichi versioni scaricabili;
-- vuoi collegare release a tag;
-- vuoi generare asset automaticamente;
-- vuoi evitare upload manuali;
-- vuoi produrre changelog coerenti;
-- vuoi pubblicare package dopo test.
-
-## Come funziona
-
-Flusso tipico:
-
-1. viene creato un tag, per esempio `v1.2.0`;
-2. parte workflow di release;
-3. esegue test o verifica artifact;
-4. compila asset;
-5. crea release GitHub;
-6. carica asset;
-7. opzionalmente pubblica package o deploy.
-
-I tag di release dovrebbero essere protetti.
-
-## API / Sintassi
-
-Trigger su tag:
+Esempio per un repository dimostrativo con un `README.md` tracciato. Un push di tag `v*` prepara uno ZIP contenente **solo** quel README e crea una **draft release**. Non è un workflow attivo del vault. Richiede Git, la CLI `gh` del runner Ubuntu e l’autorizzazione a creare release; su GitHub il comando finale **scrive davvero una bozza**. In un progetto reale, fai dipendere la pubblicazione dal job che ha testato e prodotto gli asset della stessa revisione.
 
 ```yaml
+name: Prepara bozza di release
 on:
   push:
-    tags:
-      - "v*"
+    tags: ['v*']
+permissions: {}
+jobs:
+  bozza:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+    steps:
+      - uses: actions/checkout@v6
+        with:
+          persist-credentials: false
+      - name: Archivia il README del commit selezionato
+        run: git archive --format=zip --output=guida.zip HEAD -- README.md
+      - name: Crea la bozza con l'asset
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          TAG: ${{ github.ref_name }}
+        run: gh release create "$TAG" guida.zip --verify-tag --draft --generate-notes
 ```
 
-Permessi tipici per creare release:
+`git archive` legge l’albero del commit, non modifiche locali o file non tracciati. `--verify-tag` impedisce alla CLI di creare implicitamente un tag remoto se manca. `--generate-notes` prepara le note della release; non verifica la qualità dell’asset. `--draft` lascia una bozza da controllare prima della pubblicazione; `--prerelease` indica invece una versione non stabile, non una bozza.
 
-```yaml
-permissions:
-  contents: write
-```
+## Prima di pubblicare
 
-Esempio con GitHub CLI:
-
-```yaml
-- run: gh release create "$GITHUB_REF_NAME" dist/*
-  env:
-    GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-```
-
-## Esempio pratico
-
-Release flow:
-
-```text
-main stabile
-tag v1.4.0
-workflow release
-build artifact
-create GitHub release
-upload asset
-publish package
-```
-
-Questo rende riproducibile il rilascio e lascia traccia nel repository.
-
-## Varianti
-
-- **Release manuale**: creata da UI o CLI.
-- **Release su tag**: workflow parte da `v*`.
-- **Draft release**: preparata prima della pubblicazione.
-- **Prerelease**: versioni beta, rc o preview.
-- **Release con artifact attestations**: migliora provenienza degli asset.
-- **Release con changelog automatico**: basata su PR o commit.
-
-## Errori comuni
-
-- Confondere workflow artifact e release asset.
-- Usare tag non protetti.
-- Pubblicare release senza test.
-- Sovrascrivere asset gia pubblicati.
-- Usare token personali invece di `GITHUB_TOKEN` quando basta.
-- Non collegare release a changelog e versionamento.
-
-## Checklist
-
-- La release parte da tag protetto?
-- Gli artifact vengono generati dalla pipeline ufficiale?
-- La release contiene note chiare?
-- Gli asset sono quelli attesi?
-- I permessi sono limitati al job release?
-- Il processo e ripetibile?
+- `v*` è un filtro per prefisso, non una validazione SemVer né una protezione. Limita chi può creare o modificare i tag di rilascio e verifica il commit puntato.
+- Per binari o documentazione generata, riusa i file effettivamente testati. Non archiviare l’intero vault al posto del sito filtrato: anche note escluse dalla pubblicazione potrebbero finire nello ZIP.
+- Se rilanci lo stesso run, una release per il tag può esistere già. Controllane stato e asset prima di riprovare; non sostituire in silenzio un file già distribuito. Checksum e attestazione possono documentare integrità e provenienza, non sostituiscono i test.
 
 ## Collegamenti
 
@@ -137,4 +77,6 @@ Questo rende riproducibile il rilascio e lascia traccia nel repository.
 
 ## Fonti
 
-- [GitHub Docs - About releases](https://docs.github.com/en/repositories/releasing-projects-on-github/about-releases)
+- [GitHub Docs - Relazione tra tag, release e asset](https://docs.github.com/en/repositories/releasing-projects-on-github/about-releases)
+- [GitHub CLI - gh release create](https://cli.github.com/manual/gh_release_create)
+- [Git - Contenuto di git archive](https://git-scm.com/docs/git-archive)

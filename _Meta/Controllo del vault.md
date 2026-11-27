@@ -21,14 +21,4 @@ Nessuno.
 
 ## Avvisi Editoriali
 
-- [[Programmazione/Rust/Promemoria/Pagine/Rust - Collezioni|Rust - Collezioni]]: nessuna fonte web esplicita
-- [[Programmazione/Rust/Promemoria/Pagine/Rust - Funzioni e closure|Rust - Funzioni e closure]]: nessuna fonte web esplicita
-- [[Programmazione/Rust/Promemoria/Pagine/Rust - Option Result e errori|Rust - Option Result e errori]]: nessuna fonte web esplicita
-- [[Programmazione/Rust/Promemoria/Pagine/Rust - Ownership e borrowing|Rust - Ownership e borrowing]]: nessuna fonte web esplicita
-- [[Programmazione/Rust/Promemoria/Pagine/Rust - Sintassi essenziale|Rust - Sintassi essenziale]]: nessuna fonte web esplicita
-- [[Programmazione/Rust/Promemoria/Pagine/Rust - Stringhe e slice|Rust - Stringhe e slice]]: nessuna fonte web esplicita
-- [[Programmazione/Rust/Promemoria/Pagine/Rust - Struct enum e pattern matching|Rust - Struct enum e pattern matching]]: nessuna fonte web esplicita
-- [[Programmi open source/Pagine/Aider|Aider]]: nessuna fonte web esplicita
-- [[Programmi open source/Pagine/Bruno|Bruno]]: nessuna fonte web esplicita
-- [[Programmi open source/Pagine/MusicBrainz Picard|MusicBrainz Picard]]: nessuna fonte web esplicita
-- [[Programmi open source/Pagine/OpenSCAD|OpenSCAD]]: nessuna fonte web esplicita
+Nessun avviso.

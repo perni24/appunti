@@ -28,91 +28,36 @@ title: Webhooks GitHub
 
 ## Sintesi
 
-I **webhooks GitHub** permettono a un servizio esterno di ricevere notifiche quando accadono eventi su GitHub. Invece di interrogare continuamente l'API, il tuo server riceve una richiesta HTTP quando avviene qualcosa.
+Un webhook avvisa il tuo servizio che qualcosa è accaduto; **non** gli concede il diritto di modificare GitHub. Per esempio, ricevere `issues.opened` e aggiungere l’etichetta `triage` sono due operazioni: la prima arriva con una consegna HTTP, la seconda richiede una credenziale API autorizzata.
 
-Sono il meccanismo corretto per automazioni reattive: una pull request viene aperta, una issue cambia label, una release viene pubblicata, un workflow termina.
+## Ricevere una consegna senza perderla
 
-## Quando usarlo
+1. Configura un endpoint HTTPS, un secret dedicato e soltanto gli eventi necessari, per il repository, l’organizzazione o l’App. Conserva i byte **originali** del corpo prima di decodificare il JSON.
+2. Verifica `X-Hub-Signature-256`, poi leggi `X-GitHub-Event` e `action`. Ad esempio, il tipo `issues` contiene sia `opened` sia `closed`: iscriversi al tipo non seleziona l’azione.
+3. Registra `X-GitHub-Delivery` e il lavoro da svolgere in modo durevole, idealmente nella stessa transazione. Un vincolo univoco sull’ID evita il doppio inserimento. Segnare «ricevuto» e poi perdere il lavoro prima di accodarlo non basta.
+4. Rispondi con `2xx` entro dieci secondi per una consegna accettata. Il worker fa le chiamate lente e registra l’esito. Se l’accodamento fallisce non confermare un successo inesistente.
 
-Usali quando:
+## Esempio: verifica della firma in Node.js
 
-- vuoi reagire a eventi GitHub in tempo quasi reale;
-- vuoi integrare GitHub con servizi esterni;
-- vuoi costruire bot o automazioni server-side;
-- vuoi evitare polling continuo della REST API;
-- vuoi ricevere eventi di repository, organizzazione o GitHub App;
-- vuoi collegare GitHub a sistemi interni.
+Funzione per un modulo ESM. `body` deve essere un `Buffer`, `secret` il segreto configurato e `header` il valore di `X-Hub-Signature-256`. Non è un server completo. La firma copre il corpo, non tutti gli header: autenticarla non sostituisce i controlli su repository, installazione e tipo di evento.
 
-## Come funziona
+```js
+import { createHmac, timingSafeEqual } from 'node:crypto';
 
-Configuri un webhook indicando:
-
-- URL di destinazione;
-- eventi da ascoltare;
-- formato payload;
-- secret per firmare le consegne;
-- stato attivo o disattivo.
-
-Quando l'evento avviene, GitHub invia una richiesta HTTP al tuo endpoint. Il tuo server deve validare la firma, rispondere rapidamente e poi processare il lavoro.
-
-## API / Sintassi
-
-Endpoint tipico:
-
-```text
-POST https://example.com/github/webhook
+export function firmaValida(body, secret, header) {
+  if (!Buffer.isBuffer(body) || typeof secret !== 'string' || !secret) return false;
+  if (typeof header !== 'string' || !/^sha256=[0-9a-f]{64}$/.test(header)) return false;
+  const attesa = createHmac('sha256', secret).update(body).digest();
+  const ricevuta = Buffer.from(header.slice(7), 'hex');
+  return ricevuta.length === attesa.length && timingSafeEqual(ricevuta, attesa);
+}
 ```
 
-Header importanti:
+Non passare `JSON.stringify(payload)` dopo il parsing: spazi e codifica fanno parte dei byte firmati. Una firma valida prova che il corpo corrisponde al secret, non che l’evento sia nuovo o che il lavoro sia già terminato. Non stampare secret o corpi sensibili nei log.
 
-```text
-X-GitHub-Event: pull_request
-X-GitHub-Delivery: identificatore-consegna
-X-Hub-Signature-256: sha256=...
-```
+## Consegna fallita o duplicata?
 
-Pattern di gestione:
-
-```text
-ricevi evento -> valida firma -> salva delivery id -> metti in coda -> rispondi 2xx -> processa
-```
-
-## Esempio pratico
-
-Automazione su pull request:
-
-1. arriva evento `pull_request`;
-2. il server valida `X-Hub-Signature-256`;
-3. controlla titolo, label o file modificati;
-4. chiama la REST API per commentare o aggiungere label;
-5. registra delivery id per evitare doppie elaborazioni.
-
-## Varianti
-
-- **Repository webhook**: legato a un repository.
-- **Organization webhook**: eventi su piu repository.
-- **GitHub App webhook**: legato a un'app installabile.
-- **Webhook verso sistema privato**: richiede proxy, tunnel o architettura dedicata.
-- **Webhook con coda**: consigliato per elaborazioni lente.
-
-## Errori comuni
-
-- Non validare la firma del webhook.
-- Eseguire lavoro lungo prima di rispondere.
-- Non gestire retry e consegne duplicate.
-- Ascoltare troppi eventi inutili.
-- Esporre endpoint senza rate limit o logging.
-- Trattare il payload come fonte fidata senza controlli.
-
-## Checklist
-
-- Il webhook ascolta solo eventi necessari?
-- Il secret e configurato?
-- La firma viene validata?
-- Il delivery id viene registrato?
-- Il server risponde velocemente?
-- Gli errori vengono loggati senza segreti?
-- Esiste una strategia per redelivery e retry?
+GitHub **non ritenta automaticamente** le consegne fallite. Consulta le consegne recenti e richiedi una *redelivery* quando il servizio è tornato disponibile. Una redelivery mantiene il medesimo `X-GitHub-Delivery`: se il lavoro è già stato accettato, confermalo senza accodarlo di nuovo. Se è fallito il worker **dopo** il `2xx`, invece, gestisci il retry dalla tua coda. Limita dimensione e volume delle richieste e monitora separatamente errori di ricezione ed errori di elaborazione.
 
 ## Collegamenti
 
@@ -124,5 +69,6 @@ Automazione su pull request:
 
 ## Fonti
 
-- [GitHub Docs - Webhooks](https://docs.github.com/en/webhooks)
-- [GitHub Docs - Validating webhook deliveries](https://docs.github.com/en/webhooks/using-webhooks/validating-webhook-deliveries)
+- [GitHub Docs - Validazione della firma e vettore di test](https://docs.github.com/en/webhooks/using-webhooks/validating-webhook-deliveries)
+- [GitHub Docs - Buone pratiche di ricezione](https://docs.github.com/en/webhooks/using-webhooks/best-practices-for-using-webhooks)
+- [GitHub Docs - Gestire le consegne fallite](https://docs.github.com/en/webhooks/using-webhooks/handling-failed-webhook-deliveries)

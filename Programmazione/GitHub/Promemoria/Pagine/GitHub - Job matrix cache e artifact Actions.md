@@ -25,111 +25,89 @@ title: GitHub - Job, matrix, cache e artifact Actions
 
 # GitHub - Job, matrix, cache e artifact Actions
 
-## Dipendenze tra job
+## Matrix, cache npm e report
+
+Frammento sotto `jobs`, con `permissions: { contents: read }` nel workflow. Due sistemi × due versioni Node = quattro job. `timeout-minutes` vale per ciascuno; `fail-fast: false` lascia terminare le altre combinazioni se una fallisce.
 
 ```yaml
-jobs:
-  build:
-    runs-on: ubuntu-latest
-    steps:
-      - run: npm run build
-
-  deploy:
-    needs: build
-    runs-on: ubuntu-latest
-    steps:
-      - run: ./deploy.sh
+test:
+  strategy:
+    fail-fast: false
+    matrix:
+      os: [ubuntu-latest, windows-latest]
+      node: [22, 24]
+  runs-on: ${{ matrix.os }}
+  timeout-minutes: 20
+  defaults:
+    run:
+      working-directory: site
+  steps:
+    - uses: actions/checkout@v6
+    - uses: actions/setup-node@v6
+      with:
+        node-version: ${{ matrix.node }}
+        cache: npm
+        cache-dependency-path: site/package-lock.json
+    - run: npm ci
+    - id: prova
+      run: node --test --test-reporter=tap --test-reporter-destination=report.tap scripts/content.test.mjs
+    - uses: actions/upload-artifact@v7
+      if: success() || (failure() && steps.prova.outcome == 'failure')
+      with:
+        name: report-${{ matrix.os }}-${{ matrix.node }}
+        path: site/report.tap
+        if-no-files-found: error
+        retention-days: 7
 ```
 
-## Matrix
+**Cache**: accelera il download delle dipendenze, non conserva `node_modules` e non sostituisce `npm ci`. Per una cache manuale usare `actions/cache` con chiave legata a sistema e hash del lockfile; non sovrapporla a `setup-node` per gli stessi dati.
+
+**Artifact**: conserva un file del run. Il nome include entrambe le dimensioni per evitare collisioni. Per leggere un report dopo una matrix riuscita, aggiungere questo job accanto a `test`:
 
 ```yaml
-jobs:
-  test:
-    strategy:
-      fail-fast: false
-      matrix:
-        os: [ubuntu-latest, windows-latest]
-        node: [22, 24]
-
-    runs-on: ${{ matrix.os }}
-
-    steps:
-      - uses: actions/checkout@v7
-      - uses: actions/setup-node@v7
-        with:
-          node-version: ${{ matrix.node }}
-      - run: npm ci
-      - run: npm test
+leggi:
+  needs: test
+  runs-on: ubuntu-latest
+  steps:
+    - uses: actions/download-artifact@v8
+      with:
+        name: report-ubuntu-latest-24
+        path: risultati
+    - run: head -n 5 risultati/report.tap
 ```
 
-## Output di uno step
+`needs` stabilisce l'ordine, non copia file. Se la matrix fallisce, questo consumer viene saltato per impostazione predefinita; i report già caricati restano consultabili nel run.
+
+## Output: passare un valore senza un file
+
+Esempio indipendente, ancora sotto `jobs`. `id: meta` identifica lo step; `outputs` pubblica il suo valore per il job dipendente.
 
 ```yaml
-- name: Calculate version
-  id: meta
-  shell: bash
-  run: echo "version=1.2.3" >> "$GITHUB_OUTPUT"
+build:
+  runs-on: ubuntu-latest
+  outputs:
+    version: ${{ steps.meta.outputs.version }}
+  steps:
+    - id: meta
+      shell: bash
+      run: echo "version=1.2.3" >> "$GITHUB_OUTPUT"
 
-- run: echo "${{ steps.meta.outputs.version }}"
+mostra:
+  needs: build
+  runs-on: ubuntu-latest
+  steps:
+    - env:
+        VERSIONE: ${{ needs.build.outputs.version }}
+      run: echo "$VERSIONE"
 ```
 
-## Output tra job
+## Fonti
 
-```yaml
-jobs:
-  build:
-    outputs:
-      version: ${{ steps.meta.outputs.version }}
-```
-
-```yaml
-jobs:
-  deploy:
-    needs: build
-    steps:
-      - run: echo "${{ needs.build.outputs.version }}"
-```
-
-## Cache
-
-```yaml
-- name: Cache dependencies
-  uses: actions/cache@v5
-  with:
-    path: ~/.npm
-    key: npm-${{ runner.os }}-${{ hashFiles('**/package-lock.json') }}
-    restore-keys: |
-      npm-${{ runner.os }}-
-```
-
-Per npm, il caching integrato in `actions/setup-node` e normalmente piu semplice.
-
-## Caricare artifact
-
-```yaml
-- name: Upload build
-  uses: actions/upload-artifact@v7
-  with:
-    name: frontend-build
-    path: dist/
-    if-no-files-found: error
-    retention-days: 7
-```
-
-In una matrix usare nomi artifact univoci:
-
-```yaml
-name: build-${{ matrix.os }}-${{ matrix.node }}
-```
-
-## Timeout
-
-```yaml
-jobs:
-  test:
-    timeout-minutes: 20
-```
+- [GitHub Docs: matrix, needs e output](https://docs.github.com/en/actions/reference/workflows-and-actions/workflow-syntax)
+- [actions/setup-node: cache del package manager](https://github.com/actions/setup-node/tree/v6)
+- [actions/cache: chiavi e ripristino](https://github.com/actions/cache/tree/v5)
+- [actions/upload-artifact: caricamento](https://github.com/actions/upload-artifact/tree/v7)
+- [actions/download-artifact: recupero](https://github.com/actions/download-artifact/tree/v8)
 
 ## Approfondimento
 
@@ -138,12 +116,6 @@ jobs:
 - [[Programmazione/GitHub/Pagine/Cache GitHub Actions|Cache GitHub Actions]]
 - [[Programmazione/GitHub/Pagine/Artifacts GitHub Actions|Artifacts GitHub Actions]]
 - [[Programmazione/GitHub/Pagine/Service containers GitHub Actions|Service containers GitHub Actions]]
-
-## Riferimenti
-
-- [actions/cache](https://github.com/actions/cache)
-- [actions/upload-artifact](https://github.com/actions/upload-artifact)
-
 
 ## Navigazione
 

@@ -29,92 +29,70 @@ title: Aprire una pull request corretta
 
 ## Obiettivo
 
-Aprire una pull request chiara, revisionabile e collegata al lavoro giusto, evitando PR troppo grandi, descrizioni vaghe o branch non aggiornati.
-
-Una pull request corretta non e solo una richiesta di merge: e un pacchetto leggibile di contesto, codice, motivazione, test e rischi.
-
-## Quando usarlo
-
-Usa questa procedura quando:
-
-- proponi una modifica a un repository;
-- vuoi far revisionare codice;
-- vuoi collegare una modifica a una issue;
-- lavori su branch separato;
-- devi passare controlli CI e review.
+Proporre un cambiamento che un'altra persona possa verificare: **quali file cambiano, perché e con quali prove**. L'esempio aggiorna le istruzioni di avvio in `README.md`; non apre una PR direttamente da `main`.
 
 ## Procedura
 
-1. Crea un branch con nome descrittivo.
-2. Fai commit piccoli e coerenti.
-3. Esegui test, lint o build in locale se possibile.
-4. Fai push del branch.
-5. Apri la pull request verso il branch corretto, di solito `main`.
-6. Scrivi titolo chiaro.
-7. Compila descrizione, motivazione, test eseguiti e impatto.
-8. Collega issue correlate.
-9. Aggiungi reviewer, label e assignee se richiesti.
-10. Controlla CI, conflitti e file modificati prima di chiedere review.
+Prerequisiti: clone con working tree pulito, `origin` corretto, branch di destinazione `main` e permesso di pubblicare un branch. Per la CLI serve una sessione GitHub autenticata. Se si contribuisce da un fork, vedere la variante sotto.
 
-## Snippet
-
-Flusso base:
+**1. Partire dalla base aggiornata.** Recuperare lo stato remoto; il fetch non modifica i file di lavoro.
 
 ```bash
-git switch -c feature/login-validation
-git add .
-git commit -m "Add login validation"
-git push -u origin feature/login-validation
-gh pr create --base main --head feature/login-validation
+git fetch origin
 ```
 
-Template descrizione:
+Creare il branch a partire da `origin/main`, senza impostare `origin/main` come suo upstream:
 
-```md
-## Cosa cambia
-
-- 
-
-## Perche
-
-- 
-
-## Test
-
-- [ ] Test locali
-- [ ] CI passata
-
-## Rischi
-
-- 
+```bash
+git switch --no-track -c docs/setup origin/main
 ```
 
-## Adattamenti comuni
+**2. Modificare e controllare.** Dopo aver aggiornato le istruzioni, provarle e mettere nell'indice soltanto il file pertinente:
 
-- **PR piccola**: ideale per review rapide.
-- **PR draft**: utile quando vuoi feedback prima che sia pronta.
-- **PR da fork**: comune in open source.
-- **PR collegata a issue**: usa parole come `Closes #123`.
-- **PR con breaking change**: evidenzia impatto e migrazioni.
+```bash
+git add -- README.md
+```
 
-## Debug rapido
+Rileggere ciò che finirà nel commit, evitando file generati o dati locali:
 
-- Se non puoi aprire la PR, controlla permessi e branch sorgente.
-- Se la PR punta al branch sbagliato, cambia base branch.
-- Se ci sono conflitti, aggiorna il branch con `main`.
-- Se la CI non parte, controlla trigger e path del workflow.
-- Se la review e lenta, riduci dimensione o aggiungi contesto.
+```bash
+git diff --cached
+```
 
-## Checklist finale
+```bash
+git commit -m "Chiarisci i prerequisiti di avvio"
+```
 
-- Branch descrittivo.
-- Titolo chiaro.
-- Descrizione completa.
-- Issue collegata se esiste.
-- Test dichiarati.
-- CI passata o errore spiegato.
-- Nessun file accidentale incluso.
-- Reviewer corretti assegnati.
+**3. Verificare il confronto prima del push.** I tre punti mostrano le modifiche dal comune antenato con la base al proprio `HEAD`. Qui ci si aspetta solo `README.md`; se compaiono altri file, ispezionare la differenza prima di proseguire.
+
+```bash
+git diff --name-status origin/main...HEAD
+```
+
+**4. Pubblicare il branch e aprire la PR.** Il primo comando scrive il branch su GitHub. Il secondo crea una PR in bozza e chiede titolo e descrizione; `--base` riceve le modifiche, `--head` le propone.
+
+```bash
+git push -u origin docs/setup
+```
+
+```bash
+gh pr create --base main --head docs/setup --draft
+```
+
+## Cosa scrivere nella descrizione
+
+| Campo | Esempio per questa modifica |
+| --- | --- |
+| Cosa e perché | Il README ora indica la versione Node richiesta prima dell'installazione. |
+| Verifica | Indicare la versione provata e il comando effettivamente eseguito. Se una prova non è stata fatta, dirlo. |
+| Impatto | Solo documentazione: nessuna modifica al runtime. In una PR incompatibile aggiungere istruzioni di migrazione. |
+| Issue | Usare `Closes #123` solo se il merge risolve davvero la issue. Nella descrizione la chiusura automatica vale quando la PR punta al branch predefinito. |
+
+## Varianti e verifica finale
+
+- **Fork:** fare push sul proprio fork; in GitHub confrontare il branch del fork con il branch base del progetto originale. Non confondere i due owner anche se entrambi hanno un branch `main`.
+- **Prima della review:** rileggere *Files changed*, verificare l'esito dei check sull'ultima revisione e passare da draft a *Ready for review*. Aggiungere i reviewer pertinenti. Altri commit sullo stesso branch aggiornano la stessa PR.
+- **Nessuna differenza o check assente:** ricontrollare orientamento base/head, push e trigger del workflow. In caso di conflitto aggiornare il branch con la strategia del team e ripetere le prove.
 
 ## Collegamenti
 
@@ -128,4 +106,6 @@ Template descrizione:
 
 ## Fonti
 
-- [GitHub Docs - Creating a pull request](https://docs.github.com/en/pull-requests/collaborating-with-pull-requests/proposing-changes-to-your-work-with-pull-requests/creating-a-pull-request)
+- [GitHub CLI: gh pr create](https://cli.github.com/manual/gh_pr_create)
+- [Git: confronto a tre punti](https://git-scm.com/docs/git-diff)
+- [GitHub Docs: collegare e chiudere una issue](https://docs.github.com/en/issues/tracking-your-work-with-issues/using-issues/linking-a-pull-request-to-an-issue)

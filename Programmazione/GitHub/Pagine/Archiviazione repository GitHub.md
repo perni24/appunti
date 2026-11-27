@@ -28,89 +28,42 @@ title: Archiviazione repository GitHub
 
 ## Sintesi
 
-L'**archiviazione di un repository GitHub** rende il repository read-only e segnala che non e piu mantenuto attivamente. E utile per preservare codice, issue, release e storico senza continuare a ricevere contributi come se il progetto fosse attivo.
+Archiviare un repository su GitHub significa **mantenerlo consultabile ma renderlo di sola lettura**. È una scelta adatta a un progetto concluso o sostituito. Non cancella i dati, non cambia automaticamente la visibilità e non crea una copia di sicurezza indipendente.
 
-Archiviare non significa cancellare: significa congelare lo stato del progetto.
+## Prima di archiviare
 
-## Quando usarlo
+1. Aggiornare README e descrizione **prima** di bloccarne le modifiche. Indicare l'ultima versione mantenuta, l'eventuale successore e dove chiedere assistenza.
+2. Rispondere alle issue e alle PR aperte. Chi legge deve distinguere il lavoro completato da quello non più seguito.
+3. Fare un inventario di ciò che dipende dal repository: sito Pages e dominio, pacchetti, release, workflow e webhook. Verificare ogni servizio separatamente; l'archiviazione non è una procedura di migrazione.
+4. Se serve un backup, definirne il perimetro e provarne il ripristino. Per esempio, un bundle Git non conserva issue, binari delle release o contenuti Git LFS.
 
-Archivia un repository quando:
+### Esempio: salvare branch e tag
 
-- il progetto e concluso;
-- il codice e sostituito da un nuovo repository;
-- non ci sono piu manutentori;
-- il repository resta utile come riferimento storico;
-- vuoi evitare nuove issue e pull request operative;
-- vuoi comunicare chiaramente che non ci saranno aggiornamenti.
+Da un repository locale completo e aggiornato, scegliere un **nuovo** file di destinazione. Il comando salva i branch e i tag presenti nel clone e gli oggetti Git raggiungibili; non include modifiche non committate né branch presenti soltanto come riferimenti remoti.
 
-## Come funziona
-
-Un repository archiviato diventa read-only per codice, issue, pull request, wiki, release, branch, tag, label, milestone, progetti, commenti e permessi. Per modificarlo bisogna prima disarchiviarlo.
-
-Prima di archiviare conviene:
-
-- chiudere o commentare issue e pull request;
-- aggiornare README e descrizione;
-- indicare repository sostitutivo, se esiste;
-- salvare backup se serve;
-- controllare release e tag;
-- verificare implicazioni su Pages, package, Actions o integrazioni.
-
-## API / Sintassi
-
-Checklist pre-archiviazione:
-
-```text
-README aggiornato
-descrizione aggiornata
-issue e PR gestite
-link al nuovo repository se esiste
-backup valutato
-release e tag controllati
-repository archiviato da Settings > Danger Zone
+```bash
+git bundle create ../progetto.bundle --branches --tags
 ```
 
-## Esempio pratico
+Dallo stesso repository, controllare che Git riconosca il bundle e che eventuali prerequisiti siano soddisfatti:
 
-README finale:
-
-```md
-# Nome progetto
-
-> Repository archiviato. Il progetto non e piu mantenuto.
-
-Nuovo repository: https://github.com/org/nuovo-progetto
-Ultima versione stabile: v1.4.2
+```bash
+git bundle verify ../progetto.bundle
 ```
 
-Questo evita che utenti o LLM interpretino il progetto come ancora attivo.
+La verifica del bundle non sostituisce una prova di ripristino né un'esportazione dei dati GitHub necessari.
 
-## Varianti
+## Archiviazione e verifica
 
-- **Archiviazione semplice**: repository personale o demo conclusa.
-- **Archiviazione con migrazione**: indica il nuovo repository.
-- **Archiviazione storica**: conserva release e tag come riferimento.
-- **Disarchiviazione temporanea**: solo per correggere metadati o sicurezza.
-- **Backup prima dell'archiviazione**: utile per requisiti interni o disaster recovery.
+Con accesso amministratore: **Settings → General → Danger Zone → Archive this repository**. Dopo la conferma, anche i manutentori non possono fare push, modificare issue o release, né aggiungere o rimuovere collaboratori finché non disarchiviano. Chi aveva accesso conserva la possibilità di leggere; eventuali modifiche fatte in un clone locale non sono pushabili verso il repository archiviato.
 
-## Errori comuni
+Per controllare lo stato, con GitHub CLI e accesso al repository (sostituire `OWNER/REPO`):
 
-- Archiviare senza spiegare perche.
-- Lasciare issue critiche senza risposta.
-- Non indicare il repository successore.
-- Confondere archiviazione e cancellazione.
-- Non considerare backup o Git LFS.
-- Non controllare integrazioni che puntano ancora al repository.
+```bash
+gh repo view OWNER/REPO --json nameWithOwner,isArchived,visibility
+```
 
-## Checklist
-
-- Il README dichiara lo stato del progetto?
-- La descrizione del repository e aggiornata?
-- Issue e pull request sono state gestite?
-- Esiste un link al successore?
-- Release e tag sono ordinati?
-- Serve un backup?
-- Le integrazioni esterne sono state aggiornate?
+`isArchived: true` conferma l'archiviazione; `visibility` risponde a una domanda diversa: chi può vedere il repository? Per riprendere la manutenzione, usare **Unarchive this repository**, poi verificare accessi, CI e istruzioni prima di annunciare la riapertura.
 
 ## Collegamenti
 
@@ -123,5 +76,7 @@ Questo evita che utenti o LLM interpretino il progetto come ancora attivo.
 
 ## Fonti
 
-- [GitHub Docs - Archiving repositories](https://docs.github.com/en/repositories/archiving-a-github-repository/archiving-repositories)
-- [GitHub Docs - Backing up a repository](https://docs.github.com/en/repositories/archiving-a-github-repository/backing-up-a-repository)
+- [GitHub Docs: archiviazione e riapertura](https://docs.github.com/en/repositories/archiving-a-github-repository/archiving-repositories)
+- [GitHub Docs: backup del repository](https://docs.github.com/en/repositories/archiving-a-github-repository/backing-up-a-repository)
+- [Git: cosa contiene un bundle](https://git-scm.com/docs/git-bundle)
+- [GitHub CLI: gh repo view](https://cli.github.com/manual/gh_repo_view)

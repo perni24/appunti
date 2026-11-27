@@ -26,100 +26,60 @@ title: Jobs steps e runners
 
 ## Sintesi
 
-In GitHub Actions un **job** e un gruppo di step eseguiti su un **runner**. Uno **step** puo eseguire un comando shell o usare una action. Il runner e la macchina che esegue il job.
+Usa più **step** quando le operazioni devono lavorare sugli stessi file. Usa più **job** quando vuoi lavoro indipendente, runner diversi o permessi distinti. Un runner esegue un job: due job con `runs-on: ubuntu-latest` chiedono lo stesso tipo di ambiente, non la stessa macchina.
 
-Capire questa struttura aiuta a progettare workflow veloci, leggibili e facili da debuggare.
+## Che cosa sopravvive da un’operazione all’altra?
 
-## Quando usarlo
+| Dato | Tra step dello stesso job | Tra job |
+| --- | --- | --- |
+| File nel workspace | Sì: uno step può leggere ciò che il precedente ha scritto. | Non implicitamente. Per trasferire una directory prodotta dalla build, carica e recupera un artifact. |
+| Variabile impostata nella shell | No: ogni step `run` avvia un nuovo processo. Usa `GITHUB_ENV` per gli step successivi. | No. Per un valore breve usa uno step output esposto come job output. |
+| Esito di un job | Gli step sono sequenziali e normalmente si fermano al primo errore. | `needs` dichiara la dipendenza: per impostazione predefinita il job successivo parte solo dopo il successo del precedente. |
 
-Studia jobs, steps e runners quando:
+## Esempio pratico: passare un nome, non una directory
 
-- vuoi separare test, build e deploy;
-- vuoi parallelizzare controlli;
-- vuoi usare sistemi operativi diversi;
-- vuoi capire dove vengono eseguiti i comandi;
-- vuoi scegliere tra GitHub-hosted e self-hosted runner;
-- vuoi ottimizzare tempi e costi.
-
-## Come funziona
-
-Un workflow contiene uno o piu job. Ogni job:
-
-- sceglie un runner con `runs-on`;
-- ha una lista di step;
-- puo dipendere da altri job tramite `needs`;
-- puo definire variabili o permessi;
-- produce log separati.
-
-Gli step vengono eseguiti in ordine nello stesso job. Job diversi possono girare in parallelo se non hanno dipendenze.
-
-## API / Sintassi
-
-Job base:
+Il primo job legge il campo `name` dal vero manifesto del vault e lo scrive come output. Il secondo usa soltanto quella stringa, quindi non esegue il checkout. La shell è PowerShell su entrambi i runner.
 
 ```yaml
+name: Leggi il nome del pacchetto
+on: workflow_dispatch
+permissions:
+  contents: read
+defaults:
+  run:
+    shell: pwsh
 jobs:
-  test:
-    runs-on: ubuntu-latest
+  leggi:
+    runs-on: windows-latest
+    outputs:
+      nome: ${{ steps.lettura.outputs.nome }}
     steps:
-      - uses: actions/checkout@v4
-      - run: npm ci
-      - run: npm test
+      - uses: actions/checkout@v6
+      - id: lettura
+        run: |
+          $manifest = Get-Content -Raw -LiteralPath 'site/package.json' | ConvertFrom-Json
+          "nome=$($manifest.name)" >> $env:GITHUB_OUTPUT
+  mostra:
+    needs: leggi
+    runs-on: windows-latest
+    steps:
+      - name: Mostra il nome ricevuto
+        env:
+          PACKAGE_NAME: ${{ needs.leggi.outputs.nome }}
+        run: |
+          if (-not $env:PACKAGE_NAME) { throw 'Output nome assente' }
+          Write-Output "Pacchetto: $env:PACKAGE_NAME"
 ```
 
-Dipendenza tra job:
+Segui il nome `nome` lungo tre passaggi: lo step `lettura` lo scrive in `GITHUB_OUTPUT`; `leggi.outputs` lo espone; `mostra` lo legge tramite `needs.leggi.outputs.nome`. Aggiungere soltanto `needs: leggi` imporrebbe l’ordine senza trasferire alcun dato.
 
-```yaml
-jobs:
-  test:
-    runs-on: ubuntu-latest
-    steps:
-      - run: npm test
+## Varianti e limiti
 
-  deploy:
-    needs: test
-    runs-on: ubuntu-latest
-    steps:
-      - run: ./deploy.sh
-```
+Job senza dipendenze possono procedere in parallelo, nei limiti dei runner disponibili: per esempio lint e test indipendenti. Per eseguire gli step in un’immagine Linux specifica si può dichiarare `jobs.<id>.container` su un runner Linux compatibile. Il container definisce l’ambiente degli step, non sostituisce il runner.
 
-## Esempio pratico
+Nel deploy Quartz, `site/public` non è una stringa: `build` lo carica come artifact di Pages e `deploy` pubblica quell’artifact. Una **cache** ha un altro scopo: accelera run futuri e può mancare, quindi non usarla come unica copia dell’output da pubblicare.
 
-Separazione utile:
-
-- `lint`: controlla stile e regole statiche;
-- `test`: esegue test;
-- `build`: produce artefatti;
-- `deploy`: pubblica solo se build e test passano.
-
-Questa divisione rende chiaro cosa fallisce e permette di parallelizzare dove possibile.
-
-## Varianti
-
-- **GitHub-hosted runner**: runner gestito da GitHub.
-- **Self-hosted runner**: runner gestito da te.
-- **Job paralleli**: nessun `needs` tra loro.
-- **Job sequenziali**: usano `needs`.
-- **Matrix job**: stesso job su piu versioni o ambienti.
-- **Container job**: job eseguito in container.
-
-## Errori comuni
-
-- Mettere tutto in un solo job enorme.
-- Duplicare setup in molti job senza cache o riuso.
-- Usare self-hosted runner senza hardening.
-- Non capire che job diversi non condividono filesystem.
-- Dimenticare `actions/checkout`.
-- Usare `ubuntu-latest` senza considerare aggiornamenti futuri.
-
-## Checklist
-
-- I job riflettono fasi logiche?
-- I job indipendenti possono girare in parallelo?
-- Le dipendenze `needs` sono minime?
-- Il runner scelto e adatto?
-- Gli step hanno nomi comprensibili?
-- I log aiutano a capire il fallimento?
+Una **matrix** ripete un job per combinazioni di sistema o runtime. Le immagini hosted con suffisso `-latest` possono evolvere; con runner **self-hosted** possono invece rimanere file tra esecuzioni. Non fare affidamento su quello stato e non eseguire codice non fidato su un runner con accesso a risorse interne.
 
 ## Collegamenti
 
@@ -130,5 +90,7 @@ Questa divisione rende chiaro cosa fallisce e permette di parallelizzare dove po
 
 ## Fonti
 
-- [GitHub Docs - GitHub-hosted runners](https://docs.github.com/en/actions/concepts/runners/github-hosted-runners)
-- [GitHub Docs - Workflow syntax](https://docs.github.com/en/actions/reference/workflows-and-actions/workflow-syntax)
+- [GitHub Docs - Runner gestiti da GitHub](https://docs.github.com/en/actions/concepts/runners/github-hosted-runners)
+- [GitHub Docs - Job in un container](https://docs.github.com/en/actions/how-tos/write-workflows/choose-where-workflows-run/run-jobs-in-a-container)
+- [GitHub Docs - Passare output tra job](https://docs.github.com/en/actions/how-tos/write-workflows/choose-what-workflows-do/pass-job-outputs)
+- [GitHub Docs - File di ambiente e output](https://docs.github.com/en/actions/reference/workflows-and-actions/workflow-commands)

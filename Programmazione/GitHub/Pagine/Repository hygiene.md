@@ -28,89 +28,46 @@ title: Repository hygiene
 
 ## Sintesi
 
-La **repository hygiene** e la manutenzione ordinaria che mantiene un repository comprensibile, sicuro e usabile. Include documentazione, file standard, pulizia di branch, issue, dipendenze, release e impostazioni.
+Per **repository hygiene** si intende la manutenzione periodica che rende il progetto comprensibile e utilizzabile da chi arriva oggi. Non si misura contando quanti branch o issue si eliminano: un branch di manutenzione vecchio può servire ancora e una segnalazione aperta può descrivere un problema reale.
 
-Non e un'attivita una tantum: e una routine per evitare che il repository diventi difficile da leggere, automatizzare o trasferire.
+## Routine di triage
 
-## Quando usarlo
+| Controllo | Segnale | Azione utile |
+| --- | --- | --- |
+| Setup e documentazione | Un clone nuovo non si avvia con le istruzioni del README | Riprovare il percorso documentato, poi correggere prerequisiti o comandi. Verificare anche licenza, descrizione e contatto di sicurezza. |
+| Issue e pull request | Ricerca `is:issue is:open no:label` o PR senza risposta | Confermare se il problema è riproducibile, assegnare una priorità o chiedere informazioni. Se si chiude, spiegare perché. |
+| Dipendenze e release | Alert non assegnati, bozze ferme, note di aggiornamento mancanti | Assegnare un responsabile, verificare impatto e test; controllare che le release pubblicate corrispondano ai tag attesi. |
+| Ciclo di vita | Utenti ancora attivi ma nessun manutentore | Dichiarare lo stato nel README, cercare un successore o valutare l'archiviazione. |
 
-Serve quando:
+## Esempio: ispezionare senza cancellare
 
-- il repository contiene codice usato davvero;
-- nuovi contributor devono orientarsi;
-- issue e branch crescono senza controllo;
-- release e tag sono confusi;
-- ci sono dipendenze obsolete;
-- il README non descrive piu lo stato reale;
-- il progetto rischia di sembrare abbandonato.
+Dalla radice di un clone con `main` aggiornato, elencare i **branch locali** il cui commit di punta è raggiungibile da `main`:
 
-## Come funziona
-
-Una buona igiene riguarda:
-
-- README aggiornato;
-- LICENSE e `.gitignore` corretti;
-- issue e pull request chiuse o etichettate;
-- branch vecchi rimossi;
-- dipendenze monitorate;
-- release e tag coerenti;
-- security file e disclosure policy;
-- repository description e topics aggiornati.
-
-L'obiettivo e ridurre attrito: chi apre il repository deve capire cosa fa, come usarlo, come contribuire e qual e lo stato del progetto.
-
-## API / Sintassi
-
-Checklist periodica:
-
-```text
-README aggiornato
-issue triage
-branch obsoleti rimossi
-release coerenti
-dipendenze controllate
-security features attive
-topics e descrizione aggiornati
+```bash
+git branch --merged main --format="%(refname:short)"
 ```
 
-## Esempio pratico
+Anche `main` può apparire. Un merge con squash può invece aver integrato il contenuto **senza** rendere raggiungibile il commit originale. Prima di eliminare un branch, controllare PR, lavoro residuo e necessità del team: l'elenco non è una lista di cancellazione.
 
-Routine mensile:
+Nel vault, i file sorgente sono tracciati, l'HTML generato in `site/public` no. Quali file di quella cartella sono già nell'indice Git?
 
-```text
-1. controlla issue senza label
-2. chiudi branch merged
-3. verifica Dependabot alerts
-4. aggiorna README se il setup e cambiato
-5. controlla release draft o obsolete
-6. archivia repository non piu mantenuti
+```bash
+git ls-files -- site/public
 ```
 
-## Varianti
+Nessuna riga significa **nessun file tracciato in quel percorso**, non che la cartella sia vuota. Per un file generato non tracciato, chiedere quale regola lo ignora:
 
-- **Hygiene open source**: focus su community file, issue e contributor.
-- **Hygiene interna**: focus su accessi, CI, ownership e release.
-- **Hygiene sicurezza**: focus su secret scanning, code scanning e dipendenze.
-- **Hygiene archivio**: focus su README finale, chiusura issue e archiviazione.
+```bash
+git check-ignore -v -- site/public/index.html
+```
+
+L'output indica file delle regole, riga e pattern. Aggiungere un percorso a `.gitignore` non smette di tracciare file già versionati.
 
 ## Errori comuni
 
-- Tenere branch vecchi senza motivo.
-- Lasciare issue aperte senza triage.
-- Non aggiornare README dopo cambi di setup.
-- Usare release senza tag coerenti.
-- Non indicare che un progetto e non mantenuto.
-- Duplicare template e policy tra repository invece di centralizzarli.
-
-## Checklist
-
-- Il README spiega stato e setup attuali?
-- Ci sono branch obsoleti?
-- Le issue hanno label e priorita?
-- Le dipendenze hanno alert gestiti?
-- Le release hanno tag e note leggibili?
-- I file di community sono presenti?
-- I repository inattivi sono archiviati o dichiarati?
+- Chiudere o eliminare elementi soltanto per anzianità, senza consultare chi li usa.
+- Considerare risolto un alert perché è stato letto, senza annotare la decisione.
+- Duplicare policy comuni senza sapere quale copia aggiornare. Al termine del triage, lasciare una decisione verificabile o una prossima azione con responsabile.
 
 ## Collegamenti
 
@@ -126,4 +83,7 @@ Routine mensile:
 
 ## Fonti
 
-- [GitHub Docs - Best practices for repositories](https://docs.github.com/en/repositories/creating-and-managing-repositories/best-practices-for-repositories)
+- [GitHub Docs: pratiche di gestione](https://docs.github.com/en/repositories/creating-and-managing-repositories/best-practices-for-repositories)
+- [Git: git branch](https://git-scm.com/docs/git-branch)
+- [Git: git ls-files](https://git-scm.com/docs/git-ls-files)
+- [Git: git check-ignore](https://git-scm.com/docs/git-check-ignore)

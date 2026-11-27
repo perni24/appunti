@@ -26,117 +26,51 @@ title: Issues GitHub
 
 ## Sintesi
 
-Le **Issues GitHub** servono a tracciare bug, richieste, task, discussioni operative e lavoro da pianificare. Sono diverse dalle pull request: una issue descrive un problema o obiettivo; una pull request propone una modifica concreta al codice.
+Un’**issue** descrive un problema, un obiettivo o una decisione da seguire. Una **pull request** propone invece una modifica concreta. L’issue può esistere prima del codice e restare aperta anche dopo più PR, se nessuna completa il lavoro.
 
-Una buona issue rende chiaro cosa va fatto, perche conta e come verificare la soluzione.
+## Esempio: una segnalazione verificabile
 
-## Quando usarlo
+Scrivi una segnalazione con dati di prova riproducibili, non solo «l’export non funziona»:
 
-Usa issue per:
+```md
+Titolo: Il CSV perde l'intestazione quando il report è vuoto
 
-- segnalare bug;
-- pianificare feature;
-- raccogliere decisioni tecniche;
-- spezzare lavoro grande in task;
-- collegare pull request a obiettivi tracciati;
-- dare contesto a chi contribuira in futuro.
+Passi: aprire un report di prova con zero righe ed esportarlo in CSV.
+Atteso: il file contiene l'intestazione, senza righe di dati.
+Osservato: il file è vuoto.
+Criterio di accettazione: il caso vuoto conserva l'intestazione;
+un report con una riga continua a esportare anche quella riga.
+```
 
-## Come funziona
+Aggiungi versione e ambiente se aiutano a riprodurre il problema. Non allegare token o dati reali dei clienti. Per una feature descrivi il bisogno e il risultato verificabile; per un lavoro ampio suddividi i sotto-obiettivi, invece di mescolare bug indipendenti. Se si tratta solo di un confronto aperto, valuta Discussions.
 
-Un'issue puo contenere:
+## Collegare il lavoro senza chiuderlo troppo presto
 
-- titolo;
-- descrizione;
-- label;
-- assignee;
-- milestone;
-- commenti;
-- checklist;
-- riferimenti a commit e pull request.
-
-Una pull request puo chiudere automaticamente una issue usando parole chiave come:
+- `#12` in una PR richiama l’issue di quel repository; **menzionare** non significa **chiudere**.
+- Se la PR risolve l’intera issue, inserisci **nella descrizione della PR** una parola chiave. `Fixes` e `Resolves` sono alternative a `Closes`:
 
 ```text
 Closes #12
-Fixes #12
-Resolves #12
 ```
 
-## API / Sintassi
+- Le parole chiave nella descrizione si applicano quando la PR ha come destinazione il **branch predefinito**. L’issue aperta viene chiusa al merge, non alla creazione della PR, al push o quando i test diventano verdi. Per un altro repository usa, per esempio, `Closes OWNER/REPO#12`.
+- Se la PR aggiunge solo il test e la correzione arriverà dopo, usa un semplice riferimento. Prima di chiudere manualmente, verifica i criteri di accettazione e lascia traccia dell’esito.
 
-Creare issue con GitHub CLI:
+## Operazioni essenziali
+
+Con `gh` autenticato, nel clone giusto e con Issues abilitato, crea una segnalazione interattiva:
 
 ```bash
 gh issue create
 ```
 
-Elencare issue:
+`gh issue list` elenca normalmente le issue aperte. Per rileggere anche i commenti della segnalazione di esempio:
 
 ```bash
-gh issue list
+gh issue view 12 --comments
 ```
 
-Vedere una issue:
-
-```bash
-gh issue view 12
-```
-
-Chiudere una issue:
-
-```bash
-gh issue close 12
-```
-
-## Esempio pratico
-
-Issue bug:
-
-```md
-## Problema
-
-Il login fallisce quando il token e scaduto.
-
-## Come riprodurre
-
-1. Effettua login.
-2. Attendi scadenza token.
-3. Ricarica la pagina.
-
-## Risultato atteso
-
-L'utente viene riportato alla schermata di login.
-
-## Risultato attuale
-
-La pagina resta bloccata in loading.
-```
-
-## Varianti
-
-- **Bug report**: comportamento errato riproducibile.
-- **Feature request**: nuova capacita richiesta.
-- **Task tecnico**: lavoro interno non visibile all'utente.
-- **Discussion-like issue**: decisione aperta, se non si usa GitHub Discussions.
-- **Epic leggera**: issue grande con checklist di sotto-task.
-
-## Errori comuni
-
-- Titoli vaghi come "non funziona".
-- Mancanza di passi per riprodurre un bug.
-- Mescolare troppi problemi nella stessa issue.
-- Non chiudere issue risolte.
-- Non collegare pull request e issue.
-- Usare issue come chat disordinata senza decisioni finali.
-
-## Checklist
-
-- Il titolo e specifico?
-- La descrizione spiega contesto e impatto?
-- I passi di riproduzione sono chiari?
-- Ci sono criteri di accettazione?
-- Label, assignee e milestone sono corretti?
-- La pull request collegata chiude l'issue?
+La chiusura manuale è un’azione distinta: `gh issue close 12 --reason completed` registra che il lavoro è concluso; non integra codice né pubblica una release. Label, milestone e assegnatario aiutano a trovare la segnalazione in seguito.
 
 ## Collegamenti
 
@@ -148,3 +82,4 @@ La pagina resta bloccata in loading.
 ## Fonti
 
 - [GitHub Docs - About issues](https://docs.github.com/en/issues/tracking-your-work-with-issues/learning-about-issues/about-issues)
+- [GitHub Docs: collegare issue e pull request](https://docs.github.com/en/issues/tracking-your-work-with-issues/using-issues/linking-a-pull-request-to-an-issue)

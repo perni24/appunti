@@ -28,92 +28,39 @@ title: Pubblicare documentazione con GitHub Pages
 
 ## Obiettivo
 
-Pubblicare documentazione statica con GitHub Pages, scegliendo se usare una branch dedicata, una cartella del repository o un workflow GitHub Actions.
+Pubblicare la versione verificata degli appunti con **il workflow Quartz già presente**. I Markdown restano i sorgenti tracciati; `site/public` è un risultato della build. Non serve un branch di HTML, né un secondo workflow di deploy.
 
-Per documentazione generata da tool moderni e preferibile usare GitHub Actions, perche build e pubblicazione restano esplicite e ripetibili.
+## Procedura per questo vault
 
-## Quando usarlo
+1. **Scegliere la pagina da rendere visibile.** Modificare il Markdown nella sua area e collegarlo dall'indice. Le note di contenuto devono avere `publish: true` e non `draft: true`; Home e indici seguono le regole dedicate del vault. Una build riuscita non rende pubblica una nota esclusa.
+2. **Provare l'output locale.** Dalla radice, con le dipendenze di `site` e i plugin installati come nel workflow, eseguire:
 
-Usalo quando:
-
-- vuoi pubblicare documentazione tecnica;
-- vuoi esporre un sito statico;
-- usi generatori come Quartz, VitePress, MkDocs, Docusaurus o Astro;
-- vuoi collegare documentazione al repository;
-- vuoi aggiornare il sito a ogni push.
-
-## Procedura
-
-1. Verifica che il repository possa usare GitHub Pages.
-2. Decidi la sorgente: branch/cartella o GitHub Actions.
-3. Prepara il comando di build della documentazione.
-4. Crea il workflow di deploy.
-5. Imposta permessi `contents: read`, `pages: write`, `id-token: write`.
-6. Carica l'artifact Pages.
-7. Esegui il deploy.
-8. Controlla l'URL pubblicato.
-9. Se usi dominio custom, configura DNS e impostazioni Pages.
-
-## Snippet
-
-Workflow base con GitHub Actions:
-
-```yaml
-name: Deploy docs
-
-on:
-  push:
-    branches: [main]
-
-permissions:
-  contents: read
-  pages: write
-  id-token: write
-
-jobs:
-  deploy:
-    runs-on: ubuntu-latest
-    environment:
-      name: github-pages
-      url: ${{ steps.deployment.outputs.page_url }}
-    steps:
-      - uses: actions/checkout@v4
-      - run: npm ci
-      - run: npm run build
-      - uses: actions/configure-pages@v5
-      - uses: actions/upload-pages-artifact@v3
-        with:
-          path: dist
-      - id: deployment
-        uses: actions/deploy-pages@v4
+```bash
+npm --prefix site run site:build
 ```
 
-## Adattamenti comuni
+   La home attesa è `site/public/index.html`. Per aprire home, nota e collegamenti nello stesso sottopercorso previsto online, avviare la preview e seguire l'URL indicato nel terminale:
 
-- **Sito statico gia pronto**: pubblica direttamente la cartella generata.
-- **MkDocs**: il path di output tipico e `site`.
-- **Vite/Astro**: il path di output tipico e `dist`.
-- **Quartz**: usa il comando build previsto dal progetto.
-- **Dominio custom**: aggiungi `CNAME` e configura DNS.
-- **Repository privato**: verifica disponibilita Pages per il piano usato.
+```bash
+npm --prefix site run site:preview
+```
 
-## Debug rapido
+3. **Configurare la sorgente una volta.** Con permessi amministrativi e Pages disponibile per il repository, in *Settings → Pages → Build and deployment → Source* scegliere **GitHub Actions**. *Deploy from a branch* è una modalità alternativa per chi pubblica da un branch e dalla sua radice o da `/docs`; non è un secondo passaggio per Quartz.
+4. **Pubblicare i sorgenti.** Dopo la verifica, inviare le modifiche al branch `main` tramite il normale flusso del progetto. Un commit soltanto locale o un push al solo branch di lavoro non attivano il deploy di questo vault. Per ripubblicare `main` senza modifiche, usare *Actions → Deploy Quartz to GitHub Pages → Run workflow* selezionando `main`.
+5. **Controllare la consegna.** Nel run per il commit atteso, `build` deve caricare l'artifact da `site/public` e `deploy` deve completarsi nell'environment `github-pages`. Aprire il link dell'environment e verificare una modifica riconoscibile nella nota, non solo la home. Caricare l'artifact non basta a rendere online la nuova versione.
 
-- Se il sito e 404, controlla branch, source e artifact pubblicato.
-- Se il deploy fallisce per permessi, controlla `pages: write` e `id-token: write`.
-- Se l'output e vuoto, verifica il path `dist` o equivalente.
-- Se CSS e asset non caricano, controlla base URL del generatore.
-- Se il dominio custom non funziona, controlla DNS e file `CNAME`.
+## Diagnosi per sintomo
 
-## Checklist finale
+| Sintomo | Controllo discriminante |
+| --- | --- |
+| Compare anche una build Pages del branch | Controllare la sorgente in *Settings → Pages* prima di aggiungere o disabilitare workflow. |
+| Build verde, pagina assente | Cercare prima l'HTML nella build locale. Se manca, controllare pubblicabilità e percorso della nota; se esiste, confrontare commit e ultimo **deploy** riuscito. |
+| Repository visibile, sito in 404 | Usare l'URL Pages del deployment, non quello dei sorgenti. L'artifact deve avere `index.html` alla radice; `pages: write` e `id-token: write` servono per il job di deployment. |
+| Home visibile, CSS o pagine interne in 404 | Controllare i link sotto `/appunti/` e `configuration.baseUrl` in `site/quartz.config.yaml`. Aprire l'HTML via filesystem non riproduce il percorso del sito. |
 
-- Build documentazione funzionante.
-- Path di output corretto.
-- Pages abilitato.
-- Workflow con permessi corretti.
-- Artifact caricato.
-- URL finale verificato.
-- Dominio custom configurato se serve.
+## Altri generatori e domini
+
+Per un sito diverso, caricare **la directory che contiene l'index generato**: può essere `dist` o altro. Il nome non si deduce da GitHub Pages. Con dominio personalizzato, configurare dominio nelle impostazioni Pages e record dal provider DNS; nel deploy con workflow personalizzato il **file** `CNAME` non è richiesto ed è ignorato. È distinto dal **record DNS** CNAME eventualmente richiesto per un sottodominio.
 
 ## Collegamenti
 
@@ -126,5 +73,6 @@ jobs:
 
 ## Fonti
 
-- [GitHub Docs - Creating a GitHub Pages site](https://docs.github.com/en/pages/getting-started-with-github-pages/creating-a-github-pages-site)
-- [GitHub Docs - Configuring a publishing source for GitHub Pages](https://docs.github.com/en/pages/getting-started-with-github-pages/configuring-a-publishing-source-for-your-github-pages-site)
+- [GitHub Docs: scegliere la sorgente di pubblicazione](https://docs.github.com/en/pages/getting-started-with-github-pages/configuring-a-publishing-source-for-your-github-pages-site)
+- [GitHub Docs: artifact e deploy nei workflow Pages](https://docs.github.com/en/pages/getting-started-with-github-pages/using-custom-workflows-with-github-pages)
+- [GitHub Docs: configurare un dominio personalizzato](https://docs.github.com/en/pages/configuring-a-custom-domain-for-your-github-pages-site/managing-a-custom-domain-for-your-github-pages-site)

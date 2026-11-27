@@ -27,104 +27,67 @@ title: Merge squash e rebase su GitHub
 
 ## Sintesi
 
-GitHub offre diversi modi per unire una pull request:
+Due integrazioni possono produrre **gli stessi file finali** ma storie diverse. Chiediti che cosa deve poter ricostruire chi leggerà `main`: i commit originali con la loro parentela, un solo cambiamento per PR o una sequenza lineare di passi distinti.
 
-- **merge commit**: conserva tutti i commit e crea un commit di merge;
-- **squash merge**: comprime i commit della PR in un solo commit;
-- **rebase merge**: riapplica i commit della PR sopra il branch base senza commit di merge.
+| Metodo su GitHub | Cosa entra nel branch base | Quando è utile |
+| --- | --- | --- |
+| Create a merge commit | I commit originali diventano antenati della base tramite un nuovo commit di merge. | Vuoi conservare identità, ordine e punto di unione della PR. |
+| Squash and merge | Un solo nuovo commit con il risultato complessivo; gli originali del branch non diventano antenati per effetto dello squash. | La PR contiene tentativi e correzioni intermedie; ha senso annullarla come unità. |
+| Rebase and merge | I commit della PR vengono riapplicati separatamente sulla base, senza commit di merge. GitHub assegna nuovi SHA. | Ogni commit racconta un passo utile e vuoi una storia lineare. |
 
-La scelta influenza leggibilita della history, tracciabilita e facilita di rollback.
+I metodi disponibili dipendono dalle impostazioni e dalle regole del repository. **Auto-merge** decide *quando* integrare dopo il soddisfacimento dei requisiti, non è un quarto modo di costruire la storia.
 
-## Quando usarlo
+## Esempio: una PR, tre storie alternative
 
-Scegli consapevolmente la strategia quando:
+Supponi che `fix/export-vuoto` contenga due commit, prima il test e poi la correzione. I percorsi seguenti sono **alternative**, non comandi da concatenare: provali in copie di lavoro di prova separate, pulite e con la stessa storia iniziale. Non richiedono push.
 
-- lavori in team;
-- vuoi una history lineare;
-- vuoi conservare tutti i commit intermedi;
-- devi fare rollback semplice;
-- vuoi mantenere PR piccole e leggibili;
-- il repository ha regole precise di release.
+### Conservare il punto di unione
 
-## Come funziona
+Da `main`, `--no-ff` crea un merge commit anche quando sarebbe possibile un semplice avanzamento del riferimento. Senza quell’opzione `git merge` può fare un fast-forward senza creare alcun commit.
 
-**Merge commit** mantiene la struttura dei branch. E utile quando vuoi vedere chiaramente che una PR e stata unita come unita logica.
+```bash
+git merge --no-ff --no-edit fix/export-vuoto
+```
 
-**Squash merge** crea un solo commit su `main`. E utile quando i commit intermedi sono rumorosi o poco curati.
+### Riunire tutto in un commit
 
-**Rebase merge** mantiene commit separati ma senza commit di merge. Richiede commit puliti e ordinati.
+Da `main`, prepara il risultato combinato senza registrarlo né spostare `HEAD`:
 
-## API / Sintassi
+```bash
+git merge --squash fix/export-vuoto
+```
 
-Merge locale:
+Verifica `git diff --staged`; poi registra il risultato con un messaggio che descriva l’intera PR:
+
+```bash
+git commit -m "Corregge l'export CSV dei report vuoti"
+```
+
+### Riapplicare i passi sulla base
+
+Da `fix/export-vuoto`, con commit locali non condivisi e una base `main` che è avanzata dalla biforcazione:
+
+```bash
+git rebase main
+```
+
+Questo aggiorna **il branch di lavoro**, non `main`. Dopo il rebase e i test, passa a `main`:
 
 ```bash
 git switch main
-git merge feature/nome-feature
 ```
-
-Squash locale:
 
 ```bash
-git switch main
-git merge --squash feature/nome-feature
-git commit -m "Aggiunge nuova feature"
+git merge --ff-only fix/export-vuoto
 ```
 
-Rebase del branch:
+Qui il fast-forward muove solo il riferimento. L’esempio spiega la topologia, non replica esattamente il pulsante GitHub: un `git rebase` locale può anche non riscrivere nulla se la base è già un antenato, mentre **Rebase and merge** su GitHub crea nuovi identificatori.
 
-```bash
-git switch feature/nome-feature
-git fetch origin
-git rebase origin/main
-```
+## Prima di scegliere
 
-Su GitHub la scelta avviene dal pulsante di merge della pull request, se abilitata nelle impostazioni repository.
-
-## Esempio pratico
-
-PR con commit intermedi:
-
-```text
-WIP
-fix typo
-prova test
-corregge validazione
-```
-
-In questo caso `squash merge` puo produrre una history piu utile:
-
-```text
-Corregge validazione del form di login
-```
-
-Se invece ogni commit e gia atomico e descrittivo, rebase o merge commit possono avere piu senso.
-
-## Varianti
-
-- **Merge commit**: massima tracciabilita del branch.
-- **Squash merge**: history pulita, un commit per PR.
-- **Rebase merge**: history lineare con commit separati.
-- **Fast-forward**: possibile quando non ci sono divergenze.
-- **Auto-merge**: GitHub unisce quando i controlli richiesti passano.
-
-## Errori comuni
-
-- Usare squash e perdere dettagli importanti dei commit.
-- Usare rebase su branch condivisi senza coordinarsi.
-- Fare merge con conflitti risolti frettolosamente.
-- Non controllare il messaggio finale dello squash.
-- Avere strategie diverse per ogni PR senza convenzione.
-- Pensare che rebase e squash siano sempre "piu puliti" in ogni contesto.
-
-## Checklist
-
-- La strategia di merge e coerente con il repository?
-- I commit intermedi sono utili o rumorosi?
-- Il messaggio finale e chiaro?
-- I controlli richiesti sono passati?
-- La PR e aggiornata rispetto al branch base?
-- Sai come fare rollback della modifica?
+- Guarda la storia con `git log --graph --oneline --all`. Per tornare a una correzione dopo uno squash, cerca il commit integrato sulla base, non solo lo SHA del branch di lavoro.
+- Se conservi un branch di lunga durata dopo uno squash, Git può riproporre vecchi commit nel confronto successivo: per lavoro nuovo è più semplice ripartire dalla base aggiornata.
+- Non riscrivere un branch condiviso senza accordo. Se ci sono conflitti, non basta ottenere un diff pulito: riprova i casi di comportamento interessati.
 
 ## Collegamenti
 
@@ -137,3 +100,5 @@ Se invece ogni commit e gia atomico e descrittivo, rebase o merge commit possono
 ## Fonti
 
 - [GitHub Docs - About merge methods](https://docs.github.com/en/repositories/configuring-branches-and-merges-in-your-repository/configuring-pull-request-merges/about-merge-methods-on-github)
+- [Git: merge, squash e fast-forward](https://git-scm.com/docs/git-merge)
+- [Git: riapplicare i commit con rebase](https://git-scm.com/docs/git-rebase)

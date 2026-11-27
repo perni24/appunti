@@ -28,57 +28,45 @@ title: README LICENSE e gitignore
 
 ## Sintesi
 
-`README.md`, `LICENSE` e `.gitignore` sono tre file fondamentali in un repository GitHub.
+Questi tre file rispondono a domande diverse. Il **README** dice come usare il progetto; **LICENSE** specifica a quali condizioni si può riutilizzare il codice; **.gitignore** indica a Git quali file **non ancora tracciati** ignorare. Nessuno dei tre controlla chi può accedere al repository.
 
-- `README.md`: spiega cosa fa il progetto e come usarlo.
-- `LICENSE`: dichiara i termini legali di uso e distribuzione.
-- `.gitignore`: indica a Git quali file non versionare.
+## README: verificare il primo avvio
 
-Sono piccoli, ma determinano quanto un repository e comprensibile, riutilizzabile e sicuro.
-
-## Quando usarlo
-
-Aggiungili quando:
-
-- crei un nuovo repository;
-- pubblichi un progetto open source;
-- vuoi rendere chiaro come installare o eseguire il codice;
-- vuoi evitare di committare cache, build, dipendenze o segreti;
-- vuoi chiarire se altri possono usare, modificare o distribuire il progetto.
-
-## Come funziona
-
-GitHub mostra automaticamente il `README.md` nella pagina principale del repository.
-
-Una licenza chiarisce cosa e permesso fare col codice. Senza licenza, un repository pubblico non e automaticamente libero da riusare.
-
-`.gitignore` viene letto da Git e impedisce di aggiungere file che corrispondono ai pattern indicati.
-
-## API / Sintassi
-
-Esempio `README.md` minimo:
+Per un’app Node con `package-lock.json` e script `dev` e `test` realmente definiti in `package.json`, un README minimo potrebbe essere:
 
 ````md
-# Nome progetto
+# Catalogo
 
-## Descrizione
-
-Breve spiegazione del progetto.
+API locale per cercare elementi per nome. Requisiti: Node.js e npm nelle versioni indicate dal progetto.
 
 ## Installazione
 
 ```bash
-npm install
+npm ci
 ```
 
-## Uso
+## Avvio
 
 ```bash
 npm run dev
 ```
+
+## Test
+
+```bash
+npm test
+```
 ````
 
-Esempio `.gitignore`:
+Adatta il contenuto al progetto: per una libreria mostra una chiamata minima e i requisiti di compatibilità; per un’app indica anche le variabili necessarie, con valori fittizi. Un buon controllo è partire da un clone nuovo e seguire solo le istruzioni scritte. Nel repository GitHub sceglie il README da mostrare cercando nell’ordine `.github/`, radice, `docs/`: controlla questo ordine se viene mostrato il testo sbagliato.
+
+## LICENSE: pubblico non significa open source
+
+Se vuoi permettere il riuso, scegli una licenza coerente con l’obiettivo e includine il testo. Licenze permissive e copyleft impongono condizioni differenti: non basta scrivere «open source» nel README. Senza licenza esplicita, rendere il codice pubblico non concede in generale i diritti di modifica e redistribuzione di una licenza open source. Poter vedere il repository e farne un fork su GitHub è una questione distinta.
+
+## .gitignore: una prova prima del commit
+
+Esempio nella radice di un progetto web:
 
 ```gitignore
 node_modules/
@@ -87,55 +75,31 @@ dist/
 coverage/
 ```
 
-## Esempio pratico
+Con un file `.env` locale **non tracciato**, mostra la regola che lo esclude:
 
-Per un progetto web:
-
-```text
-README.md
-LICENSE
-.gitignore
-package.json
-src/
-tests/
+```bash
+git check-ignore -v -- .env
 ```
 
-Nel `README.md` inserisci almeno:
+Controlla invece se il file è **già nell’indice**:
 
-- scopo;
-- requisiti;
-- installazione;
-- comandi principali;
-- variabili d'ambiente richieste;
-- come eseguire test;
-- stato del progetto.
+```bash
+git ls-files -- .env
+```
 
-## Varianti
+Se il secondo comando stampa `.env`, la regola da sola non lo protegge. Per smettere di tracciarlo lasciando la copia sul disco, verifica innanzitutto il percorso e, solo se vuoi registrare la sua rimozione dal repository, usa:
 
-- **README breve**: adatto a repository personali piccoli.
-- **README operativo**: include setup, comandi, troubleshooting.
-- **README da libreria**: include API, esempi e compatibilita.
-- **Licenza permissiva**: permette uso ampio con pochi vincoli.
-- **Licenza copyleft**: impone condizioni piu forti sulla redistribuzione.
-- **.gitignore per linguaggio**: Node, Python, Rust, Java, ecc.
+```bash
+git rm --cached -- .env
+```
 
-## Errori comuni
-
-- Repository senza descrizione.
-- README che spiega solo "cosa" ma non "come eseguirlo".
-- Inserire credenziali in `.env` e poi committarle.
-- Aggiungere `.gitignore` dopo aver gia versionato file da ignorare.
-- Pubblicare codice senza licenza e creare ambiguita sul riuso.
-- Copiare licenze senza capirne implicazioni.
+Controlla `git status` prima del commit. L’operazione **non cancella la cronologia**; se quel file conteneva un segreto già condiviso, revoca o ruota la credenziale. Per spiegare la configurazione agli altri, versiona semmai un `.env.example` con nomi delle variabili e valori innocui.
 
 ## Checklist
 
-- Il README spiega lo scopo in poche righe?
-- Ci sono istruzioni di installazione?
-- Ci sono comandi di esecuzione e test?
-- La licenza e coerente con l'obiettivo del progetto?
-- `.gitignore` copre file generati e segreti?
-- Hai verificato `git status` prima del commit?
+- Scopo, requisiti, avvio e test sono riproducibili? È chiaro quali parti del progetto siano pronte all’uso?
+- La licenza esprime il riuso che si vuole consentire?
+- Cache, dipendenze ricostruibili e output generati sono esclusi senza nascondere file necessari? Controlla lo staging prima del commit.
 
 ## Collegamenti
 
@@ -145,6 +109,7 @@ Nel `README.md` inserisci almeno:
 
 ## Fonti
 
-- [GitHub Docs - About READMEs](https://docs.github.com/en/repositories/managing-your-repositorys-settings-and-features/customizing-your-repository/about-readmes)
-- [GitHub Docs - Licensing a repository](https://docs.github.com/en/repositories/managing-your-repositorys-settings-and-features/customizing-your-repository/licensing-a-repository)
-- [GitHub Docs - Ignoring files](https://docs.github.com/en/get-started/git-basics/ignoring-files)
+- [GitHub Docs: scelta e visualizzazione del README](https://docs.github.com/en/repositories/managing-your-repositorys-settings-and-features/customizing-your-repository/about-readmes)
+- [GitHub Docs: licenze dei repository](https://docs.github.com/en/repositories/managing-your-repositorys-settings-and-features/customizing-your-repository/licensing-a-repository)
+- [Git: regole di gitignore e file già tracciati](https://git-scm.com/docs/gitignore)
+- [GitHub Docs: ignorare file](https://docs.github.com/en/get-started/git-basics/ignoring-files)

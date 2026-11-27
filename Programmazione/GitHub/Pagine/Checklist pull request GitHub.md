@@ -28,77 +28,34 @@ title: Checklist pull request GitHub
 
 ## Obiettivo
 
-Controllare che una pull request sia pronta per la review o per il merge, riducendo ambiguita, regressioni e lavoro inutile per chi revisiona.
+Prendere due decisioni diverse: **posso chiedere una review?** e **possiamo fare merge di questa revisione?** La prima richiede una proposta comprensibile; la seconda richiede anche che le condizioni del branch base siano soddisfatte.
 
-Una PR pronta deve spiegare cosa cambia, perche cambia, come e stata verificata e quali rischi porta.
+## Prima della review
 
-## Quando usarlo
+- [ ] Il branch base è quello che deve ricevere la modifica. In *Files changed* il diff contiene soltanto il lavoro dichiarato: niente file locali, modifiche generate per errore o cambiamenti estranei.
+- [ ] Il titolo descrive l'effetto. La descrizione spiega perché serve, quale issue risolve, quali test sono stati davvero eseguiti e cosa resta da provare. Per una modifica visibile allegare, se utile, un prima/dopo senza dati privati.
+- [ ] Se cambiano un'API o un formato dati, indicare utenti coinvolti, migrazione e recupero. Se la PR è ampia, suggerire un ordine di lettura o separare gli interventi indipendenti.
+- [ ] Se si cerca solo feedback preliminare, mantenere la PR in bozza e dire su cosa serve il parere. Una richiesta di review assegnata **non** equivale a un'approvazione.
 
-- Prima di chiedere review.
-- Prima di fare merge.
-- Quando una PR resta bloccata.
-- Quando una PR e troppo grande o poco chiara.
-- Quando devi standardizzare il processo di review del team.
+## Prima del merge
 
-## Procedura
+Esempi di sola lettura: sostituire `42` e `OWNER/REPO` con PR e repository reali; serve GitHub CLI con accesso alla PR. Identificare base, revisione proposta e stato della review:
 
-1. Controlla titolo e descrizione.
-2. Verifica dimensione e coerenza della modifica.
-3. Controlla issue collegate.
-4. Verifica test, lint e build.
-5. Controlla file modificati uno per uno.
-6. Risolvi commenti e conversazioni.
-7. Verifica branch aggiornato e conflitti.
-8. Controlla metodo di merge previsto.
-
-## Snippet
-
-Checklist per descrizione PR:
-
-```md
-## Cosa cambia
-- [ ] Modifica descritta in modo chiaro
-
-## Perche
-- [ ] Motivazione o issue collegata
-
-## Verifica
-- [ ] Test locali
-- [ ] CI passata
-- [ ] Caso manuale verificato se serve
-
-## Rischi
-- [ ] Breaking change indicate
-- [ ] Migrazioni documentate
+```bash
+gh pr view 42 --repo OWNER/REPO --json baseRefName,headRefName,headRefOid,isDraft,reviewDecision
 ```
 
-## Adattamenti comuni
+Leggere i check richiesti per la PR, non il risultato di un vecchio push:
 
-- **PR piccola**: descrizione breve ma test chiari.
-- **PR grande**: spiega strategia, file principali e ordine di review.
-- **PR draft**: indica cosa manca prima della review finale.
-- **PR di fix urgente**: documenta rischio e piano di rollback.
-- **PR da fork**: controlla permessi, secret e workflow eseguiti.
+```bash
+gh pr checks 42 --repo OWNER/REPO --required
+```
 
-## Debug rapido
+- [ ] La PR non è draft. In caso di nuovi commit dopo la review, rileggere il diff aggiornato e verificare se le regole richiedono una nuova approvazione, anche dai code owner.
+- [ ] I check attesi hanno un risultato valido per la revisione valutata da GitHub: può essere il commit di prova del merge, non solo lo SHA del branch sorgente. `gh pr checks` restituisce codice `8` per controlli in attesa; nessun check richiesto non significa «test passati».
+- [ ] Richieste di modifica, conversazioni bloccanti e conflitti sono risolti. Metodo di merge e aggiornamento rispetto alla base seguono le regole del progetto. Per una PR da fork non mettere credenziali a disposizione del codice proposto per far passare i test.
 
-- Se i reviewer non capiscono la PR, aggiungi contesto e screenshot/log se utili.
-- Se la CI fallisce, non chiedere merge senza spiegazione.
-- Se ci sono troppi file, valuta split in PR piu piccole.
-- Se la PR e bloccata da review, controlla CODEOWNERS e reviewer richiesti.
-- Se ci sono conflitti, aggiorna il branch prima della review finale.
-
-## Checklist finale
-
-- Titolo chiaro.
-- Descrizione completa.
-- Issue collegata se esiste.
-- Diff controllato.
-- Test e CI verificati.
-- Review richieste assegnate.
-- Conversazioni risolte.
-- Nessun file accidentale.
-- Merge strategy coerente.
+**Esempio di decisione:** la CI ha passato tutti i test, ma `reviewDecision` vale `CHANGES_REQUESTED`. Si può discutere la correzione col reviewer; la spunta verde da sola non autorizza il merge.
 
 ## Collegamenti
 
@@ -112,4 +69,6 @@ Checklist per descrizione PR:
 
 ## Fonti
 
-- [GitHub Docs - Creating a pull request](https://docs.github.com/en/pull-requests/collaborating-with-pull-requests/proposing-changes-to-your-work-with-pull-requests/creating-a-pull-request)
+- [GitHub CLI: stato della pull request](https://cli.github.com/manual/gh_pr_view)
+- [GitHub CLI: check obbligatori e codici di uscita](https://cli.github.com/manual/gh_pr_checks)
+- [GitHub Docs: quale commit deve superare i check](https://docs.github.com/en/pull-requests/how-tos/merge-and-close-pull-requests/troubleshooting-required-status-checks)

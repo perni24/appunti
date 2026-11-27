@@ -28,106 +28,59 @@ title: Labels milestones e assignees
 
 ## Sintesi
 
-**Labels**, **milestones** e **assignees** aiutano a organizzare issue e pull request su GitHub.
+Su GitHub, label, milestone e assignee rispondono a **tre domande diverse**. Per l’issue «Il CSV perde l’intestazione quando il report è vuoto»:
 
-- **Label**: classificano tipo, priorita, area o stato.
-- **Milestone**: raggruppano lavoro verso una scadenza o versione.
-- **Assignee**: indica chi e responsabile di portare avanti il lavoro.
+| Campo | Domanda | Esempio |
+| --- | --- | --- |
+| Label | Che lavoro è? In quale area e con quale priorità? | `bug`, `area: export` |
+| Milestone | Per quale obiettivo del repository vogliamo finirlo? | `v1.4.0` |
+| Assignee | Chi prende in carico il prossimo passo? | La persona incaricata di correggere l’esportatore |
 
-Questi campi rendono il backlog leggibile e permettono di filtrare rapidamente cio che conta.
+Le label sono proprie del repository. Un’issue o una PR può avere più label, ma una sola milestone alla volta. La milestone può avere una scadenza: la percentuale di completamento riflette gli elementi chiusi, non le ore lavorate né l’avvenuto rilascio. L’assignee non è necessariamente l’autore della futura PR e non diventa automaticamente il suo **reviewer**.
 
-## Quando usarlo
+## Esempio: dal triage alla release
 
-Usali quando:
+Gli esempi modificano un’issue **esistente**. Nel repository giusto, con `gh` autenticato e i permessi necessari, sostituisci `12` con il numero reale. Le label e la milestone da applicare devono già esistere.
 
-- il repository ha molte issue;
-- piu persone collaborano;
-- devi distinguere bug, feature e task;
-- vuoi pianificare release;
-- vuoi sapere chi sta lavorando su cosa;
-- vuoi costruire viste in GitHub Projects.
-
-## Come funziona
-
-Le label sono flessibili. Una tassonomia minima puo includere:
-
-- `bug`;
-- `feature`;
-- `documentation`;
-- `security`;
-- `good first issue`;
-- `priority: high`;
-- `status: blocked`.
-
-Le milestone raccolgono issue e pull request verso un obiettivo, per esempio `v1.2.0`.
-
-Gli assignee indicano responsabilita operativa, non per forza autore unico del codice.
-
-## API / Sintassi
-
-Elencare issue filtrate per label:
+Verifica quali label sono disponibili, senza crearne di quasi identiche:
 
 ```bash
-gh issue list --label bug
+gh label list
 ```
 
-Assegnare una issue:
+Aggiungi le due classificazioni, mantenendo quelle già presenti:
 
 ```bash
-gh issue edit 12 --add-assignee username
+gh issue edit 12 --add-label bug --add-label "area: export"
 ```
 
-Aggiungere label:
+Quando il team concorda l’obiettivo, imposta la milestone:
 
 ```bash
-gh issue edit 12 --add-label bug
+gh issue edit 12 --milestone "v1.4.0"
 ```
 
-Filtrare in GitHub search:
+Se sei tu a prendere in carico il lavoro, aggiungiti come assegnatario:
+
+```bash
+gh issue edit 12 --add-assignee "@me"
+```
+
+Per verificare il risultato leggi i campi dell’issue, non soltanto il successo del comando:
+
+```bash
+gh issue view 12 --json labels,milestone,assignees
+```
+
+## Trovare e mantenere il lavoro
+
+In GitHub cerca le issue aperte con bug assegnate a te:
 
 ```text
 is:issue is:open label:bug assignee:@me
 ```
 
-## Esempio pratico
-
-Bug critico per una release:
-
-```text
-Issue: Login bloccato con token scaduto
-Labels: bug, priority: high, area: auth
-Milestone: v1.4.0
-Assignee: luca
-```
-
-Questa combinazione comunica tipo di lavoro, urgenza, area tecnica, obiettivo e responsabilita.
-
-## Varianti
-
-- **Label per tipo**: `bug`, `feature`, `docs`.
-- **Label per area**: `area: frontend`, `area: backend`.
-- **Label per priorita**: `priority: high`.
-- **Label per stato**: `status: blocked`, `status: needs review`.
-- **Milestone di release**: raggruppa lavoro di versione.
-- **Milestone di progetto**: raggruppa lavoro non legato a release.
-
-## Errori comuni
-
-- Creare troppe label quasi identiche.
-- Usare colori senza convenzione.
-- Confondere assignee con reviewer.
-- Lasciare issue assegnate a persone che non ci lavorano piu.
-- Usare milestone come categorie permanenti.
-- Non aggiornare label e stato dopo cambiamenti.
-
-## Checklist
-
-- Le label sono poche e comprensibili?
-- Esiste una convenzione per tipo, area, priorita e stato?
-- Le milestone hanno obiettivo chiaro?
-- Gli assignee riflettono responsabilita reale?
-- Le issue bloccate sono marcate?
-- I filtri principali funzionano senza ambiguita?
+Per la lista generale dei bug aperti dalla CLI basta `gh issue list --label bug`. Usa poche label con significato condiviso (tipo, area, priorità o stato), non solo colori. Aggiorna l’assegnazione al passaggio di responsabilità. Una milestone può rappresentare un obiettivo anche senza una release; per viste trasversali fra repository considera invece GitHub Projects.
 
 ## Collegamenti
 
@@ -139,3 +92,5 @@ Questa combinazione comunica tipo di lavoro, urgenza, area tecnica, obiettivo e 
 
 - [GitHub Docs - Managing labels](https://docs.github.com/en/issues/using-labels-and-milestones-to-track-work/managing-labels)
 - [GitHub Docs - About milestones](https://docs.github.com/en/issues/using-labels-and-milestones-to-track-work/about-milestones)
+- [GitHub Docs: assegnare issue e PR](https://docs.github.com/en/issues/tracking-your-work-with-issues/using-issues/assigning-issues-and-pull-requests-to-other-github-users)
+- [GitHub CLI: modificare label, milestone e assegnatari](https://cli.github.com/manual/gh_issue_edit)

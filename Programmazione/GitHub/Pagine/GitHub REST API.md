@@ -29,103 +29,37 @@ title: GitHub REST API
 
 ## Sintesi
 
-La **GitHub REST API** permette di leggere e modificare risorse GitHub tramite endpoint HTTP. E utile per script, integrazioni, bot, dashboard, automazioni di repository e strumenti interni.
+Con REST scegli una risorsa e un’operazione: `GET` legge, `POST` crea o applica un’azione, `PATCH` modifica alcuni campi. `PUT` e `DELETE` hanno effetti definiti dal singolo endpoint. Per sapere quali issue sono aperte in un repository basta una lettura; non serve concedere allo script il diritto di aprirne di nuove.
 
-E l'API piu immediata quando conosci gia la risorsa da manipolare: issue, pull request, repository, release, workflow, secret, team o organizzazioni.
+## Esempio pratico: un report di sole issue
 
-## Quando usarlo
-
-Usala quando:
-
-- vuoi automatizzare operazioni GitHub da script;
-- vuoi creare, leggere o aggiornare issue e pull request;
-- vuoi gestire release, tag, branch o repository;
-- vuoi interrogare workflow e run di GitHub Actions;
-- vuoi integrare un servizio esterno con GitHub;
-- vuoi usare endpoint documentati con permessi chiari.
-
-## Come funziona
-
-La REST API usa richieste HTTP verso endpoint come:
-
-```text
-https://api.github.com/repos/OWNER/REPO/issues
-```
-
-Gli elementi importanti sono:
-
-- metodo HTTP: `GET`, `POST`, `PATCH`, `PUT`, `DELETE`;
-- autenticazione: `GITHUB_TOKEN`, PAT, GitHub App token o OAuth token;
-- header di versione API;
-- paginazione;
-- rate limit;
-- permessi richiesti dall'endpoint.
-
-Per automazioni stabili conviene trattare la versione API come parte della configurazione.
-
-## API / Sintassi
-
-Richiesta base con `curl`:
+Da Bash, con GitHub CLI autenticata, sostituisci `OWNER/REPO` con il repository leggibile. Su GitHub.com il comando interroga la REST API in sola lettura. La redirezione **crea o sovrascrive** `pagine.json` nella directory corrente: usa una cartella di lavoro, non una cartella pubblicabile del vault.
 
 ```bash
-curl \
-  -H "Accept: application/vnd.github+json" \
-  -H "Authorization: Bearer TOKEN" \
-  -H "X-GitHub-Api-Version: 2026-03-10" \
-  https://api.github.com/repos/OWNER/REPO/issues
+gh api --method GET -H 'Accept: application/vnd.github+json' -H 'X-GitHub-Api-Version: 2026-03-10' --paginate --slurp 'repos/OWNER/REPO/issues?state=open&per_page=100' > pagine.json
 ```
 
-Creare una issue:
+`per_page=100` è la dimensione della pagina, non il massimo del report. `--paginate` segue le pagine successive e `--slurp` raccoglie gli array di pagina in un array esterno. Con un client HTTP proprio, segui l’URL `rel="next"` nell’header `Link` finché manca: non dedurre la fine dal numero di elementi. Fissare una versione REST supportata rende esplicito il contratto utilizzato.
+
+L’endpoint `/issues` include **anche le pull request**, riconoscibili dalla proprietà `pull_request`. Dopo il successo di `gh`, questo comando Node legge il file locale e stampa soltanto numero e titolo delle issue:
 
 ```bash
-curl \
-  -X POST \
-  -H "Accept: application/vnd.github+json" \
-  -H "Authorization: Bearer TOKEN" \
-  -H "X-GitHub-Api-Version: 2026-03-10" \
-  https://api.github.com/repos/OWNER/REPO/issues \
-  -d '{"title":"Bug login","body":"Descrizione del problema"}'
+node -e "const pages = JSON.parse(require('node:fs').readFileSync('pagine.json', 'utf8')); console.log(JSON.stringify(pages.flat().filter(x => Object.hasOwn(x, 'pull_request') === false).map(({number,title}) => ({number,title}))))"
 ```
 
-## Esempio pratico
+Per un elenco di sole PR usa invece `GET /repos/OWNER/REPO/pulls`. Per aprire una issue, `POST /repos/OWNER/REPO/issues` riceve un oggetto con `title` e, facoltativamente, `body`: **crea** una risorsa e normalmente restituisce `201`. Dopo un timeout non ripetere la scrittura alla cieca: la prima richiesta potrebbe essere già riuscita.
 
-Script per leggere pull request aperte:
+## Interpretare un risultato inatteso
 
-```bash
-curl \
-  -H "Accept: application/vnd.github+json" \
-  -H "Authorization: Bearer TOKEN" \
-  -H "X-GitHub-Api-Version: 2026-03-10" \
-  "https://api.github.com/repos/OWNER/REPO/pulls?state=open"
-```
+| Risposta | Prima verifica |
+| --- | --- |
+| `200` ma report incompleto | Paginazione, filtri e presenza di PR nel conteggio. Un array vuoto non è un errore HTTP. |
+| `401` | Credenziale mancante, scaduta o non valida. |
+| `403` o `429` | Leggi messaggio e header: non ogni `403` è un problema di permessi. Per un limite rispetta `Retry-After` se presente; con quota residua zero attendi il reset. |
+| `404` su un repository privato | Verifica sia il percorso sia l’accesso: GitHub può nascondere l’esistenza della risorsa. |
+| `422` in scrittura | Controlla i campi dell’errore, il formato e i vincoli dell’endpoint prima di riprovare. |
 
-Questo e utile per dashboard, report automatici o controlli pre-release.
-
-## Varianti
-
-- **REST API da script locale**: usa PAT o GitHub CLI.
-- **REST API da GitHub Actions**: preferisci `GITHUB_TOKEN` quando basta.
-- **REST API con GitHub App**: migliore per integrazioni persistenti.
-- **REST API con paginazione**: necessaria su liste grandi.
-- **GraphQL API**: migliore quando vuoi dati aggregati e selezione precisa dei campi.
-
-## Errori comuni
-
-- Non impostare la versione API.
-- Ignorare paginazione e leggere solo la prima pagina.
-- Usare token con permessi troppo ampi.
-- Non gestire rate limit e retry.
-- Salvare token in chiaro negli script.
-- Confondere errore di permessi con endpoint sbagliato.
-
-## Checklist
-
-- L'endpoint supporta il tipo di token scelto?
-- Il token ha solo i permessi necessari?
-- La richiesta include versione API?
-- La risposta puo essere paginata?
-- Gli errori HTTP sono gestiti?
-- I token non sono stampati nei log?
+Nel job Actions usa il `GITHUB_TOKEN` se sufficiente; in una GitHub App usa il token dell’installazione. Scegli REST per risorse note e GraphQL quando conviene comporre dati collegati, non per aggirare i permessi.
 
 ## Collegamenti
 
@@ -139,4 +73,8 @@ Questo e utile per dashboard, report automatici o controlli pre-release.
 
 ## Fonti
 
-- [GitHub Docs - REST API](https://docs.github.com/en/rest)
+- [GitHub Docs - Endpoint delle issue](https://docs.github.com/en/rest/issues/issues)
+- [GitHub Docs - Versioni REST supportate](https://docs.github.com/en/rest/about-the-rest-api/api-versions)
+- [GitHub Docs - Paginazione REST](https://docs.github.com/en/rest/using-the-rest-api/using-pagination-in-the-rest-api)
+- [GitHub Docs - Rate limit e attese](https://docs.github.com/en/rest/using-the-rest-api/rate-limits-for-the-rest-api)
+- [GitHub CLI - gh api](https://cli.github.com/manual/gh_api)

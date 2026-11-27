@@ -23,117 +23,91 @@ title: GitHub - Trigger, espressioni e permessi Actions
 
 # GitHub - Trigger, espressioni e permessi Actions
 
-## Branch e percorsi
+## Scegliere l'evento
+
+Frammenti **alternativi** alla radice del workflow. Se ne servono più di uno, riunire gli eventi sotto una sola chiave `on`.
+
+**Branch e percorsi:** sul push devono coincidere sia branch sia percorso; sulla PR qui conta solo il branch **base**. Evitare filtri che saltino l'intero workflow se il check è obbligatorio per ogni PR.
 
 ```yaml
 on:
   push:
     branches: [main]
-    paths:
-      - "src/**"
-      - "package-lock.json"
+    paths: ['site/**']
   pull_request:
     branches: [main]
 ```
 
-## Tag
+**Tag:** `v*` è un filtro sul nome, non una validazione SemVer.
 
 ```yaml
 on:
   push:
-    tags:
-      - "v*"
+    tags: ['v*']
 ```
 
-## Avvio manuale
+**Manuale:** l'input è disponibile come `inputs.target`. La scelta da menu non protegge un deploy: le restrizioni vanno configurate sull'environment.
 
 ```yaml
 on:
   workflow_dispatch:
     inputs:
-      environment:
-        description: Target environment
-        required: true
+      target:
+        description: Ambiente
         type: choice
-        options:
-          - staging
-          - production
+        required: true
+        options: [staging, production]
 ```
 
-```yaml
-env:
-  TARGET_ENVIRONMENT: ${{ inputs.environment }}
-```
-
-## Pianificazione
+**Pianificato:** lunedì alle 03:00 di Roma. Senza `timezone` l'orario è UTC. Lo scheduler usa il branch predefinito e può partire in ritardo.
 
 ```yaml
 on:
   schedule:
-    - cron: "0 3 * * 1"
+    - cron: '0 3 * * 1'
+      timezone: Europe/Rome
 ```
 
-Le espressioni cron di GitHub Actions usano UTC.
+## Condizioni e contesti
 
-## Condizione
+Una sola chiave `if` per job o step. Esempio di **step** di diagnostica dopo un errore:
 
 ```yaml
-if: github.ref == 'refs/heads/main'
+- name: Segnala il test fallito
+  if: failure()
+  run: echo "Controllare il primo step fallito"
 ```
 
-```yaml
-if: success()
-if: failure()
-if: always()
-if: cancelled()
-```
+| Se serve... | Espressione |
+| --- | --- |
+| Eseguire solo sul branch principale | `github.ref == 'refs/heads/main'` |
+| Distinguere successo, annullamento o esecuzione anche dopo un errore | `success()`, `cancelled()`, `always()`; per saltare i run annullati: `!cancelled()` |
+| Identificare repository, revisione e autore dell'evento | `github.repository`, `github.sha`, `github.actor` |
+| Leggere runner, variante o risultato | `runner.os`, `matrix.node`, `needs.build.result` |
+| Leggere output, configurazione o credenziale | `steps.meta.outputs.version`, `vars.API_URL`, `secrets.API_TOKEN`; usare ciascun contesto soltanto dove ammesso |
 
-## Contesti comuni
+## Permessi e concorrenza
 
-```yaml
-${{ github.repository }}
-${{ github.ref }}
-${{ github.sha }}
-${{ github.actor }}
-${{ runner.os }}
-${{ matrix.node }}
-${{ needs.build.result }}
-${{ steps.meta.outputs.version }}
-${{ vars.API_URL }}
-${{ secrets.API_TOKEN }}
-```
-
-## Permessi minimi
+`permissions: {}` non assegna permessi al `GITHUB_TOKEN`; per checkout ordinario usare `contents: read`. Una mappa esplicita assegna `none` alle categorie omesse. Per creare una release, questo **frammento del solo job di rilascio** abilita la scrittura sui contenuti:
 
 ```yaml
 permissions:
-  contents: read
+  contents: write
 ```
 
-## Permessi per job
-
-```yaml
-jobs:
-  release:
-    permissions:
-      contents: write
-```
-
-Quando viene specificato almeno un permesso, quelli omessi diventano `none`.
-
-## Nessun permesso
-
-```yaml
-permissions: {}
-```
-
-## Concurrency
+Per il deploy Pages del vault il gruppo è condiviso: un nuovo push **non interrompe il deploy già in esecuzione**. Diversamente dalla CI, qui non si usa `cancel-in-progress: true`.
 
 ```yaml
 concurrency:
-  group: deploy-${{ github.ref }}
-  cancel-in-progress: true
+  group: pages
+  cancel-in-progress: false
 ```
+
+## Fonti
+
+- [GitHub Docs: filtri, permessi e pianificazione](https://docs.github.com/en/actions/reference/workflows-and-actions/workflow-syntax)
+- [GitHub Docs: eventi e branch predefinito](https://docs.github.com/en/actions/reference/workflows-and-actions/events-that-trigger-workflows)
+- [GitHub Docs: espressioni e funzioni di stato](https://docs.github.com/en/actions/reference/workflows-and-actions/expressions)
 
 ## Approfondimento
 
@@ -142,12 +116,6 @@ concurrency:
 - [[Programmazione/GitHub/Pagine/Permissions GitHub Actions|Permissions GitHub Actions]]
 - [[Programmazione/GitHub/Pagine/Concurrency e cancel-in-progress|Concurrency e cancel-in-progress]]
 - [[Programmazione/GitHub/Pagine/Troubleshooting permissions GitHub Actions|Troubleshooting permissions GitHub Actions]]
-
-## Riferimenti
-
-- [GitHub Docs - Workflow syntax](https://docs.github.com/en/actions/reference/workflows-and-actions/workflow-syntax)
-- [GitHub Docs - Workflow concurrency](https://docs.github.com/en/actions/how-tos/write-workflows/choose-when-workflows-run/control-workflow-concurrency)
-
 
 ## Navigazione
 

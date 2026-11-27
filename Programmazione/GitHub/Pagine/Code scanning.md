@@ -28,91 +28,51 @@ title: Code scanning
 
 ## Sintesi
 
-**Code scanning** analizza il codice per trovare vulnerabilita e pattern rischiosi. Su GitHub puo usare CodeQL o strumenti esterni che caricano risultati in formato SARIF.
+**Code scanning** raccoglie risultati di analisi statica sul **sorgente**. Con CodeQL, per esempio, le query cercano nel codice situazioni che meritano una revisione. Un alert indica il file, la regola e il contesto da esaminare; non prova da solo che il difetto si manifesti in produzione. Per una dipendenza interessata da un advisory si parte invece da [[Programmazione/GitHub/Pagine/Dependabot|Dependabot]].
 
-E una forma di controllo statico: aiuta a individuare problemi prima del deploy, ma non sostituisce test, review e threat modeling.
+## Scegliere il setup
 
-## Quando usarlo
+| Situazione | Scelta |
+| --- | --- |
+| Linguaggi supportati, nessuna esigenza particolare | **Default setup**: GitHub gestisce la configurazione. Controlla quali linguaggi ha selezionato e quando è terminata l’ultima analisi. |
+| Occorrono trigger, build o query personalizzati | **Advanced setup**: mantieni un workflow nel repository. Per CodeQL scegli un solo percorso di configurazione: non sovrapporre il workflow al default setup. |
+| Il progetto usa già un altro analizzatore | Se produce risultati compatibili **SARIF 2.1.0**, puoi caricarli in code scanning. Regole e copertura restano quelle dello strumento che li ha prodotti. |
 
-Usalo quando:
+Verifica disponibilità e permessi per il tipo di repository: GitHub.com offre code scanning nei repository pubblici; per quelli non pubblici contano il piano e l’abilitazione di GitHub Code Security.
 
-- il repository contiene codice applicativo;
-- vuoi trovare vulnerabilita note a livello sorgente;
-- vuoi bloccare regressioni di sicurezza nelle PR;
-- vuoi centralizzare alert in GitHub;
-- vuoi integrare CodeQL o scanner SAST esistenti;
-- lavori su repository pubblici o sensibili.
+## Esempio: workflow per JavaScript e TypeScript
 
-## Come funziona
-
-Il code scanning puo essere configurato in modi diversi:
-
-- setup predefinito, se disponibile;
-- workflow GitHub Actions;
-- CodeQL con configurazione avanzata;
-- upload SARIF da strumenti terzi;
-- integrazione con merge protection.
-
-Gli alert appaiono nella sezione Security e possono essere collegati a pull request.
-
-## API / Sintassi
-
-Esempio workflow CodeQL semplificato:
+Esempio di **advanced setup** per un repository pubblico con Actions attivo e branch predefinito `main`. Legge i sorgenti, non pubblica il sito e non richiede un token personale:
 
 ```yaml
-name: CodeQL
-
+name: CodeQL JavaScript e TypeScript
 on:
   push:
     branches: [main]
   pull_request:
     branches: [main]
-
 jobs:
   analyze:
     runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      security-events: write
     steps:
-      - uses: actions/checkout@v4
-      - uses: github/codeql-action/init@v3
-      - uses: github/codeql-action/analyze@v3
+      - uses: actions/checkout@v6
+      - uses: github/codeql-action/init@v4
+        with:
+          languages: javascript-typescript
+          build-mode: none
+      - uses: github/codeql-action/analyze@v4
 ```
 
-## Esempio pratico
+`push` stabilisce un riferimento sul branch principale; `pull_request` analizza le proposte dirette a quel branch. `security-events: write` consente di caricare i risultati. La modalità senza compilazione qui è scelta per JS/TS: per altri linguaggi occorre verificare le modalità supportate. Questo esempio non implica che CodeQL sia attivo nel vault.
 
-Per un progetto web:
+## Come leggere un risultato
 
-1. abilita code scanning;
-2. esegui analisi su PR e `main`;
-3. controlla alert nuovi;
-4. correggi o triagia i falsi positivi;
-5. usa required status checks solo quando il segnale e stabile;
-6. documenta regole di dismiss.
-
-## Varianti
-
-- **CodeQL default setup**: configurazione rapida.
-- **CodeQL advanced setup**: workflow personalizzato.
-- **SARIF upload**: risultati da scanner esterni.
-- **PR alerts**: alert mostrati durante pull request.
-- **Merge protection**: blocco merge in base agli alert, dove configurato.
-
-## Errori comuni
-
-- Attivare scanner senza processo di triage.
-- Ignorare alert perche ci sono falsi positivi.
-- Bloccare merge con regole troppo rumorose.
-- Non analizzare branch o linguaggi importanti.
-- Non aggiornare query o scanner.
-- Confondere code scanning con dependency scanning.
-
-## Checklist
-
-- Code scanning copre i linguaggi principali?
-- Gli alert hanno owner?
-- I falsi positivi sono dismissati con motivo?
-- Le PR mostrano alert nuovi?
-- I controlli obbligatori sono stabili?
-- I risultati sono rivisti periodicamente?
+1. Identifica **strumento, linguaggio, branch e commit**. Un job verde dice che l’analisi si è conclusa, non che non abbia prodotto segnalazioni. Un linguaggio non analizzato non può essere dichiarato privo di problemi.
+2. Apri la regola e le posizioni indicate; se lo strumento mostra un percorso dei dati, leggi origine, trasformazioni e destinazione nel contesto della modifica. Se correggi il codice, aggiungi un test sul comportamento atteso e controlla la nuova analisi sulla revisione corretta.
+3. Se la segnalazione non si applica, documenta il motivo prima del *dismiss*. Per bloccare il merge in base ai risultati configura un **ruleset** con strumento richiesto e soglie di severità: è diverso dal rendere obbligatorio il solo completamento del job.
 
 ## Collegamenti
 
@@ -123,4 +83,7 @@ Per un progetto web:
 
 ## Fonti
 
-- [GitHub Docs - Code scanning](https://docs.github.com/en/code-security/concepts/code-scanning/code-scanning)
+- [GitHub Docs: default setup, advanced setup e strumenti SARIF](https://docs.github.com/en/code-security/concepts/code-scanning/setup-types)
+- [GitHub Docs: prerequisiti dell’advanced setup](https://docs.github.com/en/code-security/how-tos/find-and-fix-code-vulnerabilities/configure-code-scanning/configuring-advanced-setup-for-code-scanning)
+- [CodeQL Action: versioni, permessi e modalità di build](https://github.com/github/codeql-action)
+- [GitHub Docs: protezione del merge basata sui risultati](https://docs.github.com/en/code-security/how-tos/find-and-fix-code-vulnerabilities/manage-your-configuration/set-merge-protection)

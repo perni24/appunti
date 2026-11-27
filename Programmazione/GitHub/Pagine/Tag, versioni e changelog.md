@@ -14,8 +14,6 @@ tags:
   - changelog
 aliases:
   - Tag versioni e changelog
-  - Tag
-  - versioni e changelog
 prerequisites:
   - "[[Programmazione/GitHub/Pagine/Git e GitHub]]"
   - "[[Programmazione/GitHub/Pagine/Commit e cronologia su GitHub]]"
@@ -30,100 +28,65 @@ title: Tag, versioni e changelog
 
 ## Sintesi
 
-**Tag, versioni e changelog** sono il modo con cui un progetto comunica la propria evoluzione. Il tag identifica un punto preciso nella storia Git, la versione assegna un nome leggibile a quel punto, il changelog spiega cosa e cambiato.
+La **versione** comunica compatibilità, il **tag** identifica il codice e il **changelog** spiega cosa cambia per chi aggiorna. Nessuno dei tre pubblica automaticamente una release o esegue un deploy.
 
-Su GitHub questi elementi diventano ancora piu importanti per release, automazioni, deploy e lettura storica del progetto.
+## Scegliere il numero di versione
 
-## Quando usarlo
+Prima di applicare Semantic Versioning, definire l'interfaccia pubblica: può includere API, opzioni CLI o variabili di configurazione documentate. Ecco tre cambiamenti alternativi a partire dalla versione stabile `1.4.2`:
 
-Usali quando:
+| Modifica | Versione | Motivo |
+| --- | --- | --- |
+| Correggere la lettura dell'URL senza cambiare la configurazione supportata | `1.4.3` | Patch compatibile. |
+| Introdurre `API_URL` continuando ad accettare `OLD_API_URL` e dichiarare la vecchia forma deprecata | `1.5.0` | Funzionalità compatibile e deprecazione esplicita. |
+| Smettere di accettare la variabile pubblica `OLD_API_URL` | `2.0.0` | Un'installazione prima valida non funziona più: modifica incompatibile. |
 
-- pubblichi versioni installabili;
-- vuoi indicare una versione stabile;
-- vuoi fare rollback o confronti;
-- vuoi generare release notes;
-- vuoi automatizzare deploy su tag;
-- vuoi comunicare breaking change.
+Il prefisso `v` nel tag `v2.0.0` è una convenzione Git: il numero SemVer è `2.0.0`. Un progetto può scegliere versioni a calendario, ma in quel caso il numero non promette automaticamente le stesse regole di compatibilità.
 
-## Come funziona
+## Esempio: preparare il changelog
 
-Un tag Git punta a un commit. GitHub mostra tag e release nella sezione Releases. Una release puo usare un tag esistente o crearne uno nuovo.
-
-Schema consigliato:
-
-```text
-commit -> tag vX.Y.Z -> release GitHub -> changelog -> deploy/package
-```
-
-Il changelog puo essere manuale, generato da conventional commits o generato da GitHub release notes, ma deve restare leggibile per una persona.
-
-## API / Sintassi
-
-Creare un tag annotato:
-
-```bash
-git tag -a v1.2.0 -m "Release v1.2.0"
-git push origin v1.2.0
-```
-
-Vedere tag:
-
-```bash
-git tag --list
-```
-
-Eliminare un tag remoto, solo se davvero necessario:
-
-```bash
-git push origin --delete v1.2.0
-```
-
-## Esempio pratico
-
-Changelog minimo:
+Committare la voce di `CHANGELOG.md` **prima** di creare il tag se deve essere presente nei sorgenti della versione. Un elenco di commit o PR può essere il punto di partenza, non sostituisce le istruzioni di aggiornamento.
 
 ```md
-# Changelog
+## 2.0.0 - 2026-11-27
 
-## v1.2.0 - 2026-07-07
+### Removed
+- Rimossa la variabile di configurazione OLD_API_URL.
 
-### Added
-- Nuova pagina impostazioni.
-
-### Fixed
-- Corretto errore nella pipeline CI.
-
-### Breaking changes
-- Rimossa variabile `OLD_API_URL`.
+### Migrazione
+- Rinominare OLD_API_URL in API_URL nella configurazione di deploy prima di aggiornare.
 ```
 
-## Varianti
+## Creare e controllare il tag
 
-- **Tag leggero**: riferimento semplice a un commit.
-- **Tag annotato**: include messaggio, autore e metadati.
-- **Protected tag**: impedisce modifiche non autorizzate.
-- **Semantic Versioning**: `MAJOR.MINOR.PATCH`.
-- **Calendar Versioning**: versione basata su data.
-- **Changelog manuale**: piu curato, ma richiede disciplina.
-- **Changelog automatico**: utile, ma va revisionato.
+Un tag leggero è un riferimento; un **tag annotato** ha un oggetto proprio con autore del tag, data e messaggio. Nell'esempio si vuole marcare il commit attualmente in checkout. Controllarne l'identificativo e confrontarlo con il commit che ha superato la CI:
 
-## Errori comuni
+```bash
+git rev-parse HEAD
+```
 
-- Riutilizzare lo stesso tag per commit diversi.
-- Non proteggere tag di release.
-- Usare versioni senza criterio.
-- Pubblicare release senza changelog.
-- Nascondere breaking change tra note generiche.
-- Generare changelog automatici senza revisione.
+Creare il tag annotato **nel clone locale**, solo dopo aver verificato commit e changelog:
 
-## Checklist
+```bash
+git tag -a v2.0.0 -m "Release v2.0.0"
+```
 
-- La strategia di versioning e chiara?
-- Il tag punta al commit corretto?
-- Il tag e protetto se e critico?
-- Il changelog distingue aggiunte, modifiche e fix?
-- Le breaking change sono evidenti?
-- Release e tag sono allineati?
+Risolvere il tag fino al commit. Confrontare questo valore, non l'identificativo dell'oggetto tag, con quello verificato:
+
+```bash
+git rev-parse "v2.0.0^{commit}"
+```
+
+Con permessi adeguati, pubblicare **solo quel tag** sul remoto (scrittura reale, che può attivare automazioni):
+
+```bash
+git push origin refs/tags/v2.0.0
+```
+
+## Errori da evitare
+
+- `git tag --list` elenca i tag locali: la presenza in elenco non prova che un tag sia già su GitHub.
+- Non spostare o riutilizzare un tag di release già pubblicato per «correggerlo»: chi lo ha scaricato può avere altro codice con lo stesso nome. Preferire una nuova versione e segnalare quella difettosa.
+- La cancellazione di un tag remoto (`git push origin --delete refs/tags/NOME`) è un intervento eccezionale e distruttivo, non un rollback dei deploy o dei clone. Definire chi può creare, modificare o eliminare i tag di release.
 
 ## Collegamenti
 
@@ -136,5 +99,7 @@ Changelog minimo:
 
 ## Fonti
 
-- [GitHub Docs - Viewing releases and tags](https://docs.github.com/en/repositories/releasing-projects-on-github/viewing-your-repositorys-releases-and-tags)
-- [GitHub Docs - Searching releases](https://docs.github.com/en/repositories/releasing-projects-on-github/searching-a-repositorys-releases)
+- [Semantic Versioning 2.0.0](https://semver.org/spec/v2.0.0.html)
+- [Git: tag leggeri e annotati](https://git-scm.com/docs/git-tag)
+- [Keep a Changelog: scrivere per chi aggiorna](https://keepachangelog.com/en/1.1.0/)
+- [GitHub Docs: relazione tra tag e release](https://docs.github.com/en/repositories/releasing-projects-on-github/about-releases)

@@ -27,97 +27,29 @@ title: Discussions GitHub
 
 ## Sintesi
 
-**GitHub Discussions** e uno spazio per conversazioni non necessariamente legate a un bug o a una modifica immediata. Serve per domande, idee, annunci, supporto, proposte e confronto della community.
+Una **Discussion** conserva una conversazione: può essere utile anche quando non c’è nulla da implementare. Un’**issue** registra invece un problema o un’attività che vuoi assegnare e verificare. Una risposta utile a una domanda e la correzione di un difetto possono quindi vivere in due posti diversi, collegati tra loro.
 
-La distinzione importante e: una issue deve portare a un lavoro tracciabile; una discussion puo essere esplorativa.
+## Scegli il formato in base alla risposta che cerchi
 
-## Quando usarlo
+| Situazione | Dove aprirla | Cosa resta alla fine |
+| --- | --- | --- |
+| «Come configuro PostgreSQL al posto di SQLite?» | Categoria Q&A | Una risposta che puoi contrassegnare per renderla visibile a chi arriva dopo. |
+| «Quali colonne dovremmo esportare?» | Discussione aperta, per esempio Ideas | Alternative, vincoli e decisione motivata; nessun obbligo di scegliere una risposta. |
+| «È disponibile il nuovo esportatore» | Categoria Announcements | Comunicazione dei manutentori con spazio per le risposte. |
+| «Con questi dati manca l’intestazione prevista» | Issue, se puoi descrivere caso osservato e risultato atteso | Un difetto da riprodurre, assegnare e verificare. |
 
-Usa Discussions quando:
+Il nome della categoria è personalizzabile; è il **formato** a consentire azioni come **Mark as answer**. Prima di aprire un’altra discussione, cerca se esiste già una risposta e indica versione e contesto se la tua situazione è diversa.
 
-- vuoi raccogliere domande ricorrenti;
-- vuoi discutere idee prima di aprire issue;
-- hai una community attiva;
-- vuoi separare supporto e bug reali;
-- vuoi pubblicare annunci o decisioni;
-- vuoi evitare che le issue diventino forum generici.
+## Esempio: dalla domanda al lavoro tracciato
 
-## Come funziona
+1. Una persona chiede in Q&A se sia normale ottenere un CSV senza intestazione quando non ci sono righe. Il manutentore risponde che la specifica dell’esportatore prevede l’intestazione anche in quel caso.
+2. La risposta chiarisce il comportamento atteso: contrassegnala nella Discussion. Non dimostra che il difetto sia stato corretto.
+3. Con permessi **triage** o superiori sul repository, usa **Create issue from discussion**. GitHub crea una **nuova issue** con il contenuto del post iniziale e conserva le label. La Discussion e le sue risposte rimangono disponibili; non aspettarti che tutti i commenti diventino commenti dell’issue.
+4. Nell’issue lascia un esempio minimo e un criterio osservabile: «Con zero righe il CSV contiene la sola intestazione». Collega la conversazione per il contesto. Se l’issue esiste già, basta linkarla nella risposta: non aprire un duplicato.
 
-Le discussioni sono organizzate in categorie. Una categoria puo essere pensata per:
+## Non confondere le due direzioni
 
-- domande;
-- idee;
-- annunci;
-- showcase;
-- supporto;
-- decisioni.
-
-Una discussion puo essere convertita in issue quando emerge un lavoro concreto.
-
-## API / Sintassi
-
-Esempio di categorie:
-
-```text
-Q&A
-Ideas
-Announcements
-Show and tell
-Support
-```
-
-Schema per una proposta:
-
-```md
-## Contesto
-
-## Proposta
-
-## Alternative
-
-## Rischi
-```
-
-## Esempio pratico
-
-Una persona chiede:
-
-```text
-Come posso usare il progetto con PostgreSQL invece di SQLite?
-```
-
-Se e una domanda, resta Discussion. Se emerge che manca documentazione ufficiale, si apre una issue:
-
-```text
-Documentare configurazione PostgreSQL
-```
-
-## Varianti
-
-- **Q&A**: domande e risposte.
-- **Ideas**: proposte iniziali.
-- **Announcements**: comunicazioni dei maintainer.
-- **Support**: aiuto non necessariamente bug.
-- **Decision log leggero**: discussione prima di formalizzare issue o PR.
-
-## Errori comuni
-
-- Usare Discussions per bug riproducibili.
-- Lasciare decisioni importanti sepolte senza issue o documentazione.
-- Non moderare categorie e tag.
-- Rispondere in modo dispersivo senza chiudere la domanda.
-- Duplicare discussioni gia presenti.
-- Non convertire in issue quando nasce lavoro concreto.
-
-## Checklist
-
-- La conversazione e esplorativa o e gia un task?
-- Esiste gia una discussion simile?
-- La categoria scelta e corretta?
-- La risposta finale e chiara?
-- Serve aprire una issue collegata?
-- Una decisione importante va documentata altrove?
+**Convert issue to discussion** serve nel verso opposto, per esempio se una proposta ancora aperta è stata registrata come bug. Prima di convertire verifica che non si perda un’attività da seguire. Per una richiesta di supporto risolta non occorre aprire un’issue; per una decisione duratura aggiorna anche la guida o la specifica, non lasciare la risposta soltanto nel thread.
 
 ## Collegamenti
 
@@ -129,3 +61,6 @@ Documentare configurazione PostgreSQL
 ## Fonti
 
 - [GitHub Docs - About discussions](https://docs.github.com/en/discussions/collaborating-with-your-community-using-discussions/about-discussions)
+- [GitHub Docs: categorie e formati](https://docs.github.com/en/discussions/managing-discussions-for-your-community/managing-categories-for-discussions)
+- [GitHub Docs: creare una issue da una Discussion](https://docs.github.com/en/issues/tracking-your-work-with-issues/using-issues/creating-an-issue#creating-an-issue-from-discussion)
+- [GitHub Docs: risposte e conversione nel verso inverso](https://docs.github.com/en/discussions/managing-discussions-for-your-community/moderating-discussions)

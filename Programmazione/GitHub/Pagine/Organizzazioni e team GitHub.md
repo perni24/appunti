@@ -27,92 +27,31 @@ title: Organizzazioni e team GitHub
 
 ## Sintesi
 
-Le **organizzazioni GitHub** raggruppano repository, persone, team e policy. I **team** permettono di gestire permessi e responsabilita in modo collettivo invece di assegnare accessi utente per utente.
+Un’**organizzazione** possiede repository e stabilisce policy condivise. Un **team** raggruppa membri a cui assegnare accessi o richieste di review. L’identità rimane quella della singola persona: il team non è un account condiviso. Un collaboratore esterno può ricevere accesso a singoli repository, ma non entra in un team dell’organizzazione finché resta esterno.
 
-Sono fondamentali quando il lavoro supera il progetto personale e diventa collaborazione strutturata.
+## Esempio: due team nello stesso monorepo
 
-## Quando usarlo
-
-Usa organizzazioni e team quando:
-
-- hai piu repository collegati;
-- lavori con piu persone;
-- vuoi accessi centralizzati;
-- vuoi CODEOWNERS basato su team;
-- vuoi policy comuni per sicurezza e Actions;
-- vuoi separare ruoli come frontend, backend, devops o security.
-
-## Come funziona
-
-Una organizzazione puo contenere:
-
-- repository;
-- membri;
-- team;
-- ruoli;
-- policy;
-- secret e variabili a livello organizzazione;
-- GitHub Apps;
-- settings di sicurezza.
-
-Un team puo avere accesso a repository e puo essere menzionato o usato in `CODEOWNERS`.
-
-## API / Sintassi
-
-Esempio di struttura:
+Supponi che `example-org/app` contenga `apps/web/` e `apps/api/`. Concedere **Write sul repository** ai team `frontend` e `backend` permette a entrambi di proporre modifiche a entrambe le directory. Non esiste in quell’assegnazione un «Write solo su `apps/web/`». Per indirizzare le review usa un file `.github/CODEOWNERS` sul branch base della PR, con team reali, visibili e con accesso esplicito di scrittura:
 
 ```text
-org: acme
-  team: frontend
-  team: backend
-  team: devops
-  team: security
+/apps/web/           @example-org/frontend
+/apps/api/           @example-org/backend
+/.github/workflows/  @example-org/platform
 ```
 
-Esempio CODEOWNERS con team:
+Se una PR tocca `apps/api/export.ts`, GitHub può richiedere la review a `backend`. Se è obbligatoria, la regola del branch deve **richiedere l’approvazione dei code owner**. La mappa non limita la visibilità del file né concede permessi. Se due gruppi non devono poter leggere l’uno il codice dell’altro, la separazione va progettata a livello di repository: una directory e un team segreto non sono un confine di accesso ai file.
 
-```text
-/apps/web/ @acme/frontend
-/apps/api/ @acme/backend
-/.github/workflows/ @acme/devops
-```
+## Cosa eredita un team figlio?
 
-## Esempio pratico
+Un team figlio eredita gli accessi ai repository del **padre**, non il contrario. Se `engineering` ha Read su `app` e il figlio `frontend` ha anche Write assegnato direttamente, i membri di `frontend` possono scrivere; gli altri membri di `engineering` non ricevono Write dal figlio. Dare al padre un accesso troppo ampio lo propaga ai discendenti.
 
-Repository `app` dentro organizzazione:
+Una menzione `@example-org/frontend` richiama il gruppo ma non lo rende code owner. I team **visibili** si prestano a review e ownership; i team **segreti** non possono far parte di gerarchie annidate e nascondono la membership, non il codice dei repository.
 
-- `frontend`: write su `apps/web`;
-- `backend`: write su `apps/api`;
-- `devops`: owner dei workflow;
-- `security`: review richiesta su autenticazione e secret.
+## Ingresso, cambio di team e uscita
 
-Gli accessi vengono gestiti aggiungendo o rimuovendo persone dai team, non modificando ogni repository manualmente.
-
-## Varianti
-
-- **Organizzazione piccola**: pochi repository e team essenziali.
-- **Organizzazione aziendale**: policy, audit e ruoli piu rigorosi.
-- **Team funzionale**: frontend, backend, devops.
-- **Team di ownership**: responsabile di un package o dominio.
-- **Team temporaneo**: utile per progetto o migrazione.
-
-## Errori comuni
-
-- Gestire accessi solo con utenti singoli.
-- Creare troppi team senza responsabilita reale.
-- Non rimuovere membri non piu attivi.
-- Usare team come gruppi sociali invece che permessi operativi.
-- Non allineare team, CODEOWNERS e branch protection.
-- Dare policy diverse a repository simili senza motivo.
-
-## Checklist
-
-- I team rappresentano responsabilita reali?
-- Gli accessi sono gestiti tramite team?
-- CODEOWNERS usa team stabili?
-- I membri inattivi vengono rimossi?
-- Le policy organizzative sono documentate?
-- I repository critici hanno ownership chiara?
+1. Per l’ingresso verifica se occorre la membership nell’organizzazione o basta un accesso esterno a un repository. Assegna il team coerente con le responsabilità reali, non quello con il livello più alto.
+2. Se una persona passa dal backend al frontend, controlla accesso precedente e nuovo, team padre e concessioni dirette. Il cambio organizzativo non modifica automaticamente i riferimenti a team rinominati o non più responsabili nelle procedure del progetto: verifica anche `CODEOWNERS`.
+3. Per l’uscita da un progetto verifica quali repository rimangono accessibili e perché. Mantieni un responsabile per l’aggiornamento dei team e delle review, soprattutto per team temporanei e policy condivise tra repository.
 
 ## Collegamenti
 
@@ -124,5 +63,6 @@ Gli accessi vengono gestiti aggiungendo o rimuovendo persone dai team, non modif
 
 ## Fonti
 
-- [GitHub Docs - About organizations](https://docs.github.com/en/organizations/collaborating-with-groups-in-organizations/about-organizations)
-- [GitHub Docs - About teams](https://docs.github.com/en/organizations/organizing-members-into-teams/about-teams)
+- [GitHub Docs: organizzazioni](https://docs.github.com/en/organizations/collaborating-with-groups-in-organizations/about-organizations)
+- [GitHub Docs: membership, visibilità ed ereditarietà dei team](https://docs.github.com/en/organizations/organizing-members-into-teams/about-teams)
+- [GitHub Docs: requisiti di accesso e visibilità dei code owner](https://docs.github.com/en/repositories/managing-your-repositorys-settings-and-features/customizing-your-repository/about-code-owners)

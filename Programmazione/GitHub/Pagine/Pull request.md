@@ -28,109 +28,52 @@ title: Pull request
 
 ## Sintesi
 
-Una **pull request** e una proposta di modifica da un branch verso un altro branch. Su GitHub e il punto centrale del lavoro collaborativo: mostra diff, commit, discussioni, review, controlli automatici e stato del merge.
+Una pull request (PR) propone di integrare il branch **head** (sorgente) nel branch **base** (destinazione). Raccoglie il motivo della modifica, i commit, il diff, le discussioni e gli eventuali check. Non è né un `git pull` né un merge già eseguito.
 
-Una pull request non e solo una richiesta tecnica di merge: e anche il contesto che spiega il problema, la soluzione e i rischi.
+## Esempio: dal branch alla PR
 
-## Quando usarlo
-
-Apri una pull request quando:
-
-- vuoi unire un branch a `main`;
-- vuoi ricevere review;
-- vuoi far girare test e lint in CI;
-- vuoi discutere una modifica prima del merge;
-- vuoi collegare codice a issue o task;
-- vuoi mantenere una traccia storica delle decisioni.
-
-## Come funziona
-
-Una pull request ha:
-
-- branch sorgente;
-- branch destinazione;
-- titolo;
-- descrizione;
-- diff;
-- commit;
-- review;
-- commenti;
-- status check;
-- eventuali issue collegate.
-
-GitHub aggiorna automaticamente la pull request quando fai push di nuovi commit sul branch sorgente.
-
-## API / Sintassi
-
-Creare un branch e inviarlo:
+L’issue `#12` segnala che manca l’intestazione nei report CSV vuoti. Hai già pubblicato `fix/export-vuoto`. Prima di aprire la PR, nel clone con `origin/main` aggiornato e sul branch della correzione, controlla quali file stai proponendo di cambiare:
 
 ```bash
-git switch -c feature/report-export
-git add .
-git commit -m "Aggiunge export report"
-git push -u origin feature/report-export
+git diff origin/main...HEAD
 ```
 
-Creare PR con GitHub CLI:
+I **tre punti** confrontano la base comune con `HEAD`, come il diff normalmente presentato nella PR. Non è un confronto diretto tra le due punte: un file cambiato solo su `main` dopo la biforcazione non entra per questo nel diff della proposta.
+
+Dal repository corretto, con `gh` autenticato, puoi aprire una bozza. Qui i branch sono nello stesso repository; per una PR da fork verifica anche i rispettivi proprietari:
 
 ```bash
-gh pr create --base main --head feature/report-export
+gh pr create --base main --head fix/export-vuoto --draft
 ```
 
-Vedere stato PR:
-
-```bash
-gh pr status
-gh pr checks
-```
-
-## Esempio pratico
-
-Descrizione utile:
+Esempio di descrizione, **da adattare ai test davvero eseguiti**:
 
 ```md
-## Cosa cambia
+## Problema
+Un report senza righe produce un CSV senza intestazione.
 
-- Aggiunge export CSV dei report.
-- Aggiunge test sul formato generato.
-
-## Perche
-
-Serve per scaricare i dati da dashboard.
+## Modifica
+L'esportatore scrive l'intestazione anche con zero righe.
 
 ## Verifica
+Con zero righe resta la sola intestazione; con una riga i dati restano invariati.
 
-- npm test
-- npm run lint
+Closes #12
 ```
 
-Una descrizione cosi riduce domande ripetute durante la review.
+La bozza consente di discutere il lavoro ma non può essere unita finché non è pronta per la review. Un altro push sullo **stesso head** aggiorna la PR: non aprirne una nuova per rispondere a un commento.
 
-## Varianti
+## Cosa controllare prima del merge
 
-- **Draft pull request**: modifica ancora in lavorazione.
-- **Ready for review**: modifica pronta per revisione.
-- **PR da fork**: comune nei progetti open source.
-- **PR piccola**: piu facile da rivedere.
-- **PR stacked**: piu pull request dipendenti, da usare con disciplina.
+- **Files changed:** il diff è limitato al problema? In una serie di PR dipendenti (stacked), verifica la base di ciascuna: scegliere sempre `main` può mostrare anche il lavoro precedente.
+- **Review:** il revisore richiesto ha risposto? Una conversazione risolta non è un’approvazione.
+- **Checks:** partono solo i controlli configurati. Verdi non significa che tutti gli scenari siano stati provati. Se la PR di esempio è la `34`, consulta i suoi check con:
 
-## Errori comuni
+```bash
+gh pr checks 34
+```
 
-- Aprire PR troppo grandi.
-- Non spiegare il perche della modifica.
-- Non indicare come e stata testata.
-- Mescolare feature, refactor e fix.
-- Lasciare conversazioni di review irrisolte.
-- Fare merge con controlli falliti.
-
-## Checklist
-
-- Il titolo spiega la modifica?
-- La descrizione include contesto e verifica?
-- La PR e piccola abbastanza da rivedere?
-- I test e lint passano?
-- Le review richieste sono assegnate?
-- Le conversazioni sono risolte prima del merge?
+`gh pr status` mostra invece una panoramica delle PR rilevanti per te. Nell’esempio `main` è il branch predefinito: `Closes #12` può chiudere l’issue quando la PR viene integrata, non quando il testo viene scritto.
 
 ## Collegamenti
 
@@ -143,3 +86,5 @@ Una descrizione cosi riduce domande ripetute durante la review.
 ## Fonti
 
 - [GitHub Docs - About pull requests](https://docs.github.com/en/pull-requests/collaborating-with-pull-requests/proposing-changes-to-your-work-with-pull-requests/about-pull-requests)
+- [GitHub Docs: scrivere codice e confrontare i branch](https://docs.github.com/en/pull-requests/concepts/writing-code-for-a-project)
+- [GitHub CLI: creare una pull request](https://cli.github.com/manual/gh_pr_create)

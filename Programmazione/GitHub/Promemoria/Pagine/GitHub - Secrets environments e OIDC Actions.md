@@ -25,91 +25,76 @@ title: GitHub - Secrets, environments e OIDC Actions
 
 # GitHub - Secrets, environments e OIDC Actions
 
-## Usare un secret
+## Scegliere il contesto
+
+| Valore necessario | Dove leggerlo |
+| --- | --- |
+| Configurazione non riservata | `vars.API_URL` |
+| Credenziale di un servizio esterno | `secrets.API_TOKEN` nello step che usa il client |
+| Operazione su GitHub nello stesso repository | `github.token`, con i soli `permissions` necessari al job |
+| Accesso a un cloud che supporta OIDC | Token d'identità del job da scambiare presso il provider, non un secret statico |
+
+## Secret di environment: verificarne la presenza
+
+Frammento sotto `jobs` per un workflow fidato. Creare prima l'environment `staging` e il relativo secret. Il job verifica soltanto la disponibilità del valore: non esegue deploy e non prova l'autenticazione.
 
 ```yaml
-- name: Deploy
-  env:
-    API_TOKEN: ${{ secrets.API_TOKEN }}
-  run: ./deploy.sh
+verifica:
+  runs-on: ubuntu-latest
+  environment: staging
+  permissions: {}
+  steps:
+    - name: Controlla configurazione
+      shell: pwsh
+      env:
+        API_TOKEN: ${{ secrets.API_TOKEN }}
+      run: |
+        if ([string]::IsNullOrWhiteSpace($env:API_TOKEN)) {
+          throw "API_TOKEN non disponibile"
+        }
+        Write-Output "API_TOKEN presente"
 ```
 
-Non passare il secret direttamente nella riga di comando quando puo apparire nei log o nell'elenco processi.
+L'`env` dello step non passa al successivo. Per una vera pubblicazione configurare branch ammessi ed eventuali approvazioni sull'environment; il campo `environment.url` può riportare l'URL del deployment, ma non lo crea. Nelle normali PR da fork i secret Actions del repository base non sono disponibili: non esporli a codice non fidato.
 
-## Variabili non sensibili
+## CLI: leggere oppure modificare
 
-```yaml
-env:
-  API_URL: ${{ vars.API_URL }}
+Sostituire `OWNER/REPO`. La lettura elenca i nomi, **non i valori**:
+
+```powershell
+gh secret list --repo OWNER/REPO --env staging
 ```
 
-## GITHUB_TOKEN
+Scrittura nel relativo environment: il valore si inserisce al prompt. Omettere `--env staging` **solo** per creare o aggiornare un secret di repository.
+
+```powershell
+gh secret set API_TOKEN --repo OWNER/REPO --env staging
+```
+
+Scrittura di una variabile **non segreta** di repository:
+
+```powershell
+gh variable set API_URL --repo OWNER/REPO --body "https://api.example.com"
+```
+
+## GitHub CLI e OIDC nei job
+
+Per usare `gh` in uno step, impostare `GH_TOKEN: ${{ github.token }}` nel suo `env`. Per leggere issue è sufficiente `issues: read`; aggiungere scrittura solo al job che la richiede.
+
+Per OIDC, **frammento del job** che deve richiedere il token:
 
 ```yaml
 permissions:
-  contents: read
-  issues: write
-```
-
-```yaml
-env:
-  GH_TOKEN: ${{ github.token }}
-```
-
-`GITHUB_TOKEN` e temporaneo e limitato al repository del workflow.
-
-## Environment
-
-```yaml
-jobs:
-  deploy:
-    environment:
-      name: production
-      url: https://example.com
-```
-
-Usare gli environment per:
-
-- secret distinti;
-- approvazioni;
-- branch autorizzati;
-- cronologia dei deployment.
-
-## OIDC
-
-```yaml
-permissions:
-  contents: read
   id-token: write
 ```
 
-Il job usa poi l'azione ufficiale del provider cloud per scambiare il token OIDC con credenziali temporanee.
+Aggiungere `contents: read` se il job deve anche fare checkout. `id-token: write` consente di richiedere un'identità, non concede privilegi cloud: il provider deve accettarne audience e soggetto (repository, ref o environment previsti) e assegnare un ruolo limitato.
 
-## Secret da CLI
+## Fonti
 
-```powershell
-gh secret set API_TOKEN
-```
-
-```powershell
-gh secret list
-```
-
-```powershell
-gh secret set API_TOKEN --env production
-```
-
-## Variabile da CLI
-
-```powershell
-gh variable set API_URL --body "https://api.example.com"
-```
-
-## Pull request da fork
-
-I secret, salvo eccezioni controllate da GitHub, non vengono forniti ai workflow avviati da pull request provenienti da fork.
-
-Non usare `pull_request_target` per eseguire codice non affidabile con accesso ai secret.
+- [GitHub Docs: usare i secret](https://docs.github.com/en/actions/how-tos/write-workflows/choose-what-workflows-do/use-secrets)
+- [GitHub Docs: OpenID Connect](https://docs.github.com/en/actions/concepts/security/openid-connect)
+- [GitHub CLI: impostare un secret](https://cli.github.com/manual/gh_secret_set)
 
 ## Approfondimento
 
@@ -120,7 +105,6 @@ Non usare `pull_request_target` per eseguire codice non affidabile con accesso a
 - [[Programmazione/GitHub/Pagine/OIDC GitHub Actions|OIDC GitHub Actions]]
 - [[Programmazione/GitHub/Pagine/Troubleshooting secrets GitHub Actions|Troubleshooting secrets GitHub Actions]]
 - [[Programmazione/GitHub/Pagine/Sicurezza dei token GitHub|Sicurezza dei token GitHub]]
-
 
 ## Navigazione
 

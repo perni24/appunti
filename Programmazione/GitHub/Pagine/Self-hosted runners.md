@@ -28,98 +28,38 @@ title: Self-hosted runners
 
 ## Sintesi
 
-I **self-hosted runners** sono macchine gestite da te che eseguono job GitHub Actions. A differenza dei runner GitHub-hosted, ti danno controllo su hardware, sistema operativo, rete e software installato.
+Un **runner self-hosted** è una macchina che gestisci tu e che GitHub può selezionare per un job. Ha senso quando serve una risorsa concreta: un compilatore specialistico, un dispositivo fisico, una GPU o una rete privata autorizzata. Per il sito Quartz il workflow usa `ubuntu-latest`: non presuppone un tuo server acceso.
 
-Sono potenti, ma aumentano responsabilita operative e rischi di sicurezza.
+## Come viene scelto il runner
 
-## Quando usarlo
+Distingui tre livelli: **registrazione** (repository, organizzazione o enterprise), **gruppo** (quali repository o workflow possono richiedere la risorsa) ed **etichette** (quali runner dichiarano la capacità richiesta). Con `runs-on: [self-hosted, linux, x64]` le etichette sono cumulative, non tre alternative. Un’etichetta personalizzata non installa né verifica automaticamente una toolchain.
 
-Usali quando:
-
-- servono strumenti non presenti nei runner GitHub-hosted;
-- servono hardware specifici, GPU o architetture particolari;
-- devi accedere a una rete privata;
-- vuoi riusare infrastruttura aziendale;
-- i job sono troppo pesanti o lunghi;
-- hai requisiti di compliance o isolamento.
-
-## Come funziona
-
-Un self-hosted runner viene registrato su GitHub a livello di:
-
-- repository;
-- organizzazione;
-- enterprise.
-
-Nel workflow lo selezioni con `runs-on` usando label come:
-
-```yaml
-runs-on: self-hosted
-```
-
-oppure label piu specifiche:
-
-```yaml
-runs-on: [self-hosted, linux, x64, gpu]
-```
-
-La macchina esegue i job e comunica con GitHub. Devi gestire patch, isolamento, credenziali, pulizia workspace e disponibilita.
-
-## API / Sintassi
-
-Job su runner self-hosted:
+Esempio di sola lettura, da usare come job in un workflow fidato. Presuppone un gruppo esistente `laboratorio` accessibile al repository e un runner Linux con etichetta `arm-toolchain`, Bash e il compilatore indicato. Non richiede checkout né credenziali e non programma un dispositivo.
 
 ```yaml
 jobs:
-  build:
-    runs-on: [self-hosted, linux, x64]
+  verifica-toolchain:
+    permissions: {}
+    runs-on:
+      group: laboratorio
+      labels: arm-toolchain
     steps:
-      - uses: actions/checkout@v4
-      - run: ./build.sh
+      - name: Verifica la versione del compilatore
+        shell: bash
+        run: arm-none-eabi-gcc --version
 ```
 
-## Esempio pratico
+| Sintomo | Cosa verificare per primo |
+| --- | --- |
+| Job in coda, nessuno step avviato | Esiste un runner online e libero che corrisponde al gruppo e alle etichette? Il repository è ammesso? |
+| Il job parte ma il comando non esiste | La selezione è riuscita. Verifica installazione e `PATH` **dell’account del servizio runner**, non soltanto della tua shell. |
+| Il job passa soltanto sulla macchina già usata | Cerca file residui o dipendenze non dichiarate. Ripeti su un ambiente pulito prima di affidarti al risultato. |
 
-Un progetto embedded potrebbe avere bisogno di compilatori, toolchain e dispositivi collegati fisicamente:
+## Responsabilità operative
 
-```yaml
-jobs:
-  firmware:
-    runs-on: [self-hosted, linux, arm-toolchain]
-    steps:
-      - uses: actions/checkout@v4
-      - run: make test
-      - run: make firmware
-```
+Un runner persistente non garantisce un filesystem nuovo a ogni job. Separa ambienti con livelli di fiducia differenti, aggiorna sistema, software del runner e toolchain, monitora spazio e disponibilità. Non instradare PR non fidate verso macchine con accesso interno o dispositivi reali: `permissions: {}` limita il token GitHub, **non** i permessi locali della macchina.
 
-Qui il runner self-hosted evita di riconfigurare ogni volta un ambiente molto specifico.
-
-## Varianti
-
-- **Repository runner**: limitato a un repository.
-- **Organization runner**: condiviso tra piu repository.
-- **Enterprise runner**: gestito a livello enterprise.
-- **Runner fisico**: utile per hardware specifico.
-- **Runner cloud**: utile per scalare o isolare ambienti.
-- **Runner containerizzato**: utile per ambienti piu riproducibili.
-
-## Errori comuni
-
-- Eseguire codice non fidato su runner con accesso alla rete interna.
-- Non pulire workspace e credenziali tra job.
-- Usare runner condivisi senza policy di accesso.
-- Non aggiornare sistema operativo e tool installati.
-- Dare label troppo generiche.
-- Non monitorare runner offline o bloccati.
-
-## Checklist
-
-- Il runner esegue solo repository fidati?
-- Le label sono specifiche?
-- Esiste pulizia tra job?
-- Le credenziali sono temporanee quando possibile?
-- Il sistema operativo viene aggiornato?
-- I log e la disponibilita sono monitorati?
+L’installazione può essere fisica o in cloud. Un runner effimero dedicato a un solo job riduce il riuso dello stato, ma devi anche eliminare o ripristinare l’ambiente sottostante. Se non puoi gestire isolamento, aggiornamenti e recovery, un runner GitHub-hosted è spesso la scelta più semplice.
 
 ## Collegamenti
 
@@ -132,4 +72,6 @@ Qui il runner self-hosted evita di riconfigurare ogni volta un ambiente molto sp
 
 ## Fonti
 
-- [GitHub Docs - Self-hosted runners](https://docs.github.com/en/actions/concepts/runners/self-hosted-runners)
+- [GitHub Docs - Caratteristiche dei runner self-hosted](https://docs.github.com/en/actions/concepts/runners/self-hosted-runners)
+- [GitHub Docs - Gruppi, etichette e selezione del runner](https://docs.github.com/en/actions/how-tos/manage-runners/self-hosted-runners/use-in-a-workflow)
+- [GitHub Docs - Sicurezza dei runner](https://docs.github.com/en/actions/reference/security/secure-use)

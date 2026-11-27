@@ -23,111 +23,71 @@ title: GitHub - Workflow Actions di base
 
 # GitHub - Workflow Actions di base
 
-## Posizione
+## CI minima per il vault
 
-```text
-.github/
-`-- workflows/
-    `-- ci.yml
-```
-
-## Workflow Node.js
+Esempio completo per `.github/workflows/ci.yml`: controlla gli appunti su PR verso `main`, su push a `main` o su richiesta. Non distribuisce il sito. Richiede `site/package-lock.json` e gli script in `site/package.json`.
 
 ```yaml
-name: CI
-
+name: CI appunti
 on:
-  push:
-    branches: [main]
   pull_request:
     branches: [main]
-
-permissions:
-  contents: read
-
-concurrency:
-  group: ci-${{ github.workflow }}-${{ github.ref }}
-  cancel-in-progress: true
-
-jobs:
-  verify:
-    runs-on: ubuntu-latest
-
-    steps:
-      - name: Checkout
-        uses: actions/checkout@v7
-
-      - name: Setup Node.js
-        uses: actions/setup-node@v7
-        with:
-          node-version: 24
-          cache: npm
-
-      - name: Install dependencies
-        run: npm ci
-
-      - name: Lint
-        run: npm run lint
-
-      - name: Test
-        run: npm test
-
-      - name: Build
-        run: npm run build
-```
-
-## Struttura minima
-
-```yaml
-name: Workflow
-
-on:
+  push:
+    branches: [main]
   workflow_dispatch:
 
 permissions:
   contents: read
 
+concurrency:
+  group: ci-appunti-${{ github.ref }}
+  cancel-in-progress: true
+
 jobs:
-  job-name:
+  verifica:
     runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: site
     steps:
-      - uses: actions/checkout@v7
-      - run: echo "Hello"
+      - uses: actions/checkout@v6
+      - uses: actions/setup-node@v6
+        with:
+          node-version: '24'
+          cache: npm
+          cache-dependency-path: site/package-lock.json
+      - run: npm ci
+      - run: npm run content:check
+      - run: npm run content:test
 ```
 
-## Shell
+`working-directory` vale per `run`, non per `uses`. Per un'altra app, adattare directory, lockfile e script: usare `npm run lint`, `npm test` o `npm run build` solo se il progetto li definisce.
+
+## Shell e variabili
+
+Due **step alternativi** sotto `jobs.verifica.steps`. La variabile vale solo nello step che la dichiara; per condividerla, spostare `env` a livello di job o di workflow.
 
 ```yaml
-- name: Bash command
+- name: Leggi il profilo in Bash
   shell: bash
-  run: echo "hello"
+  env:
+    PROFILO: test
+  run: echo "$PROFILO"
 ```
 
 ```yaml
-- name: PowerShell command
+- name: Leggi il profilo in PowerShell
   shell: pwsh
-  run: Write-Output "hello"
+  env:
+    PROFILO: test
+  run: Write-Output $env:PROFILO
 ```
 
-## Directory di lavoro
+## Fonti
 
-```yaml
-defaults:
-  run:
-    working-directory: frontend
-```
-
-## Variabili
-
-```yaml
-env:
-  NODE_ENV: test
-
-jobs:
-  verify:
-    env:
-      LOG_LEVEL: warning
-```
+- [GitHub Docs: sintassi dei workflow](https://docs.github.com/en/actions/reference/workflows-and-actions/workflow-syntax)
+- [actions/checkout: versione usata dal vault](https://github.com/actions/checkout/tree/v6)
+- [actions/setup-node: cache npm e lockfile](https://github.com/actions/setup-node/tree/v6)
 
 ## Approfondimento
 
@@ -136,13 +96,6 @@ jobs:
 - [[Programmazione/GitHub/Pagine/Pipeline CI GitHub Actions|Pipeline CI GitHub Actions]]
 - [[Programmazione/GitHub/Pagine/Workflow per test, lint e build|Workflow per test, lint e build]]
 - [[Programmazione/GitHub/Pagine/Checklist GitHub Actions|Checklist GitHub Actions]]
-
-## Riferimenti
-
-- [GitHub Docs - Workflow syntax](https://docs.github.com/en/actions/reference/workflows-and-actions/workflow-syntax)
-- [actions/checkout](https://github.com/actions/checkout)
-- [actions/setup-node](https://github.com/actions/setup-node)
-
 
 ## Navigazione
 

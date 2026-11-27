@@ -28,88 +28,38 @@ title: Personal access token GitHub
 
 ## Sintesi
 
-Un **personal access token** e una credenziale che permette di autenticarsi a GitHub dalla riga di comando, da script o tramite API. Sostituisce la password in contesti tecnici, ma va trattato come un segreto.
+Un **personal access token** (PAT) rappresenta la **persona** che lo ha creato. `Fine-grained` e `classic` sono due tipi di PAT, non due alternative al concetto di token personale. L’accesso non può superare quello della persona, anche se il token richiede permessi più ampi.
 
-Per molte automazioni moderne conviene preferire `GITHUB_TOKEN`, GitHub Apps o fine-grained token, invece di usare token classici troppo ampi.
+## Scegliere la credenziale per il compito
 
-## Quando usarlo
+| Situazione | Prima scelta | Perché |
+| --- | --- | --- |
+| Consultazione interattiva dalla propria macchina | Login di GitHub CLI o Git Credential Manager per Git via HTTPS. | Normalmente non occorre creare o trascrivere manualmente un PAT. |
+| Script personale che legge issue private | PAT fine-grained, se supportato, limitato al proprietario, ai repository e all’operazione. | Il caso d’uso è personale e il perimetro è noto. |
+| Job Actions nello stesso repository | `GITHUB_TOKEN` con i permessi del job. | La credenziale è temporanea e non dipende dal PAT di un collaboratore. |
+| Servizio condiviso che deve sopravvivere al cambio di personale | Installazione di una GitHub App. | Il servizio agisce come installazione, non come il manutentore che l’ha configurato. |
 
-Usalo quando:
+Un PAT classic usa *scope* spesso più ampi. Usalo solo dopo aver verificato che l’operazione non si possa coprire con una credenziale più limitata e che le policy dell’organizzazione lo consentano. Con SAML SSO può servire un’autorizzazione esplicita del classic per l’organizzazione; per i fine-grained l’autorizzazione SSO avviene durante la creazione.
 
-- devi autenticare uno script locale;
-- devi chiamare la REST API o GraphQL API;
-- GitHub CLI o Git Credential Manager non bastano;
-- non puoi usare `GITHUB_TOKEN`;
-- non hai ancora una GitHub App;
-- serve accesso temporaneo controllato.
+## Esempio pratico: identità e accesso sono due verifiche
 
-## Come funziona
-
-GitHub supporta due famiglie principali:
-
-- **fine-grained personal access tokens**;
-- **personal access tokens classic**.
-
-Il token agisce con i permessi dell'utente che lo ha creato, ma limitati da scope o permessi selezionati. Non puo dare privilegi che l'utente non possiede.
-
-Per automazioni stabili di organizzazione, una GitHub App e spesso piu adatta.
-
-## API / Sintassi
-
-Uso in una richiesta API:
+Con `gh` già autenticata su GitHub.com **come utente**, il primo comando mostra solo il login effettivo, non il valore della credenziale:
 
 ```bash
-curl \
-  -H "Authorization: Bearer TOKEN" \
-  -H "Accept: application/vnd.github+json" \
-  https://api.github.com/user
+gh api user --jq '.login'
 ```
 
-Uso con Git:
-
-```text
-username: tuo-username
-password: personal-access-token
-```
-
-## Esempio pratico
-
-Uno script locale che legge issue private puo usare un token con permesso `issues: read` o scope equivalente:
+Per verificare la lettura di una issue nota, sostituisci `OWNER/REPO` e `12` con i valori del tuo caso. Per provare proprio il PAT dello script, assicurati che `gh` stia usando quella credenziale, non un’altra sessione salvata.
 
 ```bash
-curl \
-  -H "Authorization: Bearer TOKEN" \
-  -H "Accept: application/vnd.github+json" \
-  "https://api.github.com/repos/OWNER/REPO/issues?state=open"
+gh api repos/OWNER/REPO/issues/12 --jq '{number, state, title}'
 ```
 
-Il token deve stare in un secret manager, variabile d'ambiente o strumento sicuro, non nel codice.
+Il primo comando riuscito non garantisce il secondo. E una lettura riuscita su un **repository pubblico** non prova che il token abbia accesso a risorse private. Con Git via HTTPS, quando viene richiesta una password puoi usare un PAT al suo posto; non inserirlo nell’URL del remote.
 
-## Varianti
+## Custodia e revoca
 
-- **Fine-grained token**: piu controllabile, legato a owner e repository specifici.
-- **Classic token**: piu ampio, utile solo quando una feature non supporta fine-grained token.
-- **GITHUB_TOKEN**: token automatico dentro GitHub Actions.
-- **GitHub App token**: consigliato per integrazioni persistenti.
-- **GitHub CLI auth**: spesso evita di gestire manualmente token.
-
-## Errori comuni
-
-- Salvare token nel repository.
-- Dare accesso a tutti i repository senza bisogno.
-- Non impostare scadenza.
-- Usare un token personale per un bot aziendale.
-- Stampare token nei log.
-- Non revocare token non piu usati.
-
-## Checklist
-
-- Serve davvero un PAT?
-- Si puo usare `GITHUB_TOKEN` o GitHub App?
-- Il token ha scadenza?
-- I permessi sono minimi?
-- Il token e conservato fuori dal codice?
-- Esiste una procedura di rotazione e revoca?
+Conserva la credenziale in un gestore di credenziali o di secret, iniettala solo dove serve e scegli una scadenza adeguata. Non inserirla negli esempi, nell’output di debug o nella cronologia della shell. Per la rotazione programmata verifica il sostituto e revoca il precedente; se un PAT è stato esposto, **revocalo subito** e aggiorna i componenti che lo utilizzavano. Cancellare il file o la riga di log non lo invalida.
 
 ## Collegamenti
 
@@ -123,4 +73,7 @@ Il token deve stare in un secret manager, variabile d'ambiente o strumento sicur
 
 ## Fonti
 
-- [GitHub Docs - Managing personal access tokens](https://docs.github.com/en/authentication/keeping-your-account-and-data-secure/managing-your-personal-access-tokens)
+- [GitHub Docs - Tipi di PAT, limiti e scadenza](https://docs.github.com/en/authentication/keeping-your-account-and-data-secure/managing-your-personal-access-tokens)
+- [GitHub Docs - PAT e SAML SSO](https://docs.github.com/en/authentication/authenticating-with-single-sign-on/authorizing-a-personal-access-token-for-use-with-single-sign-on)
+- [GitHub Docs - GITHUB_TOKEN del workflow](https://docs.github.com/en/actions/concepts/security/github_token)
+- [GitHub CLI - gh api](https://cli.github.com/manual/gh_api)

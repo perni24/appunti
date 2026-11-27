@@ -28,124 +28,58 @@ title: Workflow dispatch e scheduled workflows
 
 ## Sintesi
 
-`workflow_dispatch` permette di avviare un workflow manualmente. `schedule` permette di avviarlo a orari definiti con sintassi cron.
+`workflow_dispatch` significa «esegui su richiesta», non «esegui con privilegi elevati». `schedule` significa «tenta l’esecuzione a questi orari», non «garantisci la partenza al minuto». Possono stare nello stesso file: il punto da chiarire è quali passaggi devono girare **senza** gli input del modulo manuale.
 
-Sono trigger utili per operazioni non legate direttamente a una push: manutenzione, release manuali, pulizie, report, backup, controlli periodici.
+## Esempio pratico: controllo manuale o feriale
 
-## Quando usarlo
-
-Usa `workflow_dispatch` quando:
-
-- serve un bottone manuale;
-- vuoi scegliere branch o input;
-- vuoi avviare deploy controllati;
-- vuoi eseguire manutenzioni su richiesta.
-
-Usa `schedule` quando:
-
-- vuoi controlli periodici;
-- vuoi job di pulizia;
-- vuoi report automatici;
-- vuoi verifiche di sicurezza ricorrenti;
-- vuoi workflow non dipendenti da commit recenti.
-
-## Come funziona
-
-Un workflow manuale deve dichiarare:
+Esempio completo per `.github/workflows/verifica-note.yml`, non installato nel vault. Dal modulo manuale puoi chiedere anche i test; nei giorni feriali i test si eseguono sempre. È una validazione, non un deploy.
 
 ```yaml
-on:
-  workflow_dispatch:
-```
-
-Puo ricevere input. Si puo avviare da interfaccia GitHub, GitHub CLI o API.
-
-Un workflow schedulato usa:
-
-```yaml
-on:
-  schedule:
-    - cron: "15 4 * * *"
-```
-
-I workflow schedulati girano sulla default branch. Vanno progettati come job non critici al minuto esatto, perche possono subire ritardi.
-
-## API / Sintassi
-
-Workflow manuale con input:
-
-```yaml
+name: Verifica periodica delle note
 on:
   workflow_dispatch:
     inputs:
-      environment:
-        description: "Ambiente"
-        required: true
-        type: choice
-        options:
-          - staging
-          - production
-```
-
-Workflow schedulato:
-
-```yaml
-on:
+      completo:
+        description: Esegui anche i test di trasformazione
+        type: boolean
+        default: false
   schedule:
-    - cron: "30 5 * * 1-5"
-```
-
-## Esempio pratico
-
-Deploy manuale verso staging o produzione:
-
-```yaml
-name: Manual deploy
-
-on:
-  workflow_dispatch:
-    inputs:
-      environment:
-        type: choice
-        required: true
-        options:
-          - staging
-          - production
-
+    - cron: '17 6 * * 1-5'
+      timezone: Europe/Rome
+permissions:
+  contents: read
 jobs:
-  deploy:
+  controlla:
     runs-on: ubuntu-latest
-    environment: ${{ inputs.environment }}
+    defaults:
+      run:
+        working-directory: site
     steps:
-      - uses: actions/checkout@v4
-      - run: ./deploy.sh ${{ inputs.environment }}
+      - uses: actions/checkout@v6
+      - uses: actions/setup-node@v6
+        with:
+          node-version: '24'
+          cache: npm
+          cache-dependency-path: site/package-lock.json
+      - run: npm ci
+      - run: npm run content:check
+      - if: github.event_name == 'schedule' || inputs.completo
+        run: npm run content:test
 ```
 
-## Varianti
+`17 6 * * 1-5` indica le 06:17 dal lunedì al venerdì **nel fuso dichiarato**. Senza `timezone` il riferimento è UTC. Il run pianificato usa l’ultimo commit del branch predefinito, non il branch scelto per l’ultimo avvio manuale. Con più espressioni cron puoi distinguerle tramite `github.event.schedule`.
 
-- **Workflow manuale senza input**: bottone semplice.
-- **Workflow manuale con input**: adatto a deploy e manutenzione.
-- **Workflow schedulato giornaliero**: controlli periodici.
-- **Workflow schedulato settimanale**: manutenzione o report.
-- **Workflow con piu schedule**: logica diversa in base a `github.event.schedule`.
+## Avvio manuale e limiti
 
-## Errori comuni
+Per usare *Run workflow* servono `workflow_dispatch`, il file presente sul branch predefinito e accesso in scrittura. Puoi poi scegliere il riferimento da eseguire. Equivalente da GitHub CLI per il file dell’esempio, se installato e con accesso autorizzato; **avvia realmente un run** con il valore predefinito dell’input:
 
-- Usare `schedule` per operazioni che devono partire al minuto esatto.
-- Dimenticare che i workflow schedulati girano sulla default branch.
-- Non validare input usati dentro comandi shell.
-- Dare a un workflow manuale permessi troppo ampi.
-- Creare workflow manuali pericolosi senza environment approval.
-- Usare cron in timezone sbagliato senza documentarlo.
+```bash
+gh workflow run verifica-note.yml --ref main
+```
 
-## Checklist
+Con un input `choice` puoi offrire un elenco di ambienti, ma scegliere `production` non è un’approvazione: servono le regole dell’environment. Mantieni gli input come dati, non interpolarli nel testo di un comando shell.
 
-- Il trigger manuale e necessario?
-- Gli input sono chiari e limitati?
-- Il workflow ha permessi minimi?
-- Per produzione esiste un environment con approval?
-- La schedule evita orari troppo congestionati?
-- La timezone e documentata?
+Gli schedule possono subire ritardi o essere saltati sotto carico; nei repository pubblici vengono disabilitati dopo 60 giorni senza attività del repository. Per backup con scadenza inderogabile serve anche un controllo dell’ultima esecuzione riuscita. Il deploy Quartz di questo vault dichiara `workflow_dispatch` e push su `main`, **non** uno schedule.
 
 ## Collegamenti
 
@@ -157,5 +91,6 @@ jobs:
 
 ## Fonti
 
-- [GitHub Docs - Manually running a workflow](https://docs.github.com/en/actions/how-tos/manage-workflow-runs/manually-run-a-workflow)
-- [GitHub Docs - Events that trigger workflows](https://docs.github.com/en/actions/reference/workflows-and-actions/events-that-trigger-workflows)
+- [GitHub Docs - Avvio manuale e scelta del branch](https://docs.github.com/en/actions/how-tos/manage-workflow-runs/manually-run-a-workflow)
+- [GitHub Docs - Eventi, cron e fusi orari](https://docs.github.com/en/actions/reference/workflows-and-actions/events-that-trigger-workflows)
+- [GitHub CLI - gh workflow run](https://cli.github.com/manual/gh_workflow_run)

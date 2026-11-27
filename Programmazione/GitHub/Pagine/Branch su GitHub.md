@@ -27,104 +27,59 @@ title: Branch su GitHub
 
 ## Sintesi
 
-Un **branch** e una linea di sviluppo separata. Su GitHub i branch servono a isolare modifiche, aprire pull request, eseguire controlli automatici e proteggere il ramo principale del progetto.
+Un branch è un nome che punta a un commit. Quando lavori su quel branch e fai un nuovo commit, avanza il suo riferimento; gli altri branch non si muovono. È utile per sviluppare una feature, correggere un bug, preparare una release o sperimentare senza cambiare il branch principale. Non impedisce i conflitti: separa le storie finché non decidi di integrarle.
 
-Il branch principale di solito si chiama `main`. Le modifiche non banali dovrebbero avvenire su branch dedicati e arrivare su `main` solo dopo review e controlli.
+## Esempio: partire dalla base giusta
 
-## Quando usarlo
+Vuoi correggere l’export CSV quando il report è vuoto. Nell’esempio `origin` è il repository in cui puoi pubblicare e `main` è la destinazione della PR. Se lavori da un fork, controlla quale remoto corrisponde alla **base** desiderata.
 
-Usa branch separati quando:
-
-- sviluppi una nuova feature;
-- correggi un bug;
-- prepari una release;
-- vuoi aprire una pull request;
-- devi sperimentare senza toccare `main`;
-- lavori in team e vuoi evitare conflitti diretti.
-
-## Come funziona
-
-Un branch locale puo esistere solo sulla tua macchina. Per farlo comparire su GitHub devi eseguire un push.
-
-Flusso tipico:
-
-1. parti da `main` aggiornato;
-2. crei un branch;
-3. fai commit;
-4. invii il branch a GitHub;
-5. apri una pull request;
-6. esegui merge dopo review.
-
-## API / Sintassi
-
-Creare e spostarsi su un branch:
+1. Nel clone, controlla la directory di lavoro. Se contiene modifiche, decidi prima dove salvarle: cambiare branch non le isola automaticamente.
 
 ```bash
-git switch main
-git pull
-git switch -c feature/nuova-funzione
+git status --short
 ```
 
-Inviare il branch a GitHub:
+2. Aggiorna i riferimenti remoti senza integrare nulla nel branch corrente:
 
 ```bash
-git push -u origin feature/nuova-funzione
+git fetch origin
 ```
 
-Eliminare un branch locale:
+3. Crea il branch direttamente dall’ultimo `origin/main` scaricato. `--no-track` evita di impostare `origin/main` come upstream del branch di lavoro. Il tuo `main` locale non viene spostato.
 
 ```bash
-git branch -d feature/nuova-funzione
+git switch --no-track -c fix/export-vuoto origin/main
 ```
 
-Eliminare un branch remoto:
+4. Dopo aver registrato la correzione e il test, pubblica il branch sul remoto e imposta il tracciamento verso il branch **omonimo**:
 
 ```bash
-git push origin --delete feature/nuova-funzione
+git push -u origin fix/export-vuoto
 ```
 
-## Esempio pratico
+Ora il branch esiste anche sul server. Il push non apre una pull request e non modifica `main`. Per le volte successive verifica il tracciamento con `git branch -vv`.
 
-Branch per una correzione:
+## Nomi e protezioni
+
+`feature/`, `fix/`, `release/` e `hotfix/` sono convenzioni del team, non tipi speciali di branch. Anche `main` è solo un nome: la protezione da push o merge non controllati dipende dalle regole attive su GitHub. Preferisci un nome che descriva la modifica a uno come `test`.
+
+## Pulizia dopo il merge
+
+Sono due operazioni distinte, **non una sequenza da eseguire sempre**. Prima controlla su GitHub che la PR sia stata integrata nella base prevista e che nessun altro usi il branch.
+
+- **Locale:** passa a un altro branch. Il comando seguente cerca di eliminare solo il riferimento locale. Il controllo di `-d` riguarda l’upstream del branch, se configurato, altrimenti `HEAD`: non è una prova che la PR sia stata integrata in `main`.
 
 ```bash
-git switch main
-git pull
-git switch -c fix/login-error
-
-# modifica i file
-git add .
-git commit -m "Corregge errore nel login"
-git push -u origin fix/login-error
+git branch -d fix/export-vuoto
 ```
 
-Su GitHub puoi poi aprire una pull request da `fix/login-error` verso `main`.
+- **Remoto:** se il branch è ancora sul server e vuoi eliminarlo anche per i collaboratori:
 
-## Varianti
+```bash
+git push origin --delete fix/export-vuoto
+```
 
-- **feature branch**: per una nuova funzionalita.
-- **fix branch**: per una correzione.
-- **release branch**: per stabilizzare una versione.
-- **hotfix branch**: per correzioni urgenti.
-- **branch protetto**: branch con regole che impediscono merge o push non controllati.
-
-## Errori comuni
-
-- Lavorare direttamente su `main`.
-- Creare branch da una base non aggiornata.
-- Usare nomi branch vaghi come `test` o `modifiche`.
-- Tenere branch aperti per troppo tempo.
-- Fare push senza `-u` e poi confondersi sul tracking.
-- Dimenticare di eliminare branch gia mergiati.
-
-## Checklist
-
-- Il branch parte da `main` aggiornato?
-- Il nome descrive lo scopo?
-- Il branch contiene una modifica coerente?
-- Hai fatto push verso il remote giusto?
-- Esiste una pull request collegata?
-- Il branch puo essere eliminato dopo il merge?
+Squash e rebase possono integrare il contenuto senza conservare i commit originali come antenati di `main`. Non passare automaticamente a una cancellazione forzata se il controllo locale rifiuta l’operazione.
 
 ## Collegamenti
 
@@ -137,3 +92,4 @@ Su GitHub puoi poi aprire una pull request da `fix/login-error` verso `main`.
 ## Fonti
 
 - [GitHub Docs - About branches](https://docs.github.com/en/pull-requests/collaborating-with-pull-requests/proposing-changes-to-your-work-with-pull-requests/about-branches)
+- [Git: creazione, tracciamento ed eliminazione dei branch](https://git-scm.com/docs/git-branch)

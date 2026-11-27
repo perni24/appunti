@@ -27,106 +27,48 @@ title: GitHub GraphQL API
 
 ## Sintesi
 
-La **GitHub GraphQL API** permette di chiedere esattamente i dati che servono, con query e mutation GraphQL. E utile quando una chiamata REST richiederebbe molte richieste separate o quando vuoi comporre dati da risorse collegate.
+Con GraphQL descrivi **quali campi e relazioni** restituire. Una dashboard può chiedere nome del repository, numero e titolo delle issue senza scaricare tutto il JSON delle risorse. Una `query` legge; una `mutation` può modificare dati. Entrambe passano normalmente con `POST` a `https://api.github.com/graphql`: il metodo HTTP qui non distingue lettura e scrittura.
 
-La REST API e spesso piu semplice per operazioni dirette. GraphQL diventa piu vantaggiosa per query ricche, dashboard, report e automazioni che leggono molte relazioni.
+## Esempio pratico: leggere tutte le issue aperte
 
-## Quando usarlo
-
-Usala quando:
-
-- vuoi leggere dati collegati in una sola richiesta;
-- vuoi selezionare solo i campi necessari;
-- vuoi costruire dashboard o report;
-- vuoi usare node ID globali;
-- vuoi ridurre molte chiamate REST;
-- devi usare mutation GraphQL disponibili solo nello schema.
-
-## Come funziona
-
-GraphQL usa un singolo endpoint:
-
-```text
-https://api.github.com/graphql
-```
-
-La richiesta contiene:
-
-- `query`, per leggere dati;
-- `mutation`, per modificare dati;
-- variabili;
-- autenticazione;
-- gestione di paginazione tramite connection, `edges`, `nodes` e `pageInfo`.
-
-Il costo della query dipende da complessita e quantita di dati richiesti.
-
-## API / Sintassi
-
-Query per leggere repository e issue:
+Documento GraphQL, per esempio `issue.graphql`. `owner` e `name` sono variabili, non testo da concatenare alla query. La prima richiesta omette `endCursor`; nelle successive `after` riparte dal cursore dell’ultima pagina.
 
 ```graphql
-query RepositoryIssues($owner: String!, $name: String!) {
+query IssueAperte($owner: String!, $name: String!, $endCursor: String) {
   repository(owner: $owner, name: $name) {
-    name
-    issues(first: 10, states: OPEN) {
-      nodes {
-        title
-        url
-        createdAt
-      }
+    nameWithOwner
+    issues(first: 50, after: $endCursor, states: [OPEN]) {
+      nodes { number title url }
+      pageInfo { hasNextPage endCursor }
     }
   }
 }
 ```
 
-Chiamata con `curl`:
+Con il file nella directory corrente e GitHub CLI autenticata, sostituisci `OWNER` e `REPO`. `-F query=@issue.graphql` legge il documento da file. Con `--paginate` la CLI usa la variabile `$endCursor` e i campi di `pageInfo`; `--slurp` restituisce un array con una risposta per pagina.
 
 ```bash
-curl \
-  -H "Authorization: Bearer TOKEN" \
-  -H "Content-Type: application/json" \
-  -d '{"query":"query { viewer { login } }"}' \
-  https://api.github.com/graphql
+gh api graphql --paginate --slurp -f owner=OWNER -f name=REPO -F query=@issue.graphql
 ```
 
-## Esempio pratico
+Dentro ogni pagina trovi le issue in `data.repository.issues.nodes`. **`first: 50` da solo non legge l’intera lista**. Con un client proprio continua solo se `hasNextPage` è vero e hai un nuovo `endCursor`; non ricavare il cursore dal numero della issue. Una seconda connection, per esempio i commenti di ogni issue, ha cursori propri. Per una dashboard non confondere un campione di commenti con il totale.
 
-Per una dashboard puoi leggere in una query:
+## Perché controllare anche il corpo della risposta
 
-- nome repository;
-- issue aperte;
-- pull request aperte;
-- ultimi aggiornamenti;
-- stato di campi Project.
+Un client HTTP non deve interpretare `200` come «report completo». Esempio di risposta parziale **illustrativa**: un campo richiesto è illeggibile, un altro è disponibile.
 
-Con REST spesso richiederesti piu endpoint e piu paginazione.
+```json
+{
+  "data": { "repository": null, "viewer": { "login": "utente-esempio" } },
+  "errors": [{ "message": "Repository non disponibile", "path": ["repository"] }]
+}
+```
 
-## Varianti
+Questo illustra una query che richiedeva *anche* `viewer`, non l’output della query precedente. Se il repository è indispensabile al report, segnala il problema: `repository: null` **non equivale** a `issues.nodes: []`. Se accetti dati parziali, marca esplicitamente cosa manca. Prima di riprovare distingui un errore di schema, un permesso mancante e un limite di costo.
 
-- **Query**: lettura dati.
-- **Mutation**: modifica dati.
-- **Fragments**: riuso di selezioni.
-- **Variables**: parametri esterni alla query.
-- **Pagination**: lettura progressiva di connection.
-- **REST + GraphQL**: spesso convivono nello stesso strumento.
+## Scelta degli strumenti
 
-## Errori comuni
-
-- Richiedere troppi campi senza bisogno.
-- Dimenticare la paginazione.
-- Non controllare costo e rate limit.
-- Usare GraphQL per una chiamata REST semplice.
-- Non gestire campi `null`.
-- Basarsi su node ID senza conservarli correttamente.
-
-## Checklist
-
-- GraphQL riduce davvero il numero di richieste?
-- La query seleziona solo i campi utili?
-- La paginazione e gestita?
-- Le variabili sono separate dalla query?
-- I permessi del token coprono tutti i dati richiesti?
-- Gli errori GraphQL sono gestiti oltre allo status HTTP?
+Usa `nodes` se servono solo gli oggetti; `edges` se servono informazioni del collegamento, come il cursore per elemento. I *fragment* riusano selezioni di campi, non concedono accesso. Un node ID e il numero di una issue non sono intercambiabili. Per modificare un oggetto verifica quale ID richiede la mutation; per una singola operazione ben documentata, REST può essere più semplice.
 
 ## Collegamenti
 
@@ -138,4 +80,7 @@ Con REST spesso richiederesti piu endpoint e piu paginazione.
 
 ## Fonti
 
-- [GitHub Docs - GraphQL API](https://docs.github.com/en/graphql)
+- [GitHub Docs - Costruire chiamate GraphQL](https://docs.github.com/en/graphql/guides/forming-calls-with-graphql)
+- [GitHub Docs - Connection e paginazione](https://docs.github.com/en/graphql/guides/using-pagination-in-the-graphql-api)
+- [GitHub Docs - Costi e risposte di errore](https://docs.github.com/en/graphql/overview/rate-limits-and-query-limits-for-the-graphql-api)
+- [GitHub CLI - Paginazione GraphQL](https://cli.github.com/manual/gh_api)

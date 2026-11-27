@@ -26,94 +26,35 @@ title: Repository settings
 
 ## Sintesi
 
-I **repository settings** controllano configurazione, permessi, feature abilitate, sicurezza, branch, Actions, Pages, webhook e integrazioni di un repository GitHub.
+Le **Settings** descrivono come GitHub ospita e amministra un repository. Non tutto è versionato: il file di workflow è nel clone, mentre la sorgente di pubblicazione Pages, gli accessi e molte protezioni sono configurazioni del servizio. Per diagnosticare un problema, individua prima **dove risiede la scelta** e chi ha il permesso di leggerla o modificarla.
 
-Sono una zona ad alto impatto: una modifica sbagliata puo aprire accessi, disabilitare protezioni o rompere automazioni.
+## Dove cercare
 
-## Quando usarlo
+| Domanda | Punto di partenza |
+| --- | --- |
+| Qual è il branch predefinito? Quali metodi di merge e funzioni collaborative sono disponibili? | **General**: branch predefinito, opzioni delle PR, Issues, Wiki o Discussions secondo contesto e permessi. |
+| Chi può contribuire? Cosa deve passare prima di un merge? | **Collaborators / Collaborators and teams** per gli accessi; **Branches** e **Rules → Rulesets** per le condizioni sui riferimenti. |
+| Perché un’azione non è consentita? | **Actions → General** per azioni ammesse e permessi predefiniti; confronta le policy dell’organizzazione e il blocco `permissions` del workflow. |
+| Dove vanno credenziali e parametri? | **Secrets and variables → Actions** oppure l’**Environment** che li utilizza. Le variabili sono configurazione non segreta. Webhook e deploy key hanno scopi e accessi separati. |
+| Da dove arriva il sito? | **Pages → Build and deployment → Source** e cronologia del deployment, non il semplice elenco dei branch. |
 
-Intervieni nei settings quando:
-
-- crei un repository condiviso;
-- vuoi abilitare o disabilitare issue, wiki, discussions o projects;
-- configuri branch protection o rulesets;
-- gestisci Actions e Pages;
-- imposti webhook o deploy key;
-- controlli visibilita e permessi.
-
-## Come funziona
-
-La sezione `Settings` puo includere:
-
-- general settings;
-- access e collaborators;
-- branches;
-- rules;
-- actions;
-- security;
-- webhooks;
-- deploy keys;
-- pages;
-- environments;
-- secrets e variables.
-
-Le voci visibili dipendono da permessi, tipo di repository e funzionalita abilitate.
-
-## API / Sintassi
-
-Percorsi web tipici:
-
-```text
-https://github.com/owner/repository/settings
-https://github.com/owner/repository/settings/branches
-https://github.com/owner/repository/settings/actions
-https://github.com/owner/repository/settings/secrets/actions
-```
-
-Aprire repository nel browser con GitHub CLI:
+Con la CLI, sostituendo `OWNER/REPO`, puoi leggere alcuni dati senza cambiare la configurazione:
 
 ```bash
-gh repo view --web
+gh repo view OWNER/REPO --json nameWithOwner,defaultBranchRef,visibility
 ```
 
-## Esempio pratico
+`gh repo view OWNER/REPO --web` apre il repository nel browser: da lì scegli **Settings**. Il comando non certifica l’accesso amministrativo. La presenza di una voce dipende anche dal piano, dal proprietario e dalle policy superiori.
 
-Setup iniziale per repository condiviso:
+## Esempio: controllare la pubblicazione Quartz
 
-1. definisci descrizione e topic;
-2. abilita issue e pull request;
-3. configura branch protection su `main`;
-4. abilita GitHub Actions solo con permessi necessari;
-5. configura secret richiesti;
-6. controlla accessi e ruoli;
-7. documenta policy principali nel README o in `CONTRIBUTING.md`.
+1. Nel clone apri `.github/workflows/deploy-pages.yml`. Distingui il job `build`, che verifica le note e carica `site/public` come artefatto, da `deploy`, che dipende da `build` e pubblica nell’environment `github-pages`.
+2. Sul repository verifica che **Settings → Pages → Source** indichi **GitHub Actions** se usi quel workflow. Questa scelta non seleziona un file YAML specifico e non sostituisce i trigger dichiarati dal workflow. Non aggiungere un secondo workflow per il solo fatto che GitHub propone un modello.
+3. Per sapere se una revisione è online, confronta lo SHA del push con la run in **Actions**, verifica il job di deploy e apri l’URL dell’environment. Il successo della sola build dimostra la generazione dell’artefatto, non la sua pubblicazione.
 
-## Varianti
+## Prima di cambiare una configurazione condivisa
 
-- **Settings personali**: repository di un utente.
-- **Settings organizzazione**: repository dentro org con policy ereditate.
-- **Settings security**: scanning, alerts e advisories.
-- **Settings Actions**: permessi e runner.
-- **Settings Pages**: pubblicazione sito statico.
-- **Settings webhooks**: integrazioni esterne.
-
-## Errori comuni
-
-- Modificare settings senza sapere impatto.
-- Lasciare Actions con permessi troppo ampi.
-- Non controllare accessi dopo cambio team.
-- Disabilitare issue o PR senza avvisare.
-- Non proteggere branch dopo aver creato il repo.
-- Inserire secret in posti sbagliati o con nomi confusi.
-
-## Checklist
-
-- Le feature abilitate sono necessarie?
-- Gli accessi sono minimi e aggiornati?
-- Branch protection o rulesets sono configurati?
-- Actions ha permessi adeguati?
-- Secret e variables sono nominati chiaramente?
-- Le modifiche ai settings critici sono documentate?
+Registra repository, valore attuale, valore voluto ed effetto atteso. Una documentazione come `CONTRIBUTING.md` può descrivere la policy, non la applica. Se un solo job non riesce, non ampliare i permessi dell’intero repository per tentativi: leggi prima quale operazione è fallita, con quale identità e con quale ambiente. Per cambi di visibilità, accessi o pubblicazione, verifica anche chi potrà leggere i contenuti dopo il cambio.
 
 ## Collegamenti
 
@@ -122,7 +63,11 @@ Setup iniziale per repository condiviso:
 - [[Programmazione/GitHub/Pagine/GitHub Web UI|GitHub Web UI]]
 - [[Programmazione/GitHub/Pagine/Branch protection rules|Branch protection rules]]
 - [[Programmazione/GitHub/Pagine/Repository rulesets|Repository rulesets]]
+- [[Programmazione/GitHub/Pagine/GitHub Pages con Actions|GitHub Pages con Actions]]
 
 ## Fonti
 
-- [GitHub Docs - Managing repository settings](https://docs.github.com/en/repositories/managing-your-repositorys-settings-and-features/managing-repository-settings)
+- [GitHub Docs: impostazioni del repository](https://docs.github.com/en/repositories/managing-your-repositorys-settings-and-features/managing-repository-settings)
+- [GitHub Docs: sorgente di pubblicazione di Pages](https://docs.github.com/en/pages/getting-started-with-github-pages/configuring-a-publishing-source-for-your-github-pages-site)
+- [GitHub Docs: impostazioni Actions del repository](https://docs.github.com/en/repositories/managing-your-repositorys-settings-and-features/enabling-features-for-your-repository/managing-github-actions-settings-for-a-repository)
+- [GitHub CLI: campi disponibili in gh repo view](https://cli.github.com/manual/gh_repo_view)

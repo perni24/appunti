@@ -26,106 +26,47 @@ title: GitHub Pages con Actions
 
 ## Sintesi
 
-**GitHub Pages con Actions** permette di pubblicare siti statici usando workflow GitHub Actions. E utile per documentazione, blog, siti di progetto e build statiche generate da strumenti come Quartz, Vite, MkDocs, Docusaurus o altri generatori.
+Con **GitHub Pages da Actions**, Git conserva i sorgenti e il workflow consegna a Pages l’output statico. Per questo vault la pagina iniziale si scrive in `Home.md` e si genera come `site/public/index.html`. Non serve committare gli HTML, e modificarli direttamente non cambia la fonte della prossima build.
 
-Il punto chiave e distinguere sorgente e output: il repository contiene sorgenti, il workflow costruisce e pubblica il sito.
+## Il percorso di una nota in questo repository
 
-## Quando usarlo
+1. **Sorgente Pages:** in **Settings → Pages → Build and deployment → Source**, scegli *GitHub Actions* per usare il workflow personalizzato. *Deploy from a branch* è l’altra modalità, pensata per contenuti pubblicabili da un branch. Non aggiungere un secondo workflow per far riconoscere quello esistente.
+2. **Evento:** `.github/workflows/deploy-pages.yml` parte al push su `main` o manualmente. Non parte per il solo commit locale o all’apertura di una PR.
+3. **Build:** il job `build` esegue checkout, prepara Node 24 e configura Pages. Installazione, plugin, controlli del vault e build girano da `site/`. Il contenuto da caricare è `site/public`, **non** `dist`, la radice del vault o la cartella dei Markdown.
+4. **Pubblicazione:** il job `deploy` attende `build`; `actions/deploy-pages` usa l’artifact Pages di quel run. L’output `page_url` è il link della destinazione. La versione online è quella dell’ultimo deployment riuscito, non necessariamente quella dell’ultimo push.
 
-Usalo quando:
-
-- vuoi pubblicare documentazione statica;
-- il sito richiede una build;
-- vuoi controllare deploy da branch o workflow;
-- vuoi usare generatori statici;
-- vuoi pubblicare un vault o wiki in HTML;
-- vuoi integrare test e build prima della pubblicazione.
-
-## Come funziona
-
-GitHub Pages puo pubblicare da branch o da GitHub Actions. Con Actions:
-
-1. il workflow parte su push o manualmente;
-2. esegue build del sito;
-3. carica artifact Pages;
-4. esegue deploy verso GitHub Pages.
-
-Spesso il workflow usa action ufficiali dedicate a Pages.
-
-## API / Sintassi
-
-Schema semplificato:
+Questi sono gli ultimi passaggi dei due job, **estratti separati dal workflow in uso**. Il primo è uno step di `build`; il secondo è il job sotto `jobs.deploy`. Il workflow dichiara `contents: read`, `pages: write` e `id-token: write`.
 
 ```yaml
-name: Deploy Pages
-
-on:
-  push:
-    branches: [main]
-
-permissions:
-  contents: read
-  pages: write
-  id-token: write
-
-jobs:
-  build:
-    runs-on: ubuntu-latest
-    steps:
-      - uses: actions/checkout@v4
-      - run: npm ci
-      - run: npm run build
-      - uses: actions/upload-pages-artifact@v3
-        with:
-          path: dist
-
-  deploy:
-    needs: build
-    runs-on: ubuntu-latest
-    environment:
-      name: github-pages
-      url: ${{ steps.deployment.outputs.page_url }}
-    steps:
-      - id: deployment
-        uses: actions/deploy-pages@v4
+- name: Upload GitHub Pages artifact
+  uses: actions/upload-pages-artifact@v5
+  with:
+    path: site/public
 ```
 
-## Esempio pratico
-
-Per una knowledge base:
-
-```text
-Markdown sorgente -> build statico -> artifact Pages -> deploy Pages
+```yaml
+environment:
+  name: github-pages
+  url: ${{ steps.deployment.outputs.page_url }}
+runs-on: ubuntu-latest
+needs: build
+steps:
+  - name: Deploy to GitHub Pages
+    id: deployment
+    uses: actions/deploy-pages@v4
 ```
 
-Il workflow consente di pubblicare sempre la versione derivata dall'ultimo commit su `main`.
+## Se il sito non mostra la modifica
 
-## Varianti
+| Sintomo | Primo controllo utile |
+| --- | --- |
+| Nessun run per lo SHA atteso | Verifica push e branch, poi il trigger del workflow. |
+| Build o upload fallito | Apri il primo step rosso e verifica che l’output contenga `index.html` alla radice dell’artifact. |
+| Upload riuscito, deploy saltato o fallito | Controlla dipendenza, sorgente Pages, permessi ed eventuali regole di `github-pages`. L’upload da solo non pubblica. |
+| Home visibile, link interni rotti | Per un sito di progetto il prefisso conta: `site/quartz.config.yaml` usa `perni24.github.io/appunti`. Verifica un link profondo sotto `/appunti/`, non solo la home. |
+| Manca una singola nota | Verifica il frontmatter: `publish: true` per una nota di contenuto, niente `draft: true`. Gli indici seguono regole dedicate. |
 
-- **Pages da branch**: semplice per HTML gia pronto.
-- **Pages da Actions**: adatto a build statiche.
-- **Custom domain**: dominio personalizzato.
-- **Docs site**: documentazione tecnica.
-- **Knowledge base pubblicata**: Markdown trasformato in sito.
-- **Preview separata**: non sempre nativa, spesso richiede workflow dedicati.
-
-## Errori comuni
-
-- Pubblicare sorgenti invece dell'output buildato.
-- Dimenticare permessi `pages: write` e `id-token: write`.
-- Non configurare Pages su sorgente GitHub Actions.
-- Usare path artifact sbagliato.
-- Non distinguere deploy Pages da release asset.
-- Non controllare link e asset dopo deploy.
-
-## Checklist
-
-- Pages e configurato per usare GitHub Actions?
-- Il workflow produce output statico corretto?
-- Il path di upload e giusto?
-- I permessi sono minimi e sufficienti?
-- Il deploy dipende dalla build?
-- Il sito pubblicato viene verificato?
+Un dominio personalizzato o una preview separata cambia la destinazione da verificare. Una build locale permette di controllare l’HTML prima del push, ma non verifica le impostazioni Pages del repository.
 
 ## Collegamenti
 
@@ -137,4 +78,6 @@ Il workflow consente di pubblicare sempre la versione derivata dall'ultimo commi
 
 ## Fonti
 
-- [GitHub Docs - What is GitHub Pages](https://docs.github.com/en/pages/getting-started-with-github-pages/what-is-github-pages)
+- [GitHub Docs - Scegliere la sorgente di pubblicazione](https://docs.github.com/en/pages/getting-started-with-github-pages/configuring-a-publishing-source-for-your-github-pages-site)
+- [GitHub Docs - Build, artifact e deploy personalizzati](https://docs.github.com/en/pages/getting-started-with-github-pages/using-custom-workflows-with-github-pages)
+- [actions/deploy-pages - Requisiti e output](https://github.com/actions/deploy-pages/tree/v4)

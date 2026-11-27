@@ -18,8 +18,7 @@ prerequisites:
   - "[[Programmazione/GitHub/Pagine/Pipeline CI GitHub Actions]]"
 related:
   - "[[Programmazione/GitHub/Pagine/Artifacts GitHub Actions]]"
-  - Workflow per test
-  - lint e build
+  - "[[Programmazione/GitHub/Pagine/Workflow per test, lint e build|Workflow per test, lint e build]]"
 title: Cache GitHub Actions
 ---
 
@@ -27,92 +26,50 @@ title: Cache GitHub Actions
 
 ## Sintesi
 
-La **cache GitHub Actions** conserva file riutilizzabili tra workflow run, soprattutto dipendenze scaricate o output intermedi costosi da rigenerare. Serve ad accelerare la CI.
+Una cache è una **scorciatoia facoltativa**. La domanda giusta è «Se sparisce oggi, il job darà lo stesso risultato, anche se più lentamente?». Se la risposta è no, stai probabilmente usando la cache al posto di un input versionato o di un artifact.
 
-Non va confusa con gli artifact: la cache e per velocizzare run futuri, gli artifact sono output da conservare o scaricare dopo un run.
+## Esempio pratico: la cache npm del vault
 
-## Quando usarlo
-
-Usa cache quando:
-
-- installare dipendenze e lento;
-- il package manager supporta cache;
-- la CI gira spesso;
-- vuoi ridurre tempi e costi;
-- hai lockfile stabili;
-- puoi rigenerare il contenuto se la cache manca.
-
-## Come funziona
-
-Una cache usa:
-
-- `path`: file o cartelle da salvare;
-- `key`: chiave principale;
-- `restore-keys`: fallback opzionali.
-
-Una buona key dipende da sistema operativo, runtime e lockfile. Se cambia il lockfile, la cache dovrebbe essere invalidata.
-
-## API / Sintassi
-
-Con `actions/setup-node`:
+Questi step presuppongono il checkout del repository. Corrispondono alla scelta fatta nel deploy Quartz: il lockfile è sotto `site/` e il package manager è npm.
 
 ```yaml
-- uses: actions/setup-node@v4
+- uses: actions/setup-node@v6
   with:
-    node-version: 22
+    node-version: '24'
     cache: npm
+    cache-dependency-path: site/package-lock.json
+- run: npm ci
+  working-directory: site
 ```
 
-Con `actions/cache`:
+`setup-node` conserva i dati di download di npm, **non `node_modules`**. `cache-dependency-path` serve alla chiave di cache; `working-directory` dice invece a npm dove installare. Anche dopo un hit esatto si esegue `npm ci`: l’installazione deve corrispondere al lockfile corrente.
+
+## Quando serve una chiave esplicita
+
+Alternativa su **Ubuntu**, dopo checkout e setup di Node **senza** la cache integrata (ometti `cache: npm` e imposta `package-manager-cache: false` su `setup-node@v6`). L’esempio assume la cache npm predefinita `~/.npm`: se il runner è personalizzato, verifica il percorso con `npm config get cache`.
 
 ```yaml
-- uses: actions/cache@v4
+- uses: actions/cache@v6
   with:
     path: ~/.npm
-    key: npm-${{ runner.os }}-${{ hashFiles('package-lock.json') }}
+    key: npm-${{ runner.os }}-${{ hashFiles('site/package-lock.json') }}
     restore-keys: |
       npm-${{ runner.os }}-
-```
-
-## Esempio pratico
-
-Per Node.js, spesso basta:
-
-```yaml
-- uses: actions/setup-node@v4
-  with:
-    node-version: 22
-    cache: npm
 - run: npm ci
+  working-directory: site
 ```
 
-Questo conserva la cache del package manager, non `node_modules`.
+| Cosa cambia | Effetto atteso |
+| --- | --- |
+| Stesso lockfile, cache esatta disponibile per questo run | Si ripristinano i download salvati. |
+| Lockfile diverso, disponibile solo una chiave con lo stesso prefisso | Si possono riusare download precedenti; `npm ci` installa comunque le versioni richieste. |
+| Cache assente o scaduta | npm deve scaricare le dipendenze. Il job deve funzionare anche così. |
 
-## Varianti
-
-- **Cache integrata setup action**: piu semplice per Node, Python, Java, ecc.
-- **actions/cache**: controllo esplicito su path e key.
-- **Cache per lockfile**: invalida quando cambiano dipendenze.
-- **Cache per OS**: evita riuso tra ambienti incompatibili.
-- **Cache monorepo**: richiede key per package o workspace.
+Le chiavi sono soggette anche all’ambito del branch e alla versione della cache. Un fallback **non** è un hit esatto; non usarlo per saltare la generazione di un binario. Una cache esistente non si aggiorna sul posto: per contenuti incompatibili cambia la chiave. Per moduli compilati possono contare anche architettura e ABI del runtime.
 
 ## Errori comuni
 
-- Salvare secret o file sensibili in cache.
-- Cacheare output non deterministici.
-- Usare key troppo generica e riutilizzare contenuto vecchio.
-- Cacheare `node_modules` senza motivo.
-- Confondere cache e artifact.
-- Non considerare cache poisoning da contesti poco fidati.
-
-## Checklist
-
-- La cache accelera davvero la CI?
-- La key include OS e lockfile?
-- La cache non contiene segreti?
-- Il job funziona anche senza cache?
-- Usi cache integrata quando disponibile?
-- Hai distinto cache e artifact?
+Non salvare credenziali, `.npmrc` con token o l’intero workspace. Non presumere che una cache sia privata o che il suo contenuto provi la provenienza del codice. Per consegnare il sito esatto prodotto da un run, usa l’artifact di quella build.
 
 ## Collegamenti
 
@@ -123,4 +80,6 @@ Questo conserva la cache del package manager, non `node_modules`.
 
 ## Fonti
 
-- [GitHub Docs - Dependency caching](https://docs.github.com/en/actions/concepts/workflows-and-actions/dependency-caching)
+- [GitHub Docs - Chiavi, ricerca e ambito della cache](https://docs.github.com/en/actions/reference/workflows-and-actions/dependency-caching)
+- [actions/setup-node - Cache dei package manager](https://github.com/actions/setup-node/tree/v6)
+- [actions/cache - Input e output della versione mostrata](https://github.com/actions/cache/tree/v6)

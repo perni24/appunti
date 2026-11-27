@@ -26,93 +26,41 @@ title: Notifiche GitHub
 
 ## Sintesi
 
-Le **notifiche GitHub** segnalano attivita su repository, issue, pull request, review, discussioni e team. Sono essenziali per collaborare, ma se non vengono gestite diventano rumore.
+Una notifica risponde a «**perché ho ricevuto questo aggiornamento?**», non a «quale lavoro è ancora aperto?». Puoi riceverla perché segui un repository o un thread, hai partecipato, sei stato menzionato, assegnato a un’issue o richiesto come revisore. Leggere la notifica non completa nessuna di queste attività.
 
-Padroneggiarle significa ricevere segnali utili senza perdere lavoro importante in mezzo a notifiche irrilevanti.
+## Due domande, due filtri
 
-## Quando usarlo
-
-Configura le notifiche quando:
-
-- lavori in piu repository;
-- sei reviewer o maintainer;
-- partecipi a progetti open source;
-- vuoi seguire issue specifiche;
-- vuoi evitare email inutili;
-- devi rispondere rapidamente a review o incidenti.
-
-## Come funziona
-
-GitHub invia notifiche in base a:
-
-- repository watched;
-- mention dirette;
-- assegnazioni;
-- review request;
-- team mention;
-- commenti su thread a cui partecipi;
-- subscription manuali.
-
-Puoi gestire notifiche da interfaccia web, email, mobile e impostazioni account.
-
-## API / Sintassi
-
-Filtri utili nella pagina notifiche:
+**Quali richieste di review non ho ancora letto?** Nella inbox delle notifiche usa:
 
 ```text
-reason:assign
-reason:mention
-reason:review-requested
-repo:owner/repository
-is:unread
+is:unread reason:review-requested
 ```
 
-GitHub CLI:
+Per le menzioni dirette in un solo progetto puoi combinare `reason:mention` e `repo:OWNER/REPO`; `reason:assign` riguarda gli aggiornamenti motivati da un’assegnazione.
+
+**Quali PR aperte richiedono ancora la mia review?** È una ricerca sulle PR, non sulle notifiche. Con `gh` autenticato, sostituendo il repository:
 
 ```bash
-gh issue list --assignee @me
-gh pr list --review-requested @me
+gh pr list --repo OWNER/REPO --state open --search "review-requested:@me"
 ```
 
-## Esempio pratico
+Per il lavoro assegnato a te nelle issue:
 
-Routine giornaliera:
+```bash
+gh issue list --repo OWNER/REPO --state open --assignee "@me"
+```
 
-1. apri notifiche non lette;
-2. filtra review request;
-3. rispondi a mention dirette;
-4. assegna o aggiorna issue bloccanti;
-5. marca come lette notifiche informative;
-6. disiscriviti da thread non piu rilevanti.
+Puoi aver letto la notifica e comparire ancora come revisore richiesto: è proprio il caso che il filtro dei non letti perderebbe.
 
-Questa routine mantiene il lavoro collaborativo sotto controllo.
+## Come trattare una notifica
 
-## Varianti
+| Azione nella inbox | Effetto | Cosa non cambia |
+| --- | --- | --- |
+| Read | Toglie lo stato di non letta | Non approva la PR e non chiude l’issue. |
+| Done | Rimuove il thread dalla vista corrente della inbox; resta consultabile tra i completati. | Non completa il lavoro nel repository e non equivale a disiscriversi. |
+| Unsubscribe | Interrompe gli aggiornamenti ordinari della conversazione. | Una nuova menzione personale o del team, oppure una nuova richiesta di review, può coinvolgerti di nuovo. |
 
-- **Watch repository**: ricevi notifiche ampie.
-- **Participating**: ricevi notifiche dove sei coinvolto.
-- **Mention**: notifiche dirette.
-- **Review request**: richiesta esplicita di review.
-- **Custom watch**: scelta per issue, PR, release o security alerts.
-- **Unsubscribe**: riduce rumore su thread non piu utili.
-
-## Errori comuni
-
-- Guardare tutti i repository con `watch` completo.
-- Ignorare review request.
-- Usare notifiche come lista task senza priorita.
-- Non disiscriversi da thread rumorosi.
-- Affidarsi solo alle email e non alla pagina notifiche.
-- Non distinguere mention dirette da aggiornamenti informativi.
-
-## Checklist
-
-- Stai guardando solo repository rilevanti?
-- Le review request sono controllate regolarmente?
-- Le mention dirette hanno priorita?
-- Hai ridotto notifiche rumorose?
-- Hai filtri salvati o routine chiara?
-- Le notifiche critiche arrivano sul canale giusto?
+Per ridurre il rumore, modifica **Watch** sul repository (tutte le attività, eventi selezionati o solo partecipazione e menzioni secondo l’impostazione), oppure la sottoscrizione al singolo thread. Le preferenze di consegna via web, mobile o email sono un’altra scelta: cambiare canale non riassegna il lavoro. Una routine utile è controllare prima le review richieste, poi le menzioni e infine gli aggiornamenti informativi.
 
 ## Collegamenti
 
@@ -125,3 +73,6 @@ Questa routine mantiene il lavoro collaborativo sotto controllo.
 ## Fonti
 
 - [GitHub Docs - About notifications](https://docs.github.com/en/account-and-profile/managing-subscriptions-and-notifications-on-github/setting-up-notifications/about-notifications)
+- [GitHub Docs: filtri supportati dalla inbox](https://docs.github.com/en/subscriptions-and-notifications/reference/inbox-filters)
+- [GitHub Docs: gestire i thread nella inbox](https://docs.github.com/en/subscriptions-and-notifications/how-tos/viewing-and-triaging-notifications/managing-notifications-from-your-inbox)
+- [GitHub CLI: filtrare le PR con --search](https://cli.github.com/manual/gh_pr_list)

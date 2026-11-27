@@ -8,16 +8,50 @@ Mantieni solo le ultime 10 voci operative.
 
 ---
 
-## 2026-11-26 - GitHub: revisionati i nove promemoria segnalati
+## 2026-11-27 - GitHub: completati note principali e promemoria
+
+### Fatto
+
+- Revisionate le sette note di Fondamenti di GitHub. Verificati con Git in repository temporanei identità per clone, pubblicazione di un branch, aggiornamento del fork e file già tracciati. Nessuna operazione sull’account GitHub.
+- Revisionate le sette note di Flusso di lavoro base. Verificati il diff a tre punti, staging e amend, la parentela dopo merge, squash e rebase; distinti feedback di review, blocco del merge e chiusura dell’issue.
+- Revisionate le sei note di Interfaccia e strumenti. Corretti i filtri per le richieste di review e gli esempi di ricerca codice; provati in locale il commit selettivo, la ricerca su commit e file su disco, la lettura di un file a SHA fissato e la sintassi GFM.
+- Revisionate le sette note di Collaborazione e project management. Chiariti gli effetti di Projects sulle issue, il passaggio da Discussion a issue, i template, gli owner dei file e la scelta dei controlli per i monorepo. Verificati localmente il modulo YAML e gli esempi Git.
+- Revisionate le sette note di Protezione del repository. Distinti precedenza delle regole classiche e cumulo dei ruleset, check pre-merge e deploy Quartz, tag annotati e protezioni remote, accessi al repository e ownership per cartella.
+- Revisionate le sette note di Sicurezza e supply chain. Verificati con i file del vault il percorso npm per Dependabot e una dipendenza transitiva di Quartz; distinti inventario e provenienza, alert e revoca, token personale e token del job.
+- Revisionate le sette note di Fondamenti GitHub Actions. Il workflow Quartz mostra la differenza tra build e pubblicazione; gli esempi locali verificano la directory di npm, il passaggio di output tra job e l’assenza di un secret.
+- Revisionate le sette note di CI con GitHub Actions. Corretti quattro riferimenti YAML spezzati; verificati gli script, il report JUnit dei test falliti, la matrix e la distinzione tra cache, artifact e pubblicazione.
+- Revisionate le sette note di CD, release e deploy. Confrontati gli esempi Pages con il workflow del vault; verificati in locale l’archivio di release e i file del package npm senza pubblicare nulla.
+- Revisionate le sette note di Actions avanzato. Distinti workflow e composite, run attivo e in attesa, cron locale e UTC, durata percepita e minuti complessivi dei runner. Eseguiti in locale gli esempi PowerShell della composite action e del debug.
+- Revisionate le sette note di API e automazione: paginazione REST e GraphQL, verifica e riconsegna dei webhook, identità e permessi per il triage di issue e PR. Controlli su dati locali, senza operazioni sui repository remoti.
+- Revisionate le sette note di Governance e manutenzione. Verificati in repository locali il ripristino da bundle, il piano di un mirror e il commit di un tag annotato; distinti trasferimento, archiviazione, release e deploy.
+- Revisionate le sei procedure pratiche: primo push, apertura di una PR, protezione della base, CI, pubblicazione Quartz e gestione dei secret. Provati il confronto di una PR con base avanzata e il controllo locale di una credenziale fittizia.
+- Revisionate le cinque checklist. Ogni decisione di condivisione, merge, accettazione del rischio, deploy o rilascio indica l'evidenza attesa. Ricontrollati in locale lo storico di un file rimosso e il commit dei tag leggeri e annotati.
+- Revisionate le cinque note di troubleshooting: diagnosi di PR e conflitti, run e tentativi Actions, autorizzazioni e disponibilità dei secret. Riprodotti un diff vuoto con commit aggiuntivi e un conflitto con marcatori aggiunti all'indice per errore.
+- Revisionati i sei promemoria finali: remote, workflow base, trigger, matrix e artifact, secret e OIDC, sicurezza repository. Verificati i riferimenti ai file del vault e la produzione del report TAP; aggiornati gli esempi dei permessi e di Dependabot.
+- Percorso GitHub concluso: **99/99** note principali e **15/15** promemoria, con corrispondenza tra indici e file. Regressione GitHub: **85/85** test. La revisione tecnica non cambia lo stato di approvazione personale.
+
+### Prossimi passi
+
+- Nessuna scheda GitHub residua in questa passata. Ricontrollare gli esempi collegati quando cambiano il workflow Pages, il lockfile del sito o le versioni delle action.
+
+## 2026-11-27 - Programmi open source: chiusi gli ultimi avvisi editoriali
+
+### Fatto
+
+- Completate le fonti e rivisti gli esempi di Aider, Bruno, MusicBrainz Picard e OpenSCAD. Verificato il foro passante della rondella con due esportazioni STL reali; le indicazioni sugli altri tre strumenti sono state controllate sui rispettivi manuali.
+- Rapporto del vault: 911/911 documenti raggiungibili, nessun errore e nessun avviso editoriale. Il controllo non equivale all’approvazione personale delle note.
+
+## 2026-11-26 - GitHub e Rust: completate le fonti dei promemoria segnalati
 
 ### Fatto
 
 - Aggiunte fonti ufficiali e corretti gli esempi Git e GitHub CLI nelle nove schede segnalate. La scheda su issue e progetti mostra ora come aggiungere un’issue esistente a un Project.
 - Provati in un repository locale temporaneo staging e ripristino, confronto tra branch divergenti, revert di un intervallo e tag annotato. I comandi GitHub sono stati verificati sulla documentazione, senza scritture remote.
+- Aggiunti 19 riferimenti ufficiali ai sette promemoria Rust sul linguaggio; ricompilati ed eseguiti tutti i 33 esempi senza modificarli.
 
 ### Prossimi passi
 
-- Completare le fonti dei sette promemoria Rust già revisionati tecnicamente; restano inoltre quattro segnalazioni nelle schede di Programmi open source.
+- Le quattro schede open source ancora segnalate in questo passaggio sono state completate il 27 novembre.
 
 ## 2026-11-26 - Clean Code: revisione tecnica completata
 
@@ -149,35 +183,3 @@ Mantieni solo le ultime 10 voci operative.
 ### Prossimi passi
 
 - Iniziare il capitolo Testing, Qualita e Sicurezza da [[Programmazione/Rust/Pagine/Unit test|Unit test]].
-
-## 2026-11-20 - Rust: completato WebAssembly
-
-### Fatto
-
-- Revisionata [[Programmazione/Rust/Pagine/wasm-bindgen|wasm-bindgen]]: **1/5** del capitolo, **152/183** note principali Rust, **31 restanti**. Il progetto compilato e caricato in Chrome mostra la conversione delle stringhe, le eccezioni, il ciclo di vita di una classe esportata e la differenza tra caricare il wrapper e inizializzare il binario.
-- Revisionata [[Programmazione/Rust/Pagine/wasm-pack|wasm-pack]]: **2/5**, **153/183** note principali Rust, **30 restanti**. Provati tre pacchetti dalla stessa crate: modulo web in Chrome, CommonJS in Node e bundle webpack in Chrome. Verificati i file inclusi nell'anteprima npm senza pubblicazione.
-- Revisionata [[Programmazione/Rust/Pagine/Interop con JavaScript|Interop con JavaScript]]: **3/5**, **154/183** note principali Rust, **29 restanti**. Provati in Chrome il contratto dei dati Serde, l'overflow in dev e release, la copia dei byte e la propagazione di errori da callback e Promise.
-- Revisionata [[Programmazione/Rust/Pagine/WASI|WASI]]: **4/5**, **155/183** note principali Rust, **28 restanti**. La stessa CLI gira come modulo P1 e componente P2 in Wasmtime. Verificati stdin, accesso al file solo tramite directory preaperta con il nome corretto e passaggio indipendente dell'ambiente.
-- Revisionata [[Programmazione/Rust/Pagine/Limiti del runtime WebAssembly|Limiti del runtime WebAssembly]]: capitolo completo (**5/5**), **156/183** note principali Rust, **27 restanti**. Confrontati il file letto dal programma nativo, il dato fornito dall'host web e l'errore di std::fs nel modulo minimale; distinte compilazione, istanziazione ed esecuzione.
-
-### Prossimi passi
-
-- Iniziare Embedded da [[Programmazione/Rust/Pagine/no_std|no_std]].
-
-## 2026-11-19 - Rust: completato Backend, Networking e Database
-
-### Fatto
-
-- Revisionata [[Programmazione/Rust/Pagine/Networking con reqwest|Networking con reqwest]]: **1/9** del capitolo, **143/183** note principali Rust, **40 restanti**. Provati su loopback la CLI, il contratto di GET e POST, il limite sul corpo e il timeout prima e dopo gli header.
-- Revisionata [[Programmazione/Rust/Pagine/Web backend con axum|Web backend con axum]]: **2/9**, **144/183** note principali Rust, **39 restanti**. Verificati su loopback il server con il client reqwest, le rejection degli extractor, gli errori di dominio e l'assegnazione degli ID durante POST concorrenti.
-- Revisionata [[Programmazione/Rust/Pagine/Tower e middleware|Tower e middleware]]: **3/9**, **145/183** note principali Rust, **38 restanti**. Verificati ordine e ambito dei layer, risposta HTTP al timeout ed errore generico di Tower, con tempo Tokio sospeso.
-- Revisionata [[Programmazione/Rust/Pagine/Serde e serializzazione|Serde e serializzazione]]: **4/9**, **146/183** note principali Rust, **37 restanti**. Verificati il JSON pubblico, la compatibilità del nome in ingresso e la distinzione fra chiave assente, null e nuovo valore in una patch.
-- Revisionata [[Programmazione/Rust/Pagine/SQLx|SQLx]]: **5/9**, **147/183** note principali Rust, **36 restanti**. Verificati i saldi dopo commit e rollback su SQLite, la differenza fra zero righe ed errore SQL e la compilazione delle macro con i metadati offline.
-- Revisionata [[Programmazione/Rust/Pagine/Diesel|Diesel]]: **6/9**, **148/183** note principali Rust, **35 restanti**. Verificati mapping posizionale, rollback del lotto, schema reale disallineato e due errori di tipo respinti dal compilatore.
-- Revisionata [[Programmazione/Rust/Pagine/SeaORM|SeaORM]]: **7/9**, **149/183** note principali Rust, **34 restanti**. Verificate su SQLite le differenze fra campo omesso, NULL e valore invariato, il join che conserva i padri senza figli e il rollback in caso di duplicato.
-- Revisionata [[Programmazione/Rust/Pagine/Connection pooling|Connection pooling]]: **8/9**, **150/183** note principali Rust, **33 restanti**. Provati saturazione e rilascio, differenza tra timeout di acquisizione e durata SQL, sonde axum e chiusura del pool; variante PostgreSQL compilata.
-- Revisionata [[Programmazione/Rust/Pagine/Background jobs|Background jobs]]: capitolo completo (**9/9**), **151/183** note principali Rust, **32 restanti**. Verificati la perdita di un job accettato solo in RAM, il completamento dei task avviati e il singolo aggiornamento del contatore quando lo stesso evento viene riconsegnato.
-
-### Prossimi passi
-
-- Iniziare WebAssembly da [[Programmazione/Rust/Pagine/wasm-bindgen|wasm-bindgen]].

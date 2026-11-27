@@ -27,94 +27,36 @@ title: Repository rulesets
 
 ## Sintesi
 
-I **repository rulesets** permettono di definire regole di protezione piu centralizzate e flessibili per branch, tag e workflow del repository. Sono utili quando le semplici branch protection rules non bastano o quando vuoi una governance piu uniforme.
+Un **ruleset** è un insieme nominato di regole. Per leggerlo parti da quattro domande: **che cosa protegge**, **quali nomi comprende**, **quali operazioni limita** e **se è attivo**. Un branch ruleset può imporre review e check; un tag ruleset può proteggere i riferimenti di release. Un workflow Actions è invece codice che esegue un’attività: non diventa obbligatorio solo perché esiste.
 
-Il concetto chiave e: le regole non vivono solo su un singolo branch, ma possono applicarsi a pattern e target piu ampi.
+## Come leggere una policy
 
-## Quando usarlo
+1. In **Settings → Rules → Rulesets** controlla il tipo di regola e la provenienza: repository oppure organizzazione, se supportato dal piano. Chi ha accesso in lettura può consultare i ruleset attivi; cambiarli richiede privilegi ulteriori.
+2. Controlla inclusioni ed esclusioni. Se l’intento è proteggere il **branch predefinito**, sceglierlo come target non equivale a scrivere il nome fisso `main`: il primo segue la scelta del repository anche dopo un cambio di default.
+3. Leggi lo stato: **Active** applica le regole; **Disabled** no. Dove disponibile, **Evaluate** registra come si comporterebbero senza bloccare le operazioni. Non considerare la valutazione una protezione già attiva.
+4. Leggi le condizioni e le eventuali eccezioni autorizzate **per quel ruleset**. Un’eccezione a un insieme di regole non cancella gli altri vincoli applicabili. I *push ruleset*, dove disponibili, riguardano restrizioni come percorsi e dimensione dei file: non sono sinonimo di regole sui branch.
 
-Usa rulesets quando:
+## Esempio: due regole sulla stessa PR
 
-- vuoi proteggere piu branch con una sola policy;
-- vuoi proteggere tag di release;
-- vuoi applicare regole coerenti in una organizzazione;
-- vuoi avere bypass espliciti e controllati;
-- vuoi migrare da branch protection frammentate;
-- vuoi rendere piu visibile la governance del repository.
+Un ruleset organizzativo richiede una review su `main`. Quello del repository ne richiede due e impone il check `docs-readme`. Senza eccezioni applicabili, servono **due approvazioni e quel check**, non tre approvazioni e non la sola regola più recente. Per lo stesso requisito vale la versione più restrittiva; requisiti diversi si sommano. Anche una protezione classica applicabile può aggiungere vincoli.
 
-## Come funziona
+Con GitHub CLI autenticata, sostituisci `OWNER/REPO`. Per consultare le regole dei ruleset che riguardano il branch predefinito:
 
-Un ruleset definisce:
-
-- target, per esempio branch o tag;
-- pattern, per esempio `main`, `release/*`, `v*`;
-- enforcement, cioe se la regola e attiva;
-- condizioni richieste;
-- bypass consentiti;
-- eventuali controlli su commit, review o status check.
-
-Le regole possono convivere con branch protection esistenti, ma bisogna evitare sovrapposizioni confuse.
-
-## API / Sintassi
-
-Esempio concettuale:
-
-```text
-Ruleset: Release tags
-Target: tags
-Pattern: v*
-Require signed tags: yes
-Allow deletion: no
-Bypass: release-managers
+```bash
+gh ruleset check --default --repo OWNER/REPO
 ```
 
-Esempio per branch:
+Per controllare a quali regole corrisponderebbe un nome di branch, **senza crearlo**:
 
-```text
-Target: branches
-Pattern: main
-Require pull request: yes
-Require status checks: yes
-Block force pushes: yes
+```bash
+gh ruleset check release/1.x --repo OWNER/REPO
 ```
 
-## Esempio pratico
+Queste sono letture, non prove di un push né una verifica completa dei permessi della persona che farà il merge. Per sapere quali check mancano davvero, apri la PR; per le regole classiche controlla anche **Branches**.
 
-Un repository puo avere:
+## Branch, tag e firme
 
-- ruleset per `main`;
-- ruleset per `release/*`;
-- ruleset per tag `v*`;
-- bypass limitato al team release;
-- required status check per test e build.
-
-Questo rende esplicito quali parti del repository sono critiche.
-
-## Varianti
-
-- **Ruleset branch**: protegge branch o pattern di branch.
-- **Ruleset tag**: protegge tag di release.
-- **Ruleset organizzativo**: applicabile a piu repository, se disponibile nel piano e contesto.
-- **Ruleset con bypass**: permette eccezioni controllate.
-- **Ruleset in evaluation**: utile per verificare impatto prima dell'enforcement, quando supportato.
-
-## Errori comuni
-
-- Duplicare branch protection e rulesets senza sapere quale regola prevale.
-- Lasciare bypass troppo ampi.
-- Proteggere tag senza definire processo di release.
-- Applicare pattern troppo larghi.
-- Non testare impatto sulle automazioni.
-- Non documentare chi puo bypassare e perche.
-
-## Checklist
-
-- Il ruleset ha target e pattern chiari?
-- Ci sono sovrapposizioni con branch protection?
-- I bypass sono minimi?
-- Le regole proteggono branch e tag critici?
-- La CI ha permessi compatibili con il ruleset?
-- Il team conosce le conseguenze operative?
+Non trasferire le opzioni da un tipo di regola all’altro. Per i tag `v*` decidi separatamente chi può creare, aggiornare o cancellare il riferimento. **Require signed commits** riguarda i commit: non è una regola chiamata «Require signed tags» e non certifica la firma dell’oggetto tag. Per la procedura di release e la distinzione tra tag annotato e firmato vedi [[Programmazione/GitHub/Pagine/Protected tags|Protected tags]].
 
 ## Collegamenti
 
@@ -126,4 +68,7 @@ Questo rende esplicito quali parti del repository sono critiche.
 
 ## Fonti
 
-- [GitHub Docs - About rulesets](https://docs.github.com/en/repositories/configuring-branches-and-merges-in-your-repository/managing-rulesets/about-rulesets)
+- [GitHub Docs: regole sovrapposte, disponibilità e stati](https://docs.github.com/en/repositories/configuring-branches-and-merges-in-your-repository/managing-rulesets/about-rulesets)
+- [GitHub Docs: tipi di regole disponibili](https://docs.github.com/en/repositories/configuring-branches-and-merges-in-your-repository/managing-rulesets/available-rules-for-rulesets)
+- [GitHub Enterprise Cloud: valutazione senza enforcement](https://docs.github.com/en/enterprise-cloud@latest/admin/enforcing-policies/enforcing-policies-for-code-governance)
+- [GitHub CLI: controllare i ruleset per nome di branch](https://cli.github.com/manual/gh_ruleset_check)

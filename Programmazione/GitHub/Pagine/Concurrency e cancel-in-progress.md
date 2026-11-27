@@ -28,100 +28,43 @@ title: Concurrency e cancel-in-progress
 
 ## Sintesi
 
-`concurrency` controlla quante esecuzioni dello stesso workflow o job possono procedere in parallelo. `cancel-in-progress` permette di annullare run precedenti quando arriva una run piu recente nello stesso gruppo.
+`concurrency.group` dà un nome a una risorsa condivisa. Nel repository, due run o job con lo stesso gruppo non possono usarla contemporaneamente. Per la CI la risorsa può essere «la verifica di questa PR»; per il deploy è spesso «il sito pubblico». **Annullare il lavoro in corso** e **conservare tutti quelli in attesa** sono due decisioni distinte.
 
-Serve a evitare sprechi, deploy sovrapposti e risultati obsoleti.
+## Caso reale: tre push al sito Quartz
 
-## Quando usarlo
-
-Usalo quando:
-
-- una nuova push rende inutile la CI precedente;
-- vuoi evitare piu deploy sullo stesso ambiente;
-- vuoi serializzare release o migrazioni;
-- vuoi proteggere staging o produzione;
-- vuoi ridurre consumo di minuti;
-- vuoi evitare race condition tra workflow.
-
-## Come funziona
-
-Definisci un gruppo di concorrenza con `concurrency.group`. Tutte le run nello stesso gruppo vengono coordinate.
-
-Con:
-
-```yaml
-cancel-in-progress: true
-```
-
-GitHub annulla la run precedente ancora in esecuzione quando parte una nuova run nello stesso gruppo.
-
-Il gruppo puo essere statico o basato su espressioni come `github.ref`, `github.workflow` o `github.head_ref`.
-
-## API / Sintassi
-
-Annullare CI obsolete sullo stesso branch:
+In `.github/workflows/deploy-pages.yml` il gruppo è definito a livello di workflow. Coordina quindi **l’intero run**, non solo l’ultimo step di pubblicazione:
 
 ```yaml
 concurrency:
-  group: ${{ github.workflow }}-${{ github.ref }}
+  group: pages
+  cancel-in-progress: false
+```
+
+Supponi che A stia ancora girando. Arriva B e resta in attesa. Se arriva C **prima che B inizi**, C prende il posto di B: A continua, B viene annullato, C resta in attesa. Il motivo è la coda predefinita `single`. `false` protegge il run attivo: **non** promette un deploy per ogni push. Per un sito interessa spesso il contenuto più recente; non usare alla cieca questa impostazione per migrazioni che devono essere applicate tutte.
+
+## Due configurazioni, due obiettivi
+
+**CI su pull request:** frammento a livello di workflow dedicato all’evento `pull_request`. Due aggiornamenti della stessa PR condividono il gruppo, due PR diverse no. Il run ormai superato può essere cancellato.
+
+```yaml
+concurrency:
+  group: ci-note-pr-${{ github.event.pull_request.number }}
   cancel-in-progress: true
 ```
 
-Serializzare deploy di produzione:
+**Deploy distinti che devono aspettare:** frammento da mettere sul job di deploy se vuoi lasciare le build indipendenti. Su GitHub.com `queue: max` permette fino a 100 elementi in attesa; oltre il limite quelli aggiuntivi vengono annullati. Non si combina con `cancel-in-progress: true`.
 
 ```yaml
 concurrency:
-  group: production-deploy
+  group: produzione
+  queue: max
 ```
 
-## Esempio pratico
-
-Per una pull request, ogni push sostituisce la precedente:
-
-```yaml
-name: Pull request CI
-
-on:
-  pull_request:
-
-concurrency:
-  group: pr-${{ github.event.pull_request.number }}
-  cancel-in-progress: true
-
-jobs:
-  test:
-    runs-on: ubuntu-latest
-    steps:
-      - uses: actions/checkout@v4
-      - run: npm test
-```
-
-Questo evita di sprecare tempo su commit ormai superati.
-
-## Varianti
-
-- **Concurrency a livello workflow**: controlla l'intera run.
-- **Concurrency a livello job**: controlla solo un job specifico.
-- **Gruppo per branch**: usa `github.ref`.
-- **Gruppo per workflow e branch**: evita collisioni tra workflow diversi.
-- **Deploy serializzato**: usa un gruppo fisso per ambiente.
+La coda segue l’arrivo **al gruppo**, non necessariamente l’ordine dei commit: due build di durata diversa possono arrivare al deploy in ordine inverso. Serializzare non rende atomiche le operazioni esterne e annullare un job non disfa i suoi effetti.
 
 ## Errori comuni
 
-- Usare un gruppo troppo generico e cancellare workflow non correlati.
-- Usare `cancel-in-progress` sui deploy di produzione senza pensarci.
-- Dimenticare `github.workflow` nel nome del gruppo.
-- Costruire gruppi con contesti non sempre disponibili.
-- Non distinguere comportamento CI e comportamento deploy.
-
-## Checklist
-
-- Il gruppo identifica davvero la risorsa condivisa?
-- Le CI obsolete vanno cancellate?
-- I deploy vanno cancellati o messi in coda?
-- Il gruppo evita collisioni con altri workflow?
-- Le espressioni usate sono disponibili per tutti gli eventi?
-- I log rendono chiaro cosa e stato cancellato?
+I nomi dei gruppi non distinguono maiuscole e minuscole e possono collidere tra workflow dello stesso repository. Per isolare CI diverse usa un prefisso univoco o `github.workflow`; per proteggere la stessa destinazione usa invece intenzionalmente la **stessa** chiave. Non basare la chiave su un campo della PR se il workflow ascolta anche eventi che non hanno una PR.
 
 ## Collegamenti
 
@@ -133,4 +76,5 @@ Questo evita di sprecare tempo su commit ormai superati.
 
 ## Fonti
 
-- [GitHub Docs - Control workflow concurrency](https://docs.github.com/en/actions/how-tos/write-workflows/choose-when-workflows-run/control-workflow-concurrency)
+- [GitHub Docs - Gruppi, coda e cancellazione](https://docs.github.com/en/actions/how-tos/write-workflows/choose-when-workflows-run/control-workflow-concurrency)
+- [GitHub Docs - Concurrency a livello di job e workflow](https://docs.github.com/en/actions/reference/workflows-and-actions/workflow-syntax)

@@ -26,84 +26,36 @@ title: Dependency graph
 
 ## Sintesi
 
-Il **dependency graph** di GitHub rappresenta le dipendenze dichiarate da un repository. Serve come base per Dependabot alerts, dependency review, analisi supply chain e generazione/esportazione di informazioni sulle dipendenze.
+Il **dependency graph** descrive i componenti che GitHub riconosce dai manifest, dai lockfile e dai dati inviati durante la build. **Dependencies** mostra ciò da cui il progetto dipende; **Dependents** mostra altri progetti che GitHub riconosce come utilizzatori. Nessuna delle due viste è un inventario completo di ciò che sta girando in produzione.
 
-La sua utilita dipende dalla qualita dei manifest e lockfile presenti nel repository.
+## Esempio: chi introduce un parser nel sito?
 
-## Quando usarlo
+Nel vault `site/package.json` dichiara `remark-parse`. Quel pacchetto richiede a sua volta `mdast-util-from-markdown`. Il primo è **diretto** per il sito, il secondo è **transitivo** lungo questa catena. La classificazione dipende dal progetto osservato, non è una proprietà del pacchetto.
 
-Usalo quando:
+Dalla radice del vault, con npm disponibile, leggi il vincolo dichiarato dal sito:
 
-- vuoi sapere quali dipendenze usa un progetto;
-- vuoi ricevere alert su vulnerabilita;
-- vuoi valutare aggiornamenti di dependency;
-- vuoi controllare transitive dependencies;
-- vuoi preparare audit o SBOM;
-- vuoi monitorare rischio supply chain.
-
-## Come funziona
-
-GitHub analizza file di manifest e lockfile supportati, per esempio:
-
-- `package.json` e lockfile JavaScript;
-- `requirements.txt`, `pyproject.toml` o file Python equivalenti;
-- `Cargo.toml` e `Cargo.lock`;
-- manifest Maven, Gradle o altri ecosistemi supportati.
-
-Il grafo mostra relazioni tra package diretti e transitivi. Se una dipendenza risulta vulnerabile e l'advisory e riconosciuto, GitHub puo generare alert.
-
-## API / Sintassi
-
-File che rendono il grafo piu accurato:
-
-```text
-package-lock.json
-pnpm-lock.yaml
-yarn.lock
-Cargo.lock
-poetry.lock
-requirements.txt
-pom.xml
+```bash
+npm --prefix site pkg get dependencies.remark-parse
 ```
 
-Per progetti con dipendenze non rilevate automaticamente, GitHub supporta anche submission tramite API o strumenti dedicati.
+Per vedere la versione risolta del parser transitivo e le catene che lo includono, consulta il lockfile senza installare pacchetti:
 
-## Esempio pratico
-
-In un progetto Node.js:
-
-```text
-package.json
-package-lock.json
+```bash
+npm --prefix site ls --package-lock-only --all mdast-util-from-markdown
 ```
 
-Il manifest indica dipendenze dichiarate. Il lockfile rende piu precisa la versione effettivamente installata.
+L’intervallo nel manifest risponde a «quali versioni sono ammesse?»; il lockfile a «quali versioni ha scelto il resolver per questa revisione?». Un nome che manca dal manifest principale può dunque comparire legittimamente nel grafo. Il dato non dimostra che il parser sia incluso nel JavaScript consegnato al browser: può essere usato soltanto per costruire le pagine.
 
-## Varianti
+## Scegliere la vista giusta
 
-- **Dipendenze dirette**: dichiarate dal progetto.
-- **Dipendenze transitive**: richieste da altre dipendenze.
-- **Dependency submission**: invio esplicito di dipendenze non rilevate automaticamente.
-- **Dependency review**: confronto delle dipendenze introdotte da una PR.
-- **SBOM export**: esportazione delle dipendenze in formato leggibile da strumenti.
+| Domanda | Strumento | Interpretazione |
+| --- | --- | --- |
+| Quali componenti risultano nel repository? | **Insights → Dependency graph** | Parti dal manifest e dall’ecosistema corretti. La copertura dipende dai formati supportati e dai dati disponibili. |
+| Quali pacchetti aggiunge o rimuove una PR? | **Dependency review** nella PR, dove disponibile | Confronta base e proposta; il diff del lockfile può includere dipendenze transitive anche se il manifest cambia di una riga. |
+| Perché un pacchetto risolto durante la build non compare? | **Dependency submission** | La build può inviare uno snapshot delle dipendenze a GitHub. Verifica la revisione e la build di origine prima di trattare un’assenza come prova. |
+| Quali componenti posso comunicare a chi usa il progetto? | Esportazione **SBOM** | Esporta lo stato del grafo. Per distribuire un binario o un archivio, verifica separatamente che l’inventario rappresenti quel prodotto. |
 
-## Errori comuni
-
-- Non versionare lockfile quando servono.
-- Usare manifest non aggiornati.
-- Ignorare dipendenze di CI, Docker o GitHub Actions.
-- Pensare che il grafo trovi codice vendorizzato o dipendenze non dichiarate.
-- Non controllare dependency review nelle PR.
-- Disattivare alert per ridurre rumore invece di fare triage.
-
-## Checklist
-
-- I manifest sono versionati?
-- I lockfile sono presenti quando utili?
-- Il dependency graph e abilitato?
-- Le dipendenze CI sono considerate?
-- Le PR che aggiungono dependency vengono revisionate?
-- Gli alert sono collegati a un processo di triage?
+Un manifest npm, un `Cargo.lock` o un manifest Python non danno automaticamente lo stesso dettaglio: controlla il supporto dell’ecosistema. Considera anche le dipendenze dei workflow e il codice copiato direttamente nel progetto, che può non comparire come pacchetto. Il grafo fornisce dati a Dependabot; **non è** un’analisi del codice sorgente.
 
 ## Collegamenti
 
@@ -114,4 +66,6 @@ Il manifest indica dipendenze dichiarate. Il lockfile rende piu precisa la versi
 
 ## Fonti
 
-- [GitHub Docs - Dependency graph](https://docs.github.com/en/code-security/concepts/supply-chain-security/dependency-graph)
+- [GitHub Docs: costruzione e limiti del dependency graph](https://docs.github.com/en/code-security/concepts/supply-chain-security/dependency-graph)
+- [GitHub Docs: dependency review nelle pull request](https://docs.github.com/en/code-security/concepts/supply-chain-security/dependency-review)
+- [npm CLI: lettura dell’albero dal package-lock](https://docs.npmjs.com/cli/v11/commands/npm-ls/)

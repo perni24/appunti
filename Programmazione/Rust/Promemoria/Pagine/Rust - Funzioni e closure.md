@@ -86,6 +86,11 @@ assert_eq!((next(), next()), (1, 2));
 
 `move` cambia **come viene catturato** il valore. Non impone una sola chiamata: `label` possiede `prefix` ma lo legge soltanto.
 
+## Fonti
+
+- [Rust Book: espressioni e valori restituiti](https://doc.rust-lang.org/book/ch03-03-how-functions-work.html)
+- [Rust Reference: catture e trait `Fn`, `FnMut`, `FnOnce`](https://doc.rust-lang.org/reference/types/closure.html#call-traits-and-coercions)
+
 ## Collegamenti
 
 - [[Programmazione/Rust/Promemoria/Indice Promemoria Rust|Indice Promemoria Rust]]

@@ -28,90 +28,37 @@ title: Checklist GitHub Actions
 
 ## Obiettivo
 
-Controllare che i workflow GitHub Actions siano leggibili, sicuri, riproducibili e proporzionati allo scopo.
+Prima di approvare un workflow, rispondere a tre domande: **quale evento lo avvia, quale codice esegue e cosa può modificare?** Prima di fidarsi di un run verde, verificare che abbia eseguito proprio il job atteso per quella revisione.
 
-Un workflow corretto non deve solo "passare": deve avere trigger giusti, permessi minimi, log leggibili e separazione chiara tra CI, release e deploy.
+## Checklist sul file del workflow
 
-## Quando usarlo
+- [ ] **Evento e destinazione.** Un controllo che deve bloccare il merge gira sulla PR verso la base corretta e, se si usa la merge queue, sul gruppo di merge. Un deploy ha invece una destinazione esplicita e parte solo dagli eventi previsti. Verificare che i filtri non saltino l'intero workflow di un check richiesto.
+- [ ] **Permessi e codice fidato.** La CI di sola lettura non richiede permessi di pubblicazione. Individuare i job che ricevono scrittura, secret o accesso a un environment; verificare la provenienza dei passi eseguiti. Per runner self-hosted valutare isolamento, pulizia e chi può inviare il lavoro. Non stampare credenziali nei log.
+- [ ] **Riproducibilità.** Controllare runtime, lockfile, directory dei comandi e revisioni delle action. La cache può mancare: l'installazione deve funzionare anche a cache fredda. Se una pipeline è lenta, misurare i singoli job prima di ampliare la matrix.
+- [ ] **Esito e consegna.** Dare un nome stabile al check richiesto. Distinguere dipendenza tra job (`needs`) e trasferimento dei file (artifact). Verificare percorso, contenuto e conservazione dell'output; per Pages controllare anche il job di deploy.
+- [ ] **Tempo e concorrenza.** Fissare timeout coerenti con il lavoro e scegliere quali run possono essere interrotti. Cancellare una CI superata sulla stessa PR può essere utile; applicare la stessa scelta a un deploy che modifica un ambiente può lasciarlo a metà.
 
-- Quando crei una nuova pipeline.
-- Prima di rendere un check obbligatorio.
-- Prima di aggiungere secrets o deploy.
-- Quando un workflow e lento o fragile.
-- Durante audit periodici delle automazioni.
+## Esempio: cosa verificare per Pages
 
-## Procedura
-
-1. Controlla nome e responsabilita del workflow.
-2. Verifica trigger.
-3. Controlla `permissions`.
-4. Verifica runner e dipendenze.
-5. Controlla cache, artifacts e retention.
-6. Verifica secrets, variables ed environments.
-7. Controlla concurrency e timeout.
-8. Verifica action esterne e versionamento.
-9. Controlla log e debug.
-
-## Snippet
-
-Base consigliata:
+Questo è il blocco `concurrency` del workflow Quartz, non un workflow autonomo:
 
 ```yaml
-permissions:
-  contents: read
-
 concurrency:
-  group: ${{ github.workflow }}-${{ github.ref }}
-  cancel-in-progress: true
-
-jobs:
-  test:
-    runs-on: ubuntu-latest
-    timeout-minutes: 20
+  group: pages
+  cancel-in-progress: false
 ```
 
-Checklist sintetica:
+Il gruppo è comune ai deploy del sito. Un nuovo push non cancella il run **in esecuzione** per effetto di questa regola. Con la configurazione mostrata, un run ancora **in attesa** può essere sostituito da uno più recente: non è una promessa di pubblicare ogni commit.
 
-```text
-[ ] Workflow con responsabilita singola
-[ ] Trigger limitati
-[ ] Permissions minimi
-[ ] Actions versionate
-[ ] Runtime esplicito
-[ ] Cache utile e controllata
-[ ] Artifacts solo se necessari
-[ ] Timeout configurato
-[ ] Secrets non stampati
-[ ] Deploy separato dalla CI
+## Checklist sul run
+
+Con GitHub CLI autenticata, sostituire `12345` con l'ID del run (non della PR) e `OWNER/REPO` con il repository. Il comando legge i risultati, non riesegue il workflow:
+
+```bash
+gh run view 12345 --repo OWNER/REPO --json event,headSha,status,conclusion,jobs,url
 ```
 
-## Adattamenti comuni
-
-- **CI**: usa `pull_request` e `push` su branch principale.
-- **Release**: usa tag o workflow manuale controllato.
-- **Deploy**: usa environment, approval e OIDC se possibile.
-- **Monorepo**: valuta path filter, matrix e job separati.
-- **Runner self-hosted**: isola repository fidati e pulisci workspace.
-
-## Debug rapido
-
-- Se il workflow non parte, controlla path e trigger.
-- Se i secret sono vuoti, controlla fork, environment e nome secret.
-- Se una action fallisce, verifica versione e permessi.
-- Se la pipeline e lenta, misura cache, matrix e job paralleli.
-- Se i log sono confusi, separa step e nomi.
-
-## Checklist finale
-
-- Trigger corretti.
-- Permessi minimi.
-- Workflow separati per CI, release e deploy.
-- Action esterne versionate.
-- Runtime e dipendenze riproducibili.
-- Cache e artifact giustificati.
-- Timeout e concurrency presenti dove utili.
-- Secrets protetti.
-- Log leggibili.
+Per un aggiornamento Quartz dopo il push a `main` verificare evento `push` e SHA atteso, `status: completed`, poi gli esiti dei job `build` e `deploy`. Un job saltato o annullato non ha eseguito il suo lavoro. Un upload riuscito con deploy saltato non dimostra che la nuova pagina sia online. Per un run manuale l'evento atteso è invece `workflow_dispatch`.
 
 ## Collegamenti
 
@@ -127,4 +74,6 @@ Checklist sintetica:
 
 ## Fonti
 
-- [GitHub Docs - Security hardening for GitHub Actions](https://docs.github.com/en/actions/security-for-github-actions/security-guides/security-hardening-for-github-actions)
+- [GitHub Docs: concorrenza di workflow e job](https://docs.github.com/en/actions/how-tos/write-workflows/choose-when-workflows-run/control-workflow-concurrency)
+- [GitHub CLI: dati di un run](https://cli.github.com/manual/gh_run_view)
+- [GitHub Docs: sicurezza dei workflow](https://docs.github.com/en/actions/reference/security/secure-use)

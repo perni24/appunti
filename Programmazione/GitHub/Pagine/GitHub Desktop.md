@@ -26,85 +26,40 @@ title: GitHub Desktop
 
 ## Sintesi
 
-**GitHub Desktop** e un'app grafica per usare Git e GitHub senza lavorare sempre da terminale. Permette di clonare repository, creare branch, vedere diff, fare commit, push, pull e aprire pull request.
+**GitHub Desktop** mostra graficamente lo stato di un clone Git. È utile per leggere il diff, selezionare file o righe e registrare commit piccoli. Un commit in **History** esiste già nel clone: non è necessariamente su GitHub.
 
-E utile per imparare il flusso GitHub e per operazioni quotidiane semplici, ma non sostituisce la comprensione di Git.
+## Prima di cliccare
 
-## Quando usarlo
+| Controllo | Domanda a cui risponde |
+| --- | --- |
+| Current Repository / Current Branch | In quale clone e su quale branch sto lavorando? |
+| Changes | Quali modifiche locali ci sono? Quali file o righe ho selezionato per il prossimo commit? |
+| History | Quali commit esistono già su questo branch? |
+| Fetch origin / Pull origin | Il fetch aggiorna i riferimenti remoti conosciuti. Il pull porta i cambiamenti remoti nel branch corrente e può richiedere di risolvere conflitti. |
+| Publish branch / Push origin | Il primo pubblica un nuovo branch locale; il secondo invia i commit di un branch già pubblicato. Nessuno dei due apre automaticamente una PR. |
 
-Usalo quando:
+## Esempio: pubblicare solo la correzione al README
 
-- preferisci una UI visuale per commit e diff;
-- vuoi vedere chiaramente file modificati;
-- vuoi fare commit piccoli selezionando file o parti;
-- sei all'inizio con Git;
-- devi gestire workflow semplici;
-- vuoi aprire velocemente un repository nell'editor.
+1. Apri il clone giusto. Da **Current Branch** crea `docs/avvio` a partire dalla base desiderata. Verifica il nome del branch **prima** di modificare.
+2. Nell’editor modifica `README.md` e, separatamente, un file di appunti che non vuoi condividere. In **Changes** leggi il diff, seleziona il README e deseleziona gli appunti. Deselezionare **non** elimina la modifica dal disco.
+3. Scrivi un messaggio che descriva la correzione e fai commit sul branch. Verifica due risultati distinti: il README compare nel nuovo commit in **History**; gli appunti sono ancora in **Changes**.
+4. Usa **Publish branch** (oppure **Push origin** se esiste già sul server). Solo a questo punto apri la PR, controllando base e head.
 
-## Come funziona
+## Controllo incrociato dal terminale
 
-GitHub Desktop si collega al tuo account GitHub e ai repository locali. Mostra:
+Desktop ed editor lavorano sugli stessi file del clone. Dopo il commit, dalla directory del progetto:
 
-- repository corrente;
-- branch attivo;
-- file modificati;
-- diff;
-- messaggio di commit;
-- stato di fetch, pull e push;
-- opzione per aprire pull request su GitHub.
-
-Le operazioni sono le stesse di Git, ma presentate tramite interfaccia grafica.
-
-## API / Sintassi
-
-Concetti equivalenti tra GitHub Desktop e Git:
-
-```text
-Fetch origin  -> git fetch origin
-Pull origin   -> git pull
-Push origin   -> git push
-New branch    -> git switch -c nome-branch
-Commit        -> git commit
+```bash
+git status --short
 ```
 
-GitHub Desktop non elimina la necessita di capire branch, remote, commit e conflitti.
+Mostra ciò che resta nel working tree o nello staging. Per vedere quali percorsi contiene la modifica dell’ultimo commit ordinario, non ciò che è ancora sul disco:
 
-## Esempio pratico
+```bash
+git show --name-only --format= HEAD
+```
 
-Flusso tipico:
-
-1. apri il repository in GitHub Desktop;
-2. crea un branch `fix/test-login`;
-3. modifica i file nell'editor;
-4. controlla il diff;
-5. scrivi un messaggio di commit chiaro;
-6. fai commit;
-7. fai push;
-8. apri la pull request da GitHub.
-
-## Varianti
-
-- **Uso didattico**: ideale per vedere diff e branch.
-- **Uso quotidiano semplice**: commit, pull, push e PR.
-- **Uso insieme al terminale**: UI per diff, terminale per comandi avanzati.
-- **Uso con editor**: apertura rapida in VS Code o editor configurato.
-
-## Errori comuni
-
-- Cliccare `Pull` o `Push` senza capire branch e remote.
-- Fare commit troppo grandi perche la UI rende facile selezionare tutto.
-- Non leggere il diff prima del commit.
-- Risolvere conflitti senza capire il contenuto.
-- Pensare che GitHub Desktop renda Git superfluo.
-
-## Checklist
-
-- Il repository selezionato e quello giusto?
-- Il branch attivo e corretto?
-- Hai letto il diff?
-- Il messaggio di commit e descrittivo?
-- Hai fatto push del branch?
-- La pull request e stata aperta e controllata?
+Se dopo **Fetch origin** non vedi file nuovi nell’editor, è normale: il fetch non integra i commit. Se il push viene rifiutato, confronta prima le storie; non usare un push forzato per far sparire l’avviso.
 
 ## Collegamenti
 
@@ -117,3 +72,5 @@ Flusso tipico:
 ## Fonti
 
 - [GitHub Docs - GitHub Desktop](https://docs.github.com/en/desktop)
+- [GitHub Desktop: selezionare file o righe e creare un commit](https://docs.github.com/en/desktop/making-changes-in-a-branch/committing-and-reviewing-changes-to-your-project-in-github-desktop)
+- [GitHub Desktop: fetch, pull e sincronizzazione](https://docs.github.com/en/desktop/working-with-your-remote-repository-on-github-or-github-enterprise/syncing-your-branch-in-github-desktop)

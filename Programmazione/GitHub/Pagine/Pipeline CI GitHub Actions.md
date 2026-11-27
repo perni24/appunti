@@ -18,8 +18,7 @@ prerequisites:
   - "[[Programmazione/GitHub/Pagine/GitHub Actions]]"
   - "[[Programmazione/GitHub/Pagine/Workflow GitHub Actions]]"
 related:
-  - Workflow per test
-  - lint e build
+  - "[[Programmazione/GitHub/Pagine/Workflow per test, lint e build|Workflow per test, lint e build]]"
   - "[[Programmazione/GitHub/Pagine/Required status checks]]"
 title: Pipeline CI GitHub Actions
 ---
@@ -28,104 +27,53 @@ title: Pipeline CI GitHub Actions
 
 ## Sintesi
 
-Una **pipeline CI** con GitHub Actions esegue controlli automatici quando il codice cambia. Di solito verifica test, lint, type check, build e altri controlli prima del merge.
+Una pipeline di **integrazione continua** risponde a una domanda sul cambiamento proposto: «Se lo integriamo adesso, quali verifiche passano?». Il risultato deve arrivare sulla pull request mentre è ancora possibile correggerla. Un deploy riuscito **dopo** il merge non dà quello stesso feedback.
 
-L'obiettivo non e solo "far girare comandi": e dare feedback rapido e affidabile sulle pull request, proteggendo il branch principale da regressioni.
+## Esempio pratico: controllare una PR del vault
 
-## Quando usarlo
-
-Usa una pipeline CI quando:
-
-- vuoi controllare ogni pull request;
-- vuoi bloccare merge con test falliti;
-- vuoi eseguire lint, typecheck o build;
-- vuoi ridurre regressioni manuali;
-- lavori in team;
-- vuoi collegare CI e required status checks.
-
-## Come funziona
-
-Una pipeline CI tipica:
-
-1. parte su `pull_request` e push su `main`;
-2. scarica il codice;
-3. prepara il runtime;
-4. installa dipendenze;
-5. esegue controlli;
-6. produce esito visibile nella pull request;
-7. diventa required check se il repository lo richiede.
-
-La pipeline deve essere veloce, deterministica e leggibile nei log.
-
-## API / Sintassi
-
-Workflow CI base:
+Workflow didattico completo per una PR verso `main`. Il job mantiene un nome stabile, non ha permessi di scrittura e non pubblica su Pages. Il deploy effettivo è un altro file: `.github/workflows/deploy-pages.yml` ascolta i push su `main` e l’avvio manuale, non le PR.
 
 ```yaml
-name: CI
-
+name: CI appunti
 on:
   pull_request:
-  push:
     branches: [main]
 
+permissions:
+  contents: read
+
 jobs:
-  ci:
+  valida:
+    name: Validazione appunti
     runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: site
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v6
+      - uses: actions/setup-node@v6
+        with:
+          node-version: '24'
+          cache: npm
+          cache-dependency-path: site/package-lock.json
       - run: npm ci
-      - run: npm test
+      - name: Verifica i collegamenti e i metadati
+        run: npm run content:check
+      - name: Verifica le regole di trasformazione
+        run: npm run content:test
 ```
 
-## Esempio pratico
+Un link verso una nota inesistente deve far fallire il primo controllo. Una modifica che altera la trasformazione dei link può invece essere rilevata dai test anche se **oggi** tutti i link del vault esistono. Un esito verde significa che sono passate queste verifiche, non che ogni spiegazione tecnica sia corretta.
 
-Pipeline separata per test e build:
+## Da segnalazione a condizione di merge
 
-```yaml
-jobs:
-  test:
-    runs-on: ubuntu-latest
-    steps:
-      - uses: actions/checkout@v4
-      - run: npm ci
-      - run: npm test
+1. Dai al job un nome riconoscibile e controlla in una PR che compaia per la revisione attesa.
+2. Se deve bloccare il merge, seleziona il check nella regola applicabile a `main`. `on: pull_request` da solo **non lo rende obbligatorio**.
+3. Evita un filtro `paths` sull’intero workflow se ogni PR deve ricevere quel check: un workflow saltato può lasciare il risultato atteso in sospeso. Se usi la merge queue, prevedi anche `merge_group` per i controlli richiesti.
 
-  build:
-    needs: test
-    runs-on: ubuntu-latest
-    steps:
-      - uses: actions/checkout@v4
-      - run: npm ci
-      - run: npm run build
-```
+## Quando estenderla
 
-## Varianti
-
-- **CI minima**: installazione e test.
-- **CI completa**: lint, test, typecheck, build.
-- **CI per monorepo**: filtri per path e job per package.
-- **CI con matrix**: piu versioni o sistemi operativi.
-- **CI con service containers**: database o cache per test integrazione.
-- **CI con artifact**: conserva report, build o log.
-
-## Errori comuni
-
-- Eseguire CI solo su `main` e non sulle PR.
-- Pipeline lenta e rumorosa.
-- Non fallire quando test o lint falliscono.
-- Non usare lockfile per installazioni riproducibili.
-- Non dichiarare permessi minimi.
-- Rendere required check instabili.
-
-## Checklist
-
-- La CI gira su pull request?
-- I controlli principali falliscono correttamente?
-- I log sono leggibili?
-- I job sono abbastanza veloci?
-- La pipeline usa lockfile?
-- I check critici sono richiesti su `main`?
+Tieni corti i controlli frequenti. Aggiungi build, typecheck o test d’integrazione quando intercettano errori diversi; usa una matrix solo per le piattaforme che vuoi verificare. Per distinguere i guasti basta spesso separare gli step. Se dividi in job, `needs` stabilisce l’ordine ma non trasferisce filesystem o dipendenze.
 
 ## Collegamenti
 
@@ -138,4 +86,6 @@ jobs:
 
 ## Fonti
 
-- [GitHub Docs - Continuous integration](https://docs.github.com/en/actions/get-started/continuous-integration)
+- [GitHub Docs - Integrazione continua](https://docs.github.com/en/actions/get-started/continuous-integration)
+- [GitHub Docs - Problemi dei controlli obbligatori](https://docs.github.com/en/pull-requests/collaborating-with-pull-requests/collaborating-on-repositories-with-code-quality-features/troubleshooting-required-status-checks)
+- [GitHub Docs - Sintassi dei workflow](https://docs.github.com/en/actions/reference/workflows-and-actions/workflow-syntax)

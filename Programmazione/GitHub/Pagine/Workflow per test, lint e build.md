@@ -28,98 +28,44 @@ title: Workflow per test, lint e build
 
 ## Sintesi
 
-Un workflow per **test, lint e build** e la base pratica della CI. Verifica che il codice sia corretto, coerente con le regole del progetto e ancora compilabile o impacchettabile.
+Lint, controllo dei tipi, test e build rispondono a **domande diverse**. Prima di scrivere `npm run lint` in un workflow, apri il `package.json` del progetto: npm non crea quel comando perché il repository contiene file JavaScript. Nel vault il manifesto è `site/package.json`.
 
-Questi controlli dovrebbero essere automatizzati per evitare discussioni manuali e regressioni ripetibili.
+| Controllo | Domanda | Esempio o limite |
+| --- | --- | --- |
+| Lint o formato | Il sorgente rispetta le regole statiche concordate? | ESLint, Ruff e Clippy dipendono dal linguaggio. Un formatter non verifica la logica. |
+| Typecheck | Le operazioni sono compatibili con i tipi dichiarati? | In TypeScript `tsc --noEmit` non esegue i test né produce il sito. |
+| Test | Un comportamento atteso è osservabile su casi precisi? | `content:test` verifica, tra l’altro, la trasformazione dei wikilink. |
+| Build | È possibile produrre l’output distribuibile? | `site:build` genera gli HTML di Quartz e ne controlla i riferimenti. Non pubblica online. |
 
-## Quando usarlo
+## Esempio pratico: validazione e build del sito
 
-Usalo quando:
-
-- il progetto ha test automatici;
-- usi ESLint, Ruff, Clippy o strumenti simili;
-- hai un passaggio di build;
-- vuoi feedback immediato sulle PR;
-- vuoi bloccare merge non validi;
-- vuoi standard ripetibili tra macchine diverse.
-
-## Come funziona
-
-La sequenza tipica e:
-
-1. checkout;
-2. setup runtime;
-3. installazione dipendenze;
-4. lint;
-5. test;
-6. build;
-7. eventuale upload artifact o report.
-
-Separare i comandi in step diversi rende piu chiaro quale controllo fallisce.
-
-## API / Sintassi
-
-Esempio Node.js:
+Frammento da inserire in `jobs.<id>.steps` su un runner Ubuntu, **dopo** checkout e setup di Node 24. I plugin vanno preparati prima della build. Gli step sono nello stesso job: il sito ritrova dipendenze e plugin già installati.
 
 ```yaml
-name: Test lint build
-
-on:
-  pull_request:
-
-jobs:
-  verify:
-    runs-on: ubuntu-latest
-    steps:
-      - uses: actions/checkout@v4
-      - uses: actions/setup-node@v4
-        with:
-          node-version: 22
-          cache: npm
-      - run: npm ci
-      - run: npm run lint
-      - run: npm test
-      - run: npm run build
+- name: Installa le dipendenze
+  working-directory: site
+  run: npm ci
+- name: Controlla il vault
+  working-directory: site
+  run: npm run content:check
+- name: Esegui i test di trasformazione
+  working-directory: site
+  run: npm run content:test
+- name: Installa i plugin Quartz
+  working-directory: site
+  run: npm run install-plugins
+- name: Genera il sito e controlla i link HTML
+  working-directory: site
+  run: npm run site:build
 ```
 
-## Esempio pratico
+È una variante didattica dei controlli del repository, non una seconda configurazione attiva. `content:check` controlla le **note**, non è ESLint; lo script `check` del generatore combina invece TypeScript e Prettier. In un altro progetto usa i comandi presenti nel suo manifesto, con il runtime e il lockfile previsti.
 
-Per un progetto TypeScript:
+## Errori da distinguere
 
-```yaml
-- run: npm run lint
-- run: npm run typecheck
-- run: npm test
-- run: npm run build
-```
-
-Il typecheck intercetta errori che test e lint potrebbero non vedere.
-
-## Varianti
-
-- **Job unico**: semplice, adatto a progetti piccoli.
-- **Job separati**: lint, test e build in parallelo.
-- **Fail fast**: interrompe presto su errori evidenti.
-- **Report artifact**: salva coverage, log o bundle.
-- **Monorepo selective CI**: esegue controlli solo su package modificati.
-
-## Errori comuni
-
-- Eseguire `npm install` invece di `npm ci` in CI.
-- Non distinguere lint, typecheck e test.
-- Non fare build sulle PR.
-- Ignorare exit code dei comandi.
-- Usare versioni runtime diverse da quelle di produzione.
-- Non cacheare dipendenze quando la pipeline diventa lenta.
-
-## Checklist
-
-- Lint, test e build sono step separati?
-- Il runtime e fissato?
-- L'installazione e riproducibile?
-- Il workflow fallisce se un controllo fallisce?
-- I controlli sono abbastanza rapidi per ogni PR?
-- I report importanti vengono conservati?
+- **Installazione rossa:** con `npm ci` un lockfile incoerente con il manifesto deve essere corretto nel sorgente. Non far passare la CI sostituendo il comando con `npm install`.
+- **Test rosso e build saltata:** per impostazione predefinita lo step successivo non parte. Non aggiungere `continue-on-error` a un controllo obbligatorio per far comparire il report: rendi condizionale solo l’upload diagnostico.
+- **Tutto verde ma nessun file scaricabile:** generare un bundle sul runner non lo conserva. Se serve dopo il job, caricalo come artifact. Per parallelizzare lint e test usa job indipendenti e prevedi il setup in ciascuno.
 
 ## Collegamenti
 
@@ -131,4 +77,6 @@ Il typecheck intercetta errori che test e lint potrebbero non vedere.
 
 ## Fonti
 
-- [GitHub Docs - Continuous integration](https://docs.github.com/en/actions/get-started/continuous-integration)
+- [GitHub Docs - Integrazione continua](https://docs.github.com/en/actions/get-started/continuous-integration)
+- [npm Docs - Contratto di npm ci](https://docs.npmjs.com/cli/v11/commands/npm-ci/)
+- [GitHub Docs - Ordine e condizioni degli step](https://docs.github.com/en/actions/reference/workflows-and-actions/workflow-syntax)

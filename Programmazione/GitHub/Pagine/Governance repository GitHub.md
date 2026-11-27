@@ -30,92 +30,34 @@ title: Governance repository GitHub
 
 ## Sintesi
 
-La **governance di un repository GitHub** e l'insieme di regole, ruoli, policy e pratiche che mantengono il progetto controllabile nel tempo. Non riguarda solo la sicurezza: include ownership, accessi, branch protetti, release, manutenzione, documentazione e ciclo di vita del repository.
+La governance stabilisce **chi decide, quale regola si applica e come verificare che venga rispettata**. Un `CONTRIBUTING.md` può chiedere una review; da solo non impedisce a chi ha accesso in scrittura di fare merge senza approvazione.
 
-Un repository senza governance puo funzionare all'inizio, ma diventa fragile quando aumentano collaboratori, automazioni, dipendenze e rilasci.
+## Come scegliere i controlli
 
-## Quando usarlo
+| Decisione | Dove documentarla | Cosa controllare su GitHub |
+| --- | --- | --- |
+| Chi può modificare il progetto? | README o guida dei manutentori | Ruoli, team, collaboratori esterni e chi può concedere accesso o fare bypass. |
+| Chi deve rivedere una modifica critica? | `CODEOWNERS` sul branch di destinazione | Che gli owner abbiano accesso in scrittura e la regola del branch richieda la loro approvazione. |
+| Quando si può fare merge? | `CONTRIBUTING.md`: review, test e strategia di merge | Protezione del branch o ruleset attivo con i controlli richiesti. Verificare nome e attivazione del job su una PR. |
+| Chi può rilasciare o ritirare il progetto? | Procedura di release, contatto in `SECURITY.md` e piano di successione | Permessi per tag e deploy, responsabile degli aggiornamenti e alternativa se il manutentore non è disponibile. |
 
-Serve governance quando:
+## Esempio: un controllo prima del merge
 
-- piu persone contribuiscono allo stesso repository;
-- il repository ha codice in produzione;
-- ci sono release pubbliche o clienti;
-- sono presenti secret, deploy o GitHub Actions;
-- serve tracciare decisioni e responsabilita;
-- il progetto deve sopravvivere al cambio di manutentori.
+In questo vault il workflow `.github/workflows/deploy-pages.yml` parte su push a `main` o su avvio manuale. Un deploy verde conferma l'esito **dopo** il push; non prova che una pull request sia stata validata **prima** del merge. Per rendere obbligatoria la validazione, serve un job che giri sulle modifiche proposte (per esempio `content:check` su `pull_request`) e un controllo richiesto sul branch. Il deploy può restare separato.
 
-## Come funziona
+Per leggere i ruleset attivi applicabili a `main`, con GitHub CLI autenticata e accesso al repository (sostituire `OWNER/REPO`):
 
-La governance combina:
-
-- ruoli e permessi;
-- branch protection o rulesets;
-- CODEOWNERS;
-- policy di merge;
-- template di issue e pull request;
-- gestione release e tag;
-- sicurezza repository;
-- archiviazione o migrazione quando il ciclo di vita cambia.
-
-La regola pratica e rendere esplicito cio che altrimenti resterebbe implicito nella testa dei manutentori.
-
-## API / Sintassi
-
-Schema minimo di governance:
-
-```text
-owner chiaro
-permessi minimi
-main protetto
-CI obbligatoria
-review richiesta
-release versionate
-README e SECURITY aggiornati
-regole di archiviazione definite
+```bash
+gh ruleset check main --repo OWNER/REPO
 ```
 
-## Esempio pratico
+Un elenco vuoto non dimostra che il branch sia privo di vincoli: verificare anche le protezioni classiche e gli accessi effettivi. Disponibilità delle regole e delle funzioni di sicurezza dipendono da piano e visibilità.
 
-Per un repository applicativo:
+## Verifica periodica
 
-```text
-main: protetto
-merge: squash o merge commit deciso dal team
-release: tag vX.Y.Z
-CODEOWNERS: team responsabili per cartelle critiche
-security: Dependabot, secret scanning, code scanning
-accessi: team, non utenti singoli quando possibile
-```
-
-Questa configurazione rende piu prevedibili contributi, review e rilasci.
-
-## Varianti
-
-- **Governance personale**: checklist leggera, backup, naming chiaro.
-- **Governance team**: ruoli, CODEOWNERS, review, CI.
-- **Governance open source**: README, LICENSE, CONTRIBUTING, CODE_OF_CONDUCT.
-- **Governance enterprise**: policy organizzative, rulesets, audit, owner multipli.
-- **Governance di progetto legacy**: archiviazione, migrazione o ownership continuity.
-
-## Errori comuni
-
-- Dare accesso admin a troppi utenti.
-- Non proteggere il branch principale.
-- Non avere owner chiari.
-- Lasciare repository abbandonati ma non archiviati.
-- Non documentare strategia di release.
-- Creare policy troppo rigide per repository piccoli.
-
-## Checklist
-
-- Il repository ha owner tecnici chiari?
-- Gli accessi sono assegnati tramite team?
-- Il branch principale e protetto?
-- Le release sono versionate?
-- Le policy di sicurezza sono attive?
-- Esiste una procedura per archiviazione o migrazione?
-- La documentazione spiega come contribuire?
+- **Progetto personale:** documentare come ricostruire e pubblicare il progetto; evitare approvazioni obbligatorie che nessun altro può dare.
+- **Progetto di team o pubblico:** indicare owner e sostituti, metodo di contribuzione, licenza e canale per segnalazioni riservate. Preferire permessi mirati all'accesso amministratore.
+- **Cambio di manutentore:** verificare accessi, integrazioni e gestione delle release. Una policy resta utile solo se chi subentra può applicarla.
 
 ## Collegamenti
 
@@ -130,4 +72,7 @@ Questa configurazione rende piu prevedibili contributi, review e rilasci.
 
 ## Fonti
 
-- [GitHub Docs - Best practices for repositories](https://docs.github.com/en/repositories/creating-and-managing-repositories/best-practices-for-repositories)
+- [GitHub Docs: pratiche di gestione](https://docs.github.com/en/repositories/creating-and-managing-repositories/best-practices-for-repositories)
+- [GitHub Docs: CODEOWNERS](https://docs.github.com/en/repositories/managing-your-repositorys-settings-and-features/customizing-your-repository/about-code-owners)
+- [GitHub Docs: ruleset](https://docs.github.com/en/repositories/configuring-branches-and-merges-in-your-repository/managing-rulesets/about-rulesets)
+- [GitHub CLI: gh ruleset check](https://cli.github.com/manual/gh_ruleset_check)

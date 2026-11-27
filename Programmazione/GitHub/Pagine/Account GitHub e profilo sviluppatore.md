@@ -26,102 +26,52 @@ title: Account GitHub e profilo sviluppatore
 
 ## Sintesi
 
-L'account GitHub identifica una persona o un bot sulla piattaforma. Il profilo sviluppatore e la parte pubblica dell'account: repository, contributi, organizzazioni, README profilo, sponsor, stelle e attivita visibile.
+Distingui **autore**, **account autenticato** e **permesso**: il commit contiene nome ed email dell’autore; la credenziale usata per collegarsi a GitHub identifica l’account; il repository stabilisce che cosa può fare quell’account. Cambiare `user.name` non cambia account né concede il diritto di push.
 
-Un account ben configurato non serve solo a presentarsi: riduce rischi di sicurezza, rende chiara l'identita nei commit e facilita collaborazione e review.
+## Configurare l’identità dei prossimi commit
 
-## Quando usarlo
-
-Cura account e profilo quando:
-
-- contribuisci a progetti pubblici;
-- lavori in organizzazioni o team;
-- vuoi separare identita personale e professionale;
-- devi usare SSH, token o GitHub CLI;
-- vuoi rendere comprensibili i tuoi repository a chi li visita.
-
-## Come funziona
-
-Un account GitHub contiene:
-
-- username;
-- email associate;
-- chiavi SSH;
-- token di accesso;
-- membership in organizzazioni;
-- impostazioni di sicurezza;
-- notifiche;
-- profilo pubblico.
-
-Il profilo puo includere un repository speciale con lo stesso nome dello username. Il `README.md` di quel repository viene mostrato nella pagina profilo.
-
-## API / Sintassi
-
-Configurare autore Git locale:
+Nel clone interessato puoi impostare un’identità **solo per quel repository**, per esempio per separare un progetto di lavoro da quelli personali:
 
 ```bash
-git config --global user.name "Nome Cognome"
-git config --global user.email "email@example.com"
+git config --local user.name "Anna Rossi"
 ```
 
-Verificare configurazione:
-
 ```bash
-git config --global --list
+git config --local user.email "anna@example.com"
 ```
 
-Autenticazione con GitHub CLI:
+Sostituisci l’email di esempio con un indirizzo collegato al tuo account o con l’indirizzo `noreply` indicato da GitHub in **Settings → Emails**. Per un valore predefinito comune ai tuoi repository usa invece `--global`. Queste impostazioni non riscrivono i commit esistenti.
+
+Controlla **il valore effettivo e da quale file proviene**, senza stampare tutta la configurazione:
 
 ```bash
-gh auth login
+git config --show-origin --get user.email
+```
+
+Per usare la CLI, `gh auth login` avvia l’accesso. Il comando seguente controlla l’account della **CLI**, non l’autore Git e non necessariamente la chiave SSH o la credenziale HTTPS usata da Git:
+
+```bash
 gh auth status
 ```
 
-## Esempio pratico
+## Esempio: un README sul profilo
 
-Creare un profilo pubblico essenziale:
-
-1. crea un repository chiamato come il tuo username;
-2. aggiungi `README.md`;
-3. descrivi competenze, progetti principali e contatti;
-4. evita informazioni sensibili;
-5. mantieni il contenuto aggiornato.
-
-Esempio di sezione:
+Per un normale account personale chiamato `anna-dev`, crea su GitHub il repository **pubblico** `anna-dev/anna-dev` e aggiungi un `README.md` **non vuoto nella radice** del branch predefinito. Non basta un README in un qualunque repository. Questa funzione non è disponibile per gli account utente gestiti da un’impresa (Enterprise Managed Users).
 
 ```md
 ## Cosa sto studiando
 
 - Backend e database
 - Automazione con GitHub Actions
-- Knowledge base in Markdown
+- Una knowledge base in Markdown
 ```
-
-## Varianti
-
-- **Account personale**: identita principale.
-- **Organizzazione**: spazio condiviso per team o progetti.
-- **Bot account**: account dedicato ad automazioni, da usare con attenzione.
-- **Profilo pubblico minimale**: utile se vuoi ridurre esposizione.
-- **Profilo portfolio**: utile se GitHub e parte della tua presentazione professionale.
-
-## Errori comuni
-
-- Usare email personale non desiderata nei commit pubblici.
-- Non abilitare autenticazione a due fattori.
-- Creare token troppo permissivi.
-- Lasciare chiavi SSH vecchie o non usate.
-- Riempire il profilo con badge inutili invece di informazioni chiare.
-- Non distinguere account personale, organizzazioni e permessi dei repository.
 
 ## Checklist
 
-- L'email dei commit e corretta?
-- La 2FA e attiva?
-- Le chiavi SSH sono ancora valide e riconoscibili?
-- I token inutilizzati sono rimossi?
-- Il profilo comunica cosa fai realmente?
-- I repository pinned sono scelti con criterio?
+- Per la privacy, verifica l’email effettiva **prima** del primo commit pubblico. L’email nell’oggetto Git non è segreta solo perché sul profilo è nascosta.
+- Abilita la 2FA, conserva i codici di recupero e rivedi chiavi SSH e token inutilizzati. Non mostrare credenziali nel README.
+- Un’organizzazione raggruppa progetti, persone e team: di norma collabori dal tuo account con i permessi assegnati. Per le automazioni scegli un’identità dedicata con i soli permessi necessari.
+- Il profilo può essere minimale: scegli repository in evidenza, attività e contatti che vuoi rendere pubblici.
 
 ## Collegamenti
 
@@ -132,4 +82,6 @@ Esempio di sezione:
 
 ## Fonti
 
-- [GitHub Docs - Signing up for a new GitHub account](https://docs.github.com/en/get-started/start-your-journey/creating-an-account-on-github)
+- [GitHub Docs: creazione di un account](https://docs.github.com/en/get-started/start-your-journey/creating-an-account-on-github)
+- [GitHub Docs: il README del profilo](https://docs.github.com/en/account-and-profile/how-tos/profile-customization/managing-your-profile-readme)
+- [GitHub Docs: scegliere l’email dei commit](https://docs.github.com/en/account-and-profile/how-tos/email-preferences/setting-your-commit-email-address)

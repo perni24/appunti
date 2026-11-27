@@ -8,6 +8,136 @@ Questi test sono infrastruttura editoriale, esclusa dal sito. Estraggono frammen
 - Node.js compatibile con il progetto; esecuzione verificata con `24.14.0`.
 - Solo per i test browser: pacchetto Playwright e Google Chrome installato. Nella sessione di revisione e stato usato il runtime Playwright gia fornito dall'ambiente Codex, senza aggiungere dipendenze al sito.
 
+## GitHub: fondamenti
+
+Dalla radice del vault, con Git disponibile nel PATH:
+
+```sh
+node --test _Meta/tests/github-fondamenti.test.mjs
+```
+
+Le quattro prove confrontano i comandi con i blocchi Markdown ed eseguono Git in directory temporanee. I remoti sono repository su disco: non occorrono account o credenziali. Su Windows, Git for Windows deve poter avviare la propria shell anche per i trasferimenti locali. Non vengono create pull request o risorse su GitHub.
+
+## GitHub: flusso di lavoro base
+
+```sh
+node --test _Meta/tests/github-flusso-base.test.mjs
+```
+
+Cinque prove locali confrontano i comandi delle note con il comportamento di Git: diff della PR, staging e amend, merge con due genitori, squash e rebase seguito da fast-forward. I repository sono temporanei e non richiedono credenziali. La suite non simula gli esiti di review, l'autochiusura di una issue o le autorizzazioni di GitHub.
+
+## GitHub: interfaccia e strumenti
+
+```sh
+node --test _Meta/tests/github-interfaccia.test.mjs
+```
+
+Richiede Git e le dipendenze Quartz del sito. In repository temporanei confronta il contenuto del commit, i file su disco e una revisione fissata. Controlla la regex dei percorsi e interpreta i due esempi Markdown con il plugin GFM del sito. Non verifica l’indice di ricerca di GitHub, la CLI autenticata o l’interfaccia Desktop.
+
+## GitHub: collaborazione e project management
+
+```sh
+node --test _Meta/tests/github-collaborazione.test.mjs
+```
+
+Legge gli esempi dalle note: verifica struttura e tipi dei campi YAML, messaggio di commit completo, creazione di un branch da un bundle Git locale e diff di una PR simulata in un monorepo. Non simula validazioni web, automazioni di Projects né autorizzazioni dei code owner.
+
+## GitHub: protezione del repository
+
+```sh
+node --test _Meta/tests/github-protezione.test.mjs
+```
+
+Estrae il workflow didattico dalla nota sui required checks e prova il comando Git su commit diversi. Confronta tag annotati e lightweight e controlla che il deploy Quartz descritto dalle note corrisponda al workflow versionato. Non contatta GitHub, non pubblica tag e non verifica le policy attive sul servizio.
+
+## GitHub: sicurezza e supply chain
+
+```sh
+node --test _Meta/tests/github-supply-chain.test.mjs
+```
+
+Controlla i tre esempi YAML nelle note, il rapporto tra dipendenza diretta e transitiva del sito e le regole Git per un file fittizio prima e dopo il tracciamento. Nessuna scansione, credenziale o attestazione reale: i controlli locali non simulano i servizi GitHub.
+
+## GitHub: fondamenti di Actions
+
+```sh
+node --test _Meta/tests/github-actions-fondamenti.test.mjs
+```
+
+Richiede PowerShell 7 (`pwsh` nel PATH). Le prove leggono il workflow Quartz e gli esempi YAML delle note. Eseguono gli script PowerShell per il passaggio di un output, la verifica della home e la presenza o assenza di una credenziale fittizia. Non avviano runner remoti e non pubblicano artifact.
+
+## GitHub: CI con Actions
+
+```sh
+node --test _Meta/tests/github-actions-ci.test.mjs
+```
+
+Dalla radice del vault, con Node, Git e le dipendenze di `site`. Legge gli esempi YAML delle sette note, confronta script e lockfile, calcola le combinazioni della matrix e controlla la configurazione client/server di PostgreSQL. Esegue il reporter JUnit su un test verde e uno rosso e prova il check Git con un file tracciato e non tracciato. Non avvia container, runner o upload remoti.
+
+## GitHub: CD, release e deploy
+
+```sh
+node --test _Meta/tests/github-actions-cd.test.mjs
+```
+
+Richiede Node, npm, Git, PowerShell 7 e le dipendenze di `site`. Le prove estraggono gli esempi dalle sette note; verificano la home, la variabile di staging, lo ZIP Git e il contenuto di un package con `npm pack --dry-run` offline. Confrontano gli estratti Pages con il workflow reale e i valori delle condizioni OIDC con identità fittizie. Non avviano deployment, approvazioni, pubblicazioni o scambi di token.
+
+## GitHub: Actions avanzato
+
+```sh
+node --test _Meta/tests/github-actions-avanzato.test.mjs
+```
+
+Dalla radice del vault, con Node, PowerShell 7 e le dipendenze di `site`. Le prove estraggono i frammenti YAML dalle sette note, eseguono gli step della composite action e del debug, verificano l’orario di Roma in due stagioni e confrontano la concorrenza con il workflow Quartz. Non avviano lo scheduler, la toolchain embedded o runner remoti e non stimano la fattura del repository.
+
+## GitHub: API e automazione
+
+```sh
+node --test _Meta/tests/github-api-automazione.test.mjs
+```
+
+Richiede Node e le dipendenze di `site`. Estrae esempi dai sette Markdown: esegue il filtro REST su pagine locali, la verifica della firma sul vettore pubblico GitHub e la classificazione di file rinominati. Controlla staticamente query, parametri CLI, permessi e trigger YAML: non interroga lo schema remoto, non invia webhook e non apre o modifica issue.
+
+## GitHub: governance e manutenzione
+
+```sh
+node --test _Meta/tests/github-governance.test.mjs
+```
+
+Dalla radice del vault, con Node, Git e le dipendenze di `site`. Le prove usano repository temporanei per squash, ignore, ripristino da bundle, simulazione mirror e tag annotati. Controllano staticamente i comandi GitHub CLI, i trigger Pages e il modulo YAML; non invocano servizi GitHub.
+
+## GitHub: procedure pratiche
+
+```sh
+node --test _Meta/tests/github-procedure-pratiche.test.mjs
+```
+
+Richiede Git, Node, PowerShell 7 e le dipendenze di `site`. Prova il primo push su un remoto locale, il diff di una PR con base avanzata e lo step PowerShell con valori fittizi. Confronta configurazione CI, nome del check e pubblicazione Pages con gli esempi e il workflow del vault; non usa un account GitHub.
+
+## GitHub: checklist
+
+```sh
+node --test _Meta/tests/github-checklist.test.mjs
+```
+
+Richiede Git, Node e le dipendenze di `site`. Confronta indice e cronologia per un file di prova e interroga tag assenti, leggeri e annotati in repository temporanei. Verifica staticamente i comandi CLI e il frammento di concorrenza del workflow Pages. Non richiede credenziali né contatta GitHub.
+
+## GitHub: troubleshooting
+
+```sh
+node --test _Meta/tests/github-troubleshooting.test.mjs
+```
+
+Richiede Git, Node, PowerShell 7 e le dipendenze di `site`. Riproduce in repository locali un diff vuoto con commit aggiuntivi e un conflitto di merge, compreso un file aggiunto con i marcatori ancora presenti. Esegue lo step PowerShell con valori fittizi e verifica staticamente comandi CLI, permessi e workflow Pages. Non effettua operazioni su GitHub.
+
+## GitHub: promemoria operativi
+
+```sh
+node --test _Meta/tests/github-promemoria.test.mjs
+```
+
+Verifica gli esempi dei sei promemoria finali con Git, Node, PowerShell 7 e le dipendenze di `site`. Esegue i cambi dei remote in un repository temporaneo, produce il report TAP della matrix e prova la presenza di un valore fittizio. Gli eventi, i permessi, la cache e lo scambio di artifact sono verificati come configurazione, non eseguiti su GitHub.
+
 ## Clean Code: fondamenti
 
 Dalla radice del vault, con Node e le dipendenze di `site`:

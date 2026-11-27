@@ -28,102 +28,43 @@ title: OIDC GitHub Actions
 
 ## Sintesi
 
-**OIDC in GitHub Actions** permette a un workflow di ottenere credenziali temporanee da un provider esterno, come un cloud provider, senza salvare secret statici a lunga durata in GitHub.
+**OpenID Connect (OIDC)** permette a un job di presentare la propria identità a un provider esterno senza custodire una chiave cloud di lunga durata tra i secret. Ci sono **due decisioni separate**: GitHub permette al job di richiedere un token di identità; il provider verifica quell’identità e decide se rilasciare credenziali temporanee e con quali privilegi.
 
-E una pratica importante per deploy sicuri: il workflow dimostra la propria identita tramite token OIDC e il provider decide se fidarsi in base a repository, branch, tag, environment o altri claim.
+## Seguire l’identità, non il nome del workflow
 
-## Quando usarlo
+1. Il job autorizzato può richiedere un token firmato da GitHub con una *audience* (`aud`) adatta al destinatario. `id-token: write` concede questa possibilità: **non** concede accesso in scrittura al repository o al cloud.
+2. Il provider verifica firma, emittente (`iss`), destinatario, validità e condizioni sul soggetto (`sub`). Un’identità valida può comunque essere rifiutata se ambiente o repository non coincidono.
+3. Se lo scambio riesce, il ruolo del provider stabilisce cosa si può fare. Un errore durante lo scambio e un’operazione negata **dopo** lo scambio richiedono diagnosi diverse.
 
-Usalo quando:
-
-- fai deploy verso cloud provider;
-- vuoi evitare access key statiche;
-- vuoi credenziali temporanee;
-- vuoi policy basate su branch, tag o environment;
-- vuoi ridurre impatto di secret leak;
-- il provider supporta federated identity.
-
-## Come funziona
-
-Il workflow richiede permesso:
+Frammento da mettere sul solo job che si autentica. `contents: read` serve se quel job deve fare checkout; non è un prerequisito di OIDC. Il frammento non invia richieste: servono anche la federazione presso il provider e il suo client o la sua action ufficiale.
 
 ```yaml
+environment: production
 permissions:
-  id-token: write
   contents: read
+  id-token: write
 ```
 
-Poi usa una action o comando del provider per scambiare il token OIDC GitHub con credenziali temporanee.
+## Esempio ragionato: chi può assumere il ruolo?
 
-Il provider valida claim come:
+Esempio **parziale**, con nomi e ID fittizi, della sola condizione di una trust policy AWS per l’audience standard di STS e il formato GitHub con ID immutabili. Non è una policy IAM completa né indica alcun ruolo del vault.
 
-- repository;
-- owner;
-- branch o tag;
-- environment;
-- workflow;
-- actor.
-
-## API / Sintassi
-
-Schema generico:
-
-```yaml
-jobs:
-  deploy:
-    runs-on: ubuntu-latest
-    environment: production
-    permissions:
-      contents: read
-      id-token: write
-    steps:
-      - uses: actions/checkout@v4
-      - name: Authenticate with cloud provider
-        run: ./auth-with-oidc.sh
-      - run: ./deploy.sh
+```json
+{
+  "StringEquals": {
+    "token.actions.githubusercontent.com:aud": "sts.amazonaws.com",
+    "token.actions.githubusercontent.com:sub": "repo:esempio@123456/guida@456789:environment:production"
+  }
+}
 ```
 
-La configurazione concreta dipende dal provider.
+Un job di `staging` non soddisfa questa uguaglianza. Un job che usa `production` ha invece, nel formato predefinito, un soggetto basato sull’environment: **quel soggetto non dimostra da solo che il branch sia `main`**. Limita anche i branch/tag ammessi nell’environment. Non dare per scontato che ogni provider possa confrontare qualsiasi claim presente nel token.
 
-## Esempio pratico
+Su GitHub.com esistono sia il formato storico (`repo:esempio/guida:environment:production`) sia quello con ID: GitHub documenta il nuovo default per i repository creati dopo il 15 luglio 2026 e casi di migrazione per quelli esistenti. Controlla il formato configurato prima di copiare la condizione. Se non coincide, correggi il valore atteso senza allargare la policy a qualsiasi repository.
 
-Policy concettuale lato cloud:
+## Limiti operativi
 
-```text
-Consenti deploy solo se:
-- repository = owner/app
-- branch = main oppure tag = v*
-- environment = production
-- workflow = deploy.yml
-```
-
-In questo modo una pull request non autorizzata non puo ottenere credenziali production.
-
-## Varianti
-
-- **OIDC verso AWS**: assume role con trust policy.
-- **OIDC verso Azure**: federated credentials.
-- **OIDC verso Google Cloud**: workload identity federation.
-- **OIDC verso registry o package provider**: quando supportato.
-- **OIDC con environment**: restringe ulteriormente deploy production.
-
-## Errori comuni
-
-- Aggiungere `id-token: write` a tutti i workflow.
-- Policy cloud troppo permissiva.
-- Non vincolare repository, branch, tag o environment.
-- Usare OIDC ma lasciare secret statici attivi.
-- Non separare staging e production.
-- Fidarsi di trigger non sicuri come PR da fork.
-
-## Checklist
-
-- Il provider supporta OIDC?
-- Il workflow usa `id-token: write` solo dove serve?
-- La policy limita repository e ref?
-- Production usa environment protetto?
-- Le vecchie credenziali statiche sono rimosse?
-- I log non espongono token o credenziali temporanee?
+Azure e Google Cloud usano meccanismi di federazione propri; anche alcuni registry accettano identità federate. Audience, condizioni e ruolo vanno definiti per quel servizio. Limita OIDC al job di deploy, tieni distinti staging e produzione, non stampare token nei log e revoca le vecchie chiavi statiche dopo aver verificato la migrazione. Il `GITHUB_TOKEN` per le API GitHub è una credenziale distinta.
 
 ## Collegamenti
 
@@ -136,4 +77,5 @@ In questo modo una pull request non autorizzata non puo ottenere credenziali pro
 ## Fonti
 
 - [GitHub Docs - OpenID Connect](https://docs.github.com/en/actions/concepts/security/openid-connect)
-- [GitHub Docs - OIDC security hardening](https://docs.github.com/en/actions/how-tos/security-for-github-actions/security-hardening-your-deployments/about-security-hardening-with-openid-connect)
+- [GitHub Docs - Claim, environment e formato immutabile](https://docs.github.com/en/actions/reference/security/oidc)
+- [GitHub Docs - Condizioni OIDC per AWS](https://docs.github.com/en/actions/how-tos/secure-your-work/security-harden-deployments/oidc-in-aws)

@@ -28,90 +28,37 @@ title: Troubleshooting GitHub Actions
 
 ## Obiettivo
 
-Diagnosticare perche un workflow GitHub Actions non parte, fallisce, resta in coda, salta step o produce risultati diversi dall'ambiente locale.
+Trovare **il primo passaggio che non è avvenuto come previsto**. Un workflow che non parte, un job in attesa e uno step terminato con errore richiedono tre diagnosi diverse. Annotare evento, branch, SHA e, se esiste, link al run e numero del tentativo.
 
-Il metodo piu efficace e seguire la run dall'alto verso il basso: evento, workflow, job, step, comando, permessi, ambiente e dati disponibili.
+## Dal sintomo al primo controllo
 
-## Quando usarlo
+| Sintomo | Dove guardare | Cosa distingue le cause |
+| --- | --- | --- |
+| Nessun run per la modifica | `.github/workflows/`, evento `on`, filtri di branch e percorsi, annotazioni di sintassi | Un commit solo locale non genera un push GitHub. Per una PR da fork controllare anche se l'esecuzione richiede approvazione. |
+| Run presente, job non avviato | Stato del job, `runs-on`, gruppo di concorrenza, eventuale environment | Un runner senza etichette compatibili, un altro run attivo e un'approvazione di deploy mancante non si risolvono aumentando il timeout di uno step. |
+| Job o step saltato | Condizione `if`, dipendenze `needs` e risultati a monte | Se `build` fallisce e `deploy` dipende da esso, il deploy saltato è una conseguenza. Diagnosticare prima la build. |
+| Step fallito | Primo comando con errore nel job interessato | Distinguere checkout mancante, directory sbagliata, lockfile assente e tool incompatibile. Un errore di accesso o un secret vuoto hanno procedure dedicate sotto. |
+| Output mancante nonostante il job verde | Percorso prodotto, upload, download e job consumatore | Due job non condividono automaticamente il filesystem. Una cache mancante dovrebbe comportare una nuova installazione, non sostituire un artifact necessario. |
 
-- Il workflow non parte.
-- Un job fallisce.
-- Uno step viene saltato.
-- Il runner resta in coda.
-- Un comando funziona in locale ma non in CI.
-- Artifact, cache o secrets non si comportano come previsto.
-- Serve aumentare il dettaglio dei log.
+## Esempio: seguire un run di Quartz
 
-## Procedura
+Nel vault `.github/workflows/deploy-pages.yml` parte al push su `main` o manualmente. Non cercare una sua esecuzione per la sola apertura di una PR. I comandi seguenti sono di sola lettura: con GitHub CLI autenticata sostituire `12345` con l'ID del run e `OWNER/REPO` con il repository.
 
-1. Verifica se il workflow e nella cartella `.github/workflows`.
-2. Controlla l'evento che dovrebbe avviarlo.
-3. Apri la run e identifica job e step fallito.
-4. Leggi comando, working directory ed exit code.
-5. Controlla runner e versione dei tool.
-6. Verifica `permissions`, secrets e variables.
-7. Controlla condizioni `if`, matrix e path filter.
-8. Abilita debug logging solo se i log normali non bastano.
-9. Riduci il problema a uno step minimo riproducibile.
-
-## Snippet
-
-Debug contestuale sicuro:
-
-```yaml
-- name: Debug context
-  run: |
-    echo "event=${GITHUB_EVENT_NAME}"
-    echo "ref=${GITHUB_REF}"
-    echo "sha=${GITHUB_SHA}"
-    pwd
-    ls
+```bash
+gh run view 12345 --repo OWNER/REPO --json event,headSha,attempt,status,conclusion,jobs
 ```
 
-Debug logging:
+Se la build ha fallito al primo tentativo, leggere gli step falliti **di quel tentativo**:
 
-```text
-ACTIONS_STEP_DEBUG=true
-ACTIONS_RUNNER_DEBUG=true
+```bash
+gh run view 12345 --repo OWNER/REPO --attempt 1 --log-failed
 ```
 
-Timeout esplicito:
+Se `npm ci` segnala un lockfile mancante, verificare nei log la directory effettiva e nel commit la presenza di `site/package-lock.json`: qui gli step npm girano da `site`, mentre l'upload legge `site/public` dal workspace. Confrontare anche Node e npm del runner con quelli locali prima di cambiare le dipendenze.
 
-```yaml
-jobs:
-  test:
-    runs-on: ubuntu-latest
-    timeout-minutes: 20
-```
+## Verificare la correzione
 
-## Adattamenti comuni
-
-- **Workflow non parte**: controlla trigger, branch, path e workflow disabilitati.
-- **Job skipped**: controlla condizioni `if` e dipendenze `needs`.
-- **Runner in coda**: controlla disponibilita runner, self-hosted runner e limiti.
-- **Errore su fork**: controlla disponibilita secrets e permessi ridotti.
-- **Errore intermittente**: aggiungi retry mirati, log e artifact di debug.
-
-## Debug rapido
-
-- Se il workflow non appare, controlla path e sintassi YAML.
-- Se lo step usa file mancanti, controlla checkout e working directory.
-- Se una action esterna fallisce, controlla versione, input e permessi.
-- Se la cache non viene usata, controlla key e lockfile.
-- Se i log non bastano, abilita `ACTIONS_STEP_DEBUG`.
-- Se il problema riguarda token o secrets, passa alle note dedicate.
-
-## Checklist finale
-
-- Evento corretto.
-- Workflow valido.
-- Job e step fallito identificati.
-- Comando ed exit code letti.
-- Runner e tool verificati.
-- Permessi controllati.
-- Secrets e variables controllati.
-- Log sufficienti o debug logging attivo.
-- Fix testato con una nuova run.
+Per un problema transitorio può avere senso ripetere lo stesso run. Un *re-run* riutilizza però lo SHA e il ref originari: **non testa una correzione committata dopo**. In quel caso verificare una nuova esecuzione sul nuovo SHA. Se serve più dettaglio, abilitare temporaneamente `ACTIONS_STEP_DEBUG` o, per problemi del runner, `ACTIONS_RUNNER_DEBUG` a `true` come variabile o secret Actions. Evitare dump dell'ambiente e non condividere log con credenziali.
 
 ## Collegamenti
 
@@ -126,4 +73,6 @@ jobs:
 
 ## Fonti
 
-- [GitHub Docs - Enabling debug logging](https://docs.github.com/en/actions/how-tos/monitor-workflows/enable-debug-logging)
+- [GitHub CLI: run, tentativi e log](https://cli.github.com/manual/gh_run_view)
+- [GitHub Docs: cosa viene riutilizzato da un re-run](https://docs.github.com/en/actions/how-tos/manage-workflow-runs/re-run-workflows-and-jobs)
+- [GitHub Docs: abilitare i log di debug](https://docs.github.com/en/actions/how-tos/monitor-workflows/enable-debug-logging)

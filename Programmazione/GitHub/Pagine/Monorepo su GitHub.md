@@ -28,104 +28,52 @@ title: Monorepo su GitHub
 
 ## Sintesi
 
-Un **monorepo** e un repository che contiene piu progetti, package o servizi collegati. Su GitHub puo semplificare condivisione di codice, issue, pull request e automazioni, ma richiede disciplina su struttura, ownership e CI.
+In un **monorepo** più applicazioni o pacchetti condividono la storia Git. Il vantaggio concreto è poter cambiare un contratto e i suoi consumatori nella **stessa PR**. Questo rende atomica la modifica nel repository, non il deploy: due servizi possono continuare a essere pubblicati in momenti diversi.
 
-Il monorepo non e automaticamente migliore di piu repository: funziona bene quando i progetti hanno forte relazione tecnica o di rilascio.
-
-## Quando usarlo
-
-Valuta un monorepo quando:
-
-- piu package condividono codice;
-- frontend e backend cambiano spesso insieme;
-- vuoi pull request atomiche su piu componenti;
-- vuoi standard unificati di tooling;
-- vuoi gestione centralizzata di issue e CI;
-- hai dipendenze interne frequenti.
-
-Evitalo se i progetti sono indipendenti, hanno team e release completamente separati o richiedono permessi molto diversi.
-
-## Come funziona
-
-Una struttura tipica:
+## Esempio: chi dipende dall’esportatore?
 
 ```text
-repo/
-  apps/
-    web/
-    api/
-  packages/
-    ui/
-    config/
-  docs/
-  .github/
-    workflows/
+apps/
+  api/              # produce il report
+  web/              # offre il download
+packages/
+  csv/              # intestazioni e serializzazione condivise
+  ui/               # componenti usati dal frontend
+docs/
+.github/
+  workflows/
 ```
 
-GitHub gestisce il repository come un'unica entita. Devi quindi progettare:
+Se cambia `packages/csv/`, i test del solo pacchetto possono passare anche se l’API o la web app si aspetta il vecchio nome della colonna. Prima della review identifica i consumatori e verifica il loro comportamento. Se invece cambi solo il testo in `docs/` può bastare la verifica della documentazione. Per vedere dalla base comune i percorsi modificati sul branch della PR, con `origin/main` aggiornato:
 
-- naming delle cartelle;
-- CODEOWNERS per aree;
-- workflow che girano solo dove serve;
-- issue label per componente;
-- policy di review;
-- strategia di release.
+```bash
+git diff --name-only origin/main...HEAD
+```
 
-## API / Sintassi
+L’elenco dice **che cosa è stato modificato**, non **che cosa ne dipende**. Per esempio, una PR che tocca solo `packages/csv/header.ts` può richiedere i test di `apps/api/` anche se quella cartella non compare nel diff.
 
-Esempio label per monorepo:
+## Ownership, CI e release
+
+| Decisione | Esempio | Errore da evitare |
+| --- | --- | --- |
+| Chi fa review? | In `.github/CODEOWNERS` assegna le directory ai team competenti. | Gli owner non limitano chi può leggere una sottocartella. Se occorre isolamento di accesso, valuta repository separati. |
+| Quali controlli devono partire? | Verifica il componente modificato, i consumatori e gli eventuali file di configurazione condivisi. | Un workflow interamente saltato per `paths` può lasciare un check obbligatorio in `Pending`, bloccando anche una PR solo documentale. |
+| Come si pubblica? | Decidi se app e pacchetti hanno versioni indipendenti o coordinate; traccia cosa è già distribuito. | Un solo merge non assicura che produttore e consumatori cambino versione insieme. |
+
+Esempio per un’organizzazione fittizia: usa **team visibili con accesso esplicito di scrittura** e sostituisci i nomi. Per il pacchetto condiviso i due owner sono sulla stessa riga:
 
 ```text
-area: web
-area: api
-area: ui
-area: docs
+/apps/web/      @example-org/frontend
+/apps/api/      @example-org/backend
+/packages/ui/   @example-org/design-system
+/packages/csv/  @example-org/backend @example-org/frontend
 ```
 
-Esempio CODEOWNERS:
+Le label `area: web` e `area: api` aiutano il triage, non attivano review per directory. Per una CI selettiva conserva un controllo obbligatorio che dia un esito per ogni PR pertinente e che fallisca se un test necessario non passa. Non rendere obbligatorio un workflow che il tuo stesso filtro può impedire di avviare.
 
-```text
-/apps/web/ @frontend-team
-/apps/api/ @backend-team
-/packages/ui/ @design-system-team
-```
+## Quando preferire più repository
 
-## Esempio pratico
-
-Una pull request puo modificare insieme:
-
-```text
-packages/ui/Button.tsx
-apps/web/ProfilePage.tsx
-```
-
-Questo e utile se la modifica al componente UI e necessaria per aggiornare una pagina. In un multi-repo avresti bisogno di coordinare due PR e due release.
-
-## Varianti
-
-- **Monorepo applicativo**: app e backend nello stesso repository.
-- **Monorepo package**: piu librerie correlate.
-- **Monorepo documentale**: docs e esempi insieme al codice.
-- **Polyrepo**: repository separati per ogni progetto.
-- **Hybrid**: monorepo per componenti collegati e repo separati per sistemi indipendenti.
-
-## Errori comuni
-
-- Mettere progetti non correlati nello stesso repository.
-- Far girare tutta la CI per ogni piccola modifica.
-- Non definire ownership per cartelle.
-- Non distinguere release indipendenti e release coordinate.
-- Usare label troppo generiche.
-- Sottovalutare permessi e visibilita.
-
-## Checklist
-
-- I progetti sono davvero collegati?
-- La struttura cartelle e leggibile?
-- CODEOWNERS copre le aree principali?
-- La CI e filtrata per path quando possibile?
-- Le label indicano componente o area?
-- La strategia di release e chiara?
+Se i componenti cambiano spesso insieme e possono condividere accessi e strumenti, la PR unica evita di coordinare aggiornamenti separati. Se devono avere visibilità diversa o cicli di vita davvero indipendenti, il costo di versionare un contratto tra repository può essere preferibile. È possibile anche una scelta mista: tenere insieme UI e web, e separare un servizio con proprietari o permessi diversi.
 
 ## Collegamenti
 
@@ -138,3 +86,6 @@ Questo e utile se la modifica al componente UI e necessaria per aggiornare una p
 ## Fonti
 
 - [GitHub Docs - About repositories](https://docs.github.com/en/repositories/creating-and-managing-repositories/about-repositories)
+- [GitHub Docs: semantica dei percorsi e dei team in CODEOWNERS](https://docs.github.com/en/repositories/managing-your-repositorys-settings-and-features/customizing-your-repository/about-code-owners)
+- [GitHub Docs: workflow saltati e check ancora in attesa](https://docs.github.com/en/actions/how-tos/manage-workflow-runs/skip-workflow-runs)
+- [Git: confronto dalla base comune con tre punti](https://git-scm.com/docs/git-diff)

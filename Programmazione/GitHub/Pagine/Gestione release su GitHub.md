@@ -17,10 +17,8 @@ aliases:
 prerequisites:
   - "[[Programmazione/GitHub/Pagine/Repository GitHub]]"
   - "[[Programmazione/GitHub/Pagine/Tag, versioni e changelog]]"
-  - "[[Programmazione/GitHub/Pagine/Tag, versioni e changelog]]"
 related:
   - "[[Programmazione/GitHub/Pagine/Release automation GitHub Actions]]"
-  - "[[Programmazione/GitHub/Pagine/Tag, versioni e changelog]]"
   - "[[Programmazione/GitHub/Pagine/Tag, versioni e changelog]]"
   - "[[Programmazione/GitHub/Pagine/GitHub REST API]]"
 title: Gestione release su GitHub
@@ -30,97 +28,44 @@ title: Gestione release su GitHub
 
 ## Sintesi
 
-La **gestione release su GitHub** organizza versioni pubblicabili di un progetto. Una release e collegata a un tag Git e puo includere note, asset, binari, changelog, pre-release e indicazioni per utenti o sistemi di deploy.
+Il **tag Git** identifica una revisione; la **release GitHub** presenta quella versione a chi la usa, con note di aggiornamento ed eventuali file da scaricare. Il **deploy** è un'altra operazione: pubblicare una release non aggiorna da solo un sito o un ambiente.
 
-Una release ben fatta risponde a tre domande: cosa cambia, quale versione e, come si usa o si aggiorna.
+## Cosa si distribuisce
 
-## Quando usarlo
+| Elemento | A cosa serve |
+| --- | --- |
+| Archivio sorgente | GitHub offre gli archivi del codice associato al tag. Non sono automaticamente un'app compilata. |
+| Asset della release | File allegato dai manutentori o dalla CI, per esempio un binario e il suo checksum. Verificare origine, versione e piattaforma. |
+| Artifact di un workflow | Output di una specifica esecuzione Actions, con proprie regole di accesso e conservazione. Diventa asset della release solo se viene caricato come tale. |
 
-Usa release GitHub quando:
+## Esempio: dal tag alla pubblicazione
 
-- pubblichi versioni installabili;
-- vuoi allegare asset o binari;
-- vuoi comunicare cambiamenti agli utenti;
-- vuoi collegare release a tag semantici;
-- vuoi automatizzare changelog e deploy;
-- vuoi distinguere versioni stabili e pre-release.
+Prerequisiti: GitHub CLI autenticata, permesso di scrittura, repository corretto e tag `v2.0.0` **già presente sul remoto e verificato rispetto al commit testato**. I comandi seguenti si riferiscono al repository del clone corrente.
 
-## Come funziona
-
-Una release contiene:
-
-- tag;
-- titolo;
-- descrizione o release notes;
-- eventuali asset;
-- stato draft, pre-release o published;
-- autore e data;
-- collegamento a commit o branch.
-
-GitHub puo generare release notes automaticamente, ma devi comunque controllare ordine, chiarezza e impatto delle modifiche.
-
-## API / Sintassi
-
-Creare una release con GitHub CLI:
+**Preparare la bozza.** Crea una release sul remoto ma non la pubblica. Senza `--verify-tag`, il comando può creare un tag mancante sul branch predefinito. Il flag controlla l'esistenza del tag remoto, non che sia il commit desiderato.
 
 ```bash
-gh release create v1.2.0 \
-  --title "v1.2.0" \
-  --notes "Correzioni e miglioramenti della versione 1.2.0"
+gh release create v2.0.0 --verify-tag --draft --generate-notes --title "v2.0.0"
 ```
 
-Creare una pre-release:
+**Rivedere il risultato.** Controllare le PR incluse nelle note generate; aggiungere cosa cambia per l'utente e le eventuali migrazioni. Caricare i file previsti nella bozza e verificare nomi e checksum prima di pubblicare, specialmente se le release sono immutabili.
 
 ```bash
-gh release create v2.0.0-beta.1 --prerelease --generate-notes
+gh release view v2.0.0 --json tagName,isDraft,isPrerelease,assets,url
 ```
 
-## Esempio pratico
+**Pubblicare solo dopo la verifica.** Questo comando rende la release disponibile agli utenti che possono accedere al repository:
 
-Struttura release:
-
-```md
-## v1.4.0
-
-### Aggiunto
-- Nuova pipeline CI.
-
-### Modificato
-- Aggiornata configurazione deploy.
-
-### Corretto
-- Risolto errore nel caricamento asset.
-
-### Note di aggiornamento
-- Eseguire la migrazione del database prima del deploy.
+```bash
+gh release edit v2.0.0 --draft=false
 ```
 
-## Varianti
+## Varianti ed errori comuni
 
-- **Draft release**: preparazione prima della pubblicazione.
-- **Pre-release**: beta, alpha o release candidate.
-- **Latest release**: versione consigliata.
-- **Release automatizzata**: creata da GitHub Actions.
-- **Release con asset**: allega binari, archivi o report.
-- **Release notes generate**: base automatica da rivedere.
-
-## Errori comuni
-
-- Creare release senza tag coerente.
-- Pubblicare note troppo generiche.
-- Non distinguere pre-release e stable.
-- Non allegare asset necessari.
-- Non indicare breaking change o migrazioni.
-- Usare release come changelog confuso e non versionato.
-
-## Checklist
-
-- Il tag e corretto?
-- Le note spiegano impatto e compatibilita?
-- Asset e checksum sono presenti se servono?
-- La release e stable o pre-release?
-- Il changelog e aggiornato?
-- Il workflow di deploy usa la release giusta?
+- **Draft** indica che la release non è ancora pubblicata. **Pre-release** segnala una versione non stabile: una beta può essere pubblica. Per una beta usare un tag distinto, per esempio `v2.0.0-beta.1`, e il flag `--prerelease`.
+- **Latest** è un'etichetta della release, non prova che quel commit sia distribuito in produzione.
+- Il changelog descrive l'impatto, non solo i titoli delle PR. «Rinominare `OLD_API_URL` in `API_URL` prima dell'aggiornamento» aiuta più di «aggiornata la configurazione».
+- Il workflow Quartz di questo vault pubblica su push a `main` o avvio manuale: un tag o una release da soli non ne attivano il deploy.
 
 ## Collegamenti
 
@@ -133,6 +78,9 @@ Struttura release:
 
 ## Fonti
 
-- [GitHub Docs - About releases](https://docs.github.com/en/repositories/releasing-projects-on-github/about-releases)
-- [GitHub Docs - Managing releases](https://docs.github.com/en/repositories/releasing-projects-on-github/managing-releases-in-a-repository)
-- [GitHub Docs - Automatically generated release notes](https://docs.github.com/en/repositories/releasing-projects-on-github/automatically-generated-release-notes)
+- [GitHub Docs: tag, release e archivi sorgente](https://docs.github.com/en/repositories/releasing-projects-on-github/about-releases)
+- [GitHub Docs: gestire le release](https://docs.github.com/en/repositories/releasing-projects-on-github/managing-releases-in-a-repository)
+- [GitHub Docs: note generate](https://docs.github.com/en/repositories/releasing-projects-on-github/automatically-generated-release-notes)
+- [GitHub CLI: gh release create](https://cli.github.com/manual/gh_release_create)
+- [GitHub CLI: gh release view](https://cli.github.com/manual/gh_release_view)
+- [GitHub CLI: gh release edit](https://cli.github.com/manual/gh_release_edit)

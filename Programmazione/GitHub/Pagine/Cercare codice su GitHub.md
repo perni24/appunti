@@ -25,96 +25,57 @@ title: Cercare codice su GitHub
 
 ## Sintesi
 
-La ricerca codice su GitHub permette di trovare file, simboli, stringhe, configurazioni, esempi d'uso e pattern dentro repository pubblici o privati a cui hai accesso.
+Prima di cercare, distingui **nome del file**, **testo nel file** e **definizione di un simbolo**. Nel repository il tasto `t` trova rapidamente un percorso conosciuto. Per cercare nel contenuto usa il motore **Code** della Web UI: un termine libero può corrispondere anche al percorso, mentre `content:` limita la ricerca al testo.
 
-E uno strumento importante per studiare codebase grandi, trovare implementazioni reali e capire come una libreria viene usata in progetti esistenti.
+## Esempio: trovare il workflow del vault
 
-## Quando usarlo
+Queste sono **query per GitHub.com**, non comandi della shell. Un termine fra virgolette indica una stringa esatta; più condizioni separate da spazi devono essere soddisfatte nello stesso file.
 
-Usala quando:
-
-- cerchi una funzione o una classe in un repository;
-- vuoi trovare dove viene usata una API;
-- devi capire configurazioni simili in altri progetti;
-- cerchi esempi reali di GitHub Actions, Dockerfile o librerie;
-- vuoi analizzare una codebase senza clonarla;
-- devi individuare file per estensione o path.
-
-## Come funziona
-
-GitHub indicizza repository e permette ricerche con filtri. Puoi cercare:
-
-- in un repository specifico;
-- in una organizzazione;
-- per linguaggio;
-- per path;
-- per nome file;
-- per stringa esatta;
-- per simboli quando supportato.
-
-La ricerca e piu utile quando combini query e filtri invece di scrivere una parola generica.
-
-## API / Sintassi
-
-Esempi di query:
+Trova i workflow YAML alla radice di `.github/workflows/` con estensione `.yml` che dichiarano l’avvio manuale:
 
 ```text
-repo:owner/repository useEffect
-org:openai extension:yml workflow_dispatch
-language:TypeScript "createContext("
-path:.github/workflows "actions/checkout"
-filename:package.json "eslint"
+repo:perni24/appunti path:/.github/workflows/*.yml content:"workflow_dispatch"
 ```
 
-Ricerca dentro repository dalla Web UI:
+Se cerchi la cache di npm, restringi per percorso e contenuto:
 
 ```text
-t
+repo:perni24/appunti path:.github/workflows content:"actions/setup-node" content:"cache: npm"
 ```
 
-Il tasto `t` apre la ricerca file rapida nel repository.
+Apri il risultato e verifica lo **step**: trovare entrambe le stringhe nello stesso file non prova che appartengano alla stessa action. La prima query non include i file `.yaml`; cambia il glob o usa `OR` se vuoi entrambe le estensioni.
 
-## Esempio pratico
+## Cambiare il tipo di ricerca
 
-Trovare workflow GitHub Actions che usano cache Node.js:
+| Obiettivo | Filtro nella ricerca web Code |
+| --- | --- |
+| Limitare il perimetro | `repo:OWNER/REPO` oppure `org:ORGANIZZAZIONE`, eventualmente con `language:TypeScript` |
+| Cercare una definizione | `symbol:parseNote` nei linguaggi supportati; non elenca tutti i punti in cui il simbolo viene chiamato |
+| Cercare un uso testuale | `content:"parseNote("`: può trovare chiamate, dichiarazioni o esempi, non solo riferimenti semantici |
+
+Per individuare i manifesti chiamati esattamente `package.json` anche in sottocartelle, usa una regex sul percorso:
 
 ```text
-path:.github/workflows "actions/setup-node" "cache:"
+repo:perni24/appunti path:/(^|\/)package\.json$/
 ```
 
-Trovare esempi di una API in TypeScript:
+Non confondere la sintassi della ricerca web con quella del motore legacy usato da `gh search code`: i risultati e il supporto alle espressioni regolari possono differire. Nella Web UI usa `path:`, non fare affidamento su `filename:` o `extension:` degli esempi legacy.
 
-```text
-language:TypeScript "satisfies"
+## Nessun risultato: che cosa hai escluso?
+
+La ricerca web indicizza il **branch predefinito** e ha limiti di indicizzazione; non vede i file modificati solo sul tuo computer. Non dedurre che il codice non esista. Nel clone, per cercare una stringa letterale nello snapshot dell’attuale `HEAD`:
+
+```bash
+git grep -n -F workflow_dispatch HEAD -- .github/workflows
 ```
 
-Per risultati migliori, limita per repository, organizzazione o path.
+Per cercare invece nei file tracciati come si trovano sul disco, ometti `HEAD`:
 
-## Varianti
+```bash
+git grep -n -F workflow_dispatch -- .github/workflows
+```
 
-- **Ricerca file rapida**: utile dentro un repository.
-- **Ricerca globale**: utile per esempi pubblici.
-- **Ricerca per path**: utile per config e workflow.
-- **Ricerca per linguaggio**: utile per esempi di codice.
-- **Ricerca per stringa esatta**: utile con virgolette.
-- **Ricerca simboli**: utile per funzioni, classi e tipi.
-
-## Errori comuni
-
-- Usare query troppo generiche.
-- Copiare codice trovato senza controllare contesto e licenza.
-- Fidarsi di esempi vecchi o non mantenuti.
-- Cercare segreti o token invece di usare strumenti di security scanning.
-- Non filtrare per linguaggio, path o repository.
-
-## Checklist
-
-- Hai limitato la ricerca al contesto corretto?
-- Hai controllato data e manutenzione del repository?
-- Il codice trovato e compatibile con il tuo stack?
-- Hai verificato licenza e contesto?
-- Hai cercato anche esempi ufficiali o documentazione?
-- La query e abbastanza specifica?
+Verifica revisione e permessi. Prima di riutilizzare codice trovato in altri progetti, controlla contesto, manutenzione e licenza; la ricerca testuale non sostituisce una scansione di sicurezza.
 
 ## Collegamenti
 
@@ -125,4 +86,6 @@ Per risultati migliori, limita per repository, organizzazione o path.
 
 ## Fonti
 
-- [GitHub Docs - Searching code](https://docs.github.com/en/search-github/searching-on-github/searching-code)
+- [GitHub Docs: sintassi di Code Search](https://docs.github.com/en/search-github/github-code-search/understanding-github-code-search-syntax)
+- [GitHub Docs: copertura e limiti della ricerca codice](https://docs.github.com/en/search-github/github-code-search/about-github-code-search)
+- [GitHub CLI: differenze del motore di ricerca](https://cli.github.com/manual/gh_search_code)

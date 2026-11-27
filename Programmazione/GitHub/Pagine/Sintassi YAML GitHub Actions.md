@@ -26,115 +26,55 @@ title: Sintassi YAML GitHub Actions
 
 ## Sintesi
 
-La sintassi YAML di GitHub Actions definisce eventi, job, step, runner, variabili, permessi e condizioni. E dichiarativa: descrive cosa deve succedere e GitHub Actions esegue il workflow.
+Per leggere il YAML parti dal livello di indentazione: `jobs` è una mappa di identificatori; `steps` è una **lista ordinata**, e ogni trattino apre uno step. Due file YAML validi possono avere effetti diversi in Actions: per esempio `if` sotto uno step governa solo quello step, sotto un job governa l’intero job.
 
-Una sintassi chiara riduce workflow fragili e difficili da debuggare.
+## Esempio pratico: un input booleano che cambia un solo step
 
-## Quando usarlo
-
-Studiala quando:
-
-- scrivi un workflow da zero;
-- modifichi CI/CD esistente;
-- devi usare condizioni;
-- vuoi passare variabili tra step o job;
-- vuoi configurare permessi;
-- vuoi capire perche un workflow non parte.
-
-## Come funziona
-
-Le chiavi principali sono:
-
-- `name`;
-- `on`;
-- `permissions`;
-- `env`;
-- `jobs`;
-- `runs-on`;
-- `steps`;
-- `uses`;
-- `run`;
-- `with`;
-- `if`;
-- `needs`.
-
-YAML e sensibile a indentazione e tipi. Un errore di spazi puo cambiare il significato del workflow.
-
-## API / Sintassi
-
-Workflow completo minimo:
+Questo workflow manuale controlla che esista `Home.md`. Con l’opzione `esteso` attiva conta anche i Markdown di `Programmazione/`. Non richiede npm, non modifica file e non pubblica nulla.
 
 ```yaml
-name: CI
-
+name: Controlla la home
 on:
-  pull_request:
+  workflow_dispatch:
+    inputs:
+      esteso:
+        description: Conta anche le note di programmazione
+        type: boolean
+        default: false
 
 permissions:
   contents: read
 
 jobs:
-  test:
-    runs-on: ubuntu-latest
+  verifica:
+    name: Verifica del vault
+    runs-on: windows-latest
+    defaults:
+      run:
+        shell: pwsh
     steps:
-      - name: Checkout
-        uses: actions/checkout@v4
-
-      - name: Run tests
-        run: npm test
+      - uses: actions/checkout@v6
+      - name: Verifica il file iniziale
+        run: |
+          if (-not (Test-Path -LiteralPath 'Home.md' -PathType Leaf)) {
+            throw 'Home.md assente'
+          }
+      - name: Conta i Markdown
+        if: inputs.esteso
+        run: |
+          (Get-ChildItem -LiteralPath 'Programmazione' -Recurse -File -Filter '*.md' | Measure-Object).Count
 ```
 
-Condizione:
+## Quattro distinzioni utili
 
-```yaml
-if: github.ref == 'refs/heads/main'
-```
+- `verifica` è l’ID del job, utilizzabile in `needs`; `name: Verifica del vault` è il nome mostrato nei log. Uno step che deve esporre output ha bisogno di un proprio `id`.
+- `uses` richiama un’action; `with` le passa input. `run` avvia la shell; `env` le rende disponibili valori con nome. Non mettere `uses` e `run` nello stesso step.
+- `if: inputs.esteso` è un’espressione di Actions, non un comando PowerShell. `inputs` conserva il tipo booleano; la stringa non vuota `'false'` non è il booleano `false`. Con l’opzione disattivata il conteggio è *skipped*, non *failed*.
+- `run: |` conserva le righe dello script. Una variabile dichiarata in `env` si legge come `$env:NOME` in PowerShell o `"$NOME"` in Bash. Le espressioni `${{ ... }}` sono valutate da Actions: per usare un valore dinamico nella shell passalo tramite `env`, non inserirlo nel testo del comando.
 
-## Esempio pratico
+## Diagnosi rapida
 
-Step con input:
-
-```yaml
-- uses: actions/setup-node@v4
-  with:
-    node-version: 22
-    cache: npm
-```
-
-Step shell:
-
-```yaml
-- name: Install dependencies
-  run: npm ci
-```
-
-## Varianti
-
-- **`uses`**: usa una action.
-- **`run`**: esegue comando shell.
-- **`with`**: passa input a una action.
-- **`env`**: definisce variabili.
-- **`if`**: condiziona esecuzione.
-- **`permissions`**: limita permessi token.
-- **`needs`**: definisce dipendenze tra job.
-
-## Errori comuni
-
-- Indentazione sbagliata.
-- Dimenticare `actions/checkout`.
-- Usare secret in echo o log.
-- Non dichiarare `permissions`.
-- Confondere contesti `${{ }}` con variabili shell.
-- Usare branch o path filter troppo ampi.
-
-## Checklist
-
-- Il YAML e indentato correttamente?
-- Le action sono versionate?
-- I permessi sono minimi?
-- I secret non finiscono nei log?
-- I nomi di job e step sono leggibili?
-- Il trigger e coerente con lo scopo?
+Se GitHub rifiuta il workflow prima di creare i job, controlla indentazione, chiavi ammesse e tipi degli input. Se il run esiste ma salta uno step, guarda il relativo `if`. Se invece lo step parte e fallisce, apri il suo log: nel caso sopra, un checkout mancante o un nome file errato fa fallire la verifica di `Home.md`.
 
 ## Collegamenti
 
@@ -146,4 +86,6 @@ Step shell:
 
 ## Fonti
 
-- [GitHub Docs - Workflow syntax](https://docs.github.com/en/actions/reference/workflows-and-actions/workflow-syntax)
+- [GitHub Docs - Sintassi dei workflow](https://docs.github.com/en/actions/reference/workflows-and-actions/workflow-syntax)
+- [GitHub Docs - Contesti ed espressioni disponibili](https://docs.github.com/en/actions/reference/workflows-and-actions/contexts)
+- [GitHub Docs - Input di workflow_dispatch](https://docs.github.com/en/actions/reference/workflows-and-actions/events-that-trigger-workflows#workflow_dispatch)
