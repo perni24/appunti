@@ -2,6 +2,7 @@
 
 ## Linguaggi
 
+- [[Programmazione/HTML e CSS/Indice HTML e CSS|HTML e CSS: struttura, semantica e layout del web]]
 - [[Programmazione/JavaScript/Indice JavaScript|JavaScript: linguaggio, browser e Node.js]]
 - [[Programmazione/TypeScript/Indice TypeScript|TypeScript: tipi statici e contratti]]
 - [[Programmazione/Python/Indice Python|Python: scripting, dati e backend]]
@@ -21,7 +22,7 @@
 
 ## Percorsi Trasversali
 
-- Frontend: [[Programmazione/JavaScript/Indice JavaScript|JavaScript]], poi [[Programmazione/TypeScript/Indice TypeScript|TypeScript]] e [[Programmazione/React/Indice React|React]].
+- Frontend: [[Programmazione/HTML e CSS/Indice HTML e CSS|HTML e CSS]], poi [[Programmazione/JavaScript/Indice JavaScript|JavaScript]], [[Programmazione/TypeScript/Indice TypeScript|TypeScript]] e [[Programmazione/React/Indice React|React]].
 - Backend: [[Programmazione/Python/Indice Python|Python]] oppure [[Programmazione/Rust/Indice Rust|Rust]], con [[Programmazione/PostgreSQL/Indice PostgreSQL|PostgreSQL]].
 - Qualita e distribuzione: [[Programmazione/Clean Code/Indice Clean Code|Clean Code]] e [[Programmazione/GitHub/Indice GitHub|GitHub Actions]].
 

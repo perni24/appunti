@@ -8,6 +8,30 @@ Mantieni solo le ultime 10 voci operative.
 
 ---
 
+## 2026-11-28 - HTML e CSS: percorso e verifiche
+
+### Fatto
+
+- Creato il percorso [[Programmazione/HTML e CSS/Indice HTML e CSS|HTML e CSS]] con nove note: dalla struttura del documento ai layout responsive. Gli esempi HTML e CSS sono verificati in Chrome con nove prove dedicate.
+- Aggiunte quattro schede su tabelle dati, tipografia, contrasto e focus visibile. Il percorso comprende ora 13 note, ciascuna con un esempio provato in Chrome.
+- Completato il posizionamento con tre schede: flusso e blocco di riferimento, sticky e fixed, contesti di sovrapposizione. Totale: 16 note e 17 prove in Chrome.
+- Completati anche gli stili dei componenti: proprietà personalizzate e fallback, ordine dei layer e container query. Le 19 schede previste sono tutte presenti nell'indice; 20 prove cumulative superate in Chrome.
+- Aggiunta al percorso base la nota su flusso normale, display e collasso dei margini. Estese le note sui moduli e sulle immagini senza duplicarle: 20 schede e 23 prove cumulative in Chrome.
+- Completate tre schede su pseudo-elementi, transizioni e keyframe con movimento ridotto: 23 note HTML e CSS, 26 prove cumulative in Chrome.
+- Aggiunto [[Programmazione/HTML e CSS/Promemoria/Indice Promemoria HTML e CSS|Promemoria HTML e CSS]]: sei schede operative, venti frammenti copiabili e rimandi alle 23 note del percorso. Verificati nel sito sia l'accesso dall'area sia quello dal portale dei promemoria.
+- Aggiunti Percorso Avanzato e Applicazioni e Qualità all'indice HTML e CSS. Disponibili le prime due note su dimensionamento intrinseco e diagnosi dell'overflow; le voci pianificate restano testo semplice. Totale: 25 note principali, sei promemoria e 34 prove cumulative in Chrome.
+- Completata la nota avanzata sui selettori relazionali e la specificità, collegata anche dalla nota introduttiva e dal promemoria sugli stati interattivi: 26 note principali e 36 prove cumulative in Chrome.
+- Completato il Percorso Avanzato con [[Programmazione/HTML e CSS/Pagine/Dialoghi e popover nativi in HTML|Dialoghi e popover nativi in HTML]]. Le 27 note principali e i sei promemoria hanno ora 38 prove cumulative in Chrome.
+- Iniziato il blocco Applicazioni e Qualità con [[Programmazione/HTML e CSS/Pagine/Validare il markup HTML|Validare il markup HTML]]. Provati i due documenti con Nu HTML Checker e con Chrome: l'area conta 28 note principali, sei promemoria e 39 prove browser.
+- Aggiunta [[Programmazione/HTML e CSS/Pagine/Analizzare i fogli CSS con Stylelint|Analizzare i fogli CSS con Stylelint]]: provati preset, autocorrezione ed eccezione locale in un progetto temporaneo, più il comportamento in stampa. Totale: 29 note principali, sei promemoria e 40 prove browser.
+- Aggiunta [[Programmazione/HTML e CSS/Pagine/Fallback CSS e miglioramento progressivo con supports|Fallback CSS e miglioramento progressivo con @supports]]. Provati il colore di riserva e la navigazione da tastiera con e senza griglia. Totale: 30 note principali, sei promemoria e 42 prove browser.
+- Aggiunta [[Programmazione/HTML e CSS/Pagine/Web font e stabilità del layout|Web font e stabilità del layout]]. Provati un WOFF2 ritardato e una richiesta fallita; confrontati i ritorni a capo di due font di riserva. Totale: 31 note principali, sei promemoria e 44 prove browser.
+- Completata l'ultima voce di Applicazioni e Qualità con [[Programmazione/HTML e CSS/Pagine/Verificare una pagina con browser e tecnologie assistive|Verificare una pagina con browser e tecnologie assistive]]. Il percorso pianificato comprende 32 note principali e sei promemoria. Superate 46 prove in Chrome, di cui le due nuove ripetute su Firefox.
+
+### Prossimi passi
+
+- Nessuna voce pianificata resta da scrivere nell'indice HTML e CSS. Per raccogliere evidenza sugli annunci occorre eseguire la prova manuale con il lettore di schermo sulla piattaforma scelta.
+
 ## 2026-11-27 - GitHub: completati note principali e promemoria
 
 ### Fatto
@@ -167,19 +191,3 @@ Mantieni solo le ultime 10 voci operative.
 ### Prossimi passi
 
 - Iniziare API Design Idiomatico da [[Programmazione/Rust/Pagine/Public API design|Public API design]]. Il capitolo elenca otto voci, ma [[Programmazione/Rust/Pagine/Newtype pattern|Newtype pattern]] è già conteggiata.
-
-## 2026-11-22 - Rust: completato Embedded
-
-### Fatto
-
-- Riconfermata [[Programmazione/Rust/Pagine/no_std|no_std]] con test host e build ARM. È la stessa pagina già revisionata in Rust di Sistema, non una nuova nota nel conteggio.
-- Revisionata [[Programmazione/Rust/Pagine/embedded-hal|embedded-hal]]: **2/7** voci del capitolo coperte, **157/183** note principali Rust, **26 restanti**. Verificati il comando SPI del LIS3DH in una sola transazione, gli errori del bus e del GPIO, e la compilazione della libreria per ARM.
-- Revisionata [[Programmazione/Rust/Pagine/cortex-m|cortex-m]]: **3/7** nel capitolo, **158/183** note principali Rust, **25 restanti**. Verificato nel firmware che il vettore SysTick punti al gestore applicativo solo con l'attributo del runtime; nessun flash su scheda.
-- Revisionata [[Programmazione/Rust/Pagine/probe-rs|probe-rs]]: **4/7** nel capitolo, **159/183** note principali Rust, **24 restanti**. Provati il catalogo della CLI 0.32.0 e il passaggio dell'ELF di `blink` al runner Cargo, senza accesso all'hardware.
-- Revisionata [[Programmazione/Rust/Pagine/defmt|defmt]]: **5/7** nel capitolo, **160/183** note principali Rust, **23 restanti**. Collegato il firmware con il backend RTT; verificati filtri di compilazione e decodifica con l'ELF effettivo, senza una scheda.
-- Revisionata [[Programmazione/Rust/Pagine/RTIC|RTIC]]: **6/7** nel capitolo, **161/183** note principali Rust, **22 restanti**. Verificati il firmware con handler EXTI0 e dispatcher USART2, la compatibilità del binario defmt nella copia del progetto e tre errori rilevati dalla macro RTIC.
-- Revisionata [[Programmazione/Rust/Pagine/Embassy|Embassy]]: **7/7**, capitolo Embedded completato; **162/183** note principali Rust, **21 restanti**. Controllati il vettore TIM2 nel firmware e il comportamento del produttore sul PC con il tempo virtuale, senza programmare una scheda.
-
-### Prossimi passi
-
-- Iniziare il capitolo Testing, Qualita e Sicurezza da [[Programmazione/Rust/Pagine/Unit test|Unit test]].

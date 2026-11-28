@@ -8117,3 +8117,93 @@ Prossimo blocco: [[Programmazione/Rust/Promemoria/Indice Promemoria Rust|Promemo
 - **6/6** prove in `_Meta/tests/github-promemoria.test.mjs`. Eseguiti i cambi di configurazione dei remote in un clone temporaneo, la generazione del report TAP e lo step di presenza con valori assenti o fittizi. Le combinazioni della matrix, i trigger, la cache, gli artifact, i permessi e Dependabot sono stati controllati come configurazione, senza avviare workflow o deploy su GitHub.
 - **85/85** prove complessive GitHub e **9/9** test di trasformazione. **911/911** documenti raggiungibili senza errori o avvisi editoriali. Nei sei HTML aggiornati verificati 34 blocchi di esempio e 20 riferimenti nelle sezioni Fonti.
 - Confrontati i due indici con i file nelle rispettive cartelle: **99/99 note principali e 15/15 promemoria**. Nessuna scheda GitHub residua in questa passata; nessun percorso spostato. L'approvazione personale resta distinta.
+
+## 2026-11-27 - HTML e CSS: primo percorso sui fondamenti del web
+
+- Nove note pubblicabili e un indice, collegato dall'indice di Programmazione. Le quattro schede HTML trattano documento, navigazione semantica, immagini e moduli; le cinque CSS passano dalla cascata al dimensionamento e al layout responsive.
+- **9/9 prove in Chrome** sugli esempi estratti dai Markdown. Verificati fra l'altro il nome accessibile di un link, i dati inviati dal modulo, la larghezza del box e il cambio del numero di colonne. Non è una verifica completa con tecnologie assistive o altri browser.
+- **9/9** test di trasformazione e **921/921** documenti raggiungibili da Home, senza errori bloccanti. Le note restano in attesa di approvazione personale.
+
+## 2026-11-27 - HTML e CSS: contenuto leggibile e controlli da tastiera
+
+- Aggiunte le schede su tabelle dati, tipografia, contrasto e focus. La navigazione semantica rimanda alla tabella completa e la scheda sul focus distingue gli stati CSS dalla gestione del focus in React.
+- **13/13 prove in Chrome**: controllati nome e intestazioni della tabella, dimensioni tipografiche dopo l'ingrandimento del font radice, contrasto sopra e sotto la soglia e ripristino della casella da tastiera. Non eseguita una sessione con screen reader.
+- **9/9 test di trasformazione**, **925/925 documenti raggiungibili**, nessun errore strutturale o avviso editoriale.
+
+## 2026-11-27 - HTML e CSS: posizionamento e sovrapposizione
+
+- Tre schede distinguono lo spazio nel flusso, il riferimento degli offset, lo scorrimento e l'ordine di disegno. Negli esempi si può cambiare una proprietà alla volta per osservare il risultato.
+- **17/17 prove in Chrome**: le quattro nuove coprono il posizionamento locale anche in RTL, il cambio di intestazione sticky, l'effetto di un antenato trasformato su fixed e il confronto tra `z-index: auto` e `0`. Nessuna verifica cross-browser.
+- **928/928** documenti raggiungibili senza errori o avvisi editoriali, **9/9** test di trasformazione. Confrontati sei blocchi di codice e otto riferimenti alle fonti tra le tre note e il rispettivo HTML.
+
+## 2026-11-27 - HTML e CSS: stili e layout dei componenti
+
+- Completate le tre voci restanti. Le schede di base su cascata e media query rimandano ai nuovi approfondimenti. Verificata la corrispondenza tra le **19 note** nell'indice e i file in `Pagine/`.
+- **20/20** prove cumulative in Chrome. Le tre nuove verificano il fallback di `var()` rispetto a un valore incompatibile, la precedenza dei layer anche con `!important` e il passaggio da una a due colonne a viewport invariata. Non sono prove cross-browser.
+- **931/931** documenti raggiungibili, nessun errore strutturale o avviso editoriale; **9/9** test di trasformazione. Nei tre HTML generati sono presenti i sei blocchi di codice e i sei riferimenti alle fonti dei Markdown.
+
+## 2026-11-27 - HTML e CSS: flusso, moduli articolati e immagini responsive
+
+- Nuova nota sui box nel flusso e sul collasso dei margini, collegata all'indice e al box model. Ampliate le due pagine HTML già presenti con un'iscrizione e una mappa che distingue ritaglio e risoluzione.
+- **23/23 prove cumulative in Chrome**. Confrontate geometria e distanza dei box, vincoli e coppie di dati del modulo senza inviarlo, URL e proporzioni delle immagini a due densità usando risorse PNG locali di prova. Non testati i suggerimenti di compilazione del browser né dispositivi fisici.
+- **932/932 documenti** raggiungibili senza errori o avvisi editoriali, **9/9** test di trasformazione. Confrontati nove blocchi e otto fonti tra le tre pagine coinvolte e l'HTML di Quartz.
+
+## 2026-11-27 - HTML e CSS: decorazioni e movimento
+
+- Aggiunte tre schede con esempi HTML e CSS indipendenti da React. Distinti box decorativi e testo necessario, transizione di uno stato nativo e sequenza di keyframe facoltativa.
+- **26/26 prove cumulative in Chrome**. Controllati il nome del titolo anche senza stili, un valore intermedio di sfondo in entrambe le direzioni, tre posizioni del testo animato e il funzionamento da tastiera con movimento ridotto. Non eseguiti test cross-browser o con screen reader.
+- **935/935 documenti** raggiungibili senza errori o avvisi editoriali, **9/9** test di trasformazione. I tre HTML conservano i sei blocchi di codice e i sei riferimenti delle fonti.
+
+## 2026-11-27 - HTML e CSS: promemoria operativi
+
+- Create sei schede con 20 snippet per documento e dati, moduli, box e cascata, layout responsive, posizionamento, focus e movimento. I collegamenti accanto agli esempi rimandano alle 23 note principali senza duplicare il percorso di studio.
+- **32/32 prove cumulative in Chrome**: le sei nuove leggono i frammenti dai Markdown, caricano i moduli senza inviarli e provano le regole CSS su markup locale. Verificati anche il contenitore ridimensionato indipendentemente dalla finestra e il controllo da tastiera con movimento ridotto.
+- **942/942** documenti raggiungibili senza errori o avvisi editoriali e **9/9** test di trasformazione. Verificati nel sito i due accessi all'indice, i sei collegamenti alle schede, i 20 blocchi di esempio e i 12 riferimenti nelle fonti.
+
+## 2026-11-27 - HTML e CSS: dimensionamento intrinseco e diagnosi dell'overflow
+
+- Aperte le sezioni avanzata e applicativa con percorsi di studio distinti dalle note già disponibili. Collegate le nuove schede anche dalle pagine di base su box model, Flexbox e Grid.
+- **34/34 prove cumulative in Chrome**. Confrontate le tre dimensioni intrinseche della stessa frase variando spazio e regole di interruzione; riprodotti i minimi automatici in Flexbox e Grid, il testo che ancora sporge dopo la riduzione del box e le alternative di ritorno a capo o scorrimento locale.
+- **944/944** documenti raggiungibili senza errori o avvisi editoriali; **9/9** test di trasformazione. Nei due HTML verificati sette blocchi di esempio e cinque riferimenti alle fonti.
+
+## 2026-11-27 - HTML e CSS: selettori relazionali e specificità
+
+- Nuova scheda avanzata: scegliere il soggetto con `:has()`, distinguere corrispondenza e peso con `:is()` e `:where()`. Il promemoria conserva lo snippet breve e rimanda alla dimostrazione.
+- **36/36 prove cumulative in Chrome**. Verificati lo stato di due checkbox da tastiera, la relazione figlio/discendente e il colore del medesimo titolo con o senza il contributo dell'ID nella lista.
+- **945/945** documenti raggiungibili, nessun errore o avviso editoriale; **9/9** test di trasformazione. Verificati i quattro blocchi, i due riferimenti ufficiali e i tre collegamenti in ingresso nell'HTML del sito.
+
+## 2026-11-27 - HTML e CSS: dialoghi e popover nativi
+
+- Chiusa l'ultima voce del Percorso Avanzato: due esempi distinguono una conferma modale da un aiuto contestuale non modale, senza dipendenze da React.
+- **38/38 prove cumulative in Chrome**. Sul dialogo verificati nome accessibile, focus iniziale e di ritorno, sfondo inerte e conferma seguita da una riapertura con annullamento. Sul popover provate la chiusura da tastiera e l'interazione con una casella esterna. Non eseguite prove con screen reader o altri browser.
+- **946/946** documenti raggiungibili senza errori o avvisi editoriali; **9/9** test di trasformazione.
+
+## 2026-11-27 - HTML e CSS: validare il markup
+
+- Nu HTML Checker 26.11.26 eseguito in locale sui documenti estratti dalla nota: due errori iniziali, uno dopo la sola correzione del paragrafo, zero dopo quella della label. Codici di uscita rispettivamente 1, 1 e 0. Il controllo di conformità ha riguardato gli esempi, non l'intero sito.
+- **39/39 prove cumulative in Chrome**: confrontati i due DOM e l'attivazione della casella tramite etichetta. Distinti il recupero automatico del parser e la correzione nel sorgente.
+- **947/947** documenti raggiungibili senza errori o avvisi editoriali; **9/9** test di trasformazione. Verificati nell'HTML di Quartz i quattro blocchi copiabili, i quattro riferimenti esterni e i due collegamenti in ingresso.
+
+## 2026-11-27 - HTML e CSS: lint dei fogli di stile
+
+- Eseguiti configurazione, script npm e CSS estratti dalla nota con Stylelint 17.16.0 e preset standard 40.0.0 in un progetto temporaneo. Due violazioni iniziali, una dopo `--fix`, zero dopo la correzione manuale. Verificati anche il limite alla sola riga interessata e l'avviso per una disattivazione inutile. Nessuna dipendenza aggiunta a Quartz.
+- **40/40 prove cumulative in Chrome**: l'ombra inline del widget resta a schermo, scompare emulando la stampa e riappare tornando a schermo. Non è una prova su stampante fisica.
+- **948/948** documenti raggiungibili senza errori o avvisi editoriali; **9/9** test di trasformazione. Nell'HTML generato verificati nove blocchi copiabili, quattro fonti e due link in ingresso.
+
+## 2026-11-28 - HTML e CSS: fallback e miglioramento progressivo
+
+- Distinti una dichiarazione ignorata dal parser, il fallback di `var()` e un gruppo di regole condizionali. La nuova nota è raggiungibile dall'indice e dalla pagina sulle proprietà personalizzate.
+- **42/42 prove cumulative in Chrome**. Confrontati bordo e colore calcolati dopo una funzione non riconosciuta; provati l'ordine dei link e la destinazione da tastiera in griglia larga, griglia stretta e layout di base. La condizione falsa è simulata nello stesso motore, non sostituisce un test cross-browser.
+- **949/949** documenti raggiungibili senza errori o avvisi editoriali e **9/9** test di trasformazione. Verificati nel sito tre blocchi di esempio, quattro riferimenti ufficiali e due link in ingresso.
+
+## 2026-11-28 - HTML e CSS: web font e stabilità del layout
+
+- Distinti scelta del fallback, politica di sostituzione e preload. Provato il WOFF2 latino 400 di IBM Plex Mono su una richiesta locale ritardata e verificata l'apertura degli orari da tastiera dopo un caricamento fallito.
+- **44/44 prove cumulative in Chrome**. Nel campione il paragrafo occupa quattro righe con il fallback proporzionale, cinque con quello monospaziato e sei con il font caricato. A interlinea costante di 30 px lo spostamento del controllo è rispettivamente di 60 e 30 px. È una misura di geometria, non del CLS in produzione.
+- **950/950** documenti raggiungibili senza errori o avvisi editoriali e **9/9** test di trasformazione. Nell'HTML generato verificati tre blocchi di esempio, cinque riferimenti esterni e due collegamenti in ingresso.
+
+## 2026-11-28 - HTML e CSS: prova cross-browser e tecnologie assistive
+
+- Chiusa la voce finale dell'indice con una pagina HTML autonoma, un percorso da tastiera, una procedura per NVDA e VoiceOver e una scheda per registrare gli esiti manuali.
+- **46/46 prove cumulative in Chrome 158.0.8127.37**; le **due nuove** sono passate anche in Firefox 153.0 (build Playwright, Windows). Verificati focus, apertura e chiusura, stato della casella, navigazione al frammento e perdita del nome quando si scollega la label. Non provati screen reader, braille, Safari o dispositivi mobili; nessuna certificazione di conformità.
+- **951/951** documenti raggiungibili senza errori o avvisi editoriali; **9/9** test di trasformazione. Nell'HTML di Quartz verificati il documento copiabile, quattro fonti e i due link in ingresso.

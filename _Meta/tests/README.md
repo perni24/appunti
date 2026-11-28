@@ -138,6 +138,50 @@ node --test _Meta/tests/github-promemoria.test.mjs
 
 Verifica gli esempi dei sei promemoria finali con Git, Node, PowerShell 7 e le dipendenze di `site`. Esegue i cambi dei remote in un repository temporaneo, produce il report TAP della matrix e prova la presenza di un valore fittizio. Gli eventi, i permessi, la cache e lo scambio di artifact sono verificati come configurazione, non eseguiti su GitHub.
 
+## HTML e CSS: fondamenti e layout
+
+```sh
+node --test _Meta/tests/html-css-fondamenti.test.mjs
+```
+
+Richiede Node, dipendenze di `site`, Chrome e Playwright (oppure `PLAYWRIGHT_MODULE_PATH` diretto al pacchetto). La suite estrae gli esempi dalle note e li carica senza rete. Verifica semantica, form, immagini, cascata e layout; controlla inoltre le intestazioni della tabella, le misure tipografiche, il contrasto del testo e il focus durante l'uso di casella e pulsante da tastiera. Non sostituisce una prova con screen reader.
+
+Per il posizionamento confronta i rettangoli prima e dopo un cambio di riferimento, fa scorrere separatamente pannello e finestra e controlla con `elementFromPoint` quale elemento è in primo piano nell'area condivisa.
+
+Per gli stili dei componenti prova valori personalizzati mancanti e incompatibili, ordine dei layer con e senza `!important`, e colonne diverse nella stessa finestra ai due lati della soglia di una container query.
+
+Per il flusso confronta le misure con `inline`, `inline-block` e `block` e la distanza tra due paragrafi. Gli esempi aggiuntivi di iscrizione e mappa vengono estratti per sezione: nel primo vengono letti i dati del modulo senza inviarli; nel secondo ogni combinazione di viewport e densità parte da un contesto nuovo e riceve PNG di prova delle misure dichiarate.
+
+Per decorazioni e movimento verifica il nome del titolo senza CSS, campiona le transizioni e i keyframe a istanti determinati e riprova casella e pannello da tastiera emulando la preferenza di movimento ridotto.
+
+Per i sei promemoria prova i frammenti HTML per sezione; le ricette CSS di ciascuna scheda sono caricate su markup locale con le classi indicate. Copre anche l'effetto dei layer sul colore, la differenza tra soglia di viewport e di contenitore e il passaggio del puntatore attraverso un livello decorativo.
+
+Per il dimensionamento avanzato confronta le larghezze effettive con `min-content`, `max-content` e `fit-content`. La prova sull'overflow applica in sequenza le correzioni estratte dalla nota e distingue la larghezza del box dal contenuto scorrevole, sia in Flexbox sia in Grid.
+
+Per i selettori avanzati la suite cambia da tastiera lo stato dei controlli, distingue figli diretti da discendenti e sostituisce `:is()` con `:where()` sulla regola originale per confrontare corrispondenza e colore calcolato.
+
+Per i controlli nativi verifica il focus prima, durante e dopo l'apertura, lo sfondo inerte del dialogo modale e gli effetti distinti di conferma, annullamento ed `Esc`. Nel popover verifica anche che il clic esterno chiuda il pannello e attivi la casella sottostante.
+
+Per la validazione confronta il DOM costruito da Chrome sui due documenti della nota e l'effetto del clic sulla label. Questa prova non sostituisce il Nu HTML Checker: gli esempi della nota indicano come ripetere separatamente il controllo di conformità.
+
+Per Stylelint verifica solo l'effetto della regola di stampa sul widget con ombra inline, passando da schermo a stampa e viceversa. Il controllo del foglio e l'autocorrezione si riproducono a parte con la CLI indicata nella nota.
+
+Per i fallback sostituisce nel foglio di prova una funzione colore e una condizione di `@supports` con valori non riconosciuti. Verifica lo stile calcolato del bordo, la disposizione effettiva dei link e la navigazione da tastiera; la simulazione avviene nello stesso Chrome.
+
+Per i web font blocca la richiesta o ritarda la risposta fino al termine delle misure sui fallback. Serve in memoria il WOFF2 latino normale 400 da `fixtures/ibm-plex-mono/`, estratto senza modifiche da `@fontsource/ibm-plex-mono@5.3.0` con la licenza originale. Il font è solo una risorsa di test: non viene installato sul sistema né pubblicato da Quartz. Le misure riguardano lo spostamento del controllo nel campione, non il CLS di un sito reale.
+
+Per la nota sulle tecnologie assistive i due test «Confronto browser» verificano il percorso da tastiera e l'effetto di una label scollegata. Per ripeterli su Firefox usa il binario Firefox della stessa versione di Playwright (non il profilo personale). In PowerShell, in una sessione dedicata:
+
+```powershell
+$env:BROWSER_CHANNEL = "firefox"
+```
+
+```powershell
+node --test --test-name-pattern="Confronto browser" _Meta/tests/html-css-fondamenti.test.mjs
+```
+
+Se i binari Playwright sono in una directory non standard, imposta anche `PLAYWRIGHT_BROWSERS_PATH` a quella directory. Senza `BROWSER_CHANNEL` la suite usa Chrome. Queste prove non avviano lettori di schermo.
+
 ## Clean Code: fondamenti
 
 Dalla radice del vault, con Node e le dipendenze di `site`:

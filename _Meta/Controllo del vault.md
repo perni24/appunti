@@ -4,10 +4,10 @@ Rapporto rigenerabile con `npm --prefix site run content:check -- --report`.
 
 ## Risultato Strutturale
 
-- Documenti, inclusa Home: 911
-- Raggiungibili da Home: 911
+- Documenti, inclusa Home: 951
+- Raggiungibili da Home: 951
 - Errori bloccanti: 0
-- Programmazione: 855
+- Programmazione: 895
 - Stampante 3D: 36
 - Programmi open source: 19
 
